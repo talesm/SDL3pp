@@ -21,15 +21,16 @@ struct Main
   SDL::SDL init{SDL::INIT_VIDEO};
 
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window{"examples/renderer/textures", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window =
+    SDL::Window::Create("examples/renderer/textures", windowSz);
+  SDL::Renderer renderer = SDL::Renderer::Create(window);
 
   /* Textures are pixel data that we upload to the video hardware for fast
      drawing. Lots of 2D engines refer to these as "sprites." We'll do a static
      texture (upload once, draw many times) with data from a bitmap file. */
-  SDL::Texture texture{
+  SDL::Texture texture{SDL::Texture::Load(
     renderer,
-    std::format("{}../assets/sample.bmp", SDL::GetBasePath())};
+    std::format("{}../assets/sample.bmp", SDL::GetBasePath()))};
 
   SDL::AppResult Iterate()
   {
@@ -41,11 +42,11 @@ struct Main
     const float scale = (SDL::fmod(now, 1.0f) - 0.5f) / 0.5f * direction;
 
     // as you can see, rendering draws over what was drawn before it.
-    renderer.SetDrawColor(SDL::Color{0, 0, 0}); // black
-    renderer.RenderClear();                     // start with a blank canvas.
+    renderer->SetDrawColor(SDL::Color{0, 0, 0}); // black
+    renderer->RenderClear();                     // start with a blank canvas.
 
-    int texture_width = texture.GetWidth();
-    int texture_height = texture.GetHeight();
+    int texture_width = texture->GetWidth();
+    int texture_height = texture->GetHeight();
 
     /* Just draw the static texture a few times. You can think of it like a
        stamp, there isn't a limit to the number of times you can draw with it.
@@ -56,23 +57,23 @@ struct Main
     dst_rect.y = 0.0f;
     dst_rect.w = (float)texture_width;
     dst_rect.h = (float)texture_height;
-    renderer.RenderTexture(texture, std::nullopt, dst_rect);
+    renderer->RenderTexture(texture, std::nullopt, dst_rect);
 
     //  center this one.
     dst_rect.x = ((float)(windowSz.x - texture_width)) / 2.0f;
     dst_rect.y = ((float)(windowSz.y - texture_height)) / 2.0f;
     dst_rect.w = (float)texture_width;
     dst_rect.h = (float)texture_height;
-    renderer.RenderTexture(texture, std::nullopt, dst_rect);
+    renderer->RenderTexture(texture, std::nullopt, dst_rect);
 
     // bottom right
     dst_rect.x = ((float)(windowSz.x - texture_width)) - (100.0f * scale);
     dst_rect.y = (float)(windowSz.y - texture_height);
     dst_rect.w = (float)texture_width;
     dst_rect.h = (float)texture_height;
-    renderer.RenderTexture(texture, std::nullopt, dst_rect);
+    renderer->RenderTexture(texture, std::nullopt, dst_rect);
 
-    renderer.Present();       // put it all on the screen!
+    renderer->Present();      // put it all on the screen!
     return SDL::APP_CONTINUE; // carry on with the program!
   }
 };

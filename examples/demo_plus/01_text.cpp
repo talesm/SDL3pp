@@ -212,31 +212,31 @@ struct Main
 {
 
   SDL::SDL init{SDL::INIT_VIDEO};
-  SDL::Window window{"examples/demo/textedit", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window = SDL::Window::Create("examples/demo/textedit", windowSz);
+  SDL::Renderer renderer = SDL::Renderer::Create(window);
   Text text;
   SDL::Point cursor{0, 0};
   bool replaceMode = false;
 
-  Main() { window.StartTextInput(); }
+  Main() { window->StartTextInput(); }
 
   SDL::AppResult Iterate()
   {
-    renderer.SetDrawColor(SDL::FColor{.75f, .75f, .75f, 1.f});
-    renderer.RenderClear();
+    renderer->SetDrawColor(SDL::FColor{.75f, .75f, .75f, 1.f});
+    renderer->RenderClear();
 
-    renderer.SetDrawColor(SDL::Color{0, 0, 0});
-    renderer.RenderRect(SDL::FRect(cursor * SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE,
-                                   {SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE,
-                                    SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE}));
+    renderer->SetDrawColor(SDL::Color{0, 0, 0});
+    renderer->RenderRect(SDL::FRect(cursor * SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE,
+                                    {SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE,
+                                     SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE}));
 
     for (int i = 0; i < textMaxSz.y; i++) {
       std::string row = text.getRow(i);
-      renderer.RenderDebugText(
+      renderer->RenderDebugText(
         {0, float(i * SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)}, row);
     }
 
-    renderer.Present();
+    renderer->Present();
     return SDL::APP_CONTINUE;
   }
 

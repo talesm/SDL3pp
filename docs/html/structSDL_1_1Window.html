@@ -89,387 +89,98 @@ Inheritance diagram for SDL::Window:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1Window__inherit__graph.png" border="0" usemap="#aSDL_1_1Window_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1Window_inherit__map" id="aSDL_1_1Window_inherit__map">
-<area shape="rect" title="Handle to an owned window." alt="" coords="29,240,136,265"/>
-<area shape="rect" href="structSDL_1_1WindowUnsafe.html" title="Unsafe Handle to window." alt="" coords="6,167,159,192"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
-<area shape="rect" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window." alt="" coords="18,93,147,119"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="Handle to an owned window." alt="" coords="47,181,153,207"/>
+<area shape="rect" href="classSDL_1_1ResourceUnique.html" title=" " alt="" coords="19,93,181,133"/>
+<area shape="poly" title=" " alt="" coords="103,147,103,181,97,181,97,147"/>
+<area shape="rect" href="classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="5,5,195,45"/>
+<area shape="poly" title=" " alt="" coords="103,59,103,93,97,93,97,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a446383c719e305c74d78deb31a8c21ac" id="r_a446383c719e305c74d78deb31a8c21ac"><td class="memItemLeft" align="right" valign="top"><a id="a446383c719e305c74d78deb31a8c21ac" name="a446383c719e305c74d78deb31a8c21ac"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Window</b> ()</td></tr>
-<tr class="memdesc:a446383c719e305c74d78deb31a8c21ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty <a class="el" href="structSDL_1_1Window.html" title="Handle to an owned window.">Window</a>. <br /></td></tr>
-<tr class="separator:a446383c719e305c74d78deb31a8c21ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad706b4718faaa3b118e39fbdddf8d168" id="r_ad706b4718faaa3b118e39fbdddf8d168"><td class="memItemLeft" align="right" valign="top"><a id="ad706b4718faaa3b118e39fbdddf8d168" name="ad706b4718faaa3b118e39fbdddf8d168"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Window</b> (SDL_Window *resource)</td></tr>
-<tr class="memdesc:ad706b4718faaa3b118e39fbdddf8d168"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:ad706b4718faaa3b118e39fbdddf8d168"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a586be22dff7e191c311d08017d1959fc" id="r_a586be22dff7e191c311d08017d1959fc"><td class="memItemLeft" align="right" valign="top"><a id="a586be22dff7e191c311d08017d1959fc" name="a586be22dff7e191c311d08017d1959fc"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Window</b> (const <a class="el" href="structSDL_1_1Window.html">Window</a> &amp;other)=delete</td></tr>
-<tr class="separator:a586be22dff7e191c311d08017d1959fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e41271ac101da002cc59e881b40123e" id="r_a3e41271ac101da002cc59e881b40123e"><td class="memItemLeft" align="right" valign="top"><a id="a3e41271ac101da002cc59e881b40123e" name="a3e41271ac101da002cc59e881b40123e"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Window</b> (<a class="el" href="structSDL_1_1Window.html">Window</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a3e41271ac101da002cc59e881b40123e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:a3e41271ac101da002cc59e881b40123e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ab3fd51fd018c036e97aaa6e816b48e" id="r_a6ab3fd51fd018c036e97aaa6e816b48e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Window.html#a6ab3fd51fd018c036e97aaa6e816b48e">Window</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> title, const SDL_Point &amp;size, <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> flags=0)</td></tr>
-<tr class="memdesc:a6ab3fd51fd018c036e97aaa6e816b48e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a window with the specified dimensions and flags.  <br /></td></tr>
-<tr class="separator:a6ab3fd51fd018c036e97aaa6e816b48e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a49eaf8a158d2ef5ccfa85fb7093457" id="r_a9a49eaf8a158d2ef5ccfa85fb7093457"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Window.html#a9a49eaf8a158d2ef5ccfa85fb7093457">Window</a> (<a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> parent, const SDL_Point &amp;offset, const SDL_Point &amp;size, <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> flags=0)</td></tr>
-<tr class="memdesc:a9a49eaf8a158d2ef5ccfa85fb7093457"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a child popup window of the specified parent window.  <br /></td></tr>
-<tr class="separator:a9a49eaf8a158d2ef5ccfa85fb7093457"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e99bb1df2e215408c74f4dde3ddcbe9" id="r_a9e99bb1df2e215408c74f4dde3ddcbe9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Window.html#a9e99bb1df2e215408c74f4dde3ddcbe9">Window</a> (<a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> props)</td></tr>
-<tr class="memdesc:a9e99bb1df2e215408c74f4dde3ddcbe9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a window with the specified properties.  <br /></td></tr>
-<tr class="separator:a9e99bb1df2e215408c74f4dde3ddcbe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92f87f6cc7e2f9603f06ee544eef6e59" id="r_a92f87f6cc7e2f9603f06ee544eef6e59"><td class="memItemLeft" align="right" valign="top"><a id="a92f87f6cc7e2f9603f06ee544eef6e59" name="a92f87f6cc7e2f9603f06ee544eef6e59"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~Window</b> ()</td></tr>
-<tr class="memdesc:a92f87f6cc7e2f9603f06ee544eef6e59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees up resource when object goes out of scope. <br /></td></tr>
-<tr class="separator:a92f87f6cc7e2f9603f06ee544eef6e59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d758d6dfd16274686efab583aa027c6" id="r_a5d758d6dfd16274686efab583aa027c6"><td class="memItemLeft" align="right" valign="top"><a id="a5d758d6dfd16274686efab583aa027c6" name="a5d758d6dfd16274686efab583aa027c6"></a>
-<a class="el" href="structSDL_1_1Window.html">Window</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1Window.html">Window</a> other)</td></tr>
-<tr class="memdesc:a5d758d6dfd16274686efab583aa027c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:a5d758d6dfd16274686efab583aa027c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a386ef444ea91977fb930a58fabc5fbef" id="r_a386ef444ea91977fb930a58fabc5fbef"><td class="memItemLeft" align="right" valign="top"><a id="a386ef444ea91977fb930a58fabc5fbef" name="a386ef444ea91977fb930a58fabc5fbef"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>WindowUnsafe</b> (const <a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a386ef444ea91977fb930a58fabc5fbef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1WindowUnsafe.html" title="Unsafe Handle to window.">WindowUnsafe</a> from <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a>. <br /></td></tr>
-<tr class="separator:a386ef444ea91977fb930a58fabc5fbef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87146da510e453da13837a6841f078ae" id="r_a87146da510e453da13837a6841f078ae"><td class="memItemLeft" align="right" valign="top"><a id="a87146da510e453da13837a6841f078ae" name="a87146da510e453da13837a6841f078ae"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>WindowUnsafe</b> (const <a class="el" href="structSDL_1_1Window.html">Window</a> &amp;other)=delete</td></tr>
-<tr class="separator:a87146da510e453da13837a6841f078ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af307f08bf87fb333eecce0c9c277bb24" id="r_af307f08bf87fb333eecce0c9c277bb24"><td class="memItemLeft" align="right" valign="top"><a id="af307f08bf87fb333eecce0c9c277bb24" name="af307f08bf87fb333eecce0c9c277bb24"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>WindowUnsafe</b> (<a class="el" href="structSDL_1_1Window.html">Window</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:af307f08bf87fb333eecce0c9c277bb24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1WindowUnsafe.html" title="Unsafe Handle to window.">WindowUnsafe</a> from <a class="el" href="structSDL_1_1Window.html" title="Handle to an owned window.">Window</a>. <br /></td></tr>
-<tr class="separator:af307f08bf87fb333eecce0c9c277bb24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1WindowUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1WindowUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1WindowUnsafe.html">SDL::WindowUnsafe</a></td></tr>
-<tr class="memitem:a386ef444ea91977fb930a58fabc5fbef inherit pub_methods_structSDL_1_1WindowUnsafe" id="r_a386ef444ea91977fb930a58fabc5fbef"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>WindowUnsafe</b> (const <a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a386ef444ea91977fb930a58fabc5fbef inherit pub_methods_structSDL_1_1WindowUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1WindowUnsafe.html" title="Unsafe Handle to window.">WindowUnsafe</a> from <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a>. <br /></td></tr>
-<tr class="separator:a386ef444ea91977fb930a58fabc5fbef inherit pub_methods_structSDL_1_1WindowUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87146da510e453da13837a6841f078ae inherit pub_methods_structSDL_1_1WindowUnsafe" id="r_a87146da510e453da13837a6841f078ae"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>WindowUnsafe</b> (const <a class="el" href="structSDL_1_1Window.html">Window</a> &amp;other)=delete</td></tr>
-<tr class="separator:a87146da510e453da13837a6841f078ae inherit pub_methods_structSDL_1_1WindowUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf307f08bf87fb333eecce0c9c277bb24 inherit pub_methods_structSDL_1_1WindowUnsafe" id="r_gaf307f08bf87fb333eecce0c9c277bb24"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>WindowUnsafe</b> (<a class="el" href="structSDL_1_1Window.html">Window</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:gaf307f08bf87fb333eecce0c9c277bb24 inherit pub_methods_structSDL_1_1WindowUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1WindowUnsafe.html" title="Unsafe Handle to window.">WindowUnsafe</a> from <a class="el" href="structSDL_1_1Window.html" title="Handle to an owned window.">Window</a>. <br /></td></tr>
-<tr class="separator:gaf307f08bf87fb333eecce0c9c277bb24 inherit pub_methods_structSDL_1_1WindowUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e4b44ed3ff2de3cd38d713e9e42339c inherit pub_methods_structSDL_1_1WindowUnsafe" id="r_a4e4b44ed3ff2de3cd38d713e9e42339c"><td class="memItemLeft" align="right" valign="top">
-constexpr <a class="el" href="structSDL_1_1WindowUnsafe.html">WindowUnsafe</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1WindowUnsafe.html">WindowUnsafe</a> other)</td></tr>
-<tr class="memdesc:a4e4b44ed3ff2de3cd38d713e9e42339c inherit pub_methods_structSDL_1_1WindowUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:a4e4b44ed3ff2de3cd38d713e9e42339c inherit pub_methods_structSDL_1_1WindowUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfc07cb1e80e63736d4574ba8f23adb7 inherit pub_methods_structSDL_1_1WindowUnsafe" id="r_abfc07cb1e80e63736d4574ba8f23adb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowUnsafe.html#abfc07cb1e80e63736d4574ba8f23adb7">Destroy</a> ()</td></tr>
-<tr class="memdesc:abfc07cb1e80e63736d4574ba8f23adb7 inherit pub_methods_structSDL_1_1WindowUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
-<tr class="separator:abfc07cb1e80e63736d4574ba8f23adb7 inherit pub_methods_structSDL_1_1WindowUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a850b93ca1b23b6472f846c2f76af7099 inherit pub_methods_structSDL_1_1WindowUnsafe" id="r_a850b93ca1b23b6472f846c2f76af7099"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowUnsafe.html#a850b93ca1b23b6472f846c2f76af7099">reset</a> (SDL_Window *newResource={})</td></tr>
-<tr class="memdesc:a850b93ca1b23b6472f846c2f76af7099 inherit pub_methods_structSDL_1_1WindowUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
-<tr class="separator:a850b93ca1b23b6472f846c2f76af7099 inherit pub_methods_structSDL_1_1WindowUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1WindowRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1WindowRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1WindowRef.html">SDL::WindowRef</a></td></tr>
-<tr class="memitem:a9ebf1ef2d5ae3494cdbec51bedc6809a inherit pub_methods_structSDL_1_1WindowRef" id="r_a9ebf1ef2d5ae3494cdbec51bedc6809a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Display.html">Display</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a9ebf1ef2d5ae3494cdbec51bedc6809a">GetDisplay</a> () const</td></tr>
-<tr class="memdesc:a9ebf1ef2d5ae3494cdbec51bedc6809a inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the display associated with a window.  <br /></td></tr>
-<tr class="separator:a9ebf1ef2d5ae3494cdbec51bedc6809a inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b178f641ac0952f31468de60aa59602 inherit pub_methods_structSDL_1_1WindowRef" id="r_a6b178f641ac0952f31468de60aa59602"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a6b178f641ac0952f31468de60aa59602">GetPixelDensity</a> () const</td></tr>
-<tr class="memdesc:a6b178f641ac0952f31468de60aa59602 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pixel density of a window.  <br /></td></tr>
-<tr class="separator:a6b178f641ac0952f31468de60aa59602 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a057eecdbd9d4c0bd76ef40cbe9320c47 inherit pub_methods_structSDL_1_1WindowRef" id="r_a057eecdbd9d4c0bd76ef40cbe9320c47"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a057eecdbd9d4c0bd76ef40cbe9320c47">GetDisplayScale</a> () const</td></tr>
-<tr class="memdesc:a057eecdbd9d4c0bd76ef40cbe9320c47 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the content display scale relative to a window's pixel size.  <br /></td></tr>
-<tr class="separator:a057eecdbd9d4c0bd76ef40cbe9320c47 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e9bbe8206f805f15e460277a1573576 inherit pub_methods_structSDL_1_1WindowRef" id="r_a5e9bbe8206f805f15e460277a1573576"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a5e9bbe8206f805f15e460277a1573576">SetFullscreenMode</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryVideo.html#ga65322ad2ac8ca3b685a8696dc5dc713a">DisplayMode</a> &gt; mode)</td></tr>
-<tr class="memdesc:a5e9bbe8206f805f15e460277a1573576 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the display mode to use when a window is visible and fullscreen.  <br /></td></tr>
-<tr class="separator:a5e9bbe8206f805f15e460277a1573576 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7add845a20274ae3782588543218cbec inherit pub_methods_structSDL_1_1WindowRef" id="r_a7add845a20274ae3782588543218cbec"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__CategoryVideo.html#ga65322ad2ac8ca3b685a8696dc5dc713a">DisplayMode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a7add845a20274ae3782588543218cbec">GetFullscreenMode</a> () const</td></tr>
-<tr class="memdesc:a7add845a20274ae3782588543218cbec inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the display mode to use when a window is visible at fullscreen.  <br /></td></tr>
-<tr class="separator:a7add845a20274ae3782588543218cbec inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a059f6d8ec02780e514a5c3f88aa5866d inherit pub_methods_structSDL_1_1WindowRef" id="r_a059f6d8ec02780e514a5c3f88aa5866d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryOwnPtr.html#gad344fd7da4e765054e86e182363639c7">OwnPtr</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a059f6d8ec02780e514a5c3f88aa5866d">GetICCProfile</a> (size_t *size) const</td></tr>
-<tr class="memdesc:a059f6d8ec02780e514a5c3f88aa5866d inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the raw ICC profile data for the screen the window is currently on.  <br /></td></tr>
-<tr class="separator:a059f6d8ec02780e514a5c3f88aa5866d inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a952598560b598acfdc62c6cb3905cd82 inherit pub_methods_structSDL_1_1WindowRef" id="r_a952598560b598acfdc62c6cb3905cd82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a952598560b598acfdc62c6cb3905cd82">GetPixelFormat</a> () const</td></tr>
-<tr class="memdesc:a952598560b598acfdc62c6cb3905cd82 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pixel format associated with the window.  <br /></td></tr>
-<tr class="separator:a952598560b598acfdc62c6cb3905cd82 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add13c6a4cb4a688242141507d832716c inherit pub_methods_structSDL_1_1WindowRef" id="r_add13c6a4cb4a688242141507d832716c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga8ea0dc352d3237a35b3e2bf4c6ebe7e3">WindowID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#add13c6a4cb4a688242141507d832716c">GetID</a> () const</td></tr>
-<tr class="memdesc:add13c6a4cb4a688242141507d832716c inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the numeric ID of a window.  <br /></td></tr>
-<tr class="separator:add13c6a4cb4a688242141507d832716c inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9e02250323bb2bd5814b4b07ab4bc8d inherit pub_methods_structSDL_1_1WindowRef" id="r_ac9e02250323bb2bd5814b4b07ab4bc8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#ac9e02250323bb2bd5814b4b07ab4bc8d">GetParent</a> () const</td></tr>
-<tr class="memdesc:ac9e02250323bb2bd5814b4b07ab4bc8d inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get parent of a window.  <br /></td></tr>
-<tr class="separator:ac9e02250323bb2bd5814b4b07ab4bc8d inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f4f8aa3caacc1f4ee7e1885be711565 inherit pub_methods_structSDL_1_1WindowRef" id="r_a8f4f8aa3caacc1f4ee7e1885be711565"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a8f4f8aa3caacc1f4ee7e1885be711565">GetProperties</a> () const</td></tr>
-<tr class="memdesc:a8f4f8aa3caacc1f4ee7e1885be711565 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a window.  <br /></td></tr>
-<tr class="separator:a8f4f8aa3caacc1f4ee7e1885be711565 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a884fdeb769d35d88581d77f0f761facb inherit pub_methods_structSDL_1_1WindowRef" id="r_a884fdeb769d35d88581d77f0f761facb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a884fdeb769d35d88581d77f0f761facb">GetFlags</a> () const</td></tr>
-<tr class="memdesc:a884fdeb769d35d88581d77f0f761facb inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the window flags.  <br /></td></tr>
-<tr class="separator:a884fdeb769d35d88581d77f0f761facb inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb78ef2fa09ccc11ae4c50ac8df4c9da inherit pub_methods_structSDL_1_1WindowRef" id="r_afb78ef2fa09ccc11ae4c50ac8df4c9da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#afb78ef2fa09ccc11ae4c50ac8df4c9da">SetTitle</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> title)</td></tr>
-<tr class="memdesc:afb78ef2fa09ccc11ae4c50ac8df4c9da inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the title of a window.  <br /></td></tr>
-<tr class="separator:afb78ef2fa09ccc11ae4c50ac8df4c9da inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1a5f0fd854e3d2c871ba97e8e7b30f1 inherit pub_methods_structSDL_1_1WindowRef" id="r_ac1a5f0fd854e3d2c871ba97e8e7b30f1"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#ac1a5f0fd854e3d2c871ba97e8e7b30f1">GetTitle</a> () const</td></tr>
-<tr class="memdesc:ac1a5f0fd854e3d2c871ba97e8e7b30f1 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the title of a window.  <br /></td></tr>
-<tr class="separator:ac1a5f0fd854e3d2c871ba97e8e7b30f1 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ca5de82c90c2553cf4a36ad58fd9079 inherit pub_methods_structSDL_1_1WindowRef" id="r_a8ca5de82c90c2553cf4a36ad58fd9079"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a8ca5de82c90c2553cf4a36ad58fd9079">SetIcon</a> (<a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> icon)</td></tr>
-<tr class="memdesc:a8ca5de82c90c2553cf4a36ad58fd9079 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the icon for a window.  <br /></td></tr>
-<tr class="separator:a8ca5de82c90c2553cf4a36ad58fd9079 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93d658f7457668142e0d8529e2778476 inherit pub_methods_structSDL_1_1WindowRef" id="r_a93d658f7457668142e0d8529e2778476"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a93d658f7457668142e0d8529e2778476">SetRect</a> (<a class="el" href="structSDL_1_1Rect.html">Rect</a> rect)</td></tr>
-<tr class="memdesc:a93d658f7457668142e0d8529e2778476 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request the window's position and size to be set.  <br /></td></tr>
-<tr class="separator:a93d658f7457668142e0d8529e2778476 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6b9cbda4628f27ae888de8f22750687 inherit pub_methods_structSDL_1_1WindowRef" id="r_ab6b9cbda4628f27ae888de8f22750687"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#ab6b9cbda4628f27ae888de8f22750687">GetRect</a> () const</td></tr>
-<tr class="memdesc:ab6b9cbda4628f27ae888de8f22750687 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the position and client size of a window.  <br /></td></tr>
-<tr class="separator:ab6b9cbda4628f27ae888de8f22750687 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fc1dad54fb6eda598d1487696db87b5 inherit pub_methods_structSDL_1_1WindowRef" id="r_a3fc1dad54fb6eda598d1487696db87b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a3fc1dad54fb6eda598d1487696db87b5">SetPosition</a> (const SDL_Point &amp;p)</td></tr>
-<tr class="memdesc:a3fc1dad54fb6eda598d1487696db87b5 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request that the window's position be set.  <br /></td></tr>
-<tr class="separator:a3fc1dad54fb6eda598d1487696db87b5 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b8c90e5891161362744f1af6e05f34c inherit pub_methods_structSDL_1_1WindowRef" id="r_a4b8c90e5891161362744f1af6e05f34c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a4b8c90e5891161362744f1af6e05f34c">GetPosition</a> () const</td></tr>
-<tr class="memdesc:a4b8c90e5891161362744f1af6e05f34c inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the position of a window.  <br /></td></tr>
-<tr class="separator:a4b8c90e5891161362744f1af6e05f34c inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45a31db38fcb045a72826c17f725b582 inherit pub_methods_structSDL_1_1WindowRef" id="r_a45a31db38fcb045a72826c17f725b582"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a45a31db38fcb045a72826c17f725b582">GetPosition</a> (int *x, int *y) const</td></tr>
-<tr class="memdesc:a45a31db38fcb045a72826c17f725b582 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the position of a window.  <br /></td></tr>
-<tr class="separator:a45a31db38fcb045a72826c17f725b582 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d3ba508f62e536e959f2d0e1bd156a9 inherit pub_methods_structSDL_1_1WindowRef" id="r_a5d3ba508f62e536e959f2d0e1bd156a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a5d3ba508f62e536e959f2d0e1bd156a9">SetSize</a> (const SDL_Point &amp;p)</td></tr>
-<tr class="memdesc:a5d3ba508f62e536e959f2d0e1bd156a9 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request that the size of a window's client area be set.  <br /></td></tr>
-<tr class="separator:a5d3ba508f62e536e959f2d0e1bd156a9 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc5567df6053f3ec7287819449186cb4 inherit pub_methods_structSDL_1_1WindowRef" id="r_afc5567df6053f3ec7287819449186cb4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#afc5567df6053f3ec7287819449186cb4">GetSize</a> () const</td></tr>
-<tr class="memdesc:afc5567df6053f3ec7287819449186cb4 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a window's client area.  <br /></td></tr>
-<tr class="separator:afc5567df6053f3ec7287819449186cb4 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35a183dad458abbb125379a874977892 inherit pub_methods_structSDL_1_1WindowRef" id="r_a35a183dad458abbb125379a874977892"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a35a183dad458abbb125379a874977892">GetSize</a> (int *w, int *h) const</td></tr>
-<tr class="memdesc:a35a183dad458abbb125379a874977892 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a window's client area.  <br /></td></tr>
-<tr class="separator:a35a183dad458abbb125379a874977892 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5aa24b8ae24f135f14a46b9cb2a1ee1a inherit pub_methods_structSDL_1_1WindowRef" id="r_a5aa24b8ae24f135f14a46b9cb2a1ee1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a5aa24b8ae24f135f14a46b9cb2a1ee1a">GetSafeArea</a> () const</td></tr>
-<tr class="memdesc:a5aa24b8ae24f135f14a46b9cb2a1ee1a inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the safe area for this window.  <br /></td></tr>
-<tr class="separator:a5aa24b8ae24f135f14a46b9cb2a1ee1a inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58bae7d198fcd27a5cb4fb8d5474ebb0 inherit pub_methods_structSDL_1_1WindowRef" id="r_a58bae7d198fcd27a5cb4fb8d5474ebb0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a58bae7d198fcd27a5cb4fb8d5474ebb0">SetAspectRatio</a> (float min_aspect, float max_aspect)</td></tr>
-<tr class="memdesc:a58bae7d198fcd27a5cb4fb8d5474ebb0 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request that the aspect ratio of a window's client area be set.  <br /></td></tr>
-<tr class="separator:a58bae7d198fcd27a5cb4fb8d5474ebb0 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addcf1057e6d449af396f7a9be39856db inherit pub_methods_structSDL_1_1WindowRef" id="r_addcf1057e6d449af396f7a9be39856db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#addcf1057e6d449af396f7a9be39856db">GetAspectRatio</a> (float *min_aspect, float *max_aspect) const</td></tr>
-<tr class="memdesc:addcf1057e6d449af396f7a9be39856db inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a window's client area.  <br /></td></tr>
-<tr class="separator:addcf1057e6d449af396f7a9be39856db inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a989ea744f471441078d796b919e336ec inherit pub_methods_structSDL_1_1WindowRef" id="r_a989ea744f471441078d796b919e336ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a989ea744f471441078d796b919e336ec">GetBordersSize</a> (int *top, int *left, int *bottom, int *right) const</td></tr>
-<tr class="memdesc:a989ea744f471441078d796b919e336ec inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a window's borders (decorations) around the client area.  <br /></td></tr>
-<tr class="separator:a989ea744f471441078d796b919e336ec inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a982e7cb78094e415489d6950e9fe8e98 inherit pub_methods_structSDL_1_1WindowRef" id="r_a982e7cb78094e415489d6950e9fe8e98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a982e7cb78094e415489d6950e9fe8e98">GetSizeInPixels</a> () const</td></tr>
-<tr class="memdesc:a982e7cb78094e415489d6950e9fe8e98 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a window's client area, in pixels.  <br /></td></tr>
-<tr class="separator:a982e7cb78094e415489d6950e9fe8e98 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a132fba98e1b8124a6a24d8854dd5e0a5 inherit pub_methods_structSDL_1_1WindowRef" id="r_a132fba98e1b8124a6a24d8854dd5e0a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a132fba98e1b8124a6a24d8854dd5e0a5">GetSizeInPixels</a> (int *w, int *h) const</td></tr>
-<tr class="memdesc:a132fba98e1b8124a6a24d8854dd5e0a5 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a window's client area, in pixels.  <br /></td></tr>
-<tr class="separator:a132fba98e1b8124a6a24d8854dd5e0a5 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa53e02f655b510dc5eecb6cad3aaaef1 inherit pub_methods_structSDL_1_1WindowRef" id="r_aa53e02f655b510dc5eecb6cad3aaaef1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#aa53e02f655b510dc5eecb6cad3aaaef1">SetMinimumSize</a> (const SDL_Point &amp;p)</td></tr>
-<tr class="memdesc:aa53e02f655b510dc5eecb6cad3aaaef1 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the minimum size of a window's client area.  <br /></td></tr>
-<tr class="separator:aa53e02f655b510dc5eecb6cad3aaaef1 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b496fe672e920ff4e889a5374d67013 inherit pub_methods_structSDL_1_1WindowRef" id="r_a9b496fe672e920ff4e889a5374d67013"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a9b496fe672e920ff4e889a5374d67013">GetMinimumSize</a> (int *w, int *h) const</td></tr>
-<tr class="memdesc:a9b496fe672e920ff4e889a5374d67013 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the minimum size of a window's client area.  <br /></td></tr>
-<tr class="separator:a9b496fe672e920ff4e889a5374d67013 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f3c96d24660290a4781d3b1625bed95 inherit pub_methods_structSDL_1_1WindowRef" id="r_a3f3c96d24660290a4781d3b1625bed95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a3f3c96d24660290a4781d3b1625bed95">SetMaximumSize</a> (const SDL_Point &amp;p)</td></tr>
-<tr class="memdesc:a3f3c96d24660290a4781d3b1625bed95 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the maximum size of a window's client area.  <br /></td></tr>
-<tr class="separator:a3f3c96d24660290a4781d3b1625bed95 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7749aef792362cc6210c669361483dec inherit pub_methods_structSDL_1_1WindowRef" id="r_a7749aef792362cc6210c669361483dec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a7749aef792362cc6210c669361483dec">GetMaximumSize</a> (int *w, int *h) const</td></tr>
-<tr class="memdesc:a7749aef792362cc6210c669361483dec inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the maximum size of a window's client area.  <br /></td></tr>
-<tr class="separator:a7749aef792362cc6210c669361483dec inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac45c7c45f59fdfa54a72f66a21c3456a inherit pub_methods_structSDL_1_1WindowRef" id="r_ac45c7c45f59fdfa54a72f66a21c3456a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#ac45c7c45f59fdfa54a72f66a21c3456a">SetBordered</a> (bool bordered)</td></tr>
-<tr class="memdesc:ac45c7c45f59fdfa54a72f66a21c3456a inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the border state of a window.  <br /></td></tr>
-<tr class="separator:ac45c7c45f59fdfa54a72f66a21c3456a inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c5a10300a637c3b6619ec4597305d8e inherit pub_methods_structSDL_1_1WindowRef" id="r_a1c5a10300a637c3b6619ec4597305d8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a1c5a10300a637c3b6619ec4597305d8e">SetResizable</a> (bool resizable)</td></tr>
-<tr class="memdesc:a1c5a10300a637c3b6619ec4597305d8e inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the user-resizable state of a window.  <br /></td></tr>
-<tr class="separator:a1c5a10300a637c3b6619ec4597305d8e inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada618832832814860e4253b577903837 inherit pub_methods_structSDL_1_1WindowRef" id="r_ada618832832814860e4253b577903837"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#ada618832832814860e4253b577903837">SetAlwaysOnTop</a> (bool on_top)</td></tr>
-<tr class="memdesc:ada618832832814860e4253b577903837 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the window to always be above the others.  <br /></td></tr>
-<tr class="separator:ada618832832814860e4253b577903837 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac29cad7b0144064f9e62a3334d5278db inherit pub_methods_structSDL_1_1WindowRef" id="r_ac29cad7b0144064f9e62a3334d5278db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#ac29cad7b0144064f9e62a3334d5278db">Show</a> ()</td></tr>
-<tr class="memdesc:ac29cad7b0144064f9e62a3334d5278db inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show a window.  <br /></td></tr>
-<tr class="separator:ac29cad7b0144064f9e62a3334d5278db inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62ce4c7a9c99ba7aa0b73237d0c8ff1c inherit pub_methods_structSDL_1_1WindowRef" id="r_a62ce4c7a9c99ba7aa0b73237d0c8ff1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a62ce4c7a9c99ba7aa0b73237d0c8ff1c">Hide</a> ()</td></tr>
-<tr class="memdesc:a62ce4c7a9c99ba7aa0b73237d0c8ff1c inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hide a window.  <br /></td></tr>
-<tr class="separator:a62ce4c7a9c99ba7aa0b73237d0c8ff1c inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a107940acf15e591a1ad0b6b2ce5de6dc inherit pub_methods_structSDL_1_1WindowRef" id="r_a107940acf15e591a1ad0b6b2ce5de6dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a107940acf15e591a1ad0b6b2ce5de6dc">Raise</a> ()</td></tr>
-<tr class="memdesc:a107940acf15e591a1ad0b6b2ce5de6dc inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request that a window be raised above other windows and gain the input focus.  <br /></td></tr>
-<tr class="separator:a107940acf15e591a1ad0b6b2ce5de6dc inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39039f50fb10131fd59a9200fc92024e inherit pub_methods_structSDL_1_1WindowRef" id="r_a39039f50fb10131fd59a9200fc92024e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a39039f50fb10131fd59a9200fc92024e">Maximize</a> ()</td></tr>
-<tr class="memdesc:a39039f50fb10131fd59a9200fc92024e inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request that the window be made as large as possible.  <br /></td></tr>
-<tr class="separator:a39039f50fb10131fd59a9200fc92024e inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abcc112068b01ccaa283a7d49ea1ff3ad inherit pub_methods_structSDL_1_1WindowRef" id="r_abcc112068b01ccaa283a7d49ea1ff3ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#abcc112068b01ccaa283a7d49ea1ff3ad">Minimize</a> ()</td></tr>
-<tr class="memdesc:abcc112068b01ccaa283a7d49ea1ff3ad inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request that the window be minimized to an iconic representation.  <br /></td></tr>
-<tr class="separator:abcc112068b01ccaa283a7d49ea1ff3ad inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbf78b1ea9ce3e91e6b7717b534ce83f inherit pub_methods_structSDL_1_1WindowRef" id="r_abbf78b1ea9ce3e91e6b7717b534ce83f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#abbf78b1ea9ce3e91e6b7717b534ce83f">Restore</a> ()</td></tr>
-<tr class="memdesc:abbf78b1ea9ce3e91e6b7717b534ce83f inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request that the size and position of a minimized or maximized window be restored.  <br /></td></tr>
-<tr class="separator:abbf78b1ea9ce3e91e6b7717b534ce83f inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af14c0b1daeb386f39ea3e9097f0e161f inherit pub_methods_structSDL_1_1WindowRef" id="r_af14c0b1daeb386f39ea3e9097f0e161f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#af14c0b1daeb386f39ea3e9097f0e161f">SetFullscreen</a> (bool fullscreen)</td></tr>
-<tr class="memdesc:af14c0b1daeb386f39ea3e9097f0e161f inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request that the window's fullscreen state be changed.  <br /></td></tr>
-<tr class="separator:af14c0b1daeb386f39ea3e9097f0e161f inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2aaa99f9bf6cd761e63b89c38526c623 inherit pub_methods_structSDL_1_1WindowRef" id="r_a2aaa99f9bf6cd761e63b89c38526c623"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a2aaa99f9bf6cd761e63b89c38526c623">Sync</a> ()</td></tr>
-<tr class="memdesc:a2aaa99f9bf6cd761e63b89c38526c623 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block until any pending window state is finalized.  <br /></td></tr>
-<tr class="separator:a2aaa99f9bf6cd761e63b89c38526c623 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75aa8c3f83b349455324be7e149343ce inherit pub_methods_structSDL_1_1WindowRef" id="r_a75aa8c3f83b349455324be7e149343ce"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a75aa8c3f83b349455324be7e149343ce">HasSurface</a> () const</td></tr>
-<tr class="memdesc:a75aa8c3f83b349455324be7e149343ce inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether the window has a surface associated with it.  <br /></td></tr>
-<tr class="separator:a75aa8c3f83b349455324be7e149343ce inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b348d3191631e98f3b7e1cdcb46df5f inherit pub_methods_structSDL_1_1WindowRef" id="r_a2b348d3191631e98f3b7e1cdcb46df5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a2b348d3191631e98f3b7e1cdcb46df5f">GetSurface</a> ()</td></tr>
-<tr class="memdesc:a2b348d3191631e98f3b7e1cdcb46df5f inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> surface associated with the window.  <br /></td></tr>
-<tr class="separator:a2b348d3191631e98f3b7e1cdcb46df5f inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebf0aafbaffebdc0cb5dadad32d5a318 inherit pub_methods_structSDL_1_1WindowRef" id="r_aebf0aafbaffebdc0cb5dadad32d5a318"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#aebf0aafbaffebdc0cb5dadad32d5a318">SetSurfaceVSync</a> (int vsync)</td></tr>
-<tr class="memdesc:aebf0aafbaffebdc0cb5dadad32d5a318 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle VSync for the window surface.  <br /></td></tr>
-<tr class="separator:aebf0aafbaffebdc0cb5dadad32d5a318 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef6a49929380e12270f29a33ff05af26 inherit pub_methods_structSDL_1_1WindowRef" id="r_aef6a49929380e12270f29a33ff05af26"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#aef6a49929380e12270f29a33ff05af26">GetSurfaceVSync</a> () const</td></tr>
-<tr class="memdesc:aef6a49929380e12270f29a33ff05af26 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get VSync for the window surface.  <br /></td></tr>
-<tr class="separator:aef6a49929380e12270f29a33ff05af26 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3706e437656aba433fc671b9472d2422 inherit pub_methods_structSDL_1_1WindowRef" id="r_a3706e437656aba433fc671b9472d2422"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a3706e437656aba433fc671b9472d2422">UpdateSurface</a> ()</td></tr>
-<tr class="memdesc:a3706e437656aba433fc671b9472d2422 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the window surface to the screen.  <br /></td></tr>
-<tr class="separator:a3706e437656aba433fc671b9472d2422 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd1c3743e46a12d0c86d2ca0c3e2d1b1 inherit pub_methods_structSDL_1_1WindowRef" id="r_abd1c3743e46a12d0c86d2ca0c3e2d1b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#abd1c3743e46a12d0c86d2ca0c3e2d1b1">UpdateSurfaceRects</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const SDL_Rect &gt; rects)</td></tr>
-<tr class="memdesc:abd1c3743e46a12d0c86d2ca0c3e2d1b1 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy areas of the window surface to the screen.  <br /></td></tr>
-<tr class="separator:abd1c3743e46a12d0c86d2ca0c3e2d1b1 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae87b36cea808cbc208ffc32d72228e75 inherit pub_methods_structSDL_1_1WindowRef" id="r_ae87b36cea808cbc208ffc32d72228e75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#ae87b36cea808cbc208ffc32d72228e75">DestroySurface</a> ()</td></tr>
-<tr class="memdesc:ae87b36cea808cbc208ffc32d72228e75 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the surface associated with the window.  <br /></td></tr>
-<tr class="separator:ae87b36cea808cbc208ffc32d72228e75 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0ad5ed93ac69c9efc51175413170bdb inherit pub_methods_structSDL_1_1WindowRef" id="r_ab0ad5ed93ac69c9efc51175413170bdb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#ab0ad5ed93ac69c9efc51175413170bdb">SetKeyboardGrab</a> (bool grabbed)</td></tr>
-<tr class="memdesc:ab0ad5ed93ac69c9efc51175413170bdb inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a window's keyboard grab mode.  <br /></td></tr>
-<tr class="separator:ab0ad5ed93ac69c9efc51175413170bdb inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bd7d9f4ba877839f9c37d1aa31fd3c9 inherit pub_methods_structSDL_1_1WindowRef" id="r_a9bd7d9f4ba877839f9c37d1aa31fd3c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a9bd7d9f4ba877839f9c37d1aa31fd3c9">SetMouseGrab</a> (bool grabbed)</td></tr>
-<tr class="memdesc:a9bd7d9f4ba877839f9c37d1aa31fd3c9 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a window's mouse grab mode.  <br /></td></tr>
-<tr class="separator:a9bd7d9f4ba877839f9c37d1aa31fd3c9 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb240e4dc1cdbcf7464145faf0521ae7 inherit pub_methods_structSDL_1_1WindowRef" id="r_adb240e4dc1cdbcf7464145faf0521ae7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#adb240e4dc1cdbcf7464145faf0521ae7">GetKeyboardGrab</a> () const</td></tr>
-<tr class="memdesc:adb240e4dc1cdbcf7464145faf0521ae7 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a window's keyboard grab mode.  <br /></td></tr>
-<tr class="separator:adb240e4dc1cdbcf7464145faf0521ae7 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a069fb4655363ad7e5ad9adc1a74c127f inherit pub_methods_structSDL_1_1WindowRef" id="r_a069fb4655363ad7e5ad9adc1a74c127f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a069fb4655363ad7e5ad9adc1a74c127f">GetMouseGrab</a> () const</td></tr>
-<tr class="memdesc:a069fb4655363ad7e5ad9adc1a74c127f inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a window's mouse grab mode.  <br /></td></tr>
-<tr class="separator:a069fb4655363ad7e5ad9adc1a74c127f inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ca4f7609682d1373503813829d042f4 inherit pub_methods_structSDL_1_1WindowRef" id="r_a2ca4f7609682d1373503813829d042f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a2ca4f7609682d1373503813829d042f4">SetMouseRect</a> (const SDL_Rect &amp;rect)</td></tr>
-<tr class="memdesc:a2ca4f7609682d1373503813829d042f4 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Confines the cursor to the specified area of a window.  <br /></td></tr>
-<tr class="separator:a2ca4f7609682d1373503813829d042f4 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad55186a7a8de668a5d3636c2856db076 inherit pub_methods_structSDL_1_1WindowRef" id="r_ad55186a7a8de668a5d3636c2856db076"><td class="memItemLeft" align="right" valign="top">const SDL_Rect *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#ad55186a7a8de668a5d3636c2856db076">GetMouseRect</a> () const</td></tr>
-<tr class="memdesc:ad55186a7a8de668a5d3636c2856db076 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mouse confinement rectangle of a window.  <br /></td></tr>
-<tr class="separator:ad55186a7a8de668a5d3636c2856db076 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a951fb6c20bb822cee081e9848a28249a inherit pub_methods_structSDL_1_1WindowRef" id="r_a951fb6c20bb822cee081e9848a28249a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a951fb6c20bb822cee081e9848a28249a">SetOpacity</a> (float opacity)</td></tr>
-<tr class="memdesc:a951fb6c20bb822cee081e9848a28249a inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the opacity for a window.  <br /></td></tr>
-<tr class="separator:a951fb6c20bb822cee081e9848a28249a inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c6ed80ffecdb3997252127badce48bb inherit pub_methods_structSDL_1_1WindowRef" id="r_a3c6ed80ffecdb3997252127badce48bb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a3c6ed80ffecdb3997252127badce48bb">GetOpacity</a> () const</td></tr>
-<tr class="memdesc:a3c6ed80ffecdb3997252127badce48bb inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the opacity of a window.  <br /></td></tr>
-<tr class="separator:a3c6ed80ffecdb3997252127badce48bb inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5addb0676f63a138cb0dc8642670c6d inherit pub_methods_structSDL_1_1WindowRef" id="r_af5addb0676f63a138cb0dc8642670c6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#af5addb0676f63a138cb0dc8642670c6d">SetParent</a> (<a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> parent)</td></tr>
-<tr class="memdesc:af5addb0676f63a138cb0dc8642670c6d inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the window as a child of a parent window.  <br /></td></tr>
-<tr class="separator:af5addb0676f63a138cb0dc8642670c6d inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4201688800166b914901f6a9b7c84f65 inherit pub_methods_structSDL_1_1WindowRef" id="r_a4201688800166b914901f6a9b7c84f65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a4201688800166b914901f6a9b7c84f65">SetModal</a> (bool modal)</td></tr>
-<tr class="memdesc:a4201688800166b914901f6a9b7c84f65 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle the state of the window as modal.  <br /></td></tr>
-<tr class="separator:a4201688800166b914901f6a9b7c84f65 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a1e03f3642304acf2662ca34a3dd58d inherit pub_methods_structSDL_1_1WindowRef" id="r_a7a1e03f3642304acf2662ca34a3dd58d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a7a1e03f3642304acf2662ca34a3dd58d">SetFocusable</a> (bool focusable)</td></tr>
-<tr class="memdesc:a7a1e03f3642304acf2662ca34a3dd58d inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set whether the window may have input focus.  <br /></td></tr>
-<tr class="separator:a7a1e03f3642304acf2662ca34a3dd58d inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a621fee12f53b27a7d8ad75adaebf025f inherit pub_methods_structSDL_1_1WindowRef" id="r_a621fee12f53b27a7d8ad75adaebf025f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a621fee12f53b27a7d8ad75adaebf025f">ShowSystemMenu</a> (const SDL_Point &amp;p)</td></tr>
-<tr class="memdesc:a621fee12f53b27a7d8ad75adaebf025f inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSDL_1_1Display.html" title="This is a unique ID for a display for the time it is connected to the system, and is never reused for...">Display</a> the system-level window menu.  <br /></td></tr>
-<tr class="separator:a621fee12f53b27a7d8ad75adaebf025f inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60de3725e2976230421b5bfd0dad4dcc inherit pub_methods_structSDL_1_1WindowRef" id="r_a60de3725e2976230421b5bfd0dad4dcc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a60de3725e2976230421b5bfd0dad4dcc">SetHitTest</a> (<a class="el" href="group__CategoryVideo.html#gab91ae0707a2ab45b059b19791af20c34">HitTestCB</a> callback)</td></tr>
-<tr class="memdesc:a60de3725e2976230421b5bfd0dad4dcc inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a callback that decides if a window region has special properties.  <br /></td></tr>
-<tr class="separator:a60de3725e2976230421b5bfd0dad4dcc inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae17eb580973ef43138cd10fc24a8375c inherit pub_methods_structSDL_1_1WindowRef" id="r_ae17eb580973ef43138cd10fc24a8375c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#ae17eb580973ef43138cd10fc24a8375c">SetHitTest</a> (<a class="el" href="group__CategoryVideo.html#ga40b63d64944c40a9ac2b889887376955">HitTest</a> callback, void *callback_data)</td></tr>
-<tr class="memdesc:ae17eb580973ef43138cd10fc24a8375c inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a callback that decides if a window region has special properties.  <br /></td></tr>
-<tr class="separator:ae17eb580973ef43138cd10fc24a8375c inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc440b6cc4731420ec49aa53094c5286 inherit pub_methods_structSDL_1_1WindowRef" id="r_afc440b6cc4731420ec49aa53094c5286"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#afc440b6cc4731420ec49aa53094c5286">SetShape</a> (<a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> shape)</td></tr>
-<tr class="memdesc:afc440b6cc4731420ec49aa53094c5286 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the shape of a transparent window.  <br /></td></tr>
-<tr class="separator:afc440b6cc4731420ec49aa53094c5286 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f25993961c06c26fd034a46e50cf800 inherit pub_methods_structSDL_1_1WindowRef" id="r_a3f25993961c06c26fd034a46e50cf800"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a3f25993961c06c26fd034a46e50cf800">Flash</a> (<a class="el" href="group__CategoryVideo.html#ga9d43efa44ae8a04c595ca7018e8ff813">FlashOperation</a> operation)</td></tr>
-<tr class="memdesc:a3f25993961c06c26fd034a46e50cf800 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request a window to demand attention from the user.  <br /></td></tr>
-<tr class="separator:a3f25993961c06c26fd034a46e50cf800 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga590ff79dc216039acd11e6920ae51669 inherit pub_methods_structSDL_1_1WindowRef" id="r_ga590ff79dc216039acd11e6920ae51669"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga590ff79dc216039acd11e6920ae51669">GetRenderer</a> () const</td></tr>
-<tr class="memdesc:ga590ff79dc216039acd11e6920ae51669 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the renderer associated with a window.  <br /></td></tr>
-<tr class="separator:ga590ff79dc216039acd11e6920ae51669 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga85e3a74f9665b3d675de0f07e300e580 inherit pub_methods_structSDL_1_1WindowRef" id="r_ga85e3a74f9665b3d675de0f07e300e580"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga85e3a74f9665b3d675de0f07e300e580">StartTextInput</a> ()</td></tr>
-<tr class="memdesc:ga85e3a74f9665b3d675de0f07e300e580 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start accepting Unicode text input events in a window.  <br /></td></tr>
-<tr class="separator:ga85e3a74f9665b3d675de0f07e300e580 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa2d86418fdd101c16d89741ee1ca971e inherit pub_methods_structSDL_1_1WindowRef" id="r_gaa2d86418fdd101c16d89741ee1ca971e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gaa2d86418fdd101c16d89741ee1ca971e">StartTextInput</a> (<a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> props)</td></tr>
-<tr class="memdesc:gaa2d86418fdd101c16d89741ee1ca971e inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start accepting Unicode text input events in a window, with properties describing the input.  <br /></td></tr>
-<tr class="separator:gaa2d86418fdd101c16d89741ee1ca971e inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafe53b79ab0ee605db0e117021595c763 inherit pub_methods_structSDL_1_1WindowRef" id="r_gafe53b79ab0ee605db0e117021595c763"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gafe53b79ab0ee605db0e117021595c763">IsTextInputActive</a> () const</td></tr>
-<tr class="memdesc:gafe53b79ab0ee605db0e117021595c763 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether or not Unicode text input events are enabled for a window.  <br /></td></tr>
-<tr class="separator:gafe53b79ab0ee605db0e117021595c763 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4b504269c4c98a8264aa14804906dd10 inherit pub_methods_structSDL_1_1WindowRef" id="r_ga4b504269c4c98a8264aa14804906dd10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga4b504269c4c98a8264aa14804906dd10">StopTextInput</a> ()</td></tr>
-<tr class="memdesc:ga4b504269c4c98a8264aa14804906dd10 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop receiving any text input events in a window.  <br /></td></tr>
-<tr class="separator:ga4b504269c4c98a8264aa14804906dd10 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa4d19ecd4edee79ffbee54624e267d93 inherit pub_methods_structSDL_1_1WindowRef" id="r_gaa4d19ecd4edee79ffbee54624e267d93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gaa4d19ecd4edee79ffbee54624e267d93">ClearComposition</a> ()</td></tr>
-<tr class="memdesc:gaa4d19ecd4edee79ffbee54624e267d93 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dismiss the composition window/IME without disabling the subsystem.  <br /></td></tr>
-<tr class="separator:gaa4d19ecd4edee79ffbee54624e267d93 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaac101213d1776a0e73a3488cc43d97f5 inherit pub_methods_structSDL_1_1WindowRef" id="r_gaac101213d1776a0e73a3488cc43d97f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gaac101213d1776a0e73a3488cc43d97f5">SetTextInputArea</a> (const SDL_Rect &amp;rect, int cursor)</td></tr>
-<tr class="memdesc:gaac101213d1776a0e73a3488cc43d97f5 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the area used to type Unicode text input.  <br /></td></tr>
-<tr class="separator:gaac101213d1776a0e73a3488cc43d97f5 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac840e677c123cd1750a3301b9ff8a238 inherit pub_methods_structSDL_1_1WindowRef" id="r_gac840e677c123cd1750a3301b9ff8a238"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gac840e677c123cd1750a3301b9ff8a238">GetTextInputArea</a> (<a class="el" href="structSDL_1_1Rect.html">Rect</a> *rect, int *cursor)</td></tr>
-<tr class="memdesc:gac840e677c123cd1750a3301b9ff8a238 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the area used to type Unicode text input.  <br /></td></tr>
-<tr class="separator:gac840e677c123cd1750a3301b9ff8a238 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga313450836d2ec17859a53d103a76f58f inherit pub_methods_structSDL_1_1WindowRef" id="r_ga313450836d2ec17859a53d103a76f58f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga313450836d2ec17859a53d103a76f58f">IsScreenKeyboardShown</a> () const</td></tr>
-<tr class="memdesc:ga313450836d2ec17859a53d103a76f58f inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the screen keyboard is shown for given window.  <br /></td></tr>
-<tr class="separator:ga313450836d2ec17859a53d103a76f58f inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0b838bf7c4e62a00187e28def4de70d3 inherit pub_methods_structSDL_1_1WindowRef" id="r_ga0b838bf7c4e62a00187e28def4de70d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga0b838bf7c4e62a00187e28def4de70d3">WarpMouse</a> (float x, float y)</td></tr>
-<tr class="memdesc:ga0b838bf7c4e62a00187e28def4de70d3 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the mouse cursor to the given position within the window.  <br /></td></tr>
-<tr class="separator:ga0b838bf7c4e62a00187e28def4de70d3 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga76b2b4117079a4a17a0b61684c25d343 inherit pub_methods_structSDL_1_1WindowRef" id="r_ga76b2b4117079a4a17a0b61684c25d343"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga76b2b4117079a4a17a0b61684c25d343">SetRelativeMouseMode</a> (bool enabled)</td></tr>
-<tr class="memdesc:ga76b2b4117079a4a17a0b61684c25d343 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set relative mouse mode for a window.  <br /></td></tr>
-<tr class="separator:ga76b2b4117079a4a17a0b61684c25d343 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5b2b046a18896a5af98454fdafc86fa5 inherit pub_methods_structSDL_1_1WindowRef" id="r_ga5b2b046a18896a5af98454fdafc86fa5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga5b2b046a18896a5af98454fdafc86fa5">GetRelativeMouseMode</a> () const</td></tr>
-<tr class="memdesc:ga5b2b046a18896a5af98454fdafc86fa5 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query whether relative mouse mode is enabled for a window.  <br /></td></tr>
-<tr class="separator:ga5b2b046a18896a5af98454fdafc86fa5 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1WindowRef" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_structSDL_1_1WindowRef" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; T &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1WindowRef" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1WindowRef" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Window * &gt;</a></td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_Window * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; SDL_Window * &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:ac275b64e073379ade67c15cbc5febe97" id="r_ac275b64e073379ade67c15cbc5febe97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Window.html#ac275b64e073379ade67c15cbc5febe97">Destroy</a> ()</td></tr>
+<tr class="memdesc:ac275b64e073379ade67c15cbc5febe97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
+<tr class="separator:ac275b64e073379ade67c15cbc5febe97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top"><a id="a8eff4b7518626ecb1d6ee2e8f2662301" name="a8eff4b7518626ecb1d6ee2e8f2662301"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a84be9e4b6d22fbaee39979c15cef0f" id="r_a2a84be9e4b6d22fbaee39979c15cef0f"><td class="memItemLeft" align="right" valign="top"><a id="a2a84be9e4b6d22fbaee39979c15cef0f" name="a2a84be9e4b6d22fbaee39979c15cef0f"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value)</td></tr>
+<tr class="memdesc:a2a84be9e4b6d22fbaee39979c15cef0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:a2a84be9e4b6d22fbaee39979c15cef0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top"><a id="abc1bcf199c285e07c14ebc87b5abf6f2" name="abc1bcf199c285e07c14ebc87b5abf6f2"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top"><a id="a59d90c89aac04332912bb8f55c387aae" name="a59d90c89aac04332912bb8f55c387aae"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1ResourceUnique"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourceUnique')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourceUnique.html">SDL::ResourceUnique&lt; WindowRef &gt;</a></td></tr>
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a84be9e4b6d22fbaee39979c15cef0f inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a2a84be9e4b6d22fbaee39979c15cef0f"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value)</td></tr>
+<tr class="memdesc:a2a84be9e4b6d22fbaee39979c15cef0f inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:a2a84be9e4b6d22fbaee39979c15cef0f inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_afbc5563c17624104d9c263f5003d57d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ResourceUnique.html#afbc5563c17624104d9c263f5003d57d5">~ResourceUnique</a> ()</td></tr>
+<tr class="memdesc:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
+<tr class="separator:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a9f10a6343315fe1f5ca553284073ecd9"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> other)</td></tr>
+<tr class="memdesc:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a4b7b571048747a5dfbef3cbe891cc15e"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr>
+<tr class="memdesc:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the value, destroying the resource if not nullptr. <br /></td></tr>
+<tr class="separator:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a0506906144295f6b398dc3580bcb336f"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
-<tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource" id="r_ab4aa1e63564473a72dc97256340d104f"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_type</b> () const</td></tr>
-<tr class="memdesc:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts back to underlying type. <br /></td></tr>
-<tr class="separator:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
-<tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource" id="r_ad2a82bc79a7dae41ceb1a25647ae1c0d"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
-<tr class="memdesc:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource" id="r_ab110e6568060a7ae58ab7b29ad68f7fc"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if not null. <br /></td></tr>
+<tr class="separator:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a747ef455db62064bb3eebf43b203cad2"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1ResourcePtrBase.html">ResourcePtrBase</a> &amp;) const =default</td></tr>
+<tr class="memdesc:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_ad1d8089cd65f38c3e49d0ca4fa676a52"><td class="memItemLeft" align="right" valign="top">
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t) const</td></tr>
-<tr class="memdesc:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource" id="r_ab273a0a0285b8eed1f70f5d3759f4167"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Window *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
-<tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource" id="r_a795922875f43cc42165896b02af59d0c"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Window *&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> (SDL_Window * newResource={})</td></tr>
-<tr class="memdesc:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource and empties or replace value. <br /></td></tr>
-<tr class="separator:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top">
-constexpr const SDL_Window *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Window *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
-<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a8a2a791f2fc677f3554798a0fb8572e4"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
+<tr class="memdesc:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a1415d2a130f807673b4f8db3047d95a7"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> () const</td></tr>
+<tr class="memdesc:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets reference. <br /></td></tr>
+<tr class="separator:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a5d2a7a6a1c79ec493548f8bd30ff6c70"><td class="memItemLeft" align="right" valign="top">
+constexpr const <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
+<tr class="memdesc:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets addressable reference. <br /></td></tr>
+<tr class="separator:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a493a79a3a6eafeead35454ff1076aa9a"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
+<tr class="memdesc:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets addressable reference. <br /></td></tr>
+<tr class="separator:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a7d506c070af513ecfa781e7fa3bf893f"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="memdesc:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference. <br /></td></tr>
+<tr class="separator:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a96c074dae2de8cb1812008baaa46f1db"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
+<tr class="memdesc:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reference and reset this. <br /></td></tr>
+<tr class="separator:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -482,319 +193,36 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aea280479e50a9229515d13b37942c6fc" id="r_aea280479e50a9229515d13b37942c6fc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Window.html">Window</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Window.html#aea280479e50a9229515d13b37942c6fc">CreateWithProperties</a> (<a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> props)</td></tr>
 <tr class="memdesc:aea280479e50a9229515d13b37942c6fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a window with the specified properties.  <br /></td></tr>
 <tr class="separator:aea280479e50a9229515d13b37942c6fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_static_methods_structSDL_1_1WindowRef"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_structSDL_1_1WindowRef')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="structSDL_1_1WindowRef.html">SDL::WindowRef</a></td></tr>
-<tr class="memitem:aa6e0254df1f42839f0704c279a152185 inherit pub_static_methods_structSDL_1_1WindowRef" id="r_aa6e0254df1f42839f0704c279a152185"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#aa6e0254df1f42839f0704c279a152185">FromID</a> (<a class="el" href="group__CategoryVideo.html#ga8ea0dc352d3237a35b3e2bf4c6ebe7e3">WindowID</a> id)</td></tr>
-<tr class="memdesc:aa6e0254df1f42839f0704c279a152185 inherit pub_static_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a window from a stored ID.  <br /></td></tr>
-<tr class="separator:aa6e0254df1f42839f0704c279a152185 inherit pub_static_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bc05cedcc50205f35db0476a9df92b6 inherit pub_static_methods_structSDL_1_1WindowRef" id="r_a0bc05cedcc50205f35db0476a9df92b6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a0bc05cedcc50205f35db0476a9df92b6">GetGrabbed</a> ()</td></tr>
-<tr class="memdesc:a0bc05cedcc50205f35db0476a9df92b6 inherit pub_static_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the window that currently has an input grab enabled.  <br /></td></tr>
-<tr class="separator:a0bc05cedcc50205f35db0476a9df92b6 inherit pub_static_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Window * &gt;</a></td></tr>
-<tr class="memitem:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource" id="r_a11ac29cf1f6da9fb29c508669f40b38d"><td class="memItemLeft" align="right" valign="top">
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL_Window *</td></tr>
-<tr class="memdesc:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
-<tr class="separator:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_structSDL_1_1WindowRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1WindowRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1WindowRef.html">SDL::WindowRef</a></td></tr>
-<tr class="memitem:abfc07cb1e80e63736d4574ba8f23adb7 inherit pro_methods_structSDL_1_1WindowRef" id="r_abfc07cb1e80e63736d4574ba8f23adb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#abfc07cb1e80e63736d4574ba8f23adb7">Destroy</a> ()</td></tr>
-<tr class="memdesc:abfc07cb1e80e63736d4574ba8f23adb7 inherit pro_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
-<tr class="separator:abfc07cb1e80e63736d4574ba8f23adb7 inherit pro_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a850b93ca1b23b6472f846c2f76af7099 inherit pro_methods_structSDL_1_1WindowRef" id="r_a850b93ca1b23b6472f846c2f76af7099"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a850b93ca1b23b6472f846c2f76af7099">reset</a> (SDL_Window *newResource={})</td></tr>
-<tr class="memdesc:a850b93ca1b23b6472f846c2f76af7099 inherit pro_methods_structSDL_1_1WindowRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
-<tr class="separator:a850b93ca1b23b6472f846c2f76af7099 inherit pro_methods_structSDL_1_1WindowRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase" id="r_a649d81bb2d1f33857880ab0faa3a45d5"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = RESOURCE</td></tr>
+<tr class="memdesc:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reference resource type. <br /></td></tr>
+<tr class="separator:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase" id="r_afaf83443621b31f83daf2d7e911208c6"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = typename reference::value_type</td></tr>
+<tr class="memdesc:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
+<tr class="separator:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:ac7d6fb948950dcc78301ef054698c53d inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_ac7d6fb948950dcc78301ef054698c53d"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourcePtrBase</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">value_type</a> value={})</td></tr>
+<tr class="memdesc:ac7d6fb948950dcc78301ef054698c53d inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:ac7d6fb948950dcc78301ef054698c53d inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_a5123ac0033c94520d252dedd8cf1d5e5"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> ()</td></tr>
+<tr class="memdesc:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference. <br /></td></tr>
+<tr class="separator:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_aa035e9da7e7a8c0d71d8bc75e560b509"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>free</b> ()</td></tr>
+<tr class="memdesc:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees resource. <br /></td></tr>
+<tr class="separator:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a> </dd></dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6ab3fd51fd018c036e97aaa6e816b48e" name="a6ab3fd51fd018c036e97aaa6e816b48e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ab3fd51fd018c036e97aaa6e816b48e">&#9670;&#160;</a></span>Window() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Window::Window </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>title</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const SDL_Point &amp;&#160;</td>
-          <td class="paramname"><em>size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a>&#160;</td>
-          <td class="paramname"><em>flags</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.</p>
-<p><code>flags</code> may be any of the following OR'd together:</p>
-<ul>
-<li><code>WINDOW_FULLSCREEN</code>: fullscreen window at desktop resolution</li>
-<li><code>WINDOW_OPENGL</code>: window usable with an OpenGL context</li>
-<li><code>WINDOW_OCCLUDED</code>: window partially or completely obscured by another window</li>
-<li><code>WINDOW_HIDDEN</code>: window is not visible</li>
-<li><code>WINDOW_BORDERLESS</code>: no window decoration</li>
-<li><code>WINDOW_RESIZABLE</code>: window can be resized</li>
-<li><code>WINDOW_MINIMIZED</code>: window is minimized</li>
-<li><code>WINDOW_MAXIMIZED</code>: window is maximized</li>
-<li><code>WINDOW_MOUSE_GRABBED</code>: window has grabbed mouse focus</li>
-<li><code>WINDOW_INPUT_FOCUS</code>: window has input focus</li>
-<li><code>WINDOW_MOUSE_FOCUS</code>: window has mouse focus</li>
-<li><code>WINDOW_EXTERNAL</code>: window not created by <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a></li>
-<li><code>WINDOW_MODAL</code>: window is modal</li>
-<li><code>WINDOW_HIGH_PIXEL_DENSITY</code>: window uses high pixel density back buffer if possible</li>
-<li><code>WINDOW_MOUSE_CAPTURE</code>: window has mouse captured (unrelated to MOUSE_GRABBED)</li>
-<li><code>WINDOW_ALWAYS_ON_TOP</code>: window should always be above others</li>
-<li><code>WINDOW_UTILITY</code>: window should be treated as a utility window, not showing in the task bar and window list</li>
-<li><code>WINDOW_TOOLTIP</code>: window should be treated as a tooltip and does not get mouse or keyboard focus, requires a parent window</li>
-<li><code>WINDOW_POPUP_MENU</code>: window should be treated as a popup menu, requires a parent window</li>
-<li><code>WINDOW_KEYBOARD_GRABBED</code>: window has grabbed keyboard input</li>
-<li><code>WINDOW_VULKAN</code>: window usable with a Vulkan instance</li>
-<li><code>WINDOW_METAL</code>: window usable with a Metal instance</li>
-<li><code>WINDOW_TRANSPARENT</code>: window with transparent buffer</li>
-<li><code>WINDOW_NOT_FOCUSABLE</code>: window should not be focusable</li>
-</ul>
-<p>The <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a> is implicitly shown if WINDOW_HIDDEN is not set.</p>
-<p>On Apple's macOS, you <b>must</b> set the NSHighResolutionCapable Info.plist property to YES, otherwise you will not receive a High-DPI OpenGL canvas.</p>
-<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowRef.html#afc5567df6053f3ec7287819449186cb4" title="Get the size of a window&#39;s client area.">WindowRef.GetSize()</a> to query the client area's size in window coordinates, and <a class="el" href="structSDL_1_1WindowRef.html#a982e7cb78094e415489d6950e9fe8e98" title="Get the size of a window&#39;s client area, in pixels.">WindowRef.GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererRef.html#a01c8137373fbda82004b63ab1bfe625f" title="Get the output size in pixels of a rendering context.">RendererRef.GetOutputSize()</a> to query the drawable size in pixels. Note that the drawable size can vary after the window is created and should be queried again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.</p>
-<p>If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN flags, then the corresponding LoadLibrary function (GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function is called by <a class="el" href="structSDL_1_1WindowRef.html#abfc07cb1e80e63736d4574ba8f23adb7" title="Destroy a window.">WindowRef.Destroy()</a>.</p>
-<p>If WINDOW_VULKAN is specified and there isn't a working Vulkan driver, <a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window()</a> will fail, because SDL_Vulkan_LoadLibrary() will fail.</p>
-<p>If WINDOW_METAL is specified on an OS that does not support Metal, <a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window()</a> will fail.</p>
-<p>If you intend to use this window with an <a class="el" href="structSDL_1_1RendererRef.html" title="A structure representing rendering state.">RendererRef</a>, you should use <a class="el" href="group__CategoryRender.html#ga6f561280a8311744b01c0615614072e4" title="Create a window and default renderer.">CreateWindowAndRenderer()</a> instead of this function, to avoid window flicker.</p>
-<p>On non-Apple devices, <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> requires you to either not link to the Vulkan loader or link to a dynamic library version. This limitation may be removed in a future version of <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">title</td><td>the title of the window, in UTF-8 encoding. </td></tr>
-    <tr><td class="paramname">size</td><td>the width and height of the window. </td></tr>
-    <tr><td class="paramname">flags</td><td>0, or one or more WindowFlags OR'd together. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the window that was created. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga6f561280a8311744b01c0615614072e4" title="Create a window and default renderer.">CreateWindowAndRenderer</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1WindowRef.html#abfc07cb1e80e63736d4574ba8f23adb7" title="Destroy a window.">WindowRef.Destroy</a> </dd></dl>
-
-</div>
-</div>
-<a id="a9a49eaf8a158d2ef5ccfa85fb7093457" name="a9a49eaf8a158d2ef5ccfa85fb7093457"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a49eaf8a158d2ef5ccfa85fb7093457">&#9670;&#160;</a></span>Window() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Window::Window </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a>&#160;</td>
-          <td class="paramname"><em>parent</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const SDL_Point &amp;&#160;</td>
-          <td class="paramname"><em>offset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const SDL_Point &amp;&#160;</td>
-          <td class="paramname"><em>size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a>&#160;</td>
-          <td class="paramname"><em>flags</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.</p>
-<p>The flags parameter <b>must</b> contain at least one of the following:</p>
-<ul>
-<li><code>WINDOW_TOOLTIP</code>: The popup window is a tooltip and will not pass any input events.</li>
-<li><code>WINDOW_POPUP_MENU</code>: The popup window is a popup menu. The topmost popup menu will implicitly gain the keyboard focus.</li>
-</ul>
-<p>The following flags are not relevant to popup window creation and will be ignored:</p>
-<ul>
-<li><code>WINDOW_MINIMIZED</code></li>
-<li><code>WINDOW_MAXIMIZED</code></li>
-<li><code>WINDOW_FULLSCREEN</code></li>
-<li><code>WINDOW_BORDERLESS</code></li>
-</ul>
-<p>The following flags are incompatible with popup window creation and will cause it to fail:</p>
-<ul>
-<li><code>WINDOW_UTILITY</code></li>
-<li><code>WINDOW_MODAL</code></li>
-</ul>
-<p>The parent parameter <b>must</b> be non-null and a valid window. The parent of a popup window can be either a regular, toplevel window, or another popup window.</p>
-<p>Popup windows cannot be minimized, maximized, made fullscreen, raised, flash, be made a modal window, be the parent of a toplevel window, or grab the mouse and/or keyboard. Attempts to do so will fail.</p>
-<p>Popup windows implicitly do not have a border/decorations and do not appear on the taskbar/dock or in lists of windows such as alt-tab menus.</p>
-<p>If a parent window is hidden or destroyed, any child popup windows will be recursively hidden or destroyed as well. Child popup windows not explicitly hidden will be restored when the parent is shown.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">parent</td><td>the parent of the window, must not be nullptr. </td></tr>
-    <tr><td class="paramname">offset</td><td>the x, y position of the popup window relative to the origin of the parent. </td></tr>
-    <tr><td class="paramname">size</td><td>the width and height of the window. </td></tr>
-    <tr><td class="paramname">flags</td><td>WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more additional WindowFlags OR'd together. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the window that was created. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowRef.html#abfc07cb1e80e63736d4574ba8f23adb7" title="Destroy a window.">WindowRef.Destroy</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1WindowRef.html#ac9e02250323bb2bd5814b4b07ab4bc8d" title="Get parent of a window.">WindowRef.GetParent</a> </dd></dl>
-
-</div>
-</div>
-<a id="a9e99bb1df2e215408c74f4dde3ddcbe9" name="a9e99bb1df2e215408c74f4dde3ddcbe9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e99bb1df2e215408c74f4dde3ddcbe9">&#9670;&#160;</a></span>Window() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Window::Window </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td>
-          <td class="paramname"><em>props</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The window size is a request and may be different than expected based on the desktop layout and window manager policies. Your application should be prepared to handle a window of any size.</p>
-<p>These are the supported properties:</p>
-<ul>
-<li><code>prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN</code>: true if the window should be always on top</li>
-<li><code>prop::Window.CREATE_BORDERLESS_BOOLEAN</code>: true if the window has no window decoration</li>
-<li><code>prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN</code>: true if the window will be used with an externally managed graphics context.</li>
-<li><code>prop::Window.CREATE_FOCUSABLE_BOOLEAN</code>: true if the window should accept keyboard input (defaults true)</li>
-<li><code>prop::Window.CREATE_FULLSCREEN_BOOLEAN</code>: true if the window should start in fullscreen mode at desktop resolution</li>
-<li><code>prop::Window.CREATE_HEIGHT_NUMBER</code>: the height of the window</li>
-<li><code>prop::Window.CREATE_HIDDEN_BOOLEAN</code>: true if the window should start hidden</li>
-<li><code>prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN</code>: true if the window uses a high pixel density buffer if possible</li>
-<li><code>prop::Window.CREATE_MAXIMIZED_BOOLEAN</code>: true if the window should start maximized</li>
-<li><code>prop::Window.CREATE_MENU_BOOLEAN</code>: true if the window is a popup menu</li>
-<li><code>prop::Window.CREATE_METAL_BOOLEAN</code>: true if the window will be used with Metal rendering</li>
-<li><code>prop::Window.CREATE_MINIMIZED_BOOLEAN</code>: true if the window should start minimized</li>
-<li><code>prop::Window.CREATE_MODAL_BOOLEAN</code>: true if the window is modal to its parent</li>
-<li><code>prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN</code>: true if the window starts with grabbed mouse focus</li>
-<li><code>prop::Window.CREATE_OPENGL_BOOLEAN</code>: true if the window will be used with OpenGL rendering</li>
-<li><code>prop::Window.CREATE_PARENT_POINTER</code>: an <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a> that will be the parent of this window, required for windows with the "tooltip", "menu", and "modal" properties</li>
-<li><code>prop::Window.CREATE_RESIZABLE_BOOLEAN</code>: true if the window should be resizable</li>
-<li><code>prop::Window.CREATE_TITLE_STRING</code>: the title of the window, in UTF-8 encoding</li>
-<li><code>prop::Window.CREATE_TRANSPARENT_BOOLEAN</code>: true if the window show transparent in the areas with alpha of 0</li>
-<li><code>prop::Window.CREATE_TOOLTIP_BOOLEAN</code>: true if the window is a tooltip</li>
-<li><code>prop::Window.CREATE_UTILITY_BOOLEAN</code>: true if the window is a utility window, not showing in the task bar and window list</li>
-<li><code>prop::Window.CREATE_VULKAN_BOOLEAN</code>: true if the window will be used with Vulkan rendering</li>
-<li><code>prop::Window.CREATE_WIDTH_NUMBER</code>: the width of the window</li>
-<li><code>prop::Window.CREATE_X_NUMBER</code>: the x position of the window, or <code>SDL_WINDOWPOS_CENTERED</code>, defaults to <code>SDL_WINDOWPOS_UNDEFINED</code>. This is relative to the parent for windows with the "tooltip" or "menu" property set.</li>
-<li><code>prop::Window.CREATE_Y_NUMBER</code>: the y position of the window, or <code>SDL_WINDOWPOS_CENTERED</code>, defaults to <code>SDL_WINDOWPOS_UNDEFINED</code>. This is relative to the parent for windows with the "tooltip" or "menu" property set.</li>
-</ul>
-<p>These are additional supported properties on macOS:</p>
-<ul>
-<li><code>prop::Window.CREATE_COCOA_WINDOW_POINTER</code>: the <code>(__unsafe_unretained)</code> NSWindow associated with the window, if you want to wrap an existing window.</li>
-<li><code>prop::Window.CREATE_COCOA_VIEW_POINTER</code>: the <code>(__unsafe_unretained)</code> NSView associated with the window, defaults to <code>[window contentView]</code></li>
-</ul>
-<p>These are additional supported properties on Wayland:</p>
-<ul>
-<li><code>prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN</code> - true if the application wants to use the Wayland surface for a custom role and does not want it attached to an XDG toplevel window. See <a href="README/wayland">README/wayland</a> for more information on using custom surfaces.</li>
-<li><code>prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN</code> - true if the application wants an associated <code>wl_egl_window</code> object to be created and attached to the window, even if the window does not have the OpenGL property or <code>WINDOW_OPENGL</code> flag set.</li>
-<li><code>prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER</code> - the wl_surface associated with the window, if you want to wrap an existing window. See <a href="README/wayland">README/wayland</a> for more information.</li>
-</ul>
-<p>These are additional supported properties on Windows:</p>
-<ul>
-<li><code>prop::Window.CREATE_WIN32_HWND_POINTER</code>: the HWND associated with the window, if you want to wrap an existing window.</li>
-<li><code>prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER</code>: optional, another window to share pixel format with, useful for OpenGL windows</li>
-</ul>
-<p>These are additional supported properties with X11:</p>
-<ul>
-<li><code>prop::Window.CREATE_X11_WINDOW_NUMBER</code>: the X11 <a class="el" href="structSDL_1_1Window.html" title="Handle to an owned window.">Window</a> associated with the window, if you want to wrap an existing window.</li>
-</ul>
-<p>The window is implicitly shown if the "hidden" property is not set.</p>
-<p>Windows with the "tooltip" and "menu" properties are popup windows and have the behaviors and guidelines outlined in <a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window()</a>.</p>
-<p>If this window is being created to be used with an <a class="el" href="structSDL_1_1RendererRef.html" title="A structure representing rendering state.">RendererRef</a>, you should not add a graphics API specific property (<code>prop::Window.CREATE_OPENGL_BOOLEAN</code>, etc), as <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will handle that internally when it chooses a renderer. However, <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> might need to recreate your window at that point, which may cause the window to appear briefly, and then flicker as it is recreated. The correct approach to this is to create the window with the <code>prop::Window.CREATE_HIDDEN_BOOLEAN</code> property set to true, then create the renderer, then show the window with <a class="el" href="structSDL_1_1WindowRef.html#ac29cad7b0144064f9e62a3334d5278db" title="Show a window.">WindowRef.Show()</a>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">props</td><td>the properties to use. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the window that was created. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#aa845d1a39b76e66f15be53f879eb7574" title="Create a group of properties.">Properties.Create</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1WindowRef.html#abfc07cb1e80e63736d4574ba8f23adb7" title="Destroy a window.">WindowRef.Destroy</a> </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a6d91ede8672c3939b0c592489046aeeb" name="a6d91ede8672c3939b0c592489046aeeb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d91ede8672c3939b0c592489046aeeb">&#9670;&#160;</a></span>Create()</h2>
 
@@ -865,9 +293,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <p>The <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a> is implicitly shown if WINDOW_HIDDEN is not set.</p>
 <p>On Apple's macOS, you <b>must</b> set the NSHighResolutionCapable Info.plist property to YES, otherwise you will not receive a High-DPI OpenGL canvas.</p>
 <p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowRef.html#afc5567df6053f3ec7287819449186cb4" title="Get the size of a window&#39;s client area.">WindowRef.GetSize()</a> to query the client area's size in window coordinates, and <a class="el" href="structSDL_1_1WindowRef.html#a982e7cb78094e415489d6950e9fe8e98" title="Get the size of a window&#39;s client area, in pixels.">WindowRef.GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererRef.html#a01c8137373fbda82004b63ab1bfe625f" title="Get the output size in pixels of a rendering context.">RendererRef.GetOutputSize()</a> to query the drawable size in pixels. Note that the drawable size can vary after the window is created and should be queried again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.</p>
-<p>If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN flags, then the corresponding LoadLibrary function (GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function is called by <a class="el" href="structSDL_1_1WindowRef.html#abfc07cb1e80e63736d4574ba8f23adb7" title="Destroy a window.">WindowRef.Destroy()</a>.</p>
-<p>If WINDOW_VULKAN is specified and there isn't a working Vulkan driver, <a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window()</a> will fail, because SDL_Vulkan_LoadLibrary() will fail.</p>
-<p>If WINDOW_METAL is specified on an OS that does not support Metal, <a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window()</a> will fail.</p>
+<p>If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN flags, then the corresponding LoadLibrary function (GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function is called by <a class="el" href="structSDL_1_1Window.html#ac275b64e073379ade67c15cbc5febe97" title="Destroy a window.">Window.Destroy()</a>.</p>
+<p>If WINDOW_VULKAN is specified and there isn't a working Vulkan driver, <a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create()</a> will fail, because SDL_Vulkan_LoadLibrary() will fail.</p>
+<p>If WINDOW_METAL is specified on an OS that does not support Metal, <a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create()</a> will fail.</p>
 <p>If you intend to use this window with an <a class="el" href="structSDL_1_1RendererRef.html" title="A structure representing rendering state.">RendererRef</a>, you should use <a class="el" href="group__CategoryRender.html#ga6f561280a8311744b01c0615614072e4" title="Create a window and default renderer.">CreateWindowAndRenderer()</a> instead of this function, to avoid window flicker.</p>
 <p>On non-Apple devices, <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> requires you to either not link to the Vulkan loader or link to a dynamic library version. This limitation may be removed in a future version of <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -878,16 +306,22 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the window that was created or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the window that was created. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga6f561280a8311744b01c0615614072e4" title="Create a window and default renderer.">CreateWindowAndRenderer</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window</a> </dd>
+<a class="el" href="structSDL_1_1Window.html#af95818c948d7eaa4ae57843cbb0eb657" title="Create a child popup window of the specified parent window.">Window.CreatePopup</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window</a> </dd>
+<a class="el" href="structSDL_1_1Window.html#aea280479e50a9229515d13b37942c6fc" title="Create a window with the specified properties.">Window.CreateWithProperties</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1WindowRef.html#abfc07cb1e80e63736d4574ba8f23adb7" title="Destroy a window.">WindowRef.Destroy</a> </dd></dl>
+<a class="el" href="structSDL_1_1Window.html#ac275b64e073379ade67c15cbc5febe97" title="Destroy a window.">Window.Destroy</a> </dd></dl>
 
 </div>
 </div>
@@ -961,18 +395,26 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">parent</td><td>the parent of the window, must not be nullptr. </td></tr>
-    <tr><td class="paramname">offset</td><td>the position of the popup window relative to the origin of the parent. </td></tr>
+    <tr><td class="paramname">offset</td><td>the x, y position of the popup window relative to the origin of the parent. </td></tr>
     <tr><td class="paramname">size</td><td>the width and height of the window. </td></tr>
     <tr><td class="paramname">flags</td><td>WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more additional WindowFlags OR'd together. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the window that was created or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the window that was created. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1WindowRef.html#abfc07cb1e80e63736d4574ba8f23adb7" title="Destroy a window.">WindowRef.Destroy</a> </dd>
+<a class="el" href="structSDL_1_1Window.html#aea280479e50a9229515d13b37942c6fc" title="Create a window with the specified properties.">Window.CreateWithProperties</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Window.html#ac275b64e073379ade67c15cbc5febe97" title="Destroy a window.">Window.Destroy</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowRef.html#ac9e02250323bb2bd5814b4b07ab4bc8d" title="Get parent of a window.">WindowRef.GetParent</a> </dd></dl>
 
@@ -1051,7 +493,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <li><code>prop::Window.CREATE_X11_WINDOW_NUMBER</code>: the X11 <a class="el" href="structSDL_1_1Window.html" title="Handle to an owned window.">Window</a> associated with the window, if you want to wrap an existing window.</li>
 </ul>
 <p>The window is implicitly shown if the "hidden" property is not set.</p>
-<p>Windows with the "tooltip" and "menu" properties are popup windows and have the behaviors and guidelines outlined in <a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window()</a>.</p>
+<p>Windows with the "tooltip" and "menu" properties are popup windows and have the behaviors and guidelines outlined in <a class="el" href="structSDL_1_1Window.html#af95818c948d7eaa4ae57843cbb0eb657" title="Create a child popup window of the specified parent window.">Window.CreatePopup()</a>.</p>
 <p>If this window is being created to be used with an <a class="el" href="structSDL_1_1RendererRef.html" title="A structure representing rendering state.">RendererRef</a>, you should not add a graphics API specific property (<code>prop::Window.CREATE_OPENGL_BOOLEAN</code>, etc), as <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will handle that internally when it chooses a renderer. However, <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> might need to recreate your window at that point, which may cause the window to appear briefly, and then flicker as it is recreated. The correct approach to this is to create the window with the <code>prop::Window.CREATE_HIDDEN_BOOLEAN</code> property set to true, then create the renderer, then show the window with <a class="el" href="structSDL_1_1WindowRef.html#ac29cad7b0144064f9e62a3334d5278db" title="Show a window.">WindowRef.Show()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1059,14 +501,54 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the window that was created or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the window that was created. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#aa845d1a39b76e66f15be53f879eb7574" title="Create a group of properties.">Properties.Create</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window</a> </dd>
+<a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1WindowRef.html#abfc07cb1e80e63736d4574ba8f23adb7" title="Destroy a window.">WindowRef.Destroy</a> </dd></dl>
+<a class="el" href="structSDL_1_1Window.html#ac275b64e073379ade67c15cbc5febe97" title="Destroy a window.">Window.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac275b64e073379ade67c15cbc5febe97" name="ac275b64e073379ade67c15cbc5febe97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac275b64e073379ade67c15cbc5febe97">&#9670;&#160;</a></span>Destroy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Window::Destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Any child windows owned by the window will be recursively destroyed as well.</p>
+<p>Note that on some platforms, the visible window may not actually be removed from the screen until the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> event loop is pumped again, even though the <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a> is no longer valid after this call.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Window.html#af95818c948d7eaa4ae57843cbb0eb657" title="Create a child popup window of the specified parent window.">Window.CreatePopup</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Window.html#aea280479e50a9229515d13b37942c6fc" title="Create a window with the specified properties.">Window.CreateWithProperties</a> </dd></dl>
 
 </div>
 </div>

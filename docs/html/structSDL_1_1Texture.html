@@ -89,247 +89,98 @@ Inheritance diagram for SDL::Texture:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1Texture__inherit__graph.png" border="0" usemap="#aSDL_1_1Texture_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1Texture_inherit__map" id="aSDL_1_1Texture_inherit__map">
-<area shape="rect" title="Handle to an owned texture." alt="" coords="31,240,134,265"/>
-<area shape="rect" href="structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture." alt="" coords="8,167,157,192"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
-<area shape="rect" href="structSDL_1_1TextureRef.html" title="An efficient driver&#45;specific representation of pixel data." alt="" coords="20,93,145,119"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="Handle to an owned texture." alt="" coords="49,181,151,207"/>
+<area shape="rect" href="classSDL_1_1ResourceUnique.html" title=" " alt="" coords="19,93,181,133"/>
+<area shape="poly" title=" " alt="" coords="103,147,103,181,97,181,97,147"/>
+<area shape="rect" href="classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="5,5,195,45"/>
+<area shape="poly" title=" " alt="" coords="103,59,103,93,97,93,97,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a88f5bd38f405ffdbc46d69a8b3fab1d2" id="r_a88f5bd38f405ffdbc46d69a8b3fab1d2"><td class="memItemLeft" align="right" valign="top"><a id="a88f5bd38f405ffdbc46d69a8b3fab1d2" name="a88f5bd38f405ffdbc46d69a8b3fab1d2"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b> ()</td></tr>
-<tr class="memdesc:a88f5bd38f405ffdbc46d69a8b3fab1d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a>. <br /></td></tr>
-<tr class="separator:a88f5bd38f405ffdbc46d69a8b3fab1d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21bfa4042b80783809d62a6af6c3988f" id="r_a21bfa4042b80783809d62a6af6c3988f"><td class="memItemLeft" align="right" valign="top"><a id="a21bfa4042b80783809d62a6af6c3988f" name="a21bfa4042b80783809d62a6af6c3988f"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b> (SDL_Texture *resource)</td></tr>
-<tr class="memdesc:a21bfa4042b80783809d62a6af6c3988f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a21bfa4042b80783809d62a6af6c3988f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b31242e05c12ac98d1097048b7a34fe" id="r_a7b31242e05c12ac98d1097048b7a34fe"><td class="memItemLeft" align="right" valign="top"><a id="a7b31242e05c12ac98d1097048b7a34fe" name="a7b31242e05c12ac98d1097048b7a34fe"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b> (const <a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;other)=delete</td></tr>
-<tr class="separator:a7b31242e05c12ac98d1097048b7a34fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aade208f89a657a949f25db5c9d826516" id="r_aade208f89a657a949f25db5c9d826516"><td class="memItemLeft" align="right" valign="top"><a id="aade208f89a657a949f25db5c9d826516" name="aade208f89a657a949f25db5c9d826516"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:aade208f89a657a949f25db5c9d826516"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:aade208f89a657a949f25db5c9d826516"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac663724b996c28f36b8a02d4f3913df9" id="r_ac663724b996c28f36b8a02d4f3913df9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#ac663724b996c28f36b8a02d4f3913df9">Texture</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
-<tr class="memdesc:ac663724b996c28f36b8a02d4f3913df9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a filesystem path into a software surface.  <br /></td></tr>
-<tr class="separator:ac663724b996c28f36b8a02d4f3913df9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8d446b167c0938b143a1cb9981c1157" id="r_aa8d446b167c0938b143a1cb9981c1157"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#aa8d446b167c0938b143a1cb9981c1157">Texture</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer, <a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src)</td></tr>
-<tr class="memdesc:aa8d446b167c0938b143a1cb9981c1157"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> into a software surface.  <br /></td></tr>
-<tr class="separator:aa8d446b167c0938b143a1cb9981c1157"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedd1a903abda261351b47ca0b0ca5cee" id="r_aedd1a903abda261351b47ca0b0ca5cee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#aedd1a903abda261351b47ca0b0ca5cee">Texture</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> access, const SDL_Point &amp;size)</td></tr>
-<tr class="memdesc:aedd1a903abda261351b47ca0b0ca5cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture for a rendering context.  <br /></td></tr>
-<tr class="separator:aedd1a903abda261351b47ca0b0ca5cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa53b5958d494b3a930c56abed2fb0962" id="r_aa53b5958d494b3a930c56abed2fb0962"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#aa53b5958d494b3a930c56abed2fb0962">Texture</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer, <a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> surface)</td></tr>
-<tr class="memdesc:aa53b5958d494b3a930c56abed2fb0962"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture from an existing surface.  <br /></td></tr>
-<tr class="separator:aa53b5958d494b3a930c56abed2fb0962"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5545214c983fe85c65e6034dcc80eac0" id="r_a5545214c983fe85c65e6034dcc80eac0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#a5545214c983fe85c65e6034dcc80eac0">Texture</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer, <a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> props)</td></tr>
-<tr class="memdesc:a5545214c983fe85c65e6034dcc80eac0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture for a rendering context with the specified properties.  <br /></td></tr>
-<tr class="separator:a5545214c983fe85c65e6034dcc80eac0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3f843e02662f69fd382fe244a9734f8" id="r_ac3f843e02662f69fd382fe244a9734f8"><td class="memItemLeft" align="right" valign="top"><a id="ac3f843e02662f69fd382fe244a9734f8" name="ac3f843e02662f69fd382fe244a9734f8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~Texture</b> ()</td></tr>
-<tr class="memdesc:ac3f843e02662f69fd382fe244a9734f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees up resource when object goes out of scope. <br /></td></tr>
-<tr class="separator:ac3f843e02662f69fd382fe244a9734f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fb76659cf21f918749b1813af13104f" id="r_a2fb76659cf21f918749b1813af13104f"><td class="memItemLeft" align="right" valign="top"><a id="a2fb76659cf21f918749b1813af13104f" name="a2fb76659cf21f918749b1813af13104f"></a>
-<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> other)</td></tr>
-<tr class="memdesc:a2fb76659cf21f918749b1813af13104f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:a2fb76659cf21f918749b1813af13104f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1836a0ae3348b55a353ba63318754b7" id="r_aa1836a0ae3348b55a353ba63318754b7"><td class="memItemLeft" align="right" valign="top"><a id="aa1836a0ae3348b55a353ba63318754b7" name="aa1836a0ae3348b55a353ba63318754b7"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (const <a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> &amp;other)</td></tr>
-<tr class="memdesc:aa1836a0ae3348b55a353ba63318754b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture.">TextureUnsafe</a> from <a class="el" href="structSDL_1_1TextureRef.html" title="An efficient driver-specific representation of pixel data.">TextureRef</a>. <br /></td></tr>
-<tr class="separator:aa1836a0ae3348b55a353ba63318754b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad47cb1616d18ee70f7921e1ee735f460" id="r_ad47cb1616d18ee70f7921e1ee735f460"><td class="memItemLeft" align="right" valign="top"><a id="ad47cb1616d18ee70f7921e1ee735f460" name="ad47cb1616d18ee70f7921e1ee735f460"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (const <a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;other)=delete</td></tr>
-<tr class="separator:ad47cb1616d18ee70f7921e1ee735f460"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee48c85e2507ee929240042f70aa6b2f" id="r_aee48c85e2507ee929240042f70aa6b2f"><td class="memItemLeft" align="right" valign="top"><a id="aee48c85e2507ee929240042f70aa6b2f" name="aee48c85e2507ee929240042f70aa6b2f"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:aee48c85e2507ee929240042f70aa6b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture.">TextureUnsafe</a> from <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a>. <br /></td></tr>
-<tr class="separator:aee48c85e2507ee929240042f70aa6b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1TextureUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1TextureUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1TextureUnsafe.html">SDL::TextureUnsafe</a></td></tr>
-<tr class="memitem:aa1836a0ae3348b55a353ba63318754b7 inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_aa1836a0ae3348b55a353ba63318754b7"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (const <a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> &amp;other)</td></tr>
-<tr class="memdesc:aa1836a0ae3348b55a353ba63318754b7 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture.">TextureUnsafe</a> from <a class="el" href="structSDL_1_1TextureRef.html" title="An efficient driver-specific representation of pixel data.">TextureRef</a>. <br /></td></tr>
-<tr class="separator:aa1836a0ae3348b55a353ba63318754b7 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad47cb1616d18ee70f7921e1ee735f460 inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_ad47cb1616d18ee70f7921e1ee735f460"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (const <a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;other)=delete</td></tr>
-<tr class="separator:ad47cb1616d18ee70f7921e1ee735f460 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaee48c85e2507ee929240042f70aa6b2f inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_gaee48c85e2507ee929240042f70aa6b2f"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:gaee48c85e2507ee929240042f70aa6b2f inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture.">TextureUnsafe</a> from <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a>. <br /></td></tr>
-<tr class="separator:gaee48c85e2507ee929240042f70aa6b2f inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5d217f9fe9fa91447e934386b105e9d inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_ad5d217f9fe9fa91447e934386b105e9d"><td class="memItemLeft" align="right" valign="top">
-constexpr <a class="el" href="structSDL_1_1TextureUnsafe.html">TextureUnsafe</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1TextureUnsafe.html">TextureUnsafe</a> other)</td></tr>
-<tr class="memdesc:ad5d217f9fe9fa91447e934386b105e9d inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:ad5d217f9fe9fa91447e934386b105e9d inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af20105a4009e6eb825f065389249d18d inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_af20105a4009e6eb825f065389249d18d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureUnsafe.html#af20105a4009e6eb825f065389249d18d">Destroy</a> ()</td></tr>
-<tr class="memdesc:af20105a4009e6eb825f065389249d18d inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the specified texture.  <br /></td></tr>
-<tr class="separator:af20105a4009e6eb825f065389249d18d inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2c68d8aee6027792b70fe2c9957d846 inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_ac2c68d8aee6027792b70fe2c9957d846"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureUnsafe.html#ac2c68d8aee6027792b70fe2c9957d846">reset</a> (SDL_Texture *newResource={})</td></tr>
-<tr class="memdesc:ac2c68d8aee6027792b70fe2c9957d846 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the specified texture.  <br /></td></tr>
-<tr class="separator:ac2c68d8aee6027792b70fe2c9957d846 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1TextureRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1TextureRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1TextureRef.html">SDL::TextureRef</a></td></tr>
-<tr class="memitem:a35de7a36a162339e8193a33a6d0fc8fa inherit pub_methods_structSDL_1_1TextureRef" id="r_a35de7a36a162339e8193a33a6d0fc8fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a35de7a36a162339e8193a33a6d0fc8fa">GetProperties</a> () const</td></tr>
-<tr class="memdesc:a35de7a36a162339e8193a33a6d0fc8fa inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a texture.  <br /></td></tr>
-<tr class="separator:a35de7a36a162339e8193a33a6d0fc8fa inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab59f223366b18d909eac87a27d4a0869 inherit pub_methods_structSDL_1_1TextureRef" id="r_ab59f223366b18d909eac87a27d4a0869"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#ab59f223366b18d909eac87a27d4a0869">GetRenderer</a> () const</td></tr>
-<tr class="memdesc:ab59f223366b18d909eac87a27d4a0869 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the renderer that created an <a class="el" href="structSDL_1_1TextureRef.html" title="An efficient driver-specific representation of pixel data.">TextureRef</a>.  <br /></td></tr>
-<tr class="separator:ab59f223366b18d909eac87a27d4a0869 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b304fe0c0c5bdacc9056372623027a1 inherit pub_methods_structSDL_1_1TextureRef" id="r_a2b304fe0c0c5bdacc9056372623027a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a2b304fe0c0c5bdacc9056372623027a1">SetMod</a> (<a class="el" href="structSDL_1_1Color.html">Color</a> c)</td></tr>
-<tr class="memdesc:a2b304fe0c0c5bdacc9056372623027a1 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color and alpha values multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a2b304fe0c0c5bdacc9056372623027a1 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5336c8f6fad523de4e77f27100b01399 inherit pub_methods_structSDL_1_1TextureRef" id="r_a5336c8f6fad523de4e77f27100b01399"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a5336c8f6fad523de4e77f27100b01399">SetMod</a> (<a class="el" href="structSDL_1_1FColor.html">FColor</a> c)</td></tr>
-<tr class="memdesc:a5336c8f6fad523de4e77f27100b01399 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color and alpha values multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a5336c8f6fad523de4e77f27100b01399 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0eba1b38e4acb7f2776c4694b858e9e0 inherit pub_methods_structSDL_1_1TextureRef" id="r_a0eba1b38e4acb7f2776c4694b858e9e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FColor.html">FColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a0eba1b38e4acb7f2776c4694b858e9e0">GetMod</a> () const</td></tr>
-<tr class="memdesc:a0eba1b38e4acb7f2776c4694b858e9e0 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a0eba1b38e4acb7f2776c4694b858e9e0 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1d729152fbe5e32e2f2fdea372dda7a inherit pub_methods_structSDL_1_1TextureRef" id="r_ae1d729152fbe5e32e2f2fdea372dda7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#ae1d729152fbe5e32e2f2fdea372dda7a">GetMod</a> (<a class="el" href="structSDL_1_1Color.html">Color</a> *c) const</td></tr>
-<tr class="memdesc:ae1d729152fbe5e32e2f2fdea372dda7a inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:ae1d729152fbe5e32e2f2fdea372dda7a inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4340098ee07622fce4345fcfe86a109 inherit pub_methods_structSDL_1_1TextureRef" id="r_af4340098ee07622fce4345fcfe86a109"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#af4340098ee07622fce4345fcfe86a109">GetMod</a> (<a class="el" href="structSDL_1_1FColor.html">FColor</a> *c) const</td></tr>
-<tr class="memdesc:af4340098ee07622fce4345fcfe86a109 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:af4340098ee07622fce4345fcfe86a109 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32d80a522dfcc680d32a161edfef3711 inherit pub_methods_structSDL_1_1TextureRef" id="r_a32d80a522dfcc680d32a161edfef3711"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711">SetColorMod</a> (Uint8 r, Uint8 g, Uint8 b)</td></tr>
-<tr class="memdesc:a32d80a522dfcc680d32a161edfef3711 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a32d80a522dfcc680d32a161edfef3711 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1723d533a5dd3128d45bc6d8553c4111 inherit pub_methods_structSDL_1_1TextureRef" id="r_a1723d533a5dd3128d45bc6d8553c4111"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a1723d533a5dd3128d45bc6d8553c4111">SetColorMod</a> (float r, float g, float b)</td></tr>
-<tr class="memdesc:a1723d533a5dd3128d45bc6d8553c4111 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a1723d533a5dd3128d45bc6d8553c4111 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bb61bb2d9134d38e90939dac7d2cfcf inherit pub_methods_structSDL_1_1TextureRef" id="r_a2bb61bb2d9134d38e90939dac7d2cfcf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a2bb61bb2d9134d38e90939dac7d2cfcf">GetColorMod</a> (Uint8 *r, Uint8 *g, Uint8 *b) const</td></tr>
-<tr class="memdesc:a2bb61bb2d9134d38e90939dac7d2cfcf inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a2bb61bb2d9134d38e90939dac7d2cfcf inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4938c0418670d33daced82df3ebe0d70 inherit pub_methods_structSDL_1_1TextureRef" id="r_a4938c0418670d33daced82df3ebe0d70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a4938c0418670d33daced82df3ebe0d70">GetColorMod</a> (float *r, float *g, float *b) const</td></tr>
-<tr class="memdesc:a4938c0418670d33daced82df3ebe0d70 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a4938c0418670d33daced82df3ebe0d70 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1a16a0f4479bc6df3f3fb97e7e59a0d inherit pub_methods_structSDL_1_1TextureRef" id="r_ac1a16a0f4479bc6df3f3fb97e7e59a0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#ac1a16a0f4479bc6df3f3fb97e7e59a0d">SetAlphaMod</a> (Uint8 alpha)</td></tr>
-<tr class="memdesc:ac1a16a0f4479bc6df3f3fb97e7e59a0d inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional alpha value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:ac1a16a0f4479bc6df3f3fb97e7e59a0d inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89d2348cd11dc85b86bd6ea25f9b2fae inherit pub_methods_structSDL_1_1TextureRef" id="r_a89d2348cd11dc85b86bd6ea25f9b2fae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a89d2348cd11dc85b86bd6ea25f9b2fae">SetAlphaMod</a> (float alpha)</td></tr>
-<tr class="memdesc:a89d2348cd11dc85b86bd6ea25f9b2fae inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional alpha value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a89d2348cd11dc85b86bd6ea25f9b2fae inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd7b5d79ce9da63509fd81de8331c15a inherit pub_methods_structSDL_1_1TextureRef" id="r_afd7b5d79ce9da63509fd81de8331c15a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#afd7b5d79ce9da63509fd81de8331c15a">GetAlphaMod</a> () const</td></tr>
-<tr class="memdesc:afd7b5d79ce9da63509fd81de8331c15a inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional alpha value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:afd7b5d79ce9da63509fd81de8331c15a inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d98ef11d655e5fac5bd30dd82c1f7bf inherit pub_methods_structSDL_1_1TextureRef" id="r_a7d98ef11d655e5fac5bd30dd82c1f7bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a7d98ef11d655e5fac5bd30dd82c1f7bf">GetAlphaMod</a> (Uint8 *alpha) const</td></tr>
-<tr class="memdesc:a7d98ef11d655e5fac5bd30dd82c1f7bf inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional alpha value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a7d98ef11d655e5fac5bd30dd82c1f7bf inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae77cb5f0ac398b2a3d733d0465950be5 inherit pub_methods_structSDL_1_1TextureRef" id="r_ae77cb5f0ac398b2a3d733d0465950be5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#ae77cb5f0ac398b2a3d733d0465950be5">GetAlphaMod</a> (float *alpha) const</td></tr>
-<tr class="memdesc:ae77cb5f0ac398b2a3d733d0465950be5 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional alpha value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:ae77cb5f0ac398b2a3d733d0465950be5 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15e38be82ab2e673b2449238e6e3c9d2 inherit pub_methods_structSDL_1_1TextureRef" id="r_a15e38be82ab2e673b2449238e6e3c9d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a15e38be82ab2e673b2449238e6e3c9d2">SetBlendMode</a> (<a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a> blendMode)</td></tr>
-<tr class="memdesc:a15e38be82ab2e673b2449238e6e3c9d2 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the blend mode for a texture, used by <a class="el" href="group__CategoryRender.html#gaa1ddfe2a29bf78dcf2df14326aa1c0d0" title="Copy a portion of the texture to the current rendering target at subpixel precision.">RendererRef.RenderTexture()</a>.  <br /></td></tr>
-<tr class="separator:a15e38be82ab2e673b2449238e6e3c9d2 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c0d9b5323e067d355a198125a2911aa inherit pub_methods_structSDL_1_1TextureRef" id="r_a1c0d9b5323e067d355a198125a2911aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a1c0d9b5323e067d355a198125a2911aa">GetBlendMode</a> () const</td></tr>
-<tr class="memdesc:a1c0d9b5323e067d355a198125a2911aa inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the blend mode used for texture copy operations.  <br /></td></tr>
-<tr class="separator:a1c0d9b5323e067d355a198125a2911aa inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d668791cf04679d3ea38fd32269458f inherit pub_methods_structSDL_1_1TextureRef" id="r_a5d668791cf04679d3ea38fd32269458f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a5d668791cf04679d3ea38fd32269458f">SetScaleMode</a> (<a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
-<tr class="memdesc:a5d668791cf04679d3ea38fd32269458f inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the scale mode used for texture scale operations.  <br /></td></tr>
-<tr class="separator:a5d668791cf04679d3ea38fd32269458f inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00b2ed9876a7c254ded85ca3e9c449fa inherit pub_methods_structSDL_1_1TextureRef" id="r_a00b2ed9876a7c254ded85ca3e9c449fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a00b2ed9876a7c254ded85ca3e9c449fa">GetScaleMode</a> () const</td></tr>
-<tr class="memdesc:a00b2ed9876a7c254ded85ca3e9c449fa inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the scale mode used for texture scale operations.  <br /></td></tr>
-<tr class="separator:a00b2ed9876a7c254ded85ca3e9c449fa inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5838d6f91777e95139ad31798ab554a1 inherit pub_methods_structSDL_1_1TextureRef" id="r_a5838d6f91777e95139ad31798ab554a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1">Update</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect, const void *pixels, int pitch)</td></tr>
-<tr class="memdesc:a5838d6f91777e95139ad31798ab554a1 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the given texture rectangle with new pixel data.  <br /></td></tr>
-<tr class="separator:a5838d6f91777e95139ad31798ab554a1 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c9ca961bb5cca2539fc7f288f97097a inherit pub_methods_structSDL_1_1TextureRef" id="r_a9c9ca961bb5cca2539fc7f288f97097a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a9c9ca961bb5cca2539fc7f288f97097a">UpdateYUV</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect, const Uint8 *Yplane, int Ypitch, const Uint8 *Uplane, int Upitch, const Uint8 *Vplane, int Vpitch)</td></tr>
-<tr class="memdesc:a9c9ca961bb5cca2539fc7f288f97097a inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a rectangle within a planar YV12 or IYUV texture with new pixel data.  <br /></td></tr>
-<tr class="separator:a9c9ca961bb5cca2539fc7f288f97097a inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b6242d67d6c0edf4be180dea494324c inherit pub_methods_structSDL_1_1TextureRef" id="r_a1b6242d67d6c0edf4be180dea494324c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a1b6242d67d6c0edf4be180dea494324c">UpdateNV</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch)</td></tr>
-<tr class="memdesc:a1b6242d67d6c0edf4be180dea494324c inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a rectangle within a planar NV12 or NV21 texture with new pixels.  <br /></td></tr>
-<tr class="separator:a1b6242d67d6c0edf4be180dea494324c inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2942fc39824ae898d51dcc7b11dc2210 inherit pub_methods_structSDL_1_1TextureRef" id="r_ga2942fc39824ae898d51dcc7b11dc2210"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TextureLock.html">TextureLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga2942fc39824ae898d51dcc7b11dc2210">Lock</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect={}) &amp;</td></tr>
-<tr class="memdesc:ga2942fc39824ae898d51dcc7b11dc2210 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock a portion of the texture for <b>write-only</b> pixel access.  <br /></td></tr>
-<tr class="separator:ga2942fc39824ae898d51dcc7b11dc2210 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abaf76e4507e0b5d55c50dfa359853ed2 inherit pub_methods_structSDL_1_1TextureRef" id="r_abaf76e4507e0b5d55c50dfa359853ed2"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetWidth</b> () const</td></tr>
-<tr class="memdesc:abaf76e4507e0b5d55c50dfa359853ed2 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the width in pixels. <br /></td></tr>
-<tr class="separator:abaf76e4507e0b5d55c50dfa359853ed2 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac534ea0c9bea87d86aba8588413dcf31 inherit pub_methods_structSDL_1_1TextureRef" id="r_ac534ea0c9bea87d86aba8588413dcf31"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetHeight</b> () const</td></tr>
-<tr class="memdesc:ac534ea0c9bea87d86aba8588413dcf31 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the height in pixels. <br /></td></tr>
-<tr class="separator:ac534ea0c9bea87d86aba8588413dcf31 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e33250b820d1cf745efbad12c24ab39 inherit pub_methods_structSDL_1_1TextureRef" id="r_a4e33250b820d1cf745efbad12c24ab39"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="structSDL_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> () const</td></tr>
-<tr class="memdesc:a4e33250b820d1cf745efbad12c24ab39 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size in pixels. <br /></td></tr>
-<tr class="separator:a4e33250b820d1cf745efbad12c24ab39 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6690aa4a0f72906ccc847431fafe2fb inherit pub_methods_structSDL_1_1TextureRef" id="r_ab6690aa4a0f72906ccc847431fafe2fb"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetFormat</b> () const</td></tr>
-<tr class="memdesc:ab6690aa4a0f72906ccc847431fafe2fb inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pixel format. <br /></td></tr>
-<tr class="separator:ab6690aa4a0f72906ccc847431fafe2fb inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TextureRef" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_structSDL_1_1TextureRef" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; T &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TextureRef" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextureRef" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Texture * &gt;</a></td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_Texture * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; SDL_Texture * &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a3998cea016cb571c1641e0d01d5c2b44" id="r_a3998cea016cb571c1641e0d01d5c2b44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#a3998cea016cb571c1641e0d01d5c2b44">Destroy</a> ()</td></tr>
+<tr class="memdesc:a3998cea016cb571c1641e0d01d5c2b44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the specified texture.  <br /></td></tr>
+<tr class="separator:a3998cea016cb571c1641e0d01d5c2b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top"><a id="a8eff4b7518626ecb1d6ee2e8f2662301" name="a8eff4b7518626ecb1d6ee2e8f2662301"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a84be9e4b6d22fbaee39979c15cef0f" id="r_a2a84be9e4b6d22fbaee39979c15cef0f"><td class="memItemLeft" align="right" valign="top"><a id="a2a84be9e4b6d22fbaee39979c15cef0f" name="a2a84be9e4b6d22fbaee39979c15cef0f"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value)</td></tr>
+<tr class="memdesc:a2a84be9e4b6d22fbaee39979c15cef0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:a2a84be9e4b6d22fbaee39979c15cef0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top"><a id="abc1bcf199c285e07c14ebc87b5abf6f2" name="abc1bcf199c285e07c14ebc87b5abf6f2"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top"><a id="a59d90c89aac04332912bb8f55c387aae" name="a59d90c89aac04332912bb8f55c387aae"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1ResourceUnique"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourceUnique')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourceUnique.html">SDL::ResourceUnique&lt; TextureRef &gt;</a></td></tr>
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a84be9e4b6d22fbaee39979c15cef0f inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a2a84be9e4b6d22fbaee39979c15cef0f"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value)</td></tr>
+<tr class="memdesc:a2a84be9e4b6d22fbaee39979c15cef0f inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:a2a84be9e4b6d22fbaee39979c15cef0f inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_afbc5563c17624104d9c263f5003d57d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ResourceUnique.html#afbc5563c17624104d9c263f5003d57d5">~ResourceUnique</a> ()</td></tr>
+<tr class="memdesc:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
+<tr class="separator:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a9f10a6343315fe1f5ca553284073ecd9"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> other)</td></tr>
+<tr class="memdesc:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a4b7b571048747a5dfbef3cbe891cc15e"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr>
+<tr class="memdesc:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the value, destroying the resource if not nullptr. <br /></td></tr>
+<tr class="separator:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a0506906144295f6b398dc3580bcb336f"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
-<tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource" id="r_ab4aa1e63564473a72dc97256340d104f"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_type</b> () const</td></tr>
-<tr class="memdesc:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts back to underlying type. <br /></td></tr>
-<tr class="separator:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
-<tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource" id="r_ad2a82bc79a7dae41ceb1a25647ae1c0d"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
-<tr class="memdesc:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource" id="r_ab110e6568060a7ae58ab7b29ad68f7fc"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if not null. <br /></td></tr>
+<tr class="separator:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a747ef455db62064bb3eebf43b203cad2"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1ResourcePtrBase.html">ResourcePtrBase</a> &amp;) const =default</td></tr>
+<tr class="memdesc:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_ad1d8089cd65f38c3e49d0ca4fa676a52"><td class="memItemLeft" align="right" valign="top">
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t) const</td></tr>
-<tr class="memdesc:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource" id="r_ab273a0a0285b8eed1f70f5d3759f4167"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
-<tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource" id="r_a795922875f43cc42165896b02af59d0c"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> (SDL_Texture * newResource={})</td></tr>
-<tr class="memdesc:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource and empties or replace value. <br /></td></tr>
-<tr class="separator:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top">
-constexpr const SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
-<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a8a2a791f2fc677f3554798a0fb8572e4"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
+<tr class="memdesc:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a1415d2a130f807673b4f8db3047d95a7"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> () const</td></tr>
+<tr class="memdesc:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets reference. <br /></td></tr>
+<tr class="separator:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a5d2a7a6a1c79ec493548f8bd30ff6c70"><td class="memItemLeft" align="right" valign="top">
+constexpr const <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
+<tr class="memdesc:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets addressable reference. <br /></td></tr>
+<tr class="separator:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a493a79a3a6eafeead35454ff1076aa9a"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
+<tr class="memdesc:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets addressable reference. <br /></td></tr>
+<tr class="separator:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a7d506c070af513ecfa781e7fa3bf893f"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="memdesc:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference. <br /></td></tr>
+<tr class="separator:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a96c074dae2de8cb1812008baaa46f1db"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
+<tr class="memdesc:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reference and reset this. <br /></td></tr>
+<tr class="separator:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -339,8 +190,14 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a35bd6b95ca5e347fe42e6bc37b13d6e8" id="r_a35bd6b95ca5e347fe42e6bc37b13d6e8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#a35bd6b95ca5e347fe42e6bc37b13d6e8">Load</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer, <a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src)</td></tr>
 <tr class="memdesc:a35bd6b95ca5e347fe42e6bc37b13d6e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a filesystem path into a software surface.  <br /></td></tr>
 <tr class="separator:a35bd6b95ca5e347fe42e6bc37b13d6e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22eebffc04326aa3cd7e193fbb640053" id="r_a22eebffc04326aa3cd7e193fbb640053"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#a22eebffc04326aa3cd7e193fbb640053">LoadBMP</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
+<tr class="memdesc:a22eebffc04326aa3cd7e193fbb640053"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a file.  <br /></td></tr>
+<tr class="separator:a22eebffc04326aa3cd7e193fbb640053"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5c8ebcbe904bfaaa20b97af5df16832" id="r_aa5c8ebcbe904bfaaa20b97af5df16832"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#aa5c8ebcbe904bfaaa20b97af5df16832">LoadBMP</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer, <a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src)</td></tr>
+<tr class="memdesc:aa5c8ebcbe904bfaaa20b97af5df16832"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a seekable <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> data stream.  <br /></td></tr>
+<tr class="separator:aa5c8ebcbe904bfaaa20b97af5df16832"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7d1ac603d5e4af91ee2fb050d674be2" id="r_ad7d1ac603d5e4af91ee2fb050d674be2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#ad7d1ac603d5e4af91ee2fb050d674be2">Create</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> access, const SDL_Point &amp;size)</td></tr>
-<tr class="memdesc:ad7d1ac603d5e4af91ee2fb050d674be2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture for a rendering context.  <br /></td></tr>
+<tr class="memdesc:ad7d1ac603d5e4af91ee2fb050d674be2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> into a software surface.  <br /></td></tr>
 <tr class="separator:ad7d1ac603d5e4af91ee2fb050d674be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9af94f028d7130c61496a16e413ecc64" id="r_a9af94f028d7130c61496a16e413ecc64"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#a9af94f028d7130c61496a16e413ecc64">CreateFromSurface</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer, <a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> surface)</td></tr>
 <tr class="memdesc:a9af94f028d7130c61496a16e413ecc64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture from an existing surface.  <br /></td></tr>
@@ -351,368 +208,33 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Texture * &gt;</a></td></tr>
-<tr class="memitem:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource" id="r_a11ac29cf1f6da9fb29c508669f40b38d"><td class="memItemLeft" align="right" valign="top">
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL_Texture *</td></tr>
-<tr class="memdesc:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
-<tr class="separator:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_structSDL_1_1TextureRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1TextureRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1TextureRef.html">SDL::TextureRef</a></td></tr>
-<tr class="memitem:af20105a4009e6eb825f065389249d18d inherit pro_methods_structSDL_1_1TextureRef" id="r_af20105a4009e6eb825f065389249d18d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#af20105a4009e6eb825f065389249d18d">Destroy</a> ()</td></tr>
-<tr class="memdesc:af20105a4009e6eb825f065389249d18d inherit pro_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the specified texture.  <br /></td></tr>
-<tr class="separator:af20105a4009e6eb825f065389249d18d inherit pro_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2c68d8aee6027792b70fe2c9957d846 inherit pro_methods_structSDL_1_1TextureRef" id="r_ac2c68d8aee6027792b70fe2c9957d846"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#ac2c68d8aee6027792b70fe2c9957d846">reset</a> (SDL_Texture *newResource={})</td></tr>
-<tr class="memdesc:ac2c68d8aee6027792b70fe2c9957d846 inherit pro_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the specified texture.  <br /></td></tr>
-<tr class="separator:ac2c68d8aee6027792b70fe2c9957d846 inherit pro_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase" id="r_a649d81bb2d1f33857880ab0faa3a45d5"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = RESOURCE</td></tr>
+<tr class="memdesc:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reference resource type. <br /></td></tr>
+<tr class="separator:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase" id="r_afaf83443621b31f83daf2d7e911208c6"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = typename reference::value_type</td></tr>
+<tr class="memdesc:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
+<tr class="separator:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:ac7d6fb948950dcc78301ef054698c53d inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_ac7d6fb948950dcc78301ef054698c53d"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourcePtrBase</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">value_type</a> value={})</td></tr>
+<tr class="memdesc:ac7d6fb948950dcc78301ef054698c53d inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:ac7d6fb948950dcc78301ef054698c53d inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_a5123ac0033c94520d252dedd8cf1d5e5"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> ()</td></tr>
+<tr class="memdesc:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference. <br /></td></tr>
+<tr class="separator:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_aa035e9da7e7a8c0d71d8bc75e560b509"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>free</b> ()</td></tr>
+<tr class="memdesc:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees resource. <br /></td></tr>
+<tr class="separator:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html" title="An efficient driver-specific representation of pixel data.">TextureRef</a> </dd></dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac663724b996c28f36b8a02d4f3913df9" name="ac663724b996c28f36b8a02d4f3913df9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac663724b996c28f36b8a02d4f3913df9">&#9670;&#160;</a></span>Texture() <span class="overload">[1/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Texture::Texture </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td>
-          <td class="paramname"><em>renderer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>file</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>If available, this uses <a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a>, otherwise it uses LoadBMP(StringParam).</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
-    <tr><td class="paramname">file</td><td>a path on the filesystem to load an image from. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded contents on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga4c751fbca052ce4d6a13293284e195a3" title="Load an image from an SDL data source into a GPU texture.">LoadTexture(RendererRef, IOStreamRef)</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1Texture.html#acb74e6921b712ca4a1ae00ef7326e0fa" title="Load an image from a filesystem path into a software surface.">Texture.Load(RendererRef, StringParam)</a> </dd>
-<dd>
-Texture.LoadBMP(RendererRef, StringParam) </dd></dl>
-
-</div>
-</div>
-<a id="aa8d446b167c0938b143a1cb9981c1157" name="aa8d446b167c0938b143a1cb9981c1157"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8d446b167c0938b143a1cb9981c1157">&#9670;&#160;</a></span>Texture() <span class="overload">[2/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Texture::Texture </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td>
-          <td class="paramname"><em>renderer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td>
-          <td class="paramname"><em>src</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>If available, this uses LoadSurface(IOStreamRef&amp;), otherwise it uses LoadBMP(IOStreamRef&amp;).</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
-    <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> to load an image from. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded contents on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gabdb011cc5326525f8f1f64bfcf36c5f9" title="Load an image from a filesystem path into a GPU texture.">LoadTexture(RendererRef, StringParam)</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1Texture.html#a35bd6b95ca5e347fe42e6bc37b13d6e8" title="Load an image from a filesystem path into a software surface.">Texture.Load(RendererRef, IOStreamRef)</a> </dd>
-<dd>
-Texture.LoadBMP(RendererRef, IOStreamRef) </dd></dl>
-
-</div>
-</div>
-<a id="aedd1a903abda261351b47ca0b0ca5cee" name="aedd1a903abda261351b47ca0b0ca5cee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedd1a903abda261351b47ca0b0ca5cee">&#9670;&#160;</a></span>Texture() <span class="overload">[3/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Texture::Texture </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td>
-          <td class="paramname"><em>renderer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td>
-          <td class="paramname"><em>format</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a>&#160;</td>
-          <td class="paramname"><em>access</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const SDL_Point &amp;&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The contents of a texture when first created are not defined.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
-    <tr><td class="paramname">format</td><td>one of the enumerated values in <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a>. </td></tr>
-    <tr><td class="paramname">access</td><td>one of the enumerated values in TextureAccess. </td></tr>
-    <tr><td class="paramname">size</td><td>the width and height of the texture in pixels. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the created texture is convertible to true on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#af20105a4009e6eb825f065389249d18d" title="Destroy the specified texture.">TextureRef.Destroy</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1TextureRef.html#a4e33250b820d1cf745efbad12c24ab39" title="Get the size in pixels.">TextureRef.GetSize</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1" title="Update the given texture rectangle with new pixel data.">TextureRef.Update</a> </dd></dl>
-
-</div>
-</div>
-<a id="aa53b5958d494b3a930c56abed2fb0962" name="aa53b5958d494b3a930c56abed2fb0962"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa53b5958d494b3a930c56abed2fb0962">&#9670;&#160;</a></span>Texture() <span class="overload">[4/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Texture::Texture </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td>
-          <td class="paramname"><em>renderer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a>&#160;</td>
-          <td class="paramname"><em>surface</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The surface is not modified or freed by this function.</p>
-<p>The TextureAccess hint for the created texture is <code>TEXTUREACCESS_STATIC</code>.</p>
-<p>The pixel format of the created texture may be different from the pixel format of the surface, and can be queried using the prop::Texture.FORMAT_NUMBER property.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
-    <tr><td class="paramname">surface</td><td>the <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> structure containing pixel data used to fill the texture. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the created texture is convertible to true on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#af20105a4009e6eb825f065389249d18d" title="Destroy the specified texture.">TextureRef.Destroy</a> </dd></dl>
-
-</div>
-</div>
-<a id="a5545214c983fe85c65e6034dcc80eac0" name="a5545214c983fe85c65e6034dcc80eac0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5545214c983fe85c65e6034dcc80eac0">&#9670;&#160;</a></span>Texture() <span class="overload">[5/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Texture::Texture </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td>
-          <td class="paramname"><em>renderer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td>
-          <td class="paramname"><em>props</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>These are the supported properties:</p>
-<ul>
-<li><code>prop::Texture.CREATE_COLORSPACE_NUMBER</code>: an <a class="el" href="classSDL_1_1Colorspace.html" title="Colorspace definitions.">Colorspace</a> value describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for YUV textures.</li>
-<li><code>prop::Texture.CREATE_FORMAT_NUMBER</code>: one of the enumerated values in <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a>, defaults to the best RGBA format for the renderer</li>
-<li><code>prop::Texture.CREATE_ACCESS_NUMBER</code>: one of the enumerated values in TextureAccess, defaults to TEXTUREACCESS_STATIC</li>
-<li><code>prop::Texture.CREATE_WIDTH_NUMBER</code>: the width of the texture in pixels, required</li>
-<li><code>prop::Texture.CREATE_HEIGHT_NUMBER</code>: the height of the texture in pixels, required</li>
-<li><code>prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT</code>: for HDR10 and floating point textures, this defines the value of 100% diffuse white, with higher values being displayed in the High Dynamic Range headroom. This defaults to 100 for HDR10 textures and 1.0 for floating point textures.</li>
-<li><code>prop::Texture.CREATE_HDR_HEADROOM_FLOAT</code>: for HDR10 and floating point textures, this defines the maximum dynamic range used by the content, in terms of the SDR white point. This would be equivalent to maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is defined, any values outside the range supported by the display will be scaled into the available HDR headroom, otherwise they are clipped.</li>
-</ul>
-<p>With the direct3d11 renderer:</p>
-<ul>
-<li><code>prop::Texture.CREATE_D3D11_TEXTURE_POINTER</code>: the ID3D11Texture2D associated with the texture, if you want to wrap an existing texture.</li>
-<li><code>prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER</code>: the ID3D11Texture2D associated with the U plane of a YUV texture, if you want to wrap an existing texture.</li>
-<li><code>prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER</code>: the ID3D11Texture2D associated with the V plane of a YUV texture, if you want to wrap an existing texture.</li>
-</ul>
-<p>With the direct3d12 renderer:</p>
-<ul>
-<li><code>prop::Texture.CREATE_D3D12_TEXTURE_POINTER</code>: the ID3D12Resource associated with the texture, if you want to wrap an existing texture.</li>
-<li><code>prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER</code>: the ID3D12Resource associated with the U plane of a YUV texture, if you want to wrap an existing texture.</li>
-<li><code>prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER</code>: the ID3D12Resource associated with the V plane of a YUV texture, if you want to wrap an existing texture.</li>
-</ul>
-<p>With the metal renderer:</p>
-<ul>
-<li><code>prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER</code>: the CVPixelBufferRef associated with the texture, if you want to create a texture from an existing pixel buffer.</li>
-</ul>
-<p>With the opengl renderer:</p>
-<ul>
-<li><code>prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER</code>: the GLuint texture associated with the texture, if you want to wrap an existing texture.</li>
-<li><code>prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER</code>: the GLuint texture associated with the UV plane of an NV12 texture, if you want to wrap an existing texture.</li>
-<li><code>prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER</code>: the GLuint texture associated with the U plane of a YUV texture, if you want to wrap an existing texture.</li>
-<li><code>prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER</code>: the GLuint texture associated with the V plane of a YUV texture, if you want to wrap an existing texture.</li>
-</ul>
-<p>With the opengles2 renderer:</p>
-<ul>
-<li><code>prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER</code>: the GLuint texture associated with the texture, if you want to wrap an existing texture.</li>
-<li><code>prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER</code>: the GLuint texture associated with the texture, if you want to wrap an existing texture.</li>
-<li><code>prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER</code>: the GLuint texture associated with the UV plane of an NV12 texture, if you want to wrap an existing texture.</li>
-<li><code>prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER</code>: the GLuint texture associated with the U plane of a YUV texture, if you want to wrap an existing texture.</li>
-<li><code>prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER</code>: the GLuint texture associated with the V plane of a YUV texture, if you want to wrap an existing texture.</li>
-</ul>
-<p>With the vulkan renderer:</p>
-<ul>
-<li><code>prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER</code>: the VkImage with layout VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if you want to wrap an existing texture.</li>
-</ul>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
-    <tr><td class="paramname">props</td><td>the properties to use. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the created texture is convertible to true on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#aa845d1a39b76e66f15be53f879eb7574" title="Create a group of properties.">Properties.Create</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1TextureRef.html#af20105a4009e6eb825f065389249d18d" title="Destroy the specified texture.">TextureRef.Destroy</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1TextureRef.html#a4e33250b820d1cf745efbad12c24ab39" title="Get the size in pixels.">TextureRef.GetSize</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1" title="Update the given texture rectangle with new pixel data.">TextureRef.Update</a> </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad7d1ac603d5e4af91ee2fb050d674be2" name="ad7d1ac603d5e4af91ee2fb050d674be2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad7d1ac603d5e4af91ee2fb050d674be2">&#9670;&#160;</a></span>Create()</h2>
 
@@ -758,28 +280,26 @@ Texture.LoadBMP(RendererRef, IOStreamRef) </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The contents of a texture when first created are not defined.</p>
+<p>If available, this uses LoadSurface(IOStreamRef&amp;), otherwise it uses LoadBMP(IOStreamRef&amp;).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
-    <tr><td class="paramname">format</td><td>one of the enumerated values in <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a>. </td></tr>
-    <tr><td class="paramname">access</td><td>one of the enumerated values in TextureAccess. </td></tr>
-    <tr><td class="paramname">size</td><td>the width and height of the texture in pixels. </td></tr>
+    <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> to load an image from. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the created texture or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Texture.html#a88f5bd38f405ffdbc46d69a8b3fab1d2" title="Constructs an empty Texture.">Texture.Texture</a> </dd>
+<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded contents on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gabdb011cc5326525f8f1f64bfcf36c5f9" title="Load an image from a filesystem path into a GPU texture.">LoadTexture(RendererRef, StringParam)</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Texture.html#a88f5bd38f405ffdbc46d69a8b3fab1d2" title="Constructs an empty Texture.">Texture.Texture</a> </dd>
+<a class="el" href="structSDL_1_1Texture.html#a35bd6b95ca5e347fe42e6bc37b13d6e8" title="Load an image from a filesystem path into a software surface.">Texture.Load(RendererRef, IOStreamRef)</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextureRef.html#af20105a4009e6eb825f065389249d18d" title="Destroy the specified texture.">TextureRef.Destroy</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1TextureRef.html#a4e33250b820d1cf745efbad12c24ab39" title="Get the size in pixels.">TextureRef.GetSize</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1" title="Update the given texture rectangle with new pixel data.">TextureRef.Update</a> </dd></dl>
+<a class="el" href="structSDL_1_1Texture.html#aa5c8ebcbe904bfaaa20b97af5df16832" title="Load a BMP texture from a seekable SDL data stream.">Texture.LoadBMP(RendererRef, IOStreamRef)</a> </dd></dl>
 
 </div>
 </div>
@@ -826,14 +346,20 @@ Texture.LoadBMP(RendererRef, IOStreamRef) </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the created texture or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the created texture is convertible to true on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Texture.html#a88f5bd38f405ffdbc46d69a8b3fab1d2" title="Constructs an empty Texture.">Texture.Texture</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Texture.html#ad7d1ac603d5e4af91ee2fb050d674be2" title="Load an image from a IOStreamRef into a software surface.">Texture.Create</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Texture.html#a88f5bd38f405ffdbc46d69a8b3fab1d2" title="Constructs an empty Texture.">Texture.Texture</a> </dd>
+<a class="el" href="structSDL_1_1Texture.html#ad1c376e4fa769d383b4fa1cb27d88ecf" title="Create a texture for a rendering context with the specified properties.">Texture.CreateWithProperties</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextureRef.html#af20105a4009e6eb825f065389249d18d" title="Destroy the specified texture.">TextureRef.Destroy</a> </dd></dl>
+<a class="el" href="structSDL_1_1Texture.html#a3998cea016cb571c1641e0d01d5c2b44" title="Destroy the specified texture.">Texture.Destroy</a> </dd></dl>
 
 </div>
 </div>
@@ -922,20 +448,57 @@ Texture.LoadBMP(RendererRef, IOStreamRef) </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the created texture or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the created texture is convertible to true on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#aa845d1a39b76e66f15be53f879eb7574" title="Create a group of properties.">Properties.Create</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Texture.html#a88f5bd38f405ffdbc46d69a8b3fab1d2" title="Constructs an empty Texture.">Texture.Texture</a> </dd>
+<a class="el" href="structSDL_1_1Texture.html#ad7d1ac603d5e4af91ee2fb050d674be2" title="Load an image from a IOStreamRef into a software surface.">Texture.Create</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Texture.html#a88f5bd38f405ffdbc46d69a8b3fab1d2" title="Constructs an empty Texture.">Texture.Texture</a> </dd>
+<a class="el" href="structSDL_1_1Texture.html#a9af94f028d7130c61496a16e413ecc64" title="Create a texture from an existing surface.">Texture.CreateFromSurface</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextureRef.html#af20105a4009e6eb825f065389249d18d" title="Destroy the specified texture.">TextureRef.Destroy</a> </dd>
+<a class="el" href="structSDL_1_1Texture.html#a3998cea016cb571c1641e0d01d5c2b44" title="Destroy the specified texture.">Texture.Destroy</a> </dd>
 <dd>
-SDL_GetTextureSize </dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a4e33250b820d1cf745efbad12c24ab39" title="Get the size in pixels.">TextureRef.GetSize</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1" title="Update the given texture rectangle with new pixel data.">TextureRef.Update</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3998cea016cb571c1641e0d01d5c2b44" name="a3998cea016cb571c1641e0d01d5c2b44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3998cea016cb571c1641e0d01d5c2b44">&#9670;&#160;</a></span>Destroy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Texture::Destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Passing nullptr or an otherwise invalid texture will set the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> error message to "Invalid texture".</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Texture.html#ad7d1ac603d5e4af91ee2fb050d674be2" title="Load an image from a IOStreamRef into a software surface.">Texture.Create</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Texture.html#a9af94f028d7130c61496a16e413ecc64" title="Create a texture from an existing surface.">Texture.CreateFromSurface</a> </dd></dl>
 
 </div>
 </div>
@@ -981,11 +544,11 @@ SDL_GetTextureSize </dd>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the new <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded contents on success or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Texture.html#aa8d446b167c0938b143a1cb9981c1157" title="Load an image from a IOStreamRef into a software surface.">Texture.Texture(RendererRef, IOStreamRef)</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>Texture.Texture(RendererRef, IOStreamRef) </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga4c751fbca052ce4d6a13293284e195a3" title="Load an image from an SDL data source into a GPU texture.">LoadTexture(RendererRef, IOStreamRef)</a> </dd>
 <dd>
-Texture.LoadBMP(RendererRef, IOStreamRef) </dd></dl>
+<a class="el" href="structSDL_1_1Texture.html#aa5c8ebcbe904bfaaa20b97af5df16832" title="Load a BMP texture from a seekable SDL data stream.">Texture.LoadBMP(RendererRef, IOStreamRef)</a> </dd></dl>
 
 </div>
 </div>
@@ -1031,11 +594,101 @@ Texture.LoadBMP(RendererRef, IOStreamRef) </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the new <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded contents on success or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Texture.html#ac663724b996c28f36b8a02d4f3913df9" title="Load an image from a filesystem path into a software surface.">Texture.Texture(RendererRef, StringParam)</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>Texture.Texture(RendererRef, StringParam) </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gabdb011cc5326525f8f1f64bfcf36c5f9" title="Load an image from a filesystem path into a GPU texture.">LoadTexture(RendererRef, StringParam)</a> </dd>
 <dd>
-Texture.LoadBMP(RendererRef, StringParam) </dd></dl>
+<a class="el" href="structSDL_1_1Texture.html#a22eebffc04326aa3cd7e193fbb640053" title="Load a BMP texture from a file.">Texture.LoadBMP(RendererRef, StringParam)</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa5c8ebcbe904bfaaa20b97af5df16832" name="aa5c8ebcbe904bfaaa20b97af5df16832"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5c8ebcbe904bfaaa20b97af5df16832">&#9670;&#160;</a></span>LoadBMP() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Texture.html">Texture</a> SDL::Texture::LoadBMP </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>the renderer to create texture </td></tr>
+    <tr><td class="paramname">src</td><td>the data stream for the surface. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded content or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="a22eebffc04326aa3cd7e193fbb640053" name="a22eebffc04326aa3cd7e193fbb640053"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22eebffc04326aa3cd7e193fbb640053">&#9670;&#160;</a></span>LoadBMP() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Texture.html">Texture</a> SDL::Texture::LoadBMP </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>file</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>the renderer to create texture </td></tr>
+    <tr><td class="paramname">file</td><td>the BMP file to load. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded content or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>

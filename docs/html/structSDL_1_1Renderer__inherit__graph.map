@@ -1,9 +1,7 @@
 <map id="SDL::Renderer" name="SDL::Renderer">
-<area shape="rect" id="Node000001" title="Handle to an owned renderer." alt="" coords="28,240,143,265"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1RendererUnsafe.html" title="Unsafe Handle to renderer." alt="" coords="5,167,165,192"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,206,88,240,83,240,83,206"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1RendererRef.html" title="A structure representing rendering state." alt="" coords="17,93,153,119"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="88,132,88,167,83,167,83,132"/>
-<area shape="rect" id="Node000004" href="$classSDL_1_1Resource.html" title=" " alt="" coords="8,5,163,45"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="88,59,88,93,83,93,83,59"/>
+<area shape="rect" id="Node000001" title="Handle to an owned renderer." alt="" coords="43,181,157,207"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="19,93,181,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,147,103,181,97,181,97,147"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="5,5,195,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,59,103,93,97,93,97,59"/>
 </map>

@@ -35,8 +35,9 @@ struct Main
   static constexpr SDL::Point windowSz = {640, 480};
 
   SDL::SDL init{SDL::INIT_VIDEO, SDL::INIT_AUDIO};
-  SDL::Window window{"examples/audio/multiple-streams", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window =
+    SDL::Window::Create("examples/audio/multiple-streams", windowSz);
+  SDL::Renderer renderer = SDL::Renderer::Create(window);
   SDL::AudioDevice audio_device =
     SDL::AudioDevice::Open(SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK, {});
   Sound sounds[2] = {{audio_device, "sample.wav"}, {audio_device, "sword.wav"}};
@@ -50,8 +51,8 @@ struct Main
     }
 
     // just blank the screen.
-    renderer.RenderClear();
-    renderer.Present();
+    renderer->RenderClear();
+    renderer->Present();
 
     return SDL::APP_CONTINUE;
   }

@@ -20,8 +20,9 @@ struct Main
   static constexpr SDL::Point windowSz = {640, 480};
 
   SDL::SDL init{SDL::INIT_VIDEO, SDL::INIT_AUDIO};
-  SDL::Window window{"examples/audio/simple-playback-callback", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window =
+    SDL::Window::Create("examples/audio/simple-playback-callback", windowSz);
+  SDL::Renderer renderer = SDL::Renderer::Create(window);
   SDL::AudioStream stream = SDL::AudioStream::OpenAudioDeviceStream(
     SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK,
     SDL::AudioSpec{.format = SDL::AUDIO_F32, .channels = 1, .freq = 8000},
@@ -72,8 +73,8 @@ struct Main
   SDL::AppResult Iterate()
   {
     // we're not doing anything with the renderer, so just blank it out.
-    renderer.RenderClear();
-    renderer.Present();
+    renderer->RenderClear();
+    renderer->Present();
 
     return SDL::APP_CONTINUE;
   }

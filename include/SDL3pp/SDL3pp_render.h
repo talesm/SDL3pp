@@ -1724,79 +1724,21 @@ struct RendererRef : Resource<SDL_Renderer*>
     RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));
   }
 
-protected:
   /**
    * Destroy the rendering context for a window and free all associated
    * textures.
    *
    * This should be called before destroying the associated window.
    *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.Renderer
-   */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy the rendering context for a window and free all associated
-   * textures.
-   *
-   * This should be called before destroying the associated window.
+   * @param resource the rendering context.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
+   * @sa Renderer.Create
    */
-  void reset(SDL_Renderer* newResource = {})
-  {
-    SDL_DestroyRenderer(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to renderer
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa RendererRef
- */
-struct RendererUnsafe : RendererRef
-{
-  using RendererRef::Destroy;
-
-  using RendererRef::RendererRef;
-
-  using RendererRef::reset;
-
-  /**
-   * Constructs RendererUnsafe from RendererRef.
-   */
-  constexpr RendererUnsafe(const RendererRef& other)
-    : RendererRef(other.get())
-  {
-  }
-
-  RendererUnsafe(const Renderer& other) = delete;
-
-  /**
-   * Constructs RendererUnsafe from Renderer.
-   */
-  constexpr explicit RendererUnsafe(Renderer&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr RendererUnsafe& operator=(RendererUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_Renderer* resource) { SDL_DestroyRenderer(resource); }
 };
 
 /**
@@ -1806,35 +1748,9 @@ struct RendererUnsafe : RendererRef
  *
  * @sa RendererRef
  */
-struct Renderer : RendererUnsafe
+struct Renderer : ResourceUnique<RendererRef>
 {
-  using RendererUnsafe::RendererUnsafe;
-
-  /**
-   * Constructs an empty Renderer.
-   */
-  constexpr Renderer()
-    : RendererUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Renderer(SDL_Renderer* resource)
-    : RendererUnsafe(resource)
-  {
-  }
-
-  constexpr Renderer(const Renderer& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Renderer(Renderer&& other)
-    : Renderer(other.release())
-  {
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a 2D rendering context for a window.
@@ -1847,12 +1763,21 @@ struct Renderer : RendererUnsafe
    * GetError() for more information.
    *
    * @param window the window where rendering is displayed.
+   * @returns a valid rendering context on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa Renderer.CreateWithProperties
+   * @sa Renderer.CreateSoftware
+   * @sa Renderer.Destroy
+   * @sa GetNumRenderDrivers
+   * @sa GetRenderDriver
+   * @sa RendererRef.GetName
    */
-  Renderer(WindowRef window)
-    : Renderer(SDL_CreateRenderer(window.get(), nullptr))
+  static Renderer Create(WindowRef window)
   {
+    return Renderer(CheckError(SDL_CreateRenderer(window, nullptr)));
   }
 
   /**
@@ -1875,152 +1800,23 @@ struct Renderer : RendererUnsafe
    * @param window the window where rendering is displayed.
    * @param name the name of the rendering driver to initialize, or nullptr to
    *             let SDL choose one.
-   * @post a valid rendering context.
+   * @returns a valid rendering context on success.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RendererRef.Destroy
-   * @sa GetNumRenderDrivers
-   * @sa GetRenderDriver
-   * @sa RendererRef.GetName
-   */
-  Renderer(WindowRef window, StringParam name)
-    : Renderer(CheckError(SDL_CreateRenderer(window.get(), name)))
-  {
-  }
-
-  /**
-   * Create a 2D rendering context for a window, with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver
-   *   to use, if a specific one is desired
-   * - `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
-   *   displayed, required if this isn't a software renderer using a surface
-   * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering
-   *   is displayed, if you want a software renderer without a window
-   * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace
-   *   value describing the colorspace for output to the display, defaults to
-   *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers
-   *   support COLORSPACE_SRGB_LINEAR, which is a linear color space and
-   *   supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing
-   *   still uses the sRGB colorspace, but values can go beyond 1.0 and float
-   *   (linear) format textures can be used for HDR content.
-   * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
-   *   present synchronized with the refresh rate. This property can take any
-   *   value that is supported by RendererRef.SetVSync() for the renderer.
-   *
-   * With the vulkan renderer:
-   *
-   * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
-   *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
-   *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
-   *   VkPhysicalDevice to use with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use
-   *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
-   *   queue family index used for rendering.
-   * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
-   *   queue family index used for presentation.
-   *
-   * @param props the properties to use.
-   * @post a valid rendering context.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Properties.Create
-   * @sa RendererRef.Destroy
-   * @sa RendererRef.GetName
-   */
-  Renderer(PropertiesRef props)
-    : Renderer(CheckError(SDL_CreateRendererWithProperties(props.get())))
-  {
-  }
-
-  /**
-   * Create a 2D software rendering context for a surface.
-   *
-   * Two other API which can be used to create Renderer:
-   * Renderer.Renderer() and CreateWindowAndRenderer(). These can _also_
-   * create a software renderer, but they are intended to be used with an
-   * WindowRef as the final destination and not an SurfaceRef.
-   *
-   * @param surface the Surface structure representing the surface where
-   *                rendering is done.
-   * @post a valid rendering context.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RendererRef.Destroy
-   */
-  Renderer(SurfaceRef surface)
-    : Renderer(CheckError(SDL_CreateSoftwareRenderer(surface.get())))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Renderer() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Renderer& operator=(Renderer other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create a 2D rendering context for a window.
-   *
-   * If you want a specific renderer, you can specify its name here. A list of
-   * available renderers can be obtained by calling GetRenderDriver()
-   * multiple times, with indices from 0 to GetNumRenderDrivers()-1. If you
-   * don't need a specific renderer, specify nullptr and SDL will attempt to
-   * choose the best option for you, based on what is available on the user's
-   * system.
-   *
-   * If `name` is a comma-separated list, SDL will try each name, in the order
-   * listed, until one succeeds or all of them fail.
-   *
-   * By default the rendering size matches the window size in pixels, but you
-   * can call RendererRef.SetLogicalPresentation() to change the content size
-   * and scaling options.
-   *
-   * @param window the window where rendering is displayed.
-   * @param name the name of the rendering driver to initialize, or nullptr to
-   * let SDL choose one.
-   * @returns a valid rendering context or nullptr if there was an error; call
-   *          GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.Renderer
-   * @sa Renderer.Renderer
-   * @sa RendererRef.Destroy
+   * @sa Renderer.CreateWithProperties
+   * @sa Renderer.CreateSoftware
+   * @sa Renderer.Destroy
    * @sa GetNumRenderDrivers
    * @sa GetRenderDriver
    * @sa RendererRef.GetName
    */
   static Renderer Create(WindowRef window, StringParam name)
   {
-    return Renderer(window, std::move(name));
+    return Renderer(CheckError(SDL_CreateRenderer(window, name)));
   }
 
   /**
@@ -2061,53 +1857,84 @@ struct Renderer : RendererUnsafe
    *   queue family index used for presentation.
    *
    * @param props the properties to use.
-   * @returns a valid rendering context or nullptr if there was an error; call
-   *          GetError() for more information.
+   * @returns a valid rendering context on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Create
-   * @sa Renderer.Renderer
-   * @sa Renderer.Renderer
-   * @sa RendererRef.Destroy
+   * @sa Renderer.Create
+   * @sa Renderer.CreateSoftware
+   * @sa Renderer.Destroy
    * @sa RendererRef.GetName
    */
   static Renderer CreateWithProperties(PropertiesRef props)
   {
-    return Renderer(props);
+    return Renderer(CheckError(SDL_CreateRendererWithProperties(props)));
   }
 
   /**
    * Create a 2D software rendering context for a surface.
    *
-   * Two other API which can be used to create RendererRef:
-   * Renderer.Renderer() and CreateWindowAndRenderer(). These can _also_
+   * Two other API which can be used to create Renderer:
+   * Renderer.Create() and CreateWindowAndRenderer(). These can _also_
    * create a software renderer, but they are intended to be used with an
    * WindowRef as the final destination and not an SurfaceRef.
    *
-   * @param surface the SurfaceRef structure representing the surface where
+   * @param surface the Surface structure representing the surface where
    *                rendering is done.
-   * @returns a valid rendering context or nullptr if there was an error; call
-   *          GetError() for more information.
+   * @returns a valid rendering context on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RendererRef.Destroy
+   * @sa Renderer.Destroy
    */
   static Renderer CreateSoftware(SurfaceRef surface)
   {
-    return Renderer(surface);
+    return Renderer(CheckError(SDL_CreateSoftwareRenderer(surface)));
   }
+
+  /**
+   * Destroy the rendering context for a window and free all associated
+   * textures.
+   *
+   * This should be called before destroying the associated window.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.Create
+   */
+  void Destroy() { reset(); }
 };
 
-constexpr RendererUnsafe::RendererUnsafe(Renderer&& other)
-  : RendererUnsafe(other.release())
+/**
+ * Unsafe Handle to renderer
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa RendererRef
+ */
+struct RendererUnsafe : ResourceUnsafe<RendererRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs RendererUnsafe from Renderer.
+   */
+  constexpr explicit RendererUnsafe(Renderer&& other)
+    : RendererUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * An efficient driver-specific representation of pixel data
@@ -2778,79 +2605,22 @@ struct TextureRef : Resource<SDL_Texture*>
    */
   PixelFormat GetFormat() const { return get()->format; }
 
-protected:
   /**
    * Destroy the specified texture.
    *
    * Passing nullptr or an otherwise invalid texture will set the SDL error
    * message to "Invalid texture".
    *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Texture.Texture
-   */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy the specified texture.
-   *
-   * Passing nullptr or an otherwise invalid texture will set the SDL error
-   * message to "Invalid texture".
+   * @param resource the texture to destroy.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
+   * @sa Texture.Create
+   * @sa Texture.CreateFromSurface
    */
-  void reset(SDL_Texture* newResource = {})
-  {
-    SDL_DestroyTexture(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to texture
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa TextureRef
- */
-struct TextureUnsafe : TextureRef
-{
-  using TextureRef::Destroy;
-
-  using TextureRef::TextureRef;
-
-  using TextureRef::reset;
-
-  /**
-   * Constructs TextureUnsafe from TextureRef.
-   */
-  constexpr TextureUnsafe(const TextureRef& other)
-    : TextureRef(other.get())
-  {
-  }
-
-  TextureUnsafe(const Texture& other) = delete;
-
-  /**
-   * Constructs TextureUnsafe from Texture.
-   */
-  constexpr explicit TextureUnsafe(Texture&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr TextureUnsafe& operator=(TextureUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_Texture* resource) { SDL_DestroyTexture(resource); }
 };
 
 /**
@@ -2860,262 +2630,9 @@ struct TextureUnsafe : TextureRef
  *
  * @sa TextureRef
  */
-struct Texture : TextureUnsafe
+struct Texture : ResourceUnique<TextureRef>
 {
-  using TextureUnsafe::TextureUnsafe;
-
-  /**
-   * Constructs an empty Texture.
-   */
-  constexpr Texture()
-    : TextureUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Texture(SDL_Texture* resource)
-    : TextureUnsafe(resource)
-  {
-  }
-
-  constexpr Texture(const Texture& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Texture(Texture&& other)
-    : Texture(other.release())
-  {
-  }
-
-  /**
-   * Load an image from a filesystem path into a software surface.
-   *
-   * If available, this uses LoadSurface(StringParam), otherwise it uses
-   * LoadBMP(StringParam).
-   *
-   * @param renderer the rendering context.
-   * @param file a path on the filesystem to load an image from.
-   * @post the new Texture with loaded contents on success.
-   * @throws Error on failure.
-   *
-   * @sa LoadTexture(RendererRef, IOStreamRef)
-   * @sa Texture.Load(RendererRef, StringParam)
-   * @sa Texture.LoadBMP(RendererRef, StringParam)
-   */
-  Texture(RendererRef renderer, StringParam file)
-    : Texture(CheckError(Load(renderer, std::move(file))))
-  {
-  }
-
-  /**
-   * Load an image from a IOStreamRef into a software surface.
-   *
-   * If available, this uses LoadSurface(IOStreamRef&), otherwise it uses
-   * LoadBMP(IOStreamRef&).
-   *
-   * @param renderer the rendering context.
-   * @param src an IOStreamRef to load an image from.
-   * @post the new Texture with loaded contents on success.
-   * @throws Error on failure.
-   *
-   * @sa LoadTexture(RendererRef, StringParam)
-   * @sa Texture.Load(RendererRef, IOStreamRef)
-   * @sa Texture.LoadBMP(RendererRef, IOStreamRef)
-   */
-  Texture(RendererRef renderer, IOStreamRef src)
-    : Texture(CheckError(Load(renderer, src)))
-  {
-  }
-
-  /**
-   * Create a texture for a rendering context.
-   *
-   * The contents of a texture when first created are not defined.
-   *
-   * @param renderer the rendering context.
-   * @param format one of the enumerated values in PixelFormat.
-   * @param access one of the enumerated values in TextureAccess.
-   * @param size the width and height of the texture in pixels.
-   * @post the created texture is convertible to true on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TextureRef.Destroy
-   * @sa TextureRef.GetSize
-   * @sa TextureRef.Update
-   */
-  Texture(RendererRef renderer,
-          PixelFormat format,
-          TextureAccess access,
-          const SDL_Point& size)
-    : Texture(CheckError(
-        SDL_CreateTexture(renderer.get(), format, access, size.x, size.y)))
-  {
-  }
-
-  /**
-   * Create a texture from an existing surface.
-   *
-   * The surface is not modified or freed by this function.
-   *
-   * The TextureAccess hint for the created texture is
-   * `TEXTUREACCESS_STATIC`.
-   *
-   * The pixel format of the created texture may be different from the pixel
-   * format of the surface, and can be queried using the
-   * prop::Texture.FORMAT_NUMBER property.
-   *
-   * @param renderer the rendering context.
-   * @param surface the SurfaceRef structure containing pixel data used to fill
-   *                the texture.
-   * @post the created texture is convertible to true on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TextureRef.Destroy
-   */
-  Texture(RendererRef renderer, SurfaceRef surface)
-    : Texture(
-        CheckError(SDL_CreateTextureFromSurface(renderer.get(), surface.get())))
-  {
-  }
-
-  /**
-   * Create a texture for a rendering context with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
-   *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
-   *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
-   *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
-   *   YUV textures.
-   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
-   *   PixelFormat, defaults to the best RGBA format for the renderer
-   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
-   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
-   *   pixels, required
-   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
-   *   pixels, required
-   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the value of 100% diffuse white, with higher
-   *   values being displayed in the High Dynamic Range headroom. This defaults
-   *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the maximum dynamic range used by the
-   *   content, in terms of the SDR white point. This would be equivalent to
-   *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
-   *   If this is defined, any values outside the range supported by the display
-   *   will be scaled into the available HDR headroom, otherwise they are
-   *   clipped.
-   *
-   * With the direct3d11 renderer:
-   *
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the direct3d12 renderer:
-   *
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the metal renderer:
-   *
-   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
-   *   associated with the texture, if you want to create a texture from an
-   *   existing pixel buffer.
-   *
-   * With the opengl renderer:
-   *
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the opengles2 renderer:
-   *
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the vulkan renderer:
-   *
-   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
-   *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
-   *   you want to wrap an existing texture.
-   *
-   * @param renderer the rendering context.
-   * @param props the properties to use.
-   * @post the created texture is convertible to true on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Properties.Create
-   * @sa TextureRef.Destroy
-   * @sa TextureRef.GetSize
-   * @sa TextureRef.Update
-   */
-  Texture(RendererRef renderer, PropertiesRef props)
-    : Texture(CheckError(
-        SDL_CreateTextureWithProperties(renderer.get(), props.get())))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Texture() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Texture& operator=(Texture other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Load an image from a filesystem path into a software surface.
@@ -3152,33 +2669,59 @@ struct Texture : TextureUnsafe
   static Texture Load(RendererRef renderer, IOStreamRef src);
 
   /**
-   * Create a texture for a rendering context.
+   * Load a BMP texture from a file.
    *
-   * The contents of a texture when first created are not defined.
-   *
-   * @param renderer the rendering context.
-   * @param format one of the enumerated values in PixelFormat.
-   * @param access one of the enumerated values in TextureAccess.
-   * @param size the width and height of the texture in pixels.
-   * @returns the created texture or nullptr on failure; call GetError() for
-   *          more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
+   * @param renderer the renderer to create texture
+   * @param file the BMP file to load.
+   * @returns a Texture with loaded content or nullptr on failure; call
+   *          GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
+   */
+  static Texture LoadBMP(RendererRef renderer, StringParam file)
+  {
+    Surface surface{SDL_LoadBMP(file)};
+    return Texture::CreateFromSurface(renderer, surface);
+  }
+
+  /**
+   * Load a BMP texture from a seekable SDL data stream.
    *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
-   * @sa TextureRef.Destroy
-   * @sa TextureRef.GetSize
-   * @sa TextureRef.Update
+   * @param renderer the renderer to create texture
+   * @param src the data stream for the surface.
+   * @returns a Texture with loaded content or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static Texture LoadBMP(RendererRef renderer, IOStreamRef src)
+  {
+    auto surface{Surface::LoadBMP(src)};
+    return Texture::CreateFromSurface(renderer, surface);
+  }
+
+  /**
+   * Load an image from a IOStreamRef into a software surface.
+   *
+   * If available, this uses LoadSurface(IOStreamRef&), otherwise it uses
+   * LoadBMP(IOStreamRef&).
+   *
+   * @param renderer the rendering context.
+   * @param src an IOStreamRef to load an image from.
+   * @post the new Texture with loaded contents on success.
+   * @throws Error on failure.
+   *
+   * @sa LoadTexture(RendererRef, StringParam)
+   * @sa Texture.Load(RendererRef, IOStreamRef)
+   * @sa Texture.LoadBMP(RendererRef, IOStreamRef)
    */
   static Texture Create(RendererRef renderer,
                         PixelFormat format,
                         TextureAccess access,
                         const SDL_Point& size)
   {
-    return Texture(renderer, format, access, size);
+    return Texture(
+      CheckError(SDL_CreateTexture(renderer, format, access, size.x, size.y)));
   }
 
   /**
@@ -3196,20 +2739,20 @@ struct Texture : TextureUnsafe
    * @param renderer the rendering context.
    * @param surface the SurfaceRef structure containing pixel data used to fill
    *                the texture.
-   * @returns the created texture or nullptr on failure; call GetError() for
-   *          more information.
+   * @returns the created texture is convertible to true on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
-   * @sa TextureRef.Destroy
+   * @sa Texture.Create
+   * @sa Texture.CreateWithProperties
+   * @sa Texture.Destroy
    */
   static Texture CreateFromSurface(RendererRef renderer, SurfaceRef surface)
   {
-    return Texture(renderer, surface);
+    return Texture(CheckError(SDL_CreateTextureFromSurface(renderer, surface)));
   }
 
   /**
@@ -3308,23 +2851,62 @@ struct Texture : TextureUnsafe
    *
    * @param renderer the rendering context.
    * @param props the properties to use.
-   * @returns the created texture or nullptr on failure; call GetError() for
-   *          more information.
+   * @returns the created texture is convertible to true on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Create
-   * @sa Texture.Texture
-   * @sa Texture.Texture
-   * @sa TextureRef.Destroy
-   * @sa SDL_GetTextureSize
+   * @sa Texture.Create
+   * @sa Texture.CreateFromSurface
+   * @sa Texture.Destroy
+   * @sa TextureRef.GetSize
    * @sa TextureRef.Update
    */
   static Texture CreateWithProperties(RendererRef renderer, PropertiesRef props)
   {
-    return Texture(renderer, props);
+    return Texture(
+      CheckError(SDL_CreateTextureWithProperties(renderer, props)));
+  }
+
+  /**
+   * Destroy the specified texture.
+   *
+   * Passing nullptr or an otherwise invalid texture will set the SDL error
+   * message to "Invalid texture".
+   *
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Create
+   * @sa Texture.CreateFromSurface
+   */
+  void Destroy() { reset(); }
+};
+
+/**
+ * Unsafe Handle to texture
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TextureRef
+ */
+struct TextureUnsafe : ResourceUnsafe<TextureRef>
+{
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs TextureUnsafe from Texture.
+   */
+  constexpr explicit TextureUnsafe(Texture&& other)
+    : TextureUnsafe(other.release())
+  {
   }
 };
 
@@ -3418,11 +3000,6 @@ public:
 
   friend class TextureRef;
 };
-
-constexpr TextureUnsafe::TextureUnsafe(Texture&& other)
-  : TextureUnsafe(other.release())
-{
-}
 
 /**
  * Get the number of 2D rendering drivers available for the current display.
@@ -3979,7 +3556,7 @@ inline TextureLock TextureRef::Lock(OptionalRef<const SDL_Rect> rect) &
 inline Texture LoadTextureBMP(RendererRef& renderer, IOStreamRef& src)
 {
   auto surface{Surface::LoadBMP(src)};
-  return Texture(renderer, surface);
+  return Texture::CreateFromSurface(renderer, surface);
 }
 
 /**
@@ -3995,7 +3572,7 @@ inline Texture LoadTextureBMP(RendererRef& renderer, IOStreamRef& src)
 inline Texture LoadTextureBMP(RendererRef& renderer, StringParam file)
 {
   Surface surface{SDL_LoadBMP(file)};
-  return Texture(renderer, surface);
+  return Texture::CreateFromSurface(renderer, surface);
 }
 
 #pragma endregion impl

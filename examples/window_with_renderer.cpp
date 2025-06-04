@@ -10,8 +10,8 @@ int main(int argc, char** argv)
   constexpr SDL::Point WINDOW_SZ = {400, 400};
   auto [window, renderer] = SDL::CreateWindowAndRenderer("Test", WINDOW_SZ);
 
-  SDL::Texture characterTexture{
-    renderer, std::format("{}../assets/smiley.png", SDL::GetBasePath())};
+  SDL::Texture characterTexture{SDL::Texture::Load(
+    renderer, std::format("{}../assets/smiley.png", SDL::GetBasePath()))};
   SDL::FRect characterRect(SDL::FPoint(WINDOW_SZ) / 2 - SDL::FPoint{64, 64},
                            {128, 128});
 
@@ -20,13 +20,13 @@ int main(int argc, char** argv)
     while (auto ev = SDL::PollEvent()) {
       if (ev->type == SDL::EVENT_QUIT) { running = false; }
     }
-    renderer.SetDrawColor(SDL::FColor{.5f, .5f, .5f, 1.f});
-    renderer.RenderClear();
-    renderer.SetDrawColor(SDL::FColor{0.f, 0.725f, 0.f, 1.f});
-    renderer.RenderFillRect(SDL::FRect{10, 10, 380, 380});
-    renderer.RenderTexture(characterTexture, {}, characterRect);
+    renderer->SetDrawColor(SDL::FColor{.5f, .5f, .5f, 1.f});
+    renderer->RenderClear();
+    renderer->SetDrawColor(SDL::FColor{0.f, 0.725f, 0.f, 1.f});
+    renderer->RenderFillRect(SDL::FRect{10, 10, 380, 380});
+    renderer->RenderTexture(characterTexture, {}, characterRect);
 
-    renderer.Present();
+    renderer->Present();
     SDL::Delay(1ns);
   }
 

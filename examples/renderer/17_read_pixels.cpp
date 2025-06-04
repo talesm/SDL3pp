@@ -22,16 +22,17 @@ struct Main
   static constexpr SDL::Point windowSz = {640, 480};
 
   SDL::SDL init{SDL::INIT_VIDEO};
-  SDL::Window window{"examples/renderer/read-pixels", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window =
+    SDL::Window::Create("examples/renderer/read-pixels", windowSz);
+  SDL::Renderer renderer = SDL::Renderer::Create(window);
 
   /* Textures are pixel data that we upload to the video hardware for fast
     drawing. Lots of 2D engines refer to these as "sprites." We'll do a static
     texture (upload once, draw many times) with data from a bitmap file. */
-  SDL::Texture texture{
+  SDL::Texture texture{SDL::Texture::Load(
     renderer,
-    std::format("{}../assets/sample.bmp", SDL::GetBasePath())};
-  SDL::Point textureSz = texture.GetSize();
+    std::format("{}../assets/sample.bmp", SDL::GetBasePath()))};
+  SDL::Point textureSz = texture->GetSize();
   SDL::Texture converted_texture;
   SDL::Point converted_textureSz;
 
@@ -43,13 +44,13 @@ struct Main
     const float rotation = SDL::fmod(now, 2.f) * 360.f;
 
     // as you can see, rendering draws over what was drawn before it.
-    renderer.SetDrawColor(SDL::Color{0, 0, 0}); // black
-    renderer.RenderClear();                     // start with a blank canvas.
+    renderer->SetDrawColor(SDL::Color{0, 0, 0}); // black
+    renderer->RenderClear();                     // start with a blank canvas.
 
     // Center this one, and draw it with some rotation so it spins!
     SDL::FRect dst_rect{(windowSz - textureSz) / 2.f, textureSz};
     SDL::FPoint center = textureSz / 2.f;
-    renderer.RenderTextureRotated(texture, {}, dst_rect, rotation, center);
+    renderer->RenderTextureRotated(texture, {}, dst_rect, rotation, center);
 
     // this next whole thing is _super_ expensive. Seriously, don't do this in
     // real life.
@@ -57,7 +58,7 @@ struct Main
     /* Download the pixels of what has just been rendered. This has to wait for
        the GPU to finish rendering it and everything before it, and then make an
        expensive copy from the GPU to system RAM! */
-    SDL::Surface surface = renderer.ReadPixels();
+    SDL::Surface surface = renderer->ReadPixels();
 
     if (surface && (surface->GetFormat() != SDL::PIXELFORMAT_RGBA8888)) {
       surface = surface->Convert(SDL::PIXELFORMAT_RGBA8888);
@@ -68,10 +69,11 @@ struct Main
       // resized, etc).
       if (surface->GetSize() != converted_textureSz) {
         converted_textureSz = surface->GetSize();
-        converted_texture = SDL::Texture(renderer,
-                                         SDL::PIXELFORMAT_RGBA8888,
-                                         SDL::TEXTUREACCESS_STREAMING,
-                                         converted_textureSz);
+        converted_texture =
+          SDL::Texture(SDL::Texture::Create(renderer,
+                                            SDL::PIXELFORMAT_RGBA8888,
+                                            SDL::TEXTUREACCESS_STREAMING,
+                                            converted_textureSz));
       }
 
       /* Turn each pixel into either black or white. This is a lousy technique
@@ -96,15 +98,15 @@ struct Main
           }
         }
       }
-      // upload the processed pixels back into a texture.
-      converted_texture.Update({}, surface->GetPixels(), surface->GetPitch());
+      // upload the processed pixels back into a texture->
+      converted_texture->Update({}, surface->GetPixels(), surface->GetPitch());
 
       // draw the texture to the top-left of the screen
-      renderer.RenderTexture(
+      renderer->RenderTexture(
         converted_texture, {}, SDL::FRect({0, 0}, windowSz / 4.f));
     }
 
-    renderer.Present();       // put it all on the screen!
+    renderer->Present();      // put it all on the screen!
     return SDL::APP_CONTINUE; // carry on with the program!
   }
 };

@@ -25,8 +25,8 @@ struct Main
   static constexpr SDL::Point windowSz = {640, 480};
 
   SDL::SDL init{SDL::INIT_VIDEO, SDL::INIT_AUDIO};
-  SDL::Window window{"examples/audio/load-wav", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window = SDL::Window::Create("examples/audio/load-wav", windowSz);
+  SDL::Renderer renderer = SDL::Renderer::Create(window);
   SDL::AudioStream stream;
   SDL::OwnArray<Uint8> wav_data;
 
@@ -54,8 +54,8 @@ struct Main
     }
 
     // we're not doing anything with the renderer, so just blank it out.
-    renderer.RenderClear();
-    renderer.Present();
+    renderer->RenderClear();
+    renderer->Present();
 
     return SDL::APP_CONTINUE;
   }

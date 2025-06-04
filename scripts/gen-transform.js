@@ -4261,47 +4261,15 @@ const transform = {
               parameters: []
             },
           }
-        }, {
-          name: "Texture.Load",
-          kind: "function",
-          type: "Texture",
-          proto: true,
-          static: true,
-          parameters: [
-            {
-              type: "RendererRef",
-              name: "renderer"
-            },
-            {
-              type: "StringParam",
-              name: "file"
-            }
-          ]
-        }, {
-          name: "Texture.Load",
-          kind: "function",
-          type: "Texture",
-          proto: true,
-          static: true,
-          parameters: [
-            {
-              type: "RendererRef",
-              name: "renderer"
-            },
-            {
-              type: "IOStreamRef",
-              name: "src"
-            }
-          ]
         }]
       },
-      resources: {
+      resourcesNew: {
         "SDL_Renderer": {
           entries: {
-            "Renderer": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
+            "Create": {
+              kind: "function",
+              name: "ctor",
+              parameters: [
                 {
                   "type": "WindowRef",
                   "name": "window"
@@ -4920,10 +4888,11 @@ const transform = {
           }
         },
         "SDL_Texture": {
+          ctors: ["Load", "LoadBMP"],
           entries: {
-            "Texture": [{
+            "Load": [{
               kind: "function",
-              type: "",
+              proto: true,
               parameters: [
                 {
                   type: "RendererRef",
@@ -4936,7 +4905,7 @@ const transform = {
               ]
             }, {
               kind: "function",
-              type: "",
+              proto: true,
               parameters: [
                 {
                   type: "RendererRef",
@@ -4971,6 +4940,31 @@ const transform = {
             },
             "SDL_CreateTextureFromSurface": "ctor",
             "SDL_CreateTextureWithProperties": "ctor",
+            "LoadBMP": [{
+              kind: "function",
+              parameters: [
+                {
+                  type: "RendererRef",
+                  name: "renderer"
+                },
+                {
+                  type: "StringParam",
+                  name: "file"
+                }
+              ]
+            }, {
+              kind: "function",
+              parameters: [
+                {
+                  type: "RendererRef",
+                  name: "renderer"
+                },
+                {
+                  type: "IOStreamRef",
+                  name: "src"
+                }
+              ]
+            }],
             "SDL_GetTextureProperties": "immutable",
             "SDL_GetRendererFromTexture": {
               "name": "GetRenderer",
@@ -7471,7 +7465,7 @@ const transform = {
           }
         ]
       },
-      resources: {
+      resourcesNew: {
         "SDL_Window": {
           free: "SDL_DestroyWindow",
           entries: {

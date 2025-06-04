@@ -76,7 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1RendererRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::RendererRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryRender.html">2D Accelerated Rendering</a></div></div></div>
 </div><!--header-->
@@ -89,13 +89,9 @@ Inheritance diagram for SDL::RendererRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1RendererRef__inherit__graph.png" border="0" usemap="#aSDL_1_1RendererRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1RendererRef_inherit__map" id="aSDL_1_1RendererRef_inherit__map">
-<area shape="rect" title="A structure representing rendering state." alt="" coords="17,93,153,119"/>
-<area shape="rect" href="structSDL_1_1RendererUnsafe.html" title="Unsafe Handle to renderer." alt="" coords="5,167,165,192"/>
-<area shape="poly" title=" " alt="" coords="88,132,88,167,83,167,83,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="8,5,163,45"/>
-<area shape="poly" title=" " alt="" coords="88,59,88,93,83,93,83,59"/>
-<area shape="rect" href="structSDL_1_1Renderer.html" title="Handle to an owned renderer." alt="" coords="28,240,143,265"/>
-<area shape="poly" title=" " alt="" coords="88,206,88,240,83,240,83,206"/>
+<area shape="rect" title="A structure representing rendering state." alt="" coords="15,93,151,119"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -361,14 +357,11 @@ constexpr SDL_Renderer *&#160;</td><td class="memItemRight" valign="bottom"><b>o
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:afd60c4500edfe9b81f8672a5b2c3c14d" id="r_afd60c4500edfe9b81f8672a5b2c3c14d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererRef.html#afd60c4500edfe9b81f8672a5b2c3c14d">Destroy</a> ()</td></tr>
-<tr class="memdesc:afd60c4500edfe9b81f8672a5b2c3c14d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the rendering context for a window and free all associated textures.  <br /></td></tr>
-<tr class="separator:afd60c4500edfe9b81f8672a5b2c3c14d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbd57cdca8a1dfeb92e35c4cc55b75ab" id="r_afbd57cdca8a1dfeb92e35c4cc55b75ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererRef.html#afbd57cdca8a1dfeb92e35c4cc55b75ab">reset</a> (SDL_Renderer *newResource={})</td></tr>
-<tr class="memdesc:afbd57cdca8a1dfeb92e35c4cc55b75ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the rendering context for a window and free all associated textures.  <br /></td></tr>
-<tr class="separator:afbd57cdca8a1dfeb92e35c4cc55b75ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a5c851c628d2152b3a25f329a80c68fa8" id="r_a5c851c628d2152b3a25f329a80c68fa8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererRef.html#a5c851c628d2152b3a25f329a80c68fa8">reset</a> (SDL_Renderer *resource)</td></tr>
+<tr class="memdesc:a5c851c628d2152b3a25f329a80c68fa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the rendering context for a window and free all associated textures.  <br /></td></tr>
+<tr class="separator:a5c851c628d2152b3a25f329a80c68fa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -432,35 +425,6 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererRef.html#a6ce856ae7deccb5473e6c685f878bc38" title="Get a point in render coordinates when given a point in window coordinates.">RendererRef.RenderCoordinatesFromWindow</a> </dd></dl>
-
-</div>
-</div>
-<a id="afd60c4500edfe9b81f8672a5b2c3c14d" name="afd60c4500edfe9b81f8672a5b2c3c14d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd60c4500edfe9b81f8672a5b2c3c14d">&#9670;&#160;</a></span>Destroy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::RendererRef::Destroy </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This should be called before destroying the associated window.</p>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Renderer.html#a69a1af6cf20f279e0a703748befc0e10" title="Constructs an empty Renderer.">Renderer.Renderer</a> </dd></dl>
 
 </div>
 </div>
@@ -1137,7 +1101,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Renderer.html#a69a1af6cf20f279e0a703748befc0e10" title="Constructs an empty Renderer.">Renderer.Renderer</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Renderer.Renderer </dd></dl>
 
 </div>
 </div>
@@ -1634,7 +1598,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Renderer.html#a69a1af6cf20f279e0a703748befc0e10" title="Constructs an empty Renderer.">Renderer.Renderer</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>Renderer.Renderer </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererRef.html#aa3ed688df48bf10e460e799fd8972d7e" title="Clear the current rendering target with the drawing color.">RendererRef.RenderClear</a> </dd>
 <dd>
@@ -2310,8 +2274,8 @@ template&lt;class... ARGS&gt; </div>
 
 </div>
 </div>
-<a id="afbd57cdca8a1dfeb92e35c4cc55b75ab" name="afbd57cdca8a1dfeb92e35c4cc55b75ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbd57cdca8a1dfeb92e35c4cc55b75ab">&#9670;&#160;</a></span>reset()</h2>
+<a id="a5c851c628d2152b3a25f329a80c68fa8" name="a5c851c628d2152b3a25f329a80c68fa8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c851c628d2152b3a25f329a80c68fa8">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2320,23 +2284,29 @@ template&lt;class... ARGS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::RendererRef::reset </td>
+          <td class="memname">static void SDL::RendererRef::reset </td>
           <td>(</td>
           <td class="paramtype">SDL_Renderer *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>This should be called before destroying the associated window.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>the rendering context.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Renderer.html#a69a1af6cf20f279e0a703748befc0e10" title="Constructs an empty Renderer.">Renderer.Renderer</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Renderer.html#a25d4f86d69b3eea111e6ac092ebc73df" title="Create a 2D rendering context for a window.">Renderer.Create</a> </dd></dl>
 
 </div>
 </div>

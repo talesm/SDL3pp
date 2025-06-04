@@ -2417,7 +2417,7 @@
           "sourceName": "SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT"
         },
         "SDL_HINT_X11_WINDOW_TYPE": {
-          "doc": "A variable specifying the type of an X11 window.\n\nDuring Window.Window, SDL uses the _NET_WM_WINDOW_TYPE X11 property to\nreport to the window manager the type of window it wants to create. This\nmight be set to various things if WINDOW_TOOLTIP or\nWINDOW_POPUP_MENU, etc, were specified. For \"normal\" windows that\nhaven't set a specific type, this hint can be used to specify a custom\ntype. For example, a dock window might set this to\n\"_NET_WM_WINDOW_TYPE_DOCK\".\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable specifying the type of an X11 window.\n\nDuring Window.Create, SDL uses the _NET_WM_WINDOW_TYPE X11 property to\nreport to the window manager the type of window it wants to create. This\nmight be set to various things if WINDOW_TOOLTIP or\nWINDOW_POPUP_MENU, etc, were specified. For \"normal\" windows that\nhaven't set a specific type, this hint can be used to specify a custom\ntype. For example, a dock window might set this to\n\"_NET_WM_WINDOW_TYPE_DOCK\".\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_X11_WINDOW_TYPE",
           "kind": "def",
           "value": "\"SDL_X11_WINDOW_TYPE\"",
@@ -4726,7 +4726,7 @@
     },
     "SDL3pp_video.h": {
       "name": "SDL3pp_video.h",
-      "doc": "@defgroup CategoryVideo Category Video\n\nSDL's video subsystem is largely interested in abstracting window\nmanagement from the underlying operating system. You can create windows,\nmanage them in various ways, set them fullscreen, and get events when\ninteresting things happen with them, such as the mouse or keyboard\ninteracting with a window.\n\nThe video subsystem is also interested in abstracting away some\nplatform-specific differences in OpenGL: context creation, swapping\nbuffers, etc. This may be crucial to your app, but also you are not\nrequired to use OpenGL at all. In fact, SDL can provide rendering to those\nwindows as well, either with an easy-to-use\n[2D API](https://wiki.libsdl.org/SDL3/CategoryRender)\nor with a more-powerful\n[GPU API](https://wiki.libsdl.org/SDL3/CategoryGPU)\n. Of course, it can simply get out of your way and give you the window\nhandles you need to use Vulkan, Direct3D, Metal, or whatever else you like\ndirectly, too.\n\nThe video subsystem covers a lot of functionality, out of necessity, so it\nis worth perusing the list of functions just to see what's available, but\nmost apps can get by with simply creating a window and listening for\nevents, so start with Window.Window() and PollEvent().",
+      "doc": "@defgroup CategoryVideo Category Video\n\nSDL's video subsystem is largely interested in abstracting window\nmanagement from the underlying operating system. You can create windows,\nmanage them in various ways, set them fullscreen, and get events when\ninteresting things happen with them, such as the mouse or keyboard\ninteracting with a window.\n\nThe video subsystem is also interested in abstracting away some\nplatform-specific differences in OpenGL: context creation, swapping\nbuffers, etc. This may be crucial to your app, but also you are not\nrequired to use OpenGL at all. In fact, SDL can provide rendering to those\nwindows as well, either with an easy-to-use\n[2D API](https://wiki.libsdl.org/SDL3/CategoryRender)\nor with a more-powerful\n[GPU API](https://wiki.libsdl.org/SDL3/CategoryGPU)\n. Of course, it can simply get out of your way and give you the window\nhandles you need to use Vulkan, Direct3D, Metal, or whatever else you like\ndirectly, too.\n\nThe video subsystem covers a lot of functionality, out of necessity, so it\nis worth perusing the list of functions just to see what's available, but\nmost apps can get by with simply creating a window and listening for\nevents, so start with Window.Create() and PollEvent().",
       "entries": {
         "WindowRef-forward": {
           "name": "WindowRef",
@@ -4805,7 +4805,7 @@
           "type": "SDL_DisplayMode"
         },
         "WindowFlags": {
-          "doc": "The flags on a window.\n\nThese cover a lot of true/false, or on/off, window state. Some of it is\nimmutable after being set through Window.Window(), some of it can be\nchanged on existing windows by the app, and some of it might be altered by\nthe user or system outside of the app's control.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa WindowRef.GetFlags",
+          "doc": "The flags on a window.\n\nThese cover a lot of true/false, or on/off, window state. Some of it is\nimmutable after being set through Window.Create(), some of it can be\nchanged on existing windows by the app, and some of it might be altered by\nthe user or system outside of the app's control.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa WindowRef.GetFlags",
           "name": "WindowFlags",
           "kind": "alias",
           "type": "SDL_WindowFlags",
@@ -5504,7 +5504,7 @@
           "sourceName": "SDL_SYSTEM_THEME_DARK"
         },
         "WindowRef": {
-          "doc": "The struct used as an opaque handle to a window.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Window.Window\n\n@cat resource\n\n@sa Window\n@sa WindowRef",
+          "doc": "The struct used as an opaque handle to a window.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Window.Create\n\n@cat resource\n\n@sa Window",
           "name": "WindowRef",
           "kind": "struct",
           "type": "Resource<SDL_Window *>",
@@ -5609,7 +5609,7 @@
               "immutable": true
             },
             "GetParent": {
-              "doc": "Get parent of a window.\n\n@returns the parent of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window",
+              "doc": "Get parent of a window.\n\n@returns the parent of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.CreatePopup",
               "name": "GetParent",
               "kind": "function",
               "type": "WindowRef",
@@ -5633,7 +5633,7 @@
               "immutable": true
             },
             "GetFlags": {
-              "doc": "Get the window flags.\n\n@returns a mask of the WindowFlags associated with `window`.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window\n@sa WindowRef.Hide\n@sa WindowRef.Maximize\n@sa WindowRef.Minimize\n@sa WindowRef.SetFullscreen\n@sa WindowRef.SetMouseGrab\n@sa WindowRef.Show",
+              "doc": "Get the window flags.\n\n@returns a mask of the WindowFlags associated with `window`.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Create\n@sa WindowRef.Hide\n@sa WindowRef.Maximize\n@sa WindowRef.Minimize\n@sa WindowRef.SetFullscreen\n@sa WindowRef.SetMouseGrab\n@sa WindowRef.Show",
               "name": "GetFlags",
               "kind": "function",
               "type": "WindowFlags",
@@ -5852,7 +5852,7 @@
               "immutable": true
             },
             "GetBordersSize": {
-              "doc": "Get the size of a window's borders (decorations) around the client area.\n\nNote: If this function fails (returns false), the size values will be\ninitialized to 0, 0, 0, 0 (if a non-nullptr pointer is provided), as if the\nwindow in question was borderless.\n\nNote: This function may fail on systems where the window has not yet been\ndecorated by the display server (for example, immediately after calling\nWindow.Window). It is recommended that you wait at least until the\nwindow has been presented and composited, so that the window system has a\nchance to decorate the window and provide the border dimensions to SDL.\n\nThis function also returns false if getting the information is not\nsupported.\n\n              (decorations) from.\n@param top pointer to variable for storing the size of the top border; nullptr\n           is permitted.\n@param left pointer to variable for storing the size of the left border;\n            nullptr is permitted.\n@param bottom pointer to variable for storing the size of the bottom\n              border; nullptr is permitted.\n@param right pointer to variable for storing the size of the right border;\n             nullptr is permitted.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowRef.GetSize",
+              "doc": "Get the size of a window's borders (decorations) around the client area.\n\nNote: If this function fails (returns false), the size values will be\ninitialized to 0, 0, 0, 0 (if a non-nullptr pointer is provided), as if the\nwindow in question was borderless.\n\nNote: This function may fail on systems where the window has not yet been\ndecorated by the display server (for example, immediately after calling\nWindow.Create). It is recommended that you wait at least until the\nwindow has been presented and composited, so that the window system has a\nchance to decorate the window and provide the border dimensions to SDL.\n\nThis function also returns false if getting the information is not\nsupported.\n\n              (decorations) from.\n@param top pointer to variable for storing the size of the top border; nullptr\n           is permitted.\n@param left pointer to variable for storing the size of the left border;\n            nullptr is permitted.\n@param bottom pointer to variable for storing the size of the bottom\n              border; nullptr is permitted.\n@param right pointer to variable for storing the size of the right border;\n             nullptr is permitted.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowRef.GetSize",
               "name": "GetBordersSize",
               "kind": "function",
               "type": "void",
@@ -5890,7 +5890,7 @@
                 "doc": ""
               },
               {
-                "doc": "Get the size of a window's client area, in pixels.\n\n@param w a pointer to variable for storing the width in pixels, may be\n         nullptr.\n@param h a pointer to variable for storing the height in pixels, may be\n         nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window\n@sa WindowRef.GetSize",
+                "doc": "Get the size of a window's client area, in pixels.\n\n@param w a pointer to variable for storing the width in pixels, may be\n         nullptr.\n@param h a pointer to variable for storing the height in pixels, may be\n         nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Create\n@sa WindowRef.GetSize",
                 "name": "GetSizeInPixels",
                 "kind": "function",
                 "type": "void",
@@ -6465,32 +6465,21 @@
               "sourceName": "SDL_GetGrabbedWindow",
               "static": true
             },
-            "Destroy": {
-              "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nWindowRef is no longer valid after this call.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window\n@sa Window.Window\n@sa Window.Window",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyWindow",
-              "hints": {
-                "body": "reset();"
-              }
-            },
             "reset": {
-              "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nWindowRef is no longer valid after this call.\n\n@param window the window to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window\n@sa Window.Window\n@sa Window.Window",
+              "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nWindowRef is no longer valid after this call.\n\n@param window the window to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.CreatePopup\n@sa Window.Create\n@sa Window.CreateWithProperties",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_Window *",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_Window *"
                 }
               ],
               "sourceName": "SDL_DestroyWindow",
+              "static": true,
               "hints": {
-                "body": "SDL_DestroyWindow(release(newResource));"
+                "body": "SDL_DestroyWindow(resource);"
               }
             },
             "GetRenderer": {
@@ -6674,272 +6663,19 @@
             "super": "Resource"
           }
         },
-        "WindowUnsafe": {
-          "name": "WindowUnsafe",
-          "kind": "struct",
-          "type": "WindowRef",
-          "doc": "Unsafe Handle to window\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa WindowRef",
-          "entries": {
-            "WindowRef::Destroy": {
-              "kind": "alias",
-              "name": "WindowRef::Destroy",
-              "doc": ""
-            },
-            "WindowRef::WindowRef": {
-              "kind": "alias",
-              "name": "WindowRef::WindowRef",
-              "doc": ""
-            },
-            "WindowRef::reset": {
-              "kind": "alias",
-              "name": "WindowRef::reset",
-              "doc": ""
-            },
-            "WindowUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const WindowRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs WindowUnsafe from WindowRef.",
-                "hints": {
-                  "init": [
-                    "WindowRef(other.get())"
-                  ]
-                },
-                "name": "WindowUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Window &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "WindowUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "WindowUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Window &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs WindowUnsafe from Window.",
-                "hints": {
-                  "init": [
-                    "WindowUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "WindowUnsafe &",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "WindowUnsafe",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release()); return *this;"
-              },
-              "name": "operator="
-            }
-          }
-        },
         "Window": {
           "name": "Window",
           "kind": "struct",
-          "type": "WindowUnsafe",
+          "type": "ResourceUnique<WindowRef>",
           "doc": "Handle to an owned window\n\n@cat resource\n\n@sa WindowRef",
           "entries": {
-            "WindowUnsafe::WindowUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "WindowUnsafe::WindowUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
             },
-            "Window": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [],
-                "doc": "Constructs an empty Window.",
-                "hints": {
-                  "init": [
-                    "WindowUnsafe(nullptr)"
-                  ]
-                },
-                "name": "Window"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Window *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "WindowUnsafe(resource)"
-                  ]
-                },
-                "name": "Window"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Window &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "Window",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Window &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "Window(other.release())"
-                  ]
-                },
-                "name": "Window"
-              },
-              {
-                "doc": "Create a window with the specified dimensions and flags.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\n`flags` may be any of the following OR'd together:\n\n- `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution\n- `WINDOW_OPENGL`: window usable with an OpenGL context\n- `WINDOW_OCCLUDED`: window partially or completely obscured by another\n  window\n- `WINDOW_HIDDEN`: window is not visible\n- `WINDOW_BORDERLESS`: no window decoration\n- `WINDOW_RESIZABLE`: window can be resized\n- `WINDOW_MINIMIZED`: window is minimized\n- `WINDOW_MAXIMIZED`: window is maximized\n- `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus\n- `WINDOW_INPUT_FOCUS`: window has input focus\n- `WINDOW_MOUSE_FOCUS`: window has mouse focus\n- `WINDOW_EXTERNAL`: window not created by SDL\n- `WINDOW_MODAL`: window is modal\n- `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back\n  buffer if possible\n- `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to\n  MOUSE_GRABBED)\n- `WINDOW_ALWAYS_ON_TOP`: window should always be above others\n- `WINDOW_UTILITY`: window should be treated as a utility window, not\n  showing in the task bar and window list\n- `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not\n  get mouse or keyboard focus, requires a parent window\n- `WINDOW_POPUP_MENU`: window should be treated as a popup menu,\n  requires a parent window\n- `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input\n- `WINDOW_VULKAN`: window usable with a Vulkan instance\n- `WINDOW_METAL`: window usable with a Metal instance\n- `WINDOW_TRANSPARENT`: window with transparent buffer\n- `WINDOW_NOT_FOCUSABLE`: window should not be focusable\n\nThe WindowRef is implicitly shown if WINDOW_HIDDEN is not set.\n\nOn Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist\nproperty to YES, otherwise you will not receive a High-DPI OpenGL canvas.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use WindowRef.GetSize() to query\nthe client area's size in window coordinates, and\nWindowRef.GetSizeInPixels() or RendererRef.GetOutputSize() to query the\ndrawable size in pixels. Note that the drawable size can vary after the\nwindow is created and should be queried again if you get an\nEVENT_WINDOW_PIXEL_SIZE_CHANGED event.\n\nIf the window is created with any of the WINDOW_OPENGL or\nWINDOW_VULKAN flags, then the corresponding LoadLibrary function\n(GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the\ncorresponding UnloadLibrary function is called by WindowRef.Destroy().\n\nIf WINDOW_VULKAN is specified and there isn't a working Vulkan driver,\nWindow.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.\n\nIf WINDOW_METAL is specified on an OS that does not support Metal,\nWindow.Window() will fail.\n\nIf you intend to use this window with an RendererRef, you should use\nCreateWindowAndRenderer() instead of this function, to avoid window\nflicker.\n\nOn non-Apple devices, SDL requires you to either not link to the Vulkan\nloader or link to a dynamic library version. This limitation may be removed\nin a future version of SDL.\n\n@param title the title of the window, in UTF-8 encoding.\n@param w the width of the window.\n@param h the height of the window.\n@param flags 0, or one or more WindowFlags OR'd together.\n@post the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CreateWindowAndRenderer\n@sa Window.Window\n@sa Window.Window\n@sa WindowRef.Destroy",
-                "name": "Window",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "title",
-                    "type": "StringParam"
-                  },
-                  {
-                    "name": "size",
-                    "type": "const SDL_Point &"
-                  },
-                  {
-                    "name": "flags",
-                    "type": "WindowFlags",
-                    "default": "0"
-                  }
-                ],
-                "sourceName": "SDL_CreateWindow",
-                "proto": false
-              },
-              {
-                "doc": "Create a child popup window of the specified parent window.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThe flags parameter **must** contain at least one of the following:\n\n- `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any\n  input events.\n- `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost\n  popup menu will implicitly gain the keyboard focus.\n\nThe following flags are not relevant to popup window creation and will be\nignored:\n\n- `WINDOW_MINIMIZED`\n- `WINDOW_MAXIMIZED`\n- `WINDOW_FULLSCREEN`\n- `WINDOW_BORDERLESS`\n\nThe following flags are incompatible with popup window creation and will\ncause it to fail:\n\n- `WINDOW_UTILITY`\n- `WINDOW_MODAL`\n\nThe parent parameter **must** be non-null and a valid window. The parent of\na popup window can be either a regular, toplevel window, or another popup\nwindow.\n\nPopup windows cannot be minimized, maximized, made fullscreen, raised,\nflash, be made a modal window, be the parent of a toplevel window, or grab\nthe mouse and/or keyboard. Attempts to do so will fail.\n\nPopup windows implicitly do not have a border/decorations and do not appear\non the taskbar/dock or in lists of windows such as alt-tab menus.\n\nIf a parent window is hidden or destroyed, any child popup windows will be\nrecursively hidden or destroyed as well. Child popup windows not explicitly\nhidden will be restored when the parent is shown.\n\n@param parent the parent of the window, must not be nullptr.\n@param offset_x the x position of the popup window relative to the origin\n                of the parent.\n@param offset_y the y position of the popup window relative to the origin\n                of the parent window.\n@param w the width of the window.\n@param h the height of the window.\n@param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more\n             additional WindowFlags OR'd together.\n@post the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window\n@sa Window.Window\n@sa WindowRef.Destroy\n@sa WindowRef.GetParent",
-                "name": "Window",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "parent",
-                    "type": "WindowRef"
-                  },
-                  {
-                    "name": "offset",
-                    "type": "const SDL_Point &"
-                  },
-                  {
-                    "name": "size",
-                    "type": "const SDL_Point &"
-                  },
-                  {
-                    "name": "flags",
-                    "type": "WindowFlags",
-                    "default": "0"
-                  }
-                ],
-                "sourceName": "SDL_CreatePopupWindow",
-                "proto": false
-              },
-              {
-                "doc": "Create a window with the specified properties.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThese are the supported properties:\n\n- `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should\n  be always on top\n- `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no\n  window decoration\n- `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the\n  window will be used with an externally managed graphics context.\n- `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should\n  accept keyboard input (defaults true)\n- `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should\n  start in fullscreen mode at desktop resolution\n- `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window\n- `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start\n  hidden\n- `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window\n  uses a high pixel density buffer if possible\n- `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should\n  start maximized\n- `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu\n- `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used\n  with Metal rendering\n- `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should\n  start minimized\n- `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to\n  its parent\n- `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts\n  with grabbed mouse focus\n- `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used\n  with OpenGL rendering\n- `prop::Window.CREATE_PARENT_POINTER`: an WindowRef that will be the\n  parent of this window, required for windows with the \"tooltip\", \"menu\",\n  and \"modal\" properties\n- `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be\n  resizable\n- `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8\n  encoding\n- `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show\n  transparent in the areas with alpha of 0\n- `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip\n- `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility\n  window, not showing in the task bar and window list\n- `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used\n  with Vulkan rendering\n- `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window\n- `prop::Window.CREATE_X_NUMBER`: the x position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n- `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n\nThese are additional supported properties on macOS:\n\n- `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the\n  `(__unsafe_unretained)` NSWindow associated with the window, if you want\n  to wrap an existing window.\n- `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`\n  NSView associated with the window, defaults to `[window contentView]`\n\nThese are additional supported properties on Wayland:\n\n- `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if\n  the application wants to use the Wayland surface for a custom role and\n  does not want it attached to an XDG toplevel window. See\n  [README/wayland](README/wayland) for more information on using custom\n  surfaces.\n- `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the\n  application wants an associated `wl_egl_window` object to be created and\n  attached to the window, even if the window does not have the OpenGL\n  property or `WINDOW_OPENGL` flag set.\n- `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface\n  associated with the window, if you want to wrap an existing window. See\n  [README/wayland](README/wayland) for more information.\n\nThese are additional supported properties on Windows:\n\n- `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the\n  window, if you want to wrap an existing window.\n- `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,\n  another window to share pixel format with, useful for OpenGL windows\n\nThese are additional supported properties with X11:\n\n- `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated\n  with the window, if you want to wrap an existing window.\n\nThe window is implicitly shown if the \"hidden\" property is not set.\n\nWindows with the \"tooltip\" and \"menu\" properties are popup windows and have\nthe behaviors and guidelines outlined in Window.Window().\n\nIf this window is being created to be used with an RendererRef, you should\nnot add a graphics API specific property\n(`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that\ninternally when it chooses a renderer. However, SDL might need to recreate\nyour window at that point, which may cause the window to appear briefly,\nand then flicker as it is recreated. The correct approach to this is to\ncreate the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property\nset to true, then create the renderer, then show the window with\nWindowRef.Show().\n\n@param props the properties to use.\n@post the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Window.Window\n@sa WindowRef.Destroy",
-                "name": "Window",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "props",
-                    "type": "PropertiesRef"
-                  }
-                ],
-                "sourceName": "SDL_CreateWindowWithProperties",
-                "proto": false
-              }
-            ],
-            "~Window": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~Window"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Window &",
-              "parameters": [
-                {
-                  "type": "Window",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "Create": {
-              "doc": "Create a window with the specified dimensions and flags.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\n`flags` may be any of the following OR'd together:\n\n- `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution\n- `WINDOW_OPENGL`: window usable with an OpenGL context\n- `WINDOW_OCCLUDED`: window partially or completely obscured by another\n  window\n- `WINDOW_HIDDEN`: window is not visible\n- `WINDOW_BORDERLESS`: no window decoration\n- `WINDOW_RESIZABLE`: window can be resized\n- `WINDOW_MINIMIZED`: window is minimized\n- `WINDOW_MAXIMIZED`: window is maximized\n- `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus\n- `WINDOW_INPUT_FOCUS`: window has input focus\n- `WINDOW_MOUSE_FOCUS`: window has mouse focus\n- `WINDOW_EXTERNAL`: window not created by SDL\n- `WINDOW_MODAL`: window is modal\n- `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back\n  buffer if possible\n- `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to\n  MOUSE_GRABBED)\n- `WINDOW_ALWAYS_ON_TOP`: window should always be above others\n- `WINDOW_UTILITY`: window should be treated as a utility window, not\n  showing in the task bar and window list\n- `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not\n  get mouse or keyboard focus, requires a parent window\n- `WINDOW_POPUP_MENU`: window should be treated as a popup menu,\n  requires a parent window\n- `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input\n- `WINDOW_VULKAN`: window usable with a Vulkan instance\n- `WINDOW_METAL`: window usable with a Metal instance\n- `WINDOW_TRANSPARENT`: window with transparent buffer\n- `WINDOW_NOT_FOCUSABLE`: window should not be focusable\n\nThe WindowRef is implicitly shown if WINDOW_HIDDEN is not set.\n\nOn Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist\nproperty to YES, otherwise you will not receive a High-DPI OpenGL canvas.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use WindowRef.GetSize() to query\nthe client area's size in window coordinates, and\nWindowRef.GetSizeInPixels() or RendererRef.GetOutputSize() to query the\ndrawable size in pixels. Note that the drawable size can vary after the\nwindow is created and should be queried again if you get an\nEVENT_WINDOW_PIXEL_SIZE_CHANGED event.\n\nIf the window is created with any of the WINDOW_OPENGL or\nWINDOW_VULKAN flags, then the corresponding LoadLibrary function\n(GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the\ncorresponding UnloadLibrary function is called by WindowRef.Destroy().\n\nIf WINDOW_VULKAN is specified and there isn't a working Vulkan driver,\nWindow.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.\n\nIf WINDOW_METAL is specified on an OS that does not support Metal,\nWindow.Window() will fail.\n\nIf you intend to use this window with an RendererRef, you should use\nCreateWindowAndRenderer() instead of this function, to avoid window\nflicker.\n\nOn non-Apple devices, SDL requires you to either not link to the Vulkan\nloader or link to a dynamic library version. This limitation may be removed\nin a future version of SDL.\n\n@param title the title of the window, in UTF-8 encoding.\n@param w the width of the window.\n@param h the height of the window.\n@param flags 0, or one or more WindowFlags OR'd together.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CreateWindowAndRenderer\n@sa Window.Window\n@sa Window.Window\n@sa WindowRef.Destroy",
+              "doc": "Create a window with the specified dimensions and flags.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\n`flags` may be any of the following OR'd together:\n\n- `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution\n- `WINDOW_OPENGL`: window usable with an OpenGL context\n- `WINDOW_OCCLUDED`: window partially or completely obscured by another\n  window\n- `WINDOW_HIDDEN`: window is not visible\n- `WINDOW_BORDERLESS`: no window decoration\n- `WINDOW_RESIZABLE`: window can be resized\n- `WINDOW_MINIMIZED`: window is minimized\n- `WINDOW_MAXIMIZED`: window is maximized\n- `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus\n- `WINDOW_INPUT_FOCUS`: window has input focus\n- `WINDOW_MOUSE_FOCUS`: window has mouse focus\n- `WINDOW_EXTERNAL`: window not created by SDL\n- `WINDOW_MODAL`: window is modal\n- `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back\n  buffer if possible\n- `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to\n  MOUSE_GRABBED)\n- `WINDOW_ALWAYS_ON_TOP`: window should always be above others\n- `WINDOW_UTILITY`: window should be treated as a utility window, not\n  showing in the task bar and window list\n- `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not\n  get mouse or keyboard focus, requires a parent window\n- `WINDOW_POPUP_MENU`: window should be treated as a popup menu,\n  requires a parent window\n- `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input\n- `WINDOW_VULKAN`: window usable with a Vulkan instance\n- `WINDOW_METAL`: window usable with a Metal instance\n- `WINDOW_TRANSPARENT`: window with transparent buffer\n- `WINDOW_NOT_FOCUSABLE`: window should not be focusable\n\nThe WindowRef is implicitly shown if WINDOW_HIDDEN is not set.\n\nOn Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist\nproperty to YES, otherwise you will not receive a High-DPI OpenGL canvas.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use WindowRef.GetSize() to query\nthe client area's size in window coordinates, and\nWindowRef.GetSizeInPixels() or RendererRef.GetOutputSize() to query the\ndrawable size in pixels. Note that the drawable size can vary after the\nwindow is created and should be queried again if you get an\nEVENT_WINDOW_PIXEL_SIZE_CHANGED event.\n\nIf the window is created with any of the WINDOW_OPENGL or\nWINDOW_VULKAN flags, then the corresponding LoadLibrary function\n(GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the\ncorresponding UnloadLibrary function is called by Window.Destroy().\n\nIf WINDOW_VULKAN is specified and there isn't a working Vulkan driver,\nWindow.Create() will fail, because SDL_Vulkan_LoadLibrary() will fail.\n\nIf WINDOW_METAL is specified on an OS that does not support Metal,\nWindow.Create() will fail.\n\nIf you intend to use this window with an RendererRef, you should use\nCreateWindowAndRenderer() instead of this function, to avoid window\nflicker.\n\nOn non-Apple devices, SDL requires you to either not link to the Vulkan\nloader or link to a dynamic library version. This limitation may be removed\nin a future version of SDL.\n\n@param title the title of the window, in UTF-8 encoding.\n@param w the width of the window.\n@param h the height of the window.\n@param flags 0, or one or more WindowFlags OR'd together.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CreateWindowAndRenderer\n@sa Window.CreatePopup\n@sa Window.CreateWithProperties\n@sa Window.Destroy",
               "name": "Create",
               "kind": "function",
               "type": "Window",
@@ -6959,13 +6695,13 @@
                 }
               ],
               "sourceName": "SDL_CreateWindow",
+              "static": true,
               "hints": {
-                "body": "return Window(title, size, flags);"
-              },
-              "static": true
+                "wrapSelf": true
+              }
             },
             "CreatePopup": {
-              "doc": "Create a child popup window of the specified parent window.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThe flags parameter **must** contain at least one of the following:\n\n- `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any\n  input events.\n- `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost\n  popup menu will implicitly gain the keyboard focus.\n\nThe following flags are not relevant to popup window creation and will be\nignored:\n\n- `WINDOW_MINIMIZED`\n- `WINDOW_MAXIMIZED`\n- `WINDOW_FULLSCREEN`\n- `WINDOW_BORDERLESS`\n\nThe following flags are incompatible with popup window creation and will\ncause it to fail:\n\n- `WINDOW_UTILITY`\n- `WINDOW_MODAL`\n\nThe parent parameter **must** be non-null and a valid window. The parent of\na popup window can be either a regular, toplevel window, or another popup\nwindow.\n\nPopup windows cannot be minimized, maximized, made fullscreen, raised,\nflash, be made a modal window, be the parent of a toplevel window, or grab\nthe mouse and/or keyboard. Attempts to do so will fail.\n\nPopup windows implicitly do not have a border/decorations and do not appear\non the taskbar/dock or in lists of windows such as alt-tab menus.\n\nIf a parent window is hidden or destroyed, any child popup windows will be\nrecursively hidden or destroyed as well. Child popup windows not explicitly\nhidden will be restored when the parent is shown.\n\n@param parent the parent of the window, must not be nullptr.\n@param offset_x the x position of the popup window relative to the origin\n                of the parent.\n@param offset_y the y position of the popup window relative to the origin\n                of the parent window.\n@param w the width of the window.\n@param h the height of the window.\n@param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more\n             additional WindowFlags OR'd together.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window\n@sa Window.Window\n@sa WindowRef.Destroy\n@sa WindowRef.GetParent",
+              "doc": "Create a child popup window of the specified parent window.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThe flags parameter **must** contain at least one of the following:\n\n- `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any\n  input events.\n- `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost\n  popup menu will implicitly gain the keyboard focus.\n\nThe following flags are not relevant to popup window creation and will be\nignored:\n\n- `WINDOW_MINIMIZED`\n- `WINDOW_MAXIMIZED`\n- `WINDOW_FULLSCREEN`\n- `WINDOW_BORDERLESS`\n\nThe following flags are incompatible with popup window creation and will\ncause it to fail:\n\n- `WINDOW_UTILITY`\n- `WINDOW_MODAL`\n\nThe parent parameter **must** be non-null and a valid window. The parent of\na popup window can be either a regular, toplevel window, or another popup\nwindow.\n\nPopup windows cannot be minimized, maximized, made fullscreen, raised,\nflash, be made a modal window, be the parent of a toplevel window, or grab\nthe mouse and/or keyboard. Attempts to do so will fail.\n\nPopup windows implicitly do not have a border/decorations and do not appear\non the taskbar/dock or in lists of windows such as alt-tab menus.\n\nIf a parent window is hidden or destroyed, any child popup windows will be\nrecursively hidden or destroyed as well. Child popup windows not explicitly\nhidden will be restored when the parent is shown.\n\n@param parent the parent of the window, must not be nullptr.\n@param offset_x the x position of the popup window relative to the origin\n                of the parent.\n@param offset_y the y position of the popup window relative to the origin\n                of the parent window.\n@param w the width of the window.\n@param h the height of the window.\n@param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more\n             additional WindowFlags OR'd together.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Create\n@sa Window.CreateWithProperties\n@sa Window.Destroy\n@sa WindowRef.GetParent",
               "name": "CreatePopup",
               "kind": "function",
               "type": "Window",
@@ -6989,13 +6725,13 @@
                 }
               ],
               "sourceName": "SDL_CreatePopupWindow",
+              "static": true,
               "hints": {
-                "body": "return Window(parent, offset, size, flags);"
-              },
-              "static": true
+                "wrapSelf": true
+              }
             },
             "CreateWithProperties": {
-              "doc": "Create a window with the specified properties.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThese are the supported properties:\n\n- `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should\n  be always on top\n- `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no\n  window decoration\n- `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the\n  window will be used with an externally managed graphics context.\n- `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should\n  accept keyboard input (defaults true)\n- `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should\n  start in fullscreen mode at desktop resolution\n- `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window\n- `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start\n  hidden\n- `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window\n  uses a high pixel density buffer if possible\n- `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should\n  start maximized\n- `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu\n- `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used\n  with Metal rendering\n- `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should\n  start minimized\n- `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to\n  its parent\n- `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts\n  with grabbed mouse focus\n- `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used\n  with OpenGL rendering\n- `prop::Window.CREATE_PARENT_POINTER`: an WindowRef that will be the\n  parent of this window, required for windows with the \"tooltip\", \"menu\",\n  and \"modal\" properties\n- `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be\n  resizable\n- `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8\n  encoding\n- `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show\n  transparent in the areas with alpha of 0\n- `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip\n- `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility\n  window, not showing in the task bar and window list\n- `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used\n  with Vulkan rendering\n- `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window\n- `prop::Window.CREATE_X_NUMBER`: the x position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n- `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n\nThese are additional supported properties on macOS:\n\n- `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the\n  `(__unsafe_unretained)` NSWindow associated with the window, if you want\n  to wrap an existing window.\n- `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`\n  NSView associated with the window, defaults to `[window contentView]`\n\nThese are additional supported properties on Wayland:\n\n- `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if\n  the application wants to use the Wayland surface for a custom role and\n  does not want it attached to an XDG toplevel window. See\n  [README/wayland](README/wayland) for more information on using custom\n  surfaces.\n- `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the\n  application wants an associated `wl_egl_window` object to be created and\n  attached to the window, even if the window does not have the OpenGL\n  property or `WINDOW_OPENGL` flag set.\n- `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface\n  associated with the window, if you want to wrap an existing window. See\n  [README/wayland](README/wayland) for more information.\n\nThese are additional supported properties on Windows:\n\n- `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the\n  window, if you want to wrap an existing window.\n- `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,\n  another window to share pixel format with, useful for OpenGL windows\n\nThese are additional supported properties with X11:\n\n- `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated\n  with the window, if you want to wrap an existing window.\n\nThe window is implicitly shown if the \"hidden\" property is not set.\n\nWindows with the \"tooltip\" and \"menu\" properties are popup windows and have\nthe behaviors and guidelines outlined in Window.Window().\n\nIf this window is being created to be used with an RendererRef, you should\nnot add a graphics API specific property\n(`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that\ninternally when it chooses a renderer. However, SDL might need to recreate\nyour window at that point, which may cause the window to appear briefly,\nand then flicker as it is recreated. The correct approach to this is to\ncreate the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property\nset to true, then create the renderer, then show the window with\nWindowRef.Show().\n\n@param props the properties to use.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Window.Window\n@sa WindowRef.Destroy",
+              "doc": "Create a window with the specified properties.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThese are the supported properties:\n\n- `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should\n  be always on top\n- `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no\n  window decoration\n- `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the\n  window will be used with an externally managed graphics context.\n- `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should\n  accept keyboard input (defaults true)\n- `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should\n  start in fullscreen mode at desktop resolution\n- `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window\n- `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start\n  hidden\n- `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window\n  uses a high pixel density buffer if possible\n- `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should\n  start maximized\n- `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu\n- `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used\n  with Metal rendering\n- `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should\n  start minimized\n- `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to\n  its parent\n- `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts\n  with grabbed mouse focus\n- `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used\n  with OpenGL rendering\n- `prop::Window.CREATE_PARENT_POINTER`: an WindowRef that will be the\n  parent of this window, required for windows with the \"tooltip\", \"menu\",\n  and \"modal\" properties\n- `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be\n  resizable\n- `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8\n  encoding\n- `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show\n  transparent in the areas with alpha of 0\n- `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip\n- `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility\n  window, not showing in the task bar and window list\n- `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used\n  with Vulkan rendering\n- `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window\n- `prop::Window.CREATE_X_NUMBER`: the x position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n- `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n\nThese are additional supported properties on macOS:\n\n- `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the\n  `(__unsafe_unretained)` NSWindow associated with the window, if you want\n  to wrap an existing window.\n- `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`\n  NSView associated with the window, defaults to `[window contentView]`\n\nThese are additional supported properties on Wayland:\n\n- `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if\n  the application wants to use the Wayland surface for a custom role and\n  does not want it attached to an XDG toplevel window. See\n  [README/wayland](README/wayland) for more information on using custom\n  surfaces.\n- `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the\n  application wants an associated `wl_egl_window` object to be created and\n  attached to the window, even if the window does not have the OpenGL\n  property or `WINDOW_OPENGL` flag set.\n- `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface\n  associated with the window, if you want to wrap an existing window. See\n  [README/wayland](README/wayland) for more information.\n\nThese are additional supported properties on Windows:\n\n- `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the\n  window, if you want to wrap an existing window.\n- `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,\n  another window to share pixel format with, useful for OpenGL windows\n\nThese are additional supported properties with X11:\n\n- `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated\n  with the window, if you want to wrap an existing window.\n\nThe window is implicitly shown if the \"hidden\" property is not set.\n\nWindows with the \"tooltip\" and \"menu\" properties are popup windows and have\nthe behaviors and guidelines outlined in Window.CreatePopup().\n\nIf this window is being created to be used with an RendererRef, you should\nnot add a graphics API specific property\n(`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that\ninternally when it chooses a renderer. However, SDL might need to recreate\nyour window at that point, which may cause the window to appear briefly,\nand then flicker as it is recreated. The correct approach to this is to\ncreate the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property\nset to true, then create the renderer, then show the window with\nWindowRef.Show().\n\n@param props the properties to use.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Window.Create\n@sa Window.Destroy",
               "name": "CreateWithProperties",
               "kind": "function",
               "type": "Window",
@@ -7006,31 +6742,57 @@
                 }
               ],
               "sourceName": "SDL_CreateWindowWithProperties",
+              "static": true,
               "hints": {
-                "body": "return Window(props);"
-              },
-              "static": true
+                "wrapSelf": true
+              }
+            },
+            "Destroy": {
+              "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nWindowRef is no longer valid after this call.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.CreatePopup\n@sa Window.Create\n@sa Window.CreateWithProperties",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyWindow",
+              "hints": {
+                "body": "reset();"
+              }
             }
           },
           "hints": {
-            "super": "Window"
+            "self": "Window"
           }
         },
-        "WindowUnsafe::WindowUnsafe": {
-          "kind": "function",
-          "name": "WindowUnsafe::WindowUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Window &&",
-              "name": "other"
+        "WindowUnsafe": {
+          "name": "WindowUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<WindowRef>",
+          "doc": "Unsafe Handle to window\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa WindowRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "WindowUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Window &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs WindowUnsafe from Window.",
+              "hints": {
+                "init": [
+                  "WindowUnsafe(other.release())"
+                ]
+              },
+              "name": "WindowUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "WindowUnsafe(other.release())"
-            ]
           }
         },
         "SDL_WINDOWPOS_UNDEFINED_MASK": {
@@ -7102,7 +6864,7 @@
           "sourceName": "SDL_WINDOWPOS_ISCENTERED"
         },
         "GLContextRef": {
-          "doc": "An opaque handle to an OpenGL context.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa GLContext.GLContext\n\n@cat resource\n\n@sa GLContext\n@sa GLContextRef",
+          "doc": "An opaque handle to an OpenGL context.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa GLContext.Create\n\n@cat resource\n\n@sa GLContext",
           "name": "GLContextRef",
           "kind": "struct",
           "type": "Resource<SDL_GLContextState *>",
@@ -7114,7 +6876,7 @@
               "doc": ""
             },
             "MakeCurrent": {
-              "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param window the window to associate with the context.\n@param context the OpenGL context to associate with the window.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.GLContext",
+              "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param window the window to associate with the context.\n@param context the OpenGL context to associate with the window.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.Create",
               "name": "MakeCurrent",
               "kind": "function",
               "type": "void",
@@ -7130,35 +6892,23 @@
               },
               "static": false
             },
-            "Destroy": {
-              "doc": "Delete an OpenGL context.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.GLContext",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_GL_DestroyContext",
-              "hints": {
-                "mayFail": true,
-                "body": "reset();"
-              }
-            },
             "reset": {
-              "doc": "Delete an OpenGL context.\n\n@param context the OpenGL context to be deleted.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.GLContext",
+              "doc": "Delete an OpenGL context.\n\n@param context the OpenGL context to be deleted.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.Create",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_GLContextState *",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_GLContextState *"
                 }
               ],
               "sourceName": "SDL_GL_DestroyContext",
               "hints": {
-                "body": "CheckError(SDL_GL_DestroyContext(release(newResource)));",
+                "body": "CheckError(SDL_GL_DestroyContext(resource));",
                 "mayFail": true
-              }
+              },
+              "static": true
             }
           },
           "hints": {
@@ -7166,222 +6916,19 @@
             "super": "Resource"
           }
         },
-        "GLContextUnsafe": {
-          "name": "GLContextUnsafe",
-          "kind": "struct",
-          "type": "GLContextRef",
-          "doc": "Unsafe Handle to gLContext\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa GLContextRef",
-          "entries": {
-            "GLContextRef::Destroy": {
-              "kind": "alias",
-              "name": "GLContextRef::Destroy",
-              "doc": ""
-            },
-            "GLContextRef::GLContextRef": {
-              "kind": "alias",
-              "name": "GLContextRef::GLContextRef",
-              "doc": ""
-            },
-            "GLContextRef::reset": {
-              "kind": "alias",
-              "name": "GLContextRef::reset",
-              "doc": ""
-            },
-            "GLContextUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const GLContextRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs GLContextUnsafe from GLContextRef.",
-                "hints": {
-                  "init": [
-                    "GLContextRef(other.get())"
-                  ]
-                },
-                "name": "GLContextUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const GLContext &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "GLContextUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "GLContextUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "GLContext &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs GLContextUnsafe from GLContext.",
-                "hints": {
-                  "init": [
-                    "GLContextUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "GLContextUnsafe &",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "GLContextUnsafe",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release()); return *this;"
-              },
-              "name": "operator="
-            }
-          }
-        },
         "GLContext": {
           "name": "GLContext",
           "kind": "struct",
-          "type": "GLContextUnsafe",
+          "type": "ResourceUnique<GLContextRef>",
           "doc": "Handle to an owned gLContext\n\n@cat resource\n\n@sa GLContextRef",
           "entries": {
-            "GLContextUnsafe::GLContextUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "GLContextUnsafe::GLContextUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
             },
-            "GLContext": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [],
-                "doc": "Constructs an empty GLContext.",
-                "hints": {
-                  "init": [
-                    "GLContextUnsafe(nullptr)"
-                  ]
-                },
-                "name": "GLContext"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_GLContextState *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "GLContextUnsafe(resource)"
-                  ]
-                },
-                "name": "GLContext"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const GLContext &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "GLContext",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "GLContext &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "GLContext(other.release())"
-                  ]
-                },
-                "name": "GLContext"
-              },
-              {
-                "doc": "Create an OpenGL context for an OpenGL window, and make it current.\n\nWindows users new to OpenGL should note that, for historical reasons, GL\nfunctions added after OpenGL version 1.1 are not available by default.\nThose functions must be loaded at run-time, either with an OpenGL\nextension-handling library or with GL_GetProcAddress() and its related\nfunctions.\n\nGLContextRef is opaque to the application.\n\n@param window the window to associate with the context.\n@post the OpenGL context associated with `window` or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContextRef.Destroy\n@sa GLContextRef.MakeCurrent",
-                "name": "GLContext",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "window",
-                    "type": "WindowRef"
-                  }
-                ],
-                "sourceName": "SDL_GL_CreateContext",
-                "proto": false
-              }
-            ],
-            "~GLContext": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~GLContext"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "GLContext &",
-              "parameters": [
-                {
-                  "type": "GLContext",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "Create": {
-              "doc": "Create an OpenGL context for an OpenGL window, and make it current.\n\nWindows users new to OpenGL should note that, for historical reasons, GL\nfunctions added after OpenGL version 1.1 are not available by default.\nThose functions must be loaded at run-time, either with an OpenGL\nextension-handling library or with GL_GetProcAddress() and its related\nfunctions.\n\nGLContextRef is opaque to the application.\n\n@param window the window to associate with the context.\n@returns the OpenGL context associated with `window` or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContextRef.Destroy\n@sa GLContextRef.MakeCurrent",
+              "doc": "Create an OpenGL context for an OpenGL window, and make it current.\n\nWindows users new to OpenGL should note that, for historical reasons, GL\nfunctions added after OpenGL version 1.1 are not available by default.\nThose functions must be loaded at run-time, either with an OpenGL\nextension-handling library or with GL_GetProcAddress() and its related\nfunctions.\n\nGLContextRef is opaque to the application.\n\n@param window the window to associate with the context.\n@returns the OpenGL context associated with `window` or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.Destroy\n@sa GLContextRef.MakeCurrent",
               "name": "Create",
               "kind": "function",
               "type": "GLContext",
@@ -7392,31 +6939,58 @@
                 }
               ],
               "sourceName": "SDL_GL_CreateContext",
+              "static": true,
               "hints": {
-                "body": "return GLContext(window);"
-              },
-              "static": true
+                "wrapSelf": true
+              }
+            },
+            "Destroy": {
+              "doc": "Delete an OpenGL context.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.Create",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_GL_DestroyContext",
+              "hints": {
+                "mayFail": true,
+                "body": "reset();"
+              }
             }
           },
           "hints": {
-            "super": "GLContext"
+            "self": "GLContext"
           }
         },
-        "GLContextUnsafe::GLContextUnsafe": {
-          "kind": "function",
-          "name": "GLContextUnsafe::GLContextUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "GLContext &&",
-              "name": "other"
+        "GLContextUnsafe": {
+          "name": "GLContextUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<GLContextRef>",
+          "doc": "Unsafe Handle to gLContext\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa GLContextRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "GLContextUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "GLContext &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs GLContextUnsafe from GLContext.",
+              "hints": {
+                "init": [
+                  "GLContextUnsafe(other.release())"
+                ]
+              },
+              "name": "GLContextUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "GLContextUnsafe(other.release())"
-            ]
           }
         },
         "EGLDisplay": {
@@ -7455,7 +7029,7 @@
           "sourceName": "SDL_EGLint"
         },
         "EGLAttribArrayCallback": {
-          "doc": "EGL platform attribute initialization callback.\n\nThis is called when SDL is attempting to create an EGL context, to let the\napp add extra attributes to its eglGetPlatformDisplay() call.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the Window.Window\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks",
+          "doc": "EGL platform attribute initialization callback.\n\nThis is called when SDL is attempting to create an EGL context, to let the\napp add extra attributes to its eglGetPlatformDisplay() call.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the Window.Create\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks",
           "name": "EGLAttribArrayCallback",
           "kind": "alias",
           "type": "SDL_EGLAttribArrayCallback",
@@ -7465,10 +7039,10 @@
           "kind": "alias",
           "name": "EGLAttribArrayCB",
           "type": "std::function<SDL_EGLAttrib *()>",
-          "doc": "EGL platform attribute initialization callback.\n\nThis is called when SDL is attempting to create an EGL context, to let the\napp add extra attributes to its eglGetPlatformDisplay() call.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the Window.Window\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks\n@sa EGLAttribArrayCallback"
+          "doc": "EGL platform attribute initialization callback.\n\nThis is called when SDL is attempting to create an EGL context, to let the\napp add extra attributes to its eglGetPlatformDisplay() call.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the Window.Create\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks\n@sa EGLAttribArrayCallback"
         },
         "EGLIntArrayCallback": {
-          "doc": "EGL surface/context attribute initialization callback types.\n\nThis is called when SDL is attempting to create an EGL surface, to let the\napp add extra attributes to its eglCreateWindowSurface() or\neglCreateContext calls.\n\nFor convenience, the EGLDisplay and EGLConfig to use are provided to the\ncallback.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the Window.Window\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param display the EGL display to be used.\n@param config the EGL config to be used.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks",
+          "doc": "EGL surface/context attribute initialization callback types.\n\nThis is called when SDL is attempting to create an EGL surface, to let the\napp add extra attributes to its eglCreateWindowSurface() or\neglCreateContext calls.\n\nFor convenience, the EGLDisplay and EGLConfig to use are provided to the\ncallback.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the Window.Create\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param display the EGL display to be used.\n@param config the EGL config to be used.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks",
           "name": "EGLIntArrayCallback",
           "kind": "alias",
           "type": "SDL_EGLIntArrayCallback",
@@ -7478,7 +7052,7 @@
           "kind": "alias",
           "name": "EGLIntArrayCB",
           "type": "std::function<SDL_EGLint *(SDL_EGLDisplay, SDL_EGLConfig)>",
-          "doc": "EGL surface/context attribute initialization callback types.\n\nThis is called when SDL is attempting to create an EGL surface, to let the\napp add extra attributes to its eglCreateWindowSurface() or\neglCreateContext calls.\n\nFor convenience, the EGLDisplay and EGLConfig to use are provided to the\ncallback.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the Window.Window\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param display the EGL display to be used.\n@param config the EGL config to be used.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks\n@sa EGLIntArrayCallback"
+          "doc": "EGL surface/context attribute initialization callback types.\n\nThis is called when SDL is attempting to create an EGL surface, to let the\napp add extra attributes to its eglCreateWindowSurface() or\neglCreateContext calls.\n\nFor convenience, the EGLDisplay and EGLConfig to use are provided to the\ncallback.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the Window.Create\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param display the EGL display to be used.\n@param config the EGL config to be used.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks\n@sa EGLIntArrayCallback"
         },
         "GLAttr": {
           "doc": "An enumeration of OpenGL configuration attributes.\n\nWhile you can set most OpenGL attributes normally, the attributes listed\nabove must be known before SDL creates the window that will be used with\nthe OpenGL context. These attributes are set and read with\nGL_SetAttribute() and GL_GetAttribute().\n\nIn some cases, these attributes are minimum requests; the GL does not\npromise to give you exactly what you asked for. It's possible to ask for a\n16-bit depth buffer and get a 24-bit one instead, for example, or to ask\nfor no stencil buffer and still have one available. Context creation should\nfail if the GL can't provide your requested attributes at a minimum, but\nyou should check to see exactly what you got.\n\n@since This enum is available since SDL 3.2.0.",
@@ -8936,7 +8510,7 @@
           "sourceName": "SDL_LOGICAL_PRESENTATION_INTEGER_SCALE"
         },
         "RendererRef": {
-          "doc": "A structure representing rendering state\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Renderer\n@sa RendererRef",
+          "doc": "A structure representing rendering state\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Renderer",
           "name": "RendererRef",
           "kind": "struct",
           "type": "Resource<SDL_Renderer *>",
@@ -8959,7 +8533,7 @@
               }
             },
             "GetName": {
-              "doc": "Get the name of a renderer.\n\n@returns the name of the selected renderer, or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer\n@sa Renderer.Renderer",
+              "doc": "Get the name of a renderer.\n\n@returns the name of the selected renderer, or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Create\n@sa Renderer.CreateWithProperties",
               "name": "GetName",
               "kind": "function",
               "type": "const char *",
@@ -9969,7 +9543,7 @@
               "static": false
             },
             "Present": {
-              "doc": "Update the screen with any rendering performed since the previous call.\n\nSDL's rendering functions operate on a backbuffer; that is, calling a\nrendering function such as RendererRef.RenderLine() does not directly put a line on\nthe screen, but rather updates the backbuffer. As such, you compose your\nentire scene and *present* the composed backbuffer to the screen as a\ncomplete picture.\n\nTherefore, when using SDL's rendering API, one does all drawing intended\nfor the frame, and then calls this function once per frame to present the\nfinal drawing to the user.\n\nThe backbuffer should be considered invalidated after each present; do not\nassume that previous contents will exist between frames. You are strongly\nencouraged to call RendererRef.RenderClear() to initialize the backbuffer before\nstarting each new frame's drawing, even if you plan to overwrite every\npixel.\n\nPlease note, that in case of rendering to a texture - there is **no need**\nto call `RendererRef.Present` after drawing needed objects to a texture, and\nshould not be done; you are only required to change back the rendering\ntarget to default via `RendererRef.SetTarget(renderer, nullptr)` afterwards, as\ntextures by themselves do not have a concept of backbuffers. Calling\nRendererRef.Present while rendering to a texture will still update the screen\nwith any current drawing that has been done _to the window itself_.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer\n@sa RendererRef.RenderClear\n@sa RendererRef.RenderFillRect\n@sa RendererRef.RenderFillRects\n@sa RendererRef.RenderLine\n@sa RendererRef.RenderLines\n@sa RendererRef.RenderPoint\n@sa RendererRef.RenderPoints\n@sa RendererRef.RenderRect\n@sa RendererRef.RenderRects\n@sa RendererRef.SetDrawBlendMode\n@sa RendererRef.SetDrawColor",
+              "doc": "Update the screen with any rendering performed since the previous call.\n\nSDL's rendering functions operate on a backbuffer; that is, calling a\nrendering function such as RendererRef.RenderLine() does not directly put a line on\nthe screen, but rather updates the backbuffer. As such, you compose your\nentire scene and *present* the composed backbuffer to the screen as a\ncomplete picture.\n\nTherefore, when using SDL's rendering API, one does all drawing intended\nfor the frame, and then calls this function once per frame to present the\nfinal drawing to the user.\n\nThe backbuffer should be considered invalidated after each present; do not\nassume that previous contents will exist between frames. You are strongly\nencouraged to call RendererRef.RenderClear() to initialize the backbuffer before\nstarting each new frame's drawing, even if you plan to overwrite every\npixel.\n\nPlease note, that in case of rendering to a texture - there is **no need**\nto call `RendererRef.Present` after drawing needed objects to a texture, and\nshould not be done; you are only required to change back the rendering\ntarget to default via `RendererRef.SetTarget(renderer, nullptr)` afterwards, as\ntextures by themselves do not have a concept of backbuffers. Calling\nRendererRef.Present while rendering to a texture will still update the screen\nwith any current drawing that has been done _to the window itself_.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Create\n@sa RendererRef.RenderClear\n@sa RendererRef.RenderFillRect\n@sa RendererRef.RenderFillRects\n@sa RendererRef.RenderLine\n@sa RendererRef.RenderLines\n@sa RendererRef.RenderPoint\n@sa RendererRef.RenderPoints\n@sa RendererRef.RenderRect\n@sa RendererRef.RenderRects\n@sa RendererRef.SetDrawBlendMode\n@sa RendererRef.SetDrawColor",
               "name": "Present",
               "kind": "function",
               "type": "void",
@@ -10064,32 +9638,21 @@
               "name": "RenderDebugTextFormat",
               "doc": ""
             },
-            "Destroy": {
-              "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyRenderer",
-              "hints": {
-                "body": "reset();"
-              }
-            },
             "reset": {
-              "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n@param renderer the rendering context.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer",
+              "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n@param renderer the rendering context.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Create",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_Renderer *",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_Renderer *"
                 }
               ],
               "sourceName": "SDL_DestroyRenderer",
+              "static": true,
               "hints": {
-                "body": "SDL_DestroyRenderer(release(newResource));"
+                "body": "SDL_DestroyRenderer(resource);"
               }
             }
           },
@@ -10098,197 +9661,39 @@
             "super": "Resource"
           }
         },
-        "RendererUnsafe": {
-          "name": "RendererUnsafe",
-          "kind": "struct",
-          "type": "RendererRef",
-          "doc": "Unsafe Handle to renderer\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa RendererRef",
-          "entries": {
-            "RendererRef::Destroy": {
-              "kind": "alias",
-              "name": "RendererRef::Destroy",
-              "doc": ""
-            },
-            "RendererRef::RendererRef": {
-              "kind": "alias",
-              "name": "RendererRef::RendererRef",
-              "doc": ""
-            },
-            "RendererRef::reset": {
-              "kind": "alias",
-              "name": "RendererRef::reset",
-              "doc": ""
-            },
-            "RendererUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const RendererRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs RendererUnsafe from RendererRef.",
-                "hints": {
-                  "init": [
-                    "RendererRef(other.get())"
-                  ]
-                },
-                "name": "RendererUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Renderer &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "RendererUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "RendererUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Renderer &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs RendererUnsafe from Renderer.",
-                "hints": {
-                  "init": [
-                    "RendererUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "RendererUnsafe &",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "RendererUnsafe",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release()); return *this;"
-              },
-              "name": "operator="
-            }
-          }
-        },
         "Renderer": {
           "name": "Renderer",
           "kind": "struct",
-          "type": "RendererUnsafe",
+          "type": "ResourceUnique<RendererRef>",
           "doc": "Handle to an owned renderer\n\n@cat resource\n\n@sa RendererRef",
           "entries": {
-            "RendererUnsafe::RendererUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "RendererUnsafe::RendererUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
             },
-            "Renderer": [
+            "Create": [
               {
                 "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [],
-                "doc": "Constructs an empty Renderer.",
-                "hints": {
-                  "init": [
-                    "RendererUnsafe(nullptr)"
-                  ]
-                },
-                "name": "Renderer"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Renderer *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "RendererUnsafe(resource)"
-                  ]
-                },
-                "name": "Renderer"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Renderer &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "Renderer",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Renderer &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "Renderer(other.release())"
-                  ]
-                },
-                "name": "Renderer"
-              },
-              {
-                "kind": "function",
-                "type": "",
+                "name": "Create",
                 "parameters": [
                   {
                     "type": "WindowRef",
                     "name": "window"
                   }
                 ],
-                "name": "Renderer",
+                "static": true,
+                "type": "Renderer",
+                "hints": {
+                  "wrapSelf": true
+                },
                 "doc": ""
               },
               {
-                "doc": "Create a 2D rendering context for a window.\n\nIf you want a specific renderer, you can specify its name here. A list of\navailable renderers can be obtained by calling GetRenderDriver()\nmultiple times, with indices from 0 to GetNumRenderDrivers()-1. If you\ndon't need a specific renderer, specify nullptr and SDL will attempt to choose\nthe best option for you, based on what is available on the user's system.\n\nIf `name` is a comma-separated list, SDL will try each name, in the order\nlisted, until one succeeds or all of them fail.\n\nBy default the rendering size matches the window size in pixels, but you\ncan call RendererRef.SetLogicalPresentation() to change the content size and\nscaling options.\n\n@param window the window where rendering is displayed.\n@param name the name of the rendering driver to initialize, or nullptr to let\n            SDL choose one.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer\n@sa Renderer.Renderer\n@sa RendererRef.Destroy\n@sa GetNumRenderDrivers\n@sa GetRenderDriver\n@sa RendererRef.GetName",
-                "name": "Renderer",
+                "doc": "Create a 2D rendering context for a window.\n\nIf you want a specific renderer, you can specify its name here. A list of\navailable renderers can be obtained by calling GetRenderDriver()\nmultiple times, with indices from 0 to GetNumRenderDrivers()-1. If you\ndon't need a specific renderer, specify nullptr and SDL will attempt to choose\nthe best option for you, based on what is available on the user's system.\n\nIf `name` is a comma-separated list, SDL will try each name, in the order\nlisted, until one succeeds or all of them fail.\n\nBy default the rendering size matches the window size in pixels, but you\ncan call RendererRef.SetLogicalPresentation() to change the content size and\nscaling options.\n\n@param window the window where rendering is displayed.\n@param name the name of the rendering driver to initialize, or nullptr to let\n            SDL choose one.\n@returns a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.CreateWithProperties\n@sa Renderer.CreateSoftware\n@sa Renderer.Destroy\n@sa GetNumRenderDrivers\n@sa GetRenderDriver\n@sa RendererRef.GetName",
+                "name": "Create",
                 "kind": "function",
-                "type": "",
+                "type": "Renderer",
                 "parameters": [
                   {
                     "name": "window",
@@ -10300,85 +9705,14 @@
                   }
                 ],
                 "sourceName": "SDL_CreateRenderer",
-                "proto": false
-              },
-              {
-                "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace\n  value describing the colorspace for output to the display, defaults to\n  COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by RendererRef.SetVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Renderer.Renderer\n@sa Renderer.Renderer\n@sa RendererRef.Destroy\n@sa RendererRef.GetName",
-                "name": "Renderer",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "props",
-                    "type": "PropertiesRef"
-                  }
-                ],
-                "sourceName": "SDL_CreateRendererWithProperties",
-                "proto": false
-              },
-              {
-                "doc": "Create a 2D software rendering context for a surface.\n\nTwo other API which can be used to create RendererRef:\nRenderer.Renderer() and CreateWindowAndRenderer(). These can _also_\ncreate a software renderer, but they are intended to be used with an\nWindowRef as the final destination and not an SurfaceRef.\n\n@param surface the SurfaceRef structure representing the surface where\n               rendering is done.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererRef.Destroy",
-                "name": "Renderer",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "surface",
-                    "type": "SurfaceRef"
-                  }
-                ],
-                "sourceName": "SDL_CreateSoftwareRenderer",
-                "proto": false
+                "static": true,
+                "hints": {
+                  "wrapSelf": true
+                }
               }
             ],
-            "~Renderer": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~Renderer"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Renderer &",
-              "parameters": [
-                {
-                  "type": "Renderer",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
-            "Create": {
-              "doc": "Create a 2D rendering context for a window.\n\nIf you want a specific renderer, you can specify its name here. A list of\navailable renderers can be obtained by calling GetRenderDriver()\nmultiple times, with indices from 0 to GetNumRenderDrivers()-1. If you\ndon't need a specific renderer, specify nullptr and SDL will attempt to choose\nthe best option for you, based on what is available on the user's system.\n\nIf `name` is a comma-separated list, SDL will try each name, in the order\nlisted, until one succeeds or all of them fail.\n\nBy default the rendering size matches the window size in pixels, but you\ncan call RendererRef.SetLogicalPresentation() to change the content size and\nscaling options.\n\n@param window the window where rendering is displayed.\n@param name the name of the rendering driver to initialize, or nullptr to let\n            SDL choose one.\n@returns a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer\n@sa Renderer.Renderer\n@sa RendererRef.Destroy\n@sa GetNumRenderDrivers\n@sa GetRenderDriver\n@sa RendererRef.GetName",
-              "name": "Create",
-              "kind": "function",
-              "type": "Renderer",
-              "parameters": [
-                {
-                  "name": "window",
-                  "type": "WindowRef"
-                },
-                {
-                  "name": "name",
-                  "type": "StringParam"
-                }
-              ],
-              "sourceName": "SDL_CreateRenderer",
-              "hints": {
-                "body": "return Renderer(window, name);"
-              },
-              "static": true
-            },
             "CreateWithProperties": {
-              "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace\n  value describing the colorspace for output to the display, defaults to\n  COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by RendererRef.SetVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@returns a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Renderer.Renderer\n@sa Renderer.Renderer\n@sa RendererRef.Destroy\n@sa RendererRef.GetName",
+              "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace\n  value describing the colorspace for output to the display, defaults to\n  COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by RendererRef.SetVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@returns a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Renderer.Create\n@sa Renderer.CreateSoftware\n@sa Renderer.Destroy\n@sa RendererRef.GetName",
               "name": "CreateWithProperties",
               "kind": "function",
               "type": "Renderer",
@@ -10389,13 +9723,13 @@
                 }
               ],
               "sourceName": "SDL_CreateRendererWithProperties",
+              "static": true,
               "hints": {
-                "body": "return Renderer(props);"
-              },
-              "static": true
+                "wrapSelf": true
+              }
             },
             "CreateSoftware": {
-              "doc": "Create a 2D software rendering context for a surface.\n\nTwo other API which can be used to create RendererRef:\nRenderer.Renderer() and CreateWindowAndRenderer(). These can _also_\ncreate a software renderer, but they are intended to be used with an\nWindowRef as the final destination and not an SurfaceRef.\n\n@param surface the SurfaceRef structure representing the surface where\n               rendering is done.\n@returns a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererRef.Destroy",
+              "doc": "Create a 2D software rendering context for a surface.\n\nTwo other API which can be used to create RendererRef:\nRenderer.Create() and CreateWindowAndRenderer(). These can _also_\ncreate a software renderer, but they are intended to be used with an\nWindowRef as the final destination and not an SurfaceRef.\n\n@param surface the SurfaceRef structure representing the surface where\n               rendering is done.\n@returns a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Destroy",
               "name": "CreateSoftware",
               "kind": "function",
               "type": "Renderer",
@@ -10406,35 +9740,61 @@
                 }
               ],
               "sourceName": "SDL_CreateSoftwareRenderer",
+              "static": true,
               "hints": {
-                "body": "return Renderer(surface);"
-              },
-              "static": true
+                "wrapSelf": true
+              }
+            },
+            "Destroy": {
+              "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Create",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyRenderer",
+              "hints": {
+                "body": "reset();"
+              }
             }
           },
           "hints": {
-            "super": "Renderer"
+            "self": "Renderer"
           }
         },
-        "RendererUnsafe::RendererUnsafe": {
-          "kind": "function",
-          "name": "RendererUnsafe::RendererUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Renderer &&",
-              "name": "other"
+        "RendererUnsafe": {
+          "name": "RendererUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<RendererRef>",
+          "doc": "Unsafe Handle to renderer\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa RendererRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "RendererUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Renderer &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs RendererUnsafe from Renderer.",
+              "hints": {
+                "init": [
+                  "RendererUnsafe(other.release())"
+                ]
+              },
+              "name": "RendererUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "RendererUnsafe(other.release())"
-            ]
           }
         },
         "TextureRef": {
-          "doc": "An efficient driver-specific representation of pixel data\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Texture.Texture\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy\n\n@cat resource\n\n@sa Texture\n@sa TextureRef",
+          "doc": "An efficient driver-specific representation of pixel data\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Texture.Create\n@sa Texture.CreateFromSurface\n@sa Texture.CreateWithProperties\n@sa Texture.Destroy\n\n@cat resource\n\n@sa Texture",
           "name": "TextureRef",
           "kind": "struct",
           "sourceName": "SDL_Texture",
@@ -10910,32 +10270,21 @@
               "name": "GetFormat",
               "doc": ""
             },
-            "Destroy": {
-              "doc": "Destroy the specified texture.\n\nPassing nullptr or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Texture\n@sa Texture.Texture",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyTexture",
-              "hints": {
-                "body": "reset();"
-              }
-            },
             "reset": {
-              "doc": "Destroy the specified texture.\n\nPassing nullptr or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n@param texture the texture to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Texture\n@sa Texture.Texture",
+              "doc": "Destroy the specified texture.\n\nPassing nullptr or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n@param texture the texture to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Create\n@sa Texture.CreateFromSurface",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_Texture *",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_Texture *"
                 }
               ],
               "sourceName": "SDL_DestroyTexture",
+              "static": true,
               "hints": {
-                "body": "SDL_DestroyTexture(release(newResource));"
+                "body": "SDL_DestroyTexture(resource);"
               }
             }
           },
@@ -10944,307 +10293,21 @@
             "super": "Resource"
           }
         },
-        "TextureUnsafe": {
-          "name": "TextureUnsafe",
-          "kind": "struct",
-          "type": "TextureRef",
-          "doc": "Unsafe Handle to texture\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextureRef",
-          "entries": {
-            "TextureRef::Destroy": {
-              "kind": "alias",
-              "name": "TextureRef::Destroy",
-              "doc": ""
-            },
-            "TextureRef::TextureRef": {
-              "kind": "alias",
-              "name": "TextureRef::TextureRef",
-              "doc": ""
-            },
-            "TextureRef::reset": {
-              "kind": "alias",
-              "name": "TextureRef::reset",
-              "doc": ""
-            },
-            "TextureUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const TextureRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs TextureUnsafe from TextureRef.",
-                "hints": {
-                  "init": [
-                    "TextureRef(other.get())"
-                  ]
-                },
-                "name": "TextureUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Texture &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "TextureUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "TextureUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Texture &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs TextureUnsafe from Texture.",
-                "hints": {
-                  "init": [
-                    "TextureUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "TextureUnsafe &",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "TextureUnsafe",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release()); return *this;"
-              },
-              "name": "operator="
-            }
-          }
-        },
         "Texture": {
           "name": "Texture",
           "kind": "struct",
-          "type": "TextureUnsafe",
+          "type": "ResourceUnique<TextureRef>",
           "doc": "Handle to an owned texture\n\n@cat resource\n\n@sa TextureRef",
           "entries": {
-            "TextureUnsafe::TextureUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "TextureUnsafe::TextureUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
-            },
-            "Texture": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [],
-                "doc": "Constructs an empty Texture.",
-                "hints": {
-                  "init": [
-                    "TextureUnsafe(nullptr)"
-                  ]
-                },
-                "name": "Texture"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Texture *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "TextureUnsafe(resource)"
-                  ]
-                },
-                "name": "Texture"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Texture &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "Texture",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Texture &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "Texture(other.release())"
-                  ]
-                },
-                "name": "Texture"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "RendererRef",
-                    "name": "renderer"
-                  },
-                  {
-                    "type": "StringParam",
-                    "name": "file"
-                  }
-                ],
-                "name": "Texture",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "RendererRef",
-                    "name": "renderer"
-                  },
-                  {
-                    "type": "IOStreamRef",
-                    "name": "src"
-                  }
-                ],
-                "name": "Texture",
-                "doc": ""
-              },
-              {
-                "doc": "Create a texture for a rendering context.\n\nThe contents of a texture when first created are not defined.\n\n@param renderer the rendering context.\n@param format one of the enumerated values in PixelFormat.\n@param access one of the enumerated values in TextureAccess.\n@param w the width of the texture in pixels.\n@param h the height of the texture in pixels.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
-                "name": "Texture",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "renderer",
-                    "type": "RendererRef"
-                  },
-                  {
-                    "name": "format",
-                    "type": "PixelFormat"
-                  },
-                  {
-                    "name": "access",
-                    "type": "TextureAccess"
-                  },
-                  {
-                    "name": "size",
-                    "type": "const SDL_Point &"
-                  }
-                ],
-                "sourceName": "SDL_CreateTexture",
-                "proto": false
-              },
-              {
-                "doc": "Create a texture from an existing surface.\n\nThe surface is not modified or freed by this function.\n\nThe TextureAccess hint for the created texture is\n`TEXTUREACCESS_STATIC`.\n\nThe pixel format of the created texture may be different from the pixel\nformat of the surface, and can be queried using the\nprop::Texture.FORMAT_NUMBER property.\n\n@param renderer the rendering context.\n@param surface the SurfaceRef structure containing pixel data used to fill\n               the texture.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy",
-                "name": "Texture",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "renderer",
-                    "type": "RendererRef"
-                  },
-                  {
-                    "name": "surface",
-                    "type": "SurfaceRef"
-                  }
-                ],
-                "sourceName": "SDL_CreateTextureFromSurface",
-                "proto": false
-              },
-              {
-                "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value\n  describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR\n  for floating point textures, COLORSPACE_HDR10 for 10-bit textures,\n  COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for\n  YUV textures.\n- `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat, defaults to the best RGBA format for the renderer\n- `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess, defaults to TEXTUREACCESS_STATIC\n- `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
-                "name": "Texture",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "renderer",
-                    "type": "RendererRef"
-                  },
-                  {
-                    "name": "props",
-                    "type": "PropertiesRef"
-                  }
-                ],
-                "sourceName": "SDL_CreateTextureWithProperties",
-                "proto": false
-              }
-            ],
-            "~Texture": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~Texture"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Texture &",
-              "parameters": [
-                {
-                  "type": "Texture",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
             },
             "Load": [
               {
-                "name": "Load",
                 "kind": "function",
-                "type": "Texture",
                 "proto": true,
-                "static": true,
                 "parameters": [
                   {
                     "type": "RendererRef",
@@ -11255,14 +10318,17 @@
                     "name": "file"
                   }
                 ],
+                "static": true,
+                "type": "Texture",
+                "hints": {
+                  "wrapSelf": true
+                },
+                "name": "Load",
                 "doc": ""
               },
               {
-                "name": "Load",
                 "kind": "function",
-                "type": "Texture",
                 "proto": true,
-                "static": true,
                 "parameters": [
                   {
                     "type": "RendererRef",
@@ -11273,11 +10339,59 @@
                     "name": "src"
                   }
                 ],
+                "static": true,
+                "type": "Texture",
+                "hints": {
+                  "wrapSelf": true
+                },
+                "name": "Load",
+                "doc": ""
+              }
+            ],
+            "LoadBMP": [
+              {
+                "kind": "function",
+                "parameters": [
+                  {
+                    "type": "RendererRef",
+                    "name": "renderer"
+                  },
+                  {
+                    "type": "StringParam",
+                    "name": "file"
+                  }
+                ],
+                "static": true,
+                "type": "Texture",
+                "hints": {
+                  "wrapSelf": true
+                },
+                "name": "LoadBMP",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "parameters": [
+                  {
+                    "type": "RendererRef",
+                    "name": "renderer"
+                  },
+                  {
+                    "type": "IOStreamRef",
+                    "name": "src"
+                  }
+                ],
+                "static": true,
+                "type": "Texture",
+                "hints": {
+                  "wrapSelf": true
+                },
+                "name": "LoadBMP",
                 "doc": ""
               }
             ],
             "Create": {
-              "doc": "Create a texture for a rendering context.\n\nThe contents of a texture when first created are not defined.\n\n@param renderer the rendering context.\n@param format one of the enumerated values in PixelFormat.\n@param access one of the enumerated values in TextureAccess.\n@param w the width of the texture in pixels.\n@param h the height of the texture in pixels.\n@returns the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
+              "doc": "Create a texture for a rendering context.\n\nThe contents of a texture when first created are not defined.\n\n@param renderer the rendering context.\n@param format one of the enumerated values in PixelFormat.\n@param access one of the enumerated values in TextureAccess.\n@param w the width of the texture in pixels.\n@param h the height of the texture in pixels.\n@returns the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.CreateFromSurface\n@sa Texture.CreateWithProperties\n@sa Texture.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
               "name": "Create",
               "kind": "function",
               "type": "Texture",
@@ -11300,13 +10414,13 @@
                 }
               ],
               "sourceName": "SDL_CreateTexture",
+              "static": true,
               "hints": {
-                "body": "return Texture(renderer, format, access, size);"
-              },
-              "static": true
+                "wrapSelf": true
+              }
             },
             "CreateFromSurface": {
-              "doc": "Create a texture from an existing surface.\n\nThe surface is not modified or freed by this function.\n\nThe TextureAccess hint for the created texture is\n`TEXTUREACCESS_STATIC`.\n\nThe pixel format of the created texture may be different from the pixel\nformat of the surface, and can be queried using the\nprop::Texture.FORMAT_NUMBER property.\n\n@param renderer the rendering context.\n@param surface the SurfaceRef structure containing pixel data used to fill\n               the texture.\n@returns the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy",
+              "doc": "Create a texture from an existing surface.\n\nThe surface is not modified or freed by this function.\n\nThe TextureAccess hint for the created texture is\n`TEXTUREACCESS_STATIC`.\n\nThe pixel format of the created texture may be different from the pixel\nformat of the surface, and can be queried using the\nprop::Texture.FORMAT_NUMBER property.\n\n@param renderer the rendering context.\n@param surface the SurfaceRef structure containing pixel data used to fill\n               the texture.\n@returns the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Create\n@sa Texture.CreateWithProperties\n@sa Texture.Destroy",
               "name": "CreateFromSurface",
               "kind": "function",
               "type": "Texture",
@@ -11321,13 +10435,13 @@
                 }
               ],
               "sourceName": "SDL_CreateTextureFromSurface",
+              "static": true,
               "hints": {
-                "body": "return Texture(renderer, surface);"
-              },
-              "static": true
+                "wrapSelf": true
+              }
             },
             "CreateWithProperties": {
-              "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value\n  describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR\n  for floating point textures, COLORSPACE_HDR10 for 10-bit textures,\n  COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for\n  YUV textures.\n- `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat, defaults to the best RGBA format for the renderer\n- `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess, defaults to TEXTUREACCESS_STATIC\n- `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@returns the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
+              "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value\n  describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR\n  for floating point textures, COLORSPACE_HDR10 for 10-bit textures,\n  COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for\n  YUV textures.\n- `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat, defaults to the best RGBA format for the renderer\n- `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess, defaults to TEXTUREACCESS_STATIC\n- `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@returns the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Texture.Create\n@sa Texture.CreateFromSurface\n@sa Texture.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
               "name": "CreateWithProperties",
               "kind": "function",
               "type": "Texture",
@@ -11342,14 +10456,57 @@
                 }
               ],
               "sourceName": "SDL_CreateTextureWithProperties",
+              "static": true,
               "hints": {
-                "body": "return Texture(renderer, props);"
-              },
-              "static": true
+                "wrapSelf": true
+              }
+            },
+            "Destroy": {
+              "doc": "Destroy the specified texture.\n\nPassing nullptr or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Create\n@sa Texture.CreateFromSurface",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyTexture",
+              "hints": {
+                "body": "reset();"
+              }
             }
           },
           "hints": {
-            "super": "Texture"
+            "self": "Texture"
+          }
+        },
+        "TextureUnsafe": {
+          "name": "TextureUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<TextureRef>",
+          "doc": "Unsafe Handle to texture\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextureRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "TextureUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Texture &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs TextureUnsafe from Texture.",
+              "hints": {
+                "init": [
+                  "TextureUnsafe(other.release())"
+                ]
+              },
+              "name": "TextureUnsafe"
+            }
           }
         },
         "TextureLock": {
@@ -11462,25 +10619,8 @@
           },
           "doc": ""
         },
-        "TextureUnsafe::TextureUnsafe": {
-          "kind": "function",
-          "name": "TextureUnsafe::TextureUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Texture &&",
-              "name": "other"
-            }
-          ],
-          "hints": {
-            "init": [
-              "TextureUnsafe(other.release())"
-            ]
-          }
-        },
         "GetNumRenderDrivers": {
-          "doc": "Get the number of 2D rendering drivers available for the current display.\n\nA render driver is a set of code that handles rendering and texture\nmanagement on a particular display. Normally there is only one, but some\ndrivers may have several available with different capabilities.\n\nThere may be none if SDL was compiled without render support.\n\n@returns the number of built in render drivers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer\n@sa GetRenderDriver",
+          "doc": "Get the number of 2D rendering drivers available for the current display.\n\nA render driver is a set of code that handles rendering and texture\nmanagement on a particular display. Normally there is only one, but some\ndrivers may have several available with different capabilities.\n\nThere may be none if SDL was compiled without render support.\n\n@returns the number of built in render drivers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Create\n@sa GetRenderDriver",
           "name": "GetNumRenderDrivers",
           "kind": "function",
           "type": "int",
@@ -11501,7 +10641,7 @@
           "sourceName": "SDL_GetRenderDriver"
         },
         "CreateWindowAndRenderer": {
-          "doc": "Create a window and default renderer.\n\n@param title the title of the window, in UTF-8 encoding.\n@param width the width of the window.\n@param height the height of the window.\n@param window_flags the flags used to create the window (see\n                    Window.Window()).\n@param window a pointer filled with the window, or nullptr on error.\n@param renderer a pointer filled with the renderer, or nullptr on error.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer\n@sa Window.Window",
+          "doc": "Create a window and default renderer.\n\n@param title the title of the window, in UTF-8 encoding.\n@param width the width of the window.\n@param height the height of the window.\n@param window_flags the flags used to create the window (see\n                    Window.Create()).\n@param window a pointer filled with the window, or nullptr on error.\n@param renderer a pointer filled with the renderer, or nullptr on error.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Create\n@sa Window.Create",
           "name": "CreateWindowAndRenderer",
           "kind": "function",
           "type": "std::pair<Window, Renderer>",
@@ -36712,7 +35852,7 @@
           "sourceName": "SDL_GetSandbox"
         },
         "OnApplicationWillTerminate": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationWillTerminate.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Window!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Let iOS apps with external event handling report\nonApplicationWillTerminate.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Create!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "OnApplicationWillTerminate",
           "kind": "function",
           "type": "void",
@@ -36720,7 +35860,7 @@
           "sourceName": "SDL_OnApplicationWillTerminate"
         },
         "OnApplicationDidReceiveMemoryWarning": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationDidReceiveMemoryWarning.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Window!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Let iOS apps with external event handling report\nonApplicationDidReceiveMemoryWarning.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Create!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "OnApplicationDidReceiveMemoryWarning",
           "kind": "function",
           "type": "void",
@@ -36728,7 +35868,7 @@
           "sourceName": "SDL_OnApplicationDidReceiveMemoryWarning"
         },
         "OnApplicationWillEnterBackground": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationWillResignActive.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Window!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Let iOS apps with external event handling report\nonApplicationWillResignActive.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Create!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "OnApplicationWillEnterBackground",
           "kind": "function",
           "type": "void",
@@ -36736,7 +35876,7 @@
           "sourceName": "SDL_OnApplicationWillEnterBackground"
         },
         "OnApplicationDidEnterBackground": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationDidEnterBackground.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Window!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Let iOS apps with external event handling report\nonApplicationDidEnterBackground.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Create!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "OnApplicationDidEnterBackground",
           "kind": "function",
           "type": "void",
@@ -36744,7 +35884,7 @@
           "sourceName": "SDL_OnApplicationDidEnterBackground"
         },
         "OnApplicationWillEnterForeground": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationWillEnterForeground.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Window!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Let iOS apps with external event handling report\nonApplicationWillEnterForeground.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Create!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "OnApplicationWillEnterForeground",
           "kind": "function",
           "type": "void",
@@ -36752,7 +35892,7 @@
           "sourceName": "SDL_OnApplicationWillEnterForeground"
         },
         "OnApplicationDidEnterForeground": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationDidBecomeActive.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Window!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Let iOS apps with external event handling report\nonApplicationDidBecomeActive.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Create!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "OnApplicationDidEnterForeground",
           "kind": "function",
           "type": "void",
@@ -36760,7 +35900,7 @@
           "sourceName": "SDL_OnApplicationDidEnterForeground"
         },
         "OnApplicationDidChangeStatusBarOrientation": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationDidChangeStatusBarOrientation.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Window!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Let iOS apps with external event handling report\nonApplicationDidChangeStatusBarOrientation.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by Window.Create!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "OnApplicationDidChangeStatusBarOrientation",
           "kind": "function",
           "type": "void",
@@ -40912,7 +40052,7 @@
         ],
         "LoadTexture": [
           {
-            "doc": "Load an image from a filesystem path into a GPU texture.\n\nAn TextureRef represents an image in GPU memory, usable by SDL's 2D Render\nAPI. This can be significantly more efficient than using a CPU-bound\nSurfaceRef if you don't need to manipulate the image directly after\nloading it.\n\nIf the loaded image has transparency or a colorkey, a texture with an alpha\nchannel will be created. Otherwise, SDL_image will attempt to create an\nTextureRef in the most format that most reasonably represents the image\ndata (but in many cases, this will just end up being 32-bit RGB or 32-bit\nRGBA).\n\nThere is a separate function to read files from an IOStreamRef, if you\nneed an i/o abstraction to provide data from anywhere instead of a simple\nfilesystem read; that function is LoadTexture().\n\nIf you would rather decode an image to an SurfaceRef (a buffer of pixels\nin CPU memory), call LoadSurface() instead.\n\nWhen done with the returned texture, the app should dispose of it with a\ncall to TextureRef.Destroy().\n\n@param renderer the RendererRef to use to create the GPU texture.\n@param file a path on the filesystem to load an image from.\n@returns a new texture, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadTexture\n@sa LoadTexture",
+            "doc": "Load an image from a filesystem path into a GPU texture.\n\nAn TextureRef represents an image in GPU memory, usable by SDL's 2D Render\nAPI. This can be significantly more efficient than using a CPU-bound\nSurfaceRef if you don't need to manipulate the image directly after\nloading it.\n\nIf the loaded image has transparency or a colorkey, a texture with an alpha\nchannel will be created. Otherwise, SDL_image will attempt to create an\nTextureRef in the most format that most reasonably represents the image\ndata (but in many cases, this will just end up being 32-bit RGB or 32-bit\nRGBA).\n\nThere is a separate function to read files from an IOStreamRef, if you\nneed an i/o abstraction to provide data from anywhere instead of a simple\nfilesystem read; that function is LoadTexture().\n\nIf you would rather decode an image to an SurfaceRef (a buffer of pixels\nin CPU memory), call LoadSurface() instead.\n\nWhen done with the returned texture, the app should dispose of it with a\ncall to Texture.Destroy().\n\n@param renderer the RendererRef to use to create the GPU texture.\n@param file a path on the filesystem to load an image from.\n@returns a new texture, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadTexture\n@sa LoadTexture",
             "name": "LoadTexture",
             "kind": "function",
             "type": "Texture",
@@ -40929,7 +40069,7 @@
             "sourceName": "IMG_LoadTexture"
           },
           {
-            "doc": "Load an image from an SDL data source into a GPU texture.\n\nAn TextureRef represents an image in GPU memory, usable by SDL's 2D Render\nAPI. This can be significantly more efficient than using a CPU-bound\nSurfaceRef if you don't need to manipulate the image directly after\nloading it.\n\nIf the loaded image has transparency or a colorkey, a texture with an alpha\nchannel will be created. Otherwise, SDL_image will attempt to create an\nTextureRef in the most format that most reasonably represents the image\ndata (but in many cases, this will just end up being 32-bit RGB or 32-bit\nRGBA).\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nThere is a separate function to read files from disk without having to deal\nwith IOStreamRef: `LoadTexture(renderer, \"filename.jpg\")` will call\nthis function and manage those details for you, determining the file type\nfrom the filename's extension.\n\nThere is also LoadTexture(), which is equivalent to this\nfunction except a file extension (like \"BMP\", \"JPG\", etc) can be specified,\nin case SDL_image cannot autodetect the file format.\n\nIf you would rather decode an image to an SurfaceRef (a buffer of pixels\nin CPU memory), call LoadSurface() instead.\n\nWhen done with the returned texture, the app should dispose of it with a\ncall to TextureRef.Destroy().\n\n@param renderer the RendererRef to use to create the GPU texture.\n@param src an IOStreamRef that data will be read from.\n@param closeio true to close/free the IOStreamRef before returning, false\n               to leave it open.\n@returns a new texture, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadTexture\n@sa LoadTexture\n@sa TextureRef.Destroy",
+            "doc": "Load an image from an SDL data source into a GPU texture.\n\nAn TextureRef represents an image in GPU memory, usable by SDL's 2D Render\nAPI. This can be significantly more efficient than using a CPU-bound\nSurfaceRef if you don't need to manipulate the image directly after\nloading it.\n\nIf the loaded image has transparency or a colorkey, a texture with an alpha\nchannel will be created. Otherwise, SDL_image will attempt to create an\nTextureRef in the most format that most reasonably represents the image\ndata (but in many cases, this will just end up being 32-bit RGB or 32-bit\nRGBA).\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nThere is a separate function to read files from disk without having to deal\nwith IOStreamRef: `LoadTexture(renderer, \"filename.jpg\")` will call\nthis function and manage those details for you, determining the file type\nfrom the filename's extension.\n\nThere is also LoadTexture(), which is equivalent to this\nfunction except a file extension (like \"BMP\", \"JPG\", etc) can be specified,\nin case SDL_image cannot autodetect the file format.\n\nIf you would rather decode an image to an SurfaceRef (a buffer of pixels\nin CPU memory), call LoadSurface() instead.\n\nWhen done with the returned texture, the app should dispose of it with a\ncall to Texture.Destroy().\n\n@param renderer the RendererRef to use to create the GPU texture.\n@param src an IOStreamRef that data will be read from.\n@param closeio true to close/free the IOStreamRef before returning, false\n               to leave it open.\n@returns a new texture, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadTexture\n@sa LoadTexture\n@sa Texture.Destroy",
             "name": "LoadTexture",
             "kind": "function",
             "type": "Texture",
@@ -40946,7 +40086,7 @@
             "sourceName": "IMG_LoadTexture_IO"
           },
           {
-            "doc": "Load an image from an SDL data source into a GPU texture.\n\nAn TextureRef represents an image in GPU memory, usable by SDL's 2D Render\nAPI. This can be significantly more efficient than using a CPU-bound\nSurfaceRef if you don't need to manipulate the image directly after\nloading it.\n\nIf the loaded image has transparency or a colorkey, a texture with an alpha\nchannel will be created. Otherwise, SDL_image will attempt to create an\nTextureRef in the most format that most reasonably represents the image\ndata (but in many cases, this will just end up being 32-bit RGB or 32-bit\nRGBA).\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nEven though this function accepts a file type, SDL_image may still try\nother decoders that are capable of detecting file type from the contents of\nthe image data, but may rely on the caller-provided type string for formats\nthat it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on\nits ability to guess the format.\n\nThere is a separate function to read files from disk without having to deal\nwith IOStreamRef: `LoadTexture(\"filename.jpg\")` will call this\nfunction and manage those details for you, determining the file type from\nthe filename's extension.\n\nThere is also LoadTexture(), which is equivalent to this function\nexcept that it will rely on SDL_image to determine what type of data it is\nloading, much like passing a nullptr for type.\n\nIf you would rather decode an image to an SurfaceRef (a buffer of pixels\nin CPU memory), call LoadSurface() instead.\n\nWhen done with the returned texture, the app should dispose of it with a\ncall to TextureRef.Destroy().\n\n@param renderer the RendererRef to use to create the GPU texture.\n@param src an IOStreamRef that data will be read from.\n@param closeio true to close/free the IOStreamRef before returning, false\n               to leave it open.\n@param type a filename extension that represent this data (\"BMP\", \"GIF\",\n            \"PNG\", etc).\n@returns a new texture, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadTexture\n@sa LoadTexture\n@sa TextureRef.Destroy",
+            "doc": "Load an image from an SDL data source into a GPU texture.\n\nAn TextureRef represents an image in GPU memory, usable by SDL's 2D Render\nAPI. This can be significantly more efficient than using a CPU-bound\nSurfaceRef if you don't need to manipulate the image directly after\nloading it.\n\nIf the loaded image has transparency or a colorkey, a texture with an alpha\nchannel will be created. Otherwise, SDL_image will attempt to create an\nTextureRef in the most format that most reasonably represents the image\ndata (but in many cases, this will just end up being 32-bit RGB or 32-bit\nRGBA).\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nEven though this function accepts a file type, SDL_image may still try\nother decoders that are capable of detecting file type from the contents of\nthe image data, but may rely on the caller-provided type string for formats\nthat it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on\nits ability to guess the format.\n\nThere is a separate function to read files from disk without having to deal\nwith IOStreamRef: `LoadTexture(\"filename.jpg\")` will call this\nfunction and manage those details for you, determining the file type from\nthe filename's extension.\n\nThere is also LoadTexture(), which is equivalent to this function\nexcept that it will rely on SDL_image to determine what type of data it is\nloading, much like passing a nullptr for type.\n\nIf you would rather decode an image to an SurfaceRef (a buffer of pixels\nin CPU memory), call LoadSurface() instead.\n\nWhen done with the returned texture, the app should dispose of it with a\ncall to Texture.Destroy().\n\n@param renderer the RendererRef to use to create the GPU texture.\n@param src an IOStreamRef that data will be read from.\n@param closeio true to close/free the IOStreamRef before returning, false\n               to leave it open.\n@param type a filename extension that represent this data (\"BMP\", \"GIF\",\n            \"PNG\", etc).\n@returns a new texture, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadTexture\n@sa LoadTexture\n@sa Texture.Destroy",
             "name": "LoadTexture",
             "kind": "function",
             "type": "Texture",

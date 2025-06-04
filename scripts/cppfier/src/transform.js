@@ -708,15 +708,24 @@ function expandResources(sourceEntries, file, context) {
     }
     for (const sourceName of resourceEntry.ctors ?? []) {
       const entry = refSubEntries[sourceName];
-      if (typeof entry === "string" || Array.isArray(entry) || !entry.name) {
+      if (typeof entry === "string") {
         system.warn(`${sourceName} can not be a custom ctor, only objects containing name property can be accepted.`);
         continue;
       }
       delete refSubEntries[sourceName];
+      // @ts-ignore
       uniqueSubEntries[sourceName] = entry;
-      entry.static = true;
-      entry.type = uniqueName;
-      addHints(entry, { wrapSelf: true });
+      if (Array.isArray(entry)) {
+        entry.forEach(e => {
+          e.static = true;
+          e.type = uniqueName;
+          addHints(e, { wrapSelf: true });
+        });
+      } else {
+        entry.static = true;
+        entry.type = uniqueName;
+        addHints(entry, { wrapSelf: true });
+      }
     }
 
     // const staticCreateFunctions = !resourceEntry.noStaticCtors;
