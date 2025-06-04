@@ -207,7 +207,7 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  *
  * @sa LoadSurface
  * @sa LoadSurface
- * @sa SurfaceRef.Destroy
+ * @sa Surface.Destroy
  */
 inline Surface LoadSurface(IOStreamRef src)
 {

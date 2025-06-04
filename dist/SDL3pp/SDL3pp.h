@@ -34191,7 +34191,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceRef.Destroy
+   * @sa Surface.Destroy
    */
   Surface Duplicate() const;
 
@@ -34209,7 +34209,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceRef.Destroy
+   * @sa Surface.Destroy
    */
   Surface Scale(int width, int height, ScaleMode scaleMode) const;
 
@@ -34236,7 +34236,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SurfaceRef.Convert
-   * @sa SurfaceRef.Destroy
+   * @sa Surface.Destroy
    */
   Surface Convert(PixelFormat format) const;
 
@@ -34264,7 +34264,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SurfaceRef.Convert
-   * @sa SurfaceRef.Destroy
+   * @sa Surface.Destroy
    */
   Surface Convert(PixelFormat format,
                   PaletteRef palette,
@@ -50970,7 +50970,7 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  *
  * @sa LoadSurface
  * @sa LoadSurface
- * @sa SurfaceRef.Destroy
+ * @sa Surface.Destroy
  */
 inline Surface LoadSurface(IOStreamRef src)
 {
