@@ -236,9 +236,9 @@ struct Storage;
 /**
  * Function interface for StorageRef.
  *
- * Apps that want to supply a custom implementation of StorageRef will fill
+ * Apps that want to supply a custom implementation of Storage will fill
  * in all the functions in this struct, and then pass it to
- * StorageRef.StorageRef to create a custom StorageRef object.
+ * Storage.Open to create a custom StorageRef object.
  *
  * It is not usually necessary to do this; SDL provides standard
  * implementations for many things you might expect to do with an StorageRef.
@@ -255,8 +255,8 @@ using StorageInterface = SDL_StorageInterface;
  * An abstract interface for filesystem access.
  *
  * This is an opaque datatype. One can create this object using standard SDL
- * functions like StorageRef.StorageRef or StorageRef.StorageRef, etc, or
- * create an object with a custom implementation using StorageRef.StorageRef.
+ * functions like Storage.OpenTitle or Storage.OpenUser, etc, or create
+ * an object with a custom implementation using Storage.Open.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -626,36 +626,22 @@ struct StorageRef : Resource<SDL_Storage*>
     return OwnArray<char*>{data, size_t(count)};
   }
 
-protected:
   /**
    * Closes and frees a storage container.
    *
-   * @returns true if the container was freed with no errors, false otherwise;
-   *          call GetError() for more information. Even if the function
-   *          returns an error, the container data will be freed; the error is
-   *          only for informational purposes.
+   * @param resource a storage container to close.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Storage
+   * @sa Storage.OpenFile
+   * @sa Storage.Open
+   * @sa Storage.OpenTitle
+   * @sa Storage.OpenUser
    */
-  bool Close() { return reset(); }
-
-  /**
-   * Closes and frees a storage container.
-   *
-   * @returns true if the container was freed with no errors, false otherwise;
-   *          call GetError() for more information. Even if the function
-   *          returns an error, the container data will be freed; the error is
-   *          only for informational purposes.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Storage.Storage
-   */
-  bool reset(SDL_Storage* newResource = {})
+  static void reset(SDL_Storage* resource)
   {
-    return SDL_CloseStorage(release(newResource));
+    CheckError(SDL_CloseStorage(resource));
   }
 };
 
@@ -668,37 +654,14 @@ protected:
  *
  * @sa StorageRef
  */
-struct StorageUnsafe : StorageRef
+struct StorageUnsafe : ResourcePtr<StorageRef>
 {
-  using StorageRef::Close;
-
-  using StorageRef::StorageRef;
-
-  using StorageRef::reset;
-
-  /**
-   * Constructs StorageUnsafe from StorageRef.
-   */
-  constexpr StorageUnsafe(const StorageRef& other)
-    : StorageRef(other.get())
-  {
-  }
-
-  StorageUnsafe(const Storage& other) = delete;
+  using ResourcePtr::ResourcePtr;
 
   /**
    * Constructs StorageUnsafe from Storage.
    */
   constexpr explicit StorageUnsafe(Storage&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr StorageUnsafe& operator=(StorageUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
 };
 
 /**
@@ -708,153 +671,9 @@ struct StorageUnsafe : StorageRef
  *
  * @sa StorageRef
  */
-struct Storage : StorageUnsafe
+struct Storage : ResourceUnique<StorageRef>
 {
-  using StorageUnsafe::StorageUnsafe;
-
-  /**
-   * Constructs an empty Storage.
-   */
-  constexpr Storage()
-    : StorageUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Storage(SDL_Storage* resource)
-    : StorageUnsafe(resource)
-  {
-  }
-
-  constexpr Storage(const Storage& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Storage(Storage&& other)
-    : Storage(other.release())
-  {
-  }
-
-  /**
-   * Opens up a read-only container for the application's filesystem.
-   *
-   * @param override a path to override the backend's default title root.
-   * @param props a property list that may contain backend-specific information.
-   * @post a title storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageRef.Close
-   * @sa StorageRef.GetFileSize
-   * @sa StorageRef.ReadFile
-   */
-  Storage(StringParam override, PropertiesRef props)
-    : Storage(CheckError(SDL_OpenTitleStorage(override, props.get())))
-  {
-  }
-
-  /**
-   * Opens up a container for a user's unique read/write filesystem.
-   *
-   * While title storage can generally be kept open throughout runtime, user
-   * storage should only be opened when the client is ready to read/write files.
-   * This allows the backend to properly batch file operations and flush them
-   * when the container has been closed; ensuring safe and optimal save I/O.
-   *
-   * @param org the name of your organization.
-   * @param app the name of your application.
-   * @param props a property list that may contain backend-specific information.
-   * @post a user storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageRef.Close
-   * @sa StorageRef.GetFileSize
-   * @sa StorageRef.GetSpaceRemaining
-   * @sa StorageRef.ReadFile
-   * @sa StorageRef.Ready
-   * @sa StorageRef.WriteFile
-   */
-  Storage(StringParam org, StringParam app, PropertiesRef props)
-    : Storage(CheckError(SDL_OpenUserStorage(org, app, props.get())))
-  {
-  }
-
-  /**
-   * Opens up a container for local filesystem storage.
-   *
-   * This is provided for development and tools. Portable applications should
-   * use Storage.Storage() for access to game data and
-   * Storage.Storage() for access to user data.
-   *
-   * @param path the base path prepended to all storage paths, or nullptr for no
-   *             base path.
-   * @post a filesystem storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageRef.Close
-   * @sa StorageRef.GetFileSize
-   * @sa StorageRef.GetSpaceRemaining
-   * @sa StorageRef.ReadFile
-   * @sa StorageRef.WriteFile
-   */
-  Storage(StringParam path)
-    : Storage(CheckError(SDL_OpenFileStorage(path)))
-  {
-  }
-
-  /**
-   * Opens up a container using a client-provided storage interface.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own StorageRef implementation. If you just need an StorageRef, you
-   * should use the built-in implementations in SDL, like Storage.Storage()
-   * or Storage.Storage().
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this storage, initialized using
-   *              SDL_INIT_INTERFACE().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @post a storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageRef.Close
-   * @sa StorageRef.GetFileSize
-   * @sa StorageRef.GetSpaceRemaining
-   * @sa SDL_INIT_INTERFACE
-   * @sa StorageRef.ReadFile
-   * @sa StorageRef.Ready
-   * @sa StorageRef.WriteFile
-   */
-  Storage(const StorageInterface& iface, void* userdata)
-    : Storage(CheckError(SDL_OpenStorage(&iface, userdata)))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Storage() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Storage& operator=(Storage other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Opens up a read-only container for the application's filesystem.
@@ -866,14 +685,14 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageRef.Close
+   * @sa Storage.Close
    * @sa StorageRef.GetFileSize
-   * @sa Storage.Storage
+   * @sa Storage.OpenUser
    * @sa StorageRef.ReadFile
    */
   static Storage OpenTitle(StringParam override, PropertiesRef props)
   {
-    return Storage(std::move(override), props);
+    return Storage(CheckError(SDL_OpenTitleStorage(override, props)));
   }
 
   /**
@@ -892,25 +711,25 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageRef.Close
+   * @sa Storage.Close
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.GetSpaceRemaining
-   * @sa Storage.Storage
+   * @sa Storage.OpenTitle
    * @sa StorageRef.ReadFile
    * @sa StorageRef.Ready
    * @sa StorageRef.WriteFile
    */
   static Storage OpenUser(StringParam org, StringParam app, PropertiesRef props)
   {
-    return Storage(std::move(org), std::move(app), props);
+    return Storage(CheckError(SDL_OpenUserStorage(org, app, props)));
   }
 
   /**
    * Opens up a container for local filesystem storage.
    *
    * This is provided for development and tools. Portable applications should
-   * use Storage.Storage() for access to game data and
-   * Storage.Storage() for access to user data.
+   * use Storage.OpenTitle() for access to game data and
+   * Storage.OpenUser() for access to user data.
    *
    * @param path the base path prepended to all storage paths, or nullptr for no
    *             base path.
@@ -919,23 +738,26 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageRef.Close
+   * @sa Storage.Close
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.GetSpaceRemaining
-   * @sa Storage.Storage
-   * @sa Storage.Storage
+   * @sa Storage.OpenTitle
+   * @sa Storage.OpenUser
    * @sa StorageRef.ReadFile
    * @sa StorageRef.WriteFile
    */
-  static Storage OpenFile(StringParam path) { return Storage(std::move(path)); }
+  static Storage OpenFile(StringParam path)
+  {
+    return Storage(CheckError(SDL_OpenFileStorage(path)));
+  }
 
   /**
    * Opens up a container using a client-provided storage interface.
    *
    * Applications do not need to use this function unless they are providing
    * their own StorageRef implementation. If you just need an StorageRef, you
-   * should use the built-in implementations in SDL, like Storage.Storage()
-   * or Storage.Storage().
+   * should use the built-in implementations in SDL, like Storage.OpenTitle()
+   * or Storage.OpenUser().
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -948,7 +770,7 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageRef.Close
+   * @sa Storage.Close
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.GetSpaceRemaining
    * @sa SDL_INIT_INTERFACE
@@ -958,8 +780,22 @@ struct Storage : StorageUnsafe
    */
   static Storage Open(const StorageInterface& iface, void* userdata)
   {
-    return Storage(iface, userdata);
+    return Storage(CheckError(SDL_OpenStorage(&iface, userdata)));
   }
+
+  /**
+   * Closes and frees a storage container.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Storage.OpenFile
+   * @sa Storage.Open
+   * @sa Storage.OpenTitle
+   * @sa Storage.OpenUser
+   */
+  void Close() { return reset(); }
 };
 
 constexpr StorageUnsafe::StorageUnsafe(Storage&& other)

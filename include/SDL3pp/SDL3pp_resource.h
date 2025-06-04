@@ -59,6 +59,9 @@ public:
   /// True if contains a valid resource
   constexpr explicit operator bool() const { return m_resource; }
 
+  /// Converts back to underlying type
+  constexpr operator value_type() const { return m_resource; }
+
   /// Comparison
   constexpr bool operator==(const Resource& other) const = default;
 

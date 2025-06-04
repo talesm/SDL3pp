@@ -5873,7 +5873,7 @@ const transform = {
       }
     },
     "SDL_storage.h": {
-      resources: {
+      resourcesNew: {
         "SDL_Storage": {
           free: "SDL_CloseStorage",
           entries: {
@@ -5968,6 +5968,10 @@ const transform = {
               parameters: [
                 {}, {}, {}, {}
               ]
+            },
+            "SDL_CloseStorage": {
+              type: "void",
+              hints: { mayFail: true }
             }
           }
         }
