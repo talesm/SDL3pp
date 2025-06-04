@@ -167,10 +167,10 @@ Variables</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>This document can't cover the complicated topic of thread safety, but reading up on what each of these primitives are, why they are useful, and how to correctly use them is vital to writing correct and safe multithreaded programs.</p>
 <ul>
-<li>Mutexes: <a class="el" href="structSDL_1_1Mutex.html#a5efc976c19ab75420cc30b00d4317bc4" title="Create a new mutex.">Mutex.Mutex()</a></li>
-<li>Read/Write locks: <a class="el" href="structSDL_1_1RWLock.html#a8dcdd21f17d07913492090ed97b44b91" title="Create a new read/write lock.">RWLock.RWLock()</a></li>
-<li>Semaphores: <a class="el" href="structSDL_1_1Semaphore.html#a289a0dd87222d6b4b6d874d921b4c208" title="Constructs an empty Semaphore.">Semaphore.Semaphore()</a></li>
-<li><a class="el" href="structSDL_1_1Condition.html" title="Handle to an owned condition.">Condition</a> variables: <a class="el" href="structSDL_1_1Condition.html#a226cebe2073619b474e7c83dc5d7d264" title="Create a condition variable.">Condition.Condition()</a></li>
+<li>Mutexes: <a class="el" href="structSDL_1_1Mutex.html#a71443f08ef2457078fdc48010a0adc59" title="Create a new mutex.">Mutex.Create()</a></li>
+<li>Read/Write locks: <a class="el" href="structSDL_1_1RWLock.html#a41ece4523b5f948bb19fcad38adaa254" title="Create a new read/write lock.">RWLock.Create()</a></li>
+<li>Semaphores: <a class="el" href="structSDL_1_1Semaphore.html#af3fce326bd0690af1ab3d656e1be2302" title="Create a semaphore.">Semaphore.Create()</a></li>
+<li><a class="el" href="structSDL_1_1Condition.html" title="Handle to an owned condition.">Condition</a> variables: <a class="el" href="structSDL_1_1Condition.html#aa70e6c5acbd8b641ca2b32242697c628" title="Create a condition variable.">Condition.Create()</a></li>
 </ul>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> also offers a datatype, <a class="el" href="structSDL_1_1InitState.html" title="A structure used for thread-safe initialization and shutdown.">InitState</a>, which can be used to make sure only one thread initializes/deinitializes some resource that several threads might try to use for the first time simultaneously. </p>
 <h2 class="groupheader">Typedef Documentation</h2>

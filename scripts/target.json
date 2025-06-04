@@ -17931,7 +17931,7 @@
           "sourceName": "SDL_FLIP_VERTICAL"
         },
         "SurfaceRef": {
-          "doc": "A collection of pixels used in software blitting.\n\nPixels are arranged in memory in rows, with the top row first. Each row\noccupies an amount of memory given by the pitch (sometimes known as the row\nstride in non-SDL APIs).\n\nWithin each row, pixels are arranged from left to right until the width is\nreached. Each pixel occupies a number of bits appropriate for its format,\nwith most formats representing each pixel as one or more whole bytes (in\nsome indexed formats, instead multiple pixels are packed into each byte),\nand a byte order given by the format. After encoding all pixels, any\nremaining bytes to reach the pitch are used as padding to reach a desired\nalignment, and have undefined contents.\n\nWhen a surface holds YUV format data, the planes are assumed to be\ncontiguous without padding between them, e.g. a 32x32 surface in NV12\nformat with a pitch of 32 would consist of 32x32 bytes of Y plane followed\nby 32x16 bytes of UV plane.\n\nWhen a surface holds MJPG format data, pixels points at the compressed JPEG\nimage and pitch is the length of that data.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Surface.Create\n@sa Surface.Destroy\n\n@cat resource\n\n@sa Surface\n@sa SurfaceRef",
+          "doc": "A collection of pixels used in software blitting.\n\nPixels are arranged in memory in rows, with the top row first. Each row\noccupies an amount of memory given by the pitch (sometimes known as the row\nstride in non-SDL APIs).\n\nWithin each row, pixels are arranged from left to right until the width is\nreached. Each pixel occupies a number of bits appropriate for its format,\nwith most formats representing each pixel as one or more whole bytes (in\nsome indexed formats, instead multiple pixels are packed into each byte),\nand a byte order given by the format. After encoding all pixels, any\nremaining bytes to reach the pitch are used as padding to reach a desired\nalignment, and have undefined contents.\n\nWhen a surface holds YUV format data, the planes are assumed to be\ncontiguous without padding between them, e.g. a 32x32 surface in NV12\nformat with a pitch of 32 would consist of 32x32 bytes of Y plane followed\nby 32x16 bytes of UV plane.\n\nWhen a surface holds MJPG format data, pixels points at the compressed JPEG\nimage and pitch is the length of that data.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Surface.Create\n@sa Surface.Destroy\n\n@cat resource\n\n@sa Surface",
           "name": "SurfaceRef",
           "kind": "struct",
           "sourceName": "SDL_Surface",
@@ -20436,7 +20436,7 @@
           "doc": "A callback that fires when data is about to be fed to an audio device.\n\nThis is useful for accessing the final mix, perhaps for writing a\nvisualizer or applying a final effect to the audio data before playback.\n\nThis callback should run as quickly as possible and not block for any\nsignificant time, as this callback delays submission of data to the audio\ndevice, which can cause audio playback problems.\n\nThe postmix callback _must_ be able to handle any audio data format\nspecified in `spec`, which can change between callbacks if the audio device\nchanged. However, this only covers frequency and channel count; data is\nalways provided here in AUDIO_F32 format.\n\nThe postmix callback runs _after_ logical device gain and audiostream gain\nhave been applied, which is to say you can make the output data louder at\nthis point than the gain settings would suggest.\n\n@param userdata a pointer provided by the app through\n                AudioDeviceRef.SetPostmixCallback, for its own use.\n@param spec the current format of audio that is to be submitted to the\n            audio device.\n@param buffer the buffer of audio samples to be submitted. The callback can\n              inspect and/or modify this data.\n@param buflen the size of `buffer` in bytes.\n\n@threadsafety This will run from a background thread owned by SDL. The\n              application is responsible for locking resources the callback\n              touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AudioDeviceRef.SetPostmixCallback\n@sa AudioPostmixCallback"
         },
         "AudioDeviceRef": {
-          "doc": "SDL Audio Device instance IDs.\n\nZero is used to signify an invalid/null device.\n\n@since This datatype is available since SDL 3.2.0.\n\n@cat resource\n\n@sa AudioDevice\n@sa AudioDeviceRef",
+          "doc": "SDL Audio Device instance IDs.\n\nZero is used to signify an invalid/null device.\n\n@since This datatype is available since SDL 3.2.0.\n\n@cat resource\n\n@sa AudioDevice",
           "name": "AudioDeviceRef",
           "kind": "struct",
           "type": "Resource<SDL_AudioDeviceID>",
@@ -20812,7 +20812,7 @@
           "doc": "A callback that fires when data passes through an AudioStreamRef.\n\nApps can (optionally) register a callback with an audio stream that is\ncalled when data is added with AudioStreamRef.PutData, or requested with\nAudioStreamRef.GetData.\n\nTwo values are offered here: one is the amount of additional data needed to\nsatisfy the immediate request (which might be zero if the stream already\nhas enough data queued) and the other is the total amount being requested.\nIn a Get call triggering a Put callback, these values can be different. In\na Put call triggering a Get callback, these values are always the same.\n\nByte counts might be slightly overestimated due to buffering or resampling,\nand may change from call to call.\n\nThis callback is not required to do anything. Generally this is useful for\nadding/reading data on demand, and the app will often put/get data as\nappropriate, but the system goes on with the data currently available to it\nif this callback does nothing.\n\n@param stream the SDL audio stream associated with this callback.\n@param additional_amount the amount of data, in bytes, that is needed right\n                         now.\n@param total_amount the total amount of data requested, in bytes, that is\n                    requested or available.\n@param userdata an opaque pointer provided by the app for their personal\n                use.\n\n@threadsafety This callbacks may run from any thread, so if you need to\n              protect shared data, you should use AudioStreamRef.Lock to\n              serialize access; this lock will be held before your callback\n              is called, so your callback does not need to manage the lock\n              explicitly.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AudioStreamRef.SetGetCallback\n@sa AudioStreamRef.SetPutCallback\n@sa AudioStreamCallback"
         },
         "AudioStreamRef": {
-          "doc": "The opaque handle that represents an audio stream.\n\nAudioStreamRef is an audio conversion interface.\n\n- It can handle resampling data in chunks without generating artifacts,\n  when it doesn't have the complete buffer available.\n- It can handle incoming data in any variable size.\n- It can handle input/output format changes on the fly.\n- It can remap audio channels between inputs and outputs.\n- You push data as you have it, and pull it when you need it\n- It can also function as a basic audio data queue even if you just have\n  sound that needs to pass from one place to another.\n- You can hook callbacks up to them when more data is added or requested,\n  to manage data on-the-fly.\n\nAudio streams are the core of the SDL3 audio interface. You create one or\nmore of them, bind them to an opened audio device, and feed data to them\n(or for recording, consume data from them).\n\n@since This struct is available since SDL 3.2.0.\n\n@sa AudioStream.Create\n\n@cat resource\n\n@sa AudioStream\n@sa AudioStreamRef",
+          "doc": "The opaque handle that represents an audio stream.\n\nAudioStreamRef is an audio conversion interface.\n\n- It can handle resampling data in chunks without generating artifacts,\n  when it doesn't have the complete buffer available.\n- It can handle incoming data in any variable size.\n- It can handle input/output format changes on the fly.\n- It can remap audio channels between inputs and outputs.\n- You push data as you have it, and pull it when you need it\n- It can also function as a basic audio data queue even if you just have\n  sound that needs to pass from one place to another.\n- You can hook callbacks up to them when more data is added or requested,\n  to manage data on-the-fly.\n\nAudio streams are the core of the SDL3 audio interface. You create one or\nmore of them, bind them to an opened audio device, and feed data to them\n(or for recording, consume data from them).\n\n@since This struct is available since SDL 3.2.0.\n\n@sa AudioStream.Create\n\n@cat resource\n\n@sa AudioStream",
           "name": "AudioStreamRef",
           "kind": "struct",
           "type": "Resource<SDL_AudioStream *>",
@@ -29024,7 +29024,7 @@
           "sourceName": "SDL_MouseID"
         },
         "CursorRef": {
-          "doc": "The structure used to identify an SDL cursor.\n\nThis is opaque data.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Cursor\n@sa CursorRef",
+          "doc": "The structure used to identify an SDL cursor.\n\nThis is opaque data.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Cursor",
           "name": "CursorRef",
           "kind": "struct",
           "type": "Resource<SDL_Cursor *>",
@@ -30242,7 +30242,7 @@
     },
     "SDL3pp_mutex.h": {
       "name": "SDL3pp_mutex.h",
-      "doc": "@defgroup CategoryMutex Category Mutex\n\nSDL offers several thread synchronization primitives. This document can't\ncover the complicated topic of thread safety, but reading up on what each\nof these primitives are, why they are useful, and how to correctly use them\nis vital to writing correct and safe multithreaded programs.\n\n- Mutexes: Mutex.Mutex()\n- Read/Write locks: RWLock.RWLock()\n- Semaphores: Semaphore.Semaphore()\n- Condition variables: Condition.Condition()\n\nSDL also offers a datatype, InitState, which can be used to make sure\nonly one thread initializes/deinitializes some resource that several\nthreads might try to use for the first time simultaneously.",
+      "doc": "@defgroup CategoryMutex Category Mutex\n\nSDL offers several thread synchronization primitives. This document can't\ncover the complicated topic of thread safety, but reading up on what each\nof these primitives are, why they are useful, and how to correctly use them\nis vital to writing correct and safe multithreaded programs.\n\n- Mutexes: Mutex.Create()\n- Read/Write locks: RWLock.Create()\n- Semaphores: Semaphore.Create()\n- Condition variables: Condition.Create()\n\nSDL also offers a datatype, InitState, which can be used to make sure\nonly one thread initializes/deinitializes some resource that several\nthreads might try to use for the first time simultaneously.",
       "entries": {
         "MutexRef-forward": {
           "name": "MutexRef",
@@ -30285,7 +30285,7 @@
           "doc": ""
         },
         "MutexRef": {
-          "doc": "A means to serialize access to a resource between threads.\n\nMutexes (short for \"mutual exclusion\") are a synchronization primitive that\nallows exactly one thread to proceed at a time.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Mutex\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Mutex\n@sa MutexRef",
+          "doc": "A means to serialize access to a resource between threads.\n\nMutexes (short for \"mutual exclusion\") are a synchronization primitive that\nallows exactly one thread to proceed at a time.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Mutex\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Mutex",
           "name": "MutexRef",
           "kind": "struct",
           "type": "Resource<SDL_Mutex *>",
@@ -30323,32 +30323,21 @@
               "parameters": [],
               "sourceName": "SDL_UnlockMutex"
             },
-            "Destroy": {
-              "doc": "Destroy a mutex created with Mutex.Mutex().\n\nThis function must be called on any mutex that is no longer needed. Failure\nto destroy a mutex will result in a system memory or resource leak. While\nit is safe to destroy a mutex that is _unlocked_, it is not safe to attempt\nto destroy a locked mutex, and may result in undefined behavior depending\non the platform.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa Mutex.Mutex",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyMutex",
-              "hints": {
-                "body": "reset();"
-              }
-            },
             "reset": {
-              "doc": "Destroy a mutex created with Mutex.Mutex().\n\nThis function must be called on any mutex that is no longer needed. Failure\nto destroy a mutex will result in a system memory or resource leak. While\nit is safe to destroy a mutex that is _unlocked_, it is not safe to attempt\nto destroy a locked mutex, and may result in undefined behavior depending\non the platform.\n\n@param mutex the mutex to destroy.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Mutex.Mutex",
+              "doc": "Destroy a mutex created with Mutex.Create().\n\nThis function must be called on any mutex that is no longer needed. Failure\nto destroy a mutex will result in a system memory or resource leak. While\nit is safe to destroy a mutex that is _unlocked_, it is not safe to attempt\nto destroy a locked mutex, and may result in undefined behavior depending\non the platform.\n\n@param mutex the mutex to destroy.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Mutex.Create",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_Mutex *",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_Mutex *"
                 }
               ],
               "sourceName": "SDL_DestroyMutex",
+              "static": true,
               "hints": {
-                "body": "SDL_DestroyMutex(release(newResource));"
+                "body": "SDL_DestroyMutex(resource);"
               }
             }
           },
@@ -30360,214 +30349,73 @@
         "MutexUnsafe": {
           "name": "MutexUnsafe",
           "kind": "struct",
-          "type": "MutexRef",
+          "type": "ResourcePtr<MutexRef>",
           "doc": "Unsafe Handle to mutex\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa MutexRef",
           "entries": {
-            "MutexRef::Destroy": {
+            "ResourcePtr::ResourcePtr": {
               "kind": "alias",
-              "name": "MutexRef::Destroy",
+              "name": "ResourcePtr::ResourcePtr",
               "doc": ""
             },
-            "MutexRef::MutexRef": {
-              "kind": "alias",
-              "name": "MutexRef::MutexRef",
-              "doc": ""
-            },
-            "MutexRef::reset": {
-              "kind": "alias",
-              "name": "MutexRef::reset",
-              "doc": ""
-            },
-            "MutexUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const MutexRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs MutexUnsafe from MutexRef.",
-                "hints": {
-                  "init": [
-                    "MutexRef(other.get())"
-                  ]
-                },
-                "name": "MutexUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Mutex &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "MutexUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "MutexUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Mutex &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs MutexUnsafe from Mutex.",
-                "hints": {
-                  "init": [
-                    "MutexUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
+            "MutexUnsafe": {
               "kind": "function",
-              "type": "MutexUnsafe &",
+              "name": "MutexUnsafe",
+              "type": "",
+              "explicit": true,
               "constexpr": true,
               "parameters": [
                 {
-                  "type": "MutexUnsafe",
+                  "type": "Mutex &&",
                   "name": "other"
                 }
               ],
-              "doc": "Assignment operator.",
+              "doc": "Constructs MutexUnsafe from Mutex.",
               "hints": {
-                "body": "release(other.release()); return *this;"
+                "init": [
+                  "MutexUnsafe(other.release())"
+                ]
               },
-              "name": "operator="
+              "proto": true
             }
           }
         },
         "Mutex": {
           "name": "Mutex",
           "kind": "struct",
-          "type": "MutexUnsafe",
+          "type": "ResourceUnique<MutexRef>",
           "doc": "Handle to an owned mutex\n\n@cat resource\n\n@sa MutexRef",
           "entries": {
-            "MutexUnsafe::MutexUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "MutexUnsafe::MutexUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
             },
-            "Mutex": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Mutex *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "MutexUnsafe(resource)"
-                  ]
-                },
-                "name": "Mutex"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Mutex &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "Mutex",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Mutex &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "Mutex(other.release())"
-                  ]
-                },
-                "name": "Mutex"
-              },
-              {
-                "doc": "Create a new mutex.\n\nAll newly-created mutexes begin in the _unlocked_ state.\n\nCalls to MutexRef.Lock() will not return while the mutex is locked by\nanother thread. See MutexRef.TryLock() to attempt to lock without blocking.\n\nSDL mutexes are reentrant.\n\n@post the initialized and unlocked mutex or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexRef.Destroy\n@sa MutexRef.Lock\n@sa MutexRef.TryLock\n@sa MutexRef.Unlock",
-                "name": "Mutex",
-                "kind": "function",
-                "type": "",
-                "parameters": [],
-                "sourceName": "SDL_CreateMutex",
-                "proto": false
-              }
-            ],
-            "~Mutex": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~Mutex"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Mutex &",
-              "parameters": [
-                {
-                  "type": "Mutex",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "Create": {
-              "doc": "Create a new mutex.\n\nAll newly-created mutexes begin in the _unlocked_ state.\n\nCalls to MutexRef.Lock() will not return while the mutex is locked by\nanother thread. See MutexRef.TryLock() to attempt to lock without blocking.\n\nSDL mutexes are reentrant.\n\n@returns the initialized and unlocked mutex or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexRef.Destroy\n@sa MutexRef.Lock\n@sa MutexRef.TryLock\n@sa MutexRef.Unlock",
+              "doc": "Create a new mutex.\n\nAll newly-created mutexes begin in the _unlocked_ state.\n\nCalls to MutexRef.Lock() will not return while the mutex is locked by\nanother thread. See MutexRef.TryLock() to attempt to lock without blocking.\n\nSDL mutexes are reentrant.\n\n@returns the initialized and unlocked mutex or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Mutex.Destroy\n@sa MutexRef.Lock\n@sa MutexRef.TryLock\n@sa MutexRef.Unlock",
               "name": "Create",
               "kind": "function",
               "type": "Mutex",
               "parameters": [],
               "sourceName": "SDL_CreateMutex",
+              "static": true,
               "hints": {
-                "body": "return Mutex();"
-              },
-              "static": true
+                "wrapSelf": true
+              }
+            },
+            "Destroy": {
+              "doc": "Destroy a mutex created with Mutex.Create().\n\nThis function must be called on any mutex that is no longer needed. Failure\nto destroy a mutex will result in a system memory or resource leak. While\nit is safe to destroy a mutex that is _unlocked_, it is not safe to attempt\nto destroy a locked mutex, and may result in undefined behavior depending\non the platform.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa Mutex.Create",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyMutex",
+              "hints": {
+                "body": "reset();"
+              }
             }
           },
           "hints": {
-            "super": "Mutex"
+            "self": "Mutex"
           }
         },
         "MutexUnsafe::MutexUnsafe": {
@@ -30588,7 +30436,7 @@
           }
         },
         "RWLockRef": {
-          "doc": "A mutex that allows read-only threads to run in parallel.\n\nA rwlock is roughly the same concept as MutexRef, but allows threads that\nrequest read-only access to all hold the lock at the same time. If a thread\nrequests write access, it will block until all read-only threads have\nreleased the lock, and no one else can hold the thread (for reading or\nwriting) at the same time as the writing thread.\n\nThis can be more efficient in cases where several threads need to access\ndata frequently, but changes to that data are rare.\n\nThere are other rules that apply to rwlocks that don't apply to mutexes,\nabout how threads are scheduled and when they can be recursively locked.\nThese are documented in the other rwlock functions.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa RWLock\n@sa RWLockRef",
+          "doc": "A mutex that allows read-only threads to run in parallel.\n\nA rwlock is roughly the same concept as MutexRef, but allows threads that\nrequest read-only access to all hold the lock at the same time. If a thread\nrequests write access, it will block until all read-only threads have\nreleased the lock, and no one else can hold the thread (for reading or\nwriting) at the same time as the writing thread.\n\nThis can be more efficient in cases where several threads need to access\ndata frequently, but changes to that data are rare.\n\nThere are other rules that apply to rwlocks that don't apply to mutexes,\nabout how threads are scheduled and when they can be recursively locked.\nThese are documented in the other rwlock functions.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa RWLock",
           "name": "RWLockRef",
           "kind": "struct",
           "type": "Resource<SDL_RWLock *>",
@@ -30645,32 +30493,21 @@
               "parameters": [],
               "sourceName": "SDL_UnlockRWLock"
             },
-            "Destroy": {
-              "doc": "Destroy a read/write lock created with RWLock.RWLock().\n\nThis function must be called on any read/write lock that is no longer\nneeded. Failure to destroy a rwlock will result in a system memory or\nresource leak. While it is safe to destroy a rwlock that is _unlocked_, it\nis not safe to attempt to destroy a locked rwlock, and may result in\nundefined behavior depending on the platform.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLock.RWLock",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyRWLock",
-              "hints": {
-                "body": "reset();"
-              }
-            },
             "reset": {
-              "doc": "Destroy a read/write lock created with RWLock.RWLock().\n\nThis function must be called on any read/write lock that is no longer\nneeded. Failure to destroy a rwlock will result in a system memory or\nresource leak. While it is safe to destroy a rwlock that is _unlocked_, it\nis not safe to attempt to destroy a locked rwlock, and may result in\nundefined behavior depending on the platform.\n\n@param rwlock the rwlock to destroy.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLock.RWLock",
+              "doc": "Destroy a read/write lock created with RWLock.Create().\n\nThis function must be called on any read/write lock that is no longer\nneeded. Failure to destroy a rwlock will result in a system memory or\nresource leak. While it is safe to destroy a rwlock that is _unlocked_, it\nis not safe to attempt to destroy a locked rwlock, and may result in\nundefined behavior depending on the platform.\n\n@param rwlock the rwlock to destroy.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLock.Create",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_RWLock *",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_RWLock *"
                 }
               ],
               "sourceName": "SDL_DestroyRWLock",
+              "static": true,
               "hints": {
-                "body": "SDL_DestroyRWLock(release(newResource));"
+                "body": "SDL_DestroyRWLock(resource);"
               }
             }
           },
@@ -30682,214 +30519,73 @@
         "RWLockUnsafe": {
           "name": "RWLockUnsafe",
           "kind": "struct",
-          "type": "RWLockRef",
+          "type": "ResourcePtr<RWLockRef>",
           "doc": "Unsafe Handle to rWLock\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa RWLockRef",
           "entries": {
-            "RWLockRef::Destroy": {
+            "ResourcePtr::ResourcePtr": {
               "kind": "alias",
-              "name": "RWLockRef::Destroy",
+              "name": "ResourcePtr::ResourcePtr",
               "doc": ""
             },
-            "RWLockRef::RWLockRef": {
-              "kind": "alias",
-              "name": "RWLockRef::RWLockRef",
-              "doc": ""
-            },
-            "RWLockRef::reset": {
-              "kind": "alias",
-              "name": "RWLockRef::reset",
-              "doc": ""
-            },
-            "RWLockUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const RWLockRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs RWLockUnsafe from RWLockRef.",
-                "hints": {
-                  "init": [
-                    "RWLockRef(other.get())"
-                  ]
-                },
-                "name": "RWLockUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const RWLock &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "RWLockUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "RWLockUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "RWLock &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs RWLockUnsafe from RWLock.",
-                "hints": {
-                  "init": [
-                    "RWLockUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
+            "RWLockUnsafe": {
               "kind": "function",
-              "type": "RWLockUnsafe &",
+              "name": "RWLockUnsafe",
+              "type": "",
+              "explicit": true,
               "constexpr": true,
               "parameters": [
                 {
-                  "type": "RWLockUnsafe",
+                  "type": "RWLock &&",
                   "name": "other"
                 }
               ],
-              "doc": "Assignment operator.",
+              "doc": "Constructs RWLockUnsafe from RWLock.",
               "hints": {
-                "body": "release(other.release()); return *this;"
+                "init": [
+                  "RWLockUnsafe(other.release())"
+                ]
               },
-              "name": "operator="
+              "proto": true
             }
           }
         },
         "RWLock": {
           "name": "RWLock",
           "kind": "struct",
-          "type": "RWLockUnsafe",
+          "type": "ResourceUnique<RWLockRef>",
           "doc": "Handle to an owned rWLock\n\n@cat resource\n\n@sa RWLockRef",
           "entries": {
-            "RWLockUnsafe::RWLockUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "RWLockUnsafe::RWLockUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
             },
-            "RWLock": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_RWLock *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "RWLockUnsafe(resource)"
-                  ]
-                },
-                "name": "RWLock"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const RWLock &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "RWLock",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "RWLock &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "RWLock(other.release())"
-                  ]
-                },
-                "name": "RWLock"
-              },
-              {
-                "doc": "Create a new read/write lock.\n\nA read/write lock is useful for situations where you have multiple threads\ntrying to access a resource that is rarely updated. All threads requesting\na read-only lock will be allowed to run in parallel; if a thread requests a\nwrite lock, it will be provided exclusive access. This makes it safe for\nmultiple threads to use a resource at the same time if they promise not to\nchange it, and when it has to be changed, the rwlock will serve as a\ngateway to make sure those changes can be made safely.\n\nIn the right situation, a rwlock can be more efficient than a mutex, which\nonly lets a single thread proceed at a time, even if it won't be modifying\nthe data.\n\nAll newly-created read/write locks begin in the _unlocked_ state.\n\nCalls to RWLockRef.LockForReading() and RWLockRef.LockForWriting will not\nreturn while the rwlock is locked _for writing_ by another thread. See\nRWLockRef.TryLockForReading() and RWLockRef.TryLockForWriting() to attempt\nto lock without blocking.\n\nSDL read/write locks are only recursive for read-only locks! They are not\nguaranteed to be fair, or provide access in a FIFO manner! They are not\nguaranteed to favor writers. You may not lock a rwlock for both read-only\nand write access at the same time from the same thread (so you can't\npromote your read-only lock to a write lock without unlocking first).\n\n@post the initialized and unlocked read/write lock or nullptr on failure;\n         call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockRef.Destroy\n@sa RWLockRef.LockForReading\n@sa RWLockRef.LockForWriting\n@sa RWLockRef.TryLockForReading\n@sa RWLockRef.TryLockForWriting\n@sa RWLockRef.Unlock",
-                "name": "RWLock",
-                "kind": "function",
-                "type": "",
-                "parameters": [],
-                "sourceName": "SDL_CreateRWLock",
-                "proto": false
-              }
-            ],
-            "~RWLock": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~RWLock"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "RWLock &",
-              "parameters": [
-                {
-                  "type": "RWLock",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "Create": {
-              "doc": "Create a new read/write lock.\n\nA read/write lock is useful for situations where you have multiple threads\ntrying to access a resource that is rarely updated. All threads requesting\na read-only lock will be allowed to run in parallel; if a thread requests a\nwrite lock, it will be provided exclusive access. This makes it safe for\nmultiple threads to use a resource at the same time if they promise not to\nchange it, and when it has to be changed, the rwlock will serve as a\ngateway to make sure those changes can be made safely.\n\nIn the right situation, a rwlock can be more efficient than a mutex, which\nonly lets a single thread proceed at a time, even if it won't be modifying\nthe data.\n\nAll newly-created read/write locks begin in the _unlocked_ state.\n\nCalls to RWLockRef.LockForReading() and RWLockRef.LockForWriting will not\nreturn while the rwlock is locked _for writing_ by another thread. See\nRWLockRef.TryLockForReading() and RWLockRef.TryLockForWriting() to attempt\nto lock without blocking.\n\nSDL read/write locks are only recursive for read-only locks! They are not\nguaranteed to be fair, or provide access in a FIFO manner! They are not\nguaranteed to favor writers. You may not lock a rwlock for both read-only\nand write access at the same time from the same thread (so you can't\npromote your read-only lock to a write lock without unlocking first).\n\n@returns the initialized and unlocked read/write lock or nullptr on failure;\n         call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockRef.Destroy\n@sa RWLockRef.LockForReading\n@sa RWLockRef.LockForWriting\n@sa RWLockRef.TryLockForReading\n@sa RWLockRef.TryLockForWriting\n@sa RWLockRef.Unlock",
+              "doc": "Create a new read/write lock.\n\nA read/write lock is useful for situations where you have multiple threads\ntrying to access a resource that is rarely updated. All threads requesting\na read-only lock will be allowed to run in parallel; if a thread requests a\nwrite lock, it will be provided exclusive access. This makes it safe for\nmultiple threads to use a resource at the same time if they promise not to\nchange it, and when it has to be changed, the rwlock will serve as a\ngateway to make sure those changes can be made safely.\n\nIn the right situation, a rwlock can be more efficient than a mutex, which\nonly lets a single thread proceed at a time, even if it won't be modifying\nthe data.\n\nAll newly-created read/write locks begin in the _unlocked_ state.\n\nCalls to RWLockRef.LockForReading() and RWLockRef.LockForWriting will not\nreturn while the rwlock is locked _for writing_ by another thread. See\nRWLockRef.TryLockForReading() and RWLockRef.TryLockForWriting() to attempt\nto lock without blocking.\n\nSDL read/write locks are only recursive for read-only locks! They are not\nguaranteed to be fair, or provide access in a FIFO manner! They are not\nguaranteed to favor writers. You may not lock a rwlock for both read-only\nand write access at the same time from the same thread (so you can't\npromote your read-only lock to a write lock without unlocking first).\n\n@returns the initialized and unlocked read/write lock or nullptr on failure;\n         call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLock.Destroy\n@sa RWLockRef.LockForReading\n@sa RWLockRef.LockForWriting\n@sa RWLockRef.TryLockForReading\n@sa RWLockRef.TryLockForWriting\n@sa RWLockRef.Unlock",
               "name": "Create",
               "kind": "function",
               "type": "RWLock",
               "parameters": [],
               "sourceName": "SDL_CreateRWLock",
+              "static": true,
               "hints": {
-                "body": "return RWLock();"
-              },
-              "static": true
+                "wrapSelf": true
+              }
+            },
+            "Destroy": {
+              "doc": "Destroy a read/write lock created with RWLock.Create().\n\nThis function must be called on any read/write lock that is no longer\nneeded. Failure to destroy a rwlock will result in a system memory or\nresource leak. While it is safe to destroy a rwlock that is _unlocked_, it\nis not safe to attempt to destroy a locked rwlock, and may result in\nundefined behavior depending on the platform.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLock.Create",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyRWLock",
+              "hints": {
+                "body": "reset();"
+              }
             }
           },
           "hints": {
-            "super": "RWLock"
+            "self": "RWLock"
           }
         },
         "RWLockUnsafe::RWLockUnsafe": {
@@ -30910,7 +30606,7 @@
           }
         },
         "SemaphoreRef": {
-          "doc": "A means to manage access to a resource, by count, between threads.\n\nSemaphores (specifically, \"counting semaphores\"), let X number of threads\nrequest access at the same time, each thread granted access decrementing a\ncounter. When the counter reaches zero, future requests block until a prior\nthread releases their request, incrementing the counter again.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Semaphore_(programming)\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Semaphore\n@sa SemaphoreRef",
+          "doc": "A means to manage access to a resource, by count, between threads.\n\nSemaphores (specifically, \"counting semaphores\"), let X number of threads\nrequest access at the same time, each thread granted access decrementing a\ncounter. When the counter reaches zero, future requests block until a prior\nthread releases their request, incrementing the counter again.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Semaphore_(programming)\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Semaphore",
           "name": "SemaphoreRef",
           "kind": "struct",
           "type": "Resource<SDL_Semaphore *>",
@@ -30967,32 +30663,21 @@
               "sourceName": "SDL_GetSemaphoreValue",
               "immutable": true
             },
-            "Destroy": {
-              "doc": "Destroy a semaphore.\n\nIt is not safe to destroy a semaphore if there are threads currently\nwaiting on it.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa Semaphore.Semaphore",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroySemaphore",
-              "hints": {
-                "body": "reset();"
-              }
-            },
             "reset": {
-              "doc": "Destroy a semaphore.\n\nIt is not safe to destroy a semaphore if there are threads currently\nwaiting on it.\n\n@param sem the semaphore to destroy.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Semaphore.Semaphore",
+              "doc": "Destroy a semaphore.\n\nIt is not safe to destroy a semaphore if there are threads currently\nwaiting on it.\n\n@param sem the semaphore to destroy.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Semaphore.Create",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_Semaphore *",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_Semaphore *"
                 }
               ],
               "sourceName": "SDL_DestroySemaphore",
+              "static": true,
               "hints": {
-                "body": "SDL_DestroySemaphore(release(newResource));"
+                "body": "SDL_DestroySemaphore(resource);"
               }
             }
           },
@@ -31004,219 +30689,49 @@
         "SemaphoreUnsafe": {
           "name": "SemaphoreUnsafe",
           "kind": "struct",
-          "type": "SemaphoreRef",
+          "type": "ResourcePtr<SemaphoreRef>",
           "doc": "Unsafe Handle to semaphore\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SemaphoreRef",
           "entries": {
-            "SemaphoreRef::Destroy": {
+            "ResourcePtr::ResourcePtr": {
               "kind": "alias",
-              "name": "SemaphoreRef::Destroy",
+              "name": "ResourcePtr::ResourcePtr",
               "doc": ""
             },
-            "SemaphoreRef::SemaphoreRef": {
-              "kind": "alias",
-              "name": "SemaphoreRef::SemaphoreRef",
-              "doc": ""
-            },
-            "SemaphoreRef::reset": {
-              "kind": "alias",
-              "name": "SemaphoreRef::reset",
-              "doc": ""
-            },
-            "SemaphoreUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const SemaphoreRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs SemaphoreUnsafe from SemaphoreRef.",
-                "hints": {
-                  "init": [
-                    "SemaphoreRef(other.get())"
-                  ]
-                },
-                "name": "SemaphoreUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Semaphore &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "SemaphoreUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "SemaphoreUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Semaphore &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs SemaphoreUnsafe from Semaphore.",
-                "hints": {
-                  "init": [
-                    "SemaphoreUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
+            "SemaphoreUnsafe": {
               "kind": "function",
-              "type": "SemaphoreUnsafe &",
+              "name": "SemaphoreUnsafe",
+              "type": "",
+              "explicit": true,
               "constexpr": true,
               "parameters": [
                 {
-                  "type": "SemaphoreUnsafe",
+                  "type": "Semaphore &&",
                   "name": "other"
                 }
               ],
-              "doc": "Assignment operator.",
+              "doc": "Constructs SemaphoreUnsafe from Semaphore.",
               "hints": {
-                "body": "release(other.release()); return *this;"
+                "init": [
+                  "SemaphoreUnsafe(other.release())"
+                ]
               },
-              "name": "operator="
+              "proto": true
             }
           }
         },
         "Semaphore": {
           "name": "Semaphore",
           "kind": "struct",
-          "type": "SemaphoreUnsafe",
+          "type": "ResourceUnique<SemaphoreRef>",
           "doc": "Handle to an owned semaphore\n\n@cat resource\n\n@sa SemaphoreRef",
           "entries": {
-            "SemaphoreUnsafe::SemaphoreUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "SemaphoreUnsafe::SemaphoreUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
             },
-            "Semaphore": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [],
-                "doc": "Constructs an empty Semaphore.",
-                "hints": {
-                  "init": [
-                    "SemaphoreUnsafe(nullptr)"
-                  ]
-                },
-                "name": "Semaphore"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Semaphore *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "SemaphoreUnsafe(resource)"
-                  ]
-                },
-                "name": "Semaphore"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Semaphore &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "Semaphore",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Semaphore &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "Semaphore(other.release())"
-                  ]
-                },
-                "name": "Semaphore"
-              },
-              {
-                "doc": "Create a semaphore.\n\nThis function creates a new semaphore and initializes it with the value\n`initial_value`. Each wait operation on the semaphore will atomically\ndecrement the semaphore value and potentially block if the semaphore value\nis 0. Each post operation will atomically increment the semaphore value and\nwake waiting threads and allow them to retry the wait operation.\n\n@param initial_value the starting value of the semaphore.\n@post a new semaphore or nullptr on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreRef.Destroy\n@sa SemaphoreRef.Signal\n@sa SemaphoreRef.TryWait\n@sa SemaphoreRef.GetValue\n@sa SemaphoreRef.Wait\n@sa SemaphoreRef.WaitTimeout",
-                "name": "Semaphore",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "initial_value",
-                    "type": "Uint32"
-                  }
-                ],
-                "sourceName": "SDL_CreateSemaphore",
-                "proto": false
-              }
-            ],
-            "~Semaphore": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~Semaphore"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Semaphore &",
-              "parameters": [
-                {
-                  "type": "Semaphore",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "Create": {
-              "doc": "Create a semaphore.\n\nThis function creates a new semaphore and initializes it with the value\n`initial_value`. Each wait operation on the semaphore will atomically\ndecrement the semaphore value and potentially block if the semaphore value\nis 0. Each post operation will atomically increment the semaphore value and\nwake waiting threads and allow them to retry the wait operation.\n\n@param initial_value the starting value of the semaphore.\n@returns a new semaphore or nullptr on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreRef.Destroy\n@sa SemaphoreRef.Signal\n@sa SemaphoreRef.TryWait\n@sa SemaphoreRef.GetValue\n@sa SemaphoreRef.Wait\n@sa SemaphoreRef.WaitTimeout",
+              "doc": "Create a semaphore.\n\nThis function creates a new semaphore and initializes it with the value\n`initial_value`. Each wait operation on the semaphore will atomically\ndecrement the semaphore value and potentially block if the semaphore value\nis 0. Each post operation will atomically increment the semaphore value and\nwake waiting threads and allow them to retry the wait operation.\n\n@param initial_value the starting value of the semaphore.\n@returns a new semaphore or nullptr on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Semaphore.Destroy\n@sa SemaphoreRef.Signal\n@sa SemaphoreRef.TryWait\n@sa SemaphoreRef.GetValue\n@sa SemaphoreRef.Wait\n@sa SemaphoreRef.WaitTimeout",
               "name": "Create",
               "kind": "function",
               "type": "Semaphore",
@@ -31227,14 +30742,25 @@
                 }
               ],
               "sourceName": "SDL_CreateSemaphore",
+              "static": true,
               "hints": {
-                "body": "return Semaphore(initial_value);"
-              },
-              "static": true
+                "wrapSelf": true
+              }
+            },
+            "Destroy": {
+              "doc": "Destroy a semaphore.\n\nIt is not safe to destroy a semaphore if there are threads currently\nwaiting on it.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa Semaphore.Create",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroySemaphore",
+              "hints": {
+                "body": "reset();"
+              }
             }
           },
           "hints": {
-            "super": "Semaphore"
+            "self": "Semaphore"
           }
         },
         "SemaphoreUnsafe::SemaphoreUnsafe": {
@@ -31255,7 +30781,7 @@
           }
         },
         "ConditionRef": {
-          "doc": "A means to block multiple threads until a condition is satisfied.\n\nCondition variables, paired with an MutexRef, let an app halt multiple\nthreads until a condition has occurred, at which time the app can release\none or all waiting threads.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Condition_variable\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Condition\n@sa ConditionRef",
+          "doc": "A means to block multiple threads until a condition is satisfied.\n\nCondition variables, paired with an MutexRef, let an app halt multiple\nthreads until a condition has occurred, at which time the app can release\none or all waiting threads.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Condition_variable\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Condition",
           "name": "ConditionRef",
           "kind": "struct",
           "type": "Resource<SDL_Condition *>",
@@ -31312,32 +30838,21 @@
               ],
               "sourceName": "SDL_WaitConditionTimeout"
             },
-            "Destroy": {
-              "doc": "Destroy a condition variable.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa Condition.Condition",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyCondition",
-              "hints": {
-                "body": "reset();"
-              }
-            },
             "reset": {
-              "doc": "Destroy a condition variable.\n\n@param cond the condition variable to destroy.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Condition.Condition",
+              "doc": "Destroy a condition variable.\n\n@param cond the condition variable to destroy.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Condition.Create",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_Condition *",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_Condition *"
                 }
               ],
               "sourceName": "SDL_DestroyCondition",
+              "static": true,
               "hints": {
-                "body": "SDL_DestroyCondition(release(newResource));"
+                "body": "SDL_DestroyCondition(resource);"
               }
             }
           },
@@ -31349,214 +30864,73 @@
         "ConditionUnsafe": {
           "name": "ConditionUnsafe",
           "kind": "struct",
-          "type": "ConditionRef",
+          "type": "ResourcePtr<ConditionRef>",
           "doc": "Unsafe Handle to condition\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ConditionRef",
           "entries": {
-            "ConditionRef::ConditionRef": {
+            "ResourcePtr::ResourcePtr": {
               "kind": "alias",
-              "name": "ConditionRef::ConditionRef",
+              "name": "ResourcePtr::ResourcePtr",
               "doc": ""
             },
-            "ConditionRef::Destroy": {
-              "kind": "alias",
-              "name": "ConditionRef::Destroy",
-              "doc": ""
-            },
-            "ConditionRef::reset": {
-              "kind": "alias",
-              "name": "ConditionRef::reset",
-              "doc": ""
-            },
-            "ConditionUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const ConditionRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs ConditionUnsafe from ConditionRef.",
-                "hints": {
-                  "init": [
-                    "ConditionRef(other.get())"
-                  ]
-                },
-                "name": "ConditionUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Condition &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "ConditionUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "ConditionUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Condition &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs ConditionUnsafe from Condition.",
-                "hints": {
-                  "init": [
-                    "ConditionUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
+            "ConditionUnsafe": {
               "kind": "function",
-              "type": "ConditionUnsafe &",
+              "name": "ConditionUnsafe",
+              "type": "",
+              "explicit": true,
               "constexpr": true,
               "parameters": [
                 {
-                  "type": "ConditionUnsafe",
+                  "type": "Condition &&",
                   "name": "other"
                 }
               ],
-              "doc": "Assignment operator.",
+              "doc": "Constructs ConditionUnsafe from Condition.",
               "hints": {
-                "body": "release(other.release()); return *this;"
+                "init": [
+                  "ConditionUnsafe(other.release())"
+                ]
               },
-              "name": "operator="
+              "proto": true
             }
           }
         },
         "Condition": {
           "name": "Condition",
           "kind": "struct",
-          "type": "ConditionUnsafe",
+          "type": "ResourceUnique<ConditionRef>",
           "doc": "Handle to an owned condition\n\n@cat resource\n\n@sa ConditionRef",
           "entries": {
-            "ConditionUnsafe::ConditionUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "ConditionUnsafe::ConditionUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
             },
-            "Condition": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Condition *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "ConditionUnsafe(resource)"
-                  ]
-                },
-                "name": "Condition"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Condition &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "Condition",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Condition &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "Condition(other.release())"
-                  ]
-                },
-                "name": "Condition"
-              },
-              {
-                "doc": "Create a condition variable.\n\n@post a new condition variable or nullptr on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionRef.Broadcast\n@sa ConditionRef.Signal\n@sa ConditionRef.Wait\n@sa ConditionRef.WaitTimeout\n@sa ConditionRef.Destroy",
-                "name": "Condition",
-                "kind": "function",
-                "type": "",
-                "parameters": [],
-                "sourceName": "SDL_CreateCondition",
-                "proto": false
-              }
-            ],
-            "~Condition": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~Condition"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Condition &",
-              "parameters": [
-                {
-                  "type": "Condition",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "Create": {
-              "doc": "Create a condition variable.\n\n@returns a new condition variable or nullptr on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionRef.Broadcast\n@sa ConditionRef.Signal\n@sa ConditionRef.Wait\n@sa ConditionRef.WaitTimeout\n@sa ConditionRef.Destroy",
+              "doc": "Create a condition variable.\n\n@returns a new condition variable or nullptr on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionRef.Broadcast\n@sa ConditionRef.Signal\n@sa ConditionRef.Wait\n@sa ConditionRef.WaitTimeout\n@sa Condition.Destroy",
               "name": "Create",
               "kind": "function",
               "type": "Condition",
               "parameters": [],
               "sourceName": "SDL_CreateCondition",
+              "static": true,
               "hints": {
-                "body": "return Condition();"
-              },
-              "static": true
+                "wrapSelf": true
+              }
+            },
+            "Destroy": {
+              "doc": "Destroy a condition variable.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa Condition.Create",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyCondition",
+              "hints": {
+                "body": "reset();"
+              }
             }
           },
           "hints": {
-            "super": "Condition"
+            "self": "Condition"
           }
         },
         "ConditionUnsafe::ConditionUnsafe": {
@@ -34251,7 +33625,7 @@
           "type": "SDL_IOStreamInterface"
         },
         "IOStreamRef": {
-          "doc": "The read/write operation structure.\n\nThis operates as an opaque handle. There are several APIs to create various\ntypes of I/O streams, or an app can supply an IOStreamInterface to\nIOStream.Open() to provide their own stream implementation behind this\nstruct's abstract interface.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa IOStream\n@sa IOStreamRef",
+          "doc": "The read/write operation structure.\n\nThis operates as an opaque handle. There are several APIs to create various\ntypes of I/O streams, or an app can supply an IOStreamInterface to\nIOStream.Open() to provide their own stream implementation behind this\nstruct's abstract interface.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa IOStream",
           "name": "IOStreamRef",
           "kind": "struct",
           "type": "Resource<SDL_IOStream *>",
@@ -35811,7 +35185,7 @@
           "doc": ""
         },
         "SharedObjectRef": {
-          "doc": "An opaque datatype that represents a loaded shared object.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SharedObject.Load\n@sa SharedObjectRef.LoadFunction\n@sa SharedObject.Unload\n\n@cat resource\n\n@sa SharedObject\n@sa SharedObjectRef",
+          "doc": "An opaque datatype that represents a loaded shared object.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SharedObject.Load\n@sa SharedObjectRef.LoadFunction\n@sa SharedObject.Unload\n\n@cat resource\n\n@sa SharedObject",
           "name": "SharedObjectRef",
           "kind": "struct",
           "type": "Resource<SDL_SharedObject *>",

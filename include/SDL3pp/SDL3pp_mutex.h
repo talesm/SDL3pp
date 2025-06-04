@@ -16,10 +16,10 @@ namespace SDL {
  * of these primitives are, why they are useful, and how to correctly use them
  * is vital to writing correct and safe multithreaded programs.
  *
- * - Mutexes: Mutex.Mutex()
- * - Read/Write locks: RWLock.RWLock()
- * - Semaphores: Semaphore.Semaphore()
- * - Condition variables: Condition.Condition()
+ * - Mutexes: Mutex.Create()
+ * - Read/Write locks: RWLock.Create()
+ * - Semaphores: Semaphore.Create()
+ * - Condition variables: Condition.Create()
  *
  * SDL also offers a datatype, InitState, which can be used to make sure
  * only one thread initializes/deinitializes some resource that several
@@ -132,9 +132,8 @@ struct MutexRef : Resource<SDL_Mutex*>
    */
   void Unlock() { SDL_UnlockMutex(get()); }
 
-protected:
   /**
-   * Destroy a mutex created with Mutex.Mutex().
+   * Destroy a mutex created with Mutex.Create().
    *
    * This function must be called on any mutex that is no longer needed. Failure
    * to destroy a mutex will result in a system memory or resource leak. While
@@ -142,30 +141,13 @@ protected:
    * to destroy a locked mutex, and may result in undefined behavior depending
    * on the platform.
    *
+   * @param resource the mutex to destroy.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Mutex.Mutex
+   * @sa Mutex.Create
    */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy a mutex created with Mutex.Mutex().
-   *
-   * This function must be called on any mutex that is no longer needed. Failure
-   * to destroy a mutex will result in a system memory or resource leak. While
-   * it is safe to destroy a mutex that is _unlocked_, it is not safe to attempt
-   * to destroy a locked mutex, and may result in undefined behavior depending
-   * on the platform.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Mutex.Mutex
-   */
-  void reset(SDL_Mutex* newResource = {})
-  {
-    SDL_DestroyMutex(release(newResource));
-  }
+  static void reset(SDL_Mutex* resource) { SDL_DestroyMutex(resource); }
 };
 
 /**
@@ -177,37 +159,14 @@ protected:
  *
  * @sa MutexRef
  */
-struct MutexUnsafe : MutexRef
+struct MutexUnsafe : ResourcePtr<MutexRef>
 {
-  using MutexRef::Destroy;
-
-  using MutexRef::MutexRef;
-
-  using MutexRef::reset;
-
-  /**
-   * Constructs MutexUnsafe from MutexRef.
-   */
-  constexpr MutexUnsafe(const MutexRef& other)
-    : MutexRef(other.get())
-  {
-  }
-
-  MutexUnsafe(const Mutex& other) = delete;
+  using ResourcePtr::ResourcePtr;
 
   /**
    * Constructs MutexUnsafe from Mutex.
    */
   constexpr explicit MutexUnsafe(Mutex&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr MutexUnsafe& operator=(MutexUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
 };
 
 /**
@@ -217,66 +176,9 @@ struct MutexUnsafe : MutexRef
  *
  * @sa MutexRef
  */
-struct Mutex : MutexUnsafe
+struct Mutex : ResourceUnique<MutexRef>
 {
-  using MutexUnsafe::MutexUnsafe;
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Mutex(SDL_Mutex* resource)
-    : MutexUnsafe(resource)
-  {
-  }
-
-  constexpr Mutex(const Mutex& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Mutex(Mutex&& other)
-    : Mutex(other.release())
-  {
-  }
-
-  /**
-   * Create a new mutex.
-   *
-   * All newly-created mutexes begin in the _unlocked_ state.
-   *
-   * Calls to MutexRef.Lock() will not return while the mutex is locked by
-   * another thread. See MutexRef.TryLock() to attempt to lock without blocking.
-   *
-   * SDL mutexes are reentrant.
-   *
-   * @post the initialized and unlocked mutex or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa MutexRef.Destroy
-   * @sa MutexRef.Lock
-   * @sa MutexRef.TryLock
-   * @sa MutexRef.Unlock
-   */
-  Mutex()
-    : Mutex(SDL_CreateMutex())
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Mutex() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Mutex& operator=(Mutex other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a new mutex.
@@ -293,12 +195,28 @@ struct Mutex : MutexUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MutexRef.Destroy
+   * @sa Mutex.Destroy
    * @sa MutexRef.Lock
    * @sa MutexRef.TryLock
    * @sa MutexRef.Unlock
    */
-  static Mutex Create() { return Mutex(); }
+  static Mutex Create() { return Mutex(SDL_CreateMutex()); }
+
+  /**
+   * Destroy a mutex created with Mutex.Create().
+   *
+   * This function must be called on any mutex that is no longer needed. Failure
+   * to destroy a mutex will result in a system memory or resource leak. While
+   * it is safe to destroy a mutex that is _unlocked_, it is not safe to attempt
+   * to destroy a locked mutex, and may result in undefined behavior depending
+   * on the platform.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Mutex.Create
+   */
+  void Destroy() { reset(); }
 };
 
 constexpr MutexUnsafe::MutexUnsafe(Mutex&& other)
@@ -475,9 +393,8 @@ struct RWLockRef : Resource<SDL_RWLock*>
    */
   void Unlock() { SDL_UnlockRWLock(get()); }
 
-protected:
   /**
-   * Destroy a read/write lock created with RWLock.RWLock().
+   * Destroy a read/write lock created with RWLock.Create().
    *
    * This function must be called on any read/write lock that is no longer
    * needed. Failure to destroy a rwlock will result in a system memory or
@@ -485,30 +402,13 @@ protected:
    * is not safe to attempt to destroy a locked rwlock, and may result in
    * undefined behavior depending on the platform.
    *
+   * @param resource the rwlock to destroy.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.RWLock
+   * @sa RWLock.Create
    */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy a read/write lock created with RWLock.RWLock().
-   *
-   * This function must be called on any read/write lock that is no longer
-   * needed. Failure to destroy a rwlock will result in a system memory or
-   * resource leak. While it is safe to destroy a rwlock that is _unlocked_, it
-   * is not safe to attempt to destroy a locked rwlock, and may result in
-   * undefined behavior depending on the platform.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RWLock.RWLock
-   */
-  void reset(SDL_RWLock* newResource = {})
-  {
-    SDL_DestroyRWLock(release(newResource));
-  }
+  static void reset(SDL_RWLock* resource) { SDL_DestroyRWLock(resource); }
 };
 
 /**
@@ -520,37 +420,14 @@ protected:
  *
  * @sa RWLockRef
  */
-struct RWLockUnsafe : RWLockRef
+struct RWLockUnsafe : ResourcePtr<RWLockRef>
 {
-  using RWLockRef::Destroy;
-
-  using RWLockRef::RWLockRef;
-
-  using RWLockRef::reset;
-
-  /**
-   * Constructs RWLockUnsafe from RWLockRef.
-   */
-  constexpr RWLockUnsafe(const RWLockRef& other)
-    : RWLockRef(other.get())
-  {
-  }
-
-  RWLockUnsafe(const RWLock& other) = delete;
+  using ResourcePtr::ResourcePtr;
 
   /**
    * Constructs RWLockUnsafe from RWLock.
    */
   constexpr explicit RWLockUnsafe(RWLock&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr RWLockUnsafe& operator=(RWLockUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
 };
 
 /**
@@ -560,86 +437,9 @@ struct RWLockUnsafe : RWLockRef
  *
  * @sa RWLockRef
  */
-struct RWLock : RWLockUnsafe
+struct RWLock : ResourceUnique<RWLockRef>
 {
-  using RWLockUnsafe::RWLockUnsafe;
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit RWLock(SDL_RWLock* resource)
-    : RWLockUnsafe(resource)
-  {
-  }
-
-  constexpr RWLock(const RWLock& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr RWLock(RWLock&& other)
-    : RWLock(other.release())
-  {
-  }
-
-  /**
-   * Create a new read/write lock.
-   *
-   * A read/write lock is useful for situations where you have multiple threads
-   * trying to access a resource that is rarely updated. All threads requesting
-   * a read-only lock will be allowed to run in parallel; if a thread requests a
-   * write lock, it will be provided exclusive access. This makes it safe for
-   * multiple threads to use a resource at the same time if they promise not to
-   * change it, and when it has to be changed, the rwlock will serve as a
-   * gateway to make sure those changes can be made safely.
-   *
-   * In the right situation, a rwlock can be more efficient than a mutex, which
-   * only lets a single thread proceed at a time, even if it won't be modifying
-   * the data.
-   *
-   * All newly-created read/write locks begin in the _unlocked_ state.
-   *
-   * Calls to RWLockRef.LockForReading() and RWLockRef.LockForWriting will not
-   * return while the rwlock is locked _for writing_ by another thread. See
-   * RWLockRef.TryLockForReading() and RWLockRef.TryLockForWriting() to attempt
-   * to lock without blocking.
-   *
-   * SDL read/write locks are only recursive for read-only locks! They are not
-   * guaranteed to be fair, or provide access in a FIFO manner! They are not
-   * guaranteed to favor writers. You may not lock a rwlock for both read-only
-   * and write access at the same time from the same thread (so you can't
-   * promote your read-only lock to a write lock without unlocking first).
-   *
-   * @post the initialized and unlocked read/write lock or nullptr on failure;
-   *          call GetError() for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RWLockRef.Destroy
-   * @sa RWLockRef.LockForReading
-   * @sa RWLockRef.LockForWriting
-   * @sa RWLockRef.TryLockForReading
-   * @sa RWLockRef.TryLockForWriting
-   * @sa RWLockRef.Unlock
-   */
-  RWLock()
-    : RWLock(SDL_CreateRWLock())
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~RWLock() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  RWLock& operator=(RWLock other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a new read/write lock.
@@ -670,18 +470,34 @@ struct RWLock : RWLockUnsafe
    * promote your read-only lock to a write lock without unlocking first).
    *
    * @returns the initialized and unlocked read/write lock or nullptr on
-   * failure; call GetError() for more information.
+   *          failure; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockRef.Destroy
+   * @sa RWLock.Destroy
    * @sa RWLockRef.LockForReading
    * @sa RWLockRef.LockForWriting
    * @sa RWLockRef.TryLockForReading
    * @sa RWLockRef.TryLockForWriting
    * @sa RWLockRef.Unlock
    */
-  static RWLock Create() { return RWLock(); }
+  static RWLock Create() { return RWLock(SDL_CreateRWLock()); }
+
+  /**
+   * Destroy a read/write lock created with RWLock.Create().
+   *
+   * This function must be called on any read/write lock that is no longer
+   * needed. Failure to destroy a rwlock will result in a system memory or
+   * resource leak. While it is safe to destroy a rwlock that is _unlocked_, it
+   * is not safe to attempt to destroy a locked rwlock, and may result in
+   * undefined behavior depending on the platform.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLock.Create
+   */
+  void Destroy() { reset(); }
 };
 
 constexpr RWLockUnsafe::RWLockUnsafe(RWLock&& other)
@@ -706,7 +522,6 @@ constexpr RWLockUnsafe::RWLockUnsafe(RWLock&& other)
  * @cat resource
  *
  * @sa Semaphore
- * @sa SemaphoreRef
  */
 struct SemaphoreRef : Resource<SDL_Semaphore*>
 {
@@ -757,7 +572,7 @@ struct SemaphoreRef : Resource<SDL_Semaphore*>
    * If the call is successful it will atomically decrement the semaphore value.
    *
    * @param timeout the length of the timeout, in milliseconds, or -1 to wait
-   *                  indefinitely.
+   *                indefinitely.
    * @returns true if the wait succeeds or false if the wait times out.
    *
    * @since This function is available since SDL 3.2.0.
@@ -792,33 +607,19 @@ struct SemaphoreRef : Resource<SDL_Semaphore*>
    */
   Uint32 GetValue() const { return SDL_GetSemaphoreValue(get()); }
 
-protected:
   /**
    * Destroy a semaphore.
    *
    * It is not safe to destroy a semaphore if there are threads currently
    * waiting on it.
    *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Semaphore.Semaphore
-   */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy a semaphore.
-   *
-   * It is not safe to destroy a semaphore if there are threads currently
-   * waiting on it.
+   * @param resource the semaphore to destroy.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Semaphore.Semaphore
+   * @sa Semaphore.Create
    */
-  void reset(SDL_Semaphore* newResource = {})
-  {
-    SDL_DestroySemaphore(release(newResource));
-  }
+  static void reset(SDL_Semaphore* resource) { SDL_DestroySemaphore(resource); }
 };
 
 /**
@@ -830,37 +631,14 @@ protected:
  *
  * @sa SemaphoreRef
  */
-struct SemaphoreUnsafe : SemaphoreRef
+struct SemaphoreUnsafe : ResourcePtr<SemaphoreRef>
 {
-  using SemaphoreRef::Destroy;
-
-  using SemaphoreRef::SemaphoreRef;
-
-  using SemaphoreRef::reset;
-
-  /**
-   * Constructs SemaphoreUnsafe from SemaphoreRef.
-   */
-  constexpr SemaphoreUnsafe(const SemaphoreRef& other)
-    : SemaphoreRef(other.get())
-  {
-  }
-
-  SemaphoreUnsafe(const Semaphore& other) = delete;
+  using ResourcePtr::ResourcePtr;
 
   /**
    * Constructs SemaphoreUnsafe from Semaphore.
    */
   constexpr explicit SemaphoreUnsafe(Semaphore&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr SemaphoreUnsafe& operator=(SemaphoreUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
 };
 
 /**
@@ -870,75 +648,9 @@ struct SemaphoreUnsafe : SemaphoreRef
  *
  * @sa SemaphoreRef
  */
-struct Semaphore : SemaphoreUnsafe
+struct Semaphore : ResourceUnique<SemaphoreRef>
 {
-  using SemaphoreUnsafe::SemaphoreUnsafe;
-
-  /**
-   * Constructs an empty Semaphore.
-   */
-  constexpr Semaphore()
-    : SemaphoreUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Semaphore(SDL_Semaphore* resource)
-    : SemaphoreUnsafe(resource)
-  {
-  }
-
-  constexpr Semaphore(const Semaphore& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Semaphore(Semaphore&& other)
-    : Semaphore(other.release())
-  {
-  }
-
-  /**
-   * Create a semaphore.
-   *
-   * This function creates a new semaphore and initializes it with the value
-   * `initial_value`. Each wait operation on the semaphore will atomically
-   * decrement the semaphore value and potentially block if the semaphore value
-   * is 0. Each post operation will atomically increment the semaphore value and
-   * wake waiting threads and allow them to retry the wait operation.
-   *
-   * @param initial_value the starting value of the semaphore.
-   * @post a new semaphore or nullptr on failure; call GetError() for more
-   *          information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SemaphoreRef.Destroy
-   * @sa SemaphoreRef.Signal
-   * @sa SemaphoreRef.TryWait
-   * @sa SemaphoreRef.GetValue
-   * @sa SemaphoreRef.Wait
-   * @sa SemaphoreRef.WaitTimeout
-   */
-  Semaphore(Uint32 initial_value)
-    : Semaphore(SDL_CreateSemaphore(initial_value))
-  {
-  }
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Semaphore() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Semaphore& operator=(Semaphore other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a semaphore.
@@ -955,7 +667,7 @@ struct Semaphore : SemaphoreUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SemaphoreRef.Destroy
+   * @sa Semaphore.Destroy
    * @sa SemaphoreRef.Signal
    * @sa SemaphoreRef.TryWait
    * @sa SemaphoreRef.GetValue
@@ -964,8 +676,21 @@ struct Semaphore : SemaphoreUnsafe
    */
   static Semaphore Create(Uint32 initial_value)
   {
-    return Semaphore(initial_value);
+    return Semaphore(SDL_CreateSemaphore(initial_value));
   }
+
+  /**
+   * Destroy a semaphore.
+   *
+   * It is not safe to destroy a semaphore if there are threads currently
+   * waiting on it.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Semaphore.Create
+   */
+  void Destroy() { reset(); }
 };
 
 constexpr SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
@@ -1064,7 +789,7 @@ struct ConditionRef : Resource<SDL_Condition*>
    *
    * @param mutex the mutex used to coordinate thread access.
    * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
-   *                  indefinitely.
+   *                indefinitely.
    * @returns true if the condition variable is signaled, false if the condition
    *          is not signaled in the allotted time.
    *
@@ -1081,28 +806,16 @@ struct ConditionRef : Resource<SDL_Condition*>
     return SDL_WaitConditionTimeout(get(), mutex.get(), timeout.count());
   }
 
-protected:
   /**
    * Destroy a condition variable.
    *
+   * @param resource the condition variable to destroy.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Condition.Condition
+   * @sa Condition.Create
    */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy a condition variable.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Condition.Condition
-   */
-  void reset(SDL_Condition* newResource = {})
-  {
-    SDL_DestroyCondition(release(newResource));
-  }
+  static void reset(SDL_Condition* resource) { SDL_DestroyCondition(resource); }
 };
 
 /**
@@ -1114,37 +827,14 @@ protected:
  *
  * @sa ConditionRef
  */
-struct ConditionUnsafe : ConditionRef
+struct ConditionUnsafe : ResourcePtr<ConditionRef>
 {
-  using ConditionRef::ConditionRef;
-
-  using ConditionRef::Destroy;
-
-  using ConditionRef::reset;
-
-  /**
-   * Constructs ConditionUnsafe from ConditionRef.
-   */
-  constexpr ConditionUnsafe(const ConditionRef& other)
-    : ConditionRef(other.get())
-  {
-  }
-
-  ConditionUnsafe(const Condition& other) = delete;
+  using ResourcePtr::ResourcePtr;
 
   /**
    * Constructs ConditionUnsafe from Condition.
    */
   constexpr explicit ConditionUnsafe(Condition&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr ConditionUnsafe& operator=(ConditionUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
 };
 
 /**
@@ -1154,60 +844,10 @@ struct ConditionUnsafe : ConditionRef
  *
  * @sa ConditionRef
  */
-struct Condition : ConditionUnsafe
+struct Condition : ResourceUnique<ConditionRef>
 {
-  using ConditionUnsafe::ConditionUnsafe;
+  using ResourceUnique::ResourceUnique;
 
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Condition(SDL_Condition* resource)
-    : ConditionUnsafe(resource)
-  {
-  }
-
-  constexpr Condition(const Condition& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Condition(Condition&& other)
-    : Condition(other.release())
-  {
-  }
-
-  /**
-   * Create a condition variable.
-   *
-   * @post a new condition variable or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ConditionRef.Broadcast
-   * @sa ConditionRef.Signal
-   * @sa ConditionRef.Wait
-   * @sa ConditionRef.WaitTimeout
-   * @sa ConditionRef.Destroy
-   */
-  Condition()
-    : Condition(SDL_CreateCondition())
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Condition() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Condition& operator=(Condition other)
-  {
-    reset(other.release());
-    return *this;
-  }
   /**
    * Create a condition variable.
    *
@@ -1220,9 +860,19 @@ struct Condition : ConditionUnsafe
    * @sa ConditionRef.Signal
    * @sa ConditionRef.Wait
    * @sa ConditionRef.WaitTimeout
-   * @sa ConditionRef.Destroy
+   * @sa Condition.Destroy
    */
-  static Condition Create() { return Condition(); }
+  static Condition Create() { return Condition(SDL_CreateCondition()); }
+
+  /**
+   * Destroy a condition variable.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Condition.Create
+   */
+  void Destroy() { reset(); }
 };
 
 constexpr ConditionUnsafe::ConditionUnsafe(Condition&& other)

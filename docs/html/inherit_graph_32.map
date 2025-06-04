@@ -1,9 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,161,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1AnimationRef.html" title="Animated image support." alt="" coords="209,13,353,38"/>
-<area shape="poly" id="edge12_Node000000_Node000001" title=" " alt="" coords="176,23,209,23,209,28,176,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1AnimationUnsafe.html" title="Unsafe Handle to animation." alt="" coords="401,13,569,38"/>
-<area shape="poly" id="edge13_Node000001_Node000002" title=" " alt="" coords="367,23,401,23,401,28,367,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Animation.html" title="Handle to an owned animation." alt="" coords="617,13,740,38"/>
-<area shape="poly" id="edge14_Node000002_Node000003" title=" " alt="" coords="583,23,617,23,617,28,583,28"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1PixelFormat.html" title="Pixel format." alt="" coords="5,5,137,31"/>
 </map>

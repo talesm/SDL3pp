@@ -10,7 +10,7 @@ var searchData=
   ['management_7',['management',['../group__CategoryVideo.html',1,'Display and Window Management'],['../group__CategorySharedObject.html',1,'Shared Object/DLL Management'],['../group__CategoryThread.html',1,'Thread Management']]],
   ['management_20status_8',['Power Management Status',['../group__CategoryPower.html',1,'']]],
   ['manipulation_9',['Bit Manipulation',['../group__CategoryBits.html',1,'']]],
-  ['map_10',['map',['../classSDL_1_1PixelFormat.html#a3fcb872686be3ac5ed167751bfe04880',1,'SDL::PixelFormat::Map()'],['../structSDL_1_1Color.html#a152048e6de3cdaae27438893d5c4bfac',1,'SDL::Color::Map()']]],
+  ['map_10',['map',['../structSDL_1_1Color.html#a152048e6de3cdaae27438893d5c4bfac',1,'SDL::Color::Map()'],['../classSDL_1_1PixelFormat.html#a3fcb872686be3ac5ed167751bfe04880',1,'SDL::PixelFormat::Map()']]],
   ['mapcolor_11',['mapcolor',['../structSDL_1_1SurfaceRef.html#a42e9cc0ae405df54c7efac508b9322a7',1,'SDL::SurfaceRef::MapColor(Uint8 r, Uint8 g, Uint8 b) const'],['../structSDL_1_1SurfaceRef.html#af57c906cabe52ed0e3f5833d16a5b2d4',1,'SDL::SurfaceRef::MapColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const'],['../structSDL_1_1SurfaceRef.html#a8e52373eccd909bc58357160d05112c7',1,'SDL::SurfaceRef::MapColor(SDL_Color color) const']]],
   ['maprgb_12',['MapRGB',['../group__CategoryPixels.html#ga4cbff25e6b58ddcdabed09145b23ad89',1,'SDL']]],
   ['maprgba_13',['MapRGBA',['../group__CategoryPixels.html#gad02ad21af6f4472fc42d05601e77723b',1,'SDL']]],
@@ -41,7 +41,7 @@ var searchData=
   ['memset_38',['memset',['../group__CategoryStdinc.html#ga5a6487beb5a07d1110c8afe1fe030446',1,'SDL']]],
   ['memset4_39',['memset4',['../group__CategoryStdinc.html#ga8e06e75cea4ef203bf1f3c967f8bff54',1,'SDL']]],
   ['message_20boxes_40',['Message Boxes',['../group__CategoryMessagebox.html',1,'']]],
-  ['messagebox_41',['messagebox',['../structSDL_1_1MessageBox.html#a761e3c246f031304d5c26b5a2f509b47',1,'SDL::MessageBox::MessageBox(const SDL_MessageBoxData &amp;messageBox={})'],['../structSDL_1_1MessageBox.html#ab3180b114bb29701aadbb78c1b24f21e',1,'SDL::MessageBox::MessageBox(MessageBoxFlags flags, WindowRef window, const char *title, const char *message, std::span&lt; const MessageBoxButtonData &gt; buttons, OptionalRef&lt; const MessageBoxColorScheme &gt; colorScheme)'],['../structSDL_1_1MessageBox.html',1,'SDL::MessageBox']]],
+  ['messagebox_41',['messagebox',['../structSDL_1_1MessageBox.html#ab3180b114bb29701aadbb78c1b24f21e',1,'SDL::MessageBox::MessageBox(MessageBoxFlags flags, WindowRef window, const char *title, const char *message, std::span&lt; const MessageBoxButtonData &gt; buttons, OptionalRef&lt; const MessageBoxColorScheme &gt; colorScheme)'],['../structSDL_1_1MessageBox.html#a761e3c246f031304d5c26b5a2f509b47',1,'SDL::MessageBox::MessageBox(const SDL_MessageBoxData &amp;messageBox={})'],['../structSDL_1_1MessageBox.html',1,'SDL::MessageBox']]],
   ['messagebox_5fbutton_5fescapekey_5fdefault_42',['MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT',['../group__CategoryMessagebox.html#ga1fe5222eee41371ebaa51c9dcc415537',1,'SDL']]],
   ['messagebox_5fbutton_5freturnkey_5fdefault_43',['MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT',['../group__CategoryMessagebox.html#ga6265e154d5dff11063cd071b9d4ac79d',1,'SDL']]],
   ['messagebox_5fbuttons_5fleft_5fto_5fright_44',['MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT',['../group__CategoryMessagebox.html#ga7d9119e947684d2dc4d959832c61c75e',1,'SDL']]],
@@ -67,7 +67,7 @@ var searchData=
   ['mixaudio_64',['mixaudio',['../group__CategoryAudio.html#gaaa8a066451543172b07d02bf4eff8882',1,'SDL::MixAudio(Uint8 *dst, SourceBytes src, AudioFormat format, float volume)'],['../group__CategoryAudio.html#ga90ebbeaafbf2f69bbd771abbd5b94f23',1,'SDL::MixAudio(TargetBytes dst, SourceBytes src, AudioFormat format, float volume)']]],
   ['mixing_65',['Audio Playback, Recording, and Mixing',['../group__CategoryAudio.html',1,'']]],
   ['modes_66',['Blend modes',['../group__CategoryBlendmode.html',1,'']]],
-  ['modf_67',['modf',['../group__CategoryStdinc.html#ga4c97858f63954904f2037d7bc81b2681',1,'SDL::modf(double x, double *y)'],['../group__CategoryStdinc.html#ga5a30a1c10942df28de78ce3f482dec53',1,'SDL::modf(float x, float *y)']]],
+  ['modf_67',['modf',['../group__CategoryStdinc.html#ga5a30a1c10942df28de78ce3f482dec53',1,'SDL::modf(float x, float *y)'],['../group__CategoryStdinc.html#ga4c97858f63954904f2037d7bc81b2681',1,'SDL::modf(double x, double *y)']]],
   ['mostsignificantbitindex32_68',['MostSignificantBitIndex32',['../group__CategoryBits.html#gaa2f08a2af2962e1673e65eeeb4b24bee',1,'SDL']]],
   ['mouse_20support_69',['Mouse Support',['../group__CategoryMouse.html',1,'']]],
   ['mousebutton_70',['MouseButton',['../group__CategoryMouse.html#ga9b8df445d428312de2e9e08aa83d87fa',1,'SDL']]],
@@ -82,7 +82,7 @@ var searchData=
   ['mousewheelevent_79',['MouseWheelEvent',['../group__CategoryEvents.html#gac44f32e104cbfb90d50082136405d4ba',1,'SDL']]],
   ['murmur3_5f32_80',['murmur3_32',['../group__CategoryStdinc.html#gaa75ce9d0d0b590cd55fce1604bb40824',1,'SDL']]],
   ['mustlock_81',['MustLock',['../structSDL_1_1SurfaceRef.html#a5030bf180d394effdc2ad46615b305ea',1,'SDL::SurfaceRef']]],
-  ['mutex_82',['mutex',['../structSDL_1_1Mutex.html',1,'SDL::Mutex'],['../structSDL_1_1Mutex.html#ad6e1f3be624f6c8754222b582863fc1d',1,'SDL::Mutex::Mutex(SDL_Mutex *resource)'],['../structSDL_1_1Mutex.html#ac78ebbdf60bdd3eb67f4f20883cfe8d2',1,'SDL::Mutex::Mutex(Mutex &amp;&amp;other)'],['../structSDL_1_1Mutex.html#a5efc976c19ab75420cc30b00d4317bc4',1,'SDL::Mutex::Mutex()']]],
+  ['mutex_82',['Mutex',['../structSDL_1_1Mutex.html',1,'SDL']]],
   ['mutexref_83',['MutexRef',['../structSDL_1_1MutexRef.html',1,'SDL']]],
-  ['mutexunsafe_84',['mutexunsafe',['../structSDL_1_1MutexUnsafe.html#ad55e16254292c2ccdbbc4e79778a8237',1,'SDL::MutexUnsafe::MutexUnsafe(const MutexRef &amp;other)'],['../group__CategoryMutex.html#gad8662111e319ec24af5d8195073eb34a',1,'SDL::MutexUnsafe::MutexUnsafe(Mutex &amp;&amp;other)'],['../structSDL_1_1Mutex.html#ad55e16254292c2ccdbbc4e79778a8237',1,'SDL::Mutex::MutexUnsafe()'],['../structSDL_1_1MutexUnsafe.html',1,'SDL::MutexUnsafe'],['../structSDL_1_1Mutex.html#ad8662111e319ec24af5d8195073eb34a',1,'SDL::Mutex::MutexUnsafe()']]]
+  ['mutexunsafe_84',['mutexunsafe',['../group__CategoryMutex.html#gad8662111e319ec24af5d8195073eb34a',1,'SDL::MutexUnsafe::MutexUnsafe()'],['../structSDL_1_1MutexUnsafe.html',1,'SDL::MutexUnsafe']]]
 ];

@@ -2806,9 +2806,8 @@ const transform = {
         "SDL_RETURN_CAPABILITY",
         "SDL_NO_THREAD_SAFETY_ANALYSIS",
       ],
-      resources: {
+      resourcesNew: {
         "SDL_Mutex": {
-          omitDefaultCtor: true,
           entries: {
             "SDL_CreateMutex": "ctor",
             "SDL_LockMutex": {
@@ -2829,7 +2828,6 @@ const transform = {
           }
         },
         "SDL_RWLock": {
-          omitDefaultCtor: true,
           entries: {
             "SDL_CreateRWLock": "ctor",
             "SDL_LockRWLockForReading": {
@@ -2878,7 +2876,6 @@ const transform = {
           }
         },
         "SDL_Condition": {
-          omitDefaultCtor: true,
           entries: {
             "SDL_CreateCondition": "ctor",
             "SDL_SignalCondition": "function",

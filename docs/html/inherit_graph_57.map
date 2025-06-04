@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1FontRef.html" title="The internal structure containing font information." alt="" coords="208,13,313,38"/>
-<area shape="poly" id="edge73_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1FontUnsafe.html" title="Unsafe Handle to font." alt="" coords="361,13,491,38"/>
-<area shape="poly" id="edge74_Node000001_Node000002" title=" " alt="" coords="327,23,361,23,361,28,327,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Font.html" title="Handle to an owned font." alt="" coords="539,13,621,38"/>
-<area shape="poly" id="edge75_Node000002_Node000003" title=" " alt="" coords="505,23,538,23,538,28,505,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1TrayRef.html" title="An opaque handle representing a toplevel system tray object." alt="" coords="208,13,312,38"/>
+<area shape="poly" id="edge56_Node000000_Node000001" title=" " alt="" coords="173,23,208,23,208,28,173,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1TrayUnsafe.html" title="Unsafe Handle to tray." alt="" coords="360,13,488,38"/>
+<area shape="poly" id="edge57_Node000001_Node000002" title=" " alt="" coords="326,23,359,23,359,28,326,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1Tray.html" title="Handle to an owned tray." alt="" coords="536,13,619,38"/>
+<area shape="poly" id="edge58_Node000002_Node000003" title=" " alt="" coords="502,23,536,23,536,28,502,28"/>
 </map>

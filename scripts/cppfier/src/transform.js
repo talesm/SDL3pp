@@ -797,7 +797,7 @@ function expandResources(sourceEntries, file, context) {
       name: refName,
       kind: "struct",
       type: resourceType,
-      doc: transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource\n\n@sa ${uniqueName}\n@sa ${refName}`,
+      doc: transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource\n\n@sa ${uniqueName}`,
       entries: {
         "Resource::Resource": "alias",
         ...refSubEntries,
