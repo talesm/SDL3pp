@@ -76,7 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1ProcessRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::ProcessRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategoryProcess.html">Process Control</a></div></div></div>
 </div><!--header-->
@@ -90,12 +90,8 @@ Inheritance diagram for SDL::ProcessRef:</div>
 <div class="center"><img src="structSDL_1_1ProcessRef__inherit__graph.png" border="0" usemap="#aSDL_1_1ProcessRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1ProcessRef_inherit__map" id="aSDL_1_1ProcessRef_inherit__map">
 <area shape="rect" title="An opaque handle representing a system process." alt="" coords="19,93,146,119"/>
-<area shape="rect" href="structSDL_1_1ProcessUnsafe.html" title="Unsafe Handle to process." alt="" coords="7,167,158,192"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-<area shape="rect" href="structSDL_1_1Process.html" title="Handle to an owned process." alt="" coords="30,240,135,265"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -189,14 +185,11 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a13f00b0e648058edaf58bbf4fac161f1" id="r_a13f00b0e648058edaf58bbf4fac161f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessRef.html#a13f00b0e648058edaf58bbf4fac161f1">Destroy</a> ()</td></tr>
-<tr class="memdesc:a13f00b0e648058edaf58bbf4fac161f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a previously created process object.  <br /></td></tr>
-<tr class="separator:a13f00b0e648058edaf58bbf4fac161f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43d0ca6bf60894daeb0d56cc0f6f8b97" id="r_a43d0ca6bf60894daeb0d56cc0f6f8b97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessRef.html#a43d0ca6bf60894daeb0d56cc0f6f8b97">reset</a> (SDL_Process *newResource={})</td></tr>
-<tr class="memdesc:a43d0ca6bf60894daeb0d56cc0f6f8b97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a previously created process object.  <br /></td></tr>
-<tr class="separator:a43d0ca6bf60894daeb0d56cc0f6f8b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a5d4156da2a98da2e87724297d47693b9" id="r_a5d4156da2a98da2e87724297d47693b9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessRef.html#a5d4156da2a98da2e87724297d47693b9">reset</a> (SDL_Process *resource)</td></tr>
+<tr class="memdesc:a5d4156da2a98da2e87724297d47693b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a previously created process object.  <br /></td></tr>
+<tr class="separator:a5d4156da2a98da2e87724297d47693b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -208,43 +201,11 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>ProcessRef.ProcessRef</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html" title="Handle to an owned process.">Process</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessRef.html" title="An opaque handle representing a system process.">ProcessRef</a> </dd></dl>
+<a class="el" href="structSDL_1_1Process.html#ad1aa8b4ceab0a0d9aae7841f32852c30" title="Create a new process.">Process.Create</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a13f00b0e648058edaf58bbf4fac161f1" name="a13f00b0e648058edaf58bbf4fac161f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13f00b0e648058edaf58bbf4fac161f1">&#9670;&#160;</a></span>Destroy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::ProcessRef::Destroy </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Note that this does not stop the process, just destroys the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> object used to track it. If you want to stop the process you should use <a class="el" href="structSDL_1_1ProcessRef.html#abbdebd7d711567b9f10f2510adaef44e" title="Stop a process.">ProcessRef.Kill()</a>.</p>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1ProcessRef.html#abbdebd7d711567b9f10f2510adaef44e" title="Stop a process.">ProcessRef.Kill</a> </dd></dl>
-
-</div>
-</div>
 <a id="a3095592c81bcc60c5184fee150e9266b" name="a3095592c81bcc60c5184fee150e9266b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3095592c81bcc60c5184fee150e9266b">&#9670;&#160;</a></span>GetInput()</h2>
 
@@ -267,12 +228,14 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The process must have been created with <a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process()</a> and pipe_stdio set to true, or with <a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process()</a> and <code>prop::process.CREATE_STDIN_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</p>
+<p>The process must have been created with <a class="el" href="structSDL_1_1Process.html#ad1aa8b4ceab0a0d9aae7841f32852c30" title="Create a new process.">Process.Create()</a> and pipe_stdio set to true, or with <a class="el" href="structSDL_1_1Process.html#a6ab886a9c3d13f62299f606fab03c409" title="Create a new process with the specified properties.">Process.CreateWithProperties()</a> and <code>prop::process.CREATE_STDIN_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</p>
 <p>Writing to this stream can return less data than expected if the process hasn't read its input. It may be blocked waiting for its output to be read, if so you may need to call <a class="el" href="structSDL_1_1ProcessRef.html#a151b8d80dd53ef866957931e5ec54e89" title="Get the IOStreamRef associated with process standard output.">ProcessRef.GetOutput()</a> and read the output in parallel with writing input.</p>
 <dl class="section return"><dt>Returns</dt><dd>the input stream or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#ad1aa8b4ceab0a0d9aae7841f32852c30" title="Create a new process.">Process.Create</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Process.html#a6ab886a9c3d13f62299f606fab03c409" title="Create a new process with the specified properties.">Process.CreateWithProperties</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessRef.html#a151b8d80dd53ef866957931e5ec54e89" title="Get the IOStreamRef associated with process standard output.">ProcessRef.GetOutput</a> </dd></dl>
 
@@ -300,12 +263,14 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The process must have been created with <a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process()</a> and pipe_stdio set to true, or with <a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process()</a> and <code>prop::process.CREATE_STDOUT_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</p>
+<p>The process must have been created with <a class="el" href="structSDL_1_1Process.html#ad1aa8b4ceab0a0d9aae7841f32852c30" title="Create a new process.">Process.Create()</a> and pipe_stdio set to true, or with <a class="el" href="structSDL_1_1Process.html#a6ab886a9c3d13f62299f606fab03c409" title="Create a new process with the specified properties.">Process.CreateWithProperties()</a> and <code>prop::process.CREATE_STDOUT_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</p>
 <p>Reading from this stream can return 0 with <a class="el" href="structSDL_1_1IOStreamRef.html#a1d8a2b80b055cb98bb2fd57824a2b9e1" title="Query the stream status of an IOStreamRef.">IOStreamRef.GetStatus()</a> returning IO_STATUS_NOT_READY if no output is available yet.</p>
 <dl class="section return"><dt>Returns</dt><dd>the output stream or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#ad1aa8b4ceab0a0d9aae7841f32852c30" title="Create a new process.">Process.Create</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Process.html#a6ab886a9c3d13f62299f606fab03c409" title="Create a new process with the specified properties.">Process.CreateWithProperties</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessRef.html#a3095592c81bcc60c5184fee150e9266b" title="Get the IOStreamRef associated with process standard input.">ProcessRef.GetInput</a> </dd></dl>
 
@@ -350,7 +315,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#ad1aa8b4ceab0a0d9aae7841f32852c30" title="Create a new process.">Process.Create</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Process.html#a6ab886a9c3d13f62299f606fab03c409" title="Create a new process with the specified properties.">Process.CreateWithProperties</a> </dd></dl>
 
 </div>
 </div>
@@ -391,11 +358,13 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#ad1aa8b4ceab0a0d9aae7841f32852c30" title="Create a new process.">Process.Create</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Process.html#a6ab886a9c3d13f62299f606fab03c409" title="Create a new process with the specified properties.">Process.CreateWithProperties</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessRef.html#ae2211b6a1888aa6181a99cc54db4b9e5" title="Wait for a process to finish.">ProcessRef.Wait</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessRef.html#a13f00b0e648058edaf58bbf4fac161f1" title="Destroy a previously created process object.">ProcessRef.Destroy</a> </dd></dl>
+<a class="el" href="structSDL_1_1Process.html#a11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy</a> </dd></dl>
 
 </div>
 </div>
@@ -440,9 +409,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#ad1aa8b4ceab0a0d9aae7841f32852c30" title="Create a new process.">Process.Create</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessRef.html#a13f00b0e648058edaf58bbf4fac161f1" title="Destroy a previously created process object.">ProcessRef.Destroy</a> </dd></dl>
+<a class="el" href="structSDL_1_1Process.html#a11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy</a> </dd></dl>
 
 </div>
 </div>
@@ -483,12 +452,12 @@ template&lt;class T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>the data or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>ProcessRef.ProcessRef </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>ProcessRef.Create </dd></dl>
 
 </div>
 </div>
-<a id="a43d0ca6bf60894daeb0d56cc0f6f8b97" name="a43d0ca6bf60894daeb0d56cc0f6f8b97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43d0ca6bf60894daeb0d56cc0f6f8b97">&#9670;&#160;</a></span>reset()</h2>
+<a id="a5d4156da2a98da2e87724297d47693b9" name="a5d4156da2a98da2e87724297d47693b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d4156da2a98da2e87724297d47693b9">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -497,23 +466,31 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::ProcessRef::reset </td>
+          <td class="memname">static void SDL::ProcessRef::reset </td>
           <td>(</td>
           <td class="paramtype">SDL_Process *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Note that this does not stop the process, just destroys the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> object used to track it. If you want to stop the process you should use <a class="el" href="structSDL_1_1ProcessRef.html#abbdebd7d711567b9f10f2510adaef44e" title="Stop a process.">ProcessRef.Kill()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>The process object to destroy.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#ad1aa8b4ceab0a0d9aae7841f32852c30" title="Create a new process.">Process.Create</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Process.html#a6ab886a9c3d13f62299f606fab03c409" title="Create a new process with the specified properties.">Process.CreateWithProperties</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessRef.html#abbdebd7d711567b9f10f2510adaef44e" title="Stop a process.">ProcessRef.Kill</a> </dd></dl>
 
@@ -565,11 +542,13 @@ template&lt;class T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true if the process exited, false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#ad1aa8b4ceab0a0d9aae7841f32852c30" title="Create a new process.">Process.Create</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Process.html#a6ab886a9c3d13f62299f606fab03c409" title="Create a new process with the specified properties.">Process.CreateWithProperties</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessRef.html#abbdebd7d711567b9f10f2510adaef44e" title="Stop a process.">ProcessRef.Kill</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessRef.html#a13f00b0e648058edaf58bbf4fac161f1" title="Destroy a previously created process object.">ProcessRef.Destroy</a> </dd></dl>
+<a class="el" href="structSDL_1_1Process.html#a11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy</a> </dd></dl>
 
 </div>
 </div>

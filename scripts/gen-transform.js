@@ -3297,7 +3297,7 @@ const transform = {
           includeAfter: "__begin",
         },
       },
-      resources: {
+      resourcesNew: {
         "SDL_Process": {
           free: "SDL_DestroyProcess",
           entries: {
