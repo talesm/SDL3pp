@@ -359,7 +359,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * // Fill in the interface function pointers with your implementation
  * iface.seek = ...
  *
- * stream = IOStreamRef.IOStreamRef(&iface, nullptr);
+ * stream = IOStreamRef.Open(iface, nullptr);
  * ```
  *
  * If you are using designated initializers, you can use the size of the
@@ -370,7 +370,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *     .version = sizeof(iface),
  *     .seek = ...
  * };
- * stream = IOStreamRef.IOStreamRef(&iface, nullptr);
+ * stream = IOStreamRef.Open(iface, nullptr);
  * ```
  *
  * @threadsafety It is safe to call this macro from any thread.

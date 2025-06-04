@@ -159,7 +159,7 @@ Variables</h2></td></tr>
 </ul>
 <p>The filelist argument should not be freed; it will automatically be freed when the callback returns.</p>
 <p>The filter argument is the index of the filter that was selected, or -1 if no filter was selected or if the platform or method doesn't support fetching the selected filter.</p>
-<p>In Android, the <code>filelist</code> are <code>content://</code> URIs. They should be opened using IOStreamRef.IOStreamRef() with appropriate modes. This applies both to open and save file dialog.</p>
+<p>In Android, the <code>filelist</code> are <code>content://</code> URIs. They should be opened using <a class="el" href="structSDL_1_1IOStream.html#a991da53140a740b71e05f122562173ea" title="Use this function to create a new IOStream structure for reading from and/or writing to a named file.">IOStream.FromFile()</a> with appropriate modes. This applies both to open and save file dialog.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">userdata</td><td>an app-provided pointer, for the callback's use. </td></tr>
@@ -203,7 +203,7 @@ Variables</h2></td></tr>
 </ul>
 <p>The filelist argument should not be freed; it will automatically be freed when the callback returns.</p>
 <p>The filter argument is the index of the filter that was selected, or -1 if no filter was selected or if the platform or method doesn't support fetching the selected filter.</p>
-<p>In Android, the <code>filelist</code> are <code>content://</code> URIs. They should be opened using IOStreamRef.IOStreamRef() with appropriate modes. This applies both to open and save file dialog.</p>
+<p>In Android, the <code>filelist</code> are <code>content://</code> URIs. They should be opened using <a class="el" href="structSDL_1_1IOStream.html#a991da53140a740b71e05f122562173ea" title="Use this function to create a new IOStream structure for reading from and/or writing to a named file.">IOStream.FromFile()</a> with appropriate modes. This applies both to open and save file dialog.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">filelist</td><td>the file(s) chosen by the user. </td></tr>

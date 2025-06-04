@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1SharedObjectRef.html" title="An opaque datatype that represents a loaded shared object." alt="" coords="208,13,372,38"/>
-<area shape="poly" id="edge54_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1SharedObjectUnsafe.html" title="Unsafe Handle to sharedObject." alt="" coords="420,13,608,38"/>
-<area shape="poly" id="edge55_Node000001_Node000002" title=" " alt="" coords="386,23,420,23,420,28,386,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1SharedObject.html" title="Handle to an owned sharedObject." alt="" coords="656,13,799,38"/>
-<area shape="poly" id="edge56_Node000002_Node000003" title=" " alt="" coords="622,23,656,23,656,28,622,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1SemaphoreRef.html" title="A means to manage access to a resource, by count, between threads." alt="" coords="208,13,359,38"/>
+<area shape="poly" id="edge49_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1SemaphoreUnsafe.html" title="Unsafe Handle to semaphore." alt="" coords="407,13,581,38"/>
+<area shape="poly" id="edge50_Node000001_Node000002" title=" " alt="" coords="373,23,407,23,407,28,373,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1Semaphore.html" title="Handle to an owned semaphore." alt="" coords="629,13,759,38"/>
+<area shape="poly" id="edge51_Node000002_Node000003" title=" " alt="" coords="595,23,629,23,629,28,595,28"/>
 </map>

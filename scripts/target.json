@@ -261,7 +261,7 @@
         },
         "InitSubSystem": [
           {
-            "doc": "Initialize the SDL library.\n\nInitSubSystem() simply forwards to calling SDL_InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nSDL_InitSubSystem() might be preferred.\n\nThe file I/O (for example: IOStream.IOStream) and threading (Thread.Thread)\nsubsystems are initialized by default. Message boxes\n(ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nInitSubSystem fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `INIT_HAPTIC`: haptic (force feedback) subsystem\n- `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `INIT_EVENTS`: events subsystem\n- `INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call QuitSubSystem()\nfor each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or\ncall Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling InitSubSystem, using either SetAppMetadata() or\nSetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAppMetadata\n@sa SetAppMetadataProperty\n@sa SDL_InitSubSystem\n@sa Quit\n@sa SetMainReady\n@sa WasInit",
+            "doc": "Initialize the SDL library.\n\nInitSubSystem() simply forwards to calling SDL_InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nSDL_InitSubSystem() might be preferred.\n\nThe file I/O (for example: IOStream.FromFile) and threading (Thread.Thread)\nsubsystems are initialized by default. Message boxes\n(ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nInitSubSystem fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `INIT_HAPTIC`: haptic (force feedback) subsystem\n- `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `INIT_EVENTS`: events subsystem\n- `INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call QuitSubSystem()\nfor each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or\ncall Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling InitSubSystem, using either SetAppMetadata() or\nSetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAppMetadata\n@sa SetAppMetadataProperty\n@sa SDL_InitSubSystem\n@sa Quit\n@sa SetMainReady\n@sa WasInit",
             "name": "InitSubSystem",
             "kind": "function",
             "type": "void",
@@ -19244,7 +19244,7 @@
             ],
             "LoadBMP": [
               {
-                "doc": "Load a BMP image from a seekable SDL data stream.\n\nThe new surface should be freed with Surface.Destroy(). Not doing so\nwill result in a memory leak.\n\n@param src the data stream for the surface.\n@param closeio if true, calls IOStreamRef.Close() on `src` before returning, even\n               in the case of an error.\n@returns a pointer to a new SurfaceRef structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Destroy\n@sa Surface.LoadBMP\n@sa SaveBMP",
+                "doc": "Load a BMP image from a seekable SDL data stream.\n\nThe new surface should be freed with Surface.Destroy(). Not doing so\nwill result in a memory leak.\n\n@param src the data stream for the surface.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@returns a pointer to a new SurfaceRef structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Destroy\n@sa Surface.LoadBMP\n@sa SaveBMP",
                 "name": "LoadBMP",
                 "kind": "function",
                 "type": "Surface",
@@ -19522,7 +19522,7 @@
         },
         "SaveBMP": [
           {
-            "doc": "Save a surface to a seekable SDL data stream in BMP format.\n\nSurfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the\nBMP directly. Other RGB formats with 8-bit or higher get converted to a\n24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit\nsurface before they are saved. YUV and paletted 1-bit and 4-bit formats are\nnot supported.\n\n@param surface the SurfaceRef structure containing the image to be saved.\n@param dst a data stream to save to.\n@param closeio if true, calls IOStreamRef.Close() on `dst` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.LoadBMP\n@sa SaveBMP",
+            "doc": "Save a surface to a seekable SDL data stream in BMP format.\n\nSurfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the\nBMP directly. Other RGB formats with 8-bit or higher get converted to a\n24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit\nsurface before they are saved. YUV and paletted 1-bit and 4-bit formats are\nnot supported.\n\n@param surface the SurfaceRef structure containing the image to be saved.\n@param dst a data stream to save to.\n@param closeio if true, calls IOStream.Close() on `dst` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.LoadBMP\n@sa SaveBMP",
             "name": "SaveBMP",
             "kind": "function",
             "type": "void",
@@ -21589,7 +21589,7 @@
         },
         "LoadWAV": [
           {
-            "doc": "Load the audio data of a WAVE file into memory.\n\nLoading a WAVE file requires `src`, `spec`, `audio_buf` and `audio_len` to\nbe valid pointers. The entire data portion of the file is then loaded into\nmemory and decoded if necessary.\n\nSupported formats are RIFF WAVE files with the formats PCM (8, 16, 24, and\n32 bits), IEEE Float (32 bits), Microsoft ADPCM and IMA ADPCM (4 bits), and\nA-law and mu-law (8 bits). Other formats are currently unsupported and\ncause an error.\n\nIf this function succeeds, the return value is zero and the pointer to the\naudio data allocated by the function is written to `audio_buf` and its\nlength in bytes to `audio_len`. The AudioSpec members `freq`,\n`channels`, and `format` are set to the values of the audio data in the\nbuffer.\n\nIt's necessary to use free() to free the audio data returned in\n`audio_buf` when it is no longer used.\n\nBecause of the underspecification of the .WAV format, there are many\nproblematic files in the wild that cause issues with strict decoders. To\nprovide compatibility with these files, this decoder is lenient in regards\nto the truncation of the file, the fact chunk, and the size of the RIFF\nchunk. The hints `SDL_HINT_WAVE_RIFF_CHUNK_SIZE`,\n`SDL_HINT_WAVE_TRUNCATION`, and `SDL_HINT_WAVE_FACT_CHUNK` can be used to\ntune the behavior of the loading process.\n\nAny file that is invalid (due to truncation, corruption, or wrong values in\nthe headers), too big, or unsupported causes an error. Additionally, any\ncritical I/O error from the data source will terminate the loading process\nwith an error. The function returns nullptr on error and in all cases (with\nthe exception of `src` being nullptr), an appropriate error message will be\nset.\n\nIt is required that the data source supports seeking.\n\nExample:\n\n```c\nLoadWAV(IOStream.IOStream(\"sample.wav\", \"rb\"), true, &spec, &buf, &len);\n```\n\nNote that the LoadWAV function does this same thing for you, but in a\nless messy way:\n\n```c\nLoadWAV(\"sample.wav\", &spec, &buf, &len);\n```\n\n@param src the data source for the WAVE data.\n@param closeio if true, calls IOStreamRef.Close() on `src` before returning, even\n               in the case of an error.\n@param spec a pointer to an AudioSpec that will be set to the WAVE\n            data's format details on successful return.\n@param audio_buf a pointer filled with the audio data, allocated by the\n                 function.\n@param audio_len a pointer filled with the length of the audio data buffer\n                 in bytes.\n@throws Error on failure.\n\n         This function returns false if the .WAV file cannot be opened,\n         uses an unknown data format, or is corrupt; call GetError()\n         for more information.\n\n         When the application is done with the data returned in\n         `audio_buf`, it should call free() to dispose of it.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa free\n@sa LoadWAV",
+            "doc": "Load the audio data of a WAVE file into memory.\n\nLoading a WAVE file requires `src`, `spec`, `audio_buf` and `audio_len` to\nbe valid pointers. The entire data portion of the file is then loaded into\nmemory and decoded if necessary.\n\nSupported formats are RIFF WAVE files with the formats PCM (8, 16, 24, and\n32 bits), IEEE Float (32 bits), Microsoft ADPCM and IMA ADPCM (4 bits), and\nA-law and mu-law (8 bits). Other formats are currently unsupported and\ncause an error.\n\nIf this function succeeds, the return value is zero and the pointer to the\naudio data allocated by the function is written to `audio_buf` and its\nlength in bytes to `audio_len`. The AudioSpec members `freq`,\n`channels`, and `format` are set to the values of the audio data in the\nbuffer.\n\nIt's necessary to use free() to free the audio data returned in\n`audio_buf` when it is no longer used.\n\nBecause of the underspecification of the .WAV format, there are many\nproblematic files in the wild that cause issues with strict decoders. To\nprovide compatibility with these files, this decoder is lenient in regards\nto the truncation of the file, the fact chunk, and the size of the RIFF\nchunk. The hints `SDL_HINT_WAVE_RIFF_CHUNK_SIZE`,\n`SDL_HINT_WAVE_TRUNCATION`, and `SDL_HINT_WAVE_FACT_CHUNK` can be used to\ntune the behavior of the loading process.\n\nAny file that is invalid (due to truncation, corruption, or wrong values in\nthe headers), too big, or unsupported causes an error. Additionally, any\ncritical I/O error from the data source will terminate the loading process\nwith an error. The function returns nullptr on error and in all cases (with\nthe exception of `src` being nullptr), an appropriate error message will be\nset.\n\nIt is required that the data source supports seeking.\n\nExample:\n\n```c\nLoadWAV(IOStream.FromFile(\"sample.wav\", \"rb\"), true, &spec, &buf, &len);\n```\n\nNote that the LoadWAV function does this same thing for you, but in a\nless messy way:\n\n```c\nLoadWAV(\"sample.wav\", &spec, &buf, &len);\n```\n\n@param src the data source for the WAVE data.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@param spec a pointer to an AudioSpec that will be set to the WAVE\n            data's format details on successful return.\n@param audio_buf a pointer filled with the audio data, allocated by the\n                 function.\n@param audio_len a pointer filled with the length of the audio data buffer\n                 in bytes.\n@throws Error on failure.\n\n         This function returns false if the .WAV file cannot be opened,\n         uses an unknown data format, or is corrupt; call GetError()\n         for more information.\n\n         When the application is done with the data returned in\n         `audio_buf`, it should call free() to dispose of it.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa free\n@sa LoadWAV",
             "name": "LoadWAV",
             "kind": "function",
             "type": "OwnArray<Uint8>",
@@ -21609,7 +21609,7 @@
             }
           },
           {
-            "doc": "Loads a WAV from a file path.\n\nThis is a convenience function that is effectively the same as:\n\n```c\nLoadWAV(IOStream.IOStream(path, \"rb\"), true, spec, audio_buf, audio_len);\n```\n\n@param path the file path of the WAV file to open.\n@param spec a pointer to an AudioSpec that will be set to the WAVE\n            data's format details on successful return.\n@param audio_buf a pointer filled with the audio data, allocated by the\n                 function.\n@param audio_len a pointer filled with the length of the audio data buffer\n                 in bytes.\n@throws Error on failure.\n\n         This function returns false if the .WAV file cannot be opened,\n         uses an unknown data format, or is corrupt; call GetError()\n         for more information.\n\n         When the application is done with the data returned in\n         `audio_buf`, it should call free() to dispose of it.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa free\n@sa LoadWAV",
+            "doc": "Loads a WAV from a file path.\n\nThis is a convenience function that is effectively the same as:\n\n```c\nLoadWAV(IOStream.FromFile(path, \"rb\"), true, spec, audio_buf, audio_len);\n```\n\n@param path the file path of the WAV file to open.\n@param spec a pointer to an AudioSpec that will be set to the WAVE\n            data's format details on successful return.\n@param audio_buf a pointer filled with the audio data, allocated by the\n                 function.\n@param audio_len a pointer filled with the length of the audio data buffer\n                 in bytes.\n@throws Error on failure.\n\n         This function returns false if the .WAV file cannot be opened,\n         uses an unknown data format, or is corrupt; call GetError()\n         for more information.\n\n         When the application is done with the data returned in\n         `audio_buf`, it should call free() to dispose of it.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa free\n@sa LoadWAV",
             "name": "LoadWAV",
             "kind": "function",
             "type": "OwnArray<Uint8>",
@@ -34223,14 +34223,14 @@
           "sourceName": "SDL_IO_SEEK_END"
         },
         "IOStreamInterface": {
-          "doc": "The function pointers that drive an IOStreamRef.\n\nApplications can provide this struct to IOStream.IOStream() to create their own\nimplementation of IOStreamRef. This is not necessarily required, as SDL\nalready offers several common types of I/O streams, via functions like\nIOStream.IOStream() and IOStream.FromMem().\n\nThis structure should be initialized using SDL_INIT_INTERFACE()\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_INIT_INTERFACE",
+          "doc": "The function pointers that drive an IOStreamRef.\n\nApplications can provide this struct to IOStream.Open() to create their own\nimplementation of IOStreamRef. This is not necessarily required, as SDL\nalready offers several common types of I/O streams, via functions like\nIOStream.FromFile() and IOStream.FromMem().\n\nThis structure should be initialized using SDL_INIT_INTERFACE()\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_INIT_INTERFACE",
           "name": "IOStreamInterface",
           "kind": "alias",
           "sourceName": "SDL_IOStreamInterface",
           "type": "SDL_IOStreamInterface"
         },
         "IOStreamRef": {
-          "doc": "The read/write operation structure.\n\nThis operates as an opaque handle. There are several APIs to create various\ntypes of I/O streams, or an app can supply an IOStreamInterface to\nIOStream.IOStream() to provide their own stream implementation behind this\nstruct's abstract interface.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa IOStream\n@sa IOStreamRef",
+          "doc": "The read/write operation structure.\n\nThis operates as an opaque handle. There are several APIs to create various\ntypes of I/O streams, or an app can supply an IOStreamInterface to\nIOStream.Open() to provide their own stream implementation behind this\nstruct's abstract interface.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa IOStream\n@sa IOStreamRef",
           "name": "IOStreamRef",
           "kind": "struct",
           "type": "Resource<SDL_IOStream *>",
@@ -34405,7 +34405,7 @@
               "sourceName": "SDL_IOvprintf"
             },
             "Flush": {
-              "doc": "Flush any buffered data in the stream.\n\nThis function makes sure that any buffered data is written to the stream.\nNormally this isn't necessary but if the stream is a pipe or socket it\nguarantees that any pending data is sent.\n\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.IOStream\n@sa IOStreamRef.Write",
+              "doc": "Flush any buffered data in the stream.\n\nThis function makes sure that any buffered data is written to the stream.\nNormally this isn't necessary but if the stream is a pipe or socket it\nguarantees that any pending data is sent.\n\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Open\n@sa IOStreamRef.Write",
               "name": "Flush",
               "kind": "function",
               "type": "void",
@@ -34416,7 +34416,7 @@
               }
             },
             "LoadFile": {
-              "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param closeio if true, calls IOStreamRef.Close() on `src` before returning, even\n               in the case of an error.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFile\n@sa IOStreamRef.SaveFile",
+              "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFile\n@sa IOStreamRef.SaveFile",
               "name": "LoadFile",
               "kind": "function",
               "type": "StringResult",
@@ -34437,7 +34437,7 @@
               "doc": ""
             },
             "SaveFile": {
-              "doc": "Save all the data into an SDL data stream.\n\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@param closeio if true, calls IOStreamRef.Close() on `src` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveFile\n@sa IOStreamRef.LoadFile",
+              "doc": "Save all the data into an SDL data stream.\n\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveFile\n@sa IOStreamRef.LoadFile",
               "name": "SaveFile",
               "kind": "function",
               "type": "void",
@@ -34928,35 +34928,23 @@
               "name": "TryReadS64BE",
               "doc": ""
             },
-            "Close": {
-              "doc": "Close and free an allocated IOStreamRef structure.\n\nIOStreamRef.Close() closes and cleans up the IOStreamRef stream. It releases any\nresources used by the stream and frees the IOStreamRef itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the IOStreamRef is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call IOStreamRef.Flush() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.IOStream",
-              "name": "Close",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_CloseIO",
-              "hints": {
-                "mayFail": true,
-                "body": "reset();"
-              }
-            },
             "reset": {
-              "doc": "Close and free an allocated IOStreamRef structure.\n\nIOStreamRef.Close() closes and cleans up the IOStreamRef stream. It releases any\nresources used by the stream and frees the IOStreamRef itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the IOStreamRef is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call IOStreamRef.Flush() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@param context IOStreamRef structure to close.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.IOStream",
+              "doc": "Close and free an allocated IOStreamRef structure.\n\nIOStream.Close() closes and cleans up the IOStreamRef stream. It releases any\nresources used by the stream and frees the IOStreamRef itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the IOStreamRef is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call IOStreamRef.Flush() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@param context IOStreamRef structure to close.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Open",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_IOStream *",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_IOStream *"
                 }
               ],
               "sourceName": "SDL_CloseIO",
               "hints": {
-                "body": "CheckError(SDL_CloseIO(release(newResource)));",
+                "body": "CheckError(SDL_CloseIO(resource));",
                 "mayFail": true
-              }
+              },
+              "static": true
             }
           },
           "hints": {
@@ -34967,244 +34955,49 @@
         "IOStreamUnsafe": {
           "name": "IOStreamUnsafe",
           "kind": "struct",
-          "type": "IOStreamRef",
+          "type": "ResourcePtr<IOStreamRef>",
           "doc": "Unsafe Handle to iOStream\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa IOStreamRef",
           "entries": {
-            "IOStreamRef::Close": {
+            "ResourcePtr::ResourcePtr": {
               "kind": "alias",
-              "name": "IOStreamRef::Close",
+              "name": "ResourcePtr::ResourcePtr",
               "doc": ""
             },
-            "IOStreamRef::IOStreamRef": {
-              "kind": "alias",
-              "name": "IOStreamRef::IOStreamRef",
-              "doc": ""
-            },
-            "IOStreamRef::reset": {
-              "kind": "alias",
-              "name": "IOStreamRef::reset",
-              "doc": ""
-            },
-            "IOStreamUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const IOStreamRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs IOStreamUnsafe from IOStreamRef.",
-                "hints": {
-                  "init": [
-                    "IOStreamRef(other.get())"
-                  ]
-                },
-                "name": "IOStreamUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const IOStream &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "IOStreamUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "IOStreamUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "IOStream &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs IOStreamUnsafe from IOStream.",
-                "hints": {
-                  "init": [
-                    "IOStreamUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
+            "IOStreamUnsafe": {
               "kind": "function",
-              "type": "IOStreamUnsafe &",
+              "name": "IOStreamUnsafe",
+              "type": "",
+              "explicit": true,
               "constexpr": true,
               "parameters": [
                 {
-                  "type": "IOStreamUnsafe",
+                  "type": "IOStream &&",
                   "name": "other"
                 }
               ],
-              "doc": "Assignment operator.",
+              "doc": "Constructs IOStreamUnsafe from IOStream.",
               "hints": {
-                "body": "release(other.release()); return *this;"
+                "init": [
+                  "IOStreamUnsafe(other.release())"
+                ]
               },
-              "name": "operator="
+              "proto": true
             }
           }
         },
         "IOStream": {
           "name": "IOStream",
           "kind": "struct",
-          "type": "IOStreamUnsafe",
+          "type": "ResourceUnique<IOStreamRef>",
           "doc": "Handle to an owned iOStream\n\n@cat resource\n\n@sa IOStreamRef",
           "entries": {
-            "IOStreamUnsafe::IOStreamUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "IOStreamUnsafe::IOStreamUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
             },
-            "IOStream": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [],
-                "doc": "Constructs an empty IOStream.",
-                "hints": {
-                  "init": [
-                    "IOStreamUnsafe(nullptr)"
-                  ]
-                },
-                "name": "IOStream"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_IOStream *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "IOStreamUnsafe(resource)"
-                  ]
-                },
-                "name": "IOStream"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const IOStream &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "IOStream",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "IOStream &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "IOStream(other.release())"
-                  ]
-                },
-                "name": "IOStream"
-              },
-              {
-                "doc": "Use this function to create a new IOStreamRef structure for reading from\nand/or writing to a named file.\n\nThe `mode` string is treated roughly the same as in a call to the C\nlibrary's fopen(), even if SDL doesn't happen to use fopen() behind the\nscenes.\n\nAvailable `mode` strings:\n\n- \"r\": Open a file for reading. The file must exist.\n- \"w\": Create an empty file for writing. If a file with the same name\n  already exists its content is erased and the file is treated as a new\n  empty file.\n- \"a\": Append to a file. Writing operations append data at the end of the\n  file. The file is created if it does not exist.\n- \"r+\": Open a file for update both reading and writing. The file must\n  exist.\n- \"w+\": Create an empty file for both reading and writing. If a file with\n  the same name already exists its content is erased and the file is\n  treated as a new empty file.\n- \"a+\": Open a file for reading and appending. All writing operations are\n  performed at the end of the file, protecting the previous content to be\n  overwritten. You can reposition (fseek, rewind) the internal pointer to\n  anywhere in the file for reading, but writing operations will move it\n  back to the end of file. The file is created if it does not exist.\n\n**NOTE**: In order to open a file as a binary file, a \"b\" character has to\nbe included in the `mode` string. This additional \"b\" character can either\nbe appended at the end of the string (thus making the following compound\nmodes: \"rb\", \"wb\", \"ab\", \"r+b\", \"w+b\", \"a+b\") or be inserted between the\nletter and the \"+\" sign for the mixed modes (\"rb+\", \"wb+\", \"ab+\").\nAdditional characters may follow the sequence, although they should have no\neffect. For example, \"t\" is sometimes appended to make explicit the file is\na text file.\n\nThis function supports Unicode filenames, but they must be encoded in UTF-8\nformat, regardless of the underlying operating system.\n\nIn Android, IOStream.IOStream() can be used to open content:// URIs. As a\nfallback, IOStream.IOStream() will transparently open a matching filename in\nthe app's `assets`.\n\nClosing the IOStreamRef will close SDL's internal file handle.\n\nThe following properties may be set at creation time by SDL:\n\n- `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast\n  to a win32 `HANDLE`, that this IOStreamRef is using to access the\n  filesystem. If the program isn't running on Windows, or SDL used some\n  other method to access the filesystem, this property will not be set.\n- `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a\n  stdio `FILE *`, that this IOStreamRef is using to access the filesystem.\n  If SDL used some other method to access the filesystem, this property\n  will not be set. PLEASE NOTE that if SDL is using a different C runtime\n  than your app, trying to use this pointer will almost certainly result in\n  a crash! This is mostly a problem on Windows; make sure you build SDL and\n  your app with the same compiler and settings to avoid it.\n- `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this\n  IOStreamRef is using to access the filesystem.\n- `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast\n  to an Android NDK `AAsset *`, that this IOStreamRef is using to access\n  the filesystem. If SDL used some other method to access the filesystem,\n  this property will not be set.\n\n@param file a UTF-8 string representing the filename to open.\n@param mode an ASCII string representing the mode to be used for opening\n            the file.\n@post a pointer to the IOStreamRef structure that is created or nullptr on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamRef.Close\n@sa IOStreamRef.Flush\n@sa IOStreamRef.Read\n@sa IOStreamRef.Seek\n@sa IOStreamRef.Tell\n@sa IOStreamRef.Write",
-                "name": "IOStream",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "file",
-                    "type": "StringParam"
-                  },
-                  {
-                    "name": "mode",
-                    "type": "StringParam"
-                  }
-                ],
-                "sourceName": "SDL_IOFromFile",
-                "proto": false
-              },
-              {
-                "doc": "Create a custom IOStreamRef.\n\nApplications do not need to use this function unless they are providing\ntheir own IOStreamRef implementation. If you just need an IOStreamRef to\nread/write a common data source, you should use the built-in\nimplementations in SDL, like IOStream.IOStream() or IOStream.FromMem(), etc.\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this IOStreamRef, initialized\n             using SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@post a pointer to the allocated memory on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamRef.Close\n@sa SDL_INIT_INTERFACE\n@sa IOStream.FromConstMem\n@sa IOStream.IOStream\n@sa IOStream.FromMem",
-                "name": "IOStream",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "iface",
-                    "type": "const IOStreamInterface &"
-                  },
-                  {
-                    "name": "userdata",
-                    "type": "void *"
-                  }
-                ],
-                "sourceName": "SDL_OpenIO",
-                "hints": {
-                  "mayFail": true
-                },
-                "proto": false
-              }
-            ],
-            "~IOStream": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~IOStream"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "IOStream &",
-              "parameters": [
-                {
-                  "type": "IOStream",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "FromFile": {
-              "doc": "Use this function to create a new IOStreamRef structure for reading from\nand/or writing to a named file.\n\nThe `mode` string is treated roughly the same as in a call to the C\nlibrary's fopen(), even if SDL doesn't happen to use fopen() behind the\nscenes.\n\nAvailable `mode` strings:\n\n- \"r\": Open a file for reading. The file must exist.\n- \"w\": Create an empty file for writing. If a file with the same name\n  already exists its content is erased and the file is treated as a new\n  empty file.\n- \"a\": Append to a file. Writing operations append data at the end of the\n  file. The file is created if it does not exist.\n- \"r+\": Open a file for update both reading and writing. The file must\n  exist.\n- \"w+\": Create an empty file for both reading and writing. If a file with\n  the same name already exists its content is erased and the file is\n  treated as a new empty file.\n- \"a+\": Open a file for reading and appending. All writing operations are\n  performed at the end of the file, protecting the previous content to be\n  overwritten. You can reposition (fseek, rewind) the internal pointer to\n  anywhere in the file for reading, but writing operations will move it\n  back to the end of file. The file is created if it does not exist.\n\n**NOTE**: In order to open a file as a binary file, a \"b\" character has to\nbe included in the `mode` string. This additional \"b\" character can either\nbe appended at the end of the string (thus making the following compound\nmodes: \"rb\", \"wb\", \"ab\", \"r+b\", \"w+b\", \"a+b\") or be inserted between the\nletter and the \"+\" sign for the mixed modes (\"rb+\", \"wb+\", \"ab+\").\nAdditional characters may follow the sequence, although they should have no\neffect. For example, \"t\" is sometimes appended to make explicit the file is\na text file.\n\nThis function supports Unicode filenames, but they must be encoded in UTF-8\nformat, regardless of the underlying operating system.\n\nIn Android, IOStream.IOStream() can be used to open content:// URIs. As a\nfallback, IOStream.IOStream() will transparently open a matching filename in\nthe app's `assets`.\n\nClosing the IOStreamRef will close SDL's internal file handle.\n\nThe following properties may be set at creation time by SDL:\n\n- `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast\n  to a win32 `HANDLE`, that this IOStreamRef is using to access the\n  filesystem. If the program isn't running on Windows, or SDL used some\n  other method to access the filesystem, this property will not be set.\n- `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a\n  stdio `FILE *`, that this IOStreamRef is using to access the filesystem.\n  If SDL used some other method to access the filesystem, this property\n  will not be set. PLEASE NOTE that if SDL is using a different C runtime\n  than your app, trying to use this pointer will almost certainly result in\n  a crash! This is mostly a problem on Windows; make sure you build SDL and\n  your app with the same compiler and settings to avoid it.\n- `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this\n  IOStreamRef is using to access the filesystem.\n- `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast\n  to an Android NDK `AAsset *`, that this IOStreamRef is using to access\n  the filesystem. If SDL used some other method to access the filesystem,\n  this property will not be set.\n\n@param file a UTF-8 string representing the filename to open.\n@param mode an ASCII string representing the mode to be used for opening\n            the file.\n@returns a pointer to the IOStreamRef structure that is created or nullptr on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamRef.Close\n@sa IOStreamRef.Flush\n@sa IOStreamRef.Read\n@sa IOStreamRef.Seek\n@sa IOStreamRef.Tell\n@sa IOStreamRef.Write",
+              "doc": "Use this function to create a new IOStreamRef structure for reading from\nand/or writing to a named file.\n\nThe `mode` string is treated roughly the same as in a call to the C\nlibrary's fopen(), even if SDL doesn't happen to use fopen() behind the\nscenes.\n\nAvailable `mode` strings:\n\n- \"r\": Open a file for reading. The file must exist.\n- \"w\": Create an empty file for writing. If a file with the same name\n  already exists its content is erased and the file is treated as a new\n  empty file.\n- \"a\": Append to a file. Writing operations append data at the end of the\n  file. The file is created if it does not exist.\n- \"r+\": Open a file for update both reading and writing. The file must\n  exist.\n- \"w+\": Create an empty file for both reading and writing. If a file with\n  the same name already exists its content is erased and the file is\n  treated as a new empty file.\n- \"a+\": Open a file for reading and appending. All writing operations are\n  performed at the end of the file, protecting the previous content to be\n  overwritten. You can reposition (fseek, rewind) the internal pointer to\n  anywhere in the file for reading, but writing operations will move it\n  back to the end of file. The file is created if it does not exist.\n\n**NOTE**: In order to open a file as a binary file, a \"b\" character has to\nbe included in the `mode` string. This additional \"b\" character can either\nbe appended at the end of the string (thus making the following compound\nmodes: \"rb\", \"wb\", \"ab\", \"r+b\", \"w+b\", \"a+b\") or be inserted between the\nletter and the \"+\" sign for the mixed modes (\"rb+\", \"wb+\", \"ab+\").\nAdditional characters may follow the sequence, although they should have no\neffect. For example, \"t\" is sometimes appended to make explicit the file is\na text file.\n\nThis function supports Unicode filenames, but they must be encoded in UTF-8\nformat, regardless of the underlying operating system.\n\nIn Android, IOStream.FromFile() can be used to open content:// URIs. As a\nfallback, IOStream.FromFile() will transparently open a matching filename in\nthe app's `assets`.\n\nClosing the IOStreamRef will close SDL's internal file handle.\n\nThe following properties may be set at creation time by SDL:\n\n- `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast\n  to a win32 `HANDLE`, that this IOStreamRef is using to access the\n  filesystem. If the program isn't running on Windows, or SDL used some\n  other method to access the filesystem, this property will not be set.\n- `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a\n  stdio `FILE *`, that this IOStreamRef is using to access the filesystem.\n  If SDL used some other method to access the filesystem, this property\n  will not be set. PLEASE NOTE that if SDL is using a different C runtime\n  than your app, trying to use this pointer will almost certainly result in\n  a crash! This is mostly a problem on Windows; make sure you build SDL and\n  your app with the same compiler and settings to avoid it.\n- `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this\n  IOStreamRef is using to access the filesystem.\n- `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast\n  to an Android NDK `AAsset *`, that this IOStreamRef is using to access\n  the filesystem. If SDL used some other method to access the filesystem,\n  this property will not be set.\n\n@param file a UTF-8 string representing the filename to open.\n@param mode an ASCII string representing the mode to be used for opening\n            the file.\n@returns a pointer to the IOStreamRef structure that is created or nullptr on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Close\n@sa IOStreamRef.Flush\n@sa IOStreamRef.Read\n@sa IOStreamRef.Seek\n@sa IOStreamRef.Tell\n@sa IOStreamRef.Write",
               "name": "FromFile",
               "kind": "function",
               "type": "IOStream",
@@ -35219,13 +35012,10 @@
                 }
               ],
               "sourceName": "SDL_IOFromFile",
-              "hints": {
-                "body": "return IOStream(file, mode);"
-              },
               "static": true
             },
             "FromMem": {
-              "doc": "Use this function to prepare a read-write memory buffer for use with\nIOStreamRef.\n\nThis function sets up an IOStreamRef struct based on a memory area of a\ncertain size, for both read and write access.\n\nThis memory buffer is not copied by the IOStreamRef; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to make sure the IOStreamRef never writes to the memory\nbuffer, you should use IOStream.FromConstMem() with a read-only buffer of\nmemory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a buffer to feed an IOStreamRef stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStreamRef structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.FromConstMem\n@sa IOStreamRef.Close\n@sa IOStreamRef.Flush\n@sa IOStreamRef.Read\n@sa IOStreamRef.Seek\n@sa IOStreamRef.Tell\n@sa IOStreamRef.Write",
+              "doc": "Use this function to prepare a read-write memory buffer for use with\nIOStreamRef.\n\nThis function sets up an IOStreamRef struct based on a memory area of a\ncertain size, for both read and write access.\n\nThis memory buffer is not copied by the IOStreamRef; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to make sure the IOStreamRef never writes to the memory\nbuffer, you should use IOStream.FromConstMem() with a read-only buffer of\nmemory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a buffer to feed an IOStreamRef stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStreamRef structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.FromConstMem\n@sa IOStream.Close\n@sa IOStreamRef.Flush\n@sa IOStreamRef.Read\n@sa IOStreamRef.Seek\n@sa IOStreamRef.Tell\n@sa IOStreamRef.Write",
               "name": "FromMem",
               "kind": "function",
               "type": "IOStream",
@@ -35239,7 +35029,7 @@
               "static": true
             },
             "FromConstMem": {
-              "doc": "Use this function to prepare a read-only memory buffer for use with\nIOStreamRef.\n\nThis function sets up an IOStreamRef struct based on a memory area of a\ncertain size. It assumes the memory area is not writable.\n\nAttempting to write to this IOStreamRef stream will report an error\nwithout writing to the memory buffer.\n\nThis memory buffer is not copied by the IOStreamRef; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to write to a memory buffer, you should use IOStream.FromMem()\nwith a writable buffer of memory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a read-only buffer to feed an IOStreamRef stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStreamRef structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.FromMem\n@sa IOStreamRef.Close\n@sa IOStreamRef.Read\n@sa IOStreamRef.Seek\n@sa IOStreamRef.Tell",
+              "doc": "Use this function to prepare a read-only memory buffer for use with\nIOStreamRef.\n\nThis function sets up an IOStreamRef struct based on a memory area of a\ncertain size. It assumes the memory area is not writable.\n\nAttempting to write to this IOStreamRef stream will report an error\nwithout writing to the memory buffer.\n\nThis memory buffer is not copied by the IOStreamRef; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to write to a memory buffer, you should use IOStream.FromMem()\nwith a writable buffer of memory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a read-only buffer to feed an IOStreamRef stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStreamRef structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.FromMem\n@sa IOStream.Close\n@sa IOStreamRef.Read\n@sa IOStreamRef.Seek\n@sa IOStreamRef.Tell",
               "name": "FromConstMem",
               "kind": "function",
               "type": "IOStream",
@@ -35253,7 +35043,7 @@
               "static": true
             },
             "FromDynamicMem": {
-              "doc": "Use this function to create an IOStreamRef that is backed by dynamically\nallocated memory.\n\nThis supports the following properties to provide access to the memory and\ncontrol over allocations:\n\n- `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal\n  memory of the stream. This can be set to nullptr to transfer ownership of\n  the memory to the application, which should free the memory with\n  free(). If this is done, the next operation on the stream must be\n  IOStreamRef.Close().\n- `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in\n  multiples of this size, defaulting to 1024.\n\n@returns a pointer to a new IOStreamRef structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamRef.Close\n@sa IOStreamRef.Read\n@sa IOStreamRef.Seek\n@sa IOStreamRef.Tell\n@sa IOStreamRef.Write",
+              "doc": "Use this function to create an IOStreamRef that is backed by dynamically\nallocated memory.\n\nThis supports the following properties to provide access to the memory and\ncontrol over allocations:\n\n- `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal\n  memory of the stream. This can be set to nullptr to transfer ownership of\n  the memory to the application, which should free the memory with\n  free(). If this is done, the next operation on the stream must be\n  IOStream.Close().\n- `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in\n  multiples of this size, defaulting to 1024.\n\n@returns a pointer to a new IOStreamRef structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Close\n@sa IOStreamRef.Read\n@sa IOStreamRef.Seek\n@sa IOStreamRef.Tell\n@sa IOStreamRef.Write",
               "name": "FromDynamicMem",
               "kind": "function",
               "type": "IOStream",
@@ -35262,7 +35052,7 @@
               "static": true
             },
             "Open": {
-              "doc": "Create a custom IOStreamRef.\n\nApplications do not need to use this function unless they are providing\ntheir own IOStreamRef implementation. If you just need an IOStreamRef to\nread/write a common data source, you should use the built-in\nimplementations in SDL, like IOStream.IOStream() or IOStream.FromMem(), etc.\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this IOStreamRef, initialized\n             using SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@returns a pointer to the allocated memory on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamRef.Close\n@sa SDL_INIT_INTERFACE\n@sa IOStream.FromConstMem\n@sa IOStream.IOStream\n@sa IOStream.FromMem",
+              "doc": "Create a custom IOStreamRef.\n\nApplications do not need to use this function unless they are providing\ntheir own IOStreamRef implementation. If you just need an IOStreamRef to\nread/write a common data source, you should use the built-in\nimplementations in SDL, like IOStream.FromFile() or IOStream.FromMem(), etc.\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this IOStreamRef, initialized\n             using SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@returns a pointer to the allocated memory on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Close\n@sa SDL_INIT_INTERFACE\n@sa IOStream.FromConstMem\n@sa IOStream.FromFile\n@sa IOStream.FromMem",
               "name": "Open",
               "kind": "function",
               "type": "IOStream",
@@ -35278,10 +35068,21 @@
               ],
               "sourceName": "SDL_OpenIO",
               "hints": {
-                "mayFail": true,
-                "body": "return IOStream(iface, userdata);"
+                "mayFail": true
               },
               "static": true
+            },
+            "Close": {
+              "doc": "Close and free an allocated IOStreamRef structure.\n\nIOStream.Close() closes and cleans up the IOStreamRef stream. It releases any\nresources used by the stream and frees the IOStreamRef itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the IOStreamRef is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call IOStreamRef.Flush() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Open",
+              "name": "Close",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_CloseIO",
+              "hints": {
+                "mayFail": true,
+                "body": "reset();"
+              }
             }
           },
           "hints": {
@@ -37270,7 +37071,7 @@
           "type": "SDL_DialogFileFilter"
         },
         "DialogFileCallback": {
-          "doc": "Callback used by file dialog functions.\n\nThe specific usage is described in each function.\n\nIf `filelist` is:\n\n- nullptr, an error occurred. Details can be obtained with GetError().\n- A pointer to nullptr, the user either didn't choose any file or canceled the\n  dialog.\n- A pointer to non-`nullptr`, the user chose one or more files. The argument\n  is a null-terminated array of pointers to UTF-8 encoded strings, each\n  containing a path.\n\nThe filelist argument should not be freed; it will automatically be freed\nwhen the callback returns.\n\nThe filter argument is the index of the filter that was selected, or -1 if\nno filter was selected or if the platform or method doesn't support\nfetching the selected filter.\n\nIn Android, the `filelist` are `content://` URIs. They should be opened\nusing IOStream.IOStream() with appropriate modes. This applies both to open\nand save file dialog.\n\n@param userdata an app-provided pointer, for the callback's use.\n@param filelist the file(s) chosen by the user.\n@param filter index of the selected filter.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
+          "doc": "Callback used by file dialog functions.\n\nThe specific usage is described in each function.\n\nIf `filelist` is:\n\n- nullptr, an error occurred. Details can be obtained with GetError().\n- A pointer to nullptr, the user either didn't choose any file or canceled the\n  dialog.\n- A pointer to non-`nullptr`, the user chose one or more files. The argument\n  is a null-terminated array of pointers to UTF-8 encoded strings, each\n  containing a path.\n\nThe filelist argument should not be freed; it will automatically be freed\nwhen the callback returns.\n\nThe filter argument is the index of the filter that was selected, or -1 if\nno filter was selected or if the platform or method doesn't support\nfetching the selected filter.\n\nIn Android, the `filelist` are `content://` URIs. They should be opened\nusing IOStream.FromFile() with appropriate modes. This applies both to open\nand save file dialog.\n\n@param userdata an app-provided pointer, for the callback's use.\n@param filelist the file(s) chosen by the user.\n@param filter index of the selected filter.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
           "name": "DialogFileCallback",
           "kind": "alias",
           "type": "SDL_DialogFileCallback",
@@ -37280,7 +37081,7 @@
           "kind": "alias",
           "name": "DialogFileCB",
           "type": "std::function<void(const char *const *, int)>",
-          "doc": "Callback used by file dialog functions.\n\nThe specific usage is described in each function.\n\nIf `filelist` is:\n\n- nullptr, an error occurred. Details can be obtained with GetError().\n- A pointer to nullptr, the user either didn't choose any file or canceled the\n  dialog.\n- A pointer to non-`nullptr`, the user chose one or more files. The argument\n  is a null-terminated array of pointers to UTF-8 encoded strings, each\n  containing a path.\n\nThe filelist argument should not be freed; it will automatically be freed\nwhen the callback returns.\n\nThe filter argument is the index of the filter that was selected, or -1 if\nno filter was selected or if the platform or method doesn't support\nfetching the selected filter.\n\nIn Android, the `filelist` are `content://` URIs. They should be opened\nusing IOStream.IOStream() with appropriate modes. This applies both to open\nand save file dialog.\n\n@param userdata an app-provided pointer, for the callback's use.\n@param filelist the file(s) chosen by the user.\n@param filter index of the selected filter.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties\n@sa DialogFileCallback"
+          "doc": "Callback used by file dialog functions.\n\nThe specific usage is described in each function.\n\nIf `filelist` is:\n\n- nullptr, an error occurred. Details can be obtained with GetError().\n- A pointer to nullptr, the user either didn't choose any file or canceled the\n  dialog.\n- A pointer to non-`nullptr`, the user chose one or more files. The argument\n  is a null-terminated array of pointers to UTF-8 encoded strings, each\n  containing a path.\n\nThe filelist argument should not be freed; it will automatically be freed\nwhen the callback returns.\n\nThe filter argument is the index of the filter that was selected, or -1 if\nno filter was selected or if the platform or method doesn't support\nfetching the selected filter.\n\nIn Android, the `filelist` are `content://` URIs. They should be opened\nusing IOStream.FromFile() with appropriate modes. This applies both to open\nand save file dialog.\n\n@param userdata an app-provided pointer, for the callback's use.\n@param filelist the file(s) chosen by the user.\n@param filter index of the selected filter.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties\n@sa DialogFileCallback"
         },
         "ShowOpenFileDialog": [
           {
@@ -39934,7 +39735,7 @@
           "sourceName": "SDL_FLT_EPSILON"
         },
         "SDL_INIT_INTERFACE": {
-          "doc": "A macro to initialize an SDL interface.\n\nThis macro will initialize an SDL interface structure and should be called\nbefore you fill out the fields with your implementation.\n\nYou can use it like this:\n\n```c\nIOStreamInterface iface;\n\nSDL_INIT_INTERFACE(&iface);\n\n// Fill in the interface function pointers with your implementation\niface.seek = ...\n\nstream = IOStream.IOStream(&iface, nullptr);\n```\n\nIf you are using designated initializers, you can use the size of the\ninterface as the version, e.g.\n\n```c\nIOStreamInterface iface = {\n    .version = sizeof(iface),\n    .seek = ...\n};\nstream = IOStream.IOStream(&iface, nullptr);\n```\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa IOStreamInterface\n@sa StorageInterface\n@sa SDL_VirtualJoystickDesc",
+          "doc": "A macro to initialize an SDL interface.\n\nThis macro will initialize an SDL interface structure and should be called\nbefore you fill out the fields with your implementation.\n\nYou can use it like this:\n\n```c\nIOStreamInterface iface;\n\nSDL_INIT_INTERFACE(&iface);\n\n// Fill in the interface function pointers with your implementation\niface.seek = ...\n\nstream = IOStream.Open(&iface, nullptr);\n```\n\nIf you are using designated initializers, you can use the size of the\ninterface as the version, e.g.\n\n```c\nIOStreamInterface iface = {\n    .version = sizeof(iface),\n    .seek = ...\n};\nstream = IOStream.Open(&iface, nullptr);\n```\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa IOStreamInterface\n@sa StorageInterface\n@sa SDL_VirtualJoystickDesc",
           "name": "SDL_INIT_INTERFACE",
           "kind": "def",
           "parameters": [

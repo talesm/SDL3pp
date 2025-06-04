@@ -229,7 +229,7 @@ using AppQuit_func = SDL_AppQuit_func;
  * The class Init is probably what you are looking for, as it automatically
  * handles de-initialization.
  *
- * The file I/O (for example: IOStreamRef.IOStreamRef) and threading
+ * The file I/O (for example: IOStream.FromFile) and threading
  * (ThreadRef.ThreadRef) subsystems are initialized by default. Message boxes
  * (ShowSimpleMessageBox) also attempt to work without initializing the
  * video subsystem, in hopes of being useful in showing an error dialog when

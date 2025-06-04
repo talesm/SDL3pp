@@ -1872,11 +1872,23 @@ const transform = {
           }]
         },
       },
-      resources: {
+      resourcesNew: {
         "SDL_IOStream": {
-          ctors: ["SDL_IOFromFile", "SDL_OpenIO"],
+          ctors: ["SDL_IOFromFile", "SDL_IOFromMem", "SDL_IOFromConstMem", "SDL_IOFromDynamicMem", "SDL_OpenIO"],
           entries: {
             "SDL_IOFromFile": { name: "FromFile" },
+            "SDL_IOFromMem": {
+              name: "FromMem",
+              parameters: [{ type: "TargetBytes", name: "mem" }]
+            },
+            "SDL_IOFromConstMem": {
+              name: "FromConstMem",
+              parameters: [{ type: "SourceBytes", name: "mem" }]
+            },
+            "SDL_IOFromDynamicMem": {
+              name: "FromDynamicMem",
+              static: true,
+            },
             "SDL_OpenIO": { name: "Open" },
             "SDL_CloseIO": {
               name: "Close",
@@ -2119,23 +2131,6 @@ const transform = {
         "SDL_PROP_IOSTREAM_": "prop::IOStream"
       },
       transform: {
-        "SDL_IOFromMem": {
-          name: "IOStream.FromMem",
-          type: "IOStream",
-          static: true,
-          parameters: [{ type: "TargetBytes", name: "mem" }]
-        },
-        "SDL_IOFromConstMem": {
-          name: "IOStream.FromConstMem",
-          type: "IOStream",
-          static: true,
-          parameters: [{ type: "SourceBytes", name: "mem" }]
-        },
-        "SDL_IOFromDynamicMem": {
-          name: "IOStream.FromDynamicMem",
-          type: "IOStream",
-          static: true,
-        },
         "SDL_LoadFile": {
           type: "StringResult",
           parameters: [{}]

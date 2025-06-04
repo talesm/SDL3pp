@@ -1005,14 +1005,14 @@ constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td clas
 <div class="line"><span class="comment">// Fill in the interface function pointers with your implementation</span></div>
 <div class="line">iface.seek = ...</div>
 <div class="line"> </div>
-<div class="line">stream = IOStreamRef.IOStreamRef(&amp;iface, <span class="keyword">nullptr</span>);</div>
+<div class="line">stream = IOStreamRef.Open(iface, <span class="keyword">nullptr</span>);</div>
 <div class="ttc" id="agroup__CategoryStdinc_html_gaad520b6fa62d69fe36edadb0925196aa"><div class="ttname"><a href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa">SDL_INIT_INTERFACE</a></div><div class="ttdeci">#define SDL_INIT_INTERFACE(iface)</div><div class="ttdoc">A macro to initialize an SDL interface.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:384</div></div>
 </div><!-- fragment --><p>If you are using designated initializers, you can use the size of the interface as the version, e.g.</p>
 <div class="fragment"><div class="line">IOStreamInterface iface = {</div>
 <div class="line">    .version = <span class="keyword">sizeof</span>(iface),</div>
 <div class="line">    .seek = ...</div>
 <div class="line">};</div>
-<div class="line">stream = IOStreamRef.IOStreamRef(&amp;iface, <span class="keyword">nullptr</span>);</div>
+<div class="line">stream = IOStreamRef.Open(iface, <span class="keyword">nullptr</span>);</div>
 </div><!-- fragment --><dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>IOStreamInterface </dd>

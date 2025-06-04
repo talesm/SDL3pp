@@ -2732,7 +2732,7 @@ inline AudioStreamLock AudioStreamRef::Lock() { return AudioStreamLock(*this); }
  * Example:
  *
  * ```c
- * LoadWAV(IOStream.IOStream("sample.wav", "rb"), true, &spec, &buf, &len);
+ * LoadWAV(IOStream.FromFile("sample.wav", "rb"), true, &spec, &buf, &len);
  * ```
  *
  * Note that the LoadWAV function does this same thing for you, but in a
@@ -2770,7 +2770,7 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src, AudioSpec* spec)
  * This is a convenience function that is effectively the same as:
  *
  * ```c
- * LoadWAV(IOStreamRef.IOStreamRef(path, "rb"), true, spec, audio_buf,
+ * LoadWAV(IOStream.FromFile(path, "rb"), true, spec, audio_buf,
  * audio_len);
  * ```
  *
