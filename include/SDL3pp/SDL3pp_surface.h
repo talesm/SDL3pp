@@ -253,7 +253,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Palette.Palette
+   * @sa Palette.Create
    * @sa SurfaceRef.GetPalette
    */
   void SetPalette(PaletteRef palette)

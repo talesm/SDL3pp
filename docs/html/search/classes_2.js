@@ -8,10 +8,11 @@ var searchData=
   ['defaultdeleter_3c_20cursorref_20_3e_5',['DefaultDeleter&lt; CursorRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
   ['defaultdeleter_3c_20iostreamref_20_3e_6',['DefaultDeleter&lt; IOStreamRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
   ['defaultdeleter_3c_20mutexref_20_3e_7',['DefaultDeleter&lt; MutexRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
-  ['defaultdeleter_3c_20rwlockref_20_3e_8',['DefaultDeleter&lt; RWLockRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
-  ['defaultdeleter_3c_20semaphoreref_20_3e_9',['DefaultDeleter&lt; SemaphoreRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
-  ['defaultdeleter_3c_20sharedobjectref_20_3e_10',['DefaultDeleter&lt; SharedObjectRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
-  ['defaultdeleter_3c_20surfaceref_20_3e_11',['DefaultDeleter&lt; SurfaceRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
-  ['detachedresource_12',['DetachedResource',['../structSDL_1_1DetachedResource.html',1,'SDL']]],
-  ['display_13',['Display',['../classSDL_1_1Display.html',1,'SDL']]]
+  ['defaultdeleter_3c_20paletteref_20_3e_8',['DefaultDeleter&lt; PaletteRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
+  ['defaultdeleter_3c_20rwlockref_20_3e_9',['DefaultDeleter&lt; RWLockRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
+  ['defaultdeleter_3c_20semaphoreref_20_3e_10',['DefaultDeleter&lt; SemaphoreRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
+  ['defaultdeleter_3c_20sharedobjectref_20_3e_11',['DefaultDeleter&lt; SharedObjectRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
+  ['defaultdeleter_3c_20surfaceref_20_3e_12',['DefaultDeleter&lt; SurfaceRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
+  ['detachedresource_13',['DetachedResource',['../structSDL_1_1DetachedResource.html',1,'SDL']]],
+  ['display_14',['Display',['../classSDL_1_1Display.html',1,'SDL']]]
 ];

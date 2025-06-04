@@ -2928,23 +2928,6 @@ const transform = {
         },
         "SDL_PackedLayout": {
           name: "PixelFormatDetails",
-        },
-        "SDL_SetPaletteColors": {
-          kind: "function",
-          name: "PaletteRef.SetColors",
-          type: "bool",
-          static: false,
-          parameters: [
-            {
-              type: "SpanRef<const SDL_Color>",
-              name: "colors"
-            },
-            {
-              type: "int",
-              name: "firstcolor",
-              default: "0"
-            }
-          ]
         }
       },
       enumerations: {
@@ -3266,7 +3249,7 @@ const transform = {
           "invalidState": false
         }
       },
-      resources: {
+      resourcesNew: {
         "SDL_Palette": {
           entries: {
             "SDL_CreatePalette": "ctor",

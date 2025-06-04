@@ -15537,7 +15537,7 @@
           }
         },
         "PaletteRef": {
-          "doc": "A set of indexed colors representing a palette.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa PaletteRef.SetColors\n\n@cat resource\n\n@sa Palette\n@sa PaletteRef",
+          "doc": "A set of indexed colors representing a palette.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa PaletteRef.SetColors\n\n@cat resource\n\n@sa Palette",
           "name": "PaletteRef",
           "kind": "struct",
           "sourceName": "SDL_Palette",
@@ -15571,73 +15571,42 @@
               "name": "operator[]",
               "doc": ""
             },
-            "SetColors": [
-              {
-                "doc": "Set a range of colors in a palette.\n\n@param colors an array of Color structures to copy into the palette.\n@param firstcolor the index of the first palette entry to modify.\n@param ncolors the number of entries to modify.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.",
-                "name": "SetColors",
-                "kind": "function",
-                "type": "void",
-                "parameters": [
-                  {
-                    "name": "colors",
-                    "type": "std::span<const SDL_Color>"
-                  },
-                  {
-                    "name": "firstcolor",
-                    "type": "int",
-                    "default": "0"
-                  }
-                ],
-                "sourceName": "SDL_SetPaletteColors",
-                "hints": {
-                  "mayFail": true
-                }
-              },
-              {
-                "kind": "function",
-                "name": "SetColors",
-                "type": "bool",
-                "static": false,
-                "parameters": [
-                  {
-                    "type": "SpanRef<const SDL_Color>",
-                    "name": "colors"
-                  },
-                  {
-                    "type": "int",
-                    "name": "firstcolor",
-                    "default": "0"
-                  }
-                ],
-                "doc": ""
-              }
-            ],
-            "Destroy": {
-              "doc": "Free a palette created with Palette.Palette().\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette",
-              "name": "Destroy",
+            "SetColors": {
+              "doc": "Set a range of colors in a palette.\n\n@param colors an array of Color structures to copy into the palette.\n@param firstcolor the index of the first palette entry to modify.\n@param ncolors the number of entries to modify.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "SetColors",
               "kind": "function",
               "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyPalette",
+              "parameters": [
+                {
+                  "name": "colors",
+                  "type": "std::span<const SDL_Color>"
+                },
+                {
+                  "name": "firstcolor",
+                  "type": "int",
+                  "default": "0"
+                }
+              ],
+              "sourceName": "SDL_SetPaletteColors",
               "hints": {
-                "body": "reset();"
+                "mayFail": true
               }
             },
             "reset": {
-              "doc": "Free a palette created with Palette.Palette().\n\n@param palette the PaletteRef structure to be freed.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette",
+              "doc": "Free a palette created with Palette.Create().\n\n@param palette the PaletteRef structure to be freed.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Create",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_Palette *",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_Palette *"
                 }
               ],
               "sourceName": "SDL_DestroyPalette",
+              "static": true,
               "hints": {
-                "body": "SDL_DestroyPalette(release(newResource));"
+                "body": "SDL_DestroyPalette(resource);"
               }
             }
           },
@@ -15649,222 +15618,49 @@
         "PaletteUnsafe": {
           "name": "PaletteUnsafe",
           "kind": "struct",
-          "type": "PaletteRef",
+          "type": "ResourcePtr<PaletteRef>",
           "doc": "Unsafe Handle to palette\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa PaletteRef",
           "entries": {
-            "PaletteRef::Destroy": {
+            "ResourcePtr::ResourcePtr": {
               "kind": "alias",
-              "name": "PaletteRef::Destroy",
+              "name": "ResourcePtr::ResourcePtr",
               "doc": ""
             },
-            "PaletteRef::PaletteRef": {
-              "kind": "alias",
-              "name": "PaletteRef::PaletteRef",
-              "doc": ""
-            },
-            "PaletteRef::reset": {
-              "kind": "alias",
-              "name": "PaletteRef::reset",
-              "doc": ""
-            },
-            "PaletteUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const PaletteRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs PaletteUnsafe from PaletteRef.",
-                "hints": {
-                  "init": [
-                    "PaletteRef(other.get())"
-                  ]
-                },
-                "name": "PaletteUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Palette &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "PaletteUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "PaletteUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Palette &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs PaletteUnsafe from Palette.",
-                "hints": {
-                  "init": [
-                    "PaletteUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
+            "PaletteUnsafe": {
               "kind": "function",
-              "type": "PaletteUnsafe &",
+              "name": "PaletteUnsafe",
+              "type": "",
+              "explicit": true,
               "constexpr": true,
               "parameters": [
                 {
-                  "type": "PaletteUnsafe",
+                  "type": "Palette &&",
                   "name": "other"
                 }
               ],
-              "doc": "Assignment operator.",
+              "doc": "Constructs PaletteUnsafe from Palette.",
               "hints": {
-                "body": "release(other.release()); return *this;"
+                "init": [
+                  "PaletteUnsafe(other.release())"
+                ]
               },
-              "name": "operator="
+              "proto": true
             }
           }
         },
         "Palette": {
           "name": "Palette",
           "kind": "struct",
-          "type": "PaletteUnsafe",
+          "type": "ResourceUnique<PaletteRef>",
           "doc": "Handle to an owned palette\n\n@cat resource\n\n@sa PaletteRef",
           "entries": {
-            "PaletteUnsafe::PaletteUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "PaletteUnsafe::PaletteUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
             },
-            "Palette": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [],
-                "doc": "Constructs an empty Palette.",
-                "hints": {
-                  "init": [
-                    "PaletteUnsafe(nullptr)"
-                  ]
-                },
-                "name": "Palette"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Palette *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "PaletteUnsafe(resource)"
-                  ]
-                },
-                "name": "Palette"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Palette &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "Palette",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Palette &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "Palette(other.release())"
-                  ]
-                },
-                "name": "Palette"
-              },
-              {
-                "doc": "Create a palette structure with the specified number of color entries.\n\nThe palette entries are initialized to white.\n\n@param ncolors represents the number of color entries in the color palette.\n@post a new PaletteRef structure on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PaletteRef.Destroy\n@sa PaletteRef.SetColors\n@sa SurfaceRef.SetPalette",
-                "name": "Palette",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "ncolors",
-                    "type": "int"
-                  }
-                ],
-                "sourceName": "SDL_CreatePalette",
-                "hints": {
-                  "mayFail": true
-                },
-                "proto": false
-              }
-            ],
-            "~Palette": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~Palette"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Palette &",
-              "parameters": [
-                {
-                  "type": "Palette",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "Create": {
-              "doc": "Create a palette structure with the specified number of color entries.\n\nThe palette entries are initialized to white.\n\n@param ncolors represents the number of color entries in the color palette.\n@returns a new PaletteRef structure on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PaletteRef.Destroy\n@sa PaletteRef.SetColors\n@sa SurfaceRef.SetPalette",
+              "doc": "Create a palette structure with the specified number of color entries.\n\nThe palette entries are initialized to white.\n\n@param ncolors represents the number of color entries in the color palette.\n@returns a new PaletteRef structure on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Destroy\n@sa PaletteRef.SetColors\n@sa SurfaceRef.SetPalette",
               "name": "Create",
               "kind": "function",
               "type": "Palette",
@@ -15877,13 +15673,24 @@
               "sourceName": "SDL_CreatePalette",
               "hints": {
                 "mayFail": true,
-                "body": "return Palette(ncolors);"
+                "wrapSelf": true
               },
               "static": true
+            },
+            "Destroy": {
+              "doc": "Free a palette created with Palette.Create().\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Create",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyPalette",
+              "hints": {
+                "body": "reset();"
+              }
             }
           },
           "hints": {
-            "super": "Palette"
+            "self": "Palette"
           }
         },
         "PaletteUnsafe::PaletteUnsafe": {
@@ -17991,7 +17798,7 @@
               }
             },
             "SetPalette": {
-              "doc": "Set the palette used by a surface.\n\nA single palette can be shared with many surfaces.\n\n@param palette the PaletteRef structure to use.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette\n@sa SurfaceRef.GetPalette",
+              "doc": "Set the palette used by a surface.\n\nA single palette can be shared with many surfaces.\n\n@param palette the PaletteRef structure to use.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Create\n@sa SurfaceRef.GetPalette",
               "name": "SetPalette",
               "kind": "function",
               "type": "void",
