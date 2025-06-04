@@ -47,6 +47,7 @@ export interface EntryHint {
   mayFail?: boolean;
   removeParamThis?: boolean;
   private?: boolean;
+  wrapSelf?: boolean;
 }
 
 export interface VersionTag {

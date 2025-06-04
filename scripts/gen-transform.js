@@ -2258,11 +2258,12 @@ const transform = {
       }
     },
     "SDL_loadso.h": {
-      resources: {
+      resourcesNew: {
         "SDL_SharedObject": {
           free: "SDL_UnloadObject",
+          ctors: ["SDL_LoadObject"],
           entries: {
-            "SDL_LoadObject": "ctor",
+            "SDL_LoadObject": { name: "Load" },
             "SDL_LoadFunction": "function",
             "SDL_UnloadObject": { name: "Unload" },
           }

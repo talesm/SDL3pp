@@ -76,7 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1SharedObjectRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::SharedObjectRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategorySharedObject.html">Shared Object/DLL Management</a></div></div></div>
 </div><!--header-->
@@ -89,13 +89,9 @@ Inheritance diagram for SDL::SharedObjectRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1SharedObjectRef__inherit__graph.png" border="0" usemap="#aSDL_1_1SharedObjectRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1SharedObjectRef_inherit__map" id="aSDL_1_1SharedObjectRef_inherit__map">
-<area shape="rect" title="An opaque datatype that represents a loaded shared object." alt="" coords="17,93,181,119"/>
-<area shape="rect" href="structSDL_1_1SharedObjectUnsafe.html" title="Unsafe Handle to sharedObject." alt="" coords="5,167,193,192"/>
-<area shape="poly" title=" " alt="" coords="102,132,102,167,97,167,97,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="22,5,177,45"/>
-<area shape="poly" title=" " alt="" coords="102,59,102,93,97,93,97,59"/>
-<area shape="rect" href="structSDL_1_1SharedObject.html" title="Handle to an owned sharedObject." alt="" coords="28,240,171,265"/>
-<area shape="poly" title=" " alt="" coords="102,206,102,240,97,240,97,206"/>
+<area shape="rect" title="An opaque datatype that represents a loaded shared object." alt="" coords="5,93,169,119"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="10,5,165,45"/>
+<area shape="poly" title=" " alt="" coords="90,59,90,93,85,93,85,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -170,14 +166,11 @@ constexpr SDL_SharedObject *&#160;</td><td class="memItemRight" valign="bottom">
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a183366ceaeac124bc111e2f57c908707" id="r_a183366ceaeac124bc111e2f57c908707"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectRef.html#a183366ceaeac124bc111e2f57c908707">Unload</a> ()</td></tr>
-<tr class="memdesc:a183366ceaeac124bc111e2f57c908707"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unload a shared object from memory.  <br /></td></tr>
-<tr class="separator:a183366ceaeac124bc111e2f57c908707"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30da00014b93430d11f33a03790e5416" id="r_a30da00014b93430d11f33a03790e5416"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectRef.html#a30da00014b93430d11f33a03790e5416">reset</a> (SDL_SharedObject *newResource={})</td></tr>
-<tr class="memdesc:a30da00014b93430d11f33a03790e5416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unload a shared object from memory.  <br /></td></tr>
-<tr class="separator:a30da00014b93430d11f33a03790e5416"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a1452fb66b4f7fcda41f7dce4df29c567" id="r_a1452fb66b4f7fcda41f7dce4df29c567"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectRef.html#a1452fb66b4f7fcda41f7dce4df29c567">reset</a> (SDL_SharedObject *resource)</td></tr>
+<tr class="memdesc:a1452fb66b4f7fcda41f7dce4df29c567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unload a shared object from memory.  <br /></td></tr>
+<tr class="separator:a1452fb66b4f7fcda41f7dce4df29c567"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -190,15 +183,13 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SharedObjectRef.SharedObjectRef </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObject.html#abee85b377f61e0e9f2bffc201e3b6907" title="Dynamically load a shared object.">SharedObject.Load</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1SharedObjectRef.html#ac0a75bdc0eea4ce18e9801bbf176b2d2" title="Look up the address of the named function in a shared object.">SharedObjectRef.LoadFunction</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SharedObjectRef.html#a183366ceaeac124bc111e2f57c908707" title="Unload a shared object from memory.">SharedObjectRef.Unload</a> </dd>
+<a class="el" href="structSDL_1_1SharedObject.html#a868c6678d9d82b71020ef26f72297740" title="Unload a shared object from memory.">SharedObject.Unload</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SharedObject.html" title="Handle to an owned sharedObject.">SharedObject</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SharedObjectRef.html" title="An opaque datatype that represents a loaded shared object.">SharedObjectRef</a> </dd></dl>
+<a class="el" href="structSDL_1_1SharedObject.html" title="Handle to an owned sharedObject.">SharedObject</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac0a75bdc0eea4ce18e9801bbf176b2d2" name="ac0a75bdc0eea4ce18e9801bbf176b2d2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac0a75bdc0eea4ce18e9801bbf176b2d2">&#9670;&#160;</a></span>LoadFunction()</h2>
@@ -223,7 +214,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function pointer is no longer valid after calling <a class="el" href="structSDL_1_1SharedObjectRef.html#a183366ceaeac124bc111e2f57c908707" title="Unload a shared object from memory.">SharedObjectRef.Unload()</a>.</p>
+<p>This function pointer is no longer valid after calling <a class="el" href="structSDL_1_1SharedObject.html#a868c6678d9d82b71020ef26f72297740" title="Unload a shared object from memory.">SharedObject.Unload()</a>.</p>
 <p>This function can only look up C function names. Other languages may have name mangling and intrinsic language support that varies from compiler to compiler.</p>
 <p>Make sure you declare your function pointers with the same calling convention as the actual library function. Your code will crash mysteriously if you do not do this.</p>
 <p>If the requested function doesn't exist, nullptr is returned.</p>
@@ -236,12 +227,12 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the function or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObject.html#aeb9cefe7d277f4c8582330a95ead7a1e" title="Constructs an empty SharedObject.">SharedObject.SharedObject</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObject.html#abee85b377f61e0e9f2bffc201e3b6907" title="Dynamically load a shared object.">SharedObject.Load</a> </dd></dl>
 
 </div>
 </div>
-<a id="a30da00014b93430d11f33a03790e5416" name="a30da00014b93430d11f33a03790e5416"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30da00014b93430d11f33a03790e5416">&#9670;&#160;</a></span>reset()</h2>
+<a id="a1452fb66b4f7fcda41f7dce4df29c567" name="a1452fb66b4f7fcda41f7dce4df29c567"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1452fb66b4f7fcda41f7dce4df29c567">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -250,52 +241,29 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::SharedObjectRef::reset </td>
+          <td class="memname">static void SDL::SharedObjectRef::reset </td>
           <td>(</td>
           <td class="paramtype">SDL_SharedObject *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Note that any pointers from this object looked up through <a class="el" href="structSDL_1_1SharedObjectRef.html#ac0a75bdc0eea4ce18e9801bbf176b2d2" title="Look up the address of the named function in a shared object.">SharedObjectRef.LoadFunction()</a> will no longer be valid.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>a valid shared object handle returned.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObject.html#aeb9cefe7d277f4c8582330a95ead7a1e" title="Constructs an empty SharedObject.">SharedObject.SharedObject</a> </dd></dl>
-
-</div>
-</div>
-<a id="a183366ceaeac124bc111e2f57c908707" name="a183366ceaeac124bc111e2f57c908707"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a183366ceaeac124bc111e2f57c908707">&#9670;&#160;</a></span>Unload()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::SharedObjectRef::Unload </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Note that any pointers from this object looked up through <a class="el" href="structSDL_1_1SharedObjectRef.html#ac0a75bdc0eea4ce18e9801bbf176b2d2" title="Look up the address of the named function in a shared object.">SharedObjectRef.LoadFunction()</a> will no longer be valid.</p>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObject.html#aeb9cefe7d277f4c8582330a95ead7a1e" title="Constructs an empty SharedObject.">SharedObject.SharedObject</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObject.html#abee85b377f61e0e9f2bffc201e3b6907" title="Dynamically load a shared object.">SharedObject.Load</a> </dd></dl>
 
 </div>
 </div>

@@ -6,7 +6,8 @@ var searchData=
   ['defaultdeleter_3c_20audiostreamref_20_3e_3',['DefaultDeleter&lt; AudioStreamRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
   ['defaultdeleter_3c_20cursorref_20_3e_4',['DefaultDeleter&lt; CursorRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
   ['defaultdeleter_3c_20iostreamref_20_3e_5',['DefaultDeleter&lt; IOStreamRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
-  ['defaultdeleter_3c_20surfaceref_20_3e_6',['DefaultDeleter&lt; SurfaceRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
-  ['detachedresource_7',['DetachedResource',['../structSDL_1_1DetachedResource.html',1,'SDL']]],
-  ['display_8',['Display',['../classSDL_1_1Display.html',1,'SDL']]]
+  ['defaultdeleter_3c_20sharedobjectref_20_3e_6',['DefaultDeleter&lt; SharedObjectRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
+  ['defaultdeleter_3c_20surfaceref_20_3e_7',['DefaultDeleter&lt; SurfaceRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
+  ['detachedresource_8',['DetachedResource',['../structSDL_1_1DetachedResource.html',1,'SDL']]],
+  ['display_9',['Display',['../classSDL_1_1Display.html',1,'SDL']]]
 ];

@@ -19255,7 +19255,10 @@
                   }
                 ],
                 "sourceName": "SDL_LoadBMP_IO",
-                "static": true
+                "static": true,
+                "hints": {
+                  "wrapSelf": true
+                }
               },
               {
                 "doc": "Load a BMP image from a file.\n\nThe new surface should be freed with Surface.Destroy(). Not doing so\nwill result in a memory leak.\n\n@param file the BMP file to load.\n@returns a pointer to a new SurfaceRef structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Destroy\n@sa Surface.LoadBMP\n@sa SaveBMP",
@@ -19269,7 +19272,10 @@
                   }
                 ],
                 "sourceName": "SDL_LoadBMP",
-                "static": true
+                "static": true,
+                "hints": {
+                  "wrapSelf": true
+                }
               }
             ],
             "Create": {
@@ -19288,7 +19294,10 @@
                 }
               ],
               "sourceName": "SDL_CreateSurface",
-              "static": true
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
             },
             "CreateFrom": {
               "doc": "Allocate a new surface with a specific pixel format and existing pixel\ndata.\n\nNo copy is made of the pixel data. Pixel data is not managed automatically;\nyou must free the surface before you free the pixel data.\n\nPitch is the offset in bytes from one row of pixels to the next, e.g.\n`width*4` for `PIXELFORMAT_RGBA8888`.\n\nYou may pass nullptr for pixels and 0 for pitch to create a surface that you\nwill fill in with valid values later.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the PixelFormat for the new surface's pixel format.\n@param pixels a pointer to existing pixel data.\n@param pitch the number of bytes between each row, including padding.\n@returns the new SurfaceRef structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Create\n@sa Surface.Destroy",
@@ -19314,7 +19323,10 @@
                 }
               ],
               "sourceName": "SDL_CreateSurfaceFrom",
-              "static": true
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
             },
             "Destroy": {
               "doc": "Free a surface.\n\nIt is safe to pass nullptr to this function.\n\n\n@threadsafety No other thread should be using the surface when it is freed.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Create\n@sa Surface.CreateFrom",
@@ -19329,7 +19341,7 @@
             }
           },
           "hints": {
-            "super": "Surface"
+            "self": "Surface"
           }
         },
         "SurfaceUnsafe::SurfaceUnsafe": {
@@ -20715,7 +20727,8 @@
               ],
               "sourceName": "SDL_OpenAudioDevice",
               "hints": {
-                "mayFail": true
+                "mayFail": true,
+                "wrapSelf": true
               },
               "static": true
             },
@@ -20732,7 +20745,7 @@
             }
           },
           "hints": {
-            "super": "AudioDevice"
+            "self": "AudioDevice"
           }
         },
         "AudioDeviceUnsafe::AudioDeviceUnsafe": {
@@ -21298,7 +21311,8 @@
               ],
               "sourceName": "SDL_CreateAudioStream",
               "hints": {
-                "mayFail": true
+                "mayFail": true,
+                "wrapSelf": true
               },
               "static": true
             },
@@ -21322,6 +21336,9 @@
                   }
                 ],
                 "static": true,
+                "hints": {
+                  "wrapSelf": true
+                },
                 "doc": ""
               },
               {
@@ -21352,7 +21369,8 @@
                 ],
                 "sourceName": "SDL_OpenAudioDeviceStream",
                 "hints": {
-                  "mayFail": true
+                  "mayFail": true,
+                  "wrapSelf": true
                 },
                 "static": true
               }
@@ -21370,7 +21388,7 @@
             }
           },
           "hints": {
-            "super": "AudioStream"
+            "self": "AudioStream"
           }
         },
         "AudioStreamUnsafe::AudioStreamUnsafe": {
@@ -29109,7 +29127,8 @@
               ],
               "sourceName": "SDL_CreateCursor",
               "hints": {
-                "mayFail": true
+                "mayFail": true,
+                "wrapSelf": true
               },
               "static": true
             },
@@ -29130,7 +29149,8 @@
               ],
               "sourceName": "SDL_CreateColorCursor",
               "hints": {
-                "mayFail": true
+                "mayFail": true,
+                "wrapSelf": true
               },
               "static": true
             },
@@ -29147,7 +29167,8 @@
               ],
               "sourceName": "SDL_CreateSystemCursor",
               "hints": {
-                "mayFail": true
+                "mayFail": true,
+                "wrapSelf": true
               },
               "static": true
             },
@@ -29164,7 +29185,7 @@
             }
           },
           "hints": {
-            "super": "Cursor"
+            "self": "Cursor"
           }
         },
         "CursorUnsafe::CursorUnsafe": {
@@ -35012,7 +35033,10 @@
                 }
               ],
               "sourceName": "SDL_IOFromFile",
-              "static": true
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
             },
             "FromMem": {
               "doc": "Use this function to prepare a read-write memory buffer for use with\nIOStreamRef.\n\nThis function sets up an IOStreamRef struct based on a memory area of a\ncertain size, for both read and write access.\n\nThis memory buffer is not copied by the IOStreamRef; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to make sure the IOStreamRef never writes to the memory\nbuffer, you should use IOStream.FromConstMem() with a read-only buffer of\nmemory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a buffer to feed an IOStreamRef stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStreamRef structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.FromConstMem\n@sa IOStream.Close\n@sa IOStreamRef.Flush\n@sa IOStreamRef.Read\n@sa IOStreamRef.Seek\n@sa IOStreamRef.Tell\n@sa IOStreamRef.Write",
@@ -35026,7 +35050,10 @@
                 }
               ],
               "sourceName": "SDL_IOFromMem",
-              "static": true
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
             },
             "FromConstMem": {
               "doc": "Use this function to prepare a read-only memory buffer for use with\nIOStreamRef.\n\nThis function sets up an IOStreamRef struct based on a memory area of a\ncertain size. It assumes the memory area is not writable.\n\nAttempting to write to this IOStreamRef stream will report an error\nwithout writing to the memory buffer.\n\nThis memory buffer is not copied by the IOStreamRef; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to write to a memory buffer, you should use IOStream.FromMem()\nwith a writable buffer of memory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a read-only buffer to feed an IOStreamRef stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStreamRef structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.FromMem\n@sa IOStream.Close\n@sa IOStreamRef.Read\n@sa IOStreamRef.Seek\n@sa IOStreamRef.Tell",
@@ -35040,7 +35067,10 @@
                 }
               ],
               "sourceName": "SDL_IOFromConstMem",
-              "static": true
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
             },
             "FromDynamicMem": {
               "doc": "Use this function to create an IOStreamRef that is backed by dynamically\nallocated memory.\n\nThis supports the following properties to provide access to the memory and\ncontrol over allocations:\n\n- `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal\n  memory of the stream. This can be set to nullptr to transfer ownership of\n  the memory to the application, which should free the memory with\n  free(). If this is done, the next operation on the stream must be\n  IOStream.Close().\n- `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in\n  multiples of this size, defaulting to 1024.\n\n@returns a pointer to a new IOStreamRef structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Close\n@sa IOStreamRef.Read\n@sa IOStreamRef.Seek\n@sa IOStreamRef.Tell\n@sa IOStreamRef.Write",
@@ -35049,7 +35079,10 @@
               "type": "IOStream",
               "parameters": [],
               "sourceName": "SDL_IOFromDynamicMem",
-              "static": true
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
             },
             "Open": {
               "doc": "Create a custom IOStreamRef.\n\nApplications do not need to use this function unless they are providing\ntheir own IOStreamRef implementation. If you just need an IOStreamRef to\nread/write a common data source, you should use the built-in\nimplementations in SDL, like IOStream.FromFile() or IOStream.FromMem(), etc.\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this IOStreamRef, initialized\n             using SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@returns a pointer to the allocated memory on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Close\n@sa SDL_INIT_INTERFACE\n@sa IOStream.FromConstMem\n@sa IOStream.FromFile\n@sa IOStream.FromMem",
@@ -35068,7 +35101,8 @@
               ],
               "sourceName": "SDL_OpenIO",
               "hints": {
-                "mayFail": true
+                "mayFail": true,
+                "wrapSelf": true
               },
               "static": true
             },
@@ -35086,7 +35120,7 @@
             }
           },
           "hints": {
-            "super": "IOStream"
+            "self": "IOStream"
           }
         },
         "IOStreamUnsafe::IOStreamUnsafe": {
@@ -35764,7 +35798,7 @@
     },
     "SDL3pp_loadso.h": {
       "name": "SDL3pp_loadso.h",
-      "doc": "@defgroup CategorySharedObject Category SharedObject\n\nSystem-dependent library loading routines.\n\nShared objects are code that is programmatically loadable at runtime.\nWindows calls these \"DLLs\", Linux calls them \"shared libraries\", etc.\n\nTo use them, build such a library, then call SharedObject.SharedObject() on it. Once\nloaded, you can use SharedObjectRef.LoadFunction() on that object to find the address\nof its exported symbols. When done with the object, call SharedObjectRef.Unload()\nto dispose of it.\n\nSome things to keep in mind:\n\n- These functions only work on C function names. Other languages may have\n  name mangling and intrinsic language support that varies from compiler to\n  compiler.\n- Make sure you declare your function pointers with the same calling\n  convention as the actual library function. Your code will crash\n  mysteriously if you do not do this.\n- Avoid namespace collisions. If you load a symbol from the library, it is\n  not defined whether or not it goes into the global symbol namespace for\n  the application. If it does and it conflicts with symbols in your code or\n  other shared libraries, you will not get the results you expect. :)\n- Once a library is unloaded, all pointers into it obtained through\n  SharedObjectRef.LoadFunction() become invalid, even if the library is later reloaded.\n  Don't unload a library if you plan to use these pointers in the future.\n  Notably: beware of giving one of these pointers to atexit(), since it may\n  call that pointer after the library unloads.",
+      "doc": "@defgroup CategorySharedObject Category SharedObject\n\nSystem-dependent library loading routines.\n\nShared objects are code that is programmatically loadable at runtime.\nWindows calls these \"DLLs\", Linux calls them \"shared libraries\", etc.\n\nTo use them, build such a library, then call SharedObject.Load() on it. Once\nloaded, you can use SharedObjectRef.LoadFunction() on that object to find the address\nof its exported symbols. When done with the object, call SharedObject.Unload()\nto dispose of it.\n\nSome things to keep in mind:\n\n- These functions only work on C function names. Other languages may have\n  name mangling and intrinsic language support that varies from compiler to\n  compiler.\n- Make sure you declare your function pointers with the same calling\n  convention as the actual library function. Your code will crash\n  mysteriously if you do not do this.\n- Avoid namespace collisions. If you load a symbol from the library, it is\n  not defined whether or not it goes into the global symbol namespace for\n  the application. If it does and it conflicts with symbols in your code or\n  other shared libraries, you will not get the results you expect. :)\n- Once a library is unloaded, all pointers into it obtained through\n  SharedObjectRef.LoadFunction() become invalid, even if the library is later reloaded.\n  Don't unload a library if you plan to use these pointers in the future.\n  Notably: beware of giving one of these pointers to atexit(), since it may\n  call that pointer after the library unloads.",
       "entries": {
         "SharedObjectRef-forward": {
           "name": "SharedObjectRef",
@@ -35777,7 +35811,7 @@
           "doc": ""
         },
         "SharedObjectRef": {
-          "doc": "An opaque datatype that represents a loaded shared object.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SharedObject.SharedObject\n@sa SharedObjectRef.LoadFunction\n@sa SharedObjectRef.Unload\n\n@cat resource\n\n@sa SharedObject\n@sa SharedObjectRef",
+          "doc": "An opaque datatype that represents a loaded shared object.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SharedObject.Load\n@sa SharedObjectRef.LoadFunction\n@sa SharedObject.Unload\n\n@cat resource\n\n@sa SharedObject\n@sa SharedObjectRef",
           "name": "SharedObjectRef",
           "kind": "struct",
           "type": "Resource<SDL_SharedObject *>",
@@ -35789,7 +35823,7 @@
               "doc": ""
             },
             "LoadFunction": {
-              "doc": "Look up the address of the named function in a shared object.\n\nThis function pointer is no longer valid after calling SharedObjectRef.Unload().\n\nThis function can only look up C function names. Other languages may have\nname mangling and intrinsic language support that varies from compiler to\ncompiler.\n\nMake sure you declare your function pointers with the same calling\nconvention as the actual library function. Your code will crash\nmysteriously if you do not do this.\n\nIf the requested function doesn't exist, nullptr is returned.\n\n@param name the name of the function to look up.\n@returns a pointer to the function or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObject.SharedObject",
+              "doc": "Look up the address of the named function in a shared object.\n\nThis function pointer is no longer valid after calling SharedObject.Unload().\n\nThis function can only look up C function names. Other languages may have\nname mangling and intrinsic language support that varies from compiler to\ncompiler.\n\nMake sure you declare your function pointers with the same calling\nconvention as the actual library function. Your code will crash\nmysteriously if you do not do this.\n\nIf the requested function doesn't exist, nullptr is returned.\n\n@param name the name of the function to look up.\n@returns a pointer to the function or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObject.Load",
               "name": "LoadFunction",
               "kind": "function",
               "type": "FunctionPointer",
@@ -35801,32 +35835,21 @@
               ],
               "sourceName": "SDL_LoadFunction"
             },
-            "Unload": {
-              "doc": "Unload a shared object from memory.\n\nNote that any pointers from this object looked up through\nSharedObjectRef.LoadFunction() will no longer be valid.\n\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObject.SharedObject",
-              "name": "Unload",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_UnloadObject",
-              "hints": {
-                "body": "reset();"
-              }
-            },
             "reset": {
-              "doc": "Unload a shared object from memory.\n\nNote that any pointers from this object looked up through\nSharedObjectRef.LoadFunction() will no longer be valid.\n\n@param handle a valid shared object handle returned by SharedObject.SharedObject().\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObject.SharedObject",
+              "doc": "Unload a shared object from memory.\n\nNote that any pointers from this object looked up through\nSharedObjectRef.LoadFunction() will no longer be valid.\n\n@param handle a valid shared object handle returned by SharedObject.Load().\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObject.Load",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_SharedObject *",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_SharedObject *"
                 }
               ],
               "sourceName": "SDL_UnloadObject",
+              "static": true,
               "hints": {
-                "body": "SDL_UnloadObject(release(newResource));"
+                "body": "SDL_UnloadObject(resource);"
               }
             }
           },
@@ -35838,220 +35861,50 @@
         "SharedObjectUnsafe": {
           "name": "SharedObjectUnsafe",
           "kind": "struct",
-          "type": "SharedObjectRef",
+          "type": "ResourcePtr<SharedObjectRef>",
           "doc": "Unsafe Handle to sharedObject\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SharedObjectRef",
           "entries": {
-            "SharedObjectRef::SharedObjectRef": {
+            "ResourcePtr::ResourcePtr": {
               "kind": "alias",
-              "name": "SharedObjectRef::SharedObjectRef",
+              "name": "ResourcePtr::ResourcePtr",
               "doc": ""
             },
-            "SharedObjectRef::Unload": {
-              "kind": "alias",
-              "name": "SharedObjectRef::Unload",
-              "doc": ""
-            },
-            "SharedObjectRef::reset": {
-              "kind": "alias",
-              "name": "SharedObjectRef::reset",
-              "doc": ""
-            },
-            "SharedObjectUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const SharedObjectRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs SharedObjectUnsafe from SharedObjectRef.",
-                "hints": {
-                  "init": [
-                    "SharedObjectRef(other.get())"
-                  ]
-                },
-                "name": "SharedObjectUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const SharedObject &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "SharedObjectUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "SharedObjectUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "SharedObject &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs SharedObjectUnsafe from SharedObject.",
-                "hints": {
-                  "init": [
-                    "SharedObjectUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
+            "SharedObjectUnsafe": {
               "kind": "function",
-              "type": "SharedObjectUnsafe &",
+              "name": "SharedObjectUnsafe",
+              "type": "",
+              "explicit": true,
               "constexpr": true,
               "parameters": [
                 {
-                  "type": "SharedObjectUnsafe",
+                  "type": "SharedObject &&",
                   "name": "other"
                 }
               ],
-              "doc": "Assignment operator.",
+              "doc": "Constructs SharedObjectUnsafe from SharedObject.",
               "hints": {
-                "body": "release(other.release()); return *this;"
+                "init": [
+                  "SharedObjectUnsafe(other.release())"
+                ]
               },
-              "name": "operator="
+              "proto": true
             }
           }
         },
         "SharedObject": {
           "name": "SharedObject",
           "kind": "struct",
-          "type": "SharedObjectUnsafe",
+          "type": "ResourceUnique<SharedObjectRef>",
           "doc": "Handle to an owned sharedObject\n\n@cat resource\n\n@sa SharedObjectRef",
           "entries": {
-            "SharedObjectUnsafe::SharedObjectUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "SharedObjectUnsafe::SharedObjectUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
             },
-            "SharedObject": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [],
-                "doc": "Constructs an empty SharedObject.",
-                "hints": {
-                  "init": [
-                    "SharedObjectUnsafe(nullptr)"
-                  ]
-                },
-                "name": "SharedObject"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_SharedObject *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "SharedObjectUnsafe(resource)"
-                  ]
-                },
-                "name": "SharedObject"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const SharedObject &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "SharedObject",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "SharedObject &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "SharedObject(other.release())"
-                  ]
-                },
-                "name": "SharedObject"
-              },
-              {
-                "doc": "Dynamically load a shared object.\n\n@param sofile a system-dependent name of the object file.\n@post an opaque pointer to the object handle or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObjectRef.LoadFunction\n@sa SharedObjectRef.Unload",
-                "name": "SharedObject",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "sofile",
-                    "type": "StringParam"
-                  }
-                ],
-                "sourceName": "SDL_LoadObject",
-                "proto": false
-              }
-            ],
-            "~SharedObject": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~SharedObject"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "SharedObject &",
-              "parameters": [
-                {
-                  "type": "SharedObject",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
-            "LoadObject": {
-              "doc": "Dynamically load a shared object.\n\n@param sofile a system-dependent name of the object file.\n@returns an opaque pointer to the object handle or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObjectRef.LoadFunction\n@sa SharedObjectRef.Unload",
-              "name": "LoadObject",
+            "Load": {
+              "doc": "Dynamically load a shared object.\n\n@param sofile a system-dependent name of the object file.\n@returns an opaque pointer to the object handle or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObjectRef.LoadFunction\n@sa SharedObject.Unload",
+              "name": "Load",
               "kind": "function",
               "type": "SharedObject",
               "parameters": [
@@ -36061,14 +35914,25 @@
                 }
               ],
               "sourceName": "SDL_LoadObject",
+              "static": true,
               "hints": {
-                "body": "return SharedObject(sofile);"
-              },
-              "static": true
+                "wrapSelf": true
+              }
+            },
+            "Unload": {
+              "doc": "Unload a shared object from memory.\n\nNote that any pointers from this object looked up through\nSharedObjectRef.LoadFunction() will no longer be valid.\n\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObject.Load",
+              "name": "Unload",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_UnloadObject",
+              "hints": {
+                "body": "reset();"
+              }
             }
           },
           "hints": {
-            "super": "SharedObject"
+            "self": "SharedObject"
           }
         },
         "SharedObjectUnsafe::SharedObjectUnsafe": {

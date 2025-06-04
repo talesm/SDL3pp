@@ -716,6 +716,7 @@ function expandResources(sourceEntries, file, context) {
       uniqueSubEntries[sourceName] = entry;
       entry.static = true;
       entry.type = uniqueName;
+      addHints(entry, { wrapSelf: true });
     }
 
     // const staticCreateFunctions = !resourceEntry.noStaticCtors;
@@ -727,6 +728,7 @@ function expandResources(sourceEntries, file, context) {
             kind: "function",
             type: uniqueName,
             static: true,
+            hints: { wrapSelf: true },
           };
         }
       } else if (!Array.isArray(entry)) {
@@ -736,6 +738,7 @@ function expandResources(sourceEntries, file, context) {
           entry.static = true;
           entry.type = uniqueName;
           entry.name = "";
+          addHints(entry, { wrapSelf: true });
         }
       }
     }
@@ -828,7 +831,7 @@ function expandResources(sourceEntries, file, context) {
           "ResourceUnique::ResourceUnique": "alias",
           ...uniqueSubEntries,
         },
-        hints: { "super": uniqueName }
+        hints: { "self": uniqueName }
       },
       {
         kind: "function",
