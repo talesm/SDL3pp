@@ -174,16 +174,16 @@ public:
  * @tparam DELETER
  */
 template<class RESOURCE, class DELETER = DefaultDeleter<RESOURCE>>
-class ResourcePtr : public ResourcePtrBase<RESOURCE, DELETER>
+class ResourceUnsafe : public ResourcePtrBase<RESOURCE, DELETER>
 {
   using base = ResourcePtrBase<RESOURCE, DELETER>;
 
 public:
   /// Default constructor.
-  constexpr ResourcePtr() = default;
+  constexpr ResourceUnsafe() = default;
 
   /// Constructs pointer from anything compatible
-  constexpr explicit ResourcePtr(RESOURCE other)
+  constexpr explicit ResourceUnsafe(RESOURCE other)
     : base(other.get())
   {
   }

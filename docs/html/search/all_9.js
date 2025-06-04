@@ -58,7 +58,7 @@ var searchData=
   ['iostream_55',['IOStream',['../structSDL_1_1IOStream.html',1,'SDL']]],
   ['iostreaminterface_56',['IOStreamInterface',['../group__CategoryIOStream.html#gabc1c1a21fb3754b7ecd223f665cb2cd6',1,'SDL']]],
   ['iostreamref_57',['IOStreamRef',['../structSDL_1_1IOStreamRef.html',1,'SDL']]],
-  ['iostreamunsafe_58',['iostreamunsafe',['../structSDL_1_1IOStreamUnsafe.html',1,'SDL::IOStreamUnsafe'],['../group__CategoryIOStream.html#ga7458e83fb00ab658808ab385a79508c9',1,'SDL::IOStreamUnsafe::IOStreamUnsafe()']]],
+  ['iostreamunsafe_58',['iostreamunsafe',['../structSDL_1_1IOStreamUnsafe.html',1,'SDL::IOStreamUnsafe'],['../structSDL_1_1IOStreamUnsafe.html#a7458e83fb00ab658808ab385a79508c9',1,'SDL::IOStreamUnsafe::IOStreamUnsafe()']]],
   ['iowhence_59',['IOWhence',['../group__CategoryIOStream.html#ga4adfc77466072724dd0d0d41b5c49421',1,'SDL']]],
   ['is10bit_60',['Is10Bit',['../classSDL_1_1PixelFormat.html#a4ea090ec10c6338de84a7b8aa9902738',1,'SDL::PixelFormat']]],
   ['isalnum_61',['isalnum',['../group__CategoryStdinc.html#gafc3565e81c3ab6ba0e66f9030c056969',1,'SDL']]],

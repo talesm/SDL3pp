@@ -112,25 +112,6 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
 };
 
 /**
- * Unsafe Handle to sharedObject
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa SharedObjectRef
- */
-struct SharedObjectUnsafe : ResourcePtr<SharedObjectRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs SharedObjectUnsafe from SharedObject.
-   */
-  constexpr explicit SharedObjectUnsafe(SharedObject&& other);
-};
-
-/**
  * Handle to an owned sharedObject
  *
  * @cat resource
@@ -176,10 +157,27 @@ struct SharedObject : ResourceUnique<SharedObjectRef>
   void Unload() { reset(); }
 };
 
-constexpr SharedObjectUnsafe::SharedObjectUnsafe(SharedObject&& other)
-  : SharedObjectUnsafe(other.release())
+/**
+ * Unsafe Handle to sharedObject
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectRef
+ */
+struct SharedObjectUnsafe : ResourceUnsafe<SharedObjectRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs SharedObjectUnsafe from SharedObject.
+   */
+  constexpr explicit SharedObjectUnsafe(SharedObject&& other)
+    : SharedObjectUnsafe(other.release())
+  {
+  }
+};
 
 /// @}
 

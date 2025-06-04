@@ -972,25 +972,6 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
 };
 
 /**
- * Unsafe Handle to audioDevice
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa AudioDeviceRef
- */
-struct AudioDeviceUnsafe : ResourcePtr<AudioDeviceRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs AudioDeviceUnsafe from AudioDevice.
-   */
-  constexpr explicit AudioDeviceUnsafe(AudioDevice&& other);
-};
-
-/**
  * Handle to an owned audioDevice
  *
  * @cat resource
@@ -1078,7 +1059,7 @@ struct AudioDevice : ResourceUnique<AudioDeviceRef>
   static AudioDevice Open(AudioDeviceRef devid,
                           OptionalRef<const SDL_AudioSpec> spec)
   {
-    return AudioDevice(CheckError(SDL_OpenAudioDevice(devid.get(), spec)));
+    return AudioDevice(CheckError(SDL_OpenAudioDevice(devid, spec)));
   }
 
   /**
@@ -1100,10 +1081,27 @@ struct AudioDevice : ResourceUnique<AudioDeviceRef>
   void Close() { reset(); }
 };
 
-constexpr AudioDeviceUnsafe::AudioDeviceUnsafe(AudioDevice&& other)
-  : AudioDeviceUnsafe(other.release())
+/**
+ * Unsafe Handle to audioDevice
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AudioDeviceRef
+ */
+struct AudioDeviceUnsafe : ResourceUnsafe<AudioDeviceRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs AudioDeviceUnsafe from AudioDevice.
+   */
+  constexpr explicit AudioDeviceUnsafe(AudioDevice&& other)
+    : AudioDeviceUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * A value used to request a default playback audio device.
@@ -1253,11 +1251,12 @@ using AudioStreamCB = std::function<
  *
  * @since This struct is available since SDL 3.2.0.
  *
+ * @sa AudioStream.Create
+ *
  * @cat resource
  *
- * @sa AudioStreamRef.AudioStreamRef
+ * @sa AudioStream.Create
  * @sa AudioStream
- * @sa AudioStreamRef
  */
 struct AudioStreamRef : Resource<SDL_AudioStream*>
 {
@@ -2221,25 +2220,6 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
 };
 
 /**
- * Unsafe Handle to audioStream
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa AudioStreamRef
- */
-struct AudioStreamUnsafe : ResourcePtr<AudioStreamRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs AudioStreamUnsafe from AudioStream.
-   */
-  constexpr explicit AudioStreamUnsafe(AudioStream&& other);
-};
-
-/**
  * Handle to an owned audioStream
  *
  * @cat resource
@@ -2409,8 +2389,8 @@ struct AudioStream : ResourceUnique<AudioStreamRef>
     AudioStreamCallback callback = nullptr,
     void* userdata = nullptr)
   {
-    return AudioStream(CheckError(
-      SDL_OpenAudioDeviceStream(devid.get(), spec, callback, userdata)));
+    return AudioStream(
+      CheckError(SDL_OpenAudioDeviceStream(devid, spec, callback, userdata)));
   }
 
   /**
@@ -2434,10 +2414,27 @@ struct AudioStream : ResourceUnique<AudioStreamRef>
   void Destroy() { reset(); }
 };
 
-constexpr AudioStreamUnsafe::AudioStreamUnsafe(AudioStream&& other)
-  : AudioStreamUnsafe(other.release())
+/**
+ * Unsafe Handle to audioStream
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AudioStreamRef
+ */
+struct AudioStreamUnsafe : ResourceUnsafe<AudioStreamRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs AudioStreamUnsafe from AudioStream.
+   */
+  constexpr explicit AudioStreamUnsafe(AudioStream&& other)
+    : AudioStreamUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Locks a AudioStream.
@@ -2485,7 +2482,7 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
   AudioStreamLock(AudioStreamRef stream)
     : LockBase(stream.get())
   {
-    CheckError(SDL_LockAudioStream(stream.get()));
+    CheckError(SDL_LockAudioStream(stream));
   }
 
   /**
@@ -2593,7 +2590,7 @@ inline const char* GetCurrentAudioDriver()
  * GetAudioRecordingDevices() instead.
  *
  * This only returns a list of physical devices; it will not have any device
- * IDs returned by AudioDeviceRef.AudioDeviceRef().
+ * IDs returned by AudioDevice.Open().
  *
  * If this function returns nullptr, to signify an error, `*count` will be set
  * to zero.
@@ -2606,7 +2603,7 @@ inline const char* GetCurrentAudioDriver()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDeviceRef.AudioDeviceRef
+ * @sa AudioDevice.Open
  * @sa GetAudioRecordingDevices
  */
 inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
@@ -2626,7 +2623,7 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  * GetAudioPlaybackDevices() instead.
  *
  * This only returns a list of physical devices; it will not have any device
- * IDs returned by AudioDeviceRef.AudioDeviceRef().
+ * IDs returned by AudioDevice.Open().
  *
  * If this function returns nullptr, to signify an error, `*count` will be set
  * to zero.
@@ -2639,7 +2636,7 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDeviceRef.AudioDeviceRef
+ * @sa AudioDevice.Open
  * @sa GetAudioPlaybackDevices
  */
 inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
@@ -2661,7 +2658,7 @@ inline void AudioDeviceRef::BindAudioStreams(std::span<AudioStreamRef> streams)
 
 inline void AudioDeviceRef::BindAudioStream(AudioStreamRef stream)
 {
-  CheckError(SDL_BindAudioStream(get(), stream.get()));
+  CheckError(SDL_BindAudioStream(get(), stream));
 }
 
 /**
@@ -2731,15 +2728,15 @@ inline AudioStreamLock AudioStreamRef::Lock() { return AudioStreamLock(*this); }
  *
  * Example:
  *
- * ```c
- * LoadWAV(IOStream.FromFile("sample.wav", "rb"), true, &spec, &buf, &len);
+ * ```cpp
+ * LoadWAV(IOStream.FromFile("sample.wav", "rb"), true, &spec);
  * ```
  *
  * Note that the LoadWAV function does this same thing for you, but in a
  * less messy way:
  *
- * ```c
- * LoadWAV("sample.wav", &spec, &buf, &len);
+ * ```cpp
+ * LoadWAV("sample.wav", spec);
  * ```
  *
  * @param src the data source for the WAVE data.
@@ -2753,8 +2750,6 @@ inline AudioStreamLock AudioStreamRef::Lock() { return AudioStreamLock(*this); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- *
- * @sa LoadWAV
  */
 inline OwnArray<Uint8> LoadWAV(IOStreamRef src, AudioSpec* spec)
 {
@@ -2769,9 +2764,8 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src, AudioSpec* spec)
  *
  * This is a convenience function that is effectively the same as:
  *
- * ```c
- * LoadWAV(IOStream.FromFile(path, "rb"), true, spec, audio_buf,
- * audio_len);
+ * ```cpp
+ * LoadWAV(IOStream.FromFile(path, "rb"), true, spec, audio_buf, audio_len);
  * ```
  *
  * @param path the file path of the WAV file to open.

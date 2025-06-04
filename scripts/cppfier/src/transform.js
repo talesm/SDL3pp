@@ -814,15 +814,6 @@ function expandResources(sourceEntries, file, context) {
     /** @type {ApiEntryTransform[]} */
     const derivedEntries = [
       {
-        name: unsafeName,
-        kind: "struct",
-        type: `ResourcePtr<${refName}>`,
-        doc: `Unsafe Handle to ${title}\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ${refName}`,
-        entries: {
-          "ResourcePtr::ResourcePtr": "alias",
-        },
-      },
-      {
         name: uniqueName,
         kind: "struct",
         type: `ResourceUnique<${refName}>`,
@@ -834,18 +825,26 @@ function expandResources(sourceEntries, file, context) {
         hints: { "self": uniqueName }
       },
       {
-        kind: "function",
-        name: `${unsafeName}::${unsafeName}`,
-        type: "",
-        explicit: true,
-        constexpr: true,
-        parameters: [{
-          type: `${uniqueName} &&`,
-          name: "other"
-        }],
-        doc: `Constructs ${unsafeName} from ${uniqueName}.`,
-        hints: { init: [`${unsafeName}(other.release())`] }
-      }
+        name: unsafeName,
+        kind: "struct",
+        type: `ResourceUnsafe<${refName}>`,
+        doc: `Unsafe Handle to ${title}\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ${refName}`,
+        entries: {
+          "ResourceUnsafe::ResourceUnsafe": "alias",
+          [unsafeName]: {
+            kind: "function",
+            type: "",
+            explicit: true,
+            constexpr: true,
+            parameters: [{
+              type: `${uniqueName} &&`,
+              name: "other"
+            }],
+            doc: `Constructs ${unsafeName} from ${uniqueName}.`,
+            hints: { init: [`${unsafeName}(other.release())`] },
+          },
+        },
+      },
     ];
     const derivedNames = new Set([uniqueName, unsafeName, optionalName]);
     if (resourceEntry.lock) {

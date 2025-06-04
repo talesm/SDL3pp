@@ -3211,39 +3211,6 @@
             "super": "Resource"
           }
         },
-        "PropertiesUnsafe": {
-          "name": "PropertiesUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<PropertiesRef>",
-          "doc": "Unsafe Handle to properties\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa PropertiesRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "PropertiesUnsafe": {
-              "kind": "function",
-              "name": "PropertiesUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "Properties &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs PropertiesUnsafe from Properties.",
-              "hints": {
-                "init": [
-                  "PropertiesUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "Properties": {
           "name": "Properties",
           "kind": "struct",
@@ -3283,21 +3250,36 @@
             "self": "Properties"
           }
         },
-        "PropertiesUnsafe::PropertiesUnsafe": {
-          "kind": "function",
-          "name": "PropertiesUnsafe::PropertiesUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Properties &&",
-              "name": "other"
+        "PropertiesUnsafe": {
+          "name": "PropertiesUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<PropertiesRef>",
+          "doc": "Unsafe Handle to properties\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa PropertiesRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "PropertiesUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Properties &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs PropertiesUnsafe from Properties.",
+              "hints": {
+                "init": [
+                  "PropertiesUnsafe(other.release())"
+                ]
+              },
+              "name": "PropertiesUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "PropertiesUnsafe(other.release())"
-            ]
           }
         },
         "PropertiesLock": {
@@ -15463,39 +15445,6 @@
             "super": "Resource"
           }
         },
-        "PaletteUnsafe": {
-          "name": "PaletteUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<PaletteRef>",
-          "doc": "Unsafe Handle to palette\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa PaletteRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "PaletteUnsafe": {
-              "kind": "function",
-              "name": "PaletteUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "Palette &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs PaletteUnsafe from Palette.",
-              "hints": {
-                "init": [
-                  "PaletteUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "Palette": {
           "name": "Palette",
           "kind": "struct",
@@ -15541,21 +15490,36 @@
             "self": "Palette"
           }
         },
-        "PaletteUnsafe::PaletteUnsafe": {
-          "kind": "function",
-          "name": "PaletteUnsafe::PaletteUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Palette &&",
-              "name": "other"
+        "PaletteUnsafe": {
+          "name": "PaletteUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<PaletteRef>",
+          "doc": "Unsafe Handle to palette\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa PaletteRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "PaletteUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Palette &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs PaletteUnsafe from Palette.",
+              "hints": {
+                "init": [
+                  "PaletteUnsafe(other.release())"
+                ]
+              },
+              "name": "PaletteUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "PaletteUnsafe(other.release())"
-            ]
           }
         },
         "MapRGB": {
@@ -18823,39 +18787,6 @@
             "super": "Resource"
           }
         },
-        "SurfaceUnsafe": {
-          "name": "SurfaceUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<SurfaceRef>",
-          "doc": "Unsafe Handle to surface\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SurfaceRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "SurfaceUnsafe": {
-              "kind": "function",
-              "name": "SurfaceUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "Surface &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs SurfaceUnsafe from Surface.",
-              "hints": {
-                "init": [
-                  "SurfaceUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "Surface": {
           "name": "Surface",
           "kind": "struct",
@@ -18999,21 +18930,36 @@
             "self": "Surface"
           }
         },
-        "SurfaceUnsafe::SurfaceUnsafe": {
-          "kind": "function",
-          "name": "SurfaceUnsafe::SurfaceUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Surface &&",
-              "name": "other"
+        "SurfaceUnsafe": {
+          "name": "SurfaceUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<SurfaceRef>",
+          "doc": "Unsafe Handle to surface\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SurfaceRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "SurfaceUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Surface &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs SurfaceUnsafe from Surface.",
+              "hints": {
+                "init": [
+                  "SurfaceUnsafe(other.release())"
+                ]
+              },
+              "name": "SurfaceUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "SurfaceUnsafe(other.release())"
-            ]
           }
         },
         "SurfaceLock": {
@@ -20321,39 +20267,6 @@
             "super": "Resource"
           }
         },
-        "AudioDeviceUnsafe": {
-          "name": "AudioDeviceUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<AudioDeviceRef>",
-          "doc": "Unsafe Handle to audioDevice\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AudioDeviceRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "AudioDeviceUnsafe": {
-              "kind": "function",
-              "name": "AudioDeviceUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "AudioDevice &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs AudioDeviceUnsafe from AudioDevice.",
-              "hints": {
-                "init": [
-                  "AudioDeviceUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "AudioDevice": {
           "name": "AudioDevice",
           "kind": "struct",
@@ -20403,21 +20316,36 @@
             "self": "AudioDevice"
           }
         },
-        "AudioDeviceUnsafe::AudioDeviceUnsafe": {
-          "kind": "function",
-          "name": "AudioDeviceUnsafe::AudioDeviceUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "AudioDevice &&",
-              "name": "other"
+        "AudioDeviceUnsafe": {
+          "name": "AudioDeviceUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<AudioDeviceRef>",
+          "doc": "Unsafe Handle to audioDevice\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AudioDeviceRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "AudioDeviceUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "AudioDevice &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs AudioDeviceUnsafe from AudioDevice.",
+              "hints": {
+                "init": [
+                  "AudioDeviceUnsafe(other.release())"
+                ]
+              },
+              "name": "AudioDeviceUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "AudioDeviceUnsafe(other.release())"
-            ]
           }
         },
         "AUDIO_DEVICE_DEFAULT_PLAYBACK": {
@@ -20905,39 +20833,6 @@
             "super": "Resource"
           }
         },
-        "AudioStreamUnsafe": {
-          "name": "AudioStreamUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<AudioStreamRef>",
-          "doc": "Unsafe Handle to audioStream\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AudioStreamRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "AudioStreamUnsafe": {
-              "kind": "function",
-              "name": "AudioStreamUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "AudioStream &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs AudioStreamUnsafe from AudioStream.",
-              "hints": {
-                "init": [
-                  "AudioStreamUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "AudioStream": {
           "name": "AudioStream",
           "kind": "struct",
@@ -21046,21 +20941,36 @@
             "self": "AudioStream"
           }
         },
-        "AudioStreamUnsafe::AudioStreamUnsafe": {
-          "kind": "function",
-          "name": "AudioStreamUnsafe::AudioStreamUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "AudioStream &&",
-              "name": "other"
+        "AudioStreamUnsafe": {
+          "name": "AudioStreamUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<AudioStreamRef>",
+          "doc": "Unsafe Handle to audioStream\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AudioStreamRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "AudioStreamUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "AudioStream &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs AudioStreamUnsafe from AudioStream.",
+              "hints": {
+                "init": [
+                  "AudioStreamUnsafe(other.release())"
+                ]
+              },
+              "name": "AudioStreamUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "AudioStreamUnsafe(other.release())"
-            ]
           }
         },
         "AudioStreamLock": {
@@ -28713,39 +28623,6 @@
             "super": "Resource"
           }
         },
-        "CursorUnsafe": {
-          "name": "CursorUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<CursorRef>",
-          "doc": "Unsafe Handle to cursor\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa CursorRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "CursorUnsafe": {
-              "kind": "function",
-              "name": "CursorUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "Cursor &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs CursorUnsafe from Cursor.",
-              "hints": {
-                "init": [
-                  "CursorUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "Cursor": {
           "name": "Cursor",
           "kind": "struct",
@@ -28843,21 +28720,36 @@
             "self": "Cursor"
           }
         },
-        "CursorUnsafe::CursorUnsafe": {
-          "kind": "function",
-          "name": "CursorUnsafe::CursorUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Cursor &&",
-              "name": "other"
+        "CursorUnsafe": {
+          "name": "CursorUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<CursorRef>",
+          "doc": "Unsafe Handle to cursor\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa CursorRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "CursorUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Cursor &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs CursorUnsafe from Cursor.",
+              "hints": {
+                "init": [
+                  "CursorUnsafe(other.release())"
+                ]
+              },
+              "name": "CursorUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "CursorUnsafe(other.release())"
-            ]
           }
         },
         "MouseButton": {
@@ -30001,39 +29893,6 @@
             "super": "Resource"
           }
         },
-        "MutexUnsafe": {
-          "name": "MutexUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<MutexRef>",
-          "doc": "Unsafe Handle to mutex\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa MutexRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "MutexUnsafe": {
-              "kind": "function",
-              "name": "MutexUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "Mutex &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs MutexUnsafe from Mutex.",
-              "hints": {
-                "init": [
-                  "MutexUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "Mutex": {
           "name": "Mutex",
           "kind": "struct",
@@ -30073,21 +29932,36 @@
             "self": "Mutex"
           }
         },
-        "MutexUnsafe::MutexUnsafe": {
-          "kind": "function",
-          "name": "MutexUnsafe::MutexUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Mutex &&",
-              "name": "other"
+        "MutexUnsafe": {
+          "name": "MutexUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<MutexRef>",
+          "doc": "Unsafe Handle to mutex\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa MutexRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "MutexUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Mutex &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs MutexUnsafe from Mutex.",
+              "hints": {
+                "init": [
+                  "MutexUnsafe(other.release())"
+                ]
+              },
+              "name": "MutexUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "MutexUnsafe(other.release())"
-            ]
           }
         },
         "RWLockRef": {
@@ -30171,39 +30045,6 @@
             "super": "Resource"
           }
         },
-        "RWLockUnsafe": {
-          "name": "RWLockUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<RWLockRef>",
-          "doc": "Unsafe Handle to rWLock\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa RWLockRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "RWLockUnsafe": {
-              "kind": "function",
-              "name": "RWLockUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "RWLock &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs RWLockUnsafe from RWLock.",
-              "hints": {
-                "init": [
-                  "RWLockUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "RWLock": {
           "name": "RWLock",
           "kind": "struct",
@@ -30243,21 +30084,36 @@
             "self": "RWLock"
           }
         },
-        "RWLockUnsafe::RWLockUnsafe": {
-          "kind": "function",
-          "name": "RWLockUnsafe::RWLockUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "RWLock &&",
-              "name": "other"
+        "RWLockUnsafe": {
+          "name": "RWLockUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<RWLockRef>",
+          "doc": "Unsafe Handle to rWLock\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa RWLockRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "RWLockUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "RWLock &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs RWLockUnsafe from RWLock.",
+              "hints": {
+                "init": [
+                  "RWLockUnsafe(other.release())"
+                ]
+              },
+              "name": "RWLockUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "RWLockUnsafe(other.release())"
-            ]
           }
         },
         "SemaphoreRef": {
@@ -30341,39 +30197,6 @@
             "super": "Resource"
           }
         },
-        "SemaphoreUnsafe": {
-          "name": "SemaphoreUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<SemaphoreRef>",
-          "doc": "Unsafe Handle to semaphore\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SemaphoreRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "SemaphoreUnsafe": {
-              "kind": "function",
-              "name": "SemaphoreUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "Semaphore &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs SemaphoreUnsafe from Semaphore.",
-              "hints": {
-                "init": [
-                  "SemaphoreUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "Semaphore": {
           "name": "Semaphore",
           "kind": "struct",
@@ -30418,21 +30241,36 @@
             "self": "Semaphore"
           }
         },
-        "SemaphoreUnsafe::SemaphoreUnsafe": {
-          "kind": "function",
-          "name": "SemaphoreUnsafe::SemaphoreUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Semaphore &&",
-              "name": "other"
+        "SemaphoreUnsafe": {
+          "name": "SemaphoreUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<SemaphoreRef>",
+          "doc": "Unsafe Handle to semaphore\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SemaphoreRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "SemaphoreUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Semaphore &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs SemaphoreUnsafe from Semaphore.",
+              "hints": {
+                "init": [
+                  "SemaphoreUnsafe(other.release())"
+                ]
+              },
+              "name": "SemaphoreUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "SemaphoreUnsafe(other.release())"
-            ]
           }
         },
         "ConditionRef": {
@@ -30516,39 +30354,6 @@
             "super": "Resource"
           }
         },
-        "ConditionUnsafe": {
-          "name": "ConditionUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<ConditionRef>",
-          "doc": "Unsafe Handle to condition\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ConditionRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "ConditionUnsafe": {
-              "kind": "function",
-              "name": "ConditionUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "Condition &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs ConditionUnsafe from Condition.",
-              "hints": {
-                "init": [
-                  "ConditionUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "Condition": {
           "name": "Condition",
           "kind": "struct",
@@ -30588,21 +30393,36 @@
             "self": "Condition"
           }
         },
-        "ConditionUnsafe::ConditionUnsafe": {
-          "kind": "function",
-          "name": "ConditionUnsafe::ConditionUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Condition &&",
-              "name": "other"
+        "ConditionUnsafe": {
+          "name": "ConditionUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<ConditionRef>",
+          "doc": "Unsafe Handle to condition\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ConditionRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "ConditionUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Condition &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs ConditionUnsafe from Condition.",
+              "hints": {
+                "init": [
+                  "ConditionUnsafe(other.release())"
+                ]
+              },
+              "name": "ConditionUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "ConditionUnsafe(other.release())"
-            ]
           }
         },
         "InitStatus": {
@@ -32766,39 +32586,6 @@
             "super": "Resource"
           }
         },
-        "StorageUnsafe": {
-          "name": "StorageUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<StorageRef>",
-          "doc": "Unsafe Handle to storage\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa StorageRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "StorageUnsafe": {
-              "kind": "function",
-              "name": "StorageUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "Storage &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs StorageUnsafe from Storage.",
-              "hints": {
-                "init": [
-                  "StorageUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "Storage": {
           "name": "Storage",
           "kind": "struct",
@@ -32915,21 +32702,36 @@
             "self": "Storage"
           }
         },
-        "StorageUnsafe::StorageUnsafe": {
-          "kind": "function",
-          "name": "StorageUnsafe::StorageUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Storage &&",
-              "name": "other"
+        "StorageUnsafe": {
+          "name": "StorageUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<StorageRef>",
+          "doc": "Unsafe Handle to storage\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa StorageRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "StorageUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Storage &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs StorageUnsafe from Storage.",
+              "hints": {
+                "init": [
+                  "StorageUnsafe(other.release())"
+                ]
+              },
+              "name": "StorageUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "StorageUnsafe(other.release())"
-            ]
           }
         }
       }
@@ -33764,39 +33566,6 @@
             "super": "Resource"
           }
         },
-        "IOStreamUnsafe": {
-          "name": "IOStreamUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<IOStreamRef>",
-          "doc": "Unsafe Handle to iOStream\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa IOStreamRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "IOStreamUnsafe": {
-              "kind": "function",
-              "name": "IOStreamUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "IOStream &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs IOStreamUnsafe from IOStream.",
-              "hints": {
-                "init": [
-                  "IOStreamUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "IOStream": {
           "name": "IOStream",
           "kind": "struct",
@@ -33914,21 +33683,36 @@
             "self": "IOStream"
           }
         },
-        "IOStreamUnsafe::IOStreamUnsafe": {
-          "kind": "function",
-          "name": "IOStreamUnsafe::IOStreamUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "IOStream &&",
-              "name": "other"
+        "IOStreamUnsafe": {
+          "name": "IOStreamUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<IOStreamRef>",
+          "doc": "Unsafe Handle to iOStream\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa IOStreamRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "IOStreamUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "IOStream &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs IOStreamUnsafe from IOStream.",
+              "hints": {
+                "init": [
+                  "IOStreamUnsafe(other.release())"
+                ]
+              },
+              "name": "IOStreamUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "IOStreamUnsafe(other.release())"
-            ]
           }
         },
         "prop::IOStream": {
@@ -34649,39 +34433,6 @@
             "super": "Resource"
           }
         },
-        "SharedObjectUnsafe": {
-          "name": "SharedObjectUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<SharedObjectRef>",
-          "doc": "Unsafe Handle to sharedObject\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SharedObjectRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "SharedObjectUnsafe": {
-              "kind": "function",
-              "name": "SharedObjectUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "SharedObject &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs SharedObjectUnsafe from SharedObject.",
-              "hints": {
-                "init": [
-                  "SharedObjectUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "SharedObject": {
           "name": "SharedObject",
           "kind": "struct",
@@ -34726,21 +34477,36 @@
             "self": "SharedObject"
           }
         },
-        "SharedObjectUnsafe::SharedObjectUnsafe": {
-          "kind": "function",
-          "name": "SharedObjectUnsafe::SharedObjectUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "SharedObject &&",
-              "name": "other"
+        "SharedObjectUnsafe": {
+          "name": "SharedObjectUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<SharedObjectRef>",
+          "doc": "Unsafe Handle to sharedObject\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SharedObjectRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "SharedObjectUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "SharedObject &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs SharedObjectUnsafe from SharedObject.",
+              "hints": {
+                "init": [
+                  "SharedObjectUnsafe(other.release())"
+                ]
+              },
+              "name": "SharedObjectUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "SharedObjectUnsafe(other.release())"
-            ]
           }
         }
       }
@@ -34927,39 +34693,6 @@
             "super": "Resource"
           }
         },
-        "ProcessUnsafe": {
-          "name": "ProcessUnsafe",
-          "kind": "struct",
-          "type": "ResourcePtr<ProcessRef>",
-          "doc": "Unsafe Handle to process\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ProcessRef",
-          "entries": {
-            "ResourcePtr::ResourcePtr": {
-              "kind": "alias",
-              "name": "ResourcePtr::ResourcePtr",
-              "doc": ""
-            },
-            "ProcessUnsafe": {
-              "kind": "function",
-              "name": "ProcessUnsafe",
-              "type": "",
-              "explicit": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "Process &&",
-                  "name": "other"
-                }
-              ],
-              "doc": "Constructs ProcessUnsafe from Process.",
-              "hints": {
-                "init": [
-                  "ProcessUnsafe(other.release())"
-                ]
-              },
-              "proto": true
-            }
-          }
-        },
         "Process": {
           "name": "Process",
           "kind": "struct",
@@ -35025,21 +34758,36 @@
             "self": "Process"
           }
         },
-        "ProcessUnsafe::ProcessUnsafe": {
-          "kind": "function",
-          "name": "ProcessUnsafe::ProcessUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Process &&",
-              "name": "other"
+        "ProcessUnsafe": {
+          "name": "ProcessUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<ProcessRef>",
+          "doc": "Unsafe Handle to process\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ProcessRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "ProcessUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Process &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs ProcessUnsafe from Process.",
+              "hints": {
+                "init": [
+                  "ProcessUnsafe(other.release())"
+                ]
+              },
+              "name": "ProcessUnsafe"
             }
-          ],
-          "hints": {
-            "init": [
-              "ProcessUnsafe(other.release())"
-            ]
           }
         },
         "prop::process": {

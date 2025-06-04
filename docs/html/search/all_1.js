@@ -99,7 +99,7 @@ var searchData=
   ['audiodevice_96',['AudioDevice',['../structSDL_1_1AudioDevice.html',1,'SDL']]],
   ['audiodeviceevent_97',['AudioDeviceEvent',['../group__CategoryEvents.html#ga6e2962a3fb4651fd34bdef5d11d22ed4',1,'SDL']]],
   ['audiodeviceref_98',['AudioDeviceRef',['../structSDL_1_1AudioDeviceRef.html',1,'SDL']]],
-  ['audiodeviceunsafe_99',['audiodeviceunsafe',['../group__CategoryAudio.html#gaf498cfe18e4432ceb2d11aa48c2a4a84',1,'SDL::AudioDeviceUnsafe::AudioDeviceUnsafe()'],['../structSDL_1_1AudioDeviceUnsafe.html',1,'SDL::AudioDeviceUnsafe']]],
+  ['audiodeviceunsafe_99',['audiodeviceunsafe',['../structSDL_1_1AudioDeviceUnsafe.html#af498cfe18e4432ceb2d11aa48c2a4a84',1,'SDL::AudioDeviceUnsafe::AudioDeviceUnsafe()'],['../structSDL_1_1AudioDeviceUnsafe.html',1,'SDL::AudioDeviceUnsafe']]],
   ['audioformat_100',['audioformat',['../classSDL_1_1AudioFormat.html',1,'SDL::AudioFormat'],['../classSDL_1_1AudioFormat.html#a9e87727cadd783fcfa9fa5e6b8042522',1,'SDL::AudioFormat::AudioFormat(SDL_AudioFormat audioFormat={})'],['../classSDL_1_1AudioFormat.html#ae10766eed6243e53b98df1e0642de581',1,'SDL::AudioFormat::AudioFormat(bool sign, bool bigendian, bool flt, Uint16 size)']]],
   ['audioframesize_101',['AudioFrameSize',['../group__CategoryAudio.html#gafd736bb7a8107101eac9d0ad555460c3',1,'SDL']]],
   ['audiopostmixcallback_102',['AudioPostmixCallback',['../group__CategoryAudio.html#ga2e483caf8bcf7944d6f995ad9ab1ffe7',1,'SDL']]],
@@ -110,5 +110,5 @@ var searchData=
   ['audiostreamcb_107',['AudioStreamCB',['../group__CategoryAudio.html#ga7e94ca585b8e971289b7bfd6780762cc',1,'SDL']]],
   ['audiostreamlock_108',['audiostreamlock',['../structSDL_1_1AudioStreamLock.html',1,'SDL::AudioStreamLock'],['../structSDL_1_1AudioStreamLock.html#af8a8afb5c73f94277cff5492f95bbb5a',1,'SDL::AudioStreamLock::AudioStreamLock()=default'],['../structSDL_1_1AudioStreamLock.html#adc6e20396e0ac81e278a07fcc0d28ccf',1,'SDL::AudioStreamLock::AudioStreamLock(AudioStreamLock &amp;&amp;other)'],['../structSDL_1_1AudioStreamLock.html#ad6ddc3bb667d25aefe4e06324f5bc832',1,'SDL::AudioStreamLock::AudioStreamLock(AudioStreamRef stream)']]],
   ['audiostreamref_109',['AudioStreamRef',['../structSDL_1_1AudioStreamRef.html',1,'SDL']]],
-  ['audiostreamunsafe_110',['audiostreamunsafe',['../structSDL_1_1AudioStreamUnsafe.html',1,'SDL::AudioStreamUnsafe'],['../group__CategoryAudio.html#gab8386584f68fa71cc8c1329f42f3e922',1,'SDL::AudioStreamUnsafe::AudioStreamUnsafe()']]]
+  ['audiostreamunsafe_110',['audiostreamunsafe',['../structSDL_1_1AudioStreamUnsafe.html',1,'SDL::AudioStreamUnsafe'],['../structSDL_1_1AudioStreamUnsafe.html#ab8386584f68fa71cc8c1329f42f3e922',1,'SDL::AudioStreamUnsafe::AudioStreamUnsafe()']]]
 ];

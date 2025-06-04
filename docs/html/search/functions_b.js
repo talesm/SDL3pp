@@ -24,5 +24,5 @@ var searchData=
   ['mostsignificantbitindex32_21',['MostSignificantBitIndex32',['../group__CategoryBits.html#gaa2f08a2af2962e1673e65eeeb4b24bee',1,'SDL']]],
   ['murmur3_5f32_22',['murmur3_32',['../group__CategoryStdinc.html#gaa75ce9d0d0b590cd55fce1604bb40824',1,'SDL']]],
   ['mustlock_23',['MustLock',['../structSDL_1_1SurfaceRef.html#a5030bf180d394effdc2ad46615b305ea',1,'SDL::SurfaceRef']]],
-  ['mutexunsafe_24',['MutexUnsafe',['../group__CategoryMutex.html#gad8662111e319ec24af5d8195073eb34a',1,'SDL::MutexUnsafe']]]
+  ['mutexunsafe_24',['MutexUnsafe',['../structSDL_1_1MutexUnsafe.html#ad8662111e319ec24af5d8195073eb34a',1,'SDL::MutexUnsafe']]]
 ];

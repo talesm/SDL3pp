@@ -103,7 +103,7 @@ var searchData=
   ['composecustomblendmode_100',['ComposeCustomBlendMode',['../group__CategoryBlendmode.html#gaec8c6ddb8b4963d1597c2ccfbb451839',1,'SDL']]],
   ['condition_101',['Condition',['../structSDL_1_1Condition.html',1,'SDL']]],
   ['conditionref_102',['ConditionRef',['../structSDL_1_1ConditionRef.html',1,'SDL']]],
-  ['conditionunsafe_103',['conditionunsafe',['../structSDL_1_1ConditionUnsafe.html',1,'SDL::ConditionUnsafe'],['../group__CategoryMutex.html#ga45ade6421c2776b56c934fb7efca2539',1,'SDL::ConditionUnsafe::ConditionUnsafe()']]],
+  ['conditionunsafe_103',['conditionunsafe',['../structSDL_1_1ConditionUnsafe.html',1,'SDL::ConditionUnsafe'],['../structSDL_1_1ConditionUnsafe.html#a45ade6421c2776b56c934fb7efca2539',1,'SDL::ConditionUnsafe::ConditionUnsafe()']]],
   ['configuration_20variables_104',['Configuration Variables',['../group__CategoryHints.html',1,'']]],
   ['constructor_20tag_105',['Constructor Tag',['../constructor-tag.html',1,'DesignNotes']]],
   ['contains_106',['contains',['../structSDL_1_1KeyValueWrapper.html#a51504896015057ec86b6c341d5eea6c7',1,'SDL::KeyValueWrapper::contains()'],['../structSDL_1_1UniqueCallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a5531419668184184f91a25c3ccd623f9',1,'SDL::UniqueCallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::contains()'],['../structSDL_1_1Rect.html#a564964cf66409486d8b81e42b099601f',1,'SDL::Rect::Contains(const Point &amp;p) const'],['../structSDL_1_1Rect.html#aef01b24cedf0b5e33316359330d0b501',1,'SDL::Rect::Contains(const Rect &amp;other) const'],['../structSDL_1_1FRect.html#a23499f14b90aab4eeabce845f0cbeb98',1,'SDL::FRect::Contains(const FPoint &amp;p) const'],['../structSDL_1_1FRect.html#afb2a1bbe6172ee65f209d7186318aafb',1,'SDL::FRect::Contains(const FRect &amp;other) const']]],
@@ -145,6 +145,6 @@ var searchData=
   ['current_142',['Current',['../group__CategoryTime.html#ga185f1c1c0b9c344738ba7a3f0ec57f15',1,'SDL::Time']]],
   ['cursor_143',['Cursor',['../structSDL_1_1Cursor.html',1,'SDL']]],
   ['cursorref_144',['CursorRef',['../structSDL_1_1CursorRef.html',1,'SDL']]],
-  ['cursorunsafe_145',['cursorunsafe',['../structSDL_1_1CursorUnsafe.html',1,'SDL::CursorUnsafe'],['../group__CategoryMouse.html#ga6ec9a50c0802a98f1568d67219c5783f',1,'SDL::CursorUnsafe::CursorUnsafe()']]],
+  ['cursorunsafe_145',['cursorunsafe',['../structSDL_1_1CursorUnsafe.html',1,'SDL::CursorUnsafe'],['../structSDL_1_1CursorUnsafe.html#a6ec9a50c0802a98f1568d67219c5783f',1,'SDL::CursorUnsafe::CursorUnsafe()']]],
   ['cursorvisible_146',['CursorVisible',['../group__CategoryMouse.html#gac4547e18959c21ca560b54349634f47b',1,'SDL']]]
 ];

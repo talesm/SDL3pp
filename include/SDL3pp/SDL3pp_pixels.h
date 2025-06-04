@@ -1991,25 +1991,6 @@ struct PaletteRef : Resource<SDL_Palette*>
 };
 
 /**
- * Unsafe Handle to palette
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa PaletteRef
- */
-struct PaletteUnsafe : ResourcePtr<PaletteRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs PaletteUnsafe from Palette.
-   */
-  constexpr explicit PaletteUnsafe(Palette&& other);
-};
-
-/**
  * Handle to an owned palette
  *
  * @cat resource
@@ -2054,10 +2035,27 @@ struct Palette : ResourceUnique<PaletteRef>
   void Destroy() { reset(); }
 };
 
-constexpr PaletteUnsafe::PaletteUnsafe(Palette&& other)
-  : PaletteUnsafe(other.release())
+/**
+ * Unsafe Handle to palette
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa PaletteRef
+ */
+struct PaletteUnsafe : ResourceUnsafe<PaletteRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs PaletteUnsafe from Palette.
+   */
+  constexpr explicit PaletteUnsafe(Palette&& other)
+    : PaletteUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.
@@ -2101,7 +2099,7 @@ inline Uint32 MapRGB(const PixelFormatDetails& format,
                      Uint8 g,
                      Uint8 b)
 {
-  return SDL_MapRGB(&format, palette.get(), r, g, b);
+  return SDL_MapRGB(&format, palette, r, g, b);
 }
 
 /**
@@ -2148,7 +2146,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
                       Uint8 b,
                       Uint8 a)
 {
-  return SDL_MapRGBA(&format, palette.get(), r, g, b, a);
+  return SDL_MapRGBA(&format, palette, r, g, b, a);
 }
 
 /**
@@ -2184,7 +2182,7 @@ inline void GetRGB(Uint32 pixel,
                    Uint8* g,
                    Uint8* b)
 {
-  SDL_GetRGB(pixel, &format, palette.get(), r, g, b);
+  SDL_GetRGB(pixel, &format, palette, r, g, b);
 }
 
 /**
@@ -2225,7 +2223,7 @@ inline void GetRGBA(Uint32 pixel,
                     Uint8* b,
                     Uint8* a)
 {
-  SDL_GetRGBA(pixel, &format, palette.get(), r, g, b, a);
+  SDL_GetRGBA(pixel, &format, palette, r, g, b, a);
 }
 
 /** @} */

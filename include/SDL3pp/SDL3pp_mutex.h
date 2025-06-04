@@ -151,25 +151,6 @@ struct MutexRef : Resource<SDL_Mutex*>
 };
 
 /**
- * Unsafe Handle to mutex
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa MutexRef
- */
-struct MutexUnsafe : ResourcePtr<MutexRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs MutexUnsafe from Mutex.
-   */
-  constexpr explicit MutexUnsafe(Mutex&& other);
-};
-
-/**
  * Handle to an owned mutex
  *
  * @cat resource
@@ -219,10 +200,27 @@ struct Mutex : ResourceUnique<MutexRef>
   void Destroy() { reset(); }
 };
 
-constexpr MutexUnsafe::MutexUnsafe(Mutex&& other)
-  : MutexUnsafe(other.release())
+/**
+ * Unsafe Handle to mutex
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa MutexRef
+ */
+struct MutexUnsafe : ResourceUnsafe<MutexRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs MutexUnsafe from Mutex.
+   */
+  constexpr explicit MutexUnsafe(Mutex&& other)
+    : MutexUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * A mutex that allows read-only threads to run in parallel.
@@ -412,25 +410,6 @@ struct RWLockRef : Resource<SDL_RWLock*>
 };
 
 /**
- * Unsafe Handle to rWLock
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa RWLockRef
- */
-struct RWLockUnsafe : ResourcePtr<RWLockRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs RWLockUnsafe from RWLock.
-   */
-  constexpr explicit RWLockUnsafe(RWLock&& other);
-};
-
-/**
  * Handle to an owned rWLock
  *
  * @cat resource
@@ -500,10 +479,27 @@ struct RWLock : ResourceUnique<RWLockRef>
   void Destroy() { reset(); }
 };
 
-constexpr RWLockUnsafe::RWLockUnsafe(RWLock&& other)
-  : RWLockUnsafe(other.release())
+/**
+ * Unsafe Handle to rWLock
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa RWLockRef
+ */
+struct RWLockUnsafe : ResourceUnsafe<RWLockRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs RWLockUnsafe from RWLock.
+   */
+  constexpr explicit RWLockUnsafe(RWLock&& other)
+    : RWLockUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * A means to manage access to a resource, by count, between threads.
@@ -623,25 +619,6 @@ struct SemaphoreRef : Resource<SDL_Semaphore*>
 };
 
 /**
- * Unsafe Handle to semaphore
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa SemaphoreRef
- */
-struct SemaphoreUnsafe : ResourcePtr<SemaphoreRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs SemaphoreUnsafe from Semaphore.
-   */
-  constexpr explicit SemaphoreUnsafe(Semaphore&& other);
-};
-
-/**
  * Handle to an owned semaphore
  *
  * @cat resource
@@ -693,10 +670,27 @@ struct Semaphore : ResourceUnique<SemaphoreRef>
   void Destroy() { reset(); }
 };
 
-constexpr SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
-  : SemaphoreUnsafe(other.release())
+/**
+ * Unsafe Handle to semaphore
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreRef
+ */
+struct SemaphoreUnsafe : ResourceUnsafe<SemaphoreRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs SemaphoreUnsafe from Semaphore.
+   */
+  constexpr explicit SemaphoreUnsafe(Semaphore&& other)
+    : SemaphoreUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * A means to block multiple threads until a condition is satisfied.
@@ -772,7 +766,7 @@ struct ConditionRef : Resource<SDL_Condition*>
    * @sa ConditionRef.Signal
    * @sa ConditionRef.WaitTimeout
    */
-  void Wait(MutexRef mutex) { SDL_WaitCondition(get(), mutex.get()); }
+  void Wait(MutexRef mutex) { SDL_WaitCondition(get(), mutex); }
 
   /**
    * Wait until a condition variable is signaled or a certain time has passed.
@@ -803,7 +797,7 @@ struct ConditionRef : Resource<SDL_Condition*>
    */
   bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout)
   {
-    return SDL_WaitConditionTimeout(get(), mutex.get(), timeout.count());
+    return SDL_WaitConditionTimeout(get(), mutex, timeout.count());
   }
 
   /**
@@ -816,25 +810,6 @@ struct ConditionRef : Resource<SDL_Condition*>
    * @sa Condition.Create
    */
   static void reset(SDL_Condition* resource) { SDL_DestroyCondition(resource); }
-};
-
-/**
- * Unsafe Handle to condition
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa ConditionRef
- */
-struct ConditionUnsafe : ResourcePtr<ConditionRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs ConditionUnsafe from Condition.
-   */
-  constexpr explicit ConditionUnsafe(Condition&& other);
 };
 
 /**
@@ -875,10 +850,27 @@ struct Condition : ResourceUnique<ConditionRef>
   void Destroy() { reset(); }
 };
 
-constexpr ConditionUnsafe::ConditionUnsafe(Condition&& other)
-  : ConditionUnsafe(other.release())
+/**
+ * Unsafe Handle to condition
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ConditionRef
+ */
+struct ConditionUnsafe : ResourceUnsafe<ConditionRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs ConditionUnsafe from Condition.
+   */
+  constexpr explicit ConditionUnsafe(Condition&& other)
+    : ConditionUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * The current status of an InitState structure.

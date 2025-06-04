@@ -185,25 +185,6 @@ struct CursorRef : Resource<SDL_Cursor*>
 };
 
 /**
- * Unsafe Handle to cursor
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa CursorRef
- */
-struct CursorUnsafe : ResourcePtr<CursorRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs CursorUnsafe from Cursor.
-   */
-  constexpr explicit CursorUnsafe(Cursor&& other);
-};
-
-/**
  * Handle to an owned cursor
  *
  * @cat resource
@@ -328,10 +309,27 @@ struct Cursor : ResourceUnique<CursorRef>
   void Destroy() { reset(); }
 };
 
-constexpr CursorUnsafe::CursorUnsafe(Cursor&& other)
-  : CursorUnsafe(other.release())
+/**
+ * Unsafe Handle to cursor
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa CursorRef
+ */
+struct CursorUnsafe : ResourceUnsafe<CursorRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs CursorUnsafe from Cursor.
+   */
+  constexpr explicit CursorUnsafe(Cursor&& other)
+    : CursorUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Represents a button index.
@@ -760,7 +758,7 @@ inline void SetCursor(CursorRef cursor)
  * Get the active cursor.
  *
  * This function returns a pointer to the current cursor which is owned by the
- * library. It is not necessary to free the cursor with CursorRef.reset().
+ * library. It is not necessary to free the cursor with Cursor.Destroy().
  *
  * @returns the active cursor or nullptr if there is no mouse.
  *
@@ -775,7 +773,7 @@ inline CursorRef GetCursor() { return SDL_GetCursor(); }
 /**
  * Get the default cursor.
  *
- * You do not have to call CursorRef.reset() on the return value, but it is
+ * You do not have to call Cursor.Destroy() on the return value, but it is
  * safe to do so.
  *
  * @returns the default cursor on success.

@@ -1406,25 +1406,6 @@ struct IOStreamRef : Resource<SDL_IOStream*>
 };
 
 /**
- * Unsafe Handle to iOStream
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa IOStreamRef
- */
-struct IOStreamUnsafe : ResourcePtr<IOStreamRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs IOStreamUnsafe from IOStream.
-   */
-  constexpr explicit IOStreamUnsafe(IOStream&& other);
-};
-
-/**
  * Handle to an owned iOStream
  *
  * @cat resource
@@ -1653,7 +1634,7 @@ struct IOStream : ResourceUnique<IOStreamRef>
    * @param iface the interface that implements this IOStreamRef, initialized
    *              using SDL_INIT_INTERFACE().
    * @param userdata the pointer that will be passed to the interface functions.
-   * @post a valid stream on success.
+   * @returns a valid stream on success.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -1703,10 +1684,27 @@ struct IOStream : ResourceUnique<IOStreamRef>
   void Close() { reset(); }
 };
 
-constexpr IOStreamUnsafe::IOStreamUnsafe(IOStream&& other)
-  : IOStreamUnsafe(other.release())
+/**
+ * Unsafe Handle to iOStream
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa IOStreamRef
+ */
+struct IOStreamUnsafe : ResourceUnsafe<IOStreamRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs IOStreamUnsafe from IOStream.
+   */
+  constexpr explicit IOStreamUnsafe(IOStream&& other)
+    : IOStreamUnsafe(other.release())
+  {
+  }
+};
 
 namespace prop::IOStream {
 

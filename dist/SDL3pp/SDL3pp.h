@@ -719,16 +719,16 @@ public:
  * @tparam DELETER
  */
 template<class RESOURCE, class DELETER = DefaultDeleter<RESOURCE>>
-class ResourcePtr : public ResourcePtrBase<RESOURCE, DELETER>
+class ResourceUnsafe : public ResourcePtrBase<RESOURCE, DELETER>
 {
   using base = ResourcePtrBase<RESOURCE, DELETER>;
 
 public:
   /// Default constructor.
-  constexpr ResourcePtr() = default;
+  constexpr ResourceUnsafe() = default;
 
   /// Constructs pointer from anything compatible
-  constexpr explicit ResourcePtr(RESOURCE other)
+  constexpr explicit ResourceUnsafe(RESOURCE other)
     : base(other.get())
   {
   }
@@ -15444,25 +15444,6 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
 };
 
 /**
- * Unsafe Handle to sharedObject
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa SharedObjectRef
- */
-struct SharedObjectUnsafe : ResourcePtr<SharedObjectRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs SharedObjectUnsafe from SharedObject.
-   */
-  constexpr explicit SharedObjectUnsafe(SharedObject&& other);
-};
-
-/**
  * Handle to an owned sharedObject
  *
  * @cat resource
@@ -15508,10 +15489,27 @@ struct SharedObject : ResourceUnique<SharedObjectRef>
   void Unload() { reset(); }
 };
 
-constexpr SharedObjectUnsafe::SharedObjectUnsafe(SharedObject&& other)
-  : SharedObjectUnsafe(other.release())
+/**
+ * Unsafe Handle to sharedObject
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectRef
+ */
+struct SharedObjectUnsafe : ResourceUnsafe<SharedObjectRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs SharedObjectUnsafe from SharedObject.
+   */
+  constexpr explicit SharedObjectUnsafe(SharedObject&& other)
+    : SharedObjectUnsafe(other.release())
+  {
+  }
+};
 
 /// @}
 
@@ -18394,25 +18392,6 @@ struct PaletteRef : Resource<SDL_Palette*>
 };
 
 /**
- * Unsafe Handle to palette
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa PaletteRef
- */
-struct PaletteUnsafe : ResourcePtr<PaletteRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs PaletteUnsafe from Palette.
-   */
-  constexpr explicit PaletteUnsafe(Palette&& other);
-};
-
-/**
  * Handle to an owned palette
  *
  * @cat resource
@@ -18457,10 +18436,27 @@ struct Palette : ResourceUnique<PaletteRef>
   void Destroy() { reset(); }
 };
 
-constexpr PaletteUnsafe::PaletteUnsafe(Palette&& other)
-  : PaletteUnsafe(other.release())
+/**
+ * Unsafe Handle to palette
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa PaletteRef
+ */
+struct PaletteUnsafe : ResourceUnsafe<PaletteRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs PaletteUnsafe from Palette.
+   */
+  constexpr explicit PaletteUnsafe(Palette&& other)
+    : PaletteUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.
@@ -18504,7 +18500,7 @@ inline Uint32 MapRGB(const PixelFormatDetails& format,
                      Uint8 g,
                      Uint8 b)
 {
-  return SDL_MapRGB(&format, palette.get(), r, g, b);
+  return SDL_MapRGB(&format, palette, r, g, b);
 }
 
 /**
@@ -18551,7 +18547,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
                       Uint8 b,
                       Uint8 a)
 {
-  return SDL_MapRGBA(&format, palette.get(), r, g, b, a);
+  return SDL_MapRGBA(&format, palette, r, g, b, a);
 }
 
 /**
@@ -18587,7 +18583,7 @@ inline void GetRGB(Uint32 pixel,
                    Uint8* g,
                    Uint8* b)
 {
-  SDL_GetRGB(pixel, &format, palette.get(), r, g, b);
+  SDL_GetRGB(pixel, &format, palette, r, g, b);
 }
 
 /**
@@ -18628,7 +18624,7 @@ inline void GetRGBA(Uint32 pixel,
                     Uint8* b,
                     Uint8* a)
 {
-  SDL_GetRGBA(pixel, &format, palette.get(), r, g, b, a);
+  SDL_GetRGBA(pixel, &format, palette, r, g, b, a);
 }
 
 /** @} */
@@ -19752,25 +19748,6 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
 };
 
 /**
- * Unsafe Handle to properties
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa PropertiesRef
- */
-struct PropertiesUnsafe : ResourcePtr<PropertiesRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs PropertiesUnsafe from Properties.
-   */
-  constexpr explicit PropertiesUnsafe(Properties&& other);
-};
-
-/**
  * Handle to an owned properties
  *
  * @cat resource
@@ -19817,10 +19794,27 @@ struct Properties : ResourceUnique<PropertiesRef>
   void Destroy() { reset(); }
 };
 
-constexpr PropertiesUnsafe::PropertiesUnsafe(Properties&& other)
-  : PropertiesUnsafe(other.release())
+/**
+ * Unsafe Handle to properties
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa PropertiesRef
+ */
+struct PropertiesUnsafe : ResourceUnsafe<PropertiesRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs PropertiesUnsafe from Properties.
+   */
+  constexpr explicit PropertiesUnsafe(Properties&& other)
+    : PropertiesUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Wrap the lock state for PropertiesRef
@@ -26226,25 +26220,6 @@ struct IOStreamRef : Resource<SDL_IOStream*>
 };
 
 /**
- * Unsafe Handle to iOStream
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa IOStreamRef
- */
-struct IOStreamUnsafe : ResourcePtr<IOStreamRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs IOStreamUnsafe from IOStream.
-   */
-  constexpr explicit IOStreamUnsafe(IOStream&& other);
-};
-
-/**
  * Handle to an owned iOStream
  *
  * @cat resource
@@ -26473,7 +26448,7 @@ struct IOStream : ResourceUnique<IOStreamRef>
    * @param iface the interface that implements this IOStreamRef, initialized
    *              using SDL_INIT_INTERFACE().
    * @param userdata the pointer that will be passed to the interface functions.
-   * @post a valid stream on success.
+   * @returns a valid stream on success.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -26523,10 +26498,27 @@ struct IOStream : ResourceUnique<IOStreamRef>
   void Close() { reset(); }
 };
 
-constexpr IOStreamUnsafe::IOStreamUnsafe(IOStream&& other)
-  : IOStreamUnsafe(other.release())
+/**
+ * Unsafe Handle to iOStream
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa IOStreamRef
+ */
+struct IOStreamUnsafe : ResourceUnsafe<IOStreamRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs IOStreamUnsafe from IOStream.
+   */
+  constexpr explicit IOStreamUnsafe(IOStream&& other)
+    : IOStreamUnsafe(other.release())
+  {
+  }
+};
 
 namespace prop::IOStream {
 
@@ -28173,25 +28165,6 @@ struct StorageRef : Resource<SDL_Storage*>
 };
 
 /**
- * Unsafe Handle to storage
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa StorageRef
- */
-struct StorageUnsafe : ResourcePtr<StorageRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs StorageUnsafe from Storage.
-   */
-  constexpr explicit StorageUnsafe(Storage&& other);
-};
-
-/**
  * Handle to an owned storage
  *
  * @cat resource
@@ -28322,13 +28295,30 @@ struct Storage : ResourceUnique<StorageRef>
    * @sa Storage.OpenTitle
    * @sa Storage.OpenUser
    */
-  void Close() { return reset(); }
+  void Close() { reset(); }
 };
 
-constexpr StorageUnsafe::StorageUnsafe(Storage&& other)
-  : StorageUnsafe(other.release())
+/**
+ * Unsafe Handle to storage
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa StorageRef
+ */
+struct StorageUnsafe : ResourceUnsafe<StorageRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs StorageUnsafe from Storage.
+   */
+  constexpr explicit StorageUnsafe(Storage&& other)
+    : StorageUnsafe(other.release())
+  {
+  }
+};
 
 /// @}
 
@@ -30029,25 +30019,6 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
 };
 
 /**
- * Unsafe Handle to audioDevice
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa AudioDeviceRef
- */
-struct AudioDeviceUnsafe : ResourcePtr<AudioDeviceRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs AudioDeviceUnsafe from AudioDevice.
-   */
-  constexpr explicit AudioDeviceUnsafe(AudioDevice&& other);
-};
-
-/**
  * Handle to an owned audioDevice
  *
  * @cat resource
@@ -30135,7 +30106,7 @@ struct AudioDevice : ResourceUnique<AudioDeviceRef>
   static AudioDevice Open(AudioDeviceRef devid,
                           OptionalRef<const SDL_AudioSpec> spec)
   {
-    return AudioDevice(CheckError(SDL_OpenAudioDevice(devid.get(), spec)));
+    return AudioDevice(CheckError(SDL_OpenAudioDevice(devid, spec)));
   }
 
   /**
@@ -30157,10 +30128,27 @@ struct AudioDevice : ResourceUnique<AudioDeviceRef>
   void Close() { reset(); }
 };
 
-constexpr AudioDeviceUnsafe::AudioDeviceUnsafe(AudioDevice&& other)
-  : AudioDeviceUnsafe(other.release())
+/**
+ * Unsafe Handle to audioDevice
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AudioDeviceRef
+ */
+struct AudioDeviceUnsafe : ResourceUnsafe<AudioDeviceRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs AudioDeviceUnsafe from AudioDevice.
+   */
+  constexpr explicit AudioDeviceUnsafe(AudioDevice&& other)
+    : AudioDeviceUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * A value used to request a default playback audio device.
@@ -30310,11 +30298,12 @@ using AudioStreamCB = std::function<
  *
  * @since This struct is available since SDL 3.2.0.
  *
+ * @sa AudioStream.Create
+ *
  * @cat resource
  *
- * @sa AudioStreamRef.AudioStreamRef
+ * @sa AudioStream.Create
  * @sa AudioStream
- * @sa AudioStreamRef
  */
 struct AudioStreamRef : Resource<SDL_AudioStream*>
 {
@@ -31278,25 +31267,6 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
 };
 
 /**
- * Unsafe Handle to audioStream
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa AudioStreamRef
- */
-struct AudioStreamUnsafe : ResourcePtr<AudioStreamRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs AudioStreamUnsafe from AudioStream.
-   */
-  constexpr explicit AudioStreamUnsafe(AudioStream&& other);
-};
-
-/**
  * Handle to an owned audioStream
  *
  * @cat resource
@@ -31466,8 +31436,8 @@ struct AudioStream : ResourceUnique<AudioStreamRef>
     AudioStreamCallback callback = nullptr,
     void* userdata = nullptr)
   {
-    return AudioStream(CheckError(
-      SDL_OpenAudioDeviceStream(devid.get(), spec, callback, userdata)));
+    return AudioStream(
+      CheckError(SDL_OpenAudioDeviceStream(devid, spec, callback, userdata)));
   }
 
   /**
@@ -31491,10 +31461,27 @@ struct AudioStream : ResourceUnique<AudioStreamRef>
   void Destroy() { reset(); }
 };
 
-constexpr AudioStreamUnsafe::AudioStreamUnsafe(AudioStream&& other)
-  : AudioStreamUnsafe(other.release())
+/**
+ * Unsafe Handle to audioStream
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AudioStreamRef
+ */
+struct AudioStreamUnsafe : ResourceUnsafe<AudioStreamRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs AudioStreamUnsafe from AudioStream.
+   */
+  constexpr explicit AudioStreamUnsafe(AudioStream&& other)
+    : AudioStreamUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Locks a AudioStream.
@@ -31542,7 +31529,7 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
   AudioStreamLock(AudioStreamRef stream)
     : LockBase(stream.get())
   {
-    CheckError(SDL_LockAudioStream(stream.get()));
+    CheckError(SDL_LockAudioStream(stream));
   }
 
   /**
@@ -31650,7 +31637,7 @@ inline const char* GetCurrentAudioDriver()
  * GetAudioRecordingDevices() instead.
  *
  * This only returns a list of physical devices; it will not have any device
- * IDs returned by AudioDeviceRef.AudioDeviceRef().
+ * IDs returned by AudioDevice.Open().
  *
  * If this function returns nullptr, to signify an error, `*count` will be set
  * to zero.
@@ -31663,7 +31650,7 @@ inline const char* GetCurrentAudioDriver()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDeviceRef.AudioDeviceRef
+ * @sa AudioDevice.Open
  * @sa GetAudioRecordingDevices
  */
 inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
@@ -31683,7 +31670,7 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  * GetAudioPlaybackDevices() instead.
  *
  * This only returns a list of physical devices; it will not have any device
- * IDs returned by AudioDeviceRef.AudioDeviceRef().
+ * IDs returned by AudioDevice.Open().
  *
  * If this function returns nullptr, to signify an error, `*count` will be set
  * to zero.
@@ -31696,7 +31683,7 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDeviceRef.AudioDeviceRef
+ * @sa AudioDevice.Open
  * @sa GetAudioPlaybackDevices
  */
 inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
@@ -31718,7 +31705,7 @@ inline void AudioDeviceRef::BindAudioStreams(std::span<AudioStreamRef> streams)
 
 inline void AudioDeviceRef::BindAudioStream(AudioStreamRef stream)
 {
-  CheckError(SDL_BindAudioStream(get(), stream.get()));
+  CheckError(SDL_BindAudioStream(get(), stream));
 }
 
 /**
@@ -31788,15 +31775,15 @@ inline AudioStreamLock AudioStreamRef::Lock() { return AudioStreamLock(*this); }
  *
  * Example:
  *
- * ```c
- * LoadWAV(IOStream.FromFile("sample.wav", "rb"), true, &spec, &buf, &len);
+ * ```cpp
+ * LoadWAV(IOStream.FromFile("sample.wav", "rb"), true, &spec);
  * ```
  *
  * Note that the LoadWAV function does this same thing for you, but in a
  * less messy way:
  *
- * ```c
- * LoadWAV("sample.wav", &spec, &buf, &len);
+ * ```cpp
+ * LoadWAV("sample.wav", spec);
  * ```
  *
  * @param src the data source for the WAVE data.
@@ -31810,8 +31797,6 @@ inline AudioStreamLock AudioStreamRef::Lock() { return AudioStreamLock(*this); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- *
- * @sa LoadWAV
  */
 inline OwnArray<Uint8> LoadWAV(IOStreamRef src, AudioSpec* spec)
 {
@@ -31826,9 +31811,8 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src, AudioSpec* spec)
  *
  * This is a convenience function that is effectively the same as:
  *
- * ```c
- * LoadWAV(IOStream.FromFile(path, "rb"), true, spec, audio_buf,
- * audio_len);
+ * ```cpp
+ * LoadWAV(IOStream.FromFile(path, "rb"), true, spec, audio_buf, audio_len);
  * ```
  *
  * @param path the file path of the WAV file to open.
@@ -32174,25 +32158,6 @@ struct MutexRef : Resource<SDL_Mutex*>
 };
 
 /**
- * Unsafe Handle to mutex
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa MutexRef
- */
-struct MutexUnsafe : ResourcePtr<MutexRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs MutexUnsafe from Mutex.
-   */
-  constexpr explicit MutexUnsafe(Mutex&& other);
-};
-
-/**
  * Handle to an owned mutex
  *
  * @cat resource
@@ -32242,10 +32207,27 @@ struct Mutex : ResourceUnique<MutexRef>
   void Destroy() { reset(); }
 };
 
-constexpr MutexUnsafe::MutexUnsafe(Mutex&& other)
-  : MutexUnsafe(other.release())
+/**
+ * Unsafe Handle to mutex
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa MutexRef
+ */
+struct MutexUnsafe : ResourceUnsafe<MutexRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs MutexUnsafe from Mutex.
+   */
+  constexpr explicit MutexUnsafe(Mutex&& other)
+    : MutexUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * A mutex that allows read-only threads to run in parallel.
@@ -32435,25 +32417,6 @@ struct RWLockRef : Resource<SDL_RWLock*>
 };
 
 /**
- * Unsafe Handle to rWLock
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa RWLockRef
- */
-struct RWLockUnsafe : ResourcePtr<RWLockRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs RWLockUnsafe from RWLock.
-   */
-  constexpr explicit RWLockUnsafe(RWLock&& other);
-};
-
-/**
  * Handle to an owned rWLock
  *
  * @cat resource
@@ -32523,10 +32486,27 @@ struct RWLock : ResourceUnique<RWLockRef>
   void Destroy() { reset(); }
 };
 
-constexpr RWLockUnsafe::RWLockUnsafe(RWLock&& other)
-  : RWLockUnsafe(other.release())
+/**
+ * Unsafe Handle to rWLock
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa RWLockRef
+ */
+struct RWLockUnsafe : ResourceUnsafe<RWLockRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs RWLockUnsafe from RWLock.
+   */
+  constexpr explicit RWLockUnsafe(RWLock&& other)
+    : RWLockUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * A means to manage access to a resource, by count, between threads.
@@ -32646,25 +32626,6 @@ struct SemaphoreRef : Resource<SDL_Semaphore*>
 };
 
 /**
- * Unsafe Handle to semaphore
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa SemaphoreRef
- */
-struct SemaphoreUnsafe : ResourcePtr<SemaphoreRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs SemaphoreUnsafe from Semaphore.
-   */
-  constexpr explicit SemaphoreUnsafe(Semaphore&& other);
-};
-
-/**
  * Handle to an owned semaphore
  *
  * @cat resource
@@ -32716,10 +32677,27 @@ struct Semaphore : ResourceUnique<SemaphoreRef>
   void Destroy() { reset(); }
 };
 
-constexpr SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
-  : SemaphoreUnsafe(other.release())
+/**
+ * Unsafe Handle to semaphore
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreRef
+ */
+struct SemaphoreUnsafe : ResourceUnsafe<SemaphoreRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs SemaphoreUnsafe from Semaphore.
+   */
+  constexpr explicit SemaphoreUnsafe(Semaphore&& other)
+    : SemaphoreUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * A means to block multiple threads until a condition is satisfied.
@@ -32795,7 +32773,7 @@ struct ConditionRef : Resource<SDL_Condition*>
    * @sa ConditionRef.Signal
    * @sa ConditionRef.WaitTimeout
    */
-  void Wait(MutexRef mutex) { SDL_WaitCondition(get(), mutex.get()); }
+  void Wait(MutexRef mutex) { SDL_WaitCondition(get(), mutex); }
 
   /**
    * Wait until a condition variable is signaled or a certain time has passed.
@@ -32826,7 +32804,7 @@ struct ConditionRef : Resource<SDL_Condition*>
    */
   bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout)
   {
-    return SDL_WaitConditionTimeout(get(), mutex.get(), timeout.count());
+    return SDL_WaitConditionTimeout(get(), mutex, timeout.count());
   }
 
   /**
@@ -32839,25 +32817,6 @@ struct ConditionRef : Resource<SDL_Condition*>
    * @sa Condition.Create
    */
   static void reset(SDL_Condition* resource) { SDL_DestroyCondition(resource); }
-};
-
-/**
- * Unsafe Handle to condition
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa ConditionRef
- */
-struct ConditionUnsafe : ResourcePtr<ConditionRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs ConditionUnsafe from Condition.
-   */
-  constexpr explicit ConditionUnsafe(Condition&& other);
 };
 
 /**
@@ -32898,10 +32857,27 @@ struct Condition : ResourceUnique<ConditionRef>
   void Destroy() { reset(); }
 };
 
-constexpr ConditionUnsafe::ConditionUnsafe(Condition&& other)
-  : ConditionUnsafe(other.release())
+/**
+ * Unsafe Handle to condition
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ConditionRef
+ */
+struct ConditionUnsafe : ResourceUnsafe<ConditionRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs ConditionUnsafe from Condition.
+   */
+  constexpr explicit ConditionUnsafe(Condition&& other)
+    : ConditionUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * The current status of an InitState structure.
@@ -33385,25 +33361,6 @@ struct ProcessRef : Resource<SDL_Process*>
 };
 
 /**
- * Unsafe Handle to process
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa ProcessRef
- */
-struct ProcessUnsafe : ResourcePtr<ProcessRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs ProcessUnsafe from Process.
-   */
-  constexpr explicit ProcessUnsafe(Process&& other);
-};
-
-/**
  * Handle to an owned process
  *
  * @cat resource
@@ -33522,7 +33479,7 @@ struct Process : ResourceUnique<ProcessRef>
    */
   static Process CreateWithProperties(PropertiesRef props)
   {
-    return Process(SDL_CreateProcessWithProperties(props.get()));
+    return Process(SDL_CreateProcessWithProperties(props));
   }
 
   /**
@@ -33544,10 +33501,27 @@ struct Process : ResourceUnique<ProcessRef>
   void Destroy() { reset(); }
 };
 
-constexpr ProcessUnsafe::ProcessUnsafe(Process&& other)
-  : ProcessUnsafe(other.release())
+/**
+ * Unsafe Handle to process
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ProcessRef
+ */
+struct ProcessUnsafe : ResourceUnsafe<ProcessRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs ProcessUnsafe from Process.
+   */
+  constexpr explicit ProcessUnsafe(Process&& other)
+    : ProcessUnsafe(other.release())
+  {
+  }
+};
 
 namespace prop::process {
 
@@ -35373,25 +35347,6 @@ struct SurfaceRef : Resource<SDL_Surface*>
 };
 
 /**
- * Unsafe Handle to surface
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa SurfaceRef
- */
-struct SurfaceUnsafe : ResourcePtr<SurfaceRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs SurfaceUnsafe from Surface.
-   */
-  constexpr explicit SurfaceUnsafe(Surface&& other);
-};
-
-/**
  * Handle to an owned surface
  *
  * @cat resource
@@ -35452,7 +35407,7 @@ struct Surface : ResourceUnique<SurfaceRef>
    */
   static Surface LoadBMP(IOStreamRef src)
   {
-    return Surface(SDL_LoadBMP_IO(src.get(), false));
+    return Surface(SDL_LoadBMP_IO(src, false));
   }
 
   /**
@@ -35552,10 +35507,27 @@ struct Surface : ResourceUnique<SurfaceRef>
   void Destroy() { reset(); }
 };
 
-constexpr SurfaceUnsafe::SurfaceUnsafe(Surface&& other)
-  : SurfaceUnsafe(other.release())
+/**
+ * Unsafe Handle to surface
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SurfaceRef
+ */
+struct SurfaceUnsafe : ResourceUnsafe<SurfaceRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs SurfaceUnsafe from Surface.
+   */
+  constexpr explicit SurfaceUnsafe(Surface&& other)
+    : SurfaceUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Locks a Surface for access to its pixels
@@ -45283,25 +45255,6 @@ struct CursorRef : Resource<SDL_Cursor*>
 };
 
 /**
- * Unsafe Handle to cursor
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa CursorRef
- */
-struct CursorUnsafe : ResourcePtr<CursorRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs CursorUnsafe from Cursor.
-   */
-  constexpr explicit CursorUnsafe(Cursor&& other);
-};
-
-/**
  * Handle to an owned cursor
  *
  * @cat resource
@@ -45426,10 +45379,27 @@ struct Cursor : ResourceUnique<CursorRef>
   void Destroy() { reset(); }
 };
 
-constexpr CursorUnsafe::CursorUnsafe(Cursor&& other)
-  : CursorUnsafe(other.release())
+/**
+ * Unsafe Handle to cursor
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa CursorRef
+ */
+struct CursorUnsafe : ResourceUnsafe<CursorRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs CursorUnsafe from Cursor.
+   */
+  constexpr explicit CursorUnsafe(Cursor&& other)
+    : CursorUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Represents a button index.
@@ -45858,7 +45828,7 @@ inline void SetCursor(CursorRef cursor)
  * Get the active cursor.
  *
  * This function returns a pointer to the current cursor which is owned by the
- * library. It is not necessary to free the cursor with CursorRef.reset().
+ * library. It is not necessary to free the cursor with Cursor.Destroy().
  *
  * @returns the active cursor or nullptr if there is no mouse.
  *
@@ -45873,7 +45843,7 @@ inline CursorRef GetCursor() { return SDL_GetCursor(); }
 /**
  * Get the default cursor.
  *
- * You do not have to call CursorRef.reset() on the return value, but it is
+ * You do not have to call Cursor.Destroy() on the return value, but it is
  * safe to do so.
  *
  * @returns the default cursor on success.

@@ -87,11 +87,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html">SDL::CursorRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The structure used to identify an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> cursor.  <a href="structSDL_1_1CursorRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorUnsafe.html">SDL::CursorUnsafe</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to cursor.  <a href="structSDL_1_1CursorUnsafe.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Cursor.html">SDL::Cursor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned cursor.  <a href="structSDL_1_1Cursor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorUnsafe.html">SDL::CursorUnsafe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to cursor.  <a href="structSDL_1_1CursorUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -163,10 +163,6 @@ Functions</h2></td></tr>
 <tr class="memitem:gac4547e18959c21ca560b54349634f47b" id="r_gac4547e18959c21ca560b54349634f47b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gac4547e18959c21ca560b54349634f47b">SDL::CursorVisible</a> ()</td></tr>
 <tr class="memdesc:gac4547e18959c21ca560b54349634f47b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether the cursor is currently being shown.  <br /></td></tr>
 <tr class="separator:gac4547e18959c21ca560b54349634f47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6ec9a50c0802a98f1568d67219c5783f" id="r_ga6ec9a50c0802a98f1568d67219c5783f"><td class="memItemLeft" align="right" valign="top"><a id="ga6ec9a50c0802a98f1568d67219c5783f" name="ga6ec9a50c0802a98f1568d67219c5783f"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::CursorUnsafe::CursorUnsafe</b> (<a class="el" href="structSDL_1_1Cursor.html">Cursor</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ga6ec9a50c0802a98f1568d67219c5783f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1CursorUnsafe.html" title="Unsafe Handle to cursor.">CursorUnsafe</a> from <a class="el" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor.">Cursor</a>. <br /></td></tr>
-<tr class="separator:ga6ec9a50c0802a98f1568d67219c5783f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0b838bf7c4e62a00187e28def4de70d3" id="r_ga0b838bf7c4e62a00187e28def4de70d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga0b838bf7c4e62a00187e28def4de70d3">SDL::WindowRef::WarpMouse</a> (float x, float y)</td></tr>
 <tr class="memdesc:ga0b838bf7c4e62a00187e28def4de70d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the mouse cursor to the given position within the window.  <br /></td></tr>
 <tr class="separator:ga0b838bf7c4e62a00187e28def4de70d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -500,7 +496,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function returns a pointer to the current cursor which is owned by the library. It is not necessary to free the cursor with <a class="el" href="structSDL_1_1CursorRef.html#aa1ac5239b074b044cbe04a33b481d2cd" title="Free a previously-created cursor.">CursorRef.reset()</a>.</p>
+<p>This function returns a pointer to the current cursor which is owned by the library. It is not necessary to free the cursor with <a class="el" href="structSDL_1_1Cursor.html#a322f04685f5a6bd68d59a15787f9e7fc" title="Free a previously-created cursor.">Cursor.Destroy()</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>the active cursor or nullptr if there is no mouse.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
@@ -530,7 +526,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
   </tr>
 </table>
 </div><div class="memdoc">
-<p>You do not have to call <a class="el" href="structSDL_1_1CursorRef.html#aa1ac5239b074b044cbe04a33b481d2cd" title="Free a previously-created cursor.">CursorRef.reset()</a> on the return value, but it is safe to do so.</p>
+<p>You do not have to call <a class="el" href="structSDL_1_1Cursor.html#a322f04685f5a6bd68d59a15787f9e7fc" title="Free a previously-created cursor.">Cursor.Destroy()</a> on the return value, but it is safe to do so.</p>
 <dl class="section return"><dt>Returns</dt><dd>the default cursor on success. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">

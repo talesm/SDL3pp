@@ -1797,25 +1797,6 @@ struct SurfaceRef : Resource<SDL_Surface*>
 };
 
 /**
- * Unsafe Handle to surface
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa SurfaceRef
- */
-struct SurfaceUnsafe : ResourcePtr<SurfaceRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs SurfaceUnsafe from Surface.
-   */
-  constexpr explicit SurfaceUnsafe(Surface&& other);
-};
-
-/**
  * Handle to an owned surface
  *
  * @cat resource
@@ -1876,7 +1857,7 @@ struct Surface : ResourceUnique<SurfaceRef>
    */
   static Surface LoadBMP(IOStreamRef src)
   {
-    return Surface(SDL_LoadBMP_IO(src.get(), false));
+    return Surface(SDL_LoadBMP_IO(src, false));
   }
 
   /**
@@ -1976,10 +1957,27 @@ struct Surface : ResourceUnique<SurfaceRef>
   void Destroy() { reset(); }
 };
 
-constexpr SurfaceUnsafe::SurfaceUnsafe(Surface&& other)
-  : SurfaceUnsafe(other.release())
+/**
+ * Unsafe Handle to surface
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SurfaceRef
+ */
+struct SurfaceUnsafe : ResourceUnsafe<SurfaceRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs SurfaceUnsafe from Surface.
+   */
+  constexpr explicit SurfaceUnsafe(Surface&& other)
+    : SurfaceUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Locks a Surface for access to its pixels

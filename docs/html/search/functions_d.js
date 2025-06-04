@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['paletteunsafe_0',['PaletteUnsafe',['../group__CategoryPixels.html#ga11cdf18344f314abe1146e323e624db0',1,'SDL::PaletteUnsafe']]],
+  ['paletteunsafe_0',['PaletteUnsafe',['../structSDL_1_1PaletteUnsafe.html#a11cdf18344f314abe1146e323e624db0',1,'SDL::PaletteUnsafe']]],
   ['pathinfo_1',['PathInfo',['../structSDL_1_1PathInfo.html#a12bfb0a6bebefb8e53d94dfebcf30937',1,'SDL::PathInfo']]],
   ['pause_2',['Pause',['../structSDL_1_1AudioDeviceRef.html#a3f8a6119aec1ec5c68f5d581d63d1e25',1,'SDL::AudioDeviceRef']]],
   ['paused_3',['Paused',['../structSDL_1_1AudioDeviceRef.html#af681a1aac685f46e657c8c403b542242',1,'SDL::AudioDeviceRef']]],
@@ -15,9 +15,9 @@ var searchData=
   ['print_12',['print',['../structSDL_1_1IOStreamRef.html#a427f0ace244ac6bb464a6321e8b0f561',1,'SDL::IOStreamRef']]],
   ['printf_13',['printf',['../structSDL_1_1IOStreamRef.html#aa1add38ee45c1bb15910177a5221e29f',1,'SDL::IOStreamRef']]],
   ['println_14',['println',['../structSDL_1_1IOStreamRef.html#a852c75ac064fea3caaff30e1f4341473',1,'SDL::IOStreamRef']]],
-  ['processunsafe_15',['ProcessUnsafe',['../group__CategoryProcess.html#ga726e16cd6fc000aa1160ab9c1aa083aa',1,'SDL::ProcessUnsafe']]],
+  ['processunsafe_15',['ProcessUnsafe',['../structSDL_1_1ProcessUnsafe.html#a726e16cd6fc000aa1160ab9c1aa083aa',1,'SDL::ProcessUnsafe']]],
   ['propertieslock_16',['propertieslock',['../classSDL_1_1PropertiesLock.html#adacdec5b1374935554b6a70640abb69b',1,'SDL::PropertiesLock::PropertiesLock(PropertiesLock &amp;&amp;other)'],['../classSDL_1_1PropertiesLock.html#a52bd8b36a47a669c13ca60eff04f3825',1,'SDL::PropertiesLock::PropertiesLock()=default']]],
-  ['propertiesunsafe_17',['PropertiesUnsafe',['../group__CategoryProperties.html#gafaed4833e72c9e2c8fef91aaf11f15b6',1,'SDL::PropertiesUnsafe']]],
+  ['propertiesunsafe_17',['PropertiesUnsafe',['../structSDL_1_1PropertiesUnsafe.html#afaed4833e72c9e2c8fef91aaf11f15b6',1,'SDL::PropertiesUnsafe']]],
   ['pumpevents_18',['PumpEvents',['../group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09',1,'SDL']]],
   ['pushevent_19',['pushevent',['../group__CategoryEvents.html#gaa592df4d4939fbfb3c89ff6718c7184f',1,'SDL::PushEvent(Event *event)'],['../group__CategoryEvents.html#ga09dbb5157cd6a2c4ee0e3b586df8cdf2',1,'SDL::PushEvent(const Event &amp;event)']]],
   ['putdata_20',['PutData',['../structSDL_1_1AudioStreamRef.html#a98d44233259c85840a44328b83c42f57',1,'SDL::AudioStreamRef']]]

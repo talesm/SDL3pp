@@ -10,7 +10,7 @@ var searchData=
   ['insertentry_7',['InsertEntry',['../group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a',1,'SDL::TrayMenu']]],
   ['insertstring_8',['InsertString',['../structSDL_1_1TextRef.html#a0ab41b4f50a3ad4e58b708a2d896b060',1,'SDL::TextRef']]],
   ['intersectline_9',['intersectline',['../structSDL_1_1Rect.html#af0f4743afba11dfd924b4d918b16053b',1,'SDL::Rect::IntersectLine(int *X1, int *Y1, int *X2, int *Y2) const'],['../structSDL_1_1Rect.html#a658abb676b9a06262f7bde330fecaba3',1,'SDL::Rect::IntersectLine(Point *p1, Point *p2) const'],['../structSDL_1_1FRect.html#ab4229097dcdbbe912dd423714d776d36',1,'SDL::FRect::IntersectLine(float *X1, float *Y1, float *X2, float *Y2) const'],['../structSDL_1_1FRect.html#a5198546beda11d6ad9cd279201640f5f',1,'SDL::FRect::IntersectLine(FPoint *p1, FPoint *p2) const']]],
-  ['iostreamunsafe_10',['IOStreamUnsafe',['../group__CategoryIOStream.html#ga7458e83fb00ab658808ab385a79508c9',1,'SDL::IOStreamUnsafe']]],
+  ['iostreamunsafe_10',['IOStreamUnsafe',['../structSDL_1_1IOStreamUnsafe.html#a7458e83fb00ab658808ab385a79508c9',1,'SDL::IOStreamUnsafe']]],
   ['is10bit_11',['Is10Bit',['../classSDL_1_1PixelFormat.html#a4ea090ec10c6338de84a7b8aa9902738',1,'SDL::PixelFormat']]],
   ['isalnum_12',['isalnum',['../group__CategoryStdinc.html#gafc3565e81c3ab6ba0e66f9030c056969',1,'SDL']]],
   ['isalpha_13',['isalpha',['../classSDL_1_1PixelFormat.html#ad0c4e69ed9005e0a17bb4295a54c5a7c',1,'SDL::PixelFormat::IsAlpha()'],['../group__CategoryStdinc.html#ga79256765fa0f219b5947721d1d920041',1,'SDL::isalpha()']]],

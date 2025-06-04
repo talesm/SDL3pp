@@ -698,25 +698,6 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
 };
 
 /**
- * Unsafe Handle to properties
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa PropertiesRef
- */
-struct PropertiesUnsafe : ResourcePtr<PropertiesRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs PropertiesUnsafe from Properties.
-   */
-  constexpr explicit PropertiesUnsafe(Properties&& other);
-};
-
-/**
  * Handle to an owned properties
  *
  * @cat resource
@@ -763,10 +744,27 @@ struct Properties : ResourceUnique<PropertiesRef>
   void Destroy() { reset(); }
 };
 
-constexpr PropertiesUnsafe::PropertiesUnsafe(Properties&& other)
-  : PropertiesUnsafe(other.release())
+/**
+ * Unsafe Handle to properties
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa PropertiesRef
+ */
+struct PropertiesUnsafe : ResourceUnsafe<PropertiesRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs PropertiesUnsafe from Properties.
+   */
+  constexpr explicit PropertiesUnsafe(Properties&& other)
+    : PropertiesUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Wrap the lock state for PropertiesRef

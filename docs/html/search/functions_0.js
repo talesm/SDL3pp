@@ -28,9 +28,9 @@ var searchData=
   ['atomicint_25',['AtomicInt',['../classSDL_1_1AtomicInt.html#a14eb6d4a2b7ba5aa2d1334e3211a3f99',1,'SDL::AtomicInt']]],
   ['atomicpointer_26',['AtomicPointer',['../classSDL_1_1AtomicPointer.html#a5adecc305227d97fe5d90135bef2299a',1,'SDL::AtomicPointer']]],
   ['atomicu32_27',['AtomicU32',['../classSDL_1_1AtomicU32.html#a3d6621533b16611174489c884d390cf1',1,'SDL::AtomicU32']]],
-  ['audiodeviceunsafe_28',['AudioDeviceUnsafe',['../group__CategoryAudio.html#gaf498cfe18e4432ceb2d11aa48c2a4a84',1,'SDL::AudioDeviceUnsafe']]],
+  ['audiodeviceunsafe_28',['AudioDeviceUnsafe',['../structSDL_1_1AudioDeviceUnsafe.html#af498cfe18e4432ceb2d11aa48c2a4a84',1,'SDL::AudioDeviceUnsafe']]],
   ['audioformat_29',['audioformat',['../classSDL_1_1AudioFormat.html#ae10766eed6243e53b98df1e0642de581',1,'SDL::AudioFormat::AudioFormat(bool sign, bool bigendian, bool flt, Uint16 size)'],['../classSDL_1_1AudioFormat.html#a9e87727cadd783fcfa9fa5e6b8042522',1,'SDL::AudioFormat::AudioFormat(SDL_AudioFormat audioFormat={})']]],
   ['audioframesize_30',['AudioFrameSize',['../group__CategoryAudio.html#gafd736bb7a8107101eac9d0ad555460c3',1,'SDL']]],
   ['audiostreamlock_31',['audiostreamlock',['../structSDL_1_1AudioStreamLock.html#ad6ddc3bb667d25aefe4e06324f5bc832',1,'SDL::AudioStreamLock::AudioStreamLock(AudioStreamRef stream)'],['../structSDL_1_1AudioStreamLock.html#adc6e20396e0ac81e278a07fcc0d28ccf',1,'SDL::AudioStreamLock::AudioStreamLock(AudioStreamLock &amp;&amp;other)'],['../structSDL_1_1AudioStreamLock.html#af8a8afb5c73f94277cff5492f95bbb5a',1,'SDL::AudioStreamLock::AudioStreamLock()=default']]],
-  ['audiostreamunsafe_32',['AudioStreamUnsafe',['../group__CategoryAudio.html#gab8386584f68fa71cc8c1329f42f3e922',1,'SDL::AudioStreamUnsafe']]]
+  ['audiostreamunsafe_32',['AudioStreamUnsafe',['../structSDL_1_1AudioStreamUnsafe.html#ab8386584f68fa71cc8c1329f42f3e922',1,'SDL::AudioStreamUnsafe']]]
 ];

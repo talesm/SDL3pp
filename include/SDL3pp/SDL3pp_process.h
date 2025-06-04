@@ -337,25 +337,6 @@ struct ProcessRef : Resource<SDL_Process*>
 };
 
 /**
- * Unsafe Handle to process
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa ProcessRef
- */
-struct ProcessUnsafe : ResourcePtr<ProcessRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs ProcessUnsafe from Process.
-   */
-  constexpr explicit ProcessUnsafe(Process&& other);
-};
-
-/**
  * Handle to an owned process
  *
  * @cat resource
@@ -474,7 +455,7 @@ struct Process : ResourceUnique<ProcessRef>
    */
   static Process CreateWithProperties(PropertiesRef props)
   {
-    return Process(SDL_CreateProcessWithProperties(props.get()));
+    return Process(SDL_CreateProcessWithProperties(props));
   }
 
   /**
@@ -496,10 +477,27 @@ struct Process : ResourceUnique<ProcessRef>
   void Destroy() { reset(); }
 };
 
-constexpr ProcessUnsafe::ProcessUnsafe(Process&& other)
-  : ProcessUnsafe(other.release())
+/**
+ * Unsafe Handle to process
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ProcessRef
+ */
+struct ProcessUnsafe : ResourceUnsafe<ProcessRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs ProcessUnsafe from Process.
+   */
+  constexpr explicit ProcessUnsafe(Process&& other)
+    : ProcessUnsafe(other.release())
+  {
+  }
+};
 
 namespace prop::process {
 

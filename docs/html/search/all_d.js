@@ -84,5 +84,5 @@ var searchData=
   ['mustlock_81',['MustLock',['../structSDL_1_1SurfaceRef.html#a5030bf180d394effdc2ad46615b305ea',1,'SDL::SurfaceRef']]],
   ['mutex_82',['Mutex',['../structSDL_1_1Mutex.html',1,'SDL']]],
   ['mutexref_83',['MutexRef',['../structSDL_1_1MutexRef.html',1,'SDL']]],
-  ['mutexunsafe_84',['mutexunsafe',['../group__CategoryMutex.html#gad8662111e319ec24af5d8195073eb34a',1,'SDL::MutexUnsafe::MutexUnsafe()'],['../structSDL_1_1MutexUnsafe.html',1,'SDL::MutexUnsafe']]]
+  ['mutexunsafe_84',['mutexunsafe',['../structSDL_1_1MutexUnsafe.html#ad8662111e319ec24af5d8195073eb34a',1,'SDL::MutexUnsafe::MutexUnsafe()'],['../structSDL_1_1MutexUnsafe.html',1,'SDL::MutexUnsafe']]]
 ];

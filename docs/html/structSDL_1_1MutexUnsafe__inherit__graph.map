@@ -1,7 +1,7 @@
 <map id="SDL::MutexUnsafe" name="SDL::MutexUnsafe">
-<area shape="rect" id="Node000001" title="Unsafe Handle to mutex." alt="" coords="47,167,190,192"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1ResourcePtr.html" title=" " alt="" coords="5,93,232,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,132,121,167,116,167,116,132"/>
-<area shape="rect" id="Node000003" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="24,5,213,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="121,59,121,93,116,93,116,59"/>
+<area shape="rect" id="Node000001" title="Unsafe Handle to mutex." alt="" coords="29,181,171,207"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="19,93,181,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,147,103,181,97,181,97,147"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="5,5,195,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,59,103,93,97,93,97,59"/>
 </map>

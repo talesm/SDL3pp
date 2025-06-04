@@ -646,25 +646,6 @@ struct StorageRef : Resource<SDL_Storage*>
 };
 
 /**
- * Unsafe Handle to storage
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa StorageRef
- */
-struct StorageUnsafe : ResourcePtr<StorageRef>
-{
-  using ResourcePtr::ResourcePtr;
-
-  /**
-   * Constructs StorageUnsafe from Storage.
-   */
-  constexpr explicit StorageUnsafe(Storage&& other);
-};
-
-/**
  * Handle to an owned storage
  *
  * @cat resource
@@ -795,15 +776,33 @@ struct Storage : ResourceUnique<StorageRef>
    * @sa Storage.OpenTitle
    * @sa Storage.OpenUser
    */
-  void Close() { return reset(); }
+  void Close() { reset(); }
 };
 
-constexpr StorageUnsafe::StorageUnsafe(Storage&& other)
-  : StorageUnsafe(other.release())
+/**
+ * Unsafe Handle to storage
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa StorageRef
+ */
+struct StorageUnsafe : ResourceUnsafe<StorageRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs StorageUnsafe from Storage.
+   */
+  constexpr explicit StorageUnsafe(Storage&& other)
+    : StorageUnsafe(other.release())
+  {
+  }
+};
 
 /// @}
+
 } // namespace SDL
 
 #endif /* SDL3PP_STORAGE_H_ */
