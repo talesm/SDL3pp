@@ -15,8 +15,7 @@ var searchData=
   ['_7etextengine_12',['~TextEngine',['../structSDL_1_1TextEngine.html#a46b75a01301601b5aa0a3f69d24787a1',1,'SDL::TextEngine']]],
   ['_7etexture_13',['~Texture',['../structSDL_1_1Texture.html#ac3f843e02662f69fd382fe244a9734f8',1,'SDL::Texture']]],
   ['_7etexturelock_14',['~TextureLock',['../classSDL_1_1TextureLock.html#a3dda3bd8f0b45fcf18b3fddf8635c395',1,'SDL::TextureLock']]],
-  ['_7ethread_15',['~Thread',['../structSDL_1_1Thread.html#a6ef1b54fff769866dbdbc8d9d63290eb',1,'SDL::Thread']]],
-  ['_7etray_16',['~Tray',['../structSDL_1_1Tray.html#a70a95a3605367d95a82e7a68b377cb57',1,'SDL::Tray']]],
-  ['_7etrayentry_17',['~TrayEntry',['../structSDL_1_1TrayEntry.html#adfcc6f5647e10ce2ae80875bcd8873d7',1,'SDL::TrayEntry']]],
-  ['_7ewindow_18',['~Window',['../structSDL_1_1Window.html#a92f87f6cc7e2f9603f06ee544eef6e59',1,'SDL::Window']]]
+  ['_7etray_15',['~Tray',['../structSDL_1_1Tray.html#a70a95a3605367d95a82e7a68b377cb57',1,'SDL::Tray']]],
+  ['_7etrayentry_16',['~TrayEntry',['../structSDL_1_1TrayEntry.html#adfcc6f5647e10ce2ae80875bcd8873d7',1,'SDL::TrayEntry']]],
+  ['_7ewindow_17',['~Window',['../structSDL_1_1Window.html#a92f87f6cc7e2f9603f06ee544eef6e59',1,'SDL::Window']]]
 ];

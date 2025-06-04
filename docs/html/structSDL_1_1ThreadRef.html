@@ -77,7 +77,6 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1ThreadRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::ThreadRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a> &raquo; <a class="el" href="group__CategoryThread.html">Thread Management</a></div></div></div>
 </div><!--header-->
@@ -91,19 +90,15 @@ Inheritance diagram for SDL::ThreadRef:</div>
 <div class="center"><img src="structSDL_1_1ThreadRef__inherit__graph.png" border="0" usemap="#aSDL_1_1ThreadRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1ThreadRef_inherit__map" id="aSDL_1_1ThreadRef_inherit__map">
 <area shape="rect" title="The SDL thread object." alt="" coords="21,93,144,119"/>
-<area shape="rect" href="structSDL_1_1ThreadUnsafe.html" title="Unsafe Handle to thread." alt="" coords="9,167,156,192"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-<area shape="rect" href="structSDL_1_1Thread.html" title="Handle to an owned thread." alt="" coords="33,240,133,265"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a99ad3aaee98ff1ea404cef9e4f45ba76" id="r_a99ad3aaee98ff1ea404cef9e4f45ba76"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#a99ad3aaee98ff1ea404cef9e4f45ba76">GetName</a> () const</td></tr>
-<tr class="memdesc:a99ad3aaee98ff1ea404cef9e4f45ba76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the thread name as it was specified in <a class="el" href="structSDL_1_1Thread.html#a4754134c719a53a79801202128537ffa" title="Constructs an empty Thread.">Thread.Thread()</a>.  <br /></td></tr>
+<tr class="memdesc:a99ad3aaee98ff1ea404cef9e4f45ba76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the thread name as it was specified in (<a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create</a>).  <br /></td></tr>
 <tr class="separator:a99ad3aaee98ff1ea404cef9e4f45ba76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8b6981474ff03df4e6e734e52712e53" id="r_ab8b6981474ff03df4e6e734e52712e53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryThread.html#gab321ed96bc6b128e8cced2d7fc9c67ea">ThreadID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#ab8b6981474ff03df4e6e734e52712e53">GetID</a> () const</td></tr>
 <tr class="memdesc:ab8b6981474ff03df4e6e734e52712e53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the thread identifier for the specified thread.  <br /></td></tr>
@@ -189,15 +184,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aa007e9dc0196c86bde2b06e91d8cab07" id="r_aa007e9dc0196c86bde2b06e91d8cab07"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#aa007e9dc0196c86bde2b06e91d8cab07">SetCurrentPriority</a> (<a class="el" href="group__CategoryThread.html#ga94fa248708fac73a2db5f33a19694db5">ThreadPriority</a> priority)</td></tr>
 <tr class="memdesc:aa007e9dc0196c86bde2b06e91d8cab07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the priority for the current thread.  <br /></td></tr>
 <tr class="separator:aa007e9dc0196c86bde2b06e91d8cab07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:ad8683086b8ed04f020f2a81f83ace4f7" id="r_ad8683086b8ed04f020f2a81f83ace4f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#ad8683086b8ed04f020f2a81f83ace4f7">Detach</a> ()</td></tr>
-<tr class="memdesc:ad8683086b8ed04f020f2a81f83ace4f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Let a thread clean up on exit without intervention.  <br /></td></tr>
-<tr class="separator:ad8683086b8ed04f020f2a81f83ace4f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a754617bb5c2a72f60f1593cc173e29b5" id="r_a754617bb5c2a72f60f1593cc173e29b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#a754617bb5c2a72f60f1593cc173e29b5">reset</a> (SDL_Thread *newResource={})</td></tr>
-<tr class="memdesc:a754617bb5c2a72f60f1593cc173e29b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Let a thread clean up on exit without intervention.  <br /></td></tr>
-<tr class="separator:a754617bb5c2a72f60f1593cc173e29b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec863a603950b2529191f27769ac219e" id="r_aec863a603950b2529191f27769ac219e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#aec863a603950b2529191f27769ac219e">reset</a> (SDL_Thread *resource)</td></tr>
+<tr class="memdesc:aec863a603950b2529191f27769ac219e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Let a thread clean up on exit without intervention.  <br /></td></tr>
+<tr class="separator:aec863a603950b2529191f27769ac219e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -216,41 +205,6 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <dd>
 <a class="el" href="structSDL_1_1ThreadRef.html" title="The SDL thread object.">ThreadRef</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad8683086b8ed04f020f2a81f83ace4f7" name="ad8683086b8ed04f020f2a81f83ace4f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8683086b8ed04f020f2a81f83ace4f7">&#9670;&#160;</a></span>Detach()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::ThreadRef::Detach </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>A thread may be "detached" to signify that it should not remain until another thread has called <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> on it. Detaching a thread is useful for long-running threads that nothing needs to synchronize with or further manage. When a detached thread is done, it simply goes away.</p>
-<p>There is no way to recover the return code of a detached thread. If you need this, don't detach the thread and instead use <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a>.</p>
-<p>Once a thread is detached, you should usually assume the <a class="el" href="structSDL_1_1ThreadRef.html" title="The SDL thread object.">ThreadRef</a> isn't safe to reference again, as it will become invalid immediately upon the detached thread's exit, instead of remaining until someone has called <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> to finally clean it up. As such, don't detach the same thread more than once.</p>
-<p>If a thread has already exited when passed to <a class="el" href="structSDL_1_1ThreadRef.html#ad8683086b8ed04f020f2a81f83ace4f7" title="Let a thread clean up on exit without intervention.">ThreadRef.Detach()</a>, it will stop waiting for a call to <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> and clean up immediately. It is not safe to detach a thread that might be used with <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a>.</p>
-<p>You may not call <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> on a thread that has been detached. Use either that function or this one, but not both, or behavior is undefined.</p>
-<p>It is safe to pass nullptr to this function; it is a no-op.</p>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Thread.html#a4754134c719a53a79801202128537ffa" title="Constructs an empty Thread.">Thread.Thread</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait</a> </dd></dl>
-
-</div>
-</div>
 <a id="ab8b6981474ff03df4e6e734e52712e53" name="ab8b6981474ff03df4e6e734e52712e53"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab8b6981474ff03df4e6e734e52712e53">&#9670;&#160;</a></span>GetID()</h2>
 
@@ -335,8 +289,8 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 
 </div>
 </div>
-<a id="a754617bb5c2a72f60f1593cc173e29b5" name="a754617bb5c2a72f60f1593cc173e29b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a754617bb5c2a72f60f1593cc173e29b5">&#9670;&#160;</a></span>reset()</h2>
+<a id="aec863a603950b2529191f27769ac219e" name="aec863a603950b2529191f27769ac219e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec863a603950b2529191f27769ac219e">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -345,27 +299,33 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::ThreadRef::reset </td>
+          <td class="memname">static void SDL::ThreadRef::reset </td>
           <td>(</td>
           <td class="paramtype">SDL_Thread *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>A thread may be "detached" to signify that it should not remain until another thread has called <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> on it. Detaching a thread is useful for long-running threads that nothing needs to synchronize with or further manage. When a detached thread is done, it simply goes away.</p>
 <p>There is no way to recover the return code of a detached thread. If you need this, don't detach the thread and instead use <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a>.</p>
 <p>Once a thread is detached, you should usually assume the <a class="el" href="structSDL_1_1ThreadRef.html" title="The SDL thread object.">ThreadRef</a> isn't safe to reference again, as it will become invalid immediately upon the detached thread's exit, instead of remaining until someone has called <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> to finally clean it up. As such, don't detach the same thread more than once.</p>
-<p>If a thread has already exited when passed to <a class="el" href="structSDL_1_1ThreadRef.html#ad8683086b8ed04f020f2a81f83ace4f7" title="Let a thread clean up on exit without intervention.">ThreadRef.Detach()</a>, it will stop waiting for a call to <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> and clean up immediately. It is not safe to detach a thread that might be used with <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a>.</p>
+<p>If a thread has already exited when passed to <a class="el" href="structSDL_1_1Thread.html#aa5572445db86d00a9c939bf0bfed5f85" title="Let a thread clean up on exit without intervention.">Thread.Detach()</a>, it will stop waiting for a call to <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> and clean up immediately. It is not safe to detach a thread that might be used with <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a>.</p>
 <p>You may not call <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> on a thread that has been detached. Use either that function or this one, but not both, or behavior is undefined.</p>
 <p>It is safe to pass nullptr to this function; it is a no-op.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>the <a class="el" href="structSDL_1_1ThreadRef.html" title="The SDL thread object.">ThreadRef</a> pointer that was returned from the <a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create()</a> call that started this thread.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Thread.html#a4754134c719a53a79801202128537ffa" title="Constructs an empty Thread.">Thread.Thread</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait</a> </dd></dl>
 
@@ -437,7 +397,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <p>Threads that haven't been detached will remain until this function cleans them up. Not doing so is a resource leak.</p>
 <p>Once a thread has been cleaned up through this function, the <a class="el" href="structSDL_1_1ThreadRef.html" title="The SDL thread object.">ThreadRef</a> that references it becomes invalid and should not be referenced again. As such, only one thread may call <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> on another.</p>
 <p>The return code from the thread function is placed in the area pointed to by <code>status</code>, if <code>status</code> is not nullptr.</p>
-<p>You may not wait on a thread that has been used in a call to <a class="el" href="structSDL_1_1ThreadRef.html#ad8683086b8ed04f020f2a81f83ace4f7" title="Let a thread clean up on exit without intervention.">ThreadRef.Detach()</a>. Use either that function or this one, but not both, or behavior is undefined.</p>
+<p>You may not wait on a thread that has been used in a call to ThreadRef.Detach(). Use either that function or this one, but not both, or behavior is undefined.</p>
 <p>It is safe to pass a nullptr thread to this function; it is a no-op.</p>
 <p>Note that the thread pointer is freed by this function and is not valid afterward.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -447,9 +407,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   </dd>
 </dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Thread.html#a4754134c719a53a79801202128537ffa" title="Constructs an empty Thread.">Thread.Thread</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ThreadRef.html#ad8683086b8ed04f020f2a81f83ace4f7" title="Let a thread clean up on exit without intervention.">ThreadRef.Detach</a> </dd></dl>
+<a class="el" href="structSDL_1_1Thread.html#aa5572445db86d00a9c939bf0bfed5f85" title="Let a thread clean up on exit without intervention.">Thread.Detach</a> </dd></dl>
 
 </div>
 </div>

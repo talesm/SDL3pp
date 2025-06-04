@@ -6982,12 +6982,13 @@ const transform = {
           includeAfter: "__begin"
         }
       },
-      resources: {
+      resourcesNew: {
         "SDL_Thread": {
           free: "SDL_DetachThread",
           entries: {
-            "Thread": {
+            "Create": {
               kind: "function",
+              name: "ctor",
               type: "",
               parameters: [
                 { type: "ThreadCB", name: "fn" },

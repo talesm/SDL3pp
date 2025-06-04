@@ -230,7 +230,7 @@ using AppQuit_func = SDL_AppQuit_func;
  * handles de-initialization.
  *
  * The file I/O (for example: IOStream.FromFile) and threading
- * (ThreadRef.ThreadRef) subsystems are initialized by default. Message boxes
+ * (Thread.Create) subsystems are initialized by default. Message boxes
  * (ShowSimpleMessageBox) also attempt to work without initializing the
  * video subsystem, in hopes of being useful in showing an error dialog when
  * Init fails. You must specifically initialize other subsystems if you
