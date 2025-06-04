@@ -41,14 +41,14 @@ struct Main
       case SDL::KEYCODE_COMMA:
         if (ptSize > 1) {
           --ptSize;
-          if (font) font.SetSize(ptSize);
+          if (font) font->SetSize(ptSize);
           refreshText();
         }
         break;
       case SDL::KEYCODE_PERIOD:
         if (ptSize < 50) {
           ++ptSize;
-          if (font) font.SetSize(ptSize);
+          if (font) font->SetSize(ptSize);
           refreshText();
         }
         break;
@@ -61,7 +61,7 @@ struct Main
       break;
     }
     case SDL::EVENT_DROP_FILE:
-      font = SDL::Font(ev.drop.data, ptSize);
+      font = SDL::Font::Open(ev.drop.data, ptSize);
       refreshText();
       break;
     default: break;
@@ -76,11 +76,11 @@ struct Main
     switch (testQuality) {
     case 0:
       surface =
-        font.RenderText_Solid_Wrapped(testString, testColor, windowSz.x);
+        font->RenderText_Solid_Wrapped(testString, testColor, windowSz.x);
       break;
     case 1:
       surface =
-        font.RenderText_Blended_Wrapped(testString, testColor, windowSz.x);
+        font->RenderText_Blended_Wrapped(testString, testColor, windowSz.x);
       break;
     default: break;
     }

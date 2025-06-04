@@ -77,7 +77,6 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1FontRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::FontRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesLibs.html">Satellite Libraries</a> &raquo; <a class="el" href="group__CategorySDLTTF.html">True type font support</a></div></div></div>
 </div><!--header-->
@@ -91,12 +90,8 @@ Inheritance diagram for SDL::FontRef:</div>
 <div class="center"><img src="structSDL_1_1FontRef__inherit__graph.png" border="0" usemap="#aSDL_1_1FontRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1FontRef_inherit__map" id="aSDL_1_1FontRef_inherit__map">
 <area shape="rect" title="The internal structure containing font information." alt="" coords="30,93,135,119"/>
-<area shape="rect" href="structSDL_1_1FontUnsafe.html" title="Unsafe Handle to font." alt="" coords="18,167,147,192"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-<area shape="rect" href="structSDL_1_1Font.html" title="Handle to an owned font." alt="" coords="41,240,124,265"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -357,15 +352,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a163fbc6b957ebfab54f9eba6d35a693c" id="r_a163fbc6b957ebfab54f9eba6d35a693c"><td class="memItemLeft" align="right" valign="top">static Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a163fbc6b957ebfab54f9eba6d35a693c">GetGlyphScript</a> (Uint32 ch)</td></tr>
 <tr class="memdesc:a163fbc6b957ebfab54f9eba6d35a693c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the script used by a 32-bit codepoint.  <br /></td></tr>
 <tr class="separator:a163fbc6b957ebfab54f9eba6d35a693c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:acd16e48f95d9bf0ff7f3519e5ba2ec6c" id="r_acd16e48f95d9bf0ff7f3519e5ba2ec6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c">Close</a> ()</td></tr>
-<tr class="memdesc:acd16e48f95d9bf0ff7f3519e5ba2ec6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of a previously-created font.  <br /></td></tr>
-<tr class="separator:acd16e48f95d9bf0ff7f3519e5ba2ec6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85152f508848fecf1af7cf10cbb972a8" id="r_a85152f508848fecf1af7cf10cbb972a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a85152f508848fecf1af7cf10cbb972a8">reset</a> (TTF_Font *newResource={})</td></tr>
-<tr class="memdesc:a85152f508848fecf1af7cf10cbb972a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of a previously-created font.  <br /></td></tr>
-<tr class="separator:a85152f508848fecf1af7cf10cbb972a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa491db57b50af8ed67e55ac9734b569c" id="r_aa491db57b50af8ed67e55ac9734b569c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#aa491db57b50af8ed67e55ac9734b569c">reset</a> (TTF_Font *resource)</td></tr>
+<tr class="memdesc:aa491db57b50af8ed67e55ac9734b569c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of a previously-created font.  <br /></td></tr>
+<tr class="separator:aa491db57b50af8ed67e55ac9734b569c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -453,36 +442,6 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1FontRef.html#abbf3e47b65907d696b97ec3f6630143e" title="Add a fallback font.">FontRef.AddFallback</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1FontRef.html#a5cd12a87baceabfe82ecc42a95a7e532" title="Remove a fallback font.">FontRef.RemoveFallback</a> </dd></dl>
-
-</div>
-</div>
-<a id="acd16e48f95d9bf0ff7f3519e5ba2ec6c" name="acd16e48f95d9bf0ff7f3519e5ba2ec6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd16e48f95d9bf0ff7f3519e5ba2ec6c">&#9670;&#160;</a></span>Close()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::FontRef::Close </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Call this when done with a font. This function will free any resources associated with it. It is safe to call this function on nullptr, for example on the result of a failed call to <a class="el" href="structSDL_1_1Font.html#a7ae1ee55dcd815b818d30d1ef8e1d2b2" title="Constructs an empty Font.">Font.Font()</a>.</p>
-<p>The font is not valid after being passed to this function. String pointers from functions that return information on this font, such as <a class="el" href="structSDL_1_1FontRef.html#ae80b0d3939737bd141f5ae183bd3e720" title="Query a font&#39;s family name.">FontRef.GetFamilyName()</a> and <a class="el" href="structSDL_1_1FontRef.html#a0c19f38c5fef645b7a9222dcb39d0d1e" title="Query a font&#39;s style name.">FontRef.GetStyleName()</a>, are no longer valid after this call, as well.</p>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should not be called while any other thread is using the font.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Font.html#a7ae1ee55dcd815b818d30d1ef8e1d2b2" title="Constructs an empty Font.">Font.Font</a> </dd></dl>
 
 </div>
 </div>
@@ -2547,8 +2506,8 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 
 </div>
 </div>
-<a id="a85152f508848fecf1af7cf10cbb972a8" name="a85152f508848fecf1af7cf10cbb972a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85152f508848fecf1af7cf10cbb972a8">&#9670;&#160;</a></span>reset()</h2>
+<a id="aa491db57b50af8ed67e55ac9734b569c" name="aa491db57b50af8ed67e55ac9734b569c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa491db57b50af8ed67e55ac9734b569c">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2557,24 +2516,32 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::FontRef::reset </td>
+          <td class="memname">static void SDL::FontRef::reset </td>
           <td>(</td>
           <td class="paramtype">TTF_Font *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Call this when done with a font. This function will free any resources associated with it. It is safe to call this function on nullptr, for example on the result of a failed call to <a class="el" href="structSDL_1_1Font.html#a7ae1ee55dcd815b818d30d1ef8e1d2b2" title="Constructs an empty Font.">Font.Font()</a>.</p>
+<p>Call this when done with a font. This function will free any resources associated with it. It is safe to call this function on nullptr, for example on the result of a failed call to <a class="el" href="structSDL_1_1Font.html#a6c0a7869abe1e34c8c4a0c284d97e586" title="Create a font from a file, using a specified point size.">Font.Open()</a>.</p>
 <p>The font is not valid after being passed to this function. String pointers from functions that return information on this font, such as <a class="el" href="structSDL_1_1FontRef.html#ae80b0d3939737bd141f5ae183bd3e720" title="Query a font&#39;s family name.">FontRef.GetFamilyName()</a> and <a class="el" href="structSDL_1_1FontRef.html#a0c19f38c5fef645b7a9222dcb39d0d1e" title="Query a font&#39;s style name.">FontRef.GetStyleName()</a>, are no longer valid after this call, as well.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>the font to dispose of.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should not be called while any other thread is using the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Font.html#a7ae1ee55dcd815b818d30d1ef8e1d2b2" title="Constructs an empty Font.">Font.Font</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Font.html#a6c0a7869abe1e34c8c4a0c284d97e586" title="Create a font from a file, using a specified point size.">Font.Open</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Font.html#a6c0a7869abe1e34c8c4a0c284d97e586" title="Create a font from a file, using a specified point size.">Font.Open</a> </dd></dl>
 
 </div>
 </div>
