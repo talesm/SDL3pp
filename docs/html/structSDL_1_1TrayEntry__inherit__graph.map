@@ -1,9 +1,7 @@
 <map id="SDL::TrayEntry" name="SDL::TrayEntry">
-<area shape="rect" id="Node000001" title="Handle to an owned trayEntry." alt="" coords="29,240,145,265"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1TrayEntryUnsafe.html" title="Unsafe Handle to trayEntry." alt="" coords="5,167,168,192"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,206,89,240,84,240,84,206"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1TrayEntryRef.html" title="An opaque handle representing an entry on a system tray object." alt="" coords="17,93,156,119"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="89,132,89,167,84,167,84,132"/>
-<area shape="rect" id="Node000004" href="$classSDL_1_1Resource.html" title=" " alt="" coords="9,5,164,45"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="89,59,89,93,84,93,84,59"/>
+<area shape="rect" id="Node000001" title="Handle to an owned trayEntry." alt="" coords="42,181,158,207"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="19,93,181,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,147,103,181,97,181,97,147"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="5,5,195,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,59,103,93,97,93,97,59"/>
 </map>

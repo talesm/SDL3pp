@@ -7176,7 +7176,7 @@ const transform = {
           name: "TrayCB",
         }],
       },
-      resources: {
+      resourcesNew: {
         "SDL_Tray": {
           entries: {
             "SDL_CreateTray": "ctor",

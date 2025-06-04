@@ -17,6 +17,8 @@ var searchData=
   ['defaultdeleter_3c_20storageref_20_3e_14',['DefaultDeleter&lt; StorageRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
   ['defaultdeleter_3c_20surfaceref_20_3e_15',['DefaultDeleter&lt; SurfaceRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
   ['defaultdeleter_3c_20threadref_20_3e_16',['DefaultDeleter&lt; ThreadRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
-  ['detachedresource_17',['DetachedResource',['../structSDL_1_1DetachedResource.html',1,'SDL']]],
-  ['display_18',['Display',['../classSDL_1_1Display.html',1,'SDL']]]
+  ['defaultdeleter_3c_20trayentryref_20_3e_17',['DefaultDeleter&lt; TrayEntryRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
+  ['defaultdeleter_3c_20trayref_20_3e_18',['DefaultDeleter&lt; TrayRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
+  ['detachedresource_19',['DetachedResource',['../structSDL_1_1DetachedResource.html',1,'SDL']]],
+  ['display_20',['Display',['../classSDL_1_1Display.html',1,'SDL']]]
 ];

@@ -1,9 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,163,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1GLContextRef.html" title="An opaque handle to an OpenGL context." alt="" coords="211,13,356,38"/>
-<area shape="poly" id="edge22_Node000000_Node000001" title=" " alt="" coords="176,23,211,23,211,28,176,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1GLContextUnsafe.html" title="Unsafe Handle to gLContext." alt="" coords="404,13,573,38"/>
-<area shape="poly" id="edge23_Node000001_Node000002" title=" " alt="" coords="370,23,404,23,404,28,370,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1GLContext.html" title="Handle to an owned gLContext." alt="" coords="621,13,744,38"/>
-<area shape="poly" id="edge24_Node000002_Node000003" title=" " alt="" coords="587,23,621,23,621,28,587,28"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1CursorRef.html" title="The structure used to identify an SDL cursor." alt="" coords="208,13,327,38"/>
+<area shape="poly" id="edge18_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
 </map>

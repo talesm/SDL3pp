@@ -89,159 +89,98 @@ Inheritance diagram for SDL::Tray:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1Tray__inherit__graph.png" border="0" usemap="#aSDL_1_1Tray_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1Tray_inherit__map" id="aSDL_1_1Tray_inherit__map">
-<area shape="rect" title="Handle to an owned tray." alt="" coords="41,240,124,265"/>
-<area shape="rect" href="structSDL_1_1TrayUnsafe.html" title="Unsafe Handle to tray." alt="" coords="19,167,147,192"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
-<area shape="rect" href="structSDL_1_1TrayRef.html" title="An opaque handle representing a toplevel system tray object." alt="" coords="31,93,135,119"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="Handle to an owned tray." alt="" coords="59,181,141,207"/>
+<area shape="rect" href="classSDL_1_1ResourceUnique.html" title=" " alt="" coords="19,93,181,133"/>
+<area shape="poly" title=" " alt="" coords="103,147,103,181,97,181,97,147"/>
+<area shape="rect" href="classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="5,5,195,45"/>
+<area shape="poly" title=" " alt="" coords="103,59,103,93,97,93,97,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a86d5e98c6cb97b53a70407bc9080af83" id="r_a86d5e98c6cb97b53a70407bc9080af83"><td class="memItemLeft" align="right" valign="top"><a id="a86d5e98c6cb97b53a70407bc9080af83" name="a86d5e98c6cb97b53a70407bc9080af83"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Tray</b> ()</td></tr>
-<tr class="memdesc:a86d5e98c6cb97b53a70407bc9080af83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty <a class="el" href="structSDL_1_1Tray.html" title="Handle to an owned tray.">Tray</a>. <br /></td></tr>
-<tr class="separator:a86d5e98c6cb97b53a70407bc9080af83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f503a1d9bbb7d3cabd6eebdc35fee5a" id="r_a1f503a1d9bbb7d3cabd6eebdc35fee5a"><td class="memItemLeft" align="right" valign="top"><a id="a1f503a1d9bbb7d3cabd6eebdc35fee5a" name="a1f503a1d9bbb7d3cabd6eebdc35fee5a"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Tray</b> (SDL_Tray *resource)</td></tr>
-<tr class="memdesc:a1f503a1d9bbb7d3cabd6eebdc35fee5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a1f503a1d9bbb7d3cabd6eebdc35fee5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad620799a76f43a4c8a4c8a3bd1cfa8b0" id="r_ad620799a76f43a4c8a4c8a3bd1cfa8b0"><td class="memItemLeft" align="right" valign="top"><a id="ad620799a76f43a4c8a4c8a3bd1cfa8b0" name="ad620799a76f43a4c8a4c8a3bd1cfa8b0"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Tray</b> (const <a class="el" href="structSDL_1_1Tray.html">Tray</a> &amp;other)=delete</td></tr>
-<tr class="separator:ad620799a76f43a4c8a4c8a3bd1cfa8b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a846fed6e9e5033ef90145707897b7125" id="r_a846fed6e9e5033ef90145707897b7125"><td class="memItemLeft" align="right" valign="top"><a id="a846fed6e9e5033ef90145707897b7125" name="a846fed6e9e5033ef90145707897b7125"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Tray</b> (<a class="el" href="structSDL_1_1Tray.html">Tray</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a846fed6e9e5033ef90145707897b7125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:a846fed6e9e5033ef90145707897b7125"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca00b6bda0ac20e0b047a163caa9175c" id="r_aca00b6bda0ac20e0b047a163caa9175c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Tray.html#aca00b6bda0ac20e0b047a163caa9175c">Tray</a> (<a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> icon, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> tooltip)</td></tr>
-<tr class="memdesc:aca00b6bda0ac20e0b047a163caa9175c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an icon to be placed in the operating system's tray, or equivalent.  <br /></td></tr>
-<tr class="separator:aca00b6bda0ac20e0b047a163caa9175c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70a95a3605367d95a82e7a68b377cb57" id="r_a70a95a3605367d95a82e7a68b377cb57"><td class="memItemLeft" align="right" valign="top"><a id="a70a95a3605367d95a82e7a68b377cb57" name="a70a95a3605367d95a82e7a68b377cb57"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~Tray</b> ()</td></tr>
-<tr class="memdesc:a70a95a3605367d95a82e7a68b377cb57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees up resource when object goes out of scope. <br /></td></tr>
-<tr class="separator:a70a95a3605367d95a82e7a68b377cb57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad81e2c2c66ff192a295fba625079a1a1" id="r_ad81e2c2c66ff192a295fba625079a1a1"><td class="memItemLeft" align="right" valign="top"><a id="ad81e2c2c66ff192a295fba625079a1a1" name="ad81e2c2c66ff192a295fba625079a1a1"></a>
-<a class="el" href="structSDL_1_1Tray.html">Tray</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1Tray.html">Tray</a> other)</td></tr>
-<tr class="memdesc:ad81e2c2c66ff192a295fba625079a1a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:ad81e2c2c66ff192a295fba625079a1a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7df71f2a220e7e0954181c5503a1006c" id="r_a7df71f2a220e7e0954181c5503a1006c"><td class="memItemLeft" align="right" valign="top"><a id="a7df71f2a220e7e0954181c5503a1006c" name="a7df71f2a220e7e0954181c5503a1006c"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TrayUnsafe</b> (const <a class="el" href="structSDL_1_1TrayRef.html">TrayRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a7df71f2a220e7e0954181c5503a1006c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TrayUnsafe.html" title="Unsafe Handle to tray.">TrayUnsafe</a> from <a class="el" href="structSDL_1_1TrayRef.html" title="An opaque handle representing a toplevel system tray object.">TrayRef</a>. <br /></td></tr>
-<tr class="separator:a7df71f2a220e7e0954181c5503a1006c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae499bbe34049e535c6225df3130732b7" id="r_ae499bbe34049e535c6225df3130732b7"><td class="memItemLeft" align="right" valign="top"><a id="ae499bbe34049e535c6225df3130732b7" name="ae499bbe34049e535c6225df3130732b7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TrayUnsafe</b> (const <a class="el" href="structSDL_1_1Tray.html">Tray</a> &amp;other)=delete</td></tr>
-<tr class="separator:ae499bbe34049e535c6225df3130732b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36347418c7592b5533bedaa431eba165" id="r_a36347418c7592b5533bedaa431eba165"><td class="memItemLeft" align="right" valign="top"><a id="a36347418c7592b5533bedaa431eba165" name="a36347418c7592b5533bedaa431eba165"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TrayUnsafe</b> (<a class="el" href="structSDL_1_1Tray.html">Tray</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a36347418c7592b5533bedaa431eba165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TrayUnsafe.html" title="Unsafe Handle to tray.">TrayUnsafe</a> from <a class="el" href="structSDL_1_1Tray.html" title="Handle to an owned tray.">Tray</a>. <br /></td></tr>
-<tr class="separator:a36347418c7592b5533bedaa431eba165"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1TrayUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1TrayUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1TrayUnsafe.html">SDL::TrayUnsafe</a></td></tr>
-<tr class="memitem:a7df71f2a220e7e0954181c5503a1006c inherit pub_methods_structSDL_1_1TrayUnsafe" id="r_a7df71f2a220e7e0954181c5503a1006c"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TrayUnsafe</b> (const <a class="el" href="structSDL_1_1TrayRef.html">TrayRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a7df71f2a220e7e0954181c5503a1006c inherit pub_methods_structSDL_1_1TrayUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TrayUnsafe.html" title="Unsafe Handle to tray.">TrayUnsafe</a> from <a class="el" href="structSDL_1_1TrayRef.html" title="An opaque handle representing a toplevel system tray object.">TrayRef</a>. <br /></td></tr>
-<tr class="separator:a7df71f2a220e7e0954181c5503a1006c inherit pub_methods_structSDL_1_1TrayUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae499bbe34049e535c6225df3130732b7 inherit pub_methods_structSDL_1_1TrayUnsafe" id="r_ae499bbe34049e535c6225df3130732b7"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>TrayUnsafe</b> (const <a class="el" href="structSDL_1_1Tray.html">Tray</a> &amp;other)=delete</td></tr>
-<tr class="separator:ae499bbe34049e535c6225df3130732b7 inherit pub_methods_structSDL_1_1TrayUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga36347418c7592b5533bedaa431eba165 inherit pub_methods_structSDL_1_1TrayUnsafe" id="r_ga36347418c7592b5533bedaa431eba165"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TrayUnsafe</b> (<a class="el" href="structSDL_1_1Tray.html">Tray</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ga36347418c7592b5533bedaa431eba165 inherit pub_methods_structSDL_1_1TrayUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TrayUnsafe.html" title="Unsafe Handle to tray.">TrayUnsafe</a> from <a class="el" href="structSDL_1_1Tray.html" title="Handle to an owned tray.">Tray</a>. <br /></td></tr>
-<tr class="separator:ga36347418c7592b5533bedaa431eba165 inherit pub_methods_structSDL_1_1TrayUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f6816938efc7517581a4c52c0529f38 inherit pub_methods_structSDL_1_1TrayUnsafe" id="r_a5f6816938efc7517581a4c52c0529f38"><td class="memItemLeft" align="right" valign="top">
-constexpr <a class="el" href="structSDL_1_1TrayUnsafe.html">TrayUnsafe</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1TrayUnsafe.html">TrayUnsafe</a> other)</td></tr>
-<tr class="memdesc:a5f6816938efc7517581a4c52c0529f38 inherit pub_methods_structSDL_1_1TrayUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:a5f6816938efc7517581a4c52c0529f38 inherit pub_methods_structSDL_1_1TrayUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18adc5c36cc23e2e6a9e20a5973af005 inherit pub_methods_structSDL_1_1TrayUnsafe" id="r_a18adc5c36cc23e2e6a9e20a5973af005"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayUnsafe.html#a18adc5c36cc23e2e6a9e20a5973af005">Destroy</a> ()</td></tr>
-<tr class="memdesc:a18adc5c36cc23e2e6a9e20a5973af005 inherit pub_methods_structSDL_1_1TrayUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a tray object.  <br /></td></tr>
-<tr class="separator:a18adc5c36cc23e2e6a9e20a5973af005 inherit pub_methods_structSDL_1_1TrayUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab145d6bb11fd1f6472a956482fc50ab0 inherit pub_methods_structSDL_1_1TrayUnsafe" id="r_ab145d6bb11fd1f6472a956482fc50ab0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayUnsafe.html#ab145d6bb11fd1f6472a956482fc50ab0">reset</a> (SDL_Tray *newResource={})</td></tr>
-<tr class="memdesc:ab145d6bb11fd1f6472a956482fc50ab0 inherit pub_methods_structSDL_1_1TrayUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a tray object.  <br /></td></tr>
-<tr class="separator:ab145d6bb11fd1f6472a956482fc50ab0 inherit pub_methods_structSDL_1_1TrayUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1TrayRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1TrayRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1TrayRef.html">SDL::TrayRef</a></td></tr>
-<tr class="memitem:a2f2726447ab21a1f8b757812e50f76a2 inherit pub_methods_structSDL_1_1TrayRef" id="r_a2f2726447ab21a1f8b757812e50f76a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayRef.html#a2f2726447ab21a1f8b757812e50f76a2">SetIcon</a> (<a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> icon)</td></tr>
-<tr class="memdesc:a2f2726447ab21a1f8b757812e50f76a2 inherit pub_methods_structSDL_1_1TrayRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the system tray icon's icon.  <br /></td></tr>
-<tr class="separator:a2f2726447ab21a1f8b757812e50f76a2 inherit pub_methods_structSDL_1_1TrayRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a725a6780f3163ed83b018f07dd77f0e1 inherit pub_methods_structSDL_1_1TrayRef" id="r_a725a6780f3163ed83b018f07dd77f0e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayRef.html#a725a6780f3163ed83b018f07dd77f0e1">SetTooltip</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> tooltip)</td></tr>
-<tr class="memdesc:a725a6780f3163ed83b018f07dd77f0e1 inherit pub_methods_structSDL_1_1TrayRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the system tray icon's tooltip.  <br /></td></tr>
-<tr class="separator:a725a6780f3163ed83b018f07dd77f0e1 inherit pub_methods_structSDL_1_1TrayRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga072195c717d26ce4fd5e4972594d9c01 inherit pub_methods_structSDL_1_1TrayRef" id="r_ga072195c717d26ce4fd5e4972594d9c01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTray.html#ga072195c717d26ce4fd5e4972594d9c01">CreateMenu</a> ()</td></tr>
-<tr class="memdesc:ga072195c717d26ce4fd5e4972594d9c01 inherit pub_methods_structSDL_1_1TrayRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a menu for a system tray.  <br /></td></tr>
-<tr class="separator:ga072195c717d26ce4fd5e4972594d9c01 inherit pub_methods_structSDL_1_1TrayRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga28cad49b1dc92e2791e07f309f5c32b5 inherit pub_methods_structSDL_1_1TrayRef" id="r_ga28cad49b1dc92e2791e07f309f5c32b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTray.html#ga28cad49b1dc92e2791e07f309f5c32b5">GetMenu</a> () const</td></tr>
-<tr class="memdesc:ga28cad49b1dc92e2791e07f309f5c32b5 inherit pub_methods_structSDL_1_1TrayRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a previously created tray menu.  <br /></td></tr>
-<tr class="separator:ga28cad49b1dc92e2791e07f309f5c32b5 inherit pub_methods_structSDL_1_1TrayRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TrayRef" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TrayRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TrayRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_structSDL_1_1TrayRef" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; T &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_structSDL_1_1TrayRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_structSDL_1_1TrayRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TrayRef" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TrayRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TrayRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TrayRef" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TrayRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TrayRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Tray * &gt;</a></td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_Tray * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; SDL_Tray * &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a93f776a6d16f96a50c2cb82b3163b8a7" id="r_a93f776a6d16f96a50c2cb82b3163b8a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Tray.html#a93f776a6d16f96a50c2cb82b3163b8a7">Destroy</a> ()</td></tr>
+<tr class="memdesc:a93f776a6d16f96a50c2cb82b3163b8a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a tray object.  <br /></td></tr>
+<tr class="separator:a93f776a6d16f96a50c2cb82b3163b8a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top"><a id="a8eff4b7518626ecb1d6ee2e8f2662301" name="a8eff4b7518626ecb1d6ee2e8f2662301"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a84be9e4b6d22fbaee39979c15cef0f" id="r_a2a84be9e4b6d22fbaee39979c15cef0f"><td class="memItemLeft" align="right" valign="top"><a id="a2a84be9e4b6d22fbaee39979c15cef0f" name="a2a84be9e4b6d22fbaee39979c15cef0f"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value)</td></tr>
+<tr class="memdesc:a2a84be9e4b6d22fbaee39979c15cef0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:a2a84be9e4b6d22fbaee39979c15cef0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top"><a id="abc1bcf199c285e07c14ebc87b5abf6f2" name="abc1bcf199c285e07c14ebc87b5abf6f2"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top"><a id="a59d90c89aac04332912bb8f55c387aae" name="a59d90c89aac04332912bb8f55c387aae"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1ResourceUnique"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourceUnique')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourceUnique.html">SDL::ResourceUnique&lt; TrayRef &gt;</a></td></tr>
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a84be9e4b6d22fbaee39979c15cef0f inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a2a84be9e4b6d22fbaee39979c15cef0f"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value)</td></tr>
+<tr class="memdesc:a2a84be9e4b6d22fbaee39979c15cef0f inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:a2a84be9e4b6d22fbaee39979c15cef0f inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_afbc5563c17624104d9c263f5003d57d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ResourceUnique.html#afbc5563c17624104d9c263f5003d57d5">~ResourceUnique</a> ()</td></tr>
+<tr class="memdesc:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
+<tr class="separator:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a9f10a6343315fe1f5ca553284073ecd9"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> other)</td></tr>
+<tr class="memdesc:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a4b7b571048747a5dfbef3cbe891cc15e"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr>
+<tr class="memdesc:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the value, destroying the resource if not nullptr. <br /></td></tr>
+<tr class="separator:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a0506906144295f6b398dc3580bcb336f"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
-<tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource" id="r_ab4aa1e63564473a72dc97256340d104f"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_type</b> () const</td></tr>
-<tr class="memdesc:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts back to underlying type. <br /></td></tr>
-<tr class="separator:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
-<tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource" id="r_ad2a82bc79a7dae41ceb1a25647ae1c0d"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
-<tr class="memdesc:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource" id="r_ab110e6568060a7ae58ab7b29ad68f7fc"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if not null. <br /></td></tr>
+<tr class="separator:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a747ef455db62064bb3eebf43b203cad2"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1ResourcePtrBase.html">ResourcePtrBase</a> &amp;) const =default</td></tr>
+<tr class="memdesc:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_ad1d8089cd65f38c3e49d0ca4fa676a52"><td class="memItemLeft" align="right" valign="top">
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t) const</td></tr>
-<tr class="memdesc:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource" id="r_ab273a0a0285b8eed1f70f5d3759f4167"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Tray *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
-<tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource" id="r_a795922875f43cc42165896b02af59d0c"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Tray *&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> (SDL_Tray * newResource={})</td></tr>
-<tr class="memdesc:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource and empties or replace value. <br /></td></tr>
-<tr class="separator:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top">
-constexpr const SDL_Tray *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Tray *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
-<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a8a2a791f2fc677f3554798a0fb8572e4"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
+<tr class="memdesc:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a1415d2a130f807673b4f8db3047d95a7"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> () const</td></tr>
+<tr class="memdesc:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets reference. <br /></td></tr>
+<tr class="separator:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a5d2a7a6a1c79ec493548f8bd30ff6c70"><td class="memItemLeft" align="right" valign="top">
+constexpr const <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
+<tr class="memdesc:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets addressable reference. <br /></td></tr>
+<tr class="separator:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a493a79a3a6eafeead35454ff1076aa9a"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
+<tr class="memdesc:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets addressable reference. <br /></td></tr>
+<tr class="separator:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a7d506c070af513ecfa781e7fa3bf893f"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="memdesc:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference. <br /></td></tr>
+<tr class="separator:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a96c074dae2de8cb1812008baaa46f1db"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
+<tr class="memdesc:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reference and reset this. <br /></td></tr>
+<tr class="separator:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -251,77 +190,33 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Tray * &gt;</a></td></tr>
-<tr class="memitem:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource" id="r_a11ac29cf1f6da9fb29c508669f40b38d"><td class="memItemLeft" align="right" valign="top">
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL_Tray *</td></tr>
-<tr class="memdesc:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
-<tr class="separator:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_structSDL_1_1TrayRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1TrayRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1TrayRef.html">SDL::TrayRef</a></td></tr>
-<tr class="memitem:a18adc5c36cc23e2e6a9e20a5973af005 inherit pro_methods_structSDL_1_1TrayRef" id="r_a18adc5c36cc23e2e6a9e20a5973af005"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayRef.html#a18adc5c36cc23e2e6a9e20a5973af005">Destroy</a> ()</td></tr>
-<tr class="memdesc:a18adc5c36cc23e2e6a9e20a5973af005 inherit pro_methods_structSDL_1_1TrayRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a tray object.  <br /></td></tr>
-<tr class="separator:a18adc5c36cc23e2e6a9e20a5973af005 inherit pro_methods_structSDL_1_1TrayRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab145d6bb11fd1f6472a956482fc50ab0 inherit pro_methods_structSDL_1_1TrayRef" id="r_ab145d6bb11fd1f6472a956482fc50ab0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayRef.html#ab145d6bb11fd1f6472a956482fc50ab0">reset</a> (SDL_Tray *newResource={})</td></tr>
-<tr class="memdesc:ab145d6bb11fd1f6472a956482fc50ab0 inherit pro_methods_structSDL_1_1TrayRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a tray object.  <br /></td></tr>
-<tr class="separator:ab145d6bb11fd1f6472a956482fc50ab0 inherit pro_methods_structSDL_1_1TrayRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase" id="r_a649d81bb2d1f33857880ab0faa3a45d5"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = RESOURCE</td></tr>
+<tr class="memdesc:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reference resource type. <br /></td></tr>
+<tr class="separator:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase" id="r_afaf83443621b31f83daf2d7e911208c6"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = typename reference::value_type</td></tr>
+<tr class="memdesc:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
+<tr class="separator:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:ac7d6fb948950dcc78301ef054698c53d inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_ac7d6fb948950dcc78301ef054698c53d"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourcePtrBase</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">value_type</a> value={})</td></tr>
+<tr class="memdesc:ac7d6fb948950dcc78301ef054698c53d inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:ac7d6fb948950dcc78301ef054698c53d inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_a5123ac0033c94520d252dedd8cf1d5e5"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> ()</td></tr>
+<tr class="memdesc:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference. <br /></td></tr>
+<tr class="separator:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_aa035e9da7e7a8c0d71d8bc75e560b509"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>free</b> ()</td></tr>
+<tr class="memdesc:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees resource. <br /></td></tr>
+<tr class="separator:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TrayRef.html" title="An opaque handle representing a toplevel system tray object.">TrayRef</a> </dd></dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aca00b6bda0ac20e0b047a163caa9175c" name="aca00b6bda0ac20e0b047a163caa9175c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca00b6bda0ac20e0b047a163caa9175c">&#9670;&#160;</a></span>Tray()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Tray::Tray </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a>&#160;</td>
-          <td class="paramname"><em>icon</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>tooltip</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Many platforms advise not using a system tray unless persistence is a necessary feature. Avoid needlessly creating a tray icon, as the user may feel like it clutters their interface.</p>
-<p>Using tray icons require the video subsystem.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">icon</td><td>a surface to be used as icon. May be nullptr. </td></tr>
-    <tr><td class="paramname">tooltip</td><td>a tooltip to be displayed when the mouse hovers the icon in UTF-8 encoding. Not supported on all platforms. May be nullptr. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>The newly created system tray icon.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#ga072195c717d26ce4fd5e4972594d9c01" title="Create a menu for a system tray.">TrayRef.CreateMenu</a> </dd>
-<dd>
-<a class="el" href="group__CategoryTray.html#ga28cad49b1dc92e2791e07f309f5c32b5" title="Gets a previously created tray menu.">TrayRef.GetMenu</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1TrayRef.html#a18adc5c36cc23e2e6a9e20a5973af005" title="Destroys a tray object.">TrayRef.Destroy</a> </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aeaeb63e46f2265c2fb95c64f76174aae" name="aeaeb63e46f2265c2fb95c64f76174aae"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeaeb63e46f2265c2fb95c64f76174aae">&#9670;&#160;</a></span>Create()</h2>
 
@@ -371,7 +266,36 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <dd>
 <a class="el" href="group__CategoryTray.html#ga28cad49b1dc92e2791e07f309f5c32b5" title="Gets a previously created tray menu.">TrayRef.GetMenu</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TrayRef.html#a18adc5c36cc23e2e6a9e20a5973af005" title="Destroys a tray object.">TrayRef.Destroy</a> </dd></dl>
+<a class="el" href="structSDL_1_1Tray.html#a93f776a6d16f96a50c2cb82b3163b8a7" title="Destroys a tray object.">Tray.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="a93f776a6d16f96a50c2cb82b3163b8a7" name="a93f776a6d16f96a50c2cb82b3163b8a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93f776a6d16f96a50c2cb82b3163b8a7">&#9670;&#160;</a></span>Destroy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Tray::Destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This also destroys all associated menus and entries.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Tray.html#aeaeb63e46f2265c2fb95c64f76174aae" title="Create an icon to be placed in the operating system&#39;s tray, or equivalent.">Tray.Create</a> </dd></dl>
 
 </div>
 </div>

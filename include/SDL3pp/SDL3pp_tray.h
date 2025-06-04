@@ -96,7 +96,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa Tray.Create
    */
   void SetIcon(SurfaceRef icon) { SDL_SetTrayIcon(get(), icon.get()); }
 
@@ -110,7 +110,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa Tray.Create
    */
   void SetTooltip(StringParam tooltip) { SDL_SetTrayTooltip(get(), tooltip); }
 
@@ -131,7 +131,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa Tray.Create
    * @sa TrayRef.GetMenu
    * @sa TrayMenu.GetParentTray
    */
@@ -155,85 +155,26 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa Tray.Create
    * @sa TrayRef.CreateMenu
    */
   TrayMenu GetMenu() const;
 
-protected:
   /**
    * Destroys a tray object.
    *
    * This also destroys all associated menus and entries.
    *
+   * @param resource the tray icon to be destroyed.
    *
    * @threadsafety This function should be called on the thread that created the
    *               tray.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa Tray.Create
    */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroys a tray object.
-   *
-   * This also destroys all associated menus and entries.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               tray.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Tray.Tray
-   */
-  void reset(SDL_Tray* newResource = {})
-  {
-    SDL_DestroyTray(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to tray
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa TrayRef
- */
-struct TrayUnsafe : TrayRef
-{
-  using TrayRef::Destroy;
-
-  using TrayRef::TrayRef;
-
-  using TrayRef::reset;
-
-  /**
-   * Constructs TrayUnsafe from TrayRef.
-   */
-  constexpr TrayUnsafe(const TrayRef& other)
-    : TrayRef(other.get())
-  {
-  }
-
-  TrayUnsafe(const Tray& other) = delete;
-
-  /**
-   * Constructs TrayUnsafe from Tray.
-   */
-  constexpr explicit TrayUnsafe(Tray&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr TrayUnsafe& operator=(TrayUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_Tray* resource) { SDL_DestroyTray(resource); }
 };
 
 /**
@@ -243,77 +184,9 @@ struct TrayUnsafe : TrayRef
  *
  * @sa TrayRef
  */
-struct Tray : TrayUnsafe
+struct Tray : ResourceUnique<TrayRef>
 {
-  using TrayUnsafe::TrayUnsafe;
-
-  /**
-   * Constructs an empty Tray.
-   */
-  constexpr Tray()
-    : TrayUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Tray(SDL_Tray* resource)
-    : TrayUnsafe(resource)
-  {
-  }
-
-  constexpr Tray(const Tray& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Tray(Tray&& other)
-    : Tray(other.release())
-  {
-  }
-
-  /**
-   * Create an icon to be placed in the operating system's tray, or equivalent.
-   *
-   * Many platforms advise not using a system tray unless persistence is a
-   * necessary feature. Avoid needlessly creating a tray icon, as the user may
-   * feel like it clutters their interface.
-   *
-   * Using tray icons require the video subsystem.
-   *
-   * @param icon a surface to be used as icon. May be nullptr.
-   * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
-   *                UTF-8 encoding. Not supported on all platforms. May be
-   * nullptr.
-   * @post The newly created system tray icon.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TrayRef.CreateMenu
-   * @sa TrayRef.GetMenu
-   * @sa TrayRef.Destroy
-   */
-  Tray(SurfaceRef icon, StringParam tooltip)
-    : Tray(SDL_CreateTray(icon.get(), tooltip))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Tray() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Tray& operator=(Tray other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create an icon to be placed in the operating system's tray, or equivalent.
@@ -336,11 +209,47 @@ struct Tray : TrayUnsafe
    *
    * @sa TrayRef.CreateMenu
    * @sa TrayRef.GetMenu
-   * @sa TrayRef.Destroy
+   * @sa Tray.Destroy
    */
   static Tray Create(SurfaceRef icon, StringParam tooltip)
   {
-    return Tray(icon, std::move(tooltip));
+    return Tray(SDL_CreateTray(icon, tooltip));
+  }
+
+  /**
+   * Destroys a tray object.
+   *
+   * This also destroys all associated menus and entries.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               tray.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Tray.Create
+   */
+  void Destroy() { reset(); }
+};
+
+/**
+ * Unsafe Handle to tray
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TrayRef
+ */
+struct TrayUnsafe : ResourceUnsafe<TrayRef>
+{
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs TrayUnsafe from Tray.
+   */
+  constexpr explicit TrayUnsafe(Tray&& other)
+    : TrayUnsafe(other.release())
+  {
   }
 };
 
@@ -367,11 +276,6 @@ using TrayCallback = SDL_TrayCallback;
  * @sa TrayEntryRef.SetCallback
  */
 using TrayCB = std::function<void(TrayEntryRef)>;
-
-constexpr TrayUnsafe::TrayUnsafe(Tray&& other)
-  : TrayUnsafe(other.release())
-{
-}
 
 /**
  * An opaque handle representing a menu/submenu on a system tray object.
@@ -432,7 +336,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayEntryRef.Remove
+   * @sa TrayEntry.Remove
    * @sa TrayMenu.InsertEntry
    */
   std::span<TrayEntry> GetEntries();
@@ -460,7 +364,7 @@ public:
    * @sa TrayMenu.AppendEntry
    * @sa TrayEntryFlags
    * @sa TrayMenu.GetEntries
-   * @sa TrayEntryRef.Remove
+   * @sa TrayEntry.Remove
    * @sa TrayEntryRef.GetParent
    */
   DetachedTrayEntry InsertEntry(int pos,
@@ -488,7 +392,7 @@ public:
    * @sa TrayMenu.InsertEntry
    * @sa TrayEntryFlags
    * @sa TrayMenu.GetEntries
-   * @sa TrayEntryRef.Remove
+   * @sa TrayEntry.Remove
    * @sa TrayEntryRef.GetParent
    */
   DetachedTrayEntry AppendEntry(StringParam label, TrayEntryFlags flags);
@@ -540,7 +444,6 @@ public:
  * @cat resource
  *
  * @sa TrayEntry
- * @sa TrayEntryRef
  */
 struct TrayEntryRef : Resource<SDL_TrayEntry*>
 {
@@ -759,7 +662,33 @@ struct TrayEntryRef : Resource<SDL_TrayEntry*>
    */
   TrayMenu GetParent() { return SDL_GetTrayEntryParent(get()); }
 
-protected:
+  /**
+   * Removes a tray entry.
+   *
+   * @param resource The entry to be deleted.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               tray.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TrayMenu.GetEntries
+   * @sa TrayMenu.InsertEntry
+   */
+  static void reset(SDL_TrayEntry* resource) { SDL_RemoveTrayEntry(resource); }
+};
+
+/**
+ * Handle to an owned trayEntry
+ *
+ * @cat resource
+ *
+ * @sa TrayEntryRef
+ */
+struct TrayEntry : ResourceUnique<TrayEntryRef>
+{
+  using ResourceUnique::ResourceUnique;
+
   /**
    * Removes a tray entry.
    *
@@ -772,22 +701,6 @@ protected:
    * @sa TrayMenu.InsertEntry
    */
   void Remove() { reset(); }
-
-  /**
-   * Removes a tray entry.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               tray.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TrayMenu.GetEntries
-   * @sa TrayMenu.InsertEntry
-   */
-  void reset(SDL_TrayEntry* newResource = {})
-  {
-    SDL_RemoveTrayEntry(release(newResource));
-  }
 };
 
 /**
@@ -799,95 +712,18 @@ protected:
  *
  * @sa TrayEntryRef
  */
-struct TrayEntryUnsafe : TrayEntryRef
+struct TrayEntryUnsafe : ResourceUnsafe<TrayEntryRef>
 {
-  using TrayEntryRef::Remove;
-
-  using TrayEntryRef::TrayEntryRef;
-
-  using TrayEntryRef::reset;
-
-  /**
-   * Constructs TrayEntryUnsafe from TrayEntryRef.
-   */
-  constexpr TrayEntryUnsafe(const TrayEntryRef& other)
-    : TrayEntryRef(other.get())
-  {
-  }
-
-  TrayEntryUnsafe(const TrayEntry& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs TrayEntryUnsafe from TrayEntry.
    */
-  constexpr explicit TrayEntryUnsafe(TrayEntry&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr TrayEntryUnsafe& operator=(TrayEntryUnsafe other)
+  constexpr explicit TrayEntryUnsafe(TrayEntry&& other)
+    : TrayEntryUnsafe(other.release())
   {
-    release(other.release());
-    return *this;
   }
 };
-
-/**
- * Handle to an owned trayEntry
- *
- * @cat resource
- *
- * @sa TrayEntryRef
- */
-struct TrayEntry : TrayEntryUnsafe
-{
-  using TrayEntryUnsafe::TrayEntryUnsafe;
-
-  /**
-   * Constructs an empty TrayEntry.
-   */
-  constexpr TrayEntry()
-    : TrayEntryUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit TrayEntry(SDL_TrayEntry* resource)
-    : TrayEntryUnsafe(resource)
-  {
-  }
-
-  constexpr TrayEntry(const TrayEntry& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr TrayEntry(TrayEntry&& other)
-    : TrayEntry(other.release())
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~TrayEntry() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  TrayEntry& operator=(TrayEntry other)
-  {
-    reset(other.release());
-    return *this;
-  }
-};
-
-constexpr TrayEntryUnsafe::TrayEntryUnsafe(TrayEntry&& other)
-  : TrayEntryUnsafe(other.release())
-{
-}
 
 inline TrayMenu TrayRef::CreateMenu() { return SDL_CreateTrayMenu(get()); }
 
