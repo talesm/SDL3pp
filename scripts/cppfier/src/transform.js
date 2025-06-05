@@ -151,6 +151,22 @@ class ApiContext {
    * @param {string} originalType 
    * @param {string} targetType 
    */
+  addName(originalType, targetType) {
+    if (!this.nameMap[originalType]) this.nameMap[originalType] = targetType;
+  }
+
+  /**
+   * @param {string} nameCandidate 
+   * @returns 
+   */
+  getName(nameCandidate) {
+    return this.nameMap[nameCandidate] || nameCandidate;
+  }
+
+  /**
+   * @param {string} originalType 
+   * @param {string} targetType 
+   */
   addParamType(originalType, targetType) {
     if (!this.paramTypeMap[originalType]) this.paramTypeMap[originalType] = targetType;
   }
@@ -225,7 +241,7 @@ function expandTypes(sourceEntries, file, context) {
       context.blacklist.add(sourceName);
       continue;
     }
-    context.nameMap[sourceName] = targetName;
+    context.addName(sourceName, targetName);
     context.addParamType(sourceName, targetName);
     context.addParamType(`${sourceName} *`, `${targetName} *`);
     context.addParamType(`const ${sourceName}`, `const ${targetName}`);
@@ -266,7 +282,7 @@ function transformEntries(sourceEntries, file, context) {
           if (!targetDelta.name) targetDelta.name = targetName;
           combineObject(targetEntry, targetDelta);
         } else targetEntry.name = targetName;
-        context.nameMap[sourceName] = targetEntry.name?.replaceAll('::', '.');
+        context.addName(sourceName, targetEntry.name?.replaceAll('::', '.'));
         return targetEntry;
       }));
     } else {
@@ -292,9 +308,9 @@ function transformEntries(sourceEntries, file, context) {
           targetName = defPrefix + targetName;
           targetEntry.name = targetName;
         }
-        context.nameMap[sourceName] = targetEntry.name;
-      } else if (!context.nameMap[sourceName]) {
-        context.nameMap[sourceName] = targetEntry.name?.replaceAll('::', '.');
+        context.addName(sourceName, targetEntry.name);
+      } else {
+        context.addName(sourceName, targetEntry.name?.replaceAll('::', '.'));
       }
       insertEntryAndCheck(targetEntries, targetEntry, context, file, targetName);
     }
@@ -335,7 +351,7 @@ function expandNamespaces(sourceEntries, transform, context) {
           entry.constexpr = true;
           entry.sourceName = key;
         }
-        context.nameMap[key] = `${nsName}.${entry.name}`;
+        context.addName(key, `${nsName}.${entry.name}`);
       }
     });
     includeAfter(ns, transform, sourceEntriesListed[0][0]);
@@ -648,7 +664,7 @@ function expandResources(sourceEntries, file, context) {
   /** @type {ApiEntry[]} */
   const referenceAliases = [];
   for (const [sourceName, resourceEntry] of Object.entries(file.resources ?? {})) {
-    const uniqueName = resourceEntry.name || resourceEntry.uniqueName || transformName(sourceName, context);
+    const uniqueName = resourceEntry.name || transformName(sourceName, context);
     const refName = uniqueName + "Ref";
     const unsafeName = uniqueName + "Unsafe";
     const optionalName = "Optional" + uniqueName;
@@ -1012,7 +1028,7 @@ function expandEnumerations(sourceEntries, file, context) {
         const sourceDoc = sourceEntries[value]?.doc ?? sourceEntry.entries?.[value]?.doc;
         entry.doc = sourceDoc || (value.startsWith(prefix) ? value.slice(prefix.length) : entry.name);
       }
-      context.nameMap[value] = entry.name;
+      context.addName(value, entry.name);
       if (!sourceEntries[value]) {
         entry.sourceName = value;
         includeAfter(entry, file, includeAfterKey || type);
@@ -1520,7 +1536,7 @@ function resolveVersionDoc(doc, context) {
  */
 function resolveDocRefs(doc, context) {
   if (!doc) return "";
-  return doc.replaceAll(context.referenceCandidate, ref => context.nameMap[ref] || ref);
+  return doc.replaceAll(context.referenceCandidate, ref => context.getName(ref));
 }
 
 

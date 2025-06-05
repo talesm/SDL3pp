@@ -133,12 +133,6 @@ export interface ApiResource extends ApiEntryTransform {
   name?: string;
 
   /**
-   * The Unique name. Defaults to the converted name from the original type
-   * @deprecated
-   */
-  uniqueName?: string;
-
-  /**
    * The wrapped type, defaults to the original type
    */
   type?: string;
@@ -180,11 +174,6 @@ export interface ApiResource extends ApiEntryTransform {
    * The unlock function name to be added to the lock class
    */
   unlockFunction?: string;
-
-  /**
-   * Prevent generation of default constructor. Defaults to false
-   */
-  omitDefaultCtor?: boolean
 
   /**
    * Extra parameters to the base classes.

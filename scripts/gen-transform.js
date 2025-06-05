@@ -413,7 +413,7 @@ const transform = {
       },
       resources: {
         "SDL_AudioDeviceID": {
-          uniqueName: "AudioDevice",
+          name: "AudioDevice",
           free: "SDL_CloseAudioDevice",
           entries: {
             "SDL_OpenAudioDevice": {
@@ -3440,8 +3440,7 @@ const transform = {
       },
       resources: {
         "SDL_PropertiesID": {
-          uniqueName: "Properties",
-          omitDefaultCtor: true,
+          name: "Properties",
           ctors: ["SDL_CreateProperties"],
           entries: {
             "SDL_CreateProperties": {
@@ -5431,7 +5430,7 @@ const transform = {
           }
         },
         "SDL_iconv_t": {
-          uniqueName: "IConv",
+          name: "IConv",
           type: "SDL_iconv_data_t",
           free: "SDL_iconv_close",
           ctors: ["SDL_iconv_open"],
