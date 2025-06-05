@@ -1,5 +1,0 @@
-<map id="SDL::ResourcePtr&lt; RESOURCE, DELETER &gt;" name="SDL::ResourcePtr&lt; RESOURCE, DELETER &gt;">
-<area shape="rect" id="Node000001" title="A dumb pointer to resource." alt="" coords="5,93,228,133"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="22,5,211,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,59,119,93,114,93,114,59"/>
-</map>

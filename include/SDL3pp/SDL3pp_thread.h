@@ -25,8 +25,8 @@ namespace SDL {
  * to each thread, but accessed from a single key).
  *
  * On platforms without thread support (such as Emscripten when built without
- * pthreads), these functions still exist, but things like
- * Thread.Create() will report failure without doing anything.
+ * pthreads), these functions still exist, but things like Thread.Create() will
+ * report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
  * good understanding of [CategoryMutex](CategoryMutex) as well.
@@ -37,7 +37,7 @@ namespace SDL {
 /**
  * A unique numeric ID that identifies a thread.
  *
- * These are different from ThreadRef objects, which are generally what an
+ * These are different from Thread objects, which are generally what an
  * application will operate on, but having a way to uniquely identify a thread
  * can be useful at times.
  *
@@ -62,8 +62,7 @@ using ThreadID = SDL_ThreadID;
 using TLSID = AtomicInt;
 
 /**
- * The function passed to Thread.Create() as the new thread's entry
- * point.
+ * The function passed to Thread.Create() as the new thread's entry point.
  *
  * @param data what was passed as `data` to Thread.Create().
  * @returns a value that can be reported through ThreadRef.Wait().
@@ -157,12 +156,11 @@ constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa ThreadRef.Wait
- *
  * @cat resource
  *
+ * @sa Thread.Create
+ * @sa ThreadRef.Wait
  * @sa Thread
- * @sa ThreadRef
  */
 struct ThreadRef : Resource<SDL_Thread*>
 {

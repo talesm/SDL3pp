@@ -1264,7 +1264,7 @@ struct TargetBytes
  *
  * These strings are maintained per-thread, and apps are welcome to set their
  * own errors, which is popular when building libraries on top of SDL for
- * other apps to consume. These strings are set by calling SDL_SetError().
+ * other apps to consume. These strings are set by calling SetError().
  *
  * A common usage pattern is to have a function that returns true for success
  * and false for failure, and do this when something fails:
@@ -1594,22 +1594,21 @@ public:
  * SDL provides its own implementation of some of the most important C runtime
  * functions.
  *
- * Using these functions allows an app to have access to common C
- * functionality without depending on a specific C runtime (or a C runtime at
- * all). More importantly, the SDL implementations work identically across
- * platforms, so apps can avoid surprises like snprintf() behaving differently
- * between Windows and Linux builds, or itoa() only existing on some
- * platforms.
+ * Using these functions allows an app to have access to common C functionality
+ * without depending on a specific C runtime (or a C runtime at all). More
+ * importantly, the SDL implementations work identically across platforms, so
+ * apps can avoid surprises like snprintf() behaving differently between Windows
+ * and Linux builds, or itoa() only existing on some platforms.
  *
- * For many of the most common functions, like SDL_memcpy, SDL might just call
- * through to the usual C runtime behind the scenes, if it makes sense to do
- * so (if it's faster and always available/reliable on a given platform),
- * reducing library size and offering the most optimized option.
+ * For many of the most common functions, like memcpy, SDL might just call
+ * through to the usual C runtime behind the scenes, if it makes sense to do so
+ * (if it's faster and always available/reliable on a given platform), reducing
+ * library size and offering the most optimized option.
  *
  * SDL also offers other C-runtime-adjacent functionality in this header that
  * either isn't, strictly speaking, part of any C runtime standards, like
- * SDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better
- * options, like SDL_strlcpy(), which functions as a safer form of strcpy().
+ * crc32() and SDL_reinterpret_cast, etc. It also offers a few better options,
+ * like strlcpy(), which functions as a safer form of strcpy().
  *
  * @{
  */
@@ -1785,7 +1784,7 @@ constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
 using Seconds = std::chrono::duration<float>;
 
 /**
- * Duration in Nanoseconds (Sint64).
+ * Duration in Nanoseconds (Uint64).
  */
 using Nanoseconds = std::chrono::nanoseconds;
 
@@ -1933,7 +1932,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * // Fill in the interface function pointers with your implementation
  * iface.seek = ...
  *
- * stream = IOStreamRef.Open(iface, nullptr);
+ * stream = IOStream.Open(&iface, nullptr);
  * ```
  *
  * If you are using designated initializers, you can use the size of the
@@ -1944,7 +1943,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *     .version = sizeof(iface),
  *     .seek = ...
  * };
- * stream = IOStreamRef.Open(iface, nullptr);
+ * stream = IOStream.Open(iface, nullptr);
  * ```
  *
  * @threadsafety It is safe to call this macro from any thread.
@@ -2309,11 +2308,12 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  *
  * @sa Environment
  * @sa GetEnvironment
- * @sa EnvironmentRef.EnvironmentRef
+ * @sa Environment.Create
  * @sa EnvironmentRef.GetVariable
  * @sa EnvironmentRef.GetVariables
  * @sa EnvironmentRef.SetVariable
  * @sa EnvironmentRef.UnsetVariable
+ * @sa Environment.Destroy
  */
 struct EnvironmentRef : Resource<SDL_Environment*>
 {
@@ -6664,7 +6664,7 @@ inline float tan(float x) { return SDL_tanf(x); }
  *
  * @cat resource
  *
- * @sa IConvRef.IConvRef
+ * @sa IConv.open
  * @sa IConv
  */
 struct IConvRef : Resource<SDL_iconv_data_t*>
@@ -6841,7 +6841,8 @@ struct IConvUnsafe : ResourceUnsafe<IConvRef>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConvRef.IConvRef
+ * @sa IConv.open
+ * @sa IConv.close
  * @sa IConvRef.iconv
  */
 inline OwnPtr<char> iconv_string(StringParam tocode,
@@ -7138,7 +7139,7 @@ inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
  * Possible outcomes from a triggered assertion.
  *
  * When an enabled assertion triggers, it may call the assertion handler
- * (possibly one provided by the app via SDL_SetAssertionHandler), which will
+ * (possibly one provided by the app via SetAssertionHandler), which will
  * return one of these values, possibly after asking the user.
  *
  * Then SDL will respond based on this outcome (loop around to retry the
@@ -7149,37 +7150,27 @@ inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
  */
 using AssertState = SDL_AssertState;
 
-/**
- * Retry the assert immediately.
- */
-constexpr AssertState ASSERTION_RETRY = SDL_ASSERTION_RETRY;
+constexpr AssertState ASSERTION_RETRY =
+  SDL_ASSERTION_RETRY; ///< Retry the assert immediately.
 
-/**
- * Make the debugger trigger a breakpoint.
- */
-constexpr AssertState ASSERTION_BREAK = SDL_ASSERTION_BREAK;
+constexpr AssertState ASSERTION_BREAK =
+  SDL_ASSERTION_BREAK; ///< Make the debugger trigger a breakpoint.
 
-/**
- * Terminate the program.
- */
-constexpr AssertState ASSERTION_ABORT = SDL_ASSERTION_ABORT;
+constexpr AssertState ASSERTION_ABORT =
+  SDL_ASSERTION_ABORT; ///< Terminate the program.
 
-/**
- * Ignore the assert.
- */
-constexpr AssertState ASSERTION_IGNORE = SDL_ASSERTION_IGNORE;
+constexpr AssertState ASSERTION_IGNORE =
+  SDL_ASSERTION_IGNORE; ///< Ignore the assert.
 
-/**
- * Ignore the assert from now on.
- */
-constexpr AssertState ASSERTION_ALWAYS_IGNORE = SDL_ASSERTION_ALWAYS_IGNORE;
+constexpr AssertState ASSERTION_ALWAYS_IGNORE =
+  SDL_ASSERTION_ALWAYS_IGNORE; ///< Ignore the assert from now on.
 
 /**
  * Information about an assertion failure.
  *
  * This structure is filled in with information about a triggered assertion,
  * used by the assertion handler, then added to the assertion report. This is
- * returned as a linked list from SDL_GetAssertionReport().
+ * returned as a linked list from GetAssertionReport().
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -7235,7 +7226,7 @@ inline AssertState ReportAssertion(AssertData* data,
  * ... without the do/while, the "else" could attach to this macro's "if". We
  * try to handle just the minimum we need here in a macro...the loop, the
  * static vars, and break points. The heavy lifting is handled in
- * SDL_ReportAssertion().
+ * ReportAssertion().
  *
  * @param condition the condition to assert.
  *
@@ -7380,10 +7371,10 @@ inline AssertState ReportAssertion(AssertData* data,
 /**
  * A @ref callback that fires when an SDL assertion fails.
  *
- * @param data a pointer to the SDL_AssertData structure corresponding to the
+ * @param data a pointer to the AssertData structure corresponding to the
  *             current assertion.
  * @param userdata what was passed as `userdata` to SetAssertionHandler().
- * @returns an SDL_AssertState value indicating how to handle the failure.
+ * @returns an AssertState value indicating how to handle the failure.
  *
  * @threadsafety This callback may be called from any thread that triggers an
  *               assert at any time.
@@ -7421,7 +7412,7 @@ using AssertionHandlerCB =
  *
  * This callback is NOT reset to SDL's internal handler upon Quit()!
  *
- * @param handler the SDL_AssertionHandler function to call when an assertion
+ * @param handler the AssertionHandler function to call when an assertion
  *                fails or nullptr for the default handler.
  * @param userdata a pointer that is passed to `handler`.
  *
@@ -7490,9 +7481,9 @@ inline AssertionHandler GetDefaultAssertionHandler()
  * Get the current assertion handler.
  *
  * This returns the function pointer that is called when an assertion is
- * triggered. This is either the value last passed to
- * SDL_SetAssertionHandler(), or if no application-specified function is set,
- * is equivalent to calling GetDefaultAssertionHandler().
+ * triggered. This is either the value last passed to SetAssertionHandler(), or
+ * if no application-specified function is set, is equivalent to calling
+ * GetDefaultAssertionHandler().
  *
  * The parameter `puserdata` is a pointer to a void*, which will store the
  * "userdata" pointer that was passed to SetAssertionHandler(). This value
@@ -7548,12 +7539,12 @@ inline AssertionHandlerCB GetAssertionHandler()
  * Get a list of all assertion failures.
  *
  * This function gets all assertions triggered since the last call to
- * SDL_ResetAssertionReport(), or the start of the program.
+ * ResetAssertionReport(), or the start of the program.
  *
  * The proper way to examine this data looks something like this:
  *
- * ```c
- * const SDL_AssertData *item = SDL_GetAssertionReport();
+ * ```cpp
+ * const AssertData *item = GetAssertionReport();
  * while (item) {
  *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
  *           item->condition, item->function, item->filename,
@@ -7564,17 +7555,16 @@ inline AssertionHandlerCB GetAssertionHandler()
  * ```
  *
  * @returns a list of all failed assertions or nullptr if the list is empty.
- *          This memory should not be modified or freed by the application. This
- *          pointer remains valid until the next call to Quit() or
- *          ResetAssertionReport().
+ * This memory should not be modified or freed by the application. This pointer
+ * remains valid until the next call to Quit() or ResetAssertionReport().
  *
  * @threadsafety This function is not thread safe. Other threads calling
- *               SDL_ResetAssertionReport() simultaneously, may render the
+ *               ResetAssertionReport() simultaneously, may render the
  *               returned pointer invalid.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_ResetAssertionReport
+ * @sa ResetAssertionReport
  */
 inline const AssertData* GetAssertionReport()
 {
@@ -7585,7 +7575,7 @@ inline const AssertData* GetAssertionReport()
  * Clear the list of all assertion failures.
  *
  * This function will clear the list of all assertions triggered up to that
- * point. Immediately following this call, SDL_GetAssertionReport will return
+ * point. Immediately following this call, GetAssertionReport will return
  * no items. In addition, any previously-triggered assertions will be reset to
  * a trigger_count of zero, and their always_ignore state will be false.
  *
@@ -7595,9 +7585,9 @@ inline const AssertData* GetAssertionReport()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetAssertionReport
+ * @sa GetAssertionReport
  */
-inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
+inline void ResetAssertionReport() { SDL_ResetAssertionReport(); }
 
 /// @}
 
@@ -8185,7 +8175,7 @@ constexpr bool HasExactlyOneBitSet32(Uint32 x)
  *
  * These predefined blend modes are supported everywhere.
  *
- * Additional values may be obtained from ComposeCustomBlendMode().
+ * Additional values may be obtained from ComposeCustomBlendMode.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -8193,10 +8183,8 @@ constexpr bool HasExactlyOneBitSet32(Uint32 x)
  */
 using BlendMode = Uint32;
 
-/**
- * no blending: dstRGBA = srcRGBA
- */
-constexpr BlendMode BLENDMODE_NONE = SDL_BLENDMODE_NONE;
+constexpr BlendMode BLENDMODE_NONE =
+  SDL_BLENDMODE_NONE; ///< no blending: dstRGBA = srcRGBA
 
 /**
  * alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA +
@@ -8236,16 +8224,15 @@ constexpr BlendMode BLENDMODE_INVALID = SDL_BLENDMODE_INVALID; ///< INVALID
 ///@}
 
 /**
- * @brief The blend operation used when combining source and destination pixel
+ * The blend operation used when combining source and destination pixel
  * components.
  *
+ * @since This enum is available since SDL 3.2.0.
  */
 using BlendOperation = SDL_BlendOperation;
 
-/**
- * dst + src: supported by all renderers
- */
-constexpr BlendOperation BLENDOPERATION_ADD = SDL_BLENDOPERATION_ADD;
+constexpr BlendOperation BLENDOPERATION_ADD =
+  SDL_BLENDOPERATION_ADD; ///< dst + src: supported by all renderers
 
 /**
  * src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
@@ -8269,75 +8256,50 @@ constexpr BlendOperation BLENDOPERATION_MINIMUM = SDL_BLENDOPERATION_MINIMUM;
 constexpr BlendOperation BLENDOPERATION_MAXIMUM = SDL_BLENDOPERATION_MAXIMUM;
 
 /**
- * @brief The normalized factor used to multiply pixel components.
+ * The normalized factor used to multiply pixel components.
  *
  * The blend factors are multiplied with the pixels from a drawing operation
  * (src) and the pixels from the render target (dst) before the blend
  * operation. The comma-separated factors listed above are always applied in
  * the component order red, green, blue, and alpha.
  *
+ * @since This enum is available since SDL 3.2.0.
  */
 using BlendFactor = SDL_BlendFactor;
 
-/**
- * 0, 0, 0, 0
- */
-constexpr BlendFactor BLENDFACTOR_ZERO = SDL_BLENDFACTOR_ZERO;
+constexpr BlendFactor BLENDFACTOR_ZERO = SDL_BLENDFACTOR_ZERO; ///< 0, 0, 0, 0
 
-/**
- * 1, 1, 1, 1
- */
-constexpr BlendFactor BLENDFACTOR_ONE = SDL_BLENDFACTOR_ONE;
+constexpr BlendFactor BLENDFACTOR_ONE = SDL_BLENDFACTOR_ONE; ///< 1, 1, 1, 1
 
-/**
- * srcR, srcG, srcB, srcA
- */
-constexpr BlendFactor BLENDFACTOR_SRC_COLOR = SDL_BLENDFACTOR_SRC_COLOR;
+constexpr BlendFactor BLENDFACTOR_SRC_COLOR =
+  SDL_BLENDFACTOR_SRC_COLOR; ///< srcR, srcG, srcB, srcA
 
-/**
- * 1-srcR, 1-srcG, 1-srcB, 1-srcA
- */
 constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_COLOR =
-  SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR;
+  SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR; ///< 1-srcR, 1-srcG, 1-srcB, 1-srcA
 
-/**
- * srcA, srcA, srcA, srcA
- */
-constexpr BlendFactor BLENDFACTOR_SRC_ALPHA = SDL_BLENDFACTOR_SRC_ALPHA;
+constexpr BlendFactor BLENDFACTOR_SRC_ALPHA =
+  SDL_BLENDFACTOR_SRC_ALPHA; ///< srcA, srcA, srcA, srcA
 
-/**
- * 1-srcA, 1-srcA, 1-srcA, 1-srcA
- */
 constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_ALPHA =
-  SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
+  SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA; ///< 1-srcA, 1-srcA, 1-srcA, 1-srcA
 
-/**
- * dstR, dstG, dstB, dstA
- */
-constexpr BlendFactor BLENDFACTOR_DST_COLOR = SDL_BLENDFACTOR_DST_COLOR;
+constexpr BlendFactor BLENDFACTOR_DST_COLOR =
+  SDL_BLENDFACTOR_DST_COLOR; ///< dstR, dstG, dstB, dstA
 
-/**
- * 1-dstR, 1-dstG, 1-dstB, 1-dstA
- */
 constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_COLOR =
-  SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR;
+  SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR; ///< 1-dstR, 1-dstG, 1-dstB, 1-dstA
 
-/**
- * dstA, dstA, dstA, dstA
- */
-constexpr BlendFactor BLENDFACTOR_DST_ALPHA = SDL_BLENDFACTOR_DST_ALPHA;
+constexpr BlendFactor BLENDFACTOR_DST_ALPHA =
+  SDL_BLENDFACTOR_DST_ALPHA; ///< dstA, dstA, dstA, dstA
 
-/**
- * 1-dstA, 1-dstA, 1-dstA, 1-dstA
- */
 constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
-  SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA;
+  SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA; ///< 1-dstA, 1-dstA, 1-dstA, 1-dstA
 
 /**
- * @brief Compose a custom blend mode for renderers.
+ * Compose a custom blend mode for renderers.
  *
- * The functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept
- * the SDL_BlendMode returned by this function if the renderer supports it.
+ * The functions RendererRef.SetDrawBlendMode and TextureRef.SetBlendMode accept
+ * the BlendMode returned by this function if the renderer supports it.
  *
  * A blend mode controls how the pixels from a drawing operation (source) get
  * combined with the pixels from the render target (destination). First, the
@@ -8362,57 +8324,62 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
  * - `max(src, dst)`
  *
  * The red, green, and blue components are always multiplied with the first,
- * second, and third components of the SDL_BlendFactor, respectively. The
- * fourth component is not used.
+ * second, and third components of the BlendFactor, respectively. The fourth
+ * component is not used.
  *
  * The alpha component is always multiplied with the fourth component of the
- * SDL_BlendFactor. The other components are not used in the alpha
- * calculation.
+ * BlendFactor. The other components are not used in the alpha calculation.
  *
  * Support for these blend modes varies for each renderer. To check if a
- * specific SDL_BlendMode is supported, create a renderer and pass it to
- * either SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will
- * return with an error if the blend mode is not supported.
+ * specific BlendMode is supported, create a renderer and pass it to either
+ * RendererRef.SetDrawBlendMode or TextureRef.SetBlendMode. They will return
+ * with an error if the blend mode is not supported.
  *
  * This list describes the support of custom blend modes for each renderer.
- * All renderers support the four blend modes listed in the SDL_BlendMode
+ * All renderers support the four blend modes listed in the BlendMode
  * enumeration.
  *
  * - **direct3d**: Supports all operations with all factors. However, some
- *   factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and
- *   `SDL_BLENDOPERATION_MAXIMUM`.
+ *   factors produce unexpected results with `BLENDOPERATION_MINIMUM` and
+ *   `BLENDOPERATION_MAXIMUM`.
  * - **direct3d11**: Same as Direct3D 9.
- * - **opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all
+ * - **opengl**: Supports the `BLENDOPERATION_ADD` operation with all
  *   factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.
- * - **opengles2**: Supports the `SDL_BLENDOPERATION_ADD`,
- *   `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT`
+ * - **opengles2**: Supports the `BLENDOPERATION_ADD`,
+ *   `BLENDOPERATION_SUBTRACT`, `BLENDOPERATION_REV_SUBTRACT`
  *   operations with all factors.
  * - **psp**: No custom blend mode support.
  * - **software**: No custom blend mode support.
  *
  * Some renderers do not provide an alpha component for the default render
- * target. The `SDL_BLENDFACTOR_DST_ALPHA` and
- * `SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this
+ * target. The `BLENDFACTOR_DST_ALPHA` and
+ * `BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this
  * case.
  *
- * @param srcColorFactor the SDL_BlendFactor applied to the red, green, and
+ * @param srcColorFactor the BlendFactor applied to the red, green, and
  *                       blue components of the source pixels.
- * @param dstColorFactor the SDL_BlendFactor applied to the red, green, and
+ * @param dstColorFactor the BlendFactor applied to the red, green, and
  *                       blue components of the destination pixels.
- * @param colorOperation the SDL_BlendOperation used to combine the red,
+ * @param colorOperation the BlendOperation used to combine the red,
  *                       green, and blue components of the source and
  *                       destination pixels.
- * @param srcAlphaFactor the SDL_BlendFactor applied to the alpha component of
+ * @param srcAlphaFactor the BlendFactor applied to the alpha component of
  *                       the source pixels.
- * @param dstAlphaFactor the SDL_BlendFactor applied to the alpha component of
+ * @param dstAlphaFactor the BlendFactor applied to the alpha component of
  *                       the destination pixels.
- * @param alphaOperation the SDL_BlendOperation used to combine the alpha
+ * @param alphaOperation the BlendOperation used to combine the alpha
  *                       component of the source and destination pixels.
- * @returns an SDL_BlendMode that represents the chosen factors and
+ * @returns an BlendMode that represents the chosen factors and
  *          operations.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RendererRef.SetDrawBlendMode
+ * @sa RendererRef.GetDrawBlendMode
+ * @sa TextureRef.SetBlendMode
+ * @sa TextureRef.GetBlendMode
  */
 inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
                                         BlendFactor dstColorFactor,
@@ -9204,9 +9171,9 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
  * platform's byte ordering:
  *
- * ```c
+ * ```cpp
  * #if SDL_BYTEORDER == SDL_LIL_ENDIAN
- * SDL_Log("This system is littleendian.");
+ * Log("This system is littleendian.");
  * #endif
  * ```
  *
@@ -9223,9 +9190,9 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
  * platform's byte ordering:
  *
- * ```c
+ * ```cpp
  * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
- * SDL_Log("This system is bigendian.");
+ * Log("This system is bigendian.");
  * #endif
  * ```
  *
@@ -9245,7 +9212,7 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  *
  * ```c
  * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
- * SDL_Log("This system is bigendian.");
+ * Log("This system is bigendian.");
  * #endif
  * ```
  *
@@ -9265,7 +9232,7 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  *
  * ```c
  * #if SDL_FLOATWORDORDER == SDL_BIG_ENDIAN
- * SDL_Log("This system's floats are bigendian.");
+ * Log("This system's floats are bigendian.");
  * #endif
  * ```
  *
@@ -9282,8 +9249,8 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * Byte-swap a floating point number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SDL_SwapFloatLE or
- * SDL_SwapFloatBE instead, in most cases.
+ * byteorder of the system or not. You should use SwapFloatLE or
+ * SwapFloatBE instead, in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -9303,8 +9270,8 @@ constexpr float SwapFloat(float x) { return SDL_SwapFloat(x); }
  * Byte-swap an unsigned 16-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SDL_Swap16LE or SDL_Swap16BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap16LE or Swap16BE instead,
+ * in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -9324,8 +9291,8 @@ constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
  * Byte-swap an unsigned 32-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SDL_Swap32LE or SDL_Swap32BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap32LE or Swap32BE instead,
+ * in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -9345,8 +9312,8 @@ constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
  * Byte-swap an unsigned 64-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SDL_Swap64LE or SDL_Swap64BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap64LE or Swap64BE instead,
+ * in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -9956,6 +9923,7 @@ using EnumerateDirectoryCallback = SDL_EnumerateDirectoryCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa EnumerateDirectory
+ * @sa EnumerateDirectoryCallback
  */
 using EnumerateDirectoryCB =
   std::function<EnumerationResult(const char* dirname, const char* fname)>;
@@ -10198,11 +10166,12 @@ inline Path GetCurrentDirectory() { return Path{SDL_GetCurrentDirectory()}; }
  * identifiable by this value: "globally unique."
  *
  * SDL provides functions to convert a GUID to/from a string.
+ *
  * @{
  */
 
 /**
- * A GUID is a 128-bit identifier for an input device that identifies that
+ * An GUID is a 128-bit identifier for an input device that identifies that
  * device across runs of SDL programs on the same platform.
  *
  * If the device is detached and then re-attached to a different port, or if
@@ -10410,10 +10379,10 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  * A variable to control whether we trap the Android back button to handle it
  * manually.
  *
- * This is necessary for the right mouse button to work on some Android
- * devices, or to be able to trap the back button for use in your code
- * reliably. If this hint is true, the back button will show up as an
- * EVENT_KEY_DOWN / EVENT_KEY_UP pair with a keycode of SCANCODE_AC_BACK.
+ * This is necessary for the right mouse button to work on some Android devices,
+ * or to be able to trap the back button for use in your code reliably. If this
+ * hint is true, the back button will show up as an EVENT_KEY_DOWN /
+ * EVENT_KEY_UP pair with a keycode of SCANCODE_AC_BACK.
  *
  * The variable can be set to the following values:
  *
@@ -14539,13 +14508,12 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
 /**
  * A variable specifying the type of an X11 window.
  *
- * During WindowRef.WindowRef, SDL uses the _NET_WM_WINDOW_TYPE X11 property
- * to report to the window manager the type of window it wants to create. This
- * might be set to various things if WINDOW_TOOLTIP or
- * WINDOW_POPUP_MENU, etc, were specified. For "normal" windows that
- * haven't set a specific type, this hint can be used to specify a custom
- * type. For example, a dock window might set this to
- * "_NET_WM_WINDOW_TYPE_DOCK".
+ * During Window.Create, SDL uses the _NET_WM_WINDOW_TYPE X11 property to report
+ * to the window manager the type of window it wants to create. This might be
+ * set to various things if WINDOW_TOOLTIP or WINDOW_POPUP_MENU, etc, were
+ * specified. For "normal" windows that haven't set a specific type, this hint
+ * can be used to specify a custom type. For example, a dock window might set
+ * this to "_NET_WM_WINDOW_TYPE_DOCK".
  *
  * This hint should be set before creating a window.
  *
@@ -15144,7 +15112,7 @@ inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
  *
  * // later...
  * #ifdef SDL_SSE2_INTRINSICS
- * if (SDL_HasSSE2()) {
+ * if (HasSSE2()) {
  *     DoSomethingWithSSE2(str);
  * }
  * #endif
@@ -15175,13 +15143,13 @@ inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
  *
  * System-dependent library loading routines.
  *
- * Shared objects are code that is programmatically loadable at runtime.
- * Windows calls these "DLLs", Linux calls them "shared libraries", etc.
+ * Shared objects are code that is programmatically loadable at runtime. Windows
+ * calls these "DLLs", Linux calls them "shared libraries", etc.
  *
- * To use them, build such a library, then call SDL_LoadObject() on it. Once
- * loaded, you can use SDL_LoadFunction() on that object to find the address
- * of its exported symbols. When done with the object, call SDL_UnloadObject()
- * to dispose of it.
+ * To use them, build such a library, then call SharedObject.Load() on it. Once
+ * loaded, you can use SharedObjectRef.LoadFunction() on that object to find the
+ * address of its exported symbols. When done with the object, call
+ * SharedObject.Unload() to dispose of it.
  *
  * Some things to keep in mind:
  *
@@ -15196,10 +15164,10 @@ inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
  *   the application. If it does and it conflicts with symbols in your code or
  *   other shared libraries, you will not get the results you expect. :)
  * - Once a library is unloaded, all pointers into it obtained through
- *   SDL_LoadFunction() become invalid, even if the library is later reloaded.
- *   Don't unload a library if you plan to use these pointers in the future.
- *   Notably: beware of giving one of these pointers to atexit(), since it may
- *   call that pointer after the library unloads.
+ *   SharedObjectRef.LoadFunction() become invalid, even if the library is later
+ *   reloaded. Don't unload a library if you plan to use these pointers in the
+ *   future. Notably: beware of giving one of these pointers to atexit(), since
+ *   it may call that pointer after the library unloads.
  *
  * @{
  */
@@ -15431,10 +15399,10 @@ inline OwnArray<Locale*> GetPreferredLocales()
  * quiet by default.
  *
  * You can change the log verbosity programmatically using
- * LogCategory.SetLogPriority() or with SDL_SetHint(SDL_HINT_LOGGING, ...), or
- * with the "SDL_LOGGING" environment variable. This variable is a comma
- * separated set of category=level tokens that define the default logging levels
- * for SDL applications.
+ * LogCategory.SetLogPriority() or with SetHint(SDL_HINT_LOGGING, ...), or with
+ * the "SDL_LOGGING" environment variable. This variable is a comma separated
+ * set of category=level tokens that define the default logging levels for SDL
+ * applications.
  *
  * The category can be a numeric category, one of "app", "error", "assert",
  * "system", "audio", "video", "render", "input", "test", or `*` for any
@@ -16566,7 +16534,7 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  *   ABGR32, define a platform-independent encoding into bytes in the order
  *   specified. For example, in RGB24 data, each pixel is encoded in 3 bytes
  *   (red, green, blue) in that order, and in ABGR32 data, each pixel is
- *   encoded in 4 bytes alpha, blue, green, red) in that order. Use these
+ *   encoded in 4 bytes (alpha, blue, green, red) in that order. Use these
  *   names if the property of a format that is important to you is the order
  *   of the bytes in memory or on disk.
  * - Names with a bit count per component, such as ARGB8888 and XRGB1555, are
@@ -18177,7 +18145,6 @@ struct FColor : SDL_FColor
  *
  * @sa PaletteRef.SetColors
  * @sa Palette
- * @sa PaletteRef
  */
 struct PaletteRef : Resource<SDL_Palette*>
 {
@@ -18817,35 +18784,23 @@ inline const char* GetPlatform() { return SDL_GetPlatform(); }
  */
 using PowerState = SDL_PowerState;
 
-/**
- * error determining power status
- */
-constexpr PowerState POWERSTATE_ERROR = SDL_POWERSTATE_ERROR;
+constexpr PowerState POWERSTATE_ERROR =
+  SDL_POWERSTATE_ERROR; ///< error determining power status
 
-/**
- * cannot determine power status
- */
-constexpr PowerState POWERSTATE_UNKNOWN = SDL_POWERSTATE_UNKNOWN;
+constexpr PowerState POWERSTATE_UNKNOWN =
+  SDL_POWERSTATE_UNKNOWN; ///< cannot determine power status
 
-/**
- * Not plugged in, running on the battery.
- */
-constexpr PowerState POWERSTATE_ON_BATTERY = SDL_POWERSTATE_ON_BATTERY;
+constexpr PowerState POWERSTATE_ON_BATTERY =
+  SDL_POWERSTATE_ON_BATTERY; ///< Not plugged in, running on the battery.
 
-/**
- * Plugged in, no battery available.
- */
-constexpr PowerState POWERSTATE_NO_BATTERY = SDL_POWERSTATE_NO_BATTERY;
+constexpr PowerState POWERSTATE_NO_BATTERY =
+  SDL_POWERSTATE_NO_BATTERY; ///< Plugged in, no battery available.
 
-/**
- * Plugged in, charging battery.
- */
-constexpr PowerState POWERSTATE_CHARGING = SDL_POWERSTATE_CHARGING;
+constexpr PowerState POWERSTATE_CHARGING =
+  SDL_POWERSTATE_CHARGING; ///< Plugged in, charging battery.
 
-/**
- * Plugged in, battery charged.
- */
-constexpr PowerState POWERSTATE_CHARGED = SDL_POWERSTATE_CHARGED;
+constexpr PowerState POWERSTATE_CHARGED =
+  SDL_POWERSTATE_CHARGED; ///< Plugged in, battery charged.
 
 /// @}
 
@@ -18870,10 +18825,10 @@ constexpr PowerState POWERSTATE_CHARGED = SDL_POWERSTATE_CHARGED;
  * minute or so.
  *
  * @param seconds a pointer filled in with the seconds of battery life left,
- *                or NULL to ignore. This will be filled in with -1 if we
+ *                or nullptr to ignore. This will be filled in with -1 if we
  *                can't determine a value or there is no battery.
  * @param percent a pointer filled in with the percentage of battery life
- *                left, between 0 and 100, or NULL to ignore. This will be
+ *                left, between 0 and 100, or nullptr to ignore. This will be
  *                filled in with -1 we can't determine a value or there is no
  *                battery.
  * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
@@ -18894,27 +18849,27 @@ inline PowerState GetPowerInfo(int* seconds, int* percent)
  * A property is a variable that can be created and retrieved by name at
  * runtime.
  *
- * All properties are part of a property group (PropertiesRef). A property
- * group can be created with the CreateProperties() function or by simply
- * instantiating @ref Properties. It can be destroyed with the
- * Properties.Destroy(), but the Properties destructor probably will do what
- * you want to, automatically.
+ * All properties are part of a property group (Properties). A property group
+ * can be created with the Properties.Create function and destroyed with the
+ * Properties.Destroy function, but the Properties destructor probably will do
+ * what you want to, automatically.
  *
  * Properties can be added to and retrieved from a property group through the
  * following functions:
  *
- * - PropertiesRef.SetPointer() and PropertiesRef.GetPointer() operate on
- * `void*` pointer types.
- * - PropertiesRef.SetString() and PropertiesRef.GetString() operate on string
+ * - PropertiesRef.SetPointer and PropertiesRef.GetPointer operate on `void*`
+ *   pointer types.
+ * - PropertiesRef.SetString and PropertiesRef.GetString operate on string
  * types.
- * - PropertiesRef.SetNumber() and PropertiesRef.GetNumber() operate on signed
+ * - PropertiesRef.SetNumber and PropertiesRef.GetNumber operate on signed
  * 64-bit integer types.
- * - PropertiesRef.SetFloat() and PropertiesRef.GetFloat() operate on floating
- * point types.
- * - PropertiesRef.SetBoolean() and PropertiesRef.GetBoolean() operate on
- * boolean types.
+ * - PropertiesRef.SetFloat and PropertiesRef.GetFloat operate on floating point
+ *   types.
+ * - PropertiesRef.SetBoolean and PropertiesRef.GetBoolean operate on boolean
+ *   types.
  *
- * Properties can be removed from a group by using PropertiesRef.Clear().
+ * Properties can be removed from a group by using PropertiesRef.Clear.
+ *
  * @{
  */
 
@@ -18957,8 +18912,24 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
 /**
  * A callback used to free resources when a property is deleted.
  *
+ * This should release any resources associated with `value` that are no
+ * longer needed.
+ *
+ * This callback is set per-property. Different properties in the same group
+ * can have different cleanup callbacks.
+ *
+ * This callback will be called _during_ PropertiesRef.SetPointerWithCleanup if
+ * the function fails for any reason.
+ *
+ * @param value the pointer assigned to the property to clean up.
+ *
+ * @threadsafety This callback may fire without any locks held; if this is a
+ *               concern, the app should provide its own locking.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa PropertiesRef.SetPointerWithCleanup
  * @sa CleanupPropertyCallback
- * @sa PropertiesRef.SetPointerWithCleanup()
  * @sa result-callback
  *
  * @cat result-callback
@@ -18978,7 +18949,7 @@ using CleanupPropertyCB = std::function<void(void*)>;
  * per property in the set.
  *
  * @param userdata an app-defined pointer passed to the callback.
- * @param props the PropertiesRef that is being enumerated.
+ * @param props the Properties that is being enumerated.
  * @param name the next property name in the enumeration.
  *
  * @threadsafety PropertiesRef.Enumerate holds a lock on `props` during this
@@ -18999,7 +18970,7 @@ struct PropertiesRef;
  * This callback is called from PropertiesRef.Enumerate(), and is called once
  * per property in the set.
  *
- * @param props the PropertiesRef that is being enumerated.
+ * @param props the Properties that is being enumerated.
  * @param name the next property name in the enumeration.
  *
  * @threadsafety PropertiesRef.Enumerate holds a lock on `props` during this
@@ -19008,7 +18979,6 @@ struct PropertiesRef;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @cat immediate-callback
- *
  *
  * @sa PropertiesRef.Enumerate
  * @sa EnumeratePropertiesCallback
@@ -19042,31 +19012,7 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
   SDL_PROPERTY_TYPE_BOOLEAN; ///< BOOLEAN
 
 /**
- * Wrap properties id
- *
- * A property is a variable that can be created and retrieved by name at
- * runtime.
- *
- * All properties are part of a property group (Properties). A property
- * group can be created with the Properties constructor and destroyed
- * with this goes out of scope.
- *
- * Properties can be added to and retrieved from a property group through the
- * following functions:
- *
- * - SetPointer() and GetPointer() operate on `void*`
- *   pointer types.
- * - SetString() and GetString() operate on string types.
- * - SetNumber() and GetNumber() operate on signed 64-bit
- *   integer types.
- * - SetFloat() and GetFloat() operate on floating point
- *   types.
- * - SetBoolean() and GetBoolean() operate on boolean
- *   types.
- *
- * Properties can be removed from a group by using SDL_ClearProperty.
- *
- * To create a new properties group use Properties.Create().
+ * SDL properties ID
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -19752,6 +19698,7 @@ inline Uint64 PropertiesRef::GetCount() const
  *
  * Some helper functions for managing rectangles and 2D points, in both
  * integer and floating point versions.
+ *
  * @{
  */
 
@@ -19765,13 +19712,17 @@ struct Rect;
 struct FRect;
 
 /**
- * @brief The structure that defines a point (using integers)
+ * The structure that defines a point (using integers).
  *
- * Based on https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
+ * Inspired by
+ * https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
- * @sa wrap-extending-struct
+ * @sa Rect.GetEnclosingPoints
+ * @sa Point.IsInRect
  */
 struct Point : SDL_Point
 {
@@ -20205,11 +20156,14 @@ struct Point : SDL_Point
 };
 
 /**
- * @brief The structure that defines a point (using floating point values).
+ * The structure that defines a point (using floating point values).
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
- * @sa wrap-extending-struct
+ * @sa FRect.GetEnclosingPoints
+ * @sa FPoint.IsInRect
  */
 struct FPoint : SDL_FPoint
 {
@@ -20543,11 +20497,19 @@ struct FPoint : SDL_FPoint
 };
 
 /**
- * @brief A rectangle, with the origin at the upper left (using integers).
+ * A rectangle, with the origin at the upper left (using integers).
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
- * @sa wrap-extending-struct
+ * @sa Rect.Empty
+ * @sa Rect.Equal
+ * @sa Rect.HasIntersection
+ * @sa Rect.GetIntersection
+ * @sa Rect.IntersectLine
+ * @sa Rect.GetUnion
+ * @sa Rect.GetEnclosingPoints
  */
 struct Rect : SDL_Rect
 {
@@ -21165,11 +21127,22 @@ struct Rect : SDL_Rect
 };
 
 /**
- * @brief A rectangle, with the origin at the upper left (using floats).
+ * A rectangle, with the origin at the upper left (using floating point
+ * values).
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
- * @sa wrap-extending-struct
+ * @sa FRect.Empty
+ * @sa FRect.Equal
+ * @sa FRect.EqualEpsilon
+ * @sa FRect.HasIntersection
+ * @sa FRect.GetIntersection
+ * @sa FRect.IntersectLine
+ * @sa FRect.GetUnion
+ * @sa FRect.GetEnclosingPoints
+ * @sa FPoint.IsInRect
  */
 struct FRect : SDL_FRect
 {
@@ -22633,13 +22606,14 @@ constexpr SDL_Scancode SCANCODE_COUNT = SDL_SCANCODE_COUNT;
  *
  * SDL realtime clock and date/time routines.
  *
- * There are two data types that are used in this category: SDL_Time, which
+ * There are two data types that are used in this category: Time, which
  * represents the nanoseconds since a specific moment (an "epoch"), and
- * SDL_DateTime, which breaks time down into human-understandable components:
+ * DateTime, which breaks time down into human-understandable components:
  * years, months, days, hours, etc.
  *
  * Much of the functionality is involved in converting those two types to
  * other useful forms.
+ *
  * @{
  */
 
@@ -23072,14 +23046,13 @@ inline int GetDayOfWeek(int year, int month, int day)
  * SDL provides time management functionality. It is useful for dealing with
  * (usually) small durations of time.
  *
- * This is not to be confused with _calendar time_ management, which is
- * provided by [CategoryTime](#CategoryTime).
+ * This is not to be confused with _calendar time_ management, which is provided
+ * by [CategoryTime](#CategoryTime).
  *
  * This category covers measuring time elapsed (GetTicks(),
- * GetPerformanceCounter()), putting a thread to sleep for a certain
- * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
- * a callback function after a certain amount of time has elapsed
- * (AddTimer(), etc).
+ * GetPerformanceCounter()), putting a thread to sleep for a certain amount of
+ * time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing a callback function
+ * after a certain amount of time has elasped (SDL_AddTimer(), etc).
  *
  * @{
  */
@@ -23139,7 +23112,7 @@ inline std::chrono::nanoseconds GetTicks()
  *
  * The counter values are only meaningful relative to each other. Differences
  * between values can be converted to times by using
- * SDL_GetPerformanceFrequency().
+ * GetPerformanceFrequency().
  *
  * @returns the current counter value.
  *
@@ -23147,7 +23120,7 @@ inline std::chrono::nanoseconds GetTicks()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetPerformanceFrequency()
+ * @sa GetPerformanceFrequency
  */
 inline Uint64 GetPerformanceCounter() { return SDL_GetPerformanceCounter(); }
 
@@ -23160,7 +23133,7 @@ inline Uint64 GetPerformanceCounter() { return SDL_GetPerformanceCounter(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetPerformanceCounter()
+ * @sa GetPerformanceCounter
  */
 inline Uint64 GetPerformanceFrequency()
 {
@@ -23178,6 +23151,9 @@ inline Uint64 GetPerformanceFrequency()
  *
  * @threadsafety It is safe to call this function from any thread.
  *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa DelayPrecise
  */
 inline void Delay(std::chrono::nanoseconds duration)
 {
@@ -23197,8 +23173,7 @@ inline void Delay(std::chrono::nanoseconds duration)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Delay()
- * @sa DelayNS()
+ * @sa Delay
  */
 inline void DelayPrecise(std::chrono::nanoseconds duration)
 {
@@ -23221,7 +23196,7 @@ using TimerID = SDL_TimerID;
  * will be removed.
  *
  * @param userdata an arbitrary pointer provided by the app through
- *                 AddTimer(), for its own use.
+ *                 SDL_AddTimer, for its own use.
  * @param timerID the current timer being processed.
  * @param interval the current callback time interval.
  * @returns the new callback time interval, or 0 to disable further runs of
@@ -23259,8 +23234,8 @@ using TimerCallback = SDL_NSTimerCallback;
  *
  * @cat listener-callback
  *
- * @sa listener-callback
- * @sa AddTimer(TimerCB)
+ * @sa AddTimer
+ * @sa TimerCallback
  */
 using TimerCB =
   std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
@@ -23367,7 +23342,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
 }
 
 /**
- * Remove a timer created with AddTimer().
+ * Remove a timer created with SDL_AddTimer().
  *
  * @param id the ID of the timer to remove.
  * @throws Error on failure.
@@ -23376,7 +23351,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AddTimer
+ * @sa SDL_AddTimer
  */
 inline void RemoveTimer(TimerID id)
 {
@@ -23542,25 +23517,25 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
  * All SDL programs need to initialize the library before starting to work
  * with it.
  *
- * Almost everything can simply call SDL_Init() near startup, with a handful
- * of flags to specify subsystems to touch. These are here to make sure SDL
- * does not even attempt to touch low-level pieces of the operating system
+ * Almost everything can simply call InitSubSystem() near startup, with a
+ * handful of flags to specify subsystems to touch. These are here to make sure
+ * SDL does not even attempt to touch low-level pieces of the operating system
  * that you don't intend to use. For example, you might be using SDL for video
- * and input but chose an external library for audio, and in this case you
- * would just need to leave off the `SDL_INIT_AUDIO` flag to make sure that
- * external library has complete control.
+ * and input but chose an external library for audio, and in this case you would
+ * just need to leave off the `INIT_AUDIO` flag to make sure that external
+ * library has complete control.
  *
- * Most apps, when terminating, should call SDL_Quit(). This will clean up
- * (nearly) everything that SDL might have allocated, and crucially, it'll
- * make sure that the display's resolution is back to what the user expects if
- * you had previously changed it for your game.
+ * Most apps, when terminating, should call Quit(). This will clean up (nearly)
+ * everything that SDL might have allocated, and crucially, it'll make sure that
+ * the display's resolution is back to what the user expects if you had
+ * previously changed it for your game.
  *
- * SDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup
- * to fill in details about the program. This is completely optional, but it
- * helps in small ways (we can provide an About dialog box for the macOS menu,
- * we can name the app in the system's audio mixer, etc). Those that want to
- * provide a _lot_ of information should look at the more-detailed
- * SDL_SetAppMetadataProperty().
+ * SDL3 apps are strongly encouraged to call SetAppMetadata() at startup to fill
+ * in details about the program. This is completely optional, but it helps in
+ * small ways (we can provide an About dialog box for the macOS menu, we can
+ * name the app in the system's audio mixer, etc). Those that want to provide a
+ * _lot_ of information should look at the more-detailed
+ * SetAppMetadataProperty().
  *
  * @{
  */
@@ -23572,7 +23547,7 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
  */
 
 /**
- * Initialization flags for SDL
+ * Initialization flags for InitSubSystem.
  *
  * These are the flags which may be passed to InitSubSystem(). You should
  * specify the subsystems which you will be using in your application.
@@ -23751,12 +23726,11 @@ using AppQuit_func = SDL_AppQuit_func;
  * The class Init is probably what you are looking for, as it automatically
  * handles de-initialization.
  *
- * The file I/O (for example: IOStream.FromFile) and threading
- * (Thread.Create) subsystems are initialized by default. Message boxes
- * (ShowSimpleMessageBox) also attempt to work without initializing the
- * video subsystem, in hopes of being useful in showing an error dialog when
- * Init fails. You must specifically initialize other subsystems if you
- * use them in your application.
+ * The file I/O (for example: IOStream.FromFile) and threading (Thread.Create)
+ * subsystems are initialized by default. Message boxes (ShowSimpleMessageBox)
+ * also attempt to work without initializing the video subsystem, in hopes of
+ * being useful in showing an error dialog when InitSubSystem fails. You must
+ * specifically initialize other subsystems if you use them in your application.
  *
  * Logging (such as Log) works without initialization, too.
  *
@@ -23940,7 +23914,7 @@ inline void InitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
  * QuitSubSystem().
  *
  * @param flags any of the flags used by InitSubSystem(); see InitFlags for
- * details.
+ *              details.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -24193,8 +24167,12 @@ inline bool IsMainThread() { return SDL_IsMainThread(); }
 using MainThreadCallback = SDL_MainThreadCallback;
 
 /**
- * @sa PropertiesRef.MainThreadCallback
- * @sa result-callback
+ * Callback run on the main thread.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread
+ * @sa MainThreadCallback
  *
  * @cat result-callback
  *
@@ -24656,11 +24634,11 @@ inline bool SDL::updateActive(bool active)
  * @defgroup CategoryIOStream I/O Streams
  *
  * SDL provides an abstract interface for reading and writing data streams. It
- * offers implementations for files, memory, etc, and the app can provide
- * their own implementations, too.
+ * offers implementations for files, memory, etc, and the app can provide their
+ * own implementations, too.
  *
- * SDL_IOStream is not related to the standard C++ iostream class, other than
- * both are abstract interfaces to read/write data.
+ * IOStream is not related to the standard C++ iostream class, other than both
+ * are abstract interfaces to read/write data.
  *
  * @{
  */
@@ -24672,7 +24650,7 @@ struct IOStreamRef;
 struct IOStream;
 
 /**
- * IOStreamRef status, set by a read or write operation.
+ * IOStream status, set by a read or write operation.
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -24696,7 +24674,7 @@ constexpr IOStatus IO_STATUS_WRITEONLY =
   SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer.
 
 /**
- * Possible `whence` values for IOStreamRef seeking.
+ * Possible `whence` values for IOStream seeking.
  *
  * These map to the same "whence" concept that `fseek` or `lseek` use in the
  * standard C runtime.
@@ -24715,11 +24693,11 @@ constexpr IOWhence IO_SEEK_END =
   SDL_IO_SEEK_END; ///< Seek relative to the end of data.
 
 /**
- * The function pointers that drive an IOStreamRef.
+ * The function pointers that drive an IOStream.
  *
  * Applications can provide this struct to IOStream.Open() to create their own
- * implementation of IOStreamRef. This is not necessarily required, as SDL
- * already offers several common types of I/O streams, via functions like
+ * implementation of IOStream. This is not necessarily required, as SDL already
+ * offers several common types of I/O streams, via functions like
  * IOStream.FromFile() and IOStream.FromMem().
  *
  * This structure should be initialized using SDL_INIT_INTERFACE()
@@ -24735,15 +24713,14 @@ using IOStreamInterface = SDL_IOStreamInterface;
  *
  * This operates as an opaque handle. There are several APIs to create various
  * types of I/O streams, or an app can supply an IOStreamInterface to
- * IOStream.Open() to provide their own stream implementation behind
- * this struct's abstract interface.
+ * IOStream.Open() to provide their own stream implementation behind this
+ * struct's abstract interface.
  *
  * @since This struct is available since SDL 3.2.0.
  *
  * @cat resource
  *
  * @sa IOStream
- * @sa IOStreamRef
  */
 struct IOStreamRef : Resource<SDL_IOStream*>
 {
@@ -26492,95 +26469,51 @@ using Keymod = Uint16;
 #undef KMOD_SCROLL
 #undef KMOD_SHIFT
 
-/**
- * no modifier is applicable.
- */
-constexpr Keymod KMOD_NONE = SDL_KMOD_NONE;
+constexpr Keymod KMOD_NONE = SDL_KMOD_NONE; ///< no modifier is applicable.
 
-/**
- * the left Shift key is down.
- */
-constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT;
+constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT; ///< the left Shift key is down.
 
-/**
- * the right Shift key is down.
- */
-constexpr Keymod KMOD_RSHIFT = SDL_KMOD_RSHIFT;
+constexpr Keymod KMOD_RSHIFT =
+  SDL_KMOD_RSHIFT; ///< the right Shift key is down.
 
-/**
- * the Level 5 Shift key is down.
- */
-constexpr Keymod KMOD_LEVEL5 = SDL_KMOD_LEVEL5;
+constexpr Keymod KMOD_LEVEL5 =
+  SDL_KMOD_LEVEL5; ///< the Level 5 Shift key is down.
 
-/**
- * the left Ctrl (Control) key is down.
- */
-constexpr Keymod KMOD_LCTRL = SDL_KMOD_LCTRL;
+constexpr Keymod KMOD_LCTRL =
+  SDL_KMOD_LCTRL; ///< the left Ctrl (Control) key is down.
 
-/**
- * the right Ctrl (Control) key is down.
- */
-constexpr Keymod KMOD_RCTRL = SDL_KMOD_RCTRL;
+constexpr Keymod KMOD_RCTRL =
+  SDL_KMOD_RCTRL; ///< the right Ctrl (Control) key is down.
 
-/**
- * the left Alt key is down.
- */
-constexpr Keymod KMOD_LALT = SDL_KMOD_LALT;
+constexpr Keymod KMOD_LALT = SDL_KMOD_LALT; ///< the left Alt key is down.
 
-/**
- * the right Alt key is down.
- */
-constexpr Keymod KMOD_RALT = SDL_KMOD_RALT;
+constexpr Keymod KMOD_RALT = SDL_KMOD_RALT; ///< the right Alt key is down.
 
-/**
- * the left GUI key (often the Windows key) is down.
- */
-constexpr Keymod KMOD_LGUI = SDL_KMOD_LGUI;
+constexpr Keymod KMOD_LGUI =
+  SDL_KMOD_LGUI; ///< the left GUI key (often the Windows key) is down.
 
-/**
- * the right GUI key (often the Windows key) is down.
- */
-constexpr Keymod KMOD_RGUI = SDL_KMOD_RGUI;
+constexpr Keymod KMOD_RGUI =
+  SDL_KMOD_RGUI; ///< the right GUI key (often the Windows key) is down.
 
 /**
  * the Num Lock key (may be located on an extended keypad) is down.
  */
 constexpr Keymod KMOD_NUM = SDL_KMOD_NUM;
 
-/**
- * the Caps Lock key is down.
- */
-constexpr Keymod KMOD_CAPS = SDL_KMOD_CAPS;
+constexpr Keymod KMOD_CAPS = SDL_KMOD_CAPS; ///< the Caps Lock key is down.
 
-/**
- * the !AltGr key is down.
- */
-constexpr Keymod KMOD_MODE = SDL_KMOD_MODE;
+constexpr Keymod KMOD_MODE = SDL_KMOD_MODE; ///< the !AltGr key is down.
 
-/**
- * the Scroll Lock key is down.
- */
-constexpr Keymod KMOD_SCROLL = SDL_KMOD_SCROLL;
+constexpr Keymod KMOD_SCROLL =
+  SDL_KMOD_SCROLL; ///< the Scroll Lock key is down.
 
-/**
- * Any Ctrl key is down.
- */
-constexpr Keymod KMOD_CTRL = SDL_KMOD_CTRL;
+constexpr Keymod KMOD_CTRL = SDL_KMOD_CTRL; ///< Any Ctrl key is down.
 
-/**
- * Any Shift key is down.
- */
-constexpr Keymod KMOD_SHIFT = SDL_KMOD_SHIFT;
+constexpr Keymod KMOD_SHIFT = SDL_KMOD_SHIFT; ///< Any Shift key is down.
 
-/**
- * Any Alt key is down.
- */
-constexpr Keymod KMOD_ALT = SDL_KMOD_ALT;
+constexpr Keymod KMOD_ALT = SDL_KMOD_ALT; ///< Any Alt key is down.
 
-/**
- * Any GUI key is down.
- */
-constexpr Keymod KMOD_GUI = SDL_KMOD_GUI;
+constexpr Keymod KMOD_GUI = SDL_KMOD_GUI; ///< Any GUI key is down.
 
 /**
  * The SDL virtual key representation.
@@ -27584,14 +27517,14 @@ struct StorageRef;
 struct Storage;
 
 /**
- * Function interface for StorageRef.
+ * Function interface for Storage.
  *
- * Apps that want to supply a custom implementation of Storage will fill
- * in all the functions in this struct, and then pass it to
- * Storage.Open to create a custom StorageRef object.
+ * Apps that want to supply a custom implementation of Storage will fill in all
+ * the functions in this struct, and then pass it to Storage.Open to create a
+ * custom Storage object.
  *
- * It is not usually necessary to do this; SDL provides standard
- * implementations for many things you might expect to do with an StorageRef.
+ * It is not usually necessary to do this; SDL provides standard implementations
+ * for many things you might expect to do with an Storage.
  *
  * This structure should be initialized using SDL_INIT_INTERFACE()
  *
@@ -28170,8 +28103,8 @@ struct StorageUnsafe : ResourceUnsafe<StorageRef>
  * to each thread, but accessed from a single key).
  *
  * On platforms without thread support (such as Emscripten when built without
- * pthreads), these functions still exist, but things like
- * Thread.Create() will report failure without doing anything.
+ * pthreads), these functions still exist, but things like Thread.Create() will
+ * report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
  * good understanding of [CategoryMutex](CategoryMutex) as well.
@@ -28182,7 +28115,7 @@ struct StorageUnsafe : ResourceUnsafe<StorageRef>
 /**
  * A unique numeric ID that identifies a thread.
  *
- * These are different from ThreadRef objects, which are generally what an
+ * These are different from Thread objects, which are generally what an
  * application will operate on, but having a way to uniquely identify a thread
  * can be useful at times.
  *
@@ -28207,8 +28140,7 @@ using ThreadID = SDL_ThreadID;
 using TLSID = AtomicInt;
 
 /**
- * The function passed to Thread.Create() as the new thread's entry
- * point.
+ * The function passed to Thread.Create() as the new thread's entry point.
  *
  * @param data what was passed as `data` to Thread.Create().
  * @returns a value that can be reported through ThreadRef.Wait().
@@ -28302,12 +28234,11 @@ constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa ThreadRef.Wait
- *
  * @cat resource
  *
+ * @sa Thread.Create
+ * @sa ThreadRef.Wait
  * @sa Thread
- * @sa ThreadRef
  */
 struct ThreadRef : Resource<SDL_Thread*>
 {
@@ -28925,9 +28856,9 @@ public:
   /**
    * Define an AudioFormat value.
    *
-   * SDL does not support custom audio formats, so this function is not of much
-   * use externally, but it can be illustrative as to what the various bits of
-   * an AudioFormat mean.
+   * SDL does not support custom audio formats, so this macro is not of much use
+   * externally, but it can be illustrative as to what the various bits of an
+   * AudioFormat mean.
    *
    * For example, AUDIO_S32LE looks like this:
    *
@@ -29237,7 +29168,6 @@ using AudioPostmixCB =
  * @cat resource
  *
  * @sa AudioDevice
- * @sa AudioDeviceRef
  */
 struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
 {
@@ -29330,7 +29260,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
   /**
    * Determine if an audio device is physical (instead of logical).
    *
-   * An AudioDeviceRef that represents physical hardware is a physical device;
+   * An AudioDevice that represents physical hardware is a physical device;
    * there is one for each piece of hardware that SDL can see. Logical devices
    * are created by calling AudioDevice.Open or
    * AudioStream.OpenAudioDeviceStream, and while each is associated with a
@@ -29427,8 +29357,8 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * has to bind a stream before any audio will flow.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDevice.Open() can be. Physical and invalid
-   * device IDs will report themselves as unpaused here.
+   * created through AudioDevice.Open() can be. Physical and invalid device
+   * IDs will report themselves as unpaused here.
    *
    * @returns true if device is valid and paused, false otherwise.
    *
@@ -29629,7 +29559,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    *
    * All of this to say: there are specific needs this callback can fulfill, but
    * it is not the simplest interface. Apps should generally provide audio in
-   * their preferred format through an AudioStreamRef and let SDL handle the
+   * their preferred format through an AudioStream and let SDL handle the
    * difference.
    *
    * This function is extremely time-sensitive; the callback should do the least
@@ -29727,17 +29657,16 @@ struct AudioDevice : ResourceUnique<AudioDeviceRef>
    * the device is using after opening.
    *
    * It's legal to open the same device ID more than once; each successful open
-   * will generate a new logical AudioDeviceRef that is managed separately
-   * from others on the same physical device. This allows libraries to open a
-   * device separately from the main app and bind its own streams without
-   * conflicting.
+   * will generate a new logical AudioDevice that is managed separately from
+   * others on the same physical device. This allows libraries to open a device
+   * separately from the main app and bind its own streams without conflicting.
    *
    * It is also legal to open a device ID returned by a previous call to this
    * function; doing so just creates another logical device on the same physical
    * device. This may be useful for making logical groupings of audio streams.
    *
    * This function returns the opened device ID on success. This is a new,
-   * unique AudioDeviceRef that represents a logical device.
+   * unique AudioDevice that represents a logical device.
    *
    * Some backends might offer arbitrary devices (for example, a networked audio
    * protocol that can connect to an arbitrary server). For these, as a change
@@ -29816,9 +29745,9 @@ struct AudioDeviceUnsafe : ResourceUnsafe<AudioDeviceRef>
 /**
  * A value used to request a default playback audio device.
  *
- * Several functions that require an AudioDeviceRef will accept this value
- * to signify the app just wants the system to choose a default device instead
- * of the app providing a specific one.
+ * Several functions that require an AudioDevice will accept this value to
+ * signify the app just wants the system to choose a default device instead of
+ * the app providing a specific one.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -29828,7 +29757,7 @@ constexpr AudioDeviceRef AUDIO_DEVICE_DEFAULT_PLAYBACK =
 /**
  * A value used to request a default recording audio device.
  *
- * Several functions that require an AudioDeviceRef will accept this value
+ * Several functions that require an AudioDevice will accept this value
  * to signify the app just wants the system to choose a default device instead
  * of the app providing a specific one.
  *
@@ -29856,7 +29785,7 @@ constexpr int AudioFrameSize(const AudioSpec& x)
 }
 
 /**
- * A callback that fires when data passes through an AudioStreamRef.
+ * A callback that fires when data passes through an AudioStream.
  *
  * Apps can (optionally) register a callback with an audio stream that is
  * called when data is added with AudioStreamRef.PutData, or requested with
@@ -29898,7 +29827,7 @@ constexpr int AudioFrameSize(const AudioSpec& x)
 using AudioStreamCallback = SDL_AudioStreamCallback;
 
 /**
- * A callback that fires when data passes through an AudioStreamRef.
+ * A callback that fires when data passes through an AudioStream.
  *
  * Apps can (optionally) register a callback with an audio stream that is
  * called when data is added with AudioStreamRef.PutData, or requested with
@@ -29942,7 +29871,7 @@ using AudioStreamCB = std::function<
 /**
  * The opaque handle that represents an audio stream.
  *
- * AudioStreamRef is an audio conversion interface.
+ * AudioStream is an audio conversion interface.
  *
  * - It can handle resampling data in chunks without generating artifacts,
  *   when it doesn't have the complete buffer available.
@@ -29960,8 +29889,6 @@ using AudioStreamCB = std::function<
  * (or for recording, consume data from them).
  *
  * @since This struct is available since SDL 3.2.0.
- *
- * @sa AudioStream.Create
  *
  * @cat resource
  *
@@ -30641,7 +30568,7 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
   /**
    * Lock an audio stream for serialized access.
    *
-   * Each AudioStreamRef has an internal mutex it uses to protect its data
+   * Each AudioStream has an internal mutex it uses to protect its data
    * structures from threading conflicts. This function allows an app to lock
    * that mutex, which could be useful if registering callbacks on this stream.
    *
@@ -31045,7 +30972,7 @@ struct AudioStream : ResourceUnique<AudioStreamRef>
    *
    * This function will open an audio device, create a stream and bind it.
    * Unlike other methods of setup, the audio device will be closed when this
-   * stream is destroyed, so the app can treat the returned AudioStreamRef as
+   * stream is destroyed, so the app can treat the returned AudioStream as
    * the only object needed to manage audio playback.
    *
    * Also unlike other functions, the audio device begins paused. This is to map
@@ -31167,7 +31094,7 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
   /**
    * Lock an audio stream for serialized access.
    *
-   * Each AudioStreamRef has an internal mutex it uses to protect its data
+   * Each AudioStream has an internal mutex it uses to protect its data
    * structures from threading conflicts. This function allows an app to lock
    * that mutex, which could be useful if registering callbacks on this stream.
    *
@@ -31465,7 +31392,7 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src, AudioSpec* spec)
 {
   Uint8* buf;
   Uint32 len;
-  if (!SDL_LoadWAV_IO(src.get(), false, spec, &buf, &len)) return {};
+  if (!SDL_LoadWAV_IO(src, false, spec, &buf, &len)) return {};
   return OwnArray<Uint8>{buf, size_t(len)};
 }
 
@@ -31590,11 +31517,11 @@ inline void MixAudio(TargetBytes dst,
  * to resample audio in blocks, as it will introduce audio artifacts on the
  * boundaries. You should only use this function if you are converting audio
  * data in its entirety in one call. If you want to convert audio in smaller
- * chunks, use an AudioStreamRef, which is designed for this situation.
+ * chunks, use an AudioStream, which is designed for this situation.
  *
- * Internally, this function creates and destroys an AudioStreamRef on each
- * use, so it's also less efficient than using one directly, if you need to
- * convert multiple times.
+ * Internally, this function creates and destroys an AudioStream on each use, so
+ * it's also less efficient than using one directly, if you need to convert
+ * multiple times.
  *
  * @param src_spec the format details of the input audio.
  * @param src_data the audio data to be converted.
@@ -31895,7 +31822,7 @@ struct MutexUnsafe : ResourceUnsafe<MutexRef>
 /**
  * A mutex that allows read-only threads to run in parallel.
  *
- * A rwlock is roughly the same concept as MutexRef, but allows threads that
+ * A rwlock is roughly the same concept as Mutex, but allows threads that
  * request read-only access to all hold the lock at the same time. If a thread
  * requests write access, it will block until all read-only threads have
  * released the lock, and no one else can hold the thread (for reading or
@@ -32365,9 +32292,9 @@ struct SemaphoreUnsafe : ResourceUnsafe<SemaphoreRef>
 /**
  * A means to block multiple threads until a condition is satisfied.
  *
- * Condition variables, paired with an MutexRef, let an app halt multiple
- * threads until a condition has occurred, at which time the app can release
- * one or all waiting threads.
+ * Condition variables, paired with an Mutex, let an app halt multiple threads
+ * until a condition has occurred, at which time the app can release one or all
+ * waiting threads.
  *
  * Wikipedia has a thorough explanation of the concept:
  *
@@ -32736,25 +32663,24 @@ struct Process;
  * to `NUL:` on Windows and `/dev/null` on POSIX systems. This is the default
  * for standard input.
  *
- * If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected
- * to a new IOStreamRef that is available to the application. Standard input
- * will be available as `prop::process.STDIN_POINTER` and allows
- * ProcessRef.GetInput(), standard output will be available as
- * `prop::process.STDOUT_POINTER` and allows ProcessRef.Read() and
- * ProcessRef.GetOutput(), and standard error will be available as
- * `prop::process.STDERR_POINTER` in the properties for the created
- * process.
+ * If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected to a
+ * new IOStream that is available to the application. Standard input will be
+ * available as `prop::process.STDIN_POINTER` and allows ProcessRef.GetInput(),
+ * standard output will be available as `prop::process.STDOUT_POINTER` and
+ * allows ProcessRef.Read() and ProcessRef.GetOutput(), and standard error will
+ * be available as `prop::process.STDERR_POINTER` in the properties for the
+ * created process.
  *
- * If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is
- * connected to an existing IOStreamRef provided by the application. Standard
- * input is provided using `prop::process.CREATE_STDIN_POINTER`, standard
- * output is provided using `prop::process.CREATE_STDOUT_POINTER`, and
- * standard error is provided using `prop::process.CREATE_STDERR_POINTER`
- * in the creation properties. These existing streams should be closed by the
- * application once the new process is created.
+ * If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is connected to
+ * an existing IOStream provided by the application. Standard input is provided
+ * using `prop::process.CREATE_STDIN_POINTER`, standard output is provided using
+ * `prop::process.CREATE_STDOUT_POINTER`, and standard error is provided using
+ * `prop::process.CREATE_STDERR_POINTER` in the creation properties. These
+ * existing streams should be closed by the application once the new process is
+ * created.
  *
- * In order to use an IOStreamRef with PROCESS_STDIO_REDIRECT, it must
- * have `prop::IOStream.WINDOWS_HANDLE_POINTER` or
+ * In order to use an IOStream with PROCESS_STDIO_REDIRECT, it must have
+ * `prop::IOStream.WINDOWS_HANDLE_POINTER` or
  * `prop::IOStream.FILE_DESCRIPTOR_NUMBER` set. This is true for streams
  * representing files and process I/O.
  *
@@ -32776,13 +32702,13 @@ constexpr ProcessIO PROCESS_STDIO_NULL =
   SDL_PROCESS_STDIO_NULL; ///< The I/O stream is ignored.
 
 /**
- * The I/O stream is connected to a new IOStreamRef that the application can
- * read or write.
+ * The I/O stream is connected to a new IOStream that the application can read
+ * or write.
  */
 constexpr ProcessIO PROCESS_STDIO_APP = SDL_PROCESS_STDIO_APP;
 
 /**
- * The I/O stream is redirected to an existing IOStreamRef.
+ * The I/O stream is redirected to an existing IOStream.
  */
 constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
 
@@ -32790,7 +32716,6 @@ constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
  * An opaque handle representing a system process.
  *
  * @since This datatype is available since SDL 3.2.0.
- *
  *
  * @cat resource
  *
@@ -33231,7 +33156,7 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  * SDL surfaces are buffers of pixels in system RAM. These are useful for
  * passing around and manipulating images that are not stored in GPU memory.
  *
- * SDL_Surface makes serious efforts to manage images in various formats, and
+ * Surface makes serious efforts to manage images in various formats, and
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
@@ -33241,6 +33166,7 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  * SDL_image:
  *
  * https://github.com/libsdl-org/SDL_image
+ *
  * @{
  */
 
@@ -33254,7 +33180,7 @@ struct SurfaceRef;
 struct Surface;
 
 /**
- * The flags on an SurfaceRef.
+ * The flags on an Surface.
  *
  * These are generally considered read-only.
  *
@@ -33285,10 +33211,7 @@ using ScaleMode = SDL_ScaleMode;
 
 #if SDL_VERSION_ATLEAST(3, 2, 10)
 
-/**
- * @since SDL 3.2.10
- */
-constexpr ScaleMode SCALEMODE_INVALID = SDL_SCALEMODE_INVALID;
+constexpr ScaleMode SCALEMODE_INVALID = SDL_SCALEMODE_INVALID; ///< INVALID
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
@@ -33336,14 +33259,13 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
  *
  * @since This struct is available since SDL 3.2.0.
  *
+ * @cat resource
+ *
+ *
  * @sa Surface.Create
  * @sa Surface.CreateFrom
  * @sa Surface.Destroy
- *
- * @cat resource
- *
  * @sa Surface
- * @sa SurfaceRef
  */
 struct SurfaceRef : Resource<SDL_Surface*>
 {
@@ -35245,11 +35167,15 @@ public:
   constexpr operator bool() const { return bool(surface); }
 
   /**
-   * Release the locked surface after directly accessing the pixels.
+   * Release a surface after directly accessing the pixels.
+   *
+   * @threadsafety This function is not thread safe. The locking referred to by
+   *               this function is making the pixels available for direct
+   *               access, not thread-safe locking.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Lock()
+   * @sa SurfaceRef.Lock
    */
   void Unlock() { return SDL_UnlockSurface(surface.release()); }
 
@@ -35299,7 +35225,7 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
  * not supported.
  *
- * @param surface the SurfaceRef structure containing the image to be saved.
+ * @param surface the Surface structure containing the image to be saved.
  * @param dst a data stream to save to.
  * @throws Error on failure.
  *
@@ -35307,7 +35233,8 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LoadBMP
+ * @sa Surface.LoadBMP
+ * @sa SaveBMP
  */
 inline void SaveBMP(SurfaceRef surface, IOStreamRef dst)
 {
@@ -35323,7 +35250,7 @@ inline void SaveBMP(SurfaceRef surface, IOStreamRef dst)
  * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
  * not supported.
  *
- * @param surface the SurfaceRef structure containing the image to be saved.
+ * @param surface the Surface structure containing the image to be saved.
  * @param file a file to save to.
  * @throws Error on failure.
  *
@@ -35331,7 +35258,8 @@ inline void SaveBMP(SurfaceRef surface, IOStreamRef dst)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LoadBMP
+ * @sa Surface.LoadBMP
+ * @sa SaveBMP
  */
 inline void SaveBMP(SurfaceRef surface, StringParam file)
 {
@@ -35407,14 +35335,14 @@ inline void ConvertPixels(int width,
  * @param src_format an PixelFormat value of the `src` pixels format.
  * @param src_colorspace an Colorspace value describing the colorspace of
  *                       the `src` pixels.
- * @param src_properties an PropertiesRef with additional source color
+ * @param src_properties an Properties with additional source color
  *                       properties, or 0.
  * @param src a pointer to the source pixels.
  * @param src_pitch the pitch of the source pixels, in bytes.
  * @param dst_format an PixelFormat value of the `dst` pixels format.
  * @param dst_colorspace an Colorspace value describing the colorspace of
  *                       the `dst` pixels.
- * @param dst_properties an PropertiesRef with additional destination color
+ * @param dst_properties an Properties with additional destination color
  *                       properties, or 0.
  * @param dst a pointer to be filled in with new pixel data.
  * @param dst_pitch the pitch of the destination pixels, in bytes.
@@ -35774,6 +35702,7 @@ using TrayCallback = SDL_TrayCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa TrayEntryRef.SetCallback
+ * @sa TrayCallback
  */
 using TrayCB = std::function<void(TrayEntryRef)>;
 
@@ -36310,8 +36239,9 @@ inline void TrayEntryRef::SetCallback(TrayCB callback)
  *
  * The video subsystem covers a lot of functionality, out of necessity, so it
  * is worth perusing the list of functions just to see what's available, but
- * most apps can get by with simply creating a window and listening for
- * events, so start with SDL_CreateWindow() and SDL_PollEvent().
+ * most apps can get by with simply creating a window and listening for events,
+ * so start with Window.Create() and PollEvent().
+ *
  * @{
  */
 
@@ -36397,7 +36327,7 @@ using DisplayMode = SDL_DisplayMode;
  * The flags on a window.
  *
  * These cover a lot of true/false, or on/off, window state. Some of it is
- * immutable after being set through WindowRef.WindowRef(), some of it can be
+ * immutable after being set through Window.Create(), some of it can be
  * changed on existing windows by the app, and some of it might be altered by
  * the user or system outside of the app's control.
  *
@@ -36590,7 +36520,7 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
 /**
  * Callback used for hit-testing.
  *
- * @param win the WindowRef where hit-testing was set on.
+ * @param win the Window where hit-testing was set on.
  * @param area an Point which should be hit-tested.
  * @param data what was passed as `callback_data` to WindowRef.SetHitTest().
  * @returns an HitTestResult value.
@@ -36606,9 +36536,9 @@ using HitTest = SDL_HitTest;
  * @param area a Point const reference which should be hit-tested.
  * @returns an SDL::HitTestResult value.
  *
- * @sa HitTest
- *
  * @cat listener-callback
+ *
+ * @sa HitTest
  */
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
@@ -37086,10 +37016,9 @@ constexpr SystemTheme SYSTEM_THEME_DARK =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa WindowRef.WindowRef
- *
  * @cat resource
  *
+ * @sa Window.Create
  * @sa Window
  */
 struct WindowRef : Resource<SDL_Window*>
@@ -39236,7 +39165,7 @@ struct WindowUnsafe : ResourceUnsafe<WindowRef>
  *
  * @cat resource
  *
- * @sa GLContextRef.GLContextRef
+ * @sa GLContext.Create
  * @sa GLContext
  */
 struct GLContextRef : Resource<SDL_GLContextState*>
@@ -40546,7 +40475,7 @@ using DialogFileFilter = SDL_DialogFileFilter;
  *
  * - nullptr, an error occurred. Details can be obtained with GetError().
  * - A pointer to nullptr, the user either didn't choose any file or canceled
- * the dialog.
+ *   the dialog.
  * - A pointer to non-`nullptr`, the user chose one or more files. The argument
  *   is a null-terminated array of pointers to UTF-8 encoded strings, each
  *   containing a path.
@@ -40559,8 +40488,8 @@ using DialogFileFilter = SDL_DialogFileFilter;
  * fetching the selected filter.
  *
  * In Android, the `filelist` are `content://` URIs. They should be opened
- * using IOStream.FromFile() with appropriate modes. This applies both
- * to open and save file dialog.
+ * using IOStream.FromFile() with appropriate modes. This applies both to open
+ * and save file dialog.
  *
  * @param userdata an app-provided pointer, for the callback's use.
  * @param filelist the file(s) chosen by the user.
@@ -40599,8 +40528,8 @@ using DialogFileCallback = SDL_DialogFileCallback;
  * fetching the selected filter.
  *
  * In Android, the `filelist` are `content://` URIs. They should be opened
- * using IOStream.FromFile() with appropriate modes. This applies both
- * to open and save file dialog.
+ * using IOStream.FromFile() with appropriate modes. This applies both to open
+ * and save file dialog.
  *
  * @param filelist the file(s) chosen by the user.
  * @param filter index of the selected filter.
@@ -41136,11 +41065,10 @@ constexpr auto CANCEL_STRING = SDL_PROP_FILE_DIALOG_CANCEL_STRING;
  *
  * An app generally takes a moment, perhaps at the start of a new frame, to
  * examine any events that have occurred since the last time and process or
- * ignore them. This is generally done by calling SDL_PollEvent() in a loop
- * until it returns false (or, if using the main callbacks, events are
- * provided one at a time in calls to SDL_AppEvent() before the next call to
- * SDL_AppIterate(); in this scenario, the app does not call PollEvent()
- * at all).
+ * ignore them. This is generally done by calling PollEvent() in a loop until it
+ * returns false (or, if using the main callbacks, events are provided one at a
+ * time in calls to SDL_AppEvent() before the next call to SDL_AppIterate(); in
+ * this scenario, the app does not call PollEvent() at all).
  *
  * There is other forms of control, too: PeepEvents() has more
  * functionality at the cost of more complexity, and WaitEvent() can block
@@ -41171,33 +41099,27 @@ using EventType = SDL_EventType;
  * @{
  */
 
-/**
- * Unused (do not remove)
- */
-constexpr EventType EVENT_FIRST = SDL_EVENT_FIRST;
+constexpr EventType EVENT_FIRST = SDL_EVENT_FIRST; ///< Unused (do not remove)
 
-/**
- * User-requested quit
- */
-constexpr EventType EVENT_QUIT = SDL_EVENT_QUIT;
+constexpr EventType EVENT_QUIT = SDL_EVENT_QUIT; ///< User-requested quit.
 
 /**
  * The application is being terminated by the OS.  This event must be handled in
- * a callback set with SDL_AddEventWatch(). Called on iOS in
+ * a callback set with AddEventWatch(). Called on iOS in
  * applicationWillTerminate() Called on Android in onDestroy()
  */
 constexpr EventType EVENT_TERMINATING = SDL_EVENT_TERMINATING;
 
 /**
  * The application is low on memory, free memory if possible.  This event must
- * be handled in a callback set with SDL_AddEventWatch(). Called on iOS in
+ * be handled in a callback set with AddEventWatch(). Called on iOS in
  * applicationDidReceiveMemoryWarning() Called on Android in onTrimMemory()
  */
 constexpr EventType EVENT_LOW_MEMORY = SDL_EVENT_LOW_MEMORY;
 
 /**
  * The application is about to enter the background.  This event must be handled
- * in a callback set with SDL_AddEventWatch(). Called on iOS in
+ * in a callback set with AddEventWatch(). Called on iOS in
  * applicationWillResignActive() Called on Android in onPause()
  */
 constexpr EventType EVENT_WILL_ENTER_BACKGROUND =
@@ -41205,14 +41127,14 @@ constexpr EventType EVENT_WILL_ENTER_BACKGROUND =
 
 /**
  * The application did enter the background and may not get CPU for some time.
- * This event must be handled in a callback set with SDL_AddEventWatch(). Called
- * on iOS in applicationDidEnterBackground() Called on Android in onPause()
+ * This event must be handled in a callback set with AddEventWatch(). Called on
+ * iOS in applicationDidEnterBackground() Called on Android in onPause()
  */
 constexpr EventType EVENT_DID_ENTER_BACKGROUND = SDL_EVENT_DID_ENTER_BACKGROUND;
 
 /**
  * The application is about to enter the foreground.  This event must be handled
- * in a callback set with SDL_AddEventWatch(). Called on iOS in
+ * in a callback set with AddEventWatch(). Called on iOS in
  * applicationWillEnterForeground() Called on Android in onResume()
  */
 constexpr EventType EVENT_WILL_ENTER_FOREGROUND =
@@ -41220,58 +41142,38 @@ constexpr EventType EVENT_WILL_ENTER_FOREGROUND =
 
 /**
  * The application is now interactive.  This event must be handled in a callback
- * set with SDL_AddEventWatch(). Called on iOS in applicationDidBecomeActive()
+ * set with AddEventWatch(). Called on iOS in applicationDidBecomeActive()
  * Called on Android in onResume()
  */
 constexpr EventType EVENT_DID_ENTER_FOREGROUND = SDL_EVENT_DID_ENTER_FOREGROUND;
 
-/**
- * The user's locale preferences have changed.
- */
-constexpr EventType EVENT_LOCALE_CHANGED = SDL_EVENT_LOCALE_CHANGED;
+constexpr EventType EVENT_LOCALE_CHANGED =
+  SDL_EVENT_LOCALE_CHANGED; ///< The user's locale preferences have changed.
 
-/**
- * The system theme changed
- */
-constexpr EventType EVENT_SYSTEM_THEME_CHANGED = SDL_EVENT_SYSTEM_THEME_CHANGED;
+constexpr EventType EVENT_SYSTEM_THEME_CHANGED =
+  SDL_EVENT_SYSTEM_THEME_CHANGED; ///< The system theme changed.
 
-/**
- * Display orientation has changed to data1
- */
-constexpr EventType EVENT_DISPLAY_ORIENTATION = SDL_EVENT_DISPLAY_ORIENTATION;
+constexpr EventType EVENT_DISPLAY_ORIENTATION =
+  SDL_EVENT_DISPLAY_ORIENTATION; ///< Display orientation has changed to data1.
 
-/**
- * Display has been added to the system
- */
-constexpr EventType EVENT_DISPLAY_ADDED = SDL_EVENT_DISPLAY_ADDED;
+constexpr EventType EVENT_DISPLAY_ADDED =
+  SDL_EVENT_DISPLAY_ADDED; ///< Display has been added to the system.
 
-/**
- * Display has been removed from the system
- */
-constexpr EventType EVENT_DISPLAY_REMOVED = SDL_EVENT_DISPLAY_REMOVED;
+constexpr EventType EVENT_DISPLAY_REMOVED =
+  SDL_EVENT_DISPLAY_REMOVED; ///< Display has been removed from the system.
 
-/**
- * Display has changed position
- */
-constexpr EventType EVENT_DISPLAY_MOVED = SDL_EVENT_DISPLAY_MOVED;
+constexpr EventType EVENT_DISPLAY_MOVED =
+  SDL_EVENT_DISPLAY_MOVED; ///< Display has changed position.
 
-/**
- * Display has changed desktop mode
- */
 constexpr EventType EVENT_DISPLAY_DESKTOP_MODE_CHANGED =
-  SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED;
+  SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED; ///< Display has changed desktop mode.
 
-/**
- * Display has changed current mode
- */
 constexpr EventType EVENT_DISPLAY_CURRENT_MODE_CHANGED =
-  SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED;
+  SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED; ///< Display has changed current mode.
 
-/**
- * Display has changed content scale
- */
 constexpr EventType EVENT_DISPLAY_CONTENT_SCALE_CHANGED =
-  SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED;
+  SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED; ///< Display has changed content
+                                           ///< scale.
 
 constexpr EventType EVENT_DISPLAY_FIRST =
   SDL_EVENT_DISPLAY_FIRST; ///< DISPLAY_FIRST
@@ -41279,130 +41181,95 @@ constexpr EventType EVENT_DISPLAY_FIRST =
 constexpr EventType EVENT_DISPLAY_LAST =
   SDL_EVENT_DISPLAY_LAST; ///< DISPLAY_LAST
 
-/**
- * Window has been shown
- */
-constexpr EventType EVENT_WINDOW_SHOWN = SDL_EVENT_WINDOW_SHOWN;
+constexpr EventType EVENT_WINDOW_SHOWN =
+  SDL_EVENT_WINDOW_SHOWN; ///< Window has been shown.
 
-/**
- * Window has been hidden
- */
-constexpr EventType EVENT_WINDOW_HIDDEN = SDL_EVENT_WINDOW_HIDDEN;
+constexpr EventType EVENT_WINDOW_HIDDEN =
+  SDL_EVENT_WINDOW_HIDDEN; ///< Window has been hidden.
 
 /**
  * Window has been exposed and should be redrawn, and can be redrawn directly
- * from event watchers for this event
+ * from event watchers for this event.
  */
 constexpr EventType EVENT_WINDOW_EXPOSED = SDL_EVENT_WINDOW_EXPOSED;
 
-/**
- * Window has been moved to data1, data2
- */
-constexpr EventType EVENT_WINDOW_MOVED = SDL_EVENT_WINDOW_MOVED;
+constexpr EventType EVENT_WINDOW_MOVED =
+  SDL_EVENT_WINDOW_MOVED; ///< Window has been moved to data1, data2.
+
+constexpr EventType EVENT_WINDOW_RESIZED =
+  SDL_EVENT_WINDOW_RESIZED; ///< Window has been resized to data1xdata2.
 
 /**
- * Window has been resized to data1xdata2
- */
-constexpr EventType EVENT_WINDOW_RESIZED = SDL_EVENT_WINDOW_RESIZED;
-
-/**
- * The pixel size of the window has changed to data1xdata2
+ * The pixel size of the window has changed to data1xdata2.
  */
 constexpr EventType EVENT_WINDOW_PIXEL_SIZE_CHANGED =
   SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED;
 
 /**
- * The pixel size of a Metal view associated with the window has changed
+ * The pixel size of a Metal view associated with the window has changed.
  */
 constexpr EventType EVENT_WINDOW_METAL_VIEW_RESIZED =
   SDL_EVENT_WINDOW_METAL_VIEW_RESIZED;
 
-/**
- * Window has been minimized
- */
-constexpr EventType EVENT_WINDOW_MINIMIZED = SDL_EVENT_WINDOW_MINIMIZED;
+constexpr EventType EVENT_WINDOW_MINIMIZED =
+  SDL_EVENT_WINDOW_MINIMIZED; ///< Window has been minimized.
+
+constexpr EventType EVENT_WINDOW_MAXIMIZED =
+  SDL_EVENT_WINDOW_MAXIMIZED; ///< Window has been maximized.
 
 /**
- * Window has been maximized
- */
-constexpr EventType EVENT_WINDOW_MAXIMIZED = SDL_EVENT_WINDOW_MAXIMIZED;
-
-/**
- * Window has been restored to normal size and position
+ * Window has been restored to normal size and position.
  */
 constexpr EventType EVENT_WINDOW_RESTORED = SDL_EVENT_WINDOW_RESTORED;
 
-/**
- * Window has gained mouse focus
- */
-constexpr EventType EVENT_WINDOW_MOUSE_ENTER = SDL_EVENT_WINDOW_MOUSE_ENTER;
+constexpr EventType EVENT_WINDOW_MOUSE_ENTER =
+  SDL_EVENT_WINDOW_MOUSE_ENTER; ///< Window has gained mouse focus.
+
+constexpr EventType EVENT_WINDOW_MOUSE_LEAVE =
+  SDL_EVENT_WINDOW_MOUSE_LEAVE; ///< Window has lost mouse focus.
+
+constexpr EventType EVENT_WINDOW_FOCUS_GAINED =
+  SDL_EVENT_WINDOW_FOCUS_GAINED; ///< Window has gained keyboard focus.
+
+constexpr EventType EVENT_WINDOW_FOCUS_LOST =
+  SDL_EVENT_WINDOW_FOCUS_LOST; ///< Window has lost keyboard focus.
 
 /**
- * Window has lost mouse focus
- */
-constexpr EventType EVENT_WINDOW_MOUSE_LEAVE = SDL_EVENT_WINDOW_MOUSE_LEAVE;
-
-/**
- * Window has gained keyboard focus
- */
-constexpr EventType EVENT_WINDOW_FOCUS_GAINED = SDL_EVENT_WINDOW_FOCUS_GAINED;
-
-/**
- * Window has lost keyboard focus
- */
-constexpr EventType EVENT_WINDOW_FOCUS_LOST = SDL_EVENT_WINDOW_FOCUS_LOST;
-
-/**
- * The window manager requests that the window be closed
+ * The window manager requests that the window be closed.
  */
 constexpr EventType EVENT_WINDOW_CLOSE_REQUESTED =
   SDL_EVENT_WINDOW_CLOSE_REQUESTED;
 
-/**
- * Window had a hit test that wasn't SDL_HITTEST_NORMAL
- */
-constexpr EventType EVENT_WINDOW_HIT_TEST = SDL_EVENT_WINDOW_HIT_TEST;
+constexpr EventType EVENT_WINDOW_HIT_TEST =
+  SDL_EVENT_WINDOW_HIT_TEST; ///< Window had a hit test that wasn't
+                             ///< HITTEST_NORMAL.
 
 /**
- * The ICC profile of the window's display has changed
+ * The ICC profile of the window's display has changed.
  */
 constexpr EventType EVENT_WINDOW_ICCPROF_CHANGED =
   SDL_EVENT_WINDOW_ICCPROF_CHANGED;
 
-/**
- * Window has been moved to display data1
- */
 constexpr EventType EVENT_WINDOW_DISPLAY_CHANGED =
-  SDL_EVENT_WINDOW_DISPLAY_CHANGED;
+  SDL_EVENT_WINDOW_DISPLAY_CHANGED; ///< Window has been moved to display data1.
 
-/**
- * Window display scale has been changed
- */
 constexpr EventType EVENT_WINDOW_DISPLAY_SCALE_CHANGED =
-  SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED;
+  SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED; ///< Window display scale has been
+                                          ///< changed.
 
-/**
- * The window safe area has been changed
- */
 constexpr EventType EVENT_WINDOW_SAFE_AREA_CHANGED =
-  SDL_EVENT_WINDOW_SAFE_AREA_CHANGED;
+  SDL_EVENT_WINDOW_SAFE_AREA_CHANGED; ///< The window safe area has been
+                                      ///< changed.
 
-/**
- * The window has been occluded
- */
-constexpr EventType EVENT_WINDOW_OCCLUDED = SDL_EVENT_WINDOW_OCCLUDED;
+constexpr EventType EVENT_WINDOW_OCCLUDED =
+  SDL_EVENT_WINDOW_OCCLUDED; ///< The window has been occluded.
 
-/**
- * The window has entered fullscreen mode
- */
 constexpr EventType EVENT_WINDOW_ENTER_FULLSCREEN =
-  SDL_EVENT_WINDOW_ENTER_FULLSCREEN;
+  SDL_EVENT_WINDOW_ENTER_FULLSCREEN; ///< The window has entered fullscreen
+                                     ///< mode.
 
-/**
- * The window has left fullscreen mode
- */
 constexpr EventType EVENT_WINDOW_LEAVE_FULLSCREEN =
-  SDL_EVENT_WINDOW_LEAVE_FULLSCREEN;
+  SDL_EVENT_WINDOW_LEAVE_FULLSCREEN; ///< The window has left fullscreen mode.
 
 /**
  * The window with the associated ID is being or has been destroyed.  If this
@@ -41413,36 +41280,23 @@ constexpr EventType EVENT_WINDOW_LEAVE_FULLSCREEN =
  */
 constexpr EventType EVENT_WINDOW_DESTROYED = SDL_EVENT_WINDOW_DESTROYED;
 
-/**
- * Window HDR properties have changed
- */
 constexpr EventType EVENT_WINDOW_HDR_STATE_CHANGED =
-  SDL_EVENT_WINDOW_HDR_STATE_CHANGED;
+  SDL_EVENT_WINDOW_HDR_STATE_CHANGED; ///< Window HDR properties have changed.
 
 constexpr EventType EVENT_WINDOW_FIRST =
   SDL_EVENT_WINDOW_FIRST; ///< WINDOW_FIRST
 
 constexpr EventType EVENT_WINDOW_LAST = SDL_EVENT_WINDOW_LAST; ///< WINDOW_LAST
 
-/**
- * Key pressed
- */
-constexpr EventType EVENT_KEY_DOWN = SDL_EVENT_KEY_DOWN;
+constexpr EventType EVENT_KEY_DOWN = SDL_EVENT_KEY_DOWN; ///< Key pressed.
 
-/**
- * Key released
- */
-constexpr EventType EVENT_KEY_UP = SDL_EVENT_KEY_UP;
+constexpr EventType EVENT_KEY_UP = SDL_EVENT_KEY_UP; ///< Key released.
 
-/**
- * Keyboard text editing (composition)
- */
-constexpr EventType EVENT_TEXT_EDITING = SDL_EVENT_TEXT_EDITING;
+constexpr EventType EVENT_TEXT_EDITING =
+  SDL_EVENT_TEXT_EDITING; ///< Keyboard text editing (composition)
 
-/**
- * Keyboard text input
- */
-constexpr EventType EVENT_TEXT_INPUT = SDL_EVENT_TEXT_INPUT;
+constexpr EventType EVENT_TEXT_INPUT =
+  SDL_EVENT_TEXT_INPUT; ///< Keyboard text input.
 
 /**
  * Keymap changed due to a system event such as an input language or keyboard
@@ -41450,163 +41304,97 @@ constexpr EventType EVENT_TEXT_INPUT = SDL_EVENT_TEXT_INPUT;
  */
 constexpr EventType EVENT_KEYMAP_CHANGED = SDL_EVENT_KEYMAP_CHANGED;
 
-/**
- * A new keyboard has been inserted into the system
- */
-constexpr EventType EVENT_KEYBOARD_ADDED = SDL_EVENT_KEYBOARD_ADDED;
+constexpr EventType EVENT_KEYBOARD_ADDED =
+  SDL_EVENT_KEYBOARD_ADDED; ///< A new keyboard has been inserted into the
+                            ///< system.
 
-/**
- * A keyboard has been removed
- */
-constexpr EventType EVENT_KEYBOARD_REMOVED = SDL_EVENT_KEYBOARD_REMOVED;
+constexpr EventType EVENT_KEYBOARD_REMOVED =
+  SDL_EVENT_KEYBOARD_REMOVED; ///< A keyboard has been removed.
 
-/**
- * Keyboard text editing candidates
- */
 constexpr EventType EVENT_TEXT_EDITING_CANDIDATES =
-  SDL_EVENT_TEXT_EDITING_CANDIDATES;
+  SDL_EVENT_TEXT_EDITING_CANDIDATES; ///< Keyboard text editing candidates.
 
-/**
- * Mouse moved
- */
-constexpr EventType EVENT_MOUSE_MOTION = SDL_EVENT_MOUSE_MOTION;
+constexpr EventType EVENT_MOUSE_MOTION =
+  SDL_EVENT_MOUSE_MOTION; ///< Mouse moved.
 
-/**
- * Mouse button pressed
- */
-constexpr EventType EVENT_MOUSE_BUTTON_DOWN = SDL_EVENT_MOUSE_BUTTON_DOWN;
+constexpr EventType EVENT_MOUSE_BUTTON_DOWN =
+  SDL_EVENT_MOUSE_BUTTON_DOWN; ///< Mouse button pressed.
 
-/**
- * Mouse button released
- */
-constexpr EventType EVENT_MOUSE_BUTTON_UP = SDL_EVENT_MOUSE_BUTTON_UP;
+constexpr EventType EVENT_MOUSE_BUTTON_UP =
+  SDL_EVENT_MOUSE_BUTTON_UP; ///< Mouse button released.
 
-/**
- * Mouse wheel motion
- */
-constexpr EventType EVENT_MOUSE_WHEEL = SDL_EVENT_MOUSE_WHEEL;
+constexpr EventType EVENT_MOUSE_WHEEL =
+  SDL_EVENT_MOUSE_WHEEL; ///< Mouse wheel motion.
 
-/**
- * A new mouse has been inserted into the system
- */
-constexpr EventType EVENT_MOUSE_ADDED = SDL_EVENT_MOUSE_ADDED;
+constexpr EventType EVENT_MOUSE_ADDED =
+  SDL_EVENT_MOUSE_ADDED; ///< A new mouse has been inserted into the system.
 
-/**
- * A mouse has been removed
- */
-constexpr EventType EVENT_MOUSE_REMOVED = SDL_EVENT_MOUSE_REMOVED;
+constexpr EventType EVENT_MOUSE_REMOVED =
+  SDL_EVENT_MOUSE_REMOVED; ///< A mouse has been removed.
 
-/**
- * Joystick axis motion
- */
-constexpr EventType EVENT_JOYSTICK_AXIS_MOTION = SDL_EVENT_JOYSTICK_AXIS_MOTION;
+constexpr EventType EVENT_JOYSTICK_AXIS_MOTION =
+  SDL_EVENT_JOYSTICK_AXIS_MOTION; ///< Joystick axis motion.
 
-/**
- * Joystick trackball motion
- */
-constexpr EventType EVENT_JOYSTICK_BALL_MOTION = SDL_EVENT_JOYSTICK_BALL_MOTION;
+constexpr EventType EVENT_JOYSTICK_BALL_MOTION =
+  SDL_EVENT_JOYSTICK_BALL_MOTION; ///< Joystick trackball motion.
 
-/**
- * Joystick hat position change
- */
-constexpr EventType EVENT_JOYSTICK_HAT_MOTION = SDL_EVENT_JOYSTICK_HAT_MOTION;
+constexpr EventType EVENT_JOYSTICK_HAT_MOTION =
+  SDL_EVENT_JOYSTICK_HAT_MOTION; ///< Joystick hat position change.
 
-/**
- * Joystick button pressed
- */
-constexpr EventType EVENT_JOYSTICK_BUTTON_DOWN = SDL_EVENT_JOYSTICK_BUTTON_DOWN;
+constexpr EventType EVENT_JOYSTICK_BUTTON_DOWN =
+  SDL_EVENT_JOYSTICK_BUTTON_DOWN; ///< Joystick button pressed.
 
-/**
- * Joystick button released
- */
-constexpr EventType EVENT_JOYSTICK_BUTTON_UP = SDL_EVENT_JOYSTICK_BUTTON_UP;
+constexpr EventType EVENT_JOYSTICK_BUTTON_UP =
+  SDL_EVENT_JOYSTICK_BUTTON_UP; ///< Joystick button released.
 
-/**
- * A new joystick has been inserted into the system
- */
-constexpr EventType EVENT_JOYSTICK_ADDED = SDL_EVENT_JOYSTICK_ADDED;
+constexpr EventType EVENT_JOYSTICK_ADDED =
+  SDL_EVENT_JOYSTICK_ADDED; ///< A new joystick has been inserted into the
+                            ///< system.
 
-/**
- * An opened joystick has been removed
- */
-constexpr EventType EVENT_JOYSTICK_REMOVED = SDL_EVENT_JOYSTICK_REMOVED;
+constexpr EventType EVENT_JOYSTICK_REMOVED =
+  SDL_EVENT_JOYSTICK_REMOVED; ///< An opened joystick has been removed.
 
-/**
- * Joystick battery level change
- */
 constexpr EventType EVENT_JOYSTICK_BATTERY_UPDATED =
-  SDL_EVENT_JOYSTICK_BATTERY_UPDATED;
+  SDL_EVENT_JOYSTICK_BATTERY_UPDATED; ///< Joystick battery level change.
 
-/**
- * Joystick update is complete
- */
 constexpr EventType EVENT_JOYSTICK_UPDATE_COMPLETE =
-  SDL_EVENT_JOYSTICK_UPDATE_COMPLETE;
+  SDL_EVENT_JOYSTICK_UPDATE_COMPLETE; ///< Joystick update is complete.
 
-/**
- * Gamepad axis motion
- */
-constexpr EventType EVENT_GAMEPAD_AXIS_MOTION = SDL_EVENT_GAMEPAD_AXIS_MOTION;
+constexpr EventType EVENT_GAMEPAD_AXIS_MOTION =
+  SDL_EVENT_GAMEPAD_AXIS_MOTION; ///< Gamepad axis motion.
 
-/**
- * Gamepad button pressed
- */
-constexpr EventType EVENT_GAMEPAD_BUTTON_DOWN = SDL_EVENT_GAMEPAD_BUTTON_DOWN;
+constexpr EventType EVENT_GAMEPAD_BUTTON_DOWN =
+  SDL_EVENT_GAMEPAD_BUTTON_DOWN; ///< Gamepad button pressed.
 
-/**
- * Gamepad button released
- */
-constexpr EventType EVENT_GAMEPAD_BUTTON_UP = SDL_EVENT_GAMEPAD_BUTTON_UP;
+constexpr EventType EVENT_GAMEPAD_BUTTON_UP =
+  SDL_EVENT_GAMEPAD_BUTTON_UP; ///< Gamepad button released.
 
-/**
- * A new gamepad has been inserted into the system
- */
-constexpr EventType EVENT_GAMEPAD_ADDED = SDL_EVENT_GAMEPAD_ADDED;
+constexpr EventType EVENT_GAMEPAD_ADDED =
+  SDL_EVENT_GAMEPAD_ADDED; ///< A new gamepad has been inserted into the system.
 
-/**
- * A gamepad has been removed
- */
-constexpr EventType EVENT_GAMEPAD_REMOVED = SDL_EVENT_GAMEPAD_REMOVED;
+constexpr EventType EVENT_GAMEPAD_REMOVED =
+  SDL_EVENT_GAMEPAD_REMOVED; ///< A gamepad has been removed.
 
-/**
- * The gamepad mapping was updated
- */
-constexpr EventType EVENT_GAMEPAD_REMAPPED = SDL_EVENT_GAMEPAD_REMAPPED;
+constexpr EventType EVENT_GAMEPAD_REMAPPED =
+  SDL_EVENT_GAMEPAD_REMAPPED; ///< The gamepad mapping was updated.
 
-/**
- * Gamepad touchpad was touched
- */
 constexpr EventType EVENT_GAMEPAD_TOUCHPAD_DOWN =
-  SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN;
+  SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN; ///< Gamepad touchpad was touched.
 
-/**
- * Gamepad touchpad finger was moved
- */
 constexpr EventType EVENT_GAMEPAD_TOUCHPAD_MOTION =
-  SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION;
+  SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION; ///< Gamepad touchpad finger was moved.
 
-/**
- * Gamepad touchpad finger was lifted
- */
-constexpr EventType EVENT_GAMEPAD_TOUCHPAD_UP = SDL_EVENT_GAMEPAD_TOUCHPAD_UP;
+constexpr EventType EVENT_GAMEPAD_TOUCHPAD_UP =
+  SDL_EVENT_GAMEPAD_TOUCHPAD_UP; ///< Gamepad touchpad finger was lifted.
 
-/**
- * Gamepad sensor was updated
- */
 constexpr EventType EVENT_GAMEPAD_SENSOR_UPDATE =
-  SDL_EVENT_GAMEPAD_SENSOR_UPDATE;
+  SDL_EVENT_GAMEPAD_SENSOR_UPDATE; ///< Gamepad sensor was updated.
 
-/**
- * Gamepad update is complete
- */
 constexpr EventType EVENT_GAMEPAD_UPDATE_COMPLETE =
-  SDL_EVENT_GAMEPAD_UPDATE_COMPLETE;
+  SDL_EVENT_GAMEPAD_UPDATE_COMPLETE; ///< Gamepad update is complete.
 
-/**
- * Gamepad Steam handle has changed
- */
 constexpr EventType EVENT_GAMEPAD_STEAM_HANDLE_UPDATED =
-  SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED;
+  SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED; ///< Gamepad Steam handle has changed.
 
 constexpr EventType EVENT_FINGER_DOWN = SDL_EVENT_FINGER_DOWN; ///< FINGER_DOWN
 
@@ -41618,45 +41406,31 @@ constexpr EventType EVENT_FINGER_MOTION =
 constexpr EventType EVENT_FINGER_CANCELED =
   SDL_EVENT_FINGER_CANCELED; ///< FINGER_CANCELED
 
-/**
- * The clipboard or primary selection changed
- */
-constexpr EventType EVENT_CLIPBOARD_UPDATE = SDL_EVENT_CLIPBOARD_UPDATE;
+constexpr EventType EVENT_CLIPBOARD_UPDATE =
+  SDL_EVENT_CLIPBOARD_UPDATE; ///< The clipboard or primary selection changed.
 
-/**
- * The system requests a file open
- */
-constexpr EventType EVENT_DROP_FILE = SDL_EVENT_DROP_FILE;
+constexpr EventType EVENT_DROP_FILE =
+  SDL_EVENT_DROP_FILE; ///< The system requests a file open.
 
-/**
- * text/plain drag-and-drop event
- */
-constexpr EventType EVENT_DROP_TEXT = SDL_EVENT_DROP_TEXT;
+constexpr EventType EVENT_DROP_TEXT =
+  SDL_EVENT_DROP_TEXT; ///< text/plain drag-and-drop event
 
-/**
- * A new set of drops is beginning (NULL filename)
- */
-constexpr EventType EVENT_DROP_BEGIN = SDL_EVENT_DROP_BEGIN;
+constexpr EventType EVENT_DROP_BEGIN =
+  SDL_EVENT_DROP_BEGIN; ///< A new set of drops is beginning (NULL filename)
 
 /**
  * Current set of drops is now complete (NULL filename)
  */
 constexpr EventType EVENT_DROP_COMPLETE = SDL_EVENT_DROP_COMPLETE;
 
-/**
- * Position while moving over the window
- */
-constexpr EventType EVENT_DROP_POSITION = SDL_EVENT_DROP_POSITION;
+constexpr EventType EVENT_DROP_POSITION =
+  SDL_EVENT_DROP_POSITION; ///< Position while moving over the window.
 
-/**
- * A new audio device is available
- */
-constexpr EventType EVENT_AUDIO_DEVICE_ADDED = SDL_EVENT_AUDIO_DEVICE_ADDED;
+constexpr EventType EVENT_AUDIO_DEVICE_ADDED =
+  SDL_EVENT_AUDIO_DEVICE_ADDED; ///< A new audio device is available.
 
-/**
- * An audio device has been removed.
- */
-constexpr EventType EVENT_AUDIO_DEVICE_REMOVED = SDL_EVENT_AUDIO_DEVICE_REMOVED;
+constexpr EventType EVENT_AUDIO_DEVICE_REMOVED =
+  SDL_EVENT_AUDIO_DEVICE_REMOVED; ///< An audio device has been removed.
 
 /**
  * An audio device's format has been changed by the system.
@@ -41664,61 +41438,41 @@ constexpr EventType EVENT_AUDIO_DEVICE_REMOVED = SDL_EVENT_AUDIO_DEVICE_REMOVED;
 constexpr EventType EVENT_AUDIO_DEVICE_FORMAT_CHANGED =
   SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED;
 
-/**
- * A sensor was updated
- */
-constexpr EventType EVENT_SENSOR_UPDATE = SDL_EVENT_SENSOR_UPDATE;
+constexpr EventType EVENT_SENSOR_UPDATE =
+  SDL_EVENT_SENSOR_UPDATE; ///< A sensor was updated.
+
+constexpr EventType EVENT_PEN_PROXIMITY_IN =
+  SDL_EVENT_PEN_PROXIMITY_IN; ///< Pressure-sensitive pen has become available.
+
+constexpr EventType EVENT_PEN_PROXIMITY_OUT =
+  SDL_EVENT_PEN_PROXIMITY_OUT; ///< Pressure-sensitive pen has become
+                               ///< unavailable.
+
+constexpr EventType EVENT_PEN_DOWN =
+  SDL_EVENT_PEN_DOWN; ///< Pressure-sensitive pen touched drawing surface.
 
 /**
- * Pressure-sensitive pen has become available
- */
-constexpr EventType EVENT_PEN_PROXIMITY_IN = SDL_EVENT_PEN_PROXIMITY_IN;
-
-/**
- * Pressure-sensitive pen has become unavailable
- */
-constexpr EventType EVENT_PEN_PROXIMITY_OUT = SDL_EVENT_PEN_PROXIMITY_OUT;
-
-/**
- * Pressure-sensitive pen touched drawing surface
- */
-constexpr EventType EVENT_PEN_DOWN = SDL_EVENT_PEN_DOWN;
-
-/**
- * Pressure-sensitive pen stopped touching drawing surface
+ * Pressure-sensitive pen stopped touching drawing surface.
  */
 constexpr EventType EVENT_PEN_UP = SDL_EVENT_PEN_UP;
 
-/**
- * Pressure-sensitive pen button pressed
- */
-constexpr EventType EVENT_PEN_BUTTON_DOWN = SDL_EVENT_PEN_BUTTON_DOWN;
+constexpr EventType EVENT_PEN_BUTTON_DOWN =
+  SDL_EVENT_PEN_BUTTON_DOWN; ///< Pressure-sensitive pen button pressed.
 
-/**
- * Pressure-sensitive pen button released
- */
-constexpr EventType EVENT_PEN_BUTTON_UP = SDL_EVENT_PEN_BUTTON_UP;
+constexpr EventType EVENT_PEN_BUTTON_UP =
+  SDL_EVENT_PEN_BUTTON_UP; ///< Pressure-sensitive pen button released.
 
-/**
- * Pressure-sensitive pen is moving on the tablet
- */
-constexpr EventType EVENT_PEN_MOTION = SDL_EVENT_PEN_MOTION;
+constexpr EventType EVENT_PEN_MOTION =
+  SDL_EVENT_PEN_MOTION; ///< Pressure-sensitive pen is moving on the tablet.
 
-/**
- * Pressure-sensitive pen angle/pressure/etc changed
- */
-constexpr EventType EVENT_PEN_AXIS = SDL_EVENT_PEN_AXIS;
+constexpr EventType EVENT_PEN_AXIS =
+  SDL_EVENT_PEN_AXIS; ///< Pressure-sensitive pen angle/pressure/etc changed.
 
-/**
- * A new camera device is available
- */
-constexpr EventType EVENT_CAMERA_DEVICE_ADDED = SDL_EVENT_CAMERA_DEVICE_ADDED;
+constexpr EventType EVENT_CAMERA_DEVICE_ADDED =
+  SDL_EVENT_CAMERA_DEVICE_ADDED; ///< A new camera device is available.
 
-/**
- * A camera device has been removed.
- */
 constexpr EventType EVENT_CAMERA_DEVICE_REMOVED =
-  SDL_EVENT_CAMERA_DEVICE_REMOVED;
+  SDL_EVENT_CAMERA_DEVICE_REMOVED; ///< A camera device has been removed.
 
 /**
  * A camera device has been approved for use by the user.
@@ -41732,19 +41486,18 @@ constexpr EventType EVENT_CAMERA_DEVICE_APPROVED =
 constexpr EventType EVENT_CAMERA_DEVICE_DENIED = SDL_EVENT_CAMERA_DEVICE_DENIED;
 
 /**
- * The render targets have been reset and their contents need to be updated
+ * The render targets have been reset and their contents need to be updated.
  */
 constexpr EventType EVENT_RENDER_TARGETS_RESET = SDL_EVENT_RENDER_TARGETS_RESET;
 
 /**
- * The device has been reset and all textures need to be recreated
+ * The device has been reset and all textures need to be recreated.
  */
 constexpr EventType EVENT_RENDER_DEVICE_RESET = SDL_EVENT_RENDER_DEVICE_RESET;
 
-/**
- * The device has been lost and can't be recovered.
- */
-constexpr EventType EVENT_RENDER_DEVICE_LOST = SDL_EVENT_RENDER_DEVICE_LOST;
+constexpr EventType EVENT_RENDER_DEVICE_LOST =
+  SDL_EVENT_RENDER_DEVICE_LOST; ///< The device has been lost and can't be
+                                ///< recovered.
 
 constexpr EventType EVENT_PRIVATE0 = SDL_EVENT_PRIVATE0; ///< PRIVATE0
 
@@ -41754,19 +41507,17 @@ constexpr EventType EVENT_PRIVATE2 = SDL_EVENT_PRIVATE2; ///< PRIVATE2
 
 constexpr EventType EVENT_PRIVATE3 = SDL_EVENT_PRIVATE3; ///< PRIVATE3
 
-/**
- * Signals the end of an event poll cycle
- */
-constexpr EventType EVENT_POLL_SENTINEL = SDL_EVENT_POLL_SENTINEL;
+constexpr EventType EVENT_POLL_SENTINEL =
+  SDL_EVENT_POLL_SENTINEL; ///< Signals the end of an event poll cycle.
 
 /**
- * Events SDL_EVENT_USER through SDL_EVENT_LAST are for your use,
- *  and should be allocated with SDL_RegisterEvents()
+ * Events EVENT_USER through EVENT_LAST are for your use, and should be
+ * allocated with RegisterEvents()
  */
 constexpr EventType EVENT_USER = SDL_EVENT_USER;
 
 /**
- * This last event is only for bounding internal arrays
+ * This last event is only for bounding internal arrays.
  */
 constexpr EventType EVENT_LAST = SDL_EVENT_LAST;
 
@@ -41806,16 +41557,16 @@ using KeyboardDeviceEvent = SDL_KeyboardDeviceEvent;
 /**
  * Keyboard button event structure (event.key.*)
  *
- * The `key` is the base SDL_Keycode generated by pressing the `scancode`
+ * The `key` is the base Keycode generated by pressing the `scancode`
  * using the current keyboard layout, applying any options specified in
- * SDL_HINT_KEYCODE_OPTIONS. You can get the SDL_Keycode corresponding to the
+ * SDL_HINT_KEYCODE_OPTIONS. You can get the Keycode corresponding to the
  * event scancode and modifiers directly from the keyboard layout, bypassing
- * SDL_HINT_KEYCODE_OPTIONS, by calling SDL_GetKeyFromScancode().
+ * SDL_HINT_KEYCODE_OPTIONS, by calling Keycode.Keycode().
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GetKeyFromScancode()
- * @sa HINT_KEYCODE_OPTIONS
+ * @sa Keycode.Keycode
+ * @sa SDL_HINT_KEYCODE_OPTIONS
  */
 using KeyboardEvent = SDL_KeyboardEvent;
 
@@ -41841,12 +41592,12 @@ using TextEditingCandidatesEvent = SDL_TextEditingCandidatesEvent;
  * Keyboard text input event structure (event.text.*)
  *
  * This event will never be delivered unless text input is enabled by calling
- * SDL_StartTextInput(). Text input is disabled by default!
+ * WindowRef.StartTextInput(). Text input is disabled by default!
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa StartTextInput()
- * @sa StopTextInput()
+ * @sa WindowRef.StartTextInput
+ * @sa WindowRef.StopTextInput
  */
 using TextInputEvent = SDL_TextInputEvent;
 
@@ -41910,7 +41661,7 @@ using JoyButtonEvent = SDL_JoyButtonEvent;
  * Joystick device event structure (event.jdevice.*)
  *
  * SDL will send JOYSTICK_ADDED events for devices that are already plugged in
- * during SDL_Init.
+ * during InitSubSystem.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -41942,11 +41693,11 @@ using GamepadButtonEvent = SDL_GamepadButtonEvent;
 /**
  * Gamepad device event structure (event.gdevice.*)
  *
- * Joysticks that are supported gamepads receive both an SDL_JoyDeviceEvent
- * and an SDL_GamepadDeviceEvent.
+ * Joysticks that are supported gamepads receive both an JoyDeviceEvent
+ * and an GamepadDeviceEvent.
  *
  * SDL will send GAMEPAD_ADDED events for joysticks that are already plugged
- * in during SDL_Init() and are recognized as gamepads. It will also send
+ * in during InitSubSystem() and are recognized as gamepads. It will also send
  * events for joysticks that get gamepad mappings at runtime.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -42015,14 +41766,14 @@ using TouchFingerEvent = SDL_TouchFingerEvent;
  * Pressure-sensitive pen proximity event structure (event.pmotion.*)
  *
  * When a pen becomes visible to the system (it is close enough to a tablet,
- * etc), SDL will send an SDL_EVENT_PEN_PROXIMITY_IN event with the new pen's
+ * etc), SDL will send an EVENT_PEN_PROXIMITY_IN event with the new pen's
  * ID. This ID is valid until the pen leaves proximity again (has been removed
  * from the tablet's area, the tablet has been unplugged, etc). If the same
  * pen reenters proximity again, it will be given a new ID.
  *
  * Note that "proximity" means "close enough for the tablet to know the tool
  * is there." The pen touching and lifting off from the tablet while not
- * leaving the area are handled by SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP.
+ * leaving the area are handled by EVENT_PEN_DOWN and EVENT_PEN_UP.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -42033,7 +41784,7 @@ using PenProximityEvent = SDL_PenProximityEvent;
  *
  * Depending on the hardware, you may get motion events when the pen is not
  * touching a tablet, for tracking a pen even when it isn't drawing. You
- * should listen for SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP events, or check
+ * should listen for EVENT_PEN_DOWN and EVENT_PEN_UP events, or check
  * `pen_state & SDL_PEN_INPUT_DOWN` to decide if a pen is "drawing" when
  * dealing with pen motion.
  *
@@ -42055,7 +41806,7 @@ using PenTouchEvent = SDL_PenTouchEvent;
  * Pressure-sensitive pen button event structure (event.pbutton.*)
  *
  * This is for buttons on the pen itself that the user might click. The pen
- * itself pressing down to draw triggers a SDL_EVENT_PEN_DOWN event instead.
+ * itself pressing down to draw triggers a EVENT_PEN_DOWN event instead.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -42106,9 +41857,9 @@ using QuitEvent = SDL_QuitEvent;
  *
  * This event is unique; it is never created by SDL, but only by the
  * application. The event can be pushed onto the event queue using
- * SDL_PushEvent(). The contents of the structure members are completely up to
+ * PushEvent(). The contents of the structure members are completely up to
  * the programmer; the only requirement is that '''type''' is a value obtained
- * from SDL_RegisterEvents().
+ * from RegisterEvents().
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -42117,7 +41868,7 @@ using UserEvent = SDL_UserEvent;
 /**
  * The structure for all events in SDL.
  *
- * The SDL_Event structure is the core of all event handling in SDL. SDL_Event
+ * The Event structure is the core of all event handling in SDL. Event
  * is a union of all event structures used in SDL.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -42129,13 +41880,13 @@ using Event = SDL_Event;
  *
  * This function updates the event queue and internal input device state.
  *
- * SDL_PumpEvents() gathers all the pending input information from devices and
- * places it in the event queue. Without calls to SDL_PumpEvents() no events
- * would ever be placed on the queue. Often the need for calls to
- * SDL_PumpEvents() is hidden from the user since SDL_PollEvent() and
- * SDL_WaitEvent() implicitly call SDL_PumpEvents(). However, if you are not
- * polling or waiting for events (e.g. you are filtering them), then you must
- * call SDL_PumpEvents() to force an event queue update.
+ * PumpEvents() gathers all the pending input information from devices and
+ * places it in the event queue. Without calls to PumpEvents() no events would
+ * ever be placed on the queue. Often the need for calls to PumpEvents() is
+ * hidden from the user since PollEvent() and WaitEvent() implicitly call
+ * PumpEvents(). However, if you are not polling or waiting for events (e.g. you
+ * are filtering them), then you must call PumpEvents() to force an event queue
+ * update.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -42159,10 +41910,8 @@ inline void PumpEvents() { return SDL_PumpEvents(); }
  */
 using EventAction = SDL_EventAction;
 
-/**
- * Add events to the back of the queue.
- */
-constexpr EventAction ADDEVENT = SDL_ADDEVENT;
+constexpr EventAction ADDEVENT =
+  SDL_ADDEVENT; ///< Add events to the back of the queue.
 
 /**
  * Check but don't remove events from the queue front.
@@ -42183,32 +41932,32 @@ constexpr EventAction GETEVENT = SDL_GETEVENT;
  *
  * ## remarks
  *
- * - `SDL_ADDEVENT`: up to `numevents` events will be added to the back of the
+ * - `ADDEVENT`: up to `numevents` events will be added to the back of the
  *   event queue.
- * - `SDL_PEEKEVENT`: `numevents` events at the front of the event queue,
+ * - `PEEKEVENT`: `numevents` events at the front of the event queue,
  *   within the specified minimum and maximum type, will be returned to the
- *   caller and will _not_ be removed from the queue. If you pass NULL for
+ *   caller and will _not_ be removed from the queue. If you pass nullptr for
  *   `events`, then `numevents` is ignored and the total number of matching
  *   events will be returned.
- * - `SDL_GETEVENT`: up to `numevents` events at the front of the event queue,
+ * - `GETEVENT`: up to `numevents` events at the front of the event queue,
  *   within the specified minimum and maximum type, will be returned to the
  *   caller and will be removed from the queue.
  *
- * You may have to call SDL_PumpEvents() before calling this function.
+ * You may have to call PumpEvents() before calling this function.
  * Otherwise, the events may not be ready to be filtered when you call
- * SDL_PeepEvents().
+ * PeepEvents().
  *
- * @param events destination buffer for the retrieved events, may be NULL to
+ * @param events destination buffer for the retrieved events, may be nullptr to
  *               leave the events in the queue and return the number of events
  *               that would have been stored.
- * @param numevents if action is SDL_ADDEVENT, the number of events to add
- *                  back to the event queue; if action is SDL_PEEKEVENT or
- *                  SDL_GETEVENT, the maximum number of events to retrieve.
+ * @param numevents if action is ADDEVENT, the number of events to add
+ *                  back to the event queue; if action is PEEKEVENT or
+ *                  GETEVENT, the maximum number of events to retrieve.
  * @param action action to take; see [Remarks](#remarks) for details.
  * @param minType minimum value of the event type to be considered;
- *                SDL_EVENT_FIRST is a safe choice.
+ *                EVENT_FIRST is a safe choice.
  * @param maxType maximum value of the event type to be considered;
- *                SDL_EVENT_LAST is a safe choice.
+ *                EVENT_LAST is a safe choice.
  * @returns the number of events actually stored or -1 on failure; call
  *          GetError() for more information.
  *
@@ -42232,11 +41981,9 @@ inline int PeepEvents(Event* events,
 /**
  * Check for the existence of a certain event type in the event queue.
  *
- * If you need to check for a range of event types, use SDL_HasEvents()
- * instead.
+ * If you need to check for a range of event types, use HasEvents() instead.
  *
- * @param type the type of event to be queried; see @ref EventTypes for
- * details.
+ * @param type the type of event to be queried; see EventType for details.
  * @returns true if events matching `type` are present, or false if events
  *          matching `type` are not present.
  *
@@ -42251,12 +41998,12 @@ inline bool HasEvent(Uint32 type) { return SDL_HasEvent(type); }
 /**
  * Check for the existence of certain event types in the event queue.
  *
- * If you need to check for a single event type, use SDL_HasEvent() instead.
+ * If you need to check for a single event type, use HasEvent() instead.
  *
  * @param minType the low end of event type to be queried, inclusive; see
- *                SDL_EventType for details.
+ *                EventType for details.
  * @param maxType the high end of event type to be queried, inclusive; see
- *                SDL_EventType for details.
+ *                EventType for details.
  * @returns true if events with type >= `minType` and <= `maxType` are
  *          present, or false if not.
  *
@@ -42274,22 +42021,21 @@ inline bool HasEvents(Uint32 minType = EVENT_FIRST, Uint32 maxType = EVENT_LAST)
 /**
  * Clear events of a specific type from the event queue.
  *
- * This will unconditionally remove any events from the queue that match
- * `type`. If you need to remove a range of event types, use SDL_FlushEvents()
- * instead.
+ * This will unconditionally remove any events from the queue that match `type`.
+ * If you need to remove a range of event types, use FlushEvents() instead.
  *
  * It's also normal to just ignore events you don't care about in your event
  * loop without calling this function.
  *
- * This function only affects currently queued events. If you want to make
- * sure that all pending OS events are flushed, you can call SDL_PumpEvents()
- * on the main thread immediately before the flush call.
+ * This function only affects currently queued events. If you want to make sure
+ * that all pending OS events are flushed, you can call PumpEvents() on the main
+ * thread immediately before the flush call.
  *
  * If you have user events with custom data that needs to be freed, you should
- * use SDL_PeepEvents() to remove and clean up those events before calling
- * this function.
+ * use PeepEvents() to remove and clean up those events before calling this
+ * function.
  *
- * @param type the type of event to be cleared; see SDL_EventType for details.
+ * @param type the type of event to be cleared; see EventType for details.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -42304,19 +42050,19 @@ inline void FlushEvent(Uint32 type) { return SDL_FlushEvent(type); }
  *
  * This will unconditionally remove any events from the queue that are in the
  * range of `minType` to `maxType`, inclusive. If you need to remove a single
- * event type, use SDL_FlushEvent() instead.
+ * event type, use FlushEvent() instead.
  *
  * It's also normal to just ignore events you don't care about in your event
  * loop without calling this function.
  *
- * This function only affects currently queued events. If you want to make
- * sure that all pending OS events are flushed, you can call SDL_PumpEvents()
- * on the main thread immediately before the flush call.
+ * This function only affects currently queued events. If you want to make sure
+ * that all pending OS events are flushed, you can call PumpEvents() on the main
+ * thread immediately before the flush call.
  *
  * @param minType the low end of event type to be cleared, inclusive; see
- *                SDL_EventType for details.
+ *                EventType for details.
  * @param maxType the high end of event type to be cleared, inclusive; see
- *                SDL_EventType for details.
+ *                EventType for details.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -42334,9 +42080,9 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  * Poll for currently pending events.
  *
  * If `event` is not nullptr, the next event is removed from the queue and
- * stored in the Event structure pointed to by `event`. The true returned
- * refers to this event, immediately stored in the SDL Event structure -- not an
- * event to follow.
+ * stored in the Event structure pointed to by `event`. The true returned refers
+ * to this event, immediately stored in the SDL Event structure -- not an event
+ * to follow.
  *
  * If `event` is nullptr, it simply returns true if there is an event in the
  * queue, but will not remove it from the queue.
@@ -42362,8 +42108,8 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  * }
  * ```
  *
- * @param event the SDL_Event structure to be filled with the next event from
- *              the queue, or nullptr.
+ * @param event the Event structure to be filled with the next event from the
+ *              queue, or nullptr.
  * @returns true if this got an event or false if there are none available.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -42482,7 +42228,7 @@ inline Event WaitEvent()
  * system scheduling.
  *
  * @param event the Event structure to be filled in with the next event from the
- * queue, or nullptr.
+ *              queue, or nullptr.
  * @param timeoutMS the maximum number of milliseconds to wait for the next
  *                  available event.
  * @returns true if this got an event or false if the timeout elapsed without
@@ -42720,7 +42466,7 @@ struct EventWatchHandle : CallbackHandle
  * event queue.
  *
  * If you just want to see events without modifying them or preventing them
- * from being queued, you should use SDL_AddEventWatch() instead.
+ * from being queued, you should use AddEventWatch() instead.
  *
  * If the filter function returns true when called, then the event will be
  * added to the internal queue. If it returns false, then the event will be
@@ -42735,13 +42481,12 @@ struct EventWatchHandle : CallbackHandle
  * application at the next event poll.
  *
  * Note: Disabled events never make it to the event filter function; see
- * SDL_SetEventEnabled().
+ * SetEventEnabled().
  *
- * Note: Events pushed onto the queue with SDL_PushEvent() get passed through
- * the event filter, but events pushed onto the queue with SDL_PeepEvents() do
- * not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through the
+ * event filter, but events pushed onto the queue with PeepEvents() do not.
  *
- * @param filter an SDL_EventFilter function to call when an event happens.
+ * @param filter an EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -42954,13 +42699,13 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 }
 
 /**
- * Remove an event watch callback added with SDL_AddEventWatch().
+ * Remove an event watch callback added with AddEventWatch().
  *
- * This function takes the same input as SDL_AddEventWatch() to identify and
- * delete the corresponding callback.
+ * This function takes the same input as AddEventWatch() to identify and delete
+ * the corresponding callback.
  *
- * @param filter the function originally passed to SDL_AddEventWatch().
- * @param userdata the pointer originally passed to SDL_AddEventWatch().
+ * @param filter the function originally passed to AddEventWatch().
+ * @param userdata the pointer originally passed to AddEventWatch().
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -43049,7 +42794,7 @@ inline void FilterEvents(EventFilterCB filter)
 /**
  * Set the state of processing events by type.
  *
- * @param type the type of event; see SDL_EventType for details.
+ * @param type the type of event; see EventType for details.
  * @param enabled whether to process the event or not.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -43066,7 +42811,7 @@ inline void SetEventEnabled(Uint32 type, bool enabled)
 /**
  * Query the state of processing events by type.
  *
- * @param type the type of event; see SDL_EventType for details.
+ * @param type the type of event; see EventType for details.
  * @returns true if the event is being processed, false otherwise.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -43168,8 +42913,8 @@ inline bool HasKeyboard() { return SDL_HasKeyboard(); }
  * @param count a pointer filled in with the number of keyboards returned, may
  *              be nullptr.
  * @returns a 0 terminated array of keyboards instance IDs or nullptr on
- * failure; call GetError() for more information. This should be freed with
- * free() when it is no longer needed.
+ *          failure; call GetError() for more information. This should be freed
+ *          with free() when it is no longer needed.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -43764,7 +43509,7 @@ inline bool WindowRef::IsScreenKeyboardShown() const
  *
  * These message boxes are native system dialogs where possible.
  *
- * There is both a customizable function (ShowMessageBox()) that offers
+ * There is both a customizable function (MessageBox.Show()) that offers
  * lots of options for what to display and reports on what choice the user
  * made, and also a much-simplified version (ShowSimpleMessageBox()),
  * merely takes a text message and title, and waits until the user presses a
@@ -44155,10 +43900,10 @@ inline void ShowSimpleMessageBox(MessageBoxFlags flags,
  * to the window, and reads mouse input no matter how far it moves.
  *
  * Games that want the system to track the mouse but want to draw their own
- * cursor can use HideCursor() and ShowCursor(). It might be more
- * efficient to let the system manage the cursor, if possible, using
- * SetCursor() with a custom image made through CursorRef.CursorRef(),
- * or perhaps just a specific system cursor from CursorRef.CursorRef().
+ * cursor can use HideCursor() and ShowCursor(). It might be more efficient to
+ * let the system manage the cursor, if possible, using SetCursor() with a
+ * custom image made through Cursor.CreateColor(), or perhaps just a specific
+ * system cursor from Cursor.CreateSystem().
  *
  * SDL can, on many platforms, differentiate between multiple connected mice,
  * allowing for interesting input scenarios and multiplayer games. They can be
@@ -46890,13 +46635,13 @@ struct RendererUnsafe : ResourceUnsafe<RendererRef>
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa TextureRef.TextureRef
- * @sa TextureRef.TextureRef
- * @sa TextureRef.TextureRef
- * @sa TextureRef.reset
  *
  * @cat resource
  *
+ * @sa Texture.Create
+ * @sa Texture.CreateFromSurface
+ * @sa Texture.CreateWithProperties
+ * @sa Texture.Destroy
  * @sa Texture
  */
 struct TextureRef : Resource<SDL_Texture*>
@@ -47650,19 +47395,25 @@ struct Texture : ResourceUnique<TextureRef>
   }
 
   /**
-   * Load an image from a IOStreamRef into a software surface.
+   * Create a texture for a rendering context.
    *
-   * If available, this uses LoadSurface(IOStreamRef&), otherwise it uses
-   * LoadBMP(IOStreamRef&).
+   * The contents of a texture when first created are not defined.
    *
    * @param renderer the rendering context.
-   * @param src an IOStreamRef to load an image from.
-   * @post the new Texture with loaded contents on success.
+   * @param format one of the enumerated values in PixelFormat.
+   * @param access one of the enumerated values in TextureAccess.
+   * @param size the width and height of the texture in pixels.
+   * @returns the created texture on success
    * @throws Error on failure.
    *
-   * @sa LoadTexture(RendererRef, StringParam)
-   * @sa Texture.Load(RendererRef, IOStreamRef)
-   * @sa Texture.LoadBMP(RendererRef, IOStreamRef)
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.CreateFromSurface
+   * @sa Texture.CreateWithProperties
+   * @sa Texture.Destroy
+   * @sa TextureRef.Update
    */
   static Texture Create(RendererRef renderer,
                         PixelFormat format,
@@ -47965,7 +47716,7 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RendererRef.RendererRef
+ * @sa Renderer.Create
  * @sa GetRenderDriver
  */
 inline int GetNumRenderDrivers() { return SDL_GetNumRenderDrivers(); }
@@ -48003,7 +47754,7 @@ inline const char* GetRenderDriver(int index)
  * @param title the title of the window, in UTF-8 encoding.
  * @param size the width and height of the window.
  * @param window_flags the flags used to create the window (see
- *                     WindowRef.WindowRef()).
+ *                     Window.Create()).
  * @returns a pair with Window and Renderer on success.
  * @throws Error on failure.
  *
@@ -48011,8 +47762,8 @@ inline const char* GetRenderDriver(int index)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RendererRef.RendererRef
- * @sa WindowRef.WindowRef
+ * @sa Renderer.Create
+ * @sa Window.Create
  */
 inline std::pair<Window, Renderer> CreateWindowAndRenderer(
   StringParam title,
@@ -49400,7 +49151,7 @@ inline Sandbox GetSandbox() { return SDL_GetSandbox(); }
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -49417,7 +49168,7 @@ inline void OnApplicationWillTerminate() { SDL_OnApplicationWillTerminate(); }
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -49437,7 +49188,7 @@ inline void OnApplicationDidReceiveMemoryWarning()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -49457,7 +49208,7 @@ inline void OnApplicationWillEnterBackground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -49477,7 +49228,7 @@ inline void OnApplicationDidEnterBackground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -49497,7 +49248,7 @@ inline void OnApplicationWillEnterForeground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -49519,7 +49270,7 @@ inline void OnApplicationDidEnterForeground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -49591,6 +49342,7 @@ namespace SDL {
  * Header file for SDL_image library
  *
  * A simple library to load images of various formats as SDL surfaces
+ *
  * @{
  */
 
@@ -49645,18 +49397,16 @@ inline int IMG_Version() { return ::IMG_Version(); }
 /**
  * Load an image from an SDL data source into a software surface.
  *
- * An SurfaceRef is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
+ * An Surface is a buffer of pixels in memory accessible by the CPU. Use this if
+ * you plan to hand the data to something else or manipulate it further in code.
  *
- * There are no guarantees about what format the new SurfaceRef data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an SurfaceRef for
- * its specifics, and use SurfaceRef.Convert to then migrate to any supported
- * format.
+ * There are no guarantees about what format the new Surface data will be; in
+ * many cases, SDL_image will attempt to supply a surface that exactly matches
+ * the provided image, but in others it might have to convert (either because
+ * the image is in a format that SDL doesn't directly support or because it's
+ * compressed data that could reasonably uncompress to various formats and
+ * SDL_image had to pick one). You can inspect an Surface for its specifics, and
+ * use SurfaceRef.Convert to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
  * for the surface. You can enable RLE acceleration on the surface afterwards
@@ -49670,7 +49420,7 @@ inline int IMG_Version() { return ::IMG_Version(); }
  * on its ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStreamRef: `LoadSurface("filename.jpg")` will call this function and
+ * with IOStream: `LoadSurface("filename.jpg")` will call this function and
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
@@ -49678,11 +49428,11 @@ inline int IMG_Version() { return ::IMG_Version(); }
  * that it will rely on SDL_image to determine what type of data it is
  * loading, much like passing a nullptr for type.
  *
- * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an TextureRef for use by the GPU without using a
- * software surface: call LoadTexture() instead.
+ * If you are using SDL's 2D rendering API, there is an equivalent call to load
+ * images directly into an Texture for use by the GPU without using a software
+ * surface: call LoadTexture() instead.
  *
- * @param src an IOStreamRef that data will be read from.
+ * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
  * @returns a new SDL surface, or nullptr on error.
@@ -49691,6 +49441,7 @@ inline int IMG_Version() { return ::IMG_Version(); }
  *
  * @sa LoadSurface
  * @sa LoadSurface
+ * @sa Surface.Destroy
  */
 inline Surface LoadSurface(IOStreamRef src, StringParam type)
 {
@@ -49700,27 +49451,25 @@ inline Surface LoadSurface(IOStreamRef src, StringParam type)
 /**
  * Load an image from a filesystem path into a software surface.
  *
- * An SurfaceRef is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
+ * An Surface is a buffer of pixels in memory accessible by the CPU. Use this if
+ * you plan to hand the data to something else or manipulate it further in code.
  *
- * There are no guarantees about what format the new SDL_Surface data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an SurfaceRef for
- * its specifics, and use SurfaceRef::Convert() to then migrate to any
- * supported format.
+ * There are no guarantees about what format the new Surface data will be; in
+ * many cases, SDL_image will attempt to supply a surface that exactly matches
+ * the provided image, but in others it might have to convert (either because
+ * the image is in a format that SDL doesn't directly support or because it's
+ * compressed data that could reasonably uncompress to various formats and
+ * SDL_image had to pick one). You can inspect an Surface for its specifics, and
+ * use SurfaceRef.Convert to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
- * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: SurfaceRef::SetColorKey(image, SDL_RLEACCEL,
+ * for the surface. You can enable RLE acceleration on the surface afterwards by
+ * calling: SurfaceRef.SetColorKey(image, SDL_RLEACCEL,
  * image->format->colorkey);
  *
- * There is a separate function to read files from an SDL_IOStream, if you
- * need an i/o abstraction to provide data from anywhere instead of a simple
- * filesystem read; that function is Load(SDL_IOStream*,bool).
+ * There is a separate function to read files from an IOStream, if you need an
+ * i/o abstraction to provide data from anywhere instead of a simple filesystem
+ * read; that function is LoadSurface(SDL_IOStream).
  *
  * If you are using SDL's 2D rendering API, there is an equivalent call to
  * load images directly into an Texture for use by the GPU without using a
@@ -49730,24 +49479,24 @@ inline Surface LoadSurface(IOStreamRef src, StringParam type)
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa Surface.Destroy
  */
 inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
 
 /**
  * Load an image from an SDL data source into a software surface.
  *
- * An SurfaceRef is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
+ * An Surface is a buffer of pixels in memory accessible by the CPU. Use this if
+ * you plan to hand the data to something else or manipulate it further in code.
  *
- * There are no guarantees about what format the new SurfaceRef data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an SurfaceRef for
- * its specifics, and use SurfaceRef.Convert to then migrate to any supported
- * format.
+ * There are no guarantees about what format the new Surface data will be; in
+ * many cases, SDL_image will attempt to supply a surface that exactly matches
+ * the provided image, but in others it might have to convert (either because
+ * the image is in a format that SDL doesn't directly support or because it's
+ * compressed data that could reasonably uncompress to various formats and
+ * SDL_image had to pick one). You can inspect an Surface for its specifics, and
+ * use SurfaceRef.Convert to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
  * for the surface. You can enable RLE acceleration on the surface afterwards
@@ -49755,7 +49504,7 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  * image->format->colorkey);
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStreamRef: `LoadSurface("filename.jpg")` will call this function and
+ * with IOStream: `LoadSurface("filename.jpg")` will call this function and
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
@@ -49764,10 +49513,10 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  * SDL_image cannot autodetect the file format.
  *
  * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an TextureRef for use by the GPU without using a
+ * load images directly into an Texture for use by the GPU without using a
  * software surface: call LoadTexture() instead.
  *
- * @param src an IOStreamRef that data will be read from.
+ * @param src an IOStream that data will be read from.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -49784,9 +49533,9 @@ inline Surface LoadSurface(IOStreamRef src)
 /**
  * Load an image from a filesystem path into a GPU texture.
  *
- * A Texture represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after loading it.
+ * An Texture represents an image in GPU memory, usable by SDL's 2D Render API.
+ * This can be significantly more efficient than using a CPU-bound Surface if
+ * you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
@@ -49797,7 +49546,7 @@ inline Surface LoadSurface(IOStreamRef src)
  * If you would rather decode an image to an Surface (a buffer of pixels in CPU
  * memory), call LoadSurface() instead.
  *
- * @param renderer the RendererRef to use to create the GPU texture.
+ * @param renderer the Renderer to use to create the GPU texture.
  * @param file a path on the filesystem to load an image from.
  * @returns a new texture, or nullptr on error.
  *
@@ -49811,36 +49560,34 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
 /**
  * Load an image from an SDL data source into a GPU texture.
  *
- * An TextureRef represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * SurfaceRef if you don't need to manipulate the image directly after
- * loading it.
+ * An Texture represents an image in GPU memory, usable by SDL's 2D Render API.
+ * This can be significantly more efficient than using a CPU-bound Surface if
+ * you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * TextureRef in the most format that most reasonably represents the image
- * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
- * RGBA).
+ * Texture in the most format that most reasonably represents the image data
+ * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStreamRef: `LoadTexture(renderer, "filename.jpg")` will call
- * this function and manage those details for you, determining the file type
- * from the filename's extension.
+ * with IOStream: `LoadTexture(renderer, "filename.jpg")` will call this
+ * function and manage those details for you, determining the file type from the
+ * filename's extension.
  *
  * There is also LoadTexture(), which is equivalent to this
  * function except a file extension (like "BMP", "JPG", etc) can be specified,
  * in case SDL_image cannot autodetect the file format.
  *
- * If you would rather decode an image to an SurfaceRef (a buffer of pixels
+ * If you would rather decode an image to an Surface (a buffer of pixels
  * in CPU memory), call LoadSurface() instead.
  *
- * @param renderer the RendererRef to use to create the GPU texture.
- * @param src an IOStreamRef that data will be read from.
+ * @param renderer the Renderer to use to create the GPU texture.
+ * @param src an IOStream that data will be read from.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa TextureRef.Destroy
+ * @sa Texture.Destroy
  */
 inline Texture LoadTexture(RendererRef renderer, IOStreamRef src)
 {
@@ -49850,14 +49597,13 @@ inline Texture LoadTexture(RendererRef renderer, IOStreamRef src)
 /**
  * Load an image from an SDL data source into a GPU texture.
  *
- * An TextureRef represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * SurfaceRef if you don't need to manipulate the image directly after
- * loading it.
+ * An Texture represents an image in GPU memory, usable by SDL's 2D Render API.
+ * This can be significantly more efficient than using a CPU-bound Surface if
+ * you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * TextureRef in the most format that most reasonably represents the image
+ * Texture in the most format that most reasonably represents the image
  * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
  * RGBA).
  *
@@ -49868,26 +49614,26 @@ inline Texture LoadTexture(RendererRef renderer, IOStreamRef src)
  * on its ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStreamRef: `LoadTexture("filename.jpg")` will call this
- * function and manage those details for you, determining the file type from
- * the filename's extension.
+ * with IOStream: `LoadTexture("filename.jpg")` will call this function and
+ * manage those details for you, determining the file type from the filename's
+ * extension.
  *
  * There is also LoadTexture(), which is equivalent to this function
  * except that it will rely on SDL_image to determine what type of data it is
  * loading, much like passing a nullptr for type.
  *
- * If you would rather decode an image to an SurfaceRef (a buffer of pixels
- * in CPU memory), call LoadSurface() instead.
+ * If you would rather decode an image to an Surface (a buffer of pixels in CPU
+ * memory), call LoadSurface() instead.
  *
- * @param renderer the RendererRef to use to create the GPU texture.
- * @param src an IOStreamRef that data will be read from.
+ * @param renderer the Renderer to use to create the GPU texture.
+ * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa TextureRef.Destroy
+ * @sa Texture.Destroy
  */
 inline Texture LoadTexture(RendererRef renderer,
                            IOStreamRef src,
@@ -49898,10 +49644,10 @@ inline Texture LoadTexture(RendererRef renderer,
 }
 
 /**
- * Detect AVIF image data on a readable/seekable IOStreamRef.
+ * Detect AVIF image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -49915,7 +49661,7 @@ inline Texture LoadTexture(RendererRef renderer,
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is AVIF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -49942,10 +49688,10 @@ inline Texture LoadTexture(RendererRef renderer,
 inline bool isAVIF(IOStreamRef src) { return IMG_isAVIF(src.get()); }
 
 /**
- * Detect ICO image data on a readable/seekable IOStreamRef.
+ * Detect ICO image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -49959,7 +49705,7 @@ inline bool isAVIF(IOStreamRef src) { return IMG_isAVIF(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is ICO data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -49985,10 +49731,10 @@ inline bool isAVIF(IOStreamRef src) { return IMG_isAVIF(src.get()); }
 inline bool isICO(IOStreamRef src) { return IMG_isICO(src.get()); }
 
 /**
- * Detect CUR image data on a readable/seekable IOStreamRef.
+ * Detect CUR image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50002,7 +49748,7 @@ inline bool isICO(IOStreamRef src) { return IMG_isICO(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is CUR data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50028,10 +49774,10 @@ inline bool isICO(IOStreamRef src) { return IMG_isICO(src.get()); }
 inline bool isCUR(IOStreamRef src) { return IMG_isCUR(src.get()); }
 
 /**
- * Detect BMP image data on a readable/seekable IOStreamRef.
+ * Detect BMP image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50045,7 +49791,7 @@ inline bool isCUR(IOStreamRef src) { return IMG_isCUR(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is BMP data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50071,10 +49817,10 @@ inline bool isCUR(IOStreamRef src) { return IMG_isCUR(src.get()); }
 inline bool isBMP(IOStreamRef src) { return IMG_isBMP(src.get()); }
 
 /**
- * Detect GIF image data on a readable/seekable IOStreamRef.
+ * Detect GIF image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50088,7 +49834,7 @@ inline bool isBMP(IOStreamRef src) { return IMG_isBMP(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is GIF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50114,10 +49860,10 @@ inline bool isBMP(IOStreamRef src) { return IMG_isBMP(src.get()); }
 inline bool isGIF(IOStreamRef src) { return IMG_isGIF(src.get()); }
 
 /**
- * Detect JPG image data on a readable/seekable IOStreamRef.
+ * Detect JPG image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50131,7 +49877,7 @@ inline bool isGIF(IOStreamRef src) { return IMG_isGIF(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is JPG data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50157,10 +49903,10 @@ inline bool isGIF(IOStreamRef src) { return IMG_isGIF(src.get()); }
 inline bool isJPG(IOStreamRef src) { return IMG_isJPG(src.get()); }
 
 /**
- * Detect JXL image data on a readable/seekable IOStreamRef.
+ * Detect JXL image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50174,7 +49920,7 @@ inline bool isJPG(IOStreamRef src) { return IMG_isJPG(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is JXL data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50200,10 +49946,10 @@ inline bool isJPG(IOStreamRef src) { return IMG_isJPG(src.get()); }
 inline bool isJXL(IOStreamRef src) { return IMG_isJXL(src.get()); }
 
 /**
- * Detect LBM image data on a readable/seekable IOStreamRef.
+ * Detect LBM image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50217,7 +49963,7 @@ inline bool isJXL(IOStreamRef src) { return IMG_isJXL(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is LBM data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50243,10 +49989,10 @@ inline bool isJXL(IOStreamRef src) { return IMG_isJXL(src.get()); }
 inline bool isLBM(IOStreamRef src) { return IMG_isLBM(src.get()); }
 
 /**
- * Detect PCX image data on a readable/seekable IOStreamRef.
+ * Detect PCX image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50260,7 +50006,7 @@ inline bool isLBM(IOStreamRef src) { return IMG_isLBM(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is PCX data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50286,10 +50032,10 @@ inline bool isLBM(IOStreamRef src) { return IMG_isLBM(src.get()); }
 inline bool isPCX(IOStreamRef src) { return IMG_isPCX(src.get()); }
 
 /**
- * Detect PNG image data on a readable/seekable IOStreamRef.
+ * Detect PNG image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50303,7 +50049,7 @@ inline bool isPCX(IOStreamRef src) { return IMG_isPCX(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is PNG data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50329,10 +50075,10 @@ inline bool isPCX(IOStreamRef src) { return IMG_isPCX(src.get()); }
 inline bool isPNG(IOStreamRef src) { return IMG_isPNG(src.get()); }
 
 /**
- * Detect PNM image data on a readable/seekable IOStreamRef.
+ * Detect PNM image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50346,7 +50092,7 @@ inline bool isPNG(IOStreamRef src) { return IMG_isPNG(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is PNM data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50372,10 +50118,10 @@ inline bool isPNG(IOStreamRef src) { return IMG_isPNG(src.get()); }
 inline bool isPNM(IOStreamRef src) { return IMG_isPNM(src.get()); }
 
 /**
- * Detect SVG image data on a readable/seekable IOStreamRef.
+ * Detect SVG image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50389,7 +50135,7 @@ inline bool isPNM(IOStreamRef src) { return IMG_isPNM(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is SVG data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50415,10 +50161,10 @@ inline bool isPNM(IOStreamRef src) { return IMG_isPNM(src.get()); }
 inline bool isSVG(IOStreamRef src) { return IMG_isSVG(src.get()); }
 
 /**
- * Detect QOI image data on a readable/seekable IOStreamRef.
+ * Detect QOI image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50432,7 +50178,7 @@ inline bool isSVG(IOStreamRef src) { return IMG_isSVG(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is QOI data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50458,10 +50204,10 @@ inline bool isSVG(IOStreamRef src) { return IMG_isSVG(src.get()); }
 inline bool isQOI(IOStreamRef src) { return IMG_isQOI(src.get()); }
 
 /**
- * Detect TIFF image data on a readable/seekable IOStreamRef.
+ * Detect TIFF image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50475,7 +50221,7 @@ inline bool isQOI(IOStreamRef src) { return IMG_isQOI(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is TIFF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50501,10 +50247,10 @@ inline bool isQOI(IOStreamRef src) { return IMG_isQOI(src.get()); }
 inline bool isTIF(IOStreamRef src) { return IMG_isTIF(src.get()); }
 
 /**
- * Detect XCF image data on a readable/seekable IOStreamRef.
+ * Detect XCF image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50518,7 +50264,7 @@ inline bool isTIF(IOStreamRef src) { return IMG_isTIF(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is XCF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50544,10 +50290,10 @@ inline bool isTIF(IOStreamRef src) { return IMG_isTIF(src.get()); }
 inline bool isXCF(IOStreamRef src) { return IMG_isXCF(src.get()); }
 
 /**
- * Detect XPM image data on a readable/seekable IOStreamRef.
+ * Detect XPM image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50561,7 +50307,7 @@ inline bool isXCF(IOStreamRef src) { return IMG_isXCF(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is XPM data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50587,10 +50333,10 @@ inline bool isXCF(IOStreamRef src) { return IMG_isXCF(src.get()); }
 inline bool isXPM(IOStreamRef src) { return IMG_isXPM(src.get()); }
 
 /**
- * Detect XV image data on a readable/seekable IOStreamRef.
+ * Detect XV image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50604,7 +50350,7 @@ inline bool isXPM(IOStreamRef src) { return IMG_isXPM(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is XV data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50630,10 +50376,10 @@ inline bool isXPM(IOStreamRef src) { return IMG_isXPM(src.get()); }
 inline bool isXV(IOStreamRef src) { return IMG_isXV(src.get()); }
 
 /**
- * Detect WEBP image data on a readable/seekable IOStreamRef.
+ * Detect WEBP image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -50647,7 +50393,7 @@ inline bool isXV(IOStreamRef src) { return IMG_isXV(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is WEBP data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50677,10 +50423,10 @@ inline bool isWEBP(IOStreamRef src) { return IMG_isWEBP(src.get()); }
  *
  * If you know you definitely have a AVIF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50714,10 +50460,10 @@ inline Surface LoadAVIF(IOStreamRef src)
  *
  * If you know you definitely have a ICO image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50751,10 +50497,10 @@ inline Surface LoadICO(IOStreamRef src)
  *
  * If you know you definitely have a CUR image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50788,10 +50534,10 @@ inline Surface LoadCUR(IOStreamRef src)
  *
  * If you know you definitely have a BMP image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50825,10 +50571,10 @@ inline Surface LoadBMP(IOStreamRef src)
  *
  * If you know you definitely have a GIF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50862,10 +50608,10 @@ inline Surface LoadGIF(IOStreamRef src)
  *
  * If you know you definitely have a JPG image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50899,10 +50645,10 @@ inline Surface LoadJPG(IOStreamRef src)
  *
  * If you know you definitely have a JXL image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50936,10 +50682,10 @@ inline Surface LoadJXL(IOStreamRef src)
  *
  * If you know you definitely have a LBM image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -50973,10 +50719,10 @@ inline Surface LoadLBM(IOStreamRef src)
  *
  * If you know you definitely have a PCX image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51010,10 +50756,10 @@ inline Surface LoadPCX(IOStreamRef src)
  *
  * If you know you definitely have a PNG image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51047,10 +50793,10 @@ inline Surface LoadPNG(IOStreamRef src)
  *
  * If you know you definitely have a PNM image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51084,10 +50830,10 @@ inline Surface LoadPNM(IOStreamRef src)
  *
  * If you know you definitely have a SVG image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51121,10 +50867,10 @@ inline Surface LoadSVG(IOStreamRef src)
  *
  * If you know you definitely have a QOI image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51158,10 +50904,10 @@ inline Surface LoadQOI(IOStreamRef src)
  *
  * If you know you definitely have a TGA image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51195,10 +50941,10 @@ inline Surface LoadTGA(IOStreamRef src)
  *
  * If you know you definitely have a TIFF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51232,10 +50978,10 @@ inline Surface LoadTIF(IOStreamRef src)
  *
  * If you know you definitely have a XCF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51269,10 +51015,10 @@ inline Surface LoadXCF(IOStreamRef src)
  *
  * If you know you definitely have a XPM image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51306,10 +51052,10 @@ inline Surface LoadXPM(IOStreamRef src)
  *
  * If you know you definitely have a XV image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51343,10 +51089,10 @@ inline Surface LoadXV(IOStreamRef src)
  *
  * If you know you definitely have a WEBP image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51387,7 +51133,7 @@ inline Surface LoadWEBP(IOStreamRef src)
  * When done with the returned surface, the app should dispose of it with a
  * call to Surface.Destroy().
  *
- * @param src an IOStreamRef to load SVG data from.
+ * @param src an IOStream to load SVG data from.
  * @param width desired width of the generated surface, in pixels.
  * @param height desired height of the generated surface, in pixels.
  * @returns a new SDL surface, or nullptr on error.
@@ -51404,12 +51150,9 @@ inline Surface LoadSizedSVG(IOStreamRef src, int width, int height)
  *
  * The returned surface will be an 8bpp indexed surface, if possible,
  * otherwise it will be 32bpp. If you always want 32-bit data, use
- * IMG_ReadXPMFromArrayToRGB888() instead.
+ * ReadXPMFromArrayToRGB888() instead.
  *
- * When done with the returned surface, the app should dispose of it with a
- * call to SDL_DestroySurface().
- *
- * @param xpm a nullptr-terminated array of strings that comprise XPM data.
+ * @param xpm a null-terminated array of strings that comprise XPM data.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51425,13 +51168,12 @@ inline Surface ReadXPMFromArray(char** xpm)
  * Load an XPM image from a memory array.
  *
  * The returned surface will always be a 32-bit RGB surface. If you want 8-bit
- * indexed colors (and the XPM data allows it), use IMG_ReadXPMFromArray()
- * instead.
+ * indexed colors (and the XPM data allows it), use ReadXPMFromArray() instead.
  *
  * When done with the returned surface, the app should dispose of it with a
- * call to SDL_DestroySurface().
+ * call to Surface.Destroy().
  *
- * @param xpm a nullptr-terminated array of strings that comprise XPM data.
+ * @param xpm a null-terminated array of strings that comprise XPM data.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51444,7 +51186,7 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
 }
 
 /**
- * Save an SurfaceRef into a AVIF image file.
+ * Save an Surface into a AVIF image file.
  *
  * If the file already exists, it will be overwritten.
  *
@@ -51462,12 +51204,12 @@ inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
 }
 
 /**
- * Save an SurfaceRef into AVIF image data, via an IOStreamRef.
+ * Save an Surface into AVIF image data, via an IOStream.
  *
  * If you just want to save to a filename, you can use SaveAVIF() instead.
  *
  * @param surface the SDL surface to save.
- * @param dst the IOStreamRef to save the image data to.
+ * @param dst the IOStream to save the image data to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
  * @throws Error on failure.
@@ -51480,7 +51222,7 @@ inline void SaveAVIF(SurfaceRef surface, IOStreamRef dst, int quality)
 }
 
 /**
- * Save an SurfaceRef into a PNG image file.
+ * Save an Surface into a PNG image file.
  *
  * If the file already exists, it will be overwritten.
  *
@@ -51498,12 +51240,12 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
 }
 
 /**
- * Save an SurfaceRef into PNG image data, via an IOStreamRef.
+ * Save an Surface into PNG image data, via an IOStream.
  *
  * If you just want to save to a filename, you can use SavePNG() instead.
  *
  * @param surface the SDL surface to save.
- * @param dst the IOStreamRef to save the image data to.
+ * @param dst the IOStream to save the image data to.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51514,7 +51256,7 @@ inline void SavePNG(SurfaceRef surface, IOStreamRef dst)
 }
 
 /**
- * Save an SurfaceRef into a JPEG image file.
+ * Save an Surface into a JPEG image file.
  *
  * If the file already exists, it will be overwritten.
  *
@@ -51532,12 +51274,12 @@ inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
 }
 
 /**
- * Save an SurfaceRef into JPEG image data, via an IOStreamRef.
+ * Save an Surface into JPEG image data, via an IOStream.
  *
  * If you just want to save to a filename, you can use SaveJPG() instead.
  *
  * @param surface the SDL surface to save.
- * @param dst the IOStreamRef to save the image data to.
+ * @param dst the IOStream to save the image data to.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
  * @throws Error on failure.
@@ -51716,10 +51458,10 @@ struct AnimationUnsafe : ResourceUnsafe<AnimationRef>
  *
  * If you know you definitely have a GIF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef that data will be read from.
+ * @param src an IOStream that data will be read from.
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51738,10 +51480,10 @@ inline Animation LoadGIFAnimation(IOStreamRef src)
  *
  * If you know you definitely have a WEBP image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef that data will be read from.
+ * @param src an IOStream that data will be read from.
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -51868,7 +51610,7 @@ struct Text;
  */
 
 /**
- * Font style flags for FontRef
+ * Font style flags for Font
  *
  * These are the flags which can be used to set the style of a font in
  * SDL_ttf. A combination of these flags can be used with functions that set
@@ -53798,7 +53540,6 @@ inline void InitSubSystem(TtfInitFlag _) { CheckError(TTF_Init()); }
  * @cat resource
  *
  * @sa TextEngine
- * @sa TextEngineRef
  */
 struct TextEngineRef : Resource<TTF_TextEngine*>
 {

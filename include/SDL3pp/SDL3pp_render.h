@@ -1941,13 +1941,13 @@ struct RendererUnsafe : ResourceUnsafe<RendererRef>
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa TextureRef.TextureRef
- * @sa TextureRef.TextureRef
- * @sa TextureRef.TextureRef
- * @sa TextureRef.reset
  *
  * @cat resource
  *
+ * @sa Texture.Create
+ * @sa Texture.CreateFromSurface
+ * @sa Texture.CreateWithProperties
+ * @sa Texture.Destroy
  * @sa Texture
  */
 struct TextureRef : Resource<SDL_Texture*>
@@ -2701,19 +2701,25 @@ struct Texture : ResourceUnique<TextureRef>
   }
 
   /**
-   * Load an image from a IOStreamRef into a software surface.
+   * Create a texture for a rendering context.
    *
-   * If available, this uses LoadSurface(IOStreamRef&), otherwise it uses
-   * LoadBMP(IOStreamRef&).
+   * The contents of a texture when first created are not defined.
    *
    * @param renderer the rendering context.
-   * @param src an IOStreamRef to load an image from.
-   * @post the new Texture with loaded contents on success.
+   * @param format one of the enumerated values in PixelFormat.
+   * @param access one of the enumerated values in TextureAccess.
+   * @param size the width and height of the texture in pixels.
+   * @returns the created texture on success
    * @throws Error on failure.
    *
-   * @sa LoadTexture(RendererRef, StringParam)
-   * @sa Texture.Load(RendererRef, IOStreamRef)
-   * @sa Texture.LoadBMP(RendererRef, IOStreamRef)
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.CreateFromSurface
+   * @sa Texture.CreateWithProperties
+   * @sa Texture.Destroy
+   * @sa TextureRef.Update
    */
   static Texture Create(RendererRef renderer,
                         PixelFormat format,
@@ -3016,7 +3022,7 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RendererRef.RendererRef
+ * @sa Renderer.Create
  * @sa GetRenderDriver
  */
 inline int GetNumRenderDrivers() { return SDL_GetNumRenderDrivers(); }
@@ -3054,7 +3060,7 @@ inline const char* GetRenderDriver(int index)
  * @param title the title of the window, in UTF-8 encoding.
  * @param size the width and height of the window.
  * @param window_flags the flags used to create the window (see
- *                     WindowRef.WindowRef()).
+ *                     Window.Create()).
  * @returns a pair with Window and Renderer on success.
  * @throws Error on failure.
  *
@@ -3062,8 +3068,8 @@ inline const char* GetRenderDriver(int index)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RendererRef.RendererRef
- * @sa WindowRef.WindowRef
+ * @sa Renderer.Create
+ * @sa Window.Create
  */
 inline std::pair<Window, Renderer> CreateWindowAndRenderer(
   StringParam title,

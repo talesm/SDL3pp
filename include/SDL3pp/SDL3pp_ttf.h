@@ -66,7 +66,7 @@ struct Text;
  */
 
 /**
- * Font style flags for FontRef
+ * Font style flags for Font
  *
  * These are the flags which can be used to set the style of a font in
  * SDL_ttf. A combination of these flags can be used with functions that set
@@ -1996,7 +1996,6 @@ inline void InitSubSystem(TtfInitFlag _) { CheckError(TTF_Init()); }
  * @cat resource
  *
  * @sa TextEngine
- * @sa TextEngineRef
  */
 struct TextEngineRef : Resource<TTF_TextEngine*>
 {

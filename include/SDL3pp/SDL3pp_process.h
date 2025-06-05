@@ -49,25 +49,24 @@ struct Process;
  * to `NUL:` on Windows and `/dev/null` on POSIX systems. This is the default
  * for standard input.
  *
- * If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected
- * to a new IOStreamRef that is available to the application. Standard input
- * will be available as `prop::process.STDIN_POINTER` and allows
- * ProcessRef.GetInput(), standard output will be available as
- * `prop::process.STDOUT_POINTER` and allows ProcessRef.Read() and
- * ProcessRef.GetOutput(), and standard error will be available as
- * `prop::process.STDERR_POINTER` in the properties for the created
- * process.
+ * If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected to a
+ * new IOStream that is available to the application. Standard input will be
+ * available as `prop::process.STDIN_POINTER` and allows ProcessRef.GetInput(),
+ * standard output will be available as `prop::process.STDOUT_POINTER` and
+ * allows ProcessRef.Read() and ProcessRef.GetOutput(), and standard error will
+ * be available as `prop::process.STDERR_POINTER` in the properties for the
+ * created process.
  *
- * If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is
- * connected to an existing IOStreamRef provided by the application. Standard
- * input is provided using `prop::process.CREATE_STDIN_POINTER`, standard
- * output is provided using `prop::process.CREATE_STDOUT_POINTER`, and
- * standard error is provided using `prop::process.CREATE_STDERR_POINTER`
- * in the creation properties. These existing streams should be closed by the
- * application once the new process is created.
+ * If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is connected to
+ * an existing IOStream provided by the application. Standard input is provided
+ * using `prop::process.CREATE_STDIN_POINTER`, standard output is provided using
+ * `prop::process.CREATE_STDOUT_POINTER`, and standard error is provided using
+ * `prop::process.CREATE_STDERR_POINTER` in the creation properties. These
+ * existing streams should be closed by the application once the new process is
+ * created.
  *
- * In order to use an IOStreamRef with PROCESS_STDIO_REDIRECT, it must
- * have `prop::IOStream.WINDOWS_HANDLE_POINTER` or
+ * In order to use an IOStream with PROCESS_STDIO_REDIRECT, it must have
+ * `prop::IOStream.WINDOWS_HANDLE_POINTER` or
  * `prop::IOStream.FILE_DESCRIPTOR_NUMBER` set. This is true for streams
  * representing files and process I/O.
  *
@@ -89,13 +88,13 @@ constexpr ProcessIO PROCESS_STDIO_NULL =
   SDL_PROCESS_STDIO_NULL; ///< The I/O stream is ignored.
 
 /**
- * The I/O stream is connected to a new IOStreamRef that the application can
- * read or write.
+ * The I/O stream is connected to a new IOStream that the application can read
+ * or write.
  */
 constexpr ProcessIO PROCESS_STDIO_APP = SDL_PROCESS_STDIO_APP;
 
 /**
- * The I/O stream is redirected to an existing IOStreamRef.
+ * The I/O stream is redirected to an existing IOStream.
  */
 constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
 
@@ -103,7 +102,6 @@ constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
  * An opaque handle representing a system process.
  *
  * @since This datatype is available since SDL 3.2.0.
- *
  *
  * @cat resource
  *

@@ -22,7 +22,7 @@ namespace SDL {
  * In order to make this consistent on all platforms, the application's main()
  * should look like this:
  *
- * ```c
+ * ```cpp
  * #include <SDL3pp/SDL3pp.h>
  * #include <SDL3pp/SDL3pp_main.h>
  *
@@ -34,7 +34,7 @@ namespace SDL {
  * SDL will take care of platform specific details on how it gets called.
  *
  * This is also where an app can be configured to use the main callbacks, via
- * the SDL_MAIN_USE_CALLBACKS macro.
+ * the SDL3PP_MAIN_USE_CALLBACKS macro.
  *
  * SDL_main.h is a "single-header library," which is to say that including
  * this header inserts code into your program, and you should only include it
@@ -55,7 +55,7 @@ namespace SDL {
  * SDL does not define this macro, but will check if it is defined when
  * including `SDL_main.h`. If defined, SDL will expect the app to provide the
  * proper entry point for the platform, and all the other magic details
- * needed, like manually calling SDL_SetMainReady.
+ * needed, like manually calling SetMainReady.
  *
  * Please see [README/main-functions](README/main-functions), (or
  * docs/README-main-functions.md in the source tree) for a more detailed
@@ -103,17 +103,17 @@ namespace SDL {
 using main_func = SDL_main_func;
 
 /**
- * Circumvent failure of SDL_Init() when not using SDL_main() as an entry
+ * Circumvent failure of InitSubSystem() when not using SDL_main() as an entry
  * point.
  *
  * This function is defined in SDL_main.h, along with the preprocessor rule to
  * redefine main() as SDL_main(). Thus to ensure that your main() function
- * will not be changed it is necessary to define SDL_MAIN_HANDLED before
+ * will not be changed it is necessary to define SDL3PP_MAIN_HANDLED before
  * including SDL.h.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_Init
+ * @sa InitSubSystem
  */
 inline void SetMainReady() { return SDL_SetMainReady(); }
 
@@ -124,21 +124,20 @@ inline void SetMainReady() { return SDL_SetMainReady(); }
  * mainFunction.
  *
  * You can use this if you want to use your own main() implementation without
- * using SDL_main (like when using SDL_MAIN_HANDLED). When using this, you do
- * *not* need SDL_SetMainReady().
+ * using SDL_main (like when using SDL3PP_MAIN_HANDLED). When using this, you do
+ * *not* need SetMainReady().
  *
  * @param argc the argc parameter from the application's main() function, or 0
  *             if the platform's main-equivalent has no argc.
  * @param argv the argv parameter from the application's main() function, or
- *             NULL if the platform's main-equivalent has no argv.
+ *             nullptr if the platform's main-equivalent has no argv.
  * @param mainFunction your SDL app's C-style main(). NOT the function you're
  *                     calling this from! Its name doesn't matter; it doesn't
  *                     literally have to be `main`.
- * @param reserved should be NULL (reserved for future use, will probably be
+ * @param reserved should be nullptr (reserved for future use, will probably be
  *                 platform-specific then).
- * @returns the return value from mainFunction: 0 on success, otherwise
- *          failure; SDL_GetError() might have more information on the
- *          failure.
+ * @returns the return value from mainFunction: 0 on success, otherwise failure;
+ *          GetError() might have more information on the failure.
  *
  * @threadsafety Generally this is called once, near startup, from the
  *               process's initial thread.
@@ -154,7 +153,7 @@ inline int RunApp(int argc,
 }
 
 /**
- * An entry point for SDL's use in SDL_MAIN_USE_CALLBACKS.
+ * An entry point for SDL's use in SDL3PP_MAIN_USE_CALLBACKS.
  *
  * Generally, you should not call this function directly. This only exists to
  * hand off work into SDL as soon as possible, where it has a lot more control

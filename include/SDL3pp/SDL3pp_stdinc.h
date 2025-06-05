@@ -20,22 +20,21 @@ namespace SDL {
  * SDL provides its own implementation of some of the most important C runtime
  * functions.
  *
- * Using these functions allows an app to have access to common C
- * functionality without depending on a specific C runtime (or a C runtime at
- * all). More importantly, the SDL implementations work identically across
- * platforms, so apps can avoid surprises like snprintf() behaving differently
- * between Windows and Linux builds, or itoa() only existing on some
- * platforms.
+ * Using these functions allows an app to have access to common C functionality
+ * without depending on a specific C runtime (or a C runtime at all). More
+ * importantly, the SDL implementations work identically across platforms, so
+ * apps can avoid surprises like snprintf() behaving differently between Windows
+ * and Linux builds, or itoa() only existing on some platforms.
  *
- * For many of the most common functions, like SDL_memcpy, SDL might just call
- * through to the usual C runtime behind the scenes, if it makes sense to do
- * so (if it's faster and always available/reliable on a given platform),
- * reducing library size and offering the most optimized option.
+ * For many of the most common functions, like memcpy, SDL might just call
+ * through to the usual C runtime behind the scenes, if it makes sense to do so
+ * (if it's faster and always available/reliable on a given platform), reducing
+ * library size and offering the most optimized option.
  *
  * SDL also offers other C-runtime-adjacent functionality in this header that
  * either isn't, strictly speaking, part of any C runtime standards, like
- * SDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better
- * options, like SDL_strlcpy(), which functions as a safer form of strcpy().
+ * crc32() and SDL_reinterpret_cast, etc. It also offers a few better options,
+ * like strlcpy(), which functions as a safer form of strcpy().
  *
  * @{
  */
@@ -211,7 +210,7 @@ constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
 using Seconds = std::chrono::duration<float>;
 
 /**
- * Duration in Nanoseconds (Sint64).
+ * Duration in Nanoseconds (Uint64).
  */
 using Nanoseconds = std::chrono::nanoseconds;
 
@@ -359,7 +358,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * // Fill in the interface function pointers with your implementation
  * iface.seek = ...
  *
- * stream = IOStreamRef.Open(iface, nullptr);
+ * stream = IOStream.Open(&iface, nullptr);
  * ```
  *
  * If you are using designated initializers, you can use the size of the
@@ -370,7 +369,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *     .version = sizeof(iface),
  *     .seek = ...
  * };
- * stream = IOStreamRef.Open(iface, nullptr);
+ * stream = IOStream.Open(iface, nullptr);
  * ```
  *
  * @threadsafety It is safe to call this macro from any thread.
@@ -735,11 +734,12 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  *
  * @sa Environment
  * @sa GetEnvironment
- * @sa EnvironmentRef.EnvironmentRef
+ * @sa Environment.Create
  * @sa EnvironmentRef.GetVariable
  * @sa EnvironmentRef.GetVariables
  * @sa EnvironmentRef.SetVariable
  * @sa EnvironmentRef.UnsetVariable
+ * @sa Environment.Destroy
  */
 struct EnvironmentRef : Resource<SDL_Environment*>
 {
@@ -5090,7 +5090,7 @@ inline float tan(float x) { return SDL_tanf(x); }
  *
  * @cat resource
  *
- * @sa IConvRef.IConvRef
+ * @sa IConv.open
  * @sa IConv
  */
 struct IConvRef : Resource<SDL_iconv_data_t*>
@@ -5267,7 +5267,8 @@ struct IConvUnsafe : ResourceUnsafe<IConvRef>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConvRef.IConvRef
+ * @sa IConv.open
+ * @sa IConv.close
  * @sa IConvRef.iconv
  */
 inline OwnPtr<char> iconv_string(StringParam tocode,

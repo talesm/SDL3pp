@@ -16,6 +16,7 @@ namespace SDL {
  *
  * Some helper functions for managing rectangles and 2D points, in both
  * integer and floating point versions.
+ *
  * @{
  */
 
@@ -29,13 +30,17 @@ struct Rect;
 struct FRect;
 
 /**
- * @brief The structure that defines a point (using integers)
+ * The structure that defines a point (using integers).
  *
- * Based on https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
+ * Inspired by
+ * https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
- * @sa wrap-extending-struct
+ * @sa Rect.GetEnclosingPoints
+ * @sa Point.IsInRect
  */
 struct Point : SDL_Point
 {
@@ -469,11 +474,14 @@ struct Point : SDL_Point
 };
 
 /**
- * @brief The structure that defines a point (using floating point values).
+ * The structure that defines a point (using floating point values).
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
- * @sa wrap-extending-struct
+ * @sa FRect.GetEnclosingPoints
+ * @sa FPoint.IsInRect
  */
 struct FPoint : SDL_FPoint
 {
@@ -807,11 +815,19 @@ struct FPoint : SDL_FPoint
 };
 
 /**
- * @brief A rectangle, with the origin at the upper left (using integers).
+ * A rectangle, with the origin at the upper left (using integers).
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
- * @sa wrap-extending-struct
+ * @sa Rect.Empty
+ * @sa Rect.Equal
+ * @sa Rect.HasIntersection
+ * @sa Rect.GetIntersection
+ * @sa Rect.IntersectLine
+ * @sa Rect.GetUnion
+ * @sa Rect.GetEnclosingPoints
  */
 struct Rect : SDL_Rect
 {
@@ -1429,11 +1445,22 @@ struct Rect : SDL_Rect
 };
 
 /**
- * @brief A rectangle, with the origin at the upper left (using floats).
+ * A rectangle, with the origin at the upper left (using floating point
+ * values).
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
- * @sa wrap-extending-struct
+ * @sa FRect.Empty
+ * @sa FRect.Equal
+ * @sa FRect.EqualEpsilon
+ * @sa FRect.HasIntersection
+ * @sa FRect.GetIntersection
+ * @sa FRect.IntersectLine
+ * @sa FRect.GetUnion
+ * @sa FRect.GetEnclosingPoints
+ * @sa FPoint.IsInRect
  */
 struct FRect : SDL_FRect
 {

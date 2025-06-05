@@ -101,10 +101,10 @@ namespace SDL {
  * A variable to control whether we trap the Android back button to handle it
  * manually.
  *
- * This is necessary for the right mouse button to work on some Android
- * devices, or to be able to trap the back button for use in your code
- * reliably. If this hint is true, the back button will show up as an
- * EVENT_KEY_DOWN / EVENT_KEY_UP pair with a keycode of SCANCODE_AC_BACK.
+ * This is necessary for the right mouse button to work on some Android devices,
+ * or to be able to trap the back button for use in your code reliably. If this
+ * hint is true, the back button will show up as an EVENT_KEY_DOWN /
+ * EVENT_KEY_UP pair with a keycode of SCANCODE_AC_BACK.
  *
  * The variable can be set to the following values:
  *
@@ -4230,13 +4230,12 @@ namespace SDL {
 /**
  * A variable specifying the type of an X11 window.
  *
- * During WindowRef.WindowRef, SDL uses the _NET_WM_WINDOW_TYPE X11 property
- * to report to the window manager the type of window it wants to create. This
- * might be set to various things if WINDOW_TOOLTIP or
- * WINDOW_POPUP_MENU, etc, were specified. For "normal" windows that
- * haven't set a specific type, this hint can be used to specify a custom
- * type. For example, a dock window might set this to
- * "_NET_WM_WINDOW_TYPE_DOCK".
+ * During Window.Create, SDL uses the _NET_WM_WINDOW_TYPE X11 property to report
+ * to the window manager the type of window it wants to create. This might be
+ * set to various things if WINDOW_TOOLTIP or WINDOW_POPUP_MENU, etc, were
+ * specified. For "normal" windows that haven't set a specific type, this hint
+ * can be used to specify a custom type. For example, a dock window might set
+ * this to "_NET_WM_WINDOW_TYPE_DOCK".
  *
  * This hint should be set before creating a window.
  *

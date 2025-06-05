@@ -172,7 +172,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Seconds</b> = s
 <tr class="separator:ga3d946d3193f4374bec115170e4e5152a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga70b3f6375d1dd34a431d52b44f1c0034" id="r_ga70b3f6375d1dd34a431d52b44f1c0034"><td class="memItemLeft" align="right" valign="top"><a id="ga70b3f6375d1dd34a431d52b44f1c0034" name="ga70b3f6375d1dd34a431d52b44f1c0034"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Nanoseconds</b> = std::chrono::nanoseconds</td></tr>
-<tr class="memdesc:ga70b3f6375d1dd34a431d52b44f1c0034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Duration in Nanoseconds (Sint64). <br /></td></tr>
+<tr class="memdesc:ga70b3f6375d1dd34a431d52b44f1c0034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Duration in Nanoseconds (Uint64). <br /></td></tr>
 <tr class="separator:ga70b3f6375d1dd34a431d52b44f1c0034"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga20e849be3a477a832c3f5b49aa71f793" id="r_ga20e849be3a477a832c3f5b49aa71f793"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga20e849be3a477a832c3f5b49aa71f793">SDL::malloc_func</a> = SDL_malloc_func</td></tr>
 <tr class="memdesc:ga20e849be3a477a832c3f5b49aa71f793"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used to implement <a class="el" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70" title="Allocate uninitialized memory.">malloc()</a>.  <br /></td></tr>
@@ -779,8 +779,8 @@ constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td clas
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Using these functions allows an app to have access to common C functionality without depending on a specific C runtime (or a C runtime at all). More importantly, the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> implementations work identically across platforms, so apps can avoid surprises like <a class="el" href="group__CategoryStdinc.html#ga57b48f04ae9e3949774b9f0c9dc0c151" title="This works exactly like snprintf() but doesn&#39;t require access to a C runtime.">snprintf()</a> behaving differently between Windows and Linux builds, or <a class="el" href="group__CategoryStdinc.html#gac0d19dc9f116d9f492fd4d17296f0c4b" title="Convert an integer into a string.">itoa()</a> only existing on some platforms.</p>
-<p>For many of the most common functions, like SDL_memcpy, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> might just call through to the usual C runtime behind the scenes, if it makes sense to do so (if it's faster and always available/reliable on a given platform), reducing library size and offering the most optimized option.</p>
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> also offers other C-runtime-adjacent functionality in this header that either isn't, strictly speaking, part of any C runtime standards, like SDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better options, like SDL_strlcpy(), which functions as a safer form of strcpy(). </p>
+<p>For many of the most common functions, like memcpy, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> might just call through to the usual C runtime behind the scenes, if it makes sense to do so (if it's faster and always available/reliable on a given platform), reducing library size and offering the most optimized option.</p>
+<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> also offers other C-runtime-adjacent functionality in this header that either isn't, strictly speaking, part of any C runtime standards, like <a class="el" href="group__CategoryStdinc.html#gacc8b8bc6d26dd888c3fed721ddb1cd2e" title="Calculate a CRC-32 value.">crc32()</a> and SDL_reinterpret_cast, etc. It also offers a few better options, like <a class="el" href="group__CategoryStdinc.html#ga598ecc44c77a20ab4de3a96eda46ea76" title="Copy a string.">strlcpy()</a>, which functions as a safer form of strcpy(). </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="gaa20b552293de849b3c1c7576cb158e9e" name="gaa20b552293de849b3c1c7576cb158e9e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaa20b552293de849b3c1c7576cb158e9e">&#9670;&#160;</a></span>SDL_copyp</h2>
@@ -997,14 +997,14 @@ constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td clas
 <div class="line"><span class="comment">// Fill in the interface function pointers with your implementation</span></div>
 <div class="line">iface.seek = ...</div>
 <div class="line"> </div>
-<div class="line">stream = IOStreamRef.Open(iface, <span class="keyword">nullptr</span>);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaad520b6fa62d69fe36edadb0925196aa"><div class="ttname"><a href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa">SDL_INIT_INTERFACE</a></div><div class="ttdeci">#define SDL_INIT_INTERFACE(iface)</div><div class="ttdoc">A macro to initialize an SDL interface.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:384</div></div>
+<div class="line">stream = IOStream.Open(&amp;iface, <span class="keyword">nullptr</span>);</div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaad520b6fa62d69fe36edadb0925196aa"><div class="ttname"><a href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa">SDL_INIT_INTERFACE</a></div><div class="ttdeci">#define SDL_INIT_INTERFACE(iface)</div><div class="ttdoc">A macro to initialize an SDL interface.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:383</div></div>
 </div><!-- fragment --><p>If you are using designated initializers, you can use the size of the interface as the version, e.g.</p>
 <div class="fragment"><div class="line">IOStreamInterface iface = {</div>
 <div class="line">    .version = <span class="keyword">sizeof</span>(iface),</div>
 <div class="line">    .seek = ...</div>
 <div class="line">};</div>
-<div class="line">stream = IOStreamRef.Open(iface, <span class="keyword">nullptr</span>);</div>
+<div class="line">stream = IOStream.Open(iface, <span class="keyword">nullptr</span>);</div>
 </div><!-- fragment --><dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>IOStreamInterface </dd>
@@ -2166,7 +2166,7 @@ SDL_strtoull </dd>
 <div class="line"> </div>
 <div class="line">data *result = <a class="code hl_function" href="group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541">bsearch</a>(&amp;key, values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]),</div>
 <div class="line">compare);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_ga20b4cc6c53a1dbd7789ee90af065b5f9"><div class="ttname"><a href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">SDL::arraysize</a></div><div class="ttdeci">constexpr std::size_t arraysize(const T(&amp;array)[N])</div><div class="ttdoc">The number of elements in a static array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:102</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_ga20b4cc6c53a1dbd7789ee90af065b5f9"><div class="ttname"><a href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">SDL::arraysize</a></div><div class="ttdeci">constexpr std::size_t arraysize(const T(&amp;array)[N])</div><div class="ttdoc">The number of elements in a static array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:101</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_gada62aea13b8eceffa3e57359e124e541"><div class="ttname"><a href="group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541">SDL::bsearch</a></div><div class="ttdeci">void * bsearch(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback compare)</div><div class="ttdoc">Perform a binary search on a previously sorted array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1161</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3605,7 +3605,9 @@ template&lt;class T , class U , class V &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a new string, converted to the new encoding, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>IConvRef.IConvRef </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IConv.html#a48e796161ef683fbbfafcb8a8ebdc83a" title="This function allocates a context for the specified character set conversion.">IConv.open</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IConv.html#a8f9170335686af5e12ff8d822ff1a5b1" title="This function frees a context used for character set conversion.">IConv.close</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1IConvRef.html#a1986bf1e484c1388ea3508010b7cb763" title="This function converts text between encodings, reading from and writing to a buffer.">IConvRef.iconv</a> </dd></dl>
 

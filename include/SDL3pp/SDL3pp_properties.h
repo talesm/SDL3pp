@@ -13,27 +13,27 @@ namespace SDL {
  * A property is a variable that can be created and retrieved by name at
  * runtime.
  *
- * All properties are part of a property group (PropertiesRef). A property
- * group can be created with the CreateProperties() function or by simply
- * instantiating @ref Properties. It can be destroyed with the
- * Properties.Destroy(), but the Properties destructor probably will do what
- * you want to, automatically.
+ * All properties are part of a property group (Properties). A property group
+ * can be created with the Properties.Create function and destroyed with the
+ * Properties.Destroy function, but the Properties destructor probably will do
+ * what you want to, automatically.
  *
  * Properties can be added to and retrieved from a property group through the
  * following functions:
  *
- * - PropertiesRef.SetPointer() and PropertiesRef.GetPointer() operate on
- * `void*` pointer types.
- * - PropertiesRef.SetString() and PropertiesRef.GetString() operate on string
+ * - PropertiesRef.SetPointer and PropertiesRef.GetPointer operate on `void*`
+ *   pointer types.
+ * - PropertiesRef.SetString and PropertiesRef.GetString operate on string
  * types.
- * - PropertiesRef.SetNumber() and PropertiesRef.GetNumber() operate on signed
+ * - PropertiesRef.SetNumber and PropertiesRef.GetNumber operate on signed
  * 64-bit integer types.
- * - PropertiesRef.SetFloat() and PropertiesRef.GetFloat() operate on floating
- * point types.
- * - PropertiesRef.SetBoolean() and PropertiesRef.GetBoolean() operate on
- * boolean types.
+ * - PropertiesRef.SetFloat and PropertiesRef.GetFloat operate on floating point
+ *   types.
+ * - PropertiesRef.SetBoolean and PropertiesRef.GetBoolean operate on boolean
+ *   types.
  *
- * Properties can be removed from a group by using PropertiesRef.Clear().
+ * Properties can be removed from a group by using PropertiesRef.Clear.
+ *
  * @{
  */
 
@@ -76,8 +76,24 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
 /**
  * A callback used to free resources when a property is deleted.
  *
+ * This should release any resources associated with `value` that are no
+ * longer needed.
+ *
+ * This callback is set per-property. Different properties in the same group
+ * can have different cleanup callbacks.
+ *
+ * This callback will be called _during_ PropertiesRef.SetPointerWithCleanup if
+ * the function fails for any reason.
+ *
+ * @param value the pointer assigned to the property to clean up.
+ *
+ * @threadsafety This callback may fire without any locks held; if this is a
+ *               concern, the app should provide its own locking.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa PropertiesRef.SetPointerWithCleanup
  * @sa CleanupPropertyCallback
- * @sa PropertiesRef.SetPointerWithCleanup()
  * @sa result-callback
  *
  * @cat result-callback
@@ -97,7 +113,7 @@ using CleanupPropertyCB = std::function<void(void*)>;
  * per property in the set.
  *
  * @param userdata an app-defined pointer passed to the callback.
- * @param props the PropertiesRef that is being enumerated.
+ * @param props the Properties that is being enumerated.
  * @param name the next property name in the enumeration.
  *
  * @threadsafety PropertiesRef.Enumerate holds a lock on `props` during this
@@ -118,7 +134,7 @@ struct PropertiesRef;
  * This callback is called from PropertiesRef.Enumerate(), and is called once
  * per property in the set.
  *
- * @param props the PropertiesRef that is being enumerated.
+ * @param props the Properties that is being enumerated.
  * @param name the next property name in the enumeration.
  *
  * @threadsafety PropertiesRef.Enumerate holds a lock on `props` during this
@@ -127,7 +143,6 @@ struct PropertiesRef;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @cat immediate-callback
- *
  *
  * @sa PropertiesRef.Enumerate
  * @sa EnumeratePropertiesCallback
@@ -161,31 +176,7 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
   SDL_PROPERTY_TYPE_BOOLEAN; ///< BOOLEAN
 
 /**
- * Wrap properties id
- *
- * A property is a variable that can be created and retrieved by name at
- * runtime.
- *
- * All properties are part of a property group (Properties). A property
- * group can be created with the Properties constructor and destroyed
- * with this goes out of scope.
- *
- * Properties can be added to and retrieved from a property group through the
- * following functions:
- *
- * - SetPointer() and GetPointer() operate on `void*`
- *   pointer types.
- * - SetString() and GetString() operate on string types.
- * - SetNumber() and GetNumber() operate on signed 64-bit
- *   integer types.
- * - SetFloat() and GetFloat() operate on floating point
- *   types.
- * - SetBoolean() and GetBoolean() operate on boolean
- *   types.
- *
- * Properties can be removed from a group by using SDL_ClearProperty.
- *
- * To create a new properties group use Properties.Create().
+ * SDL properties ID
  *
  * @since This datatype is available since SDL 3.2.0.
  *

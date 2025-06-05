@@ -11,11 +11,11 @@ namespace SDL {
  * @defgroup CategoryIOStream I/O Streams
  *
  * SDL provides an abstract interface for reading and writing data streams. It
- * offers implementations for files, memory, etc, and the app can provide
- * their own implementations, too.
+ * offers implementations for files, memory, etc, and the app can provide their
+ * own implementations, too.
  *
- * SDL_IOStream is not related to the standard C++ iostream class, other than
- * both are abstract interfaces to read/write data.
+ * IOStream is not related to the standard C++ iostream class, other than both
+ * are abstract interfaces to read/write data.
  *
  * @{
  */
@@ -27,7 +27,7 @@ struct IOStreamRef;
 struct IOStream;
 
 /**
- * IOStreamRef status, set by a read or write operation.
+ * IOStream status, set by a read or write operation.
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -51,7 +51,7 @@ constexpr IOStatus IO_STATUS_WRITEONLY =
   SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer.
 
 /**
- * Possible `whence` values for IOStreamRef seeking.
+ * Possible `whence` values for IOStream seeking.
  *
  * These map to the same "whence" concept that `fseek` or `lseek` use in the
  * standard C runtime.
@@ -70,11 +70,11 @@ constexpr IOWhence IO_SEEK_END =
   SDL_IO_SEEK_END; ///< Seek relative to the end of data.
 
 /**
- * The function pointers that drive an IOStreamRef.
+ * The function pointers that drive an IOStream.
  *
  * Applications can provide this struct to IOStream.Open() to create their own
- * implementation of IOStreamRef. This is not necessarily required, as SDL
- * already offers several common types of I/O streams, via functions like
+ * implementation of IOStream. This is not necessarily required, as SDL already
+ * offers several common types of I/O streams, via functions like
  * IOStream.FromFile() and IOStream.FromMem().
  *
  * This structure should be initialized using SDL_INIT_INTERFACE()
@@ -90,15 +90,14 @@ using IOStreamInterface = SDL_IOStreamInterface;
  *
  * This operates as an opaque handle. There are several APIs to create various
  * types of I/O streams, or an app can supply an IOStreamInterface to
- * IOStream.Open() to provide their own stream implementation behind
- * this struct's abstract interface.
+ * IOStream.Open() to provide their own stream implementation behind this
+ * struct's abstract interface.
  *
  * @since This struct is available since SDL 3.2.0.
  *
  * @cat resource
  *
  * @sa IOStream
- * @sa IOStreamRef
  */
 struct IOStreamRef : Resource<SDL_IOStream*>
 {

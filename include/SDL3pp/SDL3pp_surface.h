@@ -18,7 +18,7 @@ namespace SDL {
  * SDL surfaces are buffers of pixels in system RAM. These are useful for
  * passing around and manipulating images that are not stored in GPU memory.
  *
- * SDL_Surface makes serious efforts to manage images in various formats, and
+ * Surface makes serious efforts to manage images in various formats, and
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
@@ -28,6 +28,7 @@ namespace SDL {
  * SDL_image:
  *
  * https://github.com/libsdl-org/SDL_image
+ *
  * @{
  */
 
@@ -41,7 +42,7 @@ struct SurfaceRef;
 struct Surface;
 
 /**
- * The flags on an SurfaceRef.
+ * The flags on an Surface.
  *
  * These are generally considered read-only.
  *
@@ -72,10 +73,7 @@ using ScaleMode = SDL_ScaleMode;
 
 #if SDL_VERSION_ATLEAST(3, 2, 10)
 
-/**
- * @since SDL 3.2.10
- */
-constexpr ScaleMode SCALEMODE_INVALID = SDL_SCALEMODE_INVALID;
+constexpr ScaleMode SCALEMODE_INVALID = SDL_SCALEMODE_INVALID; ///< INVALID
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
@@ -123,14 +121,13 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
  *
  * @since This struct is available since SDL 3.2.0.
  *
+ * @cat resource
+ *
+ *
  * @sa Surface.Create
  * @sa Surface.CreateFrom
  * @sa Surface.Destroy
- *
- * @cat resource
- *
  * @sa Surface
- * @sa SurfaceRef
  */
 struct SurfaceRef : Resource<SDL_Surface*>
 {
@@ -2032,11 +2029,15 @@ public:
   constexpr operator bool() const { return bool(surface); }
 
   /**
-   * Release the locked surface after directly accessing the pixels.
+   * Release a surface after directly accessing the pixels.
+   *
+   * @threadsafety This function is not thread safe. The locking referred to by
+   *               this function is making the pixels available for direct
+   *               access, not thread-safe locking.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Lock()
+   * @sa SurfaceRef.Lock
    */
   void Unlock() { return SDL_UnlockSurface(surface.release()); }
 
@@ -2086,7 +2087,7 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
  * not supported.
  *
- * @param surface the SurfaceRef structure containing the image to be saved.
+ * @param surface the Surface structure containing the image to be saved.
  * @param dst a data stream to save to.
  * @throws Error on failure.
  *
@@ -2094,7 +2095,8 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LoadBMP
+ * @sa Surface.LoadBMP
+ * @sa SaveBMP
  */
 inline void SaveBMP(SurfaceRef surface, IOStreamRef dst)
 {
@@ -2110,7 +2112,7 @@ inline void SaveBMP(SurfaceRef surface, IOStreamRef dst)
  * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
  * not supported.
  *
- * @param surface the SurfaceRef structure containing the image to be saved.
+ * @param surface the Surface structure containing the image to be saved.
  * @param file a file to save to.
  * @throws Error on failure.
  *
@@ -2118,7 +2120,8 @@ inline void SaveBMP(SurfaceRef surface, IOStreamRef dst)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LoadBMP
+ * @sa Surface.LoadBMP
+ * @sa SaveBMP
  */
 inline void SaveBMP(SurfaceRef surface, StringParam file)
 {
@@ -2194,14 +2197,14 @@ inline void ConvertPixels(int width,
  * @param src_format an PixelFormat value of the `src` pixels format.
  * @param src_colorspace an Colorspace value describing the colorspace of
  *                       the `src` pixels.
- * @param src_properties an PropertiesRef with additional source color
+ * @param src_properties an Properties with additional source color
  *                       properties, or 0.
  * @param src a pointer to the source pixels.
  * @param src_pitch the pitch of the source pixels, in bytes.
  * @param dst_format an PixelFormat value of the `dst` pixels format.
  * @param dst_colorspace an Colorspace value describing the colorspace of
  *                       the `dst` pixels.
- * @param dst_properties an PropertiesRef with additional destination color
+ * @param dst_properties an Properties with additional destination color
  *                       properties, or 0.
  * @param dst a pointer to be filled in with new pixel data.
  * @param dst_pitch the pitch of the destination pixels, in bytes.

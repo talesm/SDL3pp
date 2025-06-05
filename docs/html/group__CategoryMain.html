@@ -102,13 +102,13 @@ Typedefs</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga2e0a74019d194d53475e74a803e5afa9" id="r_ga2e0a74019d194d53475e74a803e5afa9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9">SDL::SetMainReady</a> ()</td></tr>
-<tr class="memdesc:ga2e0a74019d194d53475e74a803e5afa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Circumvent failure of SDL_Init() when not using SDL_main() as an entry point.  <br /></td></tr>
+<tr class="memdesc:ga2e0a74019d194d53475e74a803e5afa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Circumvent failure of <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> when not using SDL_main() as an entry point.  <br /></td></tr>
 <tr class="separator:ga2e0a74019d194d53475e74a803e5afa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1b98e9c138e52fc85ce439efec6205f1" id="r_ga1b98e9c138e52fc85ce439efec6205f1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMain.html#ga1b98e9c138e52fc85ce439efec6205f1">SDL::RunApp</a> (int argc, char *argv[], <a class="el" href="group__CategoryMain.html#ga739f8556aeb10b977252e566a4ec88ef">main_func</a> mainFunction, void *reserved)</td></tr>
 <tr class="memdesc:ga1b98e9c138e52fc85ce439efec6205f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes and launches an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> application, by doing platform-specific initialization before calling your mainFunction and cleanups after it returns, if that is needed for a specific platform, otherwise it just calls mainFunction.  <br /></td></tr>
 <tr class="separator:ga1b98e9c138e52fc85ce439efec6205f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2e1cbd26b90891eef642549754780b48" id="r_ga2e1cbd26b90891eef642549754780b48"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMain.html#ga2e1cbd26b90891eef642549754780b48">SDL::EnterAppMainCallbacks</a> (int argc, char *argv[], <a class="el" href="group__CategoryInit.html#gaa769d313fe619516b0b4e621de494b1c">AppInit_func</a> appinit, <a class="el" href="group__CategoryInit.html#ga649ccd445bb0296103ce839b05fb8ddf">AppIterate_func</a> appiter, <a class="el" href="group__CategoryInit.html#gac6fad763c6a19060601dfb3b0bc06706">AppEvent_func</a> appevent, <a class="el" href="group__CategoryInit.html#gae10f17c2662e06ffae89564b29eb7e3a">AppQuit_func</a> appquit)</td></tr>
-<tr class="memdesc:ga2e1cbd26b90891eef642549754780b48"><td class="mdescLeft">&#160;</td><td class="mdescRight">An entry point for <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s use in SDL_MAIN_USE_CALLBACKS.  <br /></td></tr>
+<tr class="memdesc:ga2e1cbd26b90891eef642549754780b48"><td class="mdescLeft">&#160;</td><td class="mdescRight">An entry point for <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s use in SDL3PP_MAIN_USE_CALLBACKS.  <br /></td></tr>
 <tr class="separator:ga2e1cbd26b90891eef642549754780b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad6169770a6501a3fb0191bf1438f06cc" id="r_gad6169770a6501a3fb0191bf1438f06cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMain.html#gad6169770a6501a3fb0191bf1438f06cc">SDL::GDKSuspendComplete</a> ()</td></tr>
 <tr class="memdesc:gad6169770a6501a3fb0191bf1438f06cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback from the application to let the suspend continue.  <br /></td></tr>
@@ -123,7 +123,7 @@ Functions</h2></td></tr>
 <div class="line">{</div>
 <div class="line">}</div>
 </div><!-- fragment --><p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will take care of platform specific details on how it gets called.</p>
-<p>This is also where an app can be configured to use the main callbacks, via the SDL_MAIN_USE_CALLBACKS macro.</p>
+<p>This is also where an app can be configured to use the main callbacks, via the SDL3PP_MAIN_USE_CALLBACKS macro.</p>
 <p>SDL_main.h is a "single-header library," which is to say that including this header inserts code into your program, and you should only include it once in most cases. SDL.h does not include this header automatically.</p>
 <p>For more information, see:</p>
 <p><a href="https://wiki.libsdl.org/SDL3/README/main-functions">https://wiki.libsdl.org/SDL3/README/main-functions</a> </p>
@@ -186,13 +186,13 @@ Functions</h2></td></tr>
 <div class="line">  {                                                                            \</div>
 <div class="line">    SDL::QuitClass(<span class="keyword">static_cast&lt;</span>CLASS*<span class="keyword">&gt;</span>(appstate), result);                     \</div>
 <div class="line">  }</div>
-<div class="ttc" id="aconceptSDL_1_1HasIterateFunction_html"><div class="ttname"><a href="conceptSDL_1_1HasIterateFunction.html">SDL::HasIterateFunction</a></div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:996</div></div>
-<div class="ttc" id="agroup__CategoryEvents_html_ga89256e35005c550c3dea4f9d694c674a"><div class="ttname"><a href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">SDL::Event</a></div><div class="ttdeci">SDL_Event Event</div><div class="ttdoc">The structure for all events in SDL.</div><div class="ttdef"><b>Definition</b> SDL3pp_events.h:1010</div></div>
-<div class="ttc" id="agroup__CategoryInit_html_ga2a3032ece7da9d1cef7a7e3352a820d8"><div class="ttname"><a href="group__CategoryInit.html#ga2a3032ece7da9d1cef7a7e3352a820d8">SDL::IterateClass</a></div><div class="ttdeci">AppResult IterateClass(T *state)</div><div class="ttdoc">Iterate the state.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:1006</div></div>
-<div class="ttc" id="agroup__CategoryInit_html_ga5e144248c6563123ce5ba9e54235f37e"><div class="ttname"><a href="group__CategoryInit.html#ga5e144248c6563123ce5ba9e54235f37e">SDL::AppArgs</a></div><div class="ttdeci">std::span&lt; char const  *const  &gt; AppArgs</div><div class="ttdoc">Represents application parameters.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:914</div></div>
+<div class="ttc" id="aconceptSDL_1_1HasIterateFunction_html"><div class="ttname"><a href="conceptSDL_1_1HasIterateFunction.html">SDL::HasIterateFunction</a></div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:999</div></div>
+<div class="ttc" id="agroup__CategoryEvents_html_ga89256e35005c550c3dea4f9d694c674a"><div class="ttname"><a href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">SDL::Event</a></div><div class="ttdeci">SDL_Event Event</div><div class="ttdoc">The structure for all events in SDL.</div><div class="ttdef"><b>Definition</b> SDL3pp_events.h:832</div></div>
+<div class="ttc" id="agroup__CategoryInit_html_ga2a3032ece7da9d1cef7a7e3352a820d8"><div class="ttname"><a href="group__CategoryInit.html#ga2a3032ece7da9d1cef7a7e3352a820d8">SDL::IterateClass</a></div><div class="ttdeci">AppResult IterateClass(T *state)</div><div class="ttdoc">Iterate the state.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:1009</div></div>
+<div class="ttc" id="agroup__CategoryInit_html_ga5e144248c6563123ce5ba9e54235f37e"><div class="ttname"><a href="group__CategoryInit.html#ga5e144248c6563123ce5ba9e54235f37e">SDL::AppArgs</a></div><div class="ttdeci">std::span&lt; char const  *const  &gt; AppArgs</div><div class="ttdoc">Represents application parameters.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:917</div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga8cfb5253a0e7d61a295144448a8d4273"><div class="ttname"><a href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">SDL::AppResult</a></div><div class="ttdeci">SDL_AppResult AppResult</div><div class="ttdoc">Return values for optional main callbacks.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:135</div></div>
-<div class="ttc" id="agroup__CategoryInit_html_gab720fe23c9b07d412ac63d250bd96f3a"><div class="ttname"><a href="group__CategoryInit.html#gab720fe23c9b07d412ac63d250bd96f3a">SDL::EventClass</a></div><div class="ttdeci">AppResult EventClass(T *state, const SDL_Event &amp;event)</div><div class="ttdoc">Iterate the state.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:1048</div></div>
-<div class="ttc" id="agroup__CategoryInit_html_gac990a4caaf956991eecc59137081f220"><div class="ttname"><a href="group__CategoryInit.html#gac990a4caaf956991eecc59137081f220">SDL::InitClass</a></div><div class="ttdeci">AppResult InitClass(T **state, AppArgs args)</div><div class="ttdoc">Init state with arguments.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:965</div></div>
+<div class="ttc" id="agroup__CategoryInit_html_gab720fe23c9b07d412ac63d250bd96f3a"><div class="ttname"><a href="group__CategoryInit.html#gab720fe23c9b07d412ac63d250bd96f3a">SDL::EventClass</a></div><div class="ttdeci">AppResult EventClass(T *state, const SDL_Event &amp;event)</div><div class="ttdoc">Iterate the state.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:1051</div></div>
+<div class="ttc" id="agroup__CategoryInit_html_gac990a4caaf956991eecc59137081f220"><div class="ttname"><a href="group__CategoryInit.html#gac990a4caaf956991eecc59137081f220">SDL::InitClass</a></div><div class="ttdeci">AppResult InitClass(T **state, AppArgs args)</div><div class="ttdoc">Init state with arguments.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:968</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">CLASS</td><td>The class to wrap in callbacks. </td></tr>
@@ -216,7 +216,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> does not define this macro, but will check if it is defined when including <code>SDL_main.h</code>. If defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will expect the app to provide the proper entry point for the platform, and all the other magic details needed, like manually calling SDL_SetMainReady.</p>
+<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> does not define this macro, but will check if it is defined when including <code>SDL_main.h</code>. If defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will expect the app to provide the proper entry point for the platform, and all the other magic details needed, like manually calling SetMainReady.</p>
 <p>Please see <a href="README/main-functions">README/main-functions</a>, (or docs/README-main-functions.md in the source tree) for a more detailed explanation.</p>
 <dl class="section since"><dt>Since</dt><dd>This macro is used by the headers since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
@@ -419,17 +419,17 @@ SDL_AppQuit </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>You can use this if you want to use your own main() implementation without using SDL_main (like when using SDL_MAIN_HANDLED). When using this, you do <em>not</em> need SDL_SetMainReady().</p>
+<p>You can use this if you want to use your own main() implementation without using SDL_main (like when using SDL3PP_MAIN_HANDLED). When using this, you do <em>not</em> need <a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of InitSubSystem() when not using SDL_main() as an entry point.">SetMainReady()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">argc</td><td>the argc parameter from the application's main() function, or 0 if the platform's main-equivalent has no argc. </td></tr>
-    <tr><td class="paramname">argv</td><td>the argv parameter from the application's main() function, or NULL if the platform's main-equivalent has no argv. </td></tr>
+    <tr><td class="paramname">argv</td><td>the argv parameter from the application's main() function, or nullptr if the platform's main-equivalent has no argv. </td></tr>
     <tr><td class="paramname">mainFunction</td><td>your <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> app's C-style main(). NOT the function you're calling this from! Its name doesn't matter; it doesn't literally have to be <code>main</code>. </td></tr>
-    <tr><td class="paramname">reserved</td><td>should be NULL (reserved for future use, will probably be platform-specific then). </td></tr>
+    <tr><td class="paramname">reserved</td><td>should be nullptr (reserved for future use, will probably be platform-specific then). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the return value from mainFunction: 0 on success, otherwise failure; SDL_GetError() might have more information on the failure.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the return value from mainFunction: 0 on success, otherwise failure; <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> might have more information on the failure.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>Generally this is called once, near startup, from the process's initial thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
@@ -457,9 +457,9 @@ SDL_AppQuit </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function is defined in SDL_main.h, along with the preprocessor rule to redefine main() as SDL_main(). Thus to ensure that your main() function will not be changed it is necessary to define SDL_MAIN_HANDLED before including SDL.h.</p>
+<p>This function is defined in SDL_main.h, along with the preprocessor rule to redefine main() as SDL_main(). Thus to ensure that your main() function will not be changed it is necessary to define SDL3PP_MAIN_HANDLED before including SDL.h.</p>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_Init </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem</a> </dd></dl>
 
 </div>
 </div>

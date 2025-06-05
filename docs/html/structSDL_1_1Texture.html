@@ -197,7 +197,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa5c8ebcbe904bfaaa20b97af5df16832"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a seekable <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> data stream.  <br /></td></tr>
 <tr class="separator:aa5c8ebcbe904bfaaa20b97af5df16832"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7d1ac603d5e4af91ee2fb050d674be2" id="r_ad7d1ac603d5e4af91ee2fb050d674be2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#ad7d1ac603d5e4af91ee2fb050d674be2">Create</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> access, const SDL_Point &amp;size)</td></tr>
-<tr class="memdesc:ad7d1ac603d5e4af91ee2fb050d674be2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> into a software surface.  <br /></td></tr>
+<tr class="memdesc:ad7d1ac603d5e4af91ee2fb050d674be2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture for a rendering context.  <br /></td></tr>
 <tr class="separator:ad7d1ac603d5e4af91ee2fb050d674be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9af94f028d7130c61496a16e413ecc64" id="r_a9af94f028d7130c61496a16e413ecc64"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#a9af94f028d7130c61496a16e413ecc64">CreateFromSurface</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer, <a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> surface)</td></tr>
 <tr class="memdesc:a9af94f028d7130c61496a16e413ecc64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture from an existing surface.  <br /></td></tr>
@@ -280,26 +280,32 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>free</b> ()</td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>If available, this uses LoadSurface(IOStreamRef&amp;), otherwise it uses LoadBMP(IOStreamRef&amp;).</p>
+<p>The contents of a texture when first created are not defined.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
-    <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> to load an image from. </td></tr>
+    <tr><td class="paramname">format</td><td>one of the enumerated values in <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a>. </td></tr>
+    <tr><td class="paramname">access</td><td>one of the enumerated values in TextureAccess. </td></tr>
+    <tr><td class="paramname">size</td><td>the width and height of the texture in pixels. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded contents on success. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the created texture on success </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gabdb011cc5326525f8f1f64bfcf36c5f9" title="Load an image from a filesystem path into a GPU texture.">LoadTexture(RendererRef, StringParam)</a> </dd>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Texture.html#a9af94f028d7130c61496a16e413ecc64" title="Create a texture from an existing surface.">Texture.CreateFromSurface</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Texture.html#a35bd6b95ca5e347fe42e6bc37b13d6e8" title="Load an image from a filesystem path into a software surface.">Texture.Load(RendererRef, IOStreamRef)</a> </dd>
+<a class="el" href="structSDL_1_1Texture.html#ad1c376e4fa769d383b4fa1cb27d88ecf" title="Create a texture for a rendering context with the specified properties.">Texture.CreateWithProperties</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Texture.html#aa5c8ebcbe904bfaaa20b97af5df16832" title="Load a BMP texture from a seekable SDL data stream.">Texture.LoadBMP(RendererRef, IOStreamRef)</a> </dd></dl>
+<a class="el" href="structSDL_1_1Texture.html#a3998cea016cb571c1641e0d01d5c2b44" title="Destroy the specified texture.">Texture.Destroy</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1" title="Update the given texture rectangle with new pixel data.">TextureRef.Update</a> </dd></dl>
 
 </div>
 </div>
@@ -355,7 +361,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>free</b> ()</td></tr>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Texture.html#ad7d1ac603d5e4af91ee2fb050d674be2" title="Load an image from a IOStreamRef into a software surface.">Texture.Create</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Texture.html#ad7d1ac603d5e4af91ee2fb050d674be2" title="Create a texture for a rendering context.">Texture.Create</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Texture.html#ad1c376e4fa769d383b4fa1cb27d88ecf" title="Create a texture for a rendering context with the specified properties.">Texture.CreateWithProperties</a> </dd>
 <dd>
@@ -459,7 +465,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>free</b> ()</td></tr>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#aa845d1a39b76e66f15be53f879eb7574" title="Create a group of properties.">Properties.Create</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Texture.html#ad7d1ac603d5e4af91ee2fb050d674be2" title="Load an image from a IOStreamRef into a software surface.">Texture.Create</a> </dd>
+<a class="el" href="structSDL_1_1Texture.html#ad7d1ac603d5e4af91ee2fb050d674be2" title="Create a texture for a rendering context.">Texture.Create</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Texture.html#a9af94f028d7130c61496a16e413ecc64" title="Create a texture from an existing surface.">Texture.CreateFromSurface</a> </dd>
 <dd>
@@ -496,7 +502,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>free</b> ()</td></tr>
 <p>Passing nullptr or an otherwise invalid texture will set the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> error message to "Invalid texture".</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Texture.html#ad7d1ac603d5e4af91ee2fb050d674be2" title="Load an image from a IOStreamRef into a software surface.">Texture.Create</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Texture.html#ad7d1ac603d5e4af91ee2fb050d674be2" title="Create a texture for a rendering context.">Texture.Create</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Texture.html#a9af94f028d7130c61496a16e413ecc64" title="Create a texture from an existing surface.">Texture.CreateFromSurface</a> </dd></dl>
 

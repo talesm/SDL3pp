@@ -13,11 +13,12 @@ namespace SDL {
  * identifiable by this value: "globally unique."
  *
  * SDL provides functions to convert a GUID to/from a string.
+ *
  * @{
  */
 
 /**
- * A GUID is a 128-bit identifier for an input device that identifies that
+ * An GUID is a 128-bit identifier for an input device that identifies that
  * device across runs of SDL programs on the same platform.
  *
  * If the device is detached and then re-attached to a different port, or if

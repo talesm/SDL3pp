@@ -225,7 +225,7 @@ struct MutexUnsafe : ResourceUnsafe<MutexRef>
 /**
  * A mutex that allows read-only threads to run in parallel.
  *
- * A rwlock is roughly the same concept as MutexRef, but allows threads that
+ * A rwlock is roughly the same concept as Mutex, but allows threads that
  * request read-only access to all hold the lock at the same time. If a thread
  * requests write access, it will block until all read-only threads have
  * released the lock, and no one else can hold the thread (for reading or
@@ -695,9 +695,9 @@ struct SemaphoreUnsafe : ResourceUnsafe<SemaphoreRef>
 /**
  * A means to block multiple threads until a condition is satisfied.
  *
- * Condition variables, paired with an MutexRef, let an app halt multiple
- * threads until a condition has occurred, at which time the app can release
- * one or all waiting threads.
+ * Condition variables, paired with an Mutex, let an app halt multiple threads
+ * until a condition has occurred, at which time the app can release one or all
+ * waiting threads.
  *
  * Wikipedia has a thorough explanation of the concept:
  *

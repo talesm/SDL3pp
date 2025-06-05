@@ -234,14 +234,14 @@ struct StorageRef;
 struct Storage;
 
 /**
- * Function interface for StorageRef.
+ * Function interface for Storage.
  *
- * Apps that want to supply a custom implementation of Storage will fill
- * in all the functions in this struct, and then pass it to
- * Storage.Open to create a custom StorageRef object.
+ * Apps that want to supply a custom implementation of Storage will fill in all
+ * the functions in this struct, and then pass it to Storage.Open to create a
+ * custom Storage object.
  *
- * It is not usually necessary to do this; SDL provides standard
- * implementations for many things you might expect to do with an StorageRef.
+ * It is not usually necessary to do this; SDL provides standard implementations
+ * for many things you might expect to do with an Storage.
  *
  * This structure should be initialized using SDL_INIT_INTERFACE()
  *

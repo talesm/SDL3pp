@@ -274,6 +274,7 @@ using TrayCallback = SDL_TrayCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa TrayEntryRef.SetCallback
+ * @sa TrayCallback
  */
 using TrayCB = std::function<void(TrayEntryRef)>;
 

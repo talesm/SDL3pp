@@ -59,8 +59,8 @@ inline bool HasKeyboard() { return SDL_HasKeyboard(); }
  * @param count a pointer filled in with the number of keyboards returned, may
  *              be nullptr.
  * @returns a 0 terminated array of keyboards instance IDs or nullptr on
- * failure; call GetError() for more information. This should be freed with
- * free() when it is no longer needed.
+ *          failure; call GetError() for more information. This should be freed
+ *          with free() when it is no longer needed.
  *
  * @threadsafety This function should only be called on the main thread.
  *

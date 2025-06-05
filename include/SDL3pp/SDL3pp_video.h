@@ -34,8 +34,9 @@ namespace SDL {
  *
  * The video subsystem covers a lot of functionality, out of necessity, so it
  * is worth perusing the list of functions just to see what's available, but
- * most apps can get by with simply creating a window and listening for
- * events, so start with SDL_CreateWindow() and SDL_PollEvent().
+ * most apps can get by with simply creating a window and listening for events,
+ * so start with Window.Create() and PollEvent().
+ *
  * @{
  */
 
@@ -121,7 +122,7 @@ using DisplayMode = SDL_DisplayMode;
  * The flags on a window.
  *
  * These cover a lot of true/false, or on/off, window state. Some of it is
- * immutable after being set through WindowRef.WindowRef(), some of it can be
+ * immutable after being set through Window.Create(), some of it can be
  * changed on existing windows by the app, and some of it might be altered by
  * the user or system outside of the app's control.
  *
@@ -314,7 +315,7 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
 /**
  * Callback used for hit-testing.
  *
- * @param win the WindowRef where hit-testing was set on.
+ * @param win the Window where hit-testing was set on.
  * @param area an Point which should be hit-tested.
  * @param data what was passed as `callback_data` to WindowRef.SetHitTest().
  * @returns an HitTestResult value.
@@ -330,9 +331,9 @@ using HitTest = SDL_HitTest;
  * @param area a Point const reference which should be hit-tested.
  * @returns an SDL::HitTestResult value.
  *
- * @sa HitTest
- *
  * @cat listener-callback
+ *
+ * @sa HitTest
  */
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
@@ -810,10 +811,9 @@ constexpr SystemTheme SYSTEM_THEME_DARK =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa WindowRef.WindowRef
- *
  * @cat resource
  *
+ * @sa Window.Create
  * @sa Window
  */
 struct WindowRef : Resource<SDL_Window*>
@@ -2960,7 +2960,7 @@ struct WindowUnsafe : ResourceUnsafe<WindowRef>
  *
  * @cat resource
  *
- * @sa GLContextRef.GLContextRef
+ * @sa GLContext.Create
  * @sa GLContext
  */
 struct GLContextRef : Resource<SDL_GLContextState*>

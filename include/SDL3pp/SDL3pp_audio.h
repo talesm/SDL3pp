@@ -215,9 +215,9 @@ public:
   /**
    * Define an AudioFormat value.
    *
-   * SDL does not support custom audio formats, so this function is not of much
-   * use externally, but it can be illustrative as to what the various bits of
-   * an AudioFormat mean.
+   * SDL does not support custom audio formats, so this macro is not of much use
+   * externally, but it can be illustrative as to what the various bits of an
+   * AudioFormat mean.
    *
    * For example, AUDIO_S32LE looks like this:
    *
@@ -527,7 +527,6 @@ using AudioPostmixCB =
  * @cat resource
  *
  * @sa AudioDevice
- * @sa AudioDeviceRef
  */
 struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
 {
@@ -620,7 +619,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
   /**
    * Determine if an audio device is physical (instead of logical).
    *
-   * An AudioDeviceRef that represents physical hardware is a physical device;
+   * An AudioDevice that represents physical hardware is a physical device;
    * there is one for each piece of hardware that SDL can see. Logical devices
    * are created by calling AudioDevice.Open or
    * AudioStream.OpenAudioDeviceStream, and while each is associated with a
@@ -717,8 +716,8 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * has to bind a stream before any audio will flow.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDevice.Open() can be. Physical and invalid
-   * device IDs will report themselves as unpaused here.
+   * created through AudioDevice.Open() can be. Physical and invalid device
+   * IDs will report themselves as unpaused here.
    *
    * @returns true if device is valid and paused, false otherwise.
    *
@@ -919,7 +918,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    *
    * All of this to say: there are specific needs this callback can fulfill, but
    * it is not the simplest interface. Apps should generally provide audio in
-   * their preferred format through an AudioStreamRef and let SDL handle the
+   * their preferred format through an AudioStream and let SDL handle the
    * difference.
    *
    * This function is extremely time-sensitive; the callback should do the least
@@ -1017,17 +1016,16 @@ struct AudioDevice : ResourceUnique<AudioDeviceRef>
    * the device is using after opening.
    *
    * It's legal to open the same device ID more than once; each successful open
-   * will generate a new logical AudioDeviceRef that is managed separately
-   * from others on the same physical device. This allows libraries to open a
-   * device separately from the main app and bind its own streams without
-   * conflicting.
+   * will generate a new logical AudioDevice that is managed separately from
+   * others on the same physical device. This allows libraries to open a device
+   * separately from the main app and bind its own streams without conflicting.
    *
    * It is also legal to open a device ID returned by a previous call to this
    * function; doing so just creates another logical device on the same physical
    * device. This may be useful for making logical groupings of audio streams.
    *
    * This function returns the opened device ID on success. This is a new,
-   * unique AudioDeviceRef that represents a logical device.
+   * unique AudioDevice that represents a logical device.
    *
    * Some backends might offer arbitrary devices (for example, a networked audio
    * protocol that can connect to an arbitrary server). For these, as a change
@@ -1106,9 +1104,9 @@ struct AudioDeviceUnsafe : ResourceUnsafe<AudioDeviceRef>
 /**
  * A value used to request a default playback audio device.
  *
- * Several functions that require an AudioDeviceRef will accept this value
- * to signify the app just wants the system to choose a default device instead
- * of the app providing a specific one.
+ * Several functions that require an AudioDevice will accept this value to
+ * signify the app just wants the system to choose a default device instead of
+ * the app providing a specific one.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1118,7 +1116,7 @@ constexpr AudioDeviceRef AUDIO_DEVICE_DEFAULT_PLAYBACK =
 /**
  * A value used to request a default recording audio device.
  *
- * Several functions that require an AudioDeviceRef will accept this value
+ * Several functions that require an AudioDevice will accept this value
  * to signify the app just wants the system to choose a default device instead
  * of the app providing a specific one.
  *
@@ -1146,7 +1144,7 @@ constexpr int AudioFrameSize(const AudioSpec& x)
 }
 
 /**
- * A callback that fires when data passes through an AudioStreamRef.
+ * A callback that fires when data passes through an AudioStream.
  *
  * Apps can (optionally) register a callback with an audio stream that is
  * called when data is added with AudioStreamRef.PutData, or requested with
@@ -1188,7 +1186,7 @@ constexpr int AudioFrameSize(const AudioSpec& x)
 using AudioStreamCallback = SDL_AudioStreamCallback;
 
 /**
- * A callback that fires when data passes through an AudioStreamRef.
+ * A callback that fires when data passes through an AudioStream.
  *
  * Apps can (optionally) register a callback with an audio stream that is
  * called when data is added with AudioStreamRef.PutData, or requested with
@@ -1232,7 +1230,7 @@ using AudioStreamCB = std::function<
 /**
  * The opaque handle that represents an audio stream.
  *
- * AudioStreamRef is an audio conversion interface.
+ * AudioStream is an audio conversion interface.
  *
  * - It can handle resampling data in chunks without generating artifacts,
  *   when it doesn't have the complete buffer available.
@@ -1250,8 +1248,6 @@ using AudioStreamCB = std::function<
  * (or for recording, consume data from them).
  *
  * @since This struct is available since SDL 3.2.0.
- *
- * @sa AudioStream.Create
  *
  * @cat resource
  *
@@ -1931,7 +1927,7 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
   /**
    * Lock an audio stream for serialized access.
    *
-   * Each AudioStreamRef has an internal mutex it uses to protect its data
+   * Each AudioStream has an internal mutex it uses to protect its data
    * structures from threading conflicts. This function allows an app to lock
    * that mutex, which could be useful if registering callbacks on this stream.
    *
@@ -2335,7 +2331,7 @@ struct AudioStream : ResourceUnique<AudioStreamRef>
    *
    * This function will open an audio device, create a stream and bind it.
    * Unlike other methods of setup, the audio device will be closed when this
-   * stream is destroyed, so the app can treat the returned AudioStreamRef as
+   * stream is destroyed, so the app can treat the returned AudioStream as
    * the only object needed to manage audio playback.
    *
    * Also unlike other functions, the audio device begins paused. This is to map
@@ -2457,7 +2453,7 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
   /**
    * Lock an audio stream for serialized access.
    *
-   * Each AudioStreamRef has an internal mutex it uses to protect its data
+   * Each AudioStream has an internal mutex it uses to protect its data
    * structures from threading conflicts. This function allows an app to lock
    * that mutex, which could be useful if registering callbacks on this stream.
    *
@@ -2755,7 +2751,7 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src, AudioSpec* spec)
 {
   Uint8* buf;
   Uint32 len;
-  if (!SDL_LoadWAV_IO(src.get(), false, spec, &buf, &len)) return {};
+  if (!SDL_LoadWAV_IO(src, false, spec, &buf, &len)) return {};
   return OwnArray<Uint8>{buf, size_t(len)};
 }
 
@@ -2880,11 +2876,11 @@ inline void MixAudio(TargetBytes dst,
  * to resample audio in blocks, as it will introduce audio artifacts on the
  * boundaries. You should only use this function if you are converting audio
  * data in its entirety in one call. If you want to convert audio in smaller
- * chunks, use an AudioStreamRef, which is designed for this situation.
+ * chunks, use an AudioStream, which is designed for this situation.
  *
- * Internally, this function creates and destroys an AudioStreamRef on each
- * use, so it's also less efficient than using one directly, if you need to
- * convert multiple times.
+ * Internally, this function creates and destroys an AudioStream on each use, so
+ * it's also less efficient than using one directly, if you need to convert
+ * multiple times.
  *
  * @param src_spec the format details of the input audio.
  * @param src_data the audio data to be converted.

@@ -35,9 +35,9 @@ namespace SDL {
  * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
  * platform's byte ordering:
  *
- * ```c
+ * ```cpp
  * #if SDL_BYTEORDER == SDL_LIL_ENDIAN
- * SDL_Log("This system is littleendian.");
+ * Log("This system is littleendian.");
  * #endif
  * ```
  *
@@ -54,9 +54,9 @@ namespace SDL {
  * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
  * platform's byte ordering:
  *
- * ```c
+ * ```cpp
  * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
- * SDL_Log("This system is bigendian.");
+ * Log("This system is bigendian.");
  * #endif
  * ```
  *
@@ -76,7 +76,7 @@ namespace SDL {
  *
  * ```c
  * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
- * SDL_Log("This system is bigendian.");
+ * Log("This system is bigendian.");
  * #endif
  * ```
  *
@@ -96,7 +96,7 @@ namespace SDL {
  *
  * ```c
  * #if SDL_FLOATWORDORDER == SDL_BIG_ENDIAN
- * SDL_Log("This system's floats are bigendian.");
+ * Log("This system's floats are bigendian.");
  * #endif
  * ```
  *
@@ -113,8 +113,8 @@ namespace SDL {
  * Byte-swap a floating point number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SDL_SwapFloatLE or
- * SDL_SwapFloatBE instead, in most cases.
+ * byteorder of the system or not. You should use SwapFloatLE or
+ * SwapFloatBE instead, in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -134,8 +134,8 @@ constexpr float SwapFloat(float x) { return SDL_SwapFloat(x); }
  * Byte-swap an unsigned 16-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SDL_Swap16LE or SDL_Swap16BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap16LE or Swap16BE instead,
+ * in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -155,8 +155,8 @@ constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
  * Byte-swap an unsigned 32-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SDL_Swap32LE or SDL_Swap32BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap32LE or Swap32BE instead,
+ * in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -176,8 +176,8 @@ constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
  * Byte-swap an unsigned 64-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SDL_Swap64LE or SDL_Swap64BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap64LE or Swap64BE instead,
+ * in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is

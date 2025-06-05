@@ -82,14 +82,14 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>A rectangle, with the origin at the upper left (using floats).  
+<p>A rectangle, with the origin at the upper left (using floating point values).  
  <a href="structSDL_1_1FRect.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for SDL::FRect:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1FRect__inherit__graph.png" border="0" usemap="#aSDL_1_1FRect_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1FRect_inherit__map" id="aSDL_1_1FRect_inherit__map">
-<area shape="rect" title="A rectangle, with the origin at the upper left (using floats)." alt="" coords="5,79,97,104"/>
+<area shape="rect" title="A rectangle, with the origin at the upper left (using floating point values)." alt="" coords="5,79,97,104"/>
 <area shape="rect" title=" " alt="" coords="6,5,97,31"/>
 <area shape="poly" title=" " alt="" coords="54,44,54,79,49,79,49,44"/>
 </map>
@@ -98,7 +98,7 @@ Inheritance diagram for SDL::FRect:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa7493b6aab739b13777bc3b4acb812b7" id="r_aa7493b6aab739b13777bc3b4acb812b7"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#aa7493b6aab739b13777bc3b4acb812b7">FRect</a> (const SDL_FRect &amp;r={})</td></tr>
-<tr class="memdesc:aa7493b6aab739b13777bc3b4acb812b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floats).">FRect</a>.  <br /></td></tr>
+<tr class="memdesc:aa7493b6aab739b13777bc3b4acb812b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a>.  <br /></td></tr>
 <tr class="separator:aa7493b6aab739b13777bc3b4acb812b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3f9ac79fb459cc21895887e8f87c82f" id="r_ae3f9ac79fb459cc21895887e8f87c82f"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#ae3f9ac79fb459cc21895887e8f87c82f">FRect</a> (float x, float y, float w, float h)</td></tr>
 <tr class="memdesc:ae3f9ac79fb459cc21895887e8f87c82f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from its fields.  <br /></td></tr>
@@ -243,8 +243,25 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:ad19f9d9ae3219ab363ad74e9c4bef45c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="wrap-extending-struct.html">Wrap extending struct</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd>wrap-extending-struct </dd></dl>
+<div class="textblock"><dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="wrap-extending-struct.html">Wrap extending struct</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1FRect.html#a815a929d9f6b4e0866f458155d07c23e" title="Determine whether a rectangle has no area.">FRect.Empty</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1FRect.html#a196110eaa3957ab44f9ec977fbbae3fd" title="Determine whether two rectangles are equal.">FRect.Equal</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1FRect.html#a0dddedcee6c59d91fef1defa8aa0ae17" title="Determine whether two floating point rectangles are equal, within some given epsilon.">FRect.EqualEpsilon</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1FRect.html#a137cd01f73f24987717216478faeb7ff" title="Determine whether two rectangles intersect.">FRect.HasIntersection</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1FRect.html#a0f37dc060572a249d5b147b95d7a4776" title="Calculate the intersection of two rectangles with float precision.">FRect.GetIntersection</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1FRect.html#ab4229097dcdbbe912dd423714d776d36" title="Calculate the intersection of a rectangle and line segment with float precision.">FRect.IntersectLine</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1FRect.html#ada749298c19eef34973451c8ca164dd8" title="Calculate the union of two rectangles with float precision.">FRect.GetUnion</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1FRect.html#ad2226a6510b90e8f6bc6559b15714c0b" title="Calculate a minimal rectangle enclosing a set of points with float precision.">FRect.GetEnclosingPoints</a> </dd>
+<dd>
+<a class="el" href="group__CategoryRect.html#ga841de9b06a5c167bb849c20f216ca7bf" title="Determine whether a point resides inside a floating point rectangle.">FPoint.IsInRect</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa7493b6aab739b13777bc3b4acb812b7" name="aa7493b6aab739b13777bc3b4acb812b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa7493b6aab739b13777bc3b4acb812b7">&#9670;&#160;</a></span>FRect() <span class="overload">[1/2]</span></h2>
@@ -361,7 +378,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">p</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> to check</td></tr>
+    <tr><td class="paramname">p</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> to check</td></tr>
   </table>
   </dd>
 </dl>
@@ -394,7 +411,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">other</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> to check</td></tr>
+    <tr><td class="paramname">other</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> to check</td></tr>
   </table>
   </dd>
 </dl>
@@ -914,7 +931,7 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floats).">FRect</a> structure filled in with the minimal enclosing rectangle or an empty <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floats).">FRect</a> if all the points were outside of the clipping rectangle.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> structure filled in with the minimal enclosing rectangle or an empty <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> if all the points were outside of the clipping rectangle.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -1052,7 +1069,7 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>an SDL_Rect structure filled in with the intersection of if there is intersection, an empty <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floats).">FRect</a> otherwise.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>an SDL_Rect structure filled in with the intersection of if there is intersection, an empty <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> otherwise.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1FRect.html#a137cd01f73f24987717216478faeb7ff" title="Determine whether two rectangles intersect.">FRect.HasIntersection</a> </dd></dl>
 
@@ -1498,7 +1515,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> specifying an offset</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> specifying an offset</td></tr>
   </table>
   </dd>
 </dl>
@@ -1531,7 +1548,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> specifying an offset</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> specifying an offset</td></tr>
   </table>
   </dd>
 </dl>
@@ -1564,7 +1581,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> specifying an offset</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> specifying an offset</td></tr>
   </table>
   </dd>
 </dl>
@@ -1597,7 +1614,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> specifying an offset</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> specifying an offset</td></tr>
   </table>
   </dd>
 </dl>

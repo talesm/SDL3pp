@@ -600,7 +600,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>You can create windows, manage them in various ways, set them fullscreen, and get events when interesting things happen with them, such as the mouse or keyboard interacting with a window.</p>
 <p>The video subsystem is also interested in abstracting away some platform-specific differences in OpenGL: context creation, swapping buffers, etc. This may be crucial to your app, but also you are not required to use OpenGL at all. In fact, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> can provide rendering to those windows as well, either with an easy-to-use <a href="https://wiki.libsdl.org/SDL3/CategoryRender">2D API</a> or with a more-powerful <a href="https://wiki.libsdl.org/SDL3/CategoryGPU">GPU API</a> . Of course, it can simply get out of your way and give you the window handles you need to use Vulkan, Direct3D, Metal, or whatever else you like directly, too.</p>
-<p>The video subsystem covers a lot of functionality, out of necessity, so it is worth perusing the list of functions just to see what's available, but most apps can get by with simply creating a window and listening for events, so start with SDL_CreateWindow() and SDL_PollEvent(). </p>
+<p>The video subsystem covers a lot of functionality, out of necessity, so it is worth perusing the list of functions just to see what's available, but most apps can get by with simply creating a window and listening for events, so start with <a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create()</a> and <a class="el" href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12" title="Poll for currently pending events.">PollEvent()</a>. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ga8d2f428ddef3b4ccf08915814e35d9c7" name="ga8d2f428ddef3b4ccf08915814e35d9c7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga8d2f428ddef3b4ccf08915814e35d9c7">&#9670;&#160;</a></span>SDL_WINDOWPOS_CENTERED</h2>
@@ -1126,8 +1126,8 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">win</td><td>the <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a> where hit-testing was set on. </td></tr>
-    <tr><td class="paramname">area</td><td>an <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> which should be hit-tested. </td></tr>
+    <tr><td class="paramname">win</td><td>the <a class="el" href="structSDL_1_1Window.html" title="Handle to an owned window.">Window</a> where hit-testing was set on. </td></tr>
+    <tr><td class="paramname">area</td><td>an <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> which should be hit-tested. </td></tr>
     <tr><td class="paramname">data</td><td>what was passed as <code>callback_data</code> to <a class="el" href="structSDL_1_1WindowRef.html#a60de3725e2976230421b5bfd0dad4dcc" title="Provide a callback that decides if a window region has special properties.">WindowRef.SetHitTest()</a>. </td></tr>
   </table>
   </dd>
@@ -1151,13 +1151,13 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">win</td><td>the <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a> where hit-testing was set on. </td></tr>
-    <tr><td class="paramname">area</td><td>a <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> const reference which should be hit-tested. </td></tr>
+    <tr><td class="paramname">area</td><td>a <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> const reference which should be hit-tested. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>an <a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e" title="Possible return values from the HitTest callback.">SDL::HitTestResult</a> value.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga40b63d64944c40a9ac2b889887376955" title="Callback used for hit-testing.">HitTest</a></dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a> </dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga40b63d64944c40a9ac2b889887376955" title="Callback used for hit-testing.">HitTest</a> </dd></dl>
 
 </div>
 </div>
@@ -1206,7 +1206,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
         </tr>
       </table>
 </div><div class="memdoc">
-<p>These cover a lot of true/false, or on/off, window state. Some of it is immutable after being set through WindowRef.WindowRef(), some of it can be changed on existing windows by the app, and some of it might be altered by the user or system outside of the app's control.</p>
+<p>These cover a lot of true/false, or on/off, window state. Some of it is immutable after being set through <a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create()</a>, some of it can be changed on existing windows by the app, and some of it might be altered by the user or system outside of the app's control.</p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowRef.html#a884fdeb769d35d88581d77f0f761facb" title="Get the window flags.">WindowRef.GetFlags</a> </dd></dl>
 

@@ -151,7 +151,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This is used with the preprocessor macro SDL_BYTEORDER, to determine a platform's byte ordering:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#if SDL_BYTEORDER == SDL_BIG_ENDIAN</span></div>
-<div class="line">SDL_Log(<span class="stringliteral">&quot;This system is bigendian.&quot;</span>);</div>
+<div class="line">Log(<span class="stringliteral">&quot;This system is bigendian.&quot;</span>);</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --><dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEndian.html#ga0582882a281bd6c7580e454be3595703" title="A macro that reports the target system&#39;s byte order.">SDL_BYTEORDER</a> </dd>
@@ -173,7 +173,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other values in the future, if something else becomes popular). This can be tested with the preprocessor, so decisions can be made at compile time.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#if SDL_BYTEORDER == SDL_BIG_ENDIAN</span></div>
-<div class="line">SDL_Log(<span class="stringliteral">&quot;This system is bigendian.&quot;</span>);</div>
+<div class="line">Log(<span class="stringliteral">&quot;This system is bigendian.&quot;</span>);</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --><dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEndian.html#gad2b20e63545e73207b007b03bf08c2df" title="A value to represent littleendian byteorder.">SDL_LIL_ENDIAN</a> </dd>
@@ -195,7 +195,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other values in the future, if something else becomes popular). This can be tested with the preprocessor, so decisions can be made at compile time.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#if SDL_FLOATWORDORDER == SDL_BIG_ENDIAN</span></div>
-<div class="line">SDL_Log(<span class="stringliteral">&quot;This system&#39;s floats are bigendian.&quot;</span>);</div>
+<div class="line">Log(<span class="stringliteral">&quot;This system&#39;s floats are bigendian.&quot;</span>);</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --><dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEndian.html#gad2b20e63545e73207b007b03bf08c2df" title="A value to represent littleendian byteorder.">SDL_LIL_ENDIAN</a> </dd>
@@ -217,7 +217,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This is used with the preprocessor macro SDL_BYTEORDER, to determine a platform's byte ordering:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#if SDL_BYTEORDER == SDL_LIL_ENDIAN</span></div>
-<div class="line">SDL_Log(<span class="stringliteral">&quot;This system is littleendian.&quot;</span>);</div>
+<div class="line">Log(<span class="stringliteral">&quot;This system is littleendian.&quot;</span>);</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --><dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEndian.html#ga0582882a281bd6c7580e454be3595703" title="A macro that reports the target system&#39;s byte order.">SDL_BYTEORDER</a> </dd>
@@ -250,7 +250,7 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This will always byte-swap the value, whether it's currently in the native byteorder of the system or not. You should use SDL_Swap16LE or SDL_Swap16BE instead, in most cases.</p>
+<p>This will always byte-swap the value, whether it's currently in the native byteorder of the system or not. You should use Swap16LE or Swap16BE instead, in most cases.</p>
 <p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> itself).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -361,7 +361,7 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This will always byte-swap the value, whether it's currently in the native byteorder of the system or not. You should use SDL_Swap32LE or SDL_Swap32BE instead, in most cases.</p>
+<p>This will always byte-swap the value, whether it's currently in the native byteorder of the system or not. You should use Swap32LE or Swap32BE instead, in most cases.</p>
 <p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> itself).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -472,7 +472,7 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This will always byte-swap the value, whether it's currently in the native byteorder of the system or not. You should use SDL_Swap64LE or SDL_Swap64BE instead, in most cases.</p>
+<p>This will always byte-swap the value, whether it's currently in the native byteorder of the system or not. You should use Swap64LE or Swap64BE instead, in most cases.</p>
 <p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> itself).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -583,7 +583,7 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This will always byte-swap the value, whether it's currently in the native byteorder of the system or not. You should use SDL_SwapFloatLE or SDL_SwapFloatBE instead, in most cases.</p>
+<p>This will always byte-swap the value, whether it's currently in the native byteorder of the system or not. You should use SwapFloatLE or SwapFloatBE instead, in most cases.</p>
 <p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> itself).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

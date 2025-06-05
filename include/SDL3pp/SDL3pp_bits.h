@@ -1,4 +1,3 @@
-
 #ifndef SDL3PP_BITS_H_
 #define SDL3PP_BITS_H_
 

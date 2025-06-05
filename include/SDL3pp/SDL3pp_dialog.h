@@ -56,7 +56,7 @@ using DialogFileFilter = SDL_DialogFileFilter;
  *
  * - nullptr, an error occurred. Details can be obtained with GetError().
  * - A pointer to nullptr, the user either didn't choose any file or canceled
- * the dialog.
+ *   the dialog.
  * - A pointer to non-`nullptr`, the user chose one or more files. The argument
  *   is a null-terminated array of pointers to UTF-8 encoded strings, each
  *   containing a path.
@@ -69,8 +69,8 @@ using DialogFileFilter = SDL_DialogFileFilter;
  * fetching the selected filter.
  *
  * In Android, the `filelist` are `content://` URIs. They should be opened
- * using IOStream.FromFile() with appropriate modes. This applies both
- * to open and save file dialog.
+ * using IOStream.FromFile() with appropriate modes. This applies both to open
+ * and save file dialog.
  *
  * @param userdata an app-provided pointer, for the callback's use.
  * @param filelist the file(s) chosen by the user.
@@ -109,8 +109,8 @@ using DialogFileCallback = SDL_DialogFileCallback;
  * fetching the selected filter.
  *
  * In Android, the `filelist` are `content://` URIs. They should be opened
- * using IOStream.FromFile() with appropriate modes. This applies both
- * to open and save file dialog.
+ * using IOStream.FromFile() with appropriate modes. This applies both to open
+ * and save file dialog.
  *
  * @param filelist the file(s) chosen by the user.
  * @param filter index of the selected filter.

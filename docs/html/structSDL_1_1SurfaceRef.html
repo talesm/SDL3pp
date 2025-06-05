@@ -408,15 +408,14 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <p>When a surface holds YUV format data, the planes are assumed to be contiguous without padding between them, e.g. a 32x32 surface in NV12 format with a pitch of 32 would consist of 32x32 bytes of Y plane followed by 32x16 bytes of UV plane.</p>
 <p>When a surface holds MJPG format data, pixels points at the compressed JPEG image and pitch is the length of that data.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Surface.html#a34627cb91b18950e89c9e535757d616b" title="Allocate a new surface with a specific pixel format.">Surface.Create</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Surface.html#a9c3d3e0972ac213a499ad101f045590d" title="Allocate a new surface with a specific pixel format and existing pixel data.">Surface.CreateFrom</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Surface.html#a183c1bec6d887ec1d1418d21afa118eb" title="Free a surface.">Surface.Destroy</a></dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> </dd>
+<a class="el" href="structSDL_1_1Surface.html#a183c1bec6d887ec1d1418d21afa118eb" title="Free a surface.">Surface.Destroy</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> </dd></dl>
+<a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="acfd11c0fe094d4ae88a75c7afe7b605b" name="acfd11c0fe094d4ae88a75c7afe7b605b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acfd11c0fe094d4ae88a75c7afe7b605b">&#9670;&#160;</a></span>AddAlternateImage()</h2>
@@ -544,8 +543,8 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <div class="line">  both:</div>
 <div class="line">    <span class="keywordflow">if</span> SDL_SRCCOLORKEY set, only copy the pixels that <span class="keywordflow">do</span> not match the</div>
 <div class="line">    source color key.</div>
-<div class="ttc" id="agroup__CategoryBlendmode_html_ga5a9cb000dcb8e5ae245dc8d6931c3268"><div class="ttname"><a href="group__CategoryBlendmode.html#ga5a9cb000dcb8e5ae245dc8d6931c3268">SDL::BLENDMODE_NONE</a></div><div class="ttdeci">constexpr BlendMode BLENDMODE_NONE</div><div class="ttdoc">no blending: dstRGBA = srcRGBA</div><div class="ttdef"><b>Definition</b> SDL3pp_blendmode.h:40</div></div>
-<div class="ttc" id="agroup__CategoryBlendmode_html_gaa38070d807b6e89f76e8aa8d55f8c5a4"><div class="ttname"><a href="group__CategoryBlendmode.html#gaa38070d807b6e89f76e8aa8d55f8c5a4">SDL::BLENDMODE_BLEND</a></div><div class="ttdeci">constexpr BlendMode BLENDMODE_BLEND</div><div class="ttdoc">alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA))</div><div class="ttdef"><b>Definition</b> SDL3pp_blendmode.h:46</div></div>
+<div class="ttc" id="agroup__CategoryBlendmode_html_ga5a9cb000dcb8e5ae245dc8d6931c3268"><div class="ttname"><a href="group__CategoryBlendmode.html#ga5a9cb000dcb8e5ae245dc8d6931c3268">SDL::BLENDMODE_NONE</a></div><div class="ttdeci">constexpr BlendMode BLENDMODE_NONE</div><div class="ttdoc">no blending: dstRGBA = srcRGBA</div><div class="ttdef"><b>Definition</b> SDL3pp_blendmode.h:37</div></div>
+<div class="ttc" id="agroup__CategoryBlendmode_html_gaa38070d807b6e89f76e8aa8d55f8c5a4"><div class="ttname"><a href="group__CategoryBlendmode.html#gaa38070d807b6e89f76e8aa8d55f8c5a4">SDL::BLENDMODE_BLEND</a></div><div class="ttdeci">constexpr BlendMode BLENDMODE_BLEND</div><div class="ttdoc">alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA))</div><div class="ttdef"><b>Definition</b> SDL3pp_blendmode.h:44</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">src</td><td>the SDL_Surface structure to be copied from. </td></tr>
@@ -2190,7 +2189,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Between calls to <a class="el" href="structSDL_1_1SurfaceRef.html#a3a097a1e56a2337652248afd358f2d7a" title="Set up a surface for directly accessing the pixels.">SurfaceRef.Lock()</a> / <a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release the locked surface after directly accessing the pixels.">SurfaceLock.Unlock()</a>, you can write to and read from <code>surface-&gt;pixels</code>, using the pixel format stored in <code>surface-&gt;format</code>. Once you are done accessing the surface, you should use <a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release the locked surface after directly accessing the pixels.">SurfaceLock.Unlock()</a> to release it or let the destructor take care of this for you.</p>
+<p>Between calls to <a class="el" href="structSDL_1_1SurfaceRef.html#a3a097a1e56a2337652248afd358f2d7a" title="Set up a surface for directly accessing the pixels.">SurfaceRef.Lock()</a> / <a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release a surface after directly accessing the pixels.">SurfaceLock.Unlock()</a>, you can write to and read from <code>surface-&gt;pixels</code>, using the pixel format stored in <code>surface-&gt;format</code>. Once you are done accessing the surface, you should use <a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release a surface after directly accessing the pixels.">SurfaceLock.Unlock()</a> to release it or let the destructor take care of this for you.</p>
 <p>Not all surfaces require locking. If <code>SurfaceRef.MustLock(surface)</code> evaluates to false, then you can read and write to the surface at any time, and the pixel format of the surface will not change.</p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classSDL_1_1SurfaceLock.html" title="Locks a Surface for access to its pixels.">SurfaceLock</a> object on success. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
@@ -2203,7 +2202,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a5030bf180d394effdc2ad46615b305ea" title="Evaluates to true if the surface needs to be locked before access.">SurfaceRef.MustLock</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release the locked surface after directly accessing the pixels.">SurfaceLock.Unlock</a> </dd></dl>
+<a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release a surface after directly accessing the pixels.">SurfaceLock.Unlock</a> </dd></dl>
 
 </div>
 </div>
@@ -3272,7 +3271,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <dd>
 <a class="el" href="structSDL_1_1SurfaceRef.html#a3a097a1e56a2337652248afd358f2d7a" title="Set up a surface for directly accessing the pixels.">SurfaceRef.Lock</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release the locked surface after directly accessing the pixels.">SurfaceLock.Unlock</a> </dd></dl>
+<a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release a surface after directly accessing the pixels.">SurfaceLock.Unlock</a> </dd></dl>
 
 </div>
 </div>

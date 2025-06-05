@@ -289,7 +289,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga9471cdb876c63ac0ecf6b8a2649ac39e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a callback to be triggered when an event is added to the event queue.  <br /></td></tr>
 <tr class="separator:ga9471cdb876c63ac0ecf6b8a2649ac39e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0dd505606d83231d360fa75243a005f0" id="r_ga0dd505606d83231d360fa75243a005f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#ga0dd505606d83231d360fa75243a005f0">SDL::RemoveEventWatch</a> (<a class="el" href="group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0">EventFilter</a> filter, void *userdata)</td></tr>
-<tr class="memdesc:ga0dd505606d83231d360fa75243a005f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an event watch callback added with SDL_AddEventWatch().  <br /></td></tr>
+<tr class="memdesc:ga0dd505606d83231d360fa75243a005f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an event watch callback added with <a class="el" href="group__CategoryEvents.html#gabdcebc7e238fe59d06b205232cea2bf8" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch()</a>.  <br /></td></tr>
 <tr class="separator:ga0dd505606d83231d360fa75243a005f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafa524f0b36188ca0c048f169500628d4" id="r_gafa524f0b36188ca0c048f169500628d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#gafa524f0b36188ca0c048f169500628d4">SDL::RemoveEventWatch</a> (<a class="el" href="structSDL_1_1EventWatchHandle.html">EventWatchHandle</a> handle)</td></tr>
 <tr class="memdesc:gafa524f0b36188ca0c048f169500628d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an event watch callback added with SDL_AddEventWatch(EventFilterCB).  <br /></td></tr>
@@ -319,9 +319,8 @@ Functions</h2></td></tr>
 <tr class="memitem:ga80fcb19ed338e51b0448fe770e9a31ef" id="r_ga80fcb19ed338e51b0448fe770e9a31ef"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef">SDL::EventAction</a> = SDL_EventAction</td></tr>
 <tr class="memdesc:ga80fcb19ed338e51b0448fe770e9a31ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of action to request from <a class="el" href="group__CategoryEvents.html#ga0e103a11dbf53ae31c10a6ca48c2e3fa" title="Check the event queue for messages and optionally return them.">PeepEvents()</a>.  <br /></td></tr>
 <tr class="separator:ga80fcb19ed338e51b0448fe770e9a31ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab3a96effb1b5dae59df7a4799d7faded" id="r_gab3a96effb1b5dae59df7a4799d7faded"><td class="memItemLeft" align="right" valign="top"><a id="gab3a96effb1b5dae59df7a4799d7faded" name="gab3a96effb1b5dae59df7a4799d7faded"></a>
-constexpr <a class="el" href="group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef">EventAction</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::ADDEVENT</b> = SDL_ADDEVENT</td></tr>
-<tr class="memdesc:gab3a96effb1b5dae59df7a4799d7faded"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add events to the back of the queue. <br /></td></tr>
+<tr class="memitem:gab3a96effb1b5dae59df7a4799d7faded" id="r_gab3a96effb1b5dae59df7a4799d7faded"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef">EventAction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#gab3a96effb1b5dae59df7a4799d7faded">SDL::ADDEVENT</a></td></tr>
+<tr class="memdesc:gab3a96effb1b5dae59df7a4799d7faded"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add events to the back of the queue.  <br /></td></tr>
 <tr class="separator:gab3a96effb1b5dae59df7a4799d7faded"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadcca888e8748b4d09aa9044706d26bff" id="r_gadcca888e8748b4d09aa9044706d26bff"><td class="memItemLeft" align="right" valign="top"><a id="gadcca888e8748b4d09aa9044706d26bff" name="gadcca888e8748b4d09aa9044706d26bff"></a>
 constexpr <a class="el" href="group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef">EventAction</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PEEKEVENT</b> = SDL_PEEKEVENT</td></tr>
@@ -334,7 +333,7 @@ constexpr <a class="el" href="group__CategoryEvents.html#ga80fcb19ed338e51b0448f
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>It's extremely common&ndash;often required&ndash;that an app deal with <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s event queue. Almost all useful information about interactions with the real world flow through here: the user interacting with the computer and app, hardware coming and going, the system changing in some way, etc.</p>
-<p>An app generally takes a moment, perhaps at the start of a new frame, to examine any events that have occurred since the last time and process or ignore them. This is generally done by calling SDL_PollEvent() in a loop until it returns false (or, if using the main callbacks, events are provided one at a time in calls to SDL_AppEvent() before the next call to SDL_AppIterate(); in this scenario, the app does not call <a class="el" href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12" title="Poll for currently pending events.">PollEvent()</a> at all).</p>
+<p>An app generally takes a moment, perhaps at the start of a new frame, to examine any events that have occurred since the last time and process or ignore them. This is generally done by calling <a class="el" href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12" title="Poll for currently pending events.">PollEvent()</a> in a loop until it returns false (or, if using the main callbacks, events are provided one at a time in calls to SDL_AppEvent() before the next call to SDL_AppIterate(); in this scenario, the app does not call <a class="el" href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12" title="Poll for currently pending events.">PollEvent()</a> at all).</p>
 <p>There is other forms of control, too: <a class="el" href="group__CategoryEvents.html#ga0e103a11dbf53ae31c10a6ca48c2e3fa" title="Check the event queue for messages and optionally return them.">PeepEvents()</a> has more functionality at the cost of more complexity, and <a class="el" href="group__CategoryEvents.html#ga9ed704c5c13fef9bf73d4bab332ba16d" title="Wait indefinitely for the next available event.">WaitEvent()</a> can block the process until something interesting happens, which might be beneficial for certain types of programs on low-power hardware. One may also call <a class="el" href="group__CategoryEvents.html#gabdcebc7e238fe59d06b205232cea2bf8" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch()</a> to set a callback when new events arrive.</p>
 <p>The app is free to generate their own events, too: <a class="el" href="group__CategoryEvents.html#gaa592df4d4939fbfb3c89ff6718c7184f" title="Add an event to the event queue.">PushEvent()</a> allows the app to put events onto the queue for later retrieval; <a class="el" href="group__CategoryEvents.html#ga5817c98a343be4119321d4593710dfe7" title="Allocate a set of user-defined events, and return the beginning event number for that set of events.">RegisterEvents()</a> can guarantee that these events have a type that isn't in use by other parts of the system. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -444,7 +443,7 @@ constexpr <a class="el" href="group__CategoryEvents.html#ga80fcb19ed338e51b0448f
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The SDL_Event structure is the core of all event handling in <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>. SDL_Event is a union of all event structures used in <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
+<p>The Event structure is the core of all event handling in <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>. Event is a union of all event structures used in <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -582,8 +581,8 @@ constexpr <a class="el" href="group__CategoryEvents.html#ga80fcb19ed338e51b0448f
       </table>
 </div><div class="memdoc">
 <p>*)</p>
-<p>Joysticks that are supported gamepads receive both an SDL_JoyDeviceEvent and an SDL_GamepadDeviceEvent.</p>
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will send GAMEPAD_ADDED events for joysticks that are already plugged in during SDL_Init() and are recognized as gamepads. It will also send events for joysticks that get gamepad mappings at runtime.</p>
+<p>Joysticks that are supported gamepads receive both an JoyDeviceEvent and an GamepadDeviceEvent.</p>
+<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will send GAMEPAD_ADDED events for joysticks that are already plugged in during <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> and are recognized as gamepads. It will also send events for joysticks that get gamepad mappings at runtime.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#gae71d192a32f74e6a816302b8bdf45832" title="Joystick device event structure (event.jdevice.">JoyDeviceEvent</a> </dd></dl>
 
@@ -697,7 +696,7 @@ constexpr <a class="el" href="group__CategoryEvents.html#ga80fcb19ed338e51b0448f
       </table>
 </div><div class="memdoc">
 <p>*)</p>
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will send JOYSTICK_ADDED events for devices that are already plugged in during SDL_Init.</p>
+<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will send JOYSTICK_ADDED events for devices that are already plugged in during InitSubSystem.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#ga345c767946a1e37fa32db9e7b73f25b9" title="Gamepad device event structure (event.gdevice.">GamepadDeviceEvent</a> </dd></dl>
 
@@ -747,11 +746,11 @@ constexpr <a class="el" href="group__CategoryEvents.html#ga80fcb19ed338e51b0448f
       </table>
 </div><div class="memdoc">
 <p>*)</p>
-<p>The <code>key</code> is the base SDL_Keycode generated by pressing the <code>scancode</code> using the current keyboard layout, applying any options specified in SDL_HINT_KEYCODE_OPTIONS. You can get the SDL_Keycode corresponding to the event scancode and modifiers directly from the keyboard layout, bypassing SDL_HINT_KEYCODE_OPTIONS, by calling SDL_GetKeyFromScancode().</p>
+<p>The <code>key</code> is the base <a class="el" href="classSDL_1_1Keycode.html" title="The SDL virtual key representation.">Keycode</a> generated by pressing the <code>scancode</code> using the current keyboard layout, applying any options specified in SDL_HINT_KEYCODE_OPTIONS. You can get the <a class="el" href="classSDL_1_1Keycode.html" title="The SDL virtual key representation.">Keycode</a> corresponding to the event scancode and modifiers directly from the keyboard layout, bypassing SDL_HINT_KEYCODE_OPTIONS, by calling <a class="el" href="classSDL_1_1Keycode.html#a4570e66d30e3c7fe6e8ac432866ab16a" title="Wraps Keycode.">Keycode.Keycode()</a>.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>GetKeyFromScancode() </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Keycode.html#a4570e66d30e3c7fe6e8ac432866ab16a" title="Wraps Keycode.">Keycode.Keycode</a> </dd>
 <dd>
-HINT_KEYCODE_OPTIONS </dd></dl>
+<a class="el" href="group__CategoryHints.html#ga667c8b0f39414f4809b739fe8cc624f5" title="A variable that controls keycode representation in keyboard events.">SDL_HINT_KEYCODE_OPTIONS</a> </dd></dl>
 
 </div>
 </div>
@@ -848,7 +847,7 @@ HINT_KEYCODE_OPTIONS </dd></dl>
       </table>
 </div><div class="memdoc">
 <p>*)</p>
-<p>This is for buttons on the pen itself that the user might click. The pen itself pressing down to draw triggers a SDL_EVENT_PEN_DOWN event instead.</p>
+<p>This is for buttons on the pen itself that the user might click. The pen itself pressing down to draw triggers a EVENT_PEN_DOWN event instead.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -865,7 +864,7 @@ HINT_KEYCODE_OPTIONS </dd></dl>
       </table>
 </div><div class="memdoc">
 <p>*)</p>
-<p>Depending on the hardware, you may get motion events when the pen is not touching a tablet, for tracking a pen even when it isn't drawing. You should listen for SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP events, or check <code>pen_state &amp; SDL_PEN_INPUT_DOWN</code> to decide if a pen is "drawing" when dealing with pen motion.</p>
+<p>Depending on the hardware, you may get motion events when the pen is not touching a tablet, for tracking a pen even when it isn't drawing. You should listen for EVENT_PEN_DOWN and EVENT_PEN_UP events, or check <code>pen_state &amp; SDL_PEN_INPUT_DOWN</code> to decide if a pen is "drawing" when dealing with pen motion.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -882,9 +881,9 @@ HINT_KEYCODE_OPTIONS </dd></dl>
       </table>
 </div><div class="memdoc">
 <p>*)</p>
-<p>When a pen becomes visible to the system (it is close enough to a tablet, etc), <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will send an SDL_EVENT_PEN_PROXIMITY_IN event with the new pen's ID. This ID is valid until the pen leaves proximity again (has been removed from the tablet's area, the tablet has been unplugged, etc). If the same pen reenters proximity again, it will be given a new ID.</p>
+<p>When a pen becomes visible to the system (it is close enough to a tablet, etc), <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will send an EVENT_PEN_PROXIMITY_IN event with the new pen's ID. This ID is valid until the pen leaves proximity again (has been removed from the tablet's area, the tablet has been unplugged, etc). If the same pen reenters proximity again, it will be given a new ID.</p>
 <p>Note that "proximity" means "close enough for the tablet to know the tool
-is there." The pen touching and lifting off from the tablet while not leaving the area are handled by SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP.</p>
+is there." The pen touching and lifting off from the tablet while not leaving the area are handled by EVENT_PEN_DOWN and EVENT_PEN_UP.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -998,11 +997,11 @@ is there." The pen touching and lifting off from the tablet while not leaving th
       </table>
 </div><div class="memdoc">
 <p>*)</p>
-<p>This event will never be delivered unless text input is enabled by calling SDL_StartTextInput(). <a class="el" href="structSDL_1_1Text.html" title="Handle to an owned text.">Text</a> input is disabled by default!</p>
+<p>This event will never be delivered unless text input is enabled by calling <a class="el" href="group__CategoryKeyboard.html#ga85e3a74f9665b3d675de0f07e300e580" title="Start accepting Unicode text input events in a window.">WindowRef.StartTextInput()</a>. <a class="el" href="structSDL_1_1Text.html" title="Handle to an owned text.">Text</a> input is disabled by default!</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>StartTextInput() </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#ga85e3a74f9665b3d675de0f07e300e580" title="Start accepting Unicode text input events in a window.">WindowRef.StartTextInput</a> </dd>
 <dd>
-StopTextInput() </dd></dl>
+<a class="el" href="group__CategoryKeyboard.html#ga4b504269c4c98a8264aa14804906dd10" title="Stop receiving any text input events in a window.">WindowRef.StopTextInput</a> </dd></dl>
 
 </div>
 </div>
@@ -1036,7 +1035,7 @@ StopTextInput() </dd></dl>
       </table>
 </div><div class="memdoc">
 <p>*)</p>
-<p>This event is unique; it is never created by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>, but only by the application. The event can be pushed onto the event queue using SDL_PushEvent(). The contents of the structure members are completely up to the programmer; the only requirement is that '''type''' is a value obtained from SDL_RegisterEvents().</p>
+<p>This event is unique; it is never created by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>, but only by the application. The event can be pushed onto the event queue using <a class="el" href="group__CategoryEvents.html#gaa592df4d4939fbfb3c89ff6718c7184f" title="Add an event to the event queue.">PushEvent()</a>. The contents of the structure members are completely up to the programmer; the only requirement is that '''type''' is a value obtained from <a class="el" href="group__CategoryEvents.html#ga5817c98a343be4119321d4593710dfe7" title="Allocate a set of user-defined events, and return the beginning event number for that set of events.">RegisterEvents()</a>.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -1110,7 +1109,7 @@ StopTextInput() </dd></dl>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#ga0dd505606d83231d360fa75243a005f0" title="Remove an event watch callback added with SDL_AddEventWatch().">RemoveEventWatch</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#ga0dd505606d83231d360fa75243a005f0" title="Remove an event watch callback added with AddEventWatch().">RemoveEventWatch</a> </dd>
 <dd>
 <a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869" title="Set up a filter to process all events before they are added to the internal event queue.">SetEventFilter</a> </dd></dl>
 
@@ -1161,7 +1160,7 @@ StopTextInput() </dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>listener-callback </dd>
 <dd>
-<a class="el" href="group__CategoryEvents.html#ga0dd505606d83231d360fa75243a005f0" title="Remove an event watch callback added with SDL_AddEventWatch().">RemoveEventWatch()</a> </dd>
+<a class="el" href="group__CategoryEvents.html#ga0dd505606d83231d360fa75243a005f0" title="Remove an event watch callback added with AddEventWatch().">RemoveEventWatch()</a> </dd>
 <dd>
 <a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869" title="Set up a filter to process all events before they are added to the internal event queue.">SetEventFilter()</a> </dd></dl>
 
@@ -1192,7 +1191,7 @@ StopTextInput() </dd></dl>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">type</td><td>the type of event; see SDL_EventType for details. </td></tr>
+    <tr><td class="paramname">type</td><td>the type of event; see EventType for details. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1316,13 +1315,13 @@ StopTextInput() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This will unconditionally remove any events from the queue that match <code>type</code>. If you need to remove a range of event types, use SDL_FlushEvents() instead.</p>
+<p>This will unconditionally remove any events from the queue that match <code>type</code>. If you need to remove a range of event types, use <a class="el" href="group__CategoryEvents.html#ga53ff6baf78e15cfe2140a599b6f7ee95" title="Clear events of a range of types from the event queue.">FlushEvents()</a> instead.</p>
 <p>It's also normal to just ignore events you don't care about in your event loop without calling this function.</p>
-<p>This function only affects currently queued events. If you want to make sure that all pending OS events are flushed, you can call SDL_PumpEvents() on the main thread immediately before the flush call.</p>
-<p>If you have user events with custom data that needs to be freed, you should use SDL_PeepEvents() to remove and clean up those events before calling this function.</p>
+<p>This function only affects currently queued events. If you want to make sure that all pending OS events are flushed, you can call <a class="el" href="group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09" title="Pump the event loop, gathering events from the input devices.">PumpEvents()</a> on the main thread immediately before the flush call.</p>
+<p>If you have user events with custom data that needs to be freed, you should use <a class="el" href="group__CategoryEvents.html#ga0e103a11dbf53ae31c10a6ca48c2e3fa" title="Check the event queue for messages and optionally return them.">PeepEvents()</a> to remove and clean up those events before calling this function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">type</td><td>the type of event to be cleared; see SDL_EventType for details.</td></tr>
+    <tr><td class="paramname">type</td><td>the type of event to be cleared; see EventType for details.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1365,13 +1364,13 @@ StopTextInput() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This will unconditionally remove any events from the queue that are in the range of <code>minType</code> to <code>maxType</code>, inclusive. If you need to remove a single event type, use SDL_FlushEvent() instead.</p>
+<p>This will unconditionally remove any events from the queue that are in the range of <code>minType</code> to <code>maxType</code>, inclusive. If you need to remove a single event type, use <a class="el" href="group__CategoryEvents.html#ga08a52473aefe0861b7086df44ad5907c" title="Clear events of a specific type from the event queue.">FlushEvent()</a> instead.</p>
 <p>It's also normal to just ignore events you don't care about in your event loop without calling this function.</p>
-<p>This function only affects currently queued events. If you want to make sure that all pending OS events are flushed, you can call SDL_PumpEvents() on the main thread immediately before the flush call.</p>
+<p>This function only affects currently queued events. If you want to make sure that all pending OS events are flushed, you can call <a class="el" href="group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09" title="Pump the event loop, gathering events from the input devices.">PumpEvents()</a> on the main thread immediately before the flush call.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">minType</td><td>the low end of event type to be cleared, inclusive; see SDL_EventType for details. </td></tr>
-    <tr><td class="paramname">maxType</td><td>the high end of event type to be cleared, inclusive; see SDL_EventType for details.</td></tr>
+    <tr><td class="paramname">minType</td><td>the low end of event type to be cleared, inclusive; see EventType for details. </td></tr>
+    <tr><td class="paramname">maxType</td><td>the high end of event type to be cleared, inclusive; see EventType for details.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1536,10 +1535,10 @@ StopTextInput() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>If you need to check for a range of event types, use SDL_HasEvents() instead.</p>
+<p>If you need to check for a range of event types, use <a class="el" href="group__CategoryEvents.html#ga2446ca26ec01b32334b3033b503c6c91" title="Check for the existence of certain event types in the event queue.">HasEvents()</a> instead.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">type</td><td>the type of event to be queried; see <a class="el" href="group__EventTypes.html">Event Types</a> for details. </td></tr>
+    <tr><td class="paramname">type</td><td>the type of event to be queried; see EventType for details. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1583,11 +1582,11 @@ StopTextInput() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>If you need to check for a single event type, use SDL_HasEvent() instead.</p>
+<p>If you need to check for a single event type, use <a class="el" href="group__CategoryEvents.html#gab4a428404192df17405d611405a458eb" title="Check for the existence of a certain event type in the event queue.">HasEvent()</a> instead.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">minType</td><td>the low end of event type to be queried, inclusive; see SDL_EventType for details. </td></tr>
-    <tr><td class="paramname">maxType</td><td>the high end of event type to be queried, inclusive; see SDL_EventType for details. </td></tr>
+    <tr><td class="paramname">minType</td><td>the low end of event type to be queried, inclusive; see EventType for details. </td></tr>
+    <tr><td class="paramname">maxType</td><td>the high end of event type to be queried, inclusive; see EventType for details. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1653,18 +1652,18 @@ StopTextInput() </dd></dl>
 <h2><a class="anchor" id="remarks"></a>
 remarks</h2>
 <ul>
-<li><code>SDL_ADDEVENT</code>: up to <code>numevents</code> events will be added to the back of the event queue.</li>
-<li><code>SDL_PEEKEVENT</code>: <code>numevents</code> events at the front of the event queue, within the specified minimum and maximum type, will be returned to the caller and will <em>not</em> be removed from the queue. If you pass NULL for <code>events</code>, then <code>numevents</code> is ignored and the total number of matching events will be returned.</li>
-<li><code>SDL_GETEVENT</code>: up to <code>numevents</code> events at the front of the event queue, within the specified minimum and maximum type, will be returned to the caller and will be removed from the queue.</li>
+<li><code>ADDEVENT</code>: up to <code>numevents</code> events will be added to the back of the event queue.</li>
+<li><code>PEEKEVENT</code>: <code>numevents</code> events at the front of the event queue, within the specified minimum and maximum type, will be returned to the caller and will <em>not</em> be removed from the queue. If you pass nullptr for <code>events</code>, then <code>numevents</code> is ignored and the total number of matching events will be returned.</li>
+<li><code>GETEVENT</code>: up to <code>numevents</code> events at the front of the event queue, within the specified minimum and maximum type, will be returned to the caller and will be removed from the queue.</li>
 </ul>
-<p>You may have to call SDL_PumpEvents() before calling this function. Otherwise, the events may not be ready to be filtered when you call SDL_PeepEvents().</p>
+<p>You may have to call <a class="el" href="group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09" title="Pump the event loop, gathering events from the input devices.">PumpEvents()</a> before calling this function. Otherwise, the events may not be ready to be filtered when you call <a class="el" href="group__CategoryEvents.html#ga0e103a11dbf53ae31c10a6ca48c2e3fa" title="Check the event queue for messages and optionally return them.">PeepEvents()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">events</td><td>destination buffer for the retrieved events, may be NULL to leave the events in the queue and return the number of events that would have been stored. </td></tr>
-    <tr><td class="paramname">numevents</td><td>if action is SDL_ADDEVENT, the number of events to add back to the event queue; if action is SDL_PEEKEVENT or SDL_GETEVENT, the maximum number of events to retrieve. </td></tr>
+    <tr><td class="paramname">events</td><td>destination buffer for the retrieved events, may be nullptr to leave the events in the queue and return the number of events that would have been stored. </td></tr>
+    <tr><td class="paramname">numevents</td><td>if action is ADDEVENT, the number of events to add back to the event queue; if action is PEEKEVENT or GETEVENT, the maximum number of events to retrieve. </td></tr>
     <tr><td class="paramname">action</td><td>action to take; see <a class="el" href="group__CategoryEvents.html#remarks">Remarks</a> for details. </td></tr>
-    <tr><td class="paramname">minType</td><td>minimum value of the event type to be considered; SDL_EVENT_FIRST is a safe choice. </td></tr>
-    <tr><td class="paramname">maxType</td><td>maximum value of the event type to be considered; SDL_EVENT_LAST is a safe choice. </td></tr>
+    <tr><td class="paramname">minType</td><td>minimum value of the event type to be considered; EVENT_FIRST is a safe choice. </td></tr>
+    <tr><td class="paramname">maxType</td><td>maximum value of the event type to be considered; EVENT_LAST is a safe choice. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1713,7 +1712,7 @@ remarks</h2>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// update game state, draw the current frame</span></div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__CategoryEvents_html_ga97ffaee5e1e3e41c04226981bb19dc12"><div class="ttname"><a href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12">SDL::PollEvent</a></div><div class="ttdeci">std::optional&lt; Event &gt; PollEvent()</div><div class="ttdoc">Poll for currently pending events.</div><div class="ttdef"><b>Definition</b> SDL3pp_events.h:1301</div></div>
+<div class="ttc" id="agroup__CategoryEvents_html_ga97ffaee5e1e3e41c04226981bb19dc12"><div class="ttname"><a href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12">SDL::PollEvent</a></div><div class="ttdeci">std::optional&lt; Event &gt; PollEvent()</div><div class="ttdoc">Poll for currently pending events.</div><div class="ttdef"><b>Definition</b> SDL3pp_events.h:1118</div></div>
 </div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>Event if this got an event or std::nullopt if there are none available.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
@@ -1761,10 +1760,10 @@ remarks</h2>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// update game state, draw the current frame</span></div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__CategoryEvents_html_ga89256e35005c550c3dea4f9d694c674a"><div class="ttname"><a href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">SDL::Event</a></div><div class="ttdeci">SDL_Event Event</div><div class="ttdoc">The structure for all events in SDL.</div><div class="ttdef"><b>Definition</b> SDL3pp_events.h:1010</div></div>
+<div class="ttc" id="agroup__CategoryEvents_html_ga89256e35005c550c3dea4f9d694c674a"><div class="ttname"><a href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">SDL::Event</a></div><div class="ttdeci">SDL_Event Event</div><div class="ttdoc">The structure for all events in SDL.</div><div class="ttdef"><b>Definition</b> SDL3pp_events.h:832</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">event</td><td>the SDL_Event structure to be filled with the next event from the queue, or nullptr. </td></tr>
+    <tr><td class="paramname">event</td><td>the Event structure to be filled with the next event from the queue, or nullptr. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1802,7 +1801,7 @@ remarks</h2>
 </table>
 </div><div class="memdoc">
 <p>This function updates the event queue and internal input device state.</p>
-<p>SDL_PumpEvents() gathers all the pending input information from devices and places it in the event queue. Without calls to SDL_PumpEvents() no events would ever be placed on the queue. Often the need for calls to SDL_PumpEvents() is hidden from the user since SDL_PollEvent() and SDL_WaitEvent() implicitly call SDL_PumpEvents(). However, if you are not polling or waiting for events (e.g. you are filtering them), then you must call SDL_PumpEvents() to force an event queue update.</p>
+<p><a class="el" href="group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09" title="Pump the event loop, gathering events from the input devices.">PumpEvents()</a> gathers all the pending input information from devices and places it in the event queue. Without calls to <a class="el" href="group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09" title="Pump the event loop, gathering events from the input devices.">PumpEvents()</a> no events would ever be placed on the queue. Often the need for calls to <a class="el" href="group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09" title="Pump the event loop, gathering events from the input devices.">PumpEvents()</a> is hidden from the user since <a class="el" href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12" title="Poll for currently pending events.">PollEvent()</a> and <a class="el" href="group__CategoryEvents.html#ga9ed704c5c13fef9bf73d4bab332ba16d" title="Wait indefinitely for the next available event.">WaitEvent()</a> implicitly call <a class="el" href="group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09" title="Pump the event loop, gathering events from the input devices.">PumpEvents()</a>. However, if you are not polling or waiting for events (e.g. you are filtering them), then you must call <a class="el" href="group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09" title="Pump the event loop, gathering events from the input devices.">PumpEvents()</a> to force an event queue update.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12" title="Poll for currently pending events.">PollEvent()</a> </dd>
@@ -1978,11 +1977,11 @@ remarks</h2>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function takes the same input as SDL_AddEventWatch() to identify and delete the corresponding callback.</p>
+<p>This function takes the same input as <a class="el" href="group__CategoryEvents.html#gabdcebc7e238fe59d06b205232cea2bf8" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch()</a> to identify and delete the corresponding callback.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filter</td><td>the function originally passed to SDL_AddEventWatch(). </td></tr>
-    <tr><td class="paramname">userdata</td><td>the pointer originally passed to SDL_AddEventWatch().</td></tr>
+    <tr><td class="paramname">filter</td><td>the function originally passed to <a class="el" href="group__CategoryEvents.html#gabdcebc7e238fe59d06b205232cea2bf8" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch()</a>. </td></tr>
+    <tr><td class="paramname">userdata</td><td>the pointer originally passed to <a class="el" href="group__CategoryEvents.html#gabdcebc7e238fe59d06b205232cea2bf8" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch()</a>.</td></tr>
   </table>
   </dd>
 </dl>
@@ -2065,7 +2064,7 @@ remarks</h2>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">type</td><td>the type of event; see SDL_EventType for details. </td></tr>
+    <tr><td class="paramname">type</td><td>the type of event; see EventType for details. </td></tr>
     <tr><td class="paramname">enabled</td><td>whether to process the event or not.</td></tr>
   </table>
   </dd>
@@ -2109,15 +2108,15 @@ remarks</h2>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>If you just want to see events without modifying them or preventing them from being queued, you should use SDL_AddEventWatch() instead.</p>
+<p>If you just want to see events without modifying them or preventing them from being queued, you should use <a class="el" href="group__CategoryEvents.html#gabdcebc7e238fe59d06b205232cea2bf8" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch()</a> instead.</p>
 <p>If the filter function returns true when called, then the event will be added to the internal queue. If it returns false, then the event will be dropped from the queue, but the internal state will still be updated. This allows selective filtering of dynamically arriving events.</p>
 <p><b>WARNING</b>: Be very careful of what you do in the event filter function, as it may run in a different thread!</p>
 <p>On platforms that support it, if the quit event is generated by an interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the application at the next event poll.</p>
-<p>Note: Disabled events never make it to the event filter function; see SDL_SetEventEnabled().</p>
-<p>Note: Events pushed onto the queue with SDL_PushEvent() get passed through the event filter, but events pushed onto the queue with SDL_PeepEvents() do not.</p>
+<p>Note: Disabled events never make it to the event filter function; see <a class="el" href="group__CategoryEvents.html#ga883f6ae88fa5628490ff69fb9e2fc8e5" title="Set the state of processing events by type.">SetEventEnabled()</a>.</p>
+<p>Note: Events pushed onto the queue with <a class="el" href="group__CategoryEvents.html#gaa592df4d4939fbfb3c89ff6718c7184f" title="Add an event to the event queue.">PushEvent()</a> get passed through the event filter, but events pushed onto the queue with <a class="el" href="group__CategoryEvents.html#ga0e103a11dbf53ae31c10a6ca48c2e3fa" title="Check the event queue for messages and optionally return them.">PeepEvents()</a> do not.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filter</td><td>an SDL_EventFilter function to call when an event happens. </td></tr>
+    <tr><td class="paramname">filter</td><td>an EventFilter function to call when an event happens. </td></tr>
     <tr><td class="paramname">userdata</td><td>a pointer that is passed to <code>filter</code>.</td></tr>
   </table>
   </dd>
@@ -2466,6 +2465,31 @@ remarks</h2>
 <dd>
 <a class="el" href="group__CategoryEvents.html#ga9ed704c5c13fef9bf73d4bab332ba16d" title="Wait indefinitely for the next available event.">WaitEvent()</a> </dd></dl>
 
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="gab3a96effb1b5dae59df7a4799d7faded" name="gab3a96effb1b5dae59df7a4799d7faded"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab3a96effb1b5dae59df7a4799d7faded">&#9670;&#160;</a></span>ADDEVENT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef">EventAction</a> SDL::ADDEVENT</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_ADDEVENT</div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

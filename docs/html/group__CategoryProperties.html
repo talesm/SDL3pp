@@ -85,7 +85,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesRef.html">SDL::PropertiesRef</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap properties id.  <a href="structSDL_1_1PropertiesRef.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> properties ID.  <a href="structSDL_1_1PropertiesRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Properties.html">SDL::Properties</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned properties.  <a href="structSDL_1_1Properties.html#details">More...</a><br /></td></tr>
@@ -94,7 +94,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to properties.  <a href="structSDL_1_1PropertiesUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PropertiesLock.html">SDL::PropertiesLock</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the lock state for <a class="el" href="structSDL_1_1PropertiesRef.html" title="Wrap properties id.">PropertiesRef</a>.  <a href="classSDL_1_1PropertiesLock.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the lock state for <a class="el" href="structSDL_1_1PropertiesRef.html" title="SDL properties ID.">PropertiesRef</a>.  <a href="classSDL_1_1PropertiesLock.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -151,16 +151,16 @@ constexpr <a class="el" href="group__CategoryProperties.html#ga150010e97d120b9eb
 <tr class="separator:gabca9f4d0180160fe63ebc8829dd9311d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>All properties are part of a property group (<a class="el" href="structSDL_1_1PropertiesRef.html" title="Wrap properties id.">PropertiesRef</a>). A property group can be created with the CreateProperties() function or by simply instantiating <a class="el" href="structSDL_1_1Properties.html">Properties</a>. It can be destroyed with the <a class="el" href="structSDL_1_1Properties.html#abc95ece9f5b4babfe9aa66e79b03ec34" title="Destroy a group of properties.">Properties.Destroy()</a>, but the <a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> destructor probably will do what you want to, automatically.</p>
+<p>All properties are part of a property group (<a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a>). A property group can be created with the <a class="el" href="structSDL_1_1Properties.html#aa845d1a39b76e66f15be53f879eb7574" title="Create a group of properties.">Properties.Create</a> function and destroyed with the <a class="el" href="structSDL_1_1Properties.html#abc95ece9f5b4babfe9aa66e79b03ec34" title="Destroy a group of properties.">Properties.Destroy</a> function, but the <a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> destructor probably will do what you want to, automatically.</p>
 <p><a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> can be added to and retrieved from a property group through the following functions:</p>
 <ul>
-<li><a class="el" href="structSDL_1_1PropertiesRef.html#ae09b503d792baf036cc6ac4e7b8b06f6" title="Set a pointer property in a group of properties.">PropertiesRef.SetPointer()</a> and <a class="el" href="structSDL_1_1PropertiesRef.html#ada061cc2b3cc84b449992b257475df1f" title="Get a pointer property from a group of properties.">PropertiesRef.GetPointer()</a> operate on <code>void*</code> pointer types.</li>
-<li><a class="el" href="structSDL_1_1PropertiesRef.html#a9188a7d7b6fb1ffb8a5fbe87bf0efcf0" title="Set a string property in a group of properties.">PropertiesRef.SetString()</a> and <a class="el" href="structSDL_1_1PropertiesRef.html#aa326e299cce84db3ba018a7b213c5273" title="Get a string property from a group of properties.">PropertiesRef.GetString()</a> operate on string types.</li>
-<li><a class="el" href="structSDL_1_1PropertiesRef.html#a2a3f8c2b81b6d23919a61b524da1e504" title="Set an integer property in a group of properties.">PropertiesRef.SetNumber()</a> and <a class="el" href="structSDL_1_1PropertiesRef.html#a04f4778eb599ea9f4cfff69c03233582" title="Get a number property from a group of properties.">PropertiesRef.GetNumber()</a> operate on signed 64-bit integer types.</li>
-<li><a class="el" href="structSDL_1_1PropertiesRef.html#ad7c78bd5f0f51a5c8355ca87e2d57cd0" title="Set a floating point property in a group of properties.">PropertiesRef.SetFloat()</a> and <a class="el" href="structSDL_1_1PropertiesRef.html#a040fb51853526a4540db5147556a4627" title="Get a floating point property from a group of properties.">PropertiesRef.GetFloat()</a> operate on floating point types.</li>
-<li><a class="el" href="structSDL_1_1PropertiesRef.html#a672e9233f808df2b423be5cba5e40054" title="Set a boolean property in a group of properties.">PropertiesRef.SetBoolean()</a> and <a class="el" href="structSDL_1_1PropertiesRef.html#abf464e1b6e51b3916d3dd17722b4afd4" title="Get a boolean property from a group of properties.">PropertiesRef.GetBoolean()</a> operate on boolean types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesRef.html#ae09b503d792baf036cc6ac4e7b8b06f6" title="Set a pointer property in a group of properties.">PropertiesRef.SetPointer</a> and <a class="el" href="structSDL_1_1PropertiesRef.html#ada061cc2b3cc84b449992b257475df1f" title="Get a pointer property from a group of properties.">PropertiesRef.GetPointer</a> operate on <code>void*</code> pointer types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesRef.html#a9188a7d7b6fb1ffb8a5fbe87bf0efcf0" title="Set a string property in a group of properties.">PropertiesRef.SetString</a> and <a class="el" href="structSDL_1_1PropertiesRef.html#aa326e299cce84db3ba018a7b213c5273" title="Get a string property from a group of properties.">PropertiesRef.GetString</a> operate on string types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesRef.html#a2a3f8c2b81b6d23919a61b524da1e504" title="Set an integer property in a group of properties.">PropertiesRef.SetNumber</a> and <a class="el" href="structSDL_1_1PropertiesRef.html#a04f4778eb599ea9f4cfff69c03233582" title="Get a number property from a group of properties.">PropertiesRef.GetNumber</a> operate on signed 64-bit integer types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesRef.html#ad7c78bd5f0f51a5c8355ca87e2d57cd0" title="Set a floating point property in a group of properties.">PropertiesRef.SetFloat</a> and <a class="el" href="structSDL_1_1PropertiesRef.html#a040fb51853526a4540db5147556a4627" title="Get a floating point property from a group of properties.">PropertiesRef.GetFloat</a> operate on floating point types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesRef.html#a672e9233f808df2b423be5cba5e40054" title="Set a boolean property in a group of properties.">PropertiesRef.SetBoolean</a> and <a class="el" href="structSDL_1_1PropertiesRef.html#abf464e1b6e51b3916d3dd17722b4afd4" title="Get a boolean property from a group of properties.">PropertiesRef.GetBoolean</a> operate on boolean types.</li>
 </ul>
-<p><a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> can be removed from a group by using <a class="el" href="structSDL_1_1PropertiesRef.html#a457ef4c286d717ceffc92652596706dc" title="Clear a property from a group of properties.">PropertiesRef.Clear()</a>. </p>
+<p><a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> can be removed from a group by using <a class="el" href="structSDL_1_1PropertiesRef.html#a457ef4c286d717ceffc92652596706dc" title="Clear a property from a group of properties.">PropertiesRef.Clear</a>. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="gac68e366c86f4169ac6f6928589c0c4a8" name="gac68e366c86f4169ac6f6928589c0c4a8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gac68e366c86f4169ac6f6928589c0c4a8">&#9670;&#160;</a></span>CleanupPropertyCallback</h2>
@@ -200,9 +200,20 @@ constexpr <a class="el" href="group__CategoryProperties.html#ga150010e97d120b9eb
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryProperties.html#gac68e366c86f4169ac6f6928589c0c4a8" title="A callback used to free resources when a property is deleted.">CleanupPropertyCallback</a> </dd>
+<p>This should release any resources associated with <code>value</code> that are no longer needed.</p>
+<p>This callback is set per-property. Different properties in the same group can have different cleanup callbacks.</p>
+<p>This callback will be called <em>during</em> <a class="el" href="structSDL_1_1PropertiesRef.html#a339d00cae2ba1931ed5f691860ba7592" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesRef.SetPointerWithCleanup</a> if the function fails for any reason.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>the pointer assigned to the property to clean up.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This callback may fire without any locks held; if this is a concern, the app should provide its own locking.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesRef.html#a339d00cae2ba1931ed5f691860ba7592" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesRef.SetPointerWithCleanup</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1PropertiesRef.html#a339d00cae2ba1931ed5f691860ba7592" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesRef.SetPointerWithCleanup()</a> </dd>
+<a class="el" href="group__CategoryProperties.html#gac68e366c86f4169ac6f6928589c0c4a8" title="A callback used to free resources when a property is deleted.">CleanupPropertyCallback</a> </dd>
 <dd>
 result-callback</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#result-callback">Result callback</a> </dd></dl>
@@ -224,7 +235,7 @@ result-callback</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">userdata</td><td>an app-defined pointer passed to the callback. </td></tr>
-    <tr><td class="paramname">props</td><td>the <a class="el" href="structSDL_1_1PropertiesRef.html" title="Wrap properties id.">PropertiesRef</a> that is being enumerated. </td></tr>
+    <tr><td class="paramname">props</td><td>the <a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> that is being enumerated. </td></tr>
     <tr><td class="paramname">name</td><td>the next property name in the enumeration.</td></tr>
   </table>
   </dd>
@@ -249,7 +260,7 @@ result-callback</dd></dl>
 <p>This callback is called from <a class="el" href="structSDL_1_1PropertiesRef.html#a8771dcc6f6e74d649f66a55b08d196d0" title="Enumerate the properties contained in a group of properties.">PropertiesRef.Enumerate()</a>, and is called once per property in the set.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">props</td><td>the <a class="el" href="structSDL_1_1PropertiesRef.html" title="Wrap properties id.">PropertiesRef</a> that is being enumerated. </td></tr>
+    <tr><td class="paramname">props</td><td>the <a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> that is being enumerated. </td></tr>
     <tr><td class="paramname">name</td><td>the next property name in the enumeration.</td></tr>
   </table>
   </dd>

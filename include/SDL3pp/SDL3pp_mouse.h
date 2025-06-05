@@ -26,10 +26,10 @@ namespace SDL {
  * to the window, and reads mouse input no matter how far it moves.
  *
  * Games that want the system to track the mouse but want to draw their own
- * cursor can use HideCursor() and ShowCursor(). It might be more
- * efficient to let the system manage the cursor, if possible, using
- * SetCursor() with a custom image made through CursorRef.CursorRef(),
- * or perhaps just a specific system cursor from CursorRef.CursorRef().
+ * cursor can use HideCursor() and ShowCursor(). It might be more efficient to
+ * let the system manage the cursor, if possible, using SetCursor() with a
+ * custom image made through Cursor.CreateColor(), or perhaps just a specific
+ * system cursor from Cursor.CreateSystem().
  *
  * SDL can, on many platforms, differentiate between multiple connected mice,
  * allowing for interesting input scenarios and multiplayer games. They can be
