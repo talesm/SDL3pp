@@ -41030,6 +41030,12 @@
           "doc": "",
           "entries": {}
         },
+        "TextEngineDeleter": {
+          "kind": "alias",
+          "name": "TextEngineDeleter",
+          "type": "void (*)(TTF_TextEngine *)",
+          "doc": ""
+        },
         "FontRef-forward": {
           "name": "FontRef",
           "kind": "forward",
@@ -41040,16 +41046,6 @@
           "kind": "forward",
           "doc": ""
         },
-        "TextRef-forward": {
-          "name": "TextRef",
-          "kind": "forward",
-          "doc": ""
-        },
-        "Text-forward": {
-          "name": "Text",
-          "kind": "forward",
-          "doc": ""
-        },
         "TextEngineRef-forward": {
           "name": "TextEngineRef",
           "kind": "forward",
@@ -41057,6 +41053,16 @@
         },
         "TextEngine-forward": {
           "name": "TextEngine",
+          "kind": "forward",
+          "doc": ""
+        },
+        "TextRef-forward": {
+          "name": "TextRef",
+          "kind": "forward",
+          "doc": ""
+        },
+        "Text-forward": {
+          "name": "Text",
           "kind": "forward",
           "doc": ""
         },
@@ -42609,7 +42615,7 @@
           }
         },
         "TextEngineRef": {
-          "doc": "\n\n@cat resource\n\n@sa TextEngine\n@sa TextEngineRef",
+          "doc": "\n\n@cat resource\n\n@sa TextEngine",
           "name": "TextEngineRef",
           "kind": "struct",
           "sourceName": "TTF_TextEngine",
@@ -42620,34 +42626,8 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "TextEngineRef": {
-              "type": "",
-              "kind": "function",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "TTF_TextEngine *",
-                  "name": "engine"
-                },
-                {
-                  "name": "engine)",
-                  "type": "void (*destroy)(TTF_TextEngine *"
-                }
-              ],
-              "name": "TextEngineRef",
-              "doc": ""
-            },
-            "void": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                "*m_destroy"
-              ],
-              "name": "void",
-              "doc": ""
-            },
             "SetGPUWinding": {
-              "doc": "Sets the winding order of the vertices returned by TextRef.GetGPUDrawData\nfor a particular GPU text engine.\n\n              CreateGPUTextEngine().\n@param winding the new winding order option.\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngineRef.GetGPUWinding",
+              "doc": "Sets the winding order of the vertices returned by TextRef.GetGPUDrawData\nfor a particular GPU text engine.\n\n              TextEngine.CreateGPU().\n@param winding the new winding order option.\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngineRef.GetGPUWinding",
               "name": "SetGPUWinding",
               "kind": "function",
               "type": "void",
@@ -42660,7 +42640,7 @@
               "sourceName": "TTF_SetGPUTextEngineWinding"
             },
             "GetGPUWinding": {
-              "doc": "Get the winding order of the vertices returned by TextRef.GetGPUDrawData\nfor a particular GPU text engine\n\n              CreateGPUTextEngine().\n@returns the winding order used by the GPU text engine or\n         GPU_TEXTENGINE_WINDING_INVALID in case of error.\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngineRef.SetGPUWinding",
+              "doc": "Get the winding order of the vertices returned by TextRef.GetGPUDrawData\nfor a particular GPU text engine\n\n              TextEngine.CreateGPU().\n@returns the winding order used by the GPU text engine or\n         GPU_TEXTENGINE_WINDING_INVALID in case of error.\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngineRef.SetGPUWinding",
               "name": "GetGPUWinding",
               "kind": "function",
               "type": "GPUTextEngineWinding",
@@ -42668,19 +42648,47 @@
               "sourceName": "TTF_GetGPUTextEngineWinding",
               "immutable": true
             },
-            "reset": {
+            "DestroySurface": {
+              "doc": "Destroy a text engine created for drawing text on SDL surfaces.\n\nAll text created by this engine should be destroyed before calling this\nfunction.\n\n@param engine a TextEngineRef object created with\n              TextEngine.CreateSurface().\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngine.CreateSurface",
+              "name": "DestroySurface",
               "kind": "function",
-              "name": "reset",
               "type": "void",
-              "static": false,
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "TTF_TextEngine *",
-                  "default": "{}"
+                  "name": "engine",
+                  "type": "TTF_TextEngine *"
                 }
               ],
-              "doc": "frees up TextEngineRef."
+              "sourceName": "TTF_DestroySurfaceTextEngine",
+              "static": true
+            },
+            "DestroyRenderer": {
+              "doc": "Destroy a text engine created for drawing text on an SDL renderer.\n\nAll text created by this engine should be destroyed before calling this\nfunction.\n\n@param engine a TextEngineRef object created with\n              TextEngine.CreateRenderer().\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngine.CreateRenderer",
+              "name": "DestroyRenderer",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "engine",
+                  "type": "TTF_TextEngine *"
+                }
+              ],
+              "sourceName": "TTF_DestroyRendererTextEngine",
+              "static": true
+            },
+            "DestroyGPU": {
+              "doc": "Destroy a text engine created for drawing text with the SDL GPU API.\n\nAll text created by this engine should be destroyed before calling this\nfunction.\n\n@param engine a TextEngineRef object created with\n              TextEngine.CreateGPU().\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngine.CreateGPU",
+              "name": "DestroyGPU",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "engine",
+                  "type": "TTF_TextEngine *"
+                }
+              ],
+              "sourceName": "TTF_DestroyGPUTextEngine",
+              "static": true
             }
           },
           "hints": {
@@ -42688,216 +42696,132 @@
             "super": "Resource"
           }
         },
-        "TextEngineUnsafe": {
-          "name": "TextEngineUnsafe",
-          "kind": "struct",
-          "type": "TextEngineRef",
-          "doc": "Unsafe Handle to textEngine\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextEngineRef",
-          "entries": {
-            "TextEngineRef::TextEngineRef": {
-              "kind": "alias",
-              "name": "TextEngineRef::TextEngineRef",
-              "doc": ""
-            },
-            "TextEngineUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const TextEngineRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs TextEngineUnsafe from TextEngineRef.",
-                "hints": {
-                  "init": [
-                    "TextEngineRef(other.get())"
-                  ]
-                },
-                "name": "TextEngineUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const TextEngine &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "TextEngineUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "TextEngineUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "TextEngine &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs TextEngineUnsafe from TextEngine.",
-                "hints": {
-                  "init": [
-                    "TextEngineUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "TextEngineUnsafe &",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "TextEngineUnsafe",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release()); return *this;"
-              },
-              "name": "operator="
-            }
-          }
-        },
         "TextEngine": {
           "name": "TextEngine",
           "kind": "struct",
-          "type": "TextEngineUnsafe",
+          "type": "ResourceUnique<TextEngineRef, TextEngineDeleter>",
           "doc": "Handle to an owned textEngine\n\n@cat resource\n\n@sa TextEngineRef",
           "entries": {
-            "TextEngineUnsafe::TextEngineUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "TextEngineUnsafe::TextEngineUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
             },
-            "TextEngine": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [],
-                "doc": "Constructs an empty TextEngine.",
-                "hints": {
-                  "init": [
-                    "TextEngineUnsafe(nullptr)"
-                  ]
-                },
-                "name": "TextEngine"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "TTF_TextEngine *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "TextEngineUnsafe(resource)"
-                  ]
-                },
-                "name": "TextEngine"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const TextEngine &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "TextEngine",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "TextEngine &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "TextEngine(other.release())"
-                  ]
-                },
-                "name": "TextEngine"
-              },
-              {
-                "type": "",
-                "kind": "function",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "TTF_TextEngine *",
-                    "name": "engine"
-                  },
-                  {
-                    "name": "engine)",
-                    "type": "void (*destroy)(TTF_TextEngine *"
-                  }
-                ],
-                "name": "TextEngine",
-                "doc": ""
-              }
-            ],
-            "~TextEngine": {
+            "CreateSurface": {
+              "doc": "Create a text engine for drawing text on SDL surfaces.\n\n@returns a TextEngineRef object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngineRef.DestroySurface\n@sa TextRef.DrawSurface",
+              "name": "CreateSurface",
               "kind": "function",
-              "type": "",
+              "type": "TextEngine",
               "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
+              "sourceName": "TTF_CreateSurfaceTextEngine",
+              "static": true,
               "hints": {
-                "body": "reset();"
-              },
-              "name": "~TextEngine"
+                "wrapSelf": true
+              }
             },
-            "operator=": {
+            "CreateRenderer": {
+              "doc": "Create a text engine for drawing text on an SDL renderer.\n\n@param renderer the renderer to use for creating textures and drawing text.\n@returns a TextEngineRef object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              renderer.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngineRef.DestroyRenderer\n@sa TextRef.DrawRenderer\n@sa TextEngine.CreateRendererWithProperties",
+              "name": "CreateRenderer",
               "kind": "function",
-              "type": "TextEngine &",
+              "type": "TextEngine",
               "parameters": [
                 {
-                  "type": "TextEngine",
-                  "name": "other"
+                  "name": "renderer",
+                  "type": "RendererRef"
                 }
               ],
-              "doc": "Assignment operator.",
+              "sourceName": "TTF_CreateRendererTextEngine",
+              "static": true,
               "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
+                "wrapSelf": true
+              }
+            },
+            "CreateRendererWithProperties": {
+              "doc": "Create a text engine for drawing text on an SDL renderer, with the\nspecified properties.\n\nThese are the supported properties:\n\n- `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for\n  creating textures and drawing text\n- `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the\n  texture atlas\n\n@param props the properties to use.\n@returns a TextEngineRef object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              renderer.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngine.CreateRenderer\n@sa TextEngineRef.DestroyRenderer\n@sa TextRef.DrawRenderer",
+              "name": "CreateRendererWithProperties",
+              "kind": "function",
+              "type": "TextEngine",
+              "parameters": [
+                {
+                  "name": "props",
+                  "type": "PropertiesRef"
+                }
+              ],
+              "sourceName": "TTF_CreateRendererTextEngineWithProperties",
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
+            },
+            "CreateGPU": {
+              "doc": "Create a text engine for drawing text with the SDL GPU API.\n\n@param device the SDL_GPUDevice to use for creating textures and drawing\n              text.\n@returns a TextEngineRef object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              device.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngine.CreateGPUWithProperties\n@sa TextEngineRef.DestroyGPU\n@sa TextRef.GetGPUDrawData",
+              "name": "CreateGPU",
+              "kind": "function",
+              "type": "TextEngine",
+              "parameters": [
+                {
+                  "name": "device",
+                  "type": "SDL_GPUDevice *"
+                }
+              ],
+              "sourceName": "TTF_CreateGPUTextEngine",
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
+            },
+            "CreateGPUWithProperties": {
+              "doc": "Create a text engine for drawing text with the SDL GPU API, with the\nspecified properties.\n\nThese are the supported properties:\n\n- `prop::GpuTextEngine.DEVICE_POINTER`: the SDL_GPUDevice to use for creating\n  textures and drawing text.\n- `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture\n  atlas\n\n@param props the properties to use.\n@returns a TextEngineRef object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              device.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngine.CreateGPU\n@sa TextEngineRef.DestroyGPU\n@sa TextRef.GetGPUDrawData",
+              "name": "CreateGPUWithProperties",
+              "kind": "function",
+              "type": "TextEngine",
+              "parameters": [
+                {
+                  "name": "props",
+                  "type": "PropertiesRef"
+                }
+              ],
+              "sourceName": "TTF_CreateGPUTextEngineWithProperties",
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
             }
           },
           "hints": {
-            "super": "TextEngine"
+            "self": "TextEngine"
+          }
+        },
+        "TextEngineUnsafe": {
+          "name": "TextEngineUnsafe",
+          "kind": "struct",
+          "type": "ResourceUnsafe<TextEngineRef, TextEngineDeleter>",
+          "doc": "Unsafe Handle to textEngine\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextEngineRef",
+          "entries": {
+            "ResourceUnsafe::ResourceUnsafe": {
+              "kind": "alias",
+              "name": "ResourceUnsafe::ResourceUnsafe",
+              "doc": ""
+            },
+            "TextEngineUnsafe": {
+              "kind": "function",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "TextEngine &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs TextEngineUnsafe from TextEngine.",
+              "hints": {
+                "init": [
+                  "TextEngineUnsafe(other.release())"
+                ]
+              },
+              "name": "TextEngineUnsafe"
+            }
           }
         },
         "GPUAtlasDrawSequence": {
@@ -42918,23 +42842,6 @@
           "name": "SubStringIterator",
           "kind": "forward",
           "doc": ""
-        },
-        "TextEngineUnsafe::TextEngineUnsafe": {
-          "kind": "function",
-          "name": "TextEngineUnsafe::TextEngineUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "TextEngine &&",
-              "name": "other"
-            }
-          ],
-          "hints": {
-            "init": [
-              "TextEngineUnsafe(other.release())"
-            ]
-          }
         },
         "prop::Font": {
           "kind": "ns",
@@ -43181,7 +43088,7 @@
               "doc": ""
             },
             "DrawSurface": {
-              "doc": "Draw text to an SDL surface.\n\n`text` must have been created using a TextEngineRef from\nCreateSurfaceTextEngine().\n\n@param text the text to draw.\n@param x the x coordinate in pixels, positive from the left edge towards\n         the right.\n@param y the y coordinate in pixels, positive from the top edge towards the\n         bottom.\n@param surface the surface to draw on.\n@throws Error on failure.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa CreateSurfaceTextEngine\n@sa Text.Create",
+              "doc": "Draw text to an SDL surface.\n\n`text` must have been created using a TextEngineRef from\nTextEngine.CreateSurface().\n\n@param text the text to draw.\n@param x the x coordinate in pixels, positive from the left edge towards\n         the right.\n@param y the y coordinate in pixels, positive from the top edge towards the\n         bottom.\n@param surface the surface to draw on.\n@throws Error on failure.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngine.CreateSurface\n@sa Text.Create",
               "name": "DrawSurface",
               "kind": "function",
               "type": "void",
@@ -43203,7 +43110,7 @@
               "static": false
             },
             "DrawRenderer": {
-              "doc": "Draw text to an SDL renderer.\n\n`text` must have been created using a TextEngineRef from\nCreateRendererTextEngine(), and will draw using the renderer passed to\nthat function.\n\n@param text the text to draw.\n@param x the x coordinate in pixels, positive from the left edge towards\n         the right.\n@param y the y coordinate in pixels, positive from the top edge towards the\n         bottom.\n@throws Error on failure.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa CreateRendererTextEngine\n@sa Text.Create",
+              "doc": "Draw text to an SDL renderer.\n\n`text` must have been created using a TextEngineRef from\nTextEngine.CreateRenderer(), and will draw using the renderer passed to\nthat function.\n\n@param text the text to draw.\n@param x the x coordinate in pixels, positive from the left edge towards\n         the right.\n@param y the y coordinate in pixels, positive from the top edge towards the\n         bottom.\n@throws Error on failure.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngine.CreateRenderer\n@sa Text.Create",
               "name": "DrawRenderer",
               "kind": "function",
               "type": "void",
@@ -43221,7 +43128,7 @@
               "static": false
             },
             "GetGPUDrawData": {
-              "doc": "Get the geometry data needed for drawing the text.\n\n`text` must have been created using a TextEngineRef from\nCreateGPUTextEngine().\n\nThe positive X-axis is taken towards the right and the positive Y-axis is\ntaken upwards for both the vertex and the texture coordinates, i.e, it\nfollows the same convention used by the SDL_GPU API. If you want to use a\ndifferent coordinate system you will need to transform the vertices\nyourself.\n\nIf the text looks blocky use linear filtering.\n\n@returns a nullptr terminated linked list of GPUAtlasDrawSequence objects\n         or nullptr if the passed text is empty or in case of failure; call\n         GetError() for more information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa CreateGPUTextEngine\n@sa Text.Create",
+              "doc": "Get the geometry data needed for drawing the text.\n\n`text` must have been created using a TextEngineRef from\nTextEngine.CreateGPU().\n\nThe positive X-axis is taken towards the right and the positive Y-axis is\ntaken upwards for both the vertex and the texture coordinates, i.e, it\nfollows the same convention used by the SDL_GPU API. If you want to use a\ndifferent coordinate system you will need to transform the vertices\nyourself.\n\nIf the text looks blocky use linear filtering.\n\n@returns a nullptr terminated linked list of GPUAtlasDrawSequence objects\n         or nullptr if the passed text is empty or in case of failure; call\n         GetError() for more information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextEngine.CreateGPU\n@sa Text.Create",
               "name": "GetGPUDrawData",
               "kind": "function",
               "type": "GPUAtlasDrawSequence *",
@@ -44110,40 +44017,6 @@
           },
           "doc": ""
         },
-        "CreateSurfaceTextEngine": {
-          "doc": "Create a text engine for drawing text on SDL surfaces.\n\n@returns a TextEngineRef object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_DestroySurfaceTextEngine\n@sa TextRef.DrawSurface",
-          "name": "CreateSurfaceTextEngine",
-          "kind": "function",
-          "type": "TextEngine",
-          "parameters": [],
-          "sourceName": "TTF_CreateSurfaceTextEngine"
-        },
-        "CreateRendererTextEngine": {
-          "doc": "Create a text engine for drawing text on an SDL renderer.\n\n@param renderer the renderer to use for creating textures and drawing text.\n@returns a TextEngineRef object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              renderer.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_DestroyRendererTextEngine\n@sa TextRef.DrawRenderer\n@sa CreateRendererTextEngineWithProperties",
-          "name": "CreateRendererTextEngine",
-          "kind": "function",
-          "type": "TextEngine",
-          "parameters": [
-            {
-              "name": "renderer",
-              "type": "RendererRef"
-            }
-          ],
-          "sourceName": "TTF_CreateRendererTextEngine"
-        },
-        "CreateRendererTextEngineWithProperties": {
-          "doc": "Create a text engine for drawing text on an SDL renderer, with the\nspecified properties.\n\nThese are the supported properties:\n\n- `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for\n  creating textures and drawing text\n- `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the\n  texture atlas\n\n@param props the properties to use.\n@returns a TextEngineRef object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              renderer.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa CreateRendererTextEngine\n@sa TTF_DestroyRendererTextEngine\n@sa TextRef.DrawRenderer",
-          "name": "CreateRendererTextEngineWithProperties",
-          "kind": "function",
-          "type": "TextEngine",
-          "parameters": [
-            {
-              "name": "props",
-              "type": "PropertiesRef"
-            }
-          ],
-          "sourceName": "TTF_CreateRendererTextEngineWithProperties"
-        },
         "prop::RendererTextEngine": {
           "kind": "ns",
           "name": "prop::RendererTextEngine",
@@ -44168,32 +44041,6 @@
             }
           },
           "doc": ""
-        },
-        "CreateGPUTextEngine": {
-          "doc": "Create a text engine for drawing text with the SDL GPU API.\n\n@param device the SDL_GPUDevice to use for creating textures and drawing\n              text.\n@returns a TextEngineRef object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              device.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa CreateGPUTextEngineWithProperties\n@sa TTF_DestroyGPUTextEngine\n@sa TextRef.GetGPUDrawData",
-          "name": "CreateGPUTextEngine",
-          "kind": "function",
-          "type": "TextEngine",
-          "parameters": [
-            {
-              "name": "device",
-              "type": "SDL_GPUDevice *"
-            }
-          ],
-          "sourceName": "TTF_CreateGPUTextEngine"
-        },
-        "CreateGPUTextEngineWithProperties": {
-          "doc": "Create a text engine for drawing text with the SDL GPU API, with the\nspecified properties.\n\nThese are the supported properties:\n\n- `prop::GpuTextEngine.DEVICE_POINTER`: the SDL_GPUDevice to use for creating\n  textures and drawing text.\n- `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture\n  atlas\n\n@param props the properties to use.\n@returns a TextEngineRef object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              device.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa CreateGPUTextEngine\n@sa TTF_DestroyGPUTextEngine\n@sa TextRef.GetGPUDrawData",
-          "name": "CreateGPUTextEngineWithProperties",
-          "kind": "function",
-          "type": "TextEngine",
-          "parameters": [
-            {
-              "name": "props",
-              "type": "PropertiesRef"
-            }
-          ],
-          "sourceName": "TTF_CreateGPUTextEngineWithProperties"
         },
         "prop::GpuTextEngine": {
           "kind": "ns",

@@ -76,8 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1TextEngineRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::TextEngineRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesLibs.html">Satellite Libraries</a> &raquo; <a class="el" href="group__CategorySDLTTF.html">True type font support</a></div></div></div>
 </div><!--header-->
@@ -90,13 +89,9 @@ Inheritance diagram for SDL::TextEngineRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1TextEngineRef__inherit__graph.png" border="0" usemap="#aSDL_1_1TextEngineRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1TextEngineRef_inherit__map" id="aSDL_1_1TextEngineRef_inherit__map">
-<area shape="rect" title="A text engine used to create text objects." alt="" coords="17,93,165,119"/>
-<area shape="rect" href="structSDL_1_1TextEngineUnsafe.html" title="Unsafe Handle to textEngine." alt="" coords="5,167,177,192"/>
-<area shape="poly" title=" " alt="" coords="94,132,94,167,89,167,89,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="14,5,169,45"/>
-<area shape="poly" title=" " alt="" coords="94,59,94,93,89,93,89,59"/>
-<area shape="rect" href="structSDL_1_1TextEngine.html" title="Handle to an owned textEngine." alt="" coords="28,240,155,265"/>
-<area shape="poly" title=" " alt="" coords="94,206,94,240,89,240,89,206"/>
+<area shape="rect" title="A text engine used to create text objects." alt="" coords="9,93,157,119"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -178,23 +173,17 @@ constexpr TTF_TextEngine *&#160;</td><td class="memItemRight" valign="bottom"><b
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a151b48a7c30a79eeb8d6490859d87340" id="r_a151b48a7c30a79eeb8d6490859d87340"><td class="memItemLeft" align="right" valign="top"><a id="a151b48a7c30a79eeb8d6490859d87340" name="a151b48a7c30a79eeb8d6490859d87340"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineRef</b> (TTF_TextEngine *engine, void(*destroy)(TTF_TextEngine *engine))</td></tr>
-<tr class="memdesc:a151b48a7c30a79eeb8d6490859d87340"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create from engine and custom destroyer. <br /></td></tr>
-<tr class="separator:a151b48a7c30a79eeb8d6490859d87340"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a967eb00b8b07787e1c9fa3600d88b306" id="r_a967eb00b8b07787e1c9fa3600d88b306"><td class="memItemLeft" align="right" valign="top"><a id="a967eb00b8b07787e1c9fa3600d88b306" name="a967eb00b8b07787e1c9fa3600d88b306"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> (TTF_TextEngine *newResource={})</td></tr>
-<tr class="memdesc:a967eb00b8b07787e1c9fa3600d88b306"><td class="mdescLeft">&#160;</td><td class="mdescRight">frees up <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a>. <br /></td></tr>
-<tr class="separator:a967eb00b8b07787e1c9fa3600d88b306"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a183f67c796ecbf73a26b656155bcfa39" id="r_a183f67c796ecbf73a26b656155bcfa39"><td class="memItemLeft" align="right" valign="top"><a id="a183f67c796ecbf73a26b656155bcfa39" name="a183f67c796ecbf73a26b656155bcfa39"></a>
-void(*&#160;</td><td class="memItemRight" valign="bottom"><b>m_destroy</b> )(TTF_TextEngine *engine) = nullptr</td></tr>
-<tr class="memdesc:a183f67c796ecbf73a26b656155bcfa39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Custom destroyer. <br /></td></tr>
-<tr class="separator:a183f67c796ecbf73a26b656155bcfa39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a48f468ac61eba866266cd948d991f62d" id="r_a48f468ac61eba866266cd948d991f62d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineRef.html#a48f468ac61eba866266cd948d991f62d">DestroySurface</a> (TTF_TextEngine *engine)</td></tr>
+<tr class="memdesc:a48f468ac61eba866266cd948d991f62d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text engine created for drawing text on <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> surfaces.  <br /></td></tr>
+<tr class="separator:a48f468ac61eba866266cd948d991f62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa621069a4fdd93fe83bcde1ac9ef27fb" id="r_aa621069a4fdd93fe83bcde1ac9ef27fb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineRef.html#aa621069a4fdd93fe83bcde1ac9ef27fb">DestroyRenderer</a> (TTF_TextEngine *engine)</td></tr>
+<tr class="memdesc:aa621069a4fdd93fe83bcde1ac9ef27fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text engine created for drawing text on an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> renderer.  <br /></td></tr>
+<tr class="separator:aa621069a4fdd93fe83bcde1ac9ef27fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae915e67c612c2666f7656f135247d955" id="r_ae915e67c612c2666f7656f135247d955"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineRef.html#ae915e67c612c2666f7656f135247d955">DestroyGPU</a> (TTF_TextEngine *engine)</td></tr>
+<tr class="memdesc:ae915e67c612c2666f7656f135247d955"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text engine created for drawing text with the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> GPU API.  <br /></td></tr>
+<tr class="separator:ae915e67c612c2666f7656f135247d955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -208,9 +197,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 <div class="textblock"><p>This is a public interface that can be used by applications and libraries to perform customize rendering with text objects. See &lt;SDL3_ttf/SDL_textengine.h&gt; for details.</p>
 <p>There are three text engines provided with the library:</p>
 <ul>
-<li>Drawing to an SDL_Surface, created with <a class="el" href="group__CategorySDLTTF.html#ga0f2b7b5ad87122d3a58e1172395e4896" title="Create a text engine for drawing text on SDL surfaces.">CreateSurfaceTextEngine()</a></li>
-<li>Drawing with an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 2D renderer, created with <a class="el" href="group__CategorySDLTTF.html#gaa8cc41ddfc03bdd1fcd884cf2e6c3384" title="Create a text engine for drawing text on an SDL renderer.">CreateRendererTextEngine()</a></li>
-<li>Drawing with the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> GPU API, created with <a class="el" href="group__CategorySDLTTF.html#ga33a84b9756cccdd0a25118e113e1da47" title="Create a text engine for drawing text with the SDL GPU API.">CreateGPUTextEngine()</a></li>
+<li>Drawing to an SDL_Surface, created with CreateSurfaceTextEngine()</li>
+<li>Drawing with an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 2D renderer, created with CreateRendererTextEngine()</li>
+<li>Drawing with the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> GPU API, created with CreateGPUTextEngine()</li>
 </ul>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
@@ -218,6 +207,114 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 <dd>
 <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae915e67c612c2666f7656f135247d955" name="ae915e67c612c2666f7656f135247d955"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae915e67c612c2666f7656f135247d955">&#9670;&#160;</a></span>DestroyGPU()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void SDL::TextEngineRef::DestroyGPU </td>
+          <td>(</td>
+          <td class="paramtype">TTF_TextEngine *&#160;</td>
+          <td class="paramname"><em>engine</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>All text created by this engine should be destroyed before calling this function.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">engine</td><td>a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> object created with <a class="el" href="structSDL_1_1TextEngine.html#a1e89b99fe027028b156963f27027fce4" title="Create a text engine for drawing text with the SDL GPU API.">TextEngine.CreateGPU()</a>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html#a1e89b99fe027028b156963f27027fce4" title="Create a text engine for drawing text with the SDL GPU API.">TextEngine.CreateGPU</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa621069a4fdd93fe83bcde1ac9ef27fb" name="aa621069a4fdd93fe83bcde1ac9ef27fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa621069a4fdd93fe83bcde1ac9ef27fb">&#9670;&#160;</a></span>DestroyRenderer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void SDL::TextEngineRef::DestroyRenderer </td>
+          <td>(</td>
+          <td class="paramtype">TTF_TextEngine *&#160;</td>
+          <td class="paramname"><em>engine</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>All text created by this engine should be destroyed before calling this function.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">engine</td><td>a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> object created with <a class="el" href="structSDL_1_1TextEngine.html#a7bc1406567f891d5ef130c22594699a8" title="Create a text engine for drawing text on an SDL renderer.">TextEngine.CreateRenderer()</a>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html#a7bc1406567f891d5ef130c22594699a8" title="Create a text engine for drawing text on an SDL renderer.">TextEngine.CreateRenderer</a> </dd></dl>
+
+</div>
+</div>
+<a id="a48f468ac61eba866266cd948d991f62d" name="a48f468ac61eba866266cd948d991f62d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48f468ac61eba866266cd948d991f62d">&#9670;&#160;</a></span>DestroySurface()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void SDL::TextEngineRef::DestroySurface </td>
+          <td>(</td>
+          <td class="paramtype">TTF_TextEngine *&#160;</td>
+          <td class="paramname"><em>engine</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>All text created by this engine should be destroyed before calling this function.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">engine</td><td>a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> object created with <a class="el" href="structSDL_1_1TextEngine.html#a417a62f3e59b5b51df283d31bac63ebb" title="Create a text engine for drawing text on SDL surfaces.">TextEngine.CreateSurface()</a>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html#a417a62f3e59b5b51df283d31bac63ebb" title="Create a text engine for drawing text on SDL surfaces.">TextEngine.CreateSurface</a> </dd></dl>
+
+</div>
+</div>
 <a id="a082852df49f3dbf6e24eff7b8546c28f" name="a082852df49f3dbf6e24eff7b8546c28f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a082852df49f3dbf6e24eff7b8546c28f">&#9670;&#160;</a></span>GetGPUWinding()</h2>
 

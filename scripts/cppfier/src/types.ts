@@ -186,6 +186,11 @@ export interface ApiResource extends ApiEntryTransform {
    * Prevent generation of default constructor. Defaults to false
    */
   omitDefaultCtor?: boolean
+
+  /**
+   * Extra parameters to the base classes.
+   */
+  extraParameters?: string[]
 }
 
 export interface ApiLock extends ApiEntryTransform {

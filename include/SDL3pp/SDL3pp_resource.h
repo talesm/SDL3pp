@@ -119,8 +119,9 @@ private:
 
 protected:
   /// Constructs from raw type.
-  constexpr ResourcePtrBase(value_type value = {})
+  constexpr ResourcePtrBase(value_type value = {}, DELETER deleter = {})
     : m_value(value)
+    , m_deleter(std::move(deleter))
   {
   }
 
@@ -184,8 +185,9 @@ public:
 
   /// Constructs pointer from anything compatible
   constexpr explicit ResourceUnsafe(RESOURCE other)
-    : base(other.get())
+    : base(other)
   {
+    other.release();
   }
 
   /// Resets the value, destroying the resource if not nullptr
@@ -211,8 +213,9 @@ public:
   constexpr ResourceUnique() = default;
 
   /// Constructs from raw type.
-  constexpr explicit ResourceUnique(base::value_type value)
-    : base(value)
+  constexpr explicit ResourceUnique(base::value_type value,
+                                    DELETER deleter = {})
+    : base(value, std::move(deleter))
   {
   }
 
@@ -220,7 +223,7 @@ public:
   constexpr ResourceUnique(ResourceUnique&& other)
     : base(other)
   {
-    other.get() = {};
+    other.release();
   }
 
   ResourceUnique(const ResourceUnique& other) = delete;
@@ -235,7 +238,8 @@ public:
   /// Assignment operator.
   constexpr ResourceUnique& operator=(ResourceUnique other)
   {
-    std::swap(base::get(), other.get());
+    base::operator=(other);
+    other.release();
     return *this;
   }
 

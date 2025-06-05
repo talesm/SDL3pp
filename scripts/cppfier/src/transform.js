@@ -787,18 +787,6 @@ function expandResources(sourceEntries, file, context) {
         body: freeFunction.type === "void" ? "reset();" : "return reset();"
       });
       uniqueSubEntries[sourceName] = freeTransformEntry;
-    } else {
-      refSubEntries.reset = {
-        kind: "function",
-        name: "reset",
-        type: "void",
-        static: true,
-        parameters: [{
-          name: "resource",
-          type: pointerType,
-        }],
-        doc: `frees up ${sourceName}.`,
-      };
     }
 
     /** @type {ApiEntryTransform} */
@@ -819,13 +807,15 @@ function expandResources(sourceEntries, file, context) {
     file.transform[sourceName] = entry;
 
     const includeAfterKey = resourceEntry.includeAfter ?? sourceName;
+    const extraParametersStr = resourceEntry.extraParameters?.length
+      ? (", " + resourceEntry.extraParameters.join(", ")) : "";
 
     /** @type {ApiEntryTransform[]} */
     const derivedEntries = [
       {
         name: uniqueName,
         kind: "struct",
-        type: `ResourceUnique<${refName}>`,
+        type: `ResourceUnique<${refName}${extraParametersStr}>`,
         doc: `Handle to an owned ${title}\n\n@cat resource\n\n@sa ${refName}`,
         entries: {
           "ResourceUnique::ResourceUnique": "alias",
@@ -836,7 +826,7 @@ function expandResources(sourceEntries, file, context) {
       {
         name: unsafeName,
         kind: "struct",
-        type: `ResourceUnsafe<${refName}>`,
+        type: `ResourceUnsafe<${refName}${extraParametersStr}>`,
         doc: `Unsafe Handle to ${title}\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ${refName}`,
         entries: {
           "ResourceUnsafe::ResourceUnsafe": "alias",

@@ -82,14 +82,14 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="structSDL_1_1Text.html" title="Handle to an owned text.">Text</a> created with TextRef.TextRef()  
+<p><a class="el" href="structSDL_1_1Text.html" title="Handle to an owned text.">Text</a> created with <a class="el" href="structSDL_1_1Text.html#a023478d01d0ac5d4a5274f1066eca81a" title="Create a text object from UTF-8 text and a text engine.">Text.Create()</a>  
  <a href="structSDL_1_1TextRef.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for SDL::TextRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1TextRef__inherit__graph.png" border="0" usemap="#aSDL_1_1TextRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1TextRef_inherit__map" id="aSDL_1_1TextRef_inherit__map">
-<area shape="rect" title="Text created with TextRef.TextRef()" alt="" coords="31,93,135,119"/>
+<area shape="rect" title="Text created with Text.Create()" alt="" coords="31,93,135,119"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
 </map>
@@ -326,9 +326,11 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TextRef.TextRef </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Text.html#a023478d01d0ac5d4a5274f1066eca81a" title="Create a text object from UTF-8 text and a text engine.">Text.Create</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1TextRef.html#aa7bdbe1d563256a5558ef9ce27740420" title="Get the properties associated with a text object.">TextRef.GetProperties</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Text.html#ae58a5a317cde1ea3902150eec4ff1c1a" title="Destroy a text object created by a text engine.">Text.Destroy</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Text.html" title="Handle to an owned text.">Text</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -458,7 +460,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
   </tr>
 </table>
 </div><div class="memdoc">
-<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> from <a class="el" href="group__CategorySDLTTF.html#gaa8cc41ddfc03bdd1fcd884cf2e6c3384" title="Create a text engine for drawing text on an SDL renderer.">CreateRendererTextEngine()</a>, and will draw using the renderer passed to that function.</p>
+<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> from <a class="el" href="structSDL_1_1TextEngine.html#a7bc1406567f891d5ef130c22594699a8" title="Create a text engine for drawing text on an SDL renderer.">TextEngine.CreateRenderer()</a>, and will draw using the renderer passed to that function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">p</td><td>the (x, y) coordinate in pixels, positive from the left edge towards the right and from the top edge towards the bottom. </td></tr>
@@ -473,9 +475,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#gaa8cc41ddfc03bdd1fcd884cf2e6c3384" title="Create a text engine for drawing text on an SDL renderer.">CreateRendererTextEngine</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html#a7bc1406567f891d5ef130c22594699a8" title="Create a text engine for drawing text on an SDL renderer.">TextEngine.CreateRenderer</a> </dd>
 <dd>
-Text.Text </dd></dl>
+<a class="el" href="structSDL_1_1Text.html#a023478d01d0ac5d4a5274f1066eca81a" title="Create a text object from UTF-8 text and a text engine.">Text.Create</a> </dd></dl>
 
 </div>
 </div>
@@ -512,7 +514,7 @@ Text.Text </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> from <a class="el" href="group__CategorySDLTTF.html#ga0f2b7b5ad87122d3a58e1172395e4896" title="Create a text engine for drawing text on SDL surfaces.">CreateSurfaceTextEngine()</a>.</p>
+<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> from <a class="el" href="structSDL_1_1TextEngine.html#a417a62f3e59b5b51df283d31bac63ebb" title="Create a text engine for drawing text on SDL surfaces.">TextEngine.CreateSurface()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">p</td><td>the (x, y) coordinate in pixels, positive from the left edge towards the right and from the top edge towards the bottom. </td></tr>
@@ -528,9 +530,9 @@ Text.Text </dd></dl>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga0f2b7b5ad87122d3a58e1172395e4896" title="Create a text engine for drawing text on SDL surfaces.">CreateSurfaceTextEngine</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html#a417a62f3e59b5b51df283d31bac63ebb" title="Create a text engine for drawing text on SDL surfaces.">TextEngine.CreateSurface</a> </dd>
 <dd>
-Text.Text </dd></dl>
+<a class="el" href="structSDL_1_1Text.html#a023478d01d0ac5d4a5274f1066eca81a" title="Create a text object from UTF-8 text and a text engine.">Text.Create</a> </dd></dl>
 
 </div>
 </div>
@@ -903,15 +905,15 @@ Text.Text </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> from <a class="el" href="group__CategorySDLTTF.html#ga33a84b9756cccdd0a25118e113e1da47" title="Create a text engine for drawing text with the SDL GPU API.">CreateGPUTextEngine()</a>.</p>
+<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> from <a class="el" href="structSDL_1_1TextEngine.html#a1e89b99fe027028b156963f27027fce4" title="Create a text engine for drawing text with the SDL GPU API.">TextEngine.CreateGPU()</a>.</p>
 <p>The positive X-axis is taken towards the right and the positive Y-axis is taken upwards for both the vertex and the texture coordinates, i.e, it follows the same convention used by the SDL_GPU API. If you want to use a different coordinate system you will need to transform the vertices yourself.</p>
 <p>If the text looks blocky use linear filtering.</p>
 <dl class="section return"><dt>Returns</dt><dd>a nullptr terminated linked list of GPUAtlasDrawSequence objects or nullptr if the passed text is empty or in case of failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga33a84b9756cccdd0a25118e113e1da47" title="Create a text engine for drawing text with the SDL GPU API.">CreateGPUTextEngine</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html#a1e89b99fe027028b156963f27027fce4" title="Create a text engine for drawing text with the SDL GPU API.">TextEngine.CreateGPU</a> </dd>
 <dd>
-Text.Text </dd></dl>
+<a class="el" href="structSDL_1_1Text.html#a023478d01d0ac5d4a5274f1066eca81a" title="Create a text object from UTF-8 text and a text engine.">Text.Create</a> </dd></dl>
 
 </div>
 </div>

@@ -39,6 +39,9 @@ constexpr struct TtfInitFlag : InitFlagsExtra
 {
 } INIT_TTF; ///< Flag to init TTF support
 
+/// Deleter for TextEngine
+using TextEngineDeleter = void (*)(TTF_TextEngine*);
+
 // Forward decl
 struct FontRef;
 
@@ -46,16 +49,16 @@ struct FontRef;
 struct Font;
 
 // Forward decl
-struct TextRef;
-
-// Forward decl
-struct Text;
-
-// Forward decl
 struct TextEngineRef;
 
 // Forward decl
 struct TextEngine;
+
+// Forward decl
+struct TextRef;
+
+// Forward decl
+struct Text;
 
 /**
  * @name Font Style Flags
@@ -1999,20 +2002,6 @@ struct TextEngineRef : Resource<TTF_TextEngine*>
 {
   using Resource::Resource;
 
-protected:
-  /// Create from engine and custom destroyer
-  constexpr TextEngineRef(TTF_TextEngine* engine,
-                          void (*destroy)(TTF_TextEngine* engine))
-    : Resource(engine)
-    , m_destroy(destroy)
-  {
-  }
-
-protected:
-  /// Custom destroyer
-  void (*m_destroy)(TTF_TextEngine* engine) = nullptr;
-
-public:
   /**
    * Sets the winding order of the vertices returned by TextRef.GetGPUDrawData
    * for a particular GPU text engine.
@@ -2049,16 +2038,203 @@ public:
   {
     return TTF_GetGPUTextEngineWinding(get());
   }
-
-protected:
   /**
-   * frees up TextEngineRef.
+   * Destroy a text engine created for drawing text on SDL surfaces.
+   *
+   * All text created by this engine should be destroyed before calling this
+   * function.
+   *
+   * @param engine a TextEngineRef object created with
+   *               TextEngine.CreateSurface().
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextEngine.CreateSurface
    */
-  void reset(TTF_TextEngine* newResource = {})
+  static void DestroySurface(TTF_TextEngine* engine)
   {
-    auto prevValue = release(newResource);
-    if (m_destroy) m_destroy(prevValue);
-    m_destroy = nullptr;
+    TTF_DestroySurfaceTextEngine(engine);
+  }
+
+  /**
+   * Destroy a text engine created for drawing text on an SDL renderer.
+   *
+   * All text created by this engine should be destroyed before calling this
+   * function.
+   *
+   * @param engine a TextEngineRef object created with
+   *               TextEngine.CreateRenderer().
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextEngine.CreateRenderer
+   */
+  static void DestroyRenderer(TTF_TextEngine* engine)
+  {
+    TTF_DestroyRendererTextEngine(engine);
+  }
+
+  /**
+   * Destroy a text engine created for drawing text with the SDL GPU API.
+   *
+   * All text created by this engine should be destroyed before calling this
+   * function.
+   *
+   * @param engine a TextEngineRef object created with
+   *               TextEngine.CreateGPU().
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextEngine.CreateGPU
+   */
+  static void DestroyGPU(TTF_TextEngine* engine)
+  {
+    TTF_DestroyGPUTextEngine(engine);
+  }
+};
+
+/**
+ * Handle to an owned textEngine
+ *
+ * @cat resource
+ *
+ * @sa TextEngineRef
+ */
+struct TextEngine : ResourceUnique<TextEngineRef, TextEngineDeleter>
+{
+  using ResourceUnique::ResourceUnique;
+
+  /**
+   * Create a text engine for drawing text on SDL surfaces.
+   *
+   * @returns a TextEngineRef object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TTF_DestroySurfaceTextEngine
+   * @sa TextRef.DrawSurface
+   */
+  static TextEngine CreateSurface()
+  {
+    return TextEngine(TTF_CreateSurfaceTextEngine(),
+                      TextEngineRef::DestroySurface);
+  }
+
+  /**
+   * Create a text engine for drawing text on an SDL renderer.
+   *
+   * @param renderer the renderer to use for creating textures and drawing text.
+   * @returns a TextEngineRef object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TTF_DestroyRendererTextEngine
+   * @sa TextRef.DrawRenderer
+   * @sa TextEngine.CreateRendererWithProperties
+   */
+  static TextEngine CreateRenderer(RendererRef renderer)
+  {
+    return TextEngine(TTF_CreateRendererTextEngine(renderer),
+                      TextEngineRef::DestroyRenderer);
+  }
+
+  /**
+   * Create a text engine for drawing text on an SDL renderer, with the
+   * specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
+   *   creating textures and drawing text
+   * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
+   *   texture atlas
+   *
+   * @param props the properties to use.
+   * @returns a TextEngineRef object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextEngine.CreateRenderer
+   * @sa TTF_DestroyRendererTextEngine
+   * @sa TextRef.DrawRenderer
+   */
+  static TextEngine CreateRendererWithProperties(PropertiesRef props)
+  {
+    return TextEngine(TTF_CreateRendererTextEngineWithProperties(props),
+                      TextEngineRef::DestroyRenderer);
+  }
+
+  /**
+   * Create a text engine for drawing text with the SDL GPU API.
+   *
+   * @param device the SDL_GPUDevice to use for creating textures and drawing
+   *               text.
+   * @returns a TextEngineRef object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               device.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextEngine.CreateGPUWithProperties
+   * @sa TTF_DestroyGPUTextEngine
+   * @sa TextRef.GetGPUDrawData
+   */
+  static TextEngine CreateGPU(SDL_GPUDevice* device)
+  {
+    return TextEngine(TTF_CreateGPUTextEngine(device),
+                      TextEngineRef::DestroyGPU);
+  }
+
+  /**
+   * Create a text engine for drawing text with the SDL GPU API, with the
+   * specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::GpuTextEngine.DEVICE_POINTER`: the SDL_GPUDevice to use for
+   * creating textures and drawing text.
+   * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
+   *   atlas
+   *
+   * @param props the properties to use.
+   * @returns a TextEngineRef object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               device.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextEngine.CreateGPU
+   * @sa TTF_DestroyGPUTextEngine
+   * @sa TextRef.GetGPUDrawData
+   */
+  static TextEngine CreateGPUWithProperties(PropertiesRef props)
+  {
+    return TextEngine(TTF_CreateGPUTextEngineWithProperties(props),
+                      TextEngineRef::DestroyGPU);
   }
 };
 
@@ -2071,93 +2247,16 @@ protected:
  *
  * @sa TextEngineRef
  */
-struct TextEngineUnsafe : TextEngineRef
+struct TextEngineUnsafe : ResourceUnsafe<TextEngineRef, TextEngineDeleter>
 {
-  using TextEngineRef::TextEngineRef;
-
-  /**
-   * Constructs TextEngineUnsafe from TextEngineRef.
-   */
-  constexpr TextEngineUnsafe(const TextEngineRef& other)
-    : TextEngineRef(other.get())
-  {
-  }
-
-  TextEngineUnsafe(const TextEngine& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs TextEngineUnsafe from TextEngine.
    */
-  constexpr explicit TextEngineUnsafe(TextEngine&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr TextEngineUnsafe& operator=(TextEngineUnsafe other)
+  constexpr explicit TextEngineUnsafe(TextEngine&& other)
+    : TextEngineUnsafe(other.release())
   {
-    release(other.release());
-    return *this;
-  }
-};
-
-/**
- * Handle to an owned textEngine
- *
- * @cat resource
- *
- * @sa TextEngineRef
- */
-struct TextEngine : TextEngineUnsafe
-{
-  using TextEngineUnsafe::TextEngineUnsafe;
-
-  /**
-   * Constructs an empty TextEngine.
-   */
-  constexpr TextEngine()
-    : TextEngineUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit TextEngine(TTF_TextEngine* resource)
-    : TextEngineUnsafe(resource)
-  {
-  }
-
-  constexpr TextEngine(const TextEngine& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr TextEngine(TextEngine&& other)
-    : TextEngine(other.release())
-  {
-  }
-
-  /// Create from engine and custom destroyer
-  constexpr TextEngine(TTF_TextEngine* engine,
-                       void (*destroy)(TTF_TextEngine* engine))
-    : TextEngineUnsafe(engine, destroy)
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~TextEngine() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  TextEngine& operator=(TextEngine other)
-  {
-    reset(other.release());
-    m_destroy = other.m_destroy;
-    other.m_destroy = nullptr;
-    return *this;
   }
 };
 
@@ -2187,11 +2286,6 @@ using SubString = TTF_SubString;
 
 // Forward decl
 struct SubStringIterator;
-
-constexpr TextEngineUnsafe::TextEngineUnsafe(TextEngine&& other)
-  : TextEngineUnsafe(other.release())
-{
-}
 
 namespace prop::Font {
 
@@ -2331,14 +2425,15 @@ inline void TagToString(Uint32 tag, char* string, size_t size)
 }
 
 /**
- * Text created with TextRef.TextRef()
+ * Text created with Text.Create()
  *
  * @since This struct is available since SDL_ttf 3.0.0.
  *
  * @cat resource
  *
- * @sa TextRef.TextRef
+ * @sa Text.Create
  * @sa TextRef.GetProperties
+ * @sa Text.Destroy
  * @sa Text
  */
 struct TextRef : Resource<TTF_Text*>
@@ -2349,7 +2444,7 @@ struct TextRef : Resource<TTF_Text*>
    * Draw text to an SDL surface.
    *
    * `text` must have been created using a TextEngineRef from
-   * CreateSurfaceTextEngine().
+   * TextEngine.CreateSurface().
    *
    * @param p the (x, y) coordinate in pixels, positive from the left edge
    *          towards the right and from the top edge towards the bottom.
@@ -2361,8 +2456,8 @@ struct TextRef : Resource<TTF_Text*>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa CreateSurfaceTextEngine
-   * @sa Text.Text
+   * @sa TextEngine.CreateSurface
+   * @sa Text.Create
    */
   void DrawSurface(Point p, SurfaceRef surface) const
   {
@@ -2373,7 +2468,7 @@ struct TextRef : Resource<TTF_Text*>
    * Draw text to an SDL renderer.
    *
    * `text` must have been created using a TextEngineRef from
-   * CreateRendererTextEngine(), and will draw using the renderer passed to
+   * TextEngine.CreateRenderer(), and will draw using the renderer passed to
    * that function.
    *
    * @param p the (x, y) coordinate in pixels, positive from the left edge
@@ -2385,8 +2480,8 @@ struct TextRef : Resource<TTF_Text*>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa CreateRendererTextEngine
-   * @sa Text.Text
+   * @sa TextEngine.CreateRenderer
+   * @sa Text.Create
    */
   void DrawRenderer(FPoint p) const
   {
@@ -2397,7 +2492,7 @@ struct TextRef : Resource<TTF_Text*>
    * Get the geometry data needed for drawing the text.
    *
    * `text` must have been created using a TextEngineRef from
-   * CreateGPUTextEngine().
+   * TextEngine.CreateGPU().
    *
    * The positive X-axis is taken towards the right and the positive Y-axis is
    * taken upwards for both the vertex and the texture coordinates, i.e, it
@@ -2416,8 +2511,8 @@ struct TextRef : Resource<TTF_Text*>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa CreateGPUTextEngine
-   * @sa Text.Text
+   * @sa TextEngine.CreateGPU
+   * @sa Text.Create
    */
   GPUAtlasDrawSequence* GetGPUDrawData() const
   {
@@ -2457,7 +2552,7 @@ struct TextRef : Resource<TTF_Text*>
    */
   void SetEngine(TextEngineRef engine)
   {
-    CheckError(TTF_SetTextEngine(get(), engine.get()));
+    CheckError(TTF_SetTextEngine(get(), engine));
   }
 
   /**
@@ -2498,7 +2593,7 @@ struct TextRef : Resource<TTF_Text*>
    *
    * @sa TextRef.GetFont
    */
-  bool SetFont(FontRef font) { return TTF_SetTextFont(get(), font.get()); }
+  bool SetFont(FontRef font) { return TTF_SetTextFont(get(), font); }
 
   /**
    * Get the font used by a text object.
@@ -3401,77 +3496,6 @@ public:
   friend class TextRef;
 };
 
-/**
- * Create a text engine for drawing text on SDL surfaces.
- *
- * @returns a TextEngine object or nullptr on failure; call GetError()
- *          for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa Text
- * @sa TextRef.DrawSurface
- */
-inline TextEngine CreateSurfaceTextEngine()
-{
-  return TextEngine{TTF_CreateSurfaceTextEngine(),
-                    TTF_DestroySurfaceTextEngine};
-}
-
-/**
- * Create a text engine for drawing text on an SDL renderer.
- *
- * @param renderer the renderer to use for creating textures and drawing text.
- * @returns a TextEngine object or nullptr on failure; call GetError()
- *          for more information.
- *
- * @threadsafety This function should be called on the thread that created the
- *               renderer.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa TextRef.DrawRenderer
- * @sa Text
- * @sa CreateRendererTextEngineWithProperties
- */
-inline TextEngine CreateRendererTextEngine(RendererRef renderer)
-{
-  return TextEngine{TTF_CreateRendererTextEngine(renderer.get()),
-                    TTF_DestroyRendererTextEngine};
-}
-
-/**
- * Create a text engine for drawing text on an SDL renderer, with the
- * specified properties.
- *
- * These are the supported properties:
- *
- * - `prop::RendererTextEngine.RENDERER`: the renderer to use for
- *   creating textures and drawing text
- * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE`: the size of the
- *   texture atlas
- *
- * @param props the properties to use.
- * @returns a TextEngineRef object or nullptr on failure; call GetError()
- *          for more information.
- *
- * @threadsafety This function should be called on the thread that created the
- *               renderer.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa CreateRendererTextEngine
- * @sa Text
- * @sa TextRef.DrawRenderer
- */
-inline TextEngine CreateRendererTextEngineWithProperties(PropertiesRef props)
-{
-  return TextEngine{TTF_CreateRendererTextEngineWithProperties(props.get()),
-                    TTF_DestroyRendererTextEngine};
-}
-
 namespace prop::RendererTextEngine {
 
 #if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
@@ -3492,58 +3516,6 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
 #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
 
 } // namespace prop::RendererTextEngine
-
-/**
- * Create a text engine for drawing text with the SDL GPU API.
- *
- * @param device the SDL_GPUDevice to use for creating textures and drawing
- *               text.
- * @returns a TextEngine object or nullptr on failure; call GetError()
- *          for more information.
- *
- * @threadsafety This function should be called on the thread that created the
- *               device.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa CreateGPUTextEngineWithProperties
- * @sa Text
- * @sa TextRef.GetGPUDrawData
- */
-inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
-{
-  return TextEngine{TTF_CreateGPUTextEngine(device), TTF_DestroyGPUTextEngine};
-}
-
-/**
- * Create a text engine for drawing text with the SDL GPU API, with the
- * specified properties.
- *
- * These are the supported properties:
- *
- * - `prop::GpuTextEngine.DEVICE`: the SDL_GPUDevice to use for creating
- *   textures and drawing text.
- * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture
- *   atlas
- *
- * @param props the properties to use.
- * @returns a TextEngineRef object or nullptr on failure; call GetError()
- *          for more information.
- *
- * @threadsafety This function should be called on the thread that created the
- *               device.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa CreateGPUTextEngine
- * @sa Text
- * @sa TextRef.GetGPUDrawData
- */
-inline TextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
-{
-  return TextEngine{TTF_CreateGPUTextEngineWithProperties(props.get()),
-                    TTF_DestroyGPUTextEngine};
-}
 
 namespace prop::GpuTextEngine {
 

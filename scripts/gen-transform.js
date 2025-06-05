@@ -8278,11 +8278,6 @@ const transform = {
       }
     },
     "SDL_ttf.h": {
-      ignoreEntries: [
-        "TTF_DestroySurfaceTextEngine",
-        "TTF_DestroyRendererTextEngine",
-        "TTF_DestroyGPUTextEngine"
-      ],
       resourcesNew: {
         "TTF_Font": {
           ctors: ["TTF_OpenFontIO"],
@@ -8603,6 +8598,45 @@ const transform = {
             },
           }
         },
+        "TTF_TextEngine": {
+          returnType: "unique",
+          extraParameters: ["TextEngineDeleter"],
+          entries: {
+            "TTF_CreateSurfaceTextEngine": "ctor",
+            "TTF_CreateRendererTextEngine": "ctor",
+            "TTF_CreateRendererTextEngineWithProperties": "ctor",
+            "TTF_CreateGPUTextEngine": "ctor",
+            "TTF_CreateGPUTextEngineWithProperties": "ctor",
+            "TTF_SetGPUTextEngineWinding": {
+              "name": "SetGPUWinding"
+            },
+            "TTF_GetGPUTextEngineWinding": {
+              "immutable": true,
+              "name": "GetGPUWinding"
+            },
+            "TTF_DestroySurfaceTextEngine": {
+              static: true,
+              parameters: [{
+                name: "engine",
+                type: "TTF_TextEngine *"
+              }],
+            },
+            "TTF_DestroyRendererTextEngine": {
+              static: true,
+              parameters: [{
+                name: "engine",
+                type: "TTF_TextEngine *"
+              }],
+            },
+            "TTF_DestroyGPUTextEngine": {
+              static: true,
+              parameters: [{
+                name: "engine",
+                type: "TTF_TextEngine *"
+              }],
+            },
+          }
+        },
         "TTF_Text": {
           entries: {
             "TTF_DrawSurfaceText": {
@@ -8866,58 +8900,6 @@ const transform = {
           }
         },
       },
-      resources: {
-        "TTF_TextEngine": {
-          free: "",
-          returnType: "unique",
-          entries: {
-            "void": {
-              kind: "function",
-              type: "",
-              parameters: [
-                "*m_destroy"
-              ],
-            },
-            "TextEngine": {
-              type: "",
-              kind: "function",
-              constexpr: true,
-              parameters: [
-                {
-                  type: "TTF_TextEngine *",
-                  name: "engine"
-                },
-                {
-                  name: "engine)",
-                  type: "void (*destroy)(TTF_TextEngine *"
-                },
-              ]
-            },
-            "TextEngineRef": {
-              type: "",
-              kind: "function",
-              constexpr: true,
-              parameters: [
-                {
-                  type: "TTF_TextEngine *",
-                  name: "engine"
-                },
-                {
-                  name: "engine)",
-                  type: "void (*destroy)(TTF_TextEngine *"
-                },
-              ]
-            },
-            "TTF_SetGPUTextEngineWinding": {
-              "name": "SetGPUWinding"
-            },
-            "TTF_GetGPUTextEngineWinding": {
-              "immutable": true,
-              "name": "GetGPUWinding"
-            }
-          }
-        },
-      },
       enumerations: {
         "TTF_FontStyleFlags": {
           "prefix": "TTF_STYLE_",
@@ -8963,6 +8945,11 @@ const transform = {
             "kind": "struct",
             "name": "TtfInitFlag",
             "type": "InitFlagsExtra"
+          },
+          {
+            kind: "alias",
+            name: "TextEngineDeleter",
+            type: "void (*)(TTF_TextEngine *)",
           }
         ],
         "TTF_TextEngine": [

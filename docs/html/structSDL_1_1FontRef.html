@@ -393,7 +393,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 </div><div class="memdoc">
 <p>Add a font that will be used for glyphs that are not in the current font. The fallback font should have the same size and style as the current font.</p>
 <p>If there are multiple fallback fonts, they are used in the order added.</p>
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fallback</td><td>the font to add as a fallback. </td></tr>
@@ -436,7 +436,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1FontRef.html#abbf3e47b65907d696b97ec3f6630143e" title="Add a fallback font.">FontRef.AddFallback</a> </dd>
@@ -1747,7 +1747,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fallback</td><td>the font to remove as a fallback.</td></tr>
@@ -2569,7 +2569,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 </table>
 </div><div class="memdoc">
 <p>This function only supports left-to-right text shaping if SDL_ttf was not built with HarfBuzz support.</p>
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">direction</td><td>the new direction for text to flow. </td></tr>
@@ -2610,7 +2610,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
 <p>The hinter setting is a single value:</p>
 <ul>
 <li><code>HINTING_NORMAL</code></li>
@@ -2655,7 +2655,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 </table>
 </div><div class="memdoc">
 <p>Newly-opened fonts default to allowing kerning. This is generally a good policy unless you have a strong reason to disable it, as it tends to produce better rendering (with kerning disabled, some fonts might render the word <code>kerning</code> as something that looks like <code>keming</code> for example).</p>
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">enabled</td><td>true to enable kerning, false to disable.</td></tr>
@@ -2692,7 +2692,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 </table>
 </div><div class="memdoc">
 <p>If SDL_ttf was not built with HarfBuzz support, this function returns false.</p>
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">language_bcp47</td><td>a null-terminated string containing the desired language's BCP47 code. Or null to reset the value. </td></tr>
@@ -2733,7 +2733,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">lineskip</td><td>the new line spacing for the font.</td></tr>
@@ -2770,7 +2770,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 </table>
 </div><div class="memdoc">
 <p>This uses the font properties <code>prop::Font.OUTLINE_LINE_CAP_NUMBER</code>, <code>prop::Font.OUTLINE_LINE_JOIN_NUMBER</code>, and <code>prop::Font.OUTLINE_MITER_LIMIT_NUMBER</code> when setting the font outline.</p>
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">outline</td><td>positive outline value, 0 to default. </td></tr>
@@ -2813,7 +2813,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 </table>
 </div><div class="memdoc">
 <p>This returns false if SDL_ttf isn't built with HarfBuzz support.</p>
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">script</td><td>an <a href="https://unicode.org/iso15924/iso15924-codes.html">ISO 15924 code</a>. </td></tr>
@@ -2857,7 +2857,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
 </div><div class="memdoc">
 <p>SDF is a technique that helps fonts look sharp even when scaling and rotating, and requires special shader support for display.</p>
 <p>This works with Blended APIs, and generates the raw signed distance values in the alpha channel of the resulting texture.</p>
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">enabled</td><td>true to enable SDF, false to disable. </td></tr>
@@ -2899,7 +2899,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ptsize</td><td>the new point size. </td></tr>
@@ -2957,7 +2957,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ptsize</td><td>the new point size. </td></tr>
@@ -3003,7 +3003,7 @@ TTF_GetFontSizeDPI </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
 <p>The font styles are a set of bit flags, OR'd together:</p>
 <ul>
 <li><code>STYLE_NORMAL</code> (is zero)</li>
@@ -3047,7 +3047,7 @@ TTF_GetFontSizeDPI </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> objects using this font.</p>
+<p>This updates any <a class="el" href="structSDL_1_1TextRef.html" title="Text created with Text.Create()">TextRef</a> objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">align</td><td>the new wrap alignment option.</td></tr>
