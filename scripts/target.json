@@ -22200,13 +22200,8 @@
           "doc": "Get a list of currently connected keyboards.\n\nNote that this will include any device or virtual driver that includes\nkeyboard functionality, including some mice, KVM switches, motherboard\npower buttons, etc. You should wait for input from a device before you\nconsider it actively in use.\n\n@param count a pointer filled in with the number of keyboards returned, may\n             be nullptr.\n@returns a 0 terminated array of keyboards instance IDs or nullptr on failure;\n         call GetError() for more information. This should be freed\n         with free() when it is no longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetKeyboardNameForID\n@sa HasKeyboard",
           "name": "GetKeyboards",
           "kind": "function",
-          "type": "KeyboardID *",
-          "parameters": [
-            {
-              "name": "count",
-              "type": "int *"
-            }
-          ],
+          "type": "OwnArray<KeyboardID>",
+          "parameters": [],
           "sourceName": "SDL_GetKeyboards"
         },
         "GetKeyboardNameForID": {
@@ -22234,13 +22229,8 @@
           "doc": "Get a snapshot of the current state of the keyboard.\n\nThe pointer returned is a pointer to an internal SDL array. It will be\nvalid for the whole lifetime of the application and should not be freed by\nthe caller.\n\nA array element with a value of true means that the key is pressed and a\nvalue of false means that it is not. Indexes into this array are obtained\nby using Scancode values.\n\nUse PumpEvents() to update the state array.\n\nThis function gives you the current state after all events have been\nprocessed, so if a key or button has been pressed and released before you\nprocess events, then the pressed state will never show up in the\nGetKeyboardState() calls.\n\nNote: This function doesn't take into account whether shift has been\npressed or not.\n\n@param numkeys if non-nullptr, receives the length of the returned array.\n@returns a pointer to an array of key states.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PumpEvents\n@sa ResetKeyboard",
           "name": "GetKeyboardState",
           "kind": "function",
-          "type": "const bool *",
-          "parameters": [
-            {
-              "name": "numkeys",
-              "type": "int *"
-            }
-          ],
+          "type": "std::span<const bool>",
+          "parameters": [],
           "sourceName": "SDL_GetKeyboardState"
         },
         "ResetKeyboard": {

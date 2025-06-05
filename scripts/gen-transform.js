@@ -2155,6 +2155,14 @@ const transform = {
         "SDL_PROP_TEXTINPUT_": "prop::TextInput"
       },
       transform: {
+        "SDL_GetKeyboards": {
+          type: "OwnArray<KeyboardID>",
+          parameters: [],
+        },
+        "SDL_GetKeyboardState": {
+          type: "std::span<const bool>",
+          parameters: [],
+        },
         "SDL_GetKeyFromScancode": {
           "name": "Keycode::Keycode"
         },
