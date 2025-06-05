@@ -675,6 +675,7 @@ function expandResources(sourceEntries, file, context) {
     const pointerType = resourceEntry.pointerType ?? (isStruct ? `${type} *` : type);
     const constPointerType = `const ${pointerType}`;
     const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
+    context.addName(sourceName, uniqueName);
     referenceAliases.push(
       { name: refName, kind: "forward" },
       { name: uniqueName, kind: "forward" }
