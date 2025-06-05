@@ -730,8 +730,8 @@ public:
   constexpr ResourceUnsafe() = default;
 
   /// Constructs pointer from anything compatible
-  constexpr explicit ResourceUnsafe(RESOURCE other)
-    : base(other)
+  constexpr explicit ResourceUnsafe(RESOURCE other, DELETER deleter = {})
+    : base(other, std::move(deleter))
   {
     other = nullptr;
   }
@@ -807,33 +807,35 @@ public:
  * using DetachedTrayEntry = DetachedResource<TrayEntryRef, TrayEntry>;
  * ```
  *
- * @tparam REF the *Type*Ref.
+ * @tparam RESOURCE the *Type*Ref.
  * @tparam UNIQUE the *Type*.
  */
-template<class REF, class UNIQUE>
-struct DetachedResource : REF
+template<class RESOURCE, class UNIQUE>
+struct DetachedResource
+  : public ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>
 {
-  using REF::REF;
+  using base = ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>;
+
+public:
+  /// Constructs pointer from anything compatible
+  constexpr explicit DetachedResource(RESOURCE other)
+    : base(other)
+  {
+    other = nullptr;
+  }
 
   DetachedResource(const DetachedResource& other) = delete;
 
   /// Move ctor
-  constexpr DetachedResource(DetachedResource&& other)
-    : REF(other.release())
-  {
-  }
+  constexpr DetachedResource(DetachedResource&& other) = default;
 
   DetachedResource& operator=(const DetachedResource& other) = delete;
 
   /// Move assignment
-  constexpr DetachedResource& operator=(DetachedResource&& other)
-  {
-    release(other.release());
-    return *this;
-  }
+  constexpr DetachedResource& operator=(DetachedResource&& other) = default;
 
   /// Converts to UNIQUE
-  operator UNIQUE() { return UNIQUE{REF::release()}; }
+  operator UNIQUE() && { return UNIQUE{base::release()}; }
 };
 
 template<class T, class BASE>
@@ -36171,7 +36173,8 @@ inline DetachedTrayEntry TrayMenu::InsertEntry(int pos,
                                                StringParam label,
                                                TrayEntryFlags flags)
 {
-  return SDL_InsertTrayEntryAt(m_trayMenu, pos, label, flags);
+  return DetachedTrayEntry(
+    SDL_InsertTrayEntryAt(m_trayMenu, pos, label, flags));
 }
 
 inline TrayEntryRef TrayMenu::GetParentEntry() const

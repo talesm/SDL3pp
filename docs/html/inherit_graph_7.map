@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structSDL_1_1CallbackWrapperBase.html" title="Base class for callback wrappers." alt="" coords="5,5,204,45"/>
+<area shape="rect" id="Node000000" href="$structSDL_1_1CallbackWrapperBase.html" title=" " alt="" coords="16,91,215,131"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html" title="Wrapper result callbacks." alt="" coords="299,5,474,60"/>
+<area shape="poly" id="edge3_Node000000_Node000001" title=" " alt="" coords="197,85,298,55,300,60,199,90"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1KeyValueCallbackWrapper_3_01KEY_00_01std_1_1function_3_01Result_07Args_8_8_8_08_4_00_01VARIANT_01_4.html" title="Store callbacks by key." alt="" coords="273,163,500,217"/>
+<area shape="poly" id="edge4_Node000000_Node000002" title=" " alt="" coords="199,133,292,160,291,165,197,138"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1UniqueCallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html" title="Stored Wrapper unique by type result callbacks." alt="" coords="281,84,493,139"/>
+<area shape="poly" id="edge5_Node000000_Node000004" title=" " alt="" coords="228,109,280,109,280,114,228,114"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1KeyValueWrapper.html" title=" " alt="" coords="5,163,225,217"/>
+<area shape="poly" id="edge6_Node000003_Node000002" title=" " alt="" coords="239,187,273,187,273,193,239,193"/>
 </map>

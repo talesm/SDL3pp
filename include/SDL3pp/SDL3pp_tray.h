@@ -742,7 +742,8 @@ inline DetachedTrayEntry TrayMenu::InsertEntry(int pos,
                                                StringParam label,
                                                TrayEntryFlags flags)
 {
-  return SDL_InsertTrayEntryAt(m_trayMenu, pos, label, flags);
+  return DetachedTrayEntry(
+    SDL_InsertTrayEntryAt(m_trayMenu, pos, label, flags));
 }
 
 inline TrayEntryRef TrayMenu::GetParentEntry() const
