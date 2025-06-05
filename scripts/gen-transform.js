@@ -411,7 +411,7 @@ const transform = {
           }
         },
       },
-      resourcesNew: {
+      resources: {
         "SDL_AudioDeviceID": {
           uniqueName: "AudioDevice",
           free: "SDL_CloseAudioDevice",
@@ -1872,7 +1872,7 @@ const transform = {
           }]
         },
       },
-      resourcesNew: {
+      resources: {
         "SDL_IOStream": {
           ctors: ["SDL_IOFromFile", "SDL_IOFromMem", "SDL_IOFromConstMem", "SDL_IOFromDynamicMem", "SDL_OpenIO"],
           entries: {
@@ -2258,7 +2258,7 @@ const transform = {
       }
     },
     "SDL_loadso.h": {
-      resourcesNew: {
+      resources: {
         "SDL_SharedObject": {
           free: "SDL_UnloadObject",
           ctors: ["SDL_LoadObject"],
@@ -2729,7 +2729,7 @@ const transform = {
           ],
         },
       },
-      resourcesNew: {
+      resources: {
         "SDL_Cursor": {
           entries: {
             "SDL_CreateCursor": {
@@ -2806,7 +2806,7 @@ const transform = {
         "SDL_RETURN_CAPABILITY",
         "SDL_NO_THREAD_SAFETY_ANALYSIS",
       ],
-      resourcesNew: {
+      resources: {
         "SDL_Mutex": {
           entries: {
             "SDL_CreateMutex": "ctor",
@@ -3249,7 +3249,7 @@ const transform = {
           "invalidState": false
         }
       },
-      resourcesNew: {
+      resources: {
         "SDL_Palette": {
           entries: {
             "SDL_CreatePalette": "ctor",
@@ -3297,7 +3297,7 @@ const transform = {
           includeAfter: "__begin",
         },
       },
-      resourcesNew: {
+      resources: {
         "SDL_Process": {
           free: "SDL_DestroyProcess",
           entries: {
@@ -3438,7 +3438,7 @@ const transform = {
           prefix: "SDL_PROPERTY_TYPE_"
         }
       },
-      resourcesNew: {
+      resources: {
         "SDL_PropertiesID": {
           uniqueName: "Properties",
           omitDefaultCtor: true,
@@ -4263,7 +4263,7 @@ const transform = {
           }
         }]
       },
-      resourcesNew: {
+      resources: {
         "SDL_Renderer": {
           entries: {
             "Create": {
@@ -5413,7 +5413,7 @@ const transform = {
           doc: "Converts a time to seconds (float) since epoch."
         }],
       },
-      resourcesNew: {
+      resources: {
         "SDL_Environment": {
           entries: {
             "SDL_CreateEnvironment": "ctor",
@@ -5871,7 +5871,7 @@ const transform = {
       }
     },
     "SDL_storage.h": {
-      resourcesNew: {
+      resources: {
         "SDL_Storage": {
           free: "SDL_CloseStorage",
           entries: {
@@ -6074,7 +6074,7 @@ const transform = {
           }
         }]
       },
-      resourcesNew: {
+      resources: {
         "SDL_Surface": {
           ctors: ["SDL_LoadBMP_IO"],
           entries: {
@@ -6980,7 +6980,7 @@ const transform = {
           includeAfter: "__begin"
         }
       },
-      resourcesNew: {
+      resources: {
         "SDL_Thread": {
           free: "SDL_DetachThread",
           entries: {
@@ -7174,7 +7174,7 @@ const transform = {
           name: "TrayCB",
         }],
       },
-      resourcesNew: {
+      resources: {
         "SDL_Tray": {
           entries: {
             "SDL_CreateTray": "ctor",
@@ -7465,7 +7465,7 @@ const transform = {
           }
         ]
       },
-      resourcesNew: {
+      resources: {
         "SDL_Window": {
           free: "SDL_DestroyWindow",
           entries: {
@@ -7989,7 +7989,7 @@ const transform = {
           "name": "SDL3PP_ENABLE_IMAGE"
         }
       },
-      resourcesNew: {
+      resources: {
         "IMG_Animation": {
           returnType: "unique",
           free: "IMG_FreeAnimation",
@@ -8278,7 +8278,7 @@ const transform = {
       }
     },
     "SDL_ttf.h": {
-      resourcesNew: {
+      resources: {
         "TTF_Font": {
           ctors: ["TTF_OpenFontIO"],
           entries: {

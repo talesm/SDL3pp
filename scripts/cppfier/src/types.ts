@@ -102,7 +102,6 @@ export interface ApiFileTransform {
   includeAfter?: ApiEntryTransformMap;
   transform?: Dict<ApiEntryTransform>;
   resources?: Dict<ApiResource>;
-  resourcesNew?: Dict<ApiResource>;
   enumerations?: Dict<ApiEnumeration>;
   wrappers?: Dict<ApiWrapper>;
   namespacesMap?: StringMap;
