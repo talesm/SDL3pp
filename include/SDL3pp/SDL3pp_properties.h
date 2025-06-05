@@ -13,27 +13,27 @@ namespace SDL {
  * A property is a variable that can be created and retrieved by name at
  * runtime.
  *
- * All properties are part of a property group (PropertiesRef). A property
- * group can be created with the CreateProperties() function or by simply
- * instantiating @ref Properties. It can be destroyed with the
- * PropertiesRef.reset(), but the Properties destructor probably will do what
- * you want to, automatically.
+ * All properties are part of a property group (Properties). A property group
+ * can be created with the Properties.Create function and destroyed with the
+ * Properties.Destroy function, but the Properties destructor probably will do
+ * what you want to, automatically.
  *
  * Properties can be added to and retrieved from a property group through the
  * following functions:
  *
- * - PropertiesRef.SetPointer() and PropertiesRef.GetPointer() operate on
- * `void*` pointer types.
- * - PropertiesRef.SetString() and PropertiesRef.GetString() operate on string
+ * - PropertiesRef.SetPointer and PropertiesRef.GetPointer operate on `void*`
+ *   pointer types.
+ * - PropertiesRef.SetString and PropertiesRef.GetString operate on string
  * types.
- * - PropertiesRef.SetNumber() and PropertiesRef.GetNumber() operate on signed
+ * - PropertiesRef.SetNumber and PropertiesRef.GetNumber operate on signed
  * 64-bit integer types.
- * - PropertiesRef.SetFloat() and PropertiesRef.GetFloat() operate on floating
- * point types.
- * - PropertiesRef.SetBoolean() and PropertiesRef.GetBoolean() operate on
- * boolean types.
+ * - PropertiesRef.SetFloat and PropertiesRef.GetFloat operate on floating point
+ *   types.
+ * - PropertiesRef.SetBoolean and PropertiesRef.GetBoolean operate on boolean
+ *   types.
  *
- * Properties can be removed from a group by using PropertiesRef.Clear().
+ * Properties can be removed from a group by using PropertiesRef.Clear.
+ *
  * @{
  */
 
@@ -76,8 +76,24 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
 /**
  * A callback used to free resources when a property is deleted.
  *
+ * This should release any resources associated with `value` that are no
+ * longer needed.
+ *
+ * This callback is set per-property. Different properties in the same group
+ * can have different cleanup callbacks.
+ *
+ * This callback will be called _during_ PropertiesRef.SetPointerWithCleanup if
+ * the function fails for any reason.
+ *
+ * @param value the pointer assigned to the property to clean up.
+ *
+ * @threadsafety This callback may fire without any locks held; if this is a
+ *               concern, the app should provide its own locking.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa PropertiesRef.SetPointerWithCleanup
  * @sa CleanupPropertyCallback
- * @sa PropertiesRef.SetPointerWithCleanup()
  * @sa result-callback
  *
  * @cat result-callback
@@ -97,7 +113,7 @@ using CleanupPropertyCB = std::function<void(void*)>;
  * per property in the set.
  *
  * @param userdata an app-defined pointer passed to the callback.
- * @param props the PropertiesRef that is being enumerated.
+ * @param props the Properties that is being enumerated.
  * @param name the next property name in the enumeration.
  *
  * @threadsafety PropertiesRef.Enumerate holds a lock on `props` during this
@@ -118,7 +134,7 @@ struct PropertiesRef;
  * This callback is called from PropertiesRef.Enumerate(), and is called once
  * per property in the set.
  *
- * @param props the PropertiesRef that is being enumerated.
+ * @param props the Properties that is being enumerated.
  * @param name the next property name in the enumeration.
  *
  * @threadsafety PropertiesRef.Enumerate holds a lock on `props` during this
@@ -127,7 +143,6 @@ struct PropertiesRef;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @cat immediate-callback
- *
  *
  * @sa PropertiesRef.Enumerate
  * @sa EnumeratePropertiesCallback
@@ -161,38 +176,13 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
   SDL_PROPERTY_TYPE_BOOLEAN; ///< BOOLEAN
 
 /**
- * Wrap properties id
- *
- * A property is a variable that can be created and retrieved by name at
- * runtime.
- *
- * All properties are part of a property group (Properties). A property
- * group can be created with the Properties constructor and destroyed
- * with this goes out of scope.
- *
- * Properties can be added to and retrieved from a property group through the
- * following functions:
- *
- * - SetPointer() and GetPointer() operate on `void*`
- *   pointer types.
- * - SetString() and GetString() operate on string types.
- * - SetNumber() and GetNumber() operate on signed 64-bit
- *   integer types.
- * - SetFloat() and GetFloat() operate on floating point
- *   types.
- * - SetBoolean() and GetBoolean() operate on boolean
- *   types.
- *
- * Properties can be removed from a group by using SDL_ClearProperty.
- *
- * To create a new properties group use CreateProperties() or
- * Properties.Properties().
+ * SDL properties ID
  *
  * @since This datatype is available since SDL 3.2.0.
  *
  * @cat resource
  *
- * @sa Properties.Properties
+ * @sa Properties.Create
  * @sa Properties
  */
 struct PropertiesRef : Resource<SDL_PropertiesID>
@@ -676,13 +666,13 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
    */
   Uint64 GetCount() const;
 
-protected:
   /**
    * Destroy a group of properties.
    *
    * All properties are deleted and their cleanup functions will be called, if
    * any.
    *
+   * @param resource the properties to destroy.
    *
    * @threadsafety This function should not be called while these properties are
    *               locked or other threads might be setting or getting values
@@ -690,9 +680,43 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
+   * @sa Properties.Create
    */
-  void Destroy() { reset(); }
+  static void reset(SDL_PropertiesID resource)
+  {
+    SDL_DestroyProperties(resource);
+  }
+};
+
+/**
+ * Handle to an owned properties
+ *
+ * @cat resource
+ *
+ * @sa PropertiesRef
+ */
+struct Properties : ResourceUnique<PropertiesRef>
+{
+  using ResourceUnique::ResourceUnique;
+
+  /**
+   * Create a group of properties.
+   *
+   * All properties are automatically destroyed when Quit() is called.
+   *
+   * @returns a valid ID for a new group of properties on success;
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Destroy
+   */
+  static Properties Create()
+  {
+    return Properties(CheckError(SDL_CreateProperties()));
+  }
 
   /**
    * Destroy a group of properties.
@@ -706,12 +730,9 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
+   * @sa Properties.Create
    */
-  void reset(SDL_PropertiesID newResource = {})
-  {
-    SDL_DestroyProperties(release(newResource));
-  }
+  void Destroy() { reset(); }
 };
 
 /**
@@ -723,116 +744,17 @@ protected:
  *
  * @sa PropertiesRef
  */
-struct PropertiesUnsafe : PropertiesRef
+struct PropertiesUnsafe : ResourceUnsafe<PropertiesRef>
 {
-  using PropertiesRef::Destroy;
-
-  using PropertiesRef::PropertiesRef;
-
-  using PropertiesRef::reset;
-
-  /**
-   * Constructs PropertiesUnsafe from PropertiesRef.
-   */
-  constexpr PropertiesUnsafe(const PropertiesRef& other)
-    : PropertiesRef(other.get())
-  {
-  }
-
-  PropertiesUnsafe(const Properties& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs PropertiesUnsafe from Properties.
    */
-  constexpr explicit PropertiesUnsafe(Properties&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr PropertiesUnsafe& operator=(PropertiesUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
-};
-
-/**
- * Handle to an owned properties
- *
- * @cat resource
- *
- * @sa PropertiesRef
- */
-struct Properties : PropertiesUnsafe
-{
-  using PropertiesUnsafe::PropertiesUnsafe;
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Properties(SDL_PropertiesID resource)
-    : PropertiesUnsafe(resource)
+  constexpr explicit PropertiesUnsafe(Properties&& other)
+    : PropertiesUnsafe(other.release())
   {
   }
-
-  constexpr Properties(const Properties& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Properties(Properties&& other)
-    : Properties(other.release())
-  {
-  }
-
-  /**
-   * Create a group of properties.
-   *
-   * All properties are automatically destroyed when Quit() is called.
-   *
-   * @post an ID for a new group of properties
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesRef.Destroy
-   */
-  Properties()
-    : Properties(CheckError(SDL_CreateProperties()))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Properties() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Properties& operator=(Properties other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create a group of properties.
-   *
-   * All properties are automatically destroyed when Quit() is called.
-   *
-   * @post an ID for a new group of properties
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesRef.Destroy
-   */
-  static Properties Create() { return Properties(); }
 };
 
 /**
@@ -894,11 +816,6 @@ public:
   friend class PropertiesRef;
 };
 
-constexpr PropertiesUnsafe::PropertiesUnsafe(Properties&& other)
-  : PropertiesUnsafe(other.release())
-{
-}
-
 /**
  * Get the global SDL properties.
  *
@@ -916,25 +833,6 @@ inline PropertiesLock PropertiesRef::Lock() &
 {
   CheckError(SDL_LockProperties(get()));
   return PropertiesLock{get()};
-}
-
-/**
- * Create a group of properties.
- *
- * All properties are automatically destroyed when Quit() is called.
- *
- * @returns a valid Properties for a new group of properties, or false on
- *          failure; call GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Properties
- */
-inline Properties CreateProperties()
-{
-  return Properties{SDL_CreateProperties()};
 }
 
 #pragma region impl

@@ -18,15 +18,16 @@ struct Main
   static constexpr float cliprect_speed = 200; // pixels per second
 
   SDL::SDL init{SDL::INIT_VIDEO};
-  SDL::Window window{"examples/renderer/cliprect", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window =
+    SDL::Window::Create("examples/renderer/cliprect", windowSz);
+  SDL::Renderer renderer = SDL::Renderer::Create(window);
 
   /* Textures are pixel data that we upload to the video hardware for fast
     drawing. Lots of 2D engines refer to these as "sprites." We'll do a static
     texture (upload once, draw many times) with data from a bitmap file. */
-  SDL::Texture texture{
+  SDL::Texture texture{SDL::Texture::Load(
     renderer,
-    std::format("{}../assets/sample.bmp", SDL::GetBasePath())};
+    std::format("{}../assets/sample.bmp", SDL::GetBasePath()))};
 
   SDL::FPoint cliprect_position;
   SDL::FPoint cliprect_direction{1, 1};
@@ -42,7 +43,7 @@ struct Main
     const float distance = elapsed * cliprect_speed;
 
     // Set a new clipping rectangle position
-    renderer.SetClipRect(cliprect);
+    renderer->SetClipRect(cliprect);
     cliprect_position += cliprect_direction * distance;
     if (cliprect_position.x < 0.0f) {
       cliprect_position.x = 0.0f;
@@ -63,16 +64,16 @@ struct Main
     // okay, now draw!
 
     // Note that SDL_RenderClear is _not_ affected by the clipping rectangle!
-    renderer.SetDrawColor(SDL::Color{33, 33, 33}); // grey, full alpha
-    renderer.RenderClear();                        // start with a blank canvas.
+    renderer->SetDrawColor(SDL::Color{33, 33, 33}); // grey, full alpha
+    renderer->RenderClear(); // start with a blank canvas.
 
-    SDL::FRect dst_rect = {{0, 0}, texture.GetSize()};
+    SDL::FRect dst_rect = {{0, 0}, texture->GetSize()};
 
-    // stretch the texture across the entire window. Only the piece in the
+    // stretch the texture across the entire window-> Only the piece in the
     // clipping rectangle will actually render, though!
-    renderer.RenderTexture(texture, {}, {});
+    renderer->RenderTexture(texture, {}, {});
 
-    renderer.Present();       // put it all on the screen!
+    renderer->Present();      // put it all on the screen!
     return SDL::APP_CONTINUE; // carry on with the program!
   }
 };

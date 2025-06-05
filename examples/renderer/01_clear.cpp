@@ -24,8 +24,8 @@ struct Main
   SDL::SDL init{SDL::INIT_VIDEO};
 
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window{"examples/renderer/clear", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window = SDL::Window::Create("examples/renderer/clear", windowSz);
+  SDL::Renderer renderer = SDL::Renderer::Create(window);
 
   SDL::AppResult Iterate()
   {
@@ -39,10 +39,10 @@ struct Main
       float(0.5f + 0.5f * SDL::sin(now + SDL_PI_D * 2 / 3)),
       float(0.5f + 0.5f * SDL::sin(now + SDL_PI_D * 4 / 3)),
     };
-    renderer.SetDrawColor(color);
-    renderer.RenderClear();
+    renderer->SetDrawColor(color);
+    renderer->RenderClear();
 
-    renderer.Present();
+    renderer->Present();
     return SDL::APP_CONTINUE;
   }
 };

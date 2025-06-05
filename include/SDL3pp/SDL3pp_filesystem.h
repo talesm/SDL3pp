@@ -470,6 +470,7 @@ using EnumerateDirectoryCallback = SDL_EnumerateDirectoryCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa EnumerateDirectory
+ * @sa EnumerateDirectoryCallback
  */
 using EnumerateDirectoryCB =
   std::function<EnumerationResult(const char* dirname, const char* fname)>;

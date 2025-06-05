@@ -17,15 +17,15 @@ int main(int argc, char** argv)
 {
   SDL::SDL init(SDL::INIT_VIDEO);
   constexpr SDL::Point WINDOW_SZ = {400, 400};
-  SDL::Window window{"Test", WINDOW_SZ};
-  SDL::SurfaceRef screen = window.GetSurface();
-  SDL::Surface smileyImg(
+  SDL::Window window = SDL::Window::Create("Test", WINDOW_SZ);
+  SDL::SurfaceRef screen = window->GetSurface();
+  auto smileyImg = SDL::Surface::Load(
     std::format("{}../assets/smiley.bmp", SDL::GetBasePath()));
 
   constexpr int WW = 64;
 
-  SDL::Point smileyPos{WINDOW_SZ.x / 2 - smileyImg.GetWidth() / 2,
-                       WINDOW_SZ.y / 2 - smileyImg.GetHeight() / 2};
+  SDL::Point smileyPos{WINDOW_SZ.x / 2 - smileyImg->GetWidth() / 2,
+                       WINDOW_SZ.y / 2 - smileyImg->GetHeight() / 2};
 
   SDL::Rect rects[] = {
     {10, 10, WW, WW},
@@ -60,7 +60,7 @@ int main(int argc, char** argv)
     screen.Blit(smileyImg, {}, smileyPos);
     screen.FillRects(rects, SDL::Color{0, 255, 0});
 
-    window.UpdateSurface();
+    window->UpdateSurface();
     SDL::Delay(10ms);
   }
 

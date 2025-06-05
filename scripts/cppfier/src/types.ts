@@ -45,7 +45,9 @@ export interface EntryHint {
   super?: string;
   static?: boolean;
   mayFail?: boolean;
-  removeParamThis?: boolean
+  removeParamThis?: boolean;
+  private?: boolean;
+  wrapSelf?: boolean;
 }
 
 export interface VersionTag {
@@ -131,12 +133,6 @@ export interface ApiResource extends ApiEntryTransform {
   name?: string;
 
   /**
-   * The Unique name. Defaults to the converted name from the original type
-   * @deprecated
-   */
-  uniqueName?: string;
-
-  /**
    * The wrapped type, defaults to the original type
    */
   type?: string;
@@ -152,11 +148,6 @@ export interface ApiResource extends ApiEntryTransform {
    * Anything marked as "ctor" is automatically added here
    */
   ctors?: string[]
-
-  /**
-   * If true does not generate static functions delegating to constructors.
-   */
-  noStaticCtors?: boolean;
 
   /**
    * If true it prepend an alias to DetachedResource
@@ -185,9 +176,9 @@ export interface ApiResource extends ApiEntryTransform {
   unlockFunction?: string;
 
   /**
-   * Prevent generation of default constructor. Defaults to false
+   * Extra parameters to the base classes.
    */
-  omitDefaultCtor?: boolean
+  extraParameters?: string[]
 }
 
 export interface ApiLock extends ApiEntryTransform {

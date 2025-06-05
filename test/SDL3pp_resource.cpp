@@ -6,40 +6,51 @@ TEST_CASE("Int resource")
   struct IntResource : SDL::Resource<int>
   {
     using Resource<int>::Resource;
+
+    static void reset(int v) {}
   };
 
-  IntResource res{10};
-  REQUIRE(res);
-  REQUIRE(res.get() == 10);
-  REQUIRE(res == res);
-  REQUIRE(res != nullptr);
-
-  IntResource none;
-  REQUIRE_FALSE(none);
-  REQUIRE(none == none);
-  REQUIRE(none != res);
-  REQUIRE(none == nullptr);
-
-  SUBCASE("release")
+  SUBCASE("Naked ref")
   {
+    IntResource res{10};
     REQUIRE(res);
-    REQUIRE(res.release() == 10);
-    REQUIRE_FALSE(res);
-    REQUIRE(res == none);
-    REQUIRE(res == nullptr);
+    REQUIRE(res.get() == 10);
+    REQUIRE(res == res);
+    REQUIRE(res != nullptr);
+
+    IntResource none;
+    REQUIRE_FALSE(none);
+    REQUIRE(none == none);
+    REQUIRE(none != res);
+    REQUIRE(none == nullptr);
+
+    SUBCASE("release")
+    {
+      REQUIRE(res);
+      REQUIRE(res.release() == 10);
+      REQUIRE_FALSE(res);
+      REQUIRE(res == none);
+      REQUIRE(res == nullptr);
+    }
+
+    SUBCASE("copy")
+    {
+      REQUIRE(res);
+      IntResource resCopy{res};
+      REQUIRE(res == resCopy);
+    }
+
+    SUBCASE("move")
+    {
+      REQUIRE(res);
+      IntResource resCopy{std::move(res)};
+      REQUIRE(res == resCopy);
+    }
   }
 
-  SUBCASE("copy")
+  SUBCASE("ResourceUnique")
   {
-    REQUIRE(res);
-    IntResource resCopy{res};
-    REQUIRE(res == resCopy);
-  }
-
-  SUBCASE("move")
-  {
-    REQUIRE(res);
-    IntResource resCopy{std::move(res)};
-    REQUIRE(res == resCopy);
+    SDL::ResourceUnique<IntResource> res{10};
+    CHECK(res->get() == 10);
   }
 }

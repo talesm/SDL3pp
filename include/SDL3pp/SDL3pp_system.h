@@ -880,7 +880,7 @@ inline Sandbox GetSandbox() { return SDL_GetSandbox(); }
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -897,7 +897,7 @@ inline void OnApplicationWillTerminate() { SDL_OnApplicationWillTerminate(); }
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -917,7 +917,7 @@ inline void OnApplicationDidReceiveMemoryWarning()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -937,7 +937,7 @@ inline void OnApplicationWillEnterBackground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -957,7 +957,7 @@ inline void OnApplicationDidEnterBackground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -977,7 +977,7 @@ inline void OnApplicationWillEnterForeground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -999,7 +999,7 @@ inline void OnApplicationDidEnterForeground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *

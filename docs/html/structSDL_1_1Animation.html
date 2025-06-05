@@ -89,163 +89,98 @@ Inheritance diagram for SDL::Animation:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1Animation__inherit__graph.png" border="0" usemap="#aSDL_1_1Animation_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1Animation_inherit__map" id="aSDL_1_1Animation_inherit__map">
-<area shape="rect" title="Handle to an owned animation." alt="" coords="28,240,151,265"/>
-<area shape="rect" href="structSDL_1_1AnimationUnsafe.html" title="Unsafe Handle to animation." alt="" coords="5,167,173,192"/>
-<area shape="poly" title=" " alt="" coords="92,206,92,240,87,240,87,206"/>
-<area shape="rect" href="structSDL_1_1AnimationRef.html" title="Animated image support." alt="" coords="17,93,161,119"/>
-<area shape="poly" title=" " alt="" coords="92,132,92,167,87,167,87,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="11,5,167,45"/>
-<area shape="poly" title=" " alt="" coords="92,59,92,93,87,93,87,59"/>
+<area shape="rect" title="Handle to an owned animation." alt="" coords="39,181,161,207"/>
+<area shape="rect" href="classSDL_1_1ResourceUnique.html" title=" " alt="" coords="19,93,181,133"/>
+<area shape="poly" title=" " alt="" coords="103,147,103,181,97,181,97,147"/>
+<area shape="rect" href="classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="5,5,195,45"/>
+<area shape="poly" title=" " alt="" coords="103,59,103,93,97,93,97,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a26ce0dbe37e8d42af5d290b3d78ba0e5" id="r_a26ce0dbe37e8d42af5d290b3d78ba0e5"><td class="memItemLeft" align="right" valign="top"><a id="a26ce0dbe37e8d42af5d290b3d78ba0e5" name="a26ce0dbe37e8d42af5d290b3d78ba0e5"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Animation</b> ()</td></tr>
-<tr class="memdesc:a26ce0dbe37e8d42af5d290b3d78ba0e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty <a class="el" href="structSDL_1_1Animation.html" title="Handle to an owned animation.">Animation</a>. <br /></td></tr>
-<tr class="separator:a26ce0dbe37e8d42af5d290b3d78ba0e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a175b03b534918444720ac74b805dcc21" id="r_a175b03b534918444720ac74b805dcc21"><td class="memItemLeft" align="right" valign="top"><a id="a175b03b534918444720ac74b805dcc21" name="a175b03b534918444720ac74b805dcc21"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Animation</b> (IMG_Animation *resource)</td></tr>
-<tr class="memdesc:a175b03b534918444720ac74b805dcc21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a175b03b534918444720ac74b805dcc21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf36fde02f3eeb9de3f35c93e1c55a1e" id="r_adf36fde02f3eeb9de3f35c93e1c55a1e"><td class="memItemLeft" align="right" valign="top"><a id="adf36fde02f3eeb9de3f35c93e1c55a1e" name="adf36fde02f3eeb9de3f35c93e1c55a1e"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Animation</b> (const <a class="el" href="structSDL_1_1Animation.html">Animation</a> &amp;other)=delete</td></tr>
-<tr class="separator:adf36fde02f3eeb9de3f35c93e1c55a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a184402abe2bdd8b45a4170b3a976ec1e" id="r_a184402abe2bdd8b45a4170b3a976ec1e"><td class="memItemLeft" align="right" valign="top"><a id="a184402abe2bdd8b45a4170b3a976ec1e" name="a184402abe2bdd8b45a4170b3a976ec1e"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Animation</b> (<a class="el" href="structSDL_1_1Animation.html">Animation</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a184402abe2bdd8b45a4170b3a976ec1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:a184402abe2bdd8b45a4170b3a976ec1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb9a2fbca335b04d82a6ba78548c4ee2" id="r_afb9a2fbca335b04d82a6ba78548c4ee2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Animation.html#afb9a2fbca335b04d82a6ba78548c4ee2">Animation</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
-<tr class="memdesc:afb9a2fbca335b04d82a6ba78548c4ee2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from a file.  <br /></td></tr>
-<tr class="separator:afb9a2fbca335b04d82a6ba78548c4ee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f32dc3fc2d3355c3c8c3e2f259e94dd" id="r_a5f32dc3fc2d3355c3c8c3e2f259e94dd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Animation.html#a5f32dc3fc2d3355c3c8c3e2f259e94dd">Animation</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src)</td></tr>
-<tr class="memdesc:a5f32dc3fc2d3355c3c8c3e2f259e94dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a>.  <br /></td></tr>
-<tr class="separator:a5f32dc3fc2d3355c3c8c3e2f259e94dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a62f4130efc49212229bbd42e14d552" id="r_a8a62f4130efc49212229bbd42e14d552"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Animation.html#a8a62f4130efc49212229bbd42e14d552">Animation</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> type)</td></tr>
-<tr class="memdesc:a8a62f4130efc49212229bbd42e14d552"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> datasource.  <br /></td></tr>
-<tr class="separator:a8a62f4130efc49212229bbd42e14d552"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42d9a730e6a40bc7dddd0174e328f952" id="r_a42d9a730e6a40bc7dddd0174e328f952"><td class="memItemLeft" align="right" valign="top"><a id="a42d9a730e6a40bc7dddd0174e328f952" name="a42d9a730e6a40bc7dddd0174e328f952"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~Animation</b> ()</td></tr>
-<tr class="memdesc:a42d9a730e6a40bc7dddd0174e328f952"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees up resource when object goes out of scope. <br /></td></tr>
-<tr class="separator:a42d9a730e6a40bc7dddd0174e328f952"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1db95c28852b03419044cd58a02863c" id="r_ae1db95c28852b03419044cd58a02863c"><td class="memItemLeft" align="right" valign="top"><a id="ae1db95c28852b03419044cd58a02863c" name="ae1db95c28852b03419044cd58a02863c"></a>
-<a class="el" href="structSDL_1_1Animation.html">Animation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1Animation.html">Animation</a> other)</td></tr>
-<tr class="memdesc:ae1db95c28852b03419044cd58a02863c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:ae1db95c28852b03419044cd58a02863c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6feef8515c5ae5bc609bad807b6ac9a2" id="r_a6feef8515c5ae5bc609bad807b6ac9a2"><td class="memItemLeft" align="right" valign="top"><a id="a6feef8515c5ae5bc609bad807b6ac9a2" name="a6feef8515c5ae5bc609bad807b6ac9a2"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationUnsafe</b> (const <a class="el" href="structSDL_1_1AnimationRef.html">AnimationRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a6feef8515c5ae5bc609bad807b6ac9a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1AnimationUnsafe.html" title="Unsafe Handle to animation.">AnimationUnsafe</a> from <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a>. <br /></td></tr>
-<tr class="separator:a6feef8515c5ae5bc609bad807b6ac9a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a095c9ea47a06e867021aa9dd96f8a404" id="r_a095c9ea47a06e867021aa9dd96f8a404"><td class="memItemLeft" align="right" valign="top"><a id="a095c9ea47a06e867021aa9dd96f8a404" name="a095c9ea47a06e867021aa9dd96f8a404"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationUnsafe</b> (const <a class="el" href="structSDL_1_1Animation.html">Animation</a> &amp;other)=delete</td></tr>
-<tr class="separator:a095c9ea47a06e867021aa9dd96f8a404"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0ac4d00b080c63941f27eb85fa2c061" id="r_af0ac4d00b080c63941f27eb85fa2c061"><td class="memItemLeft" align="right" valign="top"><a id="af0ac4d00b080c63941f27eb85fa2c061" name="af0ac4d00b080c63941f27eb85fa2c061"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationUnsafe</b> (<a class="el" href="structSDL_1_1Animation.html">Animation</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:af0ac4d00b080c63941f27eb85fa2c061"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1AnimationUnsafe.html" title="Unsafe Handle to animation.">AnimationUnsafe</a> from <a class="el" href="structSDL_1_1Animation.html" title="Handle to an owned animation.">Animation</a>. <br /></td></tr>
-<tr class="separator:af0ac4d00b080c63941f27eb85fa2c061"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1AnimationUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1AnimationUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1AnimationUnsafe.html">SDL::AnimationUnsafe</a></td></tr>
-<tr class="memitem:a6feef8515c5ae5bc609bad807b6ac9a2 inherit pub_methods_structSDL_1_1AnimationUnsafe" id="r_a6feef8515c5ae5bc609bad807b6ac9a2"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationUnsafe</b> (const <a class="el" href="structSDL_1_1AnimationRef.html">AnimationRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a6feef8515c5ae5bc609bad807b6ac9a2 inherit pub_methods_structSDL_1_1AnimationUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1AnimationUnsafe.html" title="Unsafe Handle to animation.">AnimationUnsafe</a> from <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a>. <br /></td></tr>
-<tr class="separator:a6feef8515c5ae5bc609bad807b6ac9a2 inherit pub_methods_structSDL_1_1AnimationUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a095c9ea47a06e867021aa9dd96f8a404 inherit pub_methods_structSDL_1_1AnimationUnsafe" id="r_a095c9ea47a06e867021aa9dd96f8a404"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationUnsafe</b> (const <a class="el" href="structSDL_1_1Animation.html">Animation</a> &amp;other)=delete</td></tr>
-<tr class="separator:a095c9ea47a06e867021aa9dd96f8a404 inherit pub_methods_structSDL_1_1AnimationUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf0ac4d00b080c63941f27eb85fa2c061 inherit pub_methods_structSDL_1_1AnimationUnsafe" id="r_gaf0ac4d00b080c63941f27eb85fa2c061"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationUnsafe</b> (<a class="el" href="structSDL_1_1Animation.html">Animation</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:gaf0ac4d00b080c63941f27eb85fa2c061 inherit pub_methods_structSDL_1_1AnimationUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1AnimationUnsafe.html" title="Unsafe Handle to animation.">AnimationUnsafe</a> from <a class="el" href="structSDL_1_1Animation.html" title="Handle to an owned animation.">Animation</a>. <br /></td></tr>
-<tr class="separator:gaf0ac4d00b080c63941f27eb85fa2c061 inherit pub_methods_structSDL_1_1AnimationUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ef253d2b5cae31e32069cd4254e8fab inherit pub_methods_structSDL_1_1AnimationUnsafe" id="r_a6ef253d2b5cae31e32069cd4254e8fab"><td class="memItemLeft" align="right" valign="top">
-constexpr <a class="el" href="structSDL_1_1AnimationUnsafe.html">AnimationUnsafe</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1AnimationUnsafe.html">AnimationUnsafe</a> other)</td></tr>
-<tr class="memdesc:a6ef253d2b5cae31e32069cd4254e8fab inherit pub_methods_structSDL_1_1AnimationUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:a6ef253d2b5cae31e32069cd4254e8fab inherit pub_methods_structSDL_1_1AnimationUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07613e9c5466d72279d84c5702eaccc7 inherit pub_methods_structSDL_1_1AnimationUnsafe" id="r_a07613e9c5466d72279d84c5702eaccc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationUnsafe.html#a07613e9c5466d72279d84c5702eaccc7">Free</a> ()</td></tr>
-<tr class="memdesc:a07613e9c5466d72279d84c5702eaccc7 inherit pub_methods_structSDL_1_1AnimationUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of an <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a> and free its resources.  <br /></td></tr>
-<tr class="separator:a07613e9c5466d72279d84c5702eaccc7 inherit pub_methods_structSDL_1_1AnimationUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49c1ef08e98328123aa1722d3f4dbc65 inherit pub_methods_structSDL_1_1AnimationUnsafe" id="r_a49c1ef08e98328123aa1722d3f4dbc65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationUnsafe.html#a49c1ef08e98328123aa1722d3f4dbc65">reset</a> (IMG_Animation *newResource={})</td></tr>
-<tr class="memdesc:a49c1ef08e98328123aa1722d3f4dbc65 inherit pub_methods_structSDL_1_1AnimationUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of an <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a> and free its resources.  <br /></td></tr>
-<tr class="separator:a49c1ef08e98328123aa1722d3f4dbc65 inherit pub_methods_structSDL_1_1AnimationUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1AnimationRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1AnimationRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1AnimationRef.html">SDL::AnimationRef</a></td></tr>
-<tr class="memitem:a76208db5bd471c8dd9bf6c738aa369de inherit pub_methods_structSDL_1_1AnimationRef" id="r_a76208db5bd471c8dd9bf6c738aa369de"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetWidth</b> () const</td></tr>
-<tr class="memdesc:a76208db5bd471c8dd9bf6c738aa369de inherit pub_methods_structSDL_1_1AnimationRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the width in pixels. <br /></td></tr>
-<tr class="separator:a76208db5bd471c8dd9bf6c738aa369de inherit pub_methods_structSDL_1_1AnimationRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada10617d0c23351c6902bd2bc63a177d inherit pub_methods_structSDL_1_1AnimationRef" id="r_ada10617d0c23351c6902bd2bc63a177d"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetHeight</b> () const</td></tr>
-<tr class="memdesc:ada10617d0c23351c6902bd2bc63a177d inherit pub_methods_structSDL_1_1AnimationRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the height in pixels. <br /></td></tr>
-<tr class="separator:ada10617d0c23351c6902bd2bc63a177d inherit pub_methods_structSDL_1_1AnimationRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba2cc6803a35c8d9ccfaba118ae1d103 inherit pub_methods_structSDL_1_1AnimationRef" id="r_aba2cc6803a35c8d9ccfaba118ae1d103"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="structSDL_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> () const</td></tr>
-<tr class="memdesc:aba2cc6803a35c8d9ccfaba118ae1d103 inherit pub_methods_structSDL_1_1AnimationRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size in pixels. <br /></td></tr>
-<tr class="separator:aba2cc6803a35c8d9ccfaba118ae1d103 inherit pub_methods_structSDL_1_1AnimationRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bd6ada56c297a7af69277f3b118922d inherit pub_methods_structSDL_1_1AnimationRef" id="r_a5bd6ada56c297a7af69277f3b118922d"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetCount</b> () const</td></tr>
-<tr class="memdesc:a5bd6ada56c297a7af69277f3b118922d inherit pub_methods_structSDL_1_1AnimationRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of frames. <br /></td></tr>
-<tr class="separator:a5bd6ada56c297a7af69277f3b118922d inherit pub_methods_structSDL_1_1AnimationRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7183f82c13696c3574d49768d86d84ef inherit pub_methods_structSDL_1_1AnimationRef" id="r_a7183f82c13696c3574d49768d86d84ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationRef.html#a7183f82c13696c3574d49768d86d84ef">GetFrame</a> (int index) const</td></tr>
-<tr class="memdesc:a7183f82c13696c3574d49768d86d84ef inherit pub_methods_structSDL_1_1AnimationRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the frame image under given index.  <br /></td></tr>
-<tr class="separator:a7183f82c13696c3574d49768d86d84ef inherit pub_methods_structSDL_1_1AnimationRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f952b02ccd086861124dc0eaee8123d inherit pub_methods_structSDL_1_1AnimationRef" id="r_a2f952b02ccd086861124dc0eaee8123d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationRef.html#a2f952b02ccd086861124dc0eaee8123d">GetDelay</a> (int index) const</td></tr>
-<tr class="memdesc:a2f952b02ccd086861124dc0eaee8123d inherit pub_methods_structSDL_1_1AnimationRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the frame delay under given index.  <br /></td></tr>
-<tr class="separator:a2f952b02ccd086861124dc0eaee8123d inherit pub_methods_structSDL_1_1AnimationRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1AnimationRef" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1AnimationRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1AnimationRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1AnimationRef" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1AnimationRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1AnimationRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1AnimationRef" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1AnimationRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1AnimationRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; IMG_Animation * &gt;</a></td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (IMG_Animation * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a7860e37888e4ffae92f1b33e217196ce" id="r_a7860e37888e4ffae92f1b33e217196ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Animation.html#a7860e37888e4ffae92f1b33e217196ce">Free</a> ()</td></tr>
+<tr class="memdesc:a7860e37888e4ffae92f1b33e217196ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of an <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a> and free its resources.  <br /></td></tr>
+<tr class="separator:a7860e37888e4ffae92f1b33e217196ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top"><a id="a8eff4b7518626ecb1d6ee2e8f2662301" name="a8eff4b7518626ecb1d6ee2e8f2662301"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1f58f0a54f567d59a39c1bbf4c58279" id="r_ab1f58f0a54f567d59a39c1bbf4c58279"><td class="memItemLeft" align="right" valign="top"><a id="ab1f58f0a54f567d59a39c1bbf4c58279" name="ab1f58f0a54f567d59a39c1bbf4c58279"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value, DELETER deleter={})</td></tr>
+<tr class="memdesc:ab1f58f0a54f567d59a39c1bbf4c58279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:ab1f58f0a54f567d59a39c1bbf4c58279"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top"><a id="abc1bcf199c285e07c14ebc87b5abf6f2" name="abc1bcf199c285e07c14ebc87b5abf6f2"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top"><a id="a59d90c89aac04332912bb8f55c387aae" name="a59d90c89aac04332912bb8f55c387aae"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1ResourceUnique"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourceUnique')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourceUnique.html">SDL::ResourceUnique&lt; AnimationRef &gt;</a></td></tr>
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1f58f0a54f567d59a39c1bbf4c58279 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_ab1f58f0a54f567d59a39c1bbf4c58279"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value, <a class="el" href="structSDL_1_1DefaultDeleter.html">DefaultDeleter</a>&lt; <a class="el" href="structSDL_1_1AnimationRef.html">AnimationRef</a> &gt; deleter={})</td></tr>
+<tr class="memdesc:ab1f58f0a54f567d59a39c1bbf4c58279 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:ab1f58f0a54f567d59a39c1bbf4c58279 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_afbc5563c17624104d9c263f5003d57d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ResourceUnique.html#afbc5563c17624104d9c263f5003d57d5">~ResourceUnique</a> ()</td></tr>
+<tr class="memdesc:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
+<tr class="separator:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a9f10a6343315fe1f5ca553284073ecd9"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> other)</td></tr>
+<tr class="memdesc:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a4b7b571048747a5dfbef3cbe891cc15e"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr>
+<tr class="memdesc:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the value, destroying the resource if not nullptr. <br /></td></tr>
+<tr class="separator:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a0506906144295f6b398dc3580bcb336f"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
-<tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
-<tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource" id="r_ad2a82bc79a7dae41ceb1a25647ae1c0d"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
-<tr class="memdesc:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource" id="r_ab110e6568060a7ae58ab7b29ad68f7fc"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if not null. <br /></td></tr>
+<tr class="separator:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a747ef455db62064bb3eebf43b203cad2"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1ResourcePtrBase.html">ResourcePtrBase</a> &amp;) const =default</td></tr>
+<tr class="memdesc:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_ad1d8089cd65f38c3e49d0ca4fa676a52"><td class="memItemLeft" align="right" valign="top">
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t) const</td></tr>
-<tr class="memdesc:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource" id="r_ab273a0a0285b8eed1f70f5d3759f4167"><td class="memItemLeft" align="right" valign="top">
-constexpr IMG_Animation *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
-<tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource" id="r_a795922875f43cc42165896b02af59d0c"><td class="memItemLeft" align="right" valign="top">
-constexpr IMG_Animation *&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> (IMG_Animation * newResource={})</td></tr>
-<tr class="memdesc:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource and empties or replace value. <br /></td></tr>
-<tr class="separator:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top">
-constexpr const IMG_Animation *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top">
-constexpr IMG_Animation *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
-<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a8a2a791f2fc677f3554798a0fb8572e4"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
+<tr class="memdesc:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a1415d2a130f807673b4f8db3047d95a7"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> () const</td></tr>
+<tr class="memdesc:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets reference. <br /></td></tr>
+<tr class="separator:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a5d2a7a6a1c79ec493548f8bd30ff6c70"><td class="memItemLeft" align="right" valign="top">
+constexpr const <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
+<tr class="memdesc:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets addressable reference. <br /></td></tr>
+<tr class="separator:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a493a79a3a6eafeead35454ff1076aa9a"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
+<tr class="memdesc:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets addressable reference. <br /></td></tr>
+<tr class="separator:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a7d506c070af513ecfa781e7fa3bf893f"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="memdesc:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference. <br /></td></tr>
+<tr class="separator:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a96c074dae2de8cb1812008baaa46f1db"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
+<tr class="memdesc:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reference and reset this. <br /></td></tr>
+<tr class="separator:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -255,26 +190,41 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aa002f40c6c02646e6dfcbd59e8029a6f" id="r_aa002f40c6c02646e6dfcbd59e8029a6f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Animation.html">Animation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Animation.html#aa002f40c6c02646e6dfcbd59e8029a6f">Load</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src)</td></tr>
 <tr class="memdesc:aa002f40c6c02646e6dfcbd59e8029a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a>.  <br /></td></tr>
 <tr class="separator:aa002f40c6c02646e6dfcbd59e8029a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25a3157792a5ee36457d97043bdbf4ff" id="r_a25a3157792a5ee36457d97043bdbf4ff"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Animation.html">Animation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Animation.html#a25a3157792a5ee36457d97043bdbf4ff">Load</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> type)</td></tr>
-<tr class="memdesc:a25a3157792a5ee36457d97043bdbf4ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> datasource.  <br /></td></tr>
-<tr class="separator:a25a3157792a5ee36457d97043bdbf4ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade894c4ac382194be6a6faa9d8859192" id="r_ade894c4ac382194be6a6faa9d8859192"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Animation.html">Animation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Animation.html#ade894c4ac382194be6a6faa9d8859192">LoadTyped</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> type)</td></tr>
+<tr class="memdesc:ade894c4ac382194be6a6faa9d8859192"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> datasource.  <br /></td></tr>
+<tr class="separator:ade894c4ac382194be6a6faa9d8859192"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_methods_structSDL_1_1AnimationRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1AnimationRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1AnimationRef.html">SDL::AnimationRef</a></td></tr>
-<tr class="memitem:a07613e9c5466d72279d84c5702eaccc7 inherit pro_methods_structSDL_1_1AnimationRef" id="r_a07613e9c5466d72279d84c5702eaccc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationRef.html#a07613e9c5466d72279d84c5702eaccc7">Free</a> ()</td></tr>
-<tr class="memdesc:a07613e9c5466d72279d84c5702eaccc7 inherit pro_methods_structSDL_1_1AnimationRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of an <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a> and free its resources.  <br /></td></tr>
-<tr class="separator:a07613e9c5466d72279d84c5702eaccc7 inherit pro_methods_structSDL_1_1AnimationRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49c1ef08e98328123aa1722d3f4dbc65 inherit pro_methods_structSDL_1_1AnimationRef" id="r_a49c1ef08e98328123aa1722d3f4dbc65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationRef.html#a49c1ef08e98328123aa1722d3f4dbc65">reset</a> (IMG_Animation *newResource={})</td></tr>
-<tr class="memdesc:a49c1ef08e98328123aa1722d3f4dbc65 inherit pro_methods_structSDL_1_1AnimationRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of an <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a> and free its resources.  <br /></td></tr>
-<tr class="separator:a49c1ef08e98328123aa1722d3f4dbc65 inherit pro_methods_structSDL_1_1AnimationRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase" id="r_a649d81bb2d1f33857880ab0faa3a45d5"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = RESOURCE</td></tr>
+<tr class="memdesc:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reference resource type. <br /></td></tr>
+<tr class="separator:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase" id="r_afaf83443621b31f83daf2d7e911208c6"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = typename reference::value_type</td></tr>
+<tr class="memdesc:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
+<tr class="separator:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a0e39f008b2afd11a7982df6b29b82a85 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_a0e39f008b2afd11a7982df6b29b82a85"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourcePtrBase</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">value_type</a> value={}, DELETER deleter={})</td></tr>
+<tr class="memdesc:a0e39f008b2afd11a7982df6b29b82a85 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:a0e39f008b2afd11a7982df6b29b82a85 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_a5123ac0033c94520d252dedd8cf1d5e5"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> ()</td></tr>
+<tr class="memdesc:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference. <br /></td></tr>
+<tr class="separator:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_aa035e9da7e7a8c0d71d8bc75e560b509"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>free</b> ()</td></tr>
+<tr class="memdesc:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees resource. <br /></td></tr>
+<tr class="separator:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a> </dd></dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="afb9a2fbca335b04d82a6ba78548c4ee2" name="afb9a2fbca335b04d82a6ba78548c4ee2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb9a2fbca335b04d82a6ba78548c4ee2">&#9670;&#160;</a></span>Animation() <span class="overload">[1/3]</span></h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7860e37888e4ffae92f1b33e217196ce" name="a7860e37888e4ffae92f1b33e217196ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7860e37888e4ffae92f1b33e217196ce">&#9670;&#160;</a></span>Free()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -283,10 +233,9 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">SDL::Animation::Animation </td>
+          <td class="memname">void SDL::Animation::Free </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -296,103 +245,14 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">file</td><td>path on the filesystem containing an animated image. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a new <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a>, or nullptr on error.</dd></dl>
+<p>The provided <code>anim</code> pointer is not valid once this call returns.</p>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AnimationRef.html#a07613e9c5466d72279d84c5702eaccc7" title="Dispose of an AnimationRef and free its resources.">AnimationRef.Free</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Animation.html#ade894c4ac382194be6a6faa9d8859192" title="Load an animation from an SDL datasource.">Animation.LoadTyped</a> </dd></dl>
 
 </div>
 </div>
-<a id="a5f32dc3fc2d3355c3c8c3e2f259e94dd" name="a5f32dc3fc2d3355c3c8c3e2f259e94dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f32dc3fc2d3355c3c8c3e2f259e94dd">&#9670;&#160;</a></span>Animation() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Animation::Animation </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td>
-          <td class="paramname"><em>src</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> that data will be read from. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a new <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a>, or nullptr on error.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AnimationRef.html#a07613e9c5466d72279d84c5702eaccc7" title="Dispose of an AnimationRef and free its resources.">AnimationRef.Free</a> </dd></dl>
-
-</div>
-</div>
-<a id="a8a62f4130efc49212229bbd42e14d552" name="a8a62f4130efc49212229bbd42e14d552"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a62f4130efc49212229bbd42e14d552">&#9670;&#160;</a></span>Animation() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Animation::Animation </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td>
-          <td class="paramname"><em>src</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Even though this function accepts a file type, SDL_image may still try other decoders that are capable of detecting file type from the contents of the image data, but may rely on the caller-provided type string for formats that it cannot autodetect. If <code>type</code> is nullptr, SDL_image will rely solely on its ability to guess the format.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> that data will be read from. </td></tr>
-    <tr><td class="paramname">type</td><td>a filename extension that represent this data ("GIF", etc). </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a new <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a>, or nullptr on error.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AnimationRef.html#a07613e9c5466d72279d84c5702eaccc7" title="Dispose of an AnimationRef and free its resources.">AnimationRef.Free</a> </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
 <a id="aa002f40c6c02646e6dfcbd59e8029a6f" name="aa002f40c6c02646e6dfcbd59e8029a6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa002f40c6c02646e6dfcbd59e8029a6f">&#9670;&#160;</a></span>Load() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa002f40c6c02646e6dfcbd59e8029a6f">&#9670;&#160;</a></span>Load() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -414,8 +274,6 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>If <code>closeio</code> is true, <code>src</code> will be closed before returning, whether this function succeeds or not. SDL_image reads everything it needs from <code>src</code> during this call in any case.</p>
-<p>When done with the returned animation, the app should dispose of it with a call to <a class="el" href="structSDL_1_1AnimationRef.html#a07613e9c5466d72279d84c5702eaccc7" title="Dispose of an AnimationRef and free its resources.">AnimationRef.Free()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> that data will be read from. </td></tr>
@@ -424,65 +282,14 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a>, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AnimationRef.html#a07613e9c5466d72279d84c5702eaccc7" title="Dispose of an AnimationRef and free its resources.">AnimationRef.Free</a> </dd></dl>
-
-</div>
-</div>
-<a id="a25a3157792a5ee36457d97043bdbf4ff" name="a25a3157792a5ee36457d97043bdbf4ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25a3157792a5ee36457d97043bdbf4ff">&#9670;&#160;</a></span>Load() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static <a class="el" href="structSDL_1_1Animation.html">Animation</a> SDL::Animation::Load </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td>
-          <td class="paramname"><em>src</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Even though this function accepts a file type, SDL_image may still try other decoders that are capable of detecting file type from the contents of the image data, but may rely on the caller-provided type string for formats that it cannot autodetect. If <code>type</code> is nullptr, SDL_image will rely solely on its ability to guess the format.</p>
-<p>If <code>closeio</code> is true, <code>src</code> will be closed before returning, whether this function succeeds or not. SDL_image reads everything it needs from <code>src</code> during this call in any case.</p>
-<p>When done with the returned animation, the app should dispose of it with a call to <a class="el" href="structSDL_1_1AnimationRef.html#a07613e9c5466d72279d84c5702eaccc7" title="Dispose of an AnimationRef and free its resources.">AnimationRef.Free()</a>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> that data will be read from. </td></tr>
-    <tr><td class="paramname">type</td><td>a filename extension that represent this data ("GIF", etc). </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a>, or nullptr on error.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Animation.html#a26ce0dbe37e8d42af5d290b3d78ba0e5" title="Constructs an empty Animation.">Animation.Animation</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Animation.html#ade894c4ac382194be6a6faa9d8859192" title="Load an animation from an SDL datasource.">Animation.LoadTyped</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Animation.html#a26ce0dbe37e8d42af5d290b3d78ba0e5" title="Constructs an empty Animation.">Animation.Animation</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1AnimationRef.html#a07613e9c5466d72279d84c5702eaccc7" title="Dispose of an AnimationRef and free its resources.">AnimationRef.Free</a> </dd></dl>
+<a class="el" href="structSDL_1_1Animation.html#a7860e37888e4ffae92f1b33e217196ce" title="Dispose of an AnimationRef and free its resources.">Animation.Free</a> </dd></dl>
 
 </div>
 </div>
 <a id="a52e8642092d5bb05ee6c3206e9b1ee75" name="a52e8642092d5bb05ee6c3206e9b1ee75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52e8642092d5bb05ee6c3206e9b1ee75">&#9670;&#160;</a></span>Load() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a52e8642092d5bb05ee6c3206e9b1ee75">&#9670;&#160;</a></span>Load() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -504,16 +311,66 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>When done with the returned animation, the app should dispose of it with a call to <a class="el" href="structSDL_1_1AnimationRef.html#a07613e9c5466d72279d84c5702eaccc7" title="Dispose of an AnimationRef and free its resources.">AnimationRef.Free()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file</td><td>path on the filesystem containing an animated image. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="structSDL_1_1Animation.html" title="Handle to an owned animation.">Animation</a>, or nullptr on error.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Animation.html#ade894c4ac382194be6a6faa9d8859192" title="Load an animation from an SDL datasource.">Animation.LoadTyped</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Animation.html#a7860e37888e4ffae92f1b33e217196ce" title="Dispose of an AnimationRef and free its resources.">Animation.Free</a> </dd></dl>
+
+</div>
+</div>
+<a id="ade894c4ac382194be6a6faa9d8859192" name="ade894c4ac382194be6a6faa9d8859192"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade894c4ac382194be6a6faa9d8859192">&#9670;&#160;</a></span>LoadTyped()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Animation.html">Animation</a> SDL::Animation::LoadTyped </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Even though this function accepts a file type, SDL_image may still try other decoders that are capable of detecting file type from the contents of the image data, but may rely on the caller-provided type string for formats that it cannot autodetect. If <code>type</code> is nullptr, SDL_image will rely solely on its ability to guess the format.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> that data will be read from. </td></tr>
+    <tr><td class="paramname">type</td><td>a filename extension that represent this data ("GIF", etc). </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a>, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AnimationRef.html#a07613e9c5466d72279d84c5702eaccc7" title="Dispose of an AnimationRef and free its resources.">AnimationRef.Free</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Animation.html#a52e8642092d5bb05ee6c3206e9b1ee75" title="Load an animation from a file.">Animation.Load</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Animation.html#a7860e37888e4ffae92f1b33e217196ce" title="Dispose of an AnimationRef and free its resources.">Animation.Free</a> </dd></dl>
 
 </div>
 </div>

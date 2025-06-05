@@ -244,8 +244,21 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:ad81cf7a56df2c72ca116bd9b023aa38a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="wrap-extending-struct.html">Wrap extending struct</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd>wrap-extending-struct </dd></dl>
+<div class="textblock"><dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="wrap-extending-struct.html">Wrap extending struct</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Rect.html#a69592160d95cc8d1d81dcf321559bfae" title="Determine whether a rectangle has no area.">Rect.Empty</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Rect.html#a09f05c066213374274e055034aa3b28b" title="Determine whether two rectangles are equal.">Rect.Equal</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Rect.html#ade19828e88fe7ba4a55ff4c527538059" title="Determine whether two rectangles intersect.">Rect.HasIntersection</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Rect.html#a5a0fdfe1fac1286b852d8516d3f974aa" title="Calculate the intersection of two rectangles.">Rect.GetIntersection</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Rect.html#af0f4743afba11dfd924b4d918b16053b" title="Calculate the intersection of a rectangle and line segment.">Rect.IntersectLine</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Rect.html#a8eb359bd14ca3302e4d05b2bacfc6098" title="Calculate the union of two rectangles.">Rect.GetUnion</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Rect.html#a9233b5c07d2fa3d18ac6efc73cbab234" title="Calculate a minimal rectangle enclosing a set of points.">Rect.GetEnclosingPoints</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4e1e85c0b132f321023685c3dffc620d" name="a4e1e85c0b132f321023685c3dffc620d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4e1e85c0b132f321023685c3dffc620d">&#9670;&#160;</a></span>Rect() <span class="overload">[1/3]</span></h2>
@@ -405,7 +418,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">p</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> to check</td></tr>
+    <tr><td class="paramname">p</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> to check</td></tr>
   </table>
   </dd>
 </dl>
@@ -438,7 +451,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">other</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> to check</td></tr>
+    <tr><td class="paramname">other</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> to check</td></tr>
   </table>
   </dd>
 </dl>
@@ -1490,7 +1503,7 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floats).">FRect</a> filled in with the floating point representation of <code>rect</code>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> filled in with the floating point representation of <code>rect</code>.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
@@ -1547,7 +1560,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> specifying an offset</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> specifying an offset</td></tr>
   </table>
   </dd>
 </dl>
@@ -1580,7 +1593,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> specifying an offset</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> specifying an offset</td></tr>
   </table>
   </dd>
 </dl>
@@ -1613,7 +1626,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> specifying an offset</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> specifying an offset</td></tr>
   </table>
   </dd>
 </dl>
@@ -1646,7 +1659,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> specifying an offset</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> specifying an offset</td></tr>
   </table>
   </dd>
 </dl>

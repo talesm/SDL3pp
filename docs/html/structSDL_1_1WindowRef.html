@@ -77,7 +77,6 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1WindowRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::WindowRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryVideo.html">Display and Window Management</a></div></div></div>
 </div><!--header-->
@@ -91,12 +90,8 @@ Inheritance diagram for SDL::WindowRef:</div>
 <div class="center"><img src="structSDL_1_1WindowRef__inherit__graph.png" border="0" usemap="#aSDL_1_1WindowRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1WindowRef_inherit__map" id="aSDL_1_1WindowRef_inherit__map">
 <area shape="rect" title="Represents a handle to a window." alt="" coords="18,93,147,119"/>
-<area shape="rect" href="structSDL_1_1WindowUnsafe.html" title="Unsafe Handle to window." alt="" coords="6,167,159,192"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-<area shape="rect" href="structSDL_1_1Window.html" title="Handle to an owned window." alt="" coords="29,240,136,265"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -338,8 +333,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ga5b2b046a18896a5af98454fdafc86fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
+<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
 <tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78be254b85f48c12179a782cb04da9ac" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top"><a id="a78be254b85f48c12179a782cb04da9ac" name="a78be254b85f48c12179a782cb04da9ac"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; T &gt; &gt; auto &amp;resource)</td></tr>
+<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
+<tr class="separator:a78be254b85f48c12179a782cb04da9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
 <tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
@@ -351,8 +350,12 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (st
 <tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Window * &gt;</a></td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_Window * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
+<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
 <tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; SDL_Window * &gt; &gt; auto &amp;resource)</td></tr>
+<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
+<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
 <tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
@@ -365,6 +368,10 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (st
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
 <tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
 <tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource" id="r_ab4aa1e63564473a72dc97256340d104f"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_type</b> () const</td></tr>
+<tr class="memdesc:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts back to underlying type. <br /></td></tr>
+<tr class="separator:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
 <tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
@@ -402,52 +409,25 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a0bc05cedcc50205f35db0476a9df92b6" id="r_a0bc05cedcc50205f35db0476a9df92b6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a0bc05cedcc50205f35db0476a9df92b6">GetGrabbed</a> ()</td></tr>
 <tr class="memdesc:a0bc05cedcc50205f35db0476a9df92b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the window that currently has an input grab enabled.  <br /></td></tr>
 <tr class="separator:a0bc05cedcc50205f35db0476a9df92b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09735bac1ee3777134c570eb0b1d5510" id="r_a09735bac1ee3777134c570eb0b1d5510"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a09735bac1ee3777134c570eb0b1d5510">reset</a> (SDL_Window *resource)</td></tr>
+<tr class="memdesc:a09735bac1ee3777134c570eb0b1d5510"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
+<tr class="separator:a09735bac1ee3777134c570eb0b1d5510"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:abfc07cb1e80e63736d4574ba8f23adb7" id="r_abfc07cb1e80e63736d4574ba8f23adb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#abfc07cb1e80e63736d4574ba8f23adb7">Destroy</a> ()</td></tr>
-<tr class="memdesc:abfc07cb1e80e63736d4574ba8f23adb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
-<tr class="separator:abfc07cb1e80e63736d4574ba8f23adb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a850b93ca1b23b6472f846c2f76af7099" id="r_a850b93ca1b23b6472f846c2f76af7099"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a850b93ca1b23b6472f846c2f76af7099">reset</a> (SDL_Window *newResource={})</td></tr>
-<tr class="memdesc:a850b93ca1b23b6472f846c2f76af7099"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
-<tr class="separator:a850b93ca1b23b6472f846c2f76af7099"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Window * &gt;</a></td></tr>
+<tr class="memitem:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource" id="r_a11ac29cf1f6da9fb29c508669f40b38d"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL_Window *</td></tr>
+<tr class="memdesc:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
+<tr class="separator:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>WindowRef.WindowRef</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Window.html" title="Handle to an owned window.">Window</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Window.html" title="Handle to an owned window.">Window</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="abfc07cb1e80e63736d4574ba8f23adb7" name="abfc07cb1e80e63736d4574ba8f23adb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfc07cb1e80e63736d4574ba8f23adb7">&#9670;&#160;</a></span>Destroy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::WindowRef::Destroy </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Any child windows owned by the window will be recursively destroyed as well.</p>
-<p>Note that on some platforms, the visible window may not actually be removed from the screen until the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> event loop is pumped again, even though the <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a> is no longer valid after this call.</p>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window</a> </dd></dl>
-
-</div>
-</div>
 <a id="ae87b36cea808cbc208ffc32d72228e75" name="ae87b36cea808cbc208ffc32d72228e75"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae87b36cea808cbc208ffc32d72228e75">&#9670;&#160;</a></span>DestroySurface()</h2>
 
@@ -659,7 +639,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Note: If this function fails (returns false), the size values will be initialized to 0, 0, 0, 0 (if a non-nullptr pointer is provided), as if the window in question was borderless.</p>
-<p>Note: This function may fail on systems where the window has not yet been decorated by the display server (for example, immediately after calling <a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window</a>). It is recommended that you wait at least until the window has been presented and composited, so that the window system has a chance to decorate the window and provide the border dimensions to <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>.</p>
+<p>Note: This function may fail on systems where the window has not yet been decorated by the display server (for example, immediately after calling Window.Window). It is recommended that you wait at least until the window has been presented and composited, so that the window system has a chance to decorate the window and provide the border dimensions to <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>.</p>
 <p>This function also returns false if getting the information is not supported.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -768,7 +748,7 @@ Protected Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>a mask of the WindowFlags associated with <code>window</code>.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>Window.Window </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowRef.html#a62ce4c7a9c99ba7aa0b73237d0c8ff1c" title="Hide a window.">WindowRef.Hide</a> </dd>
 <dd>
@@ -1183,7 +1163,7 @@ Protected Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>the parent of the window on success, or nullptr if the window has no parent.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Window.Window </dd></dl>
 
 </div>
 </div>
@@ -1466,7 +1446,7 @@ SetPosition(int *, int *) </dd></dl>
 </table>
 </div><div class="memdoc">
 <p>This is the current position of the window as last reported by the windowing system.</p>
-<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowRef.html#a982e7cb78094e415489d6950e9fe8e98" title="Get the size of a window&#39;s client area, in pixels.">Window.GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererRef.html#a01c8137373fbda82004b63ab1bfe625f" title="Get the output size in pixels of a rendering context.">RendererRef.GetOutputSize()</a> to get the real client area size in pixels.</p>
+<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use Window.GetSizeInPixels() or <a class="el" href="structSDL_1_1RendererRef.html#a01c8137373fbda82004b63ab1bfe625f" title="Get the output size in pixels of a rendering context.">RendererRef.GetOutputSize()</a> to get the real client area size in pixels.</p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> with the position and size </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
@@ -1534,11 +1514,11 @@ SetPosition(int *, int *) </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowRef.html#a982e7cb78094e415489d6950e9fe8e98" title="Get the size of a window&#39;s client area, in pixels.">GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererRef.html#a01c8137373fbda82004b63ab1bfe625f" title="Get the output size in pixels of a rendering context.">Renderer.GetOutputSize()</a> to get the real client area size in pixels.</p>
+<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowRef.html#a982e7cb78094e415489d6950e9fe8e98" title="Get the size of a window&#39;s client area, in pixels.">GetSizeInPixels()</a> or Renderer.GetOutputSize() to get the real client area size in pixels.</p>
 <dl class="section return"><dt>Returns</dt><dd>a point with width and height on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererRef.html#a01c8137373fbda82004b63ab1bfe625f" title="Get the output size in pixels of a rendering context.">Renderer.GetOutputSize()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>Renderer.GetOutputSize() </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowRef.html#a982e7cb78094e415489d6950e9fe8e98" title="Get the size of a window&#39;s client area, in pixels.">GetSizeInPixels()</a> </dd>
 <dd>
@@ -1684,7 +1664,7 @@ GetSizeInPixels(int*, int*) </dd></dl>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>Window.Window </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowRef.html#afc5567df6053f3ec7287819449186cb4" title="Get the size of a window&#39;s client area.">WindowRef.GetSize</a> </dd></dl>
 
@@ -1975,8 +1955,8 @@ GetSizeInPixels(int*, int*) </dd></dl>
 
 </div>
 </div>
-<a id="a850b93ca1b23b6472f846c2f76af7099" name="a850b93ca1b23b6472f846c2f76af7099"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a850b93ca1b23b6472f846c2f76af7099">&#9670;&#160;</a></span>reset()</h2>
+<a id="a09735bac1ee3777134c570eb0b1d5510" name="a09735bac1ee3777134c570eb0b1d5510"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09735bac1ee3777134c570eb0b1d5510">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1985,24 +1965,34 @@ GetSizeInPixels(int*, int*) </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::WindowRef::reset </td>
+          <td class="memname">static void SDL::WindowRef::reset </td>
           <td>(</td>
           <td class="paramtype">SDL_Window *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Any child windows owned by the window will be recursively destroyed as well.</p>
 <p>Note that on some platforms, the visible window may not actually be removed from the screen until the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> event loop is pumped again, even though the <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a> is no longer valid after this call.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>the window to destroy.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Window.html#a446383c719e305c74d78deb31a8c21ac" title="Constructs an empty Window.">Window.Window</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Window.html#af95818c948d7eaa4ae57843cbb0eb657" title="Create a child popup window of the specified parent window.">Window.CreatePopup</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Window.html#aea280479e50a9229515d13b37942c6fc" title="Create a window with the specified properties.">Window.CreateWithProperties</a> </dd></dl>
 
 </div>
 </div>

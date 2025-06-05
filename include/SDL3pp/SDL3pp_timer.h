@@ -16,14 +16,13 @@ namespace SDL {
  * SDL provides time management functionality. It is useful for dealing with
  * (usually) small durations of time.
  *
- * This is not to be confused with _calendar time_ management, which is
- * provided by [CategoryTime](#CategoryTime).
+ * This is not to be confused with _calendar time_ management, which is provided
+ * by [CategoryTime](#CategoryTime).
  *
  * This category covers measuring time elapsed (GetTicks(),
- * GetPerformanceCounter()), putting a thread to sleep for a certain
- * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
- * a callback function after a certain amount of time has elapsed
- * (AddTimer(), etc).
+ * GetPerformanceCounter()), putting a thread to sleep for a certain amount of
+ * time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing a callback function
+ * after a certain amount of time has elasped (SDL_AddTimer(), etc).
  *
  * @{
  */
@@ -83,7 +82,7 @@ inline std::chrono::nanoseconds GetTicks()
  *
  * The counter values are only meaningful relative to each other. Differences
  * between values can be converted to times by using
- * SDL_GetPerformanceFrequency().
+ * GetPerformanceFrequency().
  *
  * @returns the current counter value.
  *
@@ -91,7 +90,7 @@ inline std::chrono::nanoseconds GetTicks()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetPerformanceFrequency()
+ * @sa GetPerformanceFrequency
  */
 inline Uint64 GetPerformanceCounter() { return SDL_GetPerformanceCounter(); }
 
@@ -104,7 +103,7 @@ inline Uint64 GetPerformanceCounter() { return SDL_GetPerformanceCounter(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetPerformanceCounter()
+ * @sa GetPerformanceCounter
  */
 inline Uint64 GetPerformanceFrequency()
 {
@@ -122,6 +121,9 @@ inline Uint64 GetPerformanceFrequency()
  *
  * @threadsafety It is safe to call this function from any thread.
  *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa DelayPrecise
  */
 inline void Delay(std::chrono::nanoseconds duration)
 {
@@ -141,8 +143,7 @@ inline void Delay(std::chrono::nanoseconds duration)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Delay()
- * @sa DelayNS()
+ * @sa Delay
  */
 inline void DelayPrecise(std::chrono::nanoseconds duration)
 {
@@ -165,7 +166,7 @@ using TimerID = SDL_TimerID;
  * will be removed.
  *
  * @param userdata an arbitrary pointer provided by the app through
- *                 AddTimer(), for its own use.
+ *                 SDL_AddTimer, for its own use.
  * @param timerID the current timer being processed.
  * @param interval the current callback time interval.
  * @returns the new callback time interval, or 0 to disable further runs of
@@ -203,8 +204,8 @@ using TimerCallback = SDL_NSTimerCallback;
  *
  * @cat listener-callback
  *
- * @sa listener-callback
- * @sa AddTimer(TimerCB)
+ * @sa AddTimer
+ * @sa TimerCallback
  */
 using TimerCB =
   std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
@@ -311,7 +312,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
 }
 
 /**
- * Remove a timer created with AddTimer().
+ * Remove a timer created with SDL_AddTimer().
  *
  * @param id the ID of the timer to remove.
  * @throws Error on failure.
@@ -320,7 +321,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AddTimer
+ * @sa SDL_AddTimer
  */
 inline void RemoveTimer(TimerID id)
 {

@@ -21,8 +21,9 @@ struct Main
   SDL::SDL init{SDL::INIT_VIDEO};
 
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window{"examples/renderer/primitives", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window =
+    SDL::Window::Create("examples/renderer/primitives", windowSz);
+  SDL::Renderer renderer = SDL::Renderer::Create(window);
   std::array<SDL::FPoint, 500> points;
 
   // This function runs once at startup.
@@ -40,34 +41,34 @@ struct Main
     SDL::FRect rect;
 
     // as you can see, rendering draws over what was drawn before it.
-    renderer.SetDrawColor(SDL::Color{33, 33, 33}); // Dark grey
-    renderer.RenderClear();
+    renderer->SetDrawColor(SDL::Color{33, 33, 33}); // Dark grey
+    renderer->RenderClear();
 
     // draw a filled rectangle in the middle of the canvas.
-    renderer.SetDrawColor(SDL::Color{0, 0, 255}); // Blue
+    renderer->SetDrawColor(SDL::Color{0, 0, 255}); // Blue
     rect.x = rect.y = 100;
     rect.w = 440;
     rect.h = 280;
-    renderer.RenderFillRect(rect);
+    renderer->RenderFillRect(rect);
 
     // draw some points across the canvas. */
-    renderer.SetDrawColor(SDL::Color{255, 0, 0}); // red
-    renderer.RenderPoints(points);
+    renderer->SetDrawColor(SDL::Color{255, 0, 0}); // red
+    renderer->RenderPoints(points);
 
     // draw a unfilled rectangle in-set a little bit. */
-    renderer.SetDrawColor(SDL::Color{0, 255, 0}); // green
+    renderer->SetDrawColor(SDL::Color{0, 255, 0}); // green
     rect.x += 30;
     rect.y += 30;
     rect.w -= 60;
     rect.h -= 60;
-    renderer.RenderRect(rect);
+    renderer->RenderRect(rect);
 
     // draw two lines in an X across the whole canvas. */
-    renderer.SetDrawColor(SDL::Color{255, 255, 0}); // yellow
-    renderer.RenderLine({0, 0}, {640, 480});
-    renderer.RenderLine({0, 480}, {640, 0});
+    renderer->SetDrawColor(SDL::Color{255, 255, 0}); // yellow
+    renderer->RenderLine({0, 0}, {640, 480});
+    renderer->RenderLine({0, 480}, {640, 0});
 
-    renderer.Present();       // put it all on the screen!
+    renderer->Present();      // put it all on the screen!
     return SDL::APP_CONTINUE; // carry on with the program!
   }
 };

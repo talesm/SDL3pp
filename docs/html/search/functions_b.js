@@ -24,6 +24,5 @@ var searchData=
   ['mostsignificantbitindex32_21',['MostSignificantBitIndex32',['../group__CategoryBits.html#gaa2f08a2af2962e1673e65eeeb4b24bee',1,'SDL']]],
   ['murmur3_5f32_22',['murmur3_32',['../group__CategoryStdinc.html#gaa75ce9d0d0b590cd55fce1604bb40824',1,'SDL']]],
   ['mustlock_23',['MustLock',['../structSDL_1_1SurfaceRef.html#a5030bf180d394effdc2ad46615b305ea',1,'SDL::SurfaceRef']]],
-  ['mutex_24',['mutex',['../structSDL_1_1Mutex.html#a5efc976c19ab75420cc30b00d4317bc4',1,'SDL::Mutex::Mutex()'],['../structSDL_1_1Mutex.html#ac78ebbdf60bdd3eb67f4f20883cfe8d2',1,'SDL::Mutex::Mutex(Mutex &amp;&amp;other)'],['../structSDL_1_1Mutex.html#ad6e1f3be624f6c8754222b582863fc1d',1,'SDL::Mutex::Mutex(SDL_Mutex *resource)']]],
-  ['mutexunsafe_25',['mutexunsafe',['../structSDL_1_1Mutex.html#ad8662111e319ec24af5d8195073eb34a',1,'SDL::Mutex::MutexUnsafe(Mutex &amp;&amp;other)'],['../structSDL_1_1Mutex.html#ad55e16254292c2ccdbbc4e79778a8237',1,'SDL::Mutex::MutexUnsafe(const MutexRef &amp;other)'],['../group__CategoryMutex.html#gad8662111e319ec24af5d8195073eb34a',1,'SDL::MutexUnsafe::MutexUnsafe(Mutex &amp;&amp;other)'],['../structSDL_1_1MutexUnsafe.html#ad55e16254292c2ccdbbc4e79778a8237',1,'SDL::MutexUnsafe::MutexUnsafe(const MutexRef &amp;other)']]]
+  ['mutexunsafe_24',['MutexUnsafe',['../structSDL_1_1MutexUnsafe.html#ad8662111e319ec24af5d8195073eb34a',1,'SDL::MutexUnsafe']]]
 ];

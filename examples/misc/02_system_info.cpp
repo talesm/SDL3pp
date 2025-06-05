@@ -16,7 +16,7 @@ struct Main
       cursor.y += SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE + 4;
     };
     auto show = [&](auto&&... args) {
-      renderer.RenderDebugTextFormat(cursor, args...);
+      renderer->RenderDebugTextFormat(cursor, args...);
       rollDown();
     };
     {
@@ -112,17 +112,17 @@ struct Main
   {
     std::tie(window, renderer) =
       SDL::CreateWindowAndRenderer("Test", WINDOW_SZ);
-    renderer.SetScale({2.f, 2.f});
+    renderer->SetScale({2.f, 2.f});
   }
 
   SDL::AppResult Iterate()
   {
-    renderer.SetDrawColor(SDL::FColor{.75f, .75f, .75f, 1.f});
-    renderer.RenderClear();
-    renderer.SetDrawColor(SDL::FColor{.0f, .0f, .0f, 1.f});
+    renderer->SetDrawColor(SDL::FColor{.75f, .75f, .75f, 1.f});
+    renderer->RenderClear();
+    renderer->SetDrawColor(SDL::FColor{.0f, .0f, .0f, 1.f});
     showInfo();
 
-    renderer.Present();
+    renderer->Present();
     return SDL::APP_CONTINUE;
   }
 };

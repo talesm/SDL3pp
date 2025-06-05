@@ -232,7 +232,7 @@ namespace SDL {
  *
  * // later...
  * #ifdef SDL_SSE2_INTRINSICS
- * if (SDL_HasSSE2()) {
+ * if (HasSSE2()) {
  *     DoSomethingWithSSE2(str);
  * }
  * #endif

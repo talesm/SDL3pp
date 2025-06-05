@@ -159,7 +159,7 @@ namespace SDL {
  * Possible outcomes from a triggered assertion.
  *
  * When an enabled assertion triggers, it may call the assertion handler
- * (possibly one provided by the app via SDL_SetAssertionHandler), which will
+ * (possibly one provided by the app via SetAssertionHandler), which will
  * return one of these values, possibly after asking the user.
  *
  * Then SDL will respond based on this outcome (loop around to retry the
@@ -170,37 +170,27 @@ namespace SDL {
  */
 using AssertState = SDL_AssertState;
 
-/**
- * Retry the assert immediately.
- */
-constexpr AssertState ASSERTION_RETRY = SDL_ASSERTION_RETRY;
+constexpr AssertState ASSERTION_RETRY =
+  SDL_ASSERTION_RETRY; ///< Retry the assert immediately.
 
-/**
- * Make the debugger trigger a breakpoint.
- */
-constexpr AssertState ASSERTION_BREAK = SDL_ASSERTION_BREAK;
+constexpr AssertState ASSERTION_BREAK =
+  SDL_ASSERTION_BREAK; ///< Make the debugger trigger a breakpoint.
 
-/**
- * Terminate the program.
- */
-constexpr AssertState ASSERTION_ABORT = SDL_ASSERTION_ABORT;
+constexpr AssertState ASSERTION_ABORT =
+  SDL_ASSERTION_ABORT; ///< Terminate the program.
 
-/**
- * Ignore the assert.
- */
-constexpr AssertState ASSERTION_IGNORE = SDL_ASSERTION_IGNORE;
+constexpr AssertState ASSERTION_IGNORE =
+  SDL_ASSERTION_IGNORE; ///< Ignore the assert.
 
-/**
- * Ignore the assert from now on.
- */
-constexpr AssertState ASSERTION_ALWAYS_IGNORE = SDL_ASSERTION_ALWAYS_IGNORE;
+constexpr AssertState ASSERTION_ALWAYS_IGNORE =
+  SDL_ASSERTION_ALWAYS_IGNORE; ///< Ignore the assert from now on.
 
 /**
  * Information about an assertion failure.
  *
  * This structure is filled in with information about a triggered assertion,
  * used by the assertion handler, then added to the assertion report. This is
- * returned as a linked list from SDL_GetAssertionReport().
+ * returned as a linked list from GetAssertionReport().
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -256,7 +246,7 @@ inline AssertState ReportAssertion(AssertData* data,
  * ... without the do/while, the "else" could attach to this macro's "if". We
  * try to handle just the minimum we need here in a macro...the loop, the
  * static vars, and break points. The heavy lifting is handled in
- * SDL_ReportAssertion().
+ * ReportAssertion().
  *
  * @param condition the condition to assert.
  *
@@ -401,10 +391,10 @@ inline AssertState ReportAssertion(AssertData* data,
 /**
  * A @ref callback that fires when an SDL assertion fails.
  *
- * @param data a pointer to the SDL_AssertData structure corresponding to the
+ * @param data a pointer to the AssertData structure corresponding to the
  *             current assertion.
  * @param userdata what was passed as `userdata` to SetAssertionHandler().
- * @returns an SDL_AssertState value indicating how to handle the failure.
+ * @returns an AssertState value indicating how to handle the failure.
  *
  * @threadsafety This callback may be called from any thread that triggers an
  *               assert at any time.
@@ -442,7 +432,7 @@ using AssertionHandlerCB =
  *
  * This callback is NOT reset to SDL's internal handler upon Quit()!
  *
- * @param handler the SDL_AssertionHandler function to call when an assertion
+ * @param handler the AssertionHandler function to call when an assertion
  *                fails or nullptr for the default handler.
  * @param userdata a pointer that is passed to `handler`.
  *
@@ -511,9 +501,9 @@ inline AssertionHandler GetDefaultAssertionHandler()
  * Get the current assertion handler.
  *
  * This returns the function pointer that is called when an assertion is
- * triggered. This is either the value last passed to
- * SDL_SetAssertionHandler(), or if no application-specified function is set,
- * is equivalent to calling GetDefaultAssertionHandler().
+ * triggered. This is either the value last passed to SetAssertionHandler(), or
+ * if no application-specified function is set, is equivalent to calling
+ * GetDefaultAssertionHandler().
  *
  * The parameter `puserdata` is a pointer to a void*, which will store the
  * "userdata" pointer that was passed to SetAssertionHandler(). This value
@@ -569,12 +559,12 @@ inline AssertionHandlerCB GetAssertionHandler()
  * Get a list of all assertion failures.
  *
  * This function gets all assertions triggered since the last call to
- * SDL_ResetAssertionReport(), or the start of the program.
+ * ResetAssertionReport(), or the start of the program.
  *
  * The proper way to examine this data looks something like this:
  *
- * ```c
- * const SDL_AssertData *item = SDL_GetAssertionReport();
+ * ```cpp
+ * const AssertData *item = GetAssertionReport();
  * while (item) {
  *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
  *           item->condition, item->function, item->filename,
@@ -585,17 +575,16 @@ inline AssertionHandlerCB GetAssertionHandler()
  * ```
  *
  * @returns a list of all failed assertions or nullptr if the list is empty.
- *          This memory should not be modified or freed by the application. This
- *          pointer remains valid until the next call to Quit() or
- *          ResetAssertionReport().
+ * This memory should not be modified or freed by the application. This pointer
+ * remains valid until the next call to Quit() or ResetAssertionReport().
  *
  * @threadsafety This function is not thread safe. Other threads calling
- *               SDL_ResetAssertionReport() simultaneously, may render the
+ *               ResetAssertionReport() simultaneously, may render the
  *               returned pointer invalid.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_ResetAssertionReport
+ * @sa ResetAssertionReport
  */
 inline const AssertData* GetAssertionReport()
 {
@@ -606,7 +595,7 @@ inline const AssertData* GetAssertionReport()
  * Clear the list of all assertion failures.
  *
  * This function will clear the list of all assertions triggered up to that
- * point. Immediately following this call, SDL_GetAssertionReport will return
+ * point. Immediately following this call, GetAssertionReport will return
  * no items. In addition, any previously-triggered assertions will be reset to
  * a trigger_count of zero, and their always_ignore state will be false.
  *
@@ -616,9 +605,9 @@ inline const AssertData* GetAssertionReport()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetAssertionReport
+ * @sa GetAssertionReport
  */
-inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
+inline void ResetAssertionReport() { SDL_ResetAssertionReport(); }
 
 /// @}
 

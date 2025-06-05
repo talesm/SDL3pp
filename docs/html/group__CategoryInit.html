@@ -227,6 +227,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
 <tr class="memdesc:ga85ebd45ffe827a5fe36abd499560314c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback run on the main thread.  <br /></td></tr>
 <tr class="separator:ga85ebd45ffe827a5fe36abd499560314c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2f8cd7a48bac7f78b92bb612d160585b" id="r_ga2f8cd7a48bac7f78b92bb612d160585b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga2f8cd7a48bac7f78b92bb612d160585b">SDL::MainThreadCB</a> = std::function&lt; void()&gt;</td></tr>
+<tr class="memdesc:ga2f8cd7a48bac7f78b92bb612d160585b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback run on the main thread.  <br /></td></tr>
 <tr class="separator:ga2f8cd7a48bac7f78b92bb612d160585b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4dd42c4b0db483c8dea2ed5389d3613b" id="r_ga4dd42c4b0db483c8dea2ed5389d3613b"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:ga4dd42c4b0db483c8dea2ed5389d3613b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga4dd42c4b0db483c8dea2ed5389d3613b">SDL::DefaultCreateClass</a> (T **state, <a class="el" href="group__CategoryInit.html#ga5e144248c6563123ce5ba9e54235f37e">AppArgs</a> args)</td></tr>
@@ -246,9 +247,9 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
 <tr class="separator:ga18ff61b28788b04451ffcd81fc3728cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Almost everything can simply call SDL_Init() near startup, with a handful of flags to specify subsystems to touch. These are here to make sure <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> does not even attempt to touch low-level pieces of the operating system that you don't intend to use. For example, you might be using <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> for video and input but chose an external library for audio, and in this case you would just need to leave off the <code>SDL_INIT_AUDIO</code> flag to make sure that external library has complete control.</p>
-<p>Most apps, when terminating, should call SDL_Quit(). This will clean up (nearly) everything that <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> might have allocated, and crucially, it'll make sure that the display's resolution is back to what the user expects if you had previously changed it for your game.</p>
-<p>SDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup to fill in details about the program. This is completely optional, but it helps in small ways (we can provide an About dialog box for the macOS menu, we can name the app in the system's audio mixer, etc). Those that want to provide a <em>lot</em> of information should look at the more-detailed SDL_SetAppMetadataProperty(). </p>
+<p>Almost everything can simply call <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> near startup, with a handful of flags to specify subsystems to touch. These are here to make sure <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> does not even attempt to touch low-level pieces of the operating system that you don't intend to use. For example, you might be using <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> for video and input but chose an external library for audio, and in this case you would just need to leave off the <code>INIT_AUDIO</code> flag to make sure that external library has complete control.</p>
+<p>Most apps, when terminating, should call <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a>. This will clean up (nearly) everything that <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> might have allocated, and crucially, it'll make sure that the display's resolution is back to what the user expects if you had previously changed it for your game.</p>
+<p>SDL3 apps are strongly encouraged to call <a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata()</a> at startup to fill in details about the program. This is completely optional, but it helps in small ways (we can provide an About dialog box for the macOS menu, we can name the app in the system's audio mixer, etc). Those that want to provide a <em>lot</em> of information should look at the more-detailed <a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a>. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="gac6fad763c6a19060601dfb3b0bc06706" name="gac6fad763c6a19060601dfb3b0bc06706"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gac6fad763c6a19060601dfb3b0bc06706">&#9670;&#160;</a></span>AppEvent_func</h2>
@@ -396,9 +397,10 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd>PropertiesRef.MainThreadCallback </dd>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gaa84158dc51ac29c236db85acbfc03784" title="Call a function on the main thread during event processing.">RunOnMainThread</a> </dd>
 <dd>
-result-callback</dd></dl>
+<a class="el" href="group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c" title="Callback run on the main thread.">MainThreadCallback</a></dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#result-callback">Result callback</a> </dd></dl>
 
 </div>
@@ -781,7 +783,7 @@ template&lt;class FLAG , class... FLAGS&gt; </div>
 <dd>
 <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> </dd>
 <dd>
-<a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of SDL_Init() when not using SDL_main() as an entry point.">SetMainReady()</a> </dd>
+<a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of InitSubSystem() when not using SDL_main() as an entry point.">SetMainReady()</a> </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#gaa17083ba3ec421956acec4075284b453" title="Check if all of the specified subsystems which are currently initialized.">WasInit()</a> </dd></dl>
 
@@ -876,7 +878,7 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
 <dd>
 <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> </dd>
 <dd>
-<a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of SDL_Init() when not using SDL_main() as an entry point.">SetMainReady()</a> </dd>
+<a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of InitSubSystem() when not using SDL_main() as an entry point.">SetMainReady()</a> </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#gaa17083ba3ec421956acec4075284b453" title="Check if all of the specified subsystems which are currently initialized.">WasInit()</a> </dd></dl>
 
@@ -906,7 +908,7 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
 </table>
 </div><div class="memdoc">
 <p>The class Init is probably what you are looking for, as it automatically handles de-initialization.</p>
-<p>The file I/O (for example: IOStreamRef.IOStreamRef) and threading (ThreadRef.ThreadRef) subsystems are initialized by default. Message boxes (ShowSimpleMessageBox) also attempt to work without initializing the video subsystem, in hopes of being useful in showing an error dialog when Init fails. You must specifically initialize other subsystems if you use them in your application.</p>
+<p>The file I/O (for example: <a class="el" href="structSDL_1_1IOStream.html#a991da53140a740b71e05f122562173ea" title="Use this function to create a new IOStream structure for reading from and/or writing to a named file.">IOStream.FromFile</a>) and threading (<a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create</a>) subsystems are initialized by default. Message boxes (ShowSimpleMessageBox) also attempt to work without initializing the video subsystem, in hopes of being useful in showing an error dialog when InitSubSystem fails. You must specifically initialize other subsystems if you use them in your application.</p>
 <p>Logging (such as Log) works without initialization, too.</p>
 <p><code>flags</code> may be any of the following OR'd together:</p>
 <ul>
@@ -941,7 +943,7 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
 <dd>
 <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit</a> </dd>
 <dd>
-<a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of SDL_Init() when not using SDL_main() as an entry point.">SetMainReady</a> </dd>
+<a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of InitSubSystem() when not using SDL_main() as an entry point.">SetMainReady</a> </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#gaa17083ba3ec421956acec4075284b453" title="Check if all of the specified subsystems which are currently initialized.">WasInit</a> </dd></dl>
 

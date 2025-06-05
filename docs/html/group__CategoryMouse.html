@@ -87,17 +87,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html">SDL::CursorRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The structure used to identify an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> cursor.  <a href="structSDL_1_1CursorRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorUnsafe.html">SDL::CursorUnsafe</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to cursor.  <a href="structSDL_1_1CursorUnsafe.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Cursor.html">SDL::Cursor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned cursor.  <a href="structSDL_1_1Cursor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorUnsafe.html">SDL::CursorUnsafe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to cursor.  <a href="structSDL_1_1CursorUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga18c02aef67d85f2fbf2758204eba125d" id="r_ga18c02aef67d85f2fbf2758204eba125d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga18c02aef67d85f2fbf2758204eba125d">SDL::SystemCursor</a> = SDL_SystemCursor</td></tr>
-<tr class="memdesc:ga18c02aef67d85f2fbf2758204eba125d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor.">Cursor</a> types for CursorRef.CursorRef().  <br /></td></tr>
+<tr class="memdesc:ga18c02aef67d85f2fbf2758204eba125d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor.">Cursor</a> types for <a class="el" href="structSDL_1_1Cursor.html#aba9887ef7e2652a057660a5d9cf0d528" title="Create a system cursor.">Cursor.CreateSystem()</a>.  <br /></td></tr>
 <tr class="separator:ga18c02aef67d85f2fbf2758204eba125d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga733d09de50440ff2a5587b8a47080440" id="r_ga733d09de50440ff2a5587b8a47080440"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga733d09de50440ff2a5587b8a47080440">SDL::MouseID</a> = SDL_MouseID</td></tr>
 <tr class="memdesc:ga733d09de50440ff2a5587b8a47080440"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a unique ID for a mouse for the time it is connected to the system, and is never reused for the lifetime of the application.  <br /></td></tr>
@@ -163,10 +163,6 @@ Functions</h2></td></tr>
 <tr class="memitem:gac4547e18959c21ca560b54349634f47b" id="r_gac4547e18959c21ca560b54349634f47b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gac4547e18959c21ca560b54349634f47b">SDL::CursorVisible</a> ()</td></tr>
 <tr class="memdesc:gac4547e18959c21ca560b54349634f47b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether the cursor is currently being shown.  <br /></td></tr>
 <tr class="separator:gac4547e18959c21ca560b54349634f47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6ec9a50c0802a98f1568d67219c5783f" id="r_ga6ec9a50c0802a98f1568d67219c5783f"><td class="memItemLeft" align="right" valign="top"><a id="ga6ec9a50c0802a98f1568d67219c5783f" name="ga6ec9a50c0802a98f1568d67219c5783f"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::CursorUnsafe::CursorUnsafe</b> (<a class="el" href="structSDL_1_1Cursor.html">Cursor</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ga6ec9a50c0802a98f1568d67219c5783f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1CursorUnsafe.html" title="Unsafe Handle to cursor.">CursorUnsafe</a> from <a class="el" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor.">Cursor</a>. <br /></td></tr>
-<tr class="separator:ga6ec9a50c0802a98f1568d67219c5783f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0b838bf7c4e62a00187e28def4de70d3" id="r_ga0b838bf7c4e62a00187e28def4de70d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga0b838bf7c4e62a00187e28def4de70d3">SDL::WindowRef::WarpMouse</a> (float x, float y)</td></tr>
 <tr class="memdesc:ga0b838bf7c4e62a00187e28def4de70d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the mouse cursor to the given position within the window.  <br /></td></tr>
 <tr class="separator:ga0b838bf7c4e62a00187e28def4de70d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -289,7 +285,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Most interactions with the mouse will come through the event subsystem. Moving a mouse generates an EVENT_MOUSE_MOTION event, pushing a button generates EVENT_MOUSE_BUTTON_DOWN, etc, but one can also query the current state of the mouse at any time with <a class="el" href="group__CategoryMouse.html#ga83b4f3753f840a29688be524a83f610f" title="Query SDL&#39;s cache for the synchronous mouse button state and the window-relative SDL-cursor position.">GetMouseState()</a>.</p>
 <p>For certain games, it's useful to disassociate the mouse cursor from mouse input. An FPS, for example, would not want the player's motion to stop as the mouse hits the edge of the window. For these scenarios, use <a class="el" href="group__CategoryMouse.html#ga76b2b4117079a4a17a0b61684c25d343" title="Set relative mouse mode for a window.">WindowRef.SetRelativeMouseMode()</a>, which hides the cursor, grabs mouse input to the window, and reads mouse input no matter how far it moves.</p>
-<p>Games that want the system to track the mouse but want to draw their own cursor can use <a class="el" href="group__CategoryMouse.html#gaf0f9b4279e667e985373bed9f896385e" title="Hide the cursor.">HideCursor()</a> and <a class="el" href="group__CategoryMouse.html#gaf819a266866ac1cbc7491c5ad4bd6fdd" title="Show the cursor.">ShowCursor()</a>. It might be more efficient to let the system manage the cursor, if possible, using <a class="el" href="group__CategoryMouse.html#gae0ba45c3fe4be52a1f708d2773e29e44" title="Set the active cursor.">SetCursor()</a> with a custom image made through CursorRef.CursorRef(), or perhaps just a specific system cursor from CursorRef.CursorRef().</p>
+<p>Games that want the system to track the mouse but want to draw their own cursor can use <a class="el" href="group__CategoryMouse.html#gaf0f9b4279e667e985373bed9f896385e" title="Hide the cursor.">HideCursor()</a> and <a class="el" href="group__CategoryMouse.html#gaf819a266866ac1cbc7491c5ad4bd6fdd" title="Show the cursor.">ShowCursor()</a>. It might be more efficient to let the system manage the cursor, if possible, using <a class="el" href="group__CategoryMouse.html#gae0ba45c3fe4be52a1f708d2773e29e44" title="Set the active cursor.">SetCursor()</a> with a custom image made through <a class="el" href="structSDL_1_1Cursor.html#a61bba15935de47459a5d32b9dcb8ef55" title="Create a color cursor.">Cursor.CreateColor()</a>, or perhaps just a specific system cursor from <a class="el" href="structSDL_1_1Cursor.html#aba9887ef7e2652a057660a5d9cf0d528" title="Create a system cursor.">Cursor.CreateSystem()</a>.</p>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> can, on many platforms, differentiate between multiple connected mice, allowing for interesting input scenarios and multiplayer games. They can be enumerated with <a class="el" href="group__CategoryMouse.html#gae6a2284e9cbc6ed3904dbcc27ea066ad" title="Get a list of currently connected mice.">GetMice()</a>, and <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will send EVENT_MOUSE_ADDED and EVENT_MOUSE_REMOVED events as they are connected and unplugged.</p>
 <p>Since many apps only care about basic mouse input, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> offers a virtual mouse device for touch and pen input, which often can make a desktop application work on a touchscreen phone without any code changes. Apps that care about touch/pen separately from mouse input should filter out events with a <code>which</code> field of SDL_TOUCH_MOUSEID/SDL_PEN_MOUSEID. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -500,7 +496,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function returns a pointer to the current cursor which is owned by the library. It is not necessary to free the cursor with <a class="el" href="structSDL_1_1CursorRef.html#a4755b54c6a180957caa8047a2dc6817e" title="Free a previously-created cursor.">CursorRef.reset()</a>.</p>
+<p>This function returns a pointer to the current cursor which is owned by the library. It is not necessary to free the cursor with <a class="el" href="structSDL_1_1Cursor.html#a322f04685f5a6bd68d59a15787f9e7fc" title="Free a previously-created cursor.">Cursor.Destroy()</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>the active cursor or nullptr if there is no mouse.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
@@ -530,7 +526,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
   </tr>
 </table>
 </div><div class="memdoc">
-<p>You do not have to call <a class="el" href="structSDL_1_1CursorRef.html#a4755b54c6a180957caa8047a2dc6817e" title="Free a previously-created cursor.">CursorRef.reset()</a> on the return value, but it is safe to do so.</p>
+<p>You do not have to call <a class="el" href="structSDL_1_1Cursor.html#a322f04685f5a6bd68d59a15787f9e7fc" title="Free a previously-created cursor.">Cursor.Destroy()</a> on the return value, but it is safe to do so.</p>
 <dl class="section return"><dt>Returns</dt><dd>the default cursor on success. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">

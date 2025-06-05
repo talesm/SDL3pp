@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1TextEngine-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::TextEngine Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesLibs.html">Satellite Libraries</a> &raquo; <a class="el" href="group__CategorySDLTTF.html">True type font support</a></div></div></div>
 </div><!--header-->
@@ -88,162 +89,345 @@ Inheritance diagram for SDL::TextEngine:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1TextEngine__inherit__graph.png" border="0" usemap="#aSDL_1_1TextEngine_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1TextEngine_inherit__map" id="aSDL_1_1TextEngine_inherit__map">
-<area shape="rect" title="Handle to an owned textEngine." alt="" coords="28,240,155,265"/>
-<area shape="rect" href="structSDL_1_1TextEngineUnsafe.html" title="Unsafe Handle to textEngine." alt="" coords="5,167,177,192"/>
-<area shape="poly" title=" " alt="" coords="94,206,94,240,89,240,89,206"/>
-<area shape="rect" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects." alt="" coords="17,93,165,119"/>
-<area shape="poly" title=" " alt="" coords="94,132,94,167,89,167,89,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="14,5,169,45"/>
-<area shape="poly" title=" " alt="" coords="94,59,94,93,89,93,89,59"/>
+<area shape="rect" title="Handle to an owned textEngine." alt="" coords="47,196,173,221"/>
+<area shape="rect" href="classSDL_1_1ResourceUnique.html" title=" " alt="" coords="5,93,215,148"/>
+<area shape="poly" title=" " alt="" coords="113,162,113,196,107,196,107,162"/>
+<area shape="rect" href="classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="15,5,205,45"/>
+<area shape="poly" title=" " alt="" coords="113,59,113,93,107,93,107,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abb88b9d2888f9cbd17bb4901e9b65e9b" id="r_abb88b9d2888f9cbd17bb4901e9b65e9b"><td class="memItemLeft" align="right" valign="top"><a id="abb88b9d2888f9cbd17bb4901e9b65e9b" name="abb88b9d2888f9cbd17bb4901e9b65e9b"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngine</b> ()</td></tr>
-<tr class="memdesc:abb88b9d2888f9cbd17bb4901e9b65e9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty <a class="el" href="structSDL_1_1TextEngine.html" title="Handle to an owned textEngine.">TextEngine</a>. <br /></td></tr>
-<tr class="separator:abb88b9d2888f9cbd17bb4901e9b65e9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4da2d2e19ad3a91837bc582b9d3fe6d" id="r_ac4da2d2e19ad3a91837bc582b9d3fe6d"><td class="memItemLeft" align="right" valign="top"><a id="ac4da2d2e19ad3a91837bc582b9d3fe6d" name="ac4da2d2e19ad3a91837bc582b9d3fe6d"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngine</b> (TTF_TextEngine *resource)</td></tr>
-<tr class="memdesc:ac4da2d2e19ad3a91837bc582b9d3fe6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:ac4da2d2e19ad3a91837bc582b9d3fe6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1822902cb011aee658b21f509d1c16f3" id="r_a1822902cb011aee658b21f509d1c16f3"><td class="memItemLeft" align="right" valign="top"><a id="a1822902cb011aee658b21f509d1c16f3" name="a1822902cb011aee658b21f509d1c16f3"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngine</b> (const <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> &amp;other)=delete</td></tr>
-<tr class="separator:a1822902cb011aee658b21f509d1c16f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa52a41ea13905a2d4d359a8de0318ef0" id="r_aa52a41ea13905a2d4d359a8de0318ef0"><td class="memItemLeft" align="right" valign="top"><a id="aa52a41ea13905a2d4d359a8de0318ef0" name="aa52a41ea13905a2d4d359a8de0318ef0"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngine</b> (<a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:aa52a41ea13905a2d4d359a8de0318ef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:aa52a41ea13905a2d4d359a8de0318ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82015bd10ed155977d4fc046249045b0" id="r_a82015bd10ed155977d4fc046249045b0"><td class="memItemLeft" align="right" valign="top"><a id="a82015bd10ed155977d4fc046249045b0" name="a82015bd10ed155977d4fc046249045b0"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngine</b> (TTF_TextEngine *engine, void(*destroy)(TTF_TextEngine *engine))</td></tr>
-<tr class="memdesc:a82015bd10ed155977d4fc046249045b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create from engine and custom destroyer. <br /></td></tr>
-<tr class="separator:a82015bd10ed155977d4fc046249045b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46b75a01301601b5aa0a3f69d24787a1" id="r_a46b75a01301601b5aa0a3f69d24787a1"><td class="memItemLeft" align="right" valign="top"><a id="a46b75a01301601b5aa0a3f69d24787a1" name="a46b75a01301601b5aa0a3f69d24787a1"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~TextEngine</b> ()</td></tr>
-<tr class="memdesc:a46b75a01301601b5aa0a3f69d24787a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees up resource when object goes out of scope. <br /></td></tr>
-<tr class="separator:a46b75a01301601b5aa0a3f69d24787a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83b47f13568814ec46d079c369143894" id="r_a83b47f13568814ec46d079c369143894"><td class="memItemLeft" align="right" valign="top"><a id="a83b47f13568814ec46d079c369143894" name="a83b47f13568814ec46d079c369143894"></a>
-<a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> other)</td></tr>
-<tr class="memdesc:a83b47f13568814ec46d079c369143894"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:a83b47f13568814ec46d079c369143894"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad42b7683c3966d82ce8ed875000adce1" id="r_ad42b7683c3966d82ce8ed875000adce1"><td class="memItemLeft" align="right" valign="top"><a id="ad42b7683c3966d82ce8ed875000adce1" name="ad42b7683c3966d82ce8ed875000adce1"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineUnsafe</b> (const <a class="el" href="structSDL_1_1TextEngineRef.html">TextEngineRef</a> &amp;other)</td></tr>
-<tr class="memdesc:ad42b7683c3966d82ce8ed875000adce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextEngineUnsafe.html" title="Unsafe Handle to textEngine.">TextEngineUnsafe</a> from <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a>. <br /></td></tr>
-<tr class="separator:ad42b7683c3966d82ce8ed875000adce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5000bb5e39b837471fd9282fa09fdc5" id="r_ac5000bb5e39b837471fd9282fa09fdc5"><td class="memItemLeft" align="right" valign="top"><a id="ac5000bb5e39b837471fd9282fa09fdc5" name="ac5000bb5e39b837471fd9282fa09fdc5"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineUnsafe</b> (const <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> &amp;other)=delete</td></tr>
-<tr class="separator:ac5000bb5e39b837471fd9282fa09fdc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5485c98d1b52612ade3705b847b9dbab" id="r_a5485c98d1b52612ade3705b847b9dbab"><td class="memItemLeft" align="right" valign="top"><a id="a5485c98d1b52612ade3705b847b9dbab" name="a5485c98d1b52612ade3705b847b9dbab"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineUnsafe</b> (<a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a5485c98d1b52612ade3705b847b9dbab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextEngineUnsafe.html" title="Unsafe Handle to textEngine.">TextEngineUnsafe</a> from <a class="el" href="structSDL_1_1TextEngine.html" title="Handle to an owned textEngine.">TextEngine</a>. <br /></td></tr>
-<tr class="separator:a5485c98d1b52612ade3705b847b9dbab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1TextEngineUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1TextEngineUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1TextEngineUnsafe.html">SDL::TextEngineUnsafe</a></td></tr>
-<tr class="memitem:ad42b7683c3966d82ce8ed875000adce1 inherit pub_methods_structSDL_1_1TextEngineUnsafe" id="r_ad42b7683c3966d82ce8ed875000adce1"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineUnsafe</b> (const <a class="el" href="structSDL_1_1TextEngineRef.html">TextEngineRef</a> &amp;other)</td></tr>
-<tr class="memdesc:ad42b7683c3966d82ce8ed875000adce1 inherit pub_methods_structSDL_1_1TextEngineUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextEngineUnsafe.html" title="Unsafe Handle to textEngine.">TextEngineUnsafe</a> from <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a>. <br /></td></tr>
-<tr class="separator:ad42b7683c3966d82ce8ed875000adce1 inherit pub_methods_structSDL_1_1TextEngineUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5000bb5e39b837471fd9282fa09fdc5 inherit pub_methods_structSDL_1_1TextEngineUnsafe" id="r_ac5000bb5e39b837471fd9282fa09fdc5"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineUnsafe</b> (const <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> &amp;other)=delete</td></tr>
-<tr class="separator:ac5000bb5e39b837471fd9282fa09fdc5 inherit pub_methods_structSDL_1_1TextEngineUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5485c98d1b52612ade3705b847b9dbab inherit pub_methods_structSDL_1_1TextEngineUnsafe" id="r_ga5485c98d1b52612ade3705b847b9dbab"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineUnsafe</b> (<a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ga5485c98d1b52612ade3705b847b9dbab inherit pub_methods_structSDL_1_1TextEngineUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextEngineUnsafe.html" title="Unsafe Handle to textEngine.">TextEngineUnsafe</a> from <a class="el" href="structSDL_1_1TextEngine.html" title="Handle to an owned textEngine.">TextEngine</a>. <br /></td></tr>
-<tr class="separator:ga5485c98d1b52612ade3705b847b9dbab inherit pub_methods_structSDL_1_1TextEngineUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cf3a0cac8cf97bc8939fc3c181cc84c inherit pub_methods_structSDL_1_1TextEngineUnsafe" id="r_a0cf3a0cac8cf97bc8939fc3c181cc84c"><td class="memItemLeft" align="right" valign="top">
-constexpr <a class="el" href="structSDL_1_1TextEngineUnsafe.html">TextEngineUnsafe</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1TextEngineUnsafe.html">TextEngineUnsafe</a> other)</td></tr>
-<tr class="memdesc:a0cf3a0cac8cf97bc8939fc3c181cc84c inherit pub_methods_structSDL_1_1TextEngineUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:a0cf3a0cac8cf97bc8939fc3c181cc84c inherit pub_methods_structSDL_1_1TextEngineUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a151b48a7c30a79eeb8d6490859d87340 inherit pub_methods_structSDL_1_1TextEngineUnsafe" id="r_a151b48a7c30a79eeb8d6490859d87340"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineRef</b> (TTF_TextEngine *engine, void(*destroy)(TTF_TextEngine *engine))</td></tr>
-<tr class="memdesc:a151b48a7c30a79eeb8d6490859d87340 inherit pub_methods_structSDL_1_1TextEngineUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create from engine and custom destroyer. <br /></td></tr>
-<tr class="separator:a151b48a7c30a79eeb8d6490859d87340 inherit pub_methods_structSDL_1_1TextEngineUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1TextEngineRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1TextEngineRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1TextEngineRef.html">SDL::TextEngineRef</a></td></tr>
-<tr class="memitem:ab37824219f55056f023744530683cf03 inherit pub_methods_structSDL_1_1TextEngineRef" id="r_ab37824219f55056f023744530683cf03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineRef.html#ab37824219f55056f023744530683cf03">SetGPUWinding</a> (<a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a> winding)</td></tr>
-<tr class="memdesc:ab37824219f55056f023744530683cf03 inherit pub_methods_structSDL_1_1TextEngineRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the winding order of the vertices returned by <a class="el" href="structSDL_1_1TextRef.html#a94afbdaef01a909da9dbe9777b5242ac" title="Get the geometry data needed for drawing the text.">TextRef.GetGPUDrawData</a> for a particular GPU text engine.  <br /></td></tr>
-<tr class="separator:ab37824219f55056f023744530683cf03 inherit pub_methods_structSDL_1_1TextEngineRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a082852df49f3dbf6e24eff7b8546c28f inherit pub_methods_structSDL_1_1TextEngineRef" id="r_a082852df49f3dbf6e24eff7b8546c28f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineRef.html#a082852df49f3dbf6e24eff7b8546c28f">GetGPUWinding</a> () const</td></tr>
-<tr class="memdesc:a082852df49f3dbf6e24eff7b8546c28f inherit pub_methods_structSDL_1_1TextEngineRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the winding order of the vertices returned by <a class="el" href="structSDL_1_1TextRef.html#a94afbdaef01a909da9dbe9777b5242ac" title="Get the geometry data needed for drawing the text.">TextRef.GetGPUDrawData</a> for a particular GPU text engine.  <br /></td></tr>
-<tr class="separator:a082852df49f3dbf6e24eff7b8546c28f inherit pub_methods_structSDL_1_1TextEngineRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TextEngineRef" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TextEngineRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TextEngineRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TextEngineRef" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TextEngineRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TextEngineRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextEngineRef" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextEngineRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextEngineRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; TTF_TextEngine * &gt;</a></td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (TTF_TextEngine * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top"><a id="a8eff4b7518626ecb1d6ee2e8f2662301" name="a8eff4b7518626ecb1d6ee2e8f2662301"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1f58f0a54f567d59a39c1bbf4c58279" id="r_ab1f58f0a54f567d59a39c1bbf4c58279"><td class="memItemLeft" align="right" valign="top"><a id="ab1f58f0a54f567d59a39c1bbf4c58279" name="ab1f58f0a54f567d59a39c1bbf4c58279"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value, DELETER deleter={})</td></tr>
+<tr class="memdesc:ab1f58f0a54f567d59a39c1bbf4c58279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:ab1f58f0a54f567d59a39c1bbf4c58279"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top"><a id="abc1bcf199c285e07c14ebc87b5abf6f2" name="abc1bcf199c285e07c14ebc87b5abf6f2"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top"><a id="a59d90c89aac04332912bb8f55c387aae" name="a59d90c89aac04332912bb8f55c387aae"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1ResourceUnique"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourceUnique')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourceUnique.html">SDL::ResourceUnique&lt; TextEngineRef, TextEngineDeleter &gt;</a></td></tr>
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1f58f0a54f567d59a39c1bbf4c58279 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_ab1f58f0a54f567d59a39c1bbf4c58279"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value, <a class="el" href="group__CategorySDLTTF.html#gab802e2be76e1e2a21c6fa7f5277abeb7">TextEngineDeleter</a> deleter={})</td></tr>
+<tr class="memdesc:ab1f58f0a54f567d59a39c1bbf4c58279 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:ab1f58f0a54f567d59a39c1bbf4c58279 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_afbc5563c17624104d9c263f5003d57d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ResourceUnique.html#afbc5563c17624104d9c263f5003d57d5">~ResourceUnique</a> ()</td></tr>
+<tr class="memdesc:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
+<tr class="separator:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a9f10a6343315fe1f5ca553284073ecd9"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> other)</td></tr>
+<tr class="memdesc:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a4b7b571048747a5dfbef3cbe891cc15e"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr>
+<tr class="memdesc:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the value, destroying the resource if not nullptr. <br /></td></tr>
+<tr class="separator:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a0506906144295f6b398dc3580bcb336f"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
-<tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
-<tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource" id="r_ad2a82bc79a7dae41ceb1a25647ae1c0d"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
-<tr class="memdesc:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource" id="r_ab110e6568060a7ae58ab7b29ad68f7fc"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if not null. <br /></td></tr>
+<tr class="separator:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a747ef455db62064bb3eebf43b203cad2"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1ResourcePtrBase.html">ResourcePtrBase</a> &amp;) const =default</td></tr>
+<tr class="memdesc:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_ad1d8089cd65f38c3e49d0ca4fa676a52"><td class="memItemLeft" align="right" valign="top">
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t) const</td></tr>
-<tr class="memdesc:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource" id="r_ab273a0a0285b8eed1f70f5d3759f4167"><td class="memItemLeft" align="right" valign="top">
-constexpr TTF_TextEngine *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
-<tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource" id="r_a795922875f43cc42165896b02af59d0c"><td class="memItemLeft" align="right" valign="top">
-constexpr TTF_TextEngine *&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> (TTF_TextEngine * newResource={})</td></tr>
-<tr class="memdesc:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource and empties or replace value. <br /></td></tr>
-<tr class="separator:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top">
-constexpr const TTF_TextEngine *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top">
-constexpr TTF_TextEngine *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
-<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a8a2a791f2fc677f3554798a0fb8572e4"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
+<tr class="memdesc:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a1415d2a130f807673b4f8db3047d95a7"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> () const</td></tr>
+<tr class="memdesc:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets reference. <br /></td></tr>
+<tr class="separator:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a5d2a7a6a1c79ec493548f8bd30ff6c70"><td class="memItemLeft" align="right" valign="top">
+constexpr const <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
+<tr class="memdesc:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets addressable reference. <br /></td></tr>
+<tr class="separator:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a493a79a3a6eafeead35454ff1076aa9a"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
+<tr class="memdesc:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets addressable reference. <br /></td></tr>
+<tr class="separator:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a7d506c070af513ecfa781e7fa3bf893f"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="memdesc:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference. <br /></td></tr>
+<tr class="separator:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a96c074dae2de8cb1812008baaa46f1db"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
+<tr class="memdesc:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reference and reset this. <br /></td></tr>
+<tr class="separator:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a417a62f3e59b5b51df283d31bac63ebb" id="r_a417a62f3e59b5b51df283d31bac63ebb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngine.html#a417a62f3e59b5b51df283d31bac63ebb">CreateSurface</a> ()</td></tr>
+<tr class="memdesc:a417a62f3e59b5b51df283d31bac63ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text on <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> surfaces.  <br /></td></tr>
+<tr class="separator:a417a62f3e59b5b51df283d31bac63ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bc1406567f891d5ef130c22594699a8" id="r_a7bc1406567f891d5ef130c22594699a8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngine.html#a7bc1406567f891d5ef130c22594699a8">CreateRenderer</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> renderer)</td></tr>
+<tr class="memdesc:a7bc1406567f891d5ef130c22594699a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text on an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> renderer.  <br /></td></tr>
+<tr class="separator:a7bc1406567f891d5ef130c22594699a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a7033a2aca37a714e68ac80bac9f012" id="r_a6a7033a2aca37a714e68ac80bac9f012"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngine.html#a6a7033a2aca37a714e68ac80bac9f012">CreateRendererWithProperties</a> (<a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> props)</td></tr>
+<tr class="memdesc:a6a7033a2aca37a714e68ac80bac9f012"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text on an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> renderer, with the specified properties.  <br /></td></tr>
+<tr class="separator:a6a7033a2aca37a714e68ac80bac9f012"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e89b99fe027028b156963f27027fce4" id="r_a1e89b99fe027028b156963f27027fce4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngine.html#a1e89b99fe027028b156963f27027fce4">CreateGPU</a> (SDL_GPUDevice *device)</td></tr>
+<tr class="memdesc:a1e89b99fe027028b156963f27027fce4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text with the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> GPU API.  <br /></td></tr>
+<tr class="separator:a1e89b99fe027028b156963f27027fce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec15ba39cc55e4b38eff797f95f041e9" id="r_aec15ba39cc55e4b38eff797f95f041e9"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngine.html#aec15ba39cc55e4b38eff797f95f041e9">CreateGPUWithProperties</a> (<a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> props)</td></tr>
+<tr class="memdesc:aec15ba39cc55e4b38eff797f95f041e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text with the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> GPU API, with the specified properties.  <br /></td></tr>
+<tr class="separator:aec15ba39cc55e4b38eff797f95f041e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_methods_structSDL_1_1TextEngineRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1TextEngineRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1TextEngineRef.html">SDL::TextEngineRef</a></td></tr>
-<tr class="memitem:a151b48a7c30a79eeb8d6490859d87340 inherit pro_methods_structSDL_1_1TextEngineRef" id="r_a151b48a7c30a79eeb8d6490859d87340"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineRef</b> (TTF_TextEngine *engine, void(*destroy)(TTF_TextEngine *engine))</td></tr>
-<tr class="memdesc:a151b48a7c30a79eeb8d6490859d87340 inherit pro_methods_structSDL_1_1TextEngineRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create from engine and custom destroyer. <br /></td></tr>
-<tr class="separator:a151b48a7c30a79eeb8d6490859d87340 inherit pro_methods_structSDL_1_1TextEngineRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a967eb00b8b07787e1c9fa3600d88b306 inherit pro_methods_structSDL_1_1TextEngineRef" id="r_a967eb00b8b07787e1c9fa3600d88b306"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> (TTF_TextEngine *newResource={})</td></tr>
-<tr class="memdesc:a967eb00b8b07787e1c9fa3600d88b306 inherit pro_methods_structSDL_1_1TextEngineRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">frees up <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a>. <br /></td></tr>
-<tr class="separator:a967eb00b8b07787e1c9fa3600d88b306 inherit pro_methods_structSDL_1_1TextEngineRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_structSDL_1_1TextEngineRef"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_structSDL_1_1TextEngineRef')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="structSDL_1_1TextEngineRef.html">SDL::TextEngineRef</a></td></tr>
-<tr class="memitem:a183f67c796ecbf73a26b656155bcfa39 inherit pro_attribs_structSDL_1_1TextEngineRef" id="r_a183f67c796ecbf73a26b656155bcfa39"><td class="memItemLeft" align="right" valign="top">
-void(*&#160;</td><td class="memItemRight" valign="bottom"><b>m_destroy</b> )(TTF_TextEngine *engine) = nullptr</td></tr>
-<tr class="memdesc:a183f67c796ecbf73a26b656155bcfa39 inherit pro_attribs_structSDL_1_1TextEngineRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Custom destroyer. <br /></td></tr>
-<tr class="separator:a183f67c796ecbf73a26b656155bcfa39 inherit pro_attribs_structSDL_1_1TextEngineRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase" id="r_a649d81bb2d1f33857880ab0faa3a45d5"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = RESOURCE</td></tr>
+<tr class="memdesc:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reference resource type. <br /></td></tr>
+<tr class="separator:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase" id="r_afaf83443621b31f83daf2d7e911208c6"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = typename reference::value_type</td></tr>
+<tr class="memdesc:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
+<tr class="separator:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a0e39f008b2afd11a7982df6b29b82a85 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_a0e39f008b2afd11a7982df6b29b82a85"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourcePtrBase</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">value_type</a> value={}, DELETER deleter={})</td></tr>
+<tr class="memdesc:a0e39f008b2afd11a7982df6b29b82a85 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:a0e39f008b2afd11a7982df6b29b82a85 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_a5123ac0033c94520d252dedd8cf1d5e5"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> ()</td></tr>
+<tr class="memdesc:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference. <br /></td></tr>
+<tr class="separator:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_aa035e9da7e7a8c0d71d8bc75e560b509"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>free</b> ()</td></tr>
+<tr class="memdesc:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees resource. <br /></td></tr>
+<tr class="separator:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> </dd></dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1e89b99fe027028b156963f27027fce4" name="a1e89b99fe027028b156963f27027fce4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e89b99fe027028b156963f27027fce4">&#9670;&#160;</a></span>CreateGPU()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> SDL::TextEngine::CreateGPU </td>
+          <td>(</td>
+          <td class="paramtype">SDL_GPUDevice *&#160;</td>
+          <td class="paramname"><em>device</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">device</td><td>the SDL_GPUDevice to use for creating textures and drawing text. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> object or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the device.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html#aec15ba39cc55e4b38eff797f95f041e9" title="Create a text engine for drawing text with the SDL GPU API, with the specified properties.">TextEngine.CreateGPUWithProperties</a> </dd>
+<dd>
+TTF_DestroyGPUTextEngine </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextRef.html#a94afbdaef01a909da9dbe9777b5242ac" title="Get the geometry data needed for drawing the text.">TextRef.GetGPUDrawData</a> </dd></dl>
+
+</div>
+</div>
+<a id="aec15ba39cc55e4b38eff797f95f041e9" name="aec15ba39cc55e4b38eff797f95f041e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec15ba39cc55e4b38eff797f95f041e9">&#9670;&#160;</a></span>CreateGPUWithProperties()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> SDL::TextEngine::CreateGPUWithProperties </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td>
+          <td class="paramname"><em>props</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>These are the supported properties:</p>
+<ul>
+<li><code>prop::GpuTextEngine.DEVICE_POINTER</code>: the SDL_GPUDevice to use for creating textures and drawing text.</li>
+<li><code>prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER</code>: the size of the texture atlas</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">props</td><td>the properties to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> object or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the device.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html#a1e89b99fe027028b156963f27027fce4" title="Create a text engine for drawing text with the SDL GPU API.">TextEngine.CreateGPU</a> </dd>
+<dd>
+TTF_DestroyGPUTextEngine </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextRef.html#a94afbdaef01a909da9dbe9777b5242ac" title="Get the geometry data needed for drawing the text.">TextRef.GetGPUDrawData</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7bc1406567f891d5ef130c22594699a8" name="a7bc1406567f891d5ef130c22594699a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bc1406567f891d5ef130c22594699a8">&#9670;&#160;</a></span>CreateRenderer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> SDL::TextEngine::CreateRenderer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td>
+          <td class="paramname"><em>renderer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>the renderer to use for creating textures and drawing text. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> object or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the renderer.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>TTF_DestroyRendererTextEngine </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextRef.html#ace3caed6f7af2fabbb69e693d1f4c8eb" title="Draw text to an SDL renderer.">TextRef.DrawRenderer</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextEngine.html#a6a7033a2aca37a714e68ac80bac9f012" title="Create a text engine for drawing text on an SDL renderer, with the specified properties.">TextEngine.CreateRendererWithProperties</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6a7033a2aca37a714e68ac80bac9f012" name="a6a7033a2aca37a714e68ac80bac9f012"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a7033a2aca37a714e68ac80bac9f012">&#9670;&#160;</a></span>CreateRendererWithProperties()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> SDL::TextEngine::CreateRendererWithProperties </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td>
+          <td class="paramname"><em>props</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>These are the supported properties:</p>
+<ul>
+<li><code>prop::RendererTextEngine.RENDERER_POINTER</code>: the renderer to use for creating textures and drawing text</li>
+<li><code>prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER</code>: the size of the texture atlas</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">props</td><td>the properties to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> object or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the renderer.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html#a7bc1406567f891d5ef130c22594699a8" title="Create a text engine for drawing text on an SDL renderer.">TextEngine.CreateRenderer</a> </dd>
+<dd>
+TTF_DestroyRendererTextEngine </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextRef.html#ace3caed6f7af2fabbb69e693d1f4c8eb" title="Draw text to an SDL renderer.">TextRef.DrawRenderer</a> </dd></dl>
+
+</div>
+</div>
+<a id="a417a62f3e59b5b51df283d31bac63ebb" name="a417a62f3e59b5b51df283d31bac63ebb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a417a62f3e59b5b51df283d31bac63ebb">&#9670;&#160;</a></span>CreateSurface()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> SDL::TextEngine::CreateSurface </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> object or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>TTF_DestroySurfaceTextEngine </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextRef.html#a5887cc292e202c007e5908e84408e832" title="Draw text to an SDL surface.">TextRef.DrawSurface</a> </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>SDL3pp/<a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a></li>
 </ul>
 </div><!-- contents -->

@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,92,31"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1Point.html" title="The structure that defines a point (using integers)" alt="" coords="140,5,228,31"/>
-<area shape="poly" id="edge104_Node000000_Node000001" title=" " alt="" coords="106,15,140,15,140,21,106,21"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1TrayRef.html" title="An opaque handle representing a toplevel system tray object." alt="" coords="208,13,312,38"/>
+<area shape="poly" id="edge34_Node000000_Node000001" title=" " alt="" coords="173,23,208,23,208,28,173,28"/>
 </map>

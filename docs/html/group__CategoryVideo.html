@@ -90,20 +90,20 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html">SDL::WindowRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a handle to a window.  <a href="structSDL_1_1WindowRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowUnsafe.html">SDL::WindowUnsafe</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to window.  <a href="structSDL_1_1WindowUnsafe.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Window.html">SDL::Window</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned window.  <a href="structSDL_1_1Window.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowUnsafe.html">SDL::WindowUnsafe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to window.  <a href="structSDL_1_1WindowUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html">SDL::GLContextRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An opaque handle to an OpenGL context.  <a href="structSDL_1_1GLContextRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextUnsafe.html">SDL::GLContextUnsafe</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to gLContext.  <a href="structSDL_1_1GLContextUnsafe.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContext.html">SDL::GLContext</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned gLContext.  <a href="structSDL_1_1GLContext.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextUnsafe.html">SDL::GLContextUnsafe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to gLContext.  <a href="structSDL_1_1GLContextUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -257,14 +257,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ga6a84664f815b581dab112cc87e75ed5a" id="r_ga6a84664f815b581dab112cc87e75ed5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga6a84664f815b581dab112cc87e75ed5a">SDL::GL_SwapWindow</a> (<a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> window)</td></tr>
 <tr class="memdesc:ga6a84664f815b581dab112cc87e75ed5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a window with OpenGL rendering.  <br /></td></tr>
 <tr class="separator:ga6a84664f815b581dab112cc87e75ed5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf307f08bf87fb333eecce0c9c277bb24" id="r_gaf307f08bf87fb333eecce0c9c277bb24"><td class="memItemLeft" align="right" valign="top"><a id="gaf307f08bf87fb333eecce0c9c277bb24" name="gaf307f08bf87fb333eecce0c9c277bb24"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::WindowUnsafe::WindowUnsafe</b> (<a class="el" href="structSDL_1_1Window.html">Window</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:gaf307f08bf87fb333eecce0c9c277bb24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1WindowUnsafe.html" title="Unsafe Handle to window.">WindowUnsafe</a> from <a class="el" href="structSDL_1_1Window.html" title="Handle to an owned window.">Window</a>. <br /></td></tr>
-<tr class="separator:gaf307f08bf87fb333eecce0c9c277bb24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga598c1c0e36dc42fb952c786aea94395b" id="r_ga598c1c0e36dc42fb952c786aea94395b"><td class="memItemLeft" align="right" valign="top"><a id="ga598c1c0e36dc42fb952c786aea94395b" name="ga598c1c0e36dc42fb952c786aea94395b"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::GLContextUnsafe::GLContextUnsafe</b> (<a class="el" href="structSDL_1_1GLContext.html">GLContext</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ga598c1c0e36dc42fb952c786aea94395b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1GLContextUnsafe.html" title="Unsafe Handle to gLContext.">GLContextUnsafe</a> from <a class="el" href="structSDL_1_1GLContext.html" title="Handle to an owned gLContext.">GLContext</a>. <br /></td></tr>
-<tr class="separator:ga598c1c0e36dc42fb952c786aea94395b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">DisplayOrientations</h2></td></tr>
 <tr class="memitem:ga0576b193a1d4adcb648fc1242fbc5cb8" id="r_ga0576b193a1d4adcb648fc1242fbc5cb8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga0576b193a1d4adcb648fc1242fbc5cb8">SDL::DisplayOrientation</a> = SDL_DisplayOrientation</td></tr>
@@ -608,7 +600,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>You can create windows, manage them in various ways, set them fullscreen, and get events when interesting things happen with them, such as the mouse or keyboard interacting with a window.</p>
 <p>The video subsystem is also interested in abstracting away some platform-specific differences in OpenGL: context creation, swapping buffers, etc. This may be crucial to your app, but also you are not required to use OpenGL at all. In fact, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> can provide rendering to those windows as well, either with an easy-to-use <a href="https://wiki.libsdl.org/SDL3/CategoryRender">2D API</a> or with a more-powerful <a href="https://wiki.libsdl.org/SDL3/CategoryGPU">GPU API</a> . Of course, it can simply get out of your way and give you the window handles you need to use Vulkan, Direct3D, Metal, or whatever else you like directly, too.</p>
-<p>The video subsystem covers a lot of functionality, out of necessity, so it is worth perusing the list of functions just to see what's available, but most apps can get by with simply creating a window and listening for events, so start with SDL_CreateWindow() and SDL_PollEvent(). </p>
+<p>The video subsystem covers a lot of functionality, out of necessity, so it is worth perusing the list of functions just to see what's available, but most apps can get by with simply creating a window and listening for events, so start with <a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create()</a> and <a class="el" href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12" title="Poll for currently pending events.">PollEvent()</a>. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ga8d2f428ddef3b4ccf08915814e35d9c7" name="ga8d2f428ddef3b4ccf08915814e35d9c7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga8d2f428ddef3b4ccf08915814e35d9c7">&#9670;&#160;</a></span>SDL_WINDOWPOS_CENTERED</h2>
@@ -865,7 +857,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
       </table>
 </div><div class="memdoc">
 <p>This is called when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is attempting to create an EGL context, to let the app add extra attributes to its eglGetPlatformDisplay() call.</p>
-<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the WindowRef.WindowRef process will fail gracefully.</p>
+<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create</a> process will fail gracefully.</p>
 <p>The returned pointer should be allocated with <a class="el" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70" title="Allocate uninitialized memory.">malloc()</a> and will be passed to <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>.</p>
 <p>The arrays returned by each callback will be appended to the existing attribute arrays defined by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -892,7 +884,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
       </table>
 </div><div class="memdoc">
 <p>This is called when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is attempting to create an EGL context, to let the app add extra attributes to its eglGetPlatformDisplay() call.</p>
-<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the WindowRef.WindowRef process will fail gracefully.</p>
+<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create</a> process will fail gracefully.</p>
 <p>The returned pointer should be allocated with <a class="el" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70" title="Allocate uninitialized memory.">malloc()</a> and will be passed to <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>.</p>
 <p>The arrays returned by each callback will be appended to the existing attribute arrays defined by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>a newly-allocated array of attributes, terminated with <code>EGL_NONE</code>.</dd></dl>
@@ -961,7 +953,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 </div><div class="memdoc">
 <p>This is called when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is attempting to create an EGL surface, to let the app add extra attributes to its eglCreateWindowSurface() or eglCreateContext calls.</p>
 <p>For convenience, the EGLDisplay and EGLConfig to use are provided to the callback.</p>
-<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the WindowRef.WindowRef process will fail gracefully.</p>
+<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create</a> process will fail gracefully.</p>
 <p>The returned pointer should be allocated with <a class="el" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70" title="Allocate uninitialized memory.">malloc()</a> and will be passed to <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>.</p>
 <p>The arrays returned by each callback will be appended to the existing attribute arrays defined by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -991,7 +983,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 </div><div class="memdoc">
 <p>This is called when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is attempting to create an EGL surface, to let the app add extra attributes to its eglCreateWindowSurface() or eglCreateContext calls.</p>
 <p>For convenience, the EGLDisplay and EGLConfig to use are provided to the callback.</p>
-<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the WindowRef.WindowRef process will fail gracefully.</p>
+<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create</a> process will fail gracefully.</p>
 <p>The returned pointer should be allocated with <a class="el" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70" title="Allocate uninitialized memory.">malloc()</a> and will be passed to <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>.</p>
 <p>The arrays returned by each callback will be appended to the existing attribute arrays defined by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1134,8 +1126,8 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">win</td><td>the <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a> where hit-testing was set on. </td></tr>
-    <tr><td class="paramname">area</td><td>an <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> which should be hit-tested. </td></tr>
+    <tr><td class="paramname">win</td><td>the <a class="el" href="structSDL_1_1Window.html" title="Handle to an owned window.">Window</a> where hit-testing was set on. </td></tr>
+    <tr><td class="paramname">area</td><td>an <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> which should be hit-tested. </td></tr>
     <tr><td class="paramname">data</td><td>what was passed as <code>callback_data</code> to <a class="el" href="structSDL_1_1WindowRef.html#a60de3725e2976230421b5bfd0dad4dcc" title="Provide a callback that decides if a window region has special properties.">WindowRef.SetHitTest()</a>. </td></tr>
   </table>
   </dd>
@@ -1159,13 +1151,13 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">win</td><td>the <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a> where hit-testing was set on. </td></tr>
-    <tr><td class="paramname">area</td><td>a <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> const reference which should be hit-tested. </td></tr>
+    <tr><td class="paramname">area</td><td>a <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> const reference which should be hit-tested. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>an <a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e" title="Possible return values from the HitTest callback.">SDL::HitTestResult</a> value.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga40b63d64944c40a9ac2b889887376955" title="Callback used for hit-testing.">HitTest</a></dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a> </dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga40b63d64944c40a9ac2b889887376955" title="Callback used for hit-testing.">HitTest</a> </dd></dl>
 
 </div>
 </div>
@@ -1214,7 +1206,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
         </tr>
       </table>
 </div><div class="memdoc">
-<p>These cover a lot of true/false, or on/off, window state. Some of it is immutable after being set through WindowRef.WindowRef(), some of it can be changed on existing windows by the app, and some of it might be altered by the user or system outside of the app's control.</p>
+<p>These cover a lot of true/false, or on/off, window state. Some of it is immutable after being set through <a class="el" href="structSDL_1_1Window.html#a6d91ede8672c3939b0c592489046aeeb" title="Create a window with the specified dimensions and flags.">Window.Create()</a>, some of it can be changed on existing windows by the app, and some of it might be altered by the user or system outside of the app's control.</p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowRef.html#a884fdeb769d35d88581d77f0f761facb" title="Get the window flags.">WindowRef.GetFlags</a> </dd></dl>
 

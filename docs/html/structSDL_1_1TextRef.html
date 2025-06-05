@@ -76,26 +76,22 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1TextRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::TextRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesLibs.html">Satellite Libraries</a> &raquo; <a class="el" href="group__CategorySDLTTF.html">True type font support</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="structSDL_1_1Text.html" title="Handle to an owned text.">Text</a> created with TextRef.TextRef()  
+<p><a class="el" href="structSDL_1_1Text.html" title="Handle to an owned text.">Text</a> created with <a class="el" href="structSDL_1_1Text.html#a023478d01d0ac5d4a5274f1066eca81a" title="Create a text object from UTF-8 text and a text engine.">Text.Create()</a>  
  <a href="structSDL_1_1TextRef.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for SDL::TextRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1TextRef__inherit__graph.png" border="0" usemap="#aSDL_1_1TextRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1TextRef_inherit__map" id="aSDL_1_1TextRef_inherit__map">
-<area shape="rect" title="Text created with TextRef.TextRef()" alt="" coords="31,93,135,119"/>
-<area shape="rect" href="structSDL_1_1TextUnsafe.html" title="Unsafe Handle to text." alt="" coords="19,167,147,192"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
+<area shape="rect" title="Text created with Text.Create()" alt="" coords="31,93,135,119"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-<area shape="rect" href="structSDL_1_1Text.html" title="Handle to an owned text." alt="" coords="41,240,124,265"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -245,8 +241,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNumLines</b> () con
 <tr class="separator:a882ce117b8242f23217c9d1d9390bbcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
+<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
 <tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78be254b85f48c12179a782cb04da9ac" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top"><a id="a78be254b85f48c12179a782cb04da9ac" name="a78be254b85f48c12179a782cb04da9ac"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; T &gt; &gt; auto &amp;resource)</td></tr>
+<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
+<tr class="separator:a78be254b85f48c12179a782cb04da9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
 <tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
@@ -258,8 +258,12 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (st
 <tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; TTF_Text * &gt;</a></td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (TTF_Text * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
+<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
 <tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; TTF_Text * &gt; &gt; auto &amp;resource)</td></tr>
+<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
+<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
 <tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
@@ -272,6 +276,10 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (st
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
 <tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
 <tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource" id="r_ab4aa1e63564473a72dc97256340d104f"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_type</b> () const</td></tr>
+<tr class="memdesc:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts back to underlying type. <br /></td></tr>
+<tr class="separator:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
 <tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
@@ -301,21 +309,28 @@ constexpr TTF_Text *&#160;</td><td class="memItemRight" valign="bottom"><b>opera
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a40253ff4ac5423a3f2ea4b1e4f0b802c" id="r_a40253ff4ac5423a3f2ea4b1e4f0b802c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextRef.html#a40253ff4ac5423a3f2ea4b1e4f0b802c">Destroy</a> ()</td></tr>
-<tr class="memdesc:a40253ff4ac5423a3f2ea4b1e4f0b802c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text object created by a text engine.  <br /></td></tr>
-<tr class="separator:a40253ff4ac5423a3f2ea4b1e4f0b802c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16415947dc5150a92ab97e0259575e13" id="r_a16415947dc5150a92ab97e0259575e13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextRef.html#a16415947dc5150a92ab97e0259575e13">reset</a> (TTF_Text *newResource={})</td></tr>
-<tr class="memdesc:a16415947dc5150a92ab97e0259575e13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text object created by a text engine.  <br /></td></tr>
-<tr class="separator:a16415947dc5150a92ab97e0259575e13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ab98a1b47e7b4af3c267bcda114c2c8ae" id="r_ab98a1b47e7b4af3c267bcda114c2c8ae"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextRef.html#ab98a1b47e7b4af3c267bcda114c2c8ae">reset</a> (TTF_Text *resource)</td></tr>
+<tr class="memdesc:ab98a1b47e7b4af3c267bcda114c2c8ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text object created by a text engine.  <br /></td></tr>
+<tr class="separator:ab98a1b47e7b4af3c267bcda114c2c8ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; TTF_Text * &gt;</a></td></tr>
+<tr class="memitem:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource" id="r_a11ac29cf1f6da9fb29c508669f40b38d"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = TTF_Text *</td></tr>
+<tr class="memdesc:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
+<tr class="separator:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TextRef.TextRef </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Text.html#a023478d01d0ac5d4a5274f1066eca81a" title="Create a text object from UTF-8 text and a text engine.">Text.Create</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1TextRef.html#aa7bdbe1d563256a5558ef9ce27740420" title="Get the properties associated with a text object.">TextRef.GetProperties</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Text.html#ae58a5a317cde1ea3902150eec4ff1c1a" title="Destroy a text object created by a text engine.">Text.Destroy</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Text.html" title="Handle to an owned text.">Text</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -422,34 +437,6 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a40253ff4ac5423a3f2ea4b1e4f0b802c" name="a40253ff4ac5423a3f2ea4b1e4f0b802c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40253ff4ac5423a3f2ea4b1e4f0b802c">&#9670;&#160;</a></span>Destroy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::TextRef::Destroy </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Text.html#aa6e01a4e893e336f590150807b9aabc1" title="Constructs an empty Text.">Text.Text</a> </dd></dl>
-
-</div>
-</div>
 <a id="ace3caed6f7af2fabbb69e693d1f4c8eb" name="ace3caed6f7af2fabbb69e693d1f4c8eb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ace3caed6f7af2fabbb69e693d1f4c8eb">&#9670;&#160;</a></span>DrawRenderer()</h2>
 
@@ -473,7 +460,7 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> from <a class="el" href="group__CategorySDLTTF.html#gaa8cc41ddfc03bdd1fcd884cf2e6c3384" title="Create a text engine for drawing text on an SDL renderer.">CreateRendererTextEngine()</a>, and will draw using the renderer passed to that function.</p>
+<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> from <a class="el" href="structSDL_1_1TextEngine.html#a7bc1406567f891d5ef130c22594699a8" title="Create a text engine for drawing text on an SDL renderer.">TextEngine.CreateRenderer()</a>, and will draw using the renderer passed to that function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">p</td><td>the (x, y) coordinate in pixels, positive from the left edge towards the right and from the top edge towards the bottom. </td></tr>
@@ -488,9 +475,9 @@ Protected Member Functions</h2></td></tr>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#gaa8cc41ddfc03bdd1fcd884cf2e6c3384" title="Create a text engine for drawing text on an SDL renderer.">CreateRendererTextEngine</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html#a7bc1406567f891d5ef130c22594699a8" title="Create a text engine for drawing text on an SDL renderer.">TextEngine.CreateRenderer</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Text.html#aa6e01a4e893e336f590150807b9aabc1" title="Constructs an empty Text.">Text.Text</a> </dd></dl>
+<a class="el" href="structSDL_1_1Text.html#a023478d01d0ac5d4a5274f1066eca81a" title="Create a text object from UTF-8 text and a text engine.">Text.Create</a> </dd></dl>
 
 </div>
 </div>
@@ -527,7 +514,7 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> from <a class="el" href="group__CategorySDLTTF.html#ga0f2b7b5ad87122d3a58e1172395e4896" title="Create a text engine for drawing text on SDL surfaces.">CreateSurfaceTextEngine()</a>.</p>
+<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> from <a class="el" href="structSDL_1_1TextEngine.html#a417a62f3e59b5b51df283d31bac63ebb" title="Create a text engine for drawing text on SDL surfaces.">TextEngine.CreateSurface()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">p</td><td>the (x, y) coordinate in pixels, positive from the left edge towards the right and from the top edge towards the bottom. </td></tr>
@@ -543,9 +530,9 @@ Protected Member Functions</h2></td></tr>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga0f2b7b5ad87122d3a58e1172395e4896" title="Create a text engine for drawing text on SDL surfaces.">CreateSurfaceTextEngine</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html#a417a62f3e59b5b51df283d31bac63ebb" title="Create a text engine for drawing text on SDL surfaces.">TextEngine.CreateSurface</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Text.html#aa6e01a4e893e336f590150807b9aabc1" title="Constructs an empty Text.">Text.Text</a> </dd></dl>
+<a class="el" href="structSDL_1_1Text.html#a023478d01d0ac5d4a5274f1066eca81a" title="Create a text object from UTF-8 text and a text engine.">Text.Create</a> </dd></dl>
 
 </div>
 </div>
@@ -918,15 +905,15 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> from <a class="el" href="group__CategorySDLTTF.html#ga33a84b9756cccdd0a25118e113e1da47" title="Create a text engine for drawing text with the SDL GPU API.">CreateGPUTextEngine()</a>.</p>
+<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> from <a class="el" href="structSDL_1_1TextEngine.html#a1e89b99fe027028b156963f27027fce4" title="Create a text engine for drawing text with the SDL GPU API.">TextEngine.CreateGPU()</a>.</p>
 <p>The positive X-axis is taken towards the right and the positive Y-axis is taken upwards for both the vertex and the texture coordinates, i.e, it follows the same convention used by the SDL_GPU API. If you want to use a different coordinate system you will need to transform the vertices yourself.</p>
 <p>If the text looks blocky use linear filtering.</p>
 <dl class="section return"><dt>Returns</dt><dd>a nullptr terminated linked list of GPUAtlasDrawSequence objects or nullptr if the passed text is empty or in case of failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga33a84b9756cccdd0a25118e113e1da47" title="Create a text engine for drawing text with the SDL GPU API.">CreateGPUTextEngine</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html#a1e89b99fe027028b156963f27027fce4" title="Create a text engine for drawing text with the SDL GPU API.">TextEngine.CreateGPU</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Text.html#aa6e01a4e893e336f590150807b9aabc1" title="Constructs an empty Text.">Text.Text</a> </dd></dl>
+<a class="el" href="structSDL_1_1Text.html#a023478d01d0ac5d4a5274f1066eca81a" title="Create a text object from UTF-8 text and a text engine.">Text.Create</a> </dd></dl>
 
 </div>
 </div>
@@ -1004,7 +991,7 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> with the offset of the upper left corner of this text in pixels on success. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> with the offset of the upper left corner of this text in pixels on success. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
@@ -1203,7 +1190,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>The size of the text may change when the font or font style and size change.</p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> containing the size on x and y axis on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> containing the size on x and y axis on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetSize(int*,int*) if might want only one of the coordinates </dd></dl>
@@ -1685,8 +1672,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a16415947dc5150a92ab97e0259575e13" name="a16415947dc5150a92ab97e0259575e13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16415947dc5150a92ab97e0259575e13">&#9670;&#160;</a></span>reset()</h2>
+<a id="ab98a1b47e7b4af3c267bcda114c2c8ae" name="ab98a1b47e7b4af3c267bcda114c2c8ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab98a1b47e7b4af3c267bcda114c2c8ae">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1695,22 +1682,28 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::TextRef::reset </td>
+          <td class="memname">static void SDL::TextRef::reset </td>
           <td>(</td>
           <td class="paramtype">TTF_Text *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>the text to destroy.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Text.html#aa6e01a4e893e336f590150807b9aabc1" title="Constructs an empty Text.">Text.Text</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Text.html#a023478d01d0ac5d4a5274f1066eca81a" title="Create a text object from UTF-8 text and a text engine.">Text.Create</a> </dd></dl>
 
 </div>
 </div>

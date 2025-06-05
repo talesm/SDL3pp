@@ -21,8 +21,9 @@ struct Main
   SDL::SDL init{SDL::INIT_VIDEO};
 
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window{"examples/renderer/rectangles", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window =
+    SDL::Window::Create("examples/renderer/rectangles", windowSz);
+  SDL::Renderer renderer = SDL::Renderer::Create(window);
 
   SDL::AppResult Iterate()
   {
@@ -34,8 +35,8 @@ struct Main
     const float scale = (SDL::fmod(now, 1.0f) - 0.5f) / 0.5f * direction;
 
     // as you can see, rendering draws over what was drawn before it.
-    renderer.SetDrawColor(SDL::Color{0, 0, 0}); // black
-    renderer.RenderClear();                     // start with a blank canvas.
+    renderer->SetDrawColor(SDL::Color{0, 0, 0}); // black
+    renderer->RenderClear();                     // start with a blank canvas.
 
     /* Rectangles are comprised of set of X and Y coordinates, plus width and
       height. (0, 0) is the top left of the window, and larger numbers go
@@ -45,8 +46,8 @@ struct Main
     // Let's draw a single rectangle (square, really).
     rects[0].x = rects[0].y = 100;
     rects[0].w = rects[0].h = 100 + (100 * scale);
-    renderer.SetDrawColor(SDL::Color{255, 0, 0}); // red
-    renderer.RenderRect(rects[0]);
+    renderer->SetDrawColor(SDL::Color{255, 0, 0}); // red
+    renderer->RenderRect(rects[0]);
 
     // Now let's draw several rectangles with one function call.
     for (int i = 0; i < 3; i++) {
@@ -55,8 +56,8 @@ struct Main
       rects[i].x = (windowSz.x - rects[i].w) / 2; /* center it. */
       rects[i].y = (windowSz.y - rects[i].h) / 2; /* center it. */
     }
-    renderer.SetDrawColor(SDL::Color{0, 255, 0}); // green
-    renderer.RenderRects(std::span{rects}.subspan(0, 3));
+    renderer->SetDrawColor(SDL::Color{0, 255, 0}); // green
+    renderer->RenderRects(std::span{rects}.subspan(0, 3));
 
     // those were rectangle _outlines_, really. You can also draw _filled_
     // rectangles!
@@ -64,8 +65,8 @@ struct Main
     rects[0].y = 50;
     rects[0].w = 100 + (100 * scale);
     rects[0].h = 50 + (50 * scale);
-    renderer.SetDrawColor(SDL::Color{0, 0, 255}); // blue
-    renderer.RenderFillRect(rects[0]);
+    renderer->SetDrawColor(SDL::Color{0, 0, 255}); // blue
+    renderer->RenderFillRect(rects[0]);
 
     // ...and also fill a bunch of rectangles at once...
     for (int i = 0; i < rects.size(); i++) {
@@ -76,10 +77,10 @@ struct Main
       rects[i].w = w;
       rects[i].h = h;
     }
-    renderer.SetDrawColor(SDL::Color{255, 255, 255}); // white
-    renderer.RenderFillRects(rects);
+    renderer->SetDrawColor(SDL::Color{255, 255, 255}); // white
+    renderer->RenderFillRects(rects);
 
-    renderer.Present();       // put it all on the screen!
+    renderer->Present();      // put it all on the screen!
     return SDL::APP_CONTINUE; // carry on with the program!
   }
 };

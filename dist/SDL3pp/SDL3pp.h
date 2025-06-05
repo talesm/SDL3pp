@@ -551,6 +551,17 @@ using RefArray = std::span<T>;
 /// @}
 
 /**
+ * Concept representing a valid resource handle
+ *
+ * @tparam T
+ * @tparam RESOURCE
+ */
+template<class T, class RESOURCE>
+concept ResourceHandle = requires(const T& test) {
+  { *test } -> std::convertible_to<RESOURCE>;
+};
+
+/**
  * @brief A SDL managed resource.
  *
  * @tparam T the underlying resource type.
@@ -563,9 +574,18 @@ class Resource
   T m_resource;
 
 public:
-  /// Constructs the underlying resource.
+  /// The raw resource type
+  using value_type = T;
+
+  /// Constructs from the underlying resource.
   constexpr Resource(T resource = {})
     : m_resource(std::move(resource))
+  {
+  }
+
+  /// Constructs from pointer like.
+  constexpr Resource(const ResourceHandle<Resource<T>> auto& resource)
+    : Resource(*resource)
   {
   }
 
@@ -583,6 +603,9 @@ public:
 
   /// True if contains a valid resource
   constexpr explicit operator bool() const { return m_resource; }
+
+  /// Converts back to underlying type
+  constexpr operator value_type() const { return m_resource; }
 
   /// Comparison
   constexpr bool operator==(const Resource& other) const = default;
@@ -611,70 +634,165 @@ public:
   constexpr T operator->() { return get(); }
 };
 
-/**
- * A optional reference to resource.
- *
- * This is meant to be aliased like this:
- *
- * ```cpp
- * using OptionalTexture = OptionalResource<TextureRef, Texture>;
- * ```
- *
- * @tparam REF the *Type*Ref.
- * @tparam UNIQUE the *Type*.
- */
-template<class REF, class UNIQUE>
-class OptionalResource : public REF
+/// Default deleter
+template<class RESOURCE>
+struct DefaultDeleter
 {
-  bool m_owning = false;
+  /// Deletes resource
+  void operator()(RESOURCE& ref) const { RESOURCE::reset(ref.get()); }
+};
+
+/**
+ * @brief Base class for resource pointer-like objects.
+ *
+ * @tparam RESOURCE
+ */
+template<class RESOURCE, class DELETER>
+class ResourcePtrBase
+{
+public:
+  /// The reference resource type
+  using reference = RESOURCE;
+
+  /// The raw resource type
+  using value_type = typename reference::value_type;
+
+private:
+  /// The resource.
+  reference m_value;
+  DELETER m_deleter;
+
+protected:
+  /// Constructs from raw type.
+  constexpr ResourcePtrBase(value_type value = {}, DELETER deleter = {})
+    : m_value(value)
+    , m_deleter(std::move(deleter))
+  {
+  }
+
+  /// Get reference
+  reference& get() { return m_value; }
+
+  /// Frees resource
+  void free() { m_deleter(m_value); }
 
 public:
-  using REF::REF;
+  /// Check if not null
+  constexpr operator bool() const { return bool(m_value); }
 
-  /// Constructs from a reference
-  constexpr OptionalResource(const REF& other)
-    : REF(other)
+  /// Comparison
+  constexpr bool operator==(const ResourcePtrBase&) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t) const { return !*this; }
+
+  /// Comparison
+  constexpr bool operator==(std::nullopt_t) const { return !*this; }
+
+  /// Gets reference.
+  constexpr reference operator*() const { return m_value; }
+
+  /// Gets addressable reference.
+  constexpr const reference* operator->() const { return &m_value; }
+
+  /// Gets addressable reference.
+  constexpr reference* operator->() { return &m_value; }
+
+  /// Get reference
+  reference get() const { return m_value; }
+
+  /// Returns reference and reset this
+  reference release()
+  {
+    reference value = m_value;
+    m_value = {};
+    return value;
+  }
+};
+
+/**
+ * A _dumb_ pointer to resource.
+ *
+ * This is not safe to generally use, but might be used to compose other
+ * pointers.
+ *
+ * @tparam RESOURCE
+ * @tparam DELETER
+ */
+template<class RESOURCE, class DELETER = DefaultDeleter<RESOURCE>>
+class ResourceUnsafe : public ResourcePtrBase<RESOURCE, DELETER>
+{
+  using base = ResourcePtrBase<RESOURCE, DELETER>;
+
+public:
+  /// Default constructor.
+  constexpr ResourceUnsafe() = default;
+
+  /// Constructs pointer from anything compatible
+  constexpr explicit ResourceUnsafe(RESOURCE other)
+    : base(other)
+  {
+    other.release();
+  }
+
+  /// Resets the value, destroying the resource if not nullptr
+  void reset()
+  {
+    base::free();
+    base::release();
+  }
+};
+
+/**
+ * @brief Implement unique ownership for a resource.
+ *
+ * @tparam RESOURCE
+ */
+template<class RESOURCE, class DELETER = DefaultDeleter<RESOURCE>>
+class ResourceUnique : public ResourcePtrBase<RESOURCE, DELETER>
+{
+  using base = ResourcePtrBase<RESOURCE, DELETER>;
+
+public:
+  /// Default constructor.
+  constexpr ResourceUnique() = default;
+
+  /// Constructs from raw type.
+  constexpr explicit ResourceUnique(base::value_type value,
+                                    DELETER deleter = {})
+    : base(value, std::move(deleter))
   {
   }
 
-  /// Constructs from a reference
-  constexpr OptionalResource(const UNIQUE& other)
-    : REF(other)
+  /// Move constructor.
+  constexpr ResourceUnique(ResourceUnique&& other)
+    : base(other)
   {
+    other.release();
   }
 
-  /// Constructs from a moved from unique
-  constexpr OptionalResource(UNIQUE&& other)
-    : REF(other.release())
-    , m_owning(true)
-  {
-  }
+  ResourceUnique(const ResourceUnique& other) = delete;
 
-  OptionalResource(const OptionalResource& other) = delete;
-
-  /// Move ctor
-  OptionalResource(OptionalResource&& other)
-    : REF(other.release())
-    , m_owning(other.m_owning)
-  {
-    other.m_owning = false;
-  }
-
-  OptionalResource& operator=(const OptionalResource& other) = delete;
+  /**
+   * Destructor.
+   *
+   * This frees up the resource.
+   */
+  ~ResourceUnique() { base::free(); }
 
   /// Assignment operator.
-  OptionalResource& operator=(OptionalResource&& other)
+  constexpr ResourceUnique& operator=(ResourceUnique other)
   {
-    REF::operator=(REF(other.release()));
-    m_owning = other.m_owning;
-    other.m_owning = false;
+    base::operator=(other);
+    other.release();
     return *this;
   }
 
-  /// Destructor
-  ~OptionalResource()
+  /// Resets the value, destroying the resource if not nullptr
+  void reset()
   {
-    if (m_owning) REF::reset();
+    base::free();
+    base::release();
   }
 };
 
@@ -1146,7 +1264,7 @@ struct TargetBytes
  *
  * These strings are maintained per-thread, and apps are welcome to set their
  * own errors, which is popular when building libraries on top of SDL for
- * other apps to consume. These strings are set by calling SDL_SetError().
+ * other apps to consume. These strings are set by calling SetError().
  *
  * A common usage pattern is to have a function that returns true for success
  * and false for failure, and do this when something fails:
@@ -1476,22 +1594,21 @@ public:
  * SDL provides its own implementation of some of the most important C runtime
  * functions.
  *
- * Using these functions allows an app to have access to common C
- * functionality without depending on a specific C runtime (or a C runtime at
- * all). More importantly, the SDL implementations work identically across
- * platforms, so apps can avoid surprises like snprintf() behaving differently
- * between Windows and Linux builds, or itoa() only existing on some
- * platforms.
+ * Using these functions allows an app to have access to common C functionality
+ * without depending on a specific C runtime (or a C runtime at all). More
+ * importantly, the SDL implementations work identically across platforms, so
+ * apps can avoid surprises like snprintf() behaving differently between Windows
+ * and Linux builds, or itoa() only existing on some platforms.
  *
- * For many of the most common functions, like SDL_memcpy, SDL might just call
- * through to the usual C runtime behind the scenes, if it makes sense to do
- * so (if it's faster and always available/reliable on a given platform),
- * reducing library size and offering the most optimized option.
+ * For many of the most common functions, like memcpy, SDL might just call
+ * through to the usual C runtime behind the scenes, if it makes sense to do so
+ * (if it's faster and always available/reliable on a given platform), reducing
+ * library size and offering the most optimized option.
  *
  * SDL also offers other C-runtime-adjacent functionality in this header that
  * either isn't, strictly speaking, part of any C runtime standards, like
- * SDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better
- * options, like SDL_strlcpy(), which functions as a safer form of strcpy().
+ * crc32() and SDL_reinterpret_cast, etc. It also offers a few better options,
+ * like strlcpy(), which functions as a safer form of strcpy().
  *
  * @{
  */
@@ -1667,7 +1784,7 @@ constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
 using Seconds = std::chrono::duration<float>;
 
 /**
- * Duration in Nanoseconds (Sint64).
+ * Duration in Nanoseconds (Uint64).
  */
 using Nanoseconds = std::chrono::nanoseconds;
 
@@ -1815,7 +1932,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * // Fill in the interface function pointers with your implementation
  * iface.seek = ...
  *
- * stream = IOStreamRef.IOStreamRef(&iface, nullptr);
+ * stream = IOStream.Open(&iface, nullptr);
  * ```
  *
  * If you are using designated initializers, you can use the size of the
@@ -1826,7 +1943,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *     .version = sizeof(iface),
  *     .seek = ...
  * };
- * stream = IOStreamRef.IOStreamRef(&iface, nullptr);
+ * stream = IOStream.Open(iface, nullptr);
  * ```
  *
  * @threadsafety It is safe to call this macro from any thread.
@@ -2191,11 +2308,12 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  *
  * @sa Environment
  * @sa GetEnvironment
- * @sa EnvironmentRef.EnvironmentRef
+ * @sa Environment.Create
  * @sa EnvironmentRef.GetVariable
  * @sa EnvironmentRef.GetVariables
  * @sa EnvironmentRef.SetVariable
  * @sa EnvironmentRef.UnsetVariable
+ * @sa Environment.Destroy
  */
 struct EnvironmentRef : Resource<SDL_Environment*>
 {
@@ -2308,77 +2426,21 @@ struct EnvironmentRef : Resource<SDL_Environment*>
     CheckError(SDL_UnsetEnvironmentVariable(get(), name));
   }
 
-protected:
   /**
    * Destroy a set of environment variables.
    *
+   * @param resource the environment to destroy.
    *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the environment is no longer in use.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Environment.Environment
+   * @sa Environment.Create
    */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy a set of environment variables.
-   *
-   * This object becomes empty after the call.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the environment is no longer in use.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Environment.Environment
-   */
-  void reset(SDL_Environment* newResource = {})
+  static void reset(SDL_Environment* resource)
   {
-    SDL_DestroyEnvironment(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to environment
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa EnvironmentRef
- */
-struct EnvironmentUnsafe : EnvironmentRef
-{
-  using EnvironmentRef::Destroy;
-
-  using EnvironmentRef::EnvironmentRef;
-
-  using EnvironmentRef::reset;
-
-  /**
-   * Constructs EnvironmentUnsafe from EnvironmentRef.
-   */
-  constexpr EnvironmentUnsafe(const EnvironmentRef& other)
-    : EnvironmentRef(other.get())
-  {
-  }
-
-  EnvironmentUnsafe(const Environment& other) = delete;
-
-  /**
-   * Constructs EnvironmentUnsafe from Environment.
-   */
-  constexpr explicit EnvironmentUnsafe(Environment&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr EnvironmentUnsafe& operator=(EnvironmentUnsafe other)
-  {
-    release(other.release());
-    return *this;
+    SDL_DestroyEnvironment(resource);
   }
 };
 
@@ -2389,42 +2451,16 @@ struct EnvironmentUnsafe : EnvironmentRef
  *
  * @sa EnvironmentRef
  */
-struct Environment : EnvironmentUnsafe
+struct Environment : ResourceUnique<EnvironmentRef>
 {
-  using EnvironmentUnsafe::EnvironmentUnsafe;
-
-  /**
-   * Constructs an empty Environment.
-   */
-  constexpr Environment()
-    : EnvironmentUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Environment(SDL_Environment* resource)
-    : EnvironmentUnsafe(resource)
-  {
-  }
-
-  constexpr Environment(const Environment& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Environment(Environment&& other)
-    : Environment(other.release())
-  {
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a set of environment variables
    *
    * @param populated true to initialize it from the C runtime environment,
    *                  false to create an empty environment.
-   * @post the new environment on success.
+   * @returns the new environment on success.
    * @throws Error on failure.
    *
    * @threadsafety If `populated` is false, it is safe to call this function
@@ -2437,54 +2473,48 @@ struct Environment : EnvironmentUnsafe
    * @sa EnvironmentRef.GetVariables
    * @sa EnvironmentRef.SetVariable
    * @sa EnvironmentRef.UnsetVariable
-   * @sa EnvironmentRef.Destroy
+   * @sa Environment.Destroy
    */
-  Environment(bool populated)
-    : Environment(CheckError(SDL_CreateEnvironment(populated)))
+  static Environment Create(bool populated)
   {
+    return Environment(CheckError(SDL_CreateEnvironment(populated)));
   }
 
   /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Environment() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Environment& operator=(Environment other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create a set of environment variables
+   * Destroy a set of environment variables.
    *
-   * @param populated true to initialize it from the C runtime environment,
-   *                  false to create an empty environment.
-   * @returns a pointer to the new environment or nullptr on failure; call
-   *          GetError() for more information.
    *
-   * @threadsafety If `populated` is false, it is safe to call this function
-   *               from any thread, otherwise it is safe if no other threads are
-   *               calling setenv() or unsetenv()
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the environment is no longer in use.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa EnvironmentRef.GetVariable
-   * @sa EnvironmentRef.GetVariables
-   * @sa EnvironmentRef.SetVariable
-   * @sa EnvironmentRef.UnsetVariable
-   * @sa EnvironmentRef.Destroy
+   * @sa Environment.Create
    */
-  static Environment Create(bool populated) { return Environment(populated); }
+  void Destroy() { reset(); }
 };
 
-constexpr EnvironmentUnsafe::EnvironmentUnsafe(Environment&& other)
-  : EnvironmentUnsafe(other.release())
+/**
+ * Unsafe Handle to environment
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa EnvironmentRef
+ */
+struct EnvironmentUnsafe : ResourceUnsafe<EnvironmentRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs EnvironmentUnsafe from Environment.
+   */
+  constexpr explicit EnvironmentUnsafe(Environment&& other)
+    : EnvironmentUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Get the process environment.
@@ -6634,7 +6664,7 @@ inline float tan(float x) { return SDL_tanf(x); }
  *
  * @cat resource
  *
- * @sa IConvRef.IConvRef
+ * @sa IConv.open
  * @sa IConv
  */
 struct IConvRef : Resource<SDL_iconv_data_t*>
@@ -6683,7 +6713,55 @@ struct IConvRef : Resource<SDL_iconv_data_t*>
     return SDL_iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
   }
 
-protected:
+  /**
+   * This function frees a context used for character set conversion.
+   *
+   * @param resource The character set conversion handle.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConvRef.iconv
+   * @sa IConv.open
+   * @sa iconv_string
+   */
+  static void reset(SDL_iconv_data_t* resource)
+  {
+    CheckError(SDL_iconv_close(resource) == 0);
+  }
+};
+
+/**
+ * Handle to an owned iConv
+ *
+ * @cat resource
+ *
+ * @sa IConvRef
+ */
+struct IConv : ResourceUnique<IConvRef>
+{
+  using ResourceUnique::ResourceUnique;
+
+  /**
+   * This function allocates a context for the specified character set
+   * conversion.
+   *
+   * @param tocode The target character encoding, must not be nullptr.
+   * @param fromcode The source character encoding, must not be nullptr.
+   * @returns this becomes a valid handle convertible to true on success, or
+   *          convertible to false on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConvRef.iconv
+   * @sa IConv.close
+   * @sa iconv_string
+   */
+  static IConv open(StringParam tocode, StringParam fromcode)
+  {
+    return IConv(SDL_iconv_open(tocode, fromcode));
+  }
+
   /**
    * This function frees a context used for character set conversion.
    *
@@ -6693,26 +6771,10 @@ protected:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConvRef.iconv
-   * @sa IConv.IConv
+   * @sa IConv.open
    * @sa iconv_string
    */
-  int close() { return reset(); }
-
-  /**
-   * This function frees a context used for character set conversion.
-   *
-   * @returns 0 on success, or -1 on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConvRef.iconv
-   * @sa IConv.IConv
-   * @sa iconv_string
-   */
-  int reset(SDL_iconv_data_t* newResource = {})
-  {
-    return SDL_iconv_close(release(newResource));
-  }
+  void close() { reset(); }
 };
 
 /**
@@ -6724,135 +6786,18 @@ protected:
  *
  * @sa IConvRef
  */
-struct IConvUnsafe : IConvRef
+struct IConvUnsafe : ResourceUnsafe<IConvRef>
 {
-  using IConvRef::IConvRef;
-
-  using IConvRef::close;
-
-  using IConvRef::reset;
-
-  /**
-   * Constructs IConvUnsafe from IConvRef.
-   */
-  constexpr IConvUnsafe(const IConvRef& other)
-    : IConvRef(other.get())
-  {
-  }
-
-  IConvUnsafe(const IConv& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs IConvUnsafe from IConv.
    */
-  constexpr explicit IConvUnsafe(IConv&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr IConvUnsafe& operator=(IConvUnsafe other)
+  constexpr explicit IConvUnsafe(IConv&& other)
+    : IConvUnsafe(other.release())
   {
-    release(other.release());
-    return *this;
   }
 };
-
-/**
- * Handle to an owned iConv
- *
- * @cat resource
- *
- * @sa IConvRef
- */
-struct IConv : IConvUnsafe
-{
-  using IConvUnsafe::IConvUnsafe;
-
-  /**
-   * Constructs an empty IConv.
-   */
-  constexpr IConv()
-    : IConvUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit IConv(SDL_iconv_data_t* resource)
-    : IConvUnsafe(resource)
-  {
-  }
-
-  constexpr IConv(const IConv& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr IConv(IConv&& other)
-    : IConv(other.release())
-  {
-  }
-
-  /**
-   * This function allocates a context for the specified character set
-   * conversion.
-   *
-   * @param tocode The target character encoding, must not be nullptr.
-   * @param fromcode The source character encoding, must not be nullptr.
-   * @post this becomes a valid handle convertible to true on success, or
-   *       convertible to false on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConvRef.iconv
-   * @sa IConvRef.close
-   * @sa iconv_string
-   */
-  IConv(StringParam tocode, StringParam fromcode)
-    : IConv(SDL_iconv_open(tocode, fromcode))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~IConv() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  IConv& operator=(IConv other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * This function allocates a context for the specified character set
-   * conversion.
-   *
-   * @param tocode The target character encoding, must not be nullptr.
-   * @param fromcode The source character encoding, must not be nullptr.
-   * @returns a handle that must be freed with IConvRef.close, or
-   *          SDL_ICONV_ERROR on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConvRef.iconv
-   * @sa IConvRef.close
-   * @sa iconv_string
-   */
-  static IConv open(StringParam tocode, StringParam fromcode)
-  {
-    return IConv(std::move(tocode), std::move(fromcode));
-  }
-};
-
-constexpr IConvUnsafe::IConvUnsafe(IConv&& other)
-  : IConvUnsafe(other.release())
-{
-}
 
 #ifdef SDL3PP_DOC
 
@@ -6896,7 +6841,8 @@ constexpr IConvUnsafe::IConvUnsafe(IConv&& other)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConvRef.IConvRef
+ * @sa IConv.open
+ * @sa IConv.close
  * @sa IConvRef.iconv
  */
 inline OwnPtr<char> iconv_string(StringParam tocode,
@@ -7193,7 +7139,7 @@ inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
  * Possible outcomes from a triggered assertion.
  *
  * When an enabled assertion triggers, it may call the assertion handler
- * (possibly one provided by the app via SDL_SetAssertionHandler), which will
+ * (possibly one provided by the app via SetAssertionHandler), which will
  * return one of these values, possibly after asking the user.
  *
  * Then SDL will respond based on this outcome (loop around to retry the
@@ -7204,37 +7150,27 @@ inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
  */
 using AssertState = SDL_AssertState;
 
-/**
- * Retry the assert immediately.
- */
-constexpr AssertState ASSERTION_RETRY = SDL_ASSERTION_RETRY;
+constexpr AssertState ASSERTION_RETRY =
+  SDL_ASSERTION_RETRY; ///< Retry the assert immediately.
 
-/**
- * Make the debugger trigger a breakpoint.
- */
-constexpr AssertState ASSERTION_BREAK = SDL_ASSERTION_BREAK;
+constexpr AssertState ASSERTION_BREAK =
+  SDL_ASSERTION_BREAK; ///< Make the debugger trigger a breakpoint.
 
-/**
- * Terminate the program.
- */
-constexpr AssertState ASSERTION_ABORT = SDL_ASSERTION_ABORT;
+constexpr AssertState ASSERTION_ABORT =
+  SDL_ASSERTION_ABORT; ///< Terminate the program.
 
-/**
- * Ignore the assert.
- */
-constexpr AssertState ASSERTION_IGNORE = SDL_ASSERTION_IGNORE;
+constexpr AssertState ASSERTION_IGNORE =
+  SDL_ASSERTION_IGNORE; ///< Ignore the assert.
 
-/**
- * Ignore the assert from now on.
- */
-constexpr AssertState ASSERTION_ALWAYS_IGNORE = SDL_ASSERTION_ALWAYS_IGNORE;
+constexpr AssertState ASSERTION_ALWAYS_IGNORE =
+  SDL_ASSERTION_ALWAYS_IGNORE; ///< Ignore the assert from now on.
 
 /**
  * Information about an assertion failure.
  *
  * This structure is filled in with information about a triggered assertion,
  * used by the assertion handler, then added to the assertion report. This is
- * returned as a linked list from SDL_GetAssertionReport().
+ * returned as a linked list from GetAssertionReport().
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -7290,7 +7226,7 @@ inline AssertState ReportAssertion(AssertData* data,
  * ... without the do/while, the "else" could attach to this macro's "if". We
  * try to handle just the minimum we need here in a macro...the loop, the
  * static vars, and break points. The heavy lifting is handled in
- * SDL_ReportAssertion().
+ * ReportAssertion().
  *
  * @param condition the condition to assert.
  *
@@ -7435,10 +7371,10 @@ inline AssertState ReportAssertion(AssertData* data,
 /**
  * A @ref callback that fires when an SDL assertion fails.
  *
- * @param data a pointer to the SDL_AssertData structure corresponding to the
+ * @param data a pointer to the AssertData structure corresponding to the
  *             current assertion.
  * @param userdata what was passed as `userdata` to SetAssertionHandler().
- * @returns an SDL_AssertState value indicating how to handle the failure.
+ * @returns an AssertState value indicating how to handle the failure.
  *
  * @threadsafety This callback may be called from any thread that triggers an
  *               assert at any time.
@@ -7476,7 +7412,7 @@ using AssertionHandlerCB =
  *
  * This callback is NOT reset to SDL's internal handler upon Quit()!
  *
- * @param handler the SDL_AssertionHandler function to call when an assertion
+ * @param handler the AssertionHandler function to call when an assertion
  *                fails or nullptr for the default handler.
  * @param userdata a pointer that is passed to `handler`.
  *
@@ -7545,9 +7481,9 @@ inline AssertionHandler GetDefaultAssertionHandler()
  * Get the current assertion handler.
  *
  * This returns the function pointer that is called when an assertion is
- * triggered. This is either the value last passed to
- * SDL_SetAssertionHandler(), or if no application-specified function is set,
- * is equivalent to calling GetDefaultAssertionHandler().
+ * triggered. This is either the value last passed to SetAssertionHandler(), or
+ * if no application-specified function is set, is equivalent to calling
+ * GetDefaultAssertionHandler().
  *
  * The parameter `puserdata` is a pointer to a void*, which will store the
  * "userdata" pointer that was passed to SetAssertionHandler(). This value
@@ -7603,12 +7539,12 @@ inline AssertionHandlerCB GetAssertionHandler()
  * Get a list of all assertion failures.
  *
  * This function gets all assertions triggered since the last call to
- * SDL_ResetAssertionReport(), or the start of the program.
+ * ResetAssertionReport(), or the start of the program.
  *
  * The proper way to examine this data looks something like this:
  *
- * ```c
- * const SDL_AssertData *item = SDL_GetAssertionReport();
+ * ```cpp
+ * const AssertData *item = GetAssertionReport();
  * while (item) {
  *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
  *           item->condition, item->function, item->filename,
@@ -7619,17 +7555,16 @@ inline AssertionHandlerCB GetAssertionHandler()
  * ```
  *
  * @returns a list of all failed assertions or nullptr if the list is empty.
- *          This memory should not be modified or freed by the application. This
- *          pointer remains valid until the next call to Quit() or
- *          ResetAssertionReport().
+ * This memory should not be modified or freed by the application. This pointer
+ * remains valid until the next call to Quit() or ResetAssertionReport().
  *
  * @threadsafety This function is not thread safe. Other threads calling
- *               SDL_ResetAssertionReport() simultaneously, may render the
+ *               ResetAssertionReport() simultaneously, may render the
  *               returned pointer invalid.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_ResetAssertionReport
+ * @sa ResetAssertionReport
  */
 inline const AssertData* GetAssertionReport()
 {
@@ -7640,7 +7575,7 @@ inline const AssertData* GetAssertionReport()
  * Clear the list of all assertion failures.
  *
  * This function will clear the list of all assertions triggered up to that
- * point. Immediately following this call, SDL_GetAssertionReport will return
+ * point. Immediately following this call, GetAssertionReport will return
  * no items. In addition, any previously-triggered assertions will be reset to
  * a trigger_count of zero, and their always_ignore state will be false.
  *
@@ -7650,9 +7585,9 @@ inline const AssertData* GetAssertionReport()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetAssertionReport
+ * @sa GetAssertionReport
  */
-inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
+inline void ResetAssertionReport() { SDL_ResetAssertionReport(); }
 
 /// @}
 
@@ -8240,7 +8175,7 @@ constexpr bool HasExactlyOneBitSet32(Uint32 x)
  *
  * These predefined blend modes are supported everywhere.
  *
- * Additional values may be obtained from ComposeCustomBlendMode().
+ * Additional values may be obtained from ComposeCustomBlendMode.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -8248,10 +8183,8 @@ constexpr bool HasExactlyOneBitSet32(Uint32 x)
  */
 using BlendMode = Uint32;
 
-/**
- * no blending: dstRGBA = srcRGBA
- */
-constexpr BlendMode BLENDMODE_NONE = SDL_BLENDMODE_NONE;
+constexpr BlendMode BLENDMODE_NONE =
+  SDL_BLENDMODE_NONE; ///< no blending: dstRGBA = srcRGBA
 
 /**
  * alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA +
@@ -8291,16 +8224,15 @@ constexpr BlendMode BLENDMODE_INVALID = SDL_BLENDMODE_INVALID; ///< INVALID
 ///@}
 
 /**
- * @brief The blend operation used when combining source and destination pixel
+ * The blend operation used when combining source and destination pixel
  * components.
  *
+ * @since This enum is available since SDL 3.2.0.
  */
 using BlendOperation = SDL_BlendOperation;
 
-/**
- * dst + src: supported by all renderers
- */
-constexpr BlendOperation BLENDOPERATION_ADD = SDL_BLENDOPERATION_ADD;
+constexpr BlendOperation BLENDOPERATION_ADD =
+  SDL_BLENDOPERATION_ADD; ///< dst + src: supported by all renderers
 
 /**
  * src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
@@ -8324,75 +8256,50 @@ constexpr BlendOperation BLENDOPERATION_MINIMUM = SDL_BLENDOPERATION_MINIMUM;
 constexpr BlendOperation BLENDOPERATION_MAXIMUM = SDL_BLENDOPERATION_MAXIMUM;
 
 /**
- * @brief The normalized factor used to multiply pixel components.
+ * The normalized factor used to multiply pixel components.
  *
  * The blend factors are multiplied with the pixels from a drawing operation
  * (src) and the pixels from the render target (dst) before the blend
  * operation. The comma-separated factors listed above are always applied in
  * the component order red, green, blue, and alpha.
  *
+ * @since This enum is available since SDL 3.2.0.
  */
 using BlendFactor = SDL_BlendFactor;
 
-/**
- * 0, 0, 0, 0
- */
-constexpr BlendFactor BLENDFACTOR_ZERO = SDL_BLENDFACTOR_ZERO;
+constexpr BlendFactor BLENDFACTOR_ZERO = SDL_BLENDFACTOR_ZERO; ///< 0, 0, 0, 0
 
-/**
- * 1, 1, 1, 1
- */
-constexpr BlendFactor BLENDFACTOR_ONE = SDL_BLENDFACTOR_ONE;
+constexpr BlendFactor BLENDFACTOR_ONE = SDL_BLENDFACTOR_ONE; ///< 1, 1, 1, 1
 
-/**
- * srcR, srcG, srcB, srcA
- */
-constexpr BlendFactor BLENDFACTOR_SRC_COLOR = SDL_BLENDFACTOR_SRC_COLOR;
+constexpr BlendFactor BLENDFACTOR_SRC_COLOR =
+  SDL_BLENDFACTOR_SRC_COLOR; ///< srcR, srcG, srcB, srcA
 
-/**
- * 1-srcR, 1-srcG, 1-srcB, 1-srcA
- */
 constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_COLOR =
-  SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR;
+  SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR; ///< 1-srcR, 1-srcG, 1-srcB, 1-srcA
 
-/**
- * srcA, srcA, srcA, srcA
- */
-constexpr BlendFactor BLENDFACTOR_SRC_ALPHA = SDL_BLENDFACTOR_SRC_ALPHA;
+constexpr BlendFactor BLENDFACTOR_SRC_ALPHA =
+  SDL_BLENDFACTOR_SRC_ALPHA; ///< srcA, srcA, srcA, srcA
 
-/**
- * 1-srcA, 1-srcA, 1-srcA, 1-srcA
- */
 constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_ALPHA =
-  SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
+  SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA; ///< 1-srcA, 1-srcA, 1-srcA, 1-srcA
 
-/**
- * dstR, dstG, dstB, dstA
- */
-constexpr BlendFactor BLENDFACTOR_DST_COLOR = SDL_BLENDFACTOR_DST_COLOR;
+constexpr BlendFactor BLENDFACTOR_DST_COLOR =
+  SDL_BLENDFACTOR_DST_COLOR; ///< dstR, dstG, dstB, dstA
 
-/**
- * 1-dstR, 1-dstG, 1-dstB, 1-dstA
- */
 constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_COLOR =
-  SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR;
+  SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR; ///< 1-dstR, 1-dstG, 1-dstB, 1-dstA
 
-/**
- * dstA, dstA, dstA, dstA
- */
-constexpr BlendFactor BLENDFACTOR_DST_ALPHA = SDL_BLENDFACTOR_DST_ALPHA;
+constexpr BlendFactor BLENDFACTOR_DST_ALPHA =
+  SDL_BLENDFACTOR_DST_ALPHA; ///< dstA, dstA, dstA, dstA
 
-/**
- * 1-dstA, 1-dstA, 1-dstA, 1-dstA
- */
 constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
-  SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA;
+  SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA; ///< 1-dstA, 1-dstA, 1-dstA, 1-dstA
 
 /**
- * @brief Compose a custom blend mode for renderers.
+ * Compose a custom blend mode for renderers.
  *
- * The functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept
- * the SDL_BlendMode returned by this function if the renderer supports it.
+ * The functions RendererRef.SetDrawBlendMode and TextureRef.SetBlendMode accept
+ * the BlendMode returned by this function if the renderer supports it.
  *
  * A blend mode controls how the pixels from a drawing operation (source) get
  * combined with the pixels from the render target (destination). First, the
@@ -8417,57 +8324,62 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
  * - `max(src, dst)`
  *
  * The red, green, and blue components are always multiplied with the first,
- * second, and third components of the SDL_BlendFactor, respectively. The
- * fourth component is not used.
+ * second, and third components of the BlendFactor, respectively. The fourth
+ * component is not used.
  *
  * The alpha component is always multiplied with the fourth component of the
- * SDL_BlendFactor. The other components are not used in the alpha
- * calculation.
+ * BlendFactor. The other components are not used in the alpha calculation.
  *
  * Support for these blend modes varies for each renderer. To check if a
- * specific SDL_BlendMode is supported, create a renderer and pass it to
- * either SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will
- * return with an error if the blend mode is not supported.
+ * specific BlendMode is supported, create a renderer and pass it to either
+ * RendererRef.SetDrawBlendMode or TextureRef.SetBlendMode. They will return
+ * with an error if the blend mode is not supported.
  *
  * This list describes the support of custom blend modes for each renderer.
- * All renderers support the four blend modes listed in the SDL_BlendMode
+ * All renderers support the four blend modes listed in the BlendMode
  * enumeration.
  *
  * - **direct3d**: Supports all operations with all factors. However, some
- *   factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and
- *   `SDL_BLENDOPERATION_MAXIMUM`.
+ *   factors produce unexpected results with `BLENDOPERATION_MINIMUM` and
+ *   `BLENDOPERATION_MAXIMUM`.
  * - **direct3d11**: Same as Direct3D 9.
- * - **opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all
+ * - **opengl**: Supports the `BLENDOPERATION_ADD` operation with all
  *   factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.
- * - **opengles2**: Supports the `SDL_BLENDOPERATION_ADD`,
- *   `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT`
+ * - **opengles2**: Supports the `BLENDOPERATION_ADD`,
+ *   `BLENDOPERATION_SUBTRACT`, `BLENDOPERATION_REV_SUBTRACT`
  *   operations with all factors.
  * - **psp**: No custom blend mode support.
  * - **software**: No custom blend mode support.
  *
  * Some renderers do not provide an alpha component for the default render
- * target. The `SDL_BLENDFACTOR_DST_ALPHA` and
- * `SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this
+ * target. The `BLENDFACTOR_DST_ALPHA` and
+ * `BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this
  * case.
  *
- * @param srcColorFactor the SDL_BlendFactor applied to the red, green, and
+ * @param srcColorFactor the BlendFactor applied to the red, green, and
  *                       blue components of the source pixels.
- * @param dstColorFactor the SDL_BlendFactor applied to the red, green, and
+ * @param dstColorFactor the BlendFactor applied to the red, green, and
  *                       blue components of the destination pixels.
- * @param colorOperation the SDL_BlendOperation used to combine the red,
+ * @param colorOperation the BlendOperation used to combine the red,
  *                       green, and blue components of the source and
  *                       destination pixels.
- * @param srcAlphaFactor the SDL_BlendFactor applied to the alpha component of
+ * @param srcAlphaFactor the BlendFactor applied to the alpha component of
  *                       the source pixels.
- * @param dstAlphaFactor the SDL_BlendFactor applied to the alpha component of
+ * @param dstAlphaFactor the BlendFactor applied to the alpha component of
  *                       the destination pixels.
- * @param alphaOperation the SDL_BlendOperation used to combine the alpha
+ * @param alphaOperation the BlendOperation used to combine the alpha
  *                       component of the source and destination pixels.
- * @returns an SDL_BlendMode that represents the chosen factors and
+ * @returns an BlendMode that represents the chosen factors and
  *          operations.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RendererRef.SetDrawBlendMode
+ * @sa RendererRef.GetDrawBlendMode
+ * @sa TextureRef.SetBlendMode
+ * @sa TextureRef.GetBlendMode
  */
 inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
                                         BlendFactor dstColorFactor,
@@ -9259,9 +9171,9 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
  * platform's byte ordering:
  *
- * ```c
+ * ```cpp
  * #if SDL_BYTEORDER == SDL_LIL_ENDIAN
- * SDL_Log("This system is littleendian.");
+ * Log("This system is littleendian.");
  * #endif
  * ```
  *
@@ -9278,9 +9190,9 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
  * platform's byte ordering:
  *
- * ```c
+ * ```cpp
  * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
- * SDL_Log("This system is bigendian.");
+ * Log("This system is bigendian.");
  * #endif
  * ```
  *
@@ -9300,7 +9212,7 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  *
  * ```c
  * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
- * SDL_Log("This system is bigendian.");
+ * Log("This system is bigendian.");
  * #endif
  * ```
  *
@@ -9320,7 +9232,7 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  *
  * ```c
  * #if SDL_FLOATWORDORDER == SDL_BIG_ENDIAN
- * SDL_Log("This system's floats are bigendian.");
+ * Log("This system's floats are bigendian.");
  * #endif
  * ```
  *
@@ -9337,8 +9249,8 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * Byte-swap a floating point number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SDL_SwapFloatLE or
- * SDL_SwapFloatBE instead, in most cases.
+ * byteorder of the system or not. You should use SwapFloatLE or
+ * SwapFloatBE instead, in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -9358,8 +9270,8 @@ constexpr float SwapFloat(float x) { return SDL_SwapFloat(x); }
  * Byte-swap an unsigned 16-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SDL_Swap16LE or SDL_Swap16BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap16LE or Swap16BE instead,
+ * in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -9379,8 +9291,8 @@ constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
  * Byte-swap an unsigned 32-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SDL_Swap32LE or SDL_Swap32BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap32LE or Swap32BE instead,
+ * in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -9400,8 +9312,8 @@ constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
  * Byte-swap an unsigned 64-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SDL_Swap64LE or SDL_Swap64BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap64LE or Swap64BE instead,
+ * in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -10011,6 +9923,7 @@ using EnumerateDirectoryCallback = SDL_EnumerateDirectoryCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa EnumerateDirectory
+ * @sa EnumerateDirectoryCallback
  */
 using EnumerateDirectoryCB =
   std::function<EnumerationResult(const char* dirname, const char* fname)>;
@@ -10253,11 +10166,12 @@ inline Path GetCurrentDirectory() { return Path{SDL_GetCurrentDirectory()}; }
  * identifiable by this value: "globally unique."
  *
  * SDL provides functions to convert a GUID to/from a string.
+ *
  * @{
  */
 
 /**
- * A GUID is a 128-bit identifier for an input device that identifies that
+ * An GUID is a 128-bit identifier for an input device that identifies that
  * device across runs of SDL programs on the same platform.
  *
  * If the device is detached and then re-attached to a different port, or if
@@ -10465,10 +10379,10 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  * A variable to control whether we trap the Android back button to handle it
  * manually.
  *
- * This is necessary for the right mouse button to work on some Android
- * devices, or to be able to trap the back button for use in your code
- * reliably. If this hint is true, the back button will show up as an
- * EVENT_KEY_DOWN / EVENT_KEY_UP pair with a keycode of SCANCODE_AC_BACK.
+ * This is necessary for the right mouse button to work on some Android devices,
+ * or to be able to trap the back button for use in your code reliably. If this
+ * hint is true, the back button will show up as an EVENT_KEY_DOWN /
+ * EVENT_KEY_UP pair with a keycode of SCANCODE_AC_BACK.
  *
  * The variable can be set to the following values:
  *
@@ -14594,13 +14508,12 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
 /**
  * A variable specifying the type of an X11 window.
  *
- * During WindowRef.WindowRef, SDL uses the _NET_WM_WINDOW_TYPE X11 property
- * to report to the window manager the type of window it wants to create. This
- * might be set to various things if WINDOW_TOOLTIP or
- * WINDOW_POPUP_MENU, etc, were specified. For "normal" windows that
- * haven't set a specific type, this hint can be used to specify a custom
- * type. For example, a dock window might set this to
- * "_NET_WM_WINDOW_TYPE_DOCK".
+ * During Window.Create, SDL uses the _NET_WM_WINDOW_TYPE X11 property to report
+ * to the window manager the type of window it wants to create. This might be
+ * set to various things if WINDOW_TOOLTIP or WINDOW_POPUP_MENU, etc, were
+ * specified. For "normal" windows that haven't set a specific type, this hint
+ * can be used to specify a custom type. For example, a dock window might set
+ * this to "_NET_WM_WINDOW_TYPE_DOCK".
  *
  * This hint should be set before creating a window.
  *
@@ -15199,7 +15112,7 @@ inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
  *
  * // later...
  * #ifdef SDL_SSE2_INTRINSICS
- * if (SDL_HasSSE2()) {
+ * if (HasSSE2()) {
  *     DoSomethingWithSSE2(str);
  * }
  * #endif
@@ -15230,13 +15143,13 @@ inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
  *
  * System-dependent library loading routines.
  *
- * Shared objects are code that is programmatically loadable at runtime.
- * Windows calls these "DLLs", Linux calls them "shared libraries", etc.
+ * Shared objects are code that is programmatically loadable at runtime. Windows
+ * calls these "DLLs", Linux calls them "shared libraries", etc.
  *
- * To use them, build such a library, then call SDL_LoadObject() on it. Once
- * loaded, you can use SDL_LoadFunction() on that object to find the address
- * of its exported symbols. When done with the object, call SDL_UnloadObject()
- * to dispose of it.
+ * To use them, build such a library, then call SharedObject.Load() on it. Once
+ * loaded, you can use SharedObjectRef.LoadFunction() on that object to find the
+ * address of its exported symbols. When done with the object, call
+ * SharedObject.Unload() to dispose of it.
  *
  * Some things to keep in mind:
  *
@@ -15251,10 +15164,10 @@ inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
  *   the application. If it does and it conflicts with symbols in your code or
  *   other shared libraries, you will not get the results you expect. :)
  * - Once a library is unloaded, all pointers into it obtained through
- *   SDL_LoadFunction() become invalid, even if the library is later reloaded.
- *   Don't unload a library if you plan to use these pointers in the future.
- *   Notably: beware of giving one of these pointers to atexit(), since it may
- *   call that pointer after the library unloads.
+ *   SharedObjectRef.LoadFunction() become invalid, even if the library is later
+ *   reloaded. Don't unload a library if you plan to use these pointers in the
+ *   future. Notably: beware of giving one of these pointers to atexit(), since
+ *   it may call that pointer after the library unloads.
  *
  * @{
  */
@@ -15272,11 +15185,10 @@ struct SharedObject;
  *
  * @cat resource
  *
- * @sa SharedObjectRef.SharedObjectRef
+ * @sa SharedObject.Load
  * @sa SharedObjectRef.LoadFunction
- * @sa SharedObjectRef.Unload
+ * @sa SharedObject.Unload
  * @sa SharedObject
- * @sa SharedObjectRef
  */
 struct SharedObjectRef : Resource<SDL_SharedObject*>
 {
@@ -15286,7 +15198,7 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
    * Look up the address of the named function in a shared object.
    *
    * This function pointer is no longer valid after calling
-   * SharedObjectRef.Unload().
+   * SharedObject.Unload().
    *
    * This function can only look up C function names. Other languages may have
    * name mangling and intrinsic language support that varies from compiler to
@@ -15306,86 +15218,28 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObject.SharedObject
+   * @sa SharedObject.Load
    */
   FunctionPointer LoadFunction(StringParam name)
   {
     return SDL_LoadFunction(get(), name);
   }
 
-protected:
   /**
    * Unload a shared object from memory.
    *
    * Note that any pointers from this object looked up through
    * SharedObjectRef.LoadFunction() will no longer be valid.
    *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SharedObject.SharedObject
-   */
-  void Unload() { reset(); }
-
-  /**
-   * Unload a shared object from memory.
-   *
-   * Note that any pointers from this object looked up through
-   * SharedObjectRef.LoadFunction() will no longer be valid.
+   * @param resource a valid shared object handle returned.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObject.SharedObject
+   * @sa SharedObject.Load
    */
-  void reset(SDL_SharedObject* newResource = {})
-  {
-    SDL_UnloadObject(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to sharedObject
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa SharedObjectRef
- */
-struct SharedObjectUnsafe : SharedObjectRef
-{
-  using SharedObjectRef::SharedObjectRef;
-
-  using SharedObjectRef::Unload;
-
-  using SharedObjectRef::reset;
-
-  /**
-   * Constructs SharedObjectUnsafe from SharedObjectRef.
-   */
-  constexpr SharedObjectUnsafe(const SharedObjectRef& other)
-    : SharedObjectRef(other.get())
-  {
-  }
-
-  SharedObjectUnsafe(const SharedObject& other) = delete;
-
-  /**
-   * Constructs SharedObjectUnsafe from SharedObject.
-   */
-  constexpr explicit SharedObjectUnsafe(SharedObject&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr SharedObjectUnsafe& operator=(SharedObjectUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_SharedObject* resource) { SDL_UnloadObject(resource); }
 };
 
 /**
@@ -15395,68 +15249,9 @@ struct SharedObjectUnsafe : SharedObjectRef
  *
  * @sa SharedObjectRef
  */
-struct SharedObject : SharedObjectUnsafe
+struct SharedObject : ResourceUnique<SharedObjectRef>
 {
-  using SharedObjectUnsafe::SharedObjectUnsafe;
-
-  /**
-   * Constructs an empty SharedObject.
-   */
-  constexpr SharedObject()
-    : SharedObjectUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit SharedObject(SDL_SharedObject* resource)
-    : SharedObjectUnsafe(resource)
-  {
-  }
-
-  constexpr SharedObject(const SharedObject& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr SharedObject(SharedObject&& other)
-    : SharedObject(other.release())
-  {
-  }
-
-  /**
-   * Dynamically load a shared object.
-   *
-   * @param sofile a system-dependent name of the object file.
-   * @post an opaque pointer to the object handle or nullptr on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SharedObjectRef.LoadFunction
-   * @sa SharedObjectRef.Unload
-   */
-  SharedObject(StringParam sofile)
-    : SharedObject(SDL_LoadObject(sofile))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~SharedObject() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  SharedObject& operator=(SharedObject other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Dynamically load a shared object.
@@ -15470,18 +15265,50 @@ struct SharedObject : SharedObjectUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SharedObjectRef.LoadFunction
-   * @sa SharedObjectRef.Unload
+   * @sa SharedObject.Unload
    */
-  static SharedObject LoadObject(StringParam sofile)
+  static SharedObject Load(StringParam sofile)
   {
-    return SharedObject(std::move(sofile));
+    return SharedObject(SDL_LoadObject(sofile));
   }
+
+  /**
+   * Unload a shared object from memory.
+   *
+   * Note that any pointers from this object looked up through
+   * SharedObjectRef.LoadFunction() will no longer be valid.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SharedObject.Load
+   */
+  void Unload() { reset(); }
 };
 
-constexpr SharedObjectUnsafe::SharedObjectUnsafe(SharedObject&& other)
-  : SharedObjectUnsafe(other.release())
+/**
+ * Unsafe Handle to sharedObject
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectRef
+ */
+struct SharedObjectUnsafe : ResourceUnsafe<SharedObjectRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs SharedObjectUnsafe from SharedObject.
+   */
+  constexpr explicit SharedObjectUnsafe(SharedObject&& other)
+    : SharedObjectUnsafe(other.release())
+  {
+  }
+};
 
 /// @}
 
@@ -15572,10 +15399,10 @@ inline OwnArray<Locale*> GetPreferredLocales()
  * quiet by default.
  *
  * You can change the log verbosity programmatically using
- * LogCategory.SetLogPriority() or with SDL_SetHint(SDL_HINT_LOGGING, ...), or
- * with the "SDL_LOGGING" environment variable. This variable is a comma
- * separated set of category=level tokens that define the default logging levels
- * for SDL applications.
+ * LogCategory.SetLogPriority() or with SetHint(SDL_HINT_LOGGING, ...), or with
+ * the "SDL_LOGGING" environment variable. This variable is a comma separated
+ * set of category=level tokens that define the default logging levels for SDL
+ * applications.
  *
  * The category can be a numeric category, one of "app", "error", "assert",
  * "system", "audio", "video", "render", "input", "test", or `*` for any
@@ -16707,7 +16534,7 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  *   ABGR32, define a platform-independent encoding into bytes in the order
  *   specified. For example, in RGB24 data, each pixel is encoded in 3 bytes
  *   (red, green, blue) in that order, and in ABGR32 data, each pixel is
- *   encoded in 4 bytes alpha, blue, green, red) in that order. Use these
+ *   encoded in 4 bytes (alpha, blue, green, red) in that order. Use these
  *   names if the property of a format that is important to you is the order
  *   of the bytes in memory or on disk.
  * - Names with a bit count per component, such as ARGB8888 and XRGB1555, are
@@ -18318,7 +18145,6 @@ struct FColor : SDL_FColor
  *
  * @sa PaletteRef.SetColors
  * @sa Palette
- * @sa PaletteRef
  */
 struct PaletteRef : Resource<SDL_Palette*>
 {
@@ -18349,54 +18175,63 @@ struct PaletteRef : Resource<SDL_Palette*>
   }
 
   /**
-   * Set a range of colors in a palette.
+   * Free a palette created with Palette.Create().
    *
-   * @param colors a span of SDL_Color structures to copy into the palette.
-   * @param firstcolor the index of the first palette entry to modify.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   */
-  bool SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
-  {
-    SDL_assert_paranoid(colors.size() < SDL_MAX_SINT32);
-    return SDL_SetPaletteColors(
-      get(), colors.data(), firstcolor, colors.size());
-  }
-
-protected:
-  /**
-   * Free a palette created with PaletteRef.PaletteRef().
-   *
-   * After calling, this object becomes empty.
+   * @param resource the PaletteRef structure to be freed.
    *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified or destroyed in another thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Palette.Palette
+   * @sa Palette.Create
+   */
+  static void reset(SDL_Palette* resource) { SDL_DestroyPalette(resource); }
+};
+
+/**
+ * Handle to an owned palette
+ *
+ * @cat resource
+ *
+ * @sa PaletteRef
+ */
+struct Palette : ResourceUnique<PaletteRef>
+{
+  using ResourceUnique::ResourceUnique;
+
+  /**
+   * Create a palette structure with the specified number of color entries.
+   *
+   * The palette entries are initialized to white.
+   *
+   * @param ncolors represents the number of color entries in the color palette.
+   * @returns a new Palette structure on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Palette.Destroy
+   * @sa PaletteRef.SetColors
+   * @sa SurfaceRef.SetPalette
+   */
+  static Palette Create(int ncolors)
+  {
+    return Palette(CheckError(SDL_CreatePalette(ncolors)));
+  }
+
+  /**
+   * Free a palette created with Palette.Create().
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Palette.Create
    */
   void Destroy() { reset(); }
-
-  /**
-   * Free a palette created with Palette.Palette().
-   *
-   * After calling, this object becomes empty.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Palette.Palette
-   */
-  void reset(SDL_Palette* newResource = {})
-  {
-    SDL_DestroyPalette(release(newResource));
-  }
 };
 
 /**
@@ -18408,136 +18243,18 @@ protected:
  *
  * @sa PaletteRef
  */
-struct PaletteUnsafe : PaletteRef
+struct PaletteUnsafe : ResourceUnsafe<PaletteRef>
 {
-  using PaletteRef::Destroy;
-
-  using PaletteRef::PaletteRef;
-
-  using PaletteRef::reset;
-
-  /**
-   * Constructs PaletteUnsafe from PaletteRef.
-   */
-  constexpr PaletteUnsafe(const PaletteRef& other)
-    : PaletteRef(other.get())
-  {
-  }
-
-  PaletteUnsafe(const Palette& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs PaletteUnsafe from Palette.
    */
-  constexpr explicit PaletteUnsafe(Palette&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr PaletteUnsafe& operator=(PaletteUnsafe other)
+  constexpr explicit PaletteUnsafe(Palette&& other)
+    : PaletteUnsafe(other.release())
   {
-    release(other.release());
-    return *this;
   }
 };
-
-/**
- * Handle to an owned palette
- *
- * @cat resource
- *
- * @sa PaletteRef
- */
-struct Palette : PaletteUnsafe
-{
-  using PaletteUnsafe::PaletteUnsafe;
-
-  /**
-   * Constructs an empty Palette.
-   */
-  constexpr Palette()
-    : PaletteUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Palette(SDL_Palette* resource)
-    : PaletteUnsafe(resource)
-  {
-  }
-
-  constexpr Palette(const Palette& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Palette(Palette&& other)
-    : Palette(other.release())
-  {
-  }
-
-  /**
-   * Create a palette structure with the specified number of color entries.
-   *
-   * The palette entries are initialized to white.
-   *
-   * @param ncolors represents the number of color entries in the color palette.
-   * @post a new Palette structure on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PaletteRef.Destroy
-   * @sa PaletteRef.SetColors
-   * @sa SurfaceRef.SetPalette
-   */
-  Palette(int ncolors)
-    : Palette(CheckError(SDL_CreatePalette(ncolors)))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Palette() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Palette& operator=(Palette other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create a palette structure with the specified number of color entries.
-   *
-   * The palette entries are initialized to white.
-   *
-   * @param ncolors represents the number of color entries in the color palette.
-   * @returns a new PaletteRef structure on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PaletteRef.Destroy
-   * @sa PaletteRef.SetColors
-   * @sa SurfaceRef.SetPalette
-   */
-  static Palette Create(int ncolors) { return Palette(ncolors); }
-};
-
-constexpr PaletteUnsafe::PaletteUnsafe(Palette&& other)
-  : PaletteUnsafe(other.release())
-{
-}
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.
@@ -18581,7 +18298,7 @@ inline Uint32 MapRGB(const PixelFormatDetails& format,
                      Uint8 g,
                      Uint8 b)
 {
-  return SDL_MapRGB(&format, palette.get(), r, g, b);
+  return SDL_MapRGB(&format, palette, r, g, b);
 }
 
 /**
@@ -18628,7 +18345,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
                       Uint8 b,
                       Uint8 a)
 {
-  return SDL_MapRGBA(&format, palette.get(), r, g, b, a);
+  return SDL_MapRGBA(&format, palette, r, g, b, a);
 }
 
 /**
@@ -18664,7 +18381,7 @@ inline void GetRGB(Uint32 pixel,
                    Uint8* g,
                    Uint8* b)
 {
-  SDL_GetRGB(pixel, &format, palette.get(), r, g, b);
+  SDL_GetRGB(pixel, &format, palette, r, g, b);
 }
 
 /**
@@ -18705,7 +18422,7 @@ inline void GetRGBA(Uint32 pixel,
                     Uint8* b,
                     Uint8* a)
 {
-  SDL_GetRGBA(pixel, &format, palette.get(), r, g, b, a);
+  SDL_GetRGBA(pixel, &format, palette, r, g, b, a);
 }
 
 /** @} */
@@ -19067,35 +18784,23 @@ inline const char* GetPlatform() { return SDL_GetPlatform(); }
  */
 using PowerState = SDL_PowerState;
 
-/**
- * error determining power status
- */
-constexpr PowerState POWERSTATE_ERROR = SDL_POWERSTATE_ERROR;
+constexpr PowerState POWERSTATE_ERROR =
+  SDL_POWERSTATE_ERROR; ///< error determining power status
 
-/**
- * cannot determine power status
- */
-constexpr PowerState POWERSTATE_UNKNOWN = SDL_POWERSTATE_UNKNOWN;
+constexpr PowerState POWERSTATE_UNKNOWN =
+  SDL_POWERSTATE_UNKNOWN; ///< cannot determine power status
 
-/**
- * Not plugged in, running on the battery.
- */
-constexpr PowerState POWERSTATE_ON_BATTERY = SDL_POWERSTATE_ON_BATTERY;
+constexpr PowerState POWERSTATE_ON_BATTERY =
+  SDL_POWERSTATE_ON_BATTERY; ///< Not plugged in, running on the battery.
 
-/**
- * Plugged in, no battery available.
- */
-constexpr PowerState POWERSTATE_NO_BATTERY = SDL_POWERSTATE_NO_BATTERY;
+constexpr PowerState POWERSTATE_NO_BATTERY =
+  SDL_POWERSTATE_NO_BATTERY; ///< Plugged in, no battery available.
 
-/**
- * Plugged in, charging battery.
- */
-constexpr PowerState POWERSTATE_CHARGING = SDL_POWERSTATE_CHARGING;
+constexpr PowerState POWERSTATE_CHARGING =
+  SDL_POWERSTATE_CHARGING; ///< Plugged in, charging battery.
 
-/**
- * Plugged in, battery charged.
- */
-constexpr PowerState POWERSTATE_CHARGED = SDL_POWERSTATE_CHARGED;
+constexpr PowerState POWERSTATE_CHARGED =
+  SDL_POWERSTATE_CHARGED; ///< Plugged in, battery charged.
 
 /// @}
 
@@ -19120,10 +18825,10 @@ constexpr PowerState POWERSTATE_CHARGED = SDL_POWERSTATE_CHARGED;
  * minute or so.
  *
  * @param seconds a pointer filled in with the seconds of battery life left,
- *                or NULL to ignore. This will be filled in with -1 if we
+ *                or nullptr to ignore. This will be filled in with -1 if we
  *                can't determine a value or there is no battery.
  * @param percent a pointer filled in with the percentage of battery life
- *                left, between 0 and 100, or NULL to ignore. This will be
+ *                left, between 0 and 100, or nullptr to ignore. This will be
  *                filled in with -1 we can't determine a value or there is no
  *                battery.
  * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
@@ -19144,27 +18849,27 @@ inline PowerState GetPowerInfo(int* seconds, int* percent)
  * A property is a variable that can be created and retrieved by name at
  * runtime.
  *
- * All properties are part of a property group (PropertiesRef). A property
- * group can be created with the CreateProperties() function or by simply
- * instantiating @ref Properties. It can be destroyed with the
- * PropertiesRef.reset(), but the Properties destructor probably will do what
- * you want to, automatically.
+ * All properties are part of a property group (Properties). A property group
+ * can be created with the Properties.Create function and destroyed with the
+ * Properties.Destroy function, but the Properties destructor probably will do
+ * what you want to, automatically.
  *
  * Properties can be added to and retrieved from a property group through the
  * following functions:
  *
- * - PropertiesRef.SetPointer() and PropertiesRef.GetPointer() operate on
- * `void*` pointer types.
- * - PropertiesRef.SetString() and PropertiesRef.GetString() operate on string
+ * - PropertiesRef.SetPointer and PropertiesRef.GetPointer operate on `void*`
+ *   pointer types.
+ * - PropertiesRef.SetString and PropertiesRef.GetString operate on string
  * types.
- * - PropertiesRef.SetNumber() and PropertiesRef.GetNumber() operate on signed
+ * - PropertiesRef.SetNumber and PropertiesRef.GetNumber operate on signed
  * 64-bit integer types.
- * - PropertiesRef.SetFloat() and PropertiesRef.GetFloat() operate on floating
- * point types.
- * - PropertiesRef.SetBoolean() and PropertiesRef.GetBoolean() operate on
- * boolean types.
+ * - PropertiesRef.SetFloat and PropertiesRef.GetFloat operate on floating point
+ *   types.
+ * - PropertiesRef.SetBoolean and PropertiesRef.GetBoolean operate on boolean
+ *   types.
  *
- * Properties can be removed from a group by using PropertiesRef.Clear().
+ * Properties can be removed from a group by using PropertiesRef.Clear.
+ *
  * @{
  */
 
@@ -19207,8 +18912,24 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
 /**
  * A callback used to free resources when a property is deleted.
  *
+ * This should release any resources associated with `value` that are no
+ * longer needed.
+ *
+ * This callback is set per-property. Different properties in the same group
+ * can have different cleanup callbacks.
+ *
+ * This callback will be called _during_ PropertiesRef.SetPointerWithCleanup if
+ * the function fails for any reason.
+ *
+ * @param value the pointer assigned to the property to clean up.
+ *
+ * @threadsafety This callback may fire without any locks held; if this is a
+ *               concern, the app should provide its own locking.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa PropertiesRef.SetPointerWithCleanup
  * @sa CleanupPropertyCallback
- * @sa PropertiesRef.SetPointerWithCleanup()
  * @sa result-callback
  *
  * @cat result-callback
@@ -19228,7 +18949,7 @@ using CleanupPropertyCB = std::function<void(void*)>;
  * per property in the set.
  *
  * @param userdata an app-defined pointer passed to the callback.
- * @param props the PropertiesRef that is being enumerated.
+ * @param props the Properties that is being enumerated.
  * @param name the next property name in the enumeration.
  *
  * @threadsafety PropertiesRef.Enumerate holds a lock on `props` during this
@@ -19249,7 +18970,7 @@ struct PropertiesRef;
  * This callback is called from PropertiesRef.Enumerate(), and is called once
  * per property in the set.
  *
- * @param props the PropertiesRef that is being enumerated.
+ * @param props the Properties that is being enumerated.
  * @param name the next property name in the enumeration.
  *
  * @threadsafety PropertiesRef.Enumerate holds a lock on `props` during this
@@ -19258,7 +18979,6 @@ struct PropertiesRef;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @cat immediate-callback
- *
  *
  * @sa PropertiesRef.Enumerate
  * @sa EnumeratePropertiesCallback
@@ -19292,38 +19012,13 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
   SDL_PROPERTY_TYPE_BOOLEAN; ///< BOOLEAN
 
 /**
- * Wrap properties id
- *
- * A property is a variable that can be created and retrieved by name at
- * runtime.
- *
- * All properties are part of a property group (Properties). A property
- * group can be created with the Properties constructor and destroyed
- * with this goes out of scope.
- *
- * Properties can be added to and retrieved from a property group through the
- * following functions:
- *
- * - SetPointer() and GetPointer() operate on `void*`
- *   pointer types.
- * - SetString() and GetString() operate on string types.
- * - SetNumber() and GetNumber() operate on signed 64-bit
- *   integer types.
- * - SetFloat() and GetFloat() operate on floating point
- *   types.
- * - SetBoolean() and GetBoolean() operate on boolean
- *   types.
- *
- * Properties can be removed from a group by using SDL_ClearProperty.
- *
- * To create a new properties group use CreateProperties() or
- * Properties.Properties().
+ * SDL properties ID
  *
  * @since This datatype is available since SDL 3.2.0.
  *
  * @cat resource
  *
- * @sa Properties.Properties
+ * @sa Properties.Create
  * @sa Properties
  */
 struct PropertiesRef : Resource<SDL_PropertiesID>
@@ -19807,13 +19502,13 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
    */
   Uint64 GetCount() const;
 
-protected:
   /**
    * Destroy a group of properties.
    *
    * All properties are deleted and their cleanup functions will be called, if
    * any.
    *
+   * @param resource the properties to destroy.
    *
    * @threadsafety This function should not be called while these properties are
    *               locked or other threads might be setting or getting values
@@ -19821,9 +19516,43 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
+   * @sa Properties.Create
    */
-  void Destroy() { reset(); }
+  static void reset(SDL_PropertiesID resource)
+  {
+    SDL_DestroyProperties(resource);
+  }
+};
+
+/**
+ * Handle to an owned properties
+ *
+ * @cat resource
+ *
+ * @sa PropertiesRef
+ */
+struct Properties : ResourceUnique<PropertiesRef>
+{
+  using ResourceUnique::ResourceUnique;
+
+  /**
+   * Create a group of properties.
+   *
+   * All properties are automatically destroyed when Quit() is called.
+   *
+   * @returns a valid ID for a new group of properties on success;
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Destroy
+   */
+  static Properties Create()
+  {
+    return Properties(CheckError(SDL_CreateProperties()));
+  }
 
   /**
    * Destroy a group of properties.
@@ -19837,12 +19566,9 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
+   * @sa Properties.Create
    */
-  void reset(SDL_PropertiesID newResource = {})
-  {
-    SDL_DestroyProperties(release(newResource));
-  }
+  void Destroy() { reset(); }
 };
 
 /**
@@ -19854,116 +19580,17 @@ protected:
  *
  * @sa PropertiesRef
  */
-struct PropertiesUnsafe : PropertiesRef
+struct PropertiesUnsafe : ResourceUnsafe<PropertiesRef>
 {
-  using PropertiesRef::Destroy;
-
-  using PropertiesRef::PropertiesRef;
-
-  using PropertiesRef::reset;
-
-  /**
-   * Constructs PropertiesUnsafe from PropertiesRef.
-   */
-  constexpr PropertiesUnsafe(const PropertiesRef& other)
-    : PropertiesRef(other.get())
-  {
-  }
-
-  PropertiesUnsafe(const Properties& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs PropertiesUnsafe from Properties.
    */
-  constexpr explicit PropertiesUnsafe(Properties&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr PropertiesUnsafe& operator=(PropertiesUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
-};
-
-/**
- * Handle to an owned properties
- *
- * @cat resource
- *
- * @sa PropertiesRef
- */
-struct Properties : PropertiesUnsafe
-{
-  using PropertiesUnsafe::PropertiesUnsafe;
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Properties(SDL_PropertiesID resource)
-    : PropertiesUnsafe(resource)
+  constexpr explicit PropertiesUnsafe(Properties&& other)
+    : PropertiesUnsafe(other.release())
   {
   }
-
-  constexpr Properties(const Properties& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Properties(Properties&& other)
-    : Properties(other.release())
-  {
-  }
-
-  /**
-   * Create a group of properties.
-   *
-   * All properties are automatically destroyed when Quit() is called.
-   *
-   * @post an ID for a new group of properties
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesRef.Destroy
-   */
-  Properties()
-    : Properties(CheckError(SDL_CreateProperties()))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Properties() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Properties& operator=(Properties other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create a group of properties.
-   *
-   * All properties are automatically destroyed when Quit() is called.
-   *
-   * @post an ID for a new group of properties
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesRef.Destroy
-   */
-  static Properties Create() { return Properties(); }
 };
 
 /**
@@ -20025,11 +19652,6 @@ public:
   friend class PropertiesRef;
 };
 
-constexpr PropertiesUnsafe::PropertiesUnsafe(Properties&& other)
-  : PropertiesUnsafe(other.release())
-{
-}
-
 /**
  * Get the global SDL properties.
  *
@@ -20047,25 +19669,6 @@ inline PropertiesLock PropertiesRef::Lock() &
 {
   CheckError(SDL_LockProperties(get()));
   return PropertiesLock{get()};
-}
-
-/**
- * Create a group of properties.
- *
- * All properties are automatically destroyed when Quit() is called.
- *
- * @returns a valid Properties for a new group of properties, or false on
- *          failure; call GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Properties
- */
-inline Properties CreateProperties()
-{
-  return Properties{SDL_CreateProperties()};
 }
 
 #pragma region impl
@@ -20095,6 +19698,7 @@ inline Uint64 PropertiesRef::GetCount() const
  *
  * Some helper functions for managing rectangles and 2D points, in both
  * integer and floating point versions.
+ *
  * @{
  */
 
@@ -20108,13 +19712,17 @@ struct Rect;
 struct FRect;
 
 /**
- * @brief The structure that defines a point (using integers)
+ * The structure that defines a point (using integers).
  *
- * Based on https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
+ * Inspired by
+ * https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
- * @sa wrap-extending-struct
+ * @sa Rect.GetEnclosingPoints
+ * @sa Point.IsInRect
  */
 struct Point : SDL_Point
 {
@@ -20548,11 +20156,14 @@ struct Point : SDL_Point
 };
 
 /**
- * @brief The structure that defines a point (using floating point values).
+ * The structure that defines a point (using floating point values).
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
- * @sa wrap-extending-struct
+ * @sa FRect.GetEnclosingPoints
+ * @sa FPoint.IsInRect
  */
 struct FPoint : SDL_FPoint
 {
@@ -20886,11 +20497,19 @@ struct FPoint : SDL_FPoint
 };
 
 /**
- * @brief A rectangle, with the origin at the upper left (using integers).
+ * A rectangle, with the origin at the upper left (using integers).
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
- * @sa wrap-extending-struct
+ * @sa Rect.Empty
+ * @sa Rect.Equal
+ * @sa Rect.HasIntersection
+ * @sa Rect.GetIntersection
+ * @sa Rect.IntersectLine
+ * @sa Rect.GetUnion
+ * @sa Rect.GetEnclosingPoints
  */
 struct Rect : SDL_Rect
 {
@@ -21508,11 +21127,22 @@ struct Rect : SDL_Rect
 };
 
 /**
- * @brief A rectangle, with the origin at the upper left (using floats).
+ * A rectangle, with the origin at the upper left (using floating point
+ * values).
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
- * @sa wrap-extending-struct
+ * @sa FRect.Empty
+ * @sa FRect.Equal
+ * @sa FRect.EqualEpsilon
+ * @sa FRect.HasIntersection
+ * @sa FRect.GetIntersection
+ * @sa FRect.IntersectLine
+ * @sa FRect.GetUnion
+ * @sa FRect.GetEnclosingPoints
+ * @sa FPoint.IsInRect
  */
 struct FRect : SDL_FRect
 {
@@ -22976,13 +22606,14 @@ constexpr SDL_Scancode SCANCODE_COUNT = SDL_SCANCODE_COUNT;
  *
  * SDL realtime clock and date/time routines.
  *
- * There are two data types that are used in this category: SDL_Time, which
+ * There are two data types that are used in this category: Time, which
  * represents the nanoseconds since a specific moment (an "epoch"), and
- * SDL_DateTime, which breaks time down into human-understandable components:
+ * DateTime, which breaks time down into human-understandable components:
  * years, months, days, hours, etc.
  *
  * Much of the functionality is involved in converting those two types to
  * other useful forms.
+ *
  * @{
  */
 
@@ -23415,14 +23046,13 @@ inline int GetDayOfWeek(int year, int month, int day)
  * SDL provides time management functionality. It is useful for dealing with
  * (usually) small durations of time.
  *
- * This is not to be confused with _calendar time_ management, which is
- * provided by [CategoryTime](#CategoryTime).
+ * This is not to be confused with _calendar time_ management, which is provided
+ * by [CategoryTime](#CategoryTime).
  *
  * This category covers measuring time elapsed (GetTicks(),
- * GetPerformanceCounter()), putting a thread to sleep for a certain
- * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
- * a callback function after a certain amount of time has elapsed
- * (AddTimer(), etc).
+ * GetPerformanceCounter()), putting a thread to sleep for a certain amount of
+ * time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing a callback function
+ * after a certain amount of time has elasped (SDL_AddTimer(), etc).
  *
  * @{
  */
@@ -23482,7 +23112,7 @@ inline std::chrono::nanoseconds GetTicks()
  *
  * The counter values are only meaningful relative to each other. Differences
  * between values can be converted to times by using
- * SDL_GetPerformanceFrequency().
+ * GetPerformanceFrequency().
  *
  * @returns the current counter value.
  *
@@ -23490,7 +23120,7 @@ inline std::chrono::nanoseconds GetTicks()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetPerformanceFrequency()
+ * @sa GetPerformanceFrequency
  */
 inline Uint64 GetPerformanceCounter() { return SDL_GetPerformanceCounter(); }
 
@@ -23503,7 +23133,7 @@ inline Uint64 GetPerformanceCounter() { return SDL_GetPerformanceCounter(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetPerformanceCounter()
+ * @sa GetPerformanceCounter
  */
 inline Uint64 GetPerformanceFrequency()
 {
@@ -23521,6 +23151,9 @@ inline Uint64 GetPerformanceFrequency()
  *
  * @threadsafety It is safe to call this function from any thread.
  *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa DelayPrecise
  */
 inline void Delay(std::chrono::nanoseconds duration)
 {
@@ -23540,8 +23173,7 @@ inline void Delay(std::chrono::nanoseconds duration)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Delay()
- * @sa DelayNS()
+ * @sa Delay
  */
 inline void DelayPrecise(std::chrono::nanoseconds duration)
 {
@@ -23564,7 +23196,7 @@ using TimerID = SDL_TimerID;
  * will be removed.
  *
  * @param userdata an arbitrary pointer provided by the app through
- *                 AddTimer(), for its own use.
+ *                 SDL_AddTimer, for its own use.
  * @param timerID the current timer being processed.
  * @param interval the current callback time interval.
  * @returns the new callback time interval, or 0 to disable further runs of
@@ -23602,8 +23234,8 @@ using TimerCallback = SDL_NSTimerCallback;
  *
  * @cat listener-callback
  *
- * @sa listener-callback
- * @sa AddTimer(TimerCB)
+ * @sa AddTimer
+ * @sa TimerCallback
  */
 using TimerCB =
   std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
@@ -23710,7 +23342,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
 }
 
 /**
- * Remove a timer created with AddTimer().
+ * Remove a timer created with SDL_AddTimer().
  *
  * @param id the ID of the timer to remove.
  * @throws Error on failure.
@@ -23719,7 +23351,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AddTimer
+ * @sa SDL_AddTimer
  */
 inline void RemoveTimer(TimerID id)
 {
@@ -23885,25 +23517,25 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
  * All SDL programs need to initialize the library before starting to work
  * with it.
  *
- * Almost everything can simply call SDL_Init() near startup, with a handful
- * of flags to specify subsystems to touch. These are here to make sure SDL
- * does not even attempt to touch low-level pieces of the operating system
+ * Almost everything can simply call InitSubSystem() near startup, with a
+ * handful of flags to specify subsystems to touch. These are here to make sure
+ * SDL does not even attempt to touch low-level pieces of the operating system
  * that you don't intend to use. For example, you might be using SDL for video
- * and input but chose an external library for audio, and in this case you
- * would just need to leave off the `SDL_INIT_AUDIO` flag to make sure that
- * external library has complete control.
+ * and input but chose an external library for audio, and in this case you would
+ * just need to leave off the `INIT_AUDIO` flag to make sure that external
+ * library has complete control.
  *
- * Most apps, when terminating, should call SDL_Quit(). This will clean up
- * (nearly) everything that SDL might have allocated, and crucially, it'll
- * make sure that the display's resolution is back to what the user expects if
- * you had previously changed it for your game.
+ * Most apps, when terminating, should call Quit(). This will clean up (nearly)
+ * everything that SDL might have allocated, and crucially, it'll make sure that
+ * the display's resolution is back to what the user expects if you had
+ * previously changed it for your game.
  *
- * SDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup
- * to fill in details about the program. This is completely optional, but it
- * helps in small ways (we can provide an About dialog box for the macOS menu,
- * we can name the app in the system's audio mixer, etc). Those that want to
- * provide a _lot_ of information should look at the more-detailed
- * SDL_SetAppMetadataProperty().
+ * SDL3 apps are strongly encouraged to call SetAppMetadata() at startup to fill
+ * in details about the program. This is completely optional, but it helps in
+ * small ways (we can provide an About dialog box for the macOS menu, we can
+ * name the app in the system's audio mixer, etc). Those that want to provide a
+ * _lot_ of information should look at the more-detailed
+ * SetAppMetadataProperty().
  *
  * @{
  */
@@ -23915,7 +23547,7 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
  */
 
 /**
- * Initialization flags for SDL
+ * Initialization flags for InitSubSystem.
  *
  * These are the flags which may be passed to InitSubSystem(). You should
  * specify the subsystems which you will be using in your application.
@@ -24094,12 +23726,11 @@ using AppQuit_func = SDL_AppQuit_func;
  * The class Init is probably what you are looking for, as it automatically
  * handles de-initialization.
  *
- * The file I/O (for example: IOStreamRef.IOStreamRef) and threading
- * (ThreadRef.ThreadRef) subsystems are initialized by default. Message boxes
- * (ShowSimpleMessageBox) also attempt to work without initializing the
- * video subsystem, in hopes of being useful in showing an error dialog when
- * Init fails. You must specifically initialize other subsystems if you
- * use them in your application.
+ * The file I/O (for example: IOStream.FromFile) and threading (Thread.Create)
+ * subsystems are initialized by default. Message boxes (ShowSimpleMessageBox)
+ * also attempt to work without initializing the video subsystem, in hopes of
+ * being useful in showing an error dialog when InitSubSystem fails. You must
+ * specifically initialize other subsystems if you use them in your application.
  *
  * Logging (such as Log) works without initialization, too.
  *
@@ -24283,7 +23914,7 @@ inline void InitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
  * QuitSubSystem().
  *
  * @param flags any of the flags used by InitSubSystem(); see InitFlags for
- * details.
+ *              details.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -24536,8 +24167,12 @@ inline bool IsMainThread() { return SDL_IsMainThread(); }
 using MainThreadCallback = SDL_MainThreadCallback;
 
 /**
- * @sa PropertiesRef.MainThreadCallback
- * @sa result-callback
+ * Callback run on the main thread.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread
+ * @sa MainThreadCallback
  *
  * @cat result-callback
  *
@@ -24999,11 +24634,11 @@ inline bool SDL::updateActive(bool active)
  * @defgroup CategoryIOStream I/O Streams
  *
  * SDL provides an abstract interface for reading and writing data streams. It
- * offers implementations for files, memory, etc, and the app can provide
- * their own implementations, too.
+ * offers implementations for files, memory, etc, and the app can provide their
+ * own implementations, too.
  *
- * SDL_IOStream is not related to the standard C++ iostream class, other than
- * both are abstract interfaces to read/write data.
+ * IOStream is not related to the standard C++ iostream class, other than both
+ * are abstract interfaces to read/write data.
  *
  * @{
  */
@@ -25015,7 +24650,7 @@ struct IOStreamRef;
 struct IOStream;
 
 /**
- * IOStreamRef status, set by a read or write operation.
+ * IOStream status, set by a read or write operation.
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -25039,7 +24674,7 @@ constexpr IOStatus IO_STATUS_WRITEONLY =
   SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer.
 
 /**
- * Possible `whence` values for IOStreamRef seeking.
+ * Possible `whence` values for IOStream seeking.
  *
  * These map to the same "whence" concept that `fseek` or `lseek` use in the
  * standard C runtime.
@@ -25058,12 +24693,12 @@ constexpr IOWhence IO_SEEK_END =
   SDL_IO_SEEK_END; ///< Seek relative to the end of data.
 
 /**
- * The function pointers that drive an IOStreamRef.
+ * The function pointers that drive an IOStream.
  *
- * Applications can provide this struct to IOStreamRef.IOStreamRef() to create
- * their own implementation of IOStreamRef. This is not necessarily required,
- * as SDL already offers several common types of I/O streams, via
- * IOStreamRef.IOStreamRef().
+ * Applications can provide this struct to IOStream.Open() to create their own
+ * implementation of IOStream. This is not necessarily required, as SDL already
+ * offers several common types of I/O streams, via functions like
+ * IOStream.FromFile() and IOStream.FromMem().
  *
  * This structure should be initialized using SDL_INIT_INTERFACE()
  *
@@ -25078,15 +24713,14 @@ using IOStreamInterface = SDL_IOStreamInterface;
  *
  * This operates as an opaque handle. There are several APIs to create various
  * types of I/O streams, or an app can supply an IOStreamInterface to
- * IOStreamRef.IOStreamRef() to provide their own stream implementation behind
- * this struct's abstract interface.
+ * IOStream.Open() to provide their own stream implementation behind this
+ * struct's abstract interface.
  *
  * @since This struct is available since SDL 3.2.0.
  *
  * @cat resource
  *
  * @sa IOStream
- * @sa IOStreamRef
  */
 struct IOStreamRef : Resource<SDL_IOStream*>
 {
@@ -25378,7 +25012,7 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.IOStream
+   * @sa IOStream.FromFile
    * @sa IOStreamRef.Write
    */
   void Flush() { CheckError(SDL_FlushIO(get())); }
@@ -26357,13 +25991,12 @@ struct IOStreamRef : Resource<SDL_IOStream*>
     return {};
   }
 
-protected:
   /**
    * Close and free an allocated IOStreamRef structure.
    *
-   * IOStreamRef.Close() closes and cleans up the IOStreamRef stream. It
-   * releases any resources used by the stream and frees the IOStreamRef itself.
-   * This returns true on success, or false if the stream failed to flush to its
+   * IOStream.Close() closes and cleans up the IOStreamRef stream. It releases
+   * any resources used by the stream and frees the IOStreamRef itself. This
+   * returns true on success, or false if the stream failed to flush to its
    * output (e.g. to disk).
    *
    * Note that if this fails to flush the stream for any reason, this function
@@ -26379,90 +26012,18 @@ protected:
    * time and makes the system and your app operate less efficiently, so do so
    * sparingly.
    *
+   * @param resource IOStreamRef structure to close.
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.IOStream
+   * @sa IOStream.Open
    */
-  void Close() { reset(); }
-
-  /**
-   * Close and free an allocated IOStreamRef structure.
-   *
-   * IOStreamRef.Close() closes and cleans up the IOStreamRef stream. It
-   * releases any resources used by the stream and frees the IOStreamRef itself.
-   * This returns true on success, or false if the stream failed to flush to its
-   * output (e.g. to disk).
-   *
-   * Note that if this fails to flush the stream for any reason, this function
-   * reports an error, but the IOStreamRef is still invalid once this function
-   * returns.
-   *
-   * This call flushes any buffered writes to the operating system, but there
-   * are no guarantees that those writes have gone to physical media; they might
-   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
-   * crucial that writes go to disk immediately, so they are definitely stored
-   * even if the power fails before the file cache would have caught up, one
-   * should call IOStreamRef.Flush() before closing. Note that flushing takes
-   * time and makes the system and your app operate less efficiently, so do so
-   * sparingly.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStream.IOStream
-   */
-  void reset(SDL_IOStream* newResource = {})
+  static void reset(SDL_IOStream* resource)
   {
-    CheckError(SDL_CloseIO(release(newResource)));
-  }
-};
-
-/**
- * Unsafe Handle to iOStream
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa IOStreamRef
- */
-struct IOStreamUnsafe : IOStreamRef
-{
-  using IOStreamRef::Close;
-
-  using IOStreamRef::IOStreamRef;
-
-  using IOStreamRef::reset;
-
-  /**
-   * Constructs IOStreamUnsafe from IOStreamRef.
-   */
-  constexpr IOStreamUnsafe(const IOStreamRef& other)
-    : IOStreamRef(other.get())
-  {
-  }
-
-  IOStreamUnsafe(const IOStream& other) = delete;
-
-  /**
-   * Constructs IOStreamUnsafe from IOStream.
-   */
-  constexpr explicit IOStreamUnsafe(IOStream&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr IOStreamUnsafe& operator=(IOStreamUnsafe other)
-  {
-    release(other.release());
-    return *this;
+    CheckError(SDL_CloseIO(resource));
   }
 };
 
@@ -26473,38 +26034,12 @@ struct IOStreamUnsafe : IOStreamRef
  *
  * @sa IOStreamRef
  */
-struct IOStream : IOStreamUnsafe
+struct IOStream : ResourceUnique<IOStreamRef>
 {
-  using IOStreamUnsafe::IOStreamUnsafe;
+  using ResourceUnique::ResourceUnique;
 
   /**
-   * Constructs an empty IOStream.
-   */
-  constexpr IOStream()
-    : IOStreamUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit IOStream(SDL_IOStream* resource)
-    : IOStreamUnsafe(resource)
-  {
-  }
-
-  constexpr IOStream(const IOStream& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr IOStream(IOStream&& other)
-    : IOStream(other.release())
-  {
-  }
-
-  /**
-   * Use this function to create a new IOStreamRef structure for reading from
+   * Use this function to create a new IOStream structure for reading from
    * and/or writing to a named file.
    *
    * The `mode` string is treated roughly the same as in a call to the C
@@ -26542,142 +26077,8 @@ struct IOStream : IOStreamUnsafe
    * This function supports Unicode filenames, but they must be encoded in UTF-8
    * format, regardless of the underlying operating system.
    *
-   * In Android, IOStream.IOStream() can be used to open content:// URIs. As a
-   * fallback, IOStream.IOStream() will transparently open a matching filename
-   * in the app's `assets`.
-   *
-   * Closing the IOStreamRef will close SDL's internal file handle.
-   *
-   * The following properties may be set at creation time by SDL:
-   *
-   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
-   *   to a win32 `HANDLE`, that this IOStreamRef is using to access the
-   *   filesystem. If the program isn't running on Windows, or SDL used some
-   *   other method to access the filesystem, this property will not be set.
-   * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
-   *   stdio `FILE *`, that this IOStreamRef is using to access the filesystem.
-   *   If SDL used some other method to access the filesystem, this property
-   *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
-   *   than your app, trying to use this pointer will almost certainly result in
-   *   a crash! This is mostly a problem on Windows; make sure you build SDL and
-   *   your app with the same compiler and settings to avoid it.
-   * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
-   *   IOStreamRef is using to access the filesystem.
-   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
-   *   to an Android NDK `AAsset *`, that this IOStreamRef is using to access
-   *   the filesystem. If SDL used some other method to access the filesystem,
-   *   this property will not be set.
-   *
-   * @param file a UTF-8 string representing the filename to open.
-   * @param mode an ASCII string representing the mode to be used for opening
-   *             the file.
-   * @post the object is convertible to true if valid or false on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamRef.Close
-   * @sa IOStreamRef.Flush
-   * @sa IOStreamRef.Read
-   * @sa IOStreamRef.Seek
-   * @sa IOStreamRef.Tell
-   * @sa IOStreamRef.Write
-   */
-  IOStream(StringParam file, StringParam mode)
-    : IOStream(SDL_IOFromFile(file, mode))
-  {
-  }
-
-  /**
-   * Create a custom IOStreamRef.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own IOStreamRef implementation. If you just need an IOStreamRef to
-   * read/write a common data source, you should use the built-in
-   * implementations in SDL, like IOStream.IOStream(StringParam,StringParam) or
-   * IOStream.FromMem(), etc.
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this IOStreamRef, initialized
-   *              using SDL_INIT_INTERFACE().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @post a valid stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamRef.Close
-   * @sa SDL_INIT_INTERFACE
-   * @sa IOStream.FromConstMem
-   * @sa IOStream.IOStream
-   * @sa IOStream.FromMem
-   */
-  IOStream(const IOStreamInterface& iface, void* userdata)
-    : IOStream(CheckError(SDL_OpenIO(&iface, userdata)))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~IOStream() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  IOStream& operator=(IOStream other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Use this function to create a new IOStreamRef structure for reading from
-   * and/or writing to a named file.
-   *
-   * The `mode` string is treated roughly the same as in a call to the C
-   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
-   * scenes.
-   *
-   * Available `mode` strings:
-   *
-   * - "r": Open a file for reading. The file must exist.
-   * - "w": Create an empty file for writing. If a file with the same name
-   *   already exists its content is erased and the file is treated as a new
-   *   empty file.
-   * - "a": Append to a file. Writing operations append data at the end of the
-   *   file. The file is created if it does not exist.
-   * - "r+": Open a file for update both reading and writing. The file must
-   *   exist.
-   * - "w+": Create an empty file for both reading and writing. If a file with
-   *   the same name already exists its content is erased and the file is
-   *   treated as a new empty file.
-   * - "a+": Open a file for reading and appending. All writing operations are
-   *   performed at the end of the file, protecting the previous content to be
-   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
-   *   anywhere in the file for reading, but writing operations will move it
-   *   back to the end of file. The file is created if it does not exist.
-   *
-   * **NOTE**: In order to open a file as a binary file, a "b" character has to
-   * be included in the `mode` string. This additional "b" character can either
-   * be appended at the end of the string (thus making the following compound
-   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
-   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
-   * Additional characters may follow the sequence, although they should have no
-   * effect. For example, "t" is sometimes appended to make explicit the file is
-   * a text file.
-   *
-   * This function supports Unicode filenames, but they must be encoded in UTF-8
-   * format, regardless of the underlying operating system.
-   *
-   * In Android, IOStream.IOStream() can be used to open content:// URIs. As a
-   * fallback, IOStream.IOStream() will transparently open a matching filename
+   * In Android, IOStream.FromFile() can be used to open content:// URIs. As a
+   * fallback, IOStream.FromFile() will transparently open a matching filename
    * in the app's `assets`.
    *
    * Closing the IOStreamRef will close SDL's internal file handle.
@@ -26712,7 +26113,7 @@ struct IOStream : IOStreamUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamRef.Close
+   * @sa IOStream.Close
    * @sa IOStreamRef.Flush
    * @sa IOStreamRef.Read
    * @sa IOStreamRef.Seek
@@ -26721,12 +26122,12 @@ struct IOStream : IOStreamUnsafe
    */
   static IOStream FromFile(StringParam file, StringParam mode)
   {
-    return IOStream(std::move(file), std::move(mode));
+    return IOStream(SDL_IOFromFile(file, mode));
   }
 
   /**
    * Use this function to prepare a read-write memory buffer for use with
-   * IOStreamRef.
+   * IOStream.
    *
    * This function sets up an IOStreamRef struct based on a memory area of a
    * certain size, for both read and write access.
@@ -26755,7 +26156,7 @@ struct IOStream : IOStreamUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IOStream.FromConstMem
-   * @sa IOStreamRef.Close
+   * @sa IOStream.Close
    * @sa IOStreamRef.Flush
    * @sa IOStreamRef.Read
    * @sa IOStreamRef.Seek
@@ -26800,7 +26201,7 @@ struct IOStream : IOStreamUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IOStream.FromMem
-   * @sa IOStreamRef.Close
+   * @sa IOStream.Close
    * @sa IOStreamRef.Read
    * @sa IOStreamRef.Seek
    * @sa IOStreamRef.Tell
@@ -26821,7 +26222,7 @@ struct IOStream : IOStreamUnsafe
    *   memory of the stream. This can be set to nullptr to transfer ownership of
    *   the memory to the application, which should free the memory with
    *   free(). If this is done, the next operation on the stream must be
-   *   IOStreamRef.Close().
+   *   IOStream.Close().
    * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
    *   multiples of this size, defaulting to 1024.
    *
@@ -26832,7 +26233,7 @@ struct IOStream : IOStreamUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamRef.Close
+   * @sa IOStream.Close
    * @sa IOStreamRef.Read
    * @sa IOStreamRef.Seek
    * @sa IOStreamRef.Tell
@@ -26846,7 +26247,7 @@ struct IOStream : IOStreamUnsafe
    * Applications do not need to use this function unless they are providing
    * their own IOStreamRef implementation. If you just need an IOStreamRef to
    * read/write a common data source, you should use the built-in
-   * implementations in SDL, like IOStream.IOStream() or IOStream.FromMem(),
+   * implementations in SDL, like IOStream.FromFile() or IOStream.FromMem(),
    * etc.
    *
    * This function makes a copy of `iface` and the caller does not need to keep
@@ -26855,29 +26256,77 @@ struct IOStream : IOStreamUnsafe
    * @param iface the interface that implements this IOStreamRef, initialized
    *              using SDL_INIT_INTERFACE().
    * @param userdata the pointer that will be passed to the interface functions.
-   * @returns a pointer to the allocated memory on success.
+   * @returns a valid stream on success.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamRef.Close
+   * @sa IOStream.Close
    * @sa SDL_INIT_INTERFACE
    * @sa IOStream.FromConstMem
-   * @sa IOStream.IOStream
+   * @sa IOStream.FromFile
    * @sa IOStream.FromMem
    */
   static IOStream Open(const IOStreamInterface& iface, void* userdata)
   {
-    return IOStream(iface, userdata);
+    return IOStream(CheckError(SDL_OpenIO(&iface, userdata)));
   }
+
+  /**
+   * Close and free an allocated IOStreamRef structure.
+   *
+   * IOStream.Close() closes and cleans up the IOStreamRef stream. It releases
+   * any resources used by the stream and frees the IOStreamRef itself. This
+   * returns true on success, or false if the stream failed to flush to its
+   * output (e.g. to disk).
+   *
+   * Note that if this fails to flush the stream for any reason, this function
+   * reports an error, but the IOStreamRef is still invalid once this function
+   * returns.
+   *
+   * This call flushes any buffered writes to the operating system, but there
+   * are no guarantees that those writes have gone to physical media; they might
+   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
+   * crucial that writes go to disk immediately, so they are definitely stored
+   * even if the power fails before the file cache would have caught up, one
+   * should call IOStreamRef.Flush() before closing. Note that flushing takes
+   * time and makes the system and your app operate less efficiently, so do so
+   * sparingly.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStream.Open
+   */
+  void Close() { reset(); }
 };
 
-constexpr IOStreamUnsafe::IOStreamUnsafe(IOStream&& other)
-  : IOStreamUnsafe(other.release())
+/**
+ * Unsafe Handle to iOStream
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa IOStreamRef
+ */
+struct IOStreamUnsafe : ResourceUnsafe<IOStreamRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs IOStreamUnsafe from IOStream.
+   */
+  constexpr explicit IOStreamUnsafe(IOStream&& other)
+    : IOStreamUnsafe(other.release())
+  {
+  }
+};
 
 namespace prop::IOStream {
 
@@ -27020,95 +26469,51 @@ using Keymod = Uint16;
 #undef KMOD_SCROLL
 #undef KMOD_SHIFT
 
-/**
- * no modifier is applicable.
- */
-constexpr Keymod KMOD_NONE = SDL_KMOD_NONE;
+constexpr Keymod KMOD_NONE = SDL_KMOD_NONE; ///< no modifier is applicable.
 
-/**
- * the left Shift key is down.
- */
-constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT;
+constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT; ///< the left Shift key is down.
 
-/**
- * the right Shift key is down.
- */
-constexpr Keymod KMOD_RSHIFT = SDL_KMOD_RSHIFT;
+constexpr Keymod KMOD_RSHIFT =
+  SDL_KMOD_RSHIFT; ///< the right Shift key is down.
 
-/**
- * the Level 5 Shift key is down.
- */
-constexpr Keymod KMOD_LEVEL5 = SDL_KMOD_LEVEL5;
+constexpr Keymod KMOD_LEVEL5 =
+  SDL_KMOD_LEVEL5; ///< the Level 5 Shift key is down.
 
-/**
- * the left Ctrl (Control) key is down.
- */
-constexpr Keymod KMOD_LCTRL = SDL_KMOD_LCTRL;
+constexpr Keymod KMOD_LCTRL =
+  SDL_KMOD_LCTRL; ///< the left Ctrl (Control) key is down.
 
-/**
- * the right Ctrl (Control) key is down.
- */
-constexpr Keymod KMOD_RCTRL = SDL_KMOD_RCTRL;
+constexpr Keymod KMOD_RCTRL =
+  SDL_KMOD_RCTRL; ///< the right Ctrl (Control) key is down.
 
-/**
- * the left Alt key is down.
- */
-constexpr Keymod KMOD_LALT = SDL_KMOD_LALT;
+constexpr Keymod KMOD_LALT = SDL_KMOD_LALT; ///< the left Alt key is down.
 
-/**
- * the right Alt key is down.
- */
-constexpr Keymod KMOD_RALT = SDL_KMOD_RALT;
+constexpr Keymod KMOD_RALT = SDL_KMOD_RALT; ///< the right Alt key is down.
 
-/**
- * the left GUI key (often the Windows key) is down.
- */
-constexpr Keymod KMOD_LGUI = SDL_KMOD_LGUI;
+constexpr Keymod KMOD_LGUI =
+  SDL_KMOD_LGUI; ///< the left GUI key (often the Windows key) is down.
 
-/**
- * the right GUI key (often the Windows key) is down.
- */
-constexpr Keymod KMOD_RGUI = SDL_KMOD_RGUI;
+constexpr Keymod KMOD_RGUI =
+  SDL_KMOD_RGUI; ///< the right GUI key (often the Windows key) is down.
 
 /**
  * the Num Lock key (may be located on an extended keypad) is down.
  */
 constexpr Keymod KMOD_NUM = SDL_KMOD_NUM;
 
-/**
- * the Caps Lock key is down.
- */
-constexpr Keymod KMOD_CAPS = SDL_KMOD_CAPS;
+constexpr Keymod KMOD_CAPS = SDL_KMOD_CAPS; ///< the Caps Lock key is down.
 
-/**
- * the !AltGr key is down.
- */
-constexpr Keymod KMOD_MODE = SDL_KMOD_MODE;
+constexpr Keymod KMOD_MODE = SDL_KMOD_MODE; ///< the !AltGr key is down.
 
-/**
- * the Scroll Lock key is down.
- */
-constexpr Keymod KMOD_SCROLL = SDL_KMOD_SCROLL;
+constexpr Keymod KMOD_SCROLL =
+  SDL_KMOD_SCROLL; ///< the Scroll Lock key is down.
 
-/**
- * Any Ctrl key is down.
- */
-constexpr Keymod KMOD_CTRL = SDL_KMOD_CTRL;
+constexpr Keymod KMOD_CTRL = SDL_KMOD_CTRL; ///< Any Ctrl key is down.
 
-/**
- * Any Shift key is down.
- */
-constexpr Keymod KMOD_SHIFT = SDL_KMOD_SHIFT;
+constexpr Keymod KMOD_SHIFT = SDL_KMOD_SHIFT; ///< Any Shift key is down.
 
-/**
- * Any Alt key is down.
- */
-constexpr Keymod KMOD_ALT = SDL_KMOD_ALT;
+constexpr Keymod KMOD_ALT = SDL_KMOD_ALT; ///< Any Alt key is down.
 
-/**
- * Any GUI key is down.
- */
-constexpr Keymod KMOD_GUI = SDL_KMOD_GUI;
+constexpr Keymod KMOD_GUI = SDL_KMOD_GUI; ///< Any GUI key is down.
 
 /**
  * The SDL virtual key representation.
@@ -28112,14 +27517,14 @@ struct StorageRef;
 struct Storage;
 
 /**
- * Function interface for StorageRef.
+ * Function interface for Storage.
  *
- * Apps that want to supply a custom implementation of StorageRef will fill
- * in all the functions in this struct, and then pass it to
- * StorageRef.StorageRef to create a custom StorageRef object.
+ * Apps that want to supply a custom implementation of Storage will fill in all
+ * the functions in this struct, and then pass it to Storage.Open to create a
+ * custom Storage object.
  *
- * It is not usually necessary to do this; SDL provides standard
- * implementations for many things you might expect to do with an StorageRef.
+ * It is not usually necessary to do this; SDL provides standard implementations
+ * for many things you might expect to do with an Storage.
  *
  * This structure should be initialized using SDL_INIT_INTERFACE()
  *
@@ -28133,8 +27538,8 @@ using StorageInterface = SDL_StorageInterface;
  * An abstract interface for filesystem access.
  *
  * This is an opaque datatype. One can create this object using standard SDL
- * functions like StorageRef.StorageRef or StorageRef.StorageRef, etc, or
- * create an object with a custom implementation using StorageRef.StorageRef.
+ * functions like Storage.OpenTitle or Storage.OpenUser, etc, or create
+ * an object with a custom implementation using Storage.Open.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -28504,78 +27909,22 @@ struct StorageRef : Resource<SDL_Storage*>
     return OwnArray<char*>{data, size_t(count)};
   }
 
-protected:
   /**
    * Closes and frees a storage container.
    *
-   * @returns true if the container was freed with no errors, false otherwise;
-   *          call GetError() for more information. Even if the function
-   *          returns an error, the container data will be freed; the error is
-   *          only for informational purposes.
+   * @param resource a storage container to close.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Storage
+   * @sa Storage.OpenFile
+   * @sa Storage.Open
+   * @sa Storage.OpenTitle
+   * @sa Storage.OpenUser
    */
-  bool Close() { return reset(); }
-
-  /**
-   * Closes and frees a storage container.
-   *
-   * @returns true if the container was freed with no errors, false otherwise;
-   *          call GetError() for more information. Even if the function
-   *          returns an error, the container data will be freed; the error is
-   *          only for informational purposes.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Storage.Storage
-   */
-  bool reset(SDL_Storage* newResource = {})
+  static void reset(SDL_Storage* resource)
   {
-    return SDL_CloseStorage(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to storage
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa StorageRef
- */
-struct StorageUnsafe : StorageRef
-{
-  using StorageRef::Close;
-
-  using StorageRef::StorageRef;
-
-  using StorageRef::reset;
-
-  /**
-   * Constructs StorageUnsafe from StorageRef.
-   */
-  constexpr StorageUnsafe(const StorageRef& other)
-    : StorageRef(other.get())
-  {
-  }
-
-  StorageUnsafe(const Storage& other) = delete;
-
-  /**
-   * Constructs StorageUnsafe from Storage.
-   */
-  constexpr explicit StorageUnsafe(Storage&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr StorageUnsafe& operator=(StorageUnsafe other)
-  {
-    release(other.release());
-    return *this;
+    CheckError(SDL_CloseStorage(resource));
   }
 };
 
@@ -28586,153 +27935,9 @@ struct StorageUnsafe : StorageRef
  *
  * @sa StorageRef
  */
-struct Storage : StorageUnsafe
+struct Storage : ResourceUnique<StorageRef>
 {
-  using StorageUnsafe::StorageUnsafe;
-
-  /**
-   * Constructs an empty Storage.
-   */
-  constexpr Storage()
-    : StorageUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Storage(SDL_Storage* resource)
-    : StorageUnsafe(resource)
-  {
-  }
-
-  constexpr Storage(const Storage& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Storage(Storage&& other)
-    : Storage(other.release())
-  {
-  }
-
-  /**
-   * Opens up a read-only container for the application's filesystem.
-   *
-   * @param override a path to override the backend's default title root.
-   * @param props a property list that may contain backend-specific information.
-   * @post a title storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageRef.Close
-   * @sa StorageRef.GetFileSize
-   * @sa StorageRef.ReadFile
-   */
-  Storage(StringParam override, PropertiesRef props)
-    : Storage(CheckError(SDL_OpenTitleStorage(override, props.get())))
-  {
-  }
-
-  /**
-   * Opens up a container for a user's unique read/write filesystem.
-   *
-   * While title storage can generally be kept open throughout runtime, user
-   * storage should only be opened when the client is ready to read/write files.
-   * This allows the backend to properly batch file operations and flush them
-   * when the container has been closed; ensuring safe and optimal save I/O.
-   *
-   * @param org the name of your organization.
-   * @param app the name of your application.
-   * @param props a property list that may contain backend-specific information.
-   * @post a user storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageRef.Close
-   * @sa StorageRef.GetFileSize
-   * @sa StorageRef.GetSpaceRemaining
-   * @sa StorageRef.ReadFile
-   * @sa StorageRef.Ready
-   * @sa StorageRef.WriteFile
-   */
-  Storage(StringParam org, StringParam app, PropertiesRef props)
-    : Storage(CheckError(SDL_OpenUserStorage(org, app, props.get())))
-  {
-  }
-
-  /**
-   * Opens up a container for local filesystem storage.
-   *
-   * This is provided for development and tools. Portable applications should
-   * use Storage.Storage() for access to game data and
-   * Storage.Storage() for access to user data.
-   *
-   * @param path the base path prepended to all storage paths, or nullptr for no
-   *             base path.
-   * @post a filesystem storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageRef.Close
-   * @sa StorageRef.GetFileSize
-   * @sa StorageRef.GetSpaceRemaining
-   * @sa StorageRef.ReadFile
-   * @sa StorageRef.WriteFile
-   */
-  Storage(StringParam path)
-    : Storage(CheckError(SDL_OpenFileStorage(path)))
-  {
-  }
-
-  /**
-   * Opens up a container using a client-provided storage interface.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own StorageRef implementation. If you just need an StorageRef, you
-   * should use the built-in implementations in SDL, like Storage.Storage()
-   * or Storage.Storage().
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this storage, initialized using
-   *              SDL_INIT_INTERFACE().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @post a storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageRef.Close
-   * @sa StorageRef.GetFileSize
-   * @sa StorageRef.GetSpaceRemaining
-   * @sa SDL_INIT_INTERFACE
-   * @sa StorageRef.ReadFile
-   * @sa StorageRef.Ready
-   * @sa StorageRef.WriteFile
-   */
-  Storage(const StorageInterface& iface, void* userdata)
-    : Storage(CheckError(SDL_OpenStorage(&iface, userdata)))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Storage() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Storage& operator=(Storage other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Opens up a read-only container for the application's filesystem.
@@ -28744,14 +27949,14 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageRef.Close
+   * @sa Storage.Close
    * @sa StorageRef.GetFileSize
-   * @sa Storage.Storage
+   * @sa Storage.OpenUser
    * @sa StorageRef.ReadFile
    */
   static Storage OpenTitle(StringParam override, PropertiesRef props)
   {
-    return Storage(std::move(override), props);
+    return Storage(CheckError(SDL_OpenTitleStorage(override, props)));
   }
 
   /**
@@ -28770,25 +27975,25 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageRef.Close
+   * @sa Storage.Close
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.GetSpaceRemaining
-   * @sa Storage.Storage
+   * @sa Storage.OpenTitle
    * @sa StorageRef.ReadFile
    * @sa StorageRef.Ready
    * @sa StorageRef.WriteFile
    */
   static Storage OpenUser(StringParam org, StringParam app, PropertiesRef props)
   {
-    return Storage(std::move(org), std::move(app), props);
+    return Storage(CheckError(SDL_OpenUserStorage(org, app, props)));
   }
 
   /**
    * Opens up a container for local filesystem storage.
    *
    * This is provided for development and tools. Portable applications should
-   * use Storage.Storage() for access to game data and
-   * Storage.Storage() for access to user data.
+   * use Storage.OpenTitle() for access to game data and
+   * Storage.OpenUser() for access to user data.
    *
    * @param path the base path prepended to all storage paths, or nullptr for no
    *             base path.
@@ -28797,23 +28002,26 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageRef.Close
+   * @sa Storage.Close
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.GetSpaceRemaining
-   * @sa Storage.Storage
-   * @sa Storage.Storage
+   * @sa Storage.OpenTitle
+   * @sa Storage.OpenUser
    * @sa StorageRef.ReadFile
    * @sa StorageRef.WriteFile
    */
-  static Storage OpenFile(StringParam path) { return Storage(std::move(path)); }
+  static Storage OpenFile(StringParam path)
+  {
+    return Storage(CheckError(SDL_OpenFileStorage(path)));
+  }
 
   /**
    * Opens up a container using a client-provided storage interface.
    *
    * Applications do not need to use this function unless they are providing
    * their own StorageRef implementation. If you just need an StorageRef, you
-   * should use the built-in implementations in SDL, like Storage.Storage()
-   * or Storage.Storage().
+   * should use the built-in implementations in SDL, like Storage.OpenTitle()
+   * or Storage.OpenUser().
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -28826,7 +28034,7 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageRef.Close
+   * @sa Storage.Close
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.GetSpaceRemaining
    * @sa SDL_INIT_INTERFACE
@@ -28836,14 +28044,45 @@ struct Storage : StorageUnsafe
    */
   static Storage Open(const StorageInterface& iface, void* userdata)
   {
-    return Storage(iface, userdata);
+    return Storage(CheckError(SDL_OpenStorage(&iface, userdata)));
   }
+
+  /**
+   * Closes and frees a storage container.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Storage.OpenFile
+   * @sa Storage.Open
+   * @sa Storage.OpenTitle
+   * @sa Storage.OpenUser
+   */
+  void Close() { reset(); }
 };
 
-constexpr StorageUnsafe::StorageUnsafe(Storage&& other)
-  : StorageUnsafe(other.release())
+/**
+ * Unsafe Handle to storage
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa StorageRef
+ */
+struct StorageUnsafe : ResourceUnsafe<StorageRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs StorageUnsafe from Storage.
+   */
+  constexpr explicit StorageUnsafe(Storage&& other)
+    : StorageUnsafe(other.release())
+  {
+  }
+};
 
 /// @}
 
@@ -28864,8 +28103,8 @@ constexpr StorageUnsafe::StorageUnsafe(Storage&& other)
  * to each thread, but accessed from a single key).
  *
  * On platforms without thread support (such as Emscripten when built without
- * pthreads), these functions still exist, but things like
- * ThreadRef.ThreadRef() will report failure without doing anything.
+ * pthreads), these functions still exist, but things like Thread.Create() will
+ * report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
  * good understanding of [CategoryMutex](CategoryMutex) as well.
@@ -28876,7 +28115,7 @@ constexpr StorageUnsafe::StorageUnsafe(Storage&& other)
 /**
  * A unique numeric ID that identifies a thread.
  *
- * These are different from ThreadRef objects, which are generally what an
+ * These are different from Thread objects, which are generally what an
  * application will operate on, but having a way to uniquely identify a thread
  * can be useful at times.
  *
@@ -28901,10 +28140,9 @@ using ThreadID = SDL_ThreadID;
 using TLSID = AtomicInt;
 
 /**
- * The function passed to ThreadRef.ThreadRef() as the new thread's entry
- * point.
+ * The function passed to Thread.Create() as the new thread's entry point.
  *
- * @param data what was passed as `data` to ThreadRef.ThreadRef().
+ * @param data what was passed as `data` to Thread.Create().
  * @returns a value that can be reported through ThreadRef.Wait().
  *
  * @since This datatype is available since SDL 3.2.0.
@@ -28912,7 +28150,7 @@ using TLSID = AtomicInt;
 using ThreadFunction = SDL_ThreadFunction;
 
 /**
- * The function passed to ThreadRef.ThreadRef() as the new thread's entry
+ * The function passed to Thread.Create() as the new thread's entry
  * point.
  *
  * @returns a value that can be reported through ThreadRef.Wait().
@@ -28996,19 +28234,18 @@ constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa ThreadRef.Wait
- *
  * @cat resource
  *
+ * @sa Thread.Create
+ * @sa ThreadRef.Wait
  * @sa Thread
- * @sa ThreadRef
  */
 struct ThreadRef : Resource<SDL_Thread*>
 {
   using Resource::Resource;
 
   /**
-   * Get the thread name as it was specified in Thread.Thread().
+   * Get the thread name as it was specified in (Thread.Create).
    *
    * @returns a pointer to a UTF-8 string that names the specified thread, or
    *          nullptr if it doesn't have a name.
@@ -29078,8 +28315,8 @@ struct ThreadRef : Resource<SDL_Thread*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
-   * @sa ThreadRef.Detach
+   * @sa Thread.Create
+   * @sa Thread.Detach
    */
   void Wait(int* status) { SDL_WaitThread(get(), status); }
 
@@ -29095,7 +28332,6 @@ struct ThreadRef : Resource<SDL_Thread*>
    */
   ThreadState GetState() const { return SDL_GetThreadState(get()); }
 
-protected:
   /**
    * Let a thread clean up on exit without intervention.
    *
@@ -29113,7 +28349,7 @@ protected:
    * ThreadRef.Wait() to finally clean it up. As such, don't detach the same
    * thread more than once.
    *
-   * If a thread has already exited when passed to ThreadRef.Detach(), it will
+   * If a thread has already exited when passed to Thread.Detach(), it will
    * stop waiting for a call to ThreadRef.Wait() and clean up immediately. It is
    * not safe to detach a thread that might be used with ThreadRef.Wait().
    *
@@ -29122,12 +28358,147 @@ protected:
    *
    * It is safe to pass nullptr to this function; it is a no-op.
    *
+   * @param resource the ThreadRef pointer that was returned from the
+   *               Thread.Create() call that started this thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
+   * @sa Thread.Create
    * @sa ThreadRef.Wait
    */
-  void Detach() { reset(); }
+  static void reset(SDL_Thread* resource) { SDL_DetachThread(resource); }
+};
+
+/**
+ * Handle to an owned thread
+ *
+ * @cat resource
+ *
+ * @sa ThreadRef
+ */
+struct Thread : ResourceUnique<ThreadRef>
+{
+  using ResourceUnique::ResourceUnique;
+
+  /**
+   * Create a new thread with a default stack size.
+   *
+   * @param fn the ThreadFunction function to call in the new thread.
+   * @param name the name of the thread.
+   * @returns an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Thread.CreateWithProperties
+   * @sa ThreadRef.Wait
+   */
+  static Thread Create(ThreadCB fn, StringParam name)
+  {
+    return Create(
+      [](void* handler) {
+        return CallbackWrapper<ThreadCB>::CallOnce(handler);
+      },
+      std::move(name),
+      CallbackWrapper<ThreadCB>::Wrap(std::move(fn)));
+  }
+
+  /**
+   * Create a new thread with a default stack size.
+   *
+   * This is a convenience function, equivalent to calling
+   * Thread.CreateWithProperties with the following properties set:
+   *
+   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
+   * - `prop::thread.CREATE_NAME_STRING`: `name`
+   * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
+   *
+   * Usually, apps should just call this function the same way on every platform
+   * and let the macros hide the details.
+   *
+   * @param fn the ThreadFunction function to call in the new thread.
+   * @param name the name of the thread.
+   * @param data a pointer that is passed to `fn`.
+   * @returns an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Thread.CreateWithProperties
+   * @sa ThreadRef.Wait
+   */
+  static Thread Create(ThreadFunction fn, StringParam name, void* data)
+  {
+    return Thread(CheckError(SDL_CreateThread(fn, name, data)));
+  }
+
+  /**
+   * Create a new thread with with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction
+   *   value that will be called at the start of the new thread's life.
+   *   Required.
+   * - `prop::thread.CREATE_NAME_STRING`: the name of the new thread, which
+   *   might be available to debuggers. Optional, defaults to nullptr.
+   * - `prop::thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined
+   *   pointer, which is passed to the entry function on the new thread, as its
+   *   only parameter. Optional, defaults to nullptr.
+   * - `prop::thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
+   *   thread's stack. Optional, defaults to 0 (system-defined default).
+   *
+   * SDL makes an attempt to report `prop::thread.CREATE_NAME_STRING` to the
+   * system, so that debuggers can display it. Not all platforms support this.
+   *
+   * Thread naming is a little complicated: Most systems have very small limits
+   * for the string length (Haiku has 32 bytes, Linux currently has 16, Visual
+   * C++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to
+   * see what happens with your system's debugger. The name should be UTF-8 (but
+   * using the naming limits of C identifiers is a better bet). There are no
+   * requirements for thread naming conventions, so long as the string is
+   * null-terminated UTF-8, but these guidelines are helpful in choosing a name:
+   *
+   * https://stackoverflow.com/questions/149932/naming-conventions-for-threads
+   *
+   * If a system imposes requirements, SDL will try to munge the string for it
+   * (truncate, etc), but the original string contents will be available from
+   * ThreadRef.GetName().
+   *
+   * The size (in bytes) of the new stack can be specified with
+   * `prop::thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system
+   * default" which might be wildly different between platforms. x86 Linux
+   * generally defaults to eight megabytes, an embedded device might be a few
+   * kilobytes instead. You generally need to specify a stack that is a multiple
+   * of the system's page size (in many cases, this is 4 kilobytes, but check
+   * your system documentation).
+   *
+   * Note that this "function" is actually a macro that calls an internal
+   * function with two extra parameters not listed here; they are hidden through
+   * preprocessor macros and are needed to support various C runtimes at the
+   * point of the function call. Language bindings that aren't using the C
+   * headers will need to deal with this.
+   *
+   * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so
+   * there is no symbol clash, but trying to load an SDL shared library and look
+   * for "Thread.CreateWithProperties" will fail.
+   *
+   * Usually, apps should just call this function the same way on every platform
+   * and let the macros hide the details.
+   *
+   * @param props the properties to use.
+   * @returns an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Thread.Create
+   * @sa ThreadRef.Wait
+   */
+  static Thread CreateWithProperties(PropertiesRef props)
+  {
+    return Thread(CheckError(SDL_CreateThreadWithProperties(props)));
+  }
 
   /**
    * Let a thread clean up on exit without intervention.
@@ -29146,24 +28517,19 @@ protected:
    * ThreadRef.Wait() to finally clean it up. As such, don't detach the same
    * thread more than once.
    *
-   * If a thread has already exited when passed to ThreadRef.Detach(), it will
+   * If a thread has already exited when passed to Thread.Detach(), it will
    * stop waiting for a call to ThreadRef.Wait() and clean up immediately. It is
    * not safe to detach a thread that might be used with ThreadRef.Wait().
    *
    * You may not call ThreadRef.Wait() on a thread that has been detached. Use
    * either that function or this one, but not both, or behavior is undefined.
    *
-   * It is safe to pass nullptr to this function; it is a no-op.
-   *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
+   * @sa Thread.Create
    * @sa ThreadRef.Wait
    */
-  void reset(SDL_Thread* newResource = {})
-  {
-    SDL_DetachThread(release(newResource));
-  }
+  void Detach() { reset(); }
 };
 
 /**
@@ -29175,315 +28541,18 @@ protected:
  *
  * @sa ThreadRef
  */
-struct ThreadUnsafe : ThreadRef
+struct ThreadUnsafe : ResourceUnsafe<ThreadRef>
 {
-  using ThreadRef::Detach;
-
-  using ThreadRef::ThreadRef;
-
-  using ThreadRef::reset;
-
-  /**
-   * Constructs ThreadUnsafe from ThreadRef.
-   */
-  constexpr ThreadUnsafe(const ThreadRef& other)
-    : ThreadRef(other.get())
-  {
-  }
-
-  ThreadUnsafe(const Thread& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs ThreadUnsafe from Thread.
    */
-  constexpr explicit ThreadUnsafe(Thread&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr ThreadUnsafe& operator=(ThreadUnsafe other)
+  constexpr explicit ThreadUnsafe(Thread&& other)
+    : ThreadUnsafe(other.release())
   {
-    release(other.release());
-    return *this;
   }
 };
-
-/**
- * Handle to an owned thread
- *
- * @cat resource
- *
- * @sa ThreadRef
- */
-struct Thread : ThreadUnsafe
-{
-  using ThreadUnsafe::ThreadUnsafe;
-
-  /**
-   * Constructs an empty Thread.
-   */
-  constexpr Thread()
-    : ThreadUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Thread(SDL_Thread* resource)
-    : ThreadUnsafe(resource)
-  {
-  }
-
-  constexpr Thread(const Thread& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Thread(Thread&& other)
-    : Thread(other.release())
-  {
-  }
-
-  /**
-   * Create a new thread with a default stack size.
-   *
-   * @param fn the ThreadFunction function to call in the new thread.
-   * @param name the name of the thread.
-   * @post an opaque pointer to the new thread object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadRef.Wait
-   */
-  Thread(ThreadCB fn, StringParam name)
-    : Thread(
-        [](void* handler) {
-          return CallbackWrapper<ThreadCB>::CallOnce(handler);
-        },
-        std::move(name),
-        CallbackWrapper<ThreadCB>::Wrap(std::move(fn)))
-  {
-  }
-
-  /**
-   * Create a new thread with a default stack size.
-   *
-   * This is a convenience function, equivalent to calling
-   * Thread.Thread with the following properties set:
-   *
-   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
-   * - `prop::thread.CREATE_NAME_STRING`: `name`
-   * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
-   *
-   * Usually, apps should just call this function the same way on every platform
-   * and let the macros hide the details.
-   *
-   * @param fn the ThreadFunction function to call in the new thread.
-   * @param name the name of the thread.
-   * @param data a pointer that is passed to `fn`.
-   * @post an opaque pointer to the new thread object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadRef.Wait
-   */
-  Thread(ThreadFunction fn, StringParam name, void* data)
-    : Thread(CheckError(SDL_CreateThread(fn, name, data)))
-  {
-  }
-
-  /**
-   * Create a new thread with with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction
-   *   value that will be called at the start of the new thread's life.
-   *   Required.
-   * - `prop::thread.CREATE_NAME_STRING`: the name of the new thread, which
-   *   might be available to debuggers. Optional, defaults to nullptr.
-   * - `prop::thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined
-   *   pointer, which is passed to the entry function on the new thread, as its
-   *   only parameter. Optional, defaults to nullptr.
-   * - `prop::thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
-   *   thread's stack. Optional, defaults to 0 (system-defined default).
-   *
-   * SDL makes an attempt to report `prop::thread.CREATE_NAME_STRING` to the
-   * system, so that debuggers can display it. Not all platforms support this.
-   *
-   * Thread naming is a little complicated: Most systems have very small limits
-   * for the string length (Haiku has 32 bytes, Linux currently has 16, Visual
-   * C++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to
-   * see what happens with your system's debugger. The name should be UTF-8 (but
-   * using the naming limits of C identifiers is a better bet). There are no
-   * requirements for thread naming conventions, so long as the string is
-   * null-terminated UTF-8, but these guidelines are helpful in choosing a name:
-   *
-   * https://stackoverflow.com/questions/149932/naming-conventions-for-threads
-   *
-   * If a system imposes requirements, SDL will try to munge the string for it
-   * (truncate, etc), but the original string contents will be available from
-   * ThreadRef.GetName().
-   *
-   * The size (in bytes) of the new stack can be specified with
-   * `prop::thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system
-   * default" which might be wildly different between platforms. x86 Linux
-   * generally defaults to eight megabytes, an embedded device might be a few
-   * kilobytes instead. You generally need to specify a stack that is a multiple
-   * of the system's page size (in many cases, this is 4 kilobytes, but check
-   * your system documentation).
-   *
-   * Note that this "function" is actually a macro that calls an internal
-   * function with two extra parameters not listed here; they are hidden through
-   * preprocessor macros and are needed to support various C runtimes at the
-   * point of the function call. Language bindings that aren't using the C
-   * headers will need to deal with this.
-   *
-   * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so
-   * there is no symbol clash, but trying to load an SDL shared library and look
-   * for "Thread.Thread" will fail.
-   *
-   * Usually, apps should just call this function the same way on every platform
-   * and let the macros hide the details.
-   *
-   * @param props the properties to use.
-   * @post an opaque pointer to the new thread object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadRef.Wait
-   */
-  Thread(PropertiesRef props)
-    : Thread(CheckError(SDL_CreateThreadWithProperties(props.get())))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Thread() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Thread& operator=(Thread other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create a new thread with a default stack size.
-   *
-   * This is a convenience function, equivalent to calling
-   * Thread.Thread with the following properties set:
-   *
-   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
-   * - `prop::thread.CREATE_NAME_STRING`: `name`
-   * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
-   *
-   * Note that this "function" is actually a macro that calls an internal
-   * function with two extra parameters not listed here; they are hidden through
-   * preprocessor macros and are needed to support various C runtimes at the
-   * point of the function call. Language bindings that aren't using the C
-   * headers will need to deal with this.
-   *
-   * Usually, apps should just call this function the same way on every platform
-   * and let the macros hide the details.
-   *
-   * @param fn the ThreadFunction function to call in the new thread.
-   * @param name the name of the thread.
-   * @param data a pointer that is passed to `fn`.
-   * @returns an opaque pointer to the new thread object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Thread.Thread
-   * @sa ThreadRef.Wait
-   */
-  static Thread Create(ThreadFunction fn, StringParam name, void* data)
-  {
-    return Thread(fn, std::move(name), data);
-  }
-
-  /**
-   * Create a new thread with with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction
-   *   value that will be called at the start of the new thread's life.
-   *   Required.
-   * - `prop::thread.CREATE_NAME_STRING`: the name of the new thread, which
-   *   might be available to debuggers. Optional, defaults to nullptr.
-   * - `prop::thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined
-   *   pointer, which is passed to the entry function on the new thread, as its
-   *   only parameter. Optional, defaults to nullptr.
-   * - `prop::thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
-   *   thread's stack. Optional, defaults to 0 (system-defined default).
-   *
-   * SDL makes an attempt to report `prop::thread.CREATE_NAME_STRING` to the
-   * system, so that debuggers can display it. Not all platforms support this.
-   *
-   * Thread naming is a little complicated: Most systems have very small limits
-   * for the string length (Haiku has 32 bytes, Linux currently has 16, Visual
-   * C++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to
-   * see what happens with your system's debugger. The name should be UTF-8 (but
-   * using the naming limits of C identifiers is a better bet). There are no
-   * requirements for thread naming conventions, so long as the string is
-   * null-terminated UTF-8, but these guidelines are helpful in choosing a name:
-   *
-   * https://stackoverflow.com/questions/149932/naming-conventions-for-threads
-   *
-   * If a system imposes requirements, SDL will try to munge the string for it
-   * (truncate, etc), but the original string contents will be available from
-   * ThreadRef.GetName().
-   *
-   * The size (in bytes) of the new stack can be specified with
-   * `prop::thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system
-   * default" which might be wildly different between platforms. x86 Linux
-   * generally defaults to eight megabytes, an embedded device might be a few
-   * kilobytes instead. You generally need to specify a stack that is a multiple
-   * of the system's page size (in many cases, this is 4 kilobytes, but check
-   * your system documentation).
-   *
-   * Note that this "function" is actually a macro that calls an internal
-   * function with two extra parameters not listed here; they are hidden through
-   * preprocessor macros and are needed to support various C runtimes at the
-   * point of the function call. Language bindings that aren't using the C
-   * headers will need to deal with this.
-   *
-   * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so
-   * there is no symbol clash, but trying to load an SDL shared library and look
-   * for "Thread.Thread" will fail.
-   *
-   * Usually, apps should just call this function the same way on every platform
-   * and let the macros hide the details.
-   *
-   * @param props the properties to use.
-   * @returns an opaque pointer to the new thread object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Thread.Thread
-   * @sa ThreadRef.Wait
-   */
-  static Thread CreateWithProperties(PropertiesRef props)
-  {
-    return Thread(props);
-  }
-};
-
-constexpr ThreadUnsafe::ThreadUnsafe(Thread&& other)
-  : ThreadUnsafe(other.release())
-{
-}
 
 namespace prop::thread {
 
@@ -29632,7 +28701,7 @@ inline void CleanupTLS() { SDL_CleanupTLS(); }
  * ## Simplified audio
  *
  * As a simplified model for when a single source of audio is all that's
- * needed, an app can use AudioStream.AudioStream, which is a single
+ * needed, an app can use AudioStream.OpenAudioDeviceStream, which is a single
  * function to open an audio device, create an audio stream, bind that stream
  * to the newly-opened device, and (optionally) provide a callback for
  * obtaining audio data. When using this function, the primary interface is
@@ -29787,9 +28856,9 @@ public:
   /**
    * Define an AudioFormat value.
    *
-   * SDL does not support custom audio formats, so this function is not of much
-   * use externally, but it can be illustrative as to what the various bits of
-   * an AudioFormat mean.
+   * SDL does not support custom audio formats, so this macro is not of much use
+   * externally, but it can be illustrative as to what the various bits of an
+   * AudioFormat mean.
    *
    * For example, AUDIO_S32LE looks like this:
    *
@@ -30099,7 +29168,6 @@ using AudioPostmixCB =
  * @cat resource
  *
  * @sa AudioDevice
- * @sa AudioDeviceRef
  */
 struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
 {
@@ -30192,11 +29260,12 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
   /**
    * Determine if an audio device is physical (instead of logical).
    *
-   * An AudioDeviceRef that represents physical hardware is a physical
-   * device; there is one for each piece of hardware that SDL can see. Logical
-   * devices are created by calling AudioDevice.AudioDevice or
-   * AudioStream.AudioStream, and while each is associated with a physical
-   * device, there can be any number of logical devices on one physical device.
+   * An AudioDevice that represents physical hardware is a physical device;
+   * there is one for each piece of hardware that SDL can see. Logical devices
+   * are created by calling AudioDevice.Open or
+   * AudioStream.OpenAudioDeviceStream, and while each is associated with a
+   * physical device, there can be any number of logical devices on one physical
+   * device.
    *
    * For the most part, logical and physical IDs are interchangeable--if you try
    * to open a logical device, SDL understands to assign that effort to the
@@ -30242,7 +29311,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * loading, etc.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDevice.AudioDevice() can be.
+   * created through AudioDevice.Open() can be.
    *
    * @throws Error on failure.
    *
@@ -30268,7 +29337,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * device is a legal no-op.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDevice.AudioDevice() can be.
+   * created through AudioDevice.Open() can be.
    *
    * @throws Error on failure.
    *
@@ -30288,8 +29357,8 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * has to bind a stream before any audio will flow.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDevice.AudioDevice() can be. Physical and invalid
-   * device IDs will report themselves as unpaused here.
+   * created through AudioDevice.Open() can be. Physical and invalid device
+   * IDs will report themselves as unpaused here.
    *
    * @returns true if device is valid and paused, false otherwise.
    *
@@ -30490,7 +29559,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    *
    * All of this to say: there are specific needs this callback can fulfill, but
    * it is not the simplest interface. Apps should generally provide audio in
-   * their preferred format through an AudioStreamRef and let SDL handle the
+   * their preferred format through an AudioStream and let SDL handle the
    * difference.
    *
    * This function is extremely time-sensitive; the callback should do the least
@@ -30516,7 +29585,6 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
     CheckError(SDL_SetAudioPostmixCallback(get(), callback, userdata));
   }
 
-protected:
   /**
    * Close a previously-opened audio device.
    *
@@ -30527,13 +29595,111 @@ protected:
    * hardware, so that applications don't drop the last buffer of data they
    * supplied if terminating immediately afterwards.
    *
+   * @param resource an audio device id previously returned by
+   *                 AudioDevice.Open().
+   *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.AudioDevice
+   * @sa AudioDevice.Open
    */
-  void Close() { reset(); }
+  static void reset(SDL_AudioDeviceID resource)
+  {
+    KeyValueCallbackWrapper<AudioDeviceRef, AudioPostmixCB>::release(resource);
+    SDL_CloseAudioDevice(resource);
+  }
+};
+
+/**
+ * Handle to an owned audioDevice
+ *
+ * @cat resource
+ *
+ * @sa AudioDeviceRef
+ */
+struct AudioDevice : ResourceUnique<AudioDeviceRef>
+{
+  using ResourceUnique::ResourceUnique;
+
+  /**
+   * Open a specific audio device.
+   *
+   * You can open both playback and recording devices through this function.
+   * Playback devices will take data from bound audio streams, mix it, and send
+   * it to the hardware. Recording devices will feed any bound audio streams
+   * with a copy of any incoming data.
+   *
+   * An opened audio device starts out with no audio streams bound. To start
+   * audio playing, bind a stream and supply audio data to it. Unlike SDL2,
+   * there is no audio callback; you only bind audio streams and make sure they
+   * have data flowing into them (however, you can simulate SDL2's semantics
+   * fairly closely by using AudioStream.OpenAudioDeviceStream instead of this
+   * function).
+   *
+   * If you don't care about opening a specific device, pass a `devid` of either
+   * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or
+   * `AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick
+   * the most reasonable default, and may also switch between physical devices
+   * seamlessly later, if the most reasonable default changes during the
+   * lifetime of this opened device (user changed the default in the OS's system
+   * preferences, the default got unplugged so the system jumped to a new
+   * default, the user plugged in headphones on a mobile device, etc). Unless
+   * you have a good reason to choose a specific device, this is probably what
+   * you want.
+   *
+   * You may request a specific format for the audio device, but there is no
+   * promise the device will honor that request for several reasons. As such,
+   * it's only meant to be a hint as to what data your app will provide. Audio
+   * streams will accept data in whatever format you specify and manage
+   * conversion for you as appropriate. AudioDeviceRef.GetFormat can tell you
+   * the preferred format for the device before opening and the actual format
+   * the device is using after opening.
+   *
+   * It's legal to open the same device ID more than once; each successful open
+   * will generate a new logical AudioDevice that is managed separately from
+   * others on the same physical device. This allows libraries to open a device
+   * separately from the main app and bind its own streams without conflicting.
+   *
+   * It is also legal to open a device ID returned by a previous call to this
+   * function; doing so just creates another logical device on the same physical
+   * device. This may be useful for making logical groupings of audio streams.
+   *
+   * This function returns the opened device ID on success. This is a new,
+   * unique AudioDevice that represents a logical device.
+   *
+   * Some backends might offer arbitrary devices (for example, a networked audio
+   * protocol that can connect to an arbitrary server). For these, as a change
+   * from SDL2, you should open a default device ID and use an SDL hint to
+   * specify the target if you care, or otherwise let the backend figure out a
+   * reasonable default. Most backends don't offer anything like this, and often
+   * this would be an end user setting an environment variable for their custom
+   * need, and not something an application should specifically manage.
+   *
+   * When done with an audio device, possibly at the end of the app's life, one
+   * should call AudioDevice.Close() on the returned device id.
+   *
+   * @param devid the device instance id to open, or
+   *              AUDIO_DEVICE_DEFAULT_PLAYBACK or
+   *              AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable
+   *              default device.
+   * @param spec the requested device configuration. Can be nullptr to use
+   *             reasonable defaults.
+   * @returns the device ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioDevice.Close
+   * @sa AudioDeviceRef.GetFormat
+   */
+  static AudioDevice Open(AudioDeviceRef devid,
+                          OptionalRef<const SDL_AudioSpec> spec)
+  {
+    return AudioDevice(CheckError(SDL_OpenAudioDevice(devid, spec)));
+  }
 
   /**
    * Close a previously-opened audio device.
@@ -30549,13 +29715,9 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.AudioDevice
+   * @sa AudioDevice.Open
    */
-  void reset(SDL_AudioDeviceID newResource = {})
-  {
-    KeyValueCallbackWrapper<AudioDeviceRef, AudioPostmixCB>::release(*this);
-    SDL_CloseAudioDevice(release(newResource));
-  }
+  void Close() { reset(); }
 };
 
 /**
@@ -30567,261 +29729,25 @@ protected:
  *
  * @sa AudioDeviceRef
  */
-struct AudioDeviceUnsafe : AudioDeviceRef
+struct AudioDeviceUnsafe : ResourceUnsafe<AudioDeviceRef>
 {
-  using AudioDeviceRef::AudioDeviceRef;
-
-  using AudioDeviceRef::Close;
-
-  using AudioDeviceRef::reset;
-
-  /**
-   * Constructs AudioDeviceUnsafe from AudioDeviceRef.
-   */
-  constexpr AudioDeviceUnsafe(const AudioDeviceRef& other)
-    : AudioDeviceRef(other.get())
-  {
-  }
-
-  AudioDeviceUnsafe(const AudioDevice& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs AudioDeviceUnsafe from AudioDevice.
    */
-  constexpr explicit AudioDeviceUnsafe(AudioDevice&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr AudioDeviceUnsafe& operator=(AudioDeviceUnsafe other)
+  constexpr explicit AudioDeviceUnsafe(AudioDevice&& other)
+    : AudioDeviceUnsafe(other.release())
   {
-    release(other.release());
-    return *this;
   }
 };
-
-/**
- * Handle to an owned audioDevice
- *
- * @cat resource
- *
- * @sa AudioDeviceRef
- */
-struct AudioDevice : AudioDeviceUnsafe
-{
-  using AudioDeviceUnsafe::AudioDeviceUnsafe;
-
-  /**
-   * Constructs an empty AudioDevice.
-   */
-  constexpr AudioDevice()
-    : AudioDeviceUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit AudioDevice(SDL_AudioDeviceID resource)
-    : AudioDeviceUnsafe(resource)
-  {
-  }
-
-  constexpr AudioDevice(const AudioDevice& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr AudioDevice(AudioDevice&& other)
-    : AudioDevice(other.release())
-  {
-  }
-
-  /**
-   * Open a specific audio device.
-   *
-   * You can open both playback and recording devices through this function.
-   * Playback devices will take data from bound audio streams, mix it, and send
-   * it to the hardware. Recording devices will feed any bound audio streams
-   * with a copy of any incoming data.
-   *
-   * An opened audio device starts out with no audio streams bound. To start
-   * audio playing, bind a stream and supply audio data to it. Unlike SDL2,
-   * there is no audio callback; you only bind audio streams and make sure they
-   * have data flowing into them (however, you can simulate SDL2's semantics
-   * fairly closely by using AudioStream.AudioStream instead of this
-   * function).
-   *
-   * If you don't care about opening a specific device, pass a `devid` of either
-   * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or
-   * `AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick
-   * the most reasonable default, and may also switch between physical devices
-   * seamlessly later, if the most reasonable default changes during the
-   * lifetime of this opened device (user changed the default in the OS's system
-   * preferences, the default got unplugged so the system jumped to a new
-   * default, the user plugged in headphones on a mobile device, etc). Unless
-   * you have a good reason to choose a specific device, this is probably what
-   * you want.
-   *
-   * You may request a specific format for the audio device, but there is no
-   * promise the device will honor that request for several reasons. As such,
-   * it's only meant to be a hint as to what data your app will provide. Audio
-   * streams will accept data in whatever format you specify and manage
-   * conversion for you as appropriate. AudioDeviceRef.GetFormat can tell you
-   * the preferred format for the device before opening and the actual format
-   * the device is using after opening.
-   *
-   * It's legal to open the same device ID more than once; each successful open
-   * will generate a new logical AudioDeviceRef that is managed separately
-   * from others on the same physical device. This allows libraries to open a
-   * device separately from the main app and bind its own streams without
-   * conflicting.
-   *
-   * It is also legal to open a device ID returned by a previous call to this
-   * function; doing so just creates another logical device on the same physical
-   * device. This may be useful for making logical groupings of audio streams.
-   *
-   * This function returns the opened device ID on success. This is a new,
-   * unique AudioDeviceRef that represents a logical device.
-   *
-   * Some backends might offer arbitrary devices (for example, a networked audio
-   * protocol that can connect to an arbitrary server). For these, as a change
-   * from SDL2, you should open a default device ID and use an SDL hint to
-   * specify the target if you care, or otherwise let the backend figure out a
-   * reasonable default. Most backends don't offer anything like this, and often
-   * this would be an end user setting an environment variable for their custom
-   * need, and not something an application should specifically manage.
-   *
-   * When done with an audio device, possibly at the end of the app's life, one
-   * should call AudioDeviceRef.Close() on the returned device id.
-   *
-   * @param devid the device instance id to open, or
-   *              AUDIO_DEVICE_DEFAULT_PLAYBACK or
-   *              AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable
-   *              default device.
-   * @param spec the requested device configuration. Can be nullptr to use
-   *             reasonable defaults.
-   * @post the device ID on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioDeviceRef.Close
-   * @sa AudioDeviceRef.GetFormat
-   */
-  AudioDevice(AudioDeviceRef devid, OptionalRef<const SDL_AudioSpec> spec)
-    : AudioDevice(CheckError(SDL_OpenAudioDevice(devid.get(), spec)))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~AudioDevice() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  AudioDevice& operator=(AudioDevice other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Open a specific audio device.
-   *
-   * You can open both playback and recording devices through this function.
-   * Playback devices will take data from bound audio streams, mix it, and send
-   * it to the hardware. Recording devices will feed any bound audio streams
-   * with a copy of any incoming data.
-   *
-   * An opened audio device starts out with no audio streams bound. To start
-   * audio playing, bind a stream and supply audio data to it. Unlike SDL2,
-   * there is no audio callback; you only bind audio streams and make sure they
-   * have data flowing into them (however, you can simulate SDL2's semantics
-   * fairly closely by using AudioStream.AudioStream instead of this
-   * function).
-   *
-   * If you don't care about opening a specific device, pass a `devid` of either
-   * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or
-   * `AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick
-   * the most reasonable default, and may also switch between physical devices
-   * seamlessly later, if the most reasonable default changes during the
-   * lifetime of this opened device (user changed the default in the OS's system
-   * preferences, the default got unplugged so the system jumped to a new
-   * default, the user plugged in headphones on a mobile device, etc). Unless
-   * you have a good reason to choose a specific device, this is probably what
-   * you want.
-   *
-   * You may request a specific format for the audio device, but there is no
-   * promise the device will honor that request for several reasons. As such,
-   * it's only meant to be a hint as to what data your app will provide. Audio
-   * streams will accept data in whatever format you specify and manage
-   * conversion for you as appropriate. AudioDeviceRef.GetFormat can tell you
-   * the preferred format for the device before opening and the actual format
-   * the device is using after opening.
-   *
-   * It's legal to open the same device ID more than once; each successful open
-   * will generate a new logical AudioDeviceRef that is managed separately
-   * from others on the same physical device. This allows libraries to open a
-   * device separately from the main app and bind its own streams without
-   * conflicting.
-   *
-   * It is also legal to open a device ID returned by a previous call to this
-   * function; doing so just creates another logical device on the same physical
-   * device. This may be useful for making logical groupings of audio streams.
-   *
-   * This function returns the opened device ID on success. This is a new,
-   * unique AudioDeviceRef that represents a logical device.
-   *
-   * Some backends might offer arbitrary devices (for example, a networked audio
-   * protocol that can connect to an arbitrary server). For these, as a change
-   * from SDL2, you should open a default device ID and use an SDL hint to
-   * specify the target if you care, or otherwise let the backend figure out a
-   * reasonable default. Most backends don't offer anything like this, and often
-   * this would be an end user setting an environment variable for their custom
-   * need, and not something an application should specifically manage.
-   *
-   * When done with an audio device, possibly at the end of the app's life, one
-   * should call AudioDeviceRef.Close() on the returned device id.
-   *
-   * @param devid the device instance id to open, or
-   *              AUDIO_DEVICE_DEFAULT_PLAYBACK or
-   *              AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable
-   *              default device.
-   * @param spec the requested device configuration. Can be nullptr to use
-   *             reasonable defaults.
-   * @post the device ID on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioDeviceRef.Close
-   * @sa AudioDeviceRef.GetFormat
-   */
-  static AudioDevice Open(AudioDeviceRef devid,
-                          OptionalRef<const SDL_AudioSpec> spec)
-  {
-    return AudioDevice(devid, std::move(spec));
-  }
-};
-
-constexpr AudioDeviceUnsafe::AudioDeviceUnsafe(AudioDevice&& other)
-  : AudioDeviceUnsafe(other.release())
-{
-}
 
 /**
  * A value used to request a default playback audio device.
  *
- * Several functions that require an AudioDeviceRef will accept this value
- * to signify the app just wants the system to choose a default device instead
- * of the app providing a specific one.
+ * Several functions that require an AudioDevice will accept this value to
+ * signify the app just wants the system to choose a default device instead of
+ * the app providing a specific one.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -30831,7 +29757,7 @@ constexpr AudioDeviceRef AUDIO_DEVICE_DEFAULT_PLAYBACK =
 /**
  * A value used to request a default recording audio device.
  *
- * Several functions that require an AudioDeviceRef will accept this value
+ * Several functions that require an AudioDevice will accept this value
  * to signify the app just wants the system to choose a default device instead
  * of the app providing a specific one.
  *
@@ -30859,7 +29785,7 @@ constexpr int AudioFrameSize(const AudioSpec& x)
 }
 
 /**
- * A callback that fires when data passes through an AudioStreamRef.
+ * A callback that fires when data passes through an AudioStream.
  *
  * Apps can (optionally) register a callback with an audio stream that is
  * called when data is added with AudioStreamRef.PutData, or requested with
@@ -30901,7 +29827,7 @@ constexpr int AudioFrameSize(const AudioSpec& x)
 using AudioStreamCallback = SDL_AudioStreamCallback;
 
 /**
- * A callback that fires when data passes through an AudioStreamRef.
+ * A callback that fires when data passes through an AudioStream.
  *
  * Apps can (optionally) register a callback with an audio stream that is
  * called when data is added with AudioStreamRef.PutData, or requested with
@@ -30945,7 +29871,7 @@ using AudioStreamCB = std::function<
 /**
  * The opaque handle that represents an audio stream.
  *
- * AudioStreamRef is an audio conversion interface.
+ * AudioStream is an audio conversion interface.
  *
  * - It can handle resampling data in chunks without generating artifacts,
  *   when it doesn't have the complete buffer available.
@@ -30966,9 +29892,8 @@ using AudioStreamCB = std::function<
  *
  * @cat resource
  *
- * @sa AudioStreamRef.AudioStreamRef
+ * @sa AudioStream.Create
  * @sa AudioStream
- * @sa AudioStreamRef
  */
 struct AudioStreamRef : Resource<SDL_AudioStream*>
 {
@@ -31608,8 +30533,9 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
    * previously been paused. Once unpaused, any bound audio streams will begin
    * to progress again, and audio can be generated.
    *
-   * Remember, AudioStream.AudioStream opens device in a paused state, so this
-   * function call is required for audio playback to begin on such device.
+   * Remember, AudioStream.OpenAudioDeviceStream opens device in a paused state,
+   * so this function call is required for audio playback to begin on such
+   * device.
    *
    * @throws Error on failure.
    *
@@ -31642,7 +30568,7 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
   /**
    * Lock an audio stream for serialized access.
    *
-   * Each AudioStreamRef has an internal mutex it uses to protect its data
+   * Each AudioStream has an internal mutex it uses to protect its data
    * structures from threading conflicts. This function allows an app to lock
    * that mutex, which could be useful if registering callbacks on this stream.
    *
@@ -31903,7 +30829,6 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
    */
   AudioDeviceRef GetDevice() const { return SDL_GetAudioStreamDevice(get()); }
 
-protected:
   /**
    * Free an audio stream.
    *
@@ -31911,82 +30836,23 @@ protected:
    * queued. You do not need to manually clear the stream first.
    *
    * If this stream was bound to an audio device, it is unbound during this
-   * call. If this stream was created with AudioStream.AudioStream, the audio
-   * device that was opened alongside this stream's creation will be closed,
-   * too.
+   * call. If this stream was created with AudioStream.OpenAudioDeviceStream,
+   * the audio device that was opened alongside this stream's creation will be
+   * closed, too.
+   *
+   * @param resource the audio stream to destroy.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.AudioStream
+   * @sa AudioStream.Create
    */
-  void Destroy() { reset(); }
-
-  /**
-   * Free an audio stream.
-   *
-   * This will release all allocated data, including any audio that is still
-   * queued. You do not need to manually clear the stream first.
-   *
-   * If this stream was bound to an audio device, it is unbound during this
-   * call. If this stream was created with AudioStream.AudioStream, the audio
-   * device that was opened alongside this stream's creation will be closed,
-   * too.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioStream.AudioStream
-   */
-  void reset(SDL_AudioStream* newResource = {})
+  static void reset(SDL_AudioStream* resource)
   {
-    KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 0>::release(get());
-    KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 1>::release(get());
-    SDL_DestroyAudioStream(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to audioStream
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa AudioStreamRef
- */
-struct AudioStreamUnsafe : AudioStreamRef
-{
-  using AudioStreamRef::AudioStreamRef;
-
-  using AudioStreamRef::Destroy;
-
-  using AudioStreamRef::reset;
-
-  /**
-   * Constructs AudioStreamUnsafe from AudioStreamRef.
-   */
-  constexpr AudioStreamUnsafe(const AudioStreamRef& other)
-    : AudioStreamRef(other.get())
-  {
-  }
-
-  AudioStreamUnsafe(const AudioStream& other) = delete;
-
-  /**
-   * Constructs AudioStreamUnsafe from AudioStream.
-   */
-  constexpr explicit AudioStreamUnsafe(AudioStream&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr AudioStreamUnsafe& operator=(AudioStreamUnsafe other)
-  {
-    release(other.release());
-    return *this;
+    KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 0>::release(resource);
+    KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 1>::release(resource);
+    SDL_DestroyAudioStream(resource);
   }
 };
 
@@ -31997,208 +30863,10 @@ struct AudioStreamUnsafe : AudioStreamRef
  *
  * @sa AudioStreamRef
  */
-struct AudioStream : AudioStreamUnsafe
+struct AudioStream : ResourceUnique<AudioStreamRef>
 {
-  using AudioStreamUnsafe::AudioStreamUnsafe;
+  using ResourceUnique::ResourceUnique;
 
-  /**
-   * Constructs an empty AudioStream.
-   */
-  constexpr AudioStream()
-    : AudioStreamUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit AudioStream(SDL_AudioStream* resource)
-    : AudioStreamUnsafe(resource)
-  {
-  }
-
-  constexpr AudioStream(const AudioStream& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr AudioStream(AudioStream&& other)
-    : AudioStream(other.release())
-  {
-  }
-
-  /**
-   * Create a new audio stream.
-   *
-   * @param src_spec the format details of the input audio.
-   * @param dst_spec the format details of the output audio.
-   * @post a new audio stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioStreamRef.PutData
-   * @sa AudioStreamRef.GetData
-   * @sa AudioStreamRef.GetAvailable
-   * @sa AudioStreamRef.Flush
-   * @sa AudioStreamRef.Clear
-   * @sa AudioStreamRef.SetFormat
-   * @sa AudioStreamRef.Destroy
-   */
-  AudioStream(OptionalRef<const AudioSpec> src_spec,
-              OptionalRef<const AudioSpec> dst_spec)
-    : AudioStream(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
-  {
-  }
-
-  /**
-   * Convenience function for straightforward audio init for the common case.
-   *
-   * If all your app intends to do is provide a single source of PCM audio, this
-   * function allows you to do all your audio setup in a single call.
-   *
-   * This is also intended to be a clean means to migrate apps from SDL2.
-   *
-   * This function will open an audio device, create a stream and bind it.
-   * Unlike other methods of setup, the audio device will be closed when this
-   * stream is destroyed, so the app can treat the returned AudioStreamRef as
-   * the only object needed to manage audio playback.
-   *
-   * Also unlike other functions, the audio device begins paused. This is to map
-   * more closely to SDL2-style behavior, since there is no extra step here to
-   * bind a stream to begin audio flowing. The audio device should be resumed
-   * with `AudioStreamRef.ResumeDevice(stream);`
-   *
-   * This function works with both playback and recording devices.
-   *
-   * The `spec` parameter represents the app's side of the audio stream. That
-   * is, for recording audio, this will be the output format, and for playing
-   * audio, this will be the input format. If spec is nullptr, the system will
-   * choose the format, and the app can use AudioStreamRef.GetFormat() to obtain
-   * this information later.
-   *
-   * If you don't care about opening a specific audio device, you can (and
-   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
-   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
-   *
-   * One can optionally provide a callback function; if nullptr, the app is
-   * expected to queue audio data for playback (or unqueue audio data if
-   * capturing). Otherwise, the callback will begin to fire once the device is
-   * unpaused.
-   *
-   * Destroying the returned stream with AudioStreamRef.Destroy will also close
-   * the audio device associated with this stream.
-   *
-   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
-   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
-   * @param spec the audio stream's data format. Can be std::nullopt.
-   * @param callback a callback where the app will provide new data for
-   *                 playback, or receive new data for recording. Can be
-   *                 nullptr, in which case the app will need to call
-   *                 AudioStreamRef.PutData or AudioStreamRef.GetData as
-   *                 necessary.
-   * @param userdata app-controlled pointer passed to callback. Can be nullptr.
-   *                 Ignored if callback is nullptr.
-   * @post an audio stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioStreamRef.GetDevice
-   * @sa AudioStreamRef.ResumeDevice
-   */
-  AudioStream(AudioDeviceRef devid,
-              OptionalRef<const AudioSpec> spec = std::nullopt,
-              AudioStreamCallback callback = nullptr,
-              void* userdata = nullptr)
-    : AudioStream(CheckError(
-        SDL_OpenAudioDeviceStream(devid.get(), spec, callback, userdata)))
-  {
-  }
-
-  /**
-   * Convenience function for straightforward audio init for the common case.
-   *
-   * If all your app intends to do is provide a single source of PCM audio, this
-   * function allows you to do all your audio setup in a single call.
-   *
-   * This is also intended to be a clean means to migrate apps from SDL2.
-   *
-   * This function will open an audio device, create a stream and bind it.
-   * Unlike other methods of setup, the audio device will be closed when this
-   * stream is destroyed, so the app can treat the returned AudioStreamRef as
-   * the only object needed to manage audio playback.
-   *
-   * Also unlike other functions, the audio device begins paused. This is to map
-   * more closely to SDL2-style behavior, since there is no extra step here to
-   * bind a stream to begin audio flowing. The audio device should be resumed
-   * with `AudioStreamRef.ResumeDevice(stream);`
-   *
-   * This function works with both playback and recording devices.
-   *
-   * The `spec` parameter represents the app's side of the audio stream. That
-   * is, for recording audio, this will be the output format, and for playing
-   * audio, this will be the input format. If spec is nullptr, the system will
-   * choose the format, and the app can use AudioStreamRef.GetFormat() to
-   * obtain this information later.
-   *
-   * If you don't care about opening a specific audio device, you can (and
-   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
-   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
-   *
-   * One can optionally provide a callback function; if nullptr, the app is
-   * expected to queue audio data for playback (or unqueue audio data if
-   * capturing). Otherwise, the callback will begin to fire once the device is
-   * unpaused.
-   *
-   * Destroying the returned stream with AudioStreamRef,Destroy() will also
-   * close the audio device associated with this stream.
-   *
-   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
-   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
-   * @param spec the audio stream's data format. Can be std::nullopt.
-   * @param callback a callback where the app will provide new data for
-   *                 playback, or receive new data for recording. Can not be
-   *                 nullptr.
-   * @post an audio stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioStreamRef.GetDevice
-   * @sa AudioStreamRef.ResumeDevice
-   */
-  AudioStream(AudioDeviceRef devid,
-              OptionalRef<const AudioSpec> spec,
-              AudioStreamCB callback)
-    : AudioStream(devid, std::move(spec))
-  {
-    if (devid.IsPlayback()) {
-      SetGetCallback(std::move(callback));
-    } else {
-      SetPutCallback(std::move(callback));
-    }
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~AudioStream() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  AudioStream& operator=(AudioStream other)
-  {
-    reset(other.release());
-    return *this;
-  }
   /**
    * Create a new audio stream.
    *
@@ -32217,12 +30885,12 @@ struct AudioStream : AudioStreamUnsafe
    * @sa AudioStreamRef.Flush
    * @sa AudioStreamRef.Clear
    * @sa AudioStreamRef.SetFormat
-   * @sa AudioStreamRef.Destroy
+   * @sa AudioStream.Destroy
    */
   static AudioStream Create(OptionalRef<const AudioSpec> src_spec,
                             OptionalRef<const AudioSpec> dst_spec)
   {
-    return AudioStream(std::move(src_spec), std::move(dst_spec));
+    return AudioStream(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)));
   }
 
   /**
@@ -32260,16 +30928,86 @@ struct AudioStream : AudioStreamUnsafe
    * capturing). Otherwise, the callback will begin to fire once the device is
    * unpaused.
    *
-   * Destroying the returned stream with AudioStreamRef.Destroy will also close
+   * Destroying the returned stream with AudioStream.Destroy will also close
    * the audio device associated with this stream.
    *
    * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
    *              or AUDIO_DEVICE_DEFAULT_RECORDING.
-   * @param spec the audio stream's data format. Can be nullptr.
+   * @param spec the audio stream's data format. Can be std::nullopt.
    * @param callback a callback where the app will provide new data for
    *                 playback, or receive new data for recording. Can be
-   * nullptr, in which case the app will need to call AudioStreamRef.PutData or
-   * AudioStreamRef.GetData as necessary.
+   *                 nullptr, in which case the app will need to call
+   *                 AudioStreamRef.PutData or AudioStreamRef.GetData as
+   *                 necessary.
+   * @returns an audio stream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStreamRef.GetDevice
+   * @sa AudioStreamRef.ResumeDevice
+   */
+  static AudioStream OpenAudioDeviceStream(AudioDeviceRef devid,
+                                           OptionalRef<const AudioSpec> spec,
+                                           AudioStreamCB callback)
+  {
+    AudioStream stream = OpenAudioDeviceStream(devid, std::move(spec));
+    if (devid.IsPlayback()) {
+      stream->SetGetCallback(std::move(callback));
+    } else {
+      stream->SetPutCallback(std::move(callback));
+    }
+    return stream;
+  }
+
+  /**
+   * Convenience function for straightforward audio init for the common case.
+   *
+   * If all your app intends to do is provide a single source of PCM audio, this
+   * function allows you to do all your audio setup in a single call.
+   *
+   * This is also intended to be a clean means to migrate apps from SDL2.
+   *
+   * This function will open an audio device, create a stream and bind it.
+   * Unlike other methods of setup, the audio device will be closed when this
+   * stream is destroyed, so the app can treat the returned AudioStream as
+   * the only object needed to manage audio playback.
+   *
+   * Also unlike other functions, the audio device begins paused. This is to map
+   * more closely to SDL2-style behavior, since there is no extra step here to
+   * bind a stream to begin audio flowing. The audio device should be resumed
+   * with `AudioStreamRef.ResumeDevice(stream);`
+   *
+   * This function works with both playback and recording devices.
+   *
+   * The `spec` parameter represents the app's side of the audio stream. That
+   * is, for recording audio, this will be the output format, and for playing
+   * audio, this will be the input format. If spec is nullptr, the system will
+   * choose the format, and the app can use AudioStreamRef.GetFormat() to obtain
+   * this information later.
+   *
+   * If you don't care about opening a specific audio device, you can (and
+   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
+   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
+   *
+   * One can optionally provide a callback function; if nullptr, the app is
+   * expected to queue audio data for playback (or unqueue audio data if
+   * capturing). Otherwise, the callback will begin to fire once the device is
+   * unpaused.
+   *
+   * Destroying the returned stream with AudioStream.Destroy will also close
+   * the audio device associated with this stream.
+   *
+   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
+   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
+   * @param spec the audio stream's data format. Can be std::nullopt.
+   * @param callback a callback where the app will provide new data for
+   *                 playback, or receive new data for recording. Can be
+   *                 nullptr, in which case the app will need to call
+   *                 AudioStreamRef.PutData or AudioStreamRef.GetData as
+   *                 necessary.
    * @param userdata app-controlled pointer passed to callback. Can be nullptr.
    *                 Ignored if callback is nullptr.
    * @returns an audio stream on success.
@@ -32288,68 +31026,50 @@ struct AudioStream : AudioStreamUnsafe
     AudioStreamCallback callback = nullptr,
     void* userdata = nullptr)
   {
-    return AudioStream(devid, std::move(spec), callback, userdata);
+    return AudioStream(
+      CheckError(SDL_OpenAudioDeviceStream(devid, spec, callback, userdata)));
   }
 
   /**
-   * Convenience function for straightforward audio init for the common case.
+   * Free an audio stream.
    *
-   * If all your app intends to do is provide a single source of PCM audio, this
-   * function allows you to do all your audio setup in a single call.
+   * This will release all allocated data, including any audio that is still
+   * queued. You do not need to manually clear the stream first.
    *
-   * This is also intended to be a clean means to migrate apps from SDL2.
+   * If this stream was bound to an audio device, it is unbound during this
+   * call. If this stream was created with AudioStream.OpenAudioDeviceStream,
+   * the audio device that was opened alongside this stream's creation will be
+   * closed, too.
    *
-   * This function will open an audio device, create a stream and bind it.
-   * Unlike other methods of setup, the audio device will be closed when this
-   * stream is destroyed, so the app can treat the returned AudioStreamRef as
-   * the only object needed to manage audio playback.
-   *
-   * Also unlike other functions, the audio device begins paused. This is to map
-   * more closely to SDL2-style behavior, since there is no extra step here to
-   * bind a stream to begin audio flowing. The audio device should be resumed
-   * with `AudioStreamRef.ResumeDevice(stream);`
-   *
-   * This function works with both playback and recording devices.
-   *
-   * The `spec` parameter represents the app's side of the audio stream. That
-   * is, for recording audio, this will be the output format, and for playing
-   * audio, this will be the input format. If spec is nullptr, the system will
-   * choose the format, and the app can use AudioStreamRef.GetFormat() to
-   * obtain this information later.
-   *
-   * If you don't care about opening a specific audio device, you can (and
-   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
-   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
-   *
-   * One can optionally provide a callback function; if nullptr, the app is
-   * expected to queue audio data for playback (or unqueue audio data if
-   * capturing). Otherwise, the callback will begin to fire once the device is
-   * unpaused.
-   *
-   * Destroying the returned stream with AudioStreamRef,Destroy() will also
-   * close the audio device associated with this stream.
-   *
-   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
-   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
-   * @param spec the audio stream's data format. Can be std::nullopt.
-   * @param callback a callback where the app will provide new data for
-   *                 playback, or receive new data for recording. Can not be
-   *                 nullptr.
-   * @post an audio stream on success.
-   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStreamRef.GetDevice
-   * @sa AudioStreamRef.ResumeDevice
+   * @sa AudioStream.Create
    */
-  static AudioStream OpenAudioDeviceStream(AudioDeviceRef devid,
-                                           OptionalRef<const AudioSpec> spec,
-                                           AudioStreamCB callback)
+  void Destroy() { reset(); }
+};
+
+/**
+ * Unsafe Handle to audioStream
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AudioStreamRef
+ */
+struct AudioStreamUnsafe : ResourceUnsafe<AudioStreamRef>
+{
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs AudioStreamUnsafe from AudioStream.
+   */
+  constexpr explicit AudioStreamUnsafe(AudioStream&& other)
+    : AudioStreamUnsafe(other.release())
   {
-    return AudioStream(devid, std::move(spec), std::move(callback));
   }
 };
 
@@ -32374,7 +31094,7 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
   /**
    * Lock an audio stream for serialized access.
    *
-   * Each AudioStreamRef has an internal mutex it uses to protect its data
+   * Each AudioStream has an internal mutex it uses to protect its data
    * structures from threading conflicts. This function allows an app to lock
    * that mutex, which could be useful if registering callbacks on this stream.
    *
@@ -32399,7 +31119,7 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
   AudioStreamLock(AudioStreamRef stream)
     : LockBase(stream.get())
   {
-    CheckError(SDL_LockAudioStream(stream.get()));
+    CheckError(SDL_LockAudioStream(stream));
   }
 
   /**
@@ -32428,11 +31148,6 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
    */
   void reset() { Unlock(); }
 };
-
-constexpr AudioStreamUnsafe::AudioStreamUnsafe(AudioStream&& other)
-  : AudioStreamUnsafe(other.release())
-{
-}
 
 /**
  * Use this function to get the number of built-in audio drivers.
@@ -32512,7 +31227,7 @@ inline const char* GetCurrentAudioDriver()
  * GetAudioRecordingDevices() instead.
  *
  * This only returns a list of physical devices; it will not have any device
- * IDs returned by AudioDeviceRef.AudioDeviceRef().
+ * IDs returned by AudioDevice.Open().
  *
  * If this function returns nullptr, to signify an error, `*count` will be set
  * to zero.
@@ -32525,7 +31240,7 @@ inline const char* GetCurrentAudioDriver()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDeviceRef.AudioDeviceRef
+ * @sa AudioDevice.Open
  * @sa GetAudioRecordingDevices
  */
 inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
@@ -32545,7 +31260,7 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  * GetAudioPlaybackDevices() instead.
  *
  * This only returns a list of physical devices; it will not have any device
- * IDs returned by AudioDeviceRef.AudioDeviceRef().
+ * IDs returned by AudioDevice.Open().
  *
  * If this function returns nullptr, to signify an error, `*count` will be set
  * to zero.
@@ -32558,7 +31273,7 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDeviceRef.AudioDeviceRef
+ * @sa AudioDevice.Open
  * @sa GetAudioPlaybackDevices
  */
 inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
@@ -32580,7 +31295,7 @@ inline void AudioDeviceRef::BindAudioStreams(std::span<AudioStreamRef> streams)
 
 inline void AudioDeviceRef::BindAudioStream(AudioStreamRef stream)
 {
-  CheckError(SDL_BindAudioStream(get(), stream.get()));
+  CheckError(SDL_BindAudioStream(get(), stream));
 }
 
 /**
@@ -32650,15 +31365,15 @@ inline AudioStreamLock AudioStreamRef::Lock() { return AudioStreamLock(*this); }
  *
  * Example:
  *
- * ```c
- * LoadWAV(IOStream.IOStream("sample.wav", "rb"), true, &spec, &buf, &len);
+ * ```cpp
+ * LoadWAV(IOStream.FromFile("sample.wav", "rb"), true, &spec);
  * ```
  *
  * Note that the LoadWAV function does this same thing for you, but in a
  * less messy way:
  *
- * ```c
- * LoadWAV("sample.wav", &spec, &buf, &len);
+ * ```cpp
+ * LoadWAV("sample.wav", spec);
  * ```
  *
  * @param src the data source for the WAVE data.
@@ -32672,14 +31387,12 @@ inline AudioStreamLock AudioStreamRef::Lock() { return AudioStreamLock(*this); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- *
- * @sa LoadWAV
  */
 inline OwnArray<Uint8> LoadWAV(IOStreamRef src, AudioSpec* spec)
 {
   Uint8* buf;
   Uint32 len;
-  if (!SDL_LoadWAV_IO(src.get(), false, spec, &buf, &len)) return {};
+  if (!SDL_LoadWAV_IO(src, false, spec, &buf, &len)) return {};
   return OwnArray<Uint8>{buf, size_t(len)};
 }
 
@@ -32688,9 +31401,8 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src, AudioSpec* spec)
  *
  * This is a convenience function that is effectively the same as:
  *
- * ```c
- * LoadWAV(IOStreamRef.IOStreamRef(path, "rb"), true, spec, audio_buf,
- * audio_len);
+ * ```cpp
+ * LoadWAV(IOStream.FromFile(path, "rb"), true, spec, audio_buf, audio_len);
  * ```
  *
  * @param path the file path of the WAV file to open.
@@ -32805,11 +31517,11 @@ inline void MixAudio(TargetBytes dst,
  * to resample audio in blocks, as it will introduce audio artifacts on the
  * boundaries. You should only use this function if you are converting audio
  * data in its entirety in one call. If you want to convert audio in smaller
- * chunks, use an AudioStreamRef, which is designed for this situation.
+ * chunks, use an AudioStream, which is designed for this situation.
  *
- * Internally, this function creates and destroys an AudioStreamRef on each
- * use, so it's also less efficient than using one directly, if you need to
- * convert multiple times.
+ * Internally, this function creates and destroys an AudioStream on each use, so
+ * it's also less efficient than using one directly, if you need to convert
+ * multiple times.
  *
  * @param src_spec the format details of the input audio.
  * @param src_data the audio data to be converted.
@@ -32901,10 +31613,10 @@ inline void AudioStreamRef::SetPutCallback(AudioStreamCB callback)
  * of these primitives are, why they are useful, and how to correctly use them
  * is vital to writing correct and safe multithreaded programs.
  *
- * - Mutexes: Mutex.Mutex()
- * - Read/Write locks: RWLock.RWLock()
- * - Semaphores: Semaphore.Semaphore()
- * - Condition variables: Condition.Condition()
+ * - Mutexes: Mutex.Create()
+ * - Read/Write locks: RWLock.Create()
+ * - Semaphores: Semaphore.Create()
+ * - Condition variables: Condition.Create()
  *
  * SDL also offers a datatype, InitState, which can be used to make sure
  * only one thread initializes/deinitializes some resource that several
@@ -33017,9 +31729,8 @@ struct MutexRef : Resource<SDL_Mutex*>
    */
   void Unlock() { SDL_UnlockMutex(get()); }
 
-protected:
   /**
-   * Destroy a mutex created with Mutex.Mutex().
+   * Destroy a mutex created with Mutex.Create().
    *
    * This function must be called on any mutex that is no longer needed. Failure
    * to destroy a mutex will result in a system memory or resource leak. While
@@ -33027,72 +31738,13 @@ protected:
    * to destroy a locked mutex, and may result in undefined behavior depending
    * on the platform.
    *
+   * @param resource the mutex to destroy.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Mutex.Mutex
+   * @sa Mutex.Create
    */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy a mutex created with Mutex.Mutex().
-   *
-   * This function must be called on any mutex that is no longer needed. Failure
-   * to destroy a mutex will result in a system memory or resource leak. While
-   * it is safe to destroy a mutex that is _unlocked_, it is not safe to attempt
-   * to destroy a locked mutex, and may result in undefined behavior depending
-   * on the platform.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Mutex.Mutex
-   */
-  void reset(SDL_Mutex* newResource = {})
-  {
-    SDL_DestroyMutex(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to mutex
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa MutexRef
- */
-struct MutexUnsafe : MutexRef
-{
-  using MutexRef::Destroy;
-
-  using MutexRef::MutexRef;
-
-  using MutexRef::reset;
-
-  /**
-   * Constructs MutexUnsafe from MutexRef.
-   */
-  constexpr MutexUnsafe(const MutexRef& other)
-    : MutexRef(other.get())
-  {
-  }
-
-  MutexUnsafe(const Mutex& other) = delete;
-
-  /**
-   * Constructs MutexUnsafe from Mutex.
-   */
-  constexpr explicit MutexUnsafe(Mutex&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr MutexUnsafe& operator=(MutexUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_Mutex* resource) { SDL_DestroyMutex(resource); }
 };
 
 /**
@@ -33102,66 +31754,9 @@ struct MutexUnsafe : MutexRef
  *
  * @sa MutexRef
  */
-struct Mutex : MutexUnsafe
+struct Mutex : ResourceUnique<MutexRef>
 {
-  using MutexUnsafe::MutexUnsafe;
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Mutex(SDL_Mutex* resource)
-    : MutexUnsafe(resource)
-  {
-  }
-
-  constexpr Mutex(const Mutex& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Mutex(Mutex&& other)
-    : Mutex(other.release())
-  {
-  }
-
-  /**
-   * Create a new mutex.
-   *
-   * All newly-created mutexes begin in the _unlocked_ state.
-   *
-   * Calls to MutexRef.Lock() will not return while the mutex is locked by
-   * another thread. See MutexRef.TryLock() to attempt to lock without blocking.
-   *
-   * SDL mutexes are reentrant.
-   *
-   * @post the initialized and unlocked mutex or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa MutexRef.Destroy
-   * @sa MutexRef.Lock
-   * @sa MutexRef.TryLock
-   * @sa MutexRef.Unlock
-   */
-  Mutex()
-    : Mutex(SDL_CreateMutex())
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Mutex() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Mutex& operator=(Mutex other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a new mutex.
@@ -33178,23 +31773,56 @@ struct Mutex : MutexUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MutexRef.Destroy
+   * @sa Mutex.Destroy
    * @sa MutexRef.Lock
    * @sa MutexRef.TryLock
    * @sa MutexRef.Unlock
    */
-  static Mutex Create() { return Mutex(); }
+  static Mutex Create() { return Mutex(SDL_CreateMutex()); }
+
+  /**
+   * Destroy a mutex created with Mutex.Create().
+   *
+   * This function must be called on any mutex that is no longer needed. Failure
+   * to destroy a mutex will result in a system memory or resource leak. While
+   * it is safe to destroy a mutex that is _unlocked_, it is not safe to attempt
+   * to destroy a locked mutex, and may result in undefined behavior depending
+   * on the platform.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Mutex.Create
+   */
+  void Destroy() { reset(); }
 };
 
-constexpr MutexUnsafe::MutexUnsafe(Mutex&& other)
-  : MutexUnsafe(other.release())
+/**
+ * Unsafe Handle to mutex
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa MutexRef
+ */
+struct MutexUnsafe : ResourceUnsafe<MutexRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs MutexUnsafe from Mutex.
+   */
+  constexpr explicit MutexUnsafe(Mutex&& other)
+    : MutexUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * A mutex that allows read-only threads to run in parallel.
  *
- * A rwlock is roughly the same concept as MutexRef, but allows threads that
+ * A rwlock is roughly the same concept as Mutex, but allows threads that
  * request read-only access to all hold the lock at the same time. If a thread
  * requests write access, it will block until all read-only threads have
  * released the lock, and no one else can hold the thread (for reading or
@@ -33360,9 +31988,8 @@ struct RWLockRef : Resource<SDL_RWLock*>
    */
   void Unlock() { SDL_UnlockRWLock(get()); }
 
-protected:
   /**
-   * Destroy a read/write lock created with RWLock.RWLock().
+   * Destroy a read/write lock created with RWLock.Create().
    *
    * This function must be called on any read/write lock that is no longer
    * needed. Failure to destroy a rwlock will result in a system memory or
@@ -33370,72 +31997,13 @@ protected:
    * is not safe to attempt to destroy a locked rwlock, and may result in
    * undefined behavior depending on the platform.
    *
+   * @param resource the rwlock to destroy.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.RWLock
+   * @sa RWLock.Create
    */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy a read/write lock created with RWLock.RWLock().
-   *
-   * This function must be called on any read/write lock that is no longer
-   * needed. Failure to destroy a rwlock will result in a system memory or
-   * resource leak. While it is safe to destroy a rwlock that is _unlocked_, it
-   * is not safe to attempt to destroy a locked rwlock, and may result in
-   * undefined behavior depending on the platform.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RWLock.RWLock
-   */
-  void reset(SDL_RWLock* newResource = {})
-  {
-    SDL_DestroyRWLock(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to rWLock
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa RWLockRef
- */
-struct RWLockUnsafe : RWLockRef
-{
-  using RWLockRef::Destroy;
-
-  using RWLockRef::RWLockRef;
-
-  using RWLockRef::reset;
-
-  /**
-   * Constructs RWLockUnsafe from RWLockRef.
-   */
-  constexpr RWLockUnsafe(const RWLockRef& other)
-    : RWLockRef(other.get())
-  {
-  }
-
-  RWLockUnsafe(const RWLock& other) = delete;
-
-  /**
-   * Constructs RWLockUnsafe from RWLock.
-   */
-  constexpr explicit RWLockUnsafe(RWLock&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr RWLockUnsafe& operator=(RWLockUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_RWLock* resource) { SDL_DestroyRWLock(resource); }
 };
 
 /**
@@ -33445,86 +32013,9 @@ struct RWLockUnsafe : RWLockRef
  *
  * @sa RWLockRef
  */
-struct RWLock : RWLockUnsafe
+struct RWLock : ResourceUnique<RWLockRef>
 {
-  using RWLockUnsafe::RWLockUnsafe;
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit RWLock(SDL_RWLock* resource)
-    : RWLockUnsafe(resource)
-  {
-  }
-
-  constexpr RWLock(const RWLock& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr RWLock(RWLock&& other)
-    : RWLock(other.release())
-  {
-  }
-
-  /**
-   * Create a new read/write lock.
-   *
-   * A read/write lock is useful for situations where you have multiple threads
-   * trying to access a resource that is rarely updated. All threads requesting
-   * a read-only lock will be allowed to run in parallel; if a thread requests a
-   * write lock, it will be provided exclusive access. This makes it safe for
-   * multiple threads to use a resource at the same time if they promise not to
-   * change it, and when it has to be changed, the rwlock will serve as a
-   * gateway to make sure those changes can be made safely.
-   *
-   * In the right situation, a rwlock can be more efficient than a mutex, which
-   * only lets a single thread proceed at a time, even if it won't be modifying
-   * the data.
-   *
-   * All newly-created read/write locks begin in the _unlocked_ state.
-   *
-   * Calls to RWLockRef.LockForReading() and RWLockRef.LockForWriting will not
-   * return while the rwlock is locked _for writing_ by another thread. See
-   * RWLockRef.TryLockForReading() and RWLockRef.TryLockForWriting() to attempt
-   * to lock without blocking.
-   *
-   * SDL read/write locks are only recursive for read-only locks! They are not
-   * guaranteed to be fair, or provide access in a FIFO manner! They are not
-   * guaranteed to favor writers. You may not lock a rwlock for both read-only
-   * and write access at the same time from the same thread (so you can't
-   * promote your read-only lock to a write lock without unlocking first).
-   *
-   * @post the initialized and unlocked read/write lock or nullptr on failure;
-   *          call GetError() for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RWLockRef.Destroy
-   * @sa RWLockRef.LockForReading
-   * @sa RWLockRef.LockForWriting
-   * @sa RWLockRef.TryLockForReading
-   * @sa RWLockRef.TryLockForWriting
-   * @sa RWLockRef.Unlock
-   */
-  RWLock()
-    : RWLock(SDL_CreateRWLock())
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~RWLock() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  RWLock& operator=(RWLock other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a new read/write lock.
@@ -33555,24 +32046,57 @@ struct RWLock : RWLockUnsafe
    * promote your read-only lock to a write lock without unlocking first).
    *
    * @returns the initialized and unlocked read/write lock or nullptr on
-   * failure; call GetError() for more information.
+   *          failure; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockRef.Destroy
+   * @sa RWLock.Destroy
    * @sa RWLockRef.LockForReading
    * @sa RWLockRef.LockForWriting
    * @sa RWLockRef.TryLockForReading
    * @sa RWLockRef.TryLockForWriting
    * @sa RWLockRef.Unlock
    */
-  static RWLock Create() { return RWLock(); }
+  static RWLock Create() { return RWLock(SDL_CreateRWLock()); }
+
+  /**
+   * Destroy a read/write lock created with RWLock.Create().
+   *
+   * This function must be called on any read/write lock that is no longer
+   * needed. Failure to destroy a rwlock will result in a system memory or
+   * resource leak. While it is safe to destroy a rwlock that is _unlocked_, it
+   * is not safe to attempt to destroy a locked rwlock, and may result in
+   * undefined behavior depending on the platform.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLock.Create
+   */
+  void Destroy() { reset(); }
 };
 
-constexpr RWLockUnsafe::RWLockUnsafe(RWLock&& other)
-  : RWLockUnsafe(other.release())
+/**
+ * Unsafe Handle to rWLock
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa RWLockRef
+ */
+struct RWLockUnsafe : ResourceUnsafe<RWLockRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs RWLockUnsafe from RWLock.
+   */
+  constexpr explicit RWLockUnsafe(RWLock&& other)
+    : RWLockUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * A means to manage access to a resource, by count, between threads.
@@ -33591,7 +32115,6 @@ constexpr RWLockUnsafe::RWLockUnsafe(RWLock&& other)
  * @cat resource
  *
  * @sa Semaphore
- * @sa SemaphoreRef
  */
 struct SemaphoreRef : Resource<SDL_Semaphore*>
 {
@@ -33642,7 +32165,7 @@ struct SemaphoreRef : Resource<SDL_Semaphore*>
    * If the call is successful it will atomically decrement the semaphore value.
    *
    * @param timeout the length of the timeout, in milliseconds, or -1 to wait
-   *                  indefinitely.
+   *                indefinitely.
    * @returns true if the wait succeeds or false if the wait times out.
    *
    * @since This function is available since SDL 3.2.0.
@@ -33677,75 +32200,19 @@ struct SemaphoreRef : Resource<SDL_Semaphore*>
    */
   Uint32 GetValue() const { return SDL_GetSemaphoreValue(get()); }
 
-protected:
   /**
    * Destroy a semaphore.
    *
    * It is not safe to destroy a semaphore if there are threads currently
    * waiting on it.
    *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Semaphore.Semaphore
-   */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy a semaphore.
-   *
-   * It is not safe to destroy a semaphore if there are threads currently
-   * waiting on it.
+   * @param resource the semaphore to destroy.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Semaphore.Semaphore
+   * @sa Semaphore.Create
    */
-  void reset(SDL_Semaphore* newResource = {})
-  {
-    SDL_DestroySemaphore(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to semaphore
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa SemaphoreRef
- */
-struct SemaphoreUnsafe : SemaphoreRef
-{
-  using SemaphoreRef::Destroy;
-
-  using SemaphoreRef::SemaphoreRef;
-
-  using SemaphoreRef::reset;
-
-  /**
-   * Constructs SemaphoreUnsafe from SemaphoreRef.
-   */
-  constexpr SemaphoreUnsafe(const SemaphoreRef& other)
-    : SemaphoreRef(other.get())
-  {
-  }
-
-  SemaphoreUnsafe(const Semaphore& other) = delete;
-
-  /**
-   * Constructs SemaphoreUnsafe from Semaphore.
-   */
-  constexpr explicit SemaphoreUnsafe(Semaphore&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr SemaphoreUnsafe& operator=(SemaphoreUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_Semaphore* resource) { SDL_DestroySemaphore(resource); }
 };
 
 /**
@@ -33755,75 +32222,9 @@ struct SemaphoreUnsafe : SemaphoreRef
  *
  * @sa SemaphoreRef
  */
-struct Semaphore : SemaphoreUnsafe
+struct Semaphore : ResourceUnique<SemaphoreRef>
 {
-  using SemaphoreUnsafe::SemaphoreUnsafe;
-
-  /**
-   * Constructs an empty Semaphore.
-   */
-  constexpr Semaphore()
-    : SemaphoreUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Semaphore(SDL_Semaphore* resource)
-    : SemaphoreUnsafe(resource)
-  {
-  }
-
-  constexpr Semaphore(const Semaphore& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Semaphore(Semaphore&& other)
-    : Semaphore(other.release())
-  {
-  }
-
-  /**
-   * Create a semaphore.
-   *
-   * This function creates a new semaphore and initializes it with the value
-   * `initial_value`. Each wait operation on the semaphore will atomically
-   * decrement the semaphore value and potentially block if the semaphore value
-   * is 0. Each post operation will atomically increment the semaphore value and
-   * wake waiting threads and allow them to retry the wait operation.
-   *
-   * @param initial_value the starting value of the semaphore.
-   * @post a new semaphore or nullptr on failure; call GetError() for more
-   *          information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SemaphoreRef.Destroy
-   * @sa SemaphoreRef.Signal
-   * @sa SemaphoreRef.TryWait
-   * @sa SemaphoreRef.GetValue
-   * @sa SemaphoreRef.Wait
-   * @sa SemaphoreRef.WaitTimeout
-   */
-  Semaphore(Uint32 initial_value)
-    : Semaphore(SDL_CreateSemaphore(initial_value))
-  {
-  }
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Semaphore() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Semaphore& operator=(Semaphore other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a semaphore.
@@ -33840,7 +32241,7 @@ struct Semaphore : SemaphoreUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SemaphoreRef.Destroy
+   * @sa Semaphore.Destroy
    * @sa SemaphoreRef.Signal
    * @sa SemaphoreRef.TryWait
    * @sa SemaphoreRef.GetValue
@@ -33849,21 +32250,51 @@ struct Semaphore : SemaphoreUnsafe
    */
   static Semaphore Create(Uint32 initial_value)
   {
-    return Semaphore(initial_value);
+    return Semaphore(SDL_CreateSemaphore(initial_value));
   }
+
+  /**
+   * Destroy a semaphore.
+   *
+   * It is not safe to destroy a semaphore if there are threads currently
+   * waiting on it.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Semaphore.Create
+   */
+  void Destroy() { reset(); }
 };
 
-constexpr SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
-  : SemaphoreUnsafe(other.release())
+/**
+ * Unsafe Handle to semaphore
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreRef
+ */
+struct SemaphoreUnsafe : ResourceUnsafe<SemaphoreRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs SemaphoreUnsafe from Semaphore.
+   */
+  constexpr explicit SemaphoreUnsafe(Semaphore&& other)
+    : SemaphoreUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * A means to block multiple threads until a condition is satisfied.
  *
- * Condition variables, paired with an MutexRef, let an app halt multiple
- * threads until a condition has occurred, at which time the app can release
- * one or all waiting threads.
+ * Condition variables, paired with an Mutex, let an app halt multiple threads
+ * until a condition has occurred, at which time the app can release one or all
+ * waiting threads.
  *
  * Wikipedia has a thorough explanation of the concept:
  *
@@ -33932,7 +32363,7 @@ struct ConditionRef : Resource<SDL_Condition*>
    * @sa ConditionRef.Signal
    * @sa ConditionRef.WaitTimeout
    */
-  void Wait(MutexRef mutex) { SDL_WaitCondition(get(), mutex.get()); }
+  void Wait(MutexRef mutex) { SDL_WaitCondition(get(), mutex); }
 
   /**
    * Wait until a condition variable is signaled or a certain time has passed.
@@ -33949,7 +32380,7 @@ struct ConditionRef : Resource<SDL_Condition*>
    *
    * @param mutex the mutex used to coordinate thread access.
    * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
-   *                  indefinitely.
+   *                indefinitely.
    * @returns true if the condition variable is signaled, false if the condition
    *          is not signaled in the allotted time.
    *
@@ -33963,73 +32394,19 @@ struct ConditionRef : Resource<SDL_Condition*>
    */
   bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout)
   {
-    return SDL_WaitConditionTimeout(get(), mutex.get(), timeout.count());
+    return SDL_WaitConditionTimeout(get(), mutex, timeout.count());
   }
-
-protected:
-  /**
-   * Destroy a condition variable.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Condition.Condition
-   */
-  void Destroy() { reset(); }
 
   /**
    * Destroy a condition variable.
    *
+   * @param resource the condition variable to destroy.
+   *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Condition.Condition
+   * @sa Condition.Create
    */
-  void reset(SDL_Condition* newResource = {})
-  {
-    SDL_DestroyCondition(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to condition
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa ConditionRef
- */
-struct ConditionUnsafe : ConditionRef
-{
-  using ConditionRef::ConditionRef;
-
-  using ConditionRef::Destroy;
-
-  using ConditionRef::reset;
-
-  /**
-   * Constructs ConditionUnsafe from ConditionRef.
-   */
-  constexpr ConditionUnsafe(const ConditionRef& other)
-    : ConditionRef(other.get())
-  {
-  }
-
-  ConditionUnsafe(const Condition& other) = delete;
-
-  /**
-   * Constructs ConditionUnsafe from Condition.
-   */
-  constexpr explicit ConditionUnsafe(Condition&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr ConditionUnsafe& operator=(ConditionUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_Condition* resource) { SDL_DestroyCondition(resource); }
 };
 
 /**
@@ -34039,60 +32416,10 @@ struct ConditionUnsafe : ConditionRef
  *
  * @sa ConditionRef
  */
-struct Condition : ConditionUnsafe
+struct Condition : ResourceUnique<ConditionRef>
 {
-  using ConditionUnsafe::ConditionUnsafe;
+  using ResourceUnique::ResourceUnique;
 
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Condition(SDL_Condition* resource)
-    : ConditionUnsafe(resource)
-  {
-  }
-
-  constexpr Condition(const Condition& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Condition(Condition&& other)
-    : Condition(other.release())
-  {
-  }
-
-  /**
-   * Create a condition variable.
-   *
-   * @post a new condition variable or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ConditionRef.Broadcast
-   * @sa ConditionRef.Signal
-   * @sa ConditionRef.Wait
-   * @sa ConditionRef.WaitTimeout
-   * @sa ConditionRef.Destroy
-   */
-  Condition()
-    : Condition(SDL_CreateCondition())
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Condition() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Condition& operator=(Condition other)
-  {
-    reset(other.release());
-    return *this;
-  }
   /**
    * Create a condition variable.
    *
@@ -34105,15 +32432,42 @@ struct Condition : ConditionUnsafe
    * @sa ConditionRef.Signal
    * @sa ConditionRef.Wait
    * @sa ConditionRef.WaitTimeout
-   * @sa ConditionRef.Destroy
+   * @sa Condition.Destroy
    */
-  static Condition Create() { return Condition(); }
+  static Condition Create() { return Condition(SDL_CreateCondition()); }
+
+  /**
+   * Destroy a condition variable.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Condition.Create
+   */
+  void Destroy() { reset(); }
 };
 
-constexpr ConditionUnsafe::ConditionUnsafe(Condition&& other)
-  : ConditionUnsafe(other.release())
+/**
+ * Unsafe Handle to condition
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ConditionRef
+ */
+struct ConditionUnsafe : ResourceUnsafe<ConditionRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs ConditionUnsafe from Condition.
+   */
+  constexpr explicit ConditionUnsafe(Condition&& other)
+    : ConditionUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * The current status of an InitState structure.
@@ -34277,16 +32631,15 @@ struct InitState : SDL_InitState
  * These functions provide a cross-platform way to spawn and manage OS-level
  * processes.
  *
- * You can create a new subprocess with Process.Process() and optionally
- * read and write to it using Process.Read() or Process.GetInput() and
- * Process.GetOutput(). If more advanced functionality like chaining input
- * between processes is necessary, you can use
- * Process.Process().
+ * You can create a new subprocess with Process.Create() and optionally
+ * read and write to it using ProcessRef.Read() or ProcessRef.GetInput() and
+ * ProcessRef.GetOutput(). If more advanced functionality like chaining input
+ * between processes is necessary, you can use Process.CreateWithProperties().
  *
- * You can get the status of a created process with Process.Wait(), or
- * terminate the process with Process.Kill().
+ * You can get the status of a created process with ProcessRef.Wait(), or
+ * terminate the process with ProcessRef.Kill().
  *
- * Don't forget to call Process.reset() to clean up, whether the process
+ * Don't forget to call Process.Destroy() to clean up, whether the process
  * process was killed, terminated on its own, or is still running!
  *
  * @{
@@ -34310,31 +32663,30 @@ struct Process;
  * to `NUL:` on Windows and `/dev/null` on POSIX systems. This is the default
  * for standard input.
  *
- * If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected
- * to a new IOStreamRef that is available to the application. Standard input
- * will be available as `prop::process.STDIN_POINTER` and allows
- * ProcessRef.GetInput(), standard output will be available as
- * `prop::process.STDOUT_POINTER` and allows ProcessRef.Read() and
- * ProcessRef.GetOutput(), and standard error will be available as
- * `prop::process.STDERR_POINTER` in the properties for the created
- * process.
+ * If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected to a
+ * new IOStream that is available to the application. Standard input will be
+ * available as `prop::process.STDIN_POINTER` and allows ProcessRef.GetInput(),
+ * standard output will be available as `prop::process.STDOUT_POINTER` and
+ * allows ProcessRef.Read() and ProcessRef.GetOutput(), and standard error will
+ * be available as `prop::process.STDERR_POINTER` in the properties for the
+ * created process.
  *
- * If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is
- * connected to an existing IOStreamRef provided by the application. Standard
- * input is provided using `prop::process.CREATE_STDIN_POINTER`, standard
- * output is provided using `prop::process.CREATE_STDOUT_POINTER`, and
- * standard error is provided using `prop::process.CREATE_STDERR_POINTER`
- * in the creation properties. These existing streams should be closed by the
- * application once the new process is created.
+ * If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is connected to
+ * an existing IOStream provided by the application. Standard input is provided
+ * using `prop::process.CREATE_STDIN_POINTER`, standard output is provided using
+ * `prop::process.CREATE_STDOUT_POINTER`, and standard error is provided using
+ * `prop::process.CREATE_STDERR_POINTER` in the creation properties. These
+ * existing streams should be closed by the application once the new process is
+ * created.
  *
- * In order to use an IOStreamRef with PROCESS_STDIO_REDIRECT, it must
- * have `prop::IOStream.WINDOWS_HANDLE_POINTER` or
+ * In order to use an IOStream with PROCESS_STDIO_REDIRECT, it must have
+ * `prop::IOStream.WINDOWS_HANDLE_POINTER` or
  * `prop::IOStream.FILE_DESCRIPTOR_NUMBER` set. This is true for streams
  * representing files and process I/O.
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa ProcessRef.ProcessRef
+ * @sa Process.CreateWithProperties
  * @sa ProcessRef.GetProperties
  * @sa ProcessRef.Read
  * @sa ProcessRef.GetInput
@@ -34350,13 +32702,13 @@ constexpr ProcessIO PROCESS_STDIO_NULL =
   SDL_PROCESS_STDIO_NULL; ///< The I/O stream is ignored.
 
 /**
- * The I/O stream is connected to a new IOStreamRef that the application can
- * read or write.
+ * The I/O stream is connected to a new IOStream that the application can read
+ * or write.
  */
 constexpr ProcessIO PROCESS_STDIO_APP = SDL_PROCESS_STDIO_APP;
 
 /**
- * The I/O stream is redirected to an existing IOStreamRef.
+ * The I/O stream is redirected to an existing IOStream.
  */
 constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
 
@@ -34365,12 +32717,10 @@ constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa ProcessRef.ProcessRef
- *
  * @cat resource
  *
  * @sa Process
- * @sa ProcessRef
+ * @sa Process.Create
  */
 struct ProcessRef : Resource<SDL_Process*>
 {
@@ -34401,7 +32751,8 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
+   * @sa Process.Create
+   * @sa Process.CreateWithProperties
    */
   PropertiesRef GetProperties() const
   {
@@ -34430,8 +32781,8 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa ProcessRef.Destroy
+   * @sa Process.Create
+   * @sa Process.Destroy
    */
   StringResult Read(int* exitcode = nullptr)
   {
@@ -34462,7 +32813,7 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.Create
    */
   template<class T>
   OwnArray<T> ReadAs(int* exitcode = nullptr)
@@ -34476,8 +32827,8 @@ struct ProcessRef : Resource<SDL_Process*>
   /**
    * Get the IOStreamRef associated with process standard input.
    *
-   * The process must have been created with Process.Process() and pipe_stdio
-   * set to true, or with Process.Process() and
+   * The process must have been created with Process.Create() and pipe_stdio
+   * set to true, or with Process.CreateWithProperties() and
    * `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Writing to this stream can return less data than expected if the process
@@ -34492,7 +32843,8 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
+   * @sa Process.Create
+   * @sa Process.CreateWithProperties
    * @sa ProcessRef.GetOutput
    */
   IOStreamRef GetInput() { return SDL_GetProcessInput(get()); }
@@ -34500,8 +32852,8 @@ struct ProcessRef : Resource<SDL_Process*>
   /**
    * Get the IOStreamRef associated with process standard output.
    *
-   * The process must have been created with Process.Process() and pipe_stdio
-   * set to true, or with Process.Process() and
+   * The process must have been created with Process.Create() and pipe_stdio
+   * set to true, or with Process.CreateWithProperties() and
    * `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Reading from this stream can return 0 with IOStreamRef.GetStatus()
@@ -34514,7 +32866,8 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
+   * @sa Process.Create
+   * @sa Process.CreateWithProperties
    * @sa ProcessRef.GetInput
    */
   IOStreamRef GetOutput() { return SDL_GetProcessOutput(get()); }
@@ -34533,9 +32886,10 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
+   * @sa Process.Create
+   * @sa Process.CreateWithProperties
    * @sa ProcessRef.Wait
-   * @sa ProcessRef.Destroy
+   * @sa Process.Destroy
    */
   void Kill(bool force) { CheckError(SDL_KillProcess(get(), force)); }
 
@@ -34564,16 +32918,16 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
+   * @sa Process.Create
+   * @sa Process.CreateWithProperties
    * @sa ProcessRef.Kill
-   * @sa ProcessRef.Destroy
+   * @sa Process.Destroy
    */
   bool Wait(bool block, int* exitcode)
   {
     return SDL_WaitProcess(get(), block, exitcode);
   }
 
-protected:
   /**
    * Destroy a previously created process object.
    *
@@ -34581,75 +32935,17 @@ protected:
    * to track it. If you want to stop the process you should use
    * ProcessRef.Kill().
    *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Process.Process
-   * @sa ProcessRef.Kill
-   */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy a previously created process object.
-   *
-   * Note that this does not stop the process, just destroys the SDL object used
-   * to track it. If you want to stop the process you should use
-   * ProcessRef.Kill().
+   * @param resource The process object to destroy.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
+   * @sa Process.Create
+   * @sa Process.CreateWithProperties
    * @sa ProcessRef.Kill
    */
-  void reset(SDL_Process* newResource = {})
-  {
-    SDL_DestroyProcess(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to process
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa ProcessRef
- */
-struct ProcessUnsafe : ProcessRef
-{
-  using ProcessRef::Destroy;
-
-  using ProcessRef::ProcessRef;
-
-  using ProcessRef::reset;
-
-  /**
-   * Constructs ProcessUnsafe from ProcessRef.
-   */
-  constexpr ProcessUnsafe(const ProcessRef& other)
-    : ProcessRef(other.get())
-  {
-  }
-
-  ProcessUnsafe(const Process& other) = delete;
-
-  /**
-   * Constructs ProcessUnsafe from Process.
-   */
-  constexpr explicit ProcessUnsafe(Process&& other);
-  /**
-   * Assignment operator.
-   */
-
-  constexpr ProcessUnsafe& operator=(ProcessUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_Process* resource) { SDL_DestroyProcess(resource); }
 };
 
 /**
@@ -34659,35 +32955,9 @@ struct ProcessUnsafe : ProcessRef
  *
  * @sa ProcessRef
  */
-struct Process : ProcessUnsafe
+struct Process : ResourceUnique<ProcessRef>
 {
-  using ProcessUnsafe::ProcessUnsafe;
-
-  /**
-   * Constructs an empty Process.
-   */
-  constexpr Process()
-    : ProcessUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Process(SDL_Process* resource)
-    : ProcessUnsafe(resource)
-  {
-  }
-
-  constexpr Process(const Process& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Process(Process&& other)
-    : Process(other.release())
-  {
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a new process.
@@ -34706,31 +32976,32 @@ struct Process : ProcessUnsafe
    * will allow the use of ProcessRef.Read() or ProcessRef.GetInput() and
    * ProcessRef.GetOutput().
    *
-   * See Process.Process() for more details.
+   * See Process.CreateWithProperties() for more details.
    *
    * @param args the path and arguments for the new process.
    * @param pipe_stdio true to create pipes to the process's standard input and
    *                   from the process's standard output, false for the process
    *                   to have no input and inherit the application's standard
    *                   output.
-   * @post the newly created and running process.
-   * @throws Error on failure.
+   * @returns the newly created and running process, or nullptr if the process
+   *          couldn't be created.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa Process.CreateWithProperties
    * @sa ProcessRef.GetProperties
    * @sa ProcessRef.Read
    * @sa ProcessRef.GetInput
    * @sa ProcessRef.GetOutput
    * @sa ProcessRef.Kill
    * @sa ProcessRef.Wait
-   * @sa ProcessRef.Destroy
+   * @sa Process.Destroy
    */
-  Process(const char* const* args, bool pipe_stdio)
-    : Process(CheckError(SDL_CreateProcess(args, pipe_stdio)))
+  static Process Create(const char* const* args, bool pipe_stdio)
   {
+    return Process(SDL_CreateProcess(args, pipe_stdio));
   }
 
   /**
@@ -34778,64 +33049,6 @@ struct Process : ProcessUnsafe
    * use ProcessRef.Wait() instead.
    *
    * @param props the properties to use.
-   * @post the newly created and running process.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ProcessRef.GetProperties
-   * @sa ProcessRef.Read
-   * @sa ProcessRef.GetInput
-   * @sa ProcessRef.GetOutput
-   * @sa ProcessRef.Kill
-   * @sa ProcessRef.Wait
-   * @sa ProcessRef.Destroy
-   */
-  Process(PropertiesRef props)
-    : Process(CheckError(SDL_CreateProcessWithProperties(props.get())))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Process() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Process& operator=(Process other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create a new process.
-   *
-   * The path to the executable is supplied in args[0]. args[1..N] are
-   * additional arguments passed on the command line of the new process, and the
-   * argument list should be terminated with a nullptr, e.g.:
-   *
-   * ```c
-   * const char *args[] = { "myprogram", "argument", nullptr };
-   * ```
-   *
-   * Setting pipe_stdio to true is equivalent to setting
-   * `prop::process.CREATE_STDIN_NUMBER` and
-   * `prop::process.CREATE_STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and
-   * will allow the use of ProcessRef.Read() or ProcessRef.GetInput() and
-   * ProcessRef.GetOutput().
-   *
-   * See Process.Process() for more details.
-   *
-   * @param args the path and arguments for the new process.
-   * @param pipe_stdio true to create pipes to the process's standard input and
-   *                   from the process's standard output, false for the process
-   *                   to have no input and inherit the application's standard
-   *                   output.
    * @returns the newly created and running process, or nullptr if the process
    *          couldn't be created.
    *
@@ -34843,91 +33056,60 @@ struct Process : ProcessUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
+   * @sa Process.Create
    * @sa ProcessRef.GetProperties
    * @sa ProcessRef.Read
    * @sa ProcessRef.GetInput
    * @sa ProcessRef.GetOutput
    * @sa ProcessRef.Kill
    * @sa ProcessRef.Wait
-   * @sa ProcessRef.Destroy
-   */
-  static Process Create(const char* const* args, bool pipe_stdio)
-  {
-    return Process(args, pipe_stdio);
-  }
-
-  /**
-   * Create a new process with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::process.CREATE_ARGS_POINTER`: an array of strings containing
-   *   the program to run, any arguments, and a nullptr pointer, e.g. const char
-   *   *args[] = { "myprogram", "argument", nullptr }. This is a required
-   * property.
-   * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an EnvironmentRef
-   *   pointer. If this property is set, it will be the entire environment for
-   *   the process, otherwise the current environment is used.
-   * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing
-   *   where standard input for the process comes from, defaults to
-   *   `SDL_PROCESS_STDIO_nullptr`.
-   * - `prop::process.CREATE_STDIN_POINTER`: an IOStreamRef pointer used for
-   *   standard input when `prop::process.CREATE_STDIN_NUMBER` is set to
-   *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop::process.CREATE_STDOUT_NUMBER`: an ProcessIO value
-   *   describing where standard output for the process goes to, defaults to
-   *   `PROCESS_STDIO_INHERITED`.
-   * - `prop::process.CREATE_STDOUT_POINTER`: an IOStreamRef pointer used
-   *   for standard output when `prop::process.CREATE_STDOUT_NUMBER` is set
-   *   to `PROCESS_STDIO_REDIRECT`.
-   * - `prop::process.CREATE_STDERR_NUMBER`: an ProcessIO value
-   *   describing where standard error for the process goes to, defaults to
-   *   `PROCESS_STDIO_INHERITED`.
-   * - `prop::process.CREATE_STDERR_POINTER`: an IOStreamRef pointer used
-   *   for standard error when `prop::process.CREATE_STDERR_NUMBER` is set to
-   *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error
-   *   output of the process should be redirected into the standard output of
-   *   the process. This property has no effect if
-   *   `prop::process.CREATE_STDERR_NUMBER` is set.
-   * - `prop::process.CREATE_BACKGROUND_BOOLEAN`: true if the process should
-   *   run in the background. In this case the default input and output is
-   *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
-   *   available, and will always be 0.
-   *
-   * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
-   * SIGCHLD should not be ignored or handled because those would prevent SDL
-   * from properly tracking the lifetime of the underlying process. You should
-   * use ProcessRef.Wait() instead.
-   *
-   * @param props the properties to use.
-   * @returns the newly created and running process, or nullptr if the process
-   *          couldn't be created.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Process.Process
-   * @sa ProcessRef.GetProperties
-   * @sa ProcessRef.Read
-   * @sa ProcessRef.GetInput
-   * @sa ProcessRef.GetOutput
-   * @sa ProcessRef.Kill
-   * @sa ProcessRef.Wait
-   * @sa ProcessRef.Destroy
+   * @sa Process.Destroy
    */
   static Process CreateWithProperties(PropertiesRef props)
   {
-    return Process(props);
+    return Process(SDL_CreateProcessWithProperties(props));
   }
+
+  /**
+   * Destroy a previously created process object.
+   *
+   * Note that this does not stop the process, just destroys the SDL object used
+   * to track it. If you want to stop the process you should use
+   * ProcessRef.Kill().
+   *
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Process.Create
+   * @sa Process.CreateWithProperties
+   * @sa ProcessRef.Kill
+   */
+  void Destroy() { reset(); }
 };
 
-constexpr ProcessUnsafe::ProcessUnsafe(Process&& other)
-  : ProcessUnsafe(other.release())
+/**
+ * Unsafe Handle to process
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ProcessRef
+ */
+struct ProcessUnsafe : ResourceUnsafe<ProcessRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs ProcessUnsafe from Process.
+   */
+  constexpr explicit ProcessUnsafe(Process&& other)
+    : ProcessUnsafe(other.release())
+  {
+  }
+};
 
 namespace prop::process {
 
@@ -34974,16 +33156,17 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  * SDL surfaces are buffers of pixels in system RAM. These are useful for
  * passing around and manipulating images that are not stored in GPU memory.
  *
- * SDL_Surface makes serious efforts to manage images in various formats, and
+ * Surface makes serious efforts to manage images in various formats, and
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
- * There is also a simple .bmp loader, SDL::LoadBMP(). SDL itself does not
+ * There is also a simple .bmp loader, Surface.LoadBMP(). SDL itself does not
  * provide loaders for various other file formats, but there are several
  * excellent external libraries that do, including its own satellite library,
  * SDL_image:
  *
  * https://github.com/libsdl-org/SDL_image
+ *
  * @{
  */
 
@@ -34997,7 +33180,7 @@ struct SurfaceRef;
 struct Surface;
 
 /**
- * The flags on an SurfaceRef.
+ * The flags on an Surface.
  *
  * These are generally considered read-only.
  *
@@ -35028,10 +33211,7 @@ using ScaleMode = SDL_ScaleMode;
 
 #if SDL_VERSION_ATLEAST(3, 2, 10)
 
-/**
- * @since SDL 3.2.10
- */
-constexpr ScaleMode SCALEMODE_INVALID = SDL_SCALEMODE_INVALID;
+constexpr ScaleMode SCALEMODE_INVALID = SDL_SCALEMODE_INVALID; ///< INVALID
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
@@ -35079,13 +33259,13 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa SurfaceRef.SurfaceRef
- * @sa SurfaceRef.reset
- *
  * @cat resource
  *
+ *
+ * @sa Surface.Create
+ * @sa Surface.CreateFrom
+ * @sa Surface.Destroy
  * @sa Surface
- * @sa SurfaceRef
  */
 struct SurfaceRef : Resource<SDL_Surface*>
 {
@@ -35208,7 +33388,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Palette.Palette
+   * @sa Palette.Create
    * @sa SurfaceRef.GetPalette
    */
   void SetPalette(PaletteRef palette)
@@ -35239,7 +33419,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * alternate versions will not be updated when the original surface changes.
    *
    * This function adds a reference to the alternate version, so you should call
-   * SurfaceRef.Destroy() on the image after this call.
+   * Surface.Destroy() on the image after this call.
    *
    * @param image an alternate SurfaceRef to associate with this surface.
    * @throws Error on failure.
@@ -35764,7 +33944,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceRef.Destroy
+   * @sa Surface.Destroy
    */
   Surface Duplicate() const;
 
@@ -35782,7 +33962,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceRef.Destroy
+   * @sa Surface.Destroy
    */
   Surface Scale(int width, int height, ScaleMode scaleMode) const;
 
@@ -35809,7 +33989,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SurfaceRef.Convert
-   * @sa SurfaceRef.Destroy
+   * @sa Surface.Destroy
    */
   Surface Convert(PixelFormat format) const;
 
@@ -35837,7 +34017,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SurfaceRef.Convert
-   * @sa SurfaceRef.Destroy
+   * @sa Surface.Destroy
    */
   Surface Convert(PixelFormat format,
                   PaletteRef palette,
@@ -36707,95 +34887,48 @@ struct SurfaceRef : Resource<SDL_Surface*>
   /**
    * Get the width in pixels.
    */
-  int GetWidth() const { return get()->w; }
+  constexpr int GetWidth() const { return get()->w; }
 
   /**
    * Get the height in pixels.
    */
-  int GetHeight() const { return get()->h; }
+  constexpr int GetHeight() const { return get()->h; }
 
   /**
    * Get the size in pixels.
    */
-  Point GetSize() const { return Point(GetWidth(), GetHeight()); }
+  constexpr Point GetSize() const { return Point(GetWidth(), GetHeight()); }
+
+  /**
+   * Get pitch in bytes.
+   */
+  constexpr int GetPitch() const { return get()->pitch; }
 
   /**
    * Get the pixel format.
    */
-  PixelFormat GetFormat() const { return get()->format; }
+  constexpr PixelFormat GetFormat() const { return get()->format; }
 
-protected:
   /**
-   * Free a surface.
-   *
-   * It is safe to pass nullptr to this function.
-   *
-   *
-   * @threadsafety No other thread should be using the surface when it is freed.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.Surface
+   * Get the pixels.
    */
-  void Destroy() { reset(); }
+  constexpr void* GetPixels() const { return get()->pixels; }
 
   /**
    * Free a surface.
    *
    * It is safe to pass nullptr to this function.
    *
+   * @param resource the Surface to free.
+   *
    * @threadsafety No other thread should be using the surface when it is freed.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Surface
+   * @sa Surface.Create
+   * @sa Surface.CreateFrom
    */
-  void reset(SDL_Surface* newResource = {})
-  {
-    SDL_DestroySurface(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to surface
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa SurfaceRef
- */
-struct SurfaceUnsafe : SurfaceRef
-{
-  using SurfaceRef::Destroy;
-
-  using SurfaceRef::SurfaceRef;
-
-  using SurfaceRef::reset;
-
-  /**
-   * Constructs SurfaceUnsafe from SurfaceRef.
-   */
-  constexpr SurfaceUnsafe(const SurfaceRef& other)
-    : SurfaceRef(other.get())
-  {
-  }
-
-  SurfaceUnsafe(const Surface& other) = delete;
-
-  /**
-   * Constructs SurfaceUnsafe from Surface.
-   */
-  constexpr explicit SurfaceUnsafe(Surface&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr SurfaceUnsafe& operator=(SurfaceUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_Surface* resource) { SDL_DestroySurface(resource); }
 };
 
 /**
@@ -36805,140 +34938,9 @@ struct SurfaceUnsafe : SurfaceRef
  *
  * @sa SurfaceRef
  */
-struct Surface : SurfaceUnsafe
+struct Surface : ResourceUnique<SurfaceRef>
 {
-  using SurfaceUnsafe::SurfaceUnsafe;
-
-  /**
-   * Constructs an empty Surface.
-   */
-  constexpr Surface()
-    : SurfaceUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Surface(SDL_Surface* resource)
-    : SurfaceUnsafe(resource)
-  {
-  }
-
-  constexpr Surface(const Surface& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Surface(Surface&& other)
-    : Surface(other.release())
-  {
-  }
-
-  /**
-   * Load an image from a filesystem path into a software surface.
-   *
-   * If available, this uses LoadSurface(StringParam), otherwise it uses
-   * LoadBMP(StringParam).
-   *
-   * @param file a path on the filesystem to load an image from.
-   * @post the new Surface with loaded contents on success.
-   * @throws Error on failure.
-   *
-   * @sa LoadSurface(StringParam)
-   * @sa Surface.Load(StringParam)
-   * @sa Surface.LoadBMP(StringParam)
-   */
-  Surface(StringParam file)
-    : Surface(CheckError(Load(std::move(file))))
-  {
-  }
-
-  /**
-   * Load an image from a IOStreamRef into a software surface.
-   *
-   * If available, this uses LoadSurface(IOStreamRef&), otherwise it uses
-   * LoadBMP(IOStreamRef&).
-   *
-   * @param src an IOStreamRef to load an image from.
-   * @post the new Surface with loaded contents on success.
-   * @throws Error on failure.
-   *
-   * @sa LoadSurface(IOStreamRef)
-   * @sa Surface.Load(IOStreamRef)
-   * @sa Surface.LoadBMP(IOStreamRef)
-   */
-  Surface(IOStreamRef src)
-    : Surface(CheckError(Load(src)))
-  {
-  }
-
-  /**
-   * Allocate a new surface with a specific pixel format.
-   *
-   * The pixels of the new surface are initialized to zero.
-   *
-   * @param size the width and height of the surface.
-   * @param format the PixelFormat for the new surface's pixel format.
-   * @post the new Surface structure that is created.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.Destroy
-   */
-  Surface(const SDL_Point& size, PixelFormat format)
-    : Surface(CheckError(SDL_CreateSurface(size.x, size.y, format)))
-  {
-  }
-
-  /**
-   * Allocate a new surface with a specific pixel format and existing pixel
-   * data.
-   *
-   * No copy is made of the pixel data. Pixel data is not managed
-   * automatically; you must free the surface before you free the pixel data.
-   *
-   * Pitch is the offset in bytes from one row of pixels to the next, e.g.
-   * `width*4` for `PIXELFORMAT_RGBA8888`.
-   *
-   * You may pass nullptr for pixels and 0 for pitch to create a surface that
-   * you will fill in with valid values later.
-   *
-   * @param size the width and height of the surface.
-   * @param format the PixelFormat for the new surface's pixel format.
-   * @param pixels a pointer to existing pixel data.
-   * @param pitch the number of bytes between each row, including padding.
-   * @post the new Surface structure that is created.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SurfaceRef.Destroy
-   */
-  Surface(const SDL_Point& size, PixelFormat format, void* pixels, int pitch)
-    : Surface(CheckError(
-        SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Surface() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Surface& operator=(Surface other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Load an image from a filesystem path into a software surface.
@@ -36950,7 +34952,6 @@ struct Surface : SurfaceUnsafe
    * @returns the new Surface with loaded contents on success or nullptr on
    *          failure; call GetError() for more information.
    *
-   * @sa Surface.Surface(StringParam)
    * @sa LoadSurface(StringParam)
    * @sa Surface.LoadBMP(StringParam)
    */
@@ -36966,11 +34967,56 @@ struct Surface : SurfaceUnsafe
    * @returns the new Surface with loaded contents on success or nullptr on
    *          failure; call GetError() for more information.
    *
-   * @sa Surface.Surface(IOStreamRef)
    * @sa LoadSurface(IOStreamRef)
    * @sa Surface.LoadBMP(IOStreamRef)
    */
   static Surface Load(IOStreamRef src);
+
+  /**
+   * Load a BMP image from a seekable SDL data stream.
+   *
+   * The new surface should be freed with Surface.Destroy(). Not doing so
+   * will result in a memory leak.
+   *
+   * @param src the data stream for the surface.
+   * @returns a pointer to a new SurfaceRef structure or nullptr on failure;
+   * call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Destroy
+   * @sa Surface.LoadBMP
+   * @sa SaveBMP
+   */
+  static Surface LoadBMP(IOStreamRef src)
+  {
+    return Surface(SDL_LoadBMP_IO(src, false));
+  }
+
+  /**
+   * Load a BMP image from a file.
+   *
+   * The new surface should be freed with Surface.Destroy(). Not doing so
+   * will result in a memory leak.
+   *
+   * @param file the BMP file to load.
+   * @returns a pointer to a new SurfaceRef structure or nullptr on failure;
+   * call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Destroy
+   * @sa Surface.LoadBMP
+   * @sa SaveBMP
+   */
+  static Surface LoadBMP(StringParam file)
+  {
+    return Surface(SDL_LoadBMP(file));
+  }
 
   /**
    * Allocate a new surface with a specific pixel format.
@@ -36979,19 +35025,19 @@ struct Surface : SurfaceUnsafe
    *
    * @param size the width and height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
-   * @returns the new SurfaceRef structure that is created or nullptr on
-   * failure; call GetError() for more information.
+   * @returns the new Surface structure that is created on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Surface
-   * @sa SurfaceRef.Destroy
+   * @sa Surface.CreateFrom
+   * @sa Surface.Destroy
    */
   static Surface Create(const SDL_Point& size, PixelFormat format)
   {
-    return Surface(size, format);
+    return Surface(SDL_CreateSurface(size.x, size.y, format));
   }
 
   /**
@@ -37018,15 +35064,53 @@ struct Surface : SurfaceUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Surface
-   * @sa SurfaceRef.Destroy
+   * @sa Surface.Create
+   * @sa Surface.Destroy
    */
   static Surface CreateFrom(const SDL_Point& size,
                             PixelFormat format,
                             void* pixels,
                             int pitch)
   {
-    return Surface(size, format, pixels, pitch);
+    return Surface(
+      SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch));
+  }
+
+  /**
+   * Free a surface.
+   *
+   * It is safe to pass nullptr to this function.
+   *
+   *
+   * @threadsafety No other thread should be using the surface when it is freed.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Create
+   * @sa Surface.CreateFrom
+   */
+  void Destroy() { reset(); }
+};
+
+/**
+ * Unsafe Handle to surface
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SurfaceRef
+ */
+struct SurfaceUnsafe : ResourceUnsafe<SurfaceRef>
+{
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs SurfaceUnsafe from Surface.
+   */
+  constexpr explicit SurfaceUnsafe(Surface&& other)
+    : SurfaceUnsafe(other.release())
+  {
   }
 };
 
@@ -37083,11 +35167,15 @@ public:
   constexpr operator bool() const { return bool(surface); }
 
   /**
-   * Release the locked surface after directly accessing the pixels.
+   * Release a surface after directly accessing the pixels.
+   *
+   * @threadsafety This function is not thread safe. The locking referred to by
+   *               this function is making the pixels available for direct
+   *               access, not thread-safe locking.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Lock()
+   * @sa SurfaceRef.Lock
    */
   void Unlock() { return SDL_UnlockSurface(surface.release()); }
 
@@ -37109,11 +35197,6 @@ public:
   friend class SurfaceRef;
 };
 
-constexpr SurfaceUnsafe::SurfaceUnsafe(Surface&& other)
-  : SurfaceUnsafe(other.release())
-{
-}
-
 namespace prop::Surface {
 
 constexpr auto SDR_WHITE_POINT_FLOAT = SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT;
@@ -37134,39 +35217,6 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
 } // namespace prop::Surface
 
 /**
- * Load a BMP image from a seekable SDL data stream.
- *
- * @param src the data stream for the surface.
- * @returns a Surface with the loaded content or nullptr on failure; call
- *          GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SaveBMP
- */
-inline Surface LoadBMP(IOStreamRef src)
-{
-  return Surface{SDL_LoadBMP_IO(src.get(), false)};
-}
-
-/**
- * Load a BMP image from a file.
- *
- * @param file the BMP file to load.
- * @returns a Surface with the loaded content or nullptr on failure; call
- *          GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SaveBMP
- */
-inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
-
-/**
  * Save a surface to a seekable SDL data stream in BMP format.
  *
  * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
@@ -37175,7 +35225,7 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
  * not supported.
  *
- * @param surface the SurfaceRef structure containing the image to be saved.
+ * @param surface the Surface structure containing the image to be saved.
  * @param dst a data stream to save to.
  * @throws Error on failure.
  *
@@ -37183,7 +35233,8 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LoadBMP
+ * @sa Surface.LoadBMP
+ * @sa SaveBMP
  */
 inline void SaveBMP(SurfaceRef surface, IOStreamRef dst)
 {
@@ -37199,7 +35250,7 @@ inline void SaveBMP(SurfaceRef surface, IOStreamRef dst)
  * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
  * not supported.
  *
- * @param surface the SurfaceRef structure containing the image to be saved.
+ * @param surface the Surface structure containing the image to be saved.
  * @param file a file to save to.
  * @throws Error on failure.
  *
@@ -37207,7 +35258,8 @@ inline void SaveBMP(SurfaceRef surface, IOStreamRef dst)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LoadBMP
+ * @sa Surface.LoadBMP
+ * @sa SaveBMP
  */
 inline void SaveBMP(SurfaceRef surface, StringParam file)
 {
@@ -37283,14 +35335,14 @@ inline void ConvertPixels(int width,
  * @param src_format an PixelFormat value of the `src` pixels format.
  * @param src_colorspace an Colorspace value describing the colorspace of
  *                       the `src` pixels.
- * @param src_properties an PropertiesRef with additional source color
+ * @param src_properties an Properties with additional source color
  *                       properties, or 0.
  * @param src a pointer to the source pixels.
  * @param src_pitch the pitch of the source pixels, in bytes.
  * @param dst_format an PixelFormat value of the `dst` pixels format.
  * @param dst_colorspace an Colorspace value describing the colorspace of
  *                       the `dst` pixels.
- * @param dst_properties an PropertiesRef with additional destination color
+ * @param dst_properties an Properties with additional destination color
  *                       properties, or 0.
  * @param dst a pointer to be filled in with new pixel data.
  * @param dst_pitch the pitch of the destination pixels, in bytes.
@@ -37472,7 +35524,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa Tray.Create
    */
   void SetIcon(SurfaceRef icon) { SDL_SetTrayIcon(get(), icon.get()); }
 
@@ -37486,7 +35538,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa Tray.Create
    */
   void SetTooltip(StringParam tooltip) { SDL_SetTrayTooltip(get(), tooltip); }
 
@@ -37507,7 +35559,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa Tray.Create
    * @sa TrayRef.GetMenu
    * @sa TrayMenu.GetParentTray
    */
@@ -37531,85 +35583,26 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa Tray.Create
    * @sa TrayRef.CreateMenu
    */
   TrayMenu GetMenu() const;
 
-protected:
   /**
    * Destroys a tray object.
    *
    * This also destroys all associated menus and entries.
    *
+   * @param resource the tray icon to be destroyed.
    *
    * @threadsafety This function should be called on the thread that created the
    *               tray.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa Tray.Create
    */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroys a tray object.
-   *
-   * This also destroys all associated menus and entries.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               tray.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Tray.Tray
-   */
-  void reset(SDL_Tray* newResource = {})
-  {
-    SDL_DestroyTray(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to tray
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa TrayRef
- */
-struct TrayUnsafe : TrayRef
-{
-  using TrayRef::Destroy;
-
-  using TrayRef::TrayRef;
-
-  using TrayRef::reset;
-
-  /**
-   * Constructs TrayUnsafe from TrayRef.
-   */
-  constexpr TrayUnsafe(const TrayRef& other)
-    : TrayRef(other.get())
-  {
-  }
-
-  TrayUnsafe(const Tray& other) = delete;
-
-  /**
-   * Constructs TrayUnsafe from Tray.
-   */
-  constexpr explicit TrayUnsafe(Tray&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr TrayUnsafe& operator=(TrayUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_Tray* resource) { SDL_DestroyTray(resource); }
 };
 
 /**
@@ -37619,77 +35612,9 @@ struct TrayUnsafe : TrayRef
  *
  * @sa TrayRef
  */
-struct Tray : TrayUnsafe
+struct Tray : ResourceUnique<TrayRef>
 {
-  using TrayUnsafe::TrayUnsafe;
-
-  /**
-   * Constructs an empty Tray.
-   */
-  constexpr Tray()
-    : TrayUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Tray(SDL_Tray* resource)
-    : TrayUnsafe(resource)
-  {
-  }
-
-  constexpr Tray(const Tray& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Tray(Tray&& other)
-    : Tray(other.release())
-  {
-  }
-
-  /**
-   * Create an icon to be placed in the operating system's tray, or equivalent.
-   *
-   * Many platforms advise not using a system tray unless persistence is a
-   * necessary feature. Avoid needlessly creating a tray icon, as the user may
-   * feel like it clutters their interface.
-   *
-   * Using tray icons require the video subsystem.
-   *
-   * @param icon a surface to be used as icon. May be nullptr.
-   * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
-   *                UTF-8 encoding. Not supported on all platforms. May be
-   * nullptr.
-   * @post The newly created system tray icon.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TrayRef.CreateMenu
-   * @sa TrayRef.GetMenu
-   * @sa TrayRef.Destroy
-   */
-  Tray(SurfaceRef icon, StringParam tooltip)
-    : Tray(SDL_CreateTray(icon.get(), tooltip))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Tray() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Tray& operator=(Tray other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create an icon to be placed in the operating system's tray, or equivalent.
@@ -37712,11 +35637,47 @@ struct Tray : TrayUnsafe
    *
    * @sa TrayRef.CreateMenu
    * @sa TrayRef.GetMenu
-   * @sa TrayRef.Destroy
+   * @sa Tray.Destroy
    */
   static Tray Create(SurfaceRef icon, StringParam tooltip)
   {
-    return Tray(icon, std::move(tooltip));
+    return Tray(SDL_CreateTray(icon, tooltip));
+  }
+
+  /**
+   * Destroys a tray object.
+   *
+   * This also destroys all associated menus and entries.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               tray.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Tray.Create
+   */
+  void Destroy() { reset(); }
+};
+
+/**
+ * Unsafe Handle to tray
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TrayRef
+ */
+struct TrayUnsafe : ResourceUnsafe<TrayRef>
+{
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs TrayUnsafe from Tray.
+   */
+  constexpr explicit TrayUnsafe(Tray&& other)
+    : TrayUnsafe(other.release())
+  {
   }
 };
 
@@ -37741,13 +35702,9 @@ using TrayCallback = SDL_TrayCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa TrayEntryRef.SetCallback
+ * @sa TrayCallback
  */
 using TrayCB = std::function<void(TrayEntryRef)>;
-
-constexpr TrayUnsafe::TrayUnsafe(Tray&& other)
-  : TrayUnsafe(other.release())
-{
-}
 
 /**
  * An opaque handle representing a menu/submenu on a system tray object.
@@ -37808,7 +35765,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayEntryRef.Remove
+   * @sa TrayEntry.Remove
    * @sa TrayMenu.InsertEntry
    */
   std::span<TrayEntry> GetEntries();
@@ -37836,7 +35793,7 @@ public:
    * @sa TrayMenu.AppendEntry
    * @sa TrayEntryFlags
    * @sa TrayMenu.GetEntries
-   * @sa TrayEntryRef.Remove
+   * @sa TrayEntry.Remove
    * @sa TrayEntryRef.GetParent
    */
   DetachedTrayEntry InsertEntry(int pos,
@@ -37864,7 +35821,7 @@ public:
    * @sa TrayMenu.InsertEntry
    * @sa TrayEntryFlags
    * @sa TrayMenu.GetEntries
-   * @sa TrayEntryRef.Remove
+   * @sa TrayEntry.Remove
    * @sa TrayEntryRef.GetParent
    */
   DetachedTrayEntry AppendEntry(StringParam label, TrayEntryFlags flags);
@@ -37916,7 +35873,6 @@ public:
  * @cat resource
  *
  * @sa TrayEntry
- * @sa TrayEntryRef
  */
 struct TrayEntryRef : Resource<SDL_TrayEntry*>
 {
@@ -38135,7 +36091,33 @@ struct TrayEntryRef : Resource<SDL_TrayEntry*>
    */
   TrayMenu GetParent() { return SDL_GetTrayEntryParent(get()); }
 
-protected:
+  /**
+   * Removes a tray entry.
+   *
+   * @param resource The entry to be deleted.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               tray.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TrayMenu.GetEntries
+   * @sa TrayMenu.InsertEntry
+   */
+  static void reset(SDL_TrayEntry* resource) { SDL_RemoveTrayEntry(resource); }
+};
+
+/**
+ * Handle to an owned trayEntry
+ *
+ * @cat resource
+ *
+ * @sa TrayEntryRef
+ */
+struct TrayEntry : ResourceUnique<TrayEntryRef>
+{
+  using ResourceUnique::ResourceUnique;
+
   /**
    * Removes a tray entry.
    *
@@ -38148,22 +36130,6 @@ protected:
    * @sa TrayMenu.InsertEntry
    */
   void Remove() { reset(); }
-
-  /**
-   * Removes a tray entry.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               tray.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TrayMenu.GetEntries
-   * @sa TrayMenu.InsertEntry
-   */
-  void reset(SDL_TrayEntry* newResource = {})
-  {
-    SDL_RemoveTrayEntry(release(newResource));
-  }
 };
 
 /**
@@ -38175,95 +36141,18 @@ protected:
  *
  * @sa TrayEntryRef
  */
-struct TrayEntryUnsafe : TrayEntryRef
+struct TrayEntryUnsafe : ResourceUnsafe<TrayEntryRef>
 {
-  using TrayEntryRef::Remove;
-
-  using TrayEntryRef::TrayEntryRef;
-
-  using TrayEntryRef::reset;
-
-  /**
-   * Constructs TrayEntryUnsafe from TrayEntryRef.
-   */
-  constexpr TrayEntryUnsafe(const TrayEntryRef& other)
-    : TrayEntryRef(other.get())
-  {
-  }
-
-  TrayEntryUnsafe(const TrayEntry& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs TrayEntryUnsafe from TrayEntry.
    */
-  constexpr explicit TrayEntryUnsafe(TrayEntry&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr TrayEntryUnsafe& operator=(TrayEntryUnsafe other)
+  constexpr explicit TrayEntryUnsafe(TrayEntry&& other)
+    : TrayEntryUnsafe(other.release())
   {
-    release(other.release());
-    return *this;
   }
 };
-
-/**
- * Handle to an owned trayEntry
- *
- * @cat resource
- *
- * @sa TrayEntryRef
- */
-struct TrayEntry : TrayEntryUnsafe
-{
-  using TrayEntryUnsafe::TrayEntryUnsafe;
-
-  /**
-   * Constructs an empty TrayEntry.
-   */
-  constexpr TrayEntry()
-    : TrayEntryUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit TrayEntry(SDL_TrayEntry* resource)
-    : TrayEntryUnsafe(resource)
-  {
-  }
-
-  constexpr TrayEntry(const TrayEntry& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr TrayEntry(TrayEntry&& other)
-    : TrayEntry(other.release())
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~TrayEntry() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  TrayEntry& operator=(TrayEntry other)
-  {
-    reset(other.release());
-    return *this;
-  }
-};
-
-constexpr TrayEntryUnsafe::TrayEntryUnsafe(TrayEntry&& other)
-  : TrayEntryUnsafe(other.release())
-{
-}
 
 inline TrayMenu TrayRef::CreateMenu() { return SDL_CreateTrayMenu(get()); }
 
@@ -38350,8 +36239,9 @@ inline void TrayEntryRef::SetCallback(TrayCB callback)
  *
  * The video subsystem covers a lot of functionality, out of necessity, so it
  * is worth perusing the list of functions just to see what's available, but
- * most apps can get by with simply creating a window and listening for
- * events, so start with SDL_CreateWindow() and SDL_PollEvent().
+ * most apps can get by with simply creating a window and listening for events,
+ * so start with Window.Create() and PollEvent().
+ *
  * @{
  */
 
@@ -38437,7 +36327,7 @@ using DisplayMode = SDL_DisplayMode;
  * The flags on a window.
  *
  * These cover a lot of true/false, or on/off, window state. Some of it is
- * immutable after being set through WindowRef.WindowRef(), some of it can be
+ * immutable after being set through Window.Create(), some of it can be
  * changed on existing windows by the app, and some of it might be altered by
  * the user or system outside of the app's control.
  *
@@ -38630,7 +36520,7 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
 /**
  * Callback used for hit-testing.
  *
- * @param win the WindowRef where hit-testing was set on.
+ * @param win the Window where hit-testing was set on.
  * @param area an Point which should be hit-tested.
  * @param data what was passed as `callback_data` to WindowRef.SetHitTest().
  * @returns an HitTestResult value.
@@ -38646,9 +36536,9 @@ using HitTest = SDL_HitTest;
  * @param area a Point const reference which should be hit-tested.
  * @returns an SDL::HitTestResult value.
  *
- * @sa HitTest
- *
  * @cat listener-callback
+ *
+ * @sa HitTest
  */
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
@@ -39126,10 +37016,9 @@ constexpr SystemTheme SYSTEM_THEME_DARK =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa WindowRef.WindowRef
- *
  * @cat resource
  *
+ * @sa Window.Create
  * @sa Window
  */
 struct WindowRef : Resource<SDL_Window*>
@@ -40790,7 +38679,6 @@ struct WindowRef : Resource<SDL_Window*>
    */
   static WindowRef GetGrabbed() { return SDL_GetGrabbedWindow(); }
 
-protected:
   /**
    * Destroy a window.
    *
@@ -40801,36 +38689,18 @@ protected:
    * from the screen until the SDL event loop is pumped again, even though the
    * WindowRef is no longer valid after this call.
    *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Window.Window
-   */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy a window.
-   *
-   * Any child windows owned by the window will be recursively destroyed as
-   * well.
-   *
-   * Note that on some platforms, the visible window may not actually be removed
-   * from the screen until the SDL event loop is pumped again, even though the
-   * WindowRef is no longer valid after this call.
+   * @param resource the window to destroy.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
+   * @sa Window.CreatePopup
+   * @sa Window.Create
+   * @sa Window.CreateWithProperties
    */
-  void reset(SDL_Window* newResource = {})
-  {
-    SDL_DestroyWindow(release(newResource));
-  }
+  static void reset(SDL_Window* resource) { SDL_DestroyWindow(resource); }
 
-public:
   RendererRef GetRenderer() const;
 
   void StartTextInput();
@@ -40857,83 +38727,15 @@ public:
 };
 
 /**
- * Unsafe Handle to window
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa WindowRef
- */
-struct WindowUnsafe : WindowRef
-{
-  using WindowRef::Destroy;
-
-  using WindowRef::WindowRef;
-
-  using WindowRef::reset;
-
-  /**
-   * Constructs WindowUnsafe from WindowRef.
-   */
-  constexpr WindowUnsafe(const WindowRef& other)
-    : WindowRef(other.get())
-  {
-  }
-
-  WindowUnsafe(const Window& other) = delete;
-
-  /**
-   * Constructs WindowUnsafe from Window.
-   */
-  constexpr explicit WindowUnsafe(Window&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr WindowUnsafe& operator=(WindowUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
-};
-
-/**
  * Handle to an owned window
  *
  * @cat resource
  *
  * @sa WindowRef
  */
-struct Window : WindowUnsafe
+struct Window : ResourceUnique<WindowRef>
 {
-  using WindowUnsafe::WindowUnsafe;
-
-  /**
-   * Constructs an empty Window.
-   */
-  constexpr Window()
-    : WindowUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Window(SDL_Window* resource)
-    : WindowUnsafe(resource)
-  {
-  }
-
-  constexpr Window(const Window& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Window(Window&& other)
-    : Window(other.release())
-  {
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a window with the specified dimensions and flags.
@@ -40991,13 +38793,13 @@ struct Window : WindowUnsafe
    * If the window is created with any of the WINDOW_OPENGL or
    * WINDOW_VULKAN flags, then the corresponding LoadLibrary function
    * (GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the
-   * corresponding UnloadLibrary function is called by WindowRef.Destroy().
+   * corresponding UnloadLibrary function is called by Window.Destroy().
    *
    * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
-   * Window.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.
+   * Window.Create() will fail, because SDL_Vulkan_LoadLibrary() will fail.
    *
    * If WINDOW_METAL is specified on an OS that does not support Metal,
-   * Window.Window() will fail.
+   * Window.Create() will fail.
    *
    * If you intend to use this window with an RendererRef, you should use
    * CreateWindowAndRenderer() instead of this function, to avoid window
@@ -41010,7 +38812,7 @@ struct Window : WindowUnsafe
    * @param title the title of the window, in UTF-8 encoding.
    * @param size the width and height of the window.
    * @param flags 0, or one or more WindowFlags OR'd together.
-   * @post the window that was created.
+   * @returns the window that was created.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -41018,11 +38820,15 @@ struct Window : WindowUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateWindowAndRenderer
-   * @sa WindowRef.Destroy
+   * @sa Window.CreatePopup
+   * @sa Window.CreateWithProperties
+   * @sa Window.Destroy
    */
-  Window(StringParam title, const SDL_Point& size, WindowFlags flags = 0)
-    : Window(CheckError(SDL_CreateWindow(title, size.x, size.y, flags)))
+  static Window Create(StringParam title,
+                       const SDL_Point& size,
+                       WindowFlags flags = 0)
   {
+    return Window(CheckError(SDL_CreateWindow(title, size.x, size.y, flags)));
   }
 
   /**
@@ -41074,322 +38880,16 @@ struct Window : WindowUnsafe
    * @param size the width and height of the window.
    * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
    *              additional WindowFlags OR'd together.
-   * @post the window that was created.
+   * @returns the window that was created.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowRef.Destroy
-   * @sa WindowRef.GetParent
-   */
-  Window(WindowRef parent,
-         const SDL_Point& offset,
-         const SDL_Point& size,
-         WindowFlags flags = 0)
-    : Window(CheckError(SDL_CreatePopupWindow(parent.get(),
-                                              offset.x,
-                                              offset.y,
-                                              size.x,
-                                              size.y,
-                                              flags)))
-  {
-  }
-
-  /**
-   * Create a window with the specified properties.
-   *
-   * The window size is a request and may be different than expected based on
-   * the desktop layout and window manager policies. Your application should be
-   * prepared to handle a window of any size.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should
-   *   be always on top
-   * - `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no
-   *   window decoration
-   * - `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
-   *   window will be used with an externally managed graphics context.
-   * - `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should
-   *   accept keyboard input (defaults true)
-   * - `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should
-   *   start in fullscreen mode at desktop resolution
-   * - `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window
-   * - `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
-   *   hidden
-   * - `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window
-   *   uses a high pixel density buffer if possible
-   * - `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should
-   *   start maximized
-   * - `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
-   * - `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used
-   *   with Metal rendering
-   * - `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should
-   *   start minimized
-   * - `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to
-   *   its parent
-   * - `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
-   *   with grabbed mouse focus
-   * - `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used
-   *   with OpenGL rendering
-   * - `prop::Window.CREATE_PARENT_POINTER`: an WindowRef that will be the
-   *   parent of this window, required for windows with the "tooltip", "menu",
-   *   and "modal" properties
-   * - `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
-   *   resizable
-   * - `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
-   *   encoding
-   * - `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
-   *   transparent in the areas with alpha of 0
-   * - `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
-   * - `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
-   *   window, not showing in the task bar and window list
-   * - `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used
-   *   with Vulkan rendering
-   * - `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window
-   * - `prop::Window.CREATE_X_NUMBER`: the x position of the window, or
-   *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
-   *   relative to the parent for windows with the "tooltip" or "menu" property
-   *   set.
-   * - `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or
-   *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
-   *   relative to the parent for windows with the "tooltip" or "menu" property
-   *   set.
-   *
-   * These are additional supported properties on macOS:
-   *
-   * - `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the
-   *   `(__unsafe_unretained)` NSWindow associated with the window, if you want
-   *   to wrap an existing window.
-   * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
-   *   NSView associated with the window, defaults to `[window contentView]`
-   *
-   * These are additional supported properties on Wayland:
-   *
-   * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if
-   *   the application wants to use the Wayland surface for a custom role and
-   *   does not want it attached to an XDG toplevel window. See
-   *   [README/wayland](README/wayland) for more information on using custom
-   *   surfaces.
-   * - `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
-   *   application wants an associated `wl_egl_window` object to be created and
-   *   attached to the window, even if the window does not have the OpenGL
-   *   property or `WINDOW_OPENGL` flag set.
-   * - `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
-   *   associated with the window, if you want to wrap an existing window. See
-   *   [README/wayland](README/wayland) for more information.
-   *
-   * These are additional supported properties on Windows:
-   *
-   * - `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
-   *   window, if you want to wrap an existing window.
-   * - `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,
-   *   another window to share pixel format with, useful for OpenGL windows
-   *
-   * These are additional supported properties with X11:
-   *
-   * - `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated
-   *   with the window, if you want to wrap an existing window.
-   *
-   * The window is implicitly shown if the "hidden" property is not set.
-   *
-   * Windows with the "tooltip" and "menu" properties are popup windows and have
-   * the behaviors and guidelines outlined in Window.Window().
-   *
-   * If this window is being created to be used with an RendererRef, you should
-   * not add a graphics API specific property
-   * (`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that
-   * internally when it chooses a renderer. However, SDL might need to recreate
-   * your window at that point, which may cause the window to appear briefly,
-   * and then flicker as it is recreated. The correct approach to this is to
-   * create the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property
-   * set to true, then create the renderer, then show the window with
-   * WindowRef.Show().
-   *
-   * @param props the properties to use.
-   * @post the window that was created.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Properties.Properties
-   * @sa WindowRef.Destroy
-   */
-  Window(PropertiesRef props)
-    : Window(CheckError(SDL_CreateWindowWithProperties(props.get())))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Window() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Window& operator=(Window other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create a window with the specified dimensions and flags.
-   *
-   * The window size is a request and may be different than expected based on
-   * the desktop layout and window manager policies. Your application should be
-   * prepared to handle a window of any size.
-   *
-   * `flags` may be any of the following OR'd together:
-   *
-   * - `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution
-   * - `WINDOW_OPENGL`: window usable with an OpenGL context
-   * - `WINDOW_OCCLUDED`: window partially or completely obscured by another
-   *   window
-   * - `WINDOW_HIDDEN`: window is not visible
-   * - `WINDOW_BORDERLESS`: no window decoration
-   * - `WINDOW_RESIZABLE`: window can be resized
-   * - `WINDOW_MINIMIZED`: window is minimized
-   * - `WINDOW_MAXIMIZED`: window is maximized
-   * - `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus
-   * - `WINDOW_INPUT_FOCUS`: window has input focus
-   * - `WINDOW_MOUSE_FOCUS`: window has mouse focus
-   * - `WINDOW_EXTERNAL`: window not created by SDL
-   * - `WINDOW_MODAL`: window is modal
-   * - `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back
-   *   buffer if possible
-   * - `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to
-   *   MOUSE_GRABBED)
-   * - `WINDOW_ALWAYS_ON_TOP`: window should always be above others
-   * - `WINDOW_UTILITY`: window should be treated as a utility window, not
-   *   showing in the task bar and window list
-   * - `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not
-   *   get mouse or keyboard focus, requires a parent window
-   * - `WINDOW_POPUP_MENU`: window should be treated as a popup menu,
-   *   requires a parent window
-   * - `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input
-   * - `WINDOW_VULKAN`: window usable with a Vulkan instance
-   * - `WINDOW_METAL`: window usable with a Metal instance
-   * - `WINDOW_TRANSPARENT`: window with transparent buffer
-   * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
-   *
-   * The WindowRef is implicitly shown if WINDOW_HIDDEN is not set.
-   *
-   * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
-   * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
-   *
-   * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use WindowRef.GetSize() to query
-   * the client area's size in window coordinates, and
-   * WindowRef.GetSizeInPixels() or RendererRef.GetOutputSize() to query the
-   * drawable size in pixels. Note that the drawable size can vary after the
-   * window is created and should be queried again if you get an
-   * EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
-   *
-   * If the window is created with any of the WINDOW_OPENGL or
-   * WINDOW_VULKAN flags, then the corresponding LoadLibrary function
-   * (GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the
-   * corresponding UnloadLibrary function is called by WindowRef.Destroy().
-   *
-   * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
-   * Window.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.
-   *
-   * If WINDOW_METAL is specified on an OS that does not support Metal,
-   * Window.Window() will fail.
-   *
-   * If you intend to use this window with an RendererRef, you should use
-   * CreateWindowAndRenderer() instead of this function, to avoid window
-   * flicker.
-   *
-   * On non-Apple devices, SDL requires you to either not link to the Vulkan
-   * loader or link to a dynamic library version. This limitation may be removed
-   * in a future version of SDL.
-   *
-   * @param title the title of the window, in UTF-8 encoding.
-   * @param size the width and height of the window.
-   * @param flags 0, or one or more WindowFlags OR'd together.
-   * @returns the window that was created or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateWindowAndRenderer
-   * @sa Window.Window
-   * @sa Window.Window
-   * @sa WindowRef.Destroy
-   */
-  static Window Create(StringParam title,
-                       const SDL_Point& size,
-                       WindowFlags flags = 0)
-  {
-    return Window(std::move(title), size, flags);
-  }
-
-  /**
-   * Create a child popup window of the specified parent window.
-   *
-   * The window size is a request and may be different than expected based on
-   * the desktop layout and window manager policies. Your application should be
-   * prepared to handle a window of any size.
-   *
-   * The flags parameter **must** contain at least one of the following:
-   *
-   * - `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any
-   *   input events.
-   * - `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost
-   *   popup menu will implicitly gain the keyboard focus.
-   *
-   * The following flags are not relevant to popup window creation and will be
-   * ignored:
-   *
-   * - `WINDOW_MINIMIZED`
-   * - `WINDOW_MAXIMIZED`
-   * - `WINDOW_FULLSCREEN`
-   * - `WINDOW_BORDERLESS`
-   *
-   * The following flags are incompatible with popup window creation and will
-   * cause it to fail:
-   *
-   * - `WINDOW_UTILITY`
-   * - `WINDOW_MODAL`
-   *
-   * The parent parameter **must** be non-null and a valid window. The parent of
-   * a popup window can be either a regular, toplevel window, or another popup
-   * window.
-   *
-   * Popup windows cannot be minimized, maximized, made fullscreen, raised,
-   * flash, be made a modal window, be the parent of a toplevel window, or grab
-   * the mouse and/or keyboard. Attempts to do so will fail.
-   *
-   * Popup windows implicitly do not have a border/decorations and do not appear
-   * on the taskbar/dock or in lists of windows such as alt-tab menus.
-   *
-   * If a parent window is hidden or destroyed, any child popup windows will be
-   * recursively hidden or destroyed as well. Child popup windows not explicitly
-   * hidden will be restored when the parent is shown.
-   *
-   * @param parent the parent of the window, must not be nullptr.
-   * @param offset the position of the popup window relative to the origin
-   *               of the parent.
-   * @param size the width and height of the window.
-   * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
-   *              additional WindowFlags OR'd together.
-   * @returns the window that was created or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Window.Window
-   * @sa WindowRef.Destroy
+   * @sa Window.Create
+   * @sa Window.CreateWithProperties
+   * @sa Window.Destroy
    * @sa WindowRef.GetParent
    */
   static Window CreatePopup(WindowRef parent,
@@ -41397,7 +38897,8 @@ struct Window : WindowUnsafe
                             const SDL_Point& size,
                             WindowFlags flags = 0)
   {
-    return Window(parent, offset, size, flags);
+    return Window(CheckError(SDL_CreatePopupWindow(
+      parent, offset.x, offset.y, size.x, size.y, flags)));
   }
 
   /**
@@ -41499,7 +39000,7 @@ struct Window : WindowUnsafe
    * The window is implicitly shown if the "hidden" property is not set.
    *
    * Windows with the "tooltip" and "menu" properties are popup windows and have
-   * the behaviors and guidelines outlined in Window.Window().
+   * the behaviors and guidelines outlined in Window.CreatePopup().
    *
    * If this window is being created to be used with an RendererRef, you should
    * not add a graphics API specific property
@@ -41512,27 +39013,64 @@ struct Window : WindowUnsafe
    * WindowRef.Show().
    *
    * @param props the properties to use.
-   * @returns the window that was created or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns the window that was created.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
-   * @sa Window.Window
-   * @sa WindowRef.Destroy
+   * @sa Properties.Create
+   * @sa Window.Create
+   * @sa Window.Destroy
    */
   static Window CreateWithProperties(PropertiesRef props)
   {
-    return Window(props);
+    return Window(CheckError(SDL_CreateWindowWithProperties(props.get())));
   }
+
+  /**
+   * Destroy a window.
+   *
+   * Any child windows owned by the window will be recursively destroyed as
+   * well.
+   *
+   * Note that on some platforms, the visible window may not actually be removed
+   * from the screen until the SDL event loop is pumped again, even though the
+   * WindowRef is no longer valid after this call.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.CreatePopup
+   * @sa Window.Create
+   * @sa Window.CreateWithProperties
+   */
+  void Destroy() { reset(); }
 };
 
-constexpr WindowUnsafe::WindowUnsafe(Window&& other)
-  : WindowUnsafe(other.release())
+/**
+ * Unsafe Handle to window
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa WindowRef
+ */
+struct WindowUnsafe : ResourceUnsafe<WindowRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs WindowUnsafe from Window.
+   */
+  constexpr explicit WindowUnsafe(Window&& other)
+    : WindowUnsafe(other.release())
+  {
+  }
+};
 
 #ifdef SDL3PP_DOC
 
@@ -41627,7 +39165,7 @@ constexpr WindowUnsafe::WindowUnsafe(Window&& other)
  *
  * @cat resource
  *
- * @sa GLContextRef.GLContextRef
+ * @sa GLContext.Create
  * @sa GLContext
  */
 struct GLContextRef : Resource<SDL_GLContextState*>
@@ -41653,19 +39191,61 @@ struct GLContextRef : Resource<SDL_GLContextState*>
     CheckError(SDL_GL_MakeCurrent(window.get(), get()));
   }
 
-protected:
   /**
    * Delete an OpenGL context.
    *
+   * @param resource the OpenGL context to be deleted.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContext.GLContext
+   * @sa GLContext.Create
    */
-  void Destroy() { reset(); }
+  static void reset(SDL_GLContextState* resource)
+  {
+    CheckError(SDL_GL_DestroyContext(resource));
+  }
+};
+
+/**
+ * Handle to an owned gLContext
+ *
+ * @cat resource
+ *
+ * @sa GLContextRef
+ */
+struct GLContext : ResourceUnique<GLContextRef>
+{
+  using ResourceUnique::ResourceUnique;
+
+  /**
+   * Create an OpenGL context for an OpenGL window, and make it current.
+   *
+   * Windows users new to OpenGL should note that, for historical reasons, GL
+   * functions added after OpenGL version 1.1 are not available by default.
+   * Those functions must be loaded at run-time, either with an OpenGL
+   * extension-handling library or with GL_GetProcAddress() and its related
+   * functions.
+   *
+   * GLContextRef is opaque to the application.
+   *
+   * @param window the window to associate with the context.
+   * @returns the OpenGL context associated with `window`.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GLContext.Destroy
+   * @sa GLContextRef.MakeCurrent
+   */
+  static GLContext Create(WindowRef window)
+  {
+    return GLContext(CheckError(SDL_GL_CreateContext(window.get())));
+  }
 
   /**
    * Delete an OpenGL context.
@@ -41676,12 +39256,9 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContext.GLContext
+   * @sa GLContext.Create
    */
-  void reset(SDL_GLContextState* newResource = {})
-  {
-    CheckError(SDL_GL_DestroyContext(release(newResource)));
-  }
+  void Destroy() { reset(); }
 };
 
 /**
@@ -41693,146 +39270,18 @@ protected:
  *
  * @sa GLContextRef
  */
-struct GLContextUnsafe : GLContextRef
+struct GLContextUnsafe : ResourceUnsafe<GLContextRef>
 {
-  using GLContextRef::Destroy;
-
-  using GLContextRef::GLContextRef;
-
-  using GLContextRef::reset;
-
-  /**
-   * Constructs GLContextUnsafe from GLContextRef.
-   */
-  constexpr GLContextUnsafe(const GLContextRef& other)
-    : GLContextRef(other.get())
-  {
-  }
-
-  GLContextUnsafe(const GLContext& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs GLContextUnsafe from GLContext.
    */
-  constexpr explicit GLContextUnsafe(GLContext&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr GLContextUnsafe& operator=(GLContextUnsafe other)
+  constexpr explicit GLContextUnsafe(GLContext&& other)
+    : GLContextUnsafe(other.release())
   {
-    release(other.release());
-    return *this;
   }
 };
-
-/**
- * Handle to an owned gLContext
- *
- * @cat resource
- *
- * @sa GLContextRef
- */
-struct GLContext : GLContextUnsafe
-{
-  using GLContextUnsafe::GLContextUnsafe;
-
-  /**
-   * Constructs an empty GLContext.
-   */
-  constexpr GLContext()
-    : GLContextUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit GLContext(SDL_GLContextState* resource)
-    : GLContextUnsafe(resource)
-  {
-  }
-
-  constexpr GLContext(const GLContext& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr GLContext(GLContext&& other)
-    : GLContext(other.release())
-  {
-  }
-
-  /**
-   * Create an OpenGL context for an OpenGL window, and make it current.
-   *
-   * Windows users new to OpenGL should note that, for historical reasons, GL
-   * functions added after OpenGL version 1.1 are not available by default.
-   * Those functions must be loaded at run-time, either with an OpenGL
-   * extension-handling library or with GL_GetProcAddress() and its related
-   * functions.
-   *
-   * GLContextRef is opaque to the application.
-   *
-   * @param window the window to associate with the context.
-   * @post the OpenGL context associated with `window`.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GLContextRef.Destroy
-   * @sa GLContextRef.MakeCurrent
-   */
-  GLContext(WindowRef window)
-    : GLContext(CheckError(SDL_GL_CreateContext(window.get())))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~GLContext() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  GLContext& operator=(GLContext other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create an OpenGL context for an OpenGL window, and make it current.
-   *
-   * Windows users new to OpenGL should note that, for historical reasons, GL
-   * functions added after OpenGL version 1.1 are not available by default.
-   * Those functions must be loaded at run-time, either with an OpenGL
-   * extension-handling library or with GL_GetProcAddress() and its related
-   * functions.
-   *
-   * GLContextRef is opaque to the application.
-   *
-   * @param window the window to associate with the context.
-   * @returns the OpenGL context associated with `window` or nullptr on failure;
-   *          call GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GLContextRef.Destroy
-   * @sa GLContextRef.MakeCurrent
-   */
-  static GLContext Create(WindowRef window) { return GLContext(window); }
-};
-
-constexpr GLContextUnsafe::GLContextUnsafe(GLContext&& other)
-  : GLContextUnsafe(other.release())
-{
-}
 
 /**
  * Opaque type for an EGL display.
@@ -41876,7 +39325,7 @@ using EGLint = SDL_EGLint;
  * app add extra attributes to its eglGetPlatformDisplay() call.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the WindowRef.WindowRef
+ * with `EGL_NONE`. If this function returns nullptr, the Window.Create
  * process will fail gracefully.
  *
  * The returned pointer should be allocated with malloc() and will be
@@ -41901,7 +39350,7 @@ using EGLAttribArrayCallback = SDL_EGLAttribArrayCallback;
  * app add extra attributes to its eglGetPlatformDisplay() call.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the WindowRef.WindowRef
+ * with `EGL_NONE`. If this function returns nullptr, the Window.Create
  * process will fail gracefully.
  *
  * The returned pointer should be allocated with malloc() and will be
@@ -41930,7 +39379,7 @@ using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
  * callback.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the WindowRef.WindowRef
+ * with `EGL_NONE`. If this function returns nullptr, the Window.Create
  * process will fail gracefully.
  *
  * The returned pointer should be allocated with malloc() and will be
@@ -41961,7 +39410,7 @@ using EGLIntArrayCallback = SDL_EGLIntArrayCallback;
  * callback.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the WindowRef.WindowRef
+ * with `EGL_NONE`. If this function returns nullptr, the Window.Create
  * process will fail gracefully.
  *
  * The returned pointer should be allocated with malloc() and will be
@@ -42848,7 +40297,7 @@ inline EGLConfig EGL_GetCurrentConfig()
  */
 inline EGLSurface EGL_GetWindowSurface(WindowRef window)
 {
-  return CheckError(SDL_EGL_GetWindowSurface(window.get()));
+  return CheckError(SDL_EGL_GetWindowSurface(window));
 }
 
 /**
@@ -42958,7 +40407,7 @@ inline void GL_GetSwapInterval(int* interval)
  */
 inline void GL_SwapWindow(WindowRef window)
 {
-  CheckError(SDL_GL_SwapWindow(window.get()));
+  CheckError(SDL_GL_SwapWindow(window));
 }
 
 #pragma region impl
@@ -43026,7 +40475,7 @@ using DialogFileFilter = SDL_DialogFileFilter;
  *
  * - nullptr, an error occurred. Details can be obtained with GetError().
  * - A pointer to nullptr, the user either didn't choose any file or canceled
- * the dialog.
+ *   the dialog.
  * - A pointer to non-`nullptr`, the user chose one or more files. The argument
  *   is a null-terminated array of pointers to UTF-8 encoded strings, each
  *   containing a path.
@@ -43039,8 +40488,8 @@ using DialogFileFilter = SDL_DialogFileFilter;
  * fetching the selected filter.
  *
  * In Android, the `filelist` are `content://` URIs. They should be opened
- * using IOStreamRef.IOStreamRef() with appropriate modes. This applies both
- * to open and save file dialog.
+ * using IOStream.FromFile() with appropriate modes. This applies both to open
+ * and save file dialog.
  *
  * @param userdata an app-provided pointer, for the callback's use.
  * @param filelist the file(s) chosen by the user.
@@ -43079,8 +40528,8 @@ using DialogFileCallback = SDL_DialogFileCallback;
  * fetching the selected filter.
  *
  * In Android, the `filelist` are `content://` URIs. They should be opened
- * using IOStreamRef.IOStreamRef() with appropriate modes. This applies both
- * to open and save file dialog.
+ * using IOStream.FromFile() with appropriate modes. This applies both to open
+ * and save file dialog.
  *
  * @param filelist the file(s) chosen by the user.
  * @param filter index of the selected filter.
@@ -43616,11 +41065,10 @@ constexpr auto CANCEL_STRING = SDL_PROP_FILE_DIALOG_CANCEL_STRING;
  *
  * An app generally takes a moment, perhaps at the start of a new frame, to
  * examine any events that have occurred since the last time and process or
- * ignore them. This is generally done by calling SDL_PollEvent() in a loop
- * until it returns false (or, if using the main callbacks, events are
- * provided one at a time in calls to SDL_AppEvent() before the next call to
- * SDL_AppIterate(); in this scenario, the app does not call PollEvent()
- * at all).
+ * ignore them. This is generally done by calling PollEvent() in a loop until it
+ * returns false (or, if using the main callbacks, events are provided one at a
+ * time in calls to SDL_AppEvent() before the next call to SDL_AppIterate(); in
+ * this scenario, the app does not call PollEvent() at all).
  *
  * There is other forms of control, too: PeepEvents() has more
  * functionality at the cost of more complexity, and WaitEvent() can block
@@ -43651,33 +41099,27 @@ using EventType = SDL_EventType;
  * @{
  */
 
-/**
- * Unused (do not remove)
- */
-constexpr EventType EVENT_FIRST = SDL_EVENT_FIRST;
+constexpr EventType EVENT_FIRST = SDL_EVENT_FIRST; ///< Unused (do not remove)
 
-/**
- * User-requested quit
- */
-constexpr EventType EVENT_QUIT = SDL_EVENT_QUIT;
+constexpr EventType EVENT_QUIT = SDL_EVENT_QUIT; ///< User-requested quit.
 
 /**
  * The application is being terminated by the OS.  This event must be handled in
- * a callback set with SDL_AddEventWatch(). Called on iOS in
+ * a callback set with AddEventWatch(). Called on iOS in
  * applicationWillTerminate() Called on Android in onDestroy()
  */
 constexpr EventType EVENT_TERMINATING = SDL_EVENT_TERMINATING;
 
 /**
  * The application is low on memory, free memory if possible.  This event must
- * be handled in a callback set with SDL_AddEventWatch(). Called on iOS in
+ * be handled in a callback set with AddEventWatch(). Called on iOS in
  * applicationDidReceiveMemoryWarning() Called on Android in onTrimMemory()
  */
 constexpr EventType EVENT_LOW_MEMORY = SDL_EVENT_LOW_MEMORY;
 
 /**
  * The application is about to enter the background.  This event must be handled
- * in a callback set with SDL_AddEventWatch(). Called on iOS in
+ * in a callback set with AddEventWatch(). Called on iOS in
  * applicationWillResignActive() Called on Android in onPause()
  */
 constexpr EventType EVENT_WILL_ENTER_BACKGROUND =
@@ -43685,14 +41127,14 @@ constexpr EventType EVENT_WILL_ENTER_BACKGROUND =
 
 /**
  * The application did enter the background and may not get CPU for some time.
- * This event must be handled in a callback set with SDL_AddEventWatch(). Called
- * on iOS in applicationDidEnterBackground() Called on Android in onPause()
+ * This event must be handled in a callback set with AddEventWatch(). Called on
+ * iOS in applicationDidEnterBackground() Called on Android in onPause()
  */
 constexpr EventType EVENT_DID_ENTER_BACKGROUND = SDL_EVENT_DID_ENTER_BACKGROUND;
 
 /**
  * The application is about to enter the foreground.  This event must be handled
- * in a callback set with SDL_AddEventWatch(). Called on iOS in
+ * in a callback set with AddEventWatch(). Called on iOS in
  * applicationWillEnterForeground() Called on Android in onResume()
  */
 constexpr EventType EVENT_WILL_ENTER_FOREGROUND =
@@ -43700,58 +41142,38 @@ constexpr EventType EVENT_WILL_ENTER_FOREGROUND =
 
 /**
  * The application is now interactive.  This event must be handled in a callback
- * set with SDL_AddEventWatch(). Called on iOS in applicationDidBecomeActive()
+ * set with AddEventWatch(). Called on iOS in applicationDidBecomeActive()
  * Called on Android in onResume()
  */
 constexpr EventType EVENT_DID_ENTER_FOREGROUND = SDL_EVENT_DID_ENTER_FOREGROUND;
 
-/**
- * The user's locale preferences have changed.
- */
-constexpr EventType EVENT_LOCALE_CHANGED = SDL_EVENT_LOCALE_CHANGED;
+constexpr EventType EVENT_LOCALE_CHANGED =
+  SDL_EVENT_LOCALE_CHANGED; ///< The user's locale preferences have changed.
 
-/**
- * The system theme changed
- */
-constexpr EventType EVENT_SYSTEM_THEME_CHANGED = SDL_EVENT_SYSTEM_THEME_CHANGED;
+constexpr EventType EVENT_SYSTEM_THEME_CHANGED =
+  SDL_EVENT_SYSTEM_THEME_CHANGED; ///< The system theme changed.
 
-/**
- * Display orientation has changed to data1
- */
-constexpr EventType EVENT_DISPLAY_ORIENTATION = SDL_EVENT_DISPLAY_ORIENTATION;
+constexpr EventType EVENT_DISPLAY_ORIENTATION =
+  SDL_EVENT_DISPLAY_ORIENTATION; ///< Display orientation has changed to data1.
 
-/**
- * Display has been added to the system
- */
-constexpr EventType EVENT_DISPLAY_ADDED = SDL_EVENT_DISPLAY_ADDED;
+constexpr EventType EVENT_DISPLAY_ADDED =
+  SDL_EVENT_DISPLAY_ADDED; ///< Display has been added to the system.
 
-/**
- * Display has been removed from the system
- */
-constexpr EventType EVENT_DISPLAY_REMOVED = SDL_EVENT_DISPLAY_REMOVED;
+constexpr EventType EVENT_DISPLAY_REMOVED =
+  SDL_EVENT_DISPLAY_REMOVED; ///< Display has been removed from the system.
 
-/**
- * Display has changed position
- */
-constexpr EventType EVENT_DISPLAY_MOVED = SDL_EVENT_DISPLAY_MOVED;
+constexpr EventType EVENT_DISPLAY_MOVED =
+  SDL_EVENT_DISPLAY_MOVED; ///< Display has changed position.
 
-/**
- * Display has changed desktop mode
- */
 constexpr EventType EVENT_DISPLAY_DESKTOP_MODE_CHANGED =
-  SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED;
+  SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED; ///< Display has changed desktop mode.
 
-/**
- * Display has changed current mode
- */
 constexpr EventType EVENT_DISPLAY_CURRENT_MODE_CHANGED =
-  SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED;
+  SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED; ///< Display has changed current mode.
 
-/**
- * Display has changed content scale
- */
 constexpr EventType EVENT_DISPLAY_CONTENT_SCALE_CHANGED =
-  SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED;
+  SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED; ///< Display has changed content
+                                           ///< scale.
 
 constexpr EventType EVENT_DISPLAY_FIRST =
   SDL_EVENT_DISPLAY_FIRST; ///< DISPLAY_FIRST
@@ -43759,130 +41181,95 @@ constexpr EventType EVENT_DISPLAY_FIRST =
 constexpr EventType EVENT_DISPLAY_LAST =
   SDL_EVENT_DISPLAY_LAST; ///< DISPLAY_LAST
 
-/**
- * Window has been shown
- */
-constexpr EventType EVENT_WINDOW_SHOWN = SDL_EVENT_WINDOW_SHOWN;
+constexpr EventType EVENT_WINDOW_SHOWN =
+  SDL_EVENT_WINDOW_SHOWN; ///< Window has been shown.
 
-/**
- * Window has been hidden
- */
-constexpr EventType EVENT_WINDOW_HIDDEN = SDL_EVENT_WINDOW_HIDDEN;
+constexpr EventType EVENT_WINDOW_HIDDEN =
+  SDL_EVENT_WINDOW_HIDDEN; ///< Window has been hidden.
 
 /**
  * Window has been exposed and should be redrawn, and can be redrawn directly
- * from event watchers for this event
+ * from event watchers for this event.
  */
 constexpr EventType EVENT_WINDOW_EXPOSED = SDL_EVENT_WINDOW_EXPOSED;
 
-/**
- * Window has been moved to data1, data2
- */
-constexpr EventType EVENT_WINDOW_MOVED = SDL_EVENT_WINDOW_MOVED;
+constexpr EventType EVENT_WINDOW_MOVED =
+  SDL_EVENT_WINDOW_MOVED; ///< Window has been moved to data1, data2.
+
+constexpr EventType EVENT_WINDOW_RESIZED =
+  SDL_EVENT_WINDOW_RESIZED; ///< Window has been resized to data1xdata2.
 
 /**
- * Window has been resized to data1xdata2
- */
-constexpr EventType EVENT_WINDOW_RESIZED = SDL_EVENT_WINDOW_RESIZED;
-
-/**
- * The pixel size of the window has changed to data1xdata2
+ * The pixel size of the window has changed to data1xdata2.
  */
 constexpr EventType EVENT_WINDOW_PIXEL_SIZE_CHANGED =
   SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED;
 
 /**
- * The pixel size of a Metal view associated with the window has changed
+ * The pixel size of a Metal view associated with the window has changed.
  */
 constexpr EventType EVENT_WINDOW_METAL_VIEW_RESIZED =
   SDL_EVENT_WINDOW_METAL_VIEW_RESIZED;
 
-/**
- * Window has been minimized
- */
-constexpr EventType EVENT_WINDOW_MINIMIZED = SDL_EVENT_WINDOW_MINIMIZED;
+constexpr EventType EVENT_WINDOW_MINIMIZED =
+  SDL_EVENT_WINDOW_MINIMIZED; ///< Window has been minimized.
+
+constexpr EventType EVENT_WINDOW_MAXIMIZED =
+  SDL_EVENT_WINDOW_MAXIMIZED; ///< Window has been maximized.
 
 /**
- * Window has been maximized
- */
-constexpr EventType EVENT_WINDOW_MAXIMIZED = SDL_EVENT_WINDOW_MAXIMIZED;
-
-/**
- * Window has been restored to normal size and position
+ * Window has been restored to normal size and position.
  */
 constexpr EventType EVENT_WINDOW_RESTORED = SDL_EVENT_WINDOW_RESTORED;
 
-/**
- * Window has gained mouse focus
- */
-constexpr EventType EVENT_WINDOW_MOUSE_ENTER = SDL_EVENT_WINDOW_MOUSE_ENTER;
+constexpr EventType EVENT_WINDOW_MOUSE_ENTER =
+  SDL_EVENT_WINDOW_MOUSE_ENTER; ///< Window has gained mouse focus.
+
+constexpr EventType EVENT_WINDOW_MOUSE_LEAVE =
+  SDL_EVENT_WINDOW_MOUSE_LEAVE; ///< Window has lost mouse focus.
+
+constexpr EventType EVENT_WINDOW_FOCUS_GAINED =
+  SDL_EVENT_WINDOW_FOCUS_GAINED; ///< Window has gained keyboard focus.
+
+constexpr EventType EVENT_WINDOW_FOCUS_LOST =
+  SDL_EVENT_WINDOW_FOCUS_LOST; ///< Window has lost keyboard focus.
 
 /**
- * Window has lost mouse focus
- */
-constexpr EventType EVENT_WINDOW_MOUSE_LEAVE = SDL_EVENT_WINDOW_MOUSE_LEAVE;
-
-/**
- * Window has gained keyboard focus
- */
-constexpr EventType EVENT_WINDOW_FOCUS_GAINED = SDL_EVENT_WINDOW_FOCUS_GAINED;
-
-/**
- * Window has lost keyboard focus
- */
-constexpr EventType EVENT_WINDOW_FOCUS_LOST = SDL_EVENT_WINDOW_FOCUS_LOST;
-
-/**
- * The window manager requests that the window be closed
+ * The window manager requests that the window be closed.
  */
 constexpr EventType EVENT_WINDOW_CLOSE_REQUESTED =
   SDL_EVENT_WINDOW_CLOSE_REQUESTED;
 
-/**
- * Window had a hit test that wasn't SDL_HITTEST_NORMAL
- */
-constexpr EventType EVENT_WINDOW_HIT_TEST = SDL_EVENT_WINDOW_HIT_TEST;
+constexpr EventType EVENT_WINDOW_HIT_TEST =
+  SDL_EVENT_WINDOW_HIT_TEST; ///< Window had a hit test that wasn't
+                             ///< HITTEST_NORMAL.
 
 /**
- * The ICC profile of the window's display has changed
+ * The ICC profile of the window's display has changed.
  */
 constexpr EventType EVENT_WINDOW_ICCPROF_CHANGED =
   SDL_EVENT_WINDOW_ICCPROF_CHANGED;
 
-/**
- * Window has been moved to display data1
- */
 constexpr EventType EVENT_WINDOW_DISPLAY_CHANGED =
-  SDL_EVENT_WINDOW_DISPLAY_CHANGED;
+  SDL_EVENT_WINDOW_DISPLAY_CHANGED; ///< Window has been moved to display data1.
 
-/**
- * Window display scale has been changed
- */
 constexpr EventType EVENT_WINDOW_DISPLAY_SCALE_CHANGED =
-  SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED;
+  SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED; ///< Window display scale has been
+                                          ///< changed.
 
-/**
- * The window safe area has been changed
- */
 constexpr EventType EVENT_WINDOW_SAFE_AREA_CHANGED =
-  SDL_EVENT_WINDOW_SAFE_AREA_CHANGED;
+  SDL_EVENT_WINDOW_SAFE_AREA_CHANGED; ///< The window safe area has been
+                                      ///< changed.
 
-/**
- * The window has been occluded
- */
-constexpr EventType EVENT_WINDOW_OCCLUDED = SDL_EVENT_WINDOW_OCCLUDED;
+constexpr EventType EVENT_WINDOW_OCCLUDED =
+  SDL_EVENT_WINDOW_OCCLUDED; ///< The window has been occluded.
 
-/**
- * The window has entered fullscreen mode
- */
 constexpr EventType EVENT_WINDOW_ENTER_FULLSCREEN =
-  SDL_EVENT_WINDOW_ENTER_FULLSCREEN;
+  SDL_EVENT_WINDOW_ENTER_FULLSCREEN; ///< The window has entered fullscreen
+                                     ///< mode.
 
-/**
- * The window has left fullscreen mode
- */
 constexpr EventType EVENT_WINDOW_LEAVE_FULLSCREEN =
-  SDL_EVENT_WINDOW_LEAVE_FULLSCREEN;
+  SDL_EVENT_WINDOW_LEAVE_FULLSCREEN; ///< The window has left fullscreen mode.
 
 /**
  * The window with the associated ID is being or has been destroyed.  If this
@@ -43893,36 +41280,23 @@ constexpr EventType EVENT_WINDOW_LEAVE_FULLSCREEN =
  */
 constexpr EventType EVENT_WINDOW_DESTROYED = SDL_EVENT_WINDOW_DESTROYED;
 
-/**
- * Window HDR properties have changed
- */
 constexpr EventType EVENT_WINDOW_HDR_STATE_CHANGED =
-  SDL_EVENT_WINDOW_HDR_STATE_CHANGED;
+  SDL_EVENT_WINDOW_HDR_STATE_CHANGED; ///< Window HDR properties have changed.
 
 constexpr EventType EVENT_WINDOW_FIRST =
   SDL_EVENT_WINDOW_FIRST; ///< WINDOW_FIRST
 
 constexpr EventType EVENT_WINDOW_LAST = SDL_EVENT_WINDOW_LAST; ///< WINDOW_LAST
 
-/**
- * Key pressed
- */
-constexpr EventType EVENT_KEY_DOWN = SDL_EVENT_KEY_DOWN;
+constexpr EventType EVENT_KEY_DOWN = SDL_EVENT_KEY_DOWN; ///< Key pressed.
 
-/**
- * Key released
- */
-constexpr EventType EVENT_KEY_UP = SDL_EVENT_KEY_UP;
+constexpr EventType EVENT_KEY_UP = SDL_EVENT_KEY_UP; ///< Key released.
 
-/**
- * Keyboard text editing (composition)
- */
-constexpr EventType EVENT_TEXT_EDITING = SDL_EVENT_TEXT_EDITING;
+constexpr EventType EVENT_TEXT_EDITING =
+  SDL_EVENT_TEXT_EDITING; ///< Keyboard text editing (composition)
 
-/**
- * Keyboard text input
- */
-constexpr EventType EVENT_TEXT_INPUT = SDL_EVENT_TEXT_INPUT;
+constexpr EventType EVENT_TEXT_INPUT =
+  SDL_EVENT_TEXT_INPUT; ///< Keyboard text input.
 
 /**
  * Keymap changed due to a system event such as an input language or keyboard
@@ -43930,163 +41304,97 @@ constexpr EventType EVENT_TEXT_INPUT = SDL_EVENT_TEXT_INPUT;
  */
 constexpr EventType EVENT_KEYMAP_CHANGED = SDL_EVENT_KEYMAP_CHANGED;
 
-/**
- * A new keyboard has been inserted into the system
- */
-constexpr EventType EVENT_KEYBOARD_ADDED = SDL_EVENT_KEYBOARD_ADDED;
+constexpr EventType EVENT_KEYBOARD_ADDED =
+  SDL_EVENT_KEYBOARD_ADDED; ///< A new keyboard has been inserted into the
+                            ///< system.
 
-/**
- * A keyboard has been removed
- */
-constexpr EventType EVENT_KEYBOARD_REMOVED = SDL_EVENT_KEYBOARD_REMOVED;
+constexpr EventType EVENT_KEYBOARD_REMOVED =
+  SDL_EVENT_KEYBOARD_REMOVED; ///< A keyboard has been removed.
 
-/**
- * Keyboard text editing candidates
- */
 constexpr EventType EVENT_TEXT_EDITING_CANDIDATES =
-  SDL_EVENT_TEXT_EDITING_CANDIDATES;
+  SDL_EVENT_TEXT_EDITING_CANDIDATES; ///< Keyboard text editing candidates.
 
-/**
- * Mouse moved
- */
-constexpr EventType EVENT_MOUSE_MOTION = SDL_EVENT_MOUSE_MOTION;
+constexpr EventType EVENT_MOUSE_MOTION =
+  SDL_EVENT_MOUSE_MOTION; ///< Mouse moved.
 
-/**
- * Mouse button pressed
- */
-constexpr EventType EVENT_MOUSE_BUTTON_DOWN = SDL_EVENT_MOUSE_BUTTON_DOWN;
+constexpr EventType EVENT_MOUSE_BUTTON_DOWN =
+  SDL_EVENT_MOUSE_BUTTON_DOWN; ///< Mouse button pressed.
 
-/**
- * Mouse button released
- */
-constexpr EventType EVENT_MOUSE_BUTTON_UP = SDL_EVENT_MOUSE_BUTTON_UP;
+constexpr EventType EVENT_MOUSE_BUTTON_UP =
+  SDL_EVENT_MOUSE_BUTTON_UP; ///< Mouse button released.
 
-/**
- * Mouse wheel motion
- */
-constexpr EventType EVENT_MOUSE_WHEEL = SDL_EVENT_MOUSE_WHEEL;
+constexpr EventType EVENT_MOUSE_WHEEL =
+  SDL_EVENT_MOUSE_WHEEL; ///< Mouse wheel motion.
 
-/**
- * A new mouse has been inserted into the system
- */
-constexpr EventType EVENT_MOUSE_ADDED = SDL_EVENT_MOUSE_ADDED;
+constexpr EventType EVENT_MOUSE_ADDED =
+  SDL_EVENT_MOUSE_ADDED; ///< A new mouse has been inserted into the system.
 
-/**
- * A mouse has been removed
- */
-constexpr EventType EVENT_MOUSE_REMOVED = SDL_EVENT_MOUSE_REMOVED;
+constexpr EventType EVENT_MOUSE_REMOVED =
+  SDL_EVENT_MOUSE_REMOVED; ///< A mouse has been removed.
 
-/**
- * Joystick axis motion
- */
-constexpr EventType EVENT_JOYSTICK_AXIS_MOTION = SDL_EVENT_JOYSTICK_AXIS_MOTION;
+constexpr EventType EVENT_JOYSTICK_AXIS_MOTION =
+  SDL_EVENT_JOYSTICK_AXIS_MOTION; ///< Joystick axis motion.
 
-/**
- * Joystick trackball motion
- */
-constexpr EventType EVENT_JOYSTICK_BALL_MOTION = SDL_EVENT_JOYSTICK_BALL_MOTION;
+constexpr EventType EVENT_JOYSTICK_BALL_MOTION =
+  SDL_EVENT_JOYSTICK_BALL_MOTION; ///< Joystick trackball motion.
 
-/**
- * Joystick hat position change
- */
-constexpr EventType EVENT_JOYSTICK_HAT_MOTION = SDL_EVENT_JOYSTICK_HAT_MOTION;
+constexpr EventType EVENT_JOYSTICK_HAT_MOTION =
+  SDL_EVENT_JOYSTICK_HAT_MOTION; ///< Joystick hat position change.
 
-/**
- * Joystick button pressed
- */
-constexpr EventType EVENT_JOYSTICK_BUTTON_DOWN = SDL_EVENT_JOYSTICK_BUTTON_DOWN;
+constexpr EventType EVENT_JOYSTICK_BUTTON_DOWN =
+  SDL_EVENT_JOYSTICK_BUTTON_DOWN; ///< Joystick button pressed.
 
-/**
- * Joystick button released
- */
-constexpr EventType EVENT_JOYSTICK_BUTTON_UP = SDL_EVENT_JOYSTICK_BUTTON_UP;
+constexpr EventType EVENT_JOYSTICK_BUTTON_UP =
+  SDL_EVENT_JOYSTICK_BUTTON_UP; ///< Joystick button released.
 
-/**
- * A new joystick has been inserted into the system
- */
-constexpr EventType EVENT_JOYSTICK_ADDED = SDL_EVENT_JOYSTICK_ADDED;
+constexpr EventType EVENT_JOYSTICK_ADDED =
+  SDL_EVENT_JOYSTICK_ADDED; ///< A new joystick has been inserted into the
+                            ///< system.
 
-/**
- * An opened joystick has been removed
- */
-constexpr EventType EVENT_JOYSTICK_REMOVED = SDL_EVENT_JOYSTICK_REMOVED;
+constexpr EventType EVENT_JOYSTICK_REMOVED =
+  SDL_EVENT_JOYSTICK_REMOVED; ///< An opened joystick has been removed.
 
-/**
- * Joystick battery level change
- */
 constexpr EventType EVENT_JOYSTICK_BATTERY_UPDATED =
-  SDL_EVENT_JOYSTICK_BATTERY_UPDATED;
+  SDL_EVENT_JOYSTICK_BATTERY_UPDATED; ///< Joystick battery level change.
 
-/**
- * Joystick update is complete
- */
 constexpr EventType EVENT_JOYSTICK_UPDATE_COMPLETE =
-  SDL_EVENT_JOYSTICK_UPDATE_COMPLETE;
+  SDL_EVENT_JOYSTICK_UPDATE_COMPLETE; ///< Joystick update is complete.
 
-/**
- * Gamepad axis motion
- */
-constexpr EventType EVENT_GAMEPAD_AXIS_MOTION = SDL_EVENT_GAMEPAD_AXIS_MOTION;
+constexpr EventType EVENT_GAMEPAD_AXIS_MOTION =
+  SDL_EVENT_GAMEPAD_AXIS_MOTION; ///< Gamepad axis motion.
 
-/**
- * Gamepad button pressed
- */
-constexpr EventType EVENT_GAMEPAD_BUTTON_DOWN = SDL_EVENT_GAMEPAD_BUTTON_DOWN;
+constexpr EventType EVENT_GAMEPAD_BUTTON_DOWN =
+  SDL_EVENT_GAMEPAD_BUTTON_DOWN; ///< Gamepad button pressed.
 
-/**
- * Gamepad button released
- */
-constexpr EventType EVENT_GAMEPAD_BUTTON_UP = SDL_EVENT_GAMEPAD_BUTTON_UP;
+constexpr EventType EVENT_GAMEPAD_BUTTON_UP =
+  SDL_EVENT_GAMEPAD_BUTTON_UP; ///< Gamepad button released.
 
-/**
- * A new gamepad has been inserted into the system
- */
-constexpr EventType EVENT_GAMEPAD_ADDED = SDL_EVENT_GAMEPAD_ADDED;
+constexpr EventType EVENT_GAMEPAD_ADDED =
+  SDL_EVENT_GAMEPAD_ADDED; ///< A new gamepad has been inserted into the system.
 
-/**
- * A gamepad has been removed
- */
-constexpr EventType EVENT_GAMEPAD_REMOVED = SDL_EVENT_GAMEPAD_REMOVED;
+constexpr EventType EVENT_GAMEPAD_REMOVED =
+  SDL_EVENT_GAMEPAD_REMOVED; ///< A gamepad has been removed.
 
-/**
- * The gamepad mapping was updated
- */
-constexpr EventType EVENT_GAMEPAD_REMAPPED = SDL_EVENT_GAMEPAD_REMAPPED;
+constexpr EventType EVENT_GAMEPAD_REMAPPED =
+  SDL_EVENT_GAMEPAD_REMAPPED; ///< The gamepad mapping was updated.
 
-/**
- * Gamepad touchpad was touched
- */
 constexpr EventType EVENT_GAMEPAD_TOUCHPAD_DOWN =
-  SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN;
+  SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN; ///< Gamepad touchpad was touched.
 
-/**
- * Gamepad touchpad finger was moved
- */
 constexpr EventType EVENT_GAMEPAD_TOUCHPAD_MOTION =
-  SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION;
+  SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION; ///< Gamepad touchpad finger was moved.
 
-/**
- * Gamepad touchpad finger was lifted
- */
-constexpr EventType EVENT_GAMEPAD_TOUCHPAD_UP = SDL_EVENT_GAMEPAD_TOUCHPAD_UP;
+constexpr EventType EVENT_GAMEPAD_TOUCHPAD_UP =
+  SDL_EVENT_GAMEPAD_TOUCHPAD_UP; ///< Gamepad touchpad finger was lifted.
 
-/**
- * Gamepad sensor was updated
- */
 constexpr EventType EVENT_GAMEPAD_SENSOR_UPDATE =
-  SDL_EVENT_GAMEPAD_SENSOR_UPDATE;
+  SDL_EVENT_GAMEPAD_SENSOR_UPDATE; ///< Gamepad sensor was updated.
 
-/**
- * Gamepad update is complete
- */
 constexpr EventType EVENT_GAMEPAD_UPDATE_COMPLETE =
-  SDL_EVENT_GAMEPAD_UPDATE_COMPLETE;
+  SDL_EVENT_GAMEPAD_UPDATE_COMPLETE; ///< Gamepad update is complete.
 
-/**
- * Gamepad Steam handle has changed
- */
 constexpr EventType EVENT_GAMEPAD_STEAM_HANDLE_UPDATED =
-  SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED;
+  SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED; ///< Gamepad Steam handle has changed.
 
 constexpr EventType EVENT_FINGER_DOWN = SDL_EVENT_FINGER_DOWN; ///< FINGER_DOWN
 
@@ -44098,45 +41406,31 @@ constexpr EventType EVENT_FINGER_MOTION =
 constexpr EventType EVENT_FINGER_CANCELED =
   SDL_EVENT_FINGER_CANCELED; ///< FINGER_CANCELED
 
-/**
- * The clipboard or primary selection changed
- */
-constexpr EventType EVENT_CLIPBOARD_UPDATE = SDL_EVENT_CLIPBOARD_UPDATE;
+constexpr EventType EVENT_CLIPBOARD_UPDATE =
+  SDL_EVENT_CLIPBOARD_UPDATE; ///< The clipboard or primary selection changed.
 
-/**
- * The system requests a file open
- */
-constexpr EventType EVENT_DROP_FILE = SDL_EVENT_DROP_FILE;
+constexpr EventType EVENT_DROP_FILE =
+  SDL_EVENT_DROP_FILE; ///< The system requests a file open.
 
-/**
- * text/plain drag-and-drop event
- */
-constexpr EventType EVENT_DROP_TEXT = SDL_EVENT_DROP_TEXT;
+constexpr EventType EVENT_DROP_TEXT =
+  SDL_EVENT_DROP_TEXT; ///< text/plain drag-and-drop event
 
-/**
- * A new set of drops is beginning (NULL filename)
- */
-constexpr EventType EVENT_DROP_BEGIN = SDL_EVENT_DROP_BEGIN;
+constexpr EventType EVENT_DROP_BEGIN =
+  SDL_EVENT_DROP_BEGIN; ///< A new set of drops is beginning (NULL filename)
 
 /**
  * Current set of drops is now complete (NULL filename)
  */
 constexpr EventType EVENT_DROP_COMPLETE = SDL_EVENT_DROP_COMPLETE;
 
-/**
- * Position while moving over the window
- */
-constexpr EventType EVENT_DROP_POSITION = SDL_EVENT_DROP_POSITION;
+constexpr EventType EVENT_DROP_POSITION =
+  SDL_EVENT_DROP_POSITION; ///< Position while moving over the window.
 
-/**
- * A new audio device is available
- */
-constexpr EventType EVENT_AUDIO_DEVICE_ADDED = SDL_EVENT_AUDIO_DEVICE_ADDED;
+constexpr EventType EVENT_AUDIO_DEVICE_ADDED =
+  SDL_EVENT_AUDIO_DEVICE_ADDED; ///< A new audio device is available.
 
-/**
- * An audio device has been removed.
- */
-constexpr EventType EVENT_AUDIO_DEVICE_REMOVED = SDL_EVENT_AUDIO_DEVICE_REMOVED;
+constexpr EventType EVENT_AUDIO_DEVICE_REMOVED =
+  SDL_EVENT_AUDIO_DEVICE_REMOVED; ///< An audio device has been removed.
 
 /**
  * An audio device's format has been changed by the system.
@@ -44144,61 +41438,41 @@ constexpr EventType EVENT_AUDIO_DEVICE_REMOVED = SDL_EVENT_AUDIO_DEVICE_REMOVED;
 constexpr EventType EVENT_AUDIO_DEVICE_FORMAT_CHANGED =
   SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED;
 
-/**
- * A sensor was updated
- */
-constexpr EventType EVENT_SENSOR_UPDATE = SDL_EVENT_SENSOR_UPDATE;
+constexpr EventType EVENT_SENSOR_UPDATE =
+  SDL_EVENT_SENSOR_UPDATE; ///< A sensor was updated.
+
+constexpr EventType EVENT_PEN_PROXIMITY_IN =
+  SDL_EVENT_PEN_PROXIMITY_IN; ///< Pressure-sensitive pen has become available.
+
+constexpr EventType EVENT_PEN_PROXIMITY_OUT =
+  SDL_EVENT_PEN_PROXIMITY_OUT; ///< Pressure-sensitive pen has become
+                               ///< unavailable.
+
+constexpr EventType EVENT_PEN_DOWN =
+  SDL_EVENT_PEN_DOWN; ///< Pressure-sensitive pen touched drawing surface.
 
 /**
- * Pressure-sensitive pen has become available
- */
-constexpr EventType EVENT_PEN_PROXIMITY_IN = SDL_EVENT_PEN_PROXIMITY_IN;
-
-/**
- * Pressure-sensitive pen has become unavailable
- */
-constexpr EventType EVENT_PEN_PROXIMITY_OUT = SDL_EVENT_PEN_PROXIMITY_OUT;
-
-/**
- * Pressure-sensitive pen touched drawing surface
- */
-constexpr EventType EVENT_PEN_DOWN = SDL_EVENT_PEN_DOWN;
-
-/**
- * Pressure-sensitive pen stopped touching drawing surface
+ * Pressure-sensitive pen stopped touching drawing surface.
  */
 constexpr EventType EVENT_PEN_UP = SDL_EVENT_PEN_UP;
 
-/**
- * Pressure-sensitive pen button pressed
- */
-constexpr EventType EVENT_PEN_BUTTON_DOWN = SDL_EVENT_PEN_BUTTON_DOWN;
+constexpr EventType EVENT_PEN_BUTTON_DOWN =
+  SDL_EVENT_PEN_BUTTON_DOWN; ///< Pressure-sensitive pen button pressed.
 
-/**
- * Pressure-sensitive pen button released
- */
-constexpr EventType EVENT_PEN_BUTTON_UP = SDL_EVENT_PEN_BUTTON_UP;
+constexpr EventType EVENT_PEN_BUTTON_UP =
+  SDL_EVENT_PEN_BUTTON_UP; ///< Pressure-sensitive pen button released.
 
-/**
- * Pressure-sensitive pen is moving on the tablet
- */
-constexpr EventType EVENT_PEN_MOTION = SDL_EVENT_PEN_MOTION;
+constexpr EventType EVENT_PEN_MOTION =
+  SDL_EVENT_PEN_MOTION; ///< Pressure-sensitive pen is moving on the tablet.
 
-/**
- * Pressure-sensitive pen angle/pressure/etc changed
- */
-constexpr EventType EVENT_PEN_AXIS = SDL_EVENT_PEN_AXIS;
+constexpr EventType EVENT_PEN_AXIS =
+  SDL_EVENT_PEN_AXIS; ///< Pressure-sensitive pen angle/pressure/etc changed.
 
-/**
- * A new camera device is available
- */
-constexpr EventType EVENT_CAMERA_DEVICE_ADDED = SDL_EVENT_CAMERA_DEVICE_ADDED;
+constexpr EventType EVENT_CAMERA_DEVICE_ADDED =
+  SDL_EVENT_CAMERA_DEVICE_ADDED; ///< A new camera device is available.
 
-/**
- * A camera device has been removed.
- */
 constexpr EventType EVENT_CAMERA_DEVICE_REMOVED =
-  SDL_EVENT_CAMERA_DEVICE_REMOVED;
+  SDL_EVENT_CAMERA_DEVICE_REMOVED; ///< A camera device has been removed.
 
 /**
  * A camera device has been approved for use by the user.
@@ -44212,19 +41486,18 @@ constexpr EventType EVENT_CAMERA_DEVICE_APPROVED =
 constexpr EventType EVENT_CAMERA_DEVICE_DENIED = SDL_EVENT_CAMERA_DEVICE_DENIED;
 
 /**
- * The render targets have been reset and their contents need to be updated
+ * The render targets have been reset and their contents need to be updated.
  */
 constexpr EventType EVENT_RENDER_TARGETS_RESET = SDL_EVENT_RENDER_TARGETS_RESET;
 
 /**
- * The device has been reset and all textures need to be recreated
+ * The device has been reset and all textures need to be recreated.
  */
 constexpr EventType EVENT_RENDER_DEVICE_RESET = SDL_EVENT_RENDER_DEVICE_RESET;
 
-/**
- * The device has been lost and can't be recovered.
- */
-constexpr EventType EVENT_RENDER_DEVICE_LOST = SDL_EVENT_RENDER_DEVICE_LOST;
+constexpr EventType EVENT_RENDER_DEVICE_LOST =
+  SDL_EVENT_RENDER_DEVICE_LOST; ///< The device has been lost and can't be
+                                ///< recovered.
 
 constexpr EventType EVENT_PRIVATE0 = SDL_EVENT_PRIVATE0; ///< PRIVATE0
 
@@ -44234,19 +41507,17 @@ constexpr EventType EVENT_PRIVATE2 = SDL_EVENT_PRIVATE2; ///< PRIVATE2
 
 constexpr EventType EVENT_PRIVATE3 = SDL_EVENT_PRIVATE3; ///< PRIVATE3
 
-/**
- * Signals the end of an event poll cycle
- */
-constexpr EventType EVENT_POLL_SENTINEL = SDL_EVENT_POLL_SENTINEL;
+constexpr EventType EVENT_POLL_SENTINEL =
+  SDL_EVENT_POLL_SENTINEL; ///< Signals the end of an event poll cycle.
 
 /**
- * Events SDL_EVENT_USER through SDL_EVENT_LAST are for your use,
- *  and should be allocated with SDL_RegisterEvents()
+ * Events EVENT_USER through EVENT_LAST are for your use, and should be
+ * allocated with RegisterEvents()
  */
 constexpr EventType EVENT_USER = SDL_EVENT_USER;
 
 /**
- * This last event is only for bounding internal arrays
+ * This last event is only for bounding internal arrays.
  */
 constexpr EventType EVENT_LAST = SDL_EVENT_LAST;
 
@@ -44286,16 +41557,16 @@ using KeyboardDeviceEvent = SDL_KeyboardDeviceEvent;
 /**
  * Keyboard button event structure (event.key.*)
  *
- * The `key` is the base SDL_Keycode generated by pressing the `scancode`
+ * The `key` is the base Keycode generated by pressing the `scancode`
  * using the current keyboard layout, applying any options specified in
- * SDL_HINT_KEYCODE_OPTIONS. You can get the SDL_Keycode corresponding to the
+ * SDL_HINT_KEYCODE_OPTIONS. You can get the Keycode corresponding to the
  * event scancode and modifiers directly from the keyboard layout, bypassing
- * SDL_HINT_KEYCODE_OPTIONS, by calling SDL_GetKeyFromScancode().
+ * SDL_HINT_KEYCODE_OPTIONS, by calling Keycode.Keycode().
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GetKeyFromScancode()
- * @sa HINT_KEYCODE_OPTIONS
+ * @sa Keycode.Keycode
+ * @sa SDL_HINT_KEYCODE_OPTIONS
  */
 using KeyboardEvent = SDL_KeyboardEvent;
 
@@ -44321,12 +41592,12 @@ using TextEditingCandidatesEvent = SDL_TextEditingCandidatesEvent;
  * Keyboard text input event structure (event.text.*)
  *
  * This event will never be delivered unless text input is enabled by calling
- * SDL_StartTextInput(). Text input is disabled by default!
+ * WindowRef.StartTextInput(). Text input is disabled by default!
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa StartTextInput()
- * @sa StopTextInput()
+ * @sa WindowRef.StartTextInput
+ * @sa WindowRef.StopTextInput
  */
 using TextInputEvent = SDL_TextInputEvent;
 
@@ -44390,7 +41661,7 @@ using JoyButtonEvent = SDL_JoyButtonEvent;
  * Joystick device event structure (event.jdevice.*)
  *
  * SDL will send JOYSTICK_ADDED events for devices that are already plugged in
- * during SDL_Init.
+ * during InitSubSystem.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -44422,11 +41693,11 @@ using GamepadButtonEvent = SDL_GamepadButtonEvent;
 /**
  * Gamepad device event structure (event.gdevice.*)
  *
- * Joysticks that are supported gamepads receive both an SDL_JoyDeviceEvent
- * and an SDL_GamepadDeviceEvent.
+ * Joysticks that are supported gamepads receive both an JoyDeviceEvent
+ * and an GamepadDeviceEvent.
  *
  * SDL will send GAMEPAD_ADDED events for joysticks that are already plugged
- * in during SDL_Init() and are recognized as gamepads. It will also send
+ * in during InitSubSystem() and are recognized as gamepads. It will also send
  * events for joysticks that get gamepad mappings at runtime.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -44495,14 +41766,14 @@ using TouchFingerEvent = SDL_TouchFingerEvent;
  * Pressure-sensitive pen proximity event structure (event.pmotion.*)
  *
  * When a pen becomes visible to the system (it is close enough to a tablet,
- * etc), SDL will send an SDL_EVENT_PEN_PROXIMITY_IN event with the new pen's
+ * etc), SDL will send an EVENT_PEN_PROXIMITY_IN event with the new pen's
  * ID. This ID is valid until the pen leaves proximity again (has been removed
  * from the tablet's area, the tablet has been unplugged, etc). If the same
  * pen reenters proximity again, it will be given a new ID.
  *
  * Note that "proximity" means "close enough for the tablet to know the tool
  * is there." The pen touching and lifting off from the tablet while not
- * leaving the area are handled by SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP.
+ * leaving the area are handled by EVENT_PEN_DOWN and EVENT_PEN_UP.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -44513,7 +41784,7 @@ using PenProximityEvent = SDL_PenProximityEvent;
  *
  * Depending on the hardware, you may get motion events when the pen is not
  * touching a tablet, for tracking a pen even when it isn't drawing. You
- * should listen for SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP events, or check
+ * should listen for EVENT_PEN_DOWN and EVENT_PEN_UP events, or check
  * `pen_state & SDL_PEN_INPUT_DOWN` to decide if a pen is "drawing" when
  * dealing with pen motion.
  *
@@ -44535,7 +41806,7 @@ using PenTouchEvent = SDL_PenTouchEvent;
  * Pressure-sensitive pen button event structure (event.pbutton.*)
  *
  * This is for buttons on the pen itself that the user might click. The pen
- * itself pressing down to draw triggers a SDL_EVENT_PEN_DOWN event instead.
+ * itself pressing down to draw triggers a EVENT_PEN_DOWN event instead.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -44586,9 +41857,9 @@ using QuitEvent = SDL_QuitEvent;
  *
  * This event is unique; it is never created by SDL, but only by the
  * application. The event can be pushed onto the event queue using
- * SDL_PushEvent(). The contents of the structure members are completely up to
+ * PushEvent(). The contents of the structure members are completely up to
  * the programmer; the only requirement is that '''type''' is a value obtained
- * from SDL_RegisterEvents().
+ * from RegisterEvents().
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -44597,7 +41868,7 @@ using UserEvent = SDL_UserEvent;
 /**
  * The structure for all events in SDL.
  *
- * The SDL_Event structure is the core of all event handling in SDL. SDL_Event
+ * The Event structure is the core of all event handling in SDL. Event
  * is a union of all event structures used in SDL.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -44609,13 +41880,13 @@ using Event = SDL_Event;
  *
  * This function updates the event queue and internal input device state.
  *
- * SDL_PumpEvents() gathers all the pending input information from devices and
- * places it in the event queue. Without calls to SDL_PumpEvents() no events
- * would ever be placed on the queue. Often the need for calls to
- * SDL_PumpEvents() is hidden from the user since SDL_PollEvent() and
- * SDL_WaitEvent() implicitly call SDL_PumpEvents(). However, if you are not
- * polling or waiting for events (e.g. you are filtering them), then you must
- * call SDL_PumpEvents() to force an event queue update.
+ * PumpEvents() gathers all the pending input information from devices and
+ * places it in the event queue. Without calls to PumpEvents() no events would
+ * ever be placed on the queue. Often the need for calls to PumpEvents() is
+ * hidden from the user since PollEvent() and WaitEvent() implicitly call
+ * PumpEvents(). However, if you are not polling or waiting for events (e.g. you
+ * are filtering them), then you must call PumpEvents() to force an event queue
+ * update.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -44639,10 +41910,8 @@ inline void PumpEvents() { return SDL_PumpEvents(); }
  */
 using EventAction = SDL_EventAction;
 
-/**
- * Add events to the back of the queue.
- */
-constexpr EventAction ADDEVENT = SDL_ADDEVENT;
+constexpr EventAction ADDEVENT =
+  SDL_ADDEVENT; ///< Add events to the back of the queue.
 
 /**
  * Check but don't remove events from the queue front.
@@ -44663,32 +41932,32 @@ constexpr EventAction GETEVENT = SDL_GETEVENT;
  *
  * ## remarks
  *
- * - `SDL_ADDEVENT`: up to `numevents` events will be added to the back of the
+ * - `ADDEVENT`: up to `numevents` events will be added to the back of the
  *   event queue.
- * - `SDL_PEEKEVENT`: `numevents` events at the front of the event queue,
+ * - `PEEKEVENT`: `numevents` events at the front of the event queue,
  *   within the specified minimum and maximum type, will be returned to the
- *   caller and will _not_ be removed from the queue. If you pass NULL for
+ *   caller and will _not_ be removed from the queue. If you pass nullptr for
  *   `events`, then `numevents` is ignored and the total number of matching
  *   events will be returned.
- * - `SDL_GETEVENT`: up to `numevents` events at the front of the event queue,
+ * - `GETEVENT`: up to `numevents` events at the front of the event queue,
  *   within the specified minimum and maximum type, will be returned to the
  *   caller and will be removed from the queue.
  *
- * You may have to call SDL_PumpEvents() before calling this function.
+ * You may have to call PumpEvents() before calling this function.
  * Otherwise, the events may not be ready to be filtered when you call
- * SDL_PeepEvents().
+ * PeepEvents().
  *
- * @param events destination buffer for the retrieved events, may be NULL to
+ * @param events destination buffer for the retrieved events, may be nullptr to
  *               leave the events in the queue and return the number of events
  *               that would have been stored.
- * @param numevents if action is SDL_ADDEVENT, the number of events to add
- *                  back to the event queue; if action is SDL_PEEKEVENT or
- *                  SDL_GETEVENT, the maximum number of events to retrieve.
+ * @param numevents if action is ADDEVENT, the number of events to add
+ *                  back to the event queue; if action is PEEKEVENT or
+ *                  GETEVENT, the maximum number of events to retrieve.
  * @param action action to take; see [Remarks](#remarks) for details.
  * @param minType minimum value of the event type to be considered;
- *                SDL_EVENT_FIRST is a safe choice.
+ *                EVENT_FIRST is a safe choice.
  * @param maxType maximum value of the event type to be considered;
- *                SDL_EVENT_LAST is a safe choice.
+ *                EVENT_LAST is a safe choice.
  * @returns the number of events actually stored or -1 on failure; call
  *          GetError() for more information.
  *
@@ -44712,11 +41981,9 @@ inline int PeepEvents(Event* events,
 /**
  * Check for the existence of a certain event type in the event queue.
  *
- * If you need to check for a range of event types, use SDL_HasEvents()
- * instead.
+ * If you need to check for a range of event types, use HasEvents() instead.
  *
- * @param type the type of event to be queried; see @ref EventTypes for
- * details.
+ * @param type the type of event to be queried; see EventType for details.
  * @returns true if events matching `type` are present, or false if events
  *          matching `type` are not present.
  *
@@ -44731,12 +41998,12 @@ inline bool HasEvent(Uint32 type) { return SDL_HasEvent(type); }
 /**
  * Check for the existence of certain event types in the event queue.
  *
- * If you need to check for a single event type, use SDL_HasEvent() instead.
+ * If you need to check for a single event type, use HasEvent() instead.
  *
  * @param minType the low end of event type to be queried, inclusive; see
- *                SDL_EventType for details.
+ *                EventType for details.
  * @param maxType the high end of event type to be queried, inclusive; see
- *                SDL_EventType for details.
+ *                EventType for details.
  * @returns true if events with type >= `minType` and <= `maxType` are
  *          present, or false if not.
  *
@@ -44754,22 +42021,21 @@ inline bool HasEvents(Uint32 minType = EVENT_FIRST, Uint32 maxType = EVENT_LAST)
 /**
  * Clear events of a specific type from the event queue.
  *
- * This will unconditionally remove any events from the queue that match
- * `type`. If you need to remove a range of event types, use SDL_FlushEvents()
- * instead.
+ * This will unconditionally remove any events from the queue that match `type`.
+ * If you need to remove a range of event types, use FlushEvents() instead.
  *
  * It's also normal to just ignore events you don't care about in your event
  * loop without calling this function.
  *
- * This function only affects currently queued events. If you want to make
- * sure that all pending OS events are flushed, you can call SDL_PumpEvents()
- * on the main thread immediately before the flush call.
+ * This function only affects currently queued events. If you want to make sure
+ * that all pending OS events are flushed, you can call PumpEvents() on the main
+ * thread immediately before the flush call.
  *
  * If you have user events with custom data that needs to be freed, you should
- * use SDL_PeepEvents() to remove and clean up those events before calling
- * this function.
+ * use PeepEvents() to remove and clean up those events before calling this
+ * function.
  *
- * @param type the type of event to be cleared; see SDL_EventType for details.
+ * @param type the type of event to be cleared; see EventType for details.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -44784,19 +42050,19 @@ inline void FlushEvent(Uint32 type) { return SDL_FlushEvent(type); }
  *
  * This will unconditionally remove any events from the queue that are in the
  * range of `minType` to `maxType`, inclusive. If you need to remove a single
- * event type, use SDL_FlushEvent() instead.
+ * event type, use FlushEvent() instead.
  *
  * It's also normal to just ignore events you don't care about in your event
  * loop without calling this function.
  *
- * This function only affects currently queued events. If you want to make
- * sure that all pending OS events are flushed, you can call SDL_PumpEvents()
- * on the main thread immediately before the flush call.
+ * This function only affects currently queued events. If you want to make sure
+ * that all pending OS events are flushed, you can call PumpEvents() on the main
+ * thread immediately before the flush call.
  *
  * @param minType the low end of event type to be cleared, inclusive; see
- *                SDL_EventType for details.
+ *                EventType for details.
  * @param maxType the high end of event type to be cleared, inclusive; see
- *                SDL_EventType for details.
+ *                EventType for details.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -44814,9 +42080,9 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  * Poll for currently pending events.
  *
  * If `event` is not nullptr, the next event is removed from the queue and
- * stored in the Event structure pointed to by `event`. The true returned
- * refers to this event, immediately stored in the SDL Event structure -- not an
- * event to follow.
+ * stored in the Event structure pointed to by `event`. The true returned refers
+ * to this event, immediately stored in the SDL Event structure -- not an event
+ * to follow.
  *
  * If `event` is nullptr, it simply returns true if there is an event in the
  * queue, but will not remove it from the queue.
@@ -44842,8 +42108,8 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  * }
  * ```
  *
- * @param event the SDL_Event structure to be filled with the next event from
- *              the queue, or nullptr.
+ * @param event the Event structure to be filled with the next event from the
+ *              queue, or nullptr.
  * @returns true if this got an event or false if there are none available.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -44962,7 +42228,7 @@ inline Event WaitEvent()
  * system scheduling.
  *
  * @param event the Event structure to be filled in with the next event from the
- * queue, or nullptr.
+ *              queue, or nullptr.
  * @param timeoutMS the maximum number of milliseconds to wait for the next
  *                  available event.
  * @returns true if this got an event or false if the timeout elapsed without
@@ -45200,7 +42466,7 @@ struct EventWatchHandle : CallbackHandle
  * event queue.
  *
  * If you just want to see events without modifying them or preventing them
- * from being queued, you should use SDL_AddEventWatch() instead.
+ * from being queued, you should use AddEventWatch() instead.
  *
  * If the filter function returns true when called, then the event will be
  * added to the internal queue. If it returns false, then the event will be
@@ -45215,13 +42481,12 @@ struct EventWatchHandle : CallbackHandle
  * application at the next event poll.
  *
  * Note: Disabled events never make it to the event filter function; see
- * SDL_SetEventEnabled().
+ * SetEventEnabled().
  *
- * Note: Events pushed onto the queue with SDL_PushEvent() get passed through
- * the event filter, but events pushed onto the queue with SDL_PeepEvents() do
- * not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through the
+ * event filter, but events pushed onto the queue with PeepEvents() do not.
  *
- * @param filter an SDL_EventFilter function to call when an event happens.
+ * @param filter an EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -45434,13 +42699,13 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 }
 
 /**
- * Remove an event watch callback added with SDL_AddEventWatch().
+ * Remove an event watch callback added with AddEventWatch().
  *
- * This function takes the same input as SDL_AddEventWatch() to identify and
- * delete the corresponding callback.
+ * This function takes the same input as AddEventWatch() to identify and delete
+ * the corresponding callback.
  *
- * @param filter the function originally passed to SDL_AddEventWatch().
- * @param userdata the pointer originally passed to SDL_AddEventWatch().
+ * @param filter the function originally passed to AddEventWatch().
+ * @param userdata the pointer originally passed to AddEventWatch().
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -45529,7 +42794,7 @@ inline void FilterEvents(EventFilterCB filter)
 /**
  * Set the state of processing events by type.
  *
- * @param type the type of event; see SDL_EventType for details.
+ * @param type the type of event; see EventType for details.
  * @param enabled whether to process the event or not.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -45546,7 +42811,7 @@ inline void SetEventEnabled(Uint32 type, bool enabled)
 /**
  * Query the state of processing events by type.
  *
- * @param type the type of event; see SDL_EventType for details.
+ * @param type the type of event; see EventType for details.
  * @returns true if the event is being processed, false otherwise.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -45648,8 +42913,8 @@ inline bool HasKeyboard() { return SDL_HasKeyboard(); }
  * @param count a pointer filled in with the number of keyboards returned, may
  *              be nullptr.
  * @returns a 0 terminated array of keyboards instance IDs or nullptr on
- * failure; call GetError() for more information. This should be freed with
- * free() when it is no longer needed.
+ *          failure; call GetError() for more information. This should be freed
+ *          with free() when it is no longer needed.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -46244,7 +43509,7 @@ inline bool WindowRef::IsScreenKeyboardShown() const
  *
  * These message boxes are native system dialogs where possible.
  *
- * There is both a customizable function (ShowMessageBox()) that offers
+ * There is both a customizable function (MessageBox.Show()) that offers
  * lots of options for what to display and reports on what choice the user
  * made, and also a much-simplified version (ShowSimpleMessageBox()),
  * merely takes a text message and title, and waits until the user presses a
@@ -46635,10 +43900,10 @@ inline void ShowSimpleMessageBox(MessageBoxFlags flags,
  * to the window, and reads mouse input no matter how far it moves.
  *
  * Games that want the system to track the mouse but want to draw their own
- * cursor can use HideCursor() and ShowCursor(). It might be more
- * efficient to let the system manage the cursor, if possible, using
- * SetCursor() with a custom image made through CursorRef.CursorRef(),
- * or perhaps just a specific system cursor from CursorRef.CursorRef().
+ * cursor can use HideCursor() and ShowCursor(). It might be more efficient to
+ * let the system manage the cursor, if possible, using SetCursor() with a
+ * custom image made through Cursor.CreateColor(), or perhaps just a specific
+ * system cursor from Cursor.CreateSystem().
  *
  * SDL can, on many platforms, differentiate between multiple connected mice,
  * allowing for interesting input scenarios and multiplayer games. They can be
@@ -46661,7 +43926,7 @@ struct CursorRef;
 struct Cursor;
 
 /**
- * Cursor types for CursorRef.CursorRef().
+ * Cursor types for Cursor.CreateSystem().
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -46774,80 +44039,23 @@ using MouseID = SDL_MouseID;
 struct CursorRef : Resource<SDL_Cursor*>
 {
   using Resource::Resource;
-
-protected:
   /**
    * Free a previously-created cursor.
    *
-   * Use this function to free cursor resources created with Cursor.Cursor(),
-   * Cursor.Cursor() or Cursor.Cursor().
+   * Use this function to free cursor resources created with Cursor.Create(),
+   * Cursor.CreateColor() or Cursor.CreateSystem().
+   *
+   * @param resource the cursor to free.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Cursor.Cursor
+   * @sa Cursor.CreateColor
+   * @sa Cursor.Create
+   * @sa Cursor.CreateSystem
    */
-  void Destroy() { reset(); }
-
-  /**
-   * Free a previously-created cursor.
-   *
-   * Use this function to free cursor resources created with Cursor.Cursor(),
-   * Cursor.Cursor() or Cursor.Cursor().
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Cursor.Cursor
-   */
-  void reset(SDL_Cursor* newResource = {})
-  {
-    SDL_DestroyCursor(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to cursor
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa CursorRef
- */
-struct CursorUnsafe : CursorRef
-{
-  using CursorRef::CursorRef;
-
-  using CursorRef::Destroy;
-
-  using CursorRef::reset;
-
-  /**
-   * Constructs CursorUnsafe from CursorRef.
-   */
-  constexpr CursorUnsafe(const CursorRef& other)
-    : CursorRef(other.get())
-  {
-  }
-
-  CursorUnsafe(const Cursor& other) = delete;
-
-  /**
-   * Constructs CursorUnsafe from Cursor.
-   */
-  constexpr explicit CursorUnsafe(Cursor&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr CursorUnsafe& operator=(CursorUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_Cursor* resource) { SDL_DestroyCursor(resource); }
 };
 
 /**
@@ -46857,35 +44065,9 @@ struct CursorUnsafe : CursorRef
  *
  * @sa CursorRef
  */
-struct Cursor : CursorUnsafe
+struct Cursor : ResourceUnique<CursorRef>
 {
-  using CursorUnsafe::CursorUnsafe;
-
-  /**
-   * Constructs an empty Cursor.
-   */
-  constexpr Cursor()
-    : CursorUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Cursor(SDL_Cursor* resource)
-    : CursorUnsafe(resource)
-  {
-  }
-
-  constexpr Cursor(const Cursor& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Cursor(Cursor&& other)
-    : Cursor(other.release())
-  {
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a cursor using the specified bitmap data and mask (in MSB format).
@@ -46902,136 +44084,18 @@ struct Cursor : CursorUnsafe
    * - data=1, mask=0: inverted color if possible, black if not.
    *
    * If you want to have a color cursor, or create your cursor from an
-   * SurfaceRef, you should use Cursor.Cursor(). Alternately, you can
+   * SurfaceRef, you should use Cursor.CreateColor(). Alternately, you can
    * hide the cursor and draw your own as part of your game's rendering, but it
    * will be bound to the framerate.
    *
-   * Also, Cursor.Cursor() is available, which provides several
+   * Also, Cursor.CreateSystem() is available, which provides several
    * readily-available system cursors to pick from.
    *
    * @param data the color value for each pixel of the cursor.
    * @param mask the mask value for each pixel of the cursor.
-   * @param w the width of the cursor.
-   * @param h the height of the cursor.
-   * @param hot_x the x-axis offset from the left of the cursor image to the
-   *              mouse x position, in the range of 0 to `w` - 1.
-   * @param hot_y the y-axis offset from the top of the cursor image to the
-   *              mouse y position, in the range of 0 to `h` - 1.
-   * @post a new cursor with the specified parameters on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CursorRef.Destroy
-   * @sa SetCursor
-   */
-  Cursor(const Uint8* data,
-         const Uint8* mask,
-         int w,
-         int h,
-         int hot_x,
-         int hot_y)
-    : Cursor(CheckError(SDL_CreateCursor(data, mask, w, h, hot_x, hot_y)))
-  {
-  }
-
-  /**
-   * Create a color cursor.
-   *
-   * If this function is passed a surface with alternate representations, the
-   * surface will be interpreted as the content to be used for 100% display
-   * scale, and the alternate representations will be used for high DPI
-   * situations. For example, if the original surface is 32x32, then on a 2x
-   * macOS display or 200% display scale on Windows, a 64x64 version of the
-   * image will be used, if available. If a matching version of the image isn't
-   * available, the closest larger size image will be downscaled to the
-   * appropriate size and be used instead, if available. Otherwise, the closest
-   * smaller image will be upscaled and be used instead.
-   *
-   * @param surface an SurfaceRef structure representing the cursor image.
-   * @param hot_x the x position of the cursor hot spot.
-   * @param hot_y the y position of the cursor hot spot.
-   * @post the new cursor on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CursorRef.Destroy
-   * @sa SetCursor
-   */
-  Cursor(SurfaceRef surface, int hot_x, int hot_y)
-    : Cursor(CheckError(SDL_CreateColorCursor(surface.get(), hot_x, hot_y)))
-  {
-  }
-
-  /**
-   * Create a system cursor.
-   *
-   * @param id an SystemCursor enum value.
-   * @post a cursor on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CursorRef.Destroy
-   */
-  Cursor(SystemCursor id)
-    : Cursor(CheckError(SDL_CreateSystemCursor(id)))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Cursor() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Cursor& operator=(Cursor other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create a cursor using the specified bitmap data and mask (in MSB format).
-   *
-   * `mask` has to be in MSB (Most Significant Bit) format.
-   *
-   * The cursor width (`w`) must be a multiple of 8 bits.
-   *
-   * The cursor is created in black and white according to the following:
-   *
-   * - data=0, mask=1: white
-   * - data=1, mask=1: black
-   * - data=0, mask=0: transparent
-   * - data=1, mask=0: inverted color if possible, black if not.
-   *
-   * Cursors created with this function must be freed with CursorRef.Destroy().
-   *
-   * If you want to have a color cursor, or create your cursor from an
-   * SurfaceRef, you should use Cursor.Cursor(). Alternately, you can
-   * hide the cursor and draw your own as part of your game's rendering, but it
-   * will be bound to the framerate.
-   *
-   * Also, Cursor.Cursor() is available, which provides several
-   * readily-available system cursors to pick from.
-   *
-   * @param data the color value for each pixel of the cursor.
-   * @param mask the mask value for each pixel of the cursor.
-   * @param w the width of the cursor.
-   * @param h the height of the cursor.
-   * @param hot_x the x-axis offset from the left of the cursor image to the
-   *              mouse x position, in the range of 0 to `w` - 1.
-   * @param hot_y the y-axis offset from the top of the cursor image to the
-   *              mouse y position, in the range of 0 to `h` - 1.
+   * @param size the width and height of the cursor.
+   * @param hot the x position of the cursor hot spot, from the top-left, in the
+   *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
    * @returns a new cursor with the specified parameters on success.
    * @throws Error on failure.
    *
@@ -47039,19 +44103,18 @@ struct Cursor : CursorUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Cursor.Cursor
-   * @sa Cursor.Cursor
-   * @sa CursorRef.Destroy
+   * @sa Cursor.CreateColor
+   * @sa Cursor.CreateSystem
+   * @sa Cursor.Destroy
    * @sa SetCursor
    */
   static Cursor Create(const Uint8* data,
                        const Uint8* mask,
-                       int w,
-                       int h,
-                       int hot_x,
-                       int hot_y)
+                       const SDL_Point& size,
+                       const SDL_Point& hot)
   {
-    return Cursor(data, mask, w, h, hot_x, hot_y);
+    return Cursor(
+      CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)));
   }
 
   /**
@@ -47068,8 +44131,7 @@ struct Cursor : CursorUnsafe
    * smaller image will be upscaled and be used instead.
    *
    * @param surface an SurfaceRef structure representing the cursor image.
-   * @param hot_x the x position of the cursor hot spot.
-   * @param hot_y the y position of the cursor hot spot.
+   * @param hot the x position of the cursor hot spot.
    * @returns the new cursor on success.
    * @throws Error on failure.
    *
@@ -47077,14 +44139,15 @@ struct Cursor : CursorUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Cursor.Cursor
-   * @sa Cursor.Cursor
-   * @sa CursorRef.Destroy
+   * @sa Cursor.Create
+   * @sa Cursor.CreateSystem
+   * @sa Cursor.Destroy
    * @sa SetCursor
    */
-  static Cursor CreateColor(SurfaceRef surface, int hot_x, int hot_y)
+  static Cursor CreateColor(SurfaceRef surface, const SDL_Point& hot)
   {
-    return Cursor(surface, hot_x, hot_y);
+    return Cursor(
+      CheckError(SDL_CreateColorCursor(surface.get(), hot.x, hot.y)));
   }
 
   /**
@@ -47098,15 +44161,49 @@ struct Cursor : CursorUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorRef.Destroy
+   * @sa Cursor.Destroy
    */
-  static Cursor CreateSystem(SystemCursor id) { return Cursor(id); }
+  static Cursor CreateSystem(SystemCursor id)
+  {
+    return Cursor(CheckError(SDL_CreateSystemCursor(id)));
+  }
+
+  /**
+   * Free a previously-created cursor.
+   *
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Cursor.CreateColor
+   * @sa Cursor.Create
+   * @sa Cursor.CreateSystem
+   */
+  void Destroy() { reset(); }
 };
 
-constexpr CursorUnsafe::CursorUnsafe(Cursor&& other)
-  : CursorUnsafe(other.release())
+/**
+ * Unsafe Handle to cursor
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa CursorRef
+ */
+struct CursorUnsafe : ResourceUnsafe<CursorRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs CursorUnsafe from Cursor.
+   */
+  constexpr explicit CursorUnsafe(Cursor&& other)
+    : CursorUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Represents a button index.
@@ -47535,7 +44632,7 @@ inline void SetCursor(CursorRef cursor)
  * Get the active cursor.
  *
  * This function returns a pointer to the current cursor which is owned by the
- * library. It is not necessary to free the cursor with CursorRef.reset().
+ * library. It is not necessary to free the cursor with Cursor.Destroy().
  *
  * @returns the active cursor or nullptr if there is no mouse.
  *
@@ -47550,7 +44647,7 @@ inline CursorRef GetCursor() { return SDL_GetCursor(); }
 /**
  * Get the default cursor.
  *
- * You do not have to call CursorRef.reset() on the return value, but it is
+ * You do not have to call Cursor.Destroy() on the return value, but it is
  * safe to do so.
  *
  * @returns the default cursor on success.
@@ -49101,7 +46198,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    * Read pixels from the current rendering target.
    *
    * The returned surface contains pixels inside the desired area clipped to the
-   * current viewport, and should be freed with SurfaceRef.Destroy().
+   * current viewport, and should be freed with Surface.Destroy().
    *
    * Note that this returns the actual pixels on the screen, so if you are using
    * logical presentation you should use
@@ -49321,79 +46418,21 @@ struct RendererRef : Resource<SDL_Renderer*>
     RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));
   }
 
-protected:
   /**
    * Destroy the rendering context for a window and free all associated
    * textures.
    *
    * This should be called before destroying the associated window.
    *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.Renderer
-   */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy the rendering context for a window and free all associated
-   * textures.
-   *
-   * This should be called before destroying the associated window.
+   * @param resource the rendering context.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
+   * @sa Renderer.Create
    */
-  void reset(SDL_Renderer* newResource = {})
-  {
-    SDL_DestroyRenderer(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to renderer
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa RendererRef
- */
-struct RendererUnsafe : RendererRef
-{
-  using RendererRef::Destroy;
-
-  using RendererRef::RendererRef;
-
-  using RendererRef::reset;
-
-  /**
-   * Constructs RendererUnsafe from RendererRef.
-   */
-  constexpr RendererUnsafe(const RendererRef& other)
-    : RendererRef(other.get())
-  {
-  }
-
-  RendererUnsafe(const Renderer& other) = delete;
-
-  /**
-   * Constructs RendererUnsafe from Renderer.
-   */
-  constexpr explicit RendererUnsafe(Renderer&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr RendererUnsafe& operator=(RendererUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_Renderer* resource) { SDL_DestroyRenderer(resource); }
 };
 
 /**
@@ -49403,35 +46442,9 @@ struct RendererUnsafe : RendererRef
  *
  * @sa RendererRef
  */
-struct Renderer : RendererUnsafe
+struct Renderer : ResourceUnique<RendererRef>
 {
-  using RendererUnsafe::RendererUnsafe;
-
-  /**
-   * Constructs an empty Renderer.
-   */
-  constexpr Renderer()
-    : RendererUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Renderer(SDL_Renderer* resource)
-    : RendererUnsafe(resource)
-  {
-  }
-
-  constexpr Renderer(const Renderer& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Renderer(Renderer&& other)
-    : Renderer(other.release())
-  {
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a 2D rendering context for a window.
@@ -49444,12 +46457,21 @@ struct Renderer : RendererUnsafe
    * GetError() for more information.
    *
    * @param window the window where rendering is displayed.
+   * @returns a valid rendering context on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa Renderer.CreateWithProperties
+   * @sa Renderer.CreateSoftware
+   * @sa Renderer.Destroy
+   * @sa GetNumRenderDrivers
+   * @sa GetRenderDriver
+   * @sa RendererRef.GetName
    */
-  Renderer(WindowRef window)
-    : Renderer(SDL_CreateRenderer(window.get(), nullptr))
+  static Renderer Create(WindowRef window)
   {
+    return Renderer(CheckError(SDL_CreateRenderer(window, nullptr)));
   }
 
   /**
@@ -49472,152 +46494,23 @@ struct Renderer : RendererUnsafe
    * @param window the window where rendering is displayed.
    * @param name the name of the rendering driver to initialize, or nullptr to
    *             let SDL choose one.
-   * @post a valid rendering context.
+   * @returns a valid rendering context on success.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RendererRef.Destroy
-   * @sa GetNumRenderDrivers
-   * @sa GetRenderDriver
-   * @sa RendererRef.GetName
-   */
-  Renderer(WindowRef window, StringParam name)
-    : Renderer(CheckError(SDL_CreateRenderer(window.get(), name)))
-  {
-  }
-
-  /**
-   * Create a 2D rendering context for a window, with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver
-   *   to use, if a specific one is desired
-   * - `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
-   *   displayed, required if this isn't a software renderer using a surface
-   * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering
-   *   is displayed, if you want a software renderer without a window
-   * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace
-   *   value describing the colorspace for output to the display, defaults to
-   *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers
-   *   support COLORSPACE_SRGB_LINEAR, which is a linear color space and
-   *   supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing
-   *   still uses the sRGB colorspace, but values can go beyond 1.0 and float
-   *   (linear) format textures can be used for HDR content.
-   * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
-   *   present synchronized with the refresh rate. This property can take any
-   *   value that is supported by RendererRef.SetVSync() for the renderer.
-   *
-   * With the vulkan renderer:
-   *
-   * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
-   *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
-   *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
-   *   VkPhysicalDevice to use with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use
-   *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
-   *   queue family index used for rendering.
-   * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
-   *   queue family index used for presentation.
-   *
-   * @param props the properties to use.
-   * @post a valid rendering context.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Properties.Properties
-   * @sa RendererRef.Destroy
-   * @sa RendererRef.GetName
-   */
-  Renderer(PropertiesRef props)
-    : Renderer(CheckError(SDL_CreateRendererWithProperties(props.get())))
-  {
-  }
-
-  /**
-   * Create a 2D software rendering context for a surface.
-   *
-   * Two other API which can be used to create Renderer:
-   * Renderer.Renderer() and CreateWindowAndRenderer(). These can _also_
-   * create a software renderer, but they are intended to be used with an
-   * WindowRef as the final destination and not an SurfaceRef.
-   *
-   * @param surface the Surface structure representing the surface where
-   *                rendering is done.
-   * @post a valid rendering context.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RendererRef.Destroy
-   */
-  Renderer(SurfaceRef surface)
-    : Renderer(CheckError(SDL_CreateSoftwareRenderer(surface.get())))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Renderer() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Renderer& operator=(Renderer other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create a 2D rendering context for a window.
-   *
-   * If you want a specific renderer, you can specify its name here. A list of
-   * available renderers can be obtained by calling GetRenderDriver()
-   * multiple times, with indices from 0 to GetNumRenderDrivers()-1. If you
-   * don't need a specific renderer, specify nullptr and SDL will attempt to
-   * choose the best option for you, based on what is available on the user's
-   * system.
-   *
-   * If `name` is a comma-separated list, SDL will try each name, in the order
-   * listed, until one succeeds or all of them fail.
-   *
-   * By default the rendering size matches the window size in pixels, but you
-   * can call RendererRef.SetLogicalPresentation() to change the content size
-   * and scaling options.
-   *
-   * @param window the window where rendering is displayed.
-   * @param name the name of the rendering driver to initialize, or nullptr to
-   * let SDL choose one.
-   * @returns a valid rendering context or nullptr if there was an error; call
-   *          GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.Renderer
-   * @sa Renderer.Renderer
-   * @sa RendererRef.Destroy
+   * @sa Renderer.CreateWithProperties
+   * @sa Renderer.CreateSoftware
+   * @sa Renderer.Destroy
    * @sa GetNumRenderDrivers
    * @sa GetRenderDriver
    * @sa RendererRef.GetName
    */
   static Renderer Create(WindowRef window, StringParam name)
   {
-    return Renderer(window, std::move(name));
+    return Renderer(CheckError(SDL_CreateRenderer(window, name)));
   }
 
   /**
@@ -49658,66 +46551,97 @@ struct Renderer : RendererUnsafe
    *   queue family index used for presentation.
    *
    * @param props the properties to use.
-   * @returns a valid rendering context or nullptr if there was an error; call
-   *          GetError() for more information.
+   * @returns a valid rendering context on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
-   * @sa Renderer.Renderer
-   * @sa Renderer.Renderer
-   * @sa RendererRef.Destroy
+   * @sa Properties.Create
+   * @sa Renderer.Create
+   * @sa Renderer.CreateSoftware
+   * @sa Renderer.Destroy
    * @sa RendererRef.GetName
    */
   static Renderer CreateWithProperties(PropertiesRef props)
   {
-    return Renderer(props);
+    return Renderer(CheckError(SDL_CreateRendererWithProperties(props)));
   }
 
   /**
    * Create a 2D software rendering context for a surface.
    *
-   * Two other API which can be used to create RendererRef:
-   * Renderer.Renderer() and CreateWindowAndRenderer(). These can _also_
+   * Two other API which can be used to create Renderer:
+   * Renderer.Create() and CreateWindowAndRenderer(). These can _also_
    * create a software renderer, but they are intended to be used with an
    * WindowRef as the final destination and not an SurfaceRef.
    *
-   * @param surface the SurfaceRef structure representing the surface where
+   * @param surface the Surface structure representing the surface where
    *                rendering is done.
-   * @returns a valid rendering context or nullptr if there was an error; call
-   *          GetError() for more information.
+   * @returns a valid rendering context on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RendererRef.Destroy
+   * @sa Renderer.Destroy
    */
   static Renderer CreateSoftware(SurfaceRef surface)
   {
-    return Renderer(surface);
+    return Renderer(CheckError(SDL_CreateSoftwareRenderer(surface)));
   }
+
+  /**
+   * Destroy the rendering context for a window and free all associated
+   * textures.
+   *
+   * This should be called before destroying the associated window.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.Create
+   */
+  void Destroy() { reset(); }
 };
 
-constexpr RendererUnsafe::RendererUnsafe(Renderer&& other)
-  : RendererUnsafe(other.release())
+/**
+ * Unsafe Handle to renderer
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa RendererRef
+ */
+struct RendererUnsafe : ResourceUnsafe<RendererRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs RendererUnsafe from Renderer.
+   */
+  constexpr explicit RendererUnsafe(Renderer&& other)
+    : RendererUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * An efficient driver-specific representation of pixel data
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa TextureRef.TextureRef
- * @sa TextureRef.TextureRef
- * @sa TextureRef.TextureRef
- * @sa TextureRef.reset
  *
  * @cat resource
  *
+ * @sa Texture.Create
+ * @sa Texture.CreateFromSurface
+ * @sa Texture.CreateWithProperties
+ * @sa Texture.Destroy
  * @sa Texture
  */
 struct TextureRef : Resource<SDL_Texture*>
@@ -50375,79 +47299,22 @@ struct TextureRef : Resource<SDL_Texture*>
    */
   PixelFormat GetFormat() const { return get()->format; }
 
-protected:
   /**
    * Destroy the specified texture.
    *
    * Passing nullptr or an otherwise invalid texture will set the SDL error
    * message to "Invalid texture".
    *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Texture.Texture
-   */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy the specified texture.
-   *
-   * Passing nullptr or an otherwise invalid texture will set the SDL error
-   * message to "Invalid texture".
+   * @param resource the texture to destroy.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
+   * @sa Texture.Create
+   * @sa Texture.CreateFromSurface
    */
-  void reset(SDL_Texture* newResource = {})
-  {
-    SDL_DestroyTexture(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to texture
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa TextureRef
- */
-struct TextureUnsafe : TextureRef
-{
-  using TextureRef::Destroy;
-
-  using TextureRef::TextureRef;
-
-  using TextureRef::reset;
-
-  /**
-   * Constructs TextureUnsafe from TextureRef.
-   */
-  constexpr TextureUnsafe(const TextureRef& other)
-    : TextureRef(other.get())
-  {
-  }
-
-  TextureUnsafe(const Texture& other) = delete;
-
-  /**
-   * Constructs TextureUnsafe from Texture.
-   */
-  constexpr explicit TextureUnsafe(Texture&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr TextureUnsafe& operator=(TextureUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(SDL_Texture* resource) { SDL_DestroyTexture(resource); }
 };
 
 /**
@@ -50457,262 +47324,9 @@ struct TextureUnsafe : TextureRef
  *
  * @sa TextureRef
  */
-struct Texture : TextureUnsafe
+struct Texture : ResourceUnique<TextureRef>
 {
-  using TextureUnsafe::TextureUnsafe;
-
-  /**
-   * Constructs an empty Texture.
-   */
-  constexpr Texture()
-    : TextureUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Texture(SDL_Texture* resource)
-    : TextureUnsafe(resource)
-  {
-  }
-
-  constexpr Texture(const Texture& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Texture(Texture&& other)
-    : Texture(other.release())
-  {
-  }
-
-  /**
-   * Load an image from a filesystem path into a software surface.
-   *
-   * If available, this uses LoadSurface(StringParam), otherwise it uses
-   * LoadBMP(StringParam).
-   *
-   * @param renderer the rendering context.
-   * @param file a path on the filesystem to load an image from.
-   * @post the new Texture with loaded contents on success.
-   * @throws Error on failure.
-   *
-   * @sa LoadTexture(RendererRef, IOStreamRef)
-   * @sa Texture.Load(RendererRef, StringParam)
-   * @sa Texture.LoadBMP(RendererRef, StringParam)
-   */
-  Texture(RendererRef renderer, StringParam file)
-    : Texture(CheckError(Load(renderer, std::move(file))))
-  {
-  }
-
-  /**
-   * Load an image from a IOStreamRef into a software surface.
-   *
-   * If available, this uses LoadSurface(IOStreamRef&), otherwise it uses
-   * LoadBMP(IOStreamRef&).
-   *
-   * @param renderer the rendering context.
-   * @param src an IOStreamRef to load an image from.
-   * @post the new Texture with loaded contents on success.
-   * @throws Error on failure.
-   *
-   * @sa LoadTexture(RendererRef, StringParam)
-   * @sa Texture.Load(RendererRef, IOStreamRef)
-   * @sa Texture.LoadBMP(RendererRef, IOStreamRef)
-   */
-  Texture(RendererRef renderer, IOStreamRef src)
-    : Texture(CheckError(Load(renderer, src)))
-  {
-  }
-
-  /**
-   * Create a texture for a rendering context.
-   *
-   * The contents of a texture when first created are not defined.
-   *
-   * @param renderer the rendering context.
-   * @param format one of the enumerated values in PixelFormat.
-   * @param access one of the enumerated values in TextureAccess.
-   * @param size the width and height of the texture in pixels.
-   * @post the created texture is convertible to true on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TextureRef.Destroy
-   * @sa TextureRef.GetSize
-   * @sa TextureRef.Update
-   */
-  Texture(RendererRef renderer,
-          PixelFormat format,
-          TextureAccess access,
-          const SDL_Point& size)
-    : Texture(CheckError(
-        SDL_CreateTexture(renderer.get(), format, access, size.x, size.y)))
-  {
-  }
-
-  /**
-   * Create a texture from an existing surface.
-   *
-   * The surface is not modified or freed by this function.
-   *
-   * The TextureAccess hint for the created texture is
-   * `TEXTUREACCESS_STATIC`.
-   *
-   * The pixel format of the created texture may be different from the pixel
-   * format of the surface, and can be queried using the
-   * prop::Texture.FORMAT_NUMBER property.
-   *
-   * @param renderer the rendering context.
-   * @param surface the SurfaceRef structure containing pixel data used to fill
-   *                the texture.
-   * @post the created texture is convertible to true on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TextureRef.Destroy
-   */
-  Texture(RendererRef renderer, SurfaceRef surface)
-    : Texture(
-        CheckError(SDL_CreateTextureFromSurface(renderer.get(), surface.get())))
-  {
-  }
-
-  /**
-   * Create a texture for a rendering context with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
-   *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
-   *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
-   *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
-   *   YUV textures.
-   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
-   *   PixelFormat, defaults to the best RGBA format for the renderer
-   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
-   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
-   *   pixels, required
-   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
-   *   pixels, required
-   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the value of 100% diffuse white, with higher
-   *   values being displayed in the High Dynamic Range headroom. This defaults
-   *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the maximum dynamic range used by the
-   *   content, in terms of the SDR white point. This would be equivalent to
-   *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
-   *   If this is defined, any values outside the range supported by the display
-   *   will be scaled into the available HDR headroom, otherwise they are
-   *   clipped.
-   *
-   * With the direct3d11 renderer:
-   *
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the direct3d12 renderer:
-   *
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the metal renderer:
-   *
-   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
-   *   associated with the texture, if you want to create a texture from an
-   *   existing pixel buffer.
-   *
-   * With the opengl renderer:
-   *
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the opengles2 renderer:
-   *
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the vulkan renderer:
-   *
-   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
-   *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
-   *   you want to wrap an existing texture.
-   *
-   * @param renderer the rendering context.
-   * @param props the properties to use.
-   * @post the created texture is convertible to true on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Properties.Properties
-   * @sa TextureRef.Destroy
-   * @sa TextureRef.GetSize
-   * @sa TextureRef.Update
-   */
-  Texture(RendererRef renderer, PropertiesRef props)
-    : Texture(CheckError(
-        SDL_CreateTextureWithProperties(renderer.get(), props.get())))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Texture() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Texture& operator=(Texture other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Load an image from a filesystem path into a software surface.
@@ -50749,6 +47363,38 @@ struct Texture : TextureUnsafe
   static Texture Load(RendererRef renderer, IOStreamRef src);
 
   /**
+   * Load a BMP texture from a file.
+   *
+   * @param renderer the renderer to create texture
+   * @param file the BMP file to load.
+   * @returns a Texture with loaded content or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static Texture LoadBMP(RendererRef renderer, StringParam file)
+  {
+    Surface surface{SDL_LoadBMP(file)};
+    return Texture::CreateFromSurface(renderer, surface);
+  }
+
+  /**
+   * Load a BMP texture from a seekable SDL data stream.
+   *
+   * @param renderer the renderer to create texture
+   * @param src the data stream for the surface.
+   * @returns a Texture with loaded content or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static Texture LoadBMP(RendererRef renderer, IOStreamRef src)
+  {
+    auto surface{Surface::LoadBMP(src)};
+    return Texture::CreateFromSurface(renderer, surface);
+  }
+
+  /**
    * Create a texture for a rendering context.
    *
    * The contents of a texture when first created are not defined.
@@ -50757,17 +47403,16 @@ struct Texture : TextureUnsafe
    * @param format one of the enumerated values in PixelFormat.
    * @param access one of the enumerated values in TextureAccess.
    * @param size the width and height of the texture in pixels.
-   * @returns the created texture or nullptr on failure; call GetError() for
-   *          more information.
+   * @returns the created texture on success
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
-   * @sa TextureRef.Destroy
-   * @sa TextureRef.GetSize
+   * @sa Texture.CreateFromSurface
+   * @sa Texture.CreateWithProperties
+   * @sa Texture.Destroy
    * @sa TextureRef.Update
    */
   static Texture Create(RendererRef renderer,
@@ -50775,7 +47420,8 @@ struct Texture : TextureUnsafe
                         TextureAccess access,
                         const SDL_Point& size)
   {
-    return Texture(renderer, format, access, size);
+    return Texture(
+      CheckError(SDL_CreateTexture(renderer, format, access, size.x, size.y)));
   }
 
   /**
@@ -50793,20 +47439,20 @@ struct Texture : TextureUnsafe
    * @param renderer the rendering context.
    * @param surface the SurfaceRef structure containing pixel data used to fill
    *                the texture.
-   * @returns the created texture or nullptr on failure; call GetError() for
-   *          more information.
+   * @returns the created texture is convertible to true on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
-   * @sa TextureRef.Destroy
+   * @sa Texture.Create
+   * @sa Texture.CreateWithProperties
+   * @sa Texture.Destroy
    */
   static Texture CreateFromSurface(RendererRef renderer, SurfaceRef surface)
   {
-    return Texture(renderer, surface);
+    return Texture(CheckError(SDL_CreateTextureFromSurface(renderer, surface)));
   }
 
   /**
@@ -50905,23 +47551,62 @@ struct Texture : TextureUnsafe
    *
    * @param renderer the rendering context.
    * @param props the properties to use.
-   * @returns the created texture or nullptr on failure; call GetError() for
-   *          more information.
+   * @returns the created texture is convertible to true on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
-   * @sa Texture.Texture
-   * @sa Texture.Texture
-   * @sa TextureRef.Destroy
-   * @sa SDL_GetTextureSize
+   * @sa Properties.Create
+   * @sa Texture.Create
+   * @sa Texture.CreateFromSurface
+   * @sa Texture.Destroy
+   * @sa TextureRef.GetSize
    * @sa TextureRef.Update
    */
   static Texture CreateWithProperties(RendererRef renderer, PropertiesRef props)
   {
-    return Texture(renderer, props);
+    return Texture(
+      CheckError(SDL_CreateTextureWithProperties(renderer, props)));
+  }
+
+  /**
+   * Destroy the specified texture.
+   *
+   * Passing nullptr or an otherwise invalid texture will set the SDL error
+   * message to "Invalid texture".
+   *
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Create
+   * @sa Texture.CreateFromSurface
+   */
+  void Destroy() { reset(); }
+};
+
+/**
+ * Unsafe Handle to texture
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TextureRef
+ */
+struct TextureUnsafe : ResourceUnsafe<TextureRef>
+{
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs TextureUnsafe from Texture.
+   */
+  constexpr explicit TextureUnsafe(Texture&& other)
+    : TextureUnsafe(other.release())
+  {
   }
 };
 
@@ -51016,11 +47701,6 @@ public:
   friend class TextureRef;
 };
 
-constexpr TextureUnsafe::TextureUnsafe(Texture&& other)
-  : TextureUnsafe(other.release())
-{
-}
-
 /**
  * Get the number of 2D rendering drivers available for the current display.
  *
@@ -51036,7 +47716,7 @@ constexpr TextureUnsafe::TextureUnsafe(Texture&& other)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RendererRef.RendererRef
+ * @sa Renderer.Create
  * @sa GetRenderDriver
  */
 inline int GetNumRenderDrivers() { return SDL_GetNumRenderDrivers(); }
@@ -51074,7 +47754,7 @@ inline const char* GetRenderDriver(int index)
  * @param title the title of the window, in UTF-8 encoding.
  * @param size the width and height of the window.
  * @param window_flags the flags used to create the window (see
- *                     WindowRef.WindowRef()).
+ *                     Window.Create()).
  * @returns a pair with Window and Renderer on success.
  * @throws Error on failure.
  *
@@ -51082,8 +47762,8 @@ inline const char* GetRenderDriver(int index)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RendererRef.RendererRef
- * @sa WindowRef.WindowRef
+ * @sa Renderer.Create
+ * @sa Window.Create
  */
 inline std::pair<Window, Renderer> CreateWindowAndRenderer(
   StringParam title,
@@ -51575,8 +48255,8 @@ inline TextureLock TextureRef::Lock(OptionalRef<const SDL_Rect> rect) &
  */
 inline Texture LoadTextureBMP(RendererRef& renderer, IOStreamRef& src)
 {
-  Surface surface{LoadBMP(src)};
-  return Texture(renderer, surface);
+  auto surface{Surface::LoadBMP(src)};
+  return Texture::CreateFromSurface(renderer, surface);
 }
 
 /**
@@ -51592,7 +48272,7 @@ inline Texture LoadTextureBMP(RendererRef& renderer, IOStreamRef& src)
 inline Texture LoadTextureBMP(RendererRef& renderer, StringParam file)
 {
   Surface surface{SDL_LoadBMP(file)};
-  return Texture(renderer, surface);
+  return Texture::CreateFromSurface(renderer, surface);
 }
 
 #pragma endregion impl
@@ -52471,7 +49151,7 @@ inline Sandbox GetSandbox() { return SDL_GetSandbox(); }
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -52488,7 +49168,7 @@ inline void OnApplicationWillTerminate() { SDL_OnApplicationWillTerminate(); }
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -52508,7 +49188,7 @@ inline void OnApplicationDidReceiveMemoryWarning()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -52528,7 +49208,7 @@ inline void OnApplicationWillEnterBackground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -52548,7 +49228,7 @@ inline void OnApplicationDidEnterBackground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -52568,7 +49248,7 @@ inline void OnApplicationWillEnterForeground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -52590,7 +49270,7 @@ inline void OnApplicationDidEnterForeground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by WindowRef.WindowRef!
+ * code will handle all this for windows created by Window.Create!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -52662,6 +49342,7 @@ namespace SDL {
  * Header file for SDL_image library
  *
  * A simple library to load images of various formats as SDL surfaces
+ *
  * @{
  */
 
@@ -52716,18 +49397,16 @@ inline int IMG_Version() { return ::IMG_Version(); }
 /**
  * Load an image from an SDL data source into a software surface.
  *
- * An SurfaceRef is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
+ * An Surface is a buffer of pixels in memory accessible by the CPU. Use this if
+ * you plan to hand the data to something else or manipulate it further in code.
  *
- * There are no guarantees about what format the new SurfaceRef data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an SurfaceRef for
- * its specifics, and use SurfaceRef.Convert to then migrate to any supported
- * format.
+ * There are no guarantees about what format the new Surface data will be; in
+ * many cases, SDL_image will attempt to supply a surface that exactly matches
+ * the provided image, but in others it might have to convert (either because
+ * the image is in a format that SDL doesn't directly support or because it's
+ * compressed data that could reasonably uncompress to various formats and
+ * SDL_image had to pick one). You can inspect an Surface for its specifics, and
+ * use SurfaceRef.Convert to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
  * for the surface. You can enable RLE acceleration on the surface afterwards
@@ -52741,7 +49420,7 @@ inline int IMG_Version() { return ::IMG_Version(); }
  * on its ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStreamRef: `LoadSurface("filename.jpg")` will call this function and
+ * with IOStream: `LoadSurface("filename.jpg")` will call this function and
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
@@ -52749,11 +49428,11 @@ inline int IMG_Version() { return ::IMG_Version(); }
  * that it will rely on SDL_image to determine what type of data it is
  * loading, much like passing a nullptr for type.
  *
- * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an TextureRef for use by the GPU without using a
- * software surface: call LoadTexture() instead.
+ * If you are using SDL's 2D rendering API, there is an equivalent call to load
+ * images directly into an Texture for use by the GPU without using a software
+ * surface: call LoadTexture() instead.
  *
- * @param src an IOStreamRef that data will be read from.
+ * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
  * @returns a new SDL surface, or nullptr on error.
@@ -52762,6 +49441,7 @@ inline int IMG_Version() { return ::IMG_Version(); }
  *
  * @sa LoadSurface
  * @sa LoadSurface
+ * @sa Surface.Destroy
  */
 inline Surface LoadSurface(IOStreamRef src, StringParam type)
 {
@@ -52771,27 +49451,25 @@ inline Surface LoadSurface(IOStreamRef src, StringParam type)
 /**
  * Load an image from a filesystem path into a software surface.
  *
- * An SurfaceRef is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
+ * An Surface is a buffer of pixels in memory accessible by the CPU. Use this if
+ * you plan to hand the data to something else or manipulate it further in code.
  *
- * There are no guarantees about what format the new SDL_Surface data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an SurfaceRef for
- * its specifics, and use SurfaceRef::Convert() to then migrate to any
- * supported format.
+ * There are no guarantees about what format the new Surface data will be; in
+ * many cases, SDL_image will attempt to supply a surface that exactly matches
+ * the provided image, but in others it might have to convert (either because
+ * the image is in a format that SDL doesn't directly support or because it's
+ * compressed data that could reasonably uncompress to various formats and
+ * SDL_image had to pick one). You can inspect an Surface for its specifics, and
+ * use SurfaceRef.Convert to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
- * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: SurfaceRef::SetColorKey(image, SDL_RLEACCEL,
+ * for the surface. You can enable RLE acceleration on the surface afterwards by
+ * calling: SurfaceRef.SetColorKey(image, SDL_RLEACCEL,
  * image->format->colorkey);
  *
- * There is a separate function to read files from an SDL_IOStream, if you
- * need an i/o abstraction to provide data from anywhere instead of a simple
- * filesystem read; that function is Load(SDL_IOStream*,bool).
+ * There is a separate function to read files from an IOStream, if you need an
+ * i/o abstraction to provide data from anywhere instead of a simple filesystem
+ * read; that function is LoadSurface(SDL_IOStream).
  *
  * If you are using SDL's 2D rendering API, there is an equivalent call to
  * load images directly into an Texture for use by the GPU without using a
@@ -52801,24 +49479,24 @@ inline Surface LoadSurface(IOStreamRef src, StringParam type)
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa Surface.Destroy
  */
 inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
 
 /**
  * Load an image from an SDL data source into a software surface.
  *
- * An SurfaceRef is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
+ * An Surface is a buffer of pixels in memory accessible by the CPU. Use this if
+ * you plan to hand the data to something else or manipulate it further in code.
  *
- * There are no guarantees about what format the new SurfaceRef data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an SurfaceRef for
- * its specifics, and use SurfaceRef.Convert to then migrate to any supported
- * format.
+ * There are no guarantees about what format the new Surface data will be; in
+ * many cases, SDL_image will attempt to supply a surface that exactly matches
+ * the provided image, but in others it might have to convert (either because
+ * the image is in a format that SDL doesn't directly support or because it's
+ * compressed data that could reasonably uncompress to various formats and
+ * SDL_image had to pick one). You can inspect an Surface for its specifics, and
+ * use SurfaceRef.Convert to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
  * for the surface. You can enable RLE acceleration on the surface afterwards
@@ -52826,7 +49504,7 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  * image->format->colorkey);
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStreamRef: `LoadSurface("filename.jpg")` will call this function and
+ * with IOStream: `LoadSurface("filename.jpg")` will call this function and
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
@@ -52835,17 +49513,17 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  * SDL_image cannot autodetect the file format.
  *
  * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an TextureRef for use by the GPU without using a
+ * load images directly into an Texture for use by the GPU without using a
  * software surface: call LoadTexture() instead.
  *
- * @param src an IOStreamRef that data will be read from.
+ * @param src an IOStream that data will be read from.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa LoadSurface
  * @sa LoadSurface
- * @sa SurfaceRef.Destroy
+ * @sa Surface.Destroy
  */
 inline Surface LoadSurface(IOStreamRef src)
 {
@@ -52855,9 +49533,9 @@ inline Surface LoadSurface(IOStreamRef src)
 /**
  * Load an image from a filesystem path into a GPU texture.
  *
- * A Texture represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after loading it.
+ * An Texture represents an image in GPU memory, usable by SDL's 2D Render API.
+ * This can be significantly more efficient than using a CPU-bound Surface if
+ * you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
@@ -52868,7 +49546,7 @@ inline Surface LoadSurface(IOStreamRef src)
  * If you would rather decode an image to an Surface (a buffer of pixels in CPU
  * memory), call LoadSurface() instead.
  *
- * @param renderer the RendererRef to use to create the GPU texture.
+ * @param renderer the Renderer to use to create the GPU texture.
  * @param file a path on the filesystem to load an image from.
  * @returns a new texture, or nullptr on error.
  *
@@ -52882,36 +49560,34 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
 /**
  * Load an image from an SDL data source into a GPU texture.
  *
- * An TextureRef represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * SurfaceRef if you don't need to manipulate the image directly after
- * loading it.
+ * An Texture represents an image in GPU memory, usable by SDL's 2D Render API.
+ * This can be significantly more efficient than using a CPU-bound Surface if
+ * you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * TextureRef in the most format that most reasonably represents the image
- * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
- * RGBA).
+ * Texture in the most format that most reasonably represents the image data
+ * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStreamRef: `LoadTexture(renderer, "filename.jpg")` will call
- * this function and manage those details for you, determining the file type
- * from the filename's extension.
+ * with IOStream: `LoadTexture(renderer, "filename.jpg")` will call this
+ * function and manage those details for you, determining the file type from the
+ * filename's extension.
  *
  * There is also LoadTexture(), which is equivalent to this
  * function except a file extension (like "BMP", "JPG", etc) can be specified,
  * in case SDL_image cannot autodetect the file format.
  *
- * If you would rather decode an image to an SurfaceRef (a buffer of pixels
+ * If you would rather decode an image to an Surface (a buffer of pixels
  * in CPU memory), call LoadSurface() instead.
  *
- * @param renderer the RendererRef to use to create the GPU texture.
- * @param src an IOStreamRef that data will be read from.
+ * @param renderer the Renderer to use to create the GPU texture.
+ * @param src an IOStream that data will be read from.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa TextureRef.Destroy
+ * @sa Texture.Destroy
  */
 inline Texture LoadTexture(RendererRef renderer, IOStreamRef src)
 {
@@ -52921,14 +49597,13 @@ inline Texture LoadTexture(RendererRef renderer, IOStreamRef src)
 /**
  * Load an image from an SDL data source into a GPU texture.
  *
- * An TextureRef represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * SurfaceRef if you don't need to manipulate the image directly after
- * loading it.
+ * An Texture represents an image in GPU memory, usable by SDL's 2D Render API.
+ * This can be significantly more efficient than using a CPU-bound Surface if
+ * you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * TextureRef in the most format that most reasonably represents the image
+ * Texture in the most format that most reasonably represents the image
  * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
  * RGBA).
  *
@@ -52939,26 +49614,26 @@ inline Texture LoadTexture(RendererRef renderer, IOStreamRef src)
  * on its ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStreamRef: `LoadTexture("filename.jpg")` will call this
- * function and manage those details for you, determining the file type from
- * the filename's extension.
+ * with IOStream: `LoadTexture("filename.jpg")` will call this function and
+ * manage those details for you, determining the file type from the filename's
+ * extension.
  *
  * There is also LoadTexture(), which is equivalent to this function
  * except that it will rely on SDL_image to determine what type of data it is
  * loading, much like passing a nullptr for type.
  *
- * If you would rather decode an image to an SurfaceRef (a buffer of pixels
- * in CPU memory), call LoadSurface() instead.
+ * If you would rather decode an image to an Surface (a buffer of pixels in CPU
+ * memory), call LoadSurface() instead.
  *
- * @param renderer the RendererRef to use to create the GPU texture.
- * @param src an IOStreamRef that data will be read from.
+ * @param renderer the Renderer to use to create the GPU texture.
+ * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa TextureRef.Destroy
+ * @sa Texture.Destroy
  */
 inline Texture LoadTexture(RendererRef renderer,
                            IOStreamRef src,
@@ -52969,10 +49644,10 @@ inline Texture LoadTexture(RendererRef renderer,
 }
 
 /**
- * Detect AVIF image data on a readable/seekable IOStreamRef.
+ * Detect AVIF image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -52986,7 +49661,7 @@ inline Texture LoadTexture(RendererRef renderer,
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is AVIF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53013,10 +49688,10 @@ inline Texture LoadTexture(RendererRef renderer,
 inline bool isAVIF(IOStreamRef src) { return IMG_isAVIF(src.get()); }
 
 /**
- * Detect ICO image data on a readable/seekable IOStreamRef.
+ * Detect ICO image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53030,7 +49705,7 @@ inline bool isAVIF(IOStreamRef src) { return IMG_isAVIF(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is ICO data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53056,10 +49731,10 @@ inline bool isAVIF(IOStreamRef src) { return IMG_isAVIF(src.get()); }
 inline bool isICO(IOStreamRef src) { return IMG_isICO(src.get()); }
 
 /**
- * Detect CUR image data on a readable/seekable IOStreamRef.
+ * Detect CUR image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53073,7 +49748,7 @@ inline bool isICO(IOStreamRef src) { return IMG_isICO(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is CUR data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53099,10 +49774,10 @@ inline bool isICO(IOStreamRef src) { return IMG_isICO(src.get()); }
 inline bool isCUR(IOStreamRef src) { return IMG_isCUR(src.get()); }
 
 /**
- * Detect BMP image data on a readable/seekable IOStreamRef.
+ * Detect BMP image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53116,7 +49791,7 @@ inline bool isCUR(IOStreamRef src) { return IMG_isCUR(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is BMP data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53142,10 +49817,10 @@ inline bool isCUR(IOStreamRef src) { return IMG_isCUR(src.get()); }
 inline bool isBMP(IOStreamRef src) { return IMG_isBMP(src.get()); }
 
 /**
- * Detect GIF image data on a readable/seekable IOStreamRef.
+ * Detect GIF image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53159,7 +49834,7 @@ inline bool isBMP(IOStreamRef src) { return IMG_isBMP(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is GIF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53185,10 +49860,10 @@ inline bool isBMP(IOStreamRef src) { return IMG_isBMP(src.get()); }
 inline bool isGIF(IOStreamRef src) { return IMG_isGIF(src.get()); }
 
 /**
- * Detect JPG image data on a readable/seekable IOStreamRef.
+ * Detect JPG image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53202,7 +49877,7 @@ inline bool isGIF(IOStreamRef src) { return IMG_isGIF(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is JPG data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53228,10 +49903,10 @@ inline bool isGIF(IOStreamRef src) { return IMG_isGIF(src.get()); }
 inline bool isJPG(IOStreamRef src) { return IMG_isJPG(src.get()); }
 
 /**
- * Detect JXL image data on a readable/seekable IOStreamRef.
+ * Detect JXL image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53245,7 +49920,7 @@ inline bool isJPG(IOStreamRef src) { return IMG_isJPG(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is JXL data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53271,10 +49946,10 @@ inline bool isJPG(IOStreamRef src) { return IMG_isJPG(src.get()); }
 inline bool isJXL(IOStreamRef src) { return IMG_isJXL(src.get()); }
 
 /**
- * Detect LBM image data on a readable/seekable IOStreamRef.
+ * Detect LBM image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53288,7 +49963,7 @@ inline bool isJXL(IOStreamRef src) { return IMG_isJXL(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is LBM data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53314,10 +49989,10 @@ inline bool isJXL(IOStreamRef src) { return IMG_isJXL(src.get()); }
 inline bool isLBM(IOStreamRef src) { return IMG_isLBM(src.get()); }
 
 /**
- * Detect PCX image data on a readable/seekable IOStreamRef.
+ * Detect PCX image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53331,7 +50006,7 @@ inline bool isLBM(IOStreamRef src) { return IMG_isLBM(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is PCX data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53357,10 +50032,10 @@ inline bool isLBM(IOStreamRef src) { return IMG_isLBM(src.get()); }
 inline bool isPCX(IOStreamRef src) { return IMG_isPCX(src.get()); }
 
 /**
- * Detect PNG image data on a readable/seekable IOStreamRef.
+ * Detect PNG image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53374,7 +50049,7 @@ inline bool isPCX(IOStreamRef src) { return IMG_isPCX(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is PNG data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53400,10 +50075,10 @@ inline bool isPCX(IOStreamRef src) { return IMG_isPCX(src.get()); }
 inline bool isPNG(IOStreamRef src) { return IMG_isPNG(src.get()); }
 
 /**
- * Detect PNM image data on a readable/seekable IOStreamRef.
+ * Detect PNM image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53417,7 +50092,7 @@ inline bool isPNG(IOStreamRef src) { return IMG_isPNG(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is PNM data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53443,10 +50118,10 @@ inline bool isPNG(IOStreamRef src) { return IMG_isPNG(src.get()); }
 inline bool isPNM(IOStreamRef src) { return IMG_isPNM(src.get()); }
 
 /**
- * Detect SVG image data on a readable/seekable IOStreamRef.
+ * Detect SVG image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53460,7 +50135,7 @@ inline bool isPNM(IOStreamRef src) { return IMG_isPNM(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is SVG data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53486,10 +50161,10 @@ inline bool isPNM(IOStreamRef src) { return IMG_isPNM(src.get()); }
 inline bool isSVG(IOStreamRef src) { return IMG_isSVG(src.get()); }
 
 /**
- * Detect QOI image data on a readable/seekable IOStreamRef.
+ * Detect QOI image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53503,7 +50178,7 @@ inline bool isSVG(IOStreamRef src) { return IMG_isSVG(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is QOI data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53529,10 +50204,10 @@ inline bool isSVG(IOStreamRef src) { return IMG_isSVG(src.get()); }
 inline bool isQOI(IOStreamRef src) { return IMG_isQOI(src.get()); }
 
 /**
- * Detect TIFF image data on a readable/seekable IOStreamRef.
+ * Detect TIFF image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53546,7 +50221,7 @@ inline bool isQOI(IOStreamRef src) { return IMG_isQOI(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is TIFF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53572,10 +50247,10 @@ inline bool isQOI(IOStreamRef src) { return IMG_isQOI(src.get()); }
 inline bool isTIF(IOStreamRef src) { return IMG_isTIF(src.get()); }
 
 /**
- * Detect XCF image data on a readable/seekable IOStreamRef.
+ * Detect XCF image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53589,7 +50264,7 @@ inline bool isTIF(IOStreamRef src) { return IMG_isTIF(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is XCF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53615,10 +50290,10 @@ inline bool isTIF(IOStreamRef src) { return IMG_isTIF(src.get()); }
 inline bool isXCF(IOStreamRef src) { return IMG_isXCF(src.get()); }
 
 /**
- * Detect XPM image data on a readable/seekable IOStreamRef.
+ * Detect XPM image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53632,7 +50307,7 @@ inline bool isXCF(IOStreamRef src) { return IMG_isXCF(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is XPM data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53658,10 +50333,10 @@ inline bool isXCF(IOStreamRef src) { return IMG_isXCF(src.get()); }
 inline bool isXPM(IOStreamRef src) { return IMG_isXPM(src.get()); }
 
 /**
- * Detect XV image data on a readable/seekable IOStreamRef.
+ * Detect XV image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53675,7 +50350,7 @@ inline bool isXPM(IOStreamRef src) { return IMG_isXPM(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is XV data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53701,10 +50376,10 @@ inline bool isXPM(IOStreamRef src) { return IMG_isXPM(src.get()); }
 inline bool isXV(IOStreamRef src) { return IMG_isXV(src.get()); }
 
 /**
- * Detect WEBP image data on a readable/seekable IOStreamRef.
+ * Detect WEBP image data on a readable/seekable IOStream.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the IOStreamRef (usually a few bytes).
+ * the least amount possible from the IOStream (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -53718,7 +50393,7 @@ inline bool isXV(IOStreamRef src) { return IMG_isXV(src.get()); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable IOStreamRef to provide image data.
+ * @param src a seekable/readable IOStream to provide image data.
  * @returns non-zero if this is WEBP data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53748,10 +50423,10 @@ inline bool isWEBP(IOStreamRef src) { return IMG_isWEBP(src.get()); }
  *
  * If you know you definitely have a AVIF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53785,10 +50460,10 @@ inline Surface LoadAVIF(IOStreamRef src)
  *
  * If you know you definitely have a ICO image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53822,10 +50497,10 @@ inline Surface LoadICO(IOStreamRef src)
  *
  * If you know you definitely have a CUR image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53855,14 +50530,51 @@ inline Surface LoadCUR(IOStreamRef src)
 }
 
 /**
+ * Load a BMP image directly.
+ *
+ * If you know you definitely have a BMP image, you can call this function,
+ * which will skip SDL_image's file format detection routines. Generally it's
+ * better to use the abstract interfaces; also, there is only an IOStream
+ * interface available here.
+ *
+ * @param src an IOStream to load image data from.
+ * @returns SDL surface, or nullptr on error.
+ *
+ * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
+ */
+inline Surface LoadBMP(IOStreamRef src)
+{
+  return Surface{IMG_LoadBMP_IO(src.get())};
+}
+
+/**
  * Load a GIF image directly.
  *
  * If you know you definitely have a GIF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53896,10 +50608,10 @@ inline Surface LoadGIF(IOStreamRef src)
  *
  * If you know you definitely have a JPG image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53933,10 +50645,10 @@ inline Surface LoadJPG(IOStreamRef src)
  *
  * If you know you definitely have a JXL image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -53970,10 +50682,10 @@ inline Surface LoadJXL(IOStreamRef src)
  *
  * If you know you definitely have a LBM image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54007,10 +50719,10 @@ inline Surface LoadLBM(IOStreamRef src)
  *
  * If you know you definitely have a PCX image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54044,10 +50756,10 @@ inline Surface LoadPCX(IOStreamRef src)
  *
  * If you know you definitely have a PNG image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54081,10 +50793,10 @@ inline Surface LoadPNG(IOStreamRef src)
  *
  * If you know you definitely have a PNM image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54118,10 +50830,10 @@ inline Surface LoadPNM(IOStreamRef src)
  *
  * If you know you definitely have a SVG image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54155,10 +50867,10 @@ inline Surface LoadSVG(IOStreamRef src)
  *
  * If you know you definitely have a QOI image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54192,10 +50904,10 @@ inline Surface LoadQOI(IOStreamRef src)
  *
  * If you know you definitely have a TGA image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54229,10 +50941,10 @@ inline Surface LoadTGA(IOStreamRef src)
  *
  * If you know you definitely have a TIFF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54266,10 +50978,10 @@ inline Surface LoadTIF(IOStreamRef src)
  *
  * If you know you definitely have a XCF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54303,10 +51015,10 @@ inline Surface LoadXCF(IOStreamRef src)
  *
  * If you know you definitely have a XPM image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54340,10 +51052,10 @@ inline Surface LoadXPM(IOStreamRef src)
  *
  * If you know you definitely have a XV image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54377,10 +51089,10 @@ inline Surface LoadXV(IOStreamRef src)
  *
  * If you know you definitely have a WEBP image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef to load image data from.
+ * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54419,9 +51131,9 @@ inline Surface LoadWEBP(IOStreamRef src)
  * preserve aspect ratio.
  *
  * When done with the returned surface, the app should dispose of it with a
- * call to SurfaceRef.reset().
+ * call to Surface.Destroy().
  *
- * @param src an IOStreamRef to load SVG data from.
+ * @param src an IOStream to load SVG data from.
  * @param width desired width of the generated surface, in pixels.
  * @param height desired height of the generated surface, in pixels.
  * @returns a new SDL surface, or nullptr on error.
@@ -54438,12 +51150,9 @@ inline Surface LoadSizedSVG(IOStreamRef src, int width, int height)
  *
  * The returned surface will be an 8bpp indexed surface, if possible,
  * otherwise it will be 32bpp. If you always want 32-bit data, use
- * IMG_ReadXPMFromArrayToRGB888() instead.
+ * ReadXPMFromArrayToRGB888() instead.
  *
- * When done with the returned surface, the app should dispose of it with a
- * call to SDL_DestroySurface().
- *
- * @param xpm a nullptr-terminated array of strings that comprise XPM data.
+ * @param xpm a null-terminated array of strings that comprise XPM data.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54459,13 +51168,12 @@ inline Surface ReadXPMFromArray(char** xpm)
  * Load an XPM image from a memory array.
  *
  * The returned surface will always be a 32-bit RGB surface. If you want 8-bit
- * indexed colors (and the XPM data allows it), use IMG_ReadXPMFromArray()
- * instead.
+ * indexed colors (and the XPM data allows it), use ReadXPMFromArray() instead.
  *
  * When done with the returned surface, the app should dispose of it with a
- * call to SDL_DestroySurface().
+ * call to Surface.Destroy().
  *
- * @param xpm a nullptr-terminated array of strings that comprise XPM data.
+ * @param xpm a null-terminated array of strings that comprise XPM data.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54478,7 +51186,7 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
 }
 
 /**
- * Save an SurfaceRef into a AVIF image file.
+ * Save an Surface into a AVIF image file.
  *
  * If the file already exists, it will be overwritten.
  *
@@ -54496,12 +51204,12 @@ inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
 }
 
 /**
- * Save an SurfaceRef into AVIF image data, via an IOStreamRef.
+ * Save an Surface into AVIF image data, via an IOStream.
  *
  * If you just want to save to a filename, you can use SaveAVIF() instead.
  *
  * @param surface the SDL surface to save.
- * @param dst the IOStreamRef to save the image data to.
+ * @param dst the IOStream to save the image data to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
  * @throws Error on failure.
@@ -54514,7 +51222,7 @@ inline void SaveAVIF(SurfaceRef surface, IOStreamRef dst, int quality)
 }
 
 /**
- * Save an SurfaceRef into a PNG image file.
+ * Save an Surface into a PNG image file.
  *
  * If the file already exists, it will be overwritten.
  *
@@ -54532,12 +51240,12 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
 }
 
 /**
- * Save an SurfaceRef into PNG image data, via an IOStreamRef.
+ * Save an Surface into PNG image data, via an IOStream.
  *
  * If you just want to save to a filename, you can use SavePNG() instead.
  *
  * @param surface the SDL surface to save.
- * @param dst the IOStreamRef to save the image data to.
+ * @param dst the IOStream to save the image data to.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54548,7 +51256,7 @@ inline void SavePNG(SurfaceRef surface, IOStreamRef dst)
 }
 
 /**
- * Save an SurfaceRef into a JPEG image file.
+ * Save an Surface into a JPEG image file.
  *
  * If the file already exists, it will be overwritten.
  *
@@ -54566,12 +51274,12 @@ inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
 }
 
 /**
- * Save an SurfaceRef into JPEG image data, via an IOStreamRef.
+ * Save an Surface into JPEG image data, via an IOStream.
  *
  * If you just want to save to a filename, you can use SaveJPG() instead.
  *
  * @param surface the SDL surface to save.
- * @param dst the IOStreamRef to save the image data to.
+ * @param dst the IOStream to save the image data to.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
  * @throws Error on failure.
@@ -54630,68 +51338,19 @@ struct AnimationRef : Resource<IMG_Animation*>
    */
   int GetDelay(int index) const { return get()->delays[index]; }
 
-protected:
   /**
    * Dispose of an AnimationRef and free its resources.
    *
-   * @since This function is available since SDL_image 3.0.0.
+   * The provided `anim` pointer is not valid once this call returns.
    *
-   * @sa Animation.Animation
-   */
-  void Free() { reset(); }
-
-  /**
-   * Dispose of an AnimationRef and free its resources.
+   * @param resource AnimationRef to dispose of.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa Animation.Animation
+   * @sa Animation.Load
+   * @sa Animation.LoadTyped
    */
-  void reset(IMG_Animation* newResource = {})
-  {
-    IMG_FreeAnimation(release(newResource));
-  }
-};
-/**
- * Unsafe Handle to animation
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa AnimationRef
- */
-struct AnimationUnsafe : AnimationRef
-{
-  using AnimationRef::AnimationRef;
-
-  using AnimationRef::Free;
-
-  using AnimationRef::reset;
-
-  /**
-   * Constructs AnimationUnsafe from AnimationRef.
-   */
-  constexpr AnimationUnsafe(const AnimationRef& other)
-    : AnimationRef(other.get())
-  {
-  }
-
-  AnimationUnsafe(const Animation& other) = delete;
-
-  /**
-   * Constructs AnimationUnsafe from Animation.
-   */
-  constexpr explicit AnimationUnsafe(Animation&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr AnimationUnsafe& operator=(AnimationUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(IMG_Animation* resource) { IMG_FreeAnimation(resource); }
 };
 
 /**
@@ -54701,64 +51360,40 @@ struct AnimationUnsafe : AnimationRef
  *
  * @sa AnimationRef
  */
-struct Animation : AnimationUnsafe
+struct Animation : ResourceUnique<AnimationRef>
 {
-  using AnimationUnsafe::AnimationUnsafe;
-
-  /**
-   * Constructs an empty Animation.
-   */
-  constexpr Animation()
-    : AnimationUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Animation(IMG_Animation* resource)
-    : AnimationUnsafe(resource)
-  {
-  }
-
-  constexpr Animation(const Animation& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Animation(Animation&& other)
-    : Animation(other.release())
-  {
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Load an animation from a file.
    *
    * @param file path on the filesystem containing an animated image.
-   * @post a new AnimationRef, or nullptr on error.
+   * @returns a new Animation, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.Free
+   * @sa Animation.LoadTyped
+   * @sa Animation.Free
    */
-  Animation(StringParam file)
-    : Animation(IMG_LoadAnimation(file))
+  static Animation Load(StringParam file)
   {
+    return Animation(IMG_LoadAnimation(file));
   }
 
   /**
    * Load an animation from an IOStreamRef.
    *
    * @param src an IOStreamRef that data will be read from.
-   * @post a new AnimationRef, or nullptr on error.
+   * @returns a new AnimationRef, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.Free
+   * @sa Animation.LoadTyped
+   * @sa Animation.Free
    */
-  Animation(IOStreamRef src)
-    : Animation(IMG_LoadAnimation_IO(src.get(), false))
+  static Animation Load(IOStreamRef src)
   {
+    return Animation(IMG_LoadAnimation_IO(src, false));
   }
 
   /**
@@ -54772,121 +51407,72 @@ struct Animation : AnimationUnsafe
    *
    * @param src an IOStreamRef that data will be read from.
    * @param type a filename extension that represent this data ("GIF", etc).
-   * @post a new AnimationRef, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa AnimationRef.Free
-   */
-  Animation(IOStreamRef src, StringParam type)
-    : Animation(IMG_LoadAnimationTyped_IO(src.get(), false, type))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Animation() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Animation& operator=(Animation other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Load an animation from a file.
-   *
-   * When done with the returned animation, the app should dispose of it with a
-   * call to AnimationRef.Free().
-   *
-   * @param file path on the filesystem containing an animated image.
    * @returns a new AnimationRef, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.Free
+   * @sa Animation.Load
+   * @sa Animation.Free
    */
-  static Animation Load(StringParam file) { return Animation(std::move(file)); }
-
-  /**
-   * Load an animation from an IOStreamRef.
-   *
-   * If `closeio` is true, `src` will be closed before returning, whether this
-   * function succeeds or not. SDL_image reads everything it needs from `src`
-   * during this call in any case.
-   *
-   * When done with the returned animation, the app should dispose of it with a
-   * call to AnimationRef.Free().
-   *
-   * @param src an IOStreamRef that data will be read from.
-   * @returns a new AnimationRef, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa AnimationRef.Free
-   */
-  static Animation Load(IOStreamRef src) { return Animation(src); }
-
-  /**
-   * Load an animation from an SDL datasource
-   *
-   * Even though this function accepts a file type, SDL_image may still try
-   * other decoders that are capable of detecting file type from the contents of
-   * the image data, but may rely on the caller-provided type string for formats
-   * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
-   * on its ability to guess the format.
-   *
-   * If `closeio` is true, `src` will be closed before returning, whether this
-   * function succeeds or not. SDL_image reads everything it needs from `src`
-   * during this call in any case.
-   *
-   * When done with the returned animation, the app should dispose of it with a
-   * call to AnimationRef.Free().
-   *
-   * @param src an IOStreamRef that data will be read from.
-   * @param type a filename extension that represent this data ("GIF", etc).
-   * @returns a new AnimationRef, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa Animation.Animation
-   * @sa Animation.Animation
-   * @sa AnimationRef.Free
-   */
-  static Animation Load(IOStreamRef src, StringParam type)
+  static Animation LoadTyped(IOStreamRef src, StringParam type)
   {
-    return Animation(src, std::move(type));
+    return Animation(IMG_LoadAnimationTyped_IO(src, false, type));
   }
+
+  /**
+   * Dispose of an AnimationRef and free its resources.
+   *
+   * The provided `anim` pointer is not valid once this call returns.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa Animation.LoadTyped
+   */
+  void Free() { reset(); }
 };
 
-constexpr AnimationUnsafe::AnimationUnsafe(Animation&& other)
-  : AnimationUnsafe(other.release())
+/**
+ * Unsafe Handle to animation
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AnimationRef
+ */
+struct AnimationUnsafe : ResourceUnsafe<AnimationRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs AnimationUnsafe from Animation.
+   */
+  constexpr explicit AnimationUnsafe(Animation&& other)
+    : AnimationUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Load a GIF animation directly.
  *
  * If you know you definitely have a GIF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef that data will be read from.
+ * @param src an IOStream that data will be read from.
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa AnimationRef.AnimationRef
- * @sa AnimationRef.reset
+ * @sa Animation.Load
+ * @sa Animation.LoadTyped
+ * @sa Animation.Free
  */
 inline Animation LoadGIFAnimation(IOStreamRef src)
 {
-  return Animation{IMG_LoadGIFAnimation_IO(src.get())};
+  return Animation{IMG_LoadGIFAnimation_IO(src)};
 }
 
 /**
@@ -54894,19 +51480,21 @@ inline Animation LoadGIFAnimation(IOStreamRef src)
  *
  * If you know you definitely have a WEBP image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * @param src an IOStreamRef that data will be read from.
+ * @param src an IOStream that data will be read from.
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa AnimationRef.AnimationRef
+ * @sa Animation.Load
+ * @sa Animation.LoadTyped
+ * @sa Animation.Free
  */
 inline Animation LoadWEBPAnimation(IOStreamRef src)
 {
-  return Animation{IMG_LoadWEBPAnimation_IO(src.get())};
+  return Animation{IMG_LoadWEBPAnimation_IO(src)};
 }
 
 #pragma region impl
@@ -54995,6 +51583,9 @@ constexpr struct TtfInitFlag : InitFlagsExtra
 {
 } INIT_TTF; ///< Flag to init TTF support
 
+/// Deleter for TextEngine
+using TextEngineDeleter = void (*)(TTF_TextEngine*);
+
 // Forward decl
 struct FontRef;
 
@@ -55019,7 +51610,7 @@ struct Text;
  */
 
 /**
- * Font style flags for FontRef
+ * Font style flags for Font
  *
  * These are the flags which can be used to set the style of a font in
  * SDL_ttf. A combination of these flags can be used with functions that set
@@ -56738,51 +53329,157 @@ struct FontRef : Resource<TTF_Font*>
     return Surface{TTF_RenderGlyph_LCD(get(), ch, fg, bg)};
   }
 
-protected:
   /**
    * Dispose of a previously-created font.
    *
    * Call this when done with a font. This function will free any resources
    * associated with it. It is safe to call this function on nullptr, for
-   * example on the result of a failed call to Font.Font().
+   * example on the result of a failed call to Font.Open().
    *
    * The font is not valid after being passed to this function. String pointers
    * from functions that return information on this font, such as
    * FontRef.GetFamilyName() and FontRef.GetStyleName(), are no longer valid
    * after this call, as well.
    *
+   * @param resource the font to dispose of.
+   *
    * @threadsafety This function should not be called while any other thread is
    *               using the font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.Font
+   * @sa Font.Open
+   * @sa Font.Open
    */
-  void Close() { reset(); }
+  static void reset(TTF_Font* resource) { TTF_CloseFont(resource); }
+};
+
+/**
+ * Handle to an owned font
+ *
+ * @cat resource
+ *
+ * @sa FontRef
+ */
+struct Font : ResourceUnique<FontRef>
+{
+  using ResourceUnique::ResourceUnique;
+
+  /**
+   * Create a font from a file, using a specified point size.
+   *
+   * Some .fon fonts will have several sizes embedded in the file, so the point
+   * size becomes the index of choosing which size. If the value is too high,
+   * the last indexed size will be the default.
+   *
+   * @param file path to font file.
+   * @param ptsize point size to use for the newly-opened font.
+   * @returns a valid FontRef on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa Font.Close
+   */
+  static Font Open(StringParam file, float ptsize)
+  {
+    return Font(CheckError(TTF_OpenFont(file, ptsize)));
+  }
+
+  /**
+   * Create a font from an IOStreamRef, using a specified point size.
+   *
+   * Some .fon fonts will have several sizes embedded in the file, so the point
+   * size becomes the index of choosing which size. If the value is too high,
+   * the last indexed size will be the default.
+   *
+   * @param src an IOStreamRef to provide a font file's data.
+   * @param ptsize point size to use for the newly-opened font.
+   * @returns a valid FontRef on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa Font.Close
+   */
+  static Font Open(IOStreamRef src, float ptsize)
+  {
+    return Font(CheckError(TTF_OpenFontIO(src, false, ptsize)));
+  }
+
+  /**
+   * Create a font with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
+   *   IOStreamRef isn't being used. This is required if
+   *   `prop::Font.CREATE_IOSTREAM_POINTER` and
+   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+   * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamRef containing the
+   *   font to be opened. This should not be closed until the font is closed.
+   *   This is required if `prop::Font.CREATE_FILENAME_STRING` and
+   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+   * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
+   *   for the beginning of the font, defaults to 0.
+   * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the
+   *   font should also close the associated IOStreamRef.
+   * - `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon
+   *   fonts will have several sizes embedded in the file, so the point size
+   *   becomes the index of choosing which size. If the value is too high, the
+   *   last indexed size will be the default.
+   * - `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the
+   *   font contains multiple font faces.
+   * - `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use
+   *   for font rendering, defaults to
+   *   `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.
+   * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for
+   *   font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`
+   *   if set, or 72 otherwise.
+   * - `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional FontRef that, if
+   * set, will be used as the font data source and the initial size and style of
+   *   the new font.
+   *
+   * @param props the properties to use.
+   * @returns a valid FontRef on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa Font.Close
+   */
+  static Font OpenWithProperties(PropertiesRef props)
+  {
+    return Font(CheckError(TTF_OpenFontWithProperties(props)));
+  }
 
   /**
    * Dispose of a previously-created font.
    *
    * Call this when done with a font. This function will free any resources
    * associated with it. It is safe to call this function on nullptr, for
-   * example on the result of a failed call to Font.Font().
+   * example on the result of a failed call to Font.Open().
    *
    * The font is not valid after being passed to this function. String pointers
    * from functions that return information on this font, such as
    * FontRef.GetFamilyName() and FontRef.GetStyleName(), are no longer valid
    * after this call, as well.
    *
+   *
    * @threadsafety This function should not be called while any other thread is
    *               using the font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.Font
+   * @sa Font.Open
    */
-  void reset(TTF_Font* newResource = {})
-  {
-    TTF_CloseFont(release(newResource));
-  }
+  void Close() { reset(); }
 };
 
 /**
@@ -56794,283 +53491,18 @@ protected:
  *
  * @sa FontRef
  */
-struct FontUnsafe : FontRef
+struct FontUnsafe : ResourceUnsafe<FontRef>
 {
-  using FontRef::Close;
-
-  using FontRef::FontRef;
-  using FontRef::reset;
-
-  /**
-   * Constructs FontUnsafe from FontRef.
-   */
-  constexpr FontUnsafe(const FontRef& other)
-    : FontRef(other.get())
-  {
-  }
-
-  FontUnsafe(const Font& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs FontUnsafe from Font.
    */
-  constexpr explicit FontUnsafe(Font&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr FontUnsafe& operator=(FontUnsafe other)
+  constexpr explicit FontUnsafe(Font&& other)
+    : FontUnsafe(other.release())
   {
-    release(other.release());
-    return *this;
   }
 };
-
-/**
- * Handle to an owned font
- *
- * @cat resource
- *
- * @sa FontRef
- */
-struct Font : FontUnsafe
-{
-  using FontUnsafe::FontUnsafe;
-
-  /**
-   * Constructs an empty Font.
-   */
-  constexpr Font()
-    : FontUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Font(TTF_Font* resource)
-    : FontUnsafe(resource)
-  {
-  }
-
-  constexpr Font(const Font& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Font(Font&& other)
-    : Font(other.release())
-  {
-  }
-
-  /**
-   * Create a font from a file, using a specified point size.
-   *
-   * Some .fon fonts will have several sizes embedded in the file, so the point
-   * size becomes the index of choosing which size. If the value is too high,
-   * the last indexed size will be the default.
-   *
-   * @param file path to font file.
-   * @param ptsize point size to use for the newly-opened font.
-   * @post a valid FontRef on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa FontRef.Close
-   */
-  Font(StringParam file, float ptsize)
-    : Font(CheckError(TTF_OpenFont(file, ptsize)))
-  {
-  }
-
-  /**
-   * Create a font from an IOStreamRef, using a specified point size.
-   *
-   * Some .fon fonts will have several sizes embedded in the file, so the point
-   * size becomes the index of choosing which size. If the value is too high,
-   * the last indexed size will be the default.
-   *
-   * @param src an IOStreamRef to provide a font file's data.
-   * @param ptsize point size to use for the newly-opened font.
-   * @post a valid FontRef on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa FontRef.Close
-   */
-  Font(IOStreamRef src, float ptsize)
-    : Font(CheckError(TTF_OpenFontIO(src.get(), false, ptsize)))
-  {
-  }
-
-  /**
-   * Create a font with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
-   *   IOStreamRef isn't being used. This is required if
-   *   `prop::Font.CREATE_IOSTREAM_POINTER` and
-   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
-   * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamRef containing the
-   *   font to be opened. This should not be closed until the font is closed.
-   *   This is required if `prop::Font.CREATE_FILENAME_STRING` and
-   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
-   * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
-   *   for the beginning of the font, defaults to 0.
-   * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the
-   *   font should also close the associated IOStreamRef.
-   * - `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon
-   *   fonts will have several sizes embedded in the file, so the point size
-   *   becomes the index of choosing which size. If the value is too high, the
-   *   last indexed size will be the default.
-   * - `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the
-   *   font contains multiple font faces.
-   * - `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use
-   *   for font rendering, defaults to
-   *   `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.
-   * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for
-   *   font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`
-   *   if set, or 72 otherwise.
-   * - `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional FontRef that, if
-   * set, will be used as the font data source and the initial size and style of
-   *   the new font.
-   *
-   * @param props the properties to use.
-   * @post a valid FontRef on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa FontRef.Close
-   */
-  Font(PropertiesRef props)
-    : Font(CheckError(TTF_OpenFontWithProperties(props.get())))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Font() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Font& operator=(Font other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create a font from a file, using a specified point size.
-   *
-   * Some .fon fonts will have several sizes embedded in the file, so the point
-   * size becomes the index of choosing which size. If the value is too high,
-   * the last indexed size will be the default.
-   *
-   * When done with the returned FontRef, use FontRef.Close() to dispose of it.
-   *
-   * @param file path to font file.
-   * @param ptsize point size to use for the newly-opened font.
-   * @returns a valid FontRef on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa FontRef.Close
-   */
-  static Font Open(StringParam file, float ptsize)
-  {
-    return Font(std::move(file), ptsize);
-  }
-
-  /**
-   * Create a font from an IOStreamRef, using a specified point size.
-   *
-   * Some .fon fonts will have several sizes embedded in the file, so the point
-   * size becomes the index of choosing which size. If the value is too high,
-   * the last indexed size will be the default.
-   *
-   * If `closeio` is true, `src` will be automatically closed once the font is
-   * closed. Otherwise you should keep `src` open until the font is closed.
-   *
-   * When done with the returned FontRef, use FontRef.Close() to dispose of it.
-   *
-   * @param src an IOStreamRef to provide a font file's data.
-   * @param ptsize point size to use for the newly-opened font.
-   * @returns a valid FontRef on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa FontRef.Close
-   */
-  static Font Open(IOStreamRef src, float ptsize) { return Font(src, ptsize); }
-
-  /**
-   * Create a font with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
-   *   IOStreamRef isn't being used. This is required if
-   *   `prop::Font.CREATE_IOSTREAM_POINTER` and
-   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
-   * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamRef containing the
-   *   font to be opened. This should not be closed until the font is closed.
-   *   This is required if `prop::Font.CREATE_FILENAME_STRING` and
-   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
-   * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
-   *   for the beginning of the font, defaults to 0.
-   * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the
-   *   font should also close the associated IOStreamRef.
-   * - `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon
-   *   fonts will have several sizes embedded in the file, so the point size
-   *   becomes the index of choosing which size. If the value is too high, the
-   *   last indexed size will be the default.
-   * - `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the
-   *   font contains multiple font faces.
-   * - `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use
-   *   for font rendering, defaults to
-   *   `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.
-   * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for
-   *   font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`
-   *   if set, or 72 otherwise.
-   * - `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional FontRef that, if
-   * set, will be used as the font data source and the initial size and style of
-   *   the new font.
-   *
-   * @param props the properties to use.
-   * @returns a valid FontRef on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa FontRef.Close
-   */
-  static Font OpenWithProperties(PropertiesRef props) { return Font(props); }
-};
-
-constexpr FontUnsafe::FontUnsafe(Font&& other)
-  : FontUnsafe(other.release())
-{
-}
 
 /**
  * Initialize SDL_ttf.
@@ -57108,26 +53540,11 @@ inline void InitSubSystem(TtfInitFlag _) { CheckError(TTF_Init()); }
  * @cat resource
  *
  * @sa TextEngine
- * @sa TextEngineRef
  */
 struct TextEngineRef : Resource<TTF_TextEngine*>
 {
   using Resource::Resource;
 
-protected:
-  /// Create from engine and custom destroyer
-  constexpr TextEngineRef(TTF_TextEngine* engine,
-                          void (*destroy)(TTF_TextEngine* engine))
-    : Resource(engine)
-    , m_destroy(destroy)
-  {
-  }
-
-protected:
-  /// Custom destroyer
-  void (*m_destroy)(TTF_TextEngine* engine) = nullptr;
-
-public:
   /**
    * Sets the winding order of the vertices returned by TextRef.GetGPUDrawData
    * for a particular GPU text engine.
@@ -57164,16 +53581,203 @@ public:
   {
     return TTF_GetGPUTextEngineWinding(get());
   }
-
-protected:
   /**
-   * frees up TextEngineRef.
+   * Destroy a text engine created for drawing text on SDL surfaces.
+   *
+   * All text created by this engine should be destroyed before calling this
+   * function.
+   *
+   * @param engine a TextEngineRef object created with
+   *               TextEngine.CreateSurface().
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextEngine.CreateSurface
    */
-  void reset(TTF_TextEngine* newResource = {})
+  static void DestroySurface(TTF_TextEngine* engine)
   {
-    auto prevValue = release(newResource);
-    if (m_destroy) m_destroy(prevValue);
-    m_destroy = nullptr;
+    TTF_DestroySurfaceTextEngine(engine);
+  }
+
+  /**
+   * Destroy a text engine created for drawing text on an SDL renderer.
+   *
+   * All text created by this engine should be destroyed before calling this
+   * function.
+   *
+   * @param engine a TextEngineRef object created with
+   *               TextEngine.CreateRenderer().
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextEngine.CreateRenderer
+   */
+  static void DestroyRenderer(TTF_TextEngine* engine)
+  {
+    TTF_DestroyRendererTextEngine(engine);
+  }
+
+  /**
+   * Destroy a text engine created for drawing text with the SDL GPU API.
+   *
+   * All text created by this engine should be destroyed before calling this
+   * function.
+   *
+   * @param engine a TextEngineRef object created with
+   *               TextEngine.CreateGPU().
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextEngine.CreateGPU
+   */
+  static void DestroyGPU(TTF_TextEngine* engine)
+  {
+    TTF_DestroyGPUTextEngine(engine);
+  }
+};
+
+/**
+ * Handle to an owned textEngine
+ *
+ * @cat resource
+ *
+ * @sa TextEngineRef
+ */
+struct TextEngine : ResourceUnique<TextEngineRef, TextEngineDeleter>
+{
+  using ResourceUnique::ResourceUnique;
+
+  /**
+   * Create a text engine for drawing text on SDL surfaces.
+   *
+   * @returns a TextEngineRef object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TTF_DestroySurfaceTextEngine
+   * @sa TextRef.DrawSurface
+   */
+  static TextEngine CreateSurface()
+  {
+    return TextEngine(TTF_CreateSurfaceTextEngine(),
+                      TextEngineRef::DestroySurface);
+  }
+
+  /**
+   * Create a text engine for drawing text on an SDL renderer.
+   *
+   * @param renderer the renderer to use for creating textures and drawing text.
+   * @returns a TextEngineRef object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TTF_DestroyRendererTextEngine
+   * @sa TextRef.DrawRenderer
+   * @sa TextEngine.CreateRendererWithProperties
+   */
+  static TextEngine CreateRenderer(RendererRef renderer)
+  {
+    return TextEngine(TTF_CreateRendererTextEngine(renderer),
+                      TextEngineRef::DestroyRenderer);
+  }
+
+  /**
+   * Create a text engine for drawing text on an SDL renderer, with the
+   * specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
+   *   creating textures and drawing text
+   * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
+   *   texture atlas
+   *
+   * @param props the properties to use.
+   * @returns a TextEngineRef object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextEngine.CreateRenderer
+   * @sa TTF_DestroyRendererTextEngine
+   * @sa TextRef.DrawRenderer
+   */
+  static TextEngine CreateRendererWithProperties(PropertiesRef props)
+  {
+    return TextEngine(TTF_CreateRendererTextEngineWithProperties(props),
+                      TextEngineRef::DestroyRenderer);
+  }
+
+  /**
+   * Create a text engine for drawing text with the SDL GPU API.
+   *
+   * @param device the SDL_GPUDevice to use for creating textures and drawing
+   *               text.
+   * @returns a TextEngineRef object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               device.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextEngine.CreateGPUWithProperties
+   * @sa TTF_DestroyGPUTextEngine
+   * @sa TextRef.GetGPUDrawData
+   */
+  static TextEngine CreateGPU(SDL_GPUDevice* device)
+  {
+    return TextEngine(TTF_CreateGPUTextEngine(device),
+                      TextEngineRef::DestroyGPU);
+  }
+
+  /**
+   * Create a text engine for drawing text with the SDL GPU API, with the
+   * specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::GpuTextEngine.DEVICE_POINTER`: the SDL_GPUDevice to use for
+   * creating textures and drawing text.
+   * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
+   *   atlas
+   *
+   * @param props the properties to use.
+   * @returns a TextEngineRef object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               device.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextEngine.CreateGPU
+   * @sa TTF_DestroyGPUTextEngine
+   * @sa TextRef.GetGPUDrawData
+   */
+  static TextEngine CreateGPUWithProperties(PropertiesRef props)
+  {
+    return TextEngine(TTF_CreateGPUTextEngineWithProperties(props),
+                      TextEngineRef::DestroyGPU);
   }
 };
 
@@ -57186,93 +53790,16 @@ protected:
  *
  * @sa TextEngineRef
  */
-struct TextEngineUnsafe : TextEngineRef
+struct TextEngineUnsafe : ResourceUnsafe<TextEngineRef, TextEngineDeleter>
 {
-  using TextEngineRef::TextEngineRef;
-
-  /**
-   * Constructs TextEngineUnsafe from TextEngineRef.
-   */
-  constexpr TextEngineUnsafe(const TextEngineRef& other)
-    : TextEngineRef(other.get())
-  {
-  }
-
-  TextEngineUnsafe(const TextEngine& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs TextEngineUnsafe from TextEngine.
    */
-  constexpr explicit TextEngineUnsafe(TextEngine&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr TextEngineUnsafe& operator=(TextEngineUnsafe other)
+  constexpr explicit TextEngineUnsafe(TextEngine&& other)
+    : TextEngineUnsafe(other.release())
   {
-    release(other.release());
-    return *this;
-  }
-};
-
-/**
- * Handle to an owned textEngine
- *
- * @cat resource
- *
- * @sa TextEngineRef
- */
-struct TextEngine : TextEngineUnsafe
-{
-  using TextEngineUnsafe::TextEngineUnsafe;
-
-  /**
-   * Constructs an empty TextEngine.
-   */
-  constexpr TextEngine()
-    : TextEngineUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit TextEngine(TTF_TextEngine* resource)
-    : TextEngineUnsafe(resource)
-  {
-  }
-
-  constexpr TextEngine(const TextEngine& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr TextEngine(TextEngine&& other)
-    : TextEngine(other.release())
-  {
-  }
-
-  /// Create from engine and custom destroyer
-  constexpr TextEngine(TTF_TextEngine* engine,
-                       void (*destroy)(TTF_TextEngine* engine))
-    : TextEngineUnsafe(engine, destroy)
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~TextEngine() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  TextEngine& operator=(TextEngine other)
-  {
-    reset(other.release());
-    m_destroy = other.m_destroy;
-    other.m_destroy = nullptr;
-    return *this;
   }
 };
 
@@ -57302,11 +53829,6 @@ using SubString = TTF_SubString;
 
 // Forward decl
 struct SubStringIterator;
-
-constexpr TextEngineUnsafe::TextEngineUnsafe(TextEngine&& other)
-  : TextEngineUnsafe(other.release())
-{
-}
 
 namespace prop::Font {
 
@@ -57446,14 +53968,15 @@ inline void TagToString(Uint32 tag, char* string, size_t size)
 }
 
 /**
- * Text created with TextRef.TextRef()
+ * Text created with Text.Create()
  *
  * @since This struct is available since SDL_ttf 3.0.0.
  *
  * @cat resource
  *
- * @sa TextRef.TextRef
+ * @sa Text.Create
  * @sa TextRef.GetProperties
+ * @sa Text.Destroy
  * @sa Text
  */
 struct TextRef : Resource<TTF_Text*>
@@ -57464,7 +53987,7 @@ struct TextRef : Resource<TTF_Text*>
    * Draw text to an SDL surface.
    *
    * `text` must have been created using a TextEngineRef from
-   * CreateSurfaceTextEngine().
+   * TextEngine.CreateSurface().
    *
    * @param p the (x, y) coordinate in pixels, positive from the left edge
    *          towards the right and from the top edge towards the bottom.
@@ -57476,8 +53999,8 @@ struct TextRef : Resource<TTF_Text*>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa CreateSurfaceTextEngine
-   * @sa Text.Text
+   * @sa TextEngine.CreateSurface
+   * @sa Text.Create
    */
   void DrawSurface(Point p, SurfaceRef surface) const
   {
@@ -57488,7 +54011,7 @@ struct TextRef : Resource<TTF_Text*>
    * Draw text to an SDL renderer.
    *
    * `text` must have been created using a TextEngineRef from
-   * CreateRendererTextEngine(), and will draw using the renderer passed to
+   * TextEngine.CreateRenderer(), and will draw using the renderer passed to
    * that function.
    *
    * @param p the (x, y) coordinate in pixels, positive from the left edge
@@ -57500,8 +54023,8 @@ struct TextRef : Resource<TTF_Text*>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa CreateRendererTextEngine
-   * @sa Text.Text
+   * @sa TextEngine.CreateRenderer
+   * @sa Text.Create
    */
   void DrawRenderer(FPoint p) const
   {
@@ -57512,7 +54035,7 @@ struct TextRef : Resource<TTF_Text*>
    * Get the geometry data needed for drawing the text.
    *
    * `text` must have been created using a TextEngineRef from
-   * CreateGPUTextEngine().
+   * TextEngine.CreateGPU().
    *
    * The positive X-axis is taken towards the right and the positive Y-axis is
    * taken upwards for both the vertex and the texture coordinates, i.e, it
@@ -57531,8 +54054,8 @@ struct TextRef : Resource<TTF_Text*>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa CreateGPUTextEngine
-   * @sa Text.Text
+   * @sa TextEngine.CreateGPU
+   * @sa Text.Create
    */
   GPUAtlasDrawSequence* GetGPUDrawData() const
   {
@@ -57572,7 +54095,7 @@ struct TextRef : Resource<TTF_Text*>
    */
   void SetEngine(TextEngineRef engine)
   {
-    CheckError(TTF_SetTextEngine(get(), engine.get()));
+    CheckError(TTF_SetTextEngine(get(), engine));
   }
 
   /**
@@ -57613,7 +54136,7 @@ struct TextRef : Resource<TTF_Text*>
    *
    * @sa TextRef.GetFont
    */
-  bool SetFont(FontRef font) { return TTF_SetTextFont(get(), font.get()); }
+  bool SetFont(FontRef font) { return TTF_SetTextFont(get(), font); }
 
   /**
    * Get the font used by a text object.
@@ -58361,76 +54884,19 @@ struct TextRef : Resource<TTF_Text*>
    */
   int GetNumLines() const { return get()->num_lines; }
 
-protected:
   /**
    * Destroy a text object created by a text engine.
    *
+   * @param resource the text to destroy.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.Text
+   * @sa Text.Create
    */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy a text object created by a text engine.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               text.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa Text.Text
-   */
-  void reset(TTF_Text* newResource = {})
-  {
-    TTF_DestroyText(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to text
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa TextRef
- */
-struct TextUnsafe : TextRef
-{
-  using TextRef::Destroy;
-
-  using TextRef::TextRef;
-
-  using TextRef::reset;
-
-  /**
-   * Constructs TextUnsafe from TextRef.
-   */
-  constexpr TextUnsafe(const TextRef& other)
-    : TextRef(other.get())
-  {
-  }
-
-  TextUnsafe(const Text& other) = delete;
-
-  /**
-   * Constructs TextUnsafe from Text.
-   */
-  constexpr explicit TextUnsafe(Text&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr TextUnsafe& operator=(TextUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(TTF_Text* resource) { TTF_DestroyText(resource); }
 };
 
 /**
@@ -58440,71 +54906,9 @@ struct TextUnsafe : TextRef
  *
  * @sa TextRef
  */
-struct Text : TextUnsafe
+struct Text : ResourceUnique<TextRef>
 {
-  using TextUnsafe::TextUnsafe;
-
-  /**
-   * Constructs an empty Text.
-   */
-  constexpr Text()
-    : TextUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Text(TTF_Text* resource)
-    : TextUnsafe(resource)
-  {
-  }
-
-  constexpr Text(const Text& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Text(Text&& other)
-    : Text(other.release())
-  {
-  }
-
-  /**
-   * Create a text object from UTF-8 text and a text engine.
-   *
-   * @param engine the text engine to use when creating the text object, may be
-   *               nullptr.
-   * @param font the font to render with.
-   * @param text the text to use, in UTF-8 encoding.
-   * @post a TextRef object or nullptr on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               font and text engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa TextRef.Destroy
-   */
-  Text(TextEngineRef engine, FontRef font, std::string_view text)
-    : Text(TTF_CreateText(engine.get(), font.get(), text.data(), text.size()))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Text() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Text& operator=(Text other)
-  {
-    reset(other.release());
-    return *this;
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a text object from UTF-8 text and a text engine.
@@ -58521,11 +54925,46 @@ struct Text : TextUnsafe
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextRef.Destroy
+   * @sa Text.Destroy
    */
   static Text Create(TextEngineRef engine, FontRef font, std::string_view text)
   {
-    return Text(engine, font, text);
+    return Text(TTF_CreateText(engine, font, text.data(), text.size()));
+  }
+
+  /**
+   * Destroy a text object created by a text engine.
+   *
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               text.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa Text.Create
+   */
+  void Destroy() { reset(); }
+};
+
+/**
+ * Unsafe Handle to text
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TextRef
+ */
+struct TextUnsafe : ResourceUnsafe<TextRef>
+{
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs TextUnsafe from Text.
+   */
+  constexpr explicit TextUnsafe(Text&& other)
+    : TextUnsafe(other.release())
+  {
   }
 };
 
@@ -58600,82 +55039,6 @@ public:
   friend class TextRef;
 };
 
-constexpr TextUnsafe::TextUnsafe(Text&& other)
-  : TextUnsafe(other.release())
-{
-}
-
-/**
- * Create a text engine for drawing text on SDL surfaces.
- *
- * @returns a TextEngine object or nullptr on failure; call GetError()
- *          for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa Text
- * @sa TextRef.DrawSurface
- */
-inline TextEngine CreateSurfaceTextEngine()
-{
-  return TextEngine{TTF_CreateSurfaceTextEngine(),
-                    TTF_DestroySurfaceTextEngine};
-}
-
-/**
- * Create a text engine for drawing text on an SDL renderer.
- *
- * @param renderer the renderer to use for creating textures and drawing text.
- * @returns a TextEngine object or nullptr on failure; call GetError()
- *          for more information.
- *
- * @threadsafety This function should be called on the thread that created the
- *               renderer.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa TextRef.DrawRenderer
- * @sa Text
- * @sa CreateRendererTextEngineWithProperties
- */
-inline TextEngine CreateRendererTextEngine(RendererRef renderer)
-{
-  return TextEngine{TTF_CreateRendererTextEngine(renderer.get()),
-                    TTF_DestroyRendererTextEngine};
-}
-
-/**
- * Create a text engine for drawing text on an SDL renderer, with the
- * specified properties.
- *
- * These are the supported properties:
- *
- * - `prop::RendererTextEngine.RENDERER`: the renderer to use for
- *   creating textures and drawing text
- * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE`: the size of the
- *   texture atlas
- *
- * @param props the properties to use.
- * @returns a TextEngineRef object or nullptr on failure; call GetError()
- *          for more information.
- *
- * @threadsafety This function should be called on the thread that created the
- *               renderer.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa CreateRendererTextEngine
- * @sa Text
- * @sa TextRef.DrawRenderer
- */
-inline TextEngine CreateRendererTextEngineWithProperties(PropertiesRef props)
-{
-  return TextEngine{TTF_CreateRendererTextEngineWithProperties(props.get()),
-                    TTF_DestroyRendererTextEngine};
-}
-
 namespace prop::RendererTextEngine {
 
 #if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
@@ -58696,58 +55059,6 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
 #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
 
 } // namespace prop::RendererTextEngine
-
-/**
- * Create a text engine for drawing text with the SDL GPU API.
- *
- * @param device the SDL_GPUDevice to use for creating textures and drawing
- *               text.
- * @returns a TextEngine object or nullptr on failure; call GetError()
- *          for more information.
- *
- * @threadsafety This function should be called on the thread that created the
- *               device.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa CreateGPUTextEngineWithProperties
- * @sa Text
- * @sa TextRef.GetGPUDrawData
- */
-inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
-{
-  return TextEngine{TTF_CreateGPUTextEngine(device), TTF_DestroyGPUTextEngine};
-}
-
-/**
- * Create a text engine for drawing text with the SDL GPU API, with the
- * specified properties.
- *
- * These are the supported properties:
- *
- * - `prop::GpuTextEngine.DEVICE`: the SDL_GPUDevice to use for creating
- *   textures and drawing text.
- * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture
- *   atlas
- *
- * @param props the properties to use.
- * @returns a TextEngineRef object or nullptr on failure; call GetError()
- *          for more information.
- *
- * @threadsafety This function should be called on the thread that created the
- *               device.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa CreateGPUTextEngine
- * @sa Text
- * @sa TextRef.GetGPUDrawData
- */
-inline TextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
-{
-  return TextEngine{TTF_CreateGPUTextEngineWithProperties(props.get()),
-                    TTF_DestroyGPUTextEngine};
-}
 
 namespace prop::GpuTextEngine {
 

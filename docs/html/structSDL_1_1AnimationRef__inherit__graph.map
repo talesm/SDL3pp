@@ -1,9 +1,5 @@
 <map id="SDL::AnimationRef" name="SDL::AnimationRef">
-<area shape="rect" id="Node000001" title="Animated image support." alt="" coords="17,93,161,119"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1AnimationUnsafe.html" title="Unsafe Handle to animation." alt="" coords="5,167,173,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="92,132,92,167,87,167,87,132"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="11,5,167,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,59,92,93,87,93,87,59"/>
-<area shape="rect" id="Node000004" href="$structSDL_1_1Animation.html" title="Handle to an owned animation." alt="" coords="28,240,151,265"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="92,206,92,240,87,240,87,206"/>
+<area shape="rect" id="Node000001" title="Animated image support." alt="" coords="11,93,155,119"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,161,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,59,86,93,81,93,81,59"/>
 </map>

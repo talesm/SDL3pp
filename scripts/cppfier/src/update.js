@@ -62,7 +62,7 @@ function updateContent(content, targetFile, config = {}) {
   const sourceFile = config?.currentApi?.files?.[name] ?? parseContent(name, content, { storeLineNumbers: true });
   if (config.resetDoc && sourceFile.entries) resetEntriesDoc(sourceFile.entries);
 
-  const changes = checkChanges(sourceFile?.entries ?? {}, targetFile?.entries ?? {}, sourceFile.entriesBegin, sourceFile.entriesEnd)
+  const changes = checkChanges(sourceFile?.entries ?? {}, targetFile?.entries ?? {}, sourceFile.entriesBegin, sourceFile.entriesEnd, "", config)
     .reverse();
   if (!changes.length) {
     return 0;
@@ -71,12 +71,18 @@ function updateContent(content, targetFile, config = {}) {
     changes.push({
       begin: sourceFile.entriesBegin,
       end: sourceFile.entriesBegin,
-      replacement: generateDocString("\n" + targetFile.doc + "\n\n@{"),
+      replacement: generateDocString("\n" + targetFile.doc + "\n\n@{") + "\n",
     });
     changes.unshift({
       begin: sourceFile.entriesEnd,
       end: sourceFile.entriesEnd,
       replacement: "/// @}"
+    });
+  } else if (config.resetDoc) {
+    changes.push({
+      begin: sourceFile.docBegin,
+      end: sourceFile.docEnd,
+      replacement: generateDocString("\n" + targetFile.doc + "\n\n@{") + "\n",
     });
   }
   updateChanges(content, changes);
@@ -108,8 +114,9 @@ function updateChanges(content, changes) {
  * @param {number}      begin 
  * @param {number}      end 
  * @param {string}      prefix 
+ * @param {UpdateContentConfig} config
  */
-function checkChanges(sourceEntries, targetEntries, begin, end, prefix = "") {
+function checkChanges(sourceEntries, targetEntries, begin, end, prefix, config) {
   const targetNames = Object.keys(targetEntries);
   const sourceNames = Object.keys(sourceEntries);
   if (!targetNames.length) {
@@ -181,7 +188,7 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix = "") {
         const sourceEntry = sourceEntries[targetName];
         const sourceEntryBegin = deleteBegin ?? getBegin(sourceEntry);
         const sourceEntryEnd = getEnd(sourceEntry);
-        changes.push(...checkEntryChanges(targetName, sourceEntry, targetEntry, sourceEntryBegin, sourceEntryEnd, prefix));
+        changes.push(...checkEntryChanges(targetName, sourceEntry, targetEntry, sourceEntryBegin, sourceEntryEnd, prefix, config));
         begin = sourceEntryEnd;
         sourceIndex++;
       } else {
@@ -248,8 +255,9 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix = "") {
  * @param {number} begin 
  * @param {number} end 
  * @param {string} prefix 
+ * @param {UpdateContentConfig} config
  */
-function checkEntryChanges(name, sourceEntry, targetEntry, begin, end, prefix) {
+function checkEntryChanges(name, sourceEntry, targetEntry, begin, end, prefix, config) {
   /** @type {Change[]} */
   const changes = [];
   if (Array.isArray(targetEntry)) {
@@ -266,7 +274,8 @@ function checkEntryChanges(name, sourceEntry, targetEntry, begin, end, prefix) {
         targetEntry[i],
         sourceSubEntry.begin,
         sourceSubEntry.end,
-        prefix));
+        prefix,
+        config));
     }
     if (sourceEntry.length > targetEntry.length) {
       begin = sourceEntry[targetEntry.length].begin;
@@ -276,12 +285,16 @@ function checkEntryChanges(name, sourceEntry, targetEntry, begin, end, prefix) {
     }
     return changes;
   } else if (Array.isArray(sourceEntry)) {
-    return checkEntryChanges(name, sourceEntry, [targetEntry], begin, end, prefix);
+    return checkEntryChanges(name, sourceEntry, [targetEntry], begin, end, prefix, config);
   }
   const change = checkEntryChanged(sourceEntry, targetEntry);
   const sourceEntriesCount = Object.keys(sourceEntry.entries ?? {})?.length ?? 0;
   const targetEntriesCount = Object.keys(targetEntry.entries ?? {})?.length ?? 0;
-  if (change || (sourceEntriesCount == 0 && targetEntriesCount > 0)) {
+  if (change === "doc" && sourceEntry.decl && sourceEntry.kind !== 'var') {
+    const end = sourceEntry.decl;
+    system.log(`Documentation for ${name} changed "${change}" from ${begin} to ${end}`);
+    changes.push({ begin, end, replacement: generateDocString(targetEntry.doc, prefix) });
+  } else if (change || (sourceEntriesCount == 0 && targetEntriesCount > 0)) {
     system.log(`${name} changed "${change}" from ${begin} to ${end}`);
     if (change === "parameters") {
       system.log(`  parameters went from "${JSON.stringify(sourceEntry.parameters)}" to "${JSON.stringify(targetEntry.parameters)}"`);
@@ -300,7 +313,7 @@ function checkEntryChanges(name, sourceEntry, targetEntry, begin, end, prefix) {
       combineHints(targetEntry);
       const sourceBegin = getBegin(Object.values(sourceEntry.entries));
       const sourceEnd = getEnd(Object.values(sourceEntry.entries));
-      changes.push(...checkChanges(sourceEntry.entries, targetEntry.entries, sourceBegin, sourceEnd, prefix + "  "));
+      changes.push(...checkChanges(sourceEntry.entries, targetEntry.entries, sourceBegin, sourceEnd, prefix + "  ", config));
     }
   }
   return changes;
@@ -428,7 +441,7 @@ function generateEntry(entry, prefix) {
     return entry.map(e => generateEntry(e, prefix)).join('\n\n');
   }
   prefix = prefix ?? '';
-  const doc = generateDocString(entry.doc, prefix);
+  const doc = generateDocString(entry.doc, prefix) + "\n";
   const template = generateTemplateSignature(entry.template, prefix);
   const version = entry.since;
   if (!version) return doGenerate(entry);
@@ -521,6 +534,9 @@ function generateBody(entry, prefix) {
     const superStr = hint?.super ?? "T";
     return `\n${prefix}  : ${superStr}(${callStr})\n${prefix}{}`;
   }
+  if (hint?.wrapSelf && entry.type == selfStr) {
+    return `\n${prefix}{\n${prefix}  return ${hint.self}(${callStr});\n${prefix}}`;
+  }
   const returnStr = entry.type === "void" ? "" : "return ";
   return `\n${prefix}{\n${prefix}  ${returnStr}${callStr};\n${prefix}}`;
 }
@@ -599,6 +615,9 @@ function generateStruct(entry, prefix) {
  * @param {string} prefix 
  */
 function generateStructSignature(entry, prefix) {
+  if (entry.hints?.private) {
+    return `${prefix}class ${entry.name}`;
+  }
   return `${prefix}struct ${entry.name}`;
 }
 
@@ -638,7 +657,7 @@ function generateDocString(docStr, prefix) {
   if (!docStr) return '';
   prefix = prefix ?? '';
   docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
-  return `${prefix}/**\n${docStr}\n${prefix} */\n`;
+  return `${prefix}/**\n${docStr}\n${prefix} */`;
 }
 
 /**

@@ -325,44 +325,6 @@ const transform = {
             }
           ]
         },
-        "SDL_OpenAudioDeviceStream": [{
-          kind: "function",
-          type: "",
-          name: "AudioStream.AudioStream",
-          parameters: [
-            {
-              name: "devid",
-              type: "AudioDeviceRef"
-            },
-            {
-              name: "spec",
-              type: "OptionalRef<const AudioSpec>"
-            },
-            {
-              name: "callback",
-              type: "AudioStreamCB"
-            }
-          ]
-        }, {
-          kind: "function",
-          type: "AudioStream",
-          name: "AudioStream.OpenAudioDeviceStream",
-          parameters: [
-            {
-              name: "devid",
-              type: "AudioDeviceRef"
-            },
-            {
-              name: "spec",
-              type: "OptionalRef<const AudioSpec>"
-            },
-            {
-              name: "callback",
-              type: "AudioStreamCB"
-            }
-          ],
-          hints: { body: "return AudioStream(devid, std::move(spec), std::move(callback));" }
-        }]
       },
       wrappers: {
         "SDL_AudioFormat": {
@@ -451,7 +413,7 @@ const transform = {
       },
       resources: {
         "SDL_AudioDeviceID": {
-          uniqueName: "AudioDevice",
+          name: "AudioDevice",
           free: "SDL_CloseAudioDevice",
           entries: {
             "SDL_OpenAudioDevice": {
@@ -523,6 +485,32 @@ const transform = {
           lockFunction: "SDL_LockAudioStream",
           unlockFunction: "SDL_UnlockAudioStream",
           entries: {
+            "SDL_CreateAudioStream": {
+              name: "ctor",
+              parameters: [
+                { type: "OptionalRef<const AudioSpec>" },
+                { type: "OptionalRef<const AudioSpec>" },
+              ]
+            },
+            "OpenAudioDeviceStream": {
+              kind: "function",
+              type: "AudioStream",
+              name: "ctor",
+              parameters: [
+                {
+                  name: "devid",
+                  type: "AudioDeviceRef"
+                },
+                {
+                  name: "spec",
+                  type: "OptionalRef<const AudioSpec>"
+                },
+                {
+                  name: "callback",
+                  type: "AudioStreamCB"
+                }
+              ],
+            },
             "SDL_OpenAudioDeviceStream": {
               name: "ctor",
               parameters: [
@@ -546,13 +534,6 @@ const transform = {
                   default: "nullptr"
                 }
               ],
-            },
-            "SDL_CreateAudioStream": {
-              name: "ctor",
-              parameters: [
-                { type: "OptionalRef<const AudioSpec>" },
-                { type: "OptionalRef<const AudioSpec>" },
-              ]
             },
             "SDL_GetAudioStreamProperties": "immutable",
             "GetInputFormat": {
@@ -1893,9 +1874,21 @@ const transform = {
       },
       resources: {
         "SDL_IOStream": {
-          ctors: ["SDL_IOFromFile", "SDL_OpenIO"],
+          ctors: ["SDL_IOFromFile", "SDL_IOFromMem", "SDL_IOFromConstMem", "SDL_IOFromDynamicMem", "SDL_OpenIO"],
           entries: {
             "SDL_IOFromFile": { name: "FromFile" },
+            "SDL_IOFromMem": {
+              name: "FromMem",
+              parameters: [{ type: "TargetBytes", name: "mem" }]
+            },
+            "SDL_IOFromConstMem": {
+              name: "FromConstMem",
+              parameters: [{ type: "SourceBytes", name: "mem" }]
+            },
+            "SDL_IOFromDynamicMem": {
+              name: "FromDynamicMem",
+              static: true,
+            },
             "SDL_OpenIO": { name: "Open" },
             "SDL_CloseIO": {
               name: "Close",
@@ -2138,23 +2131,6 @@ const transform = {
         "SDL_PROP_IOSTREAM_": "prop::IOStream"
       },
       transform: {
-        "SDL_IOFromMem": {
-          name: "IOStream.FromMem",
-          type: "IOStream",
-          static: true,
-          parameters: [{ type: "TargetBytes", name: "mem" }]
-        },
-        "SDL_IOFromConstMem": {
-          name: "IOStream.FromConstMem",
-          type: "IOStream",
-          static: true,
-          parameters: [{ type: "SourceBytes", name: "mem" }]
-        },
-        "SDL_IOFromDynamicMem": {
-          name: "IOStream.FromDynamicMem",
-          type: "IOStream",
-          static: true,
-        },
         "SDL_LoadFile": {
           type: "StringResult",
           parameters: [{}]
@@ -2285,8 +2261,9 @@ const transform = {
       resources: {
         "SDL_SharedObject": {
           free: "SDL_UnloadObject",
+          ctors: ["SDL_LoadObject"],
           entries: {
-            "SDL_LoadObject": "ctor",
+            "SDL_LoadObject": { name: "Load" },
             "SDL_LoadFunction": "function",
             "SDL_UnloadObject": { name: "Unload" },
           }
@@ -2760,13 +2737,17 @@ const transform = {
               parameters: [
                 { type: "const Uint8 *" },
                 { type: "const Uint8 *" },
-                {},
-                {},
-                {},
-                {},
+                { type: "const SDL_Point &", name: "size" },
+                { type: "const SDL_Point &", name: "hot" },
               ],
             },
-            "SDL_CreateColorCursor": "ctor",
+            "SDL_CreateColorCursor": {
+              name: "ctor",
+              parameters: [
+                {},
+                { type: "const SDL_Point &", name: "hot" },
+              ],
+            },
             "SDL_CreateSystemCursor": "ctor",
           }
         }
@@ -2827,7 +2808,6 @@ const transform = {
       ],
       resources: {
         "SDL_Mutex": {
-          omitDefaultCtor: true,
           entries: {
             "SDL_CreateMutex": "ctor",
             "SDL_LockMutex": {
@@ -2848,7 +2828,6 @@ const transform = {
           }
         },
         "SDL_RWLock": {
-          omitDefaultCtor: true,
           entries: {
             "SDL_CreateRWLock": "ctor",
             "SDL_LockRWLockForReading": {
@@ -2897,7 +2876,6 @@ const transform = {
           }
         },
         "SDL_Condition": {
-          omitDefaultCtor: true,
           entries: {
             "SDL_CreateCondition": "ctor",
             "SDL_SignalCondition": "function",
@@ -2950,23 +2928,6 @@ const transform = {
         },
         "SDL_PackedLayout": {
           name: "PixelFormatDetails",
-        },
-        "SDL_SetPaletteColors": {
-          kind: "function",
-          name: "PaletteRef.SetColors",
-          type: "bool",
-          static: false,
-          parameters: [
-            {
-              type: "SpanRef<const SDL_Color>",
-              name: "colors"
-            },
-            {
-              type: "int",
-              name: "firstcolor",
-              default: "0"
-            }
-          ]
         }
       },
       enumerations: {
@@ -3479,8 +3440,7 @@ const transform = {
       },
       resources: {
         "SDL_PropertiesID": {
-          uniqueName: "Properties",
-          omitDefaultCtor: true,
+          name: "Properties",
           ctors: ["SDL_CreateProperties"],
           entries: {
             "SDL_CreateProperties": {
@@ -4300,47 +4260,15 @@ const transform = {
               parameters: []
             },
           }
-        }, {
-          name: "Texture.Load",
-          kind: "function",
-          type: "Texture",
-          proto: true,
-          static: true,
-          parameters: [
-            {
-              type: "RendererRef",
-              name: "renderer"
-            },
-            {
-              type: "StringParam",
-              name: "file"
-            }
-          ]
-        }, {
-          name: "Texture.Load",
-          kind: "function",
-          type: "Texture",
-          proto: true,
-          static: true,
-          parameters: [
-            {
-              type: "RendererRef",
-              name: "renderer"
-            },
-            {
-              type: "IOStreamRef",
-              name: "src"
-            }
-          ]
         }]
       },
       resources: {
         "SDL_Renderer": {
           entries: {
-            "Renderer": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
+            "Create": {
+              kind: "function",
+              name: "ctor",
+              parameters: [
                 {
                   "type": "WindowRef",
                   "name": "window"
@@ -4959,10 +4887,11 @@ const transform = {
           }
         },
         "SDL_Texture": {
+          ctors: ["Load", "LoadBMP"],
           entries: {
-            "Texture": [{
+            "Load": [{
               kind: "function",
-              type: "",
+              proto: true,
               parameters: [
                 {
                   type: "RendererRef",
@@ -4975,7 +4904,7 @@ const transform = {
               ]
             }, {
               kind: "function",
-              type: "",
+              proto: true,
               parameters: [
                 {
                   type: "RendererRef",
@@ -5010,6 +4939,31 @@ const transform = {
             },
             "SDL_CreateTextureFromSurface": "ctor",
             "SDL_CreateTextureWithProperties": "ctor",
+            "LoadBMP": [{
+              kind: "function",
+              parameters: [
+                {
+                  type: "RendererRef",
+                  name: "renderer"
+                },
+                {
+                  type: "StringParam",
+                  name: "file"
+                }
+              ]
+            }, {
+              kind: "function",
+              parameters: [
+                {
+                  type: "RendererRef",
+                  name: "renderer"
+                },
+                {
+                  type: "IOStreamRef",
+                  name: "src"
+                }
+              ]
+            }],
             "SDL_GetTextureProperties": "immutable",
             "SDL_GetRendererFromTexture": {
               "name": "GetRenderer",
@@ -5476,14 +5430,18 @@ const transform = {
           }
         },
         "SDL_iconv_t": {
-          uniqueName: "IConv",
+          name: "IConv",
           type: "SDL_iconv_data_t",
           free: "SDL_iconv_close",
           ctors: ["SDL_iconv_open"],
           entries: {
             "SDL_iconv_open": { name: "open" },
             "SDL_iconv": "function",
-            "SDL_iconv_close": { name: "close" },
+            "SDL_iconv_close": {
+              name: "close",
+              type: "void",
+              hints: { mayFail: true },
+            },
           }
         }
       },
@@ -6007,6 +5965,10 @@ const transform = {
               parameters: [
                 {}, {}, {}, {}
               ]
+            },
+            "SDL_CloseStorage": {
+              type: "void",
+              hints: { mayFail: true }
             }
           }
         }
@@ -6109,41 +6071,28 @@ const transform = {
               parameters: []
             }
           }
-        }, {
-          name: "Surface.Load",
-          kind: "function",
-          type: "Surface",
-          proto: true,
-          static: true,
-          parameters: [{
-            type: "StringParam",
-            name: "file"
-          }],
-        }, {
-          name: "Surface.Load",
-          kind: "function",
-          type: "Surface",
-          proto: true,
-          static: true,
-          parameters: [{
-            type: "IOStreamRef",
-            name: "src"
-          }],
         }]
       },
       resources: {
         "SDL_Surface": {
+          ctors: ["SDL_LoadBMP_IO"],
           entries: {
             "Surface": [{
+              name: "Load",
               kind: "function",
-              type: "",
+              type: "Surface",
+              proto: true,
+              static: true,
               parameters: [{
                 type: "StringParam",
                 name: "file"
               }],
             }, {
+              name: "Load",
               kind: "function",
-              type: "",
+              type: "Surface",
+              proto: true,
+              static: true,
               parameters: [{
                 type: "IOStreamRef",
                 name: "src"
@@ -6219,6 +6168,16 @@ const transform = {
               type: "SurfaceLock",
               reference: 1
             },
+            "SDL_LoadBMP_IO": {
+              name: "LoadBMP",
+              type: "Surface",
+              parameters: [
+                {
+                  type: "IOStreamRef"
+                }
+              ]
+            },
+            "SDL_LoadBMP": "ctor",
             "SDL_SetSurfaceRLE": "function",
             "SDL_SurfaceHasRLE": "immutable",
             "SetColorKey": {
@@ -6872,12 +6831,24 @@ const transform = {
               type: "Point",
               parameters: []
             },
+            "GetPitch": {
+              kind: "function",
+              type: "int",
+              immutable: true,
+              parameters: []
+            },
             "GetFormat": {
               kind: "function",
               immutable: true,
               type: "PixelFormat",
               parameters: []
             },
+            "GetPixels": {
+              kind: "function",
+              immutable: true,
+              type: "void *",
+              parameters: []
+            }
           }
         }
       },
@@ -6895,18 +6866,6 @@ const transform = {
         "SDL_PROP_SURFACE_": "prop::Surface"
       },
       transform: {
-        "SDL_LoadBMP_IO": {
-          name: "LoadBMP",
-          type: "Surface",
-          parameters: [
-            {
-              type: "IOStreamRef"
-            }
-          ]
-        },
-        "SDL_LoadBMP": {
-          type: "Surface"
-        },
         "SDL_SaveBMP_IO": {
           name: "SaveBMP",
           parameters: [
@@ -7024,8 +6983,9 @@ const transform = {
         "SDL_Thread": {
           free: "SDL_DetachThread",
           entries: {
-            "Thread": {
+            "Create": {
               kind: "function",
+              name: "ctor",
               type: "",
               parameters: [
                 { type: "ThreadCB", name: "fn" },
@@ -8023,9 +7983,6 @@ const transform = {
 
     // SDL satellite Libraries:
     "SDL_image.h": {
-      ignoreEntries: [
-        "IMG_LoadBMP_IO"
-      ],
       includeAfter: {
         "__begin": {
           "name": "SDL3PP_ENABLE_IMAGE"
@@ -8048,7 +8005,7 @@ const transform = {
               ]
             },
             "IMG_LoadAnimationTyped_IO": {
-              name: "Load",
+              name: "LoadTyped",
               parameters: [
                 {
                   "name": "src",
@@ -8179,6 +8136,10 @@ const transform = {
         "IMG_LoadAVIF_IO": {
           "type": "Surface",
           "name": "LoadAVIF"
+        },
+        "IMG_LoadBMP_IO": {
+          "type": "Surface",
+          "name": "LoadBMP",
         },
         "IMG_LoadICO_IO": {
           "type": "Surface",
@@ -8316,11 +8277,6 @@ const transform = {
       }
     },
     "SDL_ttf.h": {
-      ignoreEntries: [
-        "TTF_DestroySurfaceTextEngine",
-        "TTF_DestroyRendererTextEngine",
-        "TTF_DestroyGPUTextEngine"
-      ],
       resources: {
         "TTF_Font": {
           ctors: ["TTF_OpenFontIO"],
@@ -8642,53 +8598,42 @@ const transform = {
           }
         },
         "TTF_TextEngine": {
-          free: "",
           returnType: "unique",
+          extraParameters: ["TextEngineDeleter"],
           entries: {
-            "void": {
-              kind: "function",
-              type: "",
-              parameters: [
-                "*m_destroy"
-              ],
-            },
-            "TextEngine": {
-              type: "",
-              kind: "function",
-              constexpr: true,
-              parameters: [
-                {
-                  type: "TTF_TextEngine *",
-                  name: "engine"
-                },
-                {
-                  name: "engine)",
-                  type: "void (*destroy)(TTF_TextEngine *"
-                },
-              ]
-            },
-            "TextEngineRef": {
-              type: "",
-              kind: "function",
-              constexpr: true,
-              parameters: [
-                {
-                  type: "TTF_TextEngine *",
-                  name: "engine"
-                },
-                {
-                  name: "engine)",
-                  type: "void (*destroy)(TTF_TextEngine *"
-                },
-              ]
-            },
+            "TTF_CreateSurfaceTextEngine": "ctor",
+            "TTF_CreateRendererTextEngine": "ctor",
+            "TTF_CreateRendererTextEngineWithProperties": "ctor",
+            "TTF_CreateGPUTextEngine": "ctor",
+            "TTF_CreateGPUTextEngineWithProperties": "ctor",
             "TTF_SetGPUTextEngineWinding": {
               "name": "SetGPUWinding"
             },
             "TTF_GetGPUTextEngineWinding": {
               "immutable": true,
               "name": "GetGPUWinding"
-            }
+            },
+            "TTF_DestroySurfaceTextEngine": {
+              static: true,
+              parameters: [{
+                name: "engine",
+                type: "TTF_TextEngine *"
+              }],
+            },
+            "TTF_DestroyRendererTextEngine": {
+              static: true,
+              parameters: [{
+                name: "engine",
+                type: "TTF_TextEngine *"
+              }],
+            },
+            "TTF_DestroyGPUTextEngine": {
+              static: true,
+              parameters: [{
+                name: "engine",
+                type: "TTF_TextEngine *"
+              }],
+            },
           }
         },
         "TTF_Text": {
@@ -8952,7 +8897,7 @@ const transform = {
               "parameters": []
             }
           }
-        }
+        },
       },
       enumerations: {
         "TTF_FontStyleFlags": {
@@ -8999,6 +8944,11 @@ const transform = {
             "kind": "struct",
             "name": "TtfInitFlag",
             "type": "InitFlagsExtra"
+          },
+          {
+            kind: "alias",
+            name: "TextEngineDeleter",
+            type: "void (*)(TTF_TextEngine *)",
           }
         ],
         "TTF_TextEngine": [

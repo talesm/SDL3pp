@@ -47,95 +47,51 @@ using Keymod = Uint16;
 #undef KMOD_SCROLL
 #undef KMOD_SHIFT
 
-/**
- * no modifier is applicable.
- */
-constexpr Keymod KMOD_NONE = SDL_KMOD_NONE;
+constexpr Keymod KMOD_NONE = SDL_KMOD_NONE; ///< no modifier is applicable.
 
-/**
- * the left Shift key is down.
- */
-constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT;
+constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT; ///< the left Shift key is down.
 
-/**
- * the right Shift key is down.
- */
-constexpr Keymod KMOD_RSHIFT = SDL_KMOD_RSHIFT;
+constexpr Keymod KMOD_RSHIFT =
+  SDL_KMOD_RSHIFT; ///< the right Shift key is down.
 
-/**
- * the Level 5 Shift key is down.
- */
-constexpr Keymod KMOD_LEVEL5 = SDL_KMOD_LEVEL5;
+constexpr Keymod KMOD_LEVEL5 =
+  SDL_KMOD_LEVEL5; ///< the Level 5 Shift key is down.
 
-/**
- * the left Ctrl (Control) key is down.
- */
-constexpr Keymod KMOD_LCTRL = SDL_KMOD_LCTRL;
+constexpr Keymod KMOD_LCTRL =
+  SDL_KMOD_LCTRL; ///< the left Ctrl (Control) key is down.
 
-/**
- * the right Ctrl (Control) key is down.
- */
-constexpr Keymod KMOD_RCTRL = SDL_KMOD_RCTRL;
+constexpr Keymod KMOD_RCTRL =
+  SDL_KMOD_RCTRL; ///< the right Ctrl (Control) key is down.
 
-/**
- * the left Alt key is down.
- */
-constexpr Keymod KMOD_LALT = SDL_KMOD_LALT;
+constexpr Keymod KMOD_LALT = SDL_KMOD_LALT; ///< the left Alt key is down.
 
-/**
- * the right Alt key is down.
- */
-constexpr Keymod KMOD_RALT = SDL_KMOD_RALT;
+constexpr Keymod KMOD_RALT = SDL_KMOD_RALT; ///< the right Alt key is down.
 
-/**
- * the left GUI key (often the Windows key) is down.
- */
-constexpr Keymod KMOD_LGUI = SDL_KMOD_LGUI;
+constexpr Keymod KMOD_LGUI =
+  SDL_KMOD_LGUI; ///< the left GUI key (often the Windows key) is down.
 
-/**
- * the right GUI key (often the Windows key) is down.
- */
-constexpr Keymod KMOD_RGUI = SDL_KMOD_RGUI;
+constexpr Keymod KMOD_RGUI =
+  SDL_KMOD_RGUI; ///< the right GUI key (often the Windows key) is down.
 
 /**
  * the Num Lock key (may be located on an extended keypad) is down.
  */
 constexpr Keymod KMOD_NUM = SDL_KMOD_NUM;
 
-/**
- * the Caps Lock key is down.
- */
-constexpr Keymod KMOD_CAPS = SDL_KMOD_CAPS;
+constexpr Keymod KMOD_CAPS = SDL_KMOD_CAPS; ///< the Caps Lock key is down.
 
-/**
- * the !AltGr key is down.
- */
-constexpr Keymod KMOD_MODE = SDL_KMOD_MODE;
+constexpr Keymod KMOD_MODE = SDL_KMOD_MODE; ///< the !AltGr key is down.
 
-/**
- * the Scroll Lock key is down.
- */
-constexpr Keymod KMOD_SCROLL = SDL_KMOD_SCROLL;
+constexpr Keymod KMOD_SCROLL =
+  SDL_KMOD_SCROLL; ///< the Scroll Lock key is down.
 
-/**
- * Any Ctrl key is down.
- */
-constexpr Keymod KMOD_CTRL = SDL_KMOD_CTRL;
+constexpr Keymod KMOD_CTRL = SDL_KMOD_CTRL; ///< Any Ctrl key is down.
 
-/**
- * Any Shift key is down.
- */
-constexpr Keymod KMOD_SHIFT = SDL_KMOD_SHIFT;
+constexpr Keymod KMOD_SHIFT = SDL_KMOD_SHIFT; ///< Any Shift key is down.
 
-/**
- * Any Alt key is down.
- */
-constexpr Keymod KMOD_ALT = SDL_KMOD_ALT;
+constexpr Keymod KMOD_ALT = SDL_KMOD_ALT; ///< Any Alt key is down.
 
-/**
- * Any GUI key is down.
- */
-constexpr Keymod KMOD_GUI = SDL_KMOD_GUI;
+constexpr Keymod KMOD_GUI = SDL_KMOD_GUI; ///< Any GUI key is down.
 
 /**
  * The SDL virtual key representation.

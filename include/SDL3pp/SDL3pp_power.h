@@ -1,5 +1,3 @@
-
-
 #ifndef SDL3PP_POWER_H_
 #define SDL3PP_POWER_H_
 
@@ -38,35 +36,23 @@ namespace SDL {
  */
 using PowerState = SDL_PowerState;
 
-/**
- * error determining power status
- */
-constexpr PowerState POWERSTATE_ERROR = SDL_POWERSTATE_ERROR;
+constexpr PowerState POWERSTATE_ERROR =
+  SDL_POWERSTATE_ERROR; ///< error determining power status
 
-/**
- * cannot determine power status
- */
-constexpr PowerState POWERSTATE_UNKNOWN = SDL_POWERSTATE_UNKNOWN;
+constexpr PowerState POWERSTATE_UNKNOWN =
+  SDL_POWERSTATE_UNKNOWN; ///< cannot determine power status
 
-/**
- * Not plugged in, running on the battery.
- */
-constexpr PowerState POWERSTATE_ON_BATTERY = SDL_POWERSTATE_ON_BATTERY;
+constexpr PowerState POWERSTATE_ON_BATTERY =
+  SDL_POWERSTATE_ON_BATTERY; ///< Not plugged in, running on the battery.
 
-/**
- * Plugged in, no battery available.
- */
-constexpr PowerState POWERSTATE_NO_BATTERY = SDL_POWERSTATE_NO_BATTERY;
+constexpr PowerState POWERSTATE_NO_BATTERY =
+  SDL_POWERSTATE_NO_BATTERY; ///< Plugged in, no battery available.
 
-/**
- * Plugged in, charging battery.
- */
-constexpr PowerState POWERSTATE_CHARGING = SDL_POWERSTATE_CHARGING;
+constexpr PowerState POWERSTATE_CHARGING =
+  SDL_POWERSTATE_CHARGING; ///< Plugged in, charging battery.
 
-/**
- * Plugged in, battery charged.
- */
-constexpr PowerState POWERSTATE_CHARGED = SDL_POWERSTATE_CHARGED;
+constexpr PowerState POWERSTATE_CHARGED =
+  SDL_POWERSTATE_CHARGED; ///< Plugged in, battery charged.
 
 /// @}
 
@@ -91,10 +77,10 @@ constexpr PowerState POWERSTATE_CHARGED = SDL_POWERSTATE_CHARGED;
  * minute or so.
  *
  * @param seconds a pointer filled in with the seconds of battery life left,
- *                or NULL to ignore. This will be filled in with -1 if we
+ *                or nullptr to ignore. This will be filled in with -1 if we
  *                can't determine a value or there is no battery.
  * @param percent a pointer filled in with the percentage of battery life
- *                left, between 0 and 100, or NULL to ignore. This will be
+ *                left, between 0 and 100, or nullptr to ignore. This will be
  *                filled in with -1 we can't determine a value or there is no
  *                battery.
  * @returns the current battery state or `POWERSTATE_ERROR` on failure; call

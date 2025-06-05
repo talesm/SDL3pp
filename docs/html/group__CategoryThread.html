@@ -87,11 +87,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html">SDL::ThreadRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> thread object.  <a href="structSDL_1_1ThreadRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadUnsafe.html">SDL::ThreadUnsafe</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to thread.  <a href="structSDL_1_1ThreadUnsafe.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Thread.html">SDL::Thread</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned thread.  <a href="structSDL_1_1Thread.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadUnsafe.html">SDL::ThreadUnsafe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to thread.  <a href="structSDL_1_1ThreadUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -103,10 +103,10 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:ga81de0ba54c6c2f2147b1a0b9ff7521ac"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Thread.html" title="Handle to an owned thread.">Thread</a> local storage ID.  <br /></td></tr>
 <tr class="separator:ga81de0ba54c6c2f2147b1a0b9ff7521ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadba78156436b2ebd2964937c09368291" id="r_gadba78156436b2ebd2964937c09368291"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gadba78156436b2ebd2964937c09368291">SDL::ThreadFunction</a> = SDL_ThreadFunction</td></tr>
-<tr class="memdesc:gadba78156436b2ebd2964937c09368291"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function passed to ThreadRef.ThreadRef() as the new thread's entry point.  <br /></td></tr>
+<tr class="memdesc:gadba78156436b2ebd2964937c09368291"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function passed to <a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create()</a> as the new thread's entry point.  <br /></td></tr>
 <tr class="separator:gadba78156436b2ebd2964937c09368291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga770353c17c77d7b8d9be568b8c0d5e13" id="r_ga770353c17c77d7b8d9be568b8c0d5e13"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga770353c17c77d7b8d9be568b8c0d5e13">SDL::ThreadCB</a> = std::function&lt; int()&gt;</td></tr>
-<tr class="memdesc:ga770353c17c77d7b8d9be568b8c0d5e13"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function passed to ThreadRef.ThreadRef() as the new thread's entry point.  <br /></td></tr>
+<tr class="memdesc:ga770353c17c77d7b8d9be568b8c0d5e13"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function passed to <a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create()</a> as the new thread's entry point.  <br /></td></tr>
 <tr class="separator:ga770353c17c77d7b8d9be568b8c0d5e13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga40949cd90f28bc3e1326cd3fbf727345" id="r_ga40949cd90f28bc3e1326cd3fbf727345"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga40949cd90f28bc3e1326cd3fbf727345">SDL::TLSDestructorCallback</a> = SDL_TLSDestructorCallback</td></tr>
 <tr class="memdesc:ga40949cd90f28bc3e1326cd3fbf727345"><td class="mdescLeft">&#160;</td><td class="mdescRight">The callback used to cleanup data passed to SetTLS.  <br /></td></tr>
@@ -132,10 +132,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ga07dd9ea8320cfeffd521c29d2d0cc6c4" id="r_ga07dd9ea8320cfeffd521c29d2d0cc6c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga07dd9ea8320cfeffd521c29d2d0cc6c4">SDL::CleanupTLS</a> ()</td></tr>
 <tr class="memdesc:ga07dd9ea8320cfeffd521c29d2d0cc6c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup all TLS data for this thread.  <br /></td></tr>
 <tr class="separator:ga07dd9ea8320cfeffd521c29d2d0cc6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2768b33d0c2004714e1f120c42e8e9c5" id="r_ga2768b33d0c2004714e1f120c42e8e9c5"><td class="memItemLeft" align="right" valign="top"><a id="ga2768b33d0c2004714e1f120c42e8e9c5" name="ga2768b33d0c2004714e1f120c42e8e9c5"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::ThreadUnsafe::ThreadUnsafe</b> (<a class="el" href="structSDL_1_1Thread.html">Thread</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ga2768b33d0c2004714e1f120c42e8e9c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1ThreadUnsafe.html" title="Unsafe Handle to thread.">ThreadUnsafe</a> from <a class="el" href="structSDL_1_1Thread.html" title="Handle to an owned thread.">Thread</a>. <br /></td></tr>
-<tr class="separator:ga2768b33d0c2004714e1f120c42e8e9c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -170,7 +166,7 @@ constexpr <a class="el" href="group__CategoryThread.html#ga6f7a148f3f241be0fcf98
 <p>This is provided for compatibility and completeness, we advise you to use std's thread facilities.</p>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> offers cross-platform thread management functions. These are mostly concerned with starting threads, setting their priority, and dealing with their termination.</p>
 <p>In addition, there is support for <a class="el" href="structSDL_1_1Thread.html" title="Handle to an owned thread.">Thread</a> Local <a class="el" href="structSDL_1_1Storage.html" title="Handle to an owned storage.">Storage</a> (data that is unique to each thread, but accessed from a single key).</p>
-<p>On platforms without thread support (such as Emscripten when built without pthreads), these functions still exist, but things like ThreadRef.ThreadRef() will report failure without doing anything.</p>
+<p>On platforms without thread support (such as Emscripten when built without pthreads), these functions still exist, but things like <a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create()</a> will report failure without doing anything.</p>
 <p>If you're going to work with threads, you almost certainly need to have a good understanding of [CategoryMutex](CategoryMutex) as well. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ga770353c17c77d7b8d9be568b8c0d5e13" name="ga770353c17c77d7b8d9be568b8c0d5e13"></a>
@@ -202,7 +198,7 @@ constexpr <a class="el" href="group__CategoryThread.html#ga6f7a148f3f241be0fcf98
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>what was passed as <code>data</code> to ThreadRef.ThreadRef(). </td></tr>
+    <tr><td class="paramname">data</td><td>what was passed as <code>data</code> to <a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create()</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -222,7 +218,7 @@ constexpr <a class="el" href="group__CategoryThread.html#ga6f7a148f3f241be0fcf98
         </tr>
       </table>
 </div><div class="memdoc">
-<p>These are different from <a class="el" href="structSDL_1_1ThreadRef.html" title="The SDL thread object.">ThreadRef</a> objects, which are generally what an application will operate on, but having a way to uniquely identify a thread can be useful at times.</p>
+<p>These are different from <a class="el" href="structSDL_1_1Thread.html" title="Handle to an owned thread.">Thread</a> objects, which are generally what an application will operate on, but having a way to uniquely identify a thread can be useful at times.</p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ThreadRef.html#ab8b6981474ff03df4e6e734e52712e53" title="Get the thread identifier for the specified thread.">ThreadRef.GetID</a> </dd>
 <dd>

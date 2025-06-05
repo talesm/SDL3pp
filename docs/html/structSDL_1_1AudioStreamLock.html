@@ -178,7 +178,7 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>LockBase</b> (<a
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Each <a class="el" href="structSDL_1_1AudioStreamRef.html" title="The opaque handle that represents an audio stream.">AudioStreamRef</a> has an internal mutex it uses to protect its data structures from threading conflicts. This function allows an app to lock that mutex, which could be useful if registering callbacks on this stream.</p>
+<p>Each <a class="el" href="structSDL_1_1AudioStream.html" title="Handle to an owned audioStream.">AudioStream</a> has an internal mutex it uses to protect its data structures from threading conflicts. This function allows an app to lock that mutex, which could be useful if registering callbacks on this stream.</p>
 <p>One does not need to lock a stream to use in it most cases, as the stream manages this lock internally. However, this lock is held during callbacks, which may run from arbitrary threads at any time, so if an app needs to protect shared data during those callbacks, locking the stream guarantees that the callback is not running while the lock is held.</p>
 <p>As this is just a wrapper over <a class="el" href="structSDL_1_1MutexRef.html#aee56f4bcb72708c15e2f5cddd76d3490" title="Lock the mutex.">MutexRef.Lock</a> for an internal lock; it has all the same attributes (recursive locks are allowed, etc).</p>
 <dl class="params"><dt>Parameters</dt><dd>

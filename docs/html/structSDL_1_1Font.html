@@ -89,321 +89,98 @@ Inheritance diagram for SDL::Font:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1Font__inherit__graph.png" border="0" usemap="#aSDL_1_1Font_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1Font_inherit__map" id="aSDL_1_1Font_inherit__map">
-<area shape="rect" title="Handle to an owned font." alt="" coords="41,240,124,265"/>
-<area shape="rect" href="structSDL_1_1FontUnsafe.html" title="Unsafe Handle to font." alt="" coords="18,167,147,192"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
-<area shape="rect" href="structSDL_1_1FontRef.html" title="The internal structure containing font information." alt="" coords="30,93,135,119"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="Handle to an owned font." alt="" coords="59,181,141,207"/>
+<area shape="rect" href="classSDL_1_1ResourceUnique.html" title=" " alt="" coords="19,93,181,133"/>
+<area shape="poly" title=" " alt="" coords="103,147,103,181,97,181,97,147"/>
+<area shape="rect" href="classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="5,5,195,45"/>
+<area shape="poly" title=" " alt="" coords="103,59,103,93,97,93,97,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7ae1ee55dcd815b818d30d1ef8e1d2b2" id="r_a7ae1ee55dcd815b818d30d1ef8e1d2b2"><td class="memItemLeft" align="right" valign="top"><a id="a7ae1ee55dcd815b818d30d1ef8e1d2b2" name="a7ae1ee55dcd815b818d30d1ef8e1d2b2"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Font</b> ()</td></tr>
-<tr class="memdesc:a7ae1ee55dcd815b818d30d1ef8e1d2b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty <a class="el" href="structSDL_1_1Font.html" title="Handle to an owned font.">Font</a>. <br /></td></tr>
-<tr class="separator:a7ae1ee55dcd815b818d30d1ef8e1d2b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d45118025cd8648341a28ea44885b8f" id="r_a2d45118025cd8648341a28ea44885b8f"><td class="memItemLeft" align="right" valign="top"><a id="a2d45118025cd8648341a28ea44885b8f" name="a2d45118025cd8648341a28ea44885b8f"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Font</b> (TTF_Font *resource)</td></tr>
-<tr class="memdesc:a2d45118025cd8648341a28ea44885b8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a2d45118025cd8648341a28ea44885b8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeceacf62fab0fde0f857f17506a0665d" id="r_aeceacf62fab0fde0f857f17506a0665d"><td class="memItemLeft" align="right" valign="top"><a id="aeceacf62fab0fde0f857f17506a0665d" name="aeceacf62fab0fde0f857f17506a0665d"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Font</b> (const <a class="el" href="structSDL_1_1Font.html">Font</a> &amp;other)=delete</td></tr>
-<tr class="separator:aeceacf62fab0fde0f857f17506a0665d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7e46f8f0803192ceb187b98cde96e65" id="r_ac7e46f8f0803192ceb187b98cde96e65"><td class="memItemLeft" align="right" valign="top"><a id="ac7e46f8f0803192ceb187b98cde96e65" name="ac7e46f8f0803192ceb187b98cde96e65"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Font</b> (<a class="el" href="structSDL_1_1Font.html">Font</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ac7e46f8f0803192ceb187b98cde96e65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:ac7e46f8f0803192ceb187b98cde96e65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8af361c340d4e1c8d3bb4976a510c24f" id="r_a8af361c340d4e1c8d3bb4976a510c24f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Font.html#a8af361c340d4e1c8d3bb4976a510c24f">Font</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file, float ptsize)</td></tr>
-<tr class="memdesc:a8af361c340d4e1c8d3bb4976a510c24f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a font from a file, using a specified point size.  <br /></td></tr>
-<tr class="separator:a8af361c340d4e1c8d3bb4976a510c24f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbe4016824657000db3ea1b52a8ccef4" id="r_acbe4016824657000db3ea1b52a8ccef4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Font.html#acbe4016824657000db3ea1b52a8ccef4">Font</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src, float ptsize)</td></tr>
-<tr class="memdesc:acbe4016824657000db3ea1b52a8ccef4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a font from an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a>, using a specified point size.  <br /></td></tr>
-<tr class="separator:acbe4016824657000db3ea1b52a8ccef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a1982e38efa6251d51d570cad4b9a36" id="r_a7a1982e38efa6251d51d570cad4b9a36"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Font.html#a7a1982e38efa6251d51d570cad4b9a36">Font</a> (<a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> props)</td></tr>
-<tr class="memdesc:a7a1982e38efa6251d51d570cad4b9a36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a font with the specified properties.  <br /></td></tr>
-<tr class="separator:a7a1982e38efa6251d51d570cad4b9a36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a205df6cbc1b9a497fde69d072ed5d4d6" id="r_a205df6cbc1b9a497fde69d072ed5d4d6"><td class="memItemLeft" align="right" valign="top"><a id="a205df6cbc1b9a497fde69d072ed5d4d6" name="a205df6cbc1b9a497fde69d072ed5d4d6"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~Font</b> ()</td></tr>
-<tr class="memdesc:a205df6cbc1b9a497fde69d072ed5d4d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees up resource when object goes out of scope. <br /></td></tr>
-<tr class="separator:a205df6cbc1b9a497fde69d072ed5d4d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab86435135573ef9877b0b92f9de569b5" id="r_ab86435135573ef9877b0b92f9de569b5"><td class="memItemLeft" align="right" valign="top"><a id="ab86435135573ef9877b0b92f9de569b5" name="ab86435135573ef9877b0b92f9de569b5"></a>
-<a class="el" href="structSDL_1_1Font.html">Font</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1Font.html">Font</a> other)</td></tr>
-<tr class="memdesc:ab86435135573ef9877b0b92f9de569b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:ab86435135573ef9877b0b92f9de569b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5a510f45fe009c96dd2e287d06aec53" id="r_ad5a510f45fe009c96dd2e287d06aec53"><td class="memItemLeft" align="right" valign="top"><a id="ad5a510f45fe009c96dd2e287d06aec53" name="ad5a510f45fe009c96dd2e287d06aec53"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>FontUnsafe</b> (const <a class="el" href="structSDL_1_1FontRef.html">FontRef</a> &amp;other)</td></tr>
-<tr class="memdesc:ad5a510f45fe009c96dd2e287d06aec53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1FontUnsafe.html" title="Unsafe Handle to font.">FontUnsafe</a> from <a class="el" href="structSDL_1_1FontRef.html" title="The internal structure containing font information.">FontRef</a>. <br /></td></tr>
-<tr class="separator:ad5a510f45fe009c96dd2e287d06aec53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c6a86cdf7fda81002b09c21b7744d9f" id="r_a3c6a86cdf7fda81002b09c21b7744d9f"><td class="memItemLeft" align="right" valign="top"><a id="a3c6a86cdf7fda81002b09c21b7744d9f" name="a3c6a86cdf7fda81002b09c21b7744d9f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FontUnsafe</b> (const <a class="el" href="structSDL_1_1Font.html">Font</a> &amp;other)=delete</td></tr>
-<tr class="separator:a3c6a86cdf7fda81002b09c21b7744d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7636ddaa6040b502e762b7bcc9fe5832" id="r_a7636ddaa6040b502e762b7bcc9fe5832"><td class="memItemLeft" align="right" valign="top"><a id="a7636ddaa6040b502e762b7bcc9fe5832" name="a7636ddaa6040b502e762b7bcc9fe5832"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>FontUnsafe</b> (<a class="el" href="structSDL_1_1Font.html">Font</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a7636ddaa6040b502e762b7bcc9fe5832"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1FontUnsafe.html" title="Unsafe Handle to font.">FontUnsafe</a> from <a class="el" href="structSDL_1_1Font.html" title="Handle to an owned font.">Font</a>. <br /></td></tr>
-<tr class="separator:a7636ddaa6040b502e762b7bcc9fe5832"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1FontUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1FontUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1FontUnsafe.html">SDL::FontUnsafe</a></td></tr>
-<tr class="memitem:ad5a510f45fe009c96dd2e287d06aec53 inherit pub_methods_structSDL_1_1FontUnsafe" id="r_ad5a510f45fe009c96dd2e287d06aec53"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>FontUnsafe</b> (const <a class="el" href="structSDL_1_1FontRef.html">FontRef</a> &amp;other)</td></tr>
-<tr class="memdesc:ad5a510f45fe009c96dd2e287d06aec53 inherit pub_methods_structSDL_1_1FontUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1FontUnsafe.html" title="Unsafe Handle to font.">FontUnsafe</a> from <a class="el" href="structSDL_1_1FontRef.html" title="The internal structure containing font information.">FontRef</a>. <br /></td></tr>
-<tr class="separator:ad5a510f45fe009c96dd2e287d06aec53 inherit pub_methods_structSDL_1_1FontUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c6a86cdf7fda81002b09c21b7744d9f inherit pub_methods_structSDL_1_1FontUnsafe" id="r_a3c6a86cdf7fda81002b09c21b7744d9f"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>FontUnsafe</b> (const <a class="el" href="structSDL_1_1Font.html">Font</a> &amp;other)=delete</td></tr>
-<tr class="separator:a3c6a86cdf7fda81002b09c21b7744d9f inherit pub_methods_structSDL_1_1FontUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7636ddaa6040b502e762b7bcc9fe5832 inherit pub_methods_structSDL_1_1FontUnsafe" id="r_ga7636ddaa6040b502e762b7bcc9fe5832"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>FontUnsafe</b> (<a class="el" href="structSDL_1_1Font.html">Font</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ga7636ddaa6040b502e762b7bcc9fe5832 inherit pub_methods_structSDL_1_1FontUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1FontUnsafe.html" title="Unsafe Handle to font.">FontUnsafe</a> from <a class="el" href="structSDL_1_1Font.html" title="Handle to an owned font.">Font</a>. <br /></td></tr>
-<tr class="separator:ga7636ddaa6040b502e762b7bcc9fe5832 inherit pub_methods_structSDL_1_1FontUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98e97aea15abf63383dbeb39579edb3c inherit pub_methods_structSDL_1_1FontUnsafe" id="r_a98e97aea15abf63383dbeb39579edb3c"><td class="memItemLeft" align="right" valign="top">
-constexpr <a class="el" href="structSDL_1_1FontUnsafe.html">FontUnsafe</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1FontUnsafe.html">FontUnsafe</a> other)</td></tr>
-<tr class="memdesc:a98e97aea15abf63383dbeb39579edb3c inherit pub_methods_structSDL_1_1FontUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:a98e97aea15abf63383dbeb39579edb3c inherit pub_methods_structSDL_1_1FontUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd16e48f95d9bf0ff7f3519e5ba2ec6c inherit pub_methods_structSDL_1_1FontUnsafe" id="r_acd16e48f95d9bf0ff7f3519e5ba2ec6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontUnsafe.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c">Close</a> ()</td></tr>
-<tr class="memdesc:acd16e48f95d9bf0ff7f3519e5ba2ec6c inherit pub_methods_structSDL_1_1FontUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of a previously-created font.  <br /></td></tr>
-<tr class="separator:acd16e48f95d9bf0ff7f3519e5ba2ec6c inherit pub_methods_structSDL_1_1FontUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85152f508848fecf1af7cf10cbb972a8 inherit pub_methods_structSDL_1_1FontUnsafe" id="r_a85152f508848fecf1af7cf10cbb972a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontUnsafe.html#a85152f508848fecf1af7cf10cbb972a8">reset</a> (TTF_Font *newResource={})</td></tr>
-<tr class="memdesc:a85152f508848fecf1af7cf10cbb972a8 inherit pub_methods_structSDL_1_1FontUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of a previously-created font.  <br /></td></tr>
-<tr class="separator:a85152f508848fecf1af7cf10cbb972a8 inherit pub_methods_structSDL_1_1FontUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1FontRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1FontRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1FontRef.html">SDL::FontRef</a></td></tr>
-<tr class="memitem:ga6e98900dfe44fe3acb08c90ae681c0ec inherit pub_methods_structSDL_1_1FontRef" id="r_ga6e98900dfe44fe3acb08c90ae681c0ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Font.html">Font</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga6e98900dfe44fe3acb08c90ae681c0ec">Copy</a> () const</td></tr>
-<tr class="memdesc:ga6e98900dfe44fe3acb08c90ae681c0ec inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of an existing font.  <br /></td></tr>
-<tr class="separator:ga6e98900dfe44fe3acb08c90ae681c0ec inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adade55a676ef06e3cf14ec17c499cdb3 inherit pub_methods_structSDL_1_1FontRef" id="r_adade55a676ef06e3cf14ec17c499cdb3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#adade55a676ef06e3cf14ec17c499cdb3">GetProperties</a> ()</td></tr>
-<tr class="memdesc:adade55a676ef06e3cf14ec17c499cdb3 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a font.  <br /></td></tr>
-<tr class="separator:adade55a676ef06e3cf14ec17c499cdb3 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f57bc58056b2eba083d4c99c994c7dd inherit pub_methods_structSDL_1_1FontRef" id="r_a0f57bc58056b2eba083d4c99c994c7dd"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a0f57bc58056b2eba083d4c99c994c7dd">GetGeneration</a> () const</td></tr>
-<tr class="memdesc:a0f57bc58056b2eba083d4c99c994c7dd inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the font generation.  <br /></td></tr>
-<tr class="separator:a0f57bc58056b2eba083d4c99c994c7dd inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbf3e47b65907d696b97ec3f6630143e inherit pub_methods_structSDL_1_1FontRef" id="r_abbf3e47b65907d696b97ec3f6630143e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#abbf3e47b65907d696b97ec3f6630143e">AddFallback</a> (<a class="el" href="structSDL_1_1FontRef.html">FontRef</a> fallback)</td></tr>
-<tr class="memdesc:abbf3e47b65907d696b97ec3f6630143e inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a fallback font.  <br /></td></tr>
-<tr class="separator:abbf3e47b65907d696b97ec3f6630143e inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cd12a87baceabfe82ecc42a95a7e532 inherit pub_methods_structSDL_1_1FontRef" id="r_a5cd12a87baceabfe82ecc42a95a7e532"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a5cd12a87baceabfe82ecc42a95a7e532">RemoveFallback</a> (<a class="el" href="structSDL_1_1FontRef.html">FontRef</a> fallback)</td></tr>
-<tr class="memdesc:a5cd12a87baceabfe82ecc42a95a7e532 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a fallback font.  <br /></td></tr>
-<tr class="separator:a5cd12a87baceabfe82ecc42a95a7e532 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebffc1f78a96a7e4059248dc8ebc280d inherit pub_methods_structSDL_1_1FontRef" id="r_aebffc1f78a96a7e4059248dc8ebc280d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#aebffc1f78a96a7e4059248dc8ebc280d">ClearFallbacks</a> ()</td></tr>
-<tr class="memdesc:aebffc1f78a96a7e4059248dc8ebc280d inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all fallback fonts.  <br /></td></tr>
-<tr class="separator:aebffc1f78a96a7e4059248dc8ebc280d inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b020d46e5cbcfb0052194abf872c96c inherit pub_methods_structSDL_1_1FontRef" id="r_a1b020d46e5cbcfb0052194abf872c96c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a1b020d46e5cbcfb0052194abf872c96c">SetSize</a> (float ptsize)</td></tr>
-<tr class="memdesc:a1b020d46e5cbcfb0052194abf872c96c inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a font's size dynamically.  <br /></td></tr>
-<tr class="separator:a1b020d46e5cbcfb0052194abf872c96c inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2549af2c155873d45717d44083f7e33 inherit pub_methods_structSDL_1_1FontRef" id="r_ac2549af2c155873d45717d44083f7e33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#ac2549af2c155873d45717d44083f7e33">SetSizeDPI</a> (float ptsize, int hdpi, int vdpi)</td></tr>
-<tr class="memdesc:ac2549af2c155873d45717d44083f7e33 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set font size dynamically with target resolutions, in dots per inch.  <br /></td></tr>
-<tr class="separator:ac2549af2c155873d45717d44083f7e33 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd703b35ab1b865b26917e2c671572c2 inherit pub_methods_structSDL_1_1FontRef" id="r_acd703b35ab1b865b26917e2c671572c2"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#acd703b35ab1b865b26917e2c671572c2">GetSize</a> () const</td></tr>
-<tr class="memdesc:acd703b35ab1b865b26917e2c671572c2 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a font.  <br /></td></tr>
-<tr class="separator:acd703b35ab1b865b26917e2c671572c2 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac805d679c69228c9c4d311b0f17512da inherit pub_methods_structSDL_1_1FontRef" id="r_ac805d679c69228c9c4d311b0f17512da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#ac805d679c69228c9c4d311b0f17512da">GetDPI</a> (int *hdpi, int *vdpi) const</td></tr>
-<tr class="memdesc:ac805d679c69228c9c4d311b0f17512da inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get font target resolutions, in dots per inch.  <br /></td></tr>
-<tr class="separator:ac805d679c69228c9c4d311b0f17512da inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf86044814f2f7814131c9ef57d88834 inherit pub_methods_structSDL_1_1FontRef" id="r_adf86044814f2f7814131c9ef57d88834"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#adf86044814f2f7814131c9ef57d88834">SetStyle</a> (<a class="el" href="group__CategorySDLTTF.html#ga617bd112933d7e98855835b1100825fa">FontStyleFlags</a> style)</td></tr>
-<tr class="memdesc:adf86044814f2f7814131c9ef57d88834 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a font's current style.  <br /></td></tr>
-<tr class="separator:adf86044814f2f7814131c9ef57d88834 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f4dc639c4dbddfb29568768228c8511 inherit pub_methods_structSDL_1_1FontRef" id="r_a6f4dc639c4dbddfb29568768228c8511"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga617bd112933d7e98855835b1100825fa">FontStyleFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a6f4dc639c4dbddfb29568768228c8511">GetStyle</a> () const</td></tr>
-<tr class="memdesc:a6f4dc639c4dbddfb29568768228c8511 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a font's current style.  <br /></td></tr>
-<tr class="separator:a6f4dc639c4dbddfb29568768228c8511 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78dabf0f098f703cbfd0fd7fedf31118 inherit pub_methods_structSDL_1_1FontRef" id="r_a78dabf0f098f703cbfd0fd7fedf31118"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a78dabf0f098f703cbfd0fd7fedf31118">SetOutline</a> (int outline)</td></tr>
-<tr class="memdesc:a78dabf0f098f703cbfd0fd7fedf31118 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a font's current outline.  <br /></td></tr>
-<tr class="separator:a78dabf0f098f703cbfd0fd7fedf31118 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38f57b777bade855728ae5864d4e5022 inherit pub_methods_structSDL_1_1FontRef" id="r_a38f57b777bade855728ae5864d4e5022"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a38f57b777bade855728ae5864d4e5022">GetOutline</a> () const</td></tr>
-<tr class="memdesc:a38f57b777bade855728ae5864d4e5022 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a font's current outline.  <br /></td></tr>
-<tr class="separator:a38f57b777bade855728ae5864d4e5022 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad39d9c28a37f9d33dfd122c34c4a5388 inherit pub_methods_structSDL_1_1FontRef" id="r_ad39d9c28a37f9d33dfd122c34c4a5388"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#ad39d9c28a37f9d33dfd122c34c4a5388">SetHinting</a> (<a class="el" href="group__CategorySDLTTF.html#ga45c17da1112591a8709c37afb95e7dba">HintingFlags</a> hinting)</td></tr>
-<tr class="memdesc:ad39d9c28a37f9d33dfd122c34c4a5388 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a font's current hinter setting.  <br /></td></tr>
-<tr class="separator:ad39d9c28a37f9d33dfd122c34c4a5388 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71dcf3840297d1d29ef3cd786ed38078 inherit pub_methods_structSDL_1_1FontRef" id="r_a71dcf3840297d1d29ef3cd786ed38078"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a71dcf3840297d1d29ef3cd786ed38078">GetNumFaces</a> () const</td></tr>
-<tr class="memdesc:a71dcf3840297d1d29ef3cd786ed38078 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the number of faces of a font.  <br /></td></tr>
-<tr class="separator:a71dcf3840297d1d29ef3cd786ed38078 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a474613ed62591a5155e6c57fafb850d5 inherit pub_methods_structSDL_1_1FontRef" id="r_a474613ed62591a5155e6c57fafb850d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga45c17da1112591a8709c37afb95e7dba">HintingFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a474613ed62591a5155e6c57fafb850d5">GetHinting</a> () const</td></tr>
-<tr class="memdesc:a474613ed62591a5155e6c57fafb850d5 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a font's current FreeType hinter setting.  <br /></td></tr>
-<tr class="separator:a474613ed62591a5155e6c57fafb850d5 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79ad9447eff298b575747104b02d5760 inherit pub_methods_structSDL_1_1FontRef" id="r_a79ad9447eff298b575747104b02d5760"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a79ad9447eff298b575747104b02d5760">SetSDF</a> (bool enabled)</td></tr>
-<tr class="memdesc:a79ad9447eff298b575747104b02d5760 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable Signed Distance Field rendering for a font.  <br /></td></tr>
-<tr class="separator:a79ad9447eff298b575747104b02d5760 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b5fe13a75fb6e4fbe48f52b83e86a20 inherit pub_methods_structSDL_1_1FontRef" id="r_a9b5fe13a75fb6e4fbe48f52b83e86a20"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a9b5fe13a75fb6e4fbe48f52b83e86a20">GetSDF</a> () const</td></tr>
-<tr class="memdesc:a9b5fe13a75fb6e4fbe48f52b83e86a20 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query whether Signed Distance Field rendering is enabled for a font.  <br /></td></tr>
-<tr class="separator:a9b5fe13a75fb6e4fbe48f52b83e86a20 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf2b7ba191fbf3b00ea08e6ac7b77897 inherit pub_methods_structSDL_1_1FontRef" id="r_adf2b7ba191fbf3b00ea08e6ac7b77897"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#adf2b7ba191fbf3b00ea08e6ac7b77897">GetWeight</a> () const</td></tr>
-<tr class="memdesc:adf2b7ba191fbf3b00ea08e6ac7b77897 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a font's weight, in terms of the lightness/heaviness of the strokes.  <br /></td></tr>
-<tr class="separator:adf2b7ba191fbf3b00ea08e6ac7b77897 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dba15359681e41f4fcf7c0b41d79519 inherit pub_methods_structSDL_1_1FontRef" id="r_a3dba15359681e41f4fcf7c0b41d79519"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a3dba15359681e41f4fcf7c0b41d79519">SetWrapAlignment</a> (<a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a> align)</td></tr>
-<tr class="memdesc:a3dba15359681e41f4fcf7c0b41d79519 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a font's current wrap alignment option.  <br /></td></tr>
-<tr class="separator:a3dba15359681e41f4fcf7c0b41d79519 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a291db9e7dcdee7edd1e7afc193e21e84 inherit pub_methods_structSDL_1_1FontRef" id="r_a291db9e7dcdee7edd1e7afc193e21e84"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a291db9e7dcdee7edd1e7afc193e21e84">GetWrapAlignment</a> () const</td></tr>
-<tr class="memdesc:a291db9e7dcdee7edd1e7afc193e21e84 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a font's current wrap alignment option.  <br /></td></tr>
-<tr class="separator:a291db9e7dcdee7edd1e7afc193e21e84 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75a57b5264dbb7263ff36ef116d67a27 inherit pub_methods_structSDL_1_1FontRef" id="r_a75a57b5264dbb7263ff36ef116d67a27"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a75a57b5264dbb7263ff36ef116d67a27">GetHeight</a> () const</td></tr>
-<tr class="memdesc:a75a57b5264dbb7263ff36ef116d67a27 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the total height of a font.  <br /></td></tr>
-<tr class="separator:a75a57b5264dbb7263ff36ef116d67a27 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81cc7f2043ed484b96ef8575632f59af inherit pub_methods_structSDL_1_1FontRef" id="r_a81cc7f2043ed484b96ef8575632f59af"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a81cc7f2043ed484b96ef8575632f59af">GetAscent</a> () const</td></tr>
-<tr class="memdesc:a81cc7f2043ed484b96ef8575632f59af inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the offset from the baseline to the top of a font.  <br /></td></tr>
-<tr class="separator:a81cc7f2043ed484b96ef8575632f59af inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a1b914a6799876ea079307656603e63 inherit pub_methods_structSDL_1_1FontRef" id="r_a9a1b914a6799876ea079307656603e63"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a9a1b914a6799876ea079307656603e63">GetDescent</a> () const</td></tr>
-<tr class="memdesc:a9a1b914a6799876ea079307656603e63 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the offset from the baseline to the bottom of a font.  <br /></td></tr>
-<tr class="separator:a9a1b914a6799876ea079307656603e63 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ab9b52645b497d75ec3f0a3bf97ef00 inherit pub_methods_structSDL_1_1FontRef" id="r_a3ab9b52645b497d75ec3f0a3bf97ef00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a3ab9b52645b497d75ec3f0a3bf97ef00">SetLineSkip</a> (int lineskip)</td></tr>
-<tr class="memdesc:a3ab9b52645b497d75ec3f0a3bf97ef00 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the spacing between lines of text for a font.  <br /></td></tr>
-<tr class="separator:a3ab9b52645b497d75ec3f0a3bf97ef00 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72f74ffd2596246e065b13d44b121027 inherit pub_methods_structSDL_1_1FontRef" id="r_a72f74ffd2596246e065b13d44b121027"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a72f74ffd2596246e065b13d44b121027">GetLineSkip</a> () const</td></tr>
-<tr class="memdesc:a72f74ffd2596246e065b13d44b121027 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the spacing between lines of text for a font.  <br /></td></tr>
-<tr class="separator:a72f74ffd2596246e065b13d44b121027 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e9cb909d2520f0f219e750dccf2da3a inherit pub_methods_structSDL_1_1FontRef" id="r_a3e9cb909d2520f0f219e750dccf2da3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a3e9cb909d2520f0f219e750dccf2da3a">SetKerning</a> (bool enabled)</td></tr>
-<tr class="memdesc:a3e9cb909d2520f0f219e750dccf2da3a inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set if kerning is enabled for a font.  <br /></td></tr>
-<tr class="separator:a3e9cb909d2520f0f219e750dccf2da3a inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a147a19adce94166f76baf00c89720692 inherit pub_methods_structSDL_1_1FontRef" id="r_a147a19adce94166f76baf00c89720692"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a147a19adce94166f76baf00c89720692">GetKerning</a> () const</td></tr>
-<tr class="memdesc:a147a19adce94166f76baf00c89720692 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query whether or not kerning is enabled for a font.  <br /></td></tr>
-<tr class="separator:a147a19adce94166f76baf00c89720692 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc86da60d5e92fe4b03042e9514122f4 inherit pub_methods_structSDL_1_1FontRef" id="r_abc86da60d5e92fe4b03042e9514122f4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#abc86da60d5e92fe4b03042e9514122f4">IsFixedWidth</a> () const</td></tr>
-<tr class="memdesc:abc86da60d5e92fe4b03042e9514122f4 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query whether a font is fixed-width.  <br /></td></tr>
-<tr class="separator:abc86da60d5e92fe4b03042e9514122f4 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acab0899df75f683809d753d4ad774646 inherit pub_methods_structSDL_1_1FontRef" id="r_acab0899df75f683809d753d4ad774646"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#acab0899df75f683809d753d4ad774646">IsScalable</a> () const</td></tr>
-<tr class="memdesc:acab0899df75f683809d753d4ad774646 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query whether a font is scalable or not.  <br /></td></tr>
-<tr class="separator:acab0899df75f683809d753d4ad774646 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae80b0d3939737bd141f5ae183bd3e720 inherit pub_methods_structSDL_1_1FontRef" id="r_ae80b0d3939737bd141f5ae183bd3e720"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#ae80b0d3939737bd141f5ae183bd3e720">GetFamilyName</a> () const</td></tr>
-<tr class="memdesc:ae80b0d3939737bd141f5ae183bd3e720 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a font's family name.  <br /></td></tr>
-<tr class="separator:ae80b0d3939737bd141f5ae183bd3e720 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c19f38c5fef645b7a9222dcb39d0d1e inherit pub_methods_structSDL_1_1FontRef" id="r_a0c19f38c5fef645b7a9222dcb39d0d1e"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a0c19f38c5fef645b7a9222dcb39d0d1e">GetStyleName</a> () const</td></tr>
-<tr class="memdesc:a0c19f38c5fef645b7a9222dcb39d0d1e inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a font's style name.  <br /></td></tr>
-<tr class="separator:a0c19f38c5fef645b7a9222dcb39d0d1e inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5e3050c9435a9af553a356d5d97195e inherit pub_methods_structSDL_1_1FontRef" id="r_ad5e3050c9435a9af553a356d5d97195e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#ad5e3050c9435a9af553a356d5d97195e">SetDirection</a> (<a class="el" href="group__CategorySDLTTF.html#gaf7bd9c3d8e546a09ac49f2f82eb16f3a">Direction</a> direction)</td></tr>
-<tr class="memdesc:ad5e3050c9435a9af553a356d5d97195e inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the direction to be used for text shaping by a font.  <br /></td></tr>
-<tr class="separator:ad5e3050c9435a9af553a356d5d97195e inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00e79d46868eb84d6709350f820a7907 inherit pub_methods_structSDL_1_1FontRef" id="r_a00e79d46868eb84d6709350f820a7907"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#gaf7bd9c3d8e546a09ac49f2f82eb16f3a">Direction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a00e79d46868eb84d6709350f820a7907">GetDirection</a> () const</td></tr>
-<tr class="memdesc:a00e79d46868eb84d6709350f820a7907 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the direction to be used for text shaping by a font.  <br /></td></tr>
-<tr class="separator:a00e79d46868eb84d6709350f820a7907 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71cf827cb7eb0062b84c8e7af7abba1d inherit pub_methods_structSDL_1_1FontRef" id="r_a71cf827cb7eb0062b84c8e7af7abba1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a71cf827cb7eb0062b84c8e7af7abba1d">SetScript</a> (Uint32 script)</td></tr>
-<tr class="memdesc:a71cf827cb7eb0062b84c8e7af7abba1d inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the script to be used for text shaping by a font.  <br /></td></tr>
-<tr class="separator:a71cf827cb7eb0062b84c8e7af7abba1d inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1fb998f95eb9682bfb963bc65e56c29 inherit pub_methods_structSDL_1_1FontRef" id="r_ab1fb998f95eb9682bfb963bc65e56c29"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#ab1fb998f95eb9682bfb963bc65e56c29">GetScript</a> () const</td></tr>
-<tr class="memdesc:ab1fb998f95eb9682bfb963bc65e56c29 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the script used for text shaping a font.  <br /></td></tr>
-<tr class="separator:ab1fb998f95eb9682bfb963bc65e56c29 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae514e758e318f8853476ac89673b1cd2 inherit pub_methods_structSDL_1_1FontRef" id="r_ae514e758e318f8853476ac89673b1cd2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#ae514e758e318f8853476ac89673b1cd2">SetLanguage</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> language_bcp47)</td></tr>
-<tr class="memdesc:ae514e758e318f8853476ac89673b1cd2 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set language to be used for text shaping by a font.  <br /></td></tr>
-<tr class="separator:ae514e758e318f8853476ac89673b1cd2 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac406f67d22567c3f95cda08faec46771 inherit pub_methods_structSDL_1_1FontRef" id="r_ac406f67d22567c3f95cda08faec46771"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#ac406f67d22567c3f95cda08faec46771">HasGlyph</a> (Uint32 ch) const</td></tr>
-<tr class="memdesc:ac406f67d22567c3f95cda08faec46771 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether a glyph is provided by the font for a UNICODE codepoint.  <br /></td></tr>
-<tr class="separator:ac406f67d22567c3f95cda08faec46771 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7faee82358964fa3964d10a70c885f04 inherit pub_methods_structSDL_1_1FontRef" id="r_a7faee82358964fa3964d10a70c885f04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a7faee82358964fa3964d10a70c885f04">GetGlyphImage</a> (Uint32 ch, <a class="el" href="group__CategorySDLTTF.html#ga98bfeba14cf51c2601ce84f001e074b8">ImageType</a> *image_type=nullptr) const</td></tr>
-<tr class="memdesc:a7faee82358964fa3964d10a70c885f04 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pixel image for a UNICODE codepoint.  <br /></td></tr>
-<tr class="separator:a7faee82358964fa3964d10a70c885f04 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2358405de45788d9ce09dc13633c7bb inherit pub_methods_structSDL_1_1FontRef" id="r_aa2358405de45788d9ce09dc13633c7bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#aa2358405de45788d9ce09dc13633c7bb">GetGlyphImageForIndex</a> (Uint32 glyph_index, <a class="el" href="group__CategorySDLTTF.html#ga98bfeba14cf51c2601ce84f001e074b8">ImageType</a> *image_type=nullptr) const</td></tr>
-<tr class="memdesc:aa2358405de45788d9ce09dc13633c7bb inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pixel image for a character index.  <br /></td></tr>
-<tr class="separator:aa2358405de45788d9ce09dc13633c7bb inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21268c45f0b6bd1a62a880b7187bc3f7 inherit pub_methods_structSDL_1_1FontRef" id="r_a21268c45f0b6bd1a62a880b7187bc3f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a21268c45f0b6bd1a62a880b7187bc3f7">GetGlyphMetrics</a> (Uint32 ch, int *minx, int *maxx, int *miny, int *maxy, int *advance) const</td></tr>
-<tr class="memdesc:a21268c45f0b6bd1a62a880b7187bc3f7 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the metrics (dimensions) of a font's glyph for a UNICODE codepoint.  <br /></td></tr>
-<tr class="separator:a21268c45f0b6bd1a62a880b7187bc3f7 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0986a1b846fd64136f2a7d6bcb4b0889 inherit pub_methods_structSDL_1_1FontRef" id="r_a0986a1b846fd64136f2a7d6bcb4b0889"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a0986a1b846fd64136f2a7d6bcb4b0889">GetGlyphKerning</a> (Uint32 previous_ch, Uint32 ch) const</td></tr>
-<tr class="memdesc:a0986a1b846fd64136f2a7d6bcb4b0889 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the kerning size between the glyphs of two UNICODE codepoints.  <br /></td></tr>
-<tr class="separator:a0986a1b846fd64136f2a7d6bcb4b0889 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a186b55835d9cbaad136869ae0c0a5d60 inherit pub_methods_structSDL_1_1FontRef" id="r_a186b55835d9cbaad136869ae0c0a5d60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a186b55835d9cbaad136869ae0c0a5d60">GetStringSize</a> (std::string_view text) const</td></tr>
-<tr class="memdesc:a186b55835d9cbaad136869ae0c0a5d60 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the dimensions of a rendered string of UTF-8 text.  <br /></td></tr>
-<tr class="separator:a186b55835d9cbaad136869ae0c0a5d60 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af56adfb7d9b8041cc66c4f6c1b9cf439 inherit pub_methods_structSDL_1_1FontRef" id="r_af56adfb7d9b8041cc66c4f6c1b9cf439"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#af56adfb7d9b8041cc66c4f6c1b9cf439">GetStringSize</a> (std::string_view text, int *w, int *h) const</td></tr>
-<tr class="memdesc:af56adfb7d9b8041cc66c4f6c1b9cf439 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the dimensions of a rendered string of UTF-8 text.  <br /></td></tr>
-<tr class="separator:af56adfb7d9b8041cc66c4f6c1b9cf439 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a889007e6665d2d6f2bcff34e240d96c7 inherit pub_methods_structSDL_1_1FontRef" id="r_a889007e6665d2d6f2bcff34e240d96c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a889007e6665d2d6f2bcff34e240d96c7">GetStringSizeWrapped</a> (std::string_view text, int wrap_width) const</td></tr>
-<tr class="memdesc:a889007e6665d2d6f2bcff34e240d96c7 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the dimensions of a rendered string of UTF-8 text.  <br /></td></tr>
-<tr class="separator:a889007e6665d2d6f2bcff34e240d96c7 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e2ee50da2e8f7163856cf8031d47fe3 inherit pub_methods_structSDL_1_1FontRef" id="r_a0e2ee50da2e8f7163856cf8031d47fe3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a0e2ee50da2e8f7163856cf8031d47fe3">GetStringSizeWrapped</a> (std::string_view text, int wrap_width, int *w, int *h) const</td></tr>
-<tr class="memdesc:a0e2ee50da2e8f7163856cf8031d47fe3 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the dimensions of a rendered string of UTF-8 text.  <br /></td></tr>
-<tr class="separator:a0e2ee50da2e8f7163856cf8031d47fe3 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0feb5ba458ea229b62ee932f1db2fe0 inherit pub_methods_structSDL_1_1FontRef" id="r_ae0feb5ba458ea229b62ee932f1db2fe0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#ae0feb5ba458ea229b62ee932f1db2fe0">MeasureString</a> (std::string_view text, int max_width, int *measured_width, size_t *measured_length) const</td></tr>
-<tr class="memdesc:ae0feb5ba458ea229b62ee932f1db2fe0 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate how much of a UTF-8 string will fit in a given width.  <br /></td></tr>
-<tr class="separator:ae0feb5ba458ea229b62ee932f1db2fe0 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9eaacdc286c066b007282d61821a5ee2 inherit pub_methods_structSDL_1_1FontRef" id="r_a9eaacdc286c066b007282d61821a5ee2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a9eaacdc286c066b007282d61821a5ee2">RenderText_Solid</a> (std::string_view text, <a class="el" href="structSDL_1_1Color.html">Color</a> fg) const</td></tr>
-<tr class="memdesc:a9eaacdc286c066b007282d61821a5ee2 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render UTF-8 text at fast quality to a new 8-bit surface.  <br /></td></tr>
-<tr class="separator:a9eaacdc286c066b007282d61821a5ee2 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae668286f9b7ff25cde109e6e7208f793 inherit pub_methods_structSDL_1_1FontRef" id="r_ae668286f9b7ff25cde109e6e7208f793"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#ae668286f9b7ff25cde109e6e7208f793">RenderText_Solid_Wrapped</a> (std::string_view text, <a class="el" href="structSDL_1_1Color.html">Color</a> fg, int wrapLength) const</td></tr>
-<tr class="memdesc:ae668286f9b7ff25cde109e6e7208f793 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render word-wrapped UTF-8 text at fast quality to a new 8-bit surface.  <br /></td></tr>
-<tr class="separator:ae668286f9b7ff25cde109e6e7208f793 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae12204024f945be5a0ba89f5965374f6 inherit pub_methods_structSDL_1_1FontRef" id="r_ae12204024f945be5a0ba89f5965374f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#ae12204024f945be5a0ba89f5965374f6">RenderGlyph_Solid</a> (Uint32 ch, <a class="el" href="structSDL_1_1Color.html">Color</a> fg) const</td></tr>
-<tr class="memdesc:ae12204024f945be5a0ba89f5965374f6 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a single 32-bit glyph at fast quality to a new 8-bit surface.  <br /></td></tr>
-<tr class="separator:ae12204024f945be5a0ba89f5965374f6 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0124aea2aba766e416868d41b45eaa45 inherit pub_methods_structSDL_1_1FontRef" id="r_a0124aea2aba766e416868d41b45eaa45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a0124aea2aba766e416868d41b45eaa45">RenderText_Shaded</a> (std::string_view text, <a class="el" href="structSDL_1_1Color.html">Color</a> fg, <a class="el" href="structSDL_1_1Color.html">Color</a> bg) const</td></tr>
-<tr class="memdesc:a0124aea2aba766e416868d41b45eaa45 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render UTF-8 text at high quality to a new 8-bit surface.  <br /></td></tr>
-<tr class="separator:a0124aea2aba766e416868d41b45eaa45 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93f981dd782e11da1ea2ba02316c2af1 inherit pub_methods_structSDL_1_1FontRef" id="r_a93f981dd782e11da1ea2ba02316c2af1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a93f981dd782e11da1ea2ba02316c2af1">RenderText_Shaded_Wrapped</a> (std::string_view text, <a class="el" href="structSDL_1_1Color.html">Color</a> fg, <a class="el" href="structSDL_1_1Color.html">Color</a> bg, int wrap_width) const</td></tr>
-<tr class="memdesc:a93f981dd782e11da1ea2ba02316c2af1 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render word-wrapped UTF-8 text at high quality to a new 8-bit surface.  <br /></td></tr>
-<tr class="separator:a93f981dd782e11da1ea2ba02316c2af1 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a042565d9ebe5177056518747a467af57 inherit pub_methods_structSDL_1_1FontRef" id="r_a042565d9ebe5177056518747a467af57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a042565d9ebe5177056518747a467af57">RenderGlyph_Shaded</a> (Uint32 ch, <a class="el" href="structSDL_1_1Color.html">Color</a> fg, <a class="el" href="structSDL_1_1Color.html">Color</a> bg) const</td></tr>
-<tr class="memdesc:a042565d9ebe5177056518747a467af57 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a single UNICODE codepoint at high quality to a new 8-bit surface.  <br /></td></tr>
-<tr class="separator:a042565d9ebe5177056518747a467af57 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a647bb1a0e7833ded8bdd68504c15b527 inherit pub_methods_structSDL_1_1FontRef" id="r_a647bb1a0e7833ded8bdd68504c15b527"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a647bb1a0e7833ded8bdd68504c15b527">RenderText_Blended</a> (std::string_view text, <a class="el" href="structSDL_1_1Color.html">Color</a> fg) const</td></tr>
-<tr class="memdesc:a647bb1a0e7833ded8bdd68504c15b527 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render UTF-8 text at high quality to a new ARGB surface.  <br /></td></tr>
-<tr class="separator:a647bb1a0e7833ded8bdd68504c15b527 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7078c906b8546ceab58b6fa0697e2be9 inherit pub_methods_structSDL_1_1FontRef" id="r_a7078c906b8546ceab58b6fa0697e2be9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a7078c906b8546ceab58b6fa0697e2be9">RenderText_Blended_Wrapped</a> (std::string_view text, <a class="el" href="structSDL_1_1Color.html">Color</a> fg, int wrap_width) const</td></tr>
-<tr class="memdesc:a7078c906b8546ceab58b6fa0697e2be9 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render word-wrapped UTF-8 text at high quality to a new ARGB surface.  <br /></td></tr>
-<tr class="separator:a7078c906b8546ceab58b6fa0697e2be9 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca23b4a27dad9aeabf96a46bb94a15f2 inherit pub_methods_structSDL_1_1FontRef" id="r_aca23b4a27dad9aeabf96a46bb94a15f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#aca23b4a27dad9aeabf96a46bb94a15f2">RenderGlyph_Blended</a> (Uint32 ch, <a class="el" href="structSDL_1_1Color.html">Color</a> fg) const</td></tr>
-<tr class="memdesc:aca23b4a27dad9aeabf96a46bb94a15f2 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a single UNICODE codepoint at high quality to a new ARGB surface.  <br /></td></tr>
-<tr class="separator:aca23b4a27dad9aeabf96a46bb94a15f2 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b47a311b5c56555163b204eb47a3204 inherit pub_methods_structSDL_1_1FontRef" id="r_a4b47a311b5c56555163b204eb47a3204"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a4b47a311b5c56555163b204eb47a3204">RenderText_LCD</a> (std::string_view text, <a class="el" href="structSDL_1_1Color.html">Color</a> fg, <a class="el" href="structSDL_1_1Color.html">Color</a> bg) const</td></tr>
-<tr class="memdesc:a4b47a311b5c56555163b204eb47a3204 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render UTF-8 text at LCD subpixel quality to a new ARGB surface.  <br /></td></tr>
-<tr class="separator:a4b47a311b5c56555163b204eb47a3204 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add4a598c1ff0e204fec356209f3270fb inherit pub_methods_structSDL_1_1FontRef" id="r_add4a598c1ff0e204fec356209f3270fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#add4a598c1ff0e204fec356209f3270fb">RenderText_LCD_Wrapped</a> (std::string_view text, <a class="el" href="structSDL_1_1Color.html">Color</a> fg, <a class="el" href="structSDL_1_1Color.html">Color</a> bg, int wrap_width) const</td></tr>
-<tr class="memdesc:add4a598c1ff0e204fec356209f3270fb inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render word-wrapped UTF-8 text at LCD subpixel quality to a new ARGB surface.  <br /></td></tr>
-<tr class="separator:add4a598c1ff0e204fec356209f3270fb inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3821e51df6fc581bb01549f9c095b7ca inherit pub_methods_structSDL_1_1FontRef" id="r_a3821e51df6fc581bb01549f9c095b7ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a3821e51df6fc581bb01549f9c095b7ca">RenderGlyph_LCD</a> (Uint32 ch, <a class="el" href="structSDL_1_1Color.html">Color</a> fg, <a class="el" href="structSDL_1_1Color.html">Color</a> bg) const</td></tr>
-<tr class="memdesc:a3821e51df6fc581bb01549f9c095b7ca inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a single UNICODE codepoint at LCD subpixel quality to a new ARGB surface.  <br /></td></tr>
-<tr class="separator:a3821e51df6fc581bb01549f9c095b7ca inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1FontRef" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1FontRef" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1FontRef" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; TTF_Font * &gt;</a></td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (TTF_Font * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:ac300c815a74b3cd8162ba99963279e11" id="r_ac300c815a74b3cd8162ba99963279e11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Font.html#ac300c815a74b3cd8162ba99963279e11">Close</a> ()</td></tr>
+<tr class="memdesc:ac300c815a74b3cd8162ba99963279e11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of a previously-created font.  <br /></td></tr>
+<tr class="separator:ac300c815a74b3cd8162ba99963279e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top"><a id="a8eff4b7518626ecb1d6ee2e8f2662301" name="a8eff4b7518626ecb1d6ee2e8f2662301"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1f58f0a54f567d59a39c1bbf4c58279" id="r_ab1f58f0a54f567d59a39c1bbf4c58279"><td class="memItemLeft" align="right" valign="top"><a id="ab1f58f0a54f567d59a39c1bbf4c58279" name="ab1f58f0a54f567d59a39c1bbf4c58279"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value, DELETER deleter={})</td></tr>
+<tr class="memdesc:ab1f58f0a54f567d59a39c1bbf4c58279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:ab1f58f0a54f567d59a39c1bbf4c58279"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top"><a id="abc1bcf199c285e07c14ebc87b5abf6f2" name="abc1bcf199c285e07c14ebc87b5abf6f2"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top"><a id="a59d90c89aac04332912bb8f55c387aae" name="a59d90c89aac04332912bb8f55c387aae"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1ResourceUnique"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourceUnique')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourceUnique.html">SDL::ResourceUnique&lt; FontRef &gt;</a></td></tr>
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1f58f0a54f567d59a39c1bbf4c58279 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_ab1f58f0a54f567d59a39c1bbf4c58279"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value, <a class="el" href="structSDL_1_1DefaultDeleter.html">DefaultDeleter</a>&lt; <a class="el" href="structSDL_1_1FontRef.html">FontRef</a> &gt; deleter={})</td></tr>
+<tr class="memdesc:ab1f58f0a54f567d59a39c1bbf4c58279 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:ab1f58f0a54f567d59a39c1bbf4c58279 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_afbc5563c17624104d9c263f5003d57d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ResourceUnique.html#afbc5563c17624104d9c263f5003d57d5">~ResourceUnique</a> ()</td></tr>
+<tr class="memdesc:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
+<tr class="separator:afbc5563c17624104d9c263f5003d57d5 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a9f10a6343315fe1f5ca553284073ecd9"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> other)</td></tr>
+<tr class="memdesc:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:a9f10a6343315fe1f5ca553284073ecd9 inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a4b7b571048747a5dfbef3cbe891cc15e"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr>
+<tr class="memdesc:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the value, destroying the resource if not nullptr. <br /></td></tr>
+<tr class="separator:a4b7b571048747a5dfbef3cbe891cc15e inherit pub_methods_classSDL_1_1ResourceUnique"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a0506906144295f6b398dc3580bcb336f"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
-<tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
-<tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource" id="r_ad2a82bc79a7dae41ceb1a25647ae1c0d"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
-<tr class="memdesc:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource" id="r_ab110e6568060a7ae58ab7b29ad68f7fc"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if not null. <br /></td></tr>
+<tr class="separator:a0506906144295f6b398dc3580bcb336f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a747ef455db62064bb3eebf43b203cad2"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1ResourcePtrBase.html">ResourcePtrBase</a> &amp;) const =default</td></tr>
+<tr class="memdesc:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a747ef455db62064bb3eebf43b203cad2 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_ad1d8089cd65f38c3e49d0ca4fa676a52"><td class="memItemLeft" align="right" valign="top">
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t) const</td></tr>
-<tr class="memdesc:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource" id="r_ab273a0a0285b8eed1f70f5d3759f4167"><td class="memItemLeft" align="right" valign="top">
-constexpr TTF_Font *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
-<tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource" id="r_a795922875f43cc42165896b02af59d0c"><td class="memItemLeft" align="right" valign="top">
-constexpr TTF_Font *&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> (TTF_Font * newResource={})</td></tr>
-<tr class="memdesc:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource and empties or replace value. <br /></td></tr>
-<tr class="separator:a795922875f43cc42165896b02af59d0c inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top">
-constexpr const TTF_Font *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top">
-constexpr TTF_Font *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
-<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:ad1d8089cd65f38c3e49d0ca4fa676a52 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a8a2a791f2fc677f3554798a0fb8572e4"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
+<tr class="memdesc:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a8a2a791f2fc677f3554798a0fb8572e4 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a1415d2a130f807673b4f8db3047d95a7"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> () const</td></tr>
+<tr class="memdesc:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets reference. <br /></td></tr>
+<tr class="separator:a1415d2a130f807673b4f8db3047d95a7 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a5d2a7a6a1c79ec493548f8bd30ff6c70"><td class="memItemLeft" align="right" valign="top">
+constexpr const <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
+<tr class="memdesc:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets addressable reference. <br /></td></tr>
+<tr class="separator:a5d2a7a6a1c79ec493548f8bd30ff6c70 inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a493a79a3a6eafeead35454ff1076aa9a"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
+<tr class="memdesc:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets addressable reference. <br /></td></tr>
+<tr class="separator:a493a79a3a6eafeead35454ff1076aa9a inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a7d506c070af513ecfa781e7fa3bf893f"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="memdesc:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference. <br /></td></tr>
+<tr class="separator:a7d506c070af513ecfa781e7fa3bf893f inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase" id="r_a96c074dae2de8cb1812008baaa46f1db"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
+<tr class="memdesc:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reference and reset this. <br /></td></tr>
+<tr class="separator:a96c074dae2de8cb1812008baaa46f1db inherit pub_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -416,27 +193,38 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a79fb7090503e9e09403ad24de44c53c2" id="r_a79fb7090503e9e09403ad24de44c53c2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Font.html">Font</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Font.html#a79fb7090503e9e09403ad24de44c53c2">OpenWithProperties</a> (<a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> props)</td></tr>
 <tr class="memdesc:a79fb7090503e9e09403ad24de44c53c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a font with the specified properties.  <br /></td></tr>
 <tr class="separator:a79fb7090503e9e09403ad24de44c53c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_static_methods_structSDL_1_1FontRef"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_structSDL_1_1FontRef')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="structSDL_1_1FontRef.html">SDL::FontRef</a></td></tr>
-<tr class="memitem:a163fbc6b957ebfab54f9eba6d35a693c inherit pub_static_methods_structSDL_1_1FontRef" id="r_a163fbc6b957ebfab54f9eba6d35a693c"><td class="memItemLeft" align="right" valign="top">static Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a163fbc6b957ebfab54f9eba6d35a693c">GetGlyphScript</a> (Uint32 ch)</td></tr>
-<tr class="memdesc:a163fbc6b957ebfab54f9eba6d35a693c inherit pub_static_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the script used by a 32-bit codepoint.  <br /></td></tr>
-<tr class="separator:a163fbc6b957ebfab54f9eba6d35a693c inherit pub_static_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_methods_structSDL_1_1FontRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1FontRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1FontRef.html">SDL::FontRef</a></td></tr>
-<tr class="memitem:acd16e48f95d9bf0ff7f3519e5ba2ec6c inherit pro_methods_structSDL_1_1FontRef" id="r_acd16e48f95d9bf0ff7f3519e5ba2ec6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c">Close</a> ()</td></tr>
-<tr class="memdesc:acd16e48f95d9bf0ff7f3519e5ba2ec6c inherit pro_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of a previously-created font.  <br /></td></tr>
-<tr class="separator:acd16e48f95d9bf0ff7f3519e5ba2ec6c inherit pro_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85152f508848fecf1af7cf10cbb972a8 inherit pro_methods_structSDL_1_1FontRef" id="r_a85152f508848fecf1af7cf10cbb972a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a85152f508848fecf1af7cf10cbb972a8">reset</a> (TTF_Font *newResource={})</td></tr>
-<tr class="memdesc:a85152f508848fecf1af7cf10cbb972a8 inherit pro_methods_structSDL_1_1FontRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of a previously-created font.  <br /></td></tr>
-<tr class="separator:a85152f508848fecf1af7cf10cbb972a8 inherit pro_methods_structSDL_1_1FontRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase" id="r_a649d81bb2d1f33857880ab0faa3a45d5"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = RESOURCE</td></tr>
+<tr class="memdesc:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reference resource type. <br /></td></tr>
+<tr class="separator:a649d81bb2d1f33857880ab0faa3a45d5 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase" id="r_afaf83443621b31f83daf2d7e911208c6"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = typename reference::value_type</td></tr>
+<tr class="memdesc:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
+<tr class="separator:afaf83443621b31f83daf2d7e911208c6 inherit pub_types_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSDL_1_1ResourcePtrBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSDL_1_1ResourcePtrBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSDL_1_1ResourcePtrBase.html">SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;</a></td></tr>
+<tr class="memitem:a0e39f008b2afd11a7982df6b29b82a85 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_a0e39f008b2afd11a7982df6b29b82a85"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourcePtrBase</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">value_type</a> value={}, DELETER deleter={})</td></tr>
+<tr class="memdesc:a0e39f008b2afd11a7982df6b29b82a85 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:a0e39f008b2afd11a7982df6b29b82a85 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_a5123ac0033c94520d252dedd8cf1d5e5"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1ResourcePtrBase.html#a649d81bb2d1f33857880ab0faa3a45d5">reference</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> ()</td></tr>
+<tr class="memdesc:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference. <br /></td></tr>
+<tr class="separator:a5123ac0033c94520d252dedd8cf1d5e5 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase" id="r_aa035e9da7e7a8c0d71d8bc75e560b509"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>free</b> ()</td></tr>
+<tr class="memdesc:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees resource. <br /></td></tr>
+<tr class="separator:aa035e9da7e7a8c0d71d8bc75e560b509 inherit pro_methods_classSDL_1_1ResourcePtrBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1FontRef.html" title="The internal structure containing font information.">FontRef</a> </dd></dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8af361c340d4e1c8d3bb4976a510c24f" name="a8af361c340d4e1c8d3bb4976a510c24f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8af361c340d4e1c8d3bb4976a510c24f">&#9670;&#160;</a></span>Font() <span class="overload">[1/3]</span></h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac300c815a74b3cd8162ba99963279e11" name="ac300c815a74b3cd8162ba99963279e11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac300c815a74b3cd8162ba99963279e11">&#9670;&#160;</a></span>Close()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -445,118 +233,9 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">SDL::Font::Font </td>
+          <td class="memname">void SDL::Font::Close </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>ptsize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">file</td><td>path to font file. </td></tr>
-    <tr><td class="paramname">ptsize</td><td>point size to use for the newly-opened font. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a valid <a class="el" href="structSDL_1_1FontRef.html" title="The internal structure containing font information.">FontRef</a> on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1FontRef.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c" title="Dispose of a previously-created font.">FontRef.Close</a> </dd></dl>
-
-</div>
-</div>
-<a id="acbe4016824657000db3ea1b52a8ccef4" name="acbe4016824657000db3ea1b52a8ccef4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbe4016824657000db3ea1b52a8ccef4">&#9670;&#160;</a></span>Font() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Font::Font </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td>
-          <td class="paramname"><em>src</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>ptsize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> to provide a font file's data. </td></tr>
-    <tr><td class="paramname">ptsize</td><td>point size to use for the newly-opened font. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a valid <a class="el" href="structSDL_1_1FontRef.html" title="The internal structure containing font information.">FontRef</a> on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1FontRef.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c" title="Dispose of a previously-created font.">FontRef.Close</a> </dd></dl>
-
-</div>
-</div>
-<a id="a7a1982e38efa6251d51d570cad4b9a36" name="a7a1982e38efa6251d51d570cad4b9a36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a1982e38efa6251d51d570cad4b9a36">&#9670;&#160;</a></span>Font() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::Font::Font </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td>
-          <td class="paramname"><em>props</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -566,38 +245,14 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>These are the supported properties:</p>
-<ul>
-<li><code>prop::Font.CREATE_FILENAME_STRING</code>: the font file to open, if an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> isn't being used. This is required if <code>prop::Font.CREATE_IOSTREAM_POINTER</code> and <code>prop::Font.CREATE_EXISTING_FONT_POINTER</code> aren't set.</li>
-<li><code>prop::Font.CREATE_IOSTREAM_POINTER</code>: an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> containing the font to be opened. This should not be closed until the font is closed. This is required if <code>prop::Font.CREATE_FILENAME_STRING</code> and <code>prop::Font.CREATE_EXISTING_FONT_POINTER</code> aren't set.</li>
-<li><code>prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER</code>: the offset in the iostream for the beginning of the font, defaults to 0.</li>
-<li><code>prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN</code>: true if closing the font should also close the associated <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a>.</li>
-<li><code>prop::Font.CREATE_SIZE_FLOAT</code>: the point size of the font. Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default.</li>
-<li><code>prop::Font.CREATE_FACE_NUMBER</code>: the face index of the font, if the font contains multiple font faces.</li>
-<li><code>prop::Font.CREATE_HORIZONTAL_DPI_NUMBER</code>: the horizontal DPI to use for font rendering, defaults to <code>prop::Font.CREATE_VERTICAL_DPI_NUMBER</code> if set, or 72 otherwise.</li>
-<li><code>prop::Font.CREATE_VERTICAL_DPI_NUMBER</code>: the vertical DPI to use for font rendering, defaults to <code>prop::Font.CREATE_HORIZONTAL_DPI_NUMBER</code> if set, or 72 otherwise.</li>
-<li><code>prop::Font.CREATE_EXISTING_FONT_POINTER</code>: an optional <a class="el" href="structSDL_1_1FontRef.html" title="The internal structure containing font information.">FontRef</a> that, if set, will be used as the font data source and the initial size and style of the new font.</li>
-</ul>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">props</td><td>the properties to use. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a valid <a class="el" href="structSDL_1_1FontRef.html" title="The internal structure containing font information.">FontRef</a> on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<p>Call this when done with a font. This function will free any resources associated with it. It is safe to call this function on nullptr, for example on the result of a failed call to <a class="el" href="structSDL_1_1Font.html#a6c0a7869abe1e34c8c4a0c284d97e586" title="Create a font from a file, using a specified point size.">Font.Open()</a>.</p>
+<p>The font is not valid after being passed to this function. String pointers from functions that return information on this font, such as <a class="el" href="structSDL_1_1FontRef.html#ae80b0d3939737bd141f5ae183bd3e720" title="Query a font&#39;s family name.">FontRef.GetFamilyName()</a> and <a class="el" href="structSDL_1_1FontRef.html#a0c19f38c5fef645b7a9222dcb39d0d1e" title="Query a font&#39;s style name.">FontRef.GetStyleName()</a>, are no longer valid after this call, as well.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should not be called while any other thread is using the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1FontRef.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c" title="Dispose of a previously-created font.">FontRef.Close</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Font.html#a6c0a7869abe1e34c8c4a0c284d97e586" title="Create a font from a file, using a specified point size.">Font.Open</a> </dd></dl>
 
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a3affe52299599c22f1334c7c2c92428f" name="a3affe52299599c22f1334c7c2c92428f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3affe52299599c22f1334c7c2c92428f">&#9670;&#160;</a></span>Open() <span class="overload">[1/2]</span></h2>
 
@@ -632,8 +287,6 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default.</p>
-<p>If <code>closeio</code> is true, <code>src</code> will be automatically closed once the font is closed. Otherwise you should keep <code>src</code> open until the font is closed.</p>
-<p>When done with the returned <a class="el" href="structSDL_1_1FontRef.html" title="The internal structure containing font information.">FontRef</a>, use <a class="el" href="structSDL_1_1FontRef.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c" title="Dispose of a previously-created font.">FontRef.Close()</a> to dispose of it.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> to provide a font file's data. </td></tr>
@@ -650,7 +303,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1FontRef.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c" title="Dispose of a previously-created font.">FontRef.Close</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Font.html#ac300c815a74b3cd8162ba99963279e11" title="Dispose of a previously-created font.">Font.Close</a> </dd></dl>
 
 </div>
 </div>
@@ -688,7 +341,6 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default.</p>
-<p>When done with the returned <a class="el" href="structSDL_1_1FontRef.html" title="The internal structure containing font information.">FontRef</a>, use <a class="el" href="structSDL_1_1FontRef.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c" title="Dispose of a previously-created font.">FontRef.Close()</a> to dispose of it.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file</td><td>path to font file. </td></tr>
@@ -705,7 +357,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1FontRef.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c" title="Dispose of a previously-created font.">FontRef.Close</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Font.html#ac300c815a74b3cd8162ba99963279e11" title="Dispose of a previously-created font.">Font.Close</a> </dd></dl>
 
 </div>
 </div>
@@ -759,7 +411,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1FontRef.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c" title="Dispose of a previously-created font.">FontRef.Close</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Font.html#ac300c815a74b3cd8162ba99963279e11" title="Dispose of a previously-created font.">Font.Close</a> </dd></dl>
 
 </div>
 </div>

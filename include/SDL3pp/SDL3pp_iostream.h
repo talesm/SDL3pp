@@ -11,11 +11,11 @@ namespace SDL {
  * @defgroup CategoryIOStream I/O Streams
  *
  * SDL provides an abstract interface for reading and writing data streams. It
- * offers implementations for files, memory, etc, and the app can provide
- * their own implementations, too.
+ * offers implementations for files, memory, etc, and the app can provide their
+ * own implementations, too.
  *
- * SDL_IOStream is not related to the standard C++ iostream class, other than
- * both are abstract interfaces to read/write data.
+ * IOStream is not related to the standard C++ iostream class, other than both
+ * are abstract interfaces to read/write data.
  *
  * @{
  */
@@ -27,7 +27,7 @@ struct IOStreamRef;
 struct IOStream;
 
 /**
- * IOStreamRef status, set by a read or write operation.
+ * IOStream status, set by a read or write operation.
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -51,7 +51,7 @@ constexpr IOStatus IO_STATUS_WRITEONLY =
   SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer.
 
 /**
- * Possible `whence` values for IOStreamRef seeking.
+ * Possible `whence` values for IOStream seeking.
  *
  * These map to the same "whence" concept that `fseek` or `lseek` use in the
  * standard C runtime.
@@ -70,12 +70,12 @@ constexpr IOWhence IO_SEEK_END =
   SDL_IO_SEEK_END; ///< Seek relative to the end of data.
 
 /**
- * The function pointers that drive an IOStreamRef.
+ * The function pointers that drive an IOStream.
  *
- * Applications can provide this struct to IOStreamRef.IOStreamRef() to create
- * their own implementation of IOStreamRef. This is not necessarily required,
- * as SDL already offers several common types of I/O streams, via
- * IOStreamRef.IOStreamRef().
+ * Applications can provide this struct to IOStream.Open() to create their own
+ * implementation of IOStream. This is not necessarily required, as SDL already
+ * offers several common types of I/O streams, via functions like
+ * IOStream.FromFile() and IOStream.FromMem().
  *
  * This structure should be initialized using SDL_INIT_INTERFACE()
  *
@@ -90,15 +90,14 @@ using IOStreamInterface = SDL_IOStreamInterface;
  *
  * This operates as an opaque handle. There are several APIs to create various
  * types of I/O streams, or an app can supply an IOStreamInterface to
- * IOStreamRef.IOStreamRef() to provide their own stream implementation behind
- * this struct's abstract interface.
+ * IOStream.Open() to provide their own stream implementation behind this
+ * struct's abstract interface.
  *
  * @since This struct is available since SDL 3.2.0.
  *
  * @cat resource
  *
  * @sa IOStream
- * @sa IOStreamRef
  */
 struct IOStreamRef : Resource<SDL_IOStream*>
 {
@@ -390,7 +389,7 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.IOStream
+   * @sa IOStream.FromFile
    * @sa IOStreamRef.Write
    */
   void Flush() { CheckError(SDL_FlushIO(get())); }
@@ -1369,13 +1368,12 @@ struct IOStreamRef : Resource<SDL_IOStream*>
     return {};
   }
 
-protected:
   /**
    * Close and free an allocated IOStreamRef structure.
    *
-   * IOStreamRef.Close() closes and cleans up the IOStreamRef stream. It
-   * releases any resources used by the stream and frees the IOStreamRef itself.
-   * This returns true on success, or false if the stream failed to flush to its
+   * IOStream.Close() closes and cleans up the IOStreamRef stream. It releases
+   * any resources used by the stream and frees the IOStreamRef itself. This
+   * returns true on success, or false if the stream failed to flush to its
    * output (e.g. to disk).
    *
    * Note that if this fails to flush the stream for any reason, this function
@@ -1391,90 +1389,18 @@ protected:
    * time and makes the system and your app operate less efficiently, so do so
    * sparingly.
    *
+   * @param resource IOStreamRef structure to close.
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.IOStream
+   * @sa IOStream.Open
    */
-  void Close() { reset(); }
-
-  /**
-   * Close and free an allocated IOStreamRef structure.
-   *
-   * IOStreamRef.Close() closes and cleans up the IOStreamRef stream. It
-   * releases any resources used by the stream and frees the IOStreamRef itself.
-   * This returns true on success, or false if the stream failed to flush to its
-   * output (e.g. to disk).
-   *
-   * Note that if this fails to flush the stream for any reason, this function
-   * reports an error, but the IOStreamRef is still invalid once this function
-   * returns.
-   *
-   * This call flushes any buffered writes to the operating system, but there
-   * are no guarantees that those writes have gone to physical media; they might
-   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
-   * crucial that writes go to disk immediately, so they are definitely stored
-   * even if the power fails before the file cache would have caught up, one
-   * should call IOStreamRef.Flush() before closing. Note that flushing takes
-   * time and makes the system and your app operate less efficiently, so do so
-   * sparingly.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStream.IOStream
-   */
-  void reset(SDL_IOStream* newResource = {})
+  static void reset(SDL_IOStream* resource)
   {
-    CheckError(SDL_CloseIO(release(newResource)));
-  }
-};
-
-/**
- * Unsafe Handle to iOStream
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa IOStreamRef
- */
-struct IOStreamUnsafe : IOStreamRef
-{
-  using IOStreamRef::Close;
-
-  using IOStreamRef::IOStreamRef;
-
-  using IOStreamRef::reset;
-
-  /**
-   * Constructs IOStreamUnsafe from IOStreamRef.
-   */
-  constexpr IOStreamUnsafe(const IOStreamRef& other)
-    : IOStreamRef(other.get())
-  {
-  }
-
-  IOStreamUnsafe(const IOStream& other) = delete;
-
-  /**
-   * Constructs IOStreamUnsafe from IOStream.
-   */
-  constexpr explicit IOStreamUnsafe(IOStream&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr IOStreamUnsafe& operator=(IOStreamUnsafe other)
-  {
-    release(other.release());
-    return *this;
+    CheckError(SDL_CloseIO(resource));
   }
 };
 
@@ -1485,38 +1411,12 @@ struct IOStreamUnsafe : IOStreamRef
  *
  * @sa IOStreamRef
  */
-struct IOStream : IOStreamUnsafe
+struct IOStream : ResourceUnique<IOStreamRef>
 {
-  using IOStreamUnsafe::IOStreamUnsafe;
+  using ResourceUnique::ResourceUnique;
 
   /**
-   * Constructs an empty IOStream.
-   */
-  constexpr IOStream()
-    : IOStreamUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit IOStream(SDL_IOStream* resource)
-    : IOStreamUnsafe(resource)
-  {
-  }
-
-  constexpr IOStream(const IOStream& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr IOStream(IOStream&& other)
-    : IOStream(other.release())
-  {
-  }
-
-  /**
-   * Use this function to create a new IOStreamRef structure for reading from
+   * Use this function to create a new IOStream structure for reading from
    * and/or writing to a named file.
    *
    * The `mode` string is treated roughly the same as in a call to the C
@@ -1554,142 +1454,8 @@ struct IOStream : IOStreamUnsafe
    * This function supports Unicode filenames, but they must be encoded in UTF-8
    * format, regardless of the underlying operating system.
    *
-   * In Android, IOStream.IOStream() can be used to open content:// URIs. As a
-   * fallback, IOStream.IOStream() will transparently open a matching filename
-   * in the app's `assets`.
-   *
-   * Closing the IOStreamRef will close SDL's internal file handle.
-   *
-   * The following properties may be set at creation time by SDL:
-   *
-   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
-   *   to a win32 `HANDLE`, that this IOStreamRef is using to access the
-   *   filesystem. If the program isn't running on Windows, or SDL used some
-   *   other method to access the filesystem, this property will not be set.
-   * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
-   *   stdio `FILE *`, that this IOStreamRef is using to access the filesystem.
-   *   If SDL used some other method to access the filesystem, this property
-   *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
-   *   than your app, trying to use this pointer will almost certainly result in
-   *   a crash! This is mostly a problem on Windows; make sure you build SDL and
-   *   your app with the same compiler and settings to avoid it.
-   * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
-   *   IOStreamRef is using to access the filesystem.
-   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
-   *   to an Android NDK `AAsset *`, that this IOStreamRef is using to access
-   *   the filesystem. If SDL used some other method to access the filesystem,
-   *   this property will not be set.
-   *
-   * @param file a UTF-8 string representing the filename to open.
-   * @param mode an ASCII string representing the mode to be used for opening
-   *             the file.
-   * @post the object is convertible to true if valid or false on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamRef.Close
-   * @sa IOStreamRef.Flush
-   * @sa IOStreamRef.Read
-   * @sa IOStreamRef.Seek
-   * @sa IOStreamRef.Tell
-   * @sa IOStreamRef.Write
-   */
-  IOStream(StringParam file, StringParam mode)
-    : IOStream(SDL_IOFromFile(file, mode))
-  {
-  }
-
-  /**
-   * Create a custom IOStreamRef.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own IOStreamRef implementation. If you just need an IOStreamRef to
-   * read/write a common data source, you should use the built-in
-   * implementations in SDL, like IOStream.IOStream(StringParam,StringParam) or
-   * IOStream.FromMem(), etc.
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this IOStreamRef, initialized
-   *              using SDL_INIT_INTERFACE().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @post a valid stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamRef.Close
-   * @sa SDL_INIT_INTERFACE
-   * @sa IOStream.FromConstMem
-   * @sa IOStream.IOStream
-   * @sa IOStream.FromMem
-   */
-  IOStream(const IOStreamInterface& iface, void* userdata)
-    : IOStream(CheckError(SDL_OpenIO(&iface, userdata)))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~IOStream() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  IOStream& operator=(IOStream other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Use this function to create a new IOStreamRef structure for reading from
-   * and/or writing to a named file.
-   *
-   * The `mode` string is treated roughly the same as in a call to the C
-   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
-   * scenes.
-   *
-   * Available `mode` strings:
-   *
-   * - "r": Open a file for reading. The file must exist.
-   * - "w": Create an empty file for writing. If a file with the same name
-   *   already exists its content is erased and the file is treated as a new
-   *   empty file.
-   * - "a": Append to a file. Writing operations append data at the end of the
-   *   file. The file is created if it does not exist.
-   * - "r+": Open a file for update both reading and writing. The file must
-   *   exist.
-   * - "w+": Create an empty file for both reading and writing. If a file with
-   *   the same name already exists its content is erased and the file is
-   *   treated as a new empty file.
-   * - "a+": Open a file for reading and appending. All writing operations are
-   *   performed at the end of the file, protecting the previous content to be
-   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
-   *   anywhere in the file for reading, but writing operations will move it
-   *   back to the end of file. The file is created if it does not exist.
-   *
-   * **NOTE**: In order to open a file as a binary file, a "b" character has to
-   * be included in the `mode` string. This additional "b" character can either
-   * be appended at the end of the string (thus making the following compound
-   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
-   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
-   * Additional characters may follow the sequence, although they should have no
-   * effect. For example, "t" is sometimes appended to make explicit the file is
-   * a text file.
-   *
-   * This function supports Unicode filenames, but they must be encoded in UTF-8
-   * format, regardless of the underlying operating system.
-   *
-   * In Android, IOStream.IOStream() can be used to open content:// URIs. As a
-   * fallback, IOStream.IOStream() will transparently open a matching filename
+   * In Android, IOStream.FromFile() can be used to open content:// URIs. As a
+   * fallback, IOStream.FromFile() will transparently open a matching filename
    * in the app's `assets`.
    *
    * Closing the IOStreamRef will close SDL's internal file handle.
@@ -1724,7 +1490,7 @@ struct IOStream : IOStreamUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamRef.Close
+   * @sa IOStream.Close
    * @sa IOStreamRef.Flush
    * @sa IOStreamRef.Read
    * @sa IOStreamRef.Seek
@@ -1733,12 +1499,12 @@ struct IOStream : IOStreamUnsafe
    */
   static IOStream FromFile(StringParam file, StringParam mode)
   {
-    return IOStream(std::move(file), std::move(mode));
+    return IOStream(SDL_IOFromFile(file, mode));
   }
 
   /**
    * Use this function to prepare a read-write memory buffer for use with
-   * IOStreamRef.
+   * IOStream.
    *
    * This function sets up an IOStreamRef struct based on a memory area of a
    * certain size, for both read and write access.
@@ -1767,7 +1533,7 @@ struct IOStream : IOStreamUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IOStream.FromConstMem
-   * @sa IOStreamRef.Close
+   * @sa IOStream.Close
    * @sa IOStreamRef.Flush
    * @sa IOStreamRef.Read
    * @sa IOStreamRef.Seek
@@ -1812,7 +1578,7 @@ struct IOStream : IOStreamUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IOStream.FromMem
-   * @sa IOStreamRef.Close
+   * @sa IOStream.Close
    * @sa IOStreamRef.Read
    * @sa IOStreamRef.Seek
    * @sa IOStreamRef.Tell
@@ -1833,7 +1599,7 @@ struct IOStream : IOStreamUnsafe
    *   memory of the stream. This can be set to nullptr to transfer ownership of
    *   the memory to the application, which should free the memory with
    *   free(). If this is done, the next operation on the stream must be
-   *   IOStreamRef.Close().
+   *   IOStream.Close().
    * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
    *   multiples of this size, defaulting to 1024.
    *
@@ -1844,7 +1610,7 @@ struct IOStream : IOStreamUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamRef.Close
+   * @sa IOStream.Close
    * @sa IOStreamRef.Read
    * @sa IOStreamRef.Seek
    * @sa IOStreamRef.Tell
@@ -1858,7 +1624,7 @@ struct IOStream : IOStreamUnsafe
    * Applications do not need to use this function unless they are providing
    * their own IOStreamRef implementation. If you just need an IOStreamRef to
    * read/write a common data source, you should use the built-in
-   * implementations in SDL, like IOStream.IOStream() or IOStream.FromMem(),
+   * implementations in SDL, like IOStream.FromFile() or IOStream.FromMem(),
    * etc.
    *
    * This function makes a copy of `iface` and the caller does not need to keep
@@ -1867,29 +1633,77 @@ struct IOStream : IOStreamUnsafe
    * @param iface the interface that implements this IOStreamRef, initialized
    *              using SDL_INIT_INTERFACE().
    * @param userdata the pointer that will be passed to the interface functions.
-   * @returns a pointer to the allocated memory on success.
+   * @returns a valid stream on success.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamRef.Close
+   * @sa IOStream.Close
    * @sa SDL_INIT_INTERFACE
    * @sa IOStream.FromConstMem
-   * @sa IOStream.IOStream
+   * @sa IOStream.FromFile
    * @sa IOStream.FromMem
    */
   static IOStream Open(const IOStreamInterface& iface, void* userdata)
   {
-    return IOStream(iface, userdata);
+    return IOStream(CheckError(SDL_OpenIO(&iface, userdata)));
   }
+
+  /**
+   * Close and free an allocated IOStreamRef structure.
+   *
+   * IOStream.Close() closes and cleans up the IOStreamRef stream. It releases
+   * any resources used by the stream and frees the IOStreamRef itself. This
+   * returns true on success, or false if the stream failed to flush to its
+   * output (e.g. to disk).
+   *
+   * Note that if this fails to flush the stream for any reason, this function
+   * reports an error, but the IOStreamRef is still invalid once this function
+   * returns.
+   *
+   * This call flushes any buffered writes to the operating system, but there
+   * are no guarantees that those writes have gone to physical media; they might
+   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
+   * crucial that writes go to disk immediately, so they are definitely stored
+   * even if the power fails before the file cache would have caught up, one
+   * should call IOStreamRef.Flush() before closing. Note that flushing takes
+   * time and makes the system and your app operate less efficiently, so do so
+   * sparingly.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStream.Open
+   */
+  void Close() { reset(); }
 };
 
-constexpr IOStreamUnsafe::IOStreamUnsafe(IOStream&& other)
-  : IOStreamUnsafe(other.release())
+/**
+ * Unsafe Handle to iOStream
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa IOStreamRef
+ */
+struct IOStreamUnsafe : ResourceUnsafe<IOStreamRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs IOStreamUnsafe from IOStream.
+   */
+  constexpr explicit IOStreamUnsafe(IOStream&& other)
+    : IOStreamUnsafe(other.release())
+  {
+  }
+};
 
 namespace prop::IOStream {
 

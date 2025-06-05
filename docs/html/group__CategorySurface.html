@@ -87,11 +87,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceRef.html">SDL::SurfaceRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A collection of pixels used in software blitting.  <a href="structSDL_1_1SurfaceRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceUnsafe.html">SDL::SurfaceUnsafe</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to surface.  <a href="structSDL_1_1SurfaceUnsafe.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Surface.html">SDL::Surface</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned surface.  <a href="structSDL_1_1Surface.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceUnsafe.html">SDL::SurfaceUnsafe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to surface.  <a href="structSDL_1_1SurfaceUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SurfaceLock.html">SDL::SurfaceLock</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks a <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> for access to its pixels.  <a href="classSDL_1_1SurfaceLock.html#details">More...</a><br /></td></tr>
@@ -100,7 +100,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:gad69036a1d5b07f56d21deb07fe815fbf" id="r_gad69036a1d5b07f56d21deb07fe815fbf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad69036a1d5b07f56d21deb07fe815fbf">SDL::SurfaceFlags</a> = Uint32</td></tr>
-<tr class="memdesc:gad69036a1d5b07f56d21deb07fe815fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The flags on an <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a>.  <br /></td></tr>
+<tr class="memdesc:gad69036a1d5b07f56d21deb07fe815fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The flags on an <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a>.  <br /></td></tr>
 <tr class="separator:gad69036a1d5b07f56d21deb07fe815fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaed7f0fa288a530b226389e23c38e843d" id="r_gaed7f0fa288a530b226389e23c38e843d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">SDL::ScaleMode</a> = SDL_ScaleMode</td></tr>
 <tr class="memdesc:gaed7f0fa288a530b226389e23c38e843d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scaling mode.  <br /></td></tr>
@@ -111,12 +111,6 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gaef07ab592f2d059e8c927027d231b705" id="r_gaef07ab592f2d059e8c927027d231b705"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaef07ab592f2d059e8c927027d231b705">SDL::LoadBMP</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src)</td></tr>
-<tr class="memdesc:gaef07ab592f2d059e8c927027d231b705"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP image from a seekable <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> data stream.  <br /></td></tr>
-<tr class="separator:gaef07ab592f2d059e8c927027d231b705"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6c3dd4f128eb085c7bc9c0c6dd955076" id="r_ga6c3dd4f128eb085c7bc9c0c6dd955076"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076">SDL::LoadBMP</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
-<tr class="memdesc:ga6c3dd4f128eb085c7bc9c0c6dd955076"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP image from a file.  <br /></td></tr>
-<tr class="separator:ga6c3dd4f128eb085c7bc9c0c6dd955076"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3321db6ca98ab72dd7923962360393f5" id="r_ga3321db6ca98ab72dd7923962360393f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga3321db6ca98ab72dd7923962360393f5">SDL::SaveBMP</a> (<a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> surface, <a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> dst)</td></tr>
 <tr class="memdesc:ga3321db6ca98ab72dd7923962360393f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save a surface to a seekable <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> data stream in BMP format.  <br /></td></tr>
 <tr class="separator:ga3321db6ca98ab72dd7923962360393f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,10 +126,6 @@ Functions</h2></td></tr>
 <tr class="memitem:gaefae22d0ebf9382d8200ef17fb08aca4" id="r_gaefae22d0ebf9382d8200ef17fb08aca4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaefae22d0ebf9382d8200ef17fb08aca4">SDL::PremultiplyAlpha</a> (int width, int height, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> src_format, const void *src, int src_pitch, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> dst_format, void *dst, int dst_pitch, bool linear)</td></tr>
 <tr class="memdesc:gaefae22d0ebf9382d8200ef17fb08aca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Premultiply the alpha on a block of pixels.  <br /></td></tr>
 <tr class="separator:gaefae22d0ebf9382d8200ef17fb08aca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga120e65132943adbab539b6b9dec2eb65" id="r_ga120e65132943adbab539b6b9dec2eb65"><td class="memItemLeft" align="right" valign="top"><a id="ga120e65132943adbab539b6b9dec2eb65" name="ga120e65132943adbab539b6b9dec2eb65"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::SurfaceUnsafe::SurfaceUnsafe</b> (<a class="el" href="structSDL_1_1Surface.html">Surface</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ga120e65132943adbab539b6b9dec2eb65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1SurfaceUnsafe.html" title="Unsafe Handle to surface.">SurfaceUnsafe</a> from <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a>. <br /></td></tr>
-<tr class="separator:ga120e65132943adbab539b6b9dec2eb65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga612e23a1e94cd1c9b31aa10564ac9606" id="r_ga612e23a1e94cd1c9b31aa10564ac9606"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga612e23a1e94cd1c9b31aa10564ac9606">SDL::SurfaceRef::Duplicate</a> () const</td></tr>
 <tr class="memdesc:ga612e23a1e94cd1c9b31aa10564ac9606"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new surface identical to the existing surface.  <br /></td></tr>
 <tr class="separator:ga612e23a1e94cd1c9b31aa10564ac9606"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,7 +154,9 @@ Variables</h2></td></tr>
 constexpr <a class="el" href="group__CategorySurface.html#gad69036a1d5b07f56d21deb07fe815fbf">SurfaceFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::SURFACE_SIMD_ALIGNED</b> = SDL_SURFACE_SIMD_ALIGNED</td></tr>
 <tr class="memdesc:ga2682a866aa8d36120c50a632caed6dec"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> uses pixel memory allocated with <a class="el" href="group__CategoryStdinc.html#gae3c9f70ddeadaecb2afeee2b3be34733" title="Allocate memory aligned to a specific alignment.">aligned_alloc()</a> <br /></td></tr>
 <tr class="separator:ga2682a866aa8d36120c50a632caed6dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa6cc4b06d3842efd9aa23a4fbb61f148" id="r_gaa6cc4b06d3842efd9aa23a4fbb61f148"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaa6cc4b06d3842efd9aa23a4fbb61f148">SDL::SCALEMODE_INVALID</a> = SDL_SCALEMODE_INVALID</td></tr>
+<tr class="memitem:gaa6cc4b06d3842efd9aa23a4fbb61f148" id="r_gaa6cc4b06d3842efd9aa23a4fbb61f148"><td class="memItemLeft" align="right" valign="top"><a id="gaa6cc4b06d3842efd9aa23a4fbb61f148" name="gaa6cc4b06d3842efd9aa23a4fbb61f148"></a>
+constexpr <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::SCALEMODE_INVALID</b> = SDL_SCALEMODE_INVALID</td></tr>
+<tr class="memdesc:gaa6cc4b06d3842efd9aa23a4fbb61f148"><td class="mdescLeft">&#160;</td><td class="mdescRight">INVALID. <br /></td></tr>
 <tr class="separator:gaa6cc4b06d3842efd9aa23a4fbb61f148"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga66f4bba63ed46834695fa4bc8c915bf3" id="r_ga66f4bba63ed46834695fa4bc8c915bf3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga66f4bba63ed46834695fa4bc8c915bf3">SDL::SCALEMODE_NEAREST</a></td></tr>
 <tr class="memdesc:ga66f4bba63ed46834695fa4bc8c915bf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">nearest pixel sampling  <br /></td></tr>
@@ -187,8 +179,8 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>These are useful for passing around and manipulating images that are not stored in GPU memory.</p>
-<p>SDL_Surface makes serious efforts to manage images in various formats, and provides a reasonable toolbox for transforming the data, including copying between surfaces, filling rectangles in the image data, etc.</p>
-<p>There is also a simple .bmp loader, <a class="el" href="group__CategorySurface.html#gaef07ab592f2d059e8c927027d231b705" title="Load a BMP image from a seekable SDL data stream.">SDL::LoadBMP()</a>. <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> itself does not provide loaders for various other file formats, but there are several excellent external libraries that do, including its own satellite library, SDL_image:</p>
+<p><a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> makes serious efforts to manage images in various formats, and provides a reasonable toolbox for transforming the data, including copying between surfaces, filling rectangles in the image data, etc.</p>
+<p>There is also a simple .bmp loader, <a class="el" href="structSDL_1_1Surface.html#a103e9b9ebff6d776cadfc45b0c68e5d7" title="Load a BMP image from a seekable SDL data stream.">Surface.LoadBMP()</a>. <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> itself does not provide loaders for various other file formats, but there are several excellent external libraries that do, including its own satellite library, SDL_image:</p>
 <p><a href="https://github.com/libsdl-org/SDL_image">https://github.com/libsdl-org/SDL_image</a> </p>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="gaa139652f1cfad9672e6e9898f965812b" name="gaa139652f1cfad9672e6e9898f965812b"></a>
@@ -275,7 +267,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#ga36c7e088e8fbd0bec746e65c951a320e" title="Copy an existing surface to a new surface of the specified format.">SurfaceRef.Convert</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
+<a class="el" href="structSDL_1_1Surface.html#a183c1bec6d887ec1d1418d21afa118eb" title="Free a surface.">Surface.Destroy</a> </dd></dl>
 
 </div>
 </div>
@@ -331,7 +323,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
     <tr><td class="paramname">format</td><td>the new pixel format. </td></tr>
     <tr><td class="paramname">palette</td><td>an optional palette to use for indexed formats, may be nullptr. </td></tr>
     <tr><td class="paramname">colorspace</td><td>the new colorspace. </td></tr>
-    <tr><td class="paramname">props</td><td>an <a class="el" href="structSDL_1_1PropertiesRef.html" title="Wrap properties id.">PropertiesRef</a> with additional color properties, or 0. </td></tr>
+    <tr><td class="paramname">props</td><td>an <a class="el" href="structSDL_1_1PropertiesRef.html" title="SDL properties ID.">PropertiesRef</a> with additional color properties, or 0. </td></tr>
   </table>
   </dd>
 </dl>
@@ -340,7 +332,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#ga36c7e088e8fbd0bec746e65c951a320e" title="Copy an existing surface to a new surface of the specified format.">SurfaceRef.Convert</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
+<a class="el" href="structSDL_1_1Surface.html#a183c1bec6d887ec1d1418d21afa118eb" title="Free a surface.">Surface.Destroy</a> </dd></dl>
 
 </div>
 </div>
@@ -537,12 +529,12 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
     <tr><td class="paramname">height</td><td>the height of the block to copy, in pixels. </td></tr>
     <tr><td class="paramname">src_format</td><td>an <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a> value of the <code>src</code> pixels format. </td></tr>
     <tr><td class="paramname">src_colorspace</td><td>an <a class="el" href="classSDL_1_1Colorspace.html" title="Colorspace definitions.">Colorspace</a> value describing the colorspace of the <code>src</code> pixels. </td></tr>
-    <tr><td class="paramname">src_properties</td><td>an <a class="el" href="structSDL_1_1PropertiesRef.html" title="Wrap properties id.">PropertiesRef</a> with additional source color properties, or 0. </td></tr>
+    <tr><td class="paramname">src_properties</td><td>an <a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> with additional source color properties, or 0. </td></tr>
     <tr><td class="paramname">src</td><td>a pointer to the source pixels. </td></tr>
     <tr><td class="paramname">src_pitch</td><td>the pitch of the source pixels, in bytes. </td></tr>
     <tr><td class="paramname">dst_format</td><td>an <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a> value of the <code>dst</code> pixels format. </td></tr>
     <tr><td class="paramname">dst_colorspace</td><td>an <a class="el" href="classSDL_1_1Colorspace.html" title="Colorspace definitions.">Colorspace</a> value describing the colorspace of the <code>dst</code> pixels. </td></tr>
-    <tr><td class="paramname">dst_properties</td><td>an <a class="el" href="structSDL_1_1PropertiesRef.html" title="Wrap properties id.">PropertiesRef</a> with additional destination color properties, or 0. </td></tr>
+    <tr><td class="paramname">dst_properties</td><td>an <a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> with additional destination color properties, or 0. </td></tr>
     <tr><td class="paramname">dst</td><td>a pointer to be filled in with new pixel data. </td></tr>
     <tr><td class="paramname">dst_pitch</td><td>the pitch of the destination pixels, in bytes. </td></tr>
   </table>
@@ -586,79 +578,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section return"><dt>Returns</dt><dd>a copy of the surface or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
-
-</div>
-</div>
-<a id="gaef07ab592f2d059e8c927027d231b705" name="gaef07ab592f2d059e8c927027d231b705"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaef07ab592f2d059e8c927027d231b705">&#9670;&#160;</a></span>LoadBMP() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structSDL_1_1Surface.html">Surface</a> SDL::LoadBMP </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td>
-          <td class="paramname"><em>src</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src</td><td>the data stream for the surface. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> with the loaded content or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#ga3321db6ca98ab72dd7923962360393f5" title="Save a surface to a seekable SDL data stream in BMP format.">SaveBMP</a> </dd></dl>
-
-</div>
-</div>
-<a id="ga6c3dd4f128eb085c7bc9c0c6dd955076" name="ga6c3dd4f128eb085c7bc9c0c6dd955076"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6c3dd4f128eb085c7bc9c0c6dd955076">&#9670;&#160;</a></span>LoadBMP() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structSDL_1_1Surface.html">Surface</a> SDL::LoadBMP </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">file</td><td>the BMP file to load. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> with the loaded content or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#ga3321db6ca98ab72dd7923962360393f5" title="Save a surface to a seekable SDL data stream in BMP format.">SaveBMP</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Surface.html#a183c1bec6d887ec1d1418d21afa118eb" title="Free a surface.">Surface.Destroy</a> </dd></dl>
 
 </div>
 </div>
@@ -799,7 +719,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <p>Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the BMP directly. Other RGB formats with 8-bit or higher get converted to a 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit surface before they are saved. YUV and paletted 1-bit and 4-bit formats are not supported.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">surface</td><td>the <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> structure containing the image to be saved. </td></tr>
+    <tr><td class="paramname">surface</td><td>the <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> structure containing the image to be saved. </td></tr>
     <tr><td class="paramname">dst</td><td>a data stream to save to. </td></tr>
   </table>
   </dd>
@@ -812,7 +732,9 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#gaef07ab592f2d059e8c927027d231b705" title="Load a BMP image from a seekable SDL data stream.">LoadBMP</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Surface.html#a103e9b9ebff6d776cadfc45b0c68e5d7" title="Load a BMP image from a seekable SDL data stream.">Surface.LoadBMP</a> </dd>
+<dd>
+<a class="el" href="group__CategorySurface.html#ga3321db6ca98ab72dd7923962360393f5" title="Save a surface to a seekable SDL data stream in BMP format.">SaveBMP</a> </dd></dl>
 
 </div>
 </div>
@@ -852,7 +774,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <p>Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the BMP directly. Other RGB formats with 8-bit or higher get converted to a 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit surface before they are saved. YUV and paletted 1-bit and 4-bit formats are not supported.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">surface</td><td>the <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> structure containing the image to be saved. </td></tr>
+    <tr><td class="paramname">surface</td><td>the <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> structure containing the image to be saved. </td></tr>
     <tr><td class="paramname">file</td><td>a file to save to. </td></tr>
   </table>
   </dd>
@@ -865,7 +787,9 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#gaef07ab592f2d059e8c927027d231b705" title="Load a BMP image from a seekable SDL data stream.">LoadBMP</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Surface.html#a103e9b9ebff6d776cadfc45b0c68e5d7" title="Load a BMP image from a seekable SDL data stream.">Surface.LoadBMP</a> </dd>
+<dd>
+<a class="el" href="group__CategorySurface.html#ga3321db6ca98ab72dd7923962360393f5" title="Save a surface to a seekable SDL data stream in BMP format.">SaveBMP</a> </dd></dl>
 
 </div>
 </div>
@@ -919,34 +843,11 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section return"><dt>Returns</dt><dd>a copy of the surface or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Surface.html#a183c1bec6d887ec1d1418d21afa118eb" title="Free a surface.">Surface.Destroy</a> </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="gaa6cc4b06d3842efd9aa23a4fbb61f148" name="gaa6cc4b06d3842efd9aa23a4fbb61f148"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa6cc4b06d3842efd9aa23a4fbb61f148">&#9670;&#160;</a></span>SCALEMODE_INVALID</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> SDL::SCALEMODE_INVALID = SDL_SCALEMODE_INVALID</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.10 </dd></dl>
-
-</div>
-</div>
 <a id="ga54bde4af0a6606edd0ef6356592d122e" name="ga54bde4af0a6606edd0ef6356592d122e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga54bde4af0a6606edd0ef6356592d122e">&#9670;&#160;</a></span>SCALEMODE_LINEAR</h2>
 

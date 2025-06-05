@@ -20,22 +20,21 @@ namespace SDL {
  * SDL provides its own implementation of some of the most important C runtime
  * functions.
  *
- * Using these functions allows an app to have access to common C
- * functionality without depending on a specific C runtime (or a C runtime at
- * all). More importantly, the SDL implementations work identically across
- * platforms, so apps can avoid surprises like snprintf() behaving differently
- * between Windows and Linux builds, or itoa() only existing on some
- * platforms.
+ * Using these functions allows an app to have access to common C functionality
+ * without depending on a specific C runtime (or a C runtime at all). More
+ * importantly, the SDL implementations work identically across platforms, so
+ * apps can avoid surprises like snprintf() behaving differently between Windows
+ * and Linux builds, or itoa() only existing on some platforms.
  *
- * For many of the most common functions, like SDL_memcpy, SDL might just call
- * through to the usual C runtime behind the scenes, if it makes sense to do
- * so (if it's faster and always available/reliable on a given platform),
- * reducing library size and offering the most optimized option.
+ * For many of the most common functions, like memcpy, SDL might just call
+ * through to the usual C runtime behind the scenes, if it makes sense to do so
+ * (if it's faster and always available/reliable on a given platform), reducing
+ * library size and offering the most optimized option.
  *
  * SDL also offers other C-runtime-adjacent functionality in this header that
  * either isn't, strictly speaking, part of any C runtime standards, like
- * SDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better
- * options, like SDL_strlcpy(), which functions as a safer form of strcpy().
+ * crc32() and SDL_reinterpret_cast, etc. It also offers a few better options,
+ * like strlcpy(), which functions as a safer form of strcpy().
  *
  * @{
  */
@@ -211,7 +210,7 @@ constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
 using Seconds = std::chrono::duration<float>;
 
 /**
- * Duration in Nanoseconds (Sint64).
+ * Duration in Nanoseconds (Uint64).
  */
 using Nanoseconds = std::chrono::nanoseconds;
 
@@ -359,7 +358,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * // Fill in the interface function pointers with your implementation
  * iface.seek = ...
  *
- * stream = IOStreamRef.IOStreamRef(&iface, nullptr);
+ * stream = IOStream.Open(&iface, nullptr);
  * ```
  *
  * If you are using designated initializers, you can use the size of the
@@ -370,7 +369,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *     .version = sizeof(iface),
  *     .seek = ...
  * };
- * stream = IOStreamRef.IOStreamRef(&iface, nullptr);
+ * stream = IOStream.Open(iface, nullptr);
  * ```
  *
  * @threadsafety It is safe to call this macro from any thread.
@@ -735,11 +734,12 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  *
  * @sa Environment
  * @sa GetEnvironment
- * @sa EnvironmentRef.EnvironmentRef
+ * @sa Environment.Create
  * @sa EnvironmentRef.GetVariable
  * @sa EnvironmentRef.GetVariables
  * @sa EnvironmentRef.SetVariable
  * @sa EnvironmentRef.UnsetVariable
+ * @sa Environment.Destroy
  */
 struct EnvironmentRef : Resource<SDL_Environment*>
 {
@@ -852,77 +852,21 @@ struct EnvironmentRef : Resource<SDL_Environment*>
     CheckError(SDL_UnsetEnvironmentVariable(get(), name));
   }
 
-protected:
   /**
    * Destroy a set of environment variables.
    *
+   * @param resource the environment to destroy.
    *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the environment is no longer in use.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Environment.Environment
+   * @sa Environment.Create
    */
-  void Destroy() { reset(); }
-
-  /**
-   * Destroy a set of environment variables.
-   *
-   * This object becomes empty after the call.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the environment is no longer in use.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Environment.Environment
-   */
-  void reset(SDL_Environment* newResource = {})
+  static void reset(SDL_Environment* resource)
   {
-    SDL_DestroyEnvironment(release(newResource));
-  }
-};
-
-/**
- * Unsafe Handle to environment
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa EnvironmentRef
- */
-struct EnvironmentUnsafe : EnvironmentRef
-{
-  using EnvironmentRef::Destroy;
-
-  using EnvironmentRef::EnvironmentRef;
-
-  using EnvironmentRef::reset;
-
-  /**
-   * Constructs EnvironmentUnsafe from EnvironmentRef.
-   */
-  constexpr EnvironmentUnsafe(const EnvironmentRef& other)
-    : EnvironmentRef(other.get())
-  {
-  }
-
-  EnvironmentUnsafe(const Environment& other) = delete;
-
-  /**
-   * Constructs EnvironmentUnsafe from Environment.
-   */
-  constexpr explicit EnvironmentUnsafe(Environment&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr EnvironmentUnsafe& operator=(EnvironmentUnsafe other)
-  {
-    release(other.release());
-    return *this;
+    SDL_DestroyEnvironment(resource);
   }
 };
 
@@ -933,42 +877,16 @@ struct EnvironmentUnsafe : EnvironmentRef
  *
  * @sa EnvironmentRef
  */
-struct Environment : EnvironmentUnsafe
+struct Environment : ResourceUnique<EnvironmentRef>
 {
-  using EnvironmentUnsafe::EnvironmentUnsafe;
-
-  /**
-   * Constructs an empty Environment.
-   */
-  constexpr Environment()
-    : EnvironmentUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Environment(SDL_Environment* resource)
-    : EnvironmentUnsafe(resource)
-  {
-  }
-
-  constexpr Environment(const Environment& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Environment(Environment&& other)
-    : Environment(other.release())
-  {
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a set of environment variables
    *
    * @param populated true to initialize it from the C runtime environment,
    *                  false to create an empty environment.
-   * @post the new environment on success.
+   * @returns the new environment on success.
    * @throws Error on failure.
    *
    * @threadsafety If `populated` is false, it is safe to call this function
@@ -981,54 +899,48 @@ struct Environment : EnvironmentUnsafe
    * @sa EnvironmentRef.GetVariables
    * @sa EnvironmentRef.SetVariable
    * @sa EnvironmentRef.UnsetVariable
-   * @sa EnvironmentRef.Destroy
+   * @sa Environment.Destroy
    */
-  Environment(bool populated)
-    : Environment(CheckError(SDL_CreateEnvironment(populated)))
+  static Environment Create(bool populated)
   {
+    return Environment(CheckError(SDL_CreateEnvironment(populated)));
   }
 
   /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Environment() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Environment& operator=(Environment other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Create a set of environment variables
+   * Destroy a set of environment variables.
    *
-   * @param populated true to initialize it from the C runtime environment,
-   *                  false to create an empty environment.
-   * @returns a pointer to the new environment or nullptr on failure; call
-   *          GetError() for more information.
    *
-   * @threadsafety If `populated` is false, it is safe to call this function
-   *               from any thread, otherwise it is safe if no other threads are
-   *               calling setenv() or unsetenv()
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the environment is no longer in use.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa EnvironmentRef.GetVariable
-   * @sa EnvironmentRef.GetVariables
-   * @sa EnvironmentRef.SetVariable
-   * @sa EnvironmentRef.UnsetVariable
-   * @sa EnvironmentRef.Destroy
+   * @sa Environment.Create
    */
-  static Environment Create(bool populated) { return Environment(populated); }
+  void Destroy() { reset(); }
 };
 
-constexpr EnvironmentUnsafe::EnvironmentUnsafe(Environment&& other)
-  : EnvironmentUnsafe(other.release())
+/**
+ * Unsafe Handle to environment
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa EnvironmentRef
+ */
+struct EnvironmentUnsafe : ResourceUnsafe<EnvironmentRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs EnvironmentUnsafe from Environment.
+   */
+  constexpr explicit EnvironmentUnsafe(Environment&& other)
+    : EnvironmentUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Get the process environment.
@@ -5178,7 +5090,7 @@ inline float tan(float x) { return SDL_tanf(x); }
  *
  * @cat resource
  *
- * @sa IConvRef.IConvRef
+ * @sa IConv.open
  * @sa IConv
  */
 struct IConvRef : Resource<SDL_iconv_data_t*>
@@ -5227,7 +5139,55 @@ struct IConvRef : Resource<SDL_iconv_data_t*>
     return SDL_iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
   }
 
-protected:
+  /**
+   * This function frees a context used for character set conversion.
+   *
+   * @param resource The character set conversion handle.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConvRef.iconv
+   * @sa IConv.open
+   * @sa iconv_string
+   */
+  static void reset(SDL_iconv_data_t* resource)
+  {
+    CheckError(SDL_iconv_close(resource) == 0);
+  }
+};
+
+/**
+ * Handle to an owned iConv
+ *
+ * @cat resource
+ *
+ * @sa IConvRef
+ */
+struct IConv : ResourceUnique<IConvRef>
+{
+  using ResourceUnique::ResourceUnique;
+
+  /**
+   * This function allocates a context for the specified character set
+   * conversion.
+   *
+   * @param tocode The target character encoding, must not be nullptr.
+   * @param fromcode The source character encoding, must not be nullptr.
+   * @returns this becomes a valid handle convertible to true on success, or
+   *          convertible to false on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConvRef.iconv
+   * @sa IConv.close
+   * @sa iconv_string
+   */
+  static IConv open(StringParam tocode, StringParam fromcode)
+  {
+    return IConv(SDL_iconv_open(tocode, fromcode));
+  }
+
   /**
    * This function frees a context used for character set conversion.
    *
@@ -5237,26 +5197,10 @@ protected:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConvRef.iconv
-   * @sa IConv.IConv
+   * @sa IConv.open
    * @sa iconv_string
    */
-  int close() { return reset(); }
-
-  /**
-   * This function frees a context used for character set conversion.
-   *
-   * @returns 0 on success, or -1 on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConvRef.iconv
-   * @sa IConv.IConv
-   * @sa iconv_string
-   */
-  int reset(SDL_iconv_data_t* newResource = {})
-  {
-    return SDL_iconv_close(release(newResource));
-  }
+  void close() { reset(); }
 };
 
 /**
@@ -5268,135 +5212,18 @@ protected:
  *
  * @sa IConvRef
  */
-struct IConvUnsafe : IConvRef
+struct IConvUnsafe : ResourceUnsafe<IConvRef>
 {
-  using IConvRef::IConvRef;
-
-  using IConvRef::close;
-
-  using IConvRef::reset;
-
-  /**
-   * Constructs IConvUnsafe from IConvRef.
-   */
-  constexpr IConvUnsafe(const IConvRef& other)
-    : IConvRef(other.get())
-  {
-  }
-
-  IConvUnsafe(const IConv& other) = delete;
+  using ResourceUnsafe::ResourceUnsafe;
 
   /**
    * Constructs IConvUnsafe from IConv.
    */
-  constexpr explicit IConvUnsafe(IConv&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr IConvUnsafe& operator=(IConvUnsafe other)
+  constexpr explicit IConvUnsafe(IConv&& other)
+    : IConvUnsafe(other.release())
   {
-    release(other.release());
-    return *this;
   }
 };
-
-/**
- * Handle to an owned iConv
- *
- * @cat resource
- *
- * @sa IConvRef
- */
-struct IConv : IConvUnsafe
-{
-  using IConvUnsafe::IConvUnsafe;
-
-  /**
-   * Constructs an empty IConv.
-   */
-  constexpr IConv()
-    : IConvUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit IConv(SDL_iconv_data_t* resource)
-    : IConvUnsafe(resource)
-  {
-  }
-
-  constexpr IConv(const IConv& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr IConv(IConv&& other)
-    : IConv(other.release())
-  {
-  }
-
-  /**
-   * This function allocates a context for the specified character set
-   * conversion.
-   *
-   * @param tocode The target character encoding, must not be nullptr.
-   * @param fromcode The source character encoding, must not be nullptr.
-   * @post this becomes a valid handle convertible to true on success, or
-   *       convertible to false on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConvRef.iconv
-   * @sa IConvRef.close
-   * @sa iconv_string
-   */
-  IConv(StringParam tocode, StringParam fromcode)
-    : IConv(SDL_iconv_open(tocode, fromcode))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~IConv() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  IConv& operator=(IConv other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * This function allocates a context for the specified character set
-   * conversion.
-   *
-   * @param tocode The target character encoding, must not be nullptr.
-   * @param fromcode The source character encoding, must not be nullptr.
-   * @returns a handle that must be freed with IConvRef.close, or
-   *          SDL_ICONV_ERROR on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConvRef.iconv
-   * @sa IConvRef.close
-   * @sa iconv_string
-   */
-  static IConv open(StringParam tocode, StringParam fromcode)
-  {
-    return IConv(std::move(tocode), std::move(fromcode));
-  }
-};
-
-constexpr IConvUnsafe::IConvUnsafe(IConv&& other)
-  : IConvUnsafe(other.release())
-{
-}
 
 #ifdef SDL3PP_DOC
 
@@ -5440,7 +5267,8 @@ constexpr IConvUnsafe::IConvUnsafe(IConv&& other)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConvRef.IConvRef
+ * @sa IConv.open
+ * @sa IConv.close
  * @sa IConvRef.iconv
  */
 inline OwnPtr<char> iconv_string(StringParam tocode,

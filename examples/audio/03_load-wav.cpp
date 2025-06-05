@@ -25,8 +25,8 @@ struct Main
   static constexpr SDL::Point windowSz = {640, 480};
 
   SDL::SDL init{SDL::INIT_VIDEO, SDL::INIT_AUDIO};
-  SDL::Window window{"examples/audio/load-wav", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window = SDL::Window::Create("examples/audio/load-wav", windowSz);
+  SDL::Renderer renderer = SDL::Renderer::Create(window);
   SDL::AudioStream stream;
   SDL::OwnArray<Uint8> wav_data;
 
@@ -36,8 +36,9 @@ struct Main
     wav_data = SDL::CheckError(SDL::LoadWAV(
       std::format("{}../assets/sample.wav", SDL::GetBasePath()), &spec));
 
-    stream = SDL::AudioStream(SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK, spec);
-    stream.ResumeDevice();
+    stream = SDL::AudioStream::OpenAudioDeviceStream(
+      SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK, spec);
+    stream->ResumeDevice();
   }
 
   SDL::AppResult Iterate()
@@ -46,15 +47,15 @@ struct Main
         We're being lazy here, but if there's less than the entire wav file left
        to play, just shove a whole copy of it into the queue, so we always have
        _tons_ of data queued for playback. */
-    if (stream.GetQueued() < wav_data.size()) {
+    if (stream->GetQueued() < wav_data.size()) {
       // feed the new data to the stream. It will queue at the end, and trickle
       // out as the hardware needs more data.
-      stream.PutData(wav_data);
+      stream->PutData(wav_data);
     }
 
     // we're not doing anything with the renderer, so just blank it out.
-    renderer.RenderClear();
-    renderer.Present();
+    renderer->RenderClear();
+    renderer->Present();
 
     return SDL::APP_CONTINUE;
   }

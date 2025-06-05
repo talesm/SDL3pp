@@ -16,28 +16,29 @@ struct Main
   static constexpr SDL::Point windowSz = {640, 480};
 
   SDL::SDL init{SDL::INIT_VIDEO};
-  SDL::Window window{"examples/renderer/color-mods", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window =
+    SDL::Window::Create("examples/renderer/color-mods", windowSz);
+  SDL::Renderer renderer = SDL::Renderer::Create(window);
 
   /* Textures are pixel data that we upload to the video hardware for fast
     drawing. Lots of 2D engines refer to these as "sprites." We'll do a static
     texture (upload once, draw many times) with data from a bitmap file. */
-  SDL::Texture texture{
+  SDL::Texture texture{SDL::Texture::Load(
     renderer,
-    std::format("{}../assets/sample.bmp", SDL::GetBasePath())};
+    std::format("{}../assets/sample.bmp", SDL::GetBasePath()))};
 
   SDL::AppResult Iterate()
   {
     const float now = SDL::ToSeconds(SDL::GetTicks());
-    // choose the modulation values for the center texture. The sine wave trick
+    // choose the modulation values for the center texture-> The sine wave trick
     // makes it fade between colors smoothly.
     const float red = 0.5 + 0.5 * SDL::sin(now);
     const float green = 0.5 + 0.5 * SDL::sin(now + SDL_PI_F * 2 / 3);
     const float blue = 0.5 + 0.5 * SDL::sin(now + SDL_PI_F * 4 / 3);
 
     // as you can see, rendering draws over what was drawn before it.
-    renderer.SetDrawColor(SDL::Color{0, 0, 0}); // black
-    renderer.RenderClear();                     // start with a blank canvas.
+    renderer->SetDrawColor(SDL::Color{0, 0, 0}); // black
+    renderer->RenderClear();                     // start with a blank canvas.
 
     // Just draw the static texture a few times. You can think of it like a
     // stamp, there isn't a limit to the number of times you can draw with it.
@@ -47,23 +48,23 @@ struct Main
     // alone, 0.0f will shut off that color completely, etc.
 
     // top left; let's make this one blue!
-    SDL::FRect dst_rect{{0, 0}, texture.GetSize()};
-    texture.SetColorMod(0.f, 0.f, 1.f);
-    renderer.RenderTexture(texture, {}, dst_rect);
+    SDL::FRect dst_rect{{0, 0}, texture->GetSize()};
+    texture->SetColorMod(0.f, 0.f, 1.f);
+    renderer->RenderTexture(texture, {}, dst_rect);
 
     // center this one, and have it cycle through red/green/blue modulations.
     dst_rect.x = (windowSz.x - dst_rect.w) / 2.f;
     dst_rect.y = (windowSz.y - dst_rect.h) / 2.f;
-    texture.SetColorMod(red, green, blue);
-    renderer.RenderTexture(texture, {}, dst_rect);
+    texture->SetColorMod(red, green, blue);
+    renderer->RenderTexture(texture, {}, dst_rect);
 
     // bottom right; let's make this one red!
     dst_rect.x = windowSz.x - dst_rect.w;
     dst_rect.y = windowSz.y - dst_rect.h;
-    texture.SetColorMod(1.f, 0.f, 0.f);
-    renderer.RenderTexture(texture, {}, dst_rect);
+    texture->SetColorMod(1.f, 0.f, 0.f);
+    renderer->RenderTexture(texture, {}, dst_rect);
 
-    renderer.Present();       // put it all on the screen!
+    renderer->Present();      // put it all on the screen!
     return SDL::APP_CONTINUE; // carry on with the program!
   }
 };

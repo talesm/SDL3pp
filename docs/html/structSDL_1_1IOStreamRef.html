@@ -76,7 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1IOStreamRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::IOStreamRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesFileIO.html">File and I/O Abstractions</a> &raquo; <a class="el" href="group__CategoryIOStream.html">I/O Streams</a></div></div></div>
 </div><!--header-->
@@ -89,13 +89,9 @@ Inheritance diagram for SDL::IOStreamRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1IOStreamRef__inherit__graph.png" border="0" usemap="#aSDL_1_1IOStreamRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1IOStreamRef_inherit__map" id="aSDL_1_1IOStreamRef_inherit__map">
-<area shape="rect" title="The read/write operation structure." alt="" coords="17,93,156,119"/>
-<area shape="rect" href="structSDL_1_1IOStreamUnsafe.html" title="Unsafe Handle to iOStream." alt="" coords="5,167,168,192"/>
-<area shape="poly" title=" " alt="" coords="89,132,89,167,84,167,84,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="9,5,164,45"/>
-<area shape="poly" title=" " alt="" coords="89,59,89,93,84,93,84,59"/>
-<area shape="rect" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream." alt="" coords="29,240,145,265"/>
-<area shape="poly" title=" " alt="" coords="89,206,89,240,84,240,84,206"/>
+<area shape="rect" title="The read/write operation structure." alt="" coords="13,93,152,119"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -276,8 +272,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7ee6af092685a1f1659882c095b31bf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
+<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
 <tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78be254b85f48c12179a782cb04da9ac" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top"><a id="a78be254b85f48c12179a782cb04da9ac" name="a78be254b85f48c12179a782cb04da9ac"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; T &gt; &gt; auto &amp;resource)</td></tr>
+<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
+<tr class="separator:a78be254b85f48c12179a782cb04da9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
 <tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
@@ -289,8 +289,12 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (st
 <tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_IOStream * &gt;</a></td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_IOStream * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
+<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
 <tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; SDL_IOStream * &gt; &gt; auto &amp;resource)</td></tr>
+<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
+<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
 <tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
@@ -303,6 +307,10 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (st
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
 <tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
 <tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource" id="r_ab4aa1e63564473a72dc97256340d104f"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_type</b> () const</td></tr>
+<tr class="memdesc:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts back to underlying type. <br /></td></tr>
+<tr class="separator:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
 <tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
@@ -332,60 +340,26 @@ constexpr SDL_IOStream *&#160;</td><td class="memItemRight" valign="bottom"><b>o
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a3df3b2e4929e33683c0509b0175150f5" id="r_a3df3b2e4929e33683c0509b0175150f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamRef.html#a3df3b2e4929e33683c0509b0175150f5">Close</a> ()</td></tr>
-<tr class="memdesc:a3df3b2e4929e33683c0509b0175150f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close and free an allocated <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> structure.  <br /></td></tr>
-<tr class="separator:a3df3b2e4929e33683c0509b0175150f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a776b6a4384c88344fd5c94f18068b355" id="r_a776b6a4384c88344fd5c94f18068b355"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamRef.html#a776b6a4384c88344fd5c94f18068b355">reset</a> (SDL_IOStream *newResource={})</td></tr>
-<tr class="memdesc:a776b6a4384c88344fd5c94f18068b355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close and free an allocated <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> structure.  <br /></td></tr>
-<tr class="separator:a776b6a4384c88344fd5c94f18068b355"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a492ef68db5f34610f272630f8053db24" id="r_a492ef68db5f34610f272630f8053db24"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamRef.html#a492ef68db5f34610f272630f8053db24">reset</a> (SDL_IOStream *resource)</td></tr>
+<tr class="memdesc:a492ef68db5f34610f272630f8053db24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close and free an allocated <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> structure.  <br /></td></tr>
+<tr class="separator:a492ef68db5f34610f272630f8053db24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_IOStream * &gt;</a></td></tr>
+<tr class="memitem:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource" id="r_a11ac29cf1f6da9fb29c508669f40b38d"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL_IOStream *</td></tr>
+<tr class="memdesc:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
+<tr class="separator:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This operates as an opaque handle. There are several APIs to create various types of I/O streams, or an app can supply an IOStreamInterface to IOStreamRef.IOStreamRef() to provide their own stream implementation behind this struct's abstract interface.</p>
+<div class="textblock"><p>This operates as an opaque handle. There are several APIs to create various types of I/O streams, or an app can supply an IOStreamInterface to <a class="el" href="structSDL_1_1IOStream.html#a0e7631873815248557dd83ff665ea25e" title="Create a custom IOStreamRef.">IOStream.Open()</a> to provide their own stream implementation behind this struct's abstract interface.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3df3b2e4929e33683c0509b0175150f5" name="a3df3b2e4929e33683c0509b0175150f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3df3b2e4929e33683c0509b0175150f5">&#9670;&#160;</a></span>Close()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::IOStreamRef::Close </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p><a class="el" href="structSDL_1_1IOStreamRef.html#a3df3b2e4929e33683c0509b0175150f5" title="Close and free an allocated IOStreamRef structure.">IOStreamRef.Close()</a> closes and cleans up the <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> stream. It releases any resources used by the stream and frees the <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> itself. This returns true on success, or false if the stream failed to flush to its output (e.g. to disk).</p>
-<p>Note that if this fails to flush the stream for any reason, this function reports an error, but the <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> is still invalid once this function returns.</p>
-<p>This call flushes any buffered writes to the operating system, but there are no guarantees that those writes have gone to physical media; they might be in the OS's file cache, waiting to go to disk later. If it's absolutely crucial that writes go to disk immediately, so they are definitely stored even if the power fails before the file cache would have caught up, one should call <a class="el" href="structSDL_1_1IOStreamRef.html#ac208e55f1cc620e61221c5cc1e732f1a" title="Flush any buffered data in the stream.">IOStreamRef.Flush()</a> before closing. Note that flushing takes time and makes the system and your app operate less efficiently, so do so sparingly.</p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStream.html#afc716ed30645f0aeabfc13748ec84701" title="Constructs an empty IOStream.">IOStream.IOStream</a> </dd></dl>
-
-</div>
-</div>
 <a id="ac208e55f1cc620e61221c5cc1e732f1a" name="ac208e55f1cc620e61221c5cc1e732f1a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac208e55f1cc620e61221c5cc1e732f1a">&#9670;&#160;</a></span>Flush()</h2>
 
@@ -417,7 +391,7 @@ Protected Member Functions</h2></td></tr>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStream.html#afc716ed30645f0aeabfc13748ec84701" title="Constructs an empty IOStream.">IOStream.IOStream</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStream.html#a991da53140a740b71e05f122562173ea" title="Use this function to create a new IOStream structure for reading from and/or writing to a named file.">IOStream.FromFile</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1IOStreamRef.html#ae3b518bd679bf9533679313cb6d82027" title="Write to an IOStreamRef data stream.">IOStreamRef.Write</a> </dd></dl>
 
@@ -1306,8 +1280,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a776b6a4384c88344fd5c94f18068b355" name="a776b6a4384c88344fd5c94f18068b355"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a776b6a4384c88344fd5c94f18068b355">&#9670;&#160;</a></span>reset()</h2>
+<a id="a492ef68db5f34610f272630f8053db24" name="a492ef68db5f34610f272630f8053db24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a492ef68db5f34610f272630f8053db24">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1316,22 +1290,28 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::IOStreamRef::reset </td>
+          <td class="memname">static void SDL::IOStreamRef::reset </td>
           <td>(</td>
           <td class="paramtype">SDL_IOStream *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p><a class="el" href="structSDL_1_1IOStreamRef.html#a3df3b2e4929e33683c0509b0175150f5" title="Close and free an allocated IOStreamRef structure.">IOStreamRef.Close()</a> closes and cleans up the <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> stream. It releases any resources used by the stream and frees the <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> itself. This returns true on success, or false if the stream failed to flush to its output (e.g. to disk).</p>
+<p><a class="el" href="structSDL_1_1IOStream.html#a60482e493111870baf49cf7571732839" title="Close and free an allocated IOStreamRef structure.">IOStream.Close()</a> closes and cleans up the <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> stream. It releases any resources used by the stream and frees the <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> itself. This returns true on success, or false if the stream failed to flush to its output (e.g. to disk).</p>
 <p>Note that if this fails to flush the stream for any reason, this function reports an error, but the <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> is still invalid once this function returns.</p>
 <p>This call flushes any buffered writes to the operating system, but there are no guarantees that those writes have gone to physical media; they might be in the OS's file cache, waiting to go to disk later. If it's absolutely crucial that writes go to disk immediately, so they are definitely stored even if the power fails before the file cache would have caught up, one should call <a class="el" href="structSDL_1_1IOStreamRef.html#ac208e55f1cc620e61221c5cc1e732f1a" title="Flush any buffered data in the stream.">IOStreamRef.Flush()</a> before closing. Note that flushing takes time and makes the system and your app operate less efficiently, so do so sparingly.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td><a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> structure to close. </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
@@ -1340,7 +1320,7 @@ template&lt;class T &gt; </div>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStream.html#afc716ed30645f0aeabfc13748ec84701" title="Constructs an empty IOStream.">IOStream.IOStream</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStream.html#a0e7631873815248557dd83ff665ea25e" title="Create a custom IOStreamRef.">IOStream.Open</a> </dd></dl>
 
 </div>
 </div>
