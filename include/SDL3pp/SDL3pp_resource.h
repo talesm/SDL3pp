@@ -75,6 +75,7 @@ public:
   constexpr T get() const { return m_resource; }
 
   /// Return contained resource and empties or replace value
+  /// @deprecated
   constexpr T release(T newResource = {})
   {
     T result = std::move(m_resource);
@@ -187,7 +188,7 @@ public:
   constexpr explicit ResourceUnsafe(RESOURCE other)
     : base(other)
   {
-    other.release();
+    other = nullptr;
   }
 
   /// Resets the value, destroying the resource if not nullptr
