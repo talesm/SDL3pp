@@ -74,15 +74,6 @@ public:
   /// Return contained resource;
   constexpr T get() const { return m_resource; }
 
-  /// Return contained resource and empties or replace value
-  /// @deprecated
-  constexpr T release(T newResource = {})
-  {
-    T result = std::move(m_resource);
-    m_resource = newResource;
-    return result;
-  }
-
   /// Access to fields
   constexpr const T operator->() const { return get(); }
 

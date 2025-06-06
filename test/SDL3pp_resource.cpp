@@ -24,15 +24,6 @@ TEST_CASE("Int resource")
     REQUIRE(none != res);
     REQUIRE(none == nullptr);
 
-    SUBCASE("release")
-    {
-      REQUIRE(res);
-      REQUIRE(res.release() == 10);
-      REQUIRE_FALSE(res);
-      REQUIRE(res == none);
-      REQUIRE(res == nullptr);
-    }
-
     SUBCASE("copy")
     {
       REQUIRE(res);

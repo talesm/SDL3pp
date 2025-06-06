@@ -2992,7 +2992,8 @@ public:
   {
     if (texture) {
       release();
-      SDL_UnlockTexture(texture.release());
+      SDL_UnlockTexture(texture);
+      texture = nullptr;
     }
   }
 
