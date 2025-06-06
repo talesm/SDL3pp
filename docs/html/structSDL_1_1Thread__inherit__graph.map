@@ -1,7 +1,9 @@
 <map id="SDL::Thread" name="SDL::Thread">
-<area shape="rect" id="Node000001" title="Handle to an owned thread." alt="" coords="50,181,150,207"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="19,93,181,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,147,103,181,97,181,97,147"/>
-<area shape="rect" id="Node000003" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="5,5,195,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,59,103,93,97,93,97,59"/>
+<area shape="rect" id="Node000001" title="Handle to an owned thread." alt="" coords="50,269,150,295"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="19,181,181,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,235,103,269,97,269,97,235"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ResourceOwnerBase.html" title="Base class for resource pointer&#45;like owner objects." alt="" coords="5,93,195,133"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,147,103,181,97,181,97,147"/>
+<area shape="rect" id="Node000004" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="17,5,183,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="103,59,103,93,97,93,97,59"/>
 </map>

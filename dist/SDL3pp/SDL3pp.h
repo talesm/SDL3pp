@@ -639,7 +639,7 @@ struct DefaultDeleter
  *
  * @tparam RESOURCE
  */
-template<class RESOURCE, class DELETER>
+template<class RESOURCE>
 class ResourcePtrBase
 {
 public:
@@ -652,28 +652,26 @@ public:
 private:
   /// The resource.
   reference m_value;
-  DELETER m_deleter;
 
 protected:
   /// Constructs from raw type.
-  constexpr ResourcePtrBase(value_type value = {}, DELETER deleter = {})
+  constexpr ResourcePtrBase(value_type value = {})
     : m_value(value)
-    , m_deleter(std::move(deleter))
   {
   }
 
   /// Get reference
   reference& get() { return m_value; }
 
-  /// Frees resource
-  void free() { m_deleter(m_value); }
-
 public:
   /// Check if not null
   constexpr operator bool() const { return bool(m_value); }
 
   /// Comparison
-  constexpr bool operator==(const ResourcePtrBase&) const = default;
+  constexpr bool operator==(const ResourcePtrBase& other) const
+  {
+    return m_value == other.m_value;
+  };
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t) const { return !*this; }
@@ -692,12 +690,36 @@ public:
 
   /// Get reference
   reference get() const { return m_value; }
+};
 
-  /// Returns reference and reset this
-  reference release()
+/**
+ * @brief Base class for resource pointer-like owner objects.
+ *
+ * @tparam RESOURCE
+ */
+template<class RESOURCE, class DELETER>
+class ResourceOwnerBase : public ResourcePtrBase<RESOURCE>
+{
+  using base = ResourcePtrBase<RESOURCE>;
+  DELETER m_deleter;
+
+protected:
+  /// Constructs from raw type.
+  constexpr ResourceOwnerBase(base::value_type value = {}, DELETER deleter = {})
+    : base(value)
+    , m_deleter(std::move(deleter))
   {
-    reference value = m_value;
-    m_value = {};
+  }
+
+  /// Frees resource
+  void free() { m_deleter(base::get()); }
+
+public:
+  /// Returns reference and reset this
+  RESOURCE release()
+  {
+    RESOURCE value = base::get();
+    base::get() = {};
     return value;
   }
 };
@@ -712,9 +734,9 @@ public:
  * @tparam DELETER
  */
 template<class RESOURCE, class DELETER = DefaultDeleter<RESOURCE>>
-class ResourceUnsafe : public ResourcePtrBase<RESOURCE, DELETER>
+class ResourceUnsafe : public ResourceOwnerBase<RESOURCE, DELETER>
 {
-  using base = ResourcePtrBase<RESOURCE, DELETER>;
+  using base = ResourceOwnerBase<RESOURCE, DELETER>;
 
 public:
   /// Default constructor.
@@ -741,9 +763,9 @@ public:
  * @tparam RESOURCE
  */
 template<class RESOURCE, class DELETER = DefaultDeleter<RESOURCE>>
-class ResourceUnique : public ResourcePtrBase<RESOURCE, DELETER>
+class ResourceUnique : public ResourceOwnerBase<RESOURCE, DELETER>
 {
-  using base = ResourcePtrBase<RESOURCE, DELETER>;
+  using base = ResourceOwnerBase<RESOURCE, DELETER>;
 
 public:
   /// Default constructor.
@@ -803,9 +825,9 @@ public:
  */
 template<class RESOURCE, class UNIQUE>
 class DetachedResource
-  : public ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>
+  : public ResourceOwnerBase<RESOURCE, DefaultDeleter<RESOURCE>>
 {
-  using base = ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>;
+  using base = ResourceOwnerBase<RESOURCE, DefaultDeleter<RESOURCE>>;
 
 public:
   /// Constructs pointer from anything compatible
@@ -838,9 +860,9 @@ public:
  * @see SurfaceLock
  */
 template<class RESOURCE>
-class LockBase : public ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>
+class LockBase : public ResourceOwnerBase<RESOURCE, DefaultDeleter<RESOURCE>>
 {
-  using base = ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>;
+  using base = ResourceOwnerBase<RESOURCE, DefaultDeleter<RESOURCE>>;
 
 protected:
   /// Constructs initializing member

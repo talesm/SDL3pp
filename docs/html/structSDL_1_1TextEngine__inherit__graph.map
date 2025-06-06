@@ -1,7 +1,9 @@
 <map id="SDL::TextEngine" name="SDL::TextEngine">
-<area shape="rect" id="Node000001" title="Handle to an owned textEngine." alt="" coords="47,196,173,221"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="5,93,215,148"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,162,113,196,107,196,107,162"/>
-<area shape="rect" id="Node000003" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="15,5,205,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="113,59,113,93,107,93,107,59"/>
+<area shape="rect" id="Node000001" title="Handle to an owned textEngine." alt="" coords="47,284,173,309"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="5,181,215,236"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,250,113,284,107,284,107,250"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ResourceOwnerBase.html" title="Base class for resource pointer&#45;like owner objects." alt="" coords="15,93,205,133"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="113,147,113,181,107,181,107,147"/>
+<area shape="rect" id="Node000004" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="27,5,193,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="113,59,113,93,107,93,107,59"/>
 </map>

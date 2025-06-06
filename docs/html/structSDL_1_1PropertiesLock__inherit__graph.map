@@ -1,7 +1,9 @@
 <map id="SDL::PropertiesLock" name="SDL::PropertiesLock">
-<area shape="rect" id="Node000001" title="Wrap the lock state for Properties." alt="" coords="29,181,180,207"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1LockBase.html" title=" " alt="" coords="5,93,204,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,147,107,181,102,181,102,147"/>
-<area shape="rect" id="Node000003" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="10,5,199,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="107,59,107,93,102,93,102,59"/>
+<area shape="rect" id="Node000001" title="Wrap the lock state for Properties." alt="" coords="29,269,180,295"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1LockBase.html" title=" " alt="" coords="5,181,204,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,235,107,269,102,269,102,235"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ResourceOwnerBase.html" title="Base class for resource pointer&#45;like owner objects." alt="" coords="10,93,199,133"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="107,147,107,181,102,181,102,147"/>
+<area shape="rect" id="Node000004" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="22,5,187,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="107,59,107,93,102,93,102,59"/>
 </map>

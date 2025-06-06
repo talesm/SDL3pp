@@ -1,5 +1,7 @@
 <map id="SDL::LockBase&lt; RESOURCE &gt;" name="SDL::LockBase&lt; RESOURCE &gt;">
-<area shape="rect" id="Node000001" title="Base class for locks." alt="" coords="5,108,224,133"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1ResourcePtrBase.html" title=" " alt="" coords="9,5,221,60"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,74,117,108,112,108,112,74"/>
+<area shape="rect" id="Node000001" title="Base class for locks." alt="" coords="5,196,224,221"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="9,93,221,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,162,117,196,112,196,112,162"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="32,5,197,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="117,59,117,93,112,93,112,59"/>
 </map>

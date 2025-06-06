@@ -1,7 +1,9 @@
 <map id="SDL::AudioStreamLock" name="SDL::AudioStreamLock">
-<area shape="rect" id="Node000001" title="Locks a AudioStream." alt="" coords="29,181,198,207"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1LockBase.html" title=" " alt="" coords="5,93,221,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,147,116,181,111,181,111,147"/>
-<area shape="rect" id="Node000003" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="19,5,208,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="116,59,116,93,111,93,111,59"/>
+<area shape="rect" id="Node000001" title="Locks a AudioStream." alt="" coords="29,269,198,295"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1LockBase.html" title=" " alt="" coords="5,181,221,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,235,116,269,111,269,111,235"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ResourceOwnerBase.html" title="Base class for resource pointer&#45;like owner objects." alt="" coords="19,93,208,133"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="116,147,116,181,111,181,111,147"/>
+<area shape="rect" id="Node000004" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="31,5,196,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="116,59,116,93,111,93,111,59"/>
 </map>
