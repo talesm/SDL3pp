@@ -302,14 +302,14 @@ public:
  * @see SurfaceLock
  */
 template<class RESOURCE>
-class LockBase
+class LockBase : public ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>
 {
-  RESOURCE m_resource;
+  using base = ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>;
 
 protected:
   /// Constructs initializing member
   constexpr LockBase(RESOURCE&& resource)
-    : m_resource(std::move(resource))
+    : base(std::move(resource))
   {
   }
 
@@ -321,24 +321,21 @@ public:
 
   /// Move ctor
   LockBase(LockBase&& other)
-    : LockBase(std::move(other.m_resource))
+    : base(std::move(other))
   {
+    other.get() = nullptr;
   }
 
   /// Dtor
-  constexpr ~LockBase() { SDL_assert_paranoid(!m_resource); }
-
-  LockBase& operator=(const LockBase& other) = delete;
+  constexpr ~LockBase() { SDL_assert_paranoid(!*this); }
 
   /// Move assignment
-  LockBase& operator=(LockBase&& other)
+  LockBase& operator=(LockBase other)
   {
-    std::swap(m_resource, other.m_resource);
+    base::operator=(other);
+    other.get() = nullptr;
     return *this;
   }
-
-  /// Release locked resource without unlocking it.
-  RESOURCE release() { return m_resource.release(); }
 };
 
 } // namespace SDL
