@@ -73,6 +73,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Load images from several formats<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesLibs.html">Satellite Libraries</a></div></div></div>
 </div><!--header-->
@@ -101,6 +102,15 @@ Macros</h2></td></tr>
 <tr class="memitem:ga4743d0d6cd5a82812754a8564622687f" id="r_ga4743d0d6cd5a82812754a8564622687f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga4743d0d6cd5a82812754a8564622687f">SDL_IMAGE_VERSION_ATLEAST</a>(X,  Y,  Z)</td></tr>
 <tr class="memdesc:ga4743d0d6cd5a82812754a8564622687f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro will evaluate to true if compiled with SDL_image at least X.Y.Z.  <br /></td></tr>
 <tr class="separator:ga4743d0d6cd5a82812754a8564622687f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga8f1c1e74b663c81a839926ced45f2d04" id="r_ga8f1c1e74b663c81a839926ced45f2d04"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga8f1c1e74b663c81a839926ced45f2d04">SDL::AnimationShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Animation.html">Animation</a> &gt;</td></tr>
+<tr class="memdesc:ga8f1c1e74b663c81a839926ced45f2d04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared animation.  <br /></td></tr>
+<tr class="separator:ga8f1c1e74b663c81a839926ced45f2d04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga92e21a22bf3b11f233ace8e805656663" id="r_ga92e21a22bf3b11f233ace8e805656663"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga92e21a22bf3b11f233ace8e805656663">SDL::AnimationWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Animation.html">Animation</a> &gt;</td></tr>
+<tr class="memdesc:ga92e21a22bf3b11f233ace8e805656663"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared animation.  <br /></td></tr>
+<tr class="separator:ga92e21a22bf3b11f233ace8e805656663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -269,6 +279,10 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf4b68c50bea4dafb6ccaca4de9687f04" id="r_gaf4b68c50bea4dafb6ccaca4de9687f04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Animation.html">Animation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#gaf4b68c50bea4dafb6ccaca4de9687f04">SDL::LoadWEBPAnimation</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src)</td></tr>
 <tr class="memdesc:gaf4b68c50bea4dafb6ccaca4de9687f04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a WEBP animation directly.  <br /></td></tr>
 <tr class="separator:gaf4b68c50bea4dafb6ccaca4de9687f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3fb43eef2c0feb77dfe496fec176b21f" id="r_ga3fb43eef2c0feb77dfe496fec176b21f"><td class="memItemLeft" align="right" valign="top"><a id="ga3fb43eef2c0feb77dfe496fec176b21f" name="ga3fb43eef2c0feb77dfe496fec176b21f"></a>
+<a class="el" href="group__CategorySDLImage.html#ga8f1c1e74b663c81a839926ced45f2d04">AnimationShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Animation::share</b> ()</td></tr>
+<tr class="memdesc:ga3fb43eef2c0feb77dfe496fec176b21f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this animation into a AnimationShared. <br /></td></tr>
+<tr class="separator:ga3fb43eef2c0feb77dfe496fec176b21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>A simple library to load images of various formats as <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> surfaces </p>
@@ -326,6 +340,43 @@ Functions</h2></td></tr>
 <div class="line">   (SDL_IMAGE_MAJOR_VERSION &gt; X || SDL_IMAGE_MINOR_VERSION &gt; Y ||              \</div>
 <div class="line">    SDL_IMAGE_MICRO_VERSION &gt;= Z))</div>
 </div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="ga8f1c1e74b663c81a839926ced45f2d04" name="ga8f1c1e74b663c81a839926ced45f2d04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8f1c1e74b663c81a839926ced45f2d04">&#9670;&#160;</a></span>AnimationShared</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategorySDLImage.html#ga8f1c1e74b663c81a839926ced45f2d04">SDL::AnimationShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Animation.html">Animation</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Animation.html" title="Handle to an owned animation.">Animation</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga92e21a22bf3b11f233ace8e805656663" name="ga92e21a22bf3b11f233ace8e805656663"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga92e21a22bf3b11f233ace8e805656663">&#9670;&#160;</a></span>AnimationWeak</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategorySDLImage.html#ga92e21a22bf3b11f233ace8e805656663">SDL::AnimationWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Animation.html">Animation</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga8f1c1e74b663c81a839926ced45f2d04" title="Handle to a shared animation.">AnimationShared</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a> </dd></dl>
+
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>

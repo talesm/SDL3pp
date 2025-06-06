@@ -73,6 +73,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Thread Synchronization Primitives<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a></div></div></div>
 </div><!--header-->
@@ -125,9 +126,52 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:ga1cb6bafe32bf415e1f62acad65881bba" id="r_ga1cb6bafe32bf415e1f62acad65881bba"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga1cb6bafe32bf415e1f62acad65881bba">SDL::MutexShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Mutex.html">Mutex</a> &gt;</td></tr>
+<tr class="memdesc:ga1cb6bafe32bf415e1f62acad65881bba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared mutex.  <br /></td></tr>
+<tr class="separator:ga1cb6bafe32bf415e1f62acad65881bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9b88ea48a48d52bfc248ca856898c286" id="r_ga9b88ea48a48d52bfc248ca856898c286"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga9b88ea48a48d52bfc248ca856898c286">SDL::MutexWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Mutex.html">Mutex</a> &gt;</td></tr>
+<tr class="memdesc:ga9b88ea48a48d52bfc248ca856898c286"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared mutex.  <br /></td></tr>
+<tr class="separator:ga9b88ea48a48d52bfc248ca856898c286"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga04341aeacd10e7d42ac217bef263cdd0" id="r_ga04341aeacd10e7d42ac217bef263cdd0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga04341aeacd10e7d42ac217bef263cdd0">SDL::RWLockShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &gt;</td></tr>
+<tr class="memdesc:ga04341aeacd10e7d42ac217bef263cdd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared rWLock.  <br /></td></tr>
+<tr class="separator:ga04341aeacd10e7d42ac217bef263cdd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga68becba0a31a928a67644e5b998b6ce3" id="r_ga68becba0a31a928a67644e5b998b6ce3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga68becba0a31a928a67644e5b998b6ce3">SDL::RWLockWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &gt;</td></tr>
+<tr class="memdesc:ga68becba0a31a928a67644e5b998b6ce3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared rWLock.  <br /></td></tr>
+<tr class="separator:ga68becba0a31a928a67644e5b998b6ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga13ddbe63c1bc45c089ac7ebd05bcb1c7" id="r_ga13ddbe63c1bc45c089ac7ebd05bcb1c7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga13ddbe63c1bc45c089ac7ebd05bcb1c7">SDL::SemaphoreShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Semaphore.html">Semaphore</a> &gt;</td></tr>
+<tr class="memdesc:ga13ddbe63c1bc45c089ac7ebd05bcb1c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared semaphore.  <br /></td></tr>
+<tr class="separator:ga13ddbe63c1bc45c089ac7ebd05bcb1c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga409459af73bf12356b500c006eec61e9" id="r_ga409459af73bf12356b500c006eec61e9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga409459af73bf12356b500c006eec61e9">SDL::SemaphoreWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Semaphore.html">Semaphore</a> &gt;</td></tr>
+<tr class="memdesc:ga409459af73bf12356b500c006eec61e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared semaphore.  <br /></td></tr>
+<tr class="separator:ga409459af73bf12356b500c006eec61e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf4ef31750f4f87310c433b49ddc39eff" id="r_gaf4ef31750f4f87310c433b49ddc39eff"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gaf4ef31750f4f87310c433b49ddc39eff">SDL::ConditionShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Condition.html">Condition</a> &gt;</td></tr>
+<tr class="memdesc:gaf4ef31750f4f87310c433b49ddc39eff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared condition.  <br /></td></tr>
+<tr class="separator:gaf4ef31750f4f87310c433b49ddc39eff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac638b143b5bc916bf3bdae4f00a2877b" id="r_gac638b143b5bc916bf3bdae4f00a2877b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gac638b143b5bc916bf3bdae4f00a2877b">SDL::ConditionWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Condition.html">Condition</a> &gt;</td></tr>
+<tr class="memdesc:gac638b143b5bc916bf3bdae4f00a2877b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared condition.  <br /></td></tr>
+<tr class="separator:gac638b143b5bc916bf3bdae4f00a2877b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4d35138460939f8f2b58769e2bd54851" id="r_ga4d35138460939f8f2b58769e2bd54851"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga4d35138460939f8f2b58769e2bd54851">SDL::InitStatus</a> = SDL_InitStatus</td></tr>
 <tr class="memdesc:ga4d35138460939f8f2b58769e2bd54851"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current status of an <a class="el" href="structSDL_1_1InitState.html" title="A structure used for thread-safe initialization and shutdown.">InitState</a> structure.  <br /></td></tr>
 <tr class="separator:ga4d35138460939f8f2b58769e2bd54851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:gaea008358fa70d3ff433ad3a81e5c4a63" id="r_gaea008358fa70d3ff433ad3a81e5c4a63"><td class="memItemLeft" align="right" valign="top"><a id="gaea008358fa70d3ff433ad3a81e5c4a63" name="gaea008358fa70d3ff433ad3a81e5c4a63"></a>
+<a class="el" href="group__CategoryMutex.html#ga1cb6bafe32bf415e1f62acad65881bba">MutexShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Mutex::share</b> ()</td></tr>
+<tr class="memdesc:gaea008358fa70d3ff433ad3a81e5c4a63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this mutex into a MutexShared. <br /></td></tr>
+<tr class="separator:gaea008358fa70d3ff433ad3a81e5c4a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga05ccdc14b3cbcfd8cdb2574ca6c66a97" id="r_ga05ccdc14b3cbcfd8cdb2574ca6c66a97"><td class="memItemLeft" align="right" valign="top"><a id="ga05ccdc14b3cbcfd8cdb2574ca6c66a97" name="ga05ccdc14b3cbcfd8cdb2574ca6c66a97"></a>
+<a class="el" href="group__CategoryMutex.html#ga04341aeacd10e7d42ac217bef263cdd0">RWLockShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::RWLock::share</b> ()</td></tr>
+<tr class="memdesc:ga05ccdc14b3cbcfd8cdb2574ca6c66a97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this rWLock into a RWLockShared. <br /></td></tr>
+<tr class="separator:ga05ccdc14b3cbcfd8cdb2574ca6c66a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ad49be5c4e7c1d1f4594ae47c6b5874" id="r_ga4ad49be5c4e7c1d1f4594ae47c6b5874"><td class="memItemLeft" align="right" valign="top"><a id="ga4ad49be5c4e7c1d1f4594ae47c6b5874" name="ga4ad49be5c4e7c1d1f4594ae47c6b5874"></a>
+<a class="el" href="group__CategoryMutex.html#ga13ddbe63c1bc45c089ac7ebd05bcb1c7">SemaphoreShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Semaphore::share</b> ()</td></tr>
+<tr class="memdesc:ga4ad49be5c4e7c1d1f4594ae47c6b5874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this semaphore into a SemaphoreShared. <br /></td></tr>
+<tr class="separator:ga4ad49be5c4e7c1d1f4594ae47c6b5874"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac5ac3885cace6ffbbb11704ff9cec6db" id="r_gac5ac3885cace6ffbbb11704ff9cec6db"><td class="memItemLeft" align="right" valign="top"><a id="gac5ac3885cace6ffbbb11704ff9cec6db" name="gac5ac3885cace6ffbbb11704ff9cec6db"></a>
+<a class="el" href="group__CategoryMutex.html#gaf4ef31750f4f87310c433b49ddc39eff">ConditionShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Condition::share</b> ()</td></tr>
+<tr class="memdesc:gac5ac3885cace6ffbbb11704ff9cec6db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this condition into a ConditionShared. <br /></td></tr>
+<tr class="separator:gac5ac3885cace6ffbbb11704ff9cec6db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -154,6 +198,42 @@ Variables</h2></td></tr>
 </ul>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> also offers a datatype, <a class="el" href="structSDL_1_1InitState.html" title="A structure used for thread-safe initialization and shutdown.">InitState</a>, which can be used to make sure only one thread initializes/deinitializes some resource that several threads might try to use for the first time simultaneously. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="gaf4ef31750f4f87310c433b49ddc39eff" name="gaf4ef31750f4f87310c433b49ddc39eff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf4ef31750f4f87310c433b49ddc39eff">&#9670;&#160;</a></span>ConditionShared</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryMutex.html#gaf4ef31750f4f87310c433b49ddc39eff">SDL::ConditionShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Condition.html">Condition</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ConditionRef.html" title="A means to block multiple threads until a condition is satisfied.">ConditionRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Condition.html" title="Handle to an owned condition.">Condition</a> </dd></dl>
+
+</div>
+</div>
+<a id="gac638b143b5bc916bf3bdae4f00a2877b" name="gac638b143b5bc916bf3bdae4f00a2877b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac638b143b5bc916bf3bdae4f00a2877b">&#9670;&#160;</a></span>ConditionWeak</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryMutex.html#gac638b143b5bc916bf3bdae4f00a2877b">SDL::ConditionWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Condition.html">Condition</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gaf4ef31750f4f87310c433b49ddc39eff" title="Handle to a shared condition.">ConditionShared</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ConditionRef.html" title="A means to block multiple threads until a condition is satisfied.">ConditionRef</a> </dd></dl>
+
+</div>
+</div>
 <a id="ga4d35138460939f8f2b58769e2bd54851" name="ga4d35138460939f8f2b58769e2bd54851"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga4d35138460939f8f2b58769e2bd54851">&#9670;&#160;</a></span>InitStatus</h2>
 
@@ -166,6 +246,114 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga1cb6bafe32bf415e1f62acad65881bba" name="ga1cb6bafe32bf415e1f62acad65881bba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1cb6bafe32bf415e1f62acad65881bba">&#9670;&#160;</a></span>MutexShared</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryMutex.html#ga1cb6bafe32bf415e1f62acad65881bba">SDL::MutexShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Mutex.html">Mutex</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1MutexRef.html" title="A means to serialize access to a resource between threads.">MutexRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Mutex.html" title="Handle to an owned mutex.">Mutex</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga9b88ea48a48d52bfc248ca856898c286" name="ga9b88ea48a48d52bfc248ca856898c286"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9b88ea48a48d52bfc248ca856898c286">&#9670;&#160;</a></span>MutexWeak</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryMutex.html#ga9b88ea48a48d52bfc248ca856898c286">SDL::MutexWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Mutex.html">Mutex</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga1cb6bafe32bf415e1f62acad65881bba" title="Handle to a shared mutex.">MutexShared</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1MutexRef.html" title="A means to serialize access to a resource between threads.">MutexRef</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga04341aeacd10e7d42ac217bef263cdd0" name="ga04341aeacd10e7d42ac217bef263cdd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga04341aeacd10e7d42ac217bef263cdd0">&#9670;&#160;</a></span>RWLockShared</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryMutex.html#ga04341aeacd10e7d42ac217bef263cdd0">SDL::RWLockShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1RWLock.html">RWLock</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RWLockRef.html" title="A mutex that allows read-only threads to run in parallel.">RWLockRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1RWLock.html" title="Handle to an owned rWLock.">RWLock</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga68becba0a31a928a67644e5b998b6ce3" name="ga68becba0a31a928a67644e5b998b6ce3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga68becba0a31a928a67644e5b998b6ce3">&#9670;&#160;</a></span>RWLockWeak</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryMutex.html#ga68becba0a31a928a67644e5b998b6ce3">SDL::RWLockWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1RWLock.html">RWLock</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga04341aeacd10e7d42ac217bef263cdd0" title="Handle to a shared rWLock.">RWLockShared</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1RWLockRef.html" title="A mutex that allows read-only threads to run in parallel.">RWLockRef</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga13ddbe63c1bc45c089ac7ebd05bcb1c7" name="ga13ddbe63c1bc45c089ac7ebd05bcb1c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga13ddbe63c1bc45c089ac7ebd05bcb1c7">&#9670;&#160;</a></span>SemaphoreShared</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryMutex.html#ga13ddbe63c1bc45c089ac7ebd05bcb1c7">SDL::SemaphoreShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Semaphore.html">Semaphore</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SemaphoreRef.html" title="A means to manage access to a resource, by count, between threads.">SemaphoreRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Semaphore.html" title="Handle to an owned semaphore.">Semaphore</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga409459af73bf12356b500c006eec61e9" name="ga409459af73bf12356b500c006eec61e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga409459af73bf12356b500c006eec61e9">&#9670;&#160;</a></span>SemaphoreWeak</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryMutex.html#ga409459af73bf12356b500c006eec61e9">SDL::SemaphoreWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Semaphore.html">Semaphore</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga13ddbe63c1bc45c089ac7ebd05bcb1c7" title="Handle to a shared semaphore.">SemaphoreShared</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1SemaphoreRef.html" title="A means to manage access to a resource, by count, between threads.">SemaphoreRef</a> </dd></dl>
 
 </div>
 </div>

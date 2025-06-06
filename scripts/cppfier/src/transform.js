@@ -1,5 +1,6 @@
 const { insertEntry } = require("./parse");
-const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./utils");
+const { generateCallParameters } = require("./update");
+const { system, combineObject, looksLikeFreeFunction, deepClone, combineArray } = require("./utils");
 
 /**
  * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint } from "./types"
@@ -667,7 +668,8 @@ function expandResources(sourceEntries, file, context) {
     const uniqueName = resourceEntry.name || transformName(sourceName, context);
     const refName = uniqueName + "Ref";
     const unsafeName = uniqueName + "Unsafe";
-    const optionalName = "Optional" + uniqueName;
+    const sharedName = uniqueName + "Shared";
+    const weakName = uniqueName + "Weak";
     const detachedName = "Detached" + uniqueName;
     const type = resourceEntry.type ?? sourceName;
     const sourceEntry =  /** @type {ApiEntry} */(sourceEntries[sourceName]);
@@ -676,9 +678,21 @@ function expandResources(sourceEntries, file, context) {
     const constPointerType = `const ${pointerType}`;
     const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
     context.addName(sourceName, uniqueName);
-    referenceAliases.push(
-      { name: refName, kind: "forward" },
-      { name: uniqueName, kind: "forward" }
+    referenceAliases.push({
+      name: refName, kind: "forward"
+    }, {
+      name: uniqueName, kind: "forward"
+    }, {
+      name: sharedName,
+      kind: "alias",
+      type: `ResourceShared<${uniqueName}>`,
+      doc: `Handle to a shared ${title}.\n\n@cat resource\n\n@sa ${refName}\n@sa ${uniqueName}`,
+    }, {
+      name: weakName,
+      kind: "alias",
+      type: `ResourceWeak<${uniqueName}>`,
+      doc: `Weak handle to a shared ${title}.\n\n@cat resource\n\n@sa ${sharedName}\n@sa ${refName}`,
+    },
     );
     if (resourceEntry.aliasDetached) {
       referenceAliases.push({
@@ -705,8 +719,9 @@ function expandResources(sourceEntries, file, context) {
     const refSubEntries = resourceEntry.entries || {};
     const resourceType = `Resource<${pointerType}>`;
 
-    /** @type {Dict<ApiEntryTransform>} */
+    /** @type {Dict<ApiEntryTransform | ApiEntryBase[]>} */
     const uniqueSubEntries = {};
+
     let extraUniqueCtors = refSubEntries[uniqueName];
     if (extraUniqueCtors) {
       delete refSubEntries[uniqueName];
@@ -730,17 +745,20 @@ function expandResources(sourceEntries, file, context) {
         continue;
       }
       delete refSubEntries[sourceName];
-      // @ts-ignore
       uniqueSubEntries[sourceName] = entry;
       if (Array.isArray(entry)) {
         entry.forEach(e => {
           e.static = true;
           e.type = uniqueName;
+          if (!e.name) e.name = transformMemberName(sourceName, uniqueName, context);
+          if (!e.sourceName && sourceEntries[sourceName]) e.sourceName = sourceName;
           addHints(e, { wrapSelf: true });
         });
       } else {
         entry.static = true;
         entry.type = uniqueName;
+        if (!entry.name) entry.name = transformMemberName(sourceName, uniqueName, context);
+        if (!entry.sourceName && sourceEntries[sourceName]) entry.sourceName = sourceName;
         addHints(entry, { wrapSelf: true });
       }
     }
@@ -754,7 +772,9 @@ function expandResources(sourceEntries, file, context) {
             kind: "function",
             type: uniqueName,
             static: true,
+            name: transformMemberName(sourceName, uniqueName, context),
             hints: { wrapSelf: true },
+            sourceName,
           };
         }
       } else if (!Array.isArray(entry)) {
@@ -763,7 +783,8 @@ function expandResources(sourceEntries, file, context) {
           uniqueSubEntries[sourceName] = entry;
           entry.static = true;
           entry.type = uniqueName;
-          entry.name = "";
+          entry.name = transformMemberName(sourceName, uniqueName, context);
+          if (!entry.sourceName && sourceEntries[sourceName]) entry.sourceName = sourceName;
           addHints(entry, { wrapSelf: true });
         }
       }
@@ -833,18 +854,24 @@ function expandResources(sourceEntries, file, context) {
         name: uniqueName,
         kind: "struct",
         type: `ResourceUnique<${refName}${extraParametersStr}>`,
-        doc: `Handle to an owned ${title}\n\n@cat resource\n\n@sa ${refName}`,
+        doc: `Handle to an owned ${title}.\n\n@cat resource\n\n@sa ${refName}`,
         entries: {
           "ResourceUnique::ResourceUnique": "alias",
           ...uniqueSubEntries,
         },
         hints: { "self": uniqueName }
-      },
-      {
+      }, {
+        name: `${uniqueName}::share`,
+        kind: "function",
+        type: sharedName,
+        doc: `Move this ${title} into a ${sharedName}.`,
+        parameters: [],
+        hints: { body: `return ${sharedName}(std::move(*this));` }
+      }, {
         name: unsafeName,
         kind: "struct",
         type: `ResourceUnsafe<${refName}${extraParametersStr}>`,
-        doc: `Unsafe Handle to ${title}\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ${refName}`,
+        doc: `Unsafe Handle to ${title}.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ${refName}`,
         entries: {
           "ResourceUnsafe::ResourceUnsafe": "alias",
           [unsafeName]: {
@@ -862,7 +889,7 @@ function expandResources(sourceEntries, file, context) {
         },
       },
     ];
-    const derivedNames = new Set([uniqueName, unsafeName, optionalName]);
+    const derivedNames = new Set([uniqueName, unsafeName, sharedName]);
     if (resourceEntry.lock) {
       const lockEntry = resourceEntry.lock !== true ? resourceEntry.lock : {};
       lockEntry.kind = "struct";
@@ -1257,7 +1284,7 @@ function transformHierarchy(targetEntries, context) {
   function makeMemberName(key, template) {
     if (!template) return key;
     const lastSeparator = key.lastIndexOf('::');
-    const args = template.map(n => (typeof n === "string" ? n : n.name)).join(", ");
+    const args = generateCallParameters(template);
     return `${key.slice(0, lastSeparator)}<${args}>${key.slice(lastSeparator)}`;
   }
 }
@@ -1321,6 +1348,16 @@ function makeRenameEntry(entry, name, typeName) {
     newEntry = entry;
   }
   return /** @type {ApiEntry} */ ({ ...newEntry, name: newEntry.name || makeNaturalName(name, typeName) });
+}
+
+/**
+ * 
+ * @param {string}     name 
+ * @param {string}     typeName 
+ * @param {ApiContext} context
+ */
+function transformMemberName(name, typeName, context) {
+  return makeNaturalName(transformName(name, context), typeName);
 }
 
 /**

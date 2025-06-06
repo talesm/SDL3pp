@@ -52,6 +52,26 @@ struct CursorRef;
 struct Cursor;
 
 /**
+ * Handle to a shared cursor.
+ *
+ * @cat resource
+ *
+ * @sa CursorRef
+ * @sa Cursor
+ */
+using CursorShared = ResourceShared<Cursor>;
+
+/**
+ * Weak handle to a shared cursor.
+ *
+ * @cat resource
+ *
+ * @sa CursorShared
+ * @sa CursorRef
+ */
+using CursorWeak = ResourceWeak<Cursor>;
+
+/**
  * Cursor types for Cursor.CreateSystem().
  *
  * @since This enum is available since SDL 3.2.0.
@@ -307,7 +327,18 @@ struct Cursor : ResourceUnique<CursorRef>
    * @sa Cursor.CreateSystem
    */
   void Destroy() { reset(); }
+  /**
+   * Move this cursor into a CursorShared.
+   */
+  CursorShared share();
+
 };
+
+
+inline CursorShared Cursor::share()
+{
+  return CursorShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to cursor

@@ -101,6 +101,26 @@ struct ThreadRef;
 struct Thread;
 
 /**
+ * Handle to a shared thread.
+ *
+ * @cat resource
+ *
+ * @sa ThreadRef
+ * @sa Thread
+ */
+using ThreadShared = ResourceShared<Thread>;
+
+/**
+ * Weak handle to a shared thread.
+ *
+ * @cat resource
+ *
+ * @sa ThreadShared
+ * @sa ThreadRef
+ */
+using ThreadWeak = ResourceWeak<Thread>;
+
+/**
  * The SDL thread priority.
  *
  * SDL will make system changes as necessary in order to apply the thread
@@ -452,7 +472,18 @@ struct Thread : ResourceUnique<ThreadRef>
    * @sa ThreadRef.Wait
    */
   void Detach() { reset(); }
+  /**
+   * Move this thread into a ThreadShared.
+   */
+  ThreadShared share();
+
 };
+
+
+inline ThreadShared Thread::share()
+{
+  return ThreadShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to thread

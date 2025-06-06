@@ -155,6 +155,26 @@ using EnumeratePropertiesCB =
 // Forward decl
 struct Properties;
 
+/**
+ * Handle to a shared properties.
+ *
+ * @cat resource
+ *
+ * @sa PropertiesRef
+ * @sa Properties
+ */
+using PropertiesShared = ResourceShared<Properties>;
+
+/**
+ * Weak handle to a shared properties.
+ *
+ * @cat resource
+ *
+ * @sa PropertiesShared
+ * @sa PropertiesRef
+ */
+using PropertiesWeak = ResourceWeak<Properties>;
+
 // Forward decl
 struct PropertiesLock;
 
@@ -733,7 +753,18 @@ struct Properties : ResourceUnique<PropertiesRef>
    * @sa Properties.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this properties into a PropertiesShared.
+   */
+  PropertiesShared share();
+
 };
+
+
+inline PropertiesShared Properties::share()
+{
+  return PropertiesShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to properties

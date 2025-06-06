@@ -111,6 +111,12 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga40949cd90f28bc3e1326cd3fbf727345" id="r_ga40949cd90f28bc3e1326cd3fbf727345"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga40949cd90f28bc3e1326cd3fbf727345">SDL::TLSDestructorCallback</a> = SDL_TLSDestructorCallback</td></tr>
 <tr class="memdesc:ga40949cd90f28bc3e1326cd3fbf727345"><td class="mdescLeft">&#160;</td><td class="mdescRight">The callback used to cleanup data passed to SetTLS.  <br /></td></tr>
 <tr class="separator:ga40949cd90f28bc3e1326cd3fbf727345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad84e15a47b2f5927c1b45ff298822c5a" id="r_gad84e15a47b2f5927c1b45ff298822c5a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gad84e15a47b2f5927c1b45ff298822c5a">SDL::ThreadShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Thread.html">Thread</a> &gt;</td></tr>
+<tr class="memdesc:gad84e15a47b2f5927c1b45ff298822c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared thread.  <br /></td></tr>
+<tr class="separator:gad84e15a47b2f5927c1b45ff298822c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10a116130e180ef9870fa920cdbf11d9" id="r_ga10a116130e180ef9870fa920cdbf11d9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga10a116130e180ef9870fa920cdbf11d9">SDL::ThreadWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Thread.html">Thread</a> &gt;</td></tr>
+<tr class="memdesc:ga10a116130e180ef9870fa920cdbf11d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared thread.  <br /></td></tr>
+<tr class="separator:ga10a116130e180ef9870fa920cdbf11d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga94fa248708fac73a2db5f33a19694db5" id="r_ga94fa248708fac73a2db5f33a19694db5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga94fa248708fac73a2db5f33a19694db5">SDL::ThreadPriority</a> = SDL_ThreadPriority</td></tr>
 <tr class="memdesc:ga94fa248708fac73a2db5f33a19694db5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> thread priority.  <br /></td></tr>
 <tr class="separator:ga94fa248708fac73a2db5f33a19694db5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,6 +138,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ga07dd9ea8320cfeffd521c29d2d0cc6c4" id="r_ga07dd9ea8320cfeffd521c29d2d0cc6c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga07dd9ea8320cfeffd521c29d2d0cc6c4">SDL::CleanupTLS</a> ()</td></tr>
 <tr class="memdesc:ga07dd9ea8320cfeffd521c29d2d0cc6c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup all TLS data for this thread.  <br /></td></tr>
 <tr class="separator:ga07dd9ea8320cfeffd521c29d2d0cc6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac3b7275858197e4ff283ca6c0114b3bb" id="r_gac3b7275858197e4ff283ca6c0114b3bb"><td class="memItemLeft" align="right" valign="top"><a id="gac3b7275858197e4ff283ca6c0114b3bb" name="gac3b7275858197e4ff283ca6c0114b3bb"></a>
+<a class="el" href="group__CategoryThread.html#gad84e15a47b2f5927c1b45ff298822c5a">ThreadShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Thread::share</b> ()</td></tr>
+<tr class="memdesc:gac3b7275858197e4ff283ca6c0114b3bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this thread into a ThreadShared. <br /></td></tr>
+<tr class="separator:gac3b7275858197e4ff283ca6c0114b3bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -242,6 +252,24 @@ constexpr <a class="el" href="group__CategoryThread.html#ga6f7a148f3f241be0fcf98
 
 </div>
 </div>
+<a id="gad84e15a47b2f5927c1b45ff298822c5a" name="gad84e15a47b2f5927c1b45ff298822c5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad84e15a47b2f5927c1b45ff298822c5a">&#9670;&#160;</a></span>ThreadShared</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryThread.html#gad84e15a47b2f5927c1b45ff298822c5a">SDL::ThreadShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Thread.html">Thread</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ThreadRef.html" title="The SDL thread object.">ThreadRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Thread.html" title="Handle to an owned thread.">Thread</a> </dd></dl>
+
+</div>
+</div>
 <a id="ga6f7a148f3f241be0fcf98e738225514d" name="ga6f7a148f3f241be0fcf98e738225514d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga6f7a148f3f241be0fcf98e738225514d">&#9670;&#160;</a></span>ThreadState</h2>
 
@@ -256,6 +284,24 @@ constexpr <a class="el" href="group__CategoryThread.html#ga6f7a148f3f241be0fcf98
 <p>The current state of a thread can be checked by calling <a class="el" href="structSDL_1_1ThreadRef.html#a4b5c7c344b0f0c99148803c63bfdb4dc" title="Get the current state of a thread.">ThreadRef.GetState</a>.</p>
 <dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ThreadRef.html#a4b5c7c344b0f0c99148803c63bfdb4dc" title="Get the current state of a thread.">ThreadRef.GetState</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga10a116130e180ef9870fa920cdbf11d9" name="ga10a116130e180ef9870fa920cdbf11d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga10a116130e180ef9870fa920cdbf11d9">&#9670;&#160;</a></span>ThreadWeak</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryThread.html#ga10a116130e180ef9870fa920cdbf11d9">SDL::ThreadWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Thread.html">Thread</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryThread.html#gad84e15a47b2f5927c1b45ff298822c5a" title="Handle to a shared thread.">ThreadShared</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ThreadRef.html" title="The SDL thread object.">ThreadRef</a> </dd></dl>
 
 </div>
 </div>

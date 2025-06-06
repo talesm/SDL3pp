@@ -234,6 +234,26 @@ struct StorageRef;
 struct Storage;
 
 /**
+ * Handle to a shared storage.
+ *
+ * @cat resource
+ *
+ * @sa StorageRef
+ * @sa Storage
+ */
+using StorageShared = ResourceShared<Storage>;
+
+/**
+ * Weak handle to a shared storage.
+ *
+ * @cat resource
+ *
+ * @sa StorageShared
+ * @sa StorageRef
+ */
+using StorageWeak = ResourceWeak<Storage>;
+
+/**
  * Function interface for Storage.
  *
  * Apps that want to supply a custom implementation of Storage will fill in all
@@ -777,7 +797,18 @@ struct Storage : ResourceUnique<StorageRef>
    * @sa Storage.OpenUser
    */
   void Close() { reset(); }
+  /**
+   * Move this storage into a StorageShared.
+   */
+  StorageShared share();
+
 };
+
+
+inline StorageShared Storage::share()
+{
+  return StorageShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to storage

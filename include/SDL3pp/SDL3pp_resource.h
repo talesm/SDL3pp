@@ -1,6 +1,7 @@
 #ifndef SDL3PP_RESOURCE_H_
 #define SDL3PP_RESOURCE_H_
 
+#include <memory>
 #include <optional>
 
 namespace SDL {
@@ -170,6 +171,9 @@ protected:
   void free() { m_deleter(base::get()); }
 
 public:
+  /// The deleter type
+  using deleter = DELETER;
+
   /// Returns reference and reset this
   RESOURCE release()
   {
@@ -263,6 +267,81 @@ public:
     base::free();
     base::release();
   }
+};
+
+// Forward decl
+template<class UNIQUE>
+class ResourceWeak;
+
+/**
+ * @brief Implement shared ownership for a resource.
+ *
+ * @tparam UNIQUE
+ */
+template<class UNIQUE>
+class ResourceShared : public ResourcePtrBase<typename UNIQUE::reference>
+{
+  using base = ResourcePtrBase<typename UNIQUE::reference>;
+  std::shared_ptr<UNIQUE> m_shared;
+
+public:
+  /// Default constructor
+  constexpr ResourceShared() = default;
+
+  /// Constructs from unique type
+  constexpr ResourceShared(UNIQUE&& value)
+    : base(*value)
+    , m_shared(std::make_shared<UNIQUE>(std::move(value)))
+  {
+  }
+
+  /// Constructs from raw type.
+  constexpr explicit ResourceShared(base::value_type value,
+                                    typename UNIQUE::deleter deleter = {})
+    : ResourceShared(UNIQUE(value, std::move(deleter)))
+  {
+  }
+
+  /// True if this is the only shared instance
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /// Reset this instance
+  void reset() { *this = {}; }
+
+  friend class ResourceWeak<UNIQUE>;
+};
+
+/**
+ * @brief Implement weak ownership for a resource.
+ *
+ * @tparam UNIQUE
+ */
+template<class UNIQUE>
+class ResourceWeak
+{
+  std::weak_ptr<UNIQUE> m_shared;
+
+public:
+  /// Default constructor
+  constexpr ResourceWeak() = default;
+
+  /// Constructs from ResourceShared
+  constexpr ResourceWeak(const ResourceShared<UNIQUE>& shared)
+    : m_shared(shared)
+  {
+  }
+
+  /// Compares.
+  constexpr bool operator==(const ResourceWeak& other) const = default;
+
+  /// True if expired.
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /// True if not expired.
+  constexpr operator bool() const { return !expired(); }
+
+  /// Lock back to ResourceShared
+  ResourceShared<UNIQUE> lock() const { return m_shared.lock(); }
 };
 
 /**

@@ -715,6 +715,9 @@ protected:
   void free() { m_deleter(base::get()); }
 
 public:
+  /// The deleter type
+  using deleter = DELETER;
+
   /// Returns reference and reset this
   RESOURCE release()
   {
@@ -808,6 +811,81 @@ public:
     base::free();
     base::release();
   }
+};
+
+// Forward decl
+template<class UNIQUE>
+class ResourceWeak;
+
+/**
+ * @brief Implement shared ownership for a resource.
+ *
+ * @tparam UNIQUE
+ */
+template<class UNIQUE>
+class ResourceShared : public ResourcePtrBase<typename UNIQUE::reference>
+{
+  using base = ResourcePtrBase<typename UNIQUE::reference>;
+  std::shared_ptr<UNIQUE> m_shared;
+
+public:
+  /// Default constructor
+  constexpr ResourceShared() = default;
+
+  /// Constructs from unique type
+  constexpr ResourceShared(UNIQUE&& value)
+    : base(*value)
+    , m_shared(std::make_shared<UNIQUE>(std::move(value)))
+  {
+  }
+
+  /// Constructs from raw type.
+  constexpr explicit ResourceShared(base::value_type value,
+                                    typename UNIQUE::deleter deleter = {})
+    : ResourceShared(UNIQUE(value, std::move(deleter)))
+  {
+  }
+
+  /// True if this is the only shared instance
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /// Reset this instance
+  void reset() { *this = {}; }
+
+  friend class ResourceWeak<UNIQUE>;
+};
+
+/**
+ * @brief Implement weak ownership for a resource.
+ *
+ * @tparam UNIQUE
+ */
+template<class UNIQUE>
+class ResourceWeak
+{
+  std::weak_ptr<UNIQUE> m_shared;
+
+public:
+  /// Default constructor
+  constexpr ResourceWeak() = default;
+
+  /// Constructs from ResourceShared
+  constexpr ResourceWeak(const ResourceShared<UNIQUE>& shared)
+    : m_shared(shared)
+  {
+  }
+
+  /// Compares.
+  constexpr bool operator==(const ResourceWeak& other) const = default;
+
+  /// True if expired.
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /// True if not expired.
+  constexpr operator bool() const { return !expired(); }
+
+  /// Lock back to ResourceShared
+  ResourceShared<UNIQUE> lock() const { return m_shared.lock(); }
 };
 
 /**
@@ -1632,11 +1710,51 @@ struct EnvironmentRef;
 // Forward decl
 struct Environment;
 
+/**
+ * Handle to a shared environment.
+ *
+ * @cat resource
+ *
+ * @sa EnvironmentRef
+ * @sa Environment
+ */
+using EnvironmentShared = ResourceShared<Environment>;
+
+/**
+ * Weak handle to a shared environment.
+ *
+ * @cat resource
+ *
+ * @sa EnvironmentShared
+ * @sa EnvironmentRef
+ */
+using EnvironmentWeak = ResourceWeak<Environment>;
+
 // Forward decl
 struct IConvRef;
 
 // Forward decl
 struct IConv;
+
+/**
+ * Handle to a shared iConv.
+ *
+ * @cat resource
+ *
+ * @sa IConvRef
+ * @sa IConv
+ */
+using IConvShared = ResourceShared<IConv>;
+
+/**
+ * Weak handle to a shared iConv.
+ *
+ * @cat resource
+ *
+ * @sa IConvShared
+ * @sa IConvRef
+ */
+using IConvWeak = ResourceWeak<IConv>;
 
 #ifdef SDL3PP_DOC
 
@@ -2505,7 +2623,18 @@ struct Environment : ResourceUnique<EnvironmentRef>
    * @sa Environment.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this environment into a EnvironmentShared.
+   */
+  EnvironmentShared share();
+
 };
+
+
+inline EnvironmentShared Environment::share()
+{
+  return EnvironmentShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to environment
@@ -6788,7 +6917,18 @@ struct IConv : ResourceUnique<IConvRef>
    * @sa iconv_string
    */
   void close() { reset(); }
+  /**
+   * Move this iConv into a IConvShared.
+   */
+  IConvShared share();
+
 };
+
+
+inline IConvShared IConv::share()
+{
+  return IConvShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to iConv
@@ -15192,6 +15332,26 @@ struct SharedObjectRef;
 struct SharedObject;
 
 /**
+ * Handle to a shared sharedObject.
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectRef
+ * @sa SharedObject
+ */
+using SharedObjectShared = ResourceShared<SharedObject>;
+
+/**
+ * Weak handle to a shared sharedObject.
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectShared
+ * @sa SharedObjectRef
+ */
+using SharedObjectWeak = ResourceWeak<SharedObject>;
+
+/**
  * An opaque datatype that represents a loaded shared object.
  *
  * @since This datatype is available since SDL 3.2.0.
@@ -15299,7 +15459,18 @@ struct SharedObject : ResourceUnique<SharedObjectRef>
    * @sa SharedObject.Load
    */
   void Unload() { reset(); }
+  /**
+   * Move this sharedObject into a SharedObjectShared.
+   */
+  SharedObjectShared share();
+
 };
+
+
+inline SharedObjectShared SharedObject::share()
+{
+  return SharedObjectShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to sharedObject
@@ -16291,6 +16462,26 @@ struct PaletteRef;
 
 // Forward decl
 struct Palette;
+
+/**
+ * Handle to a shared palette.
+ *
+ * @cat resource
+ *
+ * @sa PaletteRef
+ * @sa Palette
+ */
+using PaletteShared = ResourceShared<Palette>;
+
+/**
+ * Weak handle to a shared palette.
+ *
+ * @cat resource
+ *
+ * @sa PaletteShared
+ * @sa PaletteRef
+ */
+using PaletteWeak = ResourceWeak<Palette>;
 
 #ifdef SDL3PP_DOC
 
@@ -18245,7 +18436,18 @@ struct Palette : ResourceUnique<PaletteRef>
    * @sa Palette.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this palette into a PaletteShared.
+   */
+  PaletteShared share();
+
 };
+
+
+inline PaletteShared Palette::share()
+{
+  return PaletteShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to palette
@@ -19004,6 +19206,26 @@ using EnumeratePropertiesCB =
 // Forward decl
 struct Properties;
 
+/**
+ * Handle to a shared properties.
+ *
+ * @cat resource
+ *
+ * @sa PropertiesRef
+ * @sa Properties
+ */
+using PropertiesShared = ResourceShared<Properties>;
+
+/**
+ * Weak handle to a shared properties.
+ *
+ * @cat resource
+ *
+ * @sa PropertiesShared
+ * @sa PropertiesRef
+ */
+using PropertiesWeak = ResourceWeak<Properties>;
+
 // Forward decl
 struct PropertiesLock;
 
@@ -19582,7 +19804,18 @@ struct Properties : ResourceUnique<PropertiesRef>
    * @sa Properties.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this properties into a PropertiesShared.
+   */
+  PropertiesShared share();
+
 };
+
+
+inline PropertiesShared Properties::share()
+{
+  return PropertiesShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to properties
@@ -24674,6 +24907,26 @@ struct IOStreamRef;
 struct IOStream;
 
 /**
+ * Handle to a shared iOStream.
+ *
+ * @cat resource
+ *
+ * @sa IOStreamRef
+ * @sa IOStream
+ */
+using IOStreamShared = ResourceShared<IOStream>;
+
+/**
+ * Weak handle to a shared iOStream.
+ *
+ * @cat resource
+ *
+ * @sa IOStreamShared
+ * @sa IOStreamRef
+ */
+using IOStreamWeak = ResourceWeak<IOStream>;
+
+/**
  * IOStream status, set by a read or write operation.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -26328,7 +26581,18 @@ struct IOStream : ResourceUnique<IOStreamRef>
    * @sa IOStream.Open
    */
   void Close() { reset(); }
+  /**
+   * Move this iOStream into a IOStreamShared.
+   */
+  IOStreamShared share();
+
 };
+
+
+inline IOStreamShared IOStream::share()
+{
+  return IOStreamShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to iOStream
@@ -27541,6 +27805,26 @@ struct StorageRef;
 struct Storage;
 
 /**
+ * Handle to a shared storage.
+ *
+ * @cat resource
+ *
+ * @sa StorageRef
+ * @sa Storage
+ */
+using StorageShared = ResourceShared<Storage>;
+
+/**
+ * Weak handle to a shared storage.
+ *
+ * @cat resource
+ *
+ * @sa StorageShared
+ * @sa StorageRef
+ */
+using StorageWeak = ResourceWeak<Storage>;
+
+/**
  * Function interface for Storage.
  *
  * Apps that want to supply a custom implementation of Storage will fill in all
@@ -28084,7 +28368,18 @@ struct Storage : ResourceUnique<StorageRef>
    * @sa Storage.OpenUser
    */
   void Close() { reset(); }
+  /**
+   * Move this storage into a StorageShared.
+   */
+  StorageShared share();
+
 };
+
+
+inline StorageShared Storage::share()
+{
+  return StorageShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to storage
@@ -28201,6 +28496,26 @@ struct ThreadRef;
 
 // Forward decl
 struct Thread;
+
+/**
+ * Handle to a shared thread.
+ *
+ * @cat resource
+ *
+ * @sa ThreadRef
+ * @sa Thread
+ */
+using ThreadShared = ResourceShared<Thread>;
+
+/**
+ * Weak handle to a shared thread.
+ *
+ * @cat resource
+ *
+ * @sa ThreadShared
+ * @sa ThreadRef
+ */
+using ThreadWeak = ResourceWeak<Thread>;
 
 /**
  * The SDL thread priority.
@@ -28554,7 +28869,18 @@ struct Thread : ResourceUnique<ThreadRef>
    * @sa ThreadRef.Wait
    */
   void Detach() { reset(); }
+  /**
+   * Move this thread into a ThreadShared.
+   */
+  ThreadShared share();
+
 };
+
+
+inline ThreadShared Thread::share()
+{
+  return ThreadShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to thread
@@ -28797,11 +29123,51 @@ struct AudioDeviceRef;
 // Forward decl
 struct AudioDevice;
 
+/**
+ * Handle to a shared audioDevice.
+ *
+ * @cat resource
+ *
+ * @sa AudioDeviceRef
+ * @sa AudioDevice
+ */
+using AudioDeviceShared = ResourceShared<AudioDevice>;
+
+/**
+ * Weak handle to a shared audioDevice.
+ *
+ * @cat resource
+ *
+ * @sa AudioDeviceShared
+ * @sa AudioDeviceRef
+ */
+using AudioDeviceWeak = ResourceWeak<AudioDevice>;
+
 // Forward decl
 struct AudioStreamRef;
 
 // Forward decl
 struct AudioStream;
+
+/**
+ * Handle to a shared audioStream.
+ *
+ * @cat resource
+ *
+ * @sa AudioStreamRef
+ * @sa AudioStream
+ */
+using AudioStreamShared = ResourceShared<AudioStream>;
+
+/**
+ * Weak handle to a shared audioStream.
+ *
+ * @cat resource
+ *
+ * @sa AudioStreamShared
+ * @sa AudioStreamRef
+ */
+using AudioStreamWeak = ResourceWeak<AudioStream>;
 
 // Forward decl
 struct AudioStreamLock;
@@ -29742,7 +30108,18 @@ struct AudioDevice : ResourceUnique<AudioDeviceRef>
    * @sa AudioDevice.Open
    */
   void Close() { reset(); }
+  /**
+   * Move this audioDevice into a AudioDeviceShared.
+   */
+  AudioDeviceShared share();
+
 };
+
+
+inline AudioDeviceShared AudioDevice::share()
+{
+  return AudioDeviceShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to audioDevice
@@ -31073,7 +31450,18 @@ struct AudioStream : ResourceUnique<AudioStreamRef>
    * @sa AudioStream.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this audioStream into a AudioStreamShared.
+   */
+  AudioStreamShared share();
+
 };
+
+
+inline AudioStreamShared AudioStream::share()
+{
+  return AudioStreamShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to audioStream
@@ -31655,11 +32043,51 @@ struct MutexRef;
 // Forward decl
 struct Mutex;
 
+/**
+ * Handle to a shared mutex.
+ *
+ * @cat resource
+ *
+ * @sa MutexRef
+ * @sa Mutex
+ */
+using MutexShared = ResourceShared<Mutex>;
+
+/**
+ * Weak handle to a shared mutex.
+ *
+ * @cat resource
+ *
+ * @sa MutexShared
+ * @sa MutexRef
+ */
+using MutexWeak = ResourceWeak<Mutex>;
+
 // Forward decl
 struct RWLockRef;
 
 // Forward decl
 struct RWLock;
+
+/**
+ * Handle to a shared rWLock.
+ *
+ * @cat resource
+ *
+ * @sa RWLockRef
+ * @sa RWLock
+ */
+using RWLockShared = ResourceShared<RWLock>;
+
+/**
+ * Weak handle to a shared rWLock.
+ *
+ * @cat resource
+ *
+ * @sa RWLockShared
+ * @sa RWLockRef
+ */
+using RWLockWeak = ResourceWeak<RWLock>;
 
 // Forward decl
 struct SemaphoreRef;
@@ -31667,11 +32095,51 @@ struct SemaphoreRef;
 // Forward decl
 struct Semaphore;
 
+/**
+ * Handle to a shared semaphore.
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreRef
+ * @sa Semaphore
+ */
+using SemaphoreShared = ResourceShared<Semaphore>;
+
+/**
+ * Weak handle to a shared semaphore.
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreShared
+ * @sa SemaphoreRef
+ */
+using SemaphoreWeak = ResourceWeak<Semaphore>;
+
 // Forward decl
 struct ConditionRef;
 
 // Forward decl
 struct Condition;
+
+/**
+ * Handle to a shared condition.
+ *
+ * @cat resource
+ *
+ * @sa ConditionRef
+ * @sa Condition
+ */
+using ConditionShared = ResourceShared<Condition>;
+
+/**
+ * Weak handle to a shared condition.
+ *
+ * @cat resource
+ *
+ * @sa ConditionShared
+ * @sa ConditionRef
+ */
+using ConditionWeak = ResourceWeak<Condition>;
 
 /**
  * A means to serialize access to a resource between threads.
@@ -31819,7 +32287,18 @@ struct Mutex : ResourceUnique<MutexRef>
    * @sa Mutex.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this mutex into a MutexShared.
+   */
+  MutexShared share();
+
 };
+
+
+inline MutexShared Mutex::share()
+{
+  return MutexShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to mutex
@@ -32098,7 +32577,18 @@ struct RWLock : ResourceUnique<RWLockRef>
    * @sa RWLock.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this rWLock into a RWLockShared.
+   */
+  RWLockShared share();
+
 };
+
+
+inline RWLockShared RWLock::share()
+{
+  return RWLockShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to rWLock
@@ -32289,7 +32779,18 @@ struct Semaphore : ResourceUnique<SemaphoreRef>
    * @sa Semaphore.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this semaphore into a SemaphoreShared.
+   */
+  SemaphoreShared share();
+
 };
+
+
+inline SemaphoreShared Semaphore::share()
+{
+  return SemaphoreShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to semaphore
@@ -32469,7 +32970,18 @@ struct Condition : ResourceUnique<ConditionRef>
    * @sa Condition.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this condition into a ConditionShared.
+   */
+  ConditionShared share();
+
 };
+
+
+inline ConditionShared Condition::share()
+{
+  return ConditionShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to condition
@@ -32674,6 +33186,26 @@ struct ProcessRef;
 
 // Forward decl
 struct Process;
+
+/**
+ * Handle to a shared process.
+ *
+ * @cat resource
+ *
+ * @sa ProcessRef
+ * @sa Process
+ */
+using ProcessShared = ResourceShared<Process>;
+
+/**
+ * Weak handle to a shared process.
+ *
+ * @cat resource
+ *
+ * @sa ProcessShared
+ * @sa ProcessRef
+ */
+using ProcessWeak = ResourceWeak<Process>;
 
 /**
  * Description of where standard I/O should be directed when creating a
@@ -33111,7 +33643,18 @@ struct Process : ResourceUnique<ProcessRef>
    * @sa ProcessRef.Kill
    */
   void Destroy() { reset(); }
+  /**
+   * Move this process into a ProcessShared.
+   */
+  ProcessShared share();
+
 };
+
+
+inline ProcessShared Process::share()
+{
+  return ProcessShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to process
@@ -33199,6 +33742,26 @@ struct SurfaceRef;
 
 // Forward decl
 struct Surface;
+
+/**
+ * Handle to a shared surface.
+ *
+ * @cat resource
+ *
+ * @sa SurfaceRef
+ * @sa Surface
+ */
+using SurfaceShared = ResourceShared<Surface>;
+
+/**
+ * Weak handle to a shared surface.
+ *
+ * @cat resource
+ *
+ * @sa SurfaceShared
+ * @sa SurfaceRef
+ */
+using SurfaceWeak = ResourceWeak<Surface>;
 
 // Forward decl
 struct SurfaceLock;
@@ -35114,7 +35677,18 @@ struct Surface : ResourceUnique<SurfaceRef>
    * @sa Surface.CreateFrom
    */
   void Destroy() { reset(); }
+  /**
+   * Move this surface into a SurfaceShared.
+   */
+  SurfaceShared share();
+
 };
+
+
+inline SurfaceShared Surface::share()
+{
+  return SurfaceShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to surface
@@ -35470,11 +36044,51 @@ struct TrayRef;
 // Forward decl
 struct Tray;
 
+/**
+ * Handle to a shared tray.
+ *
+ * @cat resource
+ *
+ * @sa TrayRef
+ * @sa Tray
+ */
+using TrayShared = ResourceShared<Tray>;
+
+/**
+ * Weak handle to a shared tray.
+ *
+ * @cat resource
+ *
+ * @sa TrayShared
+ * @sa TrayRef
+ */
+using TrayWeak = ResourceWeak<Tray>;
+
 // Forward decl
 struct TrayEntryRef;
 
 // Forward decl
 struct TrayEntry;
+
+/**
+ * Handle to a shared trayEntry.
+ *
+ * @cat resource
+ *
+ * @sa TrayEntryRef
+ * @sa TrayEntry
+ */
+using TrayEntryShared = ResourceShared<TrayEntry>;
+
+/**
+ * Weak handle to a shared trayEntry.
+ *
+ * @cat resource
+ *
+ * @sa TrayEntryShared
+ * @sa TrayEntryRef
+ */
+using TrayEntryWeak = ResourceWeak<TrayEntry>;
 
 /**
  * A trayEntry result that will be owned only if assigned to a TrayEntry.
@@ -35670,7 +36284,18 @@ struct Tray : ResourceUnique<TrayRef>
    * @sa Tray.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this tray into a TrayShared.
+   */
+  TrayShared share();
+
 };
+
+
+inline TrayShared Tray::share()
+{
+  return TrayShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to tray
@@ -36143,7 +36768,18 @@ struct TrayEntry : ResourceUnique<TrayEntryRef>
    * @sa TrayMenu.InsertEntry
    */
   void Remove() { reset(); }
+  /**
+   * Move this trayEntry into a TrayEntryShared.
+   */
+  TrayEntryShared share();
+
 };
+
+
+inline TrayEntryShared TrayEntry::share()
+{
+  return TrayEntryShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to trayEntry
@@ -36557,6 +37193,26 @@ using HitTest = SDL_HitTest;
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
 
+/**
+ * Handle to a shared window.
+ *
+ * @cat resource
+ *
+ * @sa WindowRef
+ * @sa Window
+ */
+using WindowShared = ResourceShared<Window>;
+
+/**
+ * Weak handle to a shared window.
+ *
+ * @cat resource
+ *
+ * @sa WindowShared
+ * @sa WindowRef
+ */
+using WindowWeak = ResourceWeak<Window>;
+
 /// @}
 
 // Forward decl
@@ -36564,6 +37220,26 @@ struct GLContextRef;
 
 // Forward decl
 struct GLContext;
+
+/**
+ * Handle to a shared gLContext.
+ *
+ * @cat resource
+ *
+ * @sa GLContextRef
+ * @sa GLContext
+ */
+using GLContextShared = ResourceShared<GLContext>;
+
+/**
+ * Weak handle to a shared gLContext.
+ *
+ * @cat resource
+ *
+ * @sa GLContextShared
+ * @sa GLContextRef
+ */
+using GLContextWeak = ResourceWeak<GLContext>;
 
 /**
  * This is a unique ID for a display for the time it is connected to the
@@ -39062,7 +39738,18 @@ struct Window : ResourceUnique<WindowRef>
    * @sa Window.CreateWithProperties
    */
   void Destroy() { reset(); }
+  /**
+   * Move this window into a WindowShared.
+   */
+  WindowShared share();
+
 };
+
+
+inline WindowShared Window::share()
+{
+  return WindowShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to window
@@ -39273,7 +39960,18 @@ struct GLContext : ResourceUnique<GLContextRef>
    * @sa GLContext.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this gLContext into a GLContextShared.
+   */
+  GLContextShared share();
+
 };
+
+
+inline GLContextShared GLContext::share()
+{
+  return GLContextShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to gLContext
@@ -43943,6 +44641,26 @@ struct CursorRef;
 struct Cursor;
 
 /**
+ * Handle to a shared cursor.
+ *
+ * @cat resource
+ *
+ * @sa CursorRef
+ * @sa Cursor
+ */
+using CursorShared = ResourceShared<Cursor>;
+
+/**
+ * Weak handle to a shared cursor.
+ *
+ * @cat resource
+ *
+ * @sa CursorShared
+ * @sa CursorRef
+ */
+using CursorWeak = ResourceWeak<Cursor>;
+
+/**
  * Cursor types for Cursor.CreateSystem().
  *
  * @since This enum is available since SDL 3.2.0.
@@ -44198,7 +44916,18 @@ struct Cursor : ResourceUnique<CursorRef>
    * @sa Cursor.CreateSystem
    */
   void Destroy() { reset(); }
+  /**
+   * Move this cursor into a CursorShared.
+   */
+  CursorShared share();
+
 };
+
+
+inline CursorShared Cursor::share()
+{
+  return CursorShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to cursor
@@ -44760,11 +45489,51 @@ struct RendererRef;
 // Forward decl
 struct Renderer;
 
+/**
+ * Handle to a shared renderer.
+ *
+ * @cat resource
+ *
+ * @sa RendererRef
+ * @sa Renderer
+ */
+using RendererShared = ResourceShared<Renderer>;
+
+/**
+ * Weak handle to a shared renderer.
+ *
+ * @cat resource
+ *
+ * @sa RendererShared
+ * @sa RendererRef
+ */
+using RendererWeak = ResourceWeak<Renderer>;
+
 // Forward decl
 struct TextureRef;
 
 // Forward decl
 struct Texture;
+
+/**
+ * Handle to a shared texture.
+ *
+ * @cat resource
+ *
+ * @sa TextureRef
+ * @sa Texture
+ */
+using TextureShared = ResourceShared<Texture>;
+
+/**
+ * Weak handle to a shared texture.
+ *
+ * @cat resource
+ *
+ * @sa TextureShared
+ * @sa TextureRef
+ */
+using TextureWeak = ResourceWeak<Texture>;
 
 // Forward decl
 struct TextureLock;
@@ -46623,7 +47392,18 @@ struct Renderer : ResourceUnique<RendererRef>
    * @sa Renderer.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this renderer into a RendererShared.
+   */
+  RendererShared share();
+
 };
+
+
+inline RendererShared Renderer::share()
+{
+  return RendererShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to renderer
@@ -47603,7 +48383,18 @@ struct Texture : ResourceUnique<TextureRef>
    * @sa Texture.CreateFromSurface
    */
   void Destroy() { reset(); }
+  /**
+   * Move this texture into a TextureShared.
+   */
+  TextureShared share();
+
 };
+
+
+inline TextureShared Texture::share()
+{
+  return TextureShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to texture
@@ -49374,6 +50165,26 @@ struct AnimationRef;
 
 // Forward decl
 struct Animation;
+
+/**
+ * Handle to a shared animation.
+ *
+ * @cat resource
+ *
+ * @sa AnimationRef
+ * @sa Animation
+ */
+using AnimationShared = ResourceShared<Animation>;
+
+/**
+ * Weak handle to a shared animation.
+ *
+ * @cat resource
+ *
+ * @sa AnimationShared
+ * @sa AnimationRef
+ */
+using AnimationWeak = ResourceWeak<Animation>;
 
 #ifdef SDL3PP_DOC
 
@@ -51452,7 +52263,18 @@ struct Animation : ResourceUnique<AnimationRef>
    * @sa Animation.LoadTyped
    */
   void Free() { reset(); }
+  /**
+   * Move this animation into a AnimationShared.
+   */
+  AnimationShared share();
+
 };
+
+
+inline AnimationShared Animation::share()
+{
+  return AnimationShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to animation
@@ -51615,17 +52437,77 @@ struct FontRef;
 // Forward decl
 struct Font;
 
+/**
+ * Handle to a shared font.
+ *
+ * @cat resource
+ *
+ * @sa FontRef
+ * @sa Font
+ */
+using FontShared = ResourceShared<Font>;
+
+/**
+ * Weak handle to a shared font.
+ *
+ * @cat resource
+ *
+ * @sa FontShared
+ * @sa FontRef
+ */
+using FontWeak = ResourceWeak<Font>;
+
 // Forward decl
 struct TextEngineRef;
 
 // Forward decl
 struct TextEngine;
 
+/**
+ * Handle to a shared textEngine.
+ *
+ * @cat resource
+ *
+ * @sa TextEngineRef
+ * @sa TextEngine
+ */
+using TextEngineShared = ResourceShared<TextEngine>;
+
+/**
+ * Weak handle to a shared textEngine.
+ *
+ * @cat resource
+ *
+ * @sa TextEngineShared
+ * @sa TextEngineRef
+ */
+using TextEngineWeak = ResourceWeak<TextEngine>;
+
 // Forward decl
 struct TextRef;
 
 // Forward decl
 struct Text;
+
+/**
+ * Handle to a shared text.
+ *
+ * @cat resource
+ *
+ * @sa TextRef
+ * @sa Text
+ */
+using TextShared = ResourceShared<Text>;
+
+/**
+ * Weak handle to a shared text.
+ *
+ * @cat resource
+ *
+ * @sa TextShared
+ * @sa TextRef
+ */
+using TextWeak = ResourceWeak<Text>;
 
 /**
  * @name Font Style Flags
@@ -53503,7 +54385,18 @@ struct Font : ResourceUnique<FontRef>
    * @sa Font.Open
    */
   void Close() { reset(); }
+  /**
+   * Move this font into a FontShared.
+   */
+  FontShared share();
+
 };
+
+
+inline FontShared Font::share()
+{
+  return FontShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to font
@@ -53802,7 +54695,18 @@ struct TextEngine : ResourceUnique<TextEngineRef, TextEngineDeleter>
     return TextEngine(TTF_CreateGPUTextEngineWithProperties(props),
                       TextEngineRef::DestroyGPU);
   }
+  /**
+   * Move this textEngine into a TextEngineShared.
+   */
+  TextEngineShared share();
+
 };
+
+
+inline TextEngineShared TextEngine::share()
+{
+  return TextEngineShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to textEngine
@@ -54967,7 +55871,18 @@ struct Text : ResourceUnique<TextRef>
    * @sa Text.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this text into a TextShared.
+   */
+  TextShared share();
+
 };
+
+
+inline TextShared Text::share()
+{
+  return TextShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to text

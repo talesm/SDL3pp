@@ -72,7 +72,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Storage Abstraction<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesFileIO.html">File and I/O Abstractions</a></div></div></div>
 </div><!--header-->
 <div class="contents">
@@ -94,9 +95,22 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:ga370e2bb941e3fcae8828a072301ca1df" id="r_ga370e2bb941e3fcae8828a072301ca1df"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStorage.html#ga370e2bb941e3fcae8828a072301ca1df">SDL::StorageShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Storage.html">Storage</a> &gt;</td></tr>
+<tr class="memdesc:ga370e2bb941e3fcae8828a072301ca1df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared storage.  <br /></td></tr>
+<tr class="separator:ga370e2bb941e3fcae8828a072301ca1df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga12b124c6968e74c7efcf590768dd0353" id="r_ga12b124c6968e74c7efcf590768dd0353"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStorage.html#ga12b124c6968e74c7efcf590768dd0353">SDL::StorageWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Storage.html">Storage</a> &gt;</td></tr>
+<tr class="memdesc:ga12b124c6968e74c7efcf590768dd0353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared storage.  <br /></td></tr>
+<tr class="separator:ga12b124c6968e74c7efcf590768dd0353"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga24042115587c5568577e7acc5d0d76f7" id="r_ga24042115587c5568577e7acc5d0d76f7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStorage.html#ga24042115587c5568577e7acc5d0d76f7">SDL::StorageInterface</a> = SDL_StorageInterface</td></tr>
 <tr class="memdesc:ga24042115587c5568577e7acc5d0d76f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function interface for <a class="el" href="structSDL_1_1Storage.html" title="Handle to an owned storage.">Storage</a>.  <br /></td></tr>
 <tr class="separator:ga24042115587c5568577e7acc5d0d76f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga3d3769408d87771123e0b732f1d60b0b" id="r_ga3d3769408d87771123e0b732f1d60b0b"><td class="memItemLeft" align="right" valign="top"><a id="ga3d3769408d87771123e0b732f1d60b0b" name="ga3d3769408d87771123e0b732f1d60b0b"></a>
+<a class="el" href="group__CategoryStorage.html#ga370e2bb941e3fcae8828a072301ca1df">StorageShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Storage::share</b> ()</td></tr>
+<tr class="memdesc:ga3d3769408d87771123e0b732f1d60b0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this storage into a StorageShared. <br /></td></tr>
+<tr class="separator:ga3d3769408d87771123e0b732f1d60b0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>It is significantly more restrictive than a typical filesystem API, for a number of reasons:</p>
@@ -226,8 +240,8 @@ Typedefs</h2></td></tr>
 <div class="line">        <span class="comment">// Something bad happened!</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_ga48fe5521cb77ff8e4ae442bc8387be70"><div class="ttname"><a href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70">SDL::malloc</a></div><div class="ttdeci">void * malloc(size_t size)</div><div class="ttdoc">Allocate uninitialized memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:416</div></div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gadfa01257ca1f966fffb72f002db27fa6"><div class="ttname"><a href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6">SDL::free</a></div><div class="ttdeci">void free(void *mem)</div><div class="ttdoc">Free allocated memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:504</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_ga48fe5521cb77ff8e4ae442bc8387be70"><div class="ttname"><a href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70">SDL::malloc</a></div><div class="ttdeci">void * malloc(size_t size)</div><div class="ttdoc">Allocate uninitialized memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:456</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gadfa01257ca1f966fffb72f002db27fa6"><div class="ttname"><a href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6">SDL::free</a></div><div class="ttdeci">void free(void *mem)</div><div class="ttdoc">Free allocated memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:544</div></div>
 <div class="ttc" id="agroup__CategoryTimer_html_ga29135876921c3060e1c60a9e839d57b4"><div class="ttname"><a href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">SDL::Delay</a></div><div class="ttdeci">void Delay(std::chrono::nanoseconds duration)</div><div class="ttdoc">Wait a specified duration before returning.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:128</div></div>
 </div><!-- fragment --><p>Note the improvements that <a class="el" href="structSDL_1_1Storage.html" title="Handle to an owned storage.">Storage</a> makes:</p>
 <ol type="1">
@@ -259,6 +273,42 @@ Notes on valid paths</h2>
 <p>This structure should be initialized using <a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE()</a></p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga370e2bb941e3fcae8828a072301ca1df" name="ga370e2bb941e3fcae8828a072301ca1df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga370e2bb941e3fcae8828a072301ca1df">&#9670;&#160;</a></span>StorageShared</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryStorage.html#ga370e2bb941e3fcae8828a072301ca1df">SDL::StorageShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Storage.html">Storage</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Storage.html" title="Handle to an owned storage.">Storage</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga12b124c6968e74c7efcf590768dd0353" name="ga12b124c6968e74c7efcf590768dd0353"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga12b124c6968e74c7efcf590768dd0353">&#9670;&#160;</a></span>StorageWeak</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryStorage.html#ga12b124c6968e74c7efcf590768dd0353">SDL::StorageWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Storage.html">Storage</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStorage.html#ga370e2bb941e3fcae8828a072301ca1df" title="Handle to a shared storage.">StorageShared</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a> </dd></dl>
 
 </div>
 </div>

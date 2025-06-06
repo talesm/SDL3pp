@@ -34,6 +34,26 @@ struct AnimationRef;
 // Forward decl
 struct Animation;
 
+/**
+ * Handle to a shared animation.
+ *
+ * @cat resource
+ *
+ * @sa AnimationRef
+ * @sa Animation
+ */
+using AnimationShared = ResourceShared<Animation>;
+
+/**
+ * Weak handle to a shared animation.
+ *
+ * @cat resource
+ *
+ * @sa AnimationShared
+ * @sa AnimationRef
+ */
+using AnimationWeak = ResourceWeak<Animation>;
+
 #ifdef SDL3PP_DOC
 
 /**
@@ -2111,7 +2131,18 @@ struct Animation : ResourceUnique<AnimationRef>
    * @sa Animation.LoadTyped
    */
   void Free() { reset(); }
+  /**
+   * Move this animation into a AnimationShared.
+   */
+  AnimationShared share();
+
 };
+
+
+inline AnimationShared Animation::share()
+{
+  return AnimationShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to animation

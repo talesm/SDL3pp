@@ -96,6 +96,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:ga00b613a81ba23b5698aeba9f28aafcf7" id="r_ga00b613a81ba23b5698aeba9f28aafcf7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#ga00b613a81ba23b5698aeba9f28aafcf7">SDL::IOStreamShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1IOStream.html">IOStream</a> &gt;</td></tr>
+<tr class="memdesc:ga00b613a81ba23b5698aeba9f28aafcf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared iOStream.  <br /></td></tr>
+<tr class="separator:ga00b613a81ba23b5698aeba9f28aafcf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga898845b644ec2fc78e82d6b3c905fc90" id="r_ga898845b644ec2fc78e82d6b3c905fc90"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#ga898845b644ec2fc78e82d6b3c905fc90">SDL::IOStreamWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1IOStream.html">IOStream</a> &gt;</td></tr>
+<tr class="memdesc:ga898845b644ec2fc78e82d6b3c905fc90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared iOStream.  <br /></td></tr>
+<tr class="separator:ga898845b644ec2fc78e82d6b3c905fc90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac6fe4a8e6aa95d60056f3a597416c642" id="r_gac6fe4a8e6aa95d60056f3a597416c642"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#gac6fe4a8e6aa95d60056f3a597416c642">SDL::IOStatus</a> = SDL_IOStatus</td></tr>
 <tr class="memdesc:gac6fe4a8e6aa95d60056f3a597416c642"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a> status, set by a read or write operation.  <br /></td></tr>
 <tr class="separator:gac6fe4a8e6aa95d60056f3a597416c642"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,6 +124,10 @@ Functions</h2></td></tr>
 <tr class="memitem:gab86cae34b796b5bc0a2bacd2eb8193b8" id="r_gab86cae34b796b5bc0a2bacd2eb8193b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#gab86cae34b796b5bc0a2bacd2eb8193b8">SDL::SaveFile</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file, <a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> data)</td></tr>
 <tr class="memdesc:gab86cae34b796b5bc0a2bacd2eb8193b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save all the data into a file path.  <br /></td></tr>
 <tr class="separator:gab86cae34b796b5bc0a2bacd2eb8193b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab079d40becb3d1d15b8550d9c363cb5f" id="r_gab079d40becb3d1d15b8550d9c363cb5f"><td class="memItemLeft" align="right" valign="top"><a id="gab079d40becb3d1d15b8550d9c363cb5f" name="gab079d40becb3d1d15b8550d9c363cb5f"></a>
+<a class="el" href="group__CategoryIOStream.html#ga00b613a81ba23b5698aeba9f28aafcf7">IOStreamShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::IOStream::share</b> ()</td></tr>
+<tr class="memdesc:gab079d40becb3d1d15b8550d9c363cb5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this iOStream into a IOStreamShared. <br /></td></tr>
+<tr class="separator:gab079d40becb3d1d15b8550d9c363cb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -184,6 +194,42 @@ constexpr <a class="el" href="group__CategoryIOStream.html#gac6fe4a8e6aa95d60056
 <p>This structure should be initialized using <a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE()</a></p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga00b613a81ba23b5698aeba9f28aafcf7" name="ga00b613a81ba23b5698aeba9f28aafcf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga00b613a81ba23b5698aeba9f28aafcf7">&#9670;&#160;</a></span>IOStreamShared</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryIOStream.html#ga00b613a81ba23b5698aeba9f28aafcf7">SDL::IOStreamShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1IOStream.html">IOStream</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga898845b644ec2fc78e82d6b3c905fc90" name="ga898845b644ec2fc78e82d6b3c905fc90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga898845b644ec2fc78e82d6b3c905fc90">&#9670;&#160;</a></span>IOStreamWeak</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryIOStream.html#ga898845b644ec2fc78e82d6b3c905fc90">SDL::IOStreamWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1IOStream.html">IOStream</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIOStream.html#ga00b613a81ba23b5698aeba9f28aafcf7" title="Handle to a shared iOStream.">IOStreamShared</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> </dd></dl>
 
 </div>
 </div>

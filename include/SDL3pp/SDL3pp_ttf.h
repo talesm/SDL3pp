@@ -48,17 +48,77 @@ struct FontRef;
 // Forward decl
 struct Font;
 
+/**
+ * Handle to a shared font.
+ *
+ * @cat resource
+ *
+ * @sa FontRef
+ * @sa Font
+ */
+using FontShared = ResourceShared<Font>;
+
+/**
+ * Weak handle to a shared font.
+ *
+ * @cat resource
+ *
+ * @sa FontShared
+ * @sa FontRef
+ */
+using FontWeak = ResourceWeak<Font>;
+
 // Forward decl
 struct TextEngineRef;
 
 // Forward decl
 struct TextEngine;
 
+/**
+ * Handle to a shared textEngine.
+ *
+ * @cat resource
+ *
+ * @sa TextEngineRef
+ * @sa TextEngine
+ */
+using TextEngineShared = ResourceShared<TextEngine>;
+
+/**
+ * Weak handle to a shared textEngine.
+ *
+ * @cat resource
+ *
+ * @sa TextEngineShared
+ * @sa TextEngineRef
+ */
+using TextEngineWeak = ResourceWeak<TextEngine>;
+
 // Forward decl
 struct TextRef;
 
 // Forward decl
 struct Text;
+
+/**
+ * Handle to a shared text.
+ *
+ * @cat resource
+ *
+ * @sa TextRef
+ * @sa Text
+ */
+using TextShared = ResourceShared<Text>;
+
+/**
+ * Weak handle to a shared text.
+ *
+ * @cat resource
+ *
+ * @sa TextShared
+ * @sa TextRef
+ */
+using TextWeak = ResourceWeak<Text>;
 
 /**
  * @name Font Style Flags
@@ -1936,7 +1996,18 @@ struct Font : ResourceUnique<FontRef>
    * @sa Font.Open
    */
   void Close() { reset(); }
+  /**
+   * Move this font into a FontShared.
+   */
+  FontShared share();
+
 };
+
+
+inline FontShared Font::share()
+{
+  return FontShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to font
@@ -2235,7 +2306,18 @@ struct TextEngine : ResourceUnique<TextEngineRef, TextEngineDeleter>
     return TextEngine(TTF_CreateGPUTextEngineWithProperties(props),
                       TextEngineRef::DestroyGPU);
   }
+  /**
+   * Move this textEngine into a TextEngineShared.
+   */
+  TextEngineShared share();
+
 };
+
+
+inline TextEngineShared TextEngine::share()
+{
+  return TextEngineShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to textEngine
@@ -3400,7 +3482,18 @@ struct Text : ResourceUnique<TextRef>
    * @sa Text.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this text into a TextShared.
+   */
+  TextShared share();
+
 };
+
+
+inline TextShared Text::share()
+{
+  return TextShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to text

@@ -27,6 +27,26 @@ struct IOStreamRef;
 struct IOStream;
 
 /**
+ * Handle to a shared iOStream.
+ *
+ * @cat resource
+ *
+ * @sa IOStreamRef
+ * @sa IOStream
+ */
+using IOStreamShared = ResourceShared<IOStream>;
+
+/**
+ * Weak handle to a shared iOStream.
+ *
+ * @cat resource
+ *
+ * @sa IOStreamShared
+ * @sa IOStreamRef
+ */
+using IOStreamWeak = ResourceWeak<IOStream>;
+
+/**
  * IOStream status, set by a read or write operation.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -1681,7 +1701,18 @@ struct IOStream : ResourceUnique<IOStreamRef>
    * @sa IOStream.Open
    */
   void Close() { reset(); }
+  /**
+   * Move this iOStream into a IOStreamShared.
+   */
+  IOStreamShared share();
+
 };
+
+
+inline IOStreamShared IOStream::share()
+{
+  return IOStreamShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to iOStream

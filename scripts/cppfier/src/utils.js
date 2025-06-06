@@ -110,13 +110,14 @@ var system = {
 /**
  * Clone object, using .clone() if provided
  * @template {any} T the type
- * @param {T&any} obj the object to bee cloned
+ * @param {T} obj the object to bee cloned
  * @returns {T}
  */
 function deepClone(obj) {
   if (typeof obj !== "object" || obj === null) return obj;
   if (Array.isArray(obj)) return /** @type {T} */(obj.map(el => deepClone(el)));
-  if (typeof obj.clone === "function") return /** @type {T} */(obj.clone());
+  // @ts-ignore
+  if (typeof obj?.clone === "function") return /** @type {T} */(obj.clone());
   const result = {};
   for (const [key, value] of Object.entries(obj)) {
     result[key] = deepClone(value);

@@ -2743,6 +2743,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "PropertiesShared": {
+          "name": "PropertiesShared",
+          "kind": "alias",
+          "type": "ResourceShared<Properties>",
+          "doc": "Handle to a shared properties.\n\n@cat resource\n\n@sa PropertiesRef\n@sa Properties"
+        },
+        "PropertiesWeak": {
+          "name": "PropertiesWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Properties>",
+          "doc": "Weak handle to a shared properties.\n\n@cat resource\n\n@sa PropertiesShared\n@sa PropertiesRef"
+        },
         "PropertiesLock-forward": {
           "kind": "forward",
           "name": "PropertiesLock",
@@ -3215,7 +3227,7 @@
           "name": "Properties",
           "kind": "struct",
           "type": "ResourceUnique<PropertiesRef>",
-          "doc": "Handle to an owned properties\n\n@cat resource\n\n@sa PropertiesRef",
+          "doc": "Handle to an owned properties.\n\n@cat resource\n\n@sa PropertiesRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -3244,17 +3256,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "PropertiesShared",
+              "doc": "Move this properties into a PropertiesShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return PropertiesShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Properties"
           }
         },
+        "Properties::share": {
+          "name": "Properties::share",
+          "kind": "function",
+          "type": "PropertiesShared",
+          "parameters": [],
+          "hints": {
+            "self": "Properties",
+            "body": "return PropertiesShared(std::move(*this));"
+          }
+        },
         "PropertiesUnsafe": {
           "name": "PropertiesUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<PropertiesRef>",
-          "doc": "Unsafe Handle to properties\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa PropertiesRef",
+          "doc": "Unsafe Handle to properties.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa PropertiesRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -5163,6 +5196,18 @@
           "name": "HitTestCB",
           "doc": "@sa HitTest"
         },
+        "WindowShared": {
+          "name": "WindowShared",
+          "kind": "alias",
+          "type": "ResourceShared<Window>",
+          "doc": "Handle to a shared window.\n\n@cat resource\n\n@sa WindowRef\n@sa Window"
+        },
+        "WindowWeak": {
+          "name": "WindowWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Window>",
+          "doc": "Weak handle to a shared window.\n\n@cat resource\n\n@sa WindowShared\n@sa WindowRef"
+        },
         "GLContextRef-forward": {
           "name": "GLContextRef",
           "kind": "forward",
@@ -5172,6 +5217,18 @@
           "name": "GLContext",
           "kind": "forward",
           "doc": ""
+        },
+        "GLContextShared": {
+          "name": "GLContextShared",
+          "kind": "alias",
+          "type": "ResourceShared<GLContext>",
+          "doc": "Handle to a shared gLContext.\n\n@cat resource\n\n@sa GLContextRef\n@sa GLContext"
+        },
+        "GLContextWeak": {
+          "name": "GLContextWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<GLContext>",
+          "doc": "Weak handle to a shared gLContext.\n\n@cat resource\n\n@sa GLContextShared\n@sa GLContextRef"
         },
         "Display": {
           "doc": "This is a unique ID for a display for the time it is connected to the\nsystem, and is never reused for the lifetime of the application.\n\nIf the display is disconnected and reconnected, it will get a new ID.\n\nThe value 0 is an invalid ID.\n\n@since This datatype is available since SDL 3.2.0.",
@@ -6664,7 +6721,7 @@
           "name": "Window",
           "kind": "struct",
           "type": "ResourceUnique<WindowRef>",
-          "doc": "Handle to an owned window\n\n@cat resource\n\n@sa WindowRef",
+          "doc": "Handle to an owned window.\n\n@cat resource\n\n@sa WindowRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -6754,17 +6811,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "WindowShared",
+              "doc": "Move this window into a WindowShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return WindowShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Window"
           }
         },
+        "Window::share": {
+          "name": "Window::share",
+          "kind": "function",
+          "type": "WindowShared",
+          "parameters": [],
+          "hints": {
+            "self": "Window",
+            "body": "return WindowShared(std::move(*this));"
+          }
+        },
         "WindowUnsafe": {
           "name": "WindowUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<WindowRef>",
-          "doc": "Unsafe Handle to window\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa WindowRef",
+          "doc": "Unsafe Handle to window.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa WindowRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -6917,7 +6995,7 @@
           "name": "GLContext",
           "kind": "struct",
           "type": "ResourceUnique<GLContextRef>",
-          "doc": "Handle to an owned gLContext\n\n@cat resource\n\n@sa GLContextRef",
+          "doc": "Handle to an owned gLContext.\n\n@cat resource\n\n@sa GLContextRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -6952,17 +7030,38 @@
                 "mayFail": true,
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "GLContextShared",
+              "doc": "Move this gLContext into a GLContextShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return GLContextShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "GLContext"
           }
         },
+        "GLContext::share": {
+          "name": "GLContext::share",
+          "kind": "function",
+          "type": "GLContextShared",
+          "parameters": [],
+          "hints": {
+            "self": "GLContext",
+            "body": "return GLContextShared(std::move(*this));"
+          }
+        },
         "GLContextUnsafe": {
           "name": "GLContextUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<GLContextRef>",
-          "doc": "Unsafe Handle to gLContext\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa GLContextRef",
+          "doc": "Unsafe Handle to gLContext.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa GLContextRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -8399,6 +8498,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "RendererShared": {
+          "name": "RendererShared",
+          "kind": "alias",
+          "type": "ResourceShared<Renderer>",
+          "doc": "Handle to a shared renderer.\n\n@cat resource\n\n@sa RendererRef\n@sa Renderer"
+        },
+        "RendererWeak": {
+          "name": "RendererWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Renderer>",
+          "doc": "Weak handle to a shared renderer.\n\n@cat resource\n\n@sa RendererShared\n@sa RendererRef"
+        },
         "TextureRef-forward": {
           "name": "TextureRef",
           "kind": "forward",
@@ -8408,6 +8519,18 @@
           "name": "Texture",
           "kind": "forward",
           "doc": ""
+        },
+        "TextureShared": {
+          "name": "TextureShared",
+          "kind": "alias",
+          "type": "ResourceShared<Texture>",
+          "doc": "Handle to a shared texture.\n\n@cat resource\n\n@sa TextureRef\n@sa Texture"
+        },
+        "TextureWeak": {
+          "name": "TextureWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Texture>",
+          "doc": "Weak handle to a shared texture.\n\n@cat resource\n\n@sa TextureShared\n@sa TextureRef"
         },
         "TextureLock-forward": {
           "kind": "forward",
@@ -9662,7 +9785,7 @@
           "name": "Renderer",
           "kind": "struct",
           "type": "ResourceUnique<RendererRef>",
-          "doc": "Handle to an owned renderer\n\n@cat resource\n\n@sa RendererRef",
+          "doc": "Handle to an owned renderer.\n\n@cat resource\n\n@sa RendererRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -9752,17 +9875,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "RendererShared",
+              "doc": "Move this renderer into a RendererShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return RendererShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Renderer"
           }
         },
+        "Renderer::share": {
+          "name": "Renderer::share",
+          "kind": "function",
+          "type": "RendererShared",
+          "parameters": [],
+          "hints": {
+            "self": "Renderer",
+            "body": "return RendererShared(std::move(*this));"
+          }
+        },
         "RendererUnsafe": {
           "name": "RendererUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<RendererRef>",
-          "doc": "Unsafe Handle to renderer\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa RendererRef",
+          "doc": "Unsafe Handle to renderer.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa RendererRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -10295,7 +10439,7 @@
           "name": "Texture",
           "kind": "struct",
           "type": "ResourceUnique<TextureRef>",
-          "doc": "Handle to an owned texture\n\n@cat resource\n\n@sa TextureRef",
+          "doc": "Handle to an owned texture.\n\n@cat resource\n\n@sa TextureRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -10318,10 +10462,10 @@
                 ],
                 "static": true,
                 "type": "Texture",
+                "name": "Load",
                 "hints": {
                   "wrapSelf": true
                 },
-                "name": "Load",
                 "doc": ""
               },
               {
@@ -10339,10 +10483,10 @@
                 ],
                 "static": true,
                 "type": "Texture",
+                "name": "Load",
                 "hints": {
                   "wrapSelf": true
                 },
-                "name": "Load",
                 "doc": ""
               }
             ],
@@ -10361,10 +10505,10 @@
                 ],
                 "static": true,
                 "type": "Texture",
+                "name": "LoadBMP",
                 "hints": {
                   "wrapSelf": true
                 },
-                "name": "LoadBMP",
                 "doc": ""
               },
               {
@@ -10381,10 +10525,10 @@
                 ],
                 "static": true,
                 "type": "Texture",
+                "name": "LoadBMP",
                 "hints": {
                   "wrapSelf": true
                 },
-                "name": "LoadBMP",
                 "doc": ""
               }
             ],
@@ -10469,17 +10613,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "TextureShared",
+              "doc": "Move this texture into a TextureShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return TextureShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Texture"
           }
         },
+        "Texture::share": {
+          "name": "Texture::share",
+          "kind": "function",
+          "type": "TextureShared",
+          "parameters": [],
+          "hints": {
+            "self": "Texture",
+            "body": "return TextureShared(std::move(*this));"
+          }
+        },
         "TextureUnsafe": {
           "name": "TextureUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<TextureRef>",
-          "doc": "Unsafe Handle to texture\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextureRef",
+          "doc": "Unsafe Handle to texture.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextureRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -11840,6 +12005,18 @@
           "name": "Palette",
           "kind": "forward",
           "doc": ""
+        },
+        "PaletteShared": {
+          "name": "PaletteShared",
+          "kind": "alias",
+          "type": "ResourceShared<Palette>",
+          "doc": "Handle to a shared palette.\n\n@cat resource\n\n@sa PaletteRef\n@sa Palette"
+        },
+        "PaletteWeak": {
+          "name": "PaletteWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Palette>",
+          "doc": "Weak handle to a shared palette.\n\n@cat resource\n\n@sa PaletteShared\n@sa PaletteRef"
         },
         "SDL_ALPHA_OPAQUE": {
           "doc": "A fully opaque 8-bit alpha value.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_ALPHA_TRANSPARENT",
@@ -14599,7 +14776,7 @@
           "name": "Palette",
           "kind": "struct",
           "type": "ResourceUnique<PaletteRef>",
-          "doc": "Handle to an owned palette\n\n@cat resource\n\n@sa PaletteRef",
+          "doc": "Handle to an owned palette.\n\n@cat resource\n\n@sa PaletteRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -14634,17 +14811,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "PaletteShared",
+              "doc": "Move this palette into a PaletteShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return PaletteShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Palette"
           }
         },
+        "Palette::share": {
+          "name": "Palette::share",
+          "kind": "function",
+          "type": "PaletteShared",
+          "parameters": [],
+          "hints": {
+            "self": "Palette",
+            "body": "return PaletteShared(std::move(*this));"
+          }
+        },
         "PaletteUnsafe": {
           "name": "PaletteUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<PaletteRef>",
-          "doc": "Unsafe Handle to palette\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa PaletteRef",
+          "doc": "Unsafe Handle to palette.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa PaletteRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -16589,6 +16787,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "SurfaceShared": {
+          "name": "SurfaceShared",
+          "kind": "alias",
+          "type": "ResourceShared<Surface>",
+          "doc": "Handle to a shared surface.\n\n@cat resource\n\n@sa SurfaceRef\n@sa Surface"
+        },
+        "SurfaceWeak": {
+          "name": "SurfaceWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Surface>",
+          "doc": "Weak handle to a shared surface.\n\n@cat resource\n\n@sa SurfaceShared\n@sa SurfaceRef"
+        },
         "SurfaceLock-forward": {
           "kind": "forward",
           "name": "SurfaceLock",
@@ -17942,7 +18152,7 @@
           "name": "Surface",
           "kind": "struct",
           "type": "ResourceUnique<SurfaceRef>",
-          "doc": "Handle to an owned surface\n\n@cat resource\n\n@sa SurfaceRef",
+          "doc": "Handle to an owned surface.\n\n@cat resource\n\n@sa SurfaceRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -18075,17 +18285,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "SurfaceShared",
+              "doc": "Move this surface into a SurfaceShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return SurfaceShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Surface"
           }
         },
+        "Surface::share": {
+          "name": "Surface::share",
+          "kind": "function",
+          "type": "SurfaceShared",
+          "parameters": [],
+          "hints": {
+            "self": "Surface",
+            "body": "return SurfaceShared(std::move(*this));"
+          }
+        },
         "SurfaceUnsafe": {
           "name": "SurfaceUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<SurfaceRef>",
-          "doc": "Unsafe Handle to surface\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SurfaceRef",
+          "doc": "Unsafe Handle to surface.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SurfaceRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -18787,6 +19018,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "AudioDeviceShared": {
+          "name": "AudioDeviceShared",
+          "kind": "alias",
+          "type": "ResourceShared<AudioDevice>",
+          "doc": "Handle to a shared audioDevice.\n\n@cat resource\n\n@sa AudioDeviceRef\n@sa AudioDevice"
+        },
+        "AudioDeviceWeak": {
+          "name": "AudioDeviceWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<AudioDevice>",
+          "doc": "Weak handle to a shared audioDevice.\n\n@cat resource\n\n@sa AudioDeviceShared\n@sa AudioDeviceRef"
+        },
         "AudioStreamRef-forward": {
           "name": "AudioStreamRef",
           "kind": "forward",
@@ -18796,6 +19039,18 @@
           "name": "AudioStream",
           "kind": "forward",
           "doc": ""
+        },
+        "AudioStreamShared": {
+          "name": "AudioStreamShared",
+          "kind": "alias",
+          "type": "ResourceShared<AudioStream>",
+          "doc": "Handle to a shared audioStream.\n\n@cat resource\n\n@sa AudioStreamRef\n@sa AudioStream"
+        },
+        "AudioStreamWeak": {
+          "name": "AudioStreamWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<AudioStream>",
+          "doc": "Weak handle to a shared audioStream.\n\n@cat resource\n\n@sa AudioStreamShared\n@sa AudioStreamRef"
         },
         "AudioStreamLock-forward": {
           "kind": "forward",
@@ -19408,7 +19663,7 @@
           "name": "AudioDevice",
           "kind": "struct",
           "type": "ResourceUnique<AudioDeviceRef>",
-          "doc": "Handle to an owned audioDevice\n\n@cat resource\n\n@sa AudioDeviceRef",
+          "doc": "Handle to an owned audioDevice.\n\n@cat resource\n\n@sa AudioDeviceRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -19447,17 +19702,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "AudioDeviceShared",
+              "doc": "Move this audioDevice into a AudioDeviceShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return AudioDeviceShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "AudioDevice"
           }
         },
+        "AudioDevice::share": {
+          "name": "AudioDevice::share",
+          "kind": "function",
+          "type": "AudioDeviceShared",
+          "parameters": [],
+          "hints": {
+            "self": "AudioDevice",
+            "body": "return AudioDeviceShared(std::move(*this));"
+          }
+        },
         "AudioDeviceUnsafe": {
           "name": "AudioDeviceUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<AudioDeviceRef>",
-          "doc": "Unsafe Handle to audioDevice\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AudioDeviceRef",
+          "doc": "Unsafe Handle to audioDevice.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AudioDeviceRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -19974,7 +20250,7 @@
           "name": "AudioStream",
           "kind": "struct",
           "type": "ResourceUnique<AudioStreamRef>",
-          "doc": "Handle to an owned audioStream\n\n@cat resource\n\n@sa AudioStreamRef",
+          "doc": "Handle to an owned audioStream.\n\n@cat resource\n\n@sa AudioStreamRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -20072,17 +20348,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "AudioStreamShared",
+              "doc": "Move this audioStream into a AudioStreamShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return AudioStreamShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "AudioStream"
           }
         },
+        "AudioStream::share": {
+          "name": "AudioStream::share",
+          "kind": "function",
+          "type": "AudioStreamShared",
+          "parameters": [],
+          "hints": {
+            "self": "AudioStream",
+            "body": "return AudioStreamShared(std::move(*this));"
+          }
+        },
         "AudioStreamUnsafe": {
           "name": "AudioStreamUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<AudioStreamRef>",
-          "doc": "Unsafe Handle to audioStream\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AudioStreamRef",
+          "doc": "Unsafe Handle to audioStream.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AudioStreamRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -27533,6 +27830,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "CursorShared": {
+          "name": "CursorShared",
+          "kind": "alias",
+          "type": "ResourceShared<Cursor>",
+          "doc": "Handle to a shared cursor.\n\n@cat resource\n\n@sa CursorRef\n@sa Cursor"
+        },
+        "CursorWeak": {
+          "name": "CursorWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Cursor>",
+          "doc": "Weak handle to a shared cursor.\n\n@cat resource\n\n@sa CursorShared\n@sa CursorRef"
+        },
         "SystemCursor": {
           "doc": "Cursor types for Cursor.CreateSystem().\n\n@since This enum is available since SDL 3.2.0.",
           "name": "SystemCursor",
@@ -27754,7 +28063,7 @@
           "name": "Cursor",
           "kind": "struct",
           "type": "ResourceUnique<CursorRef>",
-          "doc": "Handle to an owned cursor\n\n@cat resource\n\n@sa CursorRef",
+          "doc": "Handle to an owned cursor.\n\n@cat resource\n\n@sa CursorRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -27841,17 +28150,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "CursorShared",
+              "doc": "Move this cursor into a CursorShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return CursorShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Cursor"
           }
         },
+        "Cursor::share": {
+          "name": "Cursor::share",
+          "kind": "function",
+          "type": "CursorShared",
+          "parameters": [],
+          "hints": {
+            "self": "Cursor",
+            "body": "return CursorShared(std::move(*this));"
+          }
+        },
         "CursorUnsafe": {
           "name": "CursorUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<CursorRef>",
-          "doc": "Unsafe Handle to cursor\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa CursorRef",
+          "doc": "Unsafe Handle to cursor.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa CursorRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -28311,6 +28641,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "ThreadShared": {
+          "name": "ThreadShared",
+          "kind": "alias",
+          "type": "ResourceShared<Thread>",
+          "doc": "Handle to a shared thread.\n\n@cat resource\n\n@sa ThreadRef\n@sa Thread"
+        },
+        "ThreadWeak": {
+          "name": "ThreadWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Thread>",
+          "doc": "Weak handle to a shared thread.\n\n@cat resource\n\n@sa ThreadShared\n@sa ThreadRef"
+        },
         "ThreadPriority": {
           "doc": "The SDL thread priority.\n\nSDL will make system changes as necessary in order to apply the thread\npriority. Code which attempts to control thread state related to priority\nshould be aware that calling ThreadRef.SetCurrentPriority may alter such\nstate. SDL_HINT_THREAD_PRIORITY_POLICY can be used to control aspects of\nthis behavior.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "ThreadPriority",
@@ -28485,7 +28827,7 @@
           "name": "Thread",
           "kind": "struct",
           "type": "ResourceUnique<ThreadRef>",
-          "doc": "Handle to an owned thread\n\n@cat resource\n\n@sa ThreadRef",
+          "doc": "Handle to an owned thread.\n\n@cat resource\n\n@sa ThreadRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -28568,17 +28910,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "ThreadShared",
+              "doc": "Move this thread into a ThreadShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return ThreadShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Thread"
           }
         },
+        "Thread::share": {
+          "name": "Thread::share",
+          "kind": "function",
+          "type": "ThreadShared",
+          "parameters": [],
+          "hints": {
+            "self": "Thread",
+            "body": "return ThreadShared(std::move(*this));"
+          }
+        },
         "ThreadUnsafe": {
           "name": "ThreadUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<ThreadRef>",
-          "doc": "Unsafe Handle to thread\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ThreadRef",
+          "doc": "Unsafe Handle to thread.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ThreadRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -28718,6 +29081,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "MutexShared": {
+          "name": "MutexShared",
+          "kind": "alias",
+          "type": "ResourceShared<Mutex>",
+          "doc": "Handle to a shared mutex.\n\n@cat resource\n\n@sa MutexRef\n@sa Mutex"
+        },
+        "MutexWeak": {
+          "name": "MutexWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Mutex>",
+          "doc": "Weak handle to a shared mutex.\n\n@cat resource\n\n@sa MutexShared\n@sa MutexRef"
+        },
         "RWLockRef-forward": {
           "name": "RWLockRef",
           "kind": "forward",
@@ -28727,6 +29102,18 @@
           "name": "RWLock",
           "kind": "forward",
           "doc": ""
+        },
+        "RWLockShared": {
+          "name": "RWLockShared",
+          "kind": "alias",
+          "type": "ResourceShared<RWLock>",
+          "doc": "Handle to a shared rWLock.\n\n@cat resource\n\n@sa RWLockRef\n@sa RWLock"
+        },
+        "RWLockWeak": {
+          "name": "RWLockWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<RWLock>",
+          "doc": "Weak handle to a shared rWLock.\n\n@cat resource\n\n@sa RWLockShared\n@sa RWLockRef"
         },
         "SemaphoreRef-forward": {
           "name": "SemaphoreRef",
@@ -28738,6 +29125,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "SemaphoreShared": {
+          "name": "SemaphoreShared",
+          "kind": "alias",
+          "type": "ResourceShared<Semaphore>",
+          "doc": "Handle to a shared semaphore.\n\n@cat resource\n\n@sa SemaphoreRef\n@sa Semaphore"
+        },
+        "SemaphoreWeak": {
+          "name": "SemaphoreWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Semaphore>",
+          "doc": "Weak handle to a shared semaphore.\n\n@cat resource\n\n@sa SemaphoreShared\n@sa SemaphoreRef"
+        },
         "ConditionRef-forward": {
           "name": "ConditionRef",
           "kind": "forward",
@@ -28747,6 +29146,18 @@
           "name": "Condition",
           "kind": "forward",
           "doc": ""
+        },
+        "ConditionShared": {
+          "name": "ConditionShared",
+          "kind": "alias",
+          "type": "ResourceShared<Condition>",
+          "doc": "Handle to a shared condition.\n\n@cat resource\n\n@sa ConditionRef\n@sa Condition"
+        },
+        "ConditionWeak": {
+          "name": "ConditionWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Condition>",
+          "doc": "Weak handle to a shared condition.\n\n@cat resource\n\n@sa ConditionShared\n@sa ConditionRef"
         },
         "MutexRef": {
           "doc": "A means to serialize access to a resource between threads.\n\nMutexes (short for \"mutual exclusion\") are a synchronization primitive that\nallows exactly one thread to proceed at a time.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Mutex\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Mutex",
@@ -28814,7 +29225,7 @@
           "name": "Mutex",
           "kind": "struct",
           "type": "ResourceUnique<MutexRef>",
-          "doc": "Handle to an owned mutex\n\n@cat resource\n\n@sa MutexRef",
+          "doc": "Handle to an owned mutex.\n\n@cat resource\n\n@sa MutexRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -28843,17 +29254,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "MutexShared",
+              "doc": "Move this mutex into a MutexShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return MutexShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Mutex"
           }
         },
+        "Mutex::share": {
+          "name": "Mutex::share",
+          "kind": "function",
+          "type": "MutexShared",
+          "parameters": [],
+          "hints": {
+            "self": "Mutex",
+            "body": "return MutexShared(std::move(*this));"
+          }
+        },
         "MutexUnsafe": {
           "name": "MutexUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<MutexRef>",
-          "doc": "Unsafe Handle to mutex\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa MutexRef",
+          "doc": "Unsafe Handle to mutex.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa MutexRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -28966,7 +29398,7 @@
           "name": "RWLock",
           "kind": "struct",
           "type": "ResourceUnique<RWLockRef>",
-          "doc": "Handle to an owned rWLock\n\n@cat resource\n\n@sa RWLockRef",
+          "doc": "Handle to an owned rWLock.\n\n@cat resource\n\n@sa RWLockRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -28995,17 +29427,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "RWLockShared",
+              "doc": "Move this rWLock into a RWLockShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return RWLockShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "RWLock"
           }
         },
+        "RWLock::share": {
+          "name": "RWLock::share",
+          "kind": "function",
+          "type": "RWLockShared",
+          "parameters": [],
+          "hints": {
+            "self": "RWLock",
+            "body": "return RWLockShared(std::move(*this));"
+          }
+        },
         "RWLockUnsafe": {
           "name": "RWLockUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<RWLockRef>",
-          "doc": "Unsafe Handle to rWLock\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa RWLockRef",
+          "doc": "Unsafe Handle to rWLock.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa RWLockRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -29118,7 +29571,7 @@
           "name": "Semaphore",
           "kind": "struct",
           "type": "ResourceUnique<SemaphoreRef>",
-          "doc": "Handle to an owned semaphore\n\n@cat resource\n\n@sa SemaphoreRef",
+          "doc": "Handle to an owned semaphore.\n\n@cat resource\n\n@sa SemaphoreRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -29152,17 +29605,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "SemaphoreShared",
+              "doc": "Move this semaphore into a SemaphoreShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return SemaphoreShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Semaphore"
           }
         },
+        "Semaphore::share": {
+          "name": "Semaphore::share",
+          "kind": "function",
+          "type": "SemaphoreShared",
+          "parameters": [],
+          "hints": {
+            "self": "Semaphore",
+            "body": "return SemaphoreShared(std::move(*this));"
+          }
+        },
         "SemaphoreUnsafe": {
           "name": "SemaphoreUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<SemaphoreRef>",
-          "doc": "Unsafe Handle to semaphore\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SemaphoreRef",
+          "doc": "Unsafe Handle to semaphore.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SemaphoreRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -29275,7 +29749,7 @@
           "name": "Condition",
           "kind": "struct",
           "type": "ResourceUnique<ConditionRef>",
-          "doc": "Handle to an owned condition\n\n@cat resource\n\n@sa ConditionRef",
+          "doc": "Handle to an owned condition.\n\n@cat resource\n\n@sa ConditionRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -29304,17 +29778,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "ConditionShared",
+              "doc": "Move this condition into a ConditionShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return ConditionShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Condition"
           }
         },
+        "Condition::share": {
+          "name": "Condition::share",
+          "kind": "function",
+          "type": "ConditionShared",
+          "parameters": [],
+          "hints": {
+            "self": "Condition",
+            "body": "return ConditionShared(std::move(*this));"
+          }
+        },
         "ConditionUnsafe": {
           "name": "ConditionUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<ConditionRef>",
-          "doc": "Unsafe Handle to condition\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ConditionRef",
+          "doc": "Unsafe Handle to condition.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ConditionRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -31192,6 +31687,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "StorageShared": {
+          "name": "StorageShared",
+          "kind": "alias",
+          "type": "ResourceShared<Storage>",
+          "doc": "Handle to a shared storage.\n\n@cat resource\n\n@sa StorageRef\n@sa Storage"
+        },
+        "StorageWeak": {
+          "name": "StorageWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Storage>",
+          "doc": "Weak handle to a shared storage.\n\n@cat resource\n\n@sa StorageShared\n@sa StorageRef"
+        },
         "StorageInterface": {
           "doc": "Function interface for Storage.\n\nApps that want to supply a custom implementation of Storage will fill\nin all the functions in this struct, and then pass it to Storage.Open to\ncreate a custom Storage object.\n\nIt is not usually necessary to do this; SDL provides standard\nimplementations for many things you might expect to do with an Storage.\n\nThis structure should be initialized using SDL_INIT_INTERFACE()\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_INIT_INTERFACE",
           "name": "StorageInterface",
@@ -31507,7 +32014,7 @@
           "name": "Storage",
           "kind": "struct",
           "type": "ResourceUnique<StorageRef>",
-          "doc": "Handle to an owned storage\n\n@cat resource\n\n@sa StorageRef",
+          "doc": "Handle to an owned storage.\n\n@cat resource\n\n@sa StorageRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -31613,17 +32120,38 @@
                 "body": "reset();",
                 "mayFail": true
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "StorageShared",
+              "doc": "Move this storage into a StorageShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return StorageShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Storage"
           }
         },
+        "Storage::share": {
+          "name": "Storage::share",
+          "kind": "function",
+          "type": "StorageShared",
+          "parameters": [],
+          "hints": {
+            "self": "Storage",
+            "body": "return StorageShared(std::move(*this));"
+          }
+        },
         "StorageUnsafe": {
           "name": "StorageUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<StorageRef>",
-          "doc": "Unsafe Handle to storage\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa StorageRef",
+          "doc": "Unsafe Handle to storage.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa StorageRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -31666,6 +32194,18 @@
           "name": "IOStream",
           "kind": "forward",
           "doc": ""
+        },
+        "IOStreamShared": {
+          "name": "IOStreamShared",
+          "kind": "alias",
+          "type": "ResourceShared<IOStream>",
+          "doc": "Handle to a shared iOStream.\n\n@cat resource\n\n@sa IOStreamRef\n@sa IOStream"
+        },
+        "IOStreamWeak": {
+          "name": "IOStreamWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<IOStream>",
+          "doc": "Weak handle to a shared iOStream.\n\n@cat resource\n\n@sa IOStreamShared\n@sa IOStreamRef"
         },
         "IOStatus": {
           "doc": "IOStream status, set by a read or write operation.\n\n@since This enum is available since SDL 3.2.0.",
@@ -32487,7 +33027,7 @@
           "name": "IOStream",
           "kind": "struct",
           "type": "ResourceUnique<IOStreamRef>",
-          "doc": "Handle to an owned iOStream\n\n@cat resource\n\n@sa IOStreamRef",
+          "doc": "Handle to an owned iOStream.\n\n@cat resource\n\n@sa IOStreamRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -32594,17 +33134,38 @@
                 "mayFail": true,
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "IOStreamShared",
+              "doc": "Move this iOStream into a IOStreamShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return IOStreamShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "IOStream"
           }
         },
+        "IOStream::share": {
+          "name": "IOStream::share",
+          "kind": "function",
+          "type": "IOStreamShared",
+          "parameters": [],
+          "hints": {
+            "self": "IOStream",
+            "body": "return IOStreamShared(std::move(*this));"
+          }
+        },
         "IOStreamUnsafe": {
           "name": "IOStreamUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<IOStreamRef>",
-          "doc": "Unsafe Handle to iOStream\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa IOStreamRef",
+          "doc": "Unsafe Handle to iOStream.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa IOStreamRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -33302,6 +33863,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "SharedObjectShared": {
+          "name": "SharedObjectShared",
+          "kind": "alias",
+          "type": "ResourceShared<SharedObject>",
+          "doc": "Handle to a shared sharedObject.\n\n@cat resource\n\n@sa SharedObjectRef\n@sa SharedObject"
+        },
+        "SharedObjectWeak": {
+          "name": "SharedObjectWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<SharedObject>",
+          "doc": "Weak handle to a shared sharedObject.\n\n@cat resource\n\n@sa SharedObjectShared\n@sa SharedObjectRef"
+        },
         "SharedObjectRef": {
           "doc": "An opaque datatype that represents a loaded shared object.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SharedObject.Load\n@sa SharedObjectRef.LoadFunction\n@sa SharedObject.Unload\n\n@cat resource\n\n@sa SharedObject",
           "name": "SharedObjectRef",
@@ -33354,7 +33927,7 @@
           "name": "SharedObject",
           "kind": "struct",
           "type": "ResourceUnique<SharedObjectRef>",
-          "doc": "Handle to an owned sharedObject\n\n@cat resource\n\n@sa SharedObjectRef",
+          "doc": "Handle to an owned sharedObject.\n\n@cat resource\n\n@sa SharedObjectRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -33388,17 +33961,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "SharedObjectShared",
+              "doc": "Move this sharedObject into a SharedObjectShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return SharedObjectShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "SharedObject"
           }
         },
+        "SharedObject::share": {
+          "name": "SharedObject::share",
+          "kind": "function",
+          "type": "SharedObjectShared",
+          "parameters": [],
+          "hints": {
+            "self": "SharedObject",
+            "body": "return SharedObjectShared(std::move(*this));"
+          }
+        },
         "SharedObjectUnsafe": {
           "name": "SharedObjectUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<SharedObjectRef>",
-          "doc": "Unsafe Handle to sharedObject\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SharedObjectRef",
+          "doc": "Unsafe Handle to sharedObject.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SharedObjectRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -33441,6 +34035,18 @@
           "name": "Process",
           "kind": "forward",
           "doc": ""
+        },
+        "ProcessShared": {
+          "name": "ProcessShared",
+          "kind": "alias",
+          "type": "ResourceShared<Process>",
+          "doc": "Handle to a shared process.\n\n@cat resource\n\n@sa ProcessRef\n@sa Process"
+        },
+        "ProcessWeak": {
+          "name": "ProcessWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Process>",
+          "doc": "Weak handle to a shared process.\n\n@cat resource\n\n@sa ProcessShared\n@sa ProcessRef"
         },
         "ProcessIO": {
           "doc": "Description of where standard I/O should be directed when creating a\nprocess.\n\nIf a standard I/O stream is set to PROCESS_STDIO_INHERITED, it will go\nto the same place as the application's I/O stream. This is the default for\nstandard output and standard error.\n\nIf a standard I/O stream is set to SDL_PROCESS_STDIO_nullptr, it is connected\nto `NUL:` on Windows and `/dev/null` on POSIX systems. This is the default\nfor standard input.\n\nIf a standard I/O stream is set to PROCESS_STDIO_APP, it is connected\nto a new IOStream that is available to the application. Standard input\nwill be available as `prop::process.STDIN_POINTER` and allows\nProcessRef.GetInput(), standard output will be available as\n`prop::process.STDOUT_POINTER` and allows ProcessRef.Read() and\nProcessRef.GetOutput(), and standard error will be available as\n`prop::process.STDERR_POINTER` in the properties for the created\nprocess.\n\nIf a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is\nconnected to an existing IOStream provided by the application. Standard\ninput is provided using `prop::process.CREATE_STDIN_POINTER`, standard\noutput is provided using `prop::process.CREATE_STDOUT_POINTER`, and\nstandard error is provided using `prop::process.CREATE_STDERR_POINTER`\nin the creation properties. These existing streams should be closed by the\napplication once the new process is created.\n\nIn order to use an IOStream with PROCESS_STDIO_REDIRECT, it must\nhave `prop::IOStream.WINDOWS_HANDLE_POINTER` or\n`prop::IOStream.FILE_DESCRIPTOR_NUMBER` set. This is true for streams\nrepresenting files and process I/O.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa Process.CreateWithProperties\n@sa ProcessRef.GetProperties\n@sa ProcessRef.Read\n@sa ProcessRef.GetInput\n@sa ProcessRef.GetOutput",
@@ -33614,7 +34220,7 @@
           "name": "Process",
           "kind": "struct",
           "type": "ResourceUnique<ProcessRef>",
-          "doc": "Handle to an owned process\n\n@cat resource\n\n@sa ProcessRef",
+          "doc": "Handle to an owned process.\n\n@cat resource\n\n@sa ProcessRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -33669,17 +34275,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "ProcessShared",
+              "doc": "Move this process into a ProcessShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return ProcessShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Process"
           }
         },
+        "Process::share": {
+          "name": "Process::share",
+          "kind": "function",
+          "type": "ProcessShared",
+          "parameters": [],
+          "hints": {
+            "self": "Process",
+            "body": "return ProcessShared(std::move(*this));"
+          }
+        },
         "ProcessUnsafe": {
           "name": "ProcessUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<ProcessRef>",
-          "doc": "Unsafe Handle to process\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ProcessRef",
+          "doc": "Unsafe Handle to process.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ProcessRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -34566,6 +35193,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "TrayShared": {
+          "name": "TrayShared",
+          "kind": "alias",
+          "type": "ResourceShared<Tray>",
+          "doc": "Handle to a shared tray.\n\n@cat resource\n\n@sa TrayRef\n@sa Tray"
+        },
+        "TrayWeak": {
+          "name": "TrayWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Tray>",
+          "doc": "Weak handle to a shared tray.\n\n@cat resource\n\n@sa TrayShared\n@sa TrayRef"
+        },
         "TrayEntryRef-forward": {
           "name": "TrayEntryRef",
           "kind": "forward",
@@ -34575,6 +35214,18 @@
           "name": "TrayEntry",
           "kind": "forward",
           "doc": ""
+        },
+        "TrayEntryShared": {
+          "name": "TrayEntryShared",
+          "kind": "alias",
+          "type": "ResourceShared<TrayEntry>",
+          "doc": "Handle to a shared trayEntry.\n\n@cat resource\n\n@sa TrayEntryRef\n@sa TrayEntry"
+        },
+        "TrayEntryWeak": {
+          "name": "TrayEntryWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<TrayEntry>",
+          "doc": "Weak handle to a shared trayEntry.\n\n@cat resource\n\n@sa TrayEntryShared\n@sa TrayEntryRef"
         },
         "DetachedTrayEntry": {
           "name": "DetachedTrayEntry",
@@ -34718,7 +35369,7 @@
           "name": "Tray",
           "kind": "struct",
           "type": "ResourceUnique<TrayRef>",
-          "doc": "Handle to an owned tray\n\n@cat resource\n\n@sa TrayRef",
+          "doc": "Handle to an owned tray.\n\n@cat resource\n\n@sa TrayRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -34756,17 +35407,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "TrayShared",
+              "doc": "Move this tray into a TrayShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return TrayShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Tray"
           }
         },
+        "Tray::share": {
+          "name": "Tray::share",
+          "kind": "function",
+          "type": "TrayShared",
+          "parameters": [],
+          "hints": {
+            "self": "Tray",
+            "body": "return TrayShared(std::move(*this));"
+          }
+        },
         "TrayUnsafe": {
           "name": "TrayUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<TrayRef>",
-          "doc": "Unsafe Handle to tray\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TrayRef",
+          "doc": "Unsafe Handle to tray.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TrayRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -35143,7 +35815,7 @@
           "name": "TrayEntry",
           "kind": "struct",
           "type": "ResourceUnique<TrayEntryRef>",
-          "doc": "Handle to an owned trayEntry\n\n@cat resource\n\n@sa TrayEntryRef",
+          "doc": "Handle to an owned trayEntry.\n\n@cat resource\n\n@sa TrayEntryRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -35160,17 +35832,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "TrayEntryShared",
+              "doc": "Move this trayEntry into a TrayEntryShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return TrayEntryShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "TrayEntry"
           }
         },
+        "TrayEntry::share": {
+          "name": "TrayEntry::share",
+          "kind": "function",
+          "type": "TrayEntryShared",
+          "parameters": [],
+          "hints": {
+            "self": "TrayEntry",
+            "body": "return TrayEntryShared(std::move(*this));"
+          }
+        },
         "TrayEntryUnsafe": {
           "name": "TrayEntryUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<TrayEntryRef>",
-          "doc": "Unsafe Handle to trayEntry\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TrayEntryRef",
+          "doc": "Unsafe Handle to trayEntry.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TrayEntryRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -35939,6 +36632,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "EnvironmentShared": {
+          "name": "EnvironmentShared",
+          "kind": "alias",
+          "type": "ResourceShared<Environment>",
+          "doc": "Handle to a shared environment.\n\n@cat resource\n\n@sa EnvironmentRef\n@sa Environment"
+        },
+        "EnvironmentWeak": {
+          "name": "EnvironmentWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Environment>",
+          "doc": "Weak handle to a shared environment.\n\n@cat resource\n\n@sa EnvironmentShared\n@sa EnvironmentRef"
+        },
         "IConvRef-forward": {
           "name": "IConvRef",
           "kind": "forward",
@@ -35948,6 +36653,18 @@
           "name": "IConv",
           "kind": "forward",
           "doc": ""
+        },
+        "IConvShared": {
+          "name": "IConvShared",
+          "kind": "alias",
+          "type": "ResourceShared<IConv>",
+          "doc": "Handle to a shared iConv.\n\n@cat resource\n\n@sa IConvRef\n@sa IConv"
+        },
+        "IConvWeak": {
+          "name": "IConvWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<IConv>",
+          "doc": "Weak handle to a shared iConv.\n\n@cat resource\n\n@sa IConvShared\n@sa IConvRef"
         },
         "SDL_NOLONGLONG": {
           "doc": "Don't let SDL use \"long long\" C types.\n\nSDL will define this if it believes the compiler doesn't understand the\n\"long long\" syntax for C datatypes. This can happen on older compilers.\n\nIf _your_ compiler doesn't support \"long long\" but SDL doesn't know it, it\nis safe to define this yourself to build against the SDL headers.\n\nIf this is defined, it will remove access to some C runtime support\nfunctions, like SDL_ulltoa and SDL_strtoll that refer to this datatype\nexplicitly. The rest of SDL will still be available.\n\nSDL's own source code cannot be built with a compiler that has this\ndefined, for various technical reasons.",
@@ -36821,7 +37538,7 @@
           "name": "Environment",
           "kind": "struct",
           "type": "ResourceUnique<EnvironmentRef>",
-          "doc": "Handle to an owned environment\n\n@cat resource\n\n@sa EnvironmentRef",
+          "doc": "Handle to an owned environment.\n\n@cat resource\n\n@sa EnvironmentRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -36855,17 +37572,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "EnvironmentShared",
+              "doc": "Move this environment into a EnvironmentShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return EnvironmentShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Environment"
           }
         },
+        "Environment::share": {
+          "name": "Environment::share",
+          "kind": "function",
+          "type": "EnvironmentShared",
+          "parameters": [],
+          "hints": {
+            "self": "Environment",
+            "body": "return EnvironmentShared(std::move(*this));"
+          }
+        },
         "EnvironmentUnsafe": {
           "name": "EnvironmentUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<EnvironmentRef>",
-          "doc": "Unsafe Handle to environment\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa EnvironmentRef",
+          "doc": "Unsafe Handle to environment.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa EnvironmentRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -39623,7 +40361,7 @@
           "name": "IConv",
           "kind": "struct",
           "type": "ResourceUnique<IConvRef>",
-          "doc": "Handle to an owned iConv\n\n@cat resource\n\n@sa IConvRef",
+          "doc": "Handle to an owned iConv.\n\n@cat resource\n\n@sa IConvRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -39662,17 +40400,38 @@
                 "mayFail": true,
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "IConvShared",
+              "doc": "Move this iConv into a IConvShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return IConvShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "IConv"
           }
         },
+        "IConv::share": {
+          "name": "IConv::share",
+          "kind": "function",
+          "type": "IConvShared",
+          "parameters": [],
+          "hints": {
+            "self": "IConv",
+            "body": "return IConvShared(std::move(*this));"
+          }
+        },
         "IConvUnsafe": {
           "name": "IConvUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<IConvRef>",
-          "doc": "Unsafe Handle to iConv\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa IConvRef",
+          "doc": "Unsafe Handle to iConv.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa IConvRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -39943,6 +40702,18 @@
           "name": "Animation",
           "kind": "forward",
           "doc": ""
+        },
+        "AnimationShared": {
+          "name": "AnimationShared",
+          "kind": "alias",
+          "type": "ResourceShared<Animation>",
+          "doc": "Handle to a shared animation.\n\n@cat resource\n\n@sa AnimationRef\n@sa Animation"
+        },
+        "AnimationWeak": {
+          "name": "AnimationWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Animation>",
+          "doc": "Weak handle to a shared animation.\n\n@cat resource\n\n@sa AnimationShared\n@sa AnimationRef"
         },
         "SDL_IMAGE_MAJOR_VERSION": {
           "doc": "Printable format: \"%d.%d.%d\", MAJOR, MINOR, MICRO",
@@ -40861,7 +41632,7 @@
           "name": "Animation",
           "kind": "struct",
           "type": "ResourceUnique<AnimationRef>",
-          "doc": "Handle to an owned animation\n\n@cat resource\n\n@sa AnimationRef",
+          "doc": "Handle to an owned animation.\n\n@cat resource\n\n@sa AnimationRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -40935,17 +41706,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "AnimationShared",
+              "doc": "Move this animation into a AnimationShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return AnimationShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Animation"
           }
         },
+        "Animation::share": {
+          "name": "Animation::share",
+          "kind": "function",
+          "type": "AnimationShared",
+          "parameters": [],
+          "hints": {
+            "self": "Animation",
+            "body": "return AnimationShared(std::move(*this));"
+          }
+        },
         "AnimationUnsafe": {
           "name": "AnimationUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<AnimationRef>",
-          "doc": "Unsafe Handle to animation\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AnimationRef",
+          "doc": "Unsafe Handle to animation.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AnimationRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -41033,6 +41825,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "FontShared": {
+          "name": "FontShared",
+          "kind": "alias",
+          "type": "ResourceShared<Font>",
+          "doc": "Handle to a shared font.\n\n@cat resource\n\n@sa FontRef\n@sa Font"
+        },
+        "FontWeak": {
+          "name": "FontWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Font>",
+          "doc": "Weak handle to a shared font.\n\n@cat resource\n\n@sa FontShared\n@sa FontRef"
+        },
         "TextEngineRef-forward": {
           "name": "TextEngineRef",
           "kind": "forward",
@@ -41043,6 +41847,18 @@
           "kind": "forward",
           "doc": ""
         },
+        "TextEngineShared": {
+          "name": "TextEngineShared",
+          "kind": "alias",
+          "type": "ResourceShared<TextEngine>",
+          "doc": "Handle to a shared textEngine.\n\n@cat resource\n\n@sa TextEngineRef\n@sa TextEngine"
+        },
+        "TextEngineWeak": {
+          "name": "TextEngineWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<TextEngine>",
+          "doc": "Weak handle to a shared textEngine.\n\n@cat resource\n\n@sa TextEngineShared\n@sa TextEngineRef"
+        },
         "TextRef-forward": {
           "name": "TextRef",
           "kind": "forward",
@@ -41052,6 +41868,18 @@
           "name": "Text",
           "kind": "forward",
           "doc": ""
+        },
+        "TextShared": {
+          "name": "TextShared",
+          "kind": "alias",
+          "type": "ResourceShared<Text>",
+          "doc": "Handle to a shared text.\n\n@cat resource\n\n@sa TextRef\n@sa Text"
+        },
+        "TextWeak": {
+          "name": "TextWeak",
+          "kind": "alias",
+          "type": "ResourceWeak<Text>",
+          "doc": "Weak handle to a shared text.\n\n@cat resource\n\n@sa TextShared\n@sa TextRef"
         },
         "FontStyleFlags": {
           "doc": "Font style flags for Font\n\nThese are the flags which can be used to set the style of a font in\nSDL_ttf. A combination of these flags can be used with functions that set\nor query font style, such as FontRef.SetStyle or FontRef.GetStyle.\n\n@since This datatype is available since SDL_ttf 3.0.0.\n\n@sa FontRef.SetStyle\n@sa FontRef.GetStyle",
@@ -42466,7 +43294,7 @@
           "name": "Font",
           "kind": "struct",
           "type": "ResourceUnique<FontRef>",
-          "doc": "Handle to an owned font\n\n@cat resource\n\n@sa FontRef",
+          "doc": "Handle to an owned font.\n\n@cat resource\n\n@sa FontRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -42547,17 +43375,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "FontShared",
+              "doc": "Move this font into a FontShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return FontShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Font"
           }
         },
+        "Font::share": {
+          "name": "Font::share",
+          "kind": "function",
+          "type": "FontShared",
+          "parameters": [],
+          "hints": {
+            "self": "Font",
+            "body": "return FontShared(std::move(*this));"
+          }
+        },
         "FontUnsafe": {
           "name": "FontUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<FontRef>",
-          "doc": "Unsafe Handle to font\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa FontRef",
+          "doc": "Unsafe Handle to font.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa FontRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -42687,7 +43536,7 @@
           "name": "TextEngine",
           "kind": "struct",
           "type": "ResourceUnique<TextEngineRef, TextEngineDeleter>",
-          "doc": "Handle to an owned textEngine\n\n@cat resource\n\n@sa TextEngineRef",
+          "doc": "Handle to an owned textEngine.\n\n@cat resource\n\n@sa TextEngineRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -42773,17 +43622,38 @@
               "hints": {
                 "wrapSelf": true
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "TextEngineShared",
+              "doc": "Move this textEngine into a TextEngineShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return TextEngineShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "TextEngine"
           }
         },
+        "TextEngine::share": {
+          "name": "TextEngine::share",
+          "kind": "function",
+          "type": "TextEngineShared",
+          "parameters": [],
+          "hints": {
+            "self": "TextEngine",
+            "body": "return TextEngineShared(std::move(*this));"
+          }
+        },
         "TextEngineUnsafe": {
           "name": "TextEngineUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<TextEngineRef, TextEngineDeleter>",
-          "doc": "Unsafe Handle to textEngine\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextEngineRef",
+          "doc": "Unsafe Handle to textEngine.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextEngineRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",
@@ -43801,7 +44671,7 @@
           "name": "Text",
           "kind": "struct",
           "type": "ResourceUnique<TextRef>",
-          "doc": "Handle to an owned text\n\n@cat resource\n\n@sa TextRef",
+          "doc": "Handle to an owned text.\n\n@cat resource\n\n@sa TextRef",
           "entries": {
             "ResourceUnique::ResourceUnique": {
               "kind": "alias",
@@ -43843,17 +44713,38 @@
               "hints": {
                 "body": "reset();"
               }
+            },
+            "share": {
+              "name": "share",
+              "kind": "function",
+              "type": "TextShared",
+              "doc": "Move this text into a TextShared.",
+              "parameters": [],
+              "hints": {
+                "body": "return TextShared(std::move(*this));"
+              },
+              "proto": true
             }
           },
           "hints": {
             "self": "Text"
           }
         },
+        "Text::share": {
+          "name": "Text::share",
+          "kind": "function",
+          "type": "TextShared",
+          "parameters": [],
+          "hints": {
+            "self": "Text",
+            "body": "return TextShared(std::move(*this));"
+          }
+        },
         "TextUnsafe": {
           "name": "TextUnsafe",
           "kind": "struct",
           "type": "ResourceUnsafe<TextRef>",
-          "doc": "Unsafe Handle to text\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextRef",
+          "doc": "Unsafe Handle to text.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextRef",
           "entries": {
             "ResourceUnsafe::ResourceUnsafe": {
               "kind": "alias",

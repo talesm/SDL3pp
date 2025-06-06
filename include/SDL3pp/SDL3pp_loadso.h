@@ -48,6 +48,26 @@ struct SharedObjectRef;
 struct SharedObject;
 
 /**
+ * Handle to a shared sharedObject.
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectRef
+ * @sa SharedObject
+ */
+using SharedObjectShared = ResourceShared<SharedObject>;
+
+/**
+ * Weak handle to a shared sharedObject.
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectShared
+ * @sa SharedObjectRef
+ */
+using SharedObjectWeak = ResourceWeak<SharedObject>;
+
+/**
  * An opaque datatype that represents a loaded shared object.
  *
  * @since This datatype is available since SDL 3.2.0.
@@ -155,7 +175,18 @@ struct SharedObject : ResourceUnique<SharedObjectRef>
    * @sa SharedObject.Load
    */
   void Unload() { reset(); }
+  /**
+   * Move this sharedObject into a SharedObjectShared.
+   */
+  SharedObjectShared share();
+
 };
+
+
+inline SharedObjectShared SharedObject::share()
+{
+  return SharedObjectShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to sharedObject

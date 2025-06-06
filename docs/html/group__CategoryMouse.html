@@ -96,6 +96,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:gae5e266fcdbc827575af47075d70b5b11" id="r_gae5e266fcdbc827575af47075d70b5b11"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gae5e266fcdbc827575af47075d70b5b11">SDL::CursorShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Cursor.html">Cursor</a> &gt;</td></tr>
+<tr class="memdesc:gae5e266fcdbc827575af47075d70b5b11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared cursor.  <br /></td></tr>
+<tr class="separator:gae5e266fcdbc827575af47075d70b5b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5712eef5bca28ae77e8a515833c3f730" id="r_ga5712eef5bca28ae77e8a515833c3f730"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga5712eef5bca28ae77e8a515833c3f730">SDL::CursorWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Cursor.html">Cursor</a> &gt;</td></tr>
+<tr class="memdesc:ga5712eef5bca28ae77e8a515833c3f730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared cursor.  <br /></td></tr>
+<tr class="separator:ga5712eef5bca28ae77e8a515833c3f730"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga18c02aef67d85f2fbf2758204eba125d" id="r_ga18c02aef67d85f2fbf2758204eba125d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga18c02aef67d85f2fbf2758204eba125d">SDL::SystemCursor</a> = SDL_SystemCursor</td></tr>
 <tr class="memdesc:ga18c02aef67d85f2fbf2758204eba125d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor.">Cursor</a> types for <a class="el" href="structSDL_1_1Cursor.html#aba9887ef7e2652a057660a5d9cf0d528" title="Create a system cursor.">Cursor.CreateSystem()</a>.  <br /></td></tr>
 <tr class="separator:ga18c02aef67d85f2fbf2758204eba125d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,6 +169,10 @@ Functions</h2></td></tr>
 <tr class="memitem:gac4547e18959c21ca560b54349634f47b" id="r_gac4547e18959c21ca560b54349634f47b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gac4547e18959c21ca560b54349634f47b">SDL::CursorVisible</a> ()</td></tr>
 <tr class="memdesc:gac4547e18959c21ca560b54349634f47b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether the cursor is currently being shown.  <br /></td></tr>
 <tr class="separator:gac4547e18959c21ca560b54349634f47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1ed49da2c7e86e87293ffa2f695f3f7f" id="r_ga1ed49da2c7e86e87293ffa2f695f3f7f"><td class="memItemLeft" align="right" valign="top"><a id="ga1ed49da2c7e86e87293ffa2f695f3f7f" name="ga1ed49da2c7e86e87293ffa2f695f3f7f"></a>
+<a class="el" href="group__CategoryMouse.html#gae5e266fcdbc827575af47075d70b5b11">CursorShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Cursor::share</b> ()</td></tr>
+<tr class="memdesc:ga1ed49da2c7e86e87293ffa2f695f3f7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this cursor into a CursorShared. <br /></td></tr>
+<tr class="separator:ga1ed49da2c7e86e87293ffa2f695f3f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0b838bf7c4e62a00187e28def4de70d3" id="r_ga0b838bf7c4e62a00187e28def4de70d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga0b838bf7c4e62a00187e28def4de70d3">SDL::WindowRef::WarpMouse</a> (float x, float y)</td></tr>
 <tr class="memdesc:ga0b838bf7c4e62a00187e28def4de70d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the mouse cursor to the given position within the window.  <br /></td></tr>
 <tr class="separator:ga0b838bf7c4e62a00187e28def4de70d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -289,6 +299,42 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> can, on many platforms, differentiate between multiple connected mice, allowing for interesting input scenarios and multiplayer games. They can be enumerated with <a class="el" href="group__CategoryMouse.html#gae6a2284e9cbc6ed3904dbcc27ea066ad" title="Get a list of currently connected mice.">GetMice()</a>, and <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will send EVENT_MOUSE_ADDED and EVENT_MOUSE_REMOVED events as they are connected and unplugged.</p>
 <p>Since many apps only care about basic mouse input, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> offers a virtual mouse device for touch and pen input, which often can make a desktop application work on a touchscreen phone without any code changes. Apps that care about touch/pen separately from mouse input should filter out events with a <code>which</code> field of SDL_TOUCH_MOUSEID/SDL_PEN_MOUSEID. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="gae5e266fcdbc827575af47075d70b5b11" name="gae5e266fcdbc827575af47075d70b5b11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae5e266fcdbc827575af47075d70b5b11">&#9670;&#160;</a></span>CursorShared</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryMouse.html#gae5e266fcdbc827575af47075d70b5b11">SDL::CursorShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Cursor.html">Cursor</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1CursorRef.html" title="The structure used to identify an SDL cursor.">CursorRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor.">Cursor</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga5712eef5bca28ae77e8a515833c3f730" name="ga5712eef5bca28ae77e8a515833c3f730"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5712eef5bca28ae77e8a515833c3f730">&#9670;&#160;</a></span>CursorWeak</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryMouse.html#ga5712eef5bca28ae77e8a515833c3f730">SDL::CursorWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Cursor.html">Cursor</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#gae5e266fcdbc827575af47075d70b5b11" title="Handle to a shared cursor.">CursorShared</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1CursorRef.html" title="The structure used to identify an SDL cursor.">CursorRef</a> </dd></dl>
+
+</div>
+</div>
 <a id="ga46f1428bf8fd96fcefe94761ed4b5120" name="ga46f1428bf8fd96fcefe94761ed4b5120"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga46f1428bf8fd96fcefe94761ed4b5120">&#9670;&#160;</a></span>MouseButtonFlags</h2>
 

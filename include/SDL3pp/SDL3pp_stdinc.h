@@ -44,11 +44,51 @@ struct EnvironmentRef;
 // Forward decl
 struct Environment;
 
+/**
+ * Handle to a shared environment.
+ *
+ * @cat resource
+ *
+ * @sa EnvironmentRef
+ * @sa Environment
+ */
+using EnvironmentShared = ResourceShared<Environment>;
+
+/**
+ * Weak handle to a shared environment.
+ *
+ * @cat resource
+ *
+ * @sa EnvironmentShared
+ * @sa EnvironmentRef
+ */
+using EnvironmentWeak = ResourceWeak<Environment>;
+
 // Forward decl
 struct IConvRef;
 
 // Forward decl
 struct IConv;
+
+/**
+ * Handle to a shared iConv.
+ *
+ * @cat resource
+ *
+ * @sa IConvRef
+ * @sa IConv
+ */
+using IConvShared = ResourceShared<IConv>;
+
+/**
+ * Weak handle to a shared iConv.
+ *
+ * @cat resource
+ *
+ * @sa IConvShared
+ * @sa IConvRef
+ */
+using IConvWeak = ResourceWeak<IConv>;
 
 #ifdef SDL3PP_DOC
 
@@ -917,7 +957,18 @@ struct Environment : ResourceUnique<EnvironmentRef>
    * @sa Environment.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this environment into a EnvironmentShared.
+   */
+  EnvironmentShared share();
+
 };
+
+
+inline EnvironmentShared Environment::share()
+{
+  return EnvironmentShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to environment
@@ -5200,7 +5251,18 @@ struct IConv : ResourceUnique<IConvRef>
    * @sa iconv_string
    */
   void close() { reset(); }
+  /**
+   * Move this iConv into a IConvShared.
+   */
+  IConvShared share();
+
 };
+
+
+inline IConvShared IConv::share()
+{
+  return IConvShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to iConv

@@ -338,6 +338,26 @@ using HitTest = SDL_HitTest;
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
 
+/**
+ * Handle to a shared window.
+ *
+ * @cat resource
+ *
+ * @sa WindowRef
+ * @sa Window
+ */
+using WindowShared = ResourceShared<Window>;
+
+/**
+ * Weak handle to a shared window.
+ *
+ * @cat resource
+ *
+ * @sa WindowShared
+ * @sa WindowRef
+ */
+using WindowWeak = ResourceWeak<Window>;
+
 /// @}
 
 // Forward decl
@@ -345,6 +365,26 @@ struct GLContextRef;
 
 // Forward decl
 struct GLContext;
+
+/**
+ * Handle to a shared gLContext.
+ *
+ * @cat resource
+ *
+ * @sa GLContextRef
+ * @sa GLContext
+ */
+using GLContextShared = ResourceShared<GLContext>;
+
+/**
+ * Weak handle to a shared gLContext.
+ *
+ * @cat resource
+ *
+ * @sa GLContextShared
+ * @sa GLContextRef
+ */
+using GLContextWeak = ResourceWeak<GLContext>;
 
 /**
  * This is a unique ID for a display for the time it is connected to the
@@ -2843,7 +2883,18 @@ struct Window : ResourceUnique<WindowRef>
    * @sa Window.CreateWithProperties
    */
   void Destroy() { reset(); }
+  /**
+   * Move this window into a WindowShared.
+   */
+  WindowShared share();
+
 };
+
+
+inline WindowShared Window::share()
+{
+  return WindowShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to window
@@ -3054,7 +3105,18 @@ struct GLContext : ResourceUnique<GLContextRef>
    * @sa GLContext.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this gLContext into a GLContextShared.
+   */
+  GLContextShared share();
+
 };
+
+
+inline GLContextShared GLContext::share()
+{
+  return GLContextShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to gLContext

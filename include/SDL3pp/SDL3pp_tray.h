@@ -29,11 +29,51 @@ struct TrayRef;
 // Forward decl
 struct Tray;
 
+/**
+ * Handle to a shared tray.
+ *
+ * @cat resource
+ *
+ * @sa TrayRef
+ * @sa Tray
+ */
+using TrayShared = ResourceShared<Tray>;
+
+/**
+ * Weak handle to a shared tray.
+ *
+ * @cat resource
+ *
+ * @sa TrayShared
+ * @sa TrayRef
+ */
+using TrayWeak = ResourceWeak<Tray>;
+
 // Forward decl
 struct TrayEntryRef;
 
 // Forward decl
 struct TrayEntry;
+
+/**
+ * Handle to a shared trayEntry.
+ *
+ * @cat resource
+ *
+ * @sa TrayEntryRef
+ * @sa TrayEntry
+ */
+using TrayEntryShared = ResourceShared<TrayEntry>;
+
+/**
+ * Weak handle to a shared trayEntry.
+ *
+ * @cat resource
+ *
+ * @sa TrayEntryShared
+ * @sa TrayEntryRef
+ */
+using TrayEntryWeak = ResourceWeak<TrayEntry>;
 
 /**
  * A trayEntry result that will be owned only if assigned to a TrayEntry.
@@ -229,7 +269,18 @@ struct Tray : ResourceUnique<TrayRef>
    * @sa Tray.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this tray into a TrayShared.
+   */
+  TrayShared share();
+
 };
+
+
+inline TrayShared Tray::share()
+{
+  return TrayShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to tray
@@ -702,7 +753,18 @@ struct TrayEntry : ResourceUnique<TrayEntryRef>
    * @sa TrayMenu.InsertEntry
    */
   void Remove() { reset(); }
+  /**
+   * Move this trayEntry into a TrayEntryShared.
+   */
+  TrayEntryShared share();
+
 };
+
+
+inline TrayEntryShared TrayEntry::share()
+{
+  return TrayEntryShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to trayEntry

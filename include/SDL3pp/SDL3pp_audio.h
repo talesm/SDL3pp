@@ -132,11 +132,51 @@ struct AudioDeviceRef;
 // Forward decl
 struct AudioDevice;
 
+/**
+ * Handle to a shared audioDevice.
+ *
+ * @cat resource
+ *
+ * @sa AudioDeviceRef
+ * @sa AudioDevice
+ */
+using AudioDeviceShared = ResourceShared<AudioDevice>;
+
+/**
+ * Weak handle to a shared audioDevice.
+ *
+ * @cat resource
+ *
+ * @sa AudioDeviceShared
+ * @sa AudioDeviceRef
+ */
+using AudioDeviceWeak = ResourceWeak<AudioDevice>;
+
 // Forward decl
 struct AudioStreamRef;
 
 // Forward decl
 struct AudioStream;
+
+/**
+ * Handle to a shared audioStream.
+ *
+ * @cat resource
+ *
+ * @sa AudioStreamRef
+ * @sa AudioStream
+ */
+using AudioStreamShared = ResourceShared<AudioStream>;
+
+/**
+ * Weak handle to a shared audioStream.
+ *
+ * @cat resource
+ *
+ * @sa AudioStreamShared
+ * @sa AudioStreamRef
+ */
+using AudioStreamWeak = ResourceWeak<AudioStream>;
 
 // Forward decl
 struct AudioStreamLock;
@@ -1077,7 +1117,18 @@ struct AudioDevice : ResourceUnique<AudioDeviceRef>
    * @sa AudioDevice.Open
    */
   void Close() { reset(); }
+  /**
+   * Move this audioDevice into a AudioDeviceShared.
+   */
+  AudioDeviceShared share();
+
 };
+
+
+inline AudioDeviceShared AudioDevice::share()
+{
+  return AudioDeviceShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to audioDevice
@@ -2408,7 +2459,18 @@ struct AudioStream : ResourceUnique<AudioStreamRef>
    * @sa AudioStream.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this audioStream into a AudioStreamShared.
+   */
+  AudioStreamShared share();
+
 };
+
+
+inline AudioStreamShared AudioStream::share()
+{
+  return AudioStreamShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to audioStream

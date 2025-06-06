@@ -500,6 +500,14 @@ function generateDef(entry) {
 }
 
 /**
+ * @param {ApiParameters} parameters 
+ */
+function generateCallParameters(parameters) {
+  return parameters?.map(p => typeof p == "string" ? p : p.name)?.join(", ") ?? "";
+}
+
+
+/**
  * @param {ApiEntry} entry 
  * @param {string}   prefix
  */
@@ -523,18 +531,16 @@ function generateBody(entry, prefix) {
     return `\n${prefix}{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
   }
   if (entry.proto) return ";";
-  const selfStr = hint?.self ?? "";
-  const hasSelf = selfStr && entry.type && !entry.static && !entry.hints?.static;
-  const paramStr = (hasSelf ? (selfStr + (entry.parameters?.length ? ", " : "")) : "") + entry.parameters
-    .map(p => typeof p == "string" ? p : p.name)
-    .join(", ");
+  const selfStr = entry.type && !entry.static && !entry.hints?.static && hint?.self;
+  const selfStrPrefix = (selfStr || "") + (entry.parameters?.length ? ", " : "");
+  const paramStr = selfStrPrefix + generateCallParameters(entry.parameters);
   const internalCallStr = `${sourceName}(${paramStr})`;
   const callStr = hint?.mayFail ? `CheckError(${internalCallStr})` : internalCallStr;
   if (!entry.type) {
     const superStr = hint?.super ?? "T";
     return `\n${prefix}  : ${superStr}(${callStr})\n${prefix}{}`;
   }
-  if (hint?.wrapSelf && entry.type == selfStr) {
+  if (hint?.wrapSelf && entry.type == hint?.self) {
     return `\n${prefix}{\n${prefix}  return ${hint.self}(${callStr});\n${prefix}}`;
   }
   const returnStr = entry.type === "void" ? "" : "return ";
@@ -684,3 +690,4 @@ function resetEntryDoc(entry) {
 exports.updateApi = updateApi;
 exports.updateContent = updateContent;
 exports.updateChanges = updateChanges;
+exports.generateCallParameters = generateCallParameters;

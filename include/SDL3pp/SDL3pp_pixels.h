@@ -79,6 +79,26 @@ struct PaletteRef;
 // Forward decl
 struct Palette;
 
+/**
+ * Handle to a shared palette.
+ *
+ * @cat resource
+ *
+ * @sa PaletteRef
+ * @sa Palette
+ */
+using PaletteShared = ResourceShared<Palette>;
+
+/**
+ * Weak handle to a shared palette.
+ *
+ * @cat resource
+ *
+ * @sa PaletteShared
+ * @sa PaletteRef
+ */
+using PaletteWeak = ResourceWeak<Palette>;
+
 #ifdef SDL3PP_DOC
 
 /**
@@ -2032,7 +2052,18 @@ struct Palette : ResourceUnique<PaletteRef>
    * @sa Palette.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this palette into a PaletteShared.
+   */
+  PaletteShared share();
+
 };
+
+
+inline PaletteShared Palette::share()
+{
+  return PaletteShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to palette

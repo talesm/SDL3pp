@@ -102,12 +102,22 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga150010e97d120b9ebadf796038d8c07f" id="r_ga150010e97d120b9ebadf796038d8c07f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga150010e97d120b9ebadf796038d8c07f">SDL::PropertyType</a> = SDL_PropertyType</td></tr>
 <tr class="memdesc:ga150010e97d120b9ebadf796038d8c07f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> property type.  <br /></td></tr>
 <tr class="separator:ga150010e97d120b9ebadf796038d8c07f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2e0a84db384ec2b8f293b9c8a26dc51d" id="r_ga2e0a84db384ec2b8f293b9c8a26dc51d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga2e0a84db384ec2b8f293b9c8a26dc51d">SDL::PropertiesShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Properties.html">Properties</a> &gt;</td></tr>
+<tr class="memdesc:ga2e0a84db384ec2b8f293b9c8a26dc51d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared properties.  <br /></td></tr>
+<tr class="separator:ga2e0a84db384ec2b8f293b9c8a26dc51d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0179f5fed8823e0ce1342b6fcc896ddf" id="r_ga0179f5fed8823e0ce1342b6fcc896ddf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga0179f5fed8823e0ce1342b6fcc896ddf">SDL::PropertiesWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Properties.html">Properties</a> &gt;</td></tr>
+<tr class="memdesc:ga0179f5fed8823e0ce1342b6fcc896ddf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared properties.  <br /></td></tr>
+<tr class="separator:ga0179f5fed8823e0ce1342b6fcc896ddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:gaff19b3a34bf82cdd3bd6e32d47e1481a" id="r_gaff19b3a34bf82cdd3bd6e32d47e1481a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#gaff19b3a34bf82cdd3bd6e32d47e1481a">SDL::GetGlobalProperties</a> ()</td></tr>
 <tr class="memdesc:gaff19b3a34bf82cdd3bd6e32d47e1481a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the global <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> properties.  <br /></td></tr>
 <tr class="separator:gaff19b3a34bf82cdd3bd6e32d47e1481a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae7a4bede2f15f3232e790c1eaa45cb3c" id="r_gae7a4bede2f15f3232e790c1eaa45cb3c"><td class="memItemLeft" align="right" valign="top"><a id="gae7a4bede2f15f3232e790c1eaa45cb3c" name="gae7a4bede2f15f3232e790c1eaa45cb3c"></a>
+<a class="el" href="group__CategoryProperties.html#ga2e0a84db384ec2b8f293b9c8a26dc51d">PropertiesShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Properties::share</b> ()</td></tr>
+<tr class="memdesc:gae7a4bede2f15f3232e790c1eaa45cb3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this properties into a PropertiesShared. <br /></td></tr>
+<tr class="separator:gae7a4bede2f15f3232e790c1eaa45cb3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4ec9e02a6b791b5b42a444fc427b2516" id="r_ga4ec9e02a6b791b5b42a444fc427b2516"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesLock.html">PropertiesLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga4ec9e02a6b791b5b42a444fc427b2516">SDL::PropertiesRef::Lock</a> () &amp;</td></tr>
 <tr class="memdesc:ga4ec9e02a6b791b5b42a444fc427b2516"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock a group of properties.  <br /></td></tr>
 <tr class="separator:ga4ec9e02a6b791b5b42a444fc427b2516"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -271,6 +281,42 @@ result-callback</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesRef.html#a8771dcc6f6e74d649f66a55b08d196d0" title="Enumerate the properties contained in a group of properties.">PropertiesRef.Enumerate</a> </dd>
 <dd>
 <a class="el" href="group__CategoryProperties.html#ga52e1c12fca5ec69ba32453ddc9d34c6c" title="A callback used to enumerate all the properties in a group of properties.">EnumeratePropertiesCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga2e0a84db384ec2b8f293b9c8a26dc51d" name="ga2e0a84db384ec2b8f293b9c8a26dc51d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2e0a84db384ec2b8f293b9c8a26dc51d">&#9670;&#160;</a></span>PropertiesShared</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryProperties.html#ga2e0a84db384ec2b8f293b9c8a26dc51d">SDL::PropertiesShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Properties.html">Properties</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesRef.html" title="SDL properties ID.">PropertiesRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga0179f5fed8823e0ce1342b6fcc896ddf" name="ga0179f5fed8823e0ce1342b6fcc896ddf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0179f5fed8823e0ce1342b6fcc896ddf">&#9670;&#160;</a></span>PropertiesWeak</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryProperties.html#ga0179f5fed8823e0ce1342b6fcc896ddf">SDL::PropertiesWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Properties.html">Properties</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryProperties.html#ga2e0a84db384ec2b8f293b9c8a26dc51d" title="Handle to a shared properties.">PropertiesShared</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1PropertiesRef.html" title="SDL properties ID.">PropertiesRef</a> </dd></dl>
 
 </div>
 </div>

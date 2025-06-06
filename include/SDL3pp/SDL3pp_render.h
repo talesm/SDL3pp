@@ -49,11 +49,51 @@ struct RendererRef;
 // Forward decl
 struct Renderer;
 
+/**
+ * Handle to a shared renderer.
+ *
+ * @cat resource
+ *
+ * @sa RendererRef
+ * @sa Renderer
+ */
+using RendererShared = ResourceShared<Renderer>;
+
+/**
+ * Weak handle to a shared renderer.
+ *
+ * @cat resource
+ *
+ * @sa RendererShared
+ * @sa RendererRef
+ */
+using RendererWeak = ResourceWeak<Renderer>;
+
 // Forward decl
 struct TextureRef;
 
 // Forward decl
 struct Texture;
+
+/**
+ * Handle to a shared texture.
+ *
+ * @cat resource
+ *
+ * @sa TextureRef
+ * @sa Texture
+ */
+using TextureShared = ResourceShared<Texture>;
+
+/**
+ * Weak handle to a shared texture.
+ *
+ * @cat resource
+ *
+ * @sa TextureShared
+ * @sa TextureRef
+ */
+using TextureWeak = ResourceWeak<Texture>;
 
 // Forward decl
 struct TextureLock;
@@ -1912,7 +1952,18 @@ struct Renderer : ResourceUnique<RendererRef>
    * @sa Renderer.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this renderer into a RendererShared.
+   */
+  RendererShared share();
+
 };
+
+
+inline RendererShared Renderer::share()
+{
+  return RendererShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to renderer
@@ -2892,7 +2943,18 @@ struct Texture : ResourceUnique<TextureRef>
    * @sa Texture.CreateFromSurface
    */
   void Destroy() { reset(); }
+  /**
+   * Move this texture into a TextureShared.
+   */
+  TextureShared share();
+
 };
+
+
+inline TextureShared Texture::share()
+{
+  return TextureShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to texture

@@ -44,4 +44,9 @@ TEST_CASE("Int resource")
     SDL::ResourceUnique<IntResource> res{10};
     CHECK(res->get() == 10);
   }
+  SUBCASE("ResourceShared")
+  {
+    SDL::ResourceShared<SDL::ResourceUnique<IntResource>> res{10};
+    CHECK(res->get() == 10);
+  }
 }

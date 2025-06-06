@@ -99,6 +99,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:ga4d25c34d7967080eca01eca816de3847" id="r_ga4d25c34d7967080eca01eca816de3847"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga4d25c34d7967080eca01eca816de3847">SDL::SurfaceShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Surface.html">Surface</a> &gt;</td></tr>
+<tr class="memdesc:ga4d25c34d7967080eca01eca816de3847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared surface.  <br /></td></tr>
+<tr class="separator:ga4d25c34d7967080eca01eca816de3847"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0412158bdb9891faf1da173bb1b2c03c" id="r_ga0412158bdb9891faf1da173bb1b2c03c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga0412158bdb9891faf1da173bb1b2c03c">SDL::SurfaceWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Surface.html">Surface</a> &gt;</td></tr>
+<tr class="memdesc:ga0412158bdb9891faf1da173bb1b2c03c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared surface.  <br /></td></tr>
+<tr class="separator:ga0412158bdb9891faf1da173bb1b2c03c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad69036a1d5b07f56d21deb07fe815fbf" id="r_gad69036a1d5b07f56d21deb07fe815fbf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad69036a1d5b07f56d21deb07fe815fbf">SDL::SurfaceFlags</a> = Uint32</td></tr>
 <tr class="memdesc:gad69036a1d5b07f56d21deb07fe815fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The flags on an <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a>.  <br /></td></tr>
 <tr class="separator:gad69036a1d5b07f56d21deb07fe815fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,6 +132,10 @@ Functions</h2></td></tr>
 <tr class="memitem:gaefae22d0ebf9382d8200ef17fb08aca4" id="r_gaefae22d0ebf9382d8200ef17fb08aca4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaefae22d0ebf9382d8200ef17fb08aca4">SDL::PremultiplyAlpha</a> (int width, int height, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> src_format, const void *src, int src_pitch, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> dst_format, void *dst, int dst_pitch, bool linear)</td></tr>
 <tr class="memdesc:gaefae22d0ebf9382d8200ef17fb08aca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Premultiply the alpha on a block of pixels.  <br /></td></tr>
 <tr class="separator:gaefae22d0ebf9382d8200ef17fb08aca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga97e844c46255caa15bb2ac056a6a2a48" id="r_ga97e844c46255caa15bb2ac056a6a2a48"><td class="memItemLeft" align="right" valign="top"><a id="ga97e844c46255caa15bb2ac056a6a2a48" name="ga97e844c46255caa15bb2ac056a6a2a48"></a>
+<a class="el" href="group__CategorySurface.html#ga4d25c34d7967080eca01eca816de3847">SurfaceShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Surface::share</b> ()</td></tr>
+<tr class="memdesc:ga97e844c46255caa15bb2ac056a6a2a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this surface into a SurfaceShared. <br /></td></tr>
+<tr class="separator:ga97e844c46255caa15bb2ac056a6a2a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3a097a1e56a2337652248afd358f2d7a" id="r_ga3a097a1e56a2337652248afd358f2d7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1SurfaceLock.html">SurfaceLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga3a097a1e56a2337652248afd358f2d7a">SDL::SurfaceRef::Lock</a> () &amp;</td></tr>
 <tr class="memdesc:ga3a097a1e56a2337652248afd358f2d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up a surface for directly accessing the pixels.  <br /></td></tr>
 <tr class="separator:ga3a097a1e56a2337652248afd358f2d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,6 +239,42 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 </div><div class="memdoc">
 <p>These are generally considered read-only.</p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga4d25c34d7967080eca01eca816de3847" name="ga4d25c34d7967080eca01eca816de3847"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4d25c34d7967080eca01eca816de3847">&#9670;&#160;</a></span>SurfaceShared</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategorySurface.html#ga4d25c34d7967080eca01eca816de3847">SDL::SurfaceShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Surface.html">Surface</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga0412158bdb9891faf1da173bb1b2c03c" name="ga0412158bdb9891faf1da173bb1b2c03c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0412158bdb9891faf1da173bb1b2c03c">&#9670;&#160;</a></span>SurfaceWeak</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategorySurface.html#ga0412158bdb9891faf1da173bb1b2c03c">SDL::SurfaceWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Surface.html">Surface</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#ga4d25c34d7967080eca01eca816de3847" title="Handle to a shared surface.">SurfaceShared</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> </dd></dl>
 
 </div>
 </div>

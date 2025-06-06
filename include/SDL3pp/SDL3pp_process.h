@@ -38,6 +38,26 @@ struct ProcessRef;
 struct Process;
 
 /**
+ * Handle to a shared process.
+ *
+ * @cat resource
+ *
+ * @sa ProcessRef
+ * @sa Process
+ */
+using ProcessShared = ResourceShared<Process>;
+
+/**
+ * Weak handle to a shared process.
+ *
+ * @cat resource
+ *
+ * @sa ProcessShared
+ * @sa ProcessRef
+ */
+using ProcessWeak = ResourceWeak<Process>;
+
+/**
  * Description of where standard I/O should be directed when creating a
  * process.
  *
@@ -473,7 +493,18 @@ struct Process : ResourceUnique<ProcessRef>
    * @sa ProcessRef.Kill
    */
   void Destroy() { reset(); }
+  /**
+   * Move this process into a ProcessShared.
+   */
+  ProcessShared share();
+
 };
+
+
+inline ProcessShared Process::share()
+{
+  return ProcessShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to process

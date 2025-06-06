@@ -34,11 +34,51 @@ struct MutexRef;
 // Forward decl
 struct Mutex;
 
+/**
+ * Handle to a shared mutex.
+ *
+ * @cat resource
+ *
+ * @sa MutexRef
+ * @sa Mutex
+ */
+using MutexShared = ResourceShared<Mutex>;
+
+/**
+ * Weak handle to a shared mutex.
+ *
+ * @cat resource
+ *
+ * @sa MutexShared
+ * @sa MutexRef
+ */
+using MutexWeak = ResourceWeak<Mutex>;
+
 // Forward decl
 struct RWLockRef;
 
 // Forward decl
 struct RWLock;
+
+/**
+ * Handle to a shared rWLock.
+ *
+ * @cat resource
+ *
+ * @sa RWLockRef
+ * @sa RWLock
+ */
+using RWLockShared = ResourceShared<RWLock>;
+
+/**
+ * Weak handle to a shared rWLock.
+ *
+ * @cat resource
+ *
+ * @sa RWLockShared
+ * @sa RWLockRef
+ */
+using RWLockWeak = ResourceWeak<RWLock>;
 
 // Forward decl
 struct SemaphoreRef;
@@ -46,11 +86,51 @@ struct SemaphoreRef;
 // Forward decl
 struct Semaphore;
 
+/**
+ * Handle to a shared semaphore.
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreRef
+ * @sa Semaphore
+ */
+using SemaphoreShared = ResourceShared<Semaphore>;
+
+/**
+ * Weak handle to a shared semaphore.
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreShared
+ * @sa SemaphoreRef
+ */
+using SemaphoreWeak = ResourceWeak<Semaphore>;
+
 // Forward decl
 struct ConditionRef;
 
 // Forward decl
 struct Condition;
+
+/**
+ * Handle to a shared condition.
+ *
+ * @cat resource
+ *
+ * @sa ConditionRef
+ * @sa Condition
+ */
+using ConditionShared = ResourceShared<Condition>;
+
+/**
+ * Weak handle to a shared condition.
+ *
+ * @cat resource
+ *
+ * @sa ConditionShared
+ * @sa ConditionRef
+ */
+using ConditionWeak = ResourceWeak<Condition>;
 
 /**
  * A means to serialize access to a resource between threads.
@@ -198,7 +278,18 @@ struct Mutex : ResourceUnique<MutexRef>
    * @sa Mutex.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this mutex into a MutexShared.
+   */
+  MutexShared share();
+
 };
+
+
+inline MutexShared Mutex::share()
+{
+  return MutexShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to mutex
@@ -477,7 +568,18 @@ struct RWLock : ResourceUnique<RWLockRef>
    * @sa RWLock.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this rWLock into a RWLockShared.
+   */
+  RWLockShared share();
+
 };
+
+
+inline RWLockShared RWLock::share()
+{
+  return RWLockShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to rWLock
@@ -668,7 +770,18 @@ struct Semaphore : ResourceUnique<SemaphoreRef>
    * @sa Semaphore.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this semaphore into a SemaphoreShared.
+   */
+  SemaphoreShared share();
+
 };
+
+
+inline SemaphoreShared Semaphore::share()
+{
+  return SemaphoreShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to semaphore
@@ -848,7 +961,18 @@ struct Condition : ResourceUnique<ConditionRef>
    * @sa Condition.Create
    */
   void Destroy() { reset(); }
+  /**
+   * Move this condition into a ConditionShared.
+   */
+  ConditionShared share();
+
 };
+
+
+inline ConditionShared Condition::share()
+{
+  return ConditionShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to condition

@@ -38,6 +38,26 @@ struct SurfaceRef;
 // Forward decl
 struct Surface;
 
+/**
+ * Handle to a shared surface.
+ *
+ * @cat resource
+ *
+ * @sa SurfaceRef
+ * @sa Surface
+ */
+using SurfaceShared = ResourceShared<Surface>;
+
+/**
+ * Weak handle to a shared surface.
+ *
+ * @cat resource
+ *
+ * @sa SurfaceShared
+ * @sa SurfaceRef
+ */
+using SurfaceWeak = ResourceWeak<Surface>;
+
 // Forward decl
 struct SurfaceLock;
 
@@ -1952,7 +1972,18 @@ struct Surface : ResourceUnique<SurfaceRef>
    * @sa Surface.CreateFrom
    */
   void Destroy() { reset(); }
+  /**
+   * Move this surface into a SurfaceShared.
+   */
+  SurfaceShared share();
+
 };
+
+
+inline SurfaceShared Surface::share()
+{
+  return SurfaceShared(std::move(*this));
+}
 
 /**
  * Unsafe Handle to surface
