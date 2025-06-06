@@ -44,9 +44,6 @@ namespace SDL {
  */
 
 // Forward decl
-struct TextureLock;
-
-// Forward decl
 struct RendererRef;
 
 // Forward decl
@@ -57,6 +54,9 @@ struct TextureRef;
 
 // Forward decl
 struct Texture;
+
+// Forward decl
+struct TextureLock;
 
 #ifdef SDL3PP_DOC
 
@@ -2919,52 +2919,57 @@ struct TextureUnsafe : ResourceUnsafe<TextureRef>
 /**
  * Locks a Texture for access to its pixels
  */
-class TextureLock : public SurfaceRef
+class TextureLock : public LockBase<SurfaceRef>
 {
-  TextureRef texture;
-
-  /**
-   * @sa TextureRef.Lock()
-   */
-  explicit TextureLock(TextureRef texture, OptionalRef<const SDL_Rect> rect)
-    : texture(std::move(texture))
-  {
-    SDL_Surface* maybeLock;
-    if (SDL_LockTextureToSurface(this->texture.get(), rect, &maybeLock)) {
-      release(maybeLock);
-    } else {
-      texture.release();
-    }
-  }
-
 public:
-  /// default ctor
+  /**
+   * Creates an empty lock
+   */
   constexpr TextureLock() = default;
 
-  // Copy ctor
-  TextureLock(const TextureLock& other) = delete;
-
-  /// Move ctor
-  TextureLock(TextureLock&& other)
-    : SurfaceRef(other.release())
-    , texture(other.texture.release())
+  /**
+   * Move constructor
+   */
+  constexpr TextureLock(TextureLock&& other)
+    : LockBase(other.release())
   {
   }
 
   /**
-   * destructor
+   * Lock a portion of the texture for **write-only** pixel access.
+   *
+   * As an optimization, the pixels made available for editing don't necessarily
+   * contain the old texture data. This is a write-only operation, and if you
+   * need to keep a copy of the texture data you should do that at the
+   * application level.
+   *
+   * You must use TextureLock.Unlock() to unlock the pixels and apply any
+   * changes.
+   *
+   * @param texture the texture to lock for access, which was created with
+   *                `TEXTUREACCESS_STREAMING`.
+   * @param rect an Rect structure representing the area to lock for access;
+   *             nullptr to lock the entire texture.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TextureLock.Unlock
+   */
+  TextureLock(TextureRef texture, OptionalRef<const SDL_Rect> rect)
+    : LockBase<SurfaceRef>(doLock(texture, rect))
+    , texture(std::move(texture))
+  {
+  }
+
+  /**
+   * Destructor
+   *
    * @sa Unlock()
    */
   ~TextureLock() { Unlock(); }
-
-  /// Assignment operator
-  TextureLock& operator=(TextureLock other)
-  {
-    Unlock();
-    SurfaceRef::release(other.get());
-    std::swap(texture, other.texture);
-    return *this;
-  }
 
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
@@ -2986,25 +2991,25 @@ public:
   void Unlock()
   {
     if (texture) {
-      SurfaceRef::release();
+      release();
       SDL_UnlockTexture(texture.release());
     }
   }
 
   /**
-   * Get the pixels
+   * Same as Unlock(), just for uniformity.
    */
-  void* GetPixels() const { return get()->pixels; }
-
-  /**
-   * Get pitch (the number of bytes between the start of one row the next)
-   */
-  int GetPitch() const { return get()->pitch; }
-
-  /// @sa Unlock()
   void reset() { Unlock(); }
 
-  friend class TextureRef;
+private:
+  TextureRef texture;
+
+  SurfaceRef doLock(TextureRef texture, OptionalRef<const SDL_Rect> rect)
+  {
+    SDL_Surface* surface = nullptr;
+    CheckError(SDL_LockTextureToSurface(texture, rect, &surface));
+    return surface;
+  }
 };
 
 /**
@@ -3326,6 +3331,11 @@ constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
 
 } // namespace prop::Texture
 
+inline TextureLock TextureRef::Lock(OptionalRef<const SDL_Rect> rect) &
+{
+  return TextureLock(get(), rect);
+}
+
 inline void RendererRef::SetTarget(TextureRef texture)
 {
   CheckError(SDL_SetRenderTarget(get(), texture.get()));
@@ -3542,11 +3552,6 @@ inline void AddVulkanRenderSemaphores(RendererRef renderer,
 #pragma region impl
 
 inline void RendererRef::ResetTarget() { return SetTarget(nullptr); }
-
-inline TextureLock TextureRef::Lock(OptionalRef<const SDL_Rect> rect) &
-{
-  return TextureLock{get(), rect};
-}
 
 /**
  * Load a BMP texture from a seekable SDL data stream.

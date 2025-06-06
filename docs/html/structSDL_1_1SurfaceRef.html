@@ -90,8 +90,6 @@ Inheritance diagram for SDL::SurfaceRef:</div>
 <div class="center"><img src="structSDL_1_1SurfaceRef__inherit__graph.png" border="0" usemap="#aSDL_1_1SurfaceRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1SurfaceRef_inherit__map" id="aSDL_1_1SurfaceRef_inherit__map">
 <area shape="rect" title="A collection of pixels used in software blitting." alt="" coords="19,93,146,119"/>
-<area shape="rect" href="classSDL_1_1TextureLock.html" title="Locks a Texture for access to its pixels." alt="" coords="16,167,149,192"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
 </map>
@@ -132,9 +130,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5030bf180d394effdc2ad46615b305ea" id="r_a5030bf180d394effdc2ad46615b305ea"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceRef.html#a5030bf180d394effdc2ad46615b305ea">MustLock</a> () const</td></tr>
 <tr class="memdesc:a5030bf180d394effdc2ad46615b305ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates to true if the surface needs to be locked before access.  <br /></td></tr>
 <tr class="separator:a5030bf180d394effdc2ad46615b305ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a097a1e56a2337652248afd358f2d7a" id="r_a3a097a1e56a2337652248afd358f2d7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1SurfaceLock.html">SurfaceLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceRef.html#a3a097a1e56a2337652248afd358f2d7a">Lock</a> () &amp;</td></tr>
-<tr class="memdesc:a3a097a1e56a2337652248afd358f2d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up a surface for directly accessing the pixels.  <br /></td></tr>
-<tr class="separator:a3a097a1e56a2337652248afd358f2d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3a097a1e56a2337652248afd358f2d7a" id="r_ga3a097a1e56a2337652248afd358f2d7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1SurfaceLock.html">SurfaceLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga3a097a1e56a2337652248afd358f2d7a">Lock</a> () &amp;</td></tr>
+<tr class="memdesc:ga3a097a1e56a2337652248afd358f2d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up a surface for directly accessing the pixels.  <br /></td></tr>
+<tr class="separator:ga3a097a1e56a2337652248afd358f2d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a554717da528ccd104d4be0f9b6544c34" id="r_a554717da528ccd104d4be0f9b6544c34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceRef.html#a554717da528ccd104d4be0f9b6544c34">SetRLE</a> (bool enabled)</td></tr>
 <tr class="memdesc:a554717da528ccd104d4be0f9b6544c34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the RLE acceleration hint for a surface.  <br /></td></tr>
 <tr class="separator:a554717da528ccd104d4be0f9b6544c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2166,45 +2164,6 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 
 </div>
 </div>
-<a id="a3a097a1e56a2337652248afd358f2d7a" name="a3a097a1e56a2337652248afd358f2d7a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a097a1e56a2337652248afd358f2d7a">&#9670;&#160;</a></span>Lock()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classSDL_1_1SurfaceLock.html">SurfaceLock</a> SDL::SurfaceRef::Lock </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> &amp;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Between calls to <a class="el" href="structSDL_1_1SurfaceRef.html#a3a097a1e56a2337652248afd358f2d7a" title="Set up a surface for directly accessing the pixels.">SurfaceRef.Lock()</a> / <a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release a surface after directly accessing the pixels.">SurfaceLock.Unlock()</a>, you can write to and read from <code>surface-&gt;pixels</code>, using the pixel format stored in <code>surface-&gt;format</code>. Once you are done accessing the surface, you should use <a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release a surface after directly accessing the pixels.">SurfaceLock.Unlock()</a> to release it or let the destructor take care of this for you.</p>
-<p>Not all surfaces require locking. If <code>SurfaceRef.MustLock(surface)</code> evaluates to false, then you can read and write to the surface at any time, and the pixel format of the surface will not change.</p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classSDL_1_1SurfaceLock.html" title="Locks a Surface for access to its pixels.">SurfaceLock</a> object on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a5030bf180d394effdc2ad46615b305ea" title="Evaluates to true if the surface needs to be locked before access.">SurfaceRef.MustLock</a> </dd>
-<dd>
-<a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release a surface after directly accessing the pixels.">SurfaceLock.Unlock</a> </dd></dl>
-
-</div>
-</div>
 <a id="a8e52373eccd909bc58357160d05112c7" name="a8e52373eccd909bc58357160d05112c7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8e52373eccd909bc58357160d05112c7">&#9670;&#160;</a></span>MapColor() <span class="overload">[1/3]</span></h2>
 
@@ -3268,9 +3227,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a465363a8684db71e431128f048108102" title="Performs a fast blit from the source surface to the destination surface with clipping.">SurfaceRef.Blit</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceRef.html#a3a097a1e56a2337652248afd358f2d7a" title="Set up a surface for directly accessing the pixels.">SurfaceRef.Lock</a> </dd>
+<a class="el" href="group__CategorySurface.html#ga3a097a1e56a2337652248afd358f2d7a" title="Set up a surface for directly accessing the pixels.">SurfaceRef.Lock</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release a surface after directly accessing the pixels.">SurfaceLock.Unlock</a> </dd></dl>
+<a class="el" href="structSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release a surface after directly accessing the pixels.">SurfaceLock.Unlock</a> </dd></dl>
 
 </div>
 </div>

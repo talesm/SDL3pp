@@ -1,0 +1,7 @@
+<map id="SDL::SurfaceLock" name="SDL::SurfaceLock">
+<area shape="rect" id="Node000001" title="Locks a Surface." alt="" coords="47,167,182,192"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1LockBase.html" title=" " alt="" coords="5,93,224,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,132,117,167,112,167,112,132"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="20,5,209,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="117,59,117,93,112,93,112,59"/>
+</map>

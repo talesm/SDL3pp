@@ -1,7 +1,5 @@
 <map id="SDL::SurfaceRef" name="SDL::SurfaceRef">
 <area shape="rect" id="Node000001" title="A collection of pixels used in software blitting." alt="" coords="19,93,146,119"/>
-<area shape="rect" id="Node000003" href="$classSDL_1_1TextureLock.html" title="Locks a Texture for access to its pixels." alt="" coords="16,167,149,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
 </map>

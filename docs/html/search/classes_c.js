@@ -11,7 +11,7 @@ var searchData=
   ['processref_8',['ProcessRef',['../structSDL_1_1ProcessRef.html',1,'SDL']]],
   ['processunsafe_9',['ProcessUnsafe',['../structSDL_1_1ProcessUnsafe.html',1,'SDL']]],
   ['properties_10',['Properties',['../structSDL_1_1Properties.html',1,'SDL']]],
-  ['propertieslock_11',['PropertiesLock',['../classSDL_1_1PropertiesLock.html',1,'SDL']]],
+  ['propertieslock_11',['PropertiesLock',['../structSDL_1_1PropertiesLock.html',1,'SDL']]],
   ['propertiesref_12',['PropertiesRef',['../structSDL_1_1PropertiesRef.html',1,'SDL']]],
   ['propertiesunsafe_13',['PropertiesUnsafe',['../structSDL_1_1PropertiesUnsafe.html',1,'SDL']]],
   ['ptrdeleter_14',['PtrDeleter',['../structSDL_1_1PtrDeleter.html',1,'SDL']]]

@@ -266,7 +266,7 @@ public:
  * @tparam UNIQUE the *Type*.
  */
 template<class RESOURCE, class UNIQUE>
-struct DetachedResource
+class DetachedResource
   : public ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>
 {
   using base = ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>;

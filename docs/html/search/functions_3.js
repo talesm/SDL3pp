@@ -13,7 +13,7 @@ var searchData=
   ['destroyrenderer_10',['DestroyRenderer',['../structSDL_1_1TextEngineRef.html#aa621069a4fdd93fe83bcde1ac9ef27fb',1,'SDL::TextEngineRef']]],
   ['destroysurface_11',['destroysurface',['../structSDL_1_1TextEngineRef.html#a48f468ac61eba866266cd948d991f62d',1,'SDL::TextEngineRef::DestroySurface()'],['../structSDL_1_1WindowRef.html#ae87b36cea808cbc208ffc32d72228e75',1,'SDL::WindowRef::DestroySurface()']]],
   ['detach_12',['Detach',['../structSDL_1_1Thread.html#aa5572445db86d00a9c939bf0bfed5f85',1,'SDL::Thread']]],
-  ['detachedresource_13',['detachedresource',['../structSDL_1_1DetachedResource.html#a32571f8a2be7777e713ba5c2fff31c0a',1,'SDL::DetachedResource::DetachedResource(DetachedResource &amp;&amp;other)=default'],['../structSDL_1_1DetachedResource.html#ab89dbe18d3feab68effce9620b839f8d',1,'SDL::DetachedResource::DetachedResource(RESOURCE other)']]],
+  ['detachedresource_13',['detachedresource',['../classSDL_1_1DetachedResource.html#a32571f8a2be7777e713ba5c2fff31c0a',1,'SDL::DetachedResource::DetachedResource(DetachedResource &amp;&amp;other)=default'],['../classSDL_1_1DetachedResource.html#ab89dbe18d3feab68effce9620b839f8d',1,'SDL::DetachedResource::DetachedResource(RESOURCE other)']]],
   ['devicepaused_14',['DevicePaused',['../structSDL_1_1AudioStreamRef.html#ae289a9050fee4d60b67b054f814fc694',1,'SDL::AudioStreamRef']]],
   ['disablescreensaver_15',['DisableScreenSaver',['../group__CategoryVideo.html#ga025e38dadcce43143eebb81fbafe20bb',1,'SDL']]],
   ['display_16',['Display',['../classSDL_1_1Display.html#af1e8f5ef744bed565850c79c0b97b67e',1,'SDL::Display']]],

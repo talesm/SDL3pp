@@ -28,6 +28,6 @@ var searchData=
   ['defaultdeleter_3c_20trayentryref_20_3e_25',['DefaultDeleter&lt; TrayEntryRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
   ['defaultdeleter_3c_20trayref_20_3e_26',['DefaultDeleter&lt; TrayRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
   ['defaultdeleter_3c_20windowref_20_3e_27',['DefaultDeleter&lt; WindowRef &gt;',['../structSDL_1_1DefaultDeleter.html',1,'SDL']]],
-  ['detachedresource_28',['DetachedResource',['../structSDL_1_1DetachedResource.html',1,'SDL']]],
+  ['detachedresource_28',['DetachedResource',['../classSDL_1_1DetachedResource.html',1,'SDL']]],
   ['display_29',['Display',['../classSDL_1_1Display.html',1,'SDL']]]
 ];

@@ -811,7 +811,7 @@ public:
  * @tparam UNIQUE the *Type*.
  */
 template<class RESOURCE, class UNIQUE>
-struct DetachedResource
+class DetachedResource
   : public ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>
 {
   using base = ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>;
@@ -847,14 +847,14 @@ public:
  * @see SurfaceLock
  */
 template<class RESOURCE>
-class LockBase
+class LockBase : public ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>
 {
-  RESOURCE m_resource;
+  using base = ResourcePtrBase<RESOURCE, DefaultDeleter<RESOURCE>>;
 
 protected:
   /// Constructs initializing member
   constexpr LockBase(RESOURCE&& resource)
-    : m_resource(std::move(resource))
+    : base(std::move(resource))
   {
   }
 
@@ -866,24 +866,21 @@ public:
 
   /// Move ctor
   LockBase(LockBase&& other)
-    : LockBase(std::move(other.m_resource))
+    : base(std::move(other))
   {
+    other.get() = nullptr;
   }
 
   /// Dtor
-  constexpr ~LockBase() { SDL_assert_paranoid(!m_resource); }
-
-  LockBase& operator=(const LockBase& other) = delete;
+  constexpr ~LockBase() { SDL_assert_paranoid(!*this); }
 
   /// Move assignment
-  LockBase& operator=(LockBase&& other)
+  LockBase& operator=(LockBase other)
   {
-    std::swap(m_resource, other.m_resource);
+    base::operator=(other);
+    other.get() = nullptr;
     return *this;
   }
-
-  /// Release locked resource without unlocking it.
-  RESOURCE release() { return m_resource.release(); }
 };
 
 template<class T, class BASE>
@@ -18992,10 +18989,10 @@ using EnumeratePropertiesCB =
 /// @}
 
 // Forward decl
-struct PropertiesLock;
+struct Properties;
 
 // Forward decl
-struct Properties;
+struct PropertiesLock;
 
 constexpr PropertyType PROPERTY_TYPE_INVALID =
   SDL_PROPERTY_TYPE_INVALID; ///< INVALID
@@ -19597,49 +19594,57 @@ struct PropertiesUnsafe : ResourceUnsafe<PropertiesRef>
 };
 
 /**
- * Wrap the lock state for PropertiesRef
+ * Wrap the lock state for Properties
  *
  */
-class PropertiesLock
+struct PropertiesLock : LockBase<PropertiesRef>
 {
-  PropertiesRef properties;
-
   /**
-   * @sa PropertiesRef.Lock()
+   * Creates an empty lock
    */
-  explicit PropertiesLock(PropertiesRef properties)
-    : properties(properties)
-  {
-  }
-
-public:
-  /// Default ctor
   constexpr PropertiesLock() = default;
 
-  PropertiesLock(const PropertiesLock& other) = delete;
-
-  /// Move ctor
-  PropertiesLock(PropertiesLock&& other)
-    : properties(std::move(other.properties))
+  /**
+   * Move constructor
+   */
+  constexpr PropertiesLock(PropertiesLock&& other)
+    : LockBase(other.release())
   {
   }
 
   /**
+   * Lock a group of properties.
+   *
+   * Obtain a multi-threaded lock for these properties. Other threads will wait
+   * while trying to lock these properties until they are unlocked. Properties
+   * must be unlocked before they are destroyed.
+   *
+   * The lock is automatically taken when setting individual properties, this
+   * function is only needed when you want to set several properties atomically
+   * or want to guarantee that properties being queried aren't freed in another
+   * thread.
+   *
+   * @param props the properties to lock.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesLock.Unlock
+   */
+  PropertiesLock(PropertiesRef props)
+    : LockBase<PropertiesRef>(std::move(props))
+  {
+    CheckError(SDL_LockProperties(get()));
+  }
+
+  /**
+   * Destructor
+   *
    * @sa Unlock()
    */
   ~PropertiesLock() { Unlock(); }
-
-  /// Assignment operator
-  PropertiesLock& operator=(PropertiesLock other)
-  {
-    std::swap(properties, other.properties);
-    return *this;
-  }
-
-  /**
-   * Returns true if lock is active
-   */
-  constexpr operator bool() const { return bool(properties); }
 
   /**
    * Unlock a group of properties.
@@ -19650,9 +19655,12 @@ public:
    *
    * @sa PropertiesRef.Lock
    */
-  void Unlock() { SDL_UnlockProperties(properties.release()); }
+  void Unlock() { SDL_UnlockProperties(release()); }
 
-  friend class PropertiesRef;
+  /**
+   * Same as Unlock(), just for uniformity.
+   */
+  void reset() { Unlock(); }
 };
 
 /**
@@ -33174,13 +33182,13 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  */
 
 // Forward decl
-struct SurfaceLock;
-
-// Forward decl
 struct SurfaceRef;
 
 // Forward decl
 struct Surface;
+
+// Forward decl
+struct SurfaceLock;
 
 /**
  * The flags on an Surface.
@@ -35118,56 +35126,61 @@ struct SurfaceUnsafe : ResourceUnsafe<SurfaceRef>
 };
 
 /**
- * Locks a Surface for access to its pixels
+ * Locks a Surface.
  *
  * Only really necessary if Surface.MustLock() returns t
  */
-class SurfaceLock
+struct SurfaceLock : LockBase<SurfaceRef>
 {
-  SurfaceRef surface;
-
   /**
-   * @sa SurfaceRef.Lock()
+   * Creates an empty lock
    */
-  explicit SurfaceLock(SurfaceRef surface)
-    : surface(std::move(surface))
-  {
-    if (!SDL_LockSurface(this->surface.get())) this->surface.release();
-  }
+  constexpr SurfaceLock() = default;
 
-public:
-  // default ctor
-  SurfaceLock()
-    : surface(nullptr)
-  {
-  }
-
-  /// Copy ctor
-  SurfaceLock(const SurfaceLock& other) = delete;
-
-  /// Move ctor
-  SurfaceLock(SurfaceLock&& other)
-    : surface(other.surface.release())
+  /**
+   * Move constructor
+   */
+  constexpr SurfaceLock(SurfaceLock&& other)
+    : LockBase(other.release())
   {
   }
 
   /**
-   * destructor
+   * Set up a surface for directly accessing the pixels.
+   *
+   * Between calls to SurfaceRef.Lock() / SurfaceLock.Unlock(), you can write to
+   * and read from `surface->pixels`, using the pixel format stored in
+   * `surface->format`. Once you are done accessing the surface, you should use
+   * SurfaceLock.Unlock() to release it.
+   *
+   * Not all surfaces require locking. If `SDL_MUSTLOCK(surface)` evaluates to
+   * 0, then you can read and write to the surface at any time, and the pixel
+   * format of the surface will not change.
+   *
+   * @param surface the Surface structure to be locked.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe. The locking referred to by
+   *               this function is making the pixels available for direct
+   *               access, not thread-safe locking.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_MUSTLOCK
+   * @sa SurfaceLock.Unlock
+   */
+  SurfaceLock(SurfaceRef surface)
+    : LockBase<SurfaceRef>(std::move(surface))
+  {
+    if (!SDL_LockSurface(get())) release();
+  }
+
+  /**
+   * Destructor
+   *
    * @sa Unlock()
    */
   ~SurfaceLock() { Unlock(); }
-
-  /// Assignment operator
-  SurfaceLock& operator=(SurfaceLock other)
-  {
-    std::swap(surface, other.surface);
-    return *this;
-  }
-
-  /**
-   * Returns true if lock is active
-   */
-  constexpr operator bool() const { return bool(surface); }
 
   /**
    * Release a surface after directly accessing the pixels.
@@ -35180,24 +35193,12 @@ public:
    *
    * @sa SurfaceRef.Lock
    */
-  void Unlock() { return SDL_UnlockSurface(surface.release()); }
+  void Unlock() { SDL_UnlockSurface(release()); }
 
   /**
-   * Get the pixels
+   * Same as Unlock(), just for uniformity.
    */
-  void* GetPixels() const { return surface->pixels; }
-
-  /**
-   * Get pitch (the number of bytes between the start of one row the next)
-   */
-  int GetPitch() const { return surface->pitch; }
-
-  /**
-   * Get the pixel format
-   */
-  PixelFormat GetFormat() const { return surface->format; }
-
-  friend class SurfaceRef;
+  void reset() { Unlock(); }
 };
 
 namespace prop::Surface {
@@ -35218,6 +35219,8 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
 #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 
 } // namespace prop::Surface
+
+inline SurfaceLock SurfaceRef::Lock() & { return SurfaceLock{get()}; }
 
 /**
  * Save a surface to a seekable SDL data stream in BMP format.
@@ -35431,12 +35434,6 @@ inline void PremultiplyAlpha(int width,
 }
 
 /// @}
-
-#pragma region impl
-
-inline SurfaceLock SurfaceRef::Lock() & { return SurfaceLock{get()}; }
-
-#pragma endregion impl
 
 /**
  *
@@ -44745,9 +44742,6 @@ inline bool CursorVisible() { return SDL_CursorVisible(); }
  */
 
 // Forward decl
-struct TextureLock;
-
-// Forward decl
 struct RendererRef;
 
 // Forward decl
@@ -44758,6 +44752,9 @@ struct TextureRef;
 
 // Forward decl
 struct Texture;
+
+// Forward decl
+struct TextureLock;
 
 #ifdef SDL3PP_DOC
 
@@ -47620,52 +47617,57 @@ struct TextureUnsafe : ResourceUnsafe<TextureRef>
 /**
  * Locks a Texture for access to its pixels
  */
-class TextureLock : public SurfaceRef
+class TextureLock : public LockBase<SurfaceRef>
 {
-  TextureRef texture;
-
-  /**
-   * @sa TextureRef.Lock()
-   */
-  explicit TextureLock(TextureRef texture, OptionalRef<const SDL_Rect> rect)
-    : texture(std::move(texture))
-  {
-    SDL_Surface* maybeLock;
-    if (SDL_LockTextureToSurface(this->texture.get(), rect, &maybeLock)) {
-      release(maybeLock);
-    } else {
-      texture.release();
-    }
-  }
-
 public:
-  /// default ctor
+  /**
+   * Creates an empty lock
+   */
   constexpr TextureLock() = default;
 
-  // Copy ctor
-  TextureLock(const TextureLock& other) = delete;
-
-  /// Move ctor
-  TextureLock(TextureLock&& other)
-    : SurfaceRef(other.release())
-    , texture(other.texture.release())
+  /**
+   * Move constructor
+   */
+  constexpr TextureLock(TextureLock&& other)
+    : LockBase(other.release())
   {
   }
 
   /**
-   * destructor
+   * Lock a portion of the texture for **write-only** pixel access.
+   *
+   * As an optimization, the pixels made available for editing don't necessarily
+   * contain the old texture data. This is a write-only operation, and if you
+   * need to keep a copy of the texture data you should do that at the
+   * application level.
+   *
+   * You must use TextureLock.Unlock() to unlock the pixels and apply any
+   * changes.
+   *
+   * @param texture the texture to lock for access, which was created with
+   *                `TEXTUREACCESS_STREAMING`.
+   * @param rect an Rect structure representing the area to lock for access;
+   *             nullptr to lock the entire texture.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TextureLock.Unlock
+   */
+  TextureLock(TextureRef texture, OptionalRef<const SDL_Rect> rect)
+    : LockBase<SurfaceRef>(doLock(texture, rect))
+    , texture(std::move(texture))
+  {
+  }
+
+  /**
+   * Destructor
+   *
    * @sa Unlock()
    */
   ~TextureLock() { Unlock(); }
-
-  /// Assignment operator
-  TextureLock& operator=(TextureLock other)
-  {
-    Unlock();
-    SurfaceRef::release(other.get());
-    std::swap(texture, other.texture);
-    return *this;
-  }
 
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
@@ -47687,25 +47689,25 @@ public:
   void Unlock()
   {
     if (texture) {
-      SurfaceRef::release();
+      release();
       SDL_UnlockTexture(texture.release());
     }
   }
 
   /**
-   * Get the pixels
+   * Same as Unlock(), just for uniformity.
    */
-  void* GetPixels() const { return get()->pixels; }
-
-  /**
-   * Get pitch (the number of bytes between the start of one row the next)
-   */
-  int GetPitch() const { return get()->pitch; }
-
-  /// @sa Unlock()
   void reset() { Unlock(); }
 
-  friend class TextureRef;
+private:
+  TextureRef texture;
+
+  SurfaceRef doLock(TextureRef texture, OptionalRef<const SDL_Rect> rect)
+  {
+    SDL_Surface* surface = nullptr;
+    CheckError(SDL_LockTextureToSurface(texture, rect, &surface));
+    return surface;
+  }
 };
 
 /**
@@ -48027,6 +48029,11 @@ constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
 
 } // namespace prop::Texture
 
+inline TextureLock TextureRef::Lock(OptionalRef<const SDL_Rect> rect) &
+{
+  return TextureLock(get(), rect);
+}
+
 inline void RendererRef::SetTarget(TextureRef texture)
 {
   CheckError(SDL_SetRenderTarget(get(), texture.get()));
@@ -48243,11 +48250,6 @@ inline void AddVulkanRenderSemaphores(RendererRef renderer,
 #pragma region impl
 
 inline void RendererRef::ResetTarget() { return SetTarget(nullptr); }
-
-inline TextureLock TextureRef::Lock(OptionalRef<const SDL_Rect> rect) &
-{
-  return TextureLock{get(), rect};
-}
 
 /**
  * Load a BMP texture from a seekable SDL data stream.

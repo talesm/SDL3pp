@@ -16,7 +16,7 @@ var searchData=
   ['printf_13',['printf',['../structSDL_1_1IOStreamRef.html#aa1add38ee45c1bb15910177a5221e29f',1,'SDL::IOStreamRef']]],
   ['println_14',['println',['../structSDL_1_1IOStreamRef.html#a852c75ac064fea3caaff30e1f4341473',1,'SDL::IOStreamRef']]],
   ['processunsafe_15',['ProcessUnsafe',['../structSDL_1_1ProcessUnsafe.html#a726e16cd6fc000aa1160ab9c1aa083aa',1,'SDL::ProcessUnsafe']]],
-  ['propertieslock_16',['propertieslock',['../classSDL_1_1PropertiesLock.html#adacdec5b1374935554b6a70640abb69b',1,'SDL::PropertiesLock::PropertiesLock(PropertiesLock &amp;&amp;other)'],['../classSDL_1_1PropertiesLock.html#a52bd8b36a47a669c13ca60eff04f3825',1,'SDL::PropertiesLock::PropertiesLock()=default']]],
+  ['propertieslock_16',['propertieslock',['../structSDL_1_1PropertiesLock.html#a12677d5c474307bc6498dd55a4ffa8ef',1,'SDL::PropertiesLock::PropertiesLock(PropertiesRef props)'],['../structSDL_1_1PropertiesLock.html#a33784f4bbaa38d68821105f12fa32cba',1,'SDL::PropertiesLock::PropertiesLock(PropertiesLock &amp;&amp;other)'],['../structSDL_1_1PropertiesLock.html#a52bd8b36a47a669c13ca60eff04f3825',1,'SDL::PropertiesLock::PropertiesLock()=default']]],
   ['propertiesunsafe_17',['PropertiesUnsafe',['../structSDL_1_1PropertiesUnsafe.html#afaed4833e72c9e2c8fef91aaf11f15b6',1,'SDL::PropertiesUnsafe']]],
   ['pumpevents_18',['PumpEvents',['../group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09',1,'SDL']]],
   ['pushevent_19',['pushevent',['../group__CategoryEvents.html#gaa592df4d4939fbfb3c89ff6718c7184f',1,'SDL::PushEvent(Event *event)'],['../group__CategoryEvents.html#ga09dbb5157cd6a2c4ee0e3b586df8cdf2',1,'SDL::PushEvent(const Event &amp;event)']]],

@@ -48,13 +48,13 @@ struct Main
      *
      */
     if (SDL::TextureLock surface = texture->Lock()) {
-      surface.Fill(SDL::Color(0, 0, 0));
+      surface->Fill(SDL::Color(0, 0, 0));
       SDL::Rect r{0,
                   int(((float)(textureSz.y * 0.9f)) * ((scale + 1.0f) / 2.0f)),
                   textureSz.x,
                   textureSz.y / 10};
       /* make a strip of the surface green */
-      surface.FillRect(r, SDL::Color{0, 255, 0});
+      surface->FillRect(r, SDL::Color{0, 255, 0});
     }
 
     // as you can see, rendering draws over what was drawn before it.

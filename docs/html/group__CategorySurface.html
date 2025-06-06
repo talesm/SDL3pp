@@ -93,8 +93,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceUnsafe.html">SDL::SurfaceUnsafe</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to surface.  <a href="structSDL_1_1SurfaceUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SurfaceLock.html">SDL::SurfaceLock</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks a <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> for access to its pixels.  <a href="classSDL_1_1SurfaceLock.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceLock.html">SDL::SurfaceLock</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks a <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a>.  <a href="structSDL_1_1SurfaceLock.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -126,6 +126,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaefae22d0ebf9382d8200ef17fb08aca4" id="r_gaefae22d0ebf9382d8200ef17fb08aca4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaefae22d0ebf9382d8200ef17fb08aca4">SDL::PremultiplyAlpha</a> (int width, int height, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> src_format, const void *src, int src_pitch, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> dst_format, void *dst, int dst_pitch, bool linear)</td></tr>
 <tr class="memdesc:gaefae22d0ebf9382d8200ef17fb08aca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Premultiply the alpha on a block of pixels.  <br /></td></tr>
 <tr class="separator:gaefae22d0ebf9382d8200ef17fb08aca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3a097a1e56a2337652248afd358f2d7a" id="r_ga3a097a1e56a2337652248afd358f2d7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1SurfaceLock.html">SurfaceLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga3a097a1e56a2337652248afd358f2d7a">SDL::SurfaceRef::Lock</a> () &amp;</td></tr>
+<tr class="memdesc:ga3a097a1e56a2337652248afd358f2d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up a surface for directly accessing the pixels.  <br /></td></tr>
+<tr class="separator:ga3a097a1e56a2337652248afd358f2d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga612e23a1e94cd1c9b31aa10564ac9606" id="r_ga612e23a1e94cd1c9b31aa10564ac9606"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga612e23a1e94cd1c9b31aa10564ac9606">SDL::SurfaceRef::Duplicate</a> () const</td></tr>
 <tr class="memdesc:ga612e23a1e94cd1c9b31aa10564ac9606"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new surface identical to the existing surface.  <br /></td></tr>
 <tr class="separator:ga612e23a1e94cd1c9b31aa10564ac9606"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -579,6 +582,45 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Surface.html#a183c1bec6d887ec1d1418d21afa118eb" title="Free a surface.">Surface.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga3a097a1e56a2337652248afd358f2d7a" name="ga3a097a1e56a2337652248afd358f2d7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3a097a1e56a2337652248afd358f2d7a">&#9670;&#160;</a></span>Lock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1SurfaceLock.html">SurfaceLock</a> SDL::SurfaceRef::Lock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Between calls to <a class="el" href="group__CategorySurface.html#ga3a097a1e56a2337652248afd358f2d7a" title="Set up a surface for directly accessing the pixels.">SurfaceRef.Lock()</a> / <a class="el" href="structSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release a surface after directly accessing the pixels.">SurfaceLock.Unlock()</a>, you can write to and read from <code>surface-&gt;pixels</code>, using the pixel format stored in <code>surface-&gt;format</code>. Once you are done accessing the surface, you should use <a class="el" href="structSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release a surface after directly accessing the pixels.">SurfaceLock.Unlock()</a> to release it or let the destructor take care of this for you.</p>
+<p>Not all surfaces require locking. If <code>SurfaceRef.MustLock(surface)</code> evaluates to false, then you can read and write to the surface at any time, and the pixel format of the surface will not change.</p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structSDL_1_1SurfaceLock.html" title="Locks a Surface.">SurfaceLock</a> object on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a5030bf180d394effdc2ad46615b305ea" title="Evaluates to true if the surface needs to be locked before access.">SurfaceRef.MustLock</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release a surface after directly accessing the pixels.">SurfaceLock.Unlock</a> </dd></dl>
 
 </div>
 </div>

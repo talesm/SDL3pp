@@ -153,10 +153,10 @@ using EnumeratePropertiesCB =
 /// @}
 
 // Forward decl
-struct PropertiesLock;
+struct Properties;
 
 // Forward decl
-struct Properties;
+struct PropertiesLock;
 
 constexpr PropertyType PROPERTY_TYPE_INVALID =
   SDL_PROPERTY_TYPE_INVALID; ///< INVALID
@@ -758,49 +758,57 @@ struct PropertiesUnsafe : ResourceUnsafe<PropertiesRef>
 };
 
 /**
- * Wrap the lock state for PropertiesRef
+ * Wrap the lock state for Properties
  *
  */
-class PropertiesLock
+struct PropertiesLock : LockBase<PropertiesRef>
 {
-  PropertiesRef properties;
-
   /**
-   * @sa PropertiesRef.Lock()
+   * Creates an empty lock
    */
-  explicit PropertiesLock(PropertiesRef properties)
-    : properties(properties)
-  {
-  }
-
-public:
-  /// Default ctor
   constexpr PropertiesLock() = default;
 
-  PropertiesLock(const PropertiesLock& other) = delete;
-
-  /// Move ctor
-  PropertiesLock(PropertiesLock&& other)
-    : properties(std::move(other.properties))
+  /**
+   * Move constructor
+   */
+  constexpr PropertiesLock(PropertiesLock&& other)
+    : LockBase(other.release())
   {
   }
 
   /**
+   * Lock a group of properties.
+   *
+   * Obtain a multi-threaded lock for these properties. Other threads will wait
+   * while trying to lock these properties until they are unlocked. Properties
+   * must be unlocked before they are destroyed.
+   *
+   * The lock is automatically taken when setting individual properties, this
+   * function is only needed when you want to set several properties atomically
+   * or want to guarantee that properties being queried aren't freed in another
+   * thread.
+   *
+   * @param props the properties to lock.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesLock.Unlock
+   */
+  PropertiesLock(PropertiesRef props)
+    : LockBase<PropertiesRef>(std::move(props))
+  {
+    CheckError(SDL_LockProperties(get()));
+  }
+
+  /**
+   * Destructor
+   *
    * @sa Unlock()
    */
   ~PropertiesLock() { Unlock(); }
-
-  /// Assignment operator
-  PropertiesLock& operator=(PropertiesLock other)
-  {
-    std::swap(properties, other.properties);
-    return *this;
-  }
-
-  /**
-   * Returns true if lock is active
-   */
-  constexpr operator bool() const { return bool(properties); }
 
   /**
    * Unlock a group of properties.
@@ -811,9 +819,12 @@ public:
    *
    * @sa PropertiesRef.Lock
    */
-  void Unlock() { SDL_UnlockProperties(properties.release()); }
+  void Unlock() { SDL_UnlockProperties(release()); }
 
-  friend class PropertiesRef;
+  /**
+   * Same as Unlock(), just for uniformity.
+   */
+  void reset() { Unlock(); }
 };
 
 /**

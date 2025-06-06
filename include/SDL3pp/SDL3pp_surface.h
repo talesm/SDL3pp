@@ -33,13 +33,13 @@ namespace SDL {
  */
 
 // Forward decl
-struct SurfaceLock;
-
-// Forward decl
 struct SurfaceRef;
 
 // Forward decl
 struct Surface;
+
+// Forward decl
+struct SurfaceLock;
 
 /**
  * The flags on an Surface.
@@ -1977,56 +1977,61 @@ struct SurfaceUnsafe : ResourceUnsafe<SurfaceRef>
 };
 
 /**
- * Locks a Surface for access to its pixels
+ * Locks a Surface.
  *
  * Only really necessary if Surface.MustLock() returns t
  */
-class SurfaceLock
+struct SurfaceLock : LockBase<SurfaceRef>
 {
-  SurfaceRef surface;
-
   /**
-   * @sa SurfaceRef.Lock()
+   * Creates an empty lock
    */
-  explicit SurfaceLock(SurfaceRef surface)
-    : surface(std::move(surface))
-  {
-    if (!SDL_LockSurface(this->surface.get())) this->surface.release();
-  }
+  constexpr SurfaceLock() = default;
 
-public:
-  // default ctor
-  SurfaceLock()
-    : surface(nullptr)
-  {
-  }
-
-  /// Copy ctor
-  SurfaceLock(const SurfaceLock& other) = delete;
-
-  /// Move ctor
-  SurfaceLock(SurfaceLock&& other)
-    : surface(other.surface.release())
+  /**
+   * Move constructor
+   */
+  constexpr SurfaceLock(SurfaceLock&& other)
+    : LockBase(other.release())
   {
   }
 
   /**
-   * destructor
+   * Set up a surface for directly accessing the pixels.
+   *
+   * Between calls to SurfaceRef.Lock() / SurfaceLock.Unlock(), you can write to
+   * and read from `surface->pixels`, using the pixel format stored in
+   * `surface->format`. Once you are done accessing the surface, you should use
+   * SurfaceLock.Unlock() to release it.
+   *
+   * Not all surfaces require locking. If `SDL_MUSTLOCK(surface)` evaluates to
+   * 0, then you can read and write to the surface at any time, and the pixel
+   * format of the surface will not change.
+   *
+   * @param surface the Surface structure to be locked.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe. The locking referred to by
+   *               this function is making the pixels available for direct
+   *               access, not thread-safe locking.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_MUSTLOCK
+   * @sa SurfaceLock.Unlock
+   */
+  SurfaceLock(SurfaceRef surface)
+    : LockBase<SurfaceRef>(std::move(surface))
+  {
+    if (!SDL_LockSurface(get())) release();
+  }
+
+  /**
+   * Destructor
+   *
    * @sa Unlock()
    */
   ~SurfaceLock() { Unlock(); }
-
-  /// Assignment operator
-  SurfaceLock& operator=(SurfaceLock other)
-  {
-    std::swap(surface, other.surface);
-    return *this;
-  }
-
-  /**
-   * Returns true if lock is active
-   */
-  constexpr operator bool() const { return bool(surface); }
 
   /**
    * Release a surface after directly accessing the pixels.
@@ -2039,24 +2044,12 @@ public:
    *
    * @sa SurfaceRef.Lock
    */
-  void Unlock() { return SDL_UnlockSurface(surface.release()); }
+  void Unlock() { SDL_UnlockSurface(release()); }
 
   /**
-   * Get the pixels
+   * Same as Unlock(), just for uniformity.
    */
-  void* GetPixels() const { return surface->pixels; }
-
-  /**
-   * Get pitch (the number of bytes between the start of one row the next)
-   */
-  int GetPitch() const { return surface->pitch; }
-
-  /**
-   * Get the pixel format
-   */
-  PixelFormat GetFormat() const { return surface->format; }
-
-  friend class SurfaceRef;
+  void reset() { Unlock(); }
 };
 
 namespace prop::Surface {
@@ -2077,6 +2070,8 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
 #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 
 } // namespace prop::Surface
+
+inline SurfaceLock SurfaceRef::Lock() & { return SurfaceLock{get()}; }
 
 /**
  * Save a surface to a seekable SDL data stream in BMP format.
@@ -2290,12 +2285,6 @@ inline void PremultiplyAlpha(int width,
 }
 
 /// @}
-
-#pragma region impl
-
-inline SurfaceLock SurfaceRef::Lock() & { return SurfaceLock{get()}; }
-
-#pragma endregion impl
 
 } // namespace SDL
 

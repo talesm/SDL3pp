@@ -2738,14 +2738,14 @@
           "type": "std::function<void(PropertiesRef props, const char *name)>",
           "doc": "A callback used to enumerate all the properties in a group of properties.\n\nThis callback is called from PropertiesRef.Enumerate(), and is called once\nper property in the set.\n\n@param userdata an app-defined pointer passed to the callback.\n@param props the Properties that is being enumerated.\n@param name the next property name in the enumeration.\n\n@threadsafety PropertiesRef.Enumerate holds a lock on `props` during this\n              callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa PropertiesRef.Enumerate\n@sa EnumeratePropertiesCallback"
         },
-        "PropertiesLock-forward": {
-          "name": "PropertiesLock",
-          "kind": "forward",
-          "doc": ""
-        },
         "Properties-forward": {
           "name": "Properties",
           "kind": "forward",
+          "doc": ""
+        },
+        "PropertiesLock-forward": {
+          "kind": "forward",
+          "name": "PropertiesLock",
           "doc": ""
         },
         "PROPERTY_TYPE_INVALID": {
@@ -3283,99 +3283,96 @@
           }
         },
         "PropertiesLock": {
-          "name": "PropertiesLock",
           "kind": "struct",
+          "name": "PropertiesLock",
+          "type": "LockBase<PropertiesRef>",
+          "doc": "Locks a Properties.",
+          "hints": {
+            "super": "LockBase<PropertiesRef>"
+          },
           "entries": {
-            "properties": {
-              "kind": "var",
-              "type": "PropertiesRef",
-              "name": "properties",
-              "doc": ""
-            },
             "PropertiesLock": [
               {
-                "doc": "@sa PropertiesRef.Lock()",
                 "kind": "function",
                 "type": "",
-                "explicit": true,
-                "parameters": [
-                  {
-                    "name": "properties",
-                    "type": "PropertiesRef"
-                  }
-                ],
+                "constexpr": true,
+                "proto": true,
+                "parameters": [],
+                "doc": "Creates an empty lock",
+                "hints": {
+                  "default": true
+                },
                 "name": "PropertiesLock"
               },
               {
                 "kind": "function",
                 "type": "",
-                "parameters": [],
-                "name": "PropertiesLock",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "const PropertiesLock &",
-                    "name": "other"
-                  }
-                ],
-                "name": "PropertiesLock",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "PropertiesLock &&",
                     "name": "other"
                   }
                 ],
+                "doc": "Move constructor",
+                "hints": {
+                  "init": [
+                    "LockBase(other.release())"
+                  ]
+                },
+                "name": "PropertiesLock"
+              },
+              {
+                "doc": "Lock a group of properties.\n\nObtain a multi-threaded lock for these properties. Other threads will wait\nwhile trying to lock these properties until they are unlocked. Properties\nmust be unlocked before they are destroyed.\n\nThe lock is automatically taken when setting individual properties, this\nfunction is only needed when you want to set several properties atomically\nor want to guarantee that properties being queried aren't freed in another\nthread.\n\n@param props the properties to lock.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PropertiesLock.Unlock",
                 "name": "PropertiesLock",
-                "doc": ""
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "props",
+                    "type": "PropertiesRef"
+                  }
+                ],
+                "sourceName": "SDL_LockProperties",
+                "hints": {
+                  "mayFail": true
+                }
               }
             ],
             "~PropertiesLock": {
               "kind": "function",
-              "doc": "@sa Unlock()",
               "type": "",
               "parameters": [],
+              "doc": "Destructor\n\n@sa Unlock()",
+              "hints": {
+                "body": "Unlock();"
+              },
               "name": "~PropertiesLock"
             },
-            "operator=": {
-              "kind": "function",
-              "type": "PropertiesLock &",
-              "parameters": [
-                {
-                  "type": "PropertiesLock",
-                  "name": "other"
-                }
-              ],
-              "name": "operator=",
-              "doc": ""
-            },
-            "operator bool": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [],
-              "name": "operator bool",
-              "doc": ""
-            },
             "Unlock": {
-              "doc": "Unlock a group of properties.\n\n@param props the properties to unlock.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PropertiesRef.Lock",
+              "doc": "Unlock a group of properties.\n\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PropertiesRef.Lock",
               "name": "Unlock",
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "sourceName": "SDL_UnlockProperties"
+              "sourceName": "SDL_UnlockProperties",
+              "static": false,
+              "hints": {
+                "body": "CheckError(SDL_UnlockProperties(release()));",
+                "removeParamThis": true
+              }
+            },
+            "reset": {
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "doc": "Same as Unlock(), just for uniformity.",
+              "hints": {
+                "body": "Unlock();"
+              },
+              "name": "reset"
             }
-          },
-          "doc": ""
+          }
         },
         "GetGlobalProperties": {
           "doc": "Get the global SDL properties.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
@@ -8392,11 +8389,6 @@
       "name": "SDL3pp_render.h",
       "doc": "@defgroup CategoryRender Category Render\n\nHeader file for SDL 2D rendering functions.\n\nThis API supports the following features:\n\n- single pixel points\n- single pixel lines\n- filled rectangles\n- texture images\n- 2D polygons\n\nThe primitives may be drawn in opaque, blended, or additive modes.\n\nThe texture images may be drawn in opaque, blended, or additive modes. They\ncan have an additional color tint or alpha modulation applied to them, and\nmay also be stretched with linear interpolation.\n\nThis API is designed to accelerate simple 2D operations. You may want more\nfunctionality such as polygons and particle effects and in that case you\nshould use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the\nmany good 3D engines.\n\nThese functions must be called from the main thread. See this bug for\ndetails: https://github.com/libsdl-org/SDL/issues/986",
       "entries": {
-        "TextureLock-forward": {
-          "name": "TextureLock",
-          "kind": "forward",
-          "doc": ""
-        },
         "RendererRef-forward": {
           "name": "RendererRef",
           "kind": "forward",
@@ -8415,6 +8407,11 @@
         "Texture-forward": {
           "name": "Texture",
           "kind": "forward",
+          "doc": ""
+        },
+        "TextureLock-forward": {
+          "kind": "forward",
+          "name": "TextureLock",
           "doc": ""
         },
         "SDL_SOFTWARE_RENDERER": {
@@ -10236,7 +10233,8 @@
                 "mayFail": true
               },
               "static": false,
-              "reference": 1
+              "reference": 1,
+              "proto": true
             },
             "GetWidth": {
               "kind": "function",
@@ -10512,19 +10510,44 @@
         "TextureLock": {
           "name": "TextureLock",
           "kind": "struct",
+          "type": "LockBase<SurfaceRef>",
           "entries": {
-            "texture": {
-              "kind": "var",
-              "type": "TextureRef",
-              "name": "texture",
-              "doc": ""
-            },
             "TextureLock": [
               {
-                "doc": "@sa TextureRef.Lock()",
                 "kind": "function",
                 "type": "",
-                "explicit": true,
+                "constexpr": true,
+                "proto": true,
+                "parameters": [],
+                "doc": "Creates an empty lock",
+                "hints": {
+                  "default": true
+                },
+                "name": "TextureLock"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "TextureLock &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor",
+                "hints": {
+                  "init": [
+                    "LockBase(other.release())"
+                  ]
+                },
+                "name": "TextureLock"
+              },
+              {
+                "doc": "Lock a portion of the texture for **write-only** pixel access.\n\nAs an optimization, the pixels made available for editing don't necessarily\ncontain the old texture data. This is a write-only operation, and if you\nneed to keep a copy of the texture data you should do that at the\napplication level.\n\nYou must use TextureLock.Unlock() to unlock the pixels and apply any\nchanges.\n\n@param texture the texture to lock for access, which was created with\n               `TEXTUREACCESS_STREAMING`.\n@param rect an Rect structure representing the area to lock for access;\n            nullptr to lock the entire texture.\n@param pixels this is filled in with a pointer to the locked pixels,\n              appropriately offset by the locked area.\n@param pitch this is filled in with the pitch of the locked pixels; the\n             pitch is the length of one row in bytes.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LockTextureToSurface\n@sa TextureLock.Unlock",
+                "name": "TextureLock",
+                "kind": "function",
+                "type": "",
                 "parameters": [
                   {
                     "name": "texture",
@@ -10535,89 +10558,58 @@
                     "type": "OptionalRef<const SDL_Rect>"
                   }
                 ],
-                "name": "TextureLock"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "parameters": [],
+                "sourceName": "SDL_LockTexture",
                 "hints": {
-                  "default": true
+                  "mayFail": true
                 },
-                "name": "TextureLock",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "const TextureLock &",
-                    "name": "other"
-                  }
-                ],
-                "name": "TextureLock",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "TextureLock &&",
-                    "name": "other"
-                  }
-                ],
-                "name": "TextureLock",
-                "doc": ""
+                "proto": false
               }
             ],
             "~TextureLock": {
               "kind": "function",
-              "doc": "@sa Unlock()",
               "type": "",
               "parameters": [],
+              "doc": "Destructor\n\n@sa Unlock()",
+              "hints": {
+                "body": "Unlock();"
+              },
               "name": "~TextureLock"
             },
-            "operator=": {
-              "kind": "function",
-              "type": "TextureLock &",
-              "parameters": [
-                {
-                  "type": "TextureLock",
-                  "name": "other"
-                }
-              ],
-              "name": "operator=",
-              "doc": ""
-            },
             "Unlock": {
-              "doc": "Unlock a texture, uploading the changes to video memory, if needed.\n\n**Warning**: Please note that TextureRef.Lock() is intended to be\nwrite-only; it will not guarantee the previous contents of the texture will\nbe provided. You must fully initialize any area of a texture that you lock\nbefore unlocking it, as the pixels might otherwise be uninitialized memory.\n\nWhich is to say: locking and immediately unlocking a texture can result in\ncorrupted textures, depending on the renderer in use.\n\n@param texture a texture locked by TextureRef.Lock().\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TextureRef.Lock",
+              "doc": "Unlock a texture, uploading the changes to video memory, if needed.\n\n**Warning**: Please note that TextureRef.Lock() is intended to be\nwrite-only; it will not guarantee the previous contents of the texture will\nbe provided. You must fully initialize any area of a texture that you lock\nbefore unlocking it, as the pixels might otherwise be uninitialized memory.\n\nWhich is to say: locking and immediately unlocking a texture can result in\ncorrupted textures, depending on the renderer in use.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TextureRef.Lock",
               "name": "Unlock",
               "kind": "function",
               "type": "void",
               "parameters": [],
               "sourceName": "SDL_UnlockTexture",
-              "static": false
+              "static": false,
+              "hints": {
+                "body": "CheckError(SDL_UnlockTexture(release()));",
+                "removeParamThis": true
+              }
             },
-            "GetPixels": {
+            "reset": {
               "kind": "function",
-              "type": "void *",
-              "immutable": true,
+              "type": "void",
               "parameters": [],
-              "name": "GetPixels",
-              "doc": ""
+              "doc": "Same as Unlock(), just for uniformity.",
+              "hints": {
+                "body": "Unlock();"
+              },
+              "name": "reset"
             },
-            "GetPitch": {
-              "kind": "function",
-              "type": "int",
-              "immutable": true,
-              "parameters": [],
-              "name": "GetPitch",
+            "texture": {
+              "kind": "var",
+              "type": "TextureRef",
+              "name": "texture",
               "doc": ""
             }
           },
-          "doc": ""
+          "hints": {
+            "super": "LockBase<SurfaceRef>",
+            "private": true
+          },
+          "doc": "Locks a Texture."
         },
         "GetNumRenderDrivers": {
           "doc": "Get the number of 2D rendering drivers available for the current display.\n\nA render driver is a set of code that handles rendering and texture\nmanagement on a particular display. Normally there is only one, but some\ndrivers may have several available with different capabilities.\n\nThere may be none if SDL was compiled without render support.\n\n@returns the number of built in render drivers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Create\n@sa GetRenderDriver",
@@ -11448,6 +11440,24 @@
             }
           },
           "doc": ""
+        },
+        "TextureRef::Lock": {
+          "name": "TextureRef::Lock",
+          "kind": "function",
+          "type": "TextureLock",
+          "parameters": [
+            {
+              "name": "rect",
+              "type": "OptionalRef<const SDL_Rect>"
+            }
+          ],
+          "sourceName": "SDL_LockTexture",
+          "hints": {
+            "self": "get()",
+            "super": "Resource",
+            "mayFail": true
+          },
+          "reference": 1
         },
         "RendererRef::SetTarget": {
           "name": "RendererRef::SetTarget",
@@ -16569,11 +16579,6 @@
       "name": "SDL3pp_surface.h",
       "doc": "@defgroup CategorySurface Category Surface\n\nSDL surfaces are buffers of pixels in system RAM. These are useful for\npassing around and manipulating images that are not stored in GPU memory.\n\nSurface makes serious efforts to manage images in various formats, and\nprovides a reasonable toolbox for transforming the data, including copying\nbetween surfaces, filling rectangles in the image data, etc.\n\nThere is also a simple .bmp loader, Surface.LoadBMP(). SDL itself does not\nprovide loaders for various other file formats, but there are several\nexcellent external libraries that do, including its own satellite library,\nSDL_image:\n\nhttps://github.com/libsdl-org/SDL_image",
       "entries": {
-        "SurfaceLock-forward": {
-          "name": "SurfaceLock",
-          "kind": "forward",
-          "doc": ""
-        },
         "SurfaceRef-forward": {
           "name": "SurfaceRef",
           "kind": "forward",
@@ -16582,6 +16587,11 @@
         "Surface-forward": {
           "name": "Surface",
           "kind": "forward",
+          "doc": ""
+        },
+        "SurfaceLock-forward": {
+          "kind": "forward",
+          "name": "SurfaceLock",
           "doc": ""
         },
         "SurfaceFlags": {
@@ -16837,7 +16847,8 @@
               "hints": {
                 "mayFail": true
               },
-              "reference": 1
+              "reference": 1,
+              "proto": true
             },
             "SetRLE": {
               "doc": "Set the RLE acceleration hint for a surface.\n\nIf RLE is enabled, color key and alpha blending blits are much faster, but\nthe surface must be locked before directly accessing the pixels.\n\n@param enabled true to enable RLE acceleration, false to disable it.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceRef.Blit\n@sa SurfaceRef.Lock\n@sa SurfaceLock.Unlock",
@@ -18103,123 +18114,96 @@
           }
         },
         "SurfaceLock": {
-          "name": "SurfaceLock",
           "kind": "struct",
+          "name": "SurfaceLock",
+          "type": "LockBase<SurfaceRef>",
+          "doc": "Locks a Surface.",
+          "hints": {
+            "super": "LockBase<SurfaceRef>"
+          },
           "entries": {
-            "surface": {
-              "kind": "var",
-              "type": "SurfaceRef",
-              "name": "surface",
-              "doc": ""
-            },
             "SurfaceLock": [
               {
-                "doc": "@sa SurfaceRef.Lock()",
                 "kind": "function",
                 "type": "",
-                "explicit": true,
-                "parameters": [
-                  {
-                    "name": "surface",
-                    "type": "SurfaceRef"
-                  }
-                ],
+                "constexpr": true,
+                "proto": true,
+                "parameters": [],
+                "doc": "Creates an empty lock",
+                "hints": {
+                  "default": true
+                },
                 "name": "SurfaceLock"
               },
               {
                 "kind": "function",
                 "type": "",
-                "parameters": [],
-                "name": "SurfaceLock",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "const SurfaceLock &",
-                    "name": "other"
-                  }
-                ],
-                "name": "SurfaceLock",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "SurfaceLock &&",
                     "name": "other"
                   }
                 ],
+                "doc": "Move constructor",
+                "hints": {
+                  "init": [
+                    "LockBase(other.release())"
+                  ]
+                },
+                "name": "SurfaceLock"
+              },
+              {
+                "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to SurfaceRef.Lock() / SurfaceLock.Unlock(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSurfaceLock.Unlock() to release it.\n\nNot all surfaces require locking. If `SDL_MUSTLOCK(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@param surface the Surface structure to be locked.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_MUSTLOCK\n@sa SurfaceLock.Unlock",
                 "name": "SurfaceLock",
-                "doc": ""
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "surface",
+                    "type": "SurfaceRef"
+                  }
+                ],
+                "sourceName": "SDL_LockSurface",
+                "hints": {
+                  "mayFail": true
+                }
               }
             ],
             "~SurfaceLock": {
               "kind": "function",
-              "doc": "@sa Unlock()",
               "type": "",
               "parameters": [],
+              "doc": "Destructor\n\n@sa Unlock()",
+              "hints": {
+                "body": "Unlock();"
+              },
               "name": "~SurfaceLock"
             },
-            "operator=": {
-              "kind": "function",
-              "type": "SurfaceLock &",
-              "parameters": [
-                {
-                  "type": "SurfaceLock",
-                  "name": "other"
-                }
-              ],
-              "name": "operator=",
-              "doc": ""
-            },
-            "operator bool": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [],
-              "name": "operator bool",
-              "doc": ""
-            },
             "Unlock": {
-              "doc": "Release a surface after directly accessing the pixels.\n\n@param surface the Surface structure to be unlocked.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceRef.Lock",
+              "doc": "Release a surface after directly accessing the pixels.\n\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceRef.Lock",
               "name": "Unlock",
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "sourceName": "SDL_UnlockSurface"
+              "sourceName": "SDL_UnlockSurface",
+              "static": false,
+              "hints": {
+                "body": "CheckError(SDL_UnlockSurface(release()));",
+                "removeParamThis": true
+              }
             },
-            "GetPixels": {
+            "reset": {
               "kind": "function",
-              "type": "void *",
-              "immutable": true,
+              "type": "void",
               "parameters": [],
-              "name": "GetPixels",
-              "doc": ""
-            },
-            "GetPitch": {
-              "kind": "function",
-              "type": "int",
-              "immutable": true,
-              "parameters": [],
-              "name": "GetPitch",
-              "doc": ""
-            },
-            "GetFormat": {
-              "kind": "function",
-              "type": "PixelFormat",
-              "immutable": true,
-              "parameters": [],
-              "name": "GetFormat",
-              "doc": ""
+              "doc": "Same as Unlock(), just for uniformity.",
+              "hints": {
+                "body": "Unlock();"
+              },
+              "name": "reset"
             }
-          },
-          "doc": ""
+          }
         },
         "prop::Surface": {
           "kind": "ns",
@@ -18272,6 +18256,19 @@
             }
           },
           "doc": ""
+        },
+        "SurfaceRef::Lock": {
+          "name": "SurfaceRef::Lock",
+          "kind": "function",
+          "type": "SurfaceLock",
+          "parameters": [],
+          "sourceName": "SDL_LockSurface",
+          "hints": {
+            "self": "get()",
+            "super": "Resource",
+            "mayFail": true
+          },
+          "reference": 1
         },
         "SaveBMP": [
           {
@@ -20145,7 +20142,7 @@
                     "name": "other"
                   }
                 ],
-                "doc": "Move ctor",
+                "doc": "Move constructor",
                 "hints": {
                   "init": [
                     "LockBase(other.release())"
@@ -20174,7 +20171,7 @@
               "kind": "function",
               "type": "",
               "parameters": [],
-              "doc": "Destructor",
+              "doc": "Destructor\n\n@sa Unlock()",
               "hints": {
                 "body": "Unlock();"
               },
@@ -20189,7 +20186,7 @@
               "sourceName": "SDL_UnlockAudioStream",
               "hints": {
                 "mayFail": true,
-                "body": "CheckError(SDL_UnlockAudioStream(release().get()));",
+                "body": "CheckError(SDL_UnlockAudioStream(release()));",
                 "removeParamThis": true
               },
               "static": false

@@ -17,7 +17,7 @@ var searchData=
   ['stringresult_14',['StringResult',['../structSDL_1_1StringResult.html',1,'SDL']]],
   ['substringiterator_15',['SubStringIterator',['../classSDL_1_1SubStringIterator.html',1,'SDL']]],
   ['surface_16',['Surface',['../structSDL_1_1Surface.html',1,'SDL']]],
-  ['surfacelock_17',['SurfaceLock',['../classSDL_1_1SurfaceLock.html',1,'SDL']]],
+  ['surfacelock_17',['SurfaceLock',['../structSDL_1_1SurfaceLock.html',1,'SDL']]],
   ['surfaceref_18',['SurfaceRef',['../structSDL_1_1SurfaceRef.html',1,'SDL']]],
   ['surfaceunsafe_19',['SurfaceUnsafe',['../structSDL_1_1SurfaceUnsafe.html',1,'SDL']]]
 ];

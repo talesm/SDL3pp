@@ -93,8 +93,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesUnsafe.html">SDL::PropertiesUnsafe</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to properties.  <a href="structSDL_1_1PropertiesUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PropertiesLock.html">SDL::PropertiesLock</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the lock state for <a class="el" href="structSDL_1_1PropertiesRef.html" title="SDL properties ID.">PropertiesRef</a>.  <a href="classSDL_1_1PropertiesLock.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesLock.html">SDL::PropertiesLock</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the lock state for <a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a>.  <a href="structSDL_1_1PropertiesLock.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -108,7 +108,7 @@ Functions</h2></td></tr>
 <tr class="memitem:gaff19b3a34bf82cdd3bd6e32d47e1481a" id="r_gaff19b3a34bf82cdd3bd6e32d47e1481a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#gaff19b3a34bf82cdd3bd6e32d47e1481a">SDL::GetGlobalProperties</a> ()</td></tr>
 <tr class="memdesc:gaff19b3a34bf82cdd3bd6e32d47e1481a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the global <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> properties.  <br /></td></tr>
 <tr class="separator:gaff19b3a34bf82cdd3bd6e32d47e1481a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4ec9e02a6b791b5b42a444fc427b2516" id="r_ga4ec9e02a6b791b5b42a444fc427b2516"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1PropertiesLock.html">PropertiesLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga4ec9e02a6b791b5b42a444fc427b2516">SDL::PropertiesRef::Lock</a> () &amp;</td></tr>
+<tr class="memitem:ga4ec9e02a6b791b5b42a444fc427b2516" id="r_ga4ec9e02a6b791b5b42a444fc427b2516"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesLock.html">PropertiesLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga4ec9e02a6b791b5b42a444fc427b2516">SDL::PropertiesRef::Lock</a> () &amp;</td></tr>
 <tr class="memdesc:ga4ec9e02a6b791b5b42a444fc427b2516"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock a group of properties.  <br /></td></tr>
 <tr class="separator:ga4ec9e02a6b791b5b42a444fc427b2516"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -333,7 +333,7 @@ result-callback</dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSDL_1_1PropertiesLock.html">PropertiesLock</a> SDL::PropertiesRef::Lock </td>
+          <td class="memname"><a class="el" href="structSDL_1_1PropertiesLock.html">PropertiesLock</a> SDL::PropertiesRef::Lock </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> &amp;</td>
@@ -347,7 +347,7 @@ result-callback</dd></dl>
 </div><div class="memdoc">
 <p>Obtain a multi-threaded lock for these properties. Other threads will wait while trying to lock these properties until they are unlocked. <a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> must be unlocked before they are destroyed.</p>
 <p>The lock is automatically taken when setting individual properties, this function is only needed when you want to set several properties atomically or want to guarantee that properties being queried aren't freed in another thread.</p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classSDL_1_1PropertiesLock.html" title="Wrap the lock state for PropertiesRef.">PropertiesLock</a> on success. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structSDL_1_1PropertiesLock.html" title="Wrap the lock state for Properties.">PropertiesLock</a> on success. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
@@ -356,7 +356,7 @@ result-callback</dd></dl>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PropertiesLock.html#a7facb4cd33b4fa7ed49a93c22f247d19" title="Unlock a group of properties.">PropertiesLock.Unlock</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesLock.html#a7facb4cd33b4fa7ed49a93c22f247d19" title="Unlock a group of properties.">PropertiesLock.Unlock</a> </dd></dl>
 
 </div>
 </div>

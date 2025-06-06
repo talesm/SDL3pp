@@ -3358,87 +3358,7 @@ const transform = {
           {
             "name": "EnumeratePropertiesCB",
           },
-          {
-            "name": "PropertiesLock",
-            "kind": "forward"
-          }
         ],
-        "SDL_PropertiesID": {
-          "name": "PropertiesLock",
-          "kind": "struct",
-          "entries": {
-            "properties": {
-              "kind": "var",
-              "type": "PropertiesRef"
-            },
-            "PropertiesLock": [
-              {
-                "doc": "@sa PropertiesRef.Lock()",
-                "kind": "function",
-                "type": "",
-                "explicit": true,
-                "parameters": [
-                  {
-                    "name": "properties",
-                    "type": "PropertiesRef"
-                  }
-                ]
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "parameters": []
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "const PropertiesLock &",
-                    "name": "other"
-                  }
-                ]
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "PropertiesLock &&",
-                    "name": "other"
-                  }
-                ]
-              }
-            ],
-            "~PropertiesLock": {
-              "kind": "function",
-              "doc": "@sa Unlock()",
-              "type": "",
-              "parameters": []
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "PropertiesLock &",
-              "parameters": [
-                {
-                  "type": "PropertiesLock",
-                  "name": "other"
-                }
-              ]
-            },
-            "operator bool": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": []
-            },
-            "SDL_UnlockProperties": {
-              "name": "Unlock",
-              "parameters": []
-            }
-          }
-        }
       },
       enumerations: {
         "SDL_PropertyType": {
@@ -3449,6 +3369,9 @@ const transform = {
       resources: {
         "SDL_PropertiesID": {
           name: "Properties",
+          lock: true,
+          lockFunction: "SDL_LockProperties",
+          unlockFunction: "SDL_UnlockProperties",
           ctors: ["SDL_CreateProperties"],
           entries: {
             "SDL_CreateProperties": {
@@ -4176,100 +4099,6 @@ const transform = {
         "SDL_RenderDebugTextFormat",
         "SDL_GetTextureSize"
       ],
-      includeAfter: {
-        "__begin":
-        {
-          name: "TextureLock",
-          kind: "forward"
-        },
-        "SDL_Texture": [{
-          name: "TextureLock",
-          kind: "struct",
-          entries: {
-            "texture": {
-              kind: "var",
-              type: "TextureRef"
-            },
-            "TextureLock": [
-              {
-                doc: "@sa TextureRef.Lock()",
-                kind: "function",
-                type: "",
-                explicit: true,
-                parameters: [
-                  {
-                    name: "texture",
-                    type: "TextureRef"
-                  },
-                  {
-                    name: "rect",
-                    type: "OptionalRef<const SDL_Rect>"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "",
-                parameters: [],
-                hints: { default: true },
-              },
-              {
-                kind: "function",
-                type: "",
-                parameters: [
-                  {
-                    type: "const TextureLock &",
-                    name: "other"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "",
-                parameters: [
-                  {
-                    type: "TextureLock &&",
-                    name: "other"
-                  }
-                ]
-              }
-            ],
-            "~TextureLock": {
-              kind: "function",
-              doc: "@sa Unlock()",
-              type: "",
-              parameters: []
-            },
-            "operator=": {
-              kind: "function",
-              type: "TextureLock &",
-              parameters: [
-                {
-                  type: "TextureLock",
-                  name: "other"
-                }
-              ]
-            },
-            "SDL_UnlockTexture": {
-              name: "Unlock",
-              static: false,
-              parameters: []
-            },
-            "GetPixels": {
-              kind: "function",
-              type: "void *",
-              immutable: true,
-              parameters: []
-            },
-            "GetPitch": {
-              kind: "function",
-              type: "int",
-              immutable: true,
-              parameters: []
-            },
-          }
-        }]
-      },
       resources: {
         "SDL_Renderer": {
           entries: {
@@ -4896,6 +4725,30 @@ const transform = {
         },
         "SDL_Texture": {
           ctors: ["Load", "LoadBMP"],
+          lock: {
+            name: "TextureLock",
+            kind: "struct",
+            type: "LockBase<SurfaceRef>",
+            entries: {
+              "SDL_LockTexture": {
+                "name": "ctor",
+                "parameters": [
+                  {},
+                  {
+                    "name": "rect",
+                    "type": "OptionalRef<const SDL_Rect>"
+                  }
+                ]
+              },
+              "texture": {
+                kind: "var",
+                type: "TextureRef"
+              },
+            },
+            hints: { private: true },
+          },
+          lockFunction: "SDL_LockTexture",
+          unlockFunction: "SDL_UnlockTexture",
           entries: {
             "Load": [{
               kind: "function",
@@ -5983,106 +5836,11 @@ const transform = {
       },
     },
     "SDL_surface.h": {
-      includeAfter: {
-        "__begin": {
-          name: "SurfaceLock",
-          kind: "forward"
-        },
-        "SDL_Surface": [{
-          name: "SurfaceLock",
-          kind: "struct",
-          entries: {
-            "surface": {
-              kind: "var",
-              type: "SurfaceRef"
-            },
-            "SurfaceLock": [
-              {
-                doc: "@sa SurfaceRef.Lock()",
-                kind: "function",
-                type: "",
-                explicit: true,
-                parameters: [{
-                  name: "surface",
-                  type: "SurfaceRef"
-                }]
-              },
-              {
-                kind: "function",
-                type: "",
-                parameters: []
-              },
-              {
-                kind: "function",
-                type: "",
-                parameters: [
-                  {
-                    type: "const SurfaceLock &",
-                    name: "other"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "",
-                parameters: [
-                  {
-                    type: "SurfaceLock &&",
-                    name: "other"
-                  }
-                ]
-              }
-            ],
-            "~SurfaceLock": {
-              kind: "function",
-              doc: "@sa Unlock()",
-              type: "",
-              parameters: []
-            },
-            "operator=": {
-              kind: "function",
-              type: "SurfaceLock &",
-              parameters: [
-                {
-                  type: "SurfaceLock",
-                  name: "other"
-                }
-              ]
-            },
-            "operator bool": {
-              kind: "function",
-              type: "",
-              constexpr: true,
-              immutable: true,
-              parameters: []
-            },
-            "SDL_UnlockSurface": {
-              name: "Unlock",
-              parameters: []
-            },
-            "GetPixels": {
-              kind: "function",
-              type: "void *",
-              immutable: true,
-              parameters: []
-            },
-            "GetPitch": {
-              kind: "function",
-              type: "int",
-              immutable: true,
-              parameters: []
-            },
-            "GetFormat": {
-              kind: "function",
-              type: "PixelFormat",
-              immutable: true,
-              parameters: []
-            }
-          }
-        }]
-      },
       resources: {
         "SDL_Surface": {
+          lock: true,
+          lockFunction: "SDL_LockSurface",
+          unlockFunction: "SDL_UnlockSurface",
           ctors: ["SDL_LoadBMP_IO"],
           entries: {
             "Surface": [{

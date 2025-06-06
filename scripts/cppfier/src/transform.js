@@ -896,7 +896,7 @@ function expandResources(sourceEntries, file, context) {
           type: "",
           constexpr: true,
           parameters: [{ type: `${lockEntry.name} &&`, name: "other" }],
-          doc: "Move ctor",
+          doc: "Move constructor",
           hints: { init: ["LockBase(other.release())"] }
         }],
         [lockFunctionName]: "ctor",
@@ -904,14 +904,14 @@ function expandResources(sourceEntries, file, context) {
           kind: "function",
           type: "",
           parameters: [],
-          doc: "Destructor",
+          doc: "Destructor\n\n@sa Unlock()",
           hints: { body: "Unlock();" }
         },
         [unlockFunctionName]: {
           name: "Unlock",
           static: false,
           hints: {
-            body: `CheckError(${unlockFunctionName}(release().get()));`,
+            body: `CheckError(${unlockFunctionName}(release()));`,
             removeParamThis: true,
           },
         },
