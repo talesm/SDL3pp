@@ -772,7 +772,7 @@ class ResourceUnique : public ResourceOwnerBase<RESOURCE, DELETER>
 
 public:
   /// Default constructor.
-  constexpr ResourceUnique() = default;
+  constexpr ResourceUnique(std::nullptr_t = nullptr) {};
 
   /// Constructs from raw type.
   constexpr explicit ResourceUnique(base::value_type value,
