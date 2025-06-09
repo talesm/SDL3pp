@@ -286,7 +286,7 @@ class ResourceShared : public ResourcePtrBase<typename UNIQUE::reference>
 
 public:
   /// Default constructor
-  constexpr ResourceShared() = default;
+  constexpr ResourceShared(std::nullptr_t = nullptr) {};
 
   /// Constructs from unique type
   constexpr ResourceShared(UNIQUE&& value)
