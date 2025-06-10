@@ -1988,7 +1988,7 @@ struct PaletteRef : Resource<SDL_Palette*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetColors(std::span<const SDL_Color> colors, int firstcolor = 0)
+  void SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
   {
     CheckError(
       SDL_SetPaletteColors(get(), colors.data(), firstcolor, colors.size()));
@@ -2056,9 +2056,7 @@ struct Palette : ResourceUnique<PaletteRef>
    * Move this palette into a PaletteShared.
    */
   PaletteShared share();
-
 };
-
 
 inline PaletteShared Palette::share()
 {

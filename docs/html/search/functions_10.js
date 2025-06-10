@@ -36,7 +36,7 @@ var searchData=
   ['setcolor_33',['setcolor',['../structSDL_1_1TextRef.html#a8b4c0886e98ba9844776afb7aceb5da3',1,'SDL::TextRef::SetColor(Color c)'],['../structSDL_1_1TextRef.html#a94643f823d6d30eb4a136c87888974fa',1,'SDL::TextRef::SetColor(FColor c)']]],
   ['setcolorkey_34',['setcolorkey',['../structSDL_1_1SurfaceRef.html#afd6540607a22ca05731c11b51b319a53',1,'SDL::SurfaceRef::SetColorKey(std::optional&lt; Uint32 &gt; key)'],['../structSDL_1_1SurfaceRef.html#a1b35a1cc9b6b6ec5de547d25f4014cfd',1,'SDL::SurfaceRef::SetColorKey(Color key)']]],
   ['setcolormod_35',['setcolormod',['../structSDL_1_1SurfaceRef.html#a97c02e47764c2663bc087eeb4b3d9ff0',1,'SDL::SurfaceRef::SetColorMod()'],['../structSDL_1_1TextureRef.html#a1723d533a5dd3128d45bc6d8553c4111',1,'SDL::TextureRef::SetColorMod(float r, float g, float b)'],['../structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711',1,'SDL::TextureRef::SetColorMod(Uint8 r, Uint8 g, Uint8 b)']]],
-  ['setcolors_36',['SetColors',['../structSDL_1_1PaletteRef.html#a5ee1a355fdb134e4b036bc43e48ce488',1,'SDL::PaletteRef']]],
+  ['setcolors_36',['SetColors',['../structSDL_1_1PaletteRef.html#adc625908d5f0389608042c0e92f27c53',1,'SDL::PaletteRef']]],
   ['setcolorscale_37',['SetColorScale',['../structSDL_1_1RendererRef.html#a897afeba8b6a0c09f650e0ab50f0c4c6',1,'SDL::RendererRef']]],
   ['setcolorscheme_38',['SetColorScheme',['../structSDL_1_1MessageBox.html#a12f4edc1fa83815bc754c4f4cae455cd',1,'SDL::MessageBox']]],
   ['setcolorspace_39',['SetColorspace',['../structSDL_1_1SurfaceRef.html#afc1921a9661b7f6c08d27e4627d41163',1,'SDL::SurfaceRef']]],

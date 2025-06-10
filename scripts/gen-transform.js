@@ -3285,7 +3285,7 @@ const transform = {
                 {},
                 {
                   name: "colors",
-                  type: "std::span<const SDL_Color>"
+                  type: "SpanRef<const SDL_Color>"
                 },
                 {
                   name: "firstcolor",
