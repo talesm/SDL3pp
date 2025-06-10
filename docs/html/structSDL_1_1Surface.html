@@ -362,7 +362,13 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourcePtrBase<
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the new <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> structure that is created or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the new <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> structure that is created on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Surface.html#a34627cb91b18950e89c9e535757d616b" title="Allocate a new surface with a specific pixel format.">Surface.Create</a> </dd>

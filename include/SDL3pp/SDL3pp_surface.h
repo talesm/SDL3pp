@@ -1919,7 +1919,7 @@ struct Surface : ResourceUnique<SurfaceRef>
    */
   static Surface Create(const SDL_Point& size, PixelFormat format)
   {
-    return Surface(SDL_CreateSurface(size.x, size.y, format));
+    return Surface(CheckError(SDL_CreateSurface(size.x, size.y, format)));
   }
 
   /**
@@ -1939,8 +1939,8 @@ struct Surface : ResourceUnique<SurfaceRef>
    * @param format the PixelFormat for the new surface's pixel format.
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
-   * @returns the new SurfaceRef structure that is created or nullptr on
-   * failure; call GetError() for more information.
+   * @returns the new Surface structure that is created on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1955,7 +1955,7 @@ struct Surface : ResourceUnique<SurfaceRef>
                             int pitch)
   {
     return Surface(
-      SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch));
+      CheckError(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)));
   }
 
   /**
@@ -1976,9 +1976,7 @@ struct Surface : ResourceUnique<SurfaceRef>
    * Move this surface into a SurfaceShared.
    */
   SurfaceShared share();
-
 };
-
 
 inline SurfaceShared Surface::share()
 {
