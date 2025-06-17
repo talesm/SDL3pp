@@ -21137,7 +21137,10 @@ struct Rect : SDL_Rect
   /**
    * @sa operator FRect()
    */
-  constexpr operator SDL_FRect() const { return operator SDL_FRect(); }
+  constexpr operator SDL_FRect() const
+  {
+    return {float(x), float(y), float(w), float(h)};
+  }
 
   /**
    * Determine whether a rectangle has no area.
