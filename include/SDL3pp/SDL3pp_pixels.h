@@ -1832,7 +1832,7 @@ struct Color : SDL_Color
 struct FColor : SDL_FColor
 {
   /**
-   * Wraps FColor.
+   * Wraps SDL_FColor.
    *
    * @param color the value to be wrapped
    */
@@ -1853,6 +1853,7 @@ struct FColor : SDL_FColor
     : SDL_FColor{r, g, b, a}
   {
   }
+
 
   /**
    * Default comparison operator

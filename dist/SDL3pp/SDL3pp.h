@@ -18216,7 +18216,7 @@ struct Color : SDL_Color
 struct FColor : SDL_FColor
 {
   /**
-   * Wraps FColor.
+   * Wraps SDL_FColor.
    *
    * @param color the value to be wrapped
    */
@@ -18235,6 +18235,16 @@ struct FColor : SDL_FColor
    */
   constexpr FColor(float r, float g, float b, float a = 1)
     : SDL_FColor{r, g, b, a}
+  {
+  }
+
+  /**
+   * Wraps SDL_Color.
+   *
+   * @param color the value to be wrapped
+   */
+  constexpr FColor(const SDL_Color& color)
+    : FColor(color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f)
   {
   }
 
