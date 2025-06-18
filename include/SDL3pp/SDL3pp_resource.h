@@ -284,6 +284,13 @@ class ResourceShared : public ResourcePtrBase<typename UNIQUE::reference>
   using base = ResourcePtrBase<typename UNIQUE::reference>;
   std::shared_ptr<UNIQUE> m_shared;
 
+  /// Constructs from std::shared_ptr.
+  constexpr explicit ResourceShared(std::shared_ptr<UNIQUE> shared)
+    : base(shared ? **shared : nullptr)
+    , m_shared(std::move(shared))
+  {
+  }
+
 public:
   /// Default constructor
   constexpr ResourceShared(std::nullptr_t = nullptr) {};
@@ -327,7 +334,7 @@ public:
 
   /// Constructs from ResourceShared
   constexpr ResourceWeak(const ResourceShared<UNIQUE>& shared)
-    : m_shared(shared)
+    : m_shared(shared.m_shared)
   {
   }
 
@@ -341,7 +348,10 @@ public:
   constexpr operator bool() const { return !expired(); }
 
   /// Lock back to ResourceShared
-  ResourceShared<UNIQUE> lock() const { return m_shared.lock(); }
+  ResourceShared<UNIQUE> lock() const
+  {
+    return ResourceShared<UNIQUE>(m_shared.lock());
+  }
 };
 
 /**
