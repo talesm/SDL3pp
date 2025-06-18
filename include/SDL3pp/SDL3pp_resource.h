@@ -430,6 +430,38 @@ public:
   }
 };
 
+/**
+ * Get hash for resource type
+ */
+template<class T>
+std::size_t hash(const SDL::Resource<T>& s) noexcept
+{
+  return std::hash<T>{}(s.get());
+}
+
+/**
+ * Get hash for resource type
+ */
+template<class T>
+std::size_t hash(const SDL::ResourcePtrBase<T>& s) noexcept
+{
+  return hash(s.get());
+}
+
+/**
+ * @brief Utility class to help creating std::hash.
+ *
+ */
+struct Hash
+{
+  /// Calculate hash.
+  template<class T>
+  std::size_t operator()(const T& s) const noexcept
+  {
+    return hash(s);
+  }
+};
+
 } // namespace SDL
 
 #endif /* SDL3PP_RESOURCE_H_ */

@@ -974,6 +974,38 @@ public:
   }
 };
 
+/**
+ * Get hash for resource type
+ */
+template<class T>
+std::size_t hash(const SDL::Resource<T>& s) noexcept
+{
+  return std::hash<T>{}(s.get());
+}
+
+/**
+ * Get hash for resource type
+ */
+template<class T>
+std::size_t hash(const SDL::ResourcePtrBase<T>& s) noexcept
+{
+  return hash(s.get());
+}
+
+/**
+ * @brief Utility class to help creating std::hash.
+ *
+ */
+struct Hash
+{
+  /// Calculate hash.
+  template<class T>
+  std::size_t operator()(const T& s) const noexcept
+  {
+    return hash(s);
+  }
+};
+
 template<class T, class BASE>
 concept DerivedWrapper =
   std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
@@ -18238,15 +18270,6 @@ struct FColor : SDL_FColor
   {
   }
 
-  /**
-   * Wraps SDL_Color.
-   *
-   * @param color the value to be wrapped
-   */
-  constexpr FColor(const SDL_Color& color)
-    : FColor(color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f)
-  {
-  }
 
   /**
    * Default comparison operator

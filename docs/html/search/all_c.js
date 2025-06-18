@@ -46,7 +46,7 @@ var searchData=
   ['lockbase_3c_20surfaceref_20_3e_43',['LockBase&lt; SurfaceRef &gt;',['../classSDL_1_1LockBase.html',1,'SDL']]],
   ['lockforreading_44',['LockForReading',['../structSDL_1_1RWLockRef.html#afc928549ffbc5818d3d7b2c1002bba81',1,'SDL::RWLockRef']]],
   ['lockforwriting_45',['LockForWriting',['../structSDL_1_1RWLockRef.html#a09e50c3cdd29d0361b2223282c8bc949',1,'SDL::RWLockRef']]],
-  ['log_46',['log',['../classSDL_1_1LogCategory.html#a67b420fcb5d7bebbeba43ffd9cd82b9c',1,'SDL::LogCategory::Log()'],['../group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a',1,'SDL::Log(std::string_view fmt, ARGS &amp;&amp;... args)'],['../group__CategoryStdinc.html#ga01c25ea063ceb75d5caf6ca1119a3bc1',1,'SDL::log(double x)'],['../group__CategoryStdinc.html#gabd852bed14a8611cd305ede0abfcf2f3',1,'SDL::log(float x)']]],
+  ['log_46',['log',['../classSDL_1_1LogCategory.html#a67b420fcb5d7bebbeba43ffd9cd82b9c',1,'SDL::LogCategory::Log()'],['../group__CategoryStdinc.html#ga01c25ea063ceb75d5caf6ca1119a3bc1',1,'SDL::log(double x)'],['../group__CategoryStdinc.html#gabd852bed14a8611cd305ede0abfcf2f3',1,'SDL::log(float x)'],['../group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a',1,'SDL::Log(std::string_view fmt, ARGS &amp;&amp;... args)']]],
   ['log_20handling_47',['Log Handling',['../group__CategoryLog.html',1,'']]],
   ['log10_48',['log10',['../group__CategoryStdinc.html#gacdf9d94c27153da5d01b604342b49024',1,'SDL::log10(double x)'],['../group__CategoryStdinc.html#ga469bfdfde9d6d0a1193cf60f4cc4ab73',1,'SDL::log10(float x)']]],
   ['log_5fcategory_5fapplication_49',['LOG_CATEGORY_APPLICATION',['../group__CategoryLog.html#ga86f1bba0c66044a1b213f069d41f4b2d',1,'SDL']]],

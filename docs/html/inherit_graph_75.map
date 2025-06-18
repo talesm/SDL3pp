@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects." alt="" coords="208,13,356,38"/>
-<area shape="poly" id="edge36_Node000000_Node000001" title=" " alt="" coords="174,23,207,23,207,28,174,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1TextRef.html" title="Text created with Text.Create()" alt="" coords="208,13,312,38"/>
+<area shape="poly" id="edge35_Node000000_Node000001" title=" " alt="" coords="173,23,208,23,208,28,173,28"/>
 </map>

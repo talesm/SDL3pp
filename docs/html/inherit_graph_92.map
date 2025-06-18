@@ -1,3 +1,299 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1ResourcePtrBase.html" title=" " alt="" coords="5,5,171,45"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="5,1114,171,1154"/>
+<area shape="rect" id="Node000001" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="239,5,470,60"/>
+<area shape="poly" id="edge37_Node000000_Node000001" title=" " alt="" coords="89,1100,103,878,130,551,148,386,169,241,191,131,204,93,217,70,237,52,241,56,221,73,208,95,196,132,174,242,154,387,136,551,108,878,94,1100"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="232,84,477,139"/>
+<area shape="poly" id="edge38_Node000000_Node000002" title=" " alt="" coords="86,1100,88,906,94,770,103,621,119,474,142,338,157,278,174,226,194,182,217,148,230,136,234,140,221,152,199,184,179,228,162,280,148,339,125,474,109,622,99,770,94,907,92,1100"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="231,163,478,217"/>
+<area shape="poly" id="edge39_Node000000_Node000003" title=" " alt="" coords="87,1100,91,920,97,794,108,659,124,524,147,400,161,345,177,297,196,258,217,227,229,215,233,219,221,230,200,260,182,299,166,347,152,401,130,524,113,659,103,795,96,920,92,1100"/>
+<area shape="rect" id="Node000004" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="242,241,467,296"/>
+<area shape="poly" id="edge40_Node000000_Node000004" title=" " alt="" coords="87,1100,94,934,113,696,129,574,151,462,180,369,197,333,217,306,240,287,244,291,221,309,202,336,185,371,157,463,135,575,118,697,99,934,93,1100"/>
+<area shape="rect" id="Node000005" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="252,320,457,375"/>
+<area shape="poly" id="edge41_Node000000_Node000005" title=" " alt="" coords="88,1100,97,948,118,734,134,624,156,524,183,441,199,409,217,384,232,370,251,360,253,365,236,375,221,388,204,412,188,443,161,525,140,625,123,735,102,949,93,1100"/>
+<area shape="rect" id="Node000006" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="249,399,461,453"/>
+<area shape="poly" id="edge42_Node000000_Node000006" title=" " alt="" coords="89,1100,100,963,123,772,139,675,161,586,186,513,201,485,217,463,246,441,250,446,221,467,205,488,191,515,166,588,145,676,128,773,105,964,94,1101"/>
+<area shape="rect" id="Node000009" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="231,477,478,532"/>
+<area shape="poly" id="edge45_Node000000_Node000009" title=" " alt="" coords="90,1100,103,977,128,810,145,726,165,649,189,585,217,542,229,530,233,534,221,545,194,588,170,650,150,727,133,811,108,978,95,1101"/>
+<area shape="rect" id="Node000010" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="259,556,450,611"/>
+<area shape="poly" id="edge46_Node000000_Node000010" title=" " alt="" coords="91,1100,106,991,133,848,150,776,170,711,192,657,217,620,236,605,258,594,260,599,239,609,221,624,197,660,175,713,155,778,138,849,112,992,96,1100"/>
+<area shape="rect" id="Node000011" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="239,635,470,689"/>
+<area shape="poly" id="edge47_Node000000_Node000011" title=" " alt="" coords="86,1100,91,1019,109,912,126,854,148,798,178,745,217,699,237,683,241,687,221,703,183,748,153,800,131,856,115,913,97,1020,92,1100"/>
+<area shape="rect" id="Node000012" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="255,713,455,768"/>
+<area shape="poly" id="edge48_Node000000_Node000012" title=" " alt="" coords="89,1100,99,1032,120,946,136,900,158,855,184,814,217,777,234,764,253,755,256,760,237,769,220,781,189,817,162,858,141,902,125,947,104,1033,94,1101"/>
+<area shape="rect" id="Node000013" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="243,792,467,847"/>
+<area shape="poly" id="edge49_Node000000_Node000013" title=" " alt="" coords="93,1100,107,1046,131,981,167,914,190,883,217,856,241,840,244,845,220,860,194,886,171,917,136,983,112,1048,98,1101"/>
+<area shape="rect" id="Node000014" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="253,871,457,925"/>
+<area shape="poly" id="edge50_Node000000_Node000014" title=" " alt="" coords="100,1100,118,1062,143,1017,177,973,217,935,251,916,254,921,220,939,181,976,148,1020,122,1064,105,1102"/>
+<area shape="rect" id="Node000015" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="251,949,459,1004"/>
+<area shape="poly" id="edge51_Node000000_Node000015" title=" " alt="" coords="113,1102,159,1056,187,1033,217,1013,249,998,252,1003,220,1018,190,1037,162,1060,117,1106"/>
+<area shape="rect" id="Node000016" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="248,1028,461,1083"/>
+<area shape="poly" id="edge52_Node000000_Node000016" title=" " alt="" coords="166,1107,218,1091,256,1080,258,1085,219,1097,167,1112"/>
+<area shape="rect" id="Node000017" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="240,1107,469,1161"/>
+<area shape="poly" id="edge53_Node000000_Node000017" title=" " alt="" coords="184,1131,240,1131,240,1137,184,1137"/>
+<area shape="rect" id="Node000018" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="247,1185,462,1240"/>
+<area shape="poly" id="edge54_Node000000_Node000018" title=" " alt="" coords="170,1155,219,1170,262,1183,260,1188,218,1175,169,1161"/>
+<area shape="rect" id="Node000019" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="243,1264,466,1319"/>
+<area shape="poly" id="edge55_Node000000_Node000019" title=" " alt="" coords="118,1163,163,1207,191,1230,220,1249,246,1261,244,1266,217,1254,187,1234,159,1211,114,1167"/>
+<area shape="rect" id="Node000020" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="236,1343,473,1397"/>
+<area shape="poly" id="edge56_Node000000_Node000020" title=" " alt="" coords="105,1165,123,1203,148,1247,181,1291,220,1328,241,1340,238,1345,217,1332,177,1294,144,1250,118,1206,100,1168"/>
+<area shape="rect" id="Node000021" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="229,1421,480,1476"/>
+<area shape="poly" id="edge57_Node000000_Node000021" title=" " alt="" coords="98,1167,112,1220,136,1285,172,1350,194,1380,220,1407,238,1419,235,1424,217,1411,190,1384,167,1353,131,1287,107,1221,93,1168"/>
+<area shape="rect" id="Node000022" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="248,1500,461,1555"/>
+<area shape="poly" id="edge58_Node000000_Node000022" title=" " alt="" coords="94,1167,104,1234,125,1320,142,1365,163,1409,189,1450,220,1485,249,1505,247,1509,217,1489,184,1453,158,1411,137,1367,120,1321,99,1235,89,1168"/>
+<area shape="rect" id="Node000023" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="249,1579,461,1633"/>
+<area shape="poly" id="edge59_Node000000_Node000023" title=" " alt="" coords="92,1167,97,1248,115,1354,131,1411,154,1467,183,1518,220,1564,250,1584,247,1589,217,1568,179,1521,149,1469,126,1413,110,1356,92,1248,87,1168"/>
+<area shape="rect" id="Node000024" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="259,1657,450,1712"/>
+<area shape="poly" id="edge60_Node000000_Node000024" title=" " alt="" coords="96,1167,112,1275,139,1418,156,1489,175,1554,197,1607,221,1643,239,1657,261,1668,258,1673,236,1662,217,1646,192,1610,170,1556,150,1491,133,1419,107,1276,91,1168"/>
+<area shape="rect" id="Node000025" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="219,1737,491,1777"/>
+<area shape="poly" id="edge61_Node000000_Node000025" title=" " alt="" coords="95,1167,108,1290,132,1457,149,1541,170,1617,193,1680,207,1704,221,1721,237,1734,233,1738,217,1725,202,1706,189,1682,165,1619,144,1542,127,1458,102,1291,89,1168"/>
+<area shape="rect" id="Node000026" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="249,1801,460,1856"/>
+<area shape="poly" id="edge62_Node000000_Node000026" title=" " alt="" coords="94,1168,106,1302,129,1488,146,1583,167,1669,192,1739,206,1766,221,1787,250,1808,247,1813,217,1791,201,1769,187,1741,162,1670,141,1584,124,1489,100,1303,89,1168"/>
+<area shape="rect" id="Node000027" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="251,1880,459,1935"/>
+<area shape="poly" id="edge63_Node000000_Node000027" title=" " alt="" coords="93,1167,103,1316,124,1526,141,1633,162,1731,189,1811,204,1842,221,1866,235,1878,252,1888,249,1893,232,1883,217,1869,199,1845,184,1813,157,1732,136,1634,119,1527,97,1317,88,1168"/>
+<area shape="rect" id="Node000028" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="259,1959,450,2013"/>
+<area shape="poly" id="edge64_Node000000_Node000028" title=" " alt="" coords="93,1168,100,1331,119,1564,136,1684,158,1793,186,1883,202,1918,221,1944,239,1960,260,1970,258,1975,236,1964,217,1948,198,1921,181,1885,153,1794,131,1685,114,1565,94,1331,87,1168"/>
+<area shape="rect" id="Node000029" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="243,2037,467,2092"/>
+<area shape="poly" id="edge65_Node000000_Node000029" title=" " alt="" coords="92,1168,97,1345,104,1468,115,1602,131,1734,153,1855,183,1955,201,1994,221,2023,244,2042,241,2046,217,2026,196,1996,178,1957,148,1856,125,1735,109,1602,98,1469,92,1345,87,1168"/>
+<area shape="rect" id="Node000030" href="$classSDL_1_1ResourceOwnerBase.html" title=" " alt="" coords="247,2116,462,2171"/>
+<area shape="poly" id="edge66_Node000000_Node000030" title=" " alt="" coords="92,1168,94,1359,100,1493,110,1639,126,1784,149,1917,163,1976,180,2027,199,2069,221,2102,248,2123,245,2127,217,2105,194,2072,175,2029,158,1977,144,1918,121,1785,105,1639,95,1494,89,1359,86,1168"/>
+<area shape="rect" id="Node000031" href="$classSDL_1_1ResourceOwnerBase.html" title="Base class for resource pointer&#45;like owner objects." alt="" coords="260,2290,449,2330"/>
+<area shape="poly" id="edge67_Node000000_Node000031" title=" " alt="" coords="93,1168,103,1367,125,1665,141,1822,163,1968,189,2091,204,2141,221,2181,242,2214,269,2243,323,2288,320,2292,265,2247,238,2217,216,2183,199,2143,184,2093,158,1969,136,1822,119,1665,97,1367,88,1168"/>
+<area shape="rect" id="Node000007" href="$classSDL_1_1DetachedResource.html" title="A detached reference to resource that might be transformed into an owned handle." alt="" coords="557,349,739,389"/>
+<area shape="poly" id="edge43_Node000006_Node000007" title=" " alt="" coords="474,400,556,384,557,389,475,405"/>
+<area shape="rect" id="Node000008" href="$classSDL_1_1LockBase.html" title="Base class for locks." alt="" coords="539,413,757,439"/>
+<area shape="poly" id="edge44_Node000006_Node000008" title=" " alt="" coords="475,423,538,423,538,429,475,429"/>
+<area shape="rect" id="Node000032" href="$classSDL_1_1LockBase.html" title=" " alt="" coords="540,463,756,503"/>
+<area shape="poly" id="edge68_Node000031_Node000032" title=" " alt="" coords="399,2280,448,2237,471,2211,488,2181,500,2137,507,2068,511,1871,507,1619,498,1340,491,1063,491,814,496,709,505,622,518,556,526,531,537,514,549,502,553,505,541,517,531,534,523,557,510,623,501,709,497,814,496,1063,503,1340,512,1619,517,1871,512,2068,505,2137,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000034" href="$classSDL_1_1LockBase.html" title=" " alt="" coords="549,527,747,567"/>
+<area shape="poly" id="edge70_Node000031_Node000034" title=" " alt="" coords="399,2280,448,2237,471,2211,488,2181,499,2138,506,2072,511,1883,506,1641,498,1373,492,1106,493,866,497,766,506,682,518,618,536,578,549,566,553,570,541,581,524,620,511,682,503,766,498,866,498,1106,504,1373,512,1641,516,1883,512,2072,505,2139,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000036" href="$classSDL_1_1LockBase.html" title=" " alt="" coords="539,592,757,617"/>
+<area shape="poly" id="edge72_Node000031_Node000036" title=" " alt="" coords="399,2280,448,2237,471,2211,488,2181,499,2140,506,2075,510,1892,505,1657,497,1397,491,1138,492,907,497,809,505,728,518,667,537,628,551,615,555,619,541,632,523,669,511,729,502,810,498,907,497,1138,503,1397,511,1657,515,1892,511,2076,504,2141,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000039" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,642,729,682"/>
+<area shape="poly" id="edge75_Node000031_Node000039" title=" " alt="" coords="399,2280,448,2237,471,2211,488,2181,499,2141,505,2080,510,1904,506,1679,499,1431,494,1183,495,960,500,867,508,789,520,730,536,692,550,680,566,671,568,675,553,684,541,696,525,731,513,790,505,867,501,961,500,1183,505,1430,512,1679,515,1904,511,2080,504,2142,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000041" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,706,729,746"/>
+<area shape="poly" id="edge77_Node000031_Node000041" title=" " alt="" coords="399,2280,448,2237,471,2211,488,2181,498,2143,505,2084,509,1916,500,1463,495,1226,497,1013,501,923,509,849,520,792,536,756,550,744,566,735,568,739,553,748,541,760,525,794,514,850,506,924,502,1013,501,1226,505,1463,515,1916,510,2085,503,2144,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000043" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,770,729,810"/>
+<area shape="poly" id="edge79_Node000031_Node000043" title=" " alt="" coords="398,2280,448,2237,471,2211,488,2181,498,2145,504,2089,509,1928,501,1495,496,1269,498,1065,503,980,510,909,521,855,536,820,550,808,566,799,568,803,553,812,541,824,526,856,515,910,508,980,504,1066,502,1268,506,1495,514,1928,509,2089,503,2146,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000045" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,834,729,874"/>
+<area shape="poly" id="edge81_Node000031_Node000045" title=" " alt="" coords="398,2280,448,2237,471,2211,488,2181,497,2147,503,2093,508,1940,501,1527,498,1311,500,1118,504,1036,511,969,522,917,536,884,550,872,566,863,568,867,553,876,541,888,527,919,516,969,509,1037,505,1118,503,1311,506,1527,513,1940,509,2093,503,2148,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000047" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,898,729,938"/>
+<area shape="poly" id="edge83_Node000031_Node000047" title=" " alt="" coords="398,2280,448,2237,471,2211,488,2181,497,2148,503,2097,507,1952,502,1560,499,1354,501,1170,512,1028,522,979,536,948,550,936,566,927,568,931,553,940,541,952,527,981,517,1029,506,1171,504,1354,507,1560,513,1952,508,2098,502,2149,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000049" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,962,729,1002"/>
+<area shape="poly" id="edge85_Node000031_Node000049" title=" " alt="" coords="398,2280,448,2237,471,2211,488,2181,497,2150,502,2102,507,1964,502,1592,500,1397,502,1223,513,1088,523,1042,536,1012,550,1000,566,991,568,995,553,1004,541,1016,528,1044,519,1089,508,1223,505,1397,508,1592,512,1964,508,2102,502,2151,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000051" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1026,729,1066"/>
+<area shape="poly" id="edge87_Node000031_Node000051" title=" " alt="" coords="398,2280,448,2237,471,2211,488,2181,496,2152,502,2106,506,1976,503,1624,501,1440,504,1275,514,1148,524,1104,536,1076,550,1064,566,1055,568,1059,553,1068,541,1080,529,1106,520,1149,509,1276,506,1440,508,1624,512,1976,507,2107,501,2153,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000053" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1090,729,1130"/>
+<area shape="poly" id="edge89_Node000031_Node000053" title=" " alt="" coords="398,2280,448,2237,471,2211,488,2181,496,2153,501,2111,506,1988,503,1657,502,1483,505,1328,515,1208,524,1167,536,1140,550,1128,566,1119,568,1123,553,1132,541,1144,529,1168,521,1209,510,1328,507,1483,509,1657,511,1988,506,2111,501,2154,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000055" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1154,729,1194"/>
+<area shape="poly" id="edge91_Node000031_Node000055" title=" " alt="" coords="398,2280,448,2237,471,2211,488,2181,495,2155,500,2115,505,2000,504,1689,503,1526,507,1380,517,1268,525,1229,537,1204,550,1192,566,1183,568,1187,553,1196,541,1208,530,1231,522,1269,512,1381,509,1526,509,1689,510,2000,506,2115,501,2156,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000057" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1218,729,1258"/>
+<area shape="poly" id="edge93_Node000031_Node000057" title=" " alt="" coords="398,2280,448,2237,471,2211,488,2181,495,2157,500,2119,505,2012,504,1721,504,1569,508,1433,518,1328,526,1292,537,1268,550,1256,566,1247,568,1251,553,1260,541,1272,531,1293,523,1329,513,1433,510,1569,510,1721,510,2012,505,2120,500,2158,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000059" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1282,729,1322"/>
+<area shape="poly" id="edge95_Node000031_Node000059" title=" " alt="" coords="398,2280,448,2237,471,2211,488,2181,500,2145,508,2102,512,1998,507,1878,498,1749,490,1622,490,1505,495,1452,504,1405,517,1365,537,1332,550,1320,566,1311,568,1315,553,1324,541,1336,522,1367,509,1407,500,1453,496,1505,496,1622,503,1749,512,1877,518,1998,513,2103,506,2147,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000061" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1346,729,1386"/>
+<area shape="poly" id="edge97_Node000031_Node000061" title=" " alt="" coords="398,2280,448,2237,470,2211,488,2181,500,2148,507,2108,511,2012,507,1901,499,1782,492,1664,493,1556,498,1507,506,1464,519,1426,537,1396,550,1384,566,1375,568,1379,553,1388,541,1400,523,1429,511,1465,503,1508,498,1556,498,1664,504,1782,512,1900,517,2012,512,2109,505,2149,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000063" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1410,729,1450"/>
+<area shape="poly" id="edge99_Node000031_Node000063" title=" " alt="" coords="398,2280,448,2237,470,2210,488,2181,499,2151,506,2114,510,2026,507,1924,500,1815,495,1707,496,1607,500,1562,508,1522,520,1488,537,1460,550,1448,566,1439,568,1444,553,1452,541,1464,525,1490,513,1524,506,1563,501,1607,500,1707,505,1814,512,1923,515,2026,511,2115,504,2152,493,2183,475,2214,452,2241,402,2284"/>
+<area shape="rect" id="Node000065" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1474,729,1514"/>
+<area shape="poly" id="edge101_Node000031_Node000065" title=" " alt="" coords="398,2280,448,2237,470,2210,488,2181,498,2153,504,2120,509,2040,506,1947,501,1847,497,1749,499,1658,510,1581,521,1550,537,1524,550,1512,566,1503,568,1508,553,1516,541,1528,526,1552,515,1582,504,1658,502,1749,506,1847,512,1946,514,2040,510,2121,503,2155,493,2183,475,2214,451,2241,402,2284"/>
+<area shape="rect" id="Node000067" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1538,729,1578"/>
+<area shape="poly" id="edge103_Node000031_Node000067" title=" " alt="" coords="397,2280,447,2237,470,2211,488,2181,497,2156,503,2126,508,2054,502,1880,499,1791,501,1709,512,1639,523,1611,537,1588,550,1576,566,1567,569,1572,553,1580,541,1592,527,1613,518,1641,507,1709,505,1791,507,1880,513,2054,508,2127,502,2158,493,2183,474,2214,451,2241,401,2284"/>
+<area shape="rect" id="Node000069" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1602,729,1642"/>
+<area shape="poly" id="edge105_Node000031_Node000069" title=" " alt="" coords="397,2280,447,2237,470,2211,488,2181,502,2132,507,2068,503,1912,502,1833,504,1760,515,1698,524,1673,537,1652,550,1640,566,1631,569,1636,553,1644,541,1656,529,1675,520,1699,510,1760,507,1833,509,1912,512,2068,507,2133,493,2183,474,2214,451,2241,401,2284"/>
+<area shape="rect" id="Node000071" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1666,729,1706"/>
+<area shape="poly" id="edge107_Node000031_Node000071" title=" " alt="" coords="397,2280,447,2237,470,2210,488,2181,501,2138,505,2081,504,1945,504,1875,507,1811,517,1756,525,1734,537,1716,550,1704,566,1695,568,1700,553,1708,541,1720,530,1737,522,1758,512,1811,509,1875,510,1945,511,2082,506,2139,493,2183,474,2214,451,2241,401,2284"/>
+<area shape="rect" id="Node000073" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1730,729,1770"/>
+<area shape="poly" id="edge109_Node000031_Node000073" title=" " alt="" coords="397,2280,447,2237,470,2210,488,2181,501,2152,508,2124,513,2071,508,2022,499,1974,491,1927,491,1879,504,1831,518,1806,537,1780,550,1768,566,1759,568,1764,553,1772,541,1784,522,1809,509,1833,496,1880,497,1926,504,1973,513,2021,518,2071,514,2125,506,2154,493,2183,474,2214,450,2241,400,2284"/>
+<area shape="rect" id="Node000075" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1794,729,1834"/>
+<area shape="poly" id="edge111_Node000031_Node000075" title=" " alt="" coords="397,2280,446,2237,469,2210,488,2181,506,2133,511,2089,508,2047,501,2007,496,1967,497,1927,509,1887,537,1844,550,1832,566,1824,568,1828,553,1837,541,1848,514,1889,502,1928,501,1967,506,2006,513,2047,516,2089,511,2134,493,2183,474,2213,450,2241,400,2284"/>
+<area shape="rect" id="Node000077" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1858,729,1898"/>
+<area shape="poly" id="edge113_Node000031_Node000077" title=" " alt="" coords="396,2280,445,2237,469,2210,488,2181,503,2142,509,2107,507,2073,503,2040,500,2008,502,1975,513,1942,537,1908,550,1897,566,1888,568,1893,553,1901,541,1912,518,1945,507,1976,506,2008,508,2040,512,2072,514,2107,509,2144,493,2183,473,2213,449,2241,399,2284"/>
+<area shape="rect" id="Node000079" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,1922,729,1962"/>
+<area shape="poly" id="edge115_Node000031_Node000079" title=" " alt="" coords="395,2280,445,2236,468,2210,488,2181,501,2151,506,2124,505,2073,505,2048,508,2023,518,1998,537,1972,566,1953,569,1957,541,1976,522,2001,513,2025,510,2049,511,2073,512,2125,506,2153,493,2183,473,2213,448,2240,399,2284"/>
+<area shape="rect" id="Node000081" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="543,1987,753,2041"/>
+<area shape="poly" id="edge117_Node000031_Node000081" title=" " alt="" coords="393,2279,442,2236,467,2209,488,2181,504,2146,508,2115,515,2084,523,2068,537,2052,553,2039,556,2044,541,2056,528,2071,520,2086,514,2116,509,2147,493,2183,471,2212,446,2239,396,2283"/>
+<area shape="rect" id="Node000083" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,2066,729,2106"/>
+<area shape="poly" id="edge119_Node000031_Node000083" title=" " alt="" coords="388,2279,437,2234,489,2180,502,2162,510,2146,520,2131,537,2116,566,2101,568,2105,540,2120,524,2135,515,2149,506,2165,493,2184,441,2237,391,2283"/>
+<area shape="rect" id="Node000085" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,2130,729,2170"/>
+<area shape="poly" id="edge121_Node000031_Node000085" title=" " alt="" coords="388,2279,455,2229,495,2203,538,2180,567,2168,569,2173,540,2184,498,2207,458,2233,391,2283"/>
+<area shape="rect" id="Node000087" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,2194,729,2234"/>
+<area shape="poly" id="edge123_Node000031_Node000087" title=" " alt="" coords="423,2283,538,2243,576,2232,578,2237,539,2249,425,2288"/>
+<area shape="rect" id="Node000089" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,2258,729,2298"/>
+<area shape="poly" id="edge125_Node000031_Node000089" title=" " alt="" coords="463,2296,567,2284,567,2289,463,2301"/>
+<area shape="rect" id="Node000091" href="$classSDL_1_1ResourceUnique.html" title=" " alt="" coords="567,2322,729,2362"/>
+<area shape="poly" id="edge127_Node000031_Node000091" title=" " alt="" coords="463,2319,567,2331,567,2336,463,2324"/>
+<area shape="rect" id="Node000093" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,2386,729,2426"/>
+<area shape="poly" id="edge129_Node000031_Node000093" title=" " alt="" coords="425,2332,539,2371,578,2383,576,2388,538,2377,423,2337"/>
+<area shape="rect" id="Node000095" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,2450,729,2490"/>
+<area shape="poly" id="edge131_Node000031_Node000095" title=" " alt="" coords="391,2337,458,2387,498,2413,540,2436,569,2447,567,2452,538,2440,495,2417,455,2391,388,2341"/>
+<area shape="rect" id="Node000097" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,2514,729,2554"/>
+<area shape="poly" id="edge133_Node000031_Node000097" title=" " alt="" coords="380,2340,408,2377,445,2420,490,2463,540,2500,568,2513,566,2518,537,2504,487,2467,442,2423,404,2380,375,2343"/>
+<area shape="rect" id="Node000099" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,2578,729,2618"/>
+<area shape="poly" id="edge135_Node000031_Node000099" title=" " alt="" coords="373,2341,398,2391,435,2451,483,2512,510,2540,540,2564,568,2579,566,2583,537,2568,507,2544,479,2515,431,2454,393,2393,368,2344"/>
+<area shape="rect" id="Node000101" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,2642,729,2682"/>
+<area shape="poly" id="edge137_Node000031_Node000101" title=" " alt="" coords="368,2342,390,2403,426,2481,449,2521,475,2560,506,2596,540,2628,568,2644,566,2648,537,2632,502,2600,471,2563,444,2524,421,2483,385,2405,363,2344"/>
+<area shape="rect" id="Node000103" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,2706,729,2746"/>
+<area shape="poly" id="edge139_Node000031_Node000103" title=" " alt="" coords="365,2343,383,2416,417,2510,440,2559,468,2608,502,2653,540,2692,569,2709,566,2713,537,2696,498,2656,464,2611,435,2562,412,2512,378,2417,360,2344"/>
+<area shape="rect" id="Node000105" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,2770,729,2810"/>
+<area shape="poly" id="edge141_Node000031_Node000105" title=" " alt="" coords="362,2344,377,2427,408,2538,432,2597,461,2655,497,2709,540,2756,569,2773,566,2778,537,2760,493,2712,456,2658,427,2600,403,2540,372,2428,357,2344"/>
+<area shape="rect" id="Node000107" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,2834,729,2874"/>
+<area shape="poly" id="edge143_Node000031_Node000107" title=" " alt="" coords="361,2343,372,2438,383,2499,400,2566,423,2635,454,2702,493,2765,540,2820,568,2838,566,2842,537,2824,488,2768,449,2705,418,2636,395,2567,378,2500,366,2438,355,2344"/>
+<area shape="rect" id="Node000109" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,2898,729,2938"/>
+<area shape="poly" id="edge145_Node000031_Node000109" title=" " alt="" coords="359,2344,367,2448,376,2518,392,2593,415,2672,447,2749,488,2821,513,2854,540,2884,569,2902,566,2907,537,2888,509,2857,484,2824,442,2751,410,2673,387,2595,371,2518,361,2449,354,2344"/>
+<area shape="rect" id="Node000111" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,2962,729,3002"/>
+<area shape="poly" id="edge147_Node000031_Node000111" title=" " alt="" coords="358,2344,362,2458,370,2536,384,2621,407,2709,439,2795,483,2877,510,2914,540,2948,569,2966,566,2971,537,2952,506,2917,479,2880,435,2798,402,2710,379,2622,365,2536,356,2459,352,2344"/>
+<area shape="rect" id="Node000113" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3026,729,3066"/>
+<area shape="poly" id="edge149_Node000031_Node000113" title=" " alt="" coords="363,2343,384,2487,422,2688,447,2791,475,2884,506,2961,523,2990,540,3012,568,3031,565,3035,537,3016,519,2993,502,2963,470,2886,442,2792,417,2689,379,2488,358,2344"/>
+<area shape="rect" id="Node000115" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3090,729,3130"/>
+<area shape="poly" id="edge151_Node000031_Node000115" title=" " alt="" coords="362,2343,382,2499,418,2719,443,2832,471,2935,504,3019,522,3052,540,3076,569,3095,566,3099,537,3080,517,3055,499,3021,466,2936,438,2833,413,2720,376,2499,357,2344"/>
+<area shape="rect" id="Node000117" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3154,729,3194"/>
+<area shape="poly" id="edge153_Node000031_Node000117" title=" " alt="" coords="362,2343,379,2510,414,2750,439,2873,468,2985,502,3078,521,3113,541,3140,569,3159,566,3164,537,3144,516,3116,497,3080,463,2987,433,2874,409,2751,374,2511,356,2344"/>
+<area shape="rect" id="Node000119" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3218,729,3258"/>
+<area shape="poly" id="edge155_Node000031_Node000119" title=" " alt="" coords="361,2343,377,2522,391,2646,410,2781,434,2914,464,3036,499,3136,519,3175,541,3204,569,3223,566,3228,537,3208,515,3178,495,3139,459,3038,429,2915,405,2781,386,2647,372,2522,356,2344"/>
+<area shape="rect" id="Node000121" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3282,729,3322"/>
+<area shape="poly" id="edge157_Node000031_Node000121" title=" " alt="" coords="360,2344,375,2534,388,2667,406,2812,430,2955,460,3087,478,3145,497,3195,518,3237,541,3268,568,3287,565,3292,537,3272,513,3239,492,3197,473,3146,455,3088,425,2956,401,2812,383,2668,369,2534,355,2344"/>
+<area shape="rect" id="Node000123" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3346,729,3386"/>
+<area shape="poly" id="edge159_Node000031_Node000123" title=" " alt="" coords="360,2344,372,2544,385,2687,402,2842,426,2996,457,3137,475,3199,495,3253,517,3298,541,3332,553,3343,568,3351,566,3356,550,3347,537,3336,512,3301,490,3255,470,3201,452,3138,421,2997,397,2842,379,2688,367,2545,355,2344"/>
+<area shape="rect" id="Node000125" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3410,729,3450"/>
+<area shape="poly" id="edge161_Node000031_Node000125" title=" " alt="" coords="360,2344,370,2555,382,2707,399,2872,422,3036,453,3187,472,3254,492,3312,515,3360,541,3396,553,3407,568,3415,566,3420,550,3412,537,3400,511,3363,487,3314,466,3255,448,3189,417,3037,393,2872,376,2708,365,2556,354,2344"/>
+<area shape="rect" id="Node000127" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3474,729,3514"/>
+<area shape="poly" id="edge163_Node000031_Node000127" title=" " alt="" coords="359,2343,368,2566,379,2727,395,2902,418,3077,449,3238,468,3308,490,3370,514,3421,541,3460,553,3471,569,3480,566,3484,550,3476,537,3464,509,3424,485,3372,463,3310,444,3239,413,3078,390,2902,373,2727,363,2566,354,2344"/>
+<area shape="rect" id="Node000129" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3538,729,3578"/>
+<area shape="poly" id="edge165_Node000031_Node000129" title=" " alt="" coords="359,2344,366,2577,376,2747,391,2932,414,3117,446,3288,465,3363,488,3429,513,3483,541,3524,553,3535,569,3544,566,3548,550,3540,537,3528,508,3486,483,3431,460,3365,441,3289,409,3118,386,2933,370,2747,361,2577,354,2344"/>
+<area shape="rect" id="Node000131" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3602,729,3642"/>
+<area shape="poly" id="edge167_Node000031_Node000131" title=" " alt="" coords="359,2344,364,2589,373,2768,388,2963,410,3159,442,3339,462,3418,485,3487,511,3545,541,3588,553,3599,568,3608,566,3612,550,3604,537,3592,507,3547,480,3489,457,3419,437,3340,405,3159,382,2963,367,2768,359,2589,353,2344"/>
+<area shape="rect" id="Node000133" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="543,3667,753,3721"/>
+<area shape="poly" id="edge169_Node000031_Node000133" title=" " alt="" coords="359,2344,364,2598,372,2785,387,2990,410,3196,442,3386,462,3470,485,3544,511,3605,541,3652,553,3665,550,3668,537,3656,506,3608,480,3546,457,3472,436,3387,404,3197,382,2991,367,2786,359,2598,353,2344"/>
+<area shape="rect" id="Node000135" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3746,729,3786"/>
+<area shape="poly" id="edge171_Node000031_Node000135" title=" " alt="" coords="358,2344,360,2612,367,2810,380,3028,402,3248,417,3352,435,3450,456,3539,480,3617,509,3682,541,3731,553,3742,568,3751,566,3755,550,3747,537,3734,504,3684,475,3619,450,3540,429,3451,411,3353,396,3248,375,3029,361,2811,355,2612,353,2344"/>
+<area shape="rect" id="Node000137" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3810,729,3850"/>
+<area shape="poly" id="edge173_Node000031_Node000137" title=" " alt="" coords="361,2344,380,2644,419,3107,445,3343,474,3551,506,3710,523,3764,541,3796,553,3808,568,3816,566,3821,550,3812,537,3800,518,3766,501,3712,468,3552,439,3343,414,3107,375,2644,355,2344"/>
+<area shape="rect" id="Node000139" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3874,729,3914"/>
+<area shape="poly" id="edge175_Node000031_Node000139" title=" " alt="" coords="360,2344,379,2655,417,3139,443,3385,472,3604,488,3695,505,3770,522,3826,541,3860,553,3872,568,3880,566,3885,550,3876,537,3864,518,3828,500,3772,483,3696,467,3605,437,3386,412,3139,374,2656,355,2344"/>
+<area shape="rect" id="Node000141" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,3938,729,3978"/>
+<area shape="poly" id="edge177_Node000031_Node000141" title=" " alt="" coords="360,2344,378,2667,415,3171,440,3428,470,3656,486,3752,504,3830,522,3889,541,3924,553,3936,568,3944,566,3949,550,3940,537,3928,517,3891,498,3832,481,3753,465,3657,435,3429,410,3171,373,2667,355,2344"/>
+<area shape="rect" id="Node000143" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,4002,729,4042"/>
+<area shape="poly" id="edge179_Node000031_Node000143" title=" " alt="" coords="360,2343,377,2677,413,3202,438,3470,468,3709,485,3808,502,3890,521,3951,541,3988,553,4000,568,4008,566,4013,550,4004,537,3992,516,3953,497,3891,479,3809,463,3709,433,3471,408,3202,372,2678,355,2344"/>
+<area shape="rect" id="Node000145" href="$classSDL_1_1ResourceUnsafe.html" title=" " alt="" coords="567,4066,729,4106"/>
+<area shape="poly" id="edge181_Node000031_Node000145" title=" " alt="" coords="360,2344,376,2689,411,3234,436,3513,466,3761,483,3865,501,3950,520,4014,541,4052,553,4064,568,4072,566,4077,550,4068,537,4056,516,4016,496,3951,478,3866,461,3762,431,3514,406,3234,371,2689,355,2344"/>
+<area shape="rect" id="Node000147" href="$classSDL_1_1ResourceUnique.html" title="Implement unique ownership for a resource." alt="" coords="553,4130,743,4170"/>
+<area shape="poly" id="edge183_Node000031_Node000147" title=" " alt="" coords="360,2344,375,2701,390,2971,410,3266,434,3556,464,3814,482,3921,500,4010,520,4076,541,4116,555,4129,551,4133,537,4120,515,4078,495,4011,476,3922,459,3814,429,3557,404,3266,385,2972,370,2701,355,2344"/>
+<area shape="rect" id="Node000148" href="$classSDL_1_1ResourceUnsafe.html" title="A dumb pointer to resource." alt="" coords="553,4194,743,4234"/>
+<area shape="poly" id="edge184_Node000031_Node000148" title=" " alt="" coords="360,2344,374,2712,388,2993,408,3298,432,3599,463,3866,480,3978,499,4070,519,4139,541,4180,555,4193,551,4197,537,4184,514,4141,494,4071,475,3979,457,3867,427,3599,402,3298,383,2993,369,2712,354,2344"/>
+<area shape="rect" id="Node000033" href="$structSDL_1_1AudioStreamLock.html" title="Locks a AudioStream." alt="" coords="815,469,984,495"/>
+<area shape="poly" id="edge69_Node000032_Node000033" title=" " alt="" coords="770,480,814,480,814,485,770,485"/>
+<area shape="rect" id="Node000035" href="$structSDL_1_1PropertiesLock.html" title="Wrap the lock state for Properties." alt="" coords="824,519,975,544"/>
+<area shape="poly" id="edge71_Node000034_Node000035" title=" " alt="" coords="761,537,824,533,824,539,762,543"/>
+<area shape="rect" id="Node000037" href="$structSDL_1_1SurfaceLock.html" title="Locks a Surface." alt="" coords="832,568,967,593"/>
+<area shape="poly" id="edge73_Node000036_Node000037" title=" " alt="" coords="771,590,832,584,832,590,772,596"/>
+<area shape="rect" id="Node000038" href="$classSDL_1_1TextureLock.html" title="Locks a Texture for access to its pixels." alt="" coords="833,617,966,643"/>
+<area shape="poly" id="edge74_Node000036_Node000038" title=" " alt="" coords="772,614,833,621,832,626,771,620"/>
+<area shape="rect" id="Node000040" href="$structSDL_1_1Animation.html" title="Handle to an owned animation." alt="" coords="838,667,961,692"/>
+<area shape="poly" id="edge76_Node000039_Node000040" title=" " alt="" coords="742,666,838,672,838,678,742,671"/>
+<area shape="rect" id="Node000042" href="$structSDL_1_1AudioDevice.html" title="Handle to an owned audioDevice." alt="" coords="831,716,968,741"/>
+<area shape="poly" id="edge78_Node000041_Node000042" title=" " alt="" coords="742,724,831,725,831,731,742,730"/>
+<area shape="rect" id="Node000044" href="$structSDL_1_1AudioStream.html" title="Handle to an owned audioStream." alt="" coords="830,777,969,803"/>
+<area shape="poly" id="edge80_Node000043_Node000044" title=" " alt="" coords="742,787,830,787,830,793,742,793"/>
+<area shape="rect" id="Node000046" href="$structSDL_1_1Condition.html" title="Handle to an owned condition." alt="" coords="841,841,958,867"/>
+<area shape="poly" id="edge82_Node000045_Node000046" title=" " alt="" coords="742,851,841,851,841,857,742,857"/>
+<area shape="rect" id="Node000048" href="$structSDL_1_1Cursor.html" title="Handle to an owned cursor." alt="" coords="851,905,948,931"/>
+<area shape="poly" id="edge84_Node000047_Node000048" title=" " alt="" coords="742,915,850,915,850,921,742,921"/>
+<area shape="rect" id="Node000050" href="$structSDL_1_1Environment.html" title="Handle to an owned environment." alt="" coords="830,969,969,995"/>
+<area shape="poly" id="edge86_Node000049_Node000050" title=" " alt="" coords="742,979,830,979,830,985,742,985"/>
+<area shape="rect" id="Node000052" href="$structSDL_1_1Font.html" title="Handle to an owned font." alt="" coords="858,1033,941,1059"/>
+<area shape="poly" id="edge88_Node000051_Node000052" title=" " alt="" coords="742,1043,858,1043,858,1049,742,1049"/>
+<area shape="rect" id="Node000054" href="$structSDL_1_1GLContext.html" title="Handle to an owned gLContext." alt="" coords="838,1097,961,1123"/>
+<area shape="poly" id="edge90_Node000053_Node000054" title=" " alt="" coords="742,1107,838,1107,838,1113,742,1113"/>
+<area shape="rect" id="Node000056" href="$structSDL_1_1IConv.html" title="Handle to an owned iConv." alt="" coords="853,1161,945,1187"/>
+<area shape="poly" id="edge92_Node000055_Node000056" title=" " alt="" coords="742,1171,853,1171,853,1177,742,1177"/>
+<area shape="rect" id="Node000058" href="$structSDL_1_1IOStream.html" title="Handle to an owned iOStream." alt="" coords="841,1225,957,1251"/>
+<area shape="poly" id="edge94_Node000057_Node000058" title=" " alt="" coords="742,1235,841,1235,841,1241,742,1241"/>
+<area shape="rect" id="Node000060" href="$structSDL_1_1Mutex.html" title="Handle to an owned mutex." alt="" coords="851,1289,947,1315"/>
+<area shape="poly" id="edge96_Node000059_Node000060" title=" " alt="" coords="742,1299,851,1299,851,1305,742,1305"/>
+<area shape="rect" id="Node000062" href="$structSDL_1_1Palette.html" title="Handle to an owned palette." alt="" coords="849,1353,949,1379"/>
+<area shape="poly" id="edge98_Node000061_Node000062" title=" " alt="" coords="742,1363,849,1363,849,1369,742,1369"/>
+<area shape="rect" id="Node000064" href="$structSDL_1_1Process.html" title="Handle to an owned process." alt="" coords="847,1417,952,1443"/>
+<area shape="poly" id="edge100_Node000063_Node000064" title=" " alt="" coords="742,1427,846,1427,846,1433,742,1433"/>
+<area shape="rect" id="Node000066" href="$structSDL_1_1Properties.html" title="Handle to an owned properties." alt="" coords="839,1481,960,1507"/>
+<area shape="poly" id="edge102_Node000065_Node000066" title=" " alt="" coords="742,1491,838,1491,838,1497,742,1497"/>
+<area shape="rect" id="Node000068" href="$structSDL_1_1RWLock.html" title="Handle to an owned rWLock." alt="" coords="846,1545,953,1571"/>
+<area shape="poly" id="edge104_Node000067_Node000068" title=" " alt="" coords="742,1555,846,1555,846,1561,742,1561"/>
+<area shape="rect" id="Node000070" href="$structSDL_1_1Renderer.html" title="Handle to an owned renderer." alt="" coords="842,1609,957,1635"/>
+<area shape="poly" id="edge106_Node000069_Node000070" title=" " alt="" coords="742,1619,842,1619,842,1625,742,1625"/>
+<area shape="rect" id="Node000072" href="$structSDL_1_1Semaphore.html" title="Handle to an owned semaphore." alt="" coords="835,1673,964,1699"/>
+<area shape="poly" id="edge108_Node000071_Node000072" title=" " alt="" coords="742,1683,834,1683,834,1689,742,1689"/>
+<area shape="rect" id="Node000074" href="$structSDL_1_1SharedObject.html" title="Handle to an owned sharedObject." alt="" coords="828,1737,971,1763"/>
+<area shape="poly" id="edge110_Node000073_Node000074" title=" " alt="" coords="742,1747,828,1747,828,1753,742,1753"/>
+<area shape="rect" id="Node000076" href="$structSDL_1_1Storage.html" title="Handle to an owned storage." alt="" coords="847,1801,952,1827"/>
+<area shape="poly" id="edge112_Node000075_Node000076" title=" " alt="" coords="742,1811,846,1811,846,1817,742,1817"/>
+<area shape="rect" id="Node000078" href="$structSDL_1_1Surface.html" title="Handle to an owned surface." alt="" coords="847,1865,951,1891"/>
+<area shape="poly" id="edge114_Node000077_Node000078" title=" " alt="" coords="742,1875,847,1875,847,1881,742,1881"/>
+<area shape="rect" id="Node000080" href="$structSDL_1_1Text.html" title="Handle to an owned text." alt="" coords="858,1929,941,1955"/>
+<area shape="poly" id="edge116_Node000079_Node000080" title=" " alt="" coords="742,1939,858,1939,858,1945,742,1945"/>
+<area shape="rect" id="Node000082" href="$structSDL_1_1TextEngine.html" title="Handle to an owned textEngine." alt="" coords="836,2001,963,2027"/>
+<area shape="poly" id="edge118_Node000081_Node000082" title=" " alt="" coords="767,2011,836,2011,836,2017,767,2017"/>
+<area shape="rect" id="Node000084" href="$structSDL_1_1Texture.html" title="Handle to an owned texture." alt="" coords="848,2073,951,2099"/>
+<area shape="poly" id="edge120_Node000083_Node000084" title=" " alt="" coords="742,2083,848,2083,848,2089,742,2089"/>
+<area shape="rect" id="Node000086" href="$structSDL_1_1Thread.html" title="Handle to an owned thread." alt="" coords="849,2137,949,2163"/>
+<area shape="poly" id="edge122_Node000085_Node000086" title=" " alt="" coords="742,2147,849,2147,849,2153,742,2153"/>
+<area shape="rect" id="Node000088" href="$structSDL_1_1Tray.html" title="Handle to an owned tray." alt="" coords="858,2201,941,2227"/>
+<area shape="poly" id="edge124_Node000087_Node000088" title=" " alt="" coords="742,2211,858,2211,858,2217,742,2217"/>
+<area shape="rect" id="Node000090" href="$structSDL_1_1TrayEntry.html" title="Handle to an owned trayEntry." alt="" coords="841,2265,957,2291"/>
+<area shape="poly" id="edge126_Node000089_Node000090" title=" " alt="" coords="742,2275,841,2275,841,2281,742,2281"/>
+<area shape="rect" id="Node000092" href="$structSDL_1_1Window.html" title="Handle to an owned window." alt="" coords="846,2329,953,2355"/>
+<area shape="poly" id="edge128_Node000091_Node000092" title=" " alt="" coords="742,2339,846,2339,846,2345,742,2345"/>
+<area shape="rect" id="Node000094" href="$structSDL_1_1AnimationUnsafe.html" title="Unsafe Handle to animation." alt="" coords="815,2393,983,2419"/>
+<area shape="poly" id="edge130_Node000093_Node000094" title=" " alt="" coords="742,2403,815,2403,815,2409,742,2409"/>
+<area shape="rect" id="Node000096" href="$structSDL_1_1AudioDeviceUnsafe.html" title="Unsafe Handle to audioDevice." alt="" coords="808,2457,991,2483"/>
+<area shape="poly" id="edge132_Node000095_Node000096" title=" " alt="" coords="743,2467,808,2467,808,2473,743,2473"/>
+<area shape="rect" id="Node000098" href="$structSDL_1_1AudioStreamUnsafe.html" title="Unsafe Handle to audioStream." alt="" coords="807,2521,992,2547"/>
+<area shape="poly" id="edge134_Node000097_Node000098" title=" " alt="" coords="742,2531,806,2531,806,2537,742,2537"/>
+<area shape="rect" id="Node000100" href="$structSDL_1_1ConditionUnsafe.html" title="Unsafe Handle to condition." alt="" coords="818,2585,981,2611"/>
+<area shape="poly" id="edge136_Node000099_Node000100" title=" " alt="" coords="742,2595,818,2595,818,2601,742,2601"/>
+<area shape="rect" id="Node000102" href="$structSDL_1_1CursorUnsafe.html" title="Unsafe Handle to cursor." alt="" coords="828,2649,971,2675"/>
+<area shape="poly" id="edge138_Node000101_Node000102" title=" " alt="" coords="742,2659,828,2659,828,2665,742,2665"/>
+<area shape="rect" id="Node000104" href="$structSDL_1_1EnvironmentUnsafe.html" title="Unsafe Handle to environment." alt="" coords="807,2713,991,2739"/>
+<area shape="poly" id="edge140_Node000103_Node000104" title=" " alt="" coords="742,2723,807,2723,807,2729,742,2729"/>
+<area shape="rect" id="Node000106" href="$structSDL_1_1FontUnsafe.html" title="Unsafe Handle to font." alt="" coords="835,2777,964,2803"/>
+<area shape="poly" id="edge142_Node000105_Node000106" title=" " alt="" coords="742,2787,834,2787,834,2793,742,2793"/>
+<area shape="rect" id="Node000108" href="$structSDL_1_1GLContextUnsafe.html" title="Unsafe Handle to gLContext." alt="" coords="815,2841,984,2867"/>
+<area shape="poly" id="edge144_Node000107_Node000108" title=" " alt="" coords="742,2851,814,2851,814,2857,742,2857"/>
+<area shape="rect" id="Node000110" href="$structSDL_1_1IConvUnsafe.html" title="Unsafe Handle to iConv." alt="" coords="830,2905,969,2931"/>
+<area shape="poly" id="edge146_Node000109_Node000110" title=" " alt="" coords="742,2915,830,2915,830,2921,742,2921"/>
+<area shape="rect" id="Node000112" href="$structSDL_1_1IOStreamUnsafe.html" title="Unsafe Handle to iOStream." alt="" coords="818,2969,981,2995"/>
+<area shape="poly" id="edge148_Node000111_Node000112" title=" " alt="" coords="742,2979,818,2979,818,2985,742,2985"/>
+<area shape="rect" id="Node000114" href="$structSDL_1_1MutexUnsafe.html" title="Unsafe Handle to mutex." alt="" coords="828,3033,971,3059"/>
+<area shape="poly" id="edge150_Node000113_Node000114" title=" " alt="" coords="742,3043,828,3043,828,3049,742,3049"/>
+<area shape="rect" id="Node000116" href="$structSDL_1_1PaletteUnsafe.html" title="Unsafe Handle to palette." alt="" coords="826,3097,973,3123"/>
+<area shape="poly" id="edge152_Node000115_Node000116" title=" " alt="" coords="742,3107,826,3107,826,3113,742,3113"/>
+<area shape="rect" id="Node000118" href="$structSDL_1_1ProcessUnsafe.html" title="Unsafe Handle to process." alt="" coords="824,3161,975,3187"/>
+<area shape="poly" id="edge154_Node000117_Node000118" title=" " alt="" coords="742,3171,824,3171,824,3177,742,3177"/>
+<area shape="rect" id="Node000120" href="$structSDL_1_1PropertiesUnsafe.html" title="Unsafe Handle to properties." alt="" coords="816,3225,983,3251"/>
+<area shape="poly" id="edge156_Node000119_Node000120" title=" " alt="" coords="742,3235,816,3235,816,3241,742,3241"/>
+<area shape="rect" id="Node000122" href="$structSDL_1_1RWLockUnsafe.html" title="Unsafe Handle to rWLock." alt="" coords="823,3289,976,3315"/>
+<area shape="poly" id="edge158_Node000121_Node000122" title=" " alt="" coords="742,3299,822,3299,822,3305,742,3305"/>
+<area shape="rect" id="Node000124" href="$structSDL_1_1RendererUnsafe.html" title="Unsafe Handle to renderer." alt="" coords="819,3353,979,3379"/>
+<area shape="poly" id="edge160_Node000123_Node000124" title=" " alt="" coords="742,3363,819,3363,819,3369,742,3369"/>
+<area shape="rect" id="Node000126" href="$structSDL_1_1SemaphoreUnsafe.html" title="Unsafe Handle to semaphore." alt="" coords="812,3417,987,3443"/>
+<area shape="poly" id="edge162_Node000125_Node000126" title=" " alt="" coords="743,3427,812,3427,812,3433,743,3433"/>
+<area shape="rect" id="Node000128" href="$structSDL_1_1SharedObjectUnsafe.html" title="Unsafe Handle to sharedObject." alt="" coords="805,3481,993,3507"/>
+<area shape="poly" id="edge164_Node000127_Node000128" title=" " alt="" coords="743,3491,805,3491,805,3497,743,3497"/>
+<area shape="rect" id="Node000130" href="$structSDL_1_1StorageUnsafe.html" title="Unsafe Handle to storage." alt="" coords="824,3545,975,3571"/>
+<area shape="poly" id="edge166_Node000129_Node000130" title=" " alt="" coords="742,3555,824,3555,824,3561,742,3561"/>
+<area shape="rect" id="Node000132" href="$structSDL_1_1SurfaceUnsafe.html" title="Unsafe Handle to surface." alt="" coords="824,3609,975,3635"/>
+<area shape="poly" id="edge168_Node000131_Node000132" title=" " alt="" coords="742,3619,824,3619,824,3625,742,3625"/>
+<area shape="rect" id="Node000134" href="$structSDL_1_1TextEngineUnsafe.html" title="Unsafe Handle to textEngine." alt="" coords="813,3681,985,3707"/>
+<area shape="poly" id="edge170_Node000133_Node000134" title=" " alt="" coords="767,3691,813,3691,813,3697,767,3697"/>
+<area shape="rect" id="Node000136" href="$structSDL_1_1TextUnsafe.html" title="Unsafe Handle to text." alt="" coords="835,3753,963,3779"/>
+<area shape="poly" id="edge172_Node000135_Node000136" title=" " alt="" coords="742,3763,835,3763,835,3769,742,3769"/>
+<area shape="rect" id="Node000138" href="$structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture." alt="" coords="825,3817,974,3843"/>
+<area shape="poly" id="edge174_Node000137_Node000138" title=" " alt="" coords="742,3827,824,3827,824,3833,742,3833"/>
+<area shape="rect" id="Node000140" href="$structSDL_1_1ThreadUnsafe.html" title="Unsafe Handle to thread." alt="" coords="826,3881,973,3907"/>
+<area shape="poly" id="edge176_Node000139_Node000140" title=" " alt="" coords="742,3891,826,3891,826,3897,742,3897"/>
+<area shape="rect" id="Node000142" href="$structSDL_1_1TrayEntryUnsafe.html" title="Unsafe Handle to trayEntry." alt="" coords="818,3945,981,3971"/>
+<area shape="poly" id="edge178_Node000141_Node000142" title=" " alt="" coords="742,3955,818,3955,818,3961,742,3961"/>
+<area shape="rect" id="Node000144" href="$structSDL_1_1TrayUnsafe.html" title="Unsafe Handle to tray." alt="" coords="835,4009,963,4035"/>
+<area shape="poly" id="edge180_Node000143_Node000144" title=" " alt="" coords="742,4019,835,4019,835,4025,742,4025"/>
+<area shape="rect" id="Node000146" href="$structSDL_1_1WindowUnsafe.html" title="Unsafe Handle to window." alt="" coords="823,4073,976,4099"/>
+<area shape="poly" id="edge182_Node000145_Node000146" title=" " alt="" coords="742,4083,822,4083,822,4089,742,4089"/>
 </map>
