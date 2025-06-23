@@ -30156,9 +30156,7 @@ struct AudioDevice : ResourceUnique<AudioDeviceRef>
    * Move this audioDevice into a AudioDeviceShared.
    */
   AudioDeviceShared share();
-
 };
-
 
 inline AudioDeviceShared AudioDevice::share()
 {
@@ -31258,7 +31256,8 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
   /**
    * Query an audio stream for its currently-bound device.
    *
-   * This reports the audio device that an audio stream is currently bound to.
+   * This reports the logical audio device that an audio stream is currently
+   * bound to.
    *
    * If not bound, or invalid, this returns zero, which is not a valid device
    * ID.
@@ -31498,9 +31497,7 @@ struct AudioStream : ResourceUnique<AudioStreamRef>
    * Move this audioStream into a AudioStreamShared.
    */
   AudioStreamShared share();
-
 };
-
 
 inline AudioStreamShared AudioStream::share()
 {

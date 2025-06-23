@@ -20215,7 +20215,7 @@
               "sourceName": "SDL_UnbindAudioStream"
             },
             "GetDevice": {
-              "doc": "Query an audio stream for its currently-bound device.\n\nThis reports the audio device that an audio stream is currently bound to.\n\nIf not bound, or invalid, this returns zero, which is not a valid device\nID.\n\n@returns the bound audio device, or 0 if not bound or invalid.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioDeviceRef.BindAudioStream\n@sa AudioDeviceRef.BindAudioStreams",
+              "doc": "Query an audio stream for its currently-bound device.\n\nThis reports the logical audio device that an audio stream is currently bound to.\n\nIf not bound, or invalid, this returns zero, which is not a valid device\nID.\n\n@returns the bound audio device, or 0 if not bound or invalid.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioDeviceRef.BindAudioStream\n@sa AudioDeviceRef.BindAudioStreams",
               "name": "GetDevice",
               "kind": "function",
               "type": "AudioDeviceRef",
