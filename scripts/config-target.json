@@ -1,0 +1,9 @@
+{
+  "sources": [
+    "SDL3pp_bits.h"
+  ],
+  "api": "scripts/target.json",
+  "baseDir": "include/SDL3pp/",
+  "sourceApi": "scripts/source.json",
+  "transform": "scripts/transform.json"
+}
