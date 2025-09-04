@@ -184,6 +184,8 @@ endif (DOXYGEN_FOUND)
 #########################
 ## Refresh the headers ##
 #########################
+set(LEGACY_TRANSFORM_JSON ${PROJECT_SOURCE_DIR}/scripts/transform-legacy.json)
+set(LEGACY_CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target-legacy.json)
 
 # Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source_xml.json
@@ -199,29 +201,29 @@ add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
 
 # Current SDL3pp state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/current.json
-    COMMAND node scripts/cppfier parse scripts/config-target.json
-    DEPENDS ${SDL3PP_WRAPPED_HEADERS} scripts/config-target.json
+    COMMAND node scripts/cppfier parse ${LEGACY_CONFIG_TARGET}
+    DEPENDS ${SDL3PP_WRAPPED_HEADERS} ${LEGACY_CONFIG_TARGET}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
-add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/transform.json
-    COMMAND node scripts/gen-transform ${PROJECT_SOURCE_DIR}/scripts/transform.json
-    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/gen-transform.js
+add_custom_command(OUTPUT ${LEGACY_TRANSFORM_JSON}
+    COMMAND node scripts/gen-transform-legacy ${LEGACY_TRANSFORM_JSON}
+    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/gen-transform-legacy.js
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
 # Target SDL3pp state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
-    COMMAND node scripts/cppfier transform scripts/config-target.json
+    COMMAND node scripts/cppfier transform-legacy ${LEGACY_CONFIG_TARGET}
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json 
-            ${PROJECT_SOURCE_DIR}/scripts/config-target.json 
-            ${PROJECT_SOURCE_DIR}/scripts/transform.json 
+            ${LEGACY_CONFIG_TARGET} 
+            ${LEGACY_TRANSFORM_JSON}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
 # Merge source and current towards target
 add_custom_target(SDL3pp_refresh
-    COMMAND node scripts/cppfier update scripts/config-target.json
+    COMMAND node scripts/cppfier update ${LEGACY_CONFIG_TARGET}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/target.json ${PROJECT_SOURCE_DIR}/scripts/current.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

@@ -31,8 +31,8 @@ function main(args) {
     case "update":
       update(args);
       break;
-    case "transform":
-      transform(args);
+    case "transform-legacy":
+      transformLegacy(args);
       break;
     case "--help":
     case "help":
@@ -307,9 +307,9 @@ function update(args) {
  * Scan files
  * @param {string[]} args the arguments
  */
-function transform(args) {
+function transformLegacy(args) {
   if (args?.length == 0) {
-    return help(["transform"]);
+    return help(["transform-legacy"]);
   }
   const config = {
     /** @type {Api} */
