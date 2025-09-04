@@ -63,7 +63,12 @@ function generateFile(content, targetFile, config) {
   if (placeholderIndex === null) {
     throw new Error("Can not find template's placeholder");
   }
-  content.splice(placeholderIndex, 1);
+  const name = targetFile.name;
+
+  const fileDocBegin = generateDocString(targetFile.doc + "\n\n@{") + "\n";
+  const fileDocEnd = '/// @}\n';
+  content.splice(placeholderIndex, 1, fileDocBegin, fileDocEnd);
+
 }
 
 /** @param {string[]} content  */
@@ -76,4 +81,17 @@ function findPlaceholderIndex(content) {
   return null;
 }
 
+/**
+ * 
+ * @param {string}  docStr 
+ * @param {string=} prefix 
+ */
+function generateDocString(docStr, prefix) {
+  if (!docStr) return '';
+  prefix = prefix ?? '';
+  docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
+  return `${prefix}/**\n${docStr}\n${prefix} */`;
+}
+
 exports.generateApi = generateApi;
+exports.generateDocString = generateDocString;

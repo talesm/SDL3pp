@@ -5,6 +5,16 @@
 
 namespace SDL {
 
+/**
+ * @defgroup CategoryBits Category Bits
+ *
+ * Functions for fiddling with bits and bitmasks.
+ *
+ * @{
+ */
+
+/// @}
+
 }
 
 #endif /* SDL3PP_BITS_H_ */

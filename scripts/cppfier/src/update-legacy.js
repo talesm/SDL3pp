@@ -1,3 +1,4 @@
+const { generateDocString } = require("./generate.js");
 const { parseContent } = require("./parse.js");
 const { readLinesSync, system, writeLinesSync, looksLikeFreeFunction } = require("./utils.js");
 const { existsSync } = require("fs");
@@ -652,18 +653,6 @@ function generateParameter(parameter) {
   if (typeof parameter == "string") return parameter;
   if (!parameter.default) return `${parameter.type} ${parameter.name}`;
   return `${parameter.type} ${parameter.name} = ${parameter.default}`;
-}
-
-/**
- * 
- * @param {string} docStr 
- * @param {string=} prefix 
- */
-function generateDocString(docStr, prefix) {
-  if (!docStr) return '';
-  prefix = prefix ?? '';
-  docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
-  return `${prefix}/**\n${docStr}\n${prefix} */`;
 }
 
 /**
