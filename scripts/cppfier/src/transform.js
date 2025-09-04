@@ -17,7 +17,7 @@ const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./u
  * 
  * @param {TransformConfig} config the rules to apply into source
  */
-function transformApiLegacy(config) {
+function transformApi(config) {
   const source = config.sourceApi;
   const transform = config.transform ?? { files: {} };
 
@@ -1578,4 +1578,4 @@ function resolveDocRefs(doc, context) {
 }
 
 
-exports.transformApiLegacy = transformApiLegacy;
+exports.transformApi = transformApi;
