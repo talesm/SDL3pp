@@ -5,7 +5,7 @@ const { transformApi } = require("./transform-legacy.js");
 const { updateApi } = require("./update-legacy.js");
 const { readJSONSync, system, writeJSONSync, writeLinesSync } = require("./utils.js");
 /**
- * @import {Api, ApiTransformLegacy} from "./types"
+ * @import {Api, ApiTransform} from "./types"
  */
 
 /**
@@ -387,7 +387,7 @@ function transformLegacy(args) {
   const config = {
     /** @type {Api} */
     sourceApi: null,
-    /** @type {ApiTransformLegacy} */
+    /** @type {ApiTransform} */
     transform: null,
     api: "",
     baseDir: "",

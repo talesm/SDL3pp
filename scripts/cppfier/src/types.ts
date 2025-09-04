@@ -83,8 +83,8 @@ export interface ApiParameter {
 
 export type StringMap = Dict<string>;
 
-export interface ApiTransformLegacy {
-  files?: Dict<ApiFileTransformLegacy>;
+export interface ApiTransform {
+  files?: Dict<ApiFileTransform>;
   prefixes?: string | string[];
   definitionPrefix?: string;
   renameRules?: ReplacementRule[];
@@ -94,13 +94,13 @@ export interface ApiTransformLegacy {
   minVersions?: Dict<VersionTag>
 }
 
-export interface ApiFileTransformLegacy {
+export interface ApiFileTransform {
   name?: string;
   doc?: string;
   ignoreEntries?: string[];
-  includeBefore?: ApiEntryTransformLegacyMap;
-  includeAfter?: ApiEntryTransformLegacyMap;
-  transform?: Dict<ApiEntryTransformLegacy>;
+  includeBefore?: ApiEntryTransformMap;
+  includeAfter?: ApiEntryTransformMap;
+  transform?: Dict<ApiEntryTransform>;
   resources?: Dict<ApiResource>;
   enumerations?: Dict<ApiEnumeration>;
   wrappers?: Dict<ApiWrapper>;
@@ -109,14 +109,14 @@ export interface ApiFileTransformLegacy {
   enableException?: boolean;
 }
 
-export type ApiEntryTransformLegacyMap = Dict<ApiEntryTransformLegacy | ApiEntryTransformLegacy[]>;
+export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>;
 
-export interface ApiEntryTransformLegacy extends ApiEntryBase {
+export interface ApiEntryTransform extends ApiEntryBase {
   entries?: ApiSubEntryTransformLegacyMap;
-  link?: ApiEntryTransformLegacy;
+  link?: ApiEntryTransform;
 }
 
-export interface ApiResource extends ApiEntryTransformLegacy {
+export interface ApiResource extends ApiEntryTransform {
   kind?: "struct";
 
   includeAfter?: string;
@@ -181,11 +181,11 @@ export interface ApiResource extends ApiEntryTransformLegacy {
   extraParameters?: string[]
 }
 
-export interface ApiLock extends ApiEntryTransformLegacy {
+export interface ApiLock extends ApiEntryTransform {
   kind?: "struct";
 }
 
-export interface ApiWrapper extends ApiEntryTransformLegacy {
+export interface ApiWrapper extends ApiEntryTransform {
   kind?: "struct";
 
   includeAfter?: string;
@@ -219,7 +219,7 @@ export interface ApiWrapper extends ApiEntryTransformLegacy {
   comparable?: boolean
 }
 
-export interface ApiEnumeration extends ApiEntryTransformLegacy {
+export interface ApiEnumeration extends ApiEntryTransform {
   kind?: "struct" | "alias" | "enum";
   prefix?: string;
   newPrefix?: string;
@@ -230,7 +230,7 @@ export interface ApiEnumeration extends ApiEntryTransformLegacy {
 
 export type QuickTransform = "immutable" | "ctor" | ApiEntryKind;
 
-export type ApiSubEntryTransformLegacyMap = Dict<ApiEntryTransformLegacy | ApiEntryBase[] | QuickTransform>;
+export type ApiSubEntryTransformLegacyMap = Dict<ApiEntryTransform | ApiEntryBase[] | QuickTransform>;
 
 export interface ReplacementRule {
   pattern: RegExp;

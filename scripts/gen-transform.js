@@ -1,10 +1,10 @@
 const { writeJSONSync } = require("./cppfier/src/utils");
 
 /**
- * @import {ApiTransformLegacy} from "./cppfier/src/types"
+ * @import {ApiTransform} from "./cppfier/src/types"
  */
 
-/** @type {ApiTransformLegacy} */
+/** @type {ApiTransform} */
 const transform = {
   prefixes: ["SDL_", "IMG_", "TTF_"],
   definitionPrefix: "SDL_",
