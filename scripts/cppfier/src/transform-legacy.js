@@ -1,5 +1,5 @@
+const { generateCallParameters } = require("./generate");
 const { insertEntry } = require("./parse");
-const { generateCallParameters } = require("./update-legacy");
 const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./utils");
 
 /**

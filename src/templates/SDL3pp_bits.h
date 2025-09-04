@@ -6,6 +6,6 @@
 namespace SDL {
 
 //! content
-}
+} // namespace SDL
 
 #endif /* SDL3PP_BITS_H_ */
