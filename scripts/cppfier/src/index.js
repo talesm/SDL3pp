@@ -35,6 +35,7 @@ function main(args) {
     case "update-legacy":
       updateLegacy(args);
       break;
+    case "transform":
     case "transform-legacy":
       transformLegacy(args);
       break;

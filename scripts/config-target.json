@@ -2,7 +2,7 @@
   "targets": [
     "SDL3pp_bits.h"
   ],
-  "api": "scripts/target-legacy.json",
+  "api": "scripts/target.json",
   "baseDir": "include/SDL3pp/",
   "templateDir": "src/templates/",
   "sourceApi": "scripts/source.json",

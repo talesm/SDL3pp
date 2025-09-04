@@ -188,6 +188,9 @@ endif (DOXYGEN_FOUND)
 set(LEGACY_TRANSFORM_JSON ${PROJECT_SOURCE_DIR}/scripts/transform-legacy.json)
 set(LEGACY_TARGET_JSON ${PROJECT_SOURCE_DIR}/scripts/target-legacy.json)
 set(LEGACY_CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target-legacy.json)
+
+set(TRANSFORM_JSON ${PROJECT_SOURCE_DIR}/scripts/transform.json)
+set(TARGET_JSON ${PROJECT_SOURCE_DIR}/scripts/target.json)
 set(CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target.json)
 
 # Source SDL and libs state
@@ -215,7 +218,7 @@ add_custom_command(OUTPUT ${LEGACY_TRANSFORM_JSON}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
-# Target SDL3pp state
+# Target SDL3pp state legacy
 add_custom_command(OUTPUT ${LEGACY_TARGET_JSON}
     COMMAND node scripts/cppfier transform-legacy ${LEGACY_CONFIG_TARGET}
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json 
@@ -231,11 +234,23 @@ add_custom_target(SDL3pp_refresh
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
-add_custom_target(SDL3pp_generate
-    COMMAND node scripts/cppfier generate ${CONFIG_TARGET}
-    DEPENDS ${CONFIG_TARGET} ${LEGACY_TARGET_JSON}
+# Target SDL3pp state
+add_custom_command(OUTPUT ${TARGET_JSON}
+    COMMAND node scripts/cppfier transform ${CONFIG_TARGET}
+    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json 
+            ${CONFIG_TARGET} 
+            ${TRANSFORM_JSON}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
+
+# Generate sources
+add_custom_target(SDL3pp_generate
+    COMMAND node scripts/cppfier generate ${CONFIG_TARGET}
+    DEPENDS ${CONFIG_TARGET} ${TARGET_JSON}
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
+
+# Apply patches
 add_custom_target(SDL3pp_refresh_new
     COMMAND scripts/applyPatches.sh
     DEPENDS SDL3pp_generate
