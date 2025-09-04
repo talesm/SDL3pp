@@ -108,7 +108,6 @@ function parseFileRecursive(filename) {
     includes: [],
     files: [],
   };
-  /** @type {{[name: string]: ParsedFile}} */
   const queue = [filename];
   const alreadyIncluded = new Set();
   const alreadySet = new Set();
