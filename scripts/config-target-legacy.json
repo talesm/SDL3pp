@@ -49,7 +49,7 @@
   ],
   "storeLineNumbers": true,
   "api": "scripts/target-legacy.json",
-  "baseDir": "include/SDL3pp/",
+  "baseDir": "include/legacy/SDL3pp/",
   "currentApi": "scripts/current.json",
   "outputFile": "scripts/current.json",
   "sourceApi": "scripts/source.json",
