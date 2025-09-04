@@ -85,13 +85,13 @@ add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_MAIN}
 add_subdirectory(examples)
 
 # Unit tests
-add_library(test_main OBJECT test/doctest.cpp)
+add_library(test_main OBJECT test/legacy/doctest.cpp)
 enable_testing()
 
-file(GLOB unitTestSources CONFIGURE_DEPENDS test/SDL3pp_*.cpp)
-add_executable(SDL3pp_unitTests ${unitTestSources})
-target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp_lib test_main)
-add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
+file(GLOB UNITTEST CONFIGURE_DEPENDS test/legacy/SDL3pp_*.cpp)
+add_executable(SDL3pp_unitTests_legacy ${UNITTEST})
+target_link_libraries(SDL3pp_unitTests_legacy PRIVATE SDL3pp_lib test_main)
+add_test(NAME SDL3pp_unitTests_legacy COMMAND SDL3pp_unitTests_legacy)
 
 # The documentation
 # check if Doxygen is installed
@@ -185,6 +185,7 @@ endif (DOXYGEN_FOUND)
 ## Refresh the headers ##
 #########################
 set(LEGACY_TRANSFORM_JSON ${PROJECT_SOURCE_DIR}/scripts/transform-legacy.json)
+set(LEGACY_TARGET_JSON ${PROJECT_SOURCE_DIR}/scripts/target-legacy.json)
 set(LEGACY_CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target-legacy.json)
 
 # Source SDL and libs state
@@ -213,7 +214,7 @@ add_custom_command(OUTPUT ${LEGACY_TRANSFORM_JSON}
 )
 
 # Target SDL3pp state
-add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
+add_custom_command(OUTPUT ${LEGACY_TARGET_JSON}
     COMMAND node scripts/cppfier transform-legacy ${LEGACY_CONFIG_TARGET}
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json 
             ${LEGACY_CONFIG_TARGET} 
@@ -225,6 +226,6 @@ add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
 add_custom_target(SDL3pp_refresh
     COMMAND node scripts/cppfier update-legacy ${LEGACY_CONFIG_TARGET}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/target.json ${PROJECT_SOURCE_DIR}/scripts/current.json
+    DEPENDS ${LEGACY_TARGET_JSON} ${PROJECT_SOURCE_DIR}/scripts/current.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
