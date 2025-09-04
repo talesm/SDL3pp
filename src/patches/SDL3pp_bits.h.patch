@@ -1,17 +1,22 @@
 diff --git a/include/SDL3pp/SDL3pp_bits.h b/include/SDL3pp/SDL3pp_bits.h
-index bf494118..c818e3eb 100644
+index 3c18c1dd..c818e3eb 100644
 --- a/include/SDL3pp/SDL3pp_bits.h
 +++ b/include/SDL3pp/SDL3pp_bits.h
-@@ -6,7 +6,7 @@
- namespace SDL {
- 
+@@ -1,5 +1,12 @@
++#ifndef SDL3PP_BITS_H_
++#define SDL3PP_BITS_H_
++
++#include <SDL3/SDL_bits.h>
++
++namespace SDL {
++
  /**
 - * @defgroup CategoryBits Category Bits
 + * @defgroup CategoryBits Bit Manipulation
   *
   * Functions for fiddling with bits and bitmasks.
   *
-@@ -31,9 +31,9 @@ namespace SDL {
+@@ -24,9 +31,9 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -23,7 +28,7 @@ index bf494118..c818e3eb 100644
  }
  
  /**
-@@ -54,9 +54,9 @@ inline int MostSignificantBitIndex32(Uint32 x)
+@@ -47,9 +54,13 @@ inline int MostSignificantBitIndex32(Uint32 x)
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -35,3 +40,7 @@ index bf494118..c818e3eb 100644
  }
  
  /// @}
++
++} // namespace SDL
++
++#endif /* SDL3PP_BITS_H_ */

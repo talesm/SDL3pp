@@ -1,4 +1,4 @@
-const { readLinesSync, system, writeLinesSync, looksLikeFreeFunction } = require("./utils.js");
+const { system, writeLinesSync } = require("./utils.js");
 const { existsSync, mkdirSync } = require("fs");
 /**
  * @import { Api, ApiEntries, ApiEntry, ApiFile, ApiParameter, ApiParameters } from "./types.js"
@@ -25,25 +25,18 @@ function generateApi(config) {
 
   let totalChanges = 0;
   for (const name of files) {
-    const templateFilename = templateDir + name;
-    if (!existsSync(templateFilename)) {
-      system.warn(`File template not found: ${name}`);
-      continue;
-    }
     system.log(`Checking ${name}`);
-    const content = readLinesSync(templateFilename);
     const targetFile = api.files[name];
 
     try {
-      generateFile(content, targetFile, config);
+      const targetFilename = baseDir + name;
+      const generatedContent = generateFile(targetFile);
+      writeLinesSync(targetFilename, generatedContent);
+
+      totalChanges += 1;
     } catch (e) {
       system.warn(`Can not generate ${name}\n`, e);
-      continue;
     }
-    const targetFilename = baseDir + name;
-    writeLinesSync(targetFilename, content);
-
-    totalChanges += 1;
   }
   if (totalChanges) {
     system.log(`Total of ${totalChanges} file(s) generated`);
@@ -54,22 +47,14 @@ function generateApi(config) {
 
 /**
  * 
- * @param {string[]}          content 
  * @param {ApiFile}           targetFile 
- * @param {GenerateApiConfig} config 
  */
-function generateFile(content, targetFile, config) {
-  const placeholderIndex = findPlaceholderIndex(content);
-  if (placeholderIndex === null) {
-    throw new Error("Can not find template's placeholder");
-  }
-  const name = targetFile.name;
-
+function generateFile(targetFile) {
   const fileDocBegin = generateDocString(targetFile.doc + "\n\n@{") + "\n";
-  const fileDocEnd = '/// @}\n';
   const generatedEntries = generateEntries(targetFile.entries, '');
+  const fileDocEnd = '/// @}\n';
 
-  content.splice(placeholderIndex, 1, fileDocBegin, generatedEntries, fileDocEnd);
+  return [fileDocBegin, generatedEntries, fileDocEnd];
 }
 
 /**
