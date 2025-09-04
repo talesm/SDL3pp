@@ -3,7 +3,7 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformLegacyMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformLegacyMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, ApiEntryTransformMap } from "./types"
  */
 
 /**
@@ -35,10 +35,8 @@ function transformApi(config) {
       fileConfig.ignoreEntries?.forEach(s => context.blacklist.add(s));
       if (!fileConfig.transform) fileConfig.transform = {};
       if (!fileConfig.definitionPrefix) fileConfig.definitionPrefix = context.definitionPrefix;
-      if (!fileConfig.includeBefore) fileConfig.includeBefore = {};
-      if (!fileConfig.includeAfter) fileConfig.includeAfter = {};
     } else {
-      fileTransformMap[sourceName] = { transform: {}, definitionPrefix: context.definitionPrefix, includeAfter: {}, includeBefore: {} };
+      fileTransformMap[sourceName] = { transform: {}, definitionPrefix: context.definitionPrefix };
     }
   }
 
@@ -88,6 +86,9 @@ class ApiContext {
     this.blacklist = new Set();
 
     this.minVersions = transform.minVersions ?? {};
+
+    /** @type {Dict<ApiEntryTransformMap>} */
+    this.includeAfterMap = {};
 
     /** @type {StringMap} */
     this.paramTypeMap = {};
@@ -191,6 +192,56 @@ class ApiContext {
     if (version.patch > tag.patch) return true;
     /* if (version.patch <= tag.patch)*/ return false;
   }
+
+  /**
+   * 
+   * @param {string}  file 
+   * @param {string}  includeAfterKey 
+   */
+  getOrCreateIncludeAfter(file, includeAfterKey) {
+    // context.addIncludeAfter(file.name, file)
+    const includeAfter = this.includeAfterMap[file];
+    if (!includeAfter) {
+      /** @type {ApiEntryTransform[]} */
+      const newArray = [];
+      this.includeAfterMap[file] = { [includeAfterKey]: newArray };
+      return newArray;
+    }
+
+    const includeTarget = includeAfter[includeAfterKey];
+    if (Array.isArray(includeTarget)) return includeTarget;
+    return includeAfter[includeAfterKey] = includeTarget ? [includeTarget] : [];
+  }
+
+  /**
+   * Add to includeAfter field
+   * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
+   * @param {string}                                        file 
+   * @param {string}                                        includeAfterKey 
+   */
+  includeAfter(entryOrName, file, includeAfterKey) {
+    const includeTarget = this.getOrCreateIncludeAfter(file, includeAfterKey);
+    if (Array.isArray(entryOrName)) {
+      includeTarget.push(...entryOrName);
+    } else {
+      includeTarget.push((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
+    }
+  }
+
+  /**
+   * Prepend to includeAfter field
+   * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
+   * @param {string}                                        file 
+   * @param {string}                                        includeAfterKey 
+   */
+  prependIncludeAfter(entryOrName, file, includeAfterKey) {
+    const includeTarget = this.getOrCreateIncludeAfter(file, includeAfterKey);
+    if (Array.isArray(entryOrName)) {
+      includeTarget.unshift(...entryOrName);
+    } else {
+      includeTarget.unshift((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
+    }
+  }
 }
 
 /**
@@ -217,13 +268,13 @@ function isType(kind) {
  * @param {ApiContext}        context 
  */
 function expandTypes(sourceEntries, file, context) {
-  expandResources(sourceEntries, file, context);
-  expandWrappers(sourceEntries, file, context);
+  // expandResources(sourceEntries, file, context);
+  // expandWrappers(sourceEntries, file, context);
   expandEnumerations(sourceEntries, file, context);
-  expandNamespaces(sourceEntries, file, context);
-  expandCallbacks(sourceEntries, file, context);
+  // expandNamespaces(sourceEntries, file, context);
+  // expandCallbacks(sourceEntries, file, context);
 
-  const transformMap = file.transform;
+  const transformMap = file.transform ?? {};
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
     if (context.blacklist.has(sourceName) || Array.isArray(sourceEntry)) continue;
@@ -246,7 +297,7 @@ function expandTypes(sourceEntries, file, context) {
     context.addParamType(sourceName, targetName);
     context.addParamType(`${sourceName} *`, `${targetName} *`);
     context.addParamType(`const ${sourceName}`, `const ${targetName}`);
-    context.addParamType(`const ${sourceName} *`, `const ${targetName} &`);
+    context.addParamType(`const ${sourceName} *`, `const ${targetName} *`);
     context.addReturnType(sourceName, targetName);
     context.addReturnType(`${sourceName} *`, `${targetName} *`);
     context.addReturnType(`const ${sourceName}`, `const ${targetName}`);
@@ -265,15 +316,12 @@ function transformEntries(sourceEntries, file, context) {
   const targetEntries = {};
   const transformMap = file.transform;
   const defPrefix = file.definitionPrefix;
-  const includeBefore = file.includeBefore;
-  const includeAfter = file.includeAfter;
+  const includeAfter = context.includeAfterMap[file.name];
 
-  insertEntryAndCheck(targetEntries, includeBefore.__begin ?? [], context, file);
   insertEntryAndCheck(targetEntries, includeAfter.__begin ?? [], context, file);
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
     if (context.blacklist.has(sourceName)) continue;
-    insertEntryAndCheck(targetEntries, includeBefore[sourceName] ?? [], context, file);
     let targetName = transformName(sourceName, context);
     if (Array.isArray(sourceEntry)) {
       const targetDelta = transformMap[sourceName];
@@ -317,7 +365,6 @@ function transformEntries(sourceEntries, file, context) {
     }
     insertEntryAndCheck(targetEntries, includeAfter[sourceName] ?? [], context, file);
   }
-  insertEntryAndCheck(targetEntries, includeBefore.__end ?? [], context, file);
   insertEntryAndCheck(targetEntries, includeAfter.__end ?? [], context, file);
 
   return targetEntries;
@@ -355,7 +402,7 @@ function expandNamespaces(sourceEntries, transform, context) {
         context.addName(key, `${nsName}.${entry.name}`);
       }
     });
-    includeAfter(ns, transform, sourceEntriesListed[0][0]);
+    context.includeAfter(ns, transform.name, sourceEntriesListed[0][0]);
   }
 }
 
@@ -397,7 +444,7 @@ function expandCallbacks(sourceEntries, file, context) {
           doc: transformDoc(sourceEntry.doc ?? "", context) + `\n@sa ${name}`,
           ...(file.transform[callbackName] ?? {})
         };
-        prependIncludeAfter(callbackEntry, file, sourceName);
+        context.prependIncludeAfter(callbackEntry, file.name, sourceName);
         break;
       }
     }
@@ -449,7 +496,7 @@ function expandWrappers(sourceEntries, transform, context) {
     transform.transform[sourceType] = wrapper;
     const targetType = wrapper.name ?? transformName(sourceType, context);
     if (wrapper.includeAfter) {
-      includeAfter(targetType, transform, wrapper.includeAfter);
+      context.includeAfter(targetType, transform.name, wrapper.includeAfter);
     }
     const isStruct = sourceEntry.kind === "struct" && !wrapper.type;
 
@@ -954,17 +1001,17 @@ function expandResources(sourceEntries, file, context) {
     }
 
     if (resourceEntry.includeAfter) {
-      includeAfter(refName, file, resourceEntry.includeAfter);
-      includeAfter(derivedEntries, file, resourceEntry.includeAfter);
+      context.includeAfter(refName, file.name, resourceEntry.includeAfter);
+      context.includeAfter(derivedEntries, file.name, resourceEntry.includeAfter);
     } else {
-      prependIncludeAfter(derivedEntries, file, includeAfterKey);
+      context.prependIncludeAfter(derivedEntries, file.name, includeAfterKey);
     }
     let pointToIncludeFunc = includeAfterKey;
     for (const [subName, subEntry] of Object.entries(refSubEntries)) {
       if (Array.isArray(subEntry)) {
         subEntry.forEach(e => {
           if (derivedNames.has(e.type)) {
-            includeAfter(e, file, pointToIncludeFunc);
+            context.includeAfter(e, file.name, pointToIncludeFunc);
           }
         });
       } else if (typeof subEntry === "string") {
@@ -985,7 +1032,6 @@ function expandResources(sourceEntries, file, context) {
       }
     }
   }
-  includeAfter(referenceAliases, file, "__begin");
 }
 
 /**
@@ -995,7 +1041,7 @@ function expandResources(sourceEntries, file, context) {
  * @param {ApiContext}            context 
  */
 function expandEnumerations(sourceEntries, file, context) {
-  const enumerations = file.enumerations ?? {};
+  const enumerations = /* file.enumerations ?? */ {};
   for (const sourceType of Object.values(sourceEntries)) {
     if (Array.isArray(sourceType) || sourceType.kind !== "enum" || enumerations[sourceType.name]) continue;
     enumerations[sourceType.name] = {};
@@ -1010,10 +1056,10 @@ function expandEnumerations(sourceEntries, file, context) {
     const includeAfterKey = enumTransform.includeAfter;
     if (includeAfterKey) {
       if (sourceEntry) {
-        includeAfter(targetType, file, includeAfterKey);
+        context.includeAfter(targetType, file.name, includeAfterKey);
       } else {
         enumTransform.name = targetType;
-        includeAfter(enumTransform, file, includeAfterKey);
+        context.includeAfter(enumTransform, file.name, includeAfterKey);
       }
     }
 
@@ -1040,17 +1086,15 @@ function expandEnumerations(sourceEntries, file, context) {
         values.forEach(n => newNames[n] = newPrefix + n.slice(oldPrefixLen));
       }
     }
-    const currIncludes = file.includeAfter[type];
-    file.includeAfter[type] = undefined;
     for (const value of values) {
       /** @type {ApiEntryTransform & ApiEntry} */
       const entry = {
         kind: "var",
-        name: file.transform[value]?.name ?? newNames[value] ?? transformName(value, context),
+        name: file.transform?.[value]?.name ?? newNames[value] ?? transformName(value, context),
         constexpr: true,
         type: valueType,
       };
-      combineObject(entry, file.transform[value] || {});
+      combineObject(entry, file.transform?.[value] || {});
       if (!entry.doc) {
         // @ts-ignore
         const sourceDoc = sourceEntries[value]?.doc ?? sourceEntry.entries?.[value]?.doc;
@@ -1059,16 +1103,13 @@ function expandEnumerations(sourceEntries, file, context) {
       context.addName(value, entry.name);
       if (!sourceEntries[value]) {
         entry.sourceName = value;
-        includeAfter(entry, file, includeAfterKey || type);
+        context.includeAfter(entry, file.name, includeAfterKey || type);
       } else if (includeAfterKey) {
-        includeAfter(entry, file, includeAfterKey);
+        context.includeAfter(entry, file.name, includeAfterKey);
         file.transform[value] = entry;
       } else {
         file.transform[value] = entry;
       }
-    }
-    if (currIncludes) {
-      includeAfter(currIncludes, file, type);
     }
 
     delete enumTransform.values;
@@ -1077,49 +1118,6 @@ function expandEnumerations(sourceEntries, file, context) {
     delete enumTransform.includeAfter;
     delete enumTransform.newPrefix;
   }
-}
-
-/**
- * Add to includeAfter field
- * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
- * @param {ApiFileTransform}            transform 
- * @param {string}                      includeAfterKey 
- */
-function includeAfter(entryOrName, transform, includeAfterKey) {
-  const includeTarget = getOrCreateIncludeAfter(transform, includeAfterKey);
-  if (Array.isArray(entryOrName)) {
-    includeTarget.push(...entryOrName);
-  } else {
-    includeTarget.push((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
-  }
-}
-
-/**
- * Prepend to includeAfter field
- * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
- * @param {ApiFileTransform}            transform 
- * @param {string}                      includeAfterKey 
- */
-function prependIncludeAfter(entryOrName, transform, includeAfterKey) {
-  const includeTarget = getOrCreateIncludeAfter(transform, includeAfterKey);
-  if (Array.isArray(entryOrName)) {
-    includeTarget.unshift(...entryOrName);
-  } else {
-    includeTarget.unshift((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
-  }
-}
-
-/**
- * 
- * @param {ApiFileTransform}  transform 
- * @param {string}            includeAfterKey 
- */
-function getOrCreateIncludeAfter(transform, includeAfterKey) {
-  const includeTarget = transform.includeAfter[includeAfterKey];
-  if (Array.isArray(includeTarget)) return includeTarget;
-
-  transform.includeAfter[includeAfterKey] = includeTarget ? [includeTarget] : [];
-  return transform.includeAfter[includeAfterKey];
 }
 
 /**

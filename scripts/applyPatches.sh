@@ -7,7 +7,7 @@ for file in include/SDL3pp/*; do
     patchFile="src/patches/$filename.patch"
     if [ -e $patchFile ]; then
       echo "patching $filename"
-      patch -f $file $patchFile #Apply patch
+      patch --merge -f $file $patchFile #Apply patch
     else
       echo "no patches for $filename"
     fi
