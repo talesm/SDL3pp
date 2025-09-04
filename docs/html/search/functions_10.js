@@ -220,7 +220,7 @@ var searchData=
   ['swap32_217',['Swap32',['../group__CategoryEndian.html#gac547afa7df92be1ee4adbd564640e0b9',1,'SDL']]],
   ['swap32be_218',['Swap32BE',['../group__CategoryEndian.html#gadbac5e1d690a3265ee9b1b8b599a234a',1,'SDL']]],
   ['swap32le_219',['Swap32LE',['../group__CategoryEndian.html#gaf5c38557342e5ce0b7c9f82fb636f535',1,'SDL']]],
-  ['swap64_220',['Swap64',['../group__CategoryEndian.html#gaf77a7d89cad6f13c9c57daaf748e5b01',1,'SDL']]],
+  ['swap64_220',['Swap64',['../group__CategoryEndian.html#ga936c4da9b241ba3872f476cda24bd0de',1,'SDL']]],
   ['swap64be_221',['Swap64BE',['../group__CategoryEndian.html#ga7e0e3b32579633e5b3c8e14d591bae8c',1,'SDL']]],
   ['swap64le_222',['Swap64LE',['../group__CategoryEndian.html#ga5de2109ef383ab80e7a2c7036fba55db',1,'SDL']]],
   ['swapfloat_223',['SwapFloat',['../group__CategoryEndian.html#gae545d43f63831dd73afeea342726a556',1,'SDL']]],

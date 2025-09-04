@@ -191,7 +191,7 @@ constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr Uint32 Swap64(Uint64 x) { return SDL_Swap64(x); }
+constexpr Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
 
 /**
  * Swap a 16-bit value from littleendian to native byte order.
