@@ -1,9 +1,10 @@
 {
-  "sources": [
+  "targets": [
     "SDL3pp_bits.h"
   ],
-  "api": "scripts/target.json",
+  "api": "scripts/target-legacy.json",
   "baseDir": "include/SDL3pp/",
+  "templateDir": "src/templates/",
   "sourceApi": "scripts/source.json",
   "transform": "scripts/transform.json"
 }

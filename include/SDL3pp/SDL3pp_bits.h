@@ -5,7 +5,6 @@
 
 namespace SDL {
 
-//! content
 }
 
 #endif /* SDL3PP_BITS_H_ */

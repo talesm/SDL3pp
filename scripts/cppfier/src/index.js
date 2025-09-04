@@ -1,3 +1,4 @@
+const { generateApi } = require("./generate.js");
 const { parseXmlApi } = require("./parse-xml.js");
 const { parseApi } = require("./parse.js");
 const { transformApi } = require("./transform-legacy.js");
@@ -27,6 +28,9 @@ function main(args) {
       break;
     case "xml":
       parseXML(args);
+      break;
+    case "generate":
+      generate(args);
       break;
     case "update-legacy":
       updateLegacy(args);
@@ -229,6 +233,74 @@ function mergeInto(destiny, source) {
       mergeInto(prevValue, value);
     }
   }
+}
+
+/**
+ * 
+ * @param {string[]} args 
+ */
+function generate(args) {
+  if (args?.length == 0) {
+    return help(["generate"]);
+  }
+
+  const config = {
+    /** @type {string[]} */
+    targets: [],
+    /** @type {Api} */
+    api: null,
+    baseDir: "",
+    templateDir: "",
+  };
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (arg == "--") {
+      config.targets.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+      break;
+    }
+    if (!arg.startsWith('-')) {
+      if (arg.endsWith(".json")) {
+        mergeInto(config, readJSONSync(arg.replaceAll("\\", '/')));
+      } else
+        config.targets.push(arg.replaceAll("\\", '/'));
+      continue;
+    }
+    switch (arg) {
+      case '-a': config.api = readJSONSync(args[++i].replaceAll("\\", '/')); break;
+      case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
+      case '-t': config.templateDir = args[++i].replaceAll("\\", '/'); break;
+      case '-c': mergeInto(config, readJSONSync(args[++i].replaceAll("\\", '/'))); break;
+      default:
+        throw new Error(`Invalid option ${arg}`);
+    }
+  }
+  if (!config.api) throw new Error("Missing target");
+  if (typeof config.api == "string") config.api = readJSONSync(config.api);
+
+  const files = config.targets;
+  delete config.targets;
+  if (files?.length) {
+    if (!config.baseDir && files[0].includes('/')) {
+      config.baseDir = files[0].slice(0, files[0].lastIndexOf("/") + 1);
+      for (let i = 1; i < files?.length; i++) {
+        const file = files[i];
+        while (!file.startsWith(config.baseDir)) {
+          const pos = config.baseDir.lastIndexOf('/');
+          config.baseDir = config.baseDir.slice(0, pos + 1);
+        }
+      }
+      if (!config.baseDir) {
+        throw new Error("Could not deduce baseDir");
+      }
+    }
+    const baseDirLen = config.baseDir?.length ?? 0;
+    const localFiles = new Set(files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file));
+    for (const file of Object.keys(config.api?.files ?? {})) {
+      if (!localFiles.has(file)) delete config.api.files[file];
+    }
+  }
+
+  generateApi(config);
 }
 
 /**

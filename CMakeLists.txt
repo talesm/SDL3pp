@@ -188,6 +188,7 @@ endif (DOXYGEN_FOUND)
 set(LEGACY_TRANSFORM_JSON ${PROJECT_SOURCE_DIR}/scripts/transform-legacy.json)
 set(LEGACY_TARGET_JSON ${PROJECT_SOURCE_DIR}/scripts/target-legacy.json)
 set(LEGACY_CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target-legacy.json)
+set(CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target.json)
 
 # Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source_xml.json
@@ -226,7 +227,12 @@ add_custom_command(OUTPUT ${LEGACY_TARGET_JSON}
 # Merge source and current towards target
 add_custom_target(SDL3pp_refresh
     COMMAND node scripts/cppfier update-legacy ${LEGACY_CONFIG_TARGET}
+    DEPENDS ${LEGACY_TARGET_JSON} ${LEGACY_CONFIG_TARGET} ${PROJECT_SOURCE_DIR}/scripts/current.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    DEPENDS ${LEGACY_TARGET_JSON} ${PROJECT_SOURCE_DIR}/scripts/current.json
+)
+
+add_custom_target(SDL3pp_refresh_new
+    COMMAND node scripts/cppfier generate ${CONFIG_TARGET}
+    DEPENDS ${CONFIG_TARGET} ${LEGACY_TARGET_JSON}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
