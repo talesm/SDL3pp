@@ -48,10 +48,10 @@
     "SDL3pp_ttf.h"
   ],
   "storeLineNumbers": true,
-  "api": "scripts/target.json",
+  "api": "scripts/target-legacy.json",
   "baseDir": "include/SDL3pp/",
   "currentApi": "scripts/current.json",
   "outputFile": "scripts/current.json",
   "sourceApi": "scripts/source.json",
-  "transform": "scripts/transform.json"
+  "transform": "scripts/transform-legacy.json"
 }

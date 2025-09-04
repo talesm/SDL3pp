@@ -28,8 +28,8 @@ function main(args) {
     case "xml":
       parseXML(args);
       break;
-    case "update":
-      update(args);
+    case "update-legacy":
+      updateLegacy(args);
       break;
     case "transform-legacy":
       transformLegacy(args);
@@ -235,9 +235,9 @@ function mergeInto(destiny, source) {
  * 
  * @param {string[]} args 
  */
-function update(args) {
+function updateLegacy(args) {
   if (args?.length == 0) {
-    return help(["update"]);
+    return help(["update-legacy"]);
   }
   const config = {
     /** @type {string[]} */

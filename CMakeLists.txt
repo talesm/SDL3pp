@@ -223,7 +223,7 @@ add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
 
 # Merge source and current towards target
 add_custom_target(SDL3pp_refresh
-    COMMAND node scripts/cppfier update ${LEGACY_CONFIG_TARGET}
+    COMMAND node scripts/cppfier update-legacy ${LEGACY_CONFIG_TARGET}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/target.json ${PROJECT_SOURCE_DIR}/scripts/current.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
