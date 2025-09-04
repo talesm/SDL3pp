@@ -47,14 +47,20 @@ function generateApi(config) {
 
 /**
  * 
- * @param {ApiFile}           targetFile 
+ * @param {ApiFile} targetFile 
  */
 function generateFile(targetFile) {
-  const fileDocBegin = generateDocString(targetFile.doc + "\n\n@{") + "\n";
+  const targetName = targetFile.name;
+  const guardName = targetName.toUpperCase().replace('.', '_') + '_';
+  const namespace = "SDL";
   const generatedEntries = generateEntries(targetFile.entries, '');
-  const fileDocEnd = '/// @}\n';
 
-  return [fileDocBegin, generatedEntries, fileDocEnd];
+  return [
+    `#ifndef ${guardName}\n#define ${guardName}\n\nnamespace ${namespace} {\n`,
+    generateDocString(targetFile.doc + "\n\n@{") + "\n",
+    generatedEntries,
+    `/// @}\n\n} // namespace ${namespace}\n\n#endif /* ${guardName} */`
+  ];
 }
 
 /**
