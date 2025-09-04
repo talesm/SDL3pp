@@ -6,7 +6,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryBits Category Bits
+ * @defgroup CategoryBits Bit Manipulation
  *
  * Functions for fiddling with bits and bitmasks.
  *
@@ -31,9 +31,9 @@ namespace SDL {
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int MostSignificantBitIndex32(Uint32 x)
+constexpr int MostSignificantBitIndex32(Uint32 x)
 {
-  return SDL_MostSignificantBitIndex32(, x);
+  return SDL_MostSignificantBitIndex32(x);
 }
 
 /**
@@ -54,9 +54,9 @@ inline int MostSignificantBitIndex32(Uint32 x)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool HasExactlyOneBitSet32(Uint32 x)
+constexpr bool HasExactlyOneBitSet32(Uint32 x)
 {
-  return SDL_HasExactlyOneBitSet32(, x);
+  return SDL_HasExactlyOneBitSet32(x);
 }
 
 /// @}

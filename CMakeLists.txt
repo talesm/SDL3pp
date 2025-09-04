@@ -231,8 +231,13 @@ add_custom_target(SDL3pp_refresh
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
-add_custom_target(SDL3pp_refresh_new
+add_custom_target(SDL3pp_generate
     COMMAND node scripts/cppfier generate ${CONFIG_TARGET}
     DEPENDS ${CONFIG_TARGET} ${LEGACY_TARGET_JSON}
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
+add_custom_target(SDL3pp_refresh_new
+    COMMAND scripts/applyPatches.sh
+    DEPENDS SDL3pp_generate
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
