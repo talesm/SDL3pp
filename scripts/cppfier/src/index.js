@@ -1,10 +1,10 @@
 const { parseXmlApi } = require("./parse-xml.js");
 const { parseApi } = require("./parse.js");
-const { transformApi } = require("./transform.js");
+const { transformApi } = require("./transform-legacy.js");
 const { updateApi } = require("./update-legacy.js");
 const { readJSONSync, system, writeJSONSync, writeLinesSync } = require("./utils.js");
 /**
- * @import {Api, ApiTransform} from "./types"
+ * @import {Api, ApiTransformLegacy} from "./types"
  */
 
 /**
@@ -314,7 +314,7 @@ function transformLegacy(args) {
   const config = {
     /** @type {Api} */
     sourceApi: null,
-    /** @type {ApiTransform} */
+    /** @type {ApiTransformLegacy} */
     transform: null,
     api: "",
     baseDir: "",

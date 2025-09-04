@@ -1,15 +1,15 @@
 const { insertEntry } = require("./parse");
 const { generateCallParameters } = require("./update-legacy");
-const { system, combineObject, looksLikeFreeFunction, deepClone, combineArray } = require("./utils");
+const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransformLegacy, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformLegacyMap, ApiTransformLegacy, Dict, ApiFileTransformLegacy, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint } from "./types"
  */
 
 /**
  * @typedef {object} TransformConfig
  * @prop {Api}            sourceApi
- * @prop {ApiTransform=}  transform
+ * @prop {ApiTransformLegacy=}  transform
  */
 
 /**
@@ -82,7 +82,7 @@ function transformApi(config) {
 }
 
 class ApiContext {
-  /** @param {ApiTransform} transform  */
+  /** @param {ApiTransformLegacy} transform  */
   constructor(transform) {
     /** @type {Set<string>} */
     this.blacklist = new Set();
@@ -213,7 +213,7 @@ function isType(kind) {
 /**
  * 
  * @param {ApiEntries}        sourceEntries 
- * @param {ApiFileTransform}  file
+ * @param {ApiFileTransformLegacy}  file
  * @param {ApiContext}        context 
  */
 function expandTypes(sourceEntries, file, context) {
@@ -257,7 +257,7 @@ function expandTypes(sourceEntries, file, context) {
 /**
  * 
  * @param {ApiEntries}        sourceEntries 
- * @param {ApiFileTransform}  file
+ * @param {ApiFileTransformLegacy}  file
  * @param {ApiContext}        context 
  */
 function transformEntries(sourceEntries, file, context) {
@@ -326,7 +326,7 @@ function transformEntries(sourceEntries, file, context) {
 /**
  * 
  * @param {ApiEntries}    sourceEntries 
- * @param {ApiFileTransform} transform,
+ * @param {ApiFileTransformLegacy} transform,
  * @param {ApiContext}    context 
  */
 function expandNamespaces(sourceEntries, transform, context) {
@@ -362,7 +362,7 @@ function expandNamespaces(sourceEntries, transform, context) {
 /**
  * 
  * @param {ApiEntries}        sourceEntries 
- * @param {ApiFileTransform}  file,
+ * @param {ApiFileTransformLegacy}  file,
  * @param {ApiContext}        context 
  */
 function expandCallbacks(sourceEntries, file, context) {
@@ -389,7 +389,7 @@ function expandCallbacks(sourceEntries, file, context) {
         const typeParams = parameters.map(p => (typeof p === "string") ? p : p.type);
         const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
         typeParams.splice(i, 1);
-        /** @type {ApiEntryTransform}  */
+        /** @type {ApiEntryTransformLegacy}  */
         const callbackEntry = {
           kind: "alias",
           name: callbackName,
@@ -435,7 +435,7 @@ function combineHints(entry, hints) {
 /**
  * 
  * @param {ApiEntries}       sourceEntries 
- * @param {ApiFileTransform} transform,
+ * @param {ApiFileTransformLegacy} transform,
  * @param {ApiContext}       context 
  */
 function expandWrappers(sourceEntries, transform, context) {
@@ -656,7 +656,7 @@ function expandWrappers(sourceEntries, transform, context) {
 /**
  * 
  * @param {ApiEntries}        sourceEntries
- * @param {ApiFileTransform}  file 
+ * @param {ApiFileTransformLegacy}  file 
  * @param {ApiContext}        context 
  */
 function expandResources(sourceEntries, file, context) {
@@ -719,7 +719,7 @@ function expandResources(sourceEntries, file, context) {
     const refSubEntries = resourceEntry.entries || {};
     const resourceType = `Resource<${pointerType}>`;
 
-    /** @type {Dict<ApiEntryTransform | ApiEntryBase[]>} */
+    /** @type {Dict<ApiEntryTransformLegacy | ApiEntryBase[]>} */
     const uniqueSubEntries = {};
 
     let extraUniqueCtors = refSubEntries[uniqueName];
@@ -794,7 +794,7 @@ function expandResources(sourceEntries, file, context) {
     if (freeFunction) {
       const sourceName = freeFunction.name;
       freeFunction = transformEntry(freeFunction, context);
-      const freeTransformEntry = /** @type {ApiEntryTransform} */(refSubEntries[sourceName]) ?? {};
+      const freeTransformEntry = /** @type {ApiEntryTransformLegacy} */(refSubEntries[sourceName]) ?? {};
       combineObject(freeFunction, freeTransformEntry);
       delete refSubEntries[sourceName];
 
@@ -827,7 +827,7 @@ function expandResources(sourceEntries, file, context) {
       uniqueSubEntries[sourceName] = freeTransformEntry;
     }
 
-    /** @type {ApiEntryTransform} */
+    /** @type {ApiEntryTransformLegacy} */
     const entry = {
       name: refName,
       kind: "struct",
@@ -848,7 +848,7 @@ function expandResources(sourceEntries, file, context) {
     const extraParametersStr = resourceEntry.extraParameters?.length
       ? (", " + resourceEntry.extraParameters.join(", ")) : "";
 
-    /** @type {ApiEntryTransform[]} */
+    /** @type {ApiEntryTransformLegacy[]} */
     const derivedEntries = [
       {
         name: uniqueName,
@@ -991,7 +991,7 @@ function expandResources(sourceEntries, file, context) {
 /**
  * 
  * @param {ApiEntries}            sourceEntries 
- * @param {ApiFileTransform}      file,
+ * @param {ApiFileTransformLegacy}      file,
  * @param {ApiContext}            context 
  */
 function expandEnumerations(sourceEntries, file, context) {
@@ -1043,7 +1043,7 @@ function expandEnumerations(sourceEntries, file, context) {
     const currIncludes = file.includeAfter[type];
     file.includeAfter[type] = undefined;
     for (const value of values) {
-      /** @type {ApiEntryTransform & ApiEntry} */
+      /** @type {ApiEntryTransformLegacy & ApiEntry} */
       const entry = {
         kind: "var",
         name: file.transform[value]?.name ?? newNames[value] ?? transformName(value, context),
@@ -1081,8 +1081,8 @@ function expandEnumerations(sourceEntries, file, context) {
 
 /**
  * Add to includeAfter field
- * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
- * @param {ApiFileTransform}            transform 
+ * @param {string|ApiEntryTransformLegacy|ApiEntryTransformLegacy[]}  entryOrName 
+ * @param {ApiFileTransformLegacy}            transform 
  * @param {string}                      includeAfterKey 
  */
 function includeAfter(entryOrName, transform, includeAfterKey) {
@@ -1096,8 +1096,8 @@ function includeAfter(entryOrName, transform, includeAfterKey) {
 
 /**
  * Prepend to includeAfter field
- * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
- * @param {ApiFileTransform}            transform 
+ * @param {string|ApiEntryTransformLegacy|ApiEntryTransformLegacy[]}  entryOrName 
+ * @param {ApiFileTransformLegacy}            transform 
  * @param {string}                      includeAfterKey 
  */
 function prependIncludeAfter(entryOrName, transform, includeAfterKey) {
@@ -1111,7 +1111,7 @@ function prependIncludeAfter(entryOrName, transform, includeAfterKey) {
 
 /**
  * 
- * @param {ApiFileTransform}  transform 
+ * @param {ApiFileTransformLegacy}  transform 
  * @param {string}            includeAfterKey 
  */
 function getOrCreateIncludeAfter(transform, includeAfterKey) {
@@ -1150,9 +1150,9 @@ function scanFreeFunction(entries, uniqueType, pointerType) {
  * Insert entry into entries
  * 
  * @param {ApiEntries}                    entries 
- * @param {ApiEntryTransform|ApiEntryTransform[]}  entry 
+ * @param {ApiEntryTransformLegacy|ApiEntryTransformLegacy[]}  entry 
  * @param {ApiContext}                    context 
- * @param {ApiFileTransform}              transform
+ * @param {ApiFileTransformLegacy}              transform
  * @param {string=}                       defaultName
  */
 function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
@@ -1174,9 +1174,9 @@ function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
 
 /**
  * 
- * @param {ApiEntryTransform} targetEntry the entry we are inserting from
+ * @param {ApiEntryTransformLegacy} targetEntry the entry we are inserting from
  * @param {ApiContext}        context 
- * @param {ApiFileTransform}  file 
+ * @param {ApiFileTransformLegacy}  file 
  * @param {ApiEntries}        targetEntries
  */
 function transformSubEntries(targetEntry, context, file, targetEntries) {
@@ -1328,7 +1328,7 @@ function validateEntries(targetEntries) {
 
 /**
  * Marshal name of member functions
- * @param {ApiEntryTransform|string} entry 
+ * @param {ApiEntryTransformLegacy|string} entry 
  * @param {string}          name 
  * @param {string}          typeName 
  */

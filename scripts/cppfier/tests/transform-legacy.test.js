@@ -1,4 +1,4 @@
-const { transformApi } = require("../src/transform");
+const { transformApi } = require("../src/transform-legacy");
 const emptyApi = require("./samples/empty.json");
 const functionsApi = require("./samples/functions.json");
 const structsApi = require("./samples/structs.json");
