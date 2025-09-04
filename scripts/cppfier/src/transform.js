@@ -1,5 +1,5 @@
 const { insertEntry } = require("./parse");
-const { generateCallParameters } = require("./update");
+const { generateCallParameters } = require("./update-legacy");
 const { system, combineObject, looksLikeFreeFunction, deepClone, combineArray } = require("./utils");
 
 /**

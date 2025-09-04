@@ -3,7 +3,7 @@ const { readLinesSync, system, writeLinesSync, looksLikeFreeFunction } = require
 const { existsSync } = require("fs");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiFile, ApiParameter, ApiParameters } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiFile, ApiParameter, ApiParameters } from "./types.js"
  */
 
 /**

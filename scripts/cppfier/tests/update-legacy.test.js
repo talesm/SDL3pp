@@ -1,4 +1,4 @@
-const { updateContent, updateChanges } = require("../src/update.js");
+const { updateContent, updateChanges } = require("../src/update-legacy.js");
 const { parseContent } = require("../src/parse.js");
 const { readLinesSync } = require("../src/utils.js");
 

@@ -1,7 +1,7 @@
 const { parseXmlApi } = require("./parse-xml.js");
 const { parseApi } = require("./parse.js");
 const { transformApi } = require("./transform.js");
-const { updateApi } = require("./update.js");
+const { updateApi } = require("./update-legacy.js");
 const { readJSONSync, system, writeJSONSync, writeLinesSync } = require("./utils.js");
 /**
  * @import {Api, ApiTransform} from "./types"
