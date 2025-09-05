@@ -289,7 +289,7 @@ function isType(kind) {
  */
 function expandTypes(sourceEntries, file, context) {
   // expandResources(sourceEntries, file, context);
-  // expandWrappers(sourceEntries, file, context);
+  expandWrappers(sourceEntries, file, context);
   expandEnumerations(sourceEntries, file, context);
   // expandNamespaces(sourceEntries, file, context);
   expandCallbacks(sourceEntries, file, context);
@@ -513,36 +513,42 @@ function combineHints(entry, hints) {
 /**
  * 
  * @param {ApiEntries}       sourceEntries 
- * @param {ApiFileTransform} transform,
+ * @param {ApiFileTransform} file,
  * @param {ApiContext}       context 
  */
-function expandWrappers(sourceEntries, transform, context) {
-  const wrappers = transform.wrappers ?? {};
-  for (const [sourceType, wrapper] of Object.entries(wrappers)) {
-    const sourceEntry = sourceEntries[sourceType];
-    if (Array.isArray(sourceEntry)) continue;
+function expandWrappers(sourceEntries, file, context) {
+  for (const [sourceType, transform] of Object.entries(file.transform)) {
+    if (transform.kind && transform.kind !== 'struct') continue;
 
-    wrapper.kind = "struct";
-    combineObject(wrapper, transform.transform[sourceType] ?? {});
-    transform.transform[sourceType] = wrapper;
-    const targetType = wrapper.name ?? transformName(sourceType, context);
-    if (wrapper.includeAfter) {
-      context.includeAfter(targetType, transform.name, wrapper.includeAfter);
-    }
-    const isStruct = sourceEntry.kind === "struct" && !wrapper.type;
+    const wrapper = transform.wrapper === true ? {} : transform.wrapper;
+    if (!wrapper) continue;
+
+    const sourceEntry = sourceEntries[sourceType];
+    if (!sourceEntry || Array.isArray(sourceEntry)) continue;
+
+    transform.kind = "struct";
+    const targetType = transform.name ?? transformName(sourceType, context);
+    transform.name = targetType;
+    const isStruct = sourceEntry.kind === "struct" && !transform.type;
 
     const type = isStruct || !sourceEntry.type?.startsWith("struct ") ? sourceType : sourceType + " *";
-    const constexpr = wrapper.constexpr !== false;
+    const constexpr = transform.constexpr !== false;
     const paramName = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
     const paramType = isStruct ? `const ${type} &` : type;
     const attribute = "m_" + paramName;
 
+    /** @type {string[]} */
+    const fields = [];
     if (isStruct) {
-      addHints(wrapper, {
-        self: "this",
+      for (const e of Object.values(sourceEntry.entries)) {
+        if (!Array.isArray(e)) fields.push(e.name);
+      }
+
+      addHints(transform, {
+        self: 'this',
       });
     } else {
-      addHints(wrapper, {
+      addHints(transform, {
         self: attribute,
       });
     }
@@ -597,7 +603,7 @@ function expandWrappers(sourceEntries, transform, context) {
         doc: "Compares with the underlying type",
         hints: { body: `return operator<=>(${targetType}(${paramName}));`, }
       }]);
-    } else if (wrapper.comparable || !isStruct) {
+    } else if (!isStruct) {
       insertEntry(entries, [{
         kind: "function",
         name: "operator==",
@@ -623,6 +629,34 @@ function expandWrappers(sourceEntries, transform, context) {
         doc: "Compares with the underlying type",
         hints: { body: `return operator==(${targetType}(${paramName}));`, }
       }]);
+    } else if (wrapper.comparable) {
+      const body = 'return ' + fields.map(f => `${f} == other.${f}`).join(' && ') + ';';
+      insertEntry(entries, [{
+        kind: "function",
+        name: "operator==",
+        type: "bool",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: `const ${targetType} &`,
+          name: "other",
+        }],
+        doc: "Default comparison operator",
+        hints: { body },
+      }, {
+        kind: "function",
+        name: "operator==",
+        type: "bool",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: paramType,
+          name: "other",
+        }],
+        doc: "Compares with the underlying type",
+        hints: { body },
+      }]);
+
     }
     if (wrapper.nullable) insertEntry(entries, {
       kind: "function",
@@ -653,12 +687,12 @@ function expandWrappers(sourceEntries, transform, context) {
       immutable: true,
       parameters: [],
       doc: `Check if valid.\n\n@returns True if valid state, false otherwise.`,
-      hints: { body: isStruct ? `return *this != ${targetType}{}` : `return ${attribute} != 0;` }
+      hints: { body: isStruct ? `return *this != ${targetType}{};` : `return ${attribute} != 0;` }
     });
 
     if (isStruct) {
-      wrapper.type = sourceType;
-      wrapper.hints.super = sourceType;
+      transform.type = sourceType;
+      transform.hints.super = sourceType;
 
       if (wrapper.genMembers !== false) {
         /** @type {ApiParameter[]} */
@@ -690,10 +724,10 @@ function expandWrappers(sourceEntries, transform, context) {
             doc: `Set the ${name}.\n\n@param new${capName} the new ${name} value.\n@returns Reference to self.`,
             hints: { body: `${name} = new${capName};\nreturn *this;` },
           }]);
-          context.addParamType(type, type);
-          context.addParamType(`${type} *`, `${type} *`);
-          context.addParamType(`const ${type}`, `const ${type}`);
-          context.addParamType(`const ${type} *`, `const ${type} &`);
+          // context.addParamType(type, type);
+          // context.addParamType(`${type} *`, `${type} *`);
+          // context.addParamType(`const ${type}`, `const ${type}`);
+          // context.addParamType(`const ${type} *`, `const ${type} &`);
         }
         insertEntry(entries, {
           kind: "function",
@@ -706,28 +740,21 @@ function expandWrappers(sourceEntries, transform, context) {
         });
       }
     } else {
-      wrapper.type = "";
+      transform.type = "";
     }
 
-    const currentCtors = wrapper.entries?.[targetType];
+    const currentCtors = transform.entries?.[targetType];
     if (currentCtors) {
       insertEntry(entries, /** @type {ApiEntry} */(currentCtors), targetType);
-      delete wrapper.entries[targetType];
+      delete transform.entries[targetType];
     }
-    wrapper.entries = { ...entries, ...(wrapper.entries ?? {}) };
+    transform.entries = { ...entries, ...(transform.entries ?? {}) };
     if (type !== sourceType) {
       context.addParamType(type, targetType);
       context.addReturnType(type, targetType);
     }
 
-    delete wrapper.invalidState;
-    delete wrapper.attribute;
-    delete wrapper.includeAfter;
-    delete wrapper.nullable;
-    delete wrapper.ordered;
-    delete wrapper.comparable;
-    delete wrapper.genCtor;
-    delete wrapper.genMembers;
+    delete transform.wrapper;
   }
 }
 

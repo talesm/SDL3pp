@@ -121,6 +121,7 @@ export interface ApiEntryTransform extends ApiEntryBase {
   entries?: ApiSubEntryTransformLegacyMap;
   link?: ApiEntryTransform;
   enum?: true | string | EnumerationDefinition;
+  wrapper?: true | WrapperDefinition;
 }
 
 export interface ApiResource extends ApiEntryTransform {
@@ -197,6 +198,36 @@ export interface ApiWrapper extends ApiEntryTransform {
 
   includeAfter?: string;
 
+  /** Defaults to `value` */
+  attribute?: string;
+
+  /** Defaults to true */
+  invalidState?: boolean;
+
+  /** Defaults to {} */
+  defaultValue?: string
+
+  /** Defaults to true if alias to pointer, false otherwise */
+  nullable?: boolean
+
+  /** Defaults to true */
+  genCtor?: boolean
+
+  /** Defaults to true, relevant only to struct */
+  genMembers?: boolean
+
+  /** 
+   * Defaults to true if alias to anything but `void *`, false otherwise.
+   */
+  ordered?: boolean
+
+  /** 
+   * Defaults to true if ordered is false and not a struct
+   */
+  comparable?: boolean
+}
+
+export interface WrapperDefinition {
   /** Defaults to `value` */
   attribute?: string;
 

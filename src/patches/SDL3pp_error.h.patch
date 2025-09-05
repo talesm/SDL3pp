@@ -1,0 +1,228 @@
+--- include/SDL3pp/SDL3pp_error.h	2025-09-05 18:52:02.001449043 -0300
++++ build/snapshot/SDL3pp_error.h	2025-09-05 18:51:59.038430686 -0300
+@@ -9,7 +9,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryError Category Error
++ * @defgroup CategoryError Error Handling
+  *
+  * Simple error message routines for SDL.
+  *
+@@ -19,21 +19,19 @@
+  *
+  * These strings are maintained per-thread, and apps are welcome to set their
+  * own errors, which is popular when building libraries on top of SDL for
+- * other apps to consume. These strings are set by calling
+- * SetErrorUnformatted().
++ * other apps to consume. These strings are set by calling SetError().
+  *
+  * A common usage pattern is to have a function that returns true for success
+  * and false for failure, and do this when something fails:
+  *
+- * ```c
++ * ```cpp
+  * if (something_went_wrong) {
+- *    return SetErrorUnformatted("The thing broke in this specific way: %d",
+- * errcode);
++ *    return SDL::SetError("The thing broke in this specific way: {}", errcode);
+  * }
+  * ```
+  *
+  * It's also common to just return `false` in this case if the failing thing
+- * is known to call SetErrorUnformatted(), so errors simply propagate through.
++ * is known to call SetError(), so errors simply propagate through.
+  *
+  * @{
+  */
+@@ -48,13 +46,11 @@
+  *
+  * ```c
+  * if (error_code) {
+- *     return SetErrorUnformatted("This operation has failed: %d", error_code);
++ *     return SDL::SetError("This operation has failed: {}", error_code);
+  * }
+  * ```
+  *
+- * @param fmt a printf()-style message format string.
+- * @param ... additional parameters matching % tokens in the `fmt` string, if
+- *            any.
++ * @param message the error message
+  * @returns false.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -63,11 +59,52 @@
+  *
+  * @sa ClearError
+  * @sa GetError
+- * @sa SDL_SetErrorV
++ * @sa SetError
+  */
+ inline bool SetErrorUnformatted(StringParam message)
+ {
+-  return SDL_SetError(message);
++  return SDL_SetError("%s", static_cast<const char*>(message));
++}
++
++/**
++ * Set the SDL error message for the current thread.
++ *
++ * Calling this function will replace any previous error message that was set.
++ *
++ * This function always returns false, since SDL frequently uses false to
++ * signify a failing result, leading to this idiom:
++ *
++ * ```c
++ * if (error_code) {
++ *     return SetError("This operation has failed: {}", error_code);
++ * }
++ * ```
++ *
++ * @tparam ARGS the formatting parameters
++ * @param fmt a
++ * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
++ * style message format string
++ * @param args additional parameters matching the `{}` tokens in the format
++ * string, if any.
++ * @returns false.
++ *
++ * @threadsafety It is safe to call this function from any thread.
++ *
++ * @since This function is available since SDL 3.2.0.
++ *
++ * @cat formatted-string
++ *
++ * @sa formatted-string
++ * @sa ClearError
++ * @sa GetError
++ * @sa SetError
++ * @return false
++ */
++template<class... ARGS>
++inline bool SetError(std::string_view fmt, ARGS... args)
++{
++  return SetError(
++    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+ }
+ 
+ /**
+@@ -121,6 +158,87 @@
+ inline const char* GetError() { return SDL_GetError(); }
+ 
+ /**
++ * An exception that returns GetError()
++ *
++ */
++class Error : public std::exception
++{
++  std::string m_message;
++
++public:
++  /**
++   * Default ctor.
++   */
++  Error()
++    : m_message(SDL_GetError())
++  {
++  }
++
++  /**
++   * Constructs from string
++   */
++  Error(std::string message)
++    : m_message(std::move(message))
++  {
++  }
++
++  /**
++   * Returns the explanatory string.
++   */
++  constexpr const char* what() const noexcept { return m_message.c_str(); }
++
++  /**
++   * Returns the explanatory string.
++   */
++  constexpr const std::string& str() const noexcept { return m_message; }
++};
++
++/**
++ * Check and throw if returned value from SDL is an error.
++ *
++ * This should be called only for things that may set SetError(). If the
++ * parameter is false it will throw Error.
++ *
++ * @param result the result returned
++ */
++constexpr void CheckError(bool result)
++{
++  if (!result) throw Error();
++}
++
++/**
++ * Check and throw if returned value from SDL is an error.
++ *
++ * This should be called only for things that may set SetError(). If the
++ * parameter is false it will throw Error.
++ *
++ * @param result the result returned
++ */
++template<class T>
++constexpr T CheckError(T result)
++{
++  if (!result) throw Error();
++  return result;
++}
++
++/**
++ * Check and throw if returned value from SDL is an error.
++ *
++ * This should be called only for things that may set SetError(). If the result
++ * parameter is equals to invalidValue it will throw Error.
++ *
++ * @param result       the result returned
++ * @param invalidValue the value that if equal to result indicates this is
++ *                     invalid.
++ */
++template<class T>
++constexpr T CheckError(T result, T invalidValue)
++{
++  if (result == invalidValue) throw Error();
++  return result;
++}
++
++/**
+  * Clear any previous error message for this thread.
+  *
+  * @returns true.
+@@ -134,10 +252,12 @@
+  */
+ inline bool ClearError() { return SDL_ClearError(); }
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * A macro to standardize error reporting on unsupported operations.
+  *
+- * This simply calls SetErrorUnformatted() with a standardized error string, for
++ * This simply calls SetError() with a standardized error string, for
+  * convenience, consistency, and clarity.
+  *
+  * @threadsafety It is safe to call this macro from any thread.
+@@ -149,7 +269,7 @@
+ /**
+  * A macro to standardize error reporting on unsupported operations.
+  *
+- * This simply calls SetErrorUnformatted() with a standardized error string, for
++ * This simply calls SetError() with a standardized error string, for
+  * convenience, consistency, and clarity.
+  *
+  * A common usage pattern inside SDL is this:
+@@ -171,6 +291,8 @@
+ #define SDL_InvalidParamError(param)                                           \
+   SDL_SetError("Parameter '%s' is invalid", (param))
+ 
++#endif // SDL3PP_DOC
++
+ /// @}
+ 
+ } // namespace SDL

@@ -238,7 +238,7 @@ function generateBody(entry, prefix) {
 function generateFunction(entry, prefix) {
   const reference = entry.reference ? "&".repeat(entry.reference) : "";
   const specifier = entry.immutable ? ` const${reference}` : (reference ? " " + reference : "");
-  const parameters = generateParameters(entry.parameters);
+  const parameters = generateParameters(entry.parameters ?? []);
   const body = generateBody(entry, prefix);
   return `${generateDeclPrefix(entry, prefix)}(${parameters})${specifier}${body}`;
 }

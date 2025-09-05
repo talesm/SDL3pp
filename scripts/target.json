@@ -2884,7 +2884,12 @@
         }
       },
       "includes": [
+        "exception",
+        "format",
         "SDL3/SDL_error.h"
+      ],
+      "localIncludes": [
+        "SDL3pp_strings.h"
       ]
     },
     "SDL3pp_log.h": {
@@ -12294,401 +12299,1511 @@
       "name": "SDL3pp_rect.h",
       "doc": "@defgroup CategoryRect Category Rect\n\nSome helper functions for managing rectangles and 2D points, in both\ninteger and floating point versions.",
       "entries": {
+        "FPoint-forward": {
+          "kind": "forward",
+          "name": "FPoint",
+          "doc": ""
+        },
+        "Rect-forward": {
+          "kind": "forward",
+          "name": "Rect",
+          "doc": ""
+        },
+        "FRect-forward": {
+          "kind": "forward",
+          "name": "FRect",
+          "doc": ""
+        },
         "Point": {
-          "doc": "The structure that defines a point (using integers).\n\n@since This struct is available since SDL 3.2.0.\n\n@sa GetRectEnclosingPoints\n@sa PointInRect",
+          "doc": "The structure that defines a point (using integers).\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Rect.GetEnclosingPoints\n@sa Point.IsInRect",
           "name": "Point",
-          "kind": "alias",
+          "kind": "struct",
           "sourceName": "SDL_Point",
+          "entries": {
+            "Point": [
+              {
+                "kind": "function",
+                "name": "Point",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Point &",
+                    "name": "p",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps Point.\n\n@param p the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_Point(p)"
+                  ]
+                }
+              },
+              {
+                "kind": "function",
+                "name": "Point",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "int",
+                    "name": "x"
+                  },
+                  {
+                    "type": "int",
+                    "name": "y"
+                  }
+                ],
+                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y.",
+                "hints": {
+                  "init": [
+                    "SDL_Point{x, y}"
+                  ]
+                }
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FPoint &",
+                    "name": "p"
+                  }
+                ],
+                "name": "Point",
+                "doc": "Wraps Point.\n\n@param p the value to be wrapped"
+              }
+            ],
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Point &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "body": "return x == other.x && y == other.y;"
+                }
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Point &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return x == other.x && y == other.y;"
+                }
+              }
+            ],
+            "operator bool": {
+              "kind": "function",
+              "name": "operator bool",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return *this != Point{};"
+              }
+            },
+            "GetX": {
+              "kind": "function",
+              "name": "GetX",
+              "type": "int",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the x.\n\n@returns current x value.",
+              "hints": {
+                "body": "return x;"
+              }
+            },
+            "SetX": {
+              "kind": "function",
+              "name": "SetX",
+              "type": "Point &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "newX"
+                }
+              ],
+              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self.",
+              "hints": {
+                "body": "x = newX;\nreturn *this;"
+              }
+            },
+            "GetY": {
+              "kind": "function",
+              "name": "GetY",
+              "type": "int",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the y.\n\n@returns current y value.",
+              "hints": {
+                "body": "return y;"
+              }
+            },
+            "SetY": {
+              "kind": "function",
+              "name": "SetY",
+              "type": "Point &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "newY"
+                }
+              ],
+              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self.",
+              "hints": {
+                "body": "y = newY;\nreturn *this;"
+              }
+            },
+            "IsInRect": {
+              "doc": "Determine whether a point resides inside a rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not nullptr,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)\nas \"inside\" and (0,1) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param r the rectangle to test.\n@returns true if `p` is contained by `r`, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "IsInRect",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "r",
+                  "type": "const Rect &"
+                }
+              ],
+              "sourceName": "SDL_PointInRect",
+              "constexpr": true,
+              "immutable": true,
+              "proto": true
+            }
+          },
+          "hints": {
+            "self": "this",
+            "super": "SDL_Point"
+          },
           "type": "SDL_Point"
         },
         "FPoint": {
-          "doc": "The structure that defines a point (using floating point values).\n\n@since This struct is available since SDL 3.2.0.\n\n@sa GetRectEnclosingPointsFloat\n@sa PointInRectFloat",
+          "doc": "The structure that defines a point (using floating point values).\n\n@since This struct is available since SDL 3.2.0.\n\n@sa FRect.GetEnclosingPoints\n@sa FPoint.IsInRect",
           "name": "FPoint",
-          "kind": "alias",
+          "kind": "struct",
           "sourceName": "SDL_FPoint",
+          "entries": {
+            "FPoint": [
+              {
+                "kind": "function",
+                "name": "FPoint",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FPoint &",
+                    "name": "p",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps FPoint.\n\n@param p the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_FPoint(p)"
+                  ]
+                }
+              },
+              {
+                "kind": "function",
+                "name": "FPoint",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "float",
+                    "name": "x"
+                  },
+                  {
+                    "type": "float",
+                    "name": "y"
+                  }
+                ],
+                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y.",
+                "hints": {
+                  "init": [
+                    "SDL_FPoint{x, y}"
+                  ]
+                }
+              }
+            ],
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const FPoint &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "body": "return x == other.x && y == other.y;"
+                }
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FPoint &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return x == other.x && y == other.y;"
+                }
+              }
+            ],
+            "operator bool": {
+              "kind": "function",
+              "name": "operator bool",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return *this != FPoint{};"
+              }
+            },
+            "GetX": {
+              "kind": "function",
+              "name": "GetX",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the x.\n\n@returns current x value.",
+              "hints": {
+                "body": "return x;"
+              }
+            },
+            "SetX": {
+              "kind": "function",
+              "name": "SetX",
+              "type": "FPoint &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newX"
+                }
+              ],
+              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self.",
+              "hints": {
+                "body": "x = newX;\nreturn *this;"
+              }
+            },
+            "GetY": {
+              "kind": "function",
+              "name": "GetY",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the y.\n\n@returns current y value.",
+              "hints": {
+                "body": "return y;"
+              }
+            },
+            "SetY": {
+              "kind": "function",
+              "name": "SetY",
+              "type": "FPoint &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newY"
+                }
+              ],
+              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self.",
+              "hints": {
+                "body": "y = newY;\nreturn *this;"
+              }
+            },
+            "IsInRect": {
+              "doc": "Determine whether a point resides inside a floating point rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not nullptr,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand <= the rectangle's x+w and y+h. So a 1x1 rectangle considers point\n(0,0) and (0,1) as \"inside\" and (0,2) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param r the rectangle to test.\n@returns true if `p` is contained by `r`, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "IsInRect",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "r",
+                  "type": "const FRect &"
+                }
+              ],
+              "sourceName": "SDL_PointInRectFloat",
+              "constexpr": true,
+              "immutable": true,
+              "proto": true
+            }
+          },
+          "hints": {
+            "self": "this",
+            "super": "SDL_FPoint"
+          },
           "type": "SDL_FPoint"
         },
         "Rect": {
-          "doc": "A rectangle, with the origin at the upper left (using integers).\n\n@since This struct is available since SDL 3.2.0.\n\n@sa RectEmpty\n@sa RectsEqual\n@sa HasRectIntersection\n@sa GetRectIntersection\n@sa GetRectAndLineIntersection\n@sa GetRectUnion\n@sa GetRectEnclosingPoints",
+          "doc": "A rectangle, with the origin at the upper left (using integers).\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Rect.Empty\n@sa Rect.Equal\n@sa Rect.HasIntersection\n@sa Rect.GetIntersection\n@sa Rect.IntersectLine\n@sa Rect.GetUnion\n@sa Rect.GetEnclosingPoints",
           "name": "Rect",
-          "kind": "alias",
+          "kind": "struct",
           "sourceName": "SDL_Rect",
+          "entries": {
+            "Rect": [
+              {
+                "kind": "function",
+                "name": "Rect",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Rect &",
+                    "name": "p",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps Rect.\n\n@param p the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_Rect(p)"
+                  ]
+                }
+              },
+              {
+                "kind": "function",
+                "name": "Rect",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "int",
+                    "name": "x"
+                  },
+                  {
+                    "type": "int",
+                    "name": "y"
+                  },
+                  {
+                    "type": "int",
+                    "name": "w"
+                  },
+                  {
+                    "type": "int",
+                    "name": "h"
+                  }
+                ],
+                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y.\n@param w the value for w.\n@param h the value for h.",
+                "hints": {
+                  "init": [
+                    "SDL_Rect{x, y, w, h}"
+                  ]
+                }
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "corner",
+                    "type": "const SDL_Point &"
+                  },
+                  {
+                    "name": "size",
+                    "type": "const SDL_Point &"
+                  }
+                ],
+                "name": "Rect",
+                "doc": "Wraps Rect.\n\n@param p the value to be wrapped"
+              }
+            ],
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Rect &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
+                }
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Rect &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
+                }
+              }
+            ],
+            "operator bool": {
+              "doc": "@sa Empty()",
+              "kind": "function",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "type": "",
+              "name": "operator bool"
+            },
+            "GetX": {
+              "kind": "function",
+              "name": "GetX",
+              "type": "int",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the x.\n\n@returns current x value.",
+              "hints": {
+                "body": "return x;"
+              }
+            },
+            "SetX": {
+              "kind": "function",
+              "name": "SetX",
+              "type": "Rect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "newX"
+                }
+              ],
+              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self.",
+              "hints": {
+                "body": "x = newX;\nreturn *this;"
+              }
+            },
+            "GetY": {
+              "kind": "function",
+              "name": "GetY",
+              "type": "int",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the y.\n\n@returns current y value.",
+              "hints": {
+                "body": "return y;"
+              }
+            },
+            "SetY": {
+              "kind": "function",
+              "name": "SetY",
+              "type": "Rect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "newY"
+                }
+              ],
+              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self.",
+              "hints": {
+                "body": "y = newY;\nreturn *this;"
+              }
+            },
+            "GetW": {
+              "kind": "function",
+              "name": "GetW",
+              "type": "int",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the w.\n\n@returns current w value.",
+              "hints": {
+                "body": "return w;"
+              }
+            },
+            "SetW": {
+              "kind": "function",
+              "name": "SetW",
+              "type": "Rect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "newW"
+                }
+              ],
+              "doc": "Set the w.\n\n@param newW the new w value.\n@returns Reference to self.",
+              "hints": {
+                "body": "w = newW;\nreturn *this;"
+              }
+            },
+            "GetH": {
+              "kind": "function",
+              "name": "GetH",
+              "type": "int",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the h.\n\n@returns current h value.",
+              "hints": {
+                "body": "return h;"
+              }
+            },
+            "SetH": {
+              "kind": "function",
+              "name": "SetH",
+              "type": "Rect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "newH"
+                }
+              ],
+              "doc": "Set the h.\n\n@param newH the new h value.\n@returns Reference to self.",
+              "hints": {
+                "body": "h = newH;\nreturn *this;"
+              }
+            },
+            "GetEnclosingPoints": {
+              "doc": "Calculate a minimal rectangle enclosing a set of points.\n\nIf `clip` is not nullptr then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of Point structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an Rect used for clipping or nullptr to enclose all points.\n@param result an Rect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetEnclosingPoints",
+              "kind": "function",
+              "type": "Rect",
+              "parameters": [
+                {
+                  "name": "points",
+                  "type": "SpanRef<const SDL_Point>"
+                },
+                {
+                  "name": "clip",
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "default": "std::nullopt"
+                }
+              ],
+              "sourceName": "SDL_GetRectEnclosingPoints",
+              "static": true
+            },
+            "FromCenter": [
+              {
+                "kind": "function",
+                "name": "FromCenter",
+                "static": true,
+                "type": "Rect",
+                "parameters": [
+                  {
+                    "name": "cx",
+                    "type": "int"
+                  },
+                  {
+                    "name": "cy",
+                    "type": "int"
+                  },
+                  {
+                    "name": "w",
+                    "type": "int"
+                  },
+                  {
+                    "name": "h",
+                    "type": "int"
+                  }
+                ],
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "FromCenter",
+                "static": true,
+                "type": "Rect",
+                "parameters": [
+                  {
+                    "name": "center",
+                    "type": "const Point &"
+                  },
+                  {
+                    "name": "size",
+                    "type": "const Point &"
+                  }
+                ],
+                "doc": ""
+              }
+            ],
+            "FromCorners": [
+              {
+                "kind": "function",
+                "name": "FromCorners",
+                "static": true,
+                "type": "Rect",
+                "parameters": [
+                  {
+                    "name": "x1",
+                    "type": "int"
+                  },
+                  {
+                    "name": "y1",
+                    "type": "int"
+                  },
+                  {
+                    "name": "x2",
+                    "type": "int"
+                  },
+                  {
+                    "name": "y2",
+                    "type": "int"
+                  }
+                ],
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "FromCorners",
+                "type": "Rect",
+                "parameters": [
+                  {
+                    "name": "p1",
+                    "type": "const Point &"
+                  },
+                  {
+                    "name": "p2",
+                    "type": "const Point &"
+                  }
+                ],
+                "doc": ""
+              }
+            ],
+            "GetX2": {
+              "kind": "function",
+              "name": "GetX2",
+              "doc": ""
+            },
+            "SetX2": {
+              "kind": "function",
+              "name": "SetX2",
+              "doc": ""
+            },
+            "GetY2": {
+              "kind": "function",
+              "name": "GetY2",
+              "doc": ""
+            },
+            "SetY2": {
+              "kind": "function",
+              "name": "SetY2",
+              "doc": ""
+            },
+            "GetTopLeft": {
+              "kind": "function",
+              "name": "GetTopLeft",
+              "doc": ""
+            },
+            "GetTopRight": {
+              "kind": "function",
+              "name": "GetTopRight",
+              "doc": ""
+            },
+            "GetBottomLeft": {
+              "kind": "function",
+              "name": "GetBottomLeft",
+              "doc": ""
+            },
+            "GetBottomRight": {
+              "kind": "function",
+              "name": "GetBottomRight",
+              "doc": ""
+            },
+            "GetSize": {
+              "kind": "function",
+              "name": "GetSize",
+              "doc": ""
+            },
+            "GetCentroid": {
+              "kind": "function",
+              "name": "GetCentroid",
+              "doc": ""
+            },
+            "IntersectLine": {
+              "doc": "Calculate the intersection of a rectangle and line segment.\n\nThis function is used to clip a line segment to a rectangle. A line segment\ncontained entirely within the rectangle or that does not intersect will\nremain unchanged. A line segment that crosses the rectangle at either or\nboth ends will be clipped to the boundary of the rectangle and the new\ncoordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.\n\n@param X1 a pointer to the starting X-coordinate of the line.\n@param Y1 a pointer to the starting Y-coordinate of the line.\n@param X2 a pointer to the ending X-coordinate of the line.\n@param Y2 a pointer to the ending Y-coordinate of the line.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "IntersectLine",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "X1",
+                  "type": "int *"
+                },
+                {
+                  "name": "Y1",
+                  "type": "int *"
+                },
+                {
+                  "name": "X2",
+                  "type": "int *"
+                },
+                {
+                  "name": "Y2",
+                  "type": "int *"
+                }
+              ],
+              "sourceName": "SDL_GetRectAndLineIntersection",
+              "immutable": true
+            },
+            "operator FRect": {
+              "doc": "Convert an Rect to FRect\n\n@param rect a pointer to an Rect.\n@param frect a pointer filled in with the floating point representation of\n             `rect`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "operator FRect",
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "sourceName": "SDL_RectToFRect",
+              "static": false,
+              "immutable": true,
+              "constexpr": true
+            },
+            "operator SDL_FRect": {
+              "doc": "@sa operator FRect()",
+              "kind": "function",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "type": "",
+              "name": "operator SDL_FRect"
+            },
+            "Empty": {
+              "doc": "Determine whether a rectangle has no area.\n\nA rectangle is considered \"empty\" for this function if `r` is nullptr, or if\n`r`'s width and/or height are <= 0.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@returns true if the rectangle is \"empty\", false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "Empty",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_RectEmpty",
+              "constexpr": true,
+              "immutable": true
+            },
+            "Equal": {
+              "doc": "Determine whether two rectangles are equal.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height match.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param b the second rectangle to test.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "Equal",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const Rect &"
+                }
+              ],
+              "sourceName": "SDL_RectsEqual",
+              "immutable": true,
+              "constexpr": true
+            },
+            "Contains": [
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "p",
+                    "type": "const Point &"
+                  }
+                ],
+                "constexpr": true,
+                "immutable": true,
+                "name": "Contains",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Rect &"
+                  }
+                ],
+                "constexpr": true,
+                "immutable": true,
+                "name": "Contains",
+                "doc": ""
+              }
+            ],
+            "HasIntersection": {
+              "doc": "Determine whether two rectangles intersect.\n\nIf either pointer is nullptr the function will return false.\n\n@param B an Rect structure representing the second rectangle.\n@returns true if there is an intersection, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Rect.GetIntersection",
+              "name": "HasIntersection",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const Rect &"
+                }
+              ],
+              "sourceName": "SDL_HasRectIntersection",
+              "immutable": true
+            },
+            "GetIntersection": {
+              "doc": "Calculate the intersection of two rectangles.\n\nIf `result` is nullptr then this function will return false.\n\n@param B an Rect structure representing the second rectangle.\n@param result an Rect structure filled in with the intersection of\n              rectangles `A` and `B`.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Rect.HasIntersection",
+              "name": "GetIntersection",
+              "kind": "function",
+              "type": "std::optional<Rect>",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const Rect &"
+                }
+              ],
+              "sourceName": "SDL_GetRectIntersection",
+              "immutable": true
+            },
+            "GetUnion": {
+              "doc": "Calculate the union of two rectangles.\n\n@param B an Rect structure representing the second rectangle.\n@param result an Rect structure filled in with the union of rectangles\n              `A` and `B`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetUnion",
+              "kind": "function",
+              "type": "Rect",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const Rect &"
+                }
+              ],
+              "sourceName": "SDL_GetRectUnion",
+              "hints": {
+                "mayFail": true
+              },
+              "immutable": true
+            }
+          },
+          "hints": {
+            "self": "this",
+            "super": "SDL_Rect"
+          },
           "type": "SDL_Rect"
         },
         "FRect": {
-          "doc": "A rectangle, with the origin at the upper left (using floating point\nvalues).\n\n@since This struct is available since SDL 3.2.0.\n\n@sa RectEmptyFloat\n@sa RectsEqualFloat\n@sa RectsEqualEpsilon\n@sa HasRectIntersectionFloat\n@sa GetRectIntersectionFloat\n@sa GetRectAndLineIntersectionFloat\n@sa GetRectUnionFloat\n@sa GetRectEnclosingPointsFloat\n@sa PointInRectFloat",
+          "doc": "A rectangle, with the origin at the upper left (using floating point\nvalues).\n\n@since This struct is available since SDL 3.2.0.\n\n@sa FRect.Empty\n@sa FRect.Equal\n@sa FRect.EqualEpsilon\n@sa FRect.HasIntersection\n@sa FRect.GetIntersection\n@sa FRect.IntersectLine\n@sa FRect.GetUnion\n@sa FRect.GetEnclosingPoints\n@sa FPoint.IsInRect",
           "name": "FRect",
-          "kind": "alias",
+          "kind": "struct",
           "sourceName": "SDL_FRect",
+          "entries": {
+            "FRect": [
+              {
+                "kind": "function",
+                "name": "FRect",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FRect &",
+                    "name": "r",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps FRect.\n\n@param r the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_FRect(r)"
+                  ]
+                }
+              },
+              {
+                "kind": "function",
+                "name": "FRect",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "float",
+                    "name": "x"
+                  },
+                  {
+                    "type": "float",
+                    "name": "y"
+                  },
+                  {
+                    "type": "float",
+                    "name": "w"
+                  },
+                  {
+                    "type": "float",
+                    "name": "h"
+                  }
+                ],
+                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y.\n@param w the value for w.\n@param h the value for h.",
+                "hints": {
+                  "init": [
+                    "SDL_FRect{x, y, w, h}"
+                  ]
+                }
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "corner",
+                    "type": "const SDL_FPoint &"
+                  },
+                  {
+                    "name": "size",
+                    "type": "const SDL_FPoint &"
+                  }
+                ],
+                "name": "FRect",
+                "doc": "Wraps FRect.\n\n@param r the value to be wrapped"
+              }
+            ],
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const FRect &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
+                }
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FRect &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
+                }
+              }
+            ],
+            "operator bool": {
+              "doc": "@sa Empty()",
+              "kind": "function",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "type": "",
+              "name": "operator bool"
+            },
+            "GetX": {
+              "kind": "function",
+              "name": "GetX",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the x.\n\n@returns current x value.",
+              "hints": {
+                "body": "return x;"
+              }
+            },
+            "SetX": {
+              "kind": "function",
+              "name": "SetX",
+              "type": "FRect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newX"
+                }
+              ],
+              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self.",
+              "hints": {
+                "body": "x = newX;\nreturn *this;"
+              }
+            },
+            "GetY": {
+              "kind": "function",
+              "name": "GetY",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the y.\n\n@returns current y value.",
+              "hints": {
+                "body": "return y;"
+              }
+            },
+            "SetY": {
+              "kind": "function",
+              "name": "SetY",
+              "type": "FRect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newY"
+                }
+              ],
+              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self.",
+              "hints": {
+                "body": "y = newY;\nreturn *this;"
+              }
+            },
+            "GetW": {
+              "kind": "function",
+              "name": "GetW",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the w.\n\n@returns current w value.",
+              "hints": {
+                "body": "return w;"
+              }
+            },
+            "SetW": {
+              "kind": "function",
+              "name": "SetW",
+              "type": "FRect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newW"
+                }
+              ],
+              "doc": "Set the w.\n\n@param newW the new w value.\n@returns Reference to self.",
+              "hints": {
+                "body": "w = newW;\nreturn *this;"
+              }
+            },
+            "GetH": {
+              "kind": "function",
+              "name": "GetH",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the h.\n\n@returns current h value.",
+              "hints": {
+                "body": "return h;"
+              }
+            },
+            "SetH": {
+              "kind": "function",
+              "name": "SetH",
+              "type": "FRect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newH"
+                }
+              ],
+              "doc": "Set the h.\n\n@param newH the new h value.\n@returns Reference to self.",
+              "hints": {
+                "body": "h = newH;\nreturn *this;"
+              }
+            },
+            "GetEnclosingPoints": {
+              "doc": "Calculate a minimal rectangle enclosing a set of points with float\nprecision.\n\nIf `clip` is not nullptr then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of FPoint structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an FRect used for clipping or nullptr to enclose all points.\n@param result an FRect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetEnclosingPoints",
+              "kind": "function",
+              "type": "FRect",
+              "parameters": [
+                {
+                  "name": "points",
+                  "type": "SpanRef<const SDL_FPoint>"
+                },
+                {
+                  "name": "clip",
+                  "type": "OptionalRef<const SDL_FRect>",
+                  "default": "std::nullopt"
+                }
+              ],
+              "sourceName": "SDL_GetRectEnclosingPointsFloat",
+              "static": true
+            },
+            "FromCenter": [
+              {
+                "kind": "function",
+                "name": "FromCenter",
+                "type": "FRect",
+                "static": true,
+                "parameters": [
+                  {
+                    "name": "cx",
+                    "type": "float"
+                  },
+                  {
+                    "name": "cy",
+                    "type": "float"
+                  },
+                  {
+                    "name": "w",
+                    "type": "float"
+                  },
+                  {
+                    "name": "h",
+                    "type": "float"
+                  }
+                ],
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "FromCenter",
+                "type": "FRect",
+                "static": true,
+                "parameters": [
+                  {
+                    "name": "center",
+                    "type": "const FPoint &"
+                  },
+                  {
+                    "name": "size",
+                    "type": "const FPoint &"
+                  }
+                ],
+                "doc": ""
+              }
+            ],
+            "FromCorners": [
+              {
+                "kind": "function",
+                "name": "FromCorners",
+                "type": "FRect",
+                "static": true,
+                "parameters": [
+                  {
+                    "name": "x1",
+                    "type": "float"
+                  },
+                  {
+                    "name": "y1",
+                    "type": "float"
+                  },
+                  {
+                    "name": "x2",
+                    "type": "float"
+                  },
+                  {
+                    "name": "y2",
+                    "type": "float"
+                  }
+                ],
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "FromCorners",
+                "static": true,
+                "type": "FRect",
+                "parameters": [
+                  {
+                    "name": "p1",
+                    "type": "const FPoint &"
+                  },
+                  {
+                    "name": "p2",
+                    "type": "const FPoint &"
+                  }
+                ],
+                "doc": ""
+              }
+            ],
+            "GetX2": {
+              "kind": "function",
+              "name": "GetX2",
+              "doc": ""
+            },
+            "SetX2": {
+              "kind": "function",
+              "name": "SetX2",
+              "doc": ""
+            },
+            "GetY2": {
+              "kind": "function",
+              "name": "GetY2",
+              "doc": ""
+            },
+            "SetY2": {
+              "kind": "function",
+              "name": "SetY2",
+              "doc": ""
+            },
+            "GetTopLeft": {
+              "kind": "function",
+              "name": "GetTopLeft",
+              "doc": ""
+            },
+            "GetTopRight": {
+              "kind": "function",
+              "name": "GetTopRight",
+              "doc": ""
+            },
+            "GetBottomLeft": {
+              "kind": "function",
+              "name": "GetBottomLeft",
+              "doc": ""
+            },
+            "GetBottomRight": {
+              "kind": "function",
+              "name": "GetBottomRight",
+              "doc": ""
+            },
+            "GetSize": {
+              "kind": "function",
+              "name": "GetSize",
+              "doc": ""
+            },
+            "GetCentroid": {
+              "kind": "function",
+              "name": "GetCentroid",
+              "doc": ""
+            },
+            "IntersectLine": {
+              "doc": "Calculate the intersection of a rectangle and line segment with float\nprecision.\n\nThis function is used to clip a line segment to a rectangle. A line segment\ncontained entirely within the rectangle or that does not intersect will\nremain unchanged. A line segment that crosses the rectangle at either or\nboth ends will be clipped to the boundary of the rectangle and the new\ncoordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.\n\n@param X1 a pointer to the starting X-coordinate of the line.\n@param Y1 a pointer to the starting Y-coordinate of the line.\n@param X2 a pointer to the ending X-coordinate of the line.\n@param Y2 a pointer to the ending Y-coordinate of the line.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "IntersectLine",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "X1",
+                  "type": "float *"
+                },
+                {
+                  "name": "Y1",
+                  "type": "float *"
+                },
+                {
+                  "name": "X2",
+                  "type": "float *"
+                },
+                {
+                  "name": "Y2",
+                  "type": "float *"
+                }
+              ],
+              "sourceName": "SDL_GetRectAndLineIntersectionFloat",
+              "immutable": true
+            },
+            "Empty": {
+              "doc": "Determine whether a floating point rectangle can contain any point.\n\nA rectangle is considered \"empty\" for this function if `r` is nullptr, or if\n`r`'s width and/or height are < 0.0f.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@returns true if the rectangle is \"empty\", false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "Empty",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_RectEmptyFloat",
+              "constexpr": true,
+              "immutable": true
+            },
+            "EqualEpsilon": {
+              "doc": "Determine whether two floating point rectangles are equal, within some\ngiven epsilon.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height are within `epsilon` of each other. If you don't know\nwhat value to use for `epsilon`, you should call the FRect.Equal\nfunction instead.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param b the second rectangle to test.\n@param epsilon the epsilon value for comparison.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FRect.Equal",
+              "name": "EqualEpsilon",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const FRect &"
+                },
+                {
+                  "name": "epsilon",
+                  "type": "const float"
+                }
+              ],
+              "sourceName": "SDL_RectsEqualEpsilon",
+              "immutable": true,
+              "constexpr": true
+            },
+            "Equal": {
+              "doc": "Determine whether two floating point rectangles are equal, within a default\nepsilon.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height are within SDL_FLT_EPSILON of each other. This is often\na reasonable way to compare two floating point rectangles and deal with the\nslight precision variations in floating point calculations that tend to pop\nup.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param b the second rectangle to test.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FRect.EqualEpsilon",
+              "name": "Equal",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const FRect &"
+                }
+              ],
+              "sourceName": "SDL_RectsEqualFloat",
+              "immutable": true,
+              "constexpr": true
+            },
+            "Contains": [
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "p",
+                    "type": "const FPoint &"
+                  }
+                ],
+                "constexpr": true,
+                "immutable": true,
+                "name": "Contains",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const FRect &"
+                  }
+                ],
+                "constexpr": true,
+                "immutable": true,
+                "name": "Contains",
+                "doc": ""
+              }
+            ],
+            "HasIntersection": {
+              "doc": "Determine whether two rectangles intersect with float precision.\n\nIf either pointer is nullptr the function will return false.\n\n@param B an FRect structure representing the second rectangle.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Rect.GetIntersection",
+              "name": "HasIntersection",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const FRect &"
+                }
+              ],
+              "sourceName": "SDL_HasRectIntersectionFloat",
+              "immutable": true
+            },
+            "GetIntersection": {
+              "doc": "Calculate the intersection of two rectangles with float precision.\n\nIf `result` is nullptr then this function will return false.\n\n@param B an FRect structure representing the second rectangle.\n@param result an FRect structure filled in with the intersection of\n              rectangles `A` and `B`.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FRect.HasIntersection",
+              "name": "GetIntersection",
+              "kind": "function",
+              "type": "FRect",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const FRect &"
+                }
+              ],
+              "sourceName": "SDL_GetRectIntersectionFloat",
+              "immutable": true
+            },
+            "GetUnion": {
+              "doc": "Calculate the union of two rectangles with float precision.\n\n@param B an FRect structure representing the second rectangle.\n@param result an FRect structure filled in with the union of rectangles\n              `A` and `B`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetUnion",
+              "kind": "function",
+              "type": "FRect",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const FRect &"
+                }
+              ],
+              "sourceName": "SDL_GetRectUnionFloat",
+              "hints": {
+                "mayFail": true
+              },
+              "immutable": true
+            }
+          },
+          "hints": {
+            "self": "this",
+            "super": "SDL_FRect"
+          },
           "type": "SDL_FRect"
         },
-        "RectToFRect": {
-          "doc": "Convert an Rect to FRect\n\n@param rect a pointer to an Rect.\n@param frect a pointer filled in with the floating point representation of\n             `rect`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "RectToFRect",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "rect",
-              "type": "const SDL_Rect &"
-            },
-            {
-              "name": "frect",
-              "type": "FRect *"
-            }
-          ],
-          "sourceName": "SDL_RectToFRect"
-        },
-        "PointInRect": {
-          "doc": "Determine whether a point resides inside a rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not nullptr,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)\nas \"inside\" and (0,1) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param p the point to test.\n@param r the rectangle to test.\n@returns true if `p` is contained by `r`, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "PointInRect",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "p",
-              "type": "const SDL_Point &"
-            },
-            {
-              "name": "r",
-              "type": "const SDL_Rect &"
-            }
-          ],
-          "sourceName": "SDL_PointInRect"
-        },
-        "RectEmpty": {
-          "doc": "Determine whether a rectangle has no area.\n\nA rectangle is considered \"empty\" for this function if `r` is nullptr, or if\n`r`'s width and/or height are <= 0.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param r the rectangle to test.\n@returns true if the rectangle is \"empty\", false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "RectEmpty",
+        "Point::IsInRect": {
+          "name": "Point::IsInRect",
           "kind": "function",
           "type": "bool",
           "parameters": [
             {
               "name": "r",
-              "type": "const SDL_Rect &"
+              "type": "const Rect &"
             }
           ],
-          "sourceName": "SDL_RectEmpty"
-        },
-        "RectsEqual": {
-          "doc": "Determine whether two rectangles are equal.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height match.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param a the first rectangle to test.\n@param b the second rectangle to test.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "RectsEqual",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "a",
-              "type": "const SDL_Rect &"
-            },
-            {
-              "name": "b",
-              "type": "const SDL_Rect &"
-            }
-          ],
-          "sourceName": "SDL_RectsEqual"
-        },
-        "HasRectIntersection": {
-          "doc": "Determine whether two rectangles intersect.\n\nIf either pointer is nullptr the function will return false.\n\n@param A an Rect structure representing the first rectangle.\n@param B an Rect structure representing the second rectangle.\n@returns true if there is an intersection, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetRectIntersection",
-          "name": "HasRectIntersection",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "A",
-              "type": "const SDL_Rect &"
-            },
-            {
-              "name": "B",
-              "type": "const SDL_Rect &"
-            }
-          ],
-          "sourceName": "SDL_HasRectIntersection"
-        },
-        "GetRectIntersection": {
-          "doc": "Calculate the intersection of two rectangles.\n\nIf `result` is nullptr then this function will return false.\n\n@param A an Rect structure representing the first rectangle.\n@param B an Rect structure representing the second rectangle.\n@param result an Rect structure filled in with the intersection of\n              rectangles `A` and `B`.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasRectIntersection",
-          "name": "GetRectIntersection",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "A",
-              "type": "const SDL_Rect &"
-            },
-            {
-              "name": "B",
-              "type": "const SDL_Rect &"
-            },
-            {
-              "name": "result",
-              "type": "Rect *"
-            }
-          ],
-          "sourceName": "SDL_GetRectIntersection"
-        },
-        "GetRectUnion": {
-          "doc": "Calculate the union of two rectangles.\n\n@param A an Rect structure representing the first rectangle.\n@param B an Rect structure representing the second rectangle.\n@param result an Rect structure filled in with the union of rectangles\n              `A` and `B`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "GetRectUnion",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "A",
-              "type": "const SDL_Rect &"
-            },
-            {
-              "name": "B",
-              "type": "const SDL_Rect &"
-            },
-            {
-              "name": "result",
-              "type": "Rect *"
-            }
-          ],
-          "sourceName": "SDL_GetRectUnion",
+          "sourceName": "SDL_PointInRect",
+          "constexpr": true,
+          "immutable": true,
           "hints": {
-            "mayFail": true
+            "self": "this",
+            "super": "SDL_Point"
           }
         },
-        "GetRectEnclosingPoints": {
-          "doc": "Calculate a minimal rectangle enclosing a set of points.\n\nIf `clip` is not nullptr then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of Point structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an Rect used for clipping or nullptr to enclose all points.\n@param result an Rect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "GetRectEnclosingPoints",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "points",
-              "type": "const SDL_Point &"
-            },
-            {
-              "name": "count",
-              "type": "int"
-            },
-            {
-              "name": "clip",
-              "type": "const SDL_Rect &"
-            },
-            {
-              "name": "result",
-              "type": "Rect *"
-            }
-          ],
-          "sourceName": "SDL_GetRectEnclosingPoints"
-        },
-        "GetRectAndLineIntersection": {
-          "doc": "Calculate the intersection of a rectangle and line segment.\n\nThis function is used to clip a line segment to a rectangle. A line segment\ncontained entirely within the rectangle or that does not intersect will\nremain unchanged. A line segment that crosses the rectangle at either or\nboth ends will be clipped to the boundary of the rectangle and the new\ncoordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.\n\n@param rect an Rect structure representing the rectangle to intersect.\n@param X1 a pointer to the starting X-coordinate of the line.\n@param Y1 a pointer to the starting Y-coordinate of the line.\n@param X2 a pointer to the ending X-coordinate of the line.\n@param Y2 a pointer to the ending Y-coordinate of the line.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "GetRectAndLineIntersection",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "rect",
-              "type": "const SDL_Rect &"
-            },
-            {
-              "name": "X1",
-              "type": "int *"
-            },
-            {
-              "name": "Y1",
-              "type": "int *"
-            },
-            {
-              "name": "X2",
-              "type": "int *"
-            },
-            {
-              "name": "Y2",
-              "type": "int *"
-            }
-          ],
-          "sourceName": "SDL_GetRectAndLineIntersection"
-        },
-        "PointInRectFloat": {
-          "doc": "Determine whether a point resides inside a floating point rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not nullptr,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand <= the rectangle's x+w and y+h. So a 1x1 rectangle considers point\n(0,0) and (0,1) as \"inside\" and (0,2) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param p the point to test.\n@param r the rectangle to test.\n@returns true if `p` is contained by `r`, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "PointInRectFloat",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "p",
-              "type": "const SDL_FPoint &"
-            },
-            {
-              "name": "r",
-              "type": "const SDL_FRect &"
-            }
-          ],
-          "sourceName": "SDL_PointInRectFloat"
-        },
-        "RectEmptyFloat": {
-          "doc": "Determine whether a floating point rectangle can contain any point.\n\nA rectangle is considered \"empty\" for this function if `r` is nullptr, or if\n`r`'s width and/or height are < 0.0f.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param r the rectangle to test.\n@returns true if the rectangle is \"empty\", false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "RectEmptyFloat",
+        "FPoint::IsInRect": {
+          "name": "FPoint::IsInRect",
           "kind": "function",
           "type": "bool",
           "parameters": [
             {
               "name": "r",
-              "type": "const SDL_FRect &"
+              "type": "const FRect &"
             }
           ],
-          "sourceName": "SDL_RectEmptyFloat"
-        },
-        "RectsEqualEpsilon": {
-          "doc": "Determine whether two floating point rectangles are equal, within some\ngiven epsilon.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height are within `epsilon` of each other. If you don't know\nwhat value to use for `epsilon`, you should call the RectsEqualFloat\nfunction instead.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param a the first rectangle to test.\n@param b the second rectangle to test.\n@param epsilon the epsilon value for comparison.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RectsEqualFloat",
-          "name": "RectsEqualEpsilon",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "a",
-              "type": "const SDL_FRect &"
-            },
-            {
-              "name": "b",
-              "type": "const SDL_FRect &"
-            },
-            {
-              "name": "epsilon",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_RectsEqualEpsilon"
-        },
-        "RectsEqualFloat": {
-          "doc": "Determine whether two floating point rectangles are equal, within a default\nepsilon.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height are within SDL_FLT_EPSILON of each other. This is often\na reasonable way to compare two floating point rectangles and deal with the\nslight precision variations in floating point calculations that tend to pop\nup.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param a the first rectangle to test.\n@param b the second rectangle to test.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RectsEqualEpsilon",
-          "name": "RectsEqualFloat",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "a",
-              "type": "const SDL_FRect &"
-            },
-            {
-              "name": "b",
-              "type": "const SDL_FRect &"
-            }
-          ],
-          "sourceName": "SDL_RectsEqualFloat"
-        },
-        "HasRectIntersectionFloat": {
-          "doc": "Determine whether two rectangles intersect with float precision.\n\nIf either pointer is nullptr the function will return false.\n\n@param A an FRect structure representing the first rectangle.\n@param B an FRect structure representing the second rectangle.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetRectIntersection",
-          "name": "HasRectIntersectionFloat",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "A",
-              "type": "const SDL_FRect &"
-            },
-            {
-              "name": "B",
-              "type": "const SDL_FRect &"
-            }
-          ],
-          "sourceName": "SDL_HasRectIntersectionFloat"
-        },
-        "GetRectIntersectionFloat": {
-          "doc": "Calculate the intersection of two rectangles with float precision.\n\nIf `result` is nullptr then this function will return false.\n\n@param A an FRect structure representing the first rectangle.\n@param B an FRect structure representing the second rectangle.\n@param result an FRect structure filled in with the intersection of\n              rectangles `A` and `B`.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasRectIntersectionFloat",
-          "name": "GetRectIntersectionFloat",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "A",
-              "type": "const SDL_FRect &"
-            },
-            {
-              "name": "B",
-              "type": "const SDL_FRect &"
-            },
-            {
-              "name": "result",
-              "type": "FRect *"
-            }
-          ],
-          "sourceName": "SDL_GetRectIntersectionFloat"
-        },
-        "GetRectUnionFloat": {
-          "doc": "Calculate the union of two rectangles with float precision.\n\n@param A an FRect structure representing the first rectangle.\n@param B an FRect structure representing the second rectangle.\n@param result an FRect structure filled in with the union of rectangles\n              `A` and `B`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "GetRectUnionFloat",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "A",
-              "type": "const SDL_FRect &"
-            },
-            {
-              "name": "B",
-              "type": "const SDL_FRect &"
-            },
-            {
-              "name": "result",
-              "type": "FRect *"
-            }
-          ],
-          "sourceName": "SDL_GetRectUnionFloat",
+          "sourceName": "SDL_PointInRectFloat",
+          "constexpr": true,
+          "immutable": true,
           "hints": {
-            "mayFail": true
+            "self": "this",
+            "super": "SDL_FPoint"
           }
-        },
-        "GetRectEnclosingPointsFloat": {
-          "doc": "Calculate a minimal rectangle enclosing a set of points with float\nprecision.\n\nIf `clip` is not nullptr then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of FPoint structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an FRect used for clipping or nullptr to enclose all points.\n@param result an FRect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "GetRectEnclosingPointsFloat",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "points",
-              "type": "const SDL_FPoint &"
-            },
-            {
-              "name": "count",
-              "type": "int"
-            },
-            {
-              "name": "clip",
-              "type": "const SDL_FRect &"
-            },
-            {
-              "name": "result",
-              "type": "FRect *"
-            }
-          ],
-          "sourceName": "SDL_GetRectEnclosingPointsFloat"
-        },
-        "GetRectAndLineIntersectionFloat": {
-          "doc": "Calculate the intersection of a rectangle and line segment with float\nprecision.\n\nThis function is used to clip a line segment to a rectangle. A line segment\ncontained entirely within the rectangle or that does not intersect will\nremain unchanged. A line segment that crosses the rectangle at either or\nboth ends will be clipped to the boundary of the rectangle and the new\ncoordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.\n\n@param rect an FRect structure representing the rectangle to intersect.\n@param X1 a pointer to the starting X-coordinate of the line.\n@param Y1 a pointer to the starting Y-coordinate of the line.\n@param X2 a pointer to the ending X-coordinate of the line.\n@param Y2 a pointer to the ending Y-coordinate of the line.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "GetRectAndLineIntersectionFloat",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "rect",
-              "type": "const SDL_FRect &"
-            },
-            {
-              "name": "X1",
-              "type": "float *"
-            },
-            {
-              "name": "Y1",
-              "type": "float *"
-            },
-            {
-              "name": "X2",
-              "type": "float *"
-            },
-            {
-              "name": "Y2",
-              "type": "float *"
-            }
-          ],
-          "sourceName": "SDL_GetRectAndLineIntersectionFloat"
         }
       },
       "includes": [
         "SDL3/SDL_rect.h"
+      ],
+      "localIncludes": [
+        "SDL3pp_error.h",
+        "SDL3pp_optionalRef.h",
+        "SDL3pp_spanRef.h"
       ]
     },
     "SDL3pp_surface.h": {

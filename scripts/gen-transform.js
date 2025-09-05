@@ -1003,6 +1003,8 @@ const transform = {
       }
     },
     "SDL_error.h": {
+      includes: ['exception', 'format'],
+      localIncludes: ['SDL3pp_strings.h'],
       ignoreEntries: [
         "SDL_SetErrorV"
       ],
@@ -3522,36 +3524,16 @@ const transform = {
       }
     },
     "SDL_rect.h": {
-      includeAfter: {
-        "__begin": [
-          {
-            "name": "FPoint",
-            "kind": "forward"
-          },
-          {
-            "name": "Rect",
-            "kind": "forward"
-          },
-          {
-            "name": "FRect",
-            "kind": "forward"
-          }
-        ],
-        "__end": [
-          {
-            "kind": "function",
-            "name": "Rect.IntersectLine"
-          },
-          {
-            "kind": "function",
-            "name": "FRect.IntersectLine"
-          }
-        ]
-      },
-      wrappers: {
+      localIncludes: ['SDL3pp_error.h', 'SDL3pp_optionalRef.h', 'SDL3pp_spanRef.h'],
+      transform: {
+        "FPoint": { kind: 'forward' },
+        "Rect": { kind: 'forward' },
+        "FRect": { kind: 'forward' },
         "SDL_Point": {
-          attribute: "p",
-          comparable: true,
+          wrapper: {
+            attribute: "p",
+            comparable: true,
+          },
           entries: {
             "Point": {
               kind: "function",
@@ -3582,8 +3564,10 @@ const transform = {
           }
         },
         "SDL_FPoint": {
-          attribute: "p",
-          comparable: true,
+          wrapper: {
+            attribute: "p",
+            comparable: true,
+          },
           entries: {
             "SDL_PointInRectFloat": {
               kind: "function",
@@ -3602,8 +3586,10 @@ const transform = {
           }
         },
         "SDL_Rect": {
-          attribute: "r",
-          comparable: true,
+          wrapper: {
+            attribute: "p",
+            comparable: true,
+          },
           entries: {
             "Rect": {
               kind: "function",
@@ -3846,8 +3832,10 @@ const transform = {
           }
         },
         "SDL_FRect": {
-          attribute: "r",
-          comparable: true,
+          wrapper: {
+            attribute: "r",
+            comparable: true,
+          },
           entries: {
             "FRect": {
               "kind": "function",
@@ -4090,7 +4078,22 @@ const transform = {
               ]
             }
           }
-        }
+        },
+      },
+      includeAfter: {
+        "__end": [
+          {
+            "kind": "function",
+            "name": "Rect.IntersectLine"
+          },
+          {
+            "kind": "function",
+            "name": "FRect.IntersectLine"
+          }
+        ]
+      },
+      wrappers: {
+
       }
     },
     "SDL_render.h": {

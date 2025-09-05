@@ -1,0 +1,2099 @@
+--- include/SDL3pp/SDL3pp_rect.h	2025-09-05 18:52:02.178450138 -0300
++++ build/snapshot/SDL3pp_rect.h	2025-09-05 18:51:59.038430686 -0300
+@@ -9,7 +9,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryRect Category Rect
++ * @defgroup CategoryRect Rectangle Functions
+  *
+  * Some helper functions for managing rectangles and 2D points, in both
+  * integer and floating point versions.
+@@ -29,8 +29,13 @@
+ /**
+  * The structure that defines a point (using integers).
+  *
++ * Inspired by
++ * https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
++ *
+  * @since This struct is available since SDL 3.2.0.
+  *
++ * @cat wrap-extending-struct
++ *
+  * @sa Rect.GetEnclosingPoints
+  * @sa Point.IsInRect
+  */
+@@ -58,11 +63,12 @@
+   }
+ 
+   /**
+-   * Wraps Point.
+-   *
+-   * @param p the value to be wrapped
++   * Explicit conversion from FPoint
+    */
+-  constexpr explicit Point(const SDL_FPoint& p) {}
++  constexpr explicit Point(const SDL_FPoint& p)
++    : SDL_Point{int(p.x), int(p.y)}
++  {
++  }
+ 
+   /**
+    * Default comparison operator
+@@ -88,16 +94,16 @@
+   constexpr explicit operator bool() const { return *this != Point{}; }
+ 
+   /**
+-   * Get the x.
++   * Get x coordinate
+    *
+-   * @returns current x value.
++   * @returns x coordinate
+    */
+   constexpr int GetX() const { return x; }
+ 
+   /**
+-   * Set the x.
++   * Set the x coordinate.
+    *
+-   * @param newX the new x value.
++   * @param newX the new x coordinate.
+    * @returns Reference to self.
+    */
+   constexpr Point& SetX(int newX)
+@@ -107,9 +113,9 @@
+   }
+ 
+   /**
+-   * Get the y.
++   * Get y coordinate
+    *
+-   * @returns current y value.
++   * @returns y coordinate
+    */
+   constexpr int GetY() const { return y; }
+ 
+@@ -139,13 +145,328 @@
+    * be able to find this function inside SDL itself).
+    *
+    * @param r the rectangle to test.
+-   * @returns true if `p` is contained by `r`, false otherwise.
++   * @returns true if this is contained by `r`, false otherwise.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+    * @since This function is available since SDL 3.2.0.
+    */
+   constexpr bool IsInRect(const Rect& r) const;
++
++  /**
++   * Get point's memberwise negation
++   *
++   * @returns New Point representing memberwise negation
++   *
++   */
++  constexpr Point operator-() const { return Point(-x, -y); }
++
++  /**
++   * Get point's memberwise addition with another point
++   *
++   * @param[in] other Point to add
++   *
++   * @returns New Point representing memberwise addition with another point
++   *
++   */
++  constexpr Point operator+(const Point& other) const
++  {
++    return Point(x + other.x, y + other.y);
++  }
++
++  /**
++   * Get point's memberwise subtraction with another point
++   *
++   * @param[in] other Point to subtract
++   *
++   * @returns New Point representing memberwise subtraction of another point
++   *
++   */
++  constexpr Point operator-(const Point& other) const
++  {
++    return Point(x - other.x, y - other.y);
++  }
++
++  /**
++   * Get point's memberwise division by an integer
++   *
++   * @param[in] value Divisor
++   *
++   * @returns New Point representing memberwise division of
++   *          point by an integer
++   *
++   */
++  constexpr Point operator/(int value) const
++  {
++    return Point(x / value, y / value);
++  }
++
++  /**
++   * Get point's memberwise division by an integer
++   *
++   * @param[in] value Divisor
++   *
++   * @returns New Point representing memberwise division of
++   *          point by an integer
++   *
++   */
++  constexpr FPoint operator/(float value) const;
++
++  /**
++   * Get point's memberwise division by another point
++   *
++   * @param[in] other Divisor
++   *
++   * @returns New Point representing memberwise division of
++   *          point by another point
++   *
++   */
++  constexpr Point operator/(const Point& other) const
++  {
++    return Point(x / other.x, y / other.y);
++  }
++
++  /**
++   * Get point's memberwise remainder from division
++   *        by an integer
++   *
++   * @param[in] value Divisor
++   *
++   * @returns New Point representing memberwise remainder
++   *          from division by an integer
++   *
++   */
++  constexpr Point operator%(int value) const
++  {
++    return Point(x % value, y % value);
++  }
++
++  /**
++   * Get point's memberwise remainder from division
++   *        by another point
++   *
++   * @param[in] other Divisor
++   *
++   * @returns New Point representing memberwise remainder
++   *          from division by another point
++   *
++   */
++  constexpr Point operator%(const Point& other) const
++  {
++    return Point(x % other.x, y % other.y);
++  }
++
++  /**
++   * Get point's memberwise multiplication by an
++   *        integer
++   *
++   * @param[in] value Multiplier
++   *
++   * @returns New Point representing memberwise multiplication
++   *          of point by an integer
++   *
++   */
++  constexpr Point operator*(int value) const
++  {
++    return Point(x * value, y * value);
++  }
++
++  /**
++   * Get point's memberwise multiplication by an
++   *        integer
++   *
++   * @param[in] value Multiplier
++   *
++   * @returns New Point representing memberwise multiplication
++   *          of point by an integer
++   *
++   */
++  constexpr FPoint operator*(float value) const;
++
++  /**
++   * Get point's memberwise multiplication by another
++   *        point
++   *
++   * @param[in] other Multiplier
++   *
++   * @returns New Point representing memberwise multiplication
++   *          of point by another point
++   *
++   */
++  constexpr Point operator*(const Point& other) const
++  {
++    return Point(x * other.x, y * other.y);
++  }
++
++  /**
++   * Memberwise add another point
++   *
++   * @param[in] other Point to add to the current one
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Point& operator+=(const Point& other)
++  {
++    x += other.x;
++    y += other.y;
++    return *this;
++  }
++
++  /**
++   * Memberwise subtract another point
++   *
++   * @param[in] other Point to subtract from the current one
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Point& operator-=(const Point& other)
++  {
++    x -= other.x;
++    y -= other.y;
++    return *this;
++  }
++
++  /**
++   * Memberwise divide by an integer
++   *
++   * @param[in] value Divisor
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Point& operator/=(int value)
++  {
++    x /= value;
++    y /= value;
++    return *this;
++  }
++
++  /**
++   * Memberwise divide by another point
++   *
++   * @param[in] other Divisor
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Point& operator/=(const Point& other)
++  {
++    x /= other.x;
++    y /= other.y;
++    return *this;
++  }
++
++  /**
++   * Memberwise remainder from division by an integer
++   *
++   * @param[in] value Divisor
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Point& operator%=(int value)
++  {
++    x %= value;
++    y %= value;
++    return *this;
++  }
++
++  /**
++   * Memberwise remainder from division by another
++   *        point
++   *
++   * @param[in] other Divisor
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Point& operator%=(const Point& other)
++  {
++    x %= other.x;
++    y %= other.y;
++    return *this;
++  }
++
++  /**
++   * Memberwise multiply by an integer
++   *
++   * @param[in] value Multiplier
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Point& operator*=(int value)
++  {
++    x *= value;
++    y *= value;
++    return *this;
++  }
++
++  /**
++   * Memberwise multiply by another point
++   *
++   * @param[in] other Multiplier
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Point& operator*=(const Point& other)
++  {
++    x *= other.x;
++    y *= other.y;
++    return *this;
++  }
++
++  /**
++   * Get a point with coordinates modified so it fits
++   *        into a given rect
++   *
++   * @param[in] rect Rectangle to clamp with
++   *
++   * @returns Clamped point
++   *
++   */
++  constexpr Point GetClamped(const Rect& rect) const;
++
++  /**
++   * Clamp point coordinates to make it fit into a
++   *        given rect
++   *
++   * @param[in] rect Rectangle to clamp with
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Point& Clamp(const Rect& rect);
++
++  /**
++   * Get a point wrapped within a specified rect
++   *
++   * @param[in] rect Rectangle to wrap with
++   *
++   * @returns Wrapped point
++   *
++   */
++  constexpr Point GetWrapped(const Rect& rect) const;
++
++  /**
++   * Wrap point coordinates within a specified rect
++   *
++   * @param[in] rect Rectangle to wrap with
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Point& Wrap(const Rect& rect);
++
++  /**
++   * Converts to FPoint
++   *
++   * @return FPoint
++   */
++  constexpr operator FPoint() const;
+ };
+ 
+ /**
+@@ -153,6 +474,8 @@
+  *
+  * @since This struct is available since SDL 3.2.0.
+  *
++ * @cat wrap-extending-struct
++ *
+  * @sa FRect.GetEnclosingPoints
+  * @sa FPoint.IsInRect
+  */
+@@ -200,19 +523,19 @@
+    *
+    * @returns True if valid state, false otherwise.
+    */
+-  constexpr explicit operator bool() const { return *this != FPoint{}; }
++  constexpr explicit operator bool() const { return x != 0 && y != 0; }
+ 
+   /**
+-   * Get the x.
++   * Get the x coordinate.
+    *
+    * @returns current x value.
+    */
+   constexpr float GetX() const { return x; }
+ 
+   /**
+-   * Set the x.
++   * Set the x coordinate.
+    *
+-   * @param newX the new x value.
++   * @param newX the new x coordinate.
+    * @returns Reference to self.
+    */
+   constexpr FPoint& SetX(float newX)
+@@ -222,16 +545,16 @@
+   }
+ 
+   /**
+-   * Get the y.
++   * Get the y coordinate.
+    *
+-   * @returns current y value.
++   * @returns current y coordinate.
+    */
+   constexpr float GetY() const { return y; }
+ 
+   /**
+-   * Set the y.
++   * Set the y coordinate.
+    *
+-   * @param newY the new y value.
++   * @param newY the new y coordinate.
+    * @returns Reference to self.
+    */
+   constexpr FPoint& SetY(float newY)
+@@ -254,13 +577,237 @@
+    * be able to find this function inside SDL itself).
+    *
+    * @param r the rectangle to test.
+-   * @returns true if `p` is contained by `r`, false otherwise.
++   * @returns true if this is contained by `r`, false otherwise.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+    * @since This function is available since SDL 3.2.0.
+    */
+   constexpr bool IsInRect(const FRect& r) const;
++
++  /**
++   * Get point's memberwise negation
++   *
++   * @returns New Point representing memberwise negation
++   *
++   */
++  constexpr FPoint operator-() const { return FPoint(-x, -y); }
++
++  /**
++   * Get point's memberwise addition with another point
++   *
++   * @param[in] other Point to add
++   *
++   * @returns New Point representing memberwise addition with another point
++   *
++   */
++  constexpr FPoint operator+(const FPoint& other) const
++  {
++    return FPoint(x + other.x, y + other.y);
++  }
++
++  /**
++   * Get point's memberwise subtraction with another point
++   *
++   * @param[in] other Point to subtract
++   *
++   * @returns New Point representing memberwise subtraction of another point
++   *
++   */
++  constexpr FPoint operator-(const FPoint& other) const
++  {
++    return FPoint(x - other.x, y - other.y);
++  }
++
++  /**
++   * Get point's memberwise division by an float
++   *
++   * @param[in] value Divisor
++   *
++   * @returns New Point representing memberwise division of
++   *          point by an float
++   *
++   */
++  constexpr FPoint operator/(float value) const
++  {
++    return FPoint(x / value, y / value);
++  }
++
++  /**
++   * Get point's memberwise division by another point
++   *
++   * @param[in] other Divisor
++   *
++   * @returns New Point representing memberwise division of
++   *          point by another point
++   *
++   */
++  constexpr FPoint operator/(const FPoint& other) const
++  {
++    return FPoint(x / other.x, y / other.y);
++  }
++
++  /**
++   * Get point's memberwise multiplication by an
++   *        float
++   *
++   * @param[in] value Multiplier
++   *
++   * @returns New Point representing memberwise multiplication
++   *          of point by an float
++   *
++   */
++  constexpr FPoint operator*(float value) const
++  {
++    return FPoint(x * value, y * value);
++  }
++
++  /**
++   * Get point's memberwise multiplication by another
++   *        point
++   *
++   * @param[in] other Multiplier
++   *
++   * @returns New Point representing memberwise multiplication
++   *          of point by another point
++   *
++   */
++  constexpr FPoint operator*(const FPoint& other) const
++  {
++    return FPoint(x * other.x, y * other.y);
++  }
++
++  /**
++   * Memberwise add another point
++   *
++   * @param[in] other Point to add to the current one
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FPoint& operator+=(const FPoint& other)
++  {
++    x += other.x;
++    y += other.y;
++    return *this;
++  }
++
++  /**
++   * Memberwise subtract another point
++   *
++   * @param[in] other Point to subtract from the current one
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FPoint& operator-=(const FPoint& other)
++  {
++    x -= other.x;
++    y -= other.y;
++    return *this;
++  }
++
++  /**
++   * Memberwise divide by an float
++   *
++   * @param[in] value Divisor
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FPoint& operator/=(float value)
++  {
++    x /= value;
++    y /= value;
++    return *this;
++  }
++
++  /**
++   * Memberwise divide by another point
++   *
++   * @param[in] other Divisor
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FPoint& operator/=(const FPoint& other)
++  {
++    x /= other.x;
++    y /= other.y;
++    return *this;
++  }
++
++  /**
++   * Memberwise multiply by an float
++   *
++   * @param[in] value Multiplier
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FPoint& operator*=(float value)
++  {
++    x *= value;
++    y *= value;
++    return *this;
++  }
++
++  /**
++   * Memberwise multiply by another point
++   *
++   * @param[in] other Multiplier
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FPoint& operator*=(const FPoint& other)
++  {
++    x *= other.x;
++    y *= other.y;
++    return *this;
++  }
++
++  /**
++   * Get a point with coordinates modified so it fits
++   *        into a given rect
++   *
++   * @param[in] rect Rectangle to clamp with
++   *
++   * @returns Clamped point
++   *
++   */
++  constexpr FPoint GetClamped(const FRect& rect) const;
++
++  /**
++   * Clamp point coordinates to make it fit into a
++   *        given rect
++   *
++   * @param[in] rect Rectangle to clamp with
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FPoint& Clamp(const FRect& rect);
++
++  /**
++   * Get a point wrapped within a specified rect
++   *
++   * @param[in] rect Rectangle to wrap with
++   *
++   * @returns Wrapped point
++   *
++   */
++  constexpr FPoint GetWrapped(const FRect& rect) const;
++
++  /**
++   * Wrap point coordinates within a specified rect
++   *
++   * @param[in] rect Rectangle to wrap with
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FPoint& Wrap(const FRect& rect);
+ };
+ 
+ /**
+@@ -268,6 +815,8 @@
+  *
+  * @since This struct is available since SDL 3.2.0.
+  *
++ * @cat wrap-extending-struct
++ *
+  * @sa Rect.Empty
+  * @sa Rect.Equal
+  * @sa Rect.HasIntersection
+@@ -281,20 +830,20 @@
+   /**
+    * Wraps Rect.
+    *
+-   * @param p the value to be wrapped
++   * @param r the value to be wrapped
+    */
+-  constexpr Rect(const SDL_Rect& p = {})
+-    : SDL_Rect(p)
++  constexpr Rect(const SDL_Rect& r = {})
++    : SDL_Rect(r)
+   {
+   }
+ 
+   /**
+    * Constructs from its fields.
+    *
+-   * @param x the value for x.
+-   * @param y the value for y.
+-   * @param w the value for w.
+-   * @param h the value for h.
++   * @param x the left x.
++   * @param y the top y.
++   * @param w the width.
++   * @param h the height.
+    */
+   constexpr Rect(int x, int y, int w, int h)
+     : SDL_Rect{x, y, w, h}
+@@ -302,44 +851,45 @@
+   }
+ 
+   /**
+-   * Wraps Rect.
++   * Construct from offset and size
+    *
+-   * @param p the value to be wrapped
++   * @param corner the top-left corner
++   * @param size the size
+    */
+-  Rect(const SDL_Point& corner, const SDL_Point& size) {}
++  constexpr Rect(const SDL_Point& corner, const SDL_Point& size)
++    : Rect{corner.x, corner.y, size.x, size.y}
++  {
++  }
+ 
+   /**
+    * Default comparison operator
+    */
+-  constexpr bool operator==(const Rect& other) const
+-  {
+-    return x == other.x && y == other.y && w == other.w && h == other.h;
+-  }
++  constexpr bool operator==(const Rect& other) const { return Equal(other); }
+ 
+   /**
+    * Compares with the underlying type
+    */
+-  constexpr bool operator==(const SDL_Rect& other) const
++  constexpr bool operator==(const SDL_Rect& r) const
+   {
+-    return x == other.x && y == other.y && w == other.w && h == other.h;
++    return operator==(Rect(r));
+   }
+ 
+   /**
+    * @sa Empty()
+    */
+-  constexpr operator bool() const { static_assert(false, "Not implemented"); }
++  constexpr operator bool() const { return !Empty(); }
+ 
+   /**
+-   * Get the x.
++   * Get left x coordinate.
+    *
+-   * @returns current x value.
++   * @returns coordinate of the left x
+    */
+   constexpr int GetX() const { return x; }
+ 
+   /**
+-   * Set the x.
++   * Set the left x coordinate.
+    *
+-   * @param newX the new x value.
++   * @param newX the new left x.
+    * @returns Reference to self.
+    */
+   constexpr Rect& SetX(int newX)
+@@ -349,16 +899,16 @@
+   }
+ 
+   /**
+-   * Get the y.
++   * Get top y coordinate.
+    *
+-   * @returns current y value.
++   * @returns coordinate of the top y.
+    */
+   constexpr int GetY() const { return y; }
+ 
+   /**
+-   * Set the y.
++   * Set the top y coordinate.
+    *
+-   * @param newY the new y value.
++   * @param newY the new top y.
+    * @returns Reference to self.
+    */
+   constexpr Rect& SetY(int newY)
+@@ -368,16 +918,16 @@
+   }
+ 
+   /**
+-   * Get the w.
++   * Get width of the rect
+    *
+-   * @returns current w value.
++   * @returns Width of the rect
+    */
+   constexpr int GetW() const { return w; }
+ 
+   /**
+-   * Set the w.
++   * Set the width of the rect.
+    *
+-   * @param newW the new w value.
++   * @param newW the new width.
+    * @returns Reference to self.
+    */
+   constexpr Rect& SetW(int newW)
+@@ -387,16 +937,16 @@
+   }
+ 
+   /**
+-   * Get the h.
++   * Get height of the rect
+    *
+-   * @returns current h value.
++   * @returns Height of the rect
+    */
+   constexpr int GetH() const { return h; }
+ 
+   /**
+-   * Set the h.
++   * Set the height of the rect.
+    *
+-   * @param newH the new h value.
++   * @param newH the new height.
+    * @returns Reference to self.
+    */
+   constexpr Rect& SetH(int newH)
+@@ -411,14 +961,13 @@
+    * If `clip` is not nullptr then only points inside of the clipping rectangle
+    * are considered.
+    *
+-   * @param points an array of Point structures representing points to be
++   * @param points a span of SDL_Point structures representing points to be
+    *               enclosed.
+-   * @param count the number of structures in the `points` array.
+-   * @param clip an Rect used for clipping or nullptr to enclose all points.
+-   * @param result an Rect structure filled in with the minimal enclosing
+-   *               rectangle.
+-   * @returns true if any points were enclosed or false if all the points were
+-   *          outside of the clipping rectangle.
++   * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
++   *             points.
++   * @returns a SDL_Rect structure filled in with the minimal enclosing
++   *          rectangle or an empty rect if all the points were outside of the
++   *          clipping rectangle.
+    *
+    * @since This function is available since SDL 3.2.0.
+    */
+@@ -426,48 +975,161 @@
+     SpanRef<const SDL_Point> points,
+     OptionalRef<const SDL_Rect> clip = std::nullopt)
+   {
+-    return SDL_GetRectEnclosingPoints(points, clip);
++    Rect result;
++    if (SDL_GetRectEnclosingPoints(
++          points.data(), points.size(), clip, &result)) {
++      return result;
++    }
++    return {};
+   }
+ 
+-  static Rect FromCenter(int cx, int cy, int w, int h)
++  /**
++   * Construct the rect from given center coordinates, width and height
++   *
++   * @param[in] cx X coordinate of the rectangle center
++   * @param[in] cy Y coordinate of the rectangle center
++   * @param[in] w Width of the rectangle
++   * @param[in] h Height of the rectangle
++   *
++   */
++  static constexpr Rect FromCenter(int cx, int cy, int w, int h)
+   {
+-    static_assert(false, "Not implemented");
++    return Rect(cx - w / 2, cy - h / 2, w, h);
+   }
+ 
+-  static Rect FromCenter(const Point& center, const Point& size)
++  /**
++   * Construct the rect from given center coordinates and size
++   *
++   * @param[in] center Coordinates of the rectangle center
++   * @param[in] size Dimensions of the rectangle
++   *
++   */
++  static constexpr Rect FromCenter(const Point& center, const Point& size)
+   {
+-    static_assert(false, "Not implemented");
++    return Rect(center - size / 2, size);
+   }
+ 
+-  static Rect FromCorners(int x1, int y1, int x2, int y2)
++  /**
++   * Construct the rect from given corners coordinates
++   *
++   * @param[in] x1 X coordinate of the top left rectangle corner
++   * @param[in] y1 Y coordinate of the top left rectangle corner
++   * @param[in] x2 X coordinate of the bottom right rectangle corner
++   * @param[in] y2 Y coordinate of the bottom right rectangle corner
++   *
++   */
++  static constexpr Rect FromCorners(int x1, int y1, int x2, int y2)
+   {
+-    static_assert(false, "Not implemented");
++    return Rect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+   }
+ 
+-  Rect FromCorners(const Point& p1, const Point& p2)
++  /**
++   * Construct the rect from given centers coordinates
++   *
++   * @param[in] p1 Coordinates of the top left rectangle corner
++   * @param[in] p2 Coordinates of the bottom right rectangle corner
++   *
++   */
++  static constexpr Rect FromCorners(const Point& p1, const Point& p2)
+   {
+-    static_assert(false, "Not implemented");
++    return Rect(p1, p2 - p1 + Point(1, 1));
+   }
+ 
+-  undefined GetX2() { static_assert(false, "Not implemented"); }
++  /**
++   * Get X coordinate of the rect second corner
++   *
++   * @returns X coordinate of the rect second corner
++   *
++   */
++  constexpr int GetX2() const { return x + w - 1; }
+ 
+-  undefined SetX2() { static_assert(false, "Not implemented"); }
++  /**
++   * Set X coordinate of the rect second corner
++   *
++   * @param[in] x2 New X coordinate value
++   *
++   * This modifies rectangle width internally
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Rect& SetX2(int x2)
++  {
++    w = x2 - x + 1;
++    return *this;
++  }
+ 
+-  undefined GetY2() { static_assert(false, "Not implemented"); }
++  /**
++   * Get Y coordinate of the rect second corner
++   *
++   * @returns Y coordinate of the rect second corner
++   *
++   */
++  constexpr int GetY2() const { return y + h - 1; }
+ 
+-  undefined SetY2() { static_assert(false, "Not implemented"); }
++  /**
++   * Set Y coordinate of the rect second corner
++   *
++   * @param[in] y2 New Y coordinate value
++   *
++   * This modifies rectangle height internally
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Rect& SetY2(int y2)
++  {
++    h = y2 - y + 1;
++    return *this;
++  }
+ 
+-  undefined GetTopLeft() { static_assert(false, "Not implemented"); }
++  /**
++   * Get top left corner of the rect
++   *
++   * @returns Top left corner of the rect
++   *
++   */
++  constexpr Point GetTopLeft() const { return Point(x, y); }
+ 
+-  undefined GetTopRight() { static_assert(false, "Not implemented"); }
++  /**
++   * Get top right corner of the rect
++   *
++   * @returns Top right corner of the rect
++   *
++   */
++  constexpr Point GetTopRight() const { return Point(GetX2(), y); }
+ 
+-  undefined GetBottomLeft() { static_assert(false, "Not implemented"); }
++  /**
++   * Get bottom left corner of the rect
++   *
++   * @returns bottom left corner of the rect
++   *
++   */
++  constexpr Point GetBottomLeft() const { return Point(x, GetY2()); }
+ 
+-  undefined GetBottomRight() { static_assert(false, "Not implemented"); }
++  /**
++   * Get bottom right corner of the rect
++   *
++   * @returns Bottom right corner of the rect
++   *
++   */
++  constexpr Point GetBottomRight() const { return Point(GetX2(), GetY2()); }
+ 
+-  undefined GetSize() { static_assert(false, "Not implemented"); }
++  /**
++   * Get size of the rect
++   *
++   * @returns Size of the rect
++   *
++   */
++  constexpr Point GetSize() const { return Point(w, h); }
+ 
+-  undefined GetCentroid() { static_assert(false, "Not implemented"); }
++  /**
++   * Get centroid of the rect
++   *
++   * @returns Centroid of the rect
++   *
++   */
++  constexpr Point GetCentroid() const { return Point(x + w / 2, y + h / 2); }
+ 
+   /**
+    * Calculate the intersection of a rectangle and line segment.
+@@ -492,24 +1154,47 @@
+   }
+ 
+   /**
+-   * Convert an Rect to FRect
++   * Calculate the intersection of a rectangle and line segment
++   *
++   * @param[in,out] p1 Starting coordinates of the line
++   * @param[in,out] p2 Ending coordinates of the line
++   *
++   * @returns True if there is an intersection, false otherwise
++   *
++   * This function is used to clip a line segment to a
++   * rectangle. A line segment contained entirely within the
++   * rectangle or that does not intersect will remain unchanged.
++   * A line segment that crosses the rectangle at either or both
++   * ends will be clipped to the boundary of the rectangle and
++   * the new coordinates saved in p1 and/or p2 as necessary.
++   *
++   */
++  bool IntersectLine(Point* p1, Point* p2) const
++  {
++    return IntersectLine(p1 ? &p1->x : nullptr,
++                         p1 ? &p1->y : nullptr,
++                         p2 ? &p2->x : nullptr,
++                         p2 ? &p2->y : nullptr);
++  }
++
++  /**
++   * Convert an SDL_Rect to SDL_FRect
+    *
+-   * @param rect a pointer to an Rect.
+-   * @param frect a pointer filled in with the floating point representation of
++   * @return A FRect filled in with the floating point representation of
+    *              `rect`.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+    * @since This function is available since SDL 3.2.0.
+    */
+-  constexpr operator FRect() const : SDL_Rect(SDL_RectToFRect()) {}
++  constexpr operator FRect() const;
+ 
+   /**
+    * @sa operator FRect()
+    */
+   constexpr operator SDL_FRect() const
+   {
+-    static_assert(false, "Not implemented");
++    return {float(x), float(y), float(w), float(h)};
+   }
+ 
+   /**
+@@ -542,7 +1227,7 @@
+    * embedded in the calling program and the linker and dynamic loader will not
+    * be able to find this function inside SDL itself).
+    *
+-   * @param b the second rectangle to test.
++   * @param other the second rectangle to test.
+    * @returns true if the rectangles are equal, false otherwise.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+@@ -551,36 +1236,50 @@
+    */
+   constexpr bool Equal(const Rect& other) const
+   {
+-    return SDL_RectsEqual(this, other);
++    return SDL_RectsEqual(this, &other);
+   }
+ 
++  /**
++   * Check whether the rect contains given point
++   *
++   * @param p Point to check
++   *
++   * @returns True if the point is contained in the rect
++   *
++   */
+   constexpr bool Contains(const Point& p) const
+   {
+-    static_assert(false, "Not implemented");
++    return SDL_PointInRect(&p, this);
+   }
+ 
++  /**
++   * Check whether the rect contains given point
++   *
++   * @param other Point to check
++   *
++   * @returns True if the point is contained in the rect
++   *
++   */
+   constexpr bool Contains(const Rect& other) const
+   {
+-    static_assert(false, "Not implemented");
++    return GetUnion(other) == *this;
+   }
+ 
+   /**
+    * Determine whether two rectangles intersect.
+    *
+-   * If either pointer is nullptr the function will return false.
+-   *
+-   * @param B an Rect structure representing the second rectangle.
++   * @param other an SDL_Rect structure representing the second rectangle.
+    * @returns true if there is an intersection, false otherwise.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+    * @since This function is available since SDL 3.2.0.
+    *
+-   * @sa Rect.GetIntersection
++   * @sa GetIntersection()
+    */
+   bool HasIntersection(const Rect& other) const
+   {
+-    return SDL_HasRectIntersection(this, other);
++    return SDL_HasRectIntersection(this, &other);
+   }
+ 
+   /**
+@@ -588,33 +1287,155 @@
+    *
+    * If `result` is nullptr then this function will return false.
+    *
+-   * @param B an Rect structure representing the second rectangle.
+-   * @param result an Rect structure filled in with the intersection of
+-   *               rectangles `A` and `B`.
+-   * @returns true if there is an intersection, false otherwise.
++   * @param other an SDL_Rect structure representing the second rectangle.
++   * @returns an SDL_Rect structure filled in with the intersection of
++   *               if there is intersection, std::nullopt otherwise.
+    *
+    * @since This function is available since SDL 3.2.0.
+    *
+    * @sa Rect.HasIntersection
+    */
+-  std::optional<Rect> GetIntersection(const Rect& other) const
++  constexpr std::optional<Rect> GetIntersection(const Rect& other) const
+   {
+-    return SDL_GetRectIntersection(this, other);
++    if (Rect result; SDL_GetRectIntersection(this, &other, &result)) {
++      return result;
++    }
++    return std::nullopt;
+   }
+ 
+   /**
+    * Calculate the union of two rectangles.
+    *
+-   * @param B an Rect structure representing the second rectangle.
+-   * @param result an Rect structure filled in with the union of rectangles
+-   *               `A` and `B`.
++   * @param other an SDL_Rect structure representing the second rectangle.
++   * @returns Rect representing union of two rectangles
+    * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+    */
+-  Rect GetUnion(const Rect& other) const
++  constexpr Rect GetUnion(const Rect& other) const
++  {
++    Rect result;
++    CheckError(SDL_GetRectUnion(this, &other, &result));
++    return result;
++  }
++
++  /**
++   * Get a rect extended by specified amount of pixels
++   *
++   * @param[in] amount Number of pixels to extend by
++   *
++   * @returns Extended rect
++   *
++   */
++  constexpr Rect GetExtension(unsigned int amount) const
++  {
++    Rect r = *this;
++    r.Extend(amount);
++    return r;
++  }
++
++  /**
++   * Get a rect extended by specified amount of pixels
++   *
++   * @param[in] hAmount Number of pixels to extend by
++   *                    in horizontal direction
++   * @param[in] vAmount Number of pixels to extend by
++   *                    in vertical direction
++   *
++   * @returns Extended rect
++   *
++   */
++  constexpr Rect GetExtension(unsigned int hAmount, unsigned int vAmount) const
++  {
++    Rect r = *this;
++    r.Extend(hAmount, vAmount);
++    return r;
++  }
++
++  /**
++   * Extend a rect by specified amount of pixels
++   *
++   * @param[in] amount Number of pixels to extend by
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Rect& Extend(unsigned int amount) { return Extend(amount, amount); }
++
++  /**
++   * Extend a rect by specified amount of pixels
++   *
++   * @param[in] hAmount Number of pixels to extend by
++   *                    in horizontal direction
++   * @param[in] vAmount Number of pixels to extend by
++   *                    in vertical direction
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Rect& Extend(unsigned int hAmount, unsigned int vAmount)
++  {
++    x -= hAmount;
++    y -= vAmount;
++    w += hAmount * 2;
++    h += vAmount * 2;
++    return *this;
++  }
++
++  /**
++   * Get rectangle moved by a given offset
++   *
++   * @param[in] offset Point specifying an offset
++   *
++   * @returns Moved rectangle
++   *
++   */
++  constexpr Rect operator+(const Point& offset) const
++  {
++    return Rect(x + offset.x, y + offset.y, w, h);
++  }
++
++  /**
++   * Get rectangle moved by an opposite of given offset
++   *
++   * @param[in] offset Point specifying an offset
++   *
++   * @returns Moved rectangle
++   *
++   */
++  constexpr Rect operator-(const Point& offset) const
+   {
+-    return CheckError(SDL_GetRectUnion(this, other));
++    return Rect(x - offset.x, y - offset.y, w, h);
++  }
++
++  /**
++   * Move by then given offset
++   *
++   * @param[in] offset Point specifying an offset
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Rect& operator+=(const Point& offset)
++  {
++    x += offset.x;
++    y += offset.y;
++    return *this;
++  }
++
++  /**
++   * Move by an opposite of the given offset
++   *
++   * @param[in] offset Point specifying an offset
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr Rect& operator-=(const Point& offset)
++  {
++    x -= offset.x;
++    y -= offset.y;
++    return *this;
+   }
+ };
+ 
+@@ -624,6 +1445,8 @@
+  *
+  * @since This struct is available since SDL 3.2.0.
+  *
++ * @cat wrap-extending-struct
++ *
+  * @sa FRect.Empty
+  * @sa FRect.Equal
+  * @sa FRect.EqualEpsilon
+@@ -649,10 +1472,10 @@
+   /**
+    * Constructs from its fields.
+    *
+-   * @param x the value for x.
+-   * @param y the value for y.
+-   * @param w the value for w.
+-   * @param h the value for h.
++   * @param x the left x.
++   * @param y the top y.
++   * @param w the width.
++   * @param h the height.
+    */
+   constexpr FRect(float x, float y, float w, float h)
+     : SDL_FRect{x, y, w, h}
+@@ -660,44 +1483,42 @@
+   }
+ 
+   /**
+-   * Wraps FRect.
+-   *
+-   * @param r the value to be wrapped
++   * Constructs from top-left corner plus size
+    */
+-  FRect(const SDL_FPoint& corner, const SDL_FPoint& size) {}
++  constexpr FRect(const SDL_FPoint& corner, const SDL_FPoint& size)
++    : FRect{corner.x, corner.y, size.x, size.y}
++  {
++  }
+ 
+   /**
+    * Default comparison operator
+    */
+-  constexpr bool operator==(const FRect& other) const
+-  {
+-    return x == other.x && y == other.y && w == other.w && h == other.h;
+-  }
++  constexpr bool operator==(const FRect& other) const { return Equal(other); }
+ 
+   /**
+    * Compares with the underlying type
+    */
+   constexpr bool operator==(const SDL_FRect& other) const
+   {
+-    return x == other.x && y == other.y && w == other.w && h == other.h;
++    return Equal(FRect(other));
+   }
+ 
+   /**
+    * @sa Empty()
+    */
+-  constexpr operator bool() const { static_assert(false, "Not implemented"); }
++  constexpr operator bool() const { return !Empty(); }
+ 
+   /**
+-   * Get the x.
++   * Get left x coordinate.
+    *
+-   * @returns current x value.
++   * @returns coordinate of the left x
+    */
+   constexpr float GetX() const { return x; }
+ 
+   /**
+-   * Set the x.
++   * Set the left x coordinate.
+    *
+-   * @param newX the new x value.
++   * @param newX the new left x.
+    * @returns Reference to self.
+    */
+   constexpr FRect& SetX(float newX)
+@@ -707,16 +1528,16 @@
+   }
+ 
+   /**
+-   * Get the y.
++   * Get top y coordinate.
+    *
+-   * @returns current y value.
++   * @returns coordinate of the top y.
+    */
+   constexpr float GetY() const { return y; }
+ 
+   /**
+-   * Set the y.
++   * Set the top y coordinate.
+    *
+-   * @param newY the new y value.
++   * @param newY the new top y.
+    * @returns Reference to self.
+    */
+   constexpr FRect& SetY(float newY)
+@@ -726,16 +1547,16 @@
+   }
+ 
+   /**
+-   * Get the w.
++   * Get width of the rect
+    *
+-   * @returns current w value.
++   * @returns Width of the rect
+    */
+   constexpr float GetW() const { return w; }
+ 
+   /**
+-   * Set the w.
++   * Set the width of the rect.
+    *
+-   * @param newW the new w value.
++   * @param newW the new width.
+    * @returns Reference to self.
+    */
+   constexpr FRect& SetW(float newW)
+@@ -745,16 +1566,16 @@
+   }
+ 
+   /**
+-   * Get the h.
++   * Get height of the rect
+    *
+-   * @returns current h value.
++   * @returns Height of the rect
+    */
+   constexpr float GetH() const { return h; }
+ 
+   /**
+-   * Set the h.
++   * Set the height of the rect.
+    *
+-   * @param newH the new h value.
++   * @param newH the new height.
+    * @returns Reference to self.
+    */
+   constexpr FRect& SetH(float newH)
+@@ -770,14 +1591,13 @@
+    * If `clip` is not nullptr then only points inside of the clipping rectangle
+    * are considered.
+    *
+-   * @param points an array of FPoint structures representing points to be
++   * @param points a span of SDL_Point structures representing points to be
+    *               enclosed.
+-   * @param count the number of structures in the `points` array.
+-   * @param clip an FRect used for clipping or nullptr to enclose all points.
+-   * @param result an FRect structure filled in with the minimal enclosing
+-   *               rectangle.
+-   * @returns true if any points were enclosed or false if all the points were
+-   *          outside of the clipping rectangle.
++   * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
++   *             points.
++   * @returns a FRect structure filled in with the minimal enclosing
++   *          rectangle or an empty FRect if all the points were outside of
++   * the clipping rectangle.
+    *
+    * @since This function is available since SDL 3.2.0.
+    */
+@@ -785,48 +1605,160 @@
+     SpanRef<const SDL_FPoint> points,
+     OptionalRef<const SDL_FRect> clip = std::nullopt)
+   {
+-    return SDL_GetRectEnclosingPointsFloat(points, clip);
++    if (FRect result; SDL_GetRectEnclosingPointsFloat(
++          points.data(), points.size(), clip, &result)) {
++      return result;
++    }
++    return {};
+   }
+ 
+-  static FRect FromCenter(float cx, float cy, float w, float h)
++  /**
++   * Construct the rect from given center coordinates, width and height
++   *
++   * @param[in] cx X coordinate of the rectangle center
++   * @param[in] cy Y coordinate of the rectangle center
++   * @param[in] w Width of the rectangle
++   * @param[in] h Height of the rectangle
++   *
++   */
++  static constexpr FRect FromCenter(float cx, float cy, float w, float h)
+   {
+-    static_assert(false, "Not implemented");
++    return FRect(cx - w / 2, cy - h / 2, w, h);
+   }
+ 
+-  static FRect FromCenter(const FPoint& center, const FPoint& size)
++  /**
++   * Construct the rect from given center coordinates and size
++   *
++   * @param[in] center Coordinates of the rectangle center
++   * @param[in] size Dimensions of the rectangle
++   *
++   */
++  static constexpr FRect FromCenter(const FPoint& center, const FPoint& size)
+   {
+-    static_assert(false, "Not implemented");
++    return FRect(center - size / 2, size);
+   }
+ 
+-  static FRect FromCorners(float x1, float y1, float x2, float y2)
++  /**
++   * Construct the rect from given corners coordinates
++   *
++   * @param[in] x1 X coordinate of the top left rectangle corner
++   * @param[in] y1 Y coordinate of the top left rectangle corner
++   * @param[in] x2 X coordinate of the bottom right rectangle corner
++   * @param[in] y2 Y coordinate of the bottom right rectangle corner
++   *
++   */
++  static constexpr FRect FromCorners(float x1, float y1, float x2, float y2)
+   {
+-    static_assert(false, "Not implemented");
++    return FRect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+   }
+ 
+-  static FRect FromCorners(const FPoint& p1, const FPoint& p2)
++  /**
++   * Construct the rect from given centers coordinates
++   *
++   * @param[in] p1 Coordinates of the top left rectangle corner
++   * @param[in] p2 Coordinates of the bottom right rectangle corner
++   *
++   */
++  static constexpr FRect FromCorners(const FPoint& p1, const FPoint& p2)
+   {
+-    static_assert(false, "Not implemented");
++    return FRect(p1, p2 - p1 + FPoint(1, 1));
+   }
+ 
+-  undefined GetX2() { static_assert(false, "Not implemented"); }
++  /**
++   * Get X coordinate of the rect second corner
++   *
++   * @returns X coordinate of the rect second corner
++   *
++   */
++  constexpr float GetX2() const { return x + w - 1; }
+ 
+-  undefined SetX2() { static_assert(false, "Not implemented"); }
++  /**
++   * Set X coordinate of the rect second corner
++   *
++   * @param[in] x2 New X coordinate value
++   *
++   * This modifies rectangle width internally
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FRect& SetX2(float x2)
++  {
++    w = x2 - x + 1;
++    return *this;
++  }
+ 
+-  undefined GetY2() { static_assert(false, "Not implemented"); }
++  /**
++   * Get Y coordinate of the rect second corner
++   *
++   * @returns Y coordinate of the rect second corner
++   *
++   */
++  constexpr float GetY2() const { return y + h - 1; }
+ 
+-  undefined SetY2() { static_assert(false, "Not implemented"); }
++  /**
++   * Set Y coordinate of the rect second corner
++   *
++   * @param[in] y2 New Y coordinate value
++   *
++   * This modifies rectangle height internally
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FRect& SetY2(float y2)
++  {
++    h = y2 - y + 1;
++    return *this;
++  }
+ 
+-  undefined GetTopLeft() { static_assert(false, "Not implemented"); }
++  /**
++   * Get top left corner of the rect
++   *
++   * @returns Top left corner of the rect
++   *
++   */
++  constexpr FPoint GetTopLeft() const { return FPoint(x, y); }
+ 
+-  undefined GetTopRight() { static_assert(false, "Not implemented"); }
++  /**
++   * Get top right corner of the rect
++   *
++   * @returns Top right corner of the rect
++   *
++   */
++  constexpr FPoint GetTopRight() const { return FPoint(GetX2(), y); }
+ 
+-  undefined GetBottomLeft() { static_assert(false, "Not implemented"); }
++  /**
++   * Get bottom left corner of the rect
++   *
++   * @returns bottom left corner of the rect
++   *
++   */
++  constexpr FPoint GetBottomLeft() const { return FPoint(x, GetY2()); }
+ 
+-  undefined GetBottomRight() { static_assert(false, "Not implemented"); }
++  /**
++   * Get bottom right corner of the rect
++   *
++   * @returns Bottom right corner of the rect
++   *
++   */
++  constexpr FPoint GetBottomRight() const { return FPoint(GetX2(), GetY2()); }
+ 
+-  undefined GetSize() { static_assert(false, "Not implemented"); }
++  /**
++   * Get size of the rect
++   *
++   * @returns Size of the rect
++   *
++   */
++  constexpr FPoint GetSize() const { return FPoint(w, h); }
+ 
+-  undefined GetCentroid() { static_assert(false, "Not implemented"); }
++  /**
++   * Get centroid of the rect
++   *
++   * @returns Centroid of the rect
++   *
++   */
++  constexpr FPoint GetCentroid() const { return FPoint(x + w / 2, y + h / 2); }
+ 
+   /**
+    * Calculate the intersection of a rectangle and line segment with float
+@@ -852,10 +1784,34 @@
+   }
+ 
+   /**
+-   * Determine whether a floating point rectangle can contain any point.
++   * Calculate the intersection of a rectangle and line segment
+    *
+-   * A rectangle is considered "empty" for this function if `r` is nullptr, or
+-   * if `r`'s width and/or height are < 0.0f.
++   * @param[in,out] p1 Starting coordinates of the line
++   * @param[in,out] p2 Ending coordinates of the line
++   *
++   * @returns True if there is an intersection, false otherwise
++   *
++   * This function is used to clip a line segment to a
++   * rectangle. A line segment contained entirely within the
++   * rectangle or that does not intersect will remain unchanged.
++   * A line segment that crosses the rectangle at either or both
++   * ends will be clipped to the boundary of the rectangle and
++   * the new coordinates saved in p1 and/or p2 as necessary.
++   *
++   */
++  bool IntersectLine(FPoint* p1, FPoint* p2) const
++  {
++    return IntersectLine(p1 ? &p1->x : nullptr,
++                         p1 ? &p1->y : nullptr,
++                         p2 ? &p2->x : nullptr,
++                         p2 ? &p2->y : nullptr);
++  }
++
++  /**
++   * Determine whether a rectangle has no area.
++   *
++   * A rectangle is considered "empty" for this function if `r` is NULL, or if
++   * `r`'s width and/or height are <= 0.
+    *
+    * Note that this is a forced-inline function in a header, and not a public
+    * API function available in the SDL library (which is to say, the code is
+@@ -884,7 +1840,7 @@
+    * embedded in the calling program and the linker and dynamic loader will not
+    * be able to find this function inside SDL itself).
+    *
+-   * @param b the second rectangle to test.
++   * @param other the second rectangle to test.
+    * @param epsilon the epsilon value for comparison.
+    * @returns true if the rectangles are equal, false otherwise.
+    *
+@@ -896,12 +1852,11 @@
+    */
+   constexpr bool EqualEpsilon(const FRect& other, const float epsilon) const
+   {
+-    return SDL_RectsEqualEpsilon(this, other, epsilon);
++    return SDL_RectsEqualEpsilon(this, &other, epsilon);
+   }
+ 
+   /**
+-   * Determine whether two floating point rectangles are equal, within a default
+-   * epsilon.
++   * Determine whether two rectangles are equal.
+    *
+    * Rectangles are considered equal if both are not nullptr and each of their
+    * x, y, width and height are within SDL_FLT_EPSILON of each other. This is
+@@ -914,7 +1869,7 @@
+    * embedded in the calling program and the linker and dynamic loader will not
+    * be able to find this function inside SDL itself).
+    *
+-   * @param b the second rectangle to test.
++   * @param other the second rectangle to test.
+    * @returns true if the rectangles are equal, false otherwise.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+@@ -925,34 +1880,50 @@
+    */
+   constexpr bool Equal(const FRect& other) const
+   {
+-    return SDL_RectsEqualFloat(this, other);
++    return SDL_RectsEqualFloat(this, &other);
+   }
+ 
++  /**
++   * Check whether the rect contains given point
++   *
++   * @param p Point to check
++   *
++   * @returns True if the point is contained in the rect
++   *
++   */
+   constexpr bool Contains(const FPoint& p) const
+   {
+-    static_assert(false, "Not implemented");
++    return SDL_PointInRectFloat(&p, this);
+   }
+ 
++  /**
++   * Check whether the rect contains given point
++   *
++   * @param other Point to check
++   *
++   * @returns True if the point is contained in the rect
++   *
++   */
+   constexpr bool Contains(const FRect& other) const
+   {
+-    static_assert(false, "Not implemented");
++    return GetUnion(other) == *this;
+   }
+ 
+   /**
+-   * Determine whether two rectangles intersect with float precision.
+-   *
+-   * If either pointer is nullptr the function will return false.
++   * Determine whether two rectangles intersect.
+    *
+-   * @param B an FRect structure representing the second rectangle.
++   * @param other an SDL_Rect structure representing the second rectangle.
+    * @returns true if there is an intersection, false otherwise.
+    *
++   * @threadsafety It is safe to call this function from any thread.
++   *
+    * @since This function is available since SDL 3.2.0.
+    *
+    * @sa Rect.GetIntersection
+    */
+   bool HasIntersection(const FRect& other) const
+   {
+-    return SDL_HasRectIntersectionFloat(this, other);
++    return SDL_HasRectIntersectionFloat(this, &other);
+   }
+ 
+   /**
+@@ -960,10 +1931,9 @@
+    *
+    * If `result` is nullptr then this function will return false.
+    *
+-   * @param B an FRect structure representing the second rectangle.
+-   * @param result an FRect structure filled in with the intersection of
+-   *               rectangles `A` and `B`.
+-   * @returns true if there is an intersection, false otherwise.
++   * @param other an SDL_Rect structure representing the second rectangle.
++   * @returns an SDL_Rect structure filled in with the intersection of
++   *          if there is intersection, an empty FRect otherwise.
+    *
+    * @since This function is available since SDL 3.2.0.
+    *
+@@ -971,37 +1941,254 @@
+    */
+   FRect GetIntersection(const FRect& other) const
+   {
+-    return SDL_GetRectIntersectionFloat(this, other);
++    if (FRect result; SDL_GetRectIntersectionFloat(this, &other, &result)) {
++      return result;
++    }
++    return {};
+   }
+ 
+   /**
+    * Calculate the union of two rectangles with float precision.
+    *
+-   * @param B an FRect structure representing the second rectangle.
+-   * @param result an FRect structure filled in with the union of rectangles
+-   *               `A` and `B`.
++   * @param other an SDL_Rect structure representing the second rectangle.
++   * @returns Rect representing union of two rectangles
+    * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+    */
+   FRect GetUnion(const FRect& other) const
+   {
+-    return CheckError(SDL_GetRectUnionFloat(this, other));
++    FRect result;
++    CheckError(SDL_GetRectUnionFloat(this, &other, &result));
++    return result;
++  }
++
++  /**
++   * Get a rect extended by specified amount of pixels
++   *
++   * @param[in] amount Number of pixels to extend by
++   *
++   * @returns Extended rect
++   *
++   */
++  constexpr FRect GetExtension(unsigned int amount) const
++  {
++    FRect r = *this;
++    r.Extend(amount);
++    return r;
++  }
++
++  /**
++   * Get a rect extended by specified amount of pixels
++   *
++   * @param[in] hAmount Number of pixels to extend by
++   *                    in horizontal direction
++   * @param[in] vAmount Number of pixels to extend by
++   *                    in vertical direction
++   *
++   * @returns Extended rect
++   *
++   */
++  constexpr FRect GetExtension(float hAmount, float vAmount) const
++  {
++    FRect r = *this;
++    r.Extend(hAmount, vAmount);
++    return r;
++  }
++
++  /**
++   * Extend a rect by specified amount of pixels
++   *
++   * @param[in] amount Number of pixels to extend by
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FRect& Extend(float amount) { return Extend(amount, amount); }
++
++  /**
++   * Extend a rect by specified amount of pixels
++   *
++   * @param[in] hAmount Number of pixels to extend by
++   *                    in horizontal direction
++   * @param[in] vAmount Number of pixels to extend by
++   *                    in vertical direction
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FRect& Extend(float hAmount, float vAmount)
++  {
++    x -= hAmount;
++    y -= vAmount;
++    w += hAmount * 2;
++    h += vAmount * 2;
++    return *this;
++  }
++
++  /**
++   * Get rectangle moved by a given offset
++   *
++   * @param[in] offset Point specifying an offset
++   *
++   * @returns Moved rectangle
++   *
++   */
++  constexpr FRect operator+(const FPoint& offset) const
++  {
++    return FRect(x + offset.x, y + offset.y, w, h);
++  }
++
++  /**
++   * Get rectangle moved by an opposite of given offset
++   *
++   * @param[in] offset Point specifying an offset
++   *
++   * @returns Moved rectangle
++   *
++   */
++  constexpr FRect operator-(const FPoint& offset) const
++  {
++    return FRect(x - offset.x, y - offset.y, w, h);
++  }
++
++  /**
++   * Move by then given offset
++   *
++   * @param[in] offset Point specifying an offset
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FRect& operator+=(const FPoint& offset)
++  {
++    x += offset.x;
++    y += offset.y;
++    return *this;
++  }
++
++  /**
++   * Move by an opposite of the given offset
++   *
++   * @param[in] offset Point specifying an offset
++   *
++   * @returns Reference to self
++   *
++   */
++  constexpr FRect& operator-=(const FPoint& offset)
++  {
++    x -= offset.x;
++    y -= offset.y;
++    return *this;
+   }
+ };
+ 
+ constexpr bool Point::IsInRect(const Rect& r) const
+ {
+-  return SDL_PointInRect(this, r);
++  return SDL_PointInRect(this, &r);
+ }
+ 
+ constexpr bool FPoint::IsInRect(const FRect& r) const
+ {
+-  return SDL_PointInRectFloat(this, r);
++  return SDL_PointInRectFloat(this, &r);
+ }
+ 
+ /// @}
+ 
++constexpr Point::operator FPoint() const { return {float(x), float(y)}; }
++
++constexpr FPoint Point::operator/(float value) const
++{
++  return FPoint(*this) / value;
++}
++constexpr FPoint Point::operator*(float value) const
++{
++  return FPoint(*this) * value;
++}
++
++constexpr Point Point::GetClamped(const Rect& rect) const
++{
++  Point p = *this;
++  p.Clamp(rect);
++  return p;
++}
++
++constexpr Point& Point::Clamp(const Rect& rect)
++{
++  if (x < rect.x) x = rect.x;
++  if (x > rect.GetX2()) x = rect.GetX2();
++  if (y < rect.y) y = rect.y;
++  if (y > rect.GetY2()) y = rect.GetY2();
++  return *this;
++}
++
++constexpr Point Point::GetWrapped(const Rect& rect) const
++{
++  Point p = *this;
++  p.Wrap(rect);
++  return p;
++}
++
++constexpr Point& Point::Wrap(const Rect& rect)
++{
++  if (x < rect.x)
++    x = rect.x + rect.w - 1 - (rect.x - x + rect.w - 1) % rect.w;
++  else if (x >= rect.x + rect.w)
++    x = rect.x + (x - rect.x - rect.w) % rect.w;
++
++  if (y < rect.y)
++    y = rect.y + rect.h - 1 - (rect.y - y + rect.h - 1) % rect.h;
++  else if (y >= rect.y + rect.h)
++    y = rect.y + (y - rect.y - rect.h) % rect.h;
++
++  return *this;
++}
++
++constexpr FPoint FPoint::GetClamped(const FRect& rect) const
++{
++  FPoint p = *this;
++  p.Clamp(rect);
++  return p;
++}
++
++constexpr FPoint& FPoint::Clamp(const FRect& rect)
++{
++  if (x < rect.x) x = rect.x;
++  if (x > rect.GetX2()) x = rect.GetX2();
++  if (y < rect.y) y = rect.y;
++  if (y > rect.GetY2()) y = rect.GetY2();
++  return *this;
++}
++
++constexpr FPoint FPoint::GetWrapped(const FRect& rect) const
++{
++  FPoint p = *this;
++  p.Wrap(rect);
++  return p;
++}
++
++constexpr FPoint& FPoint::Wrap(const FRect& rect)
++{
++  if (x < rect.x)
++    x = rect.x + rect.w - 1 - SDL_fmod(rect.x - x + rect.w - 1, rect.w);
++  else if (x >= rect.x + rect.w)
++    x = rect.x + SDL_fmod(x - rect.x - rect.w, rect.w);
++
++  if (y < rect.y)
++    y = rect.y + rect.h - 1 - SDL_fmod(rect.y - y + rect.h - 1, rect.h);
++  else if (y >= rect.y + rect.h)
++    y = rect.y + SDL_fmod(y - rect.y - rect.h, rect.h);
++
++  return *this;
++}
++
++constexpr Rect::operator FRect() const
++{
++  return {float(x), float(y), float(w), float(h)};
++}
++
++#pragma endregion impl
++
+ } // namespace SDL
+ 
+ #endif /* SDL3PP_RECT_H_ */
