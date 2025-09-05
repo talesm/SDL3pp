@@ -13,6 +13,8 @@ export interface ApiFile {
   namespace?: string;
   entriesBegin?: number;
   entriesEnd?: number;
+  includes?: string[];
+  localIncludes?: string[];
 }
 
 export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns";
@@ -87,6 +89,7 @@ export interface ApiTransform {
   files?: Dict<ApiFileTransform>;
   prefixes?: string | string[];
   definitionPrefix?: string;
+  sourceIncludePrefix?: string;
   renameRules?: ReplacementRule[];
   docRules?: ReplacementRule[];
   paramTypeMap?: StringMap;
@@ -98,6 +101,9 @@ export interface ApiFileTransform {
   name?: string;
   doc?: string;
   ignoreEntries?: string[];
+  includes?: string[];
+  localIncludes?: string[];
+  sourceIncludePrefix?: string;
   includeBefore?: ApiEntryTransformMap;
   includeAfter?: ApiEntryTransformMap;
   transform?: Dict<ApiEntryTransform>;

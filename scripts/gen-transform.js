@@ -8,6 +8,7 @@ const { writeJSONSync } = require("./cppfier/src/utils");
 const transform = {
   prefixes: ["SDL_", "IMG_", "TTF_"],
   definitionPrefix: "SDL_",
+  sourceIncludePrefix: 'SDL3/',
   renameRules: [{
     // @ts-ignore
     pattern: "^SDL_(.*)\\.h$",
@@ -31,6 +32,7 @@ const transform = {
   },
   files: {
     "SDL_assert.h": {
+      localIncludes: ['SDL3pp_stdinc.h'],
       ignoreEntries: [
         "__debugbreak"
       ],

@@ -20,6 +20,7 @@ const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./u
 function transformApi(config) {
   const source = config.sourceApi;
   const transform = config.transform ?? { files: {} };
+  const sourceIncludePrefix = transform.sourceIncludePrefix ?? '';
 
   /** @type {ApiContext} */
   const context = new ApiContext(transform);
@@ -35,8 +36,9 @@ function transformApi(config) {
       fileConfig.ignoreEntries?.forEach(s => context.blacklist.add(s));
       if (!fileConfig.transform) fileConfig.transform = {};
       if (!fileConfig.definitionPrefix) fileConfig.definitionPrefix = context.definitionPrefix;
+      if (!fileConfig.sourceIncludePrefix) fileConfig.sourceIncludePrefix = sourceIncludePrefix;
     } else {
-      fileTransformMap[sourceName] = { transform: {}, definitionPrefix: context.definitionPrefix };
+      fileTransformMap[sourceName] = { transform: {}, definitionPrefix: context.definitionPrefix, sourceIncludePrefix };
     }
   }
 
@@ -55,10 +57,16 @@ function transformApi(config) {
     const targetName = fileConfig.name || transformIncludeName(sourceName, context);
     system.log(`Transforming api ${sourceName} => ${targetName}`);
 
+    const includes = fileConfig.includes ?? [];
+    const qualifiedSourceFile = fileConfig.sourceIncludePrefix + sourceName;
+    includes.push(qualifiedSourceFile);
+
     files.push({
       name: targetName,
       doc: fileConfig.doc || transformFileDoc(sourceFile.doc, context) || "",
-      entries: transformEntries(sourceFile.entries, fileConfig, context)
+      entries: transformEntries(sourceFile.entries, fileConfig, context),
+      includes,
+      localIncludes: fileConfig.localIncludes,
     });
   }
 

@@ -55,8 +55,16 @@ function generateFile(targetFile) {
   const namespace = "SDL";
   const generatedEntries = generateEntries(targetFile.entries, '');
 
+  const includes = [
+    ...(targetFile.includes ?? []).sort().map(s => `#include <${s}>`),
+    ...(targetFile.localIncludes ?? []).sort().map(s => `#include "${s}"`),
+  ];
+
+
   return [
-    `#ifndef ${guardName}\n#define ${guardName}\n\nnamespace ${namespace} {\n`,
+    `#ifndef ${guardName}\n#define ${guardName}\n`,
+    ...includes,
+    `\nnamespace ${namespace} {\n`,
     generateDocString(targetFile.doc + "\n\n@{") + "\n",
     generatedEntries,
     `/// @}\n\n} // namespace ${namespace}\n\n#endif /* ${guardName} */`

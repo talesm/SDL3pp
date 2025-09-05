@@ -99,7 +99,10 @@
           "parameters": [],
           "sourceName": "SDL_GDKSuspendComplete"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_main.h"
+      ]
     },
     "SDL3pp_init.h": {
       "name": "SDL3pp_init.h",
@@ -428,7 +431,10 @@
           ],
           "sourceName": "SDL_GetAppMetadataProperty"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_init.h"
+      ]
     },
     "SDL3pp_hints.h": {
       "name": "SDL3pp_hints.h",
@@ -2299,7 +2305,10 @@
           ],
           "sourceName": "SDL_RemoveHintCallback"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_hints.h"
+      ]
     },
     "SDL3pp_properties.h": {
       "name": "SDL3pp_properties.h",
@@ -2809,7 +2818,10 @@
           ],
           "sourceName": "SDL_DestroyProperties"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_properties.h"
+      ]
     },
     "SDL3pp_error.h": {
       "name": "SDL3pp_error.h",
@@ -2870,7 +2882,10 @@
           "value": "SDL_SetError(\"Parameter '%s' is invalid\", (param))",
           "sourceName": "SDL_InvalidParamError"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_error.h"
+      ]
     },
     "SDL3pp_log.h": {
       "name": "SDL3pp_log.h",
@@ -3566,7 +3581,10 @@
           ],
           "sourceName": "SDL_SetLogOutputFunction"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_log.h"
+      ]
     },
     "SDL3pp_assert.h": {
       "name": "SDL3pp_assert.h",
@@ -3852,7 +3870,13 @@
           "parameters": [],
           "sourceName": "SDL_ResetAssertionReport"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_assert.h"
+      ],
+      "localIncludes": [
+        "SDL3pp_stdinc.h"
+      ]
     },
     "SDL3pp_version.h": {
       "name": "SDL3pp_version.h",
@@ -3956,7 +3980,10 @@
           "parameters": [],
           "sourceName": "SDL_GetRevision"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_version.h"
+      ]
     },
     "SDL3pp_video.h": {
       "name": "SDL3pp_video.h",
@@ -7259,7 +7286,10 @@
             "mayFail": true
           }
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_video.h"
+      ]
     },
     "SDL3pp_render.h": {
       "name": "SDL3pp_render.h",
@@ -9961,7 +9991,10 @@
             "mayFail": true
           }
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_render.h"
+      ]
     },
     "SDL3pp_pixels.h": {
       "name": "SDL3pp_pixels.h",
@@ -12156,7 +12189,10 @@
           ],
           "sourceName": "SDL_GetRGBA"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_pixels.h"
+      ]
     },
     "SDL3pp_blendmode.h": {
       "name": "SDL3pp_blendmode.h",
@@ -12392,7 +12428,10 @@
           ],
           "sourceName": "SDL_ComposeCustomBlendMode"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_blendmode.h"
+      ]
     },
     "SDL3pp_rect.h": {
       "name": "SDL3pp_rect.h",
@@ -12790,7 +12829,10 @@
           ],
           "sourceName": "SDL_GetRectAndLineIntersectionFloat"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_rect.h"
+      ]
     },
     "SDL3pp_surface.h": {
       "name": "SDL3pp_surface.h",
@@ -14381,7 +14423,10 @@
             "mayFail": true
           }
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_surface.h"
+      ]
     },
     "SDL3pp_clipboard.h": {
       "name": "SDL3pp_clipboard.h",
@@ -14556,7 +14601,10 @@
           "parameters": [],
           "sourceName": "SDL_GetClipboardMimeTypes"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_clipboard.h"
+      ]
     },
     "SDL3pp_audio.h": {
       "name": "SDL3pp_audio.h",
@@ -15830,7 +15878,10 @@
           ],
           "sourceName": "SDL_GetSilenceValueForFormat"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_audio.h"
+      ]
     },
     "SDL3pp_events.h": {
       "name": "SDL3pp_events.h",
@@ -17406,7 +17457,10 @@
             "mayFail": true
           }
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_events.h"
+      ]
     },
     "SDL3pp_keyboard.h": {
       "name": "SDL3pp_keyboard.h",
@@ -17915,7 +17969,10 @@
           "sourceName": "SDL_ScreenKeyboardShown",
           "immutable": true
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_keyboard.h"
+      ]
     },
     "SDL3pp_keycode.h": {
       "name": "SDL3pp_keycode.h",
@@ -19882,7 +19939,10 @@
           "value": "(SDL_KMOD_LGUI | SDL_KMOD_RGUI)",
           "sourceName": "SDL_KMOD_GUI"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_keycode.h"
+      ]
     },
     "SDL3pp_scancode.h": {
       "name": "SDL3pp_scancode.h",
@@ -21887,7 +21947,10 @@
           "doc": "not a key, just marks the number of scancodes for array bounds",
           "sourceName": "SDL_SCANCODE_COUNT"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_scancode.h"
+      ]
     },
     "SDL3pp_mouse.h": {
       "name": "SDL3pp_mouse.h",
@@ -22530,7 +22593,10 @@
           "parameters": [],
           "sourceName": "SDL_CursorVisible"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_mouse.h"
+      ]
     },
     "SDL3pp_thread.h": {
       "name": "SDL3pp_thread.h",
@@ -22855,7 +22921,10 @@
           "parameters": [],
           "sourceName": "SDL_CleanupTLS"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_thread.h"
+      ]
     },
     "SDL3pp_mutex.h": {
       "name": "SDL3pp_mutex.h",
@@ -23313,7 +23382,10 @@
           ],
           "sourceName": "SDL_SetInitialized"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_mutex.h"
+      ]
     },
     "SDL3pp_atomic.h": {
       "name": "SDL3pp_atomic.h",
@@ -23685,7 +23757,10 @@
           ],
           "sourceName": "SDL_GetAtomicPointer"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_atomic.h"
+      ]
     },
     "SDL3pp_timer.h": {
       "name": "SDL3pp_timer.h",
@@ -23827,7 +23902,10 @@
             "mayFail": true
           }
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_timer.h"
+      ]
     },
     "SDL3pp_time.h": {
       "name": "SDL3pp_time.h",
@@ -24066,7 +24144,10 @@
           ],
           "sourceName": "SDL_GetDayOfWeek"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_time.h"
+      ]
     },
     "SDL3pp_filesystem.h": {
       "name": "SDL3pp_filesystem.h",
@@ -24461,7 +24542,10 @@
           "parameters": [],
           "sourceName": "SDL_GetCurrentDirectory"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_filesystem.h"
+      ]
     },
     "SDL3pp_storage.h": {
       "name": "SDL3pp_storage.h",
@@ -24843,7 +24927,10 @@
             "mayFail": true
           }
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_storage.h"
+      ]
     },
     "SDL3pp_iostream.h": {
       "name": "SDL3pp_iostream.h",
@@ -25918,7 +26005,10 @@
             "mayFail": true
           }
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_iostream.h"
+      ]
     },
     "SDL3pp_platform.h": {
       "name": "SDL3pp_platform.h",
@@ -25932,7 +26022,10 @@
           "parameters": [],
           "sourceName": "SDL_GetPlatform"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_platform.h"
+      ]
     },
     "SDL3pp_cpuinfo.h": {
       "name": "SDL3pp_cpuinfo.h",
@@ -26091,7 +26184,10 @@
           "parameters": [],
           "sourceName": "SDL_GetSIMDAlignment"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_cpuinfo.h"
+      ]
     },
     "SDL3pp_intrin.h": {
       "name": "SDL3pp_intrin.h",
@@ -26204,7 +26300,10 @@
           "value": "__attribute__((target(x)))",
           "sourceName": "SDL_TARGETING"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_intrin.h"
+      ]
     },
     "SDL3pp_endian.h": {
       "name": "SDL3pp_endian.h",
@@ -26410,7 +26509,10 @@
           "type": "float",
           "constexpr": true
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_endian.h"
+      ]
     },
     "SDL3pp_bits.h": {
       "name": "SDL3pp_bits.h",
@@ -26442,7 +26544,10 @@
           ],
           "sourceName": "SDL_HasExactlyOneBitSet32"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_bits.h"
+      ]
     },
     "SDL3pp_loadso.h": {
       "name": "SDL3pp_loadso.h",
@@ -26498,7 +26603,10 @@
           ],
           "sourceName": "SDL_UnloadObject"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_loadso.h"
+      ]
     },
     "SDL3pp_process.h": {
       "name": "SDL3pp_process.h",
@@ -26802,7 +26910,10 @@
           ],
           "sourceName": "SDL_DestroyProcess"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_process.h"
+      ]
     },
     "SDL3pp_power.h": {
       "name": "SDL3pp_power.h",
@@ -26880,7 +26991,10 @@
           ],
           "sourceName": "SDL_GetPowerInfo"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_power.h"
+      ]
     },
     "SDL3pp_messagebox.h": {
       "name": "SDL3pp_messagebox.h",
@@ -27128,7 +27242,10 @@
             "mayFail": true
           }
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_messagebox.h"
+      ]
     },
     "SDL3pp_dialog.h": {
       "name": "SDL3pp_dialog.h",
@@ -27357,7 +27474,10 @@
           "value": "\"SDL.filedialog.cancel\"",
           "sourceName": "SDL_PROP_FILE_DIALOG_CANCEL_STRING"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_dialog.h"
+      ]
     },
     "SDL3pp_tray.h": {
       "name": "SDL3pp_tray.h",
@@ -27781,7 +27901,10 @@
           "parameters": [],
           "sourceName": "SDL_UpdateTrays"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_tray.h"
+      ]
     },
     "SDL3pp_locale.h": {
       "name": "SDL3pp_locale.h",
@@ -27802,7 +27925,10 @@
           "parameters": [],
           "sourceName": "SDL_GetPreferredLocales"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_locale.h"
+      ]
     },
     "SDL3pp_system.h": {
       "name": "SDL3pp_system.h",
@@ -28352,7 +28478,10 @@
           ],
           "sourceName": "SDL_GetGDKDefaultUser"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_system.h"
+      ]
     },
     "SDL3pp_stdinc.h": {
       "name": "SDL3pp_stdinc.h",
@@ -31951,7 +32080,10 @@
           "type": "SDL_FunctionPointer",
           "sourceName": "SDL_FunctionPointer"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_stdinc.h"
+      ]
     },
     "SDL3pp_guid.h": {
       "name": "SDL3pp_guid.h",
@@ -32011,7 +32143,10 @@
             }
           }
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_guid.h"
+      ]
     },
     "SDL3pp_misc.h": {
       "name": "SDL3pp_misc.h",
@@ -32033,7 +32168,10 @@
             "mayFail": true
           }
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_misc.h"
+      ]
     },
     "SDL3pp_image.h": {
       "name": "SDL3pp_image.h",
@@ -32956,7 +33094,10 @@
           ],
           "sourceName": "IMG_LoadWEBPAnimation_IO"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_image.h"
+      ]
     },
     "SDL3pp_ttf.h": {
       "name": "SDL3pp_ttf.h",
@@ -35808,7 +35949,10 @@
           ],
           "sourceName": "TTF_WasInit"
         }
-      }
+      },
+      "includes": [
+        "SDL3/SDL_ttf.h"
+      ]
     }
   }
 }
