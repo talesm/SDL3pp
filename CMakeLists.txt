@@ -86,13 +86,19 @@ add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_LEGACY_MAIN}
 add_subdirectory(examples)
 
 # Unit tests
-add_library(test_main OBJECT test/legacy/doctest.cpp)
+add_library(test_main OBJECT test/doctest.cpp test/doctest.h)
+target_include_directories(test_main INTERFACE test/)
 enable_testing()
 
-file(GLOB UNITTEST CONFIGURE_DEPENDS test/legacy/SDL3pp_*.cpp)
-add_executable(SDL3pp_unitTests_legacy ${UNITTEST})
+file(GLOB LEGACY_UNITTEST CONFIGURE_DEPENDS test/legacy/SDL3pp_*.cpp)
+add_executable(SDL3pp_unitTests_legacy ${LEGACY_UNITTEST})
 target_link_libraries(SDL3pp_unitTests_legacy PRIVATE SDL3pp_lib test_main)
-add_test(NAME SDL3pp_unitTests_legacy COMMAND SDL3pp_unitTests_legacy)
+# add_test(NAME SDL3pp_unitTests_legacy COMMAND SDL3pp_unitTests_legacy)
+
+file(GLOB UNITTEST CONFIGURE_DEPENDS test/SDL3pp_*.cpp)
+add_executable(SDL3pp_unitTests ${UNITTEST})
+target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp_lib test_main)
+add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
 
 # The documentation
 # check if Doxygen is installed
