@@ -3875,7 +3875,8 @@
         "SDL3/SDL_assert.h"
       ],
       "localIncludes": [
-        "SDL3pp_stdinc.h"
+        "SDL3pp_callbackWrapper.h",
+        "SDL3pp_strings.h"
       ]
     },
     "SDL3pp_version.h": {

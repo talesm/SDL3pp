@@ -32,7 +32,7 @@ const transform = {
   },
   files: {
     "SDL_assert.h": {
-      localIncludes: ['SDL3pp_stdinc.h'],
+      localIncludes: ['SDL3pp_callbackWrapper.h', 'SDL3pp_strings.h'],
       ignoreEntries: [
         "__debugbreak"
       ],
