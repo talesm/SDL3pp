@@ -49,6 +49,11 @@ add_library(SDL3pp_lib INTERFACE)
 target_include_directories(SDL3pp_lib INTERFACE include/legacy)
 target_link_libraries(SDL3pp_lib INTERFACE ${SDL3PP_DEPENDENCIES})
 
+# The SDL3pp library
+add_library(SDL3pp_lib_new INTERFACE)
+target_include_directories(SDL3pp_lib_new INTERFACE include)
+target_link_libraries(SDL3pp_lib_new INTERFACE ${SDL3PP_DEPENDENCIES})
+
 
 file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
 
@@ -90,14 +95,14 @@ add_library(test_main OBJECT test/doctest.cpp test/doctest.h)
 target_include_directories(test_main INTERFACE test/)
 enable_testing()
 
-file(GLOB LEGACY_UNITTEST CONFIGURE_DEPENDS test/legacy/SDL3pp_*.cpp)
+file(GLOB LEGACY_UNITTEST CONFIGURE_DEPENDS test/legacy/SDL3pp*.cpp)
 add_executable(SDL3pp_unitTests_legacy ${LEGACY_UNITTEST})
 target_link_libraries(SDL3pp_unitTests_legacy PRIVATE SDL3pp_lib test_main)
 # add_test(NAME SDL3pp_unitTests_legacy COMMAND SDL3pp_unitTests_legacy)
 
-file(GLOB UNITTEST CONFIGURE_DEPENDS test/SDL3pp_*.cpp)
+file(GLOB UNITTEST CONFIGURE_DEPENDS test/SDL3pp*.cpp)
 add_executable(SDL3pp_unitTests ${UNITTEST})
-target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp_lib test_main)
+target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp_lib_new test_main)
 add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
 
 # The documentation
