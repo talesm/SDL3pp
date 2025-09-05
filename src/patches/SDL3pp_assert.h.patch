@@ -1,7 +1,5 @@
-diff --git a/include/SDL3pp/SDL3pp_assert.h b/include/SDL3pp/SDL3pp_assert.h
-index 3bedf8ff..a32c4c0f 100644
---- a/include/SDL3pp/SDL3pp_assert.h
-+++ b/include/SDL3pp/SDL3pp_assert.h
+--- include/SDL3pp/SDL3pp_assert.h	2025-09-05 09:37:49.651279605 -0300
++++ build/snapshot/SDL3pp_assert.h	2025-09-05 09:37:48.348333113 -0300
 @@ -1,10 +1,13 @@
  #ifndef SDL3PP_ASSERT_H_
  #define SDL3PP_ASSERT_H_
@@ -17,7 +15,7 @@ index 3bedf8ff..a32c4c0f 100644
   *
   * A helpful assertion macro!
   *
-@@ -47,6 +50,8 @@ namespace SDL {
+@@ -47,6 +50,8 @@
   * @{
   */
  
@@ -26,7 +24,7 @@ index 3bedf8ff..a32c4c0f 100644
  /**
   * The level of assertion aggressiveness.
   *
-@@ -122,7 +127,7 @@ namespace SDL {
+@@ -122,7 +127,7 @@
   * To use:
   *
   * ```c
@@ -35,7 +33,7 @@ index 3bedf8ff..a32c4c0f 100644
   * ```
   *
   * @since This macro is available since SDL 3.2.0.
-@@ -148,6 +153,8 @@ namespace SDL {
+@@ -148,6 +153,8 @@
      (void)sizeof((condition));                                                 \
    } while (SDL_NULL_WHILE_LOOP_CONDITION)
  
@@ -44,7 +42,7 @@ index 3bedf8ff..a32c4c0f 100644
  /**
   * Possible outcomes from a triggered assertion.
   *
-@@ -209,9 +216,11 @@ inline AssertState ReportAssertion(AssertData* data,
+@@ -209,9 +216,11 @@
                                     StringParam file,
                                     int line)
  {
@@ -57,7 +55,7 @@ index 3bedf8ff..a32c4c0f 100644
  /**
   * The macro used when an assertion triggers a breakpoint.
   *
-@@ -243,7 +252,21 @@ inline AssertState ReportAssertion(AssertData* data,
+@@ -243,7 +252,21 @@
   *
   * @since This macro is available since SDL 3.2.0.
   */
@@ -80,7 +78,7 @@ index 3bedf8ff..a32c4c0f 100644
  
  /**
   * An assertion test that is normally performed only in debug builds.
-@@ -363,8 +386,10 @@ inline AssertState ReportAssertion(AssertData* data,
+@@ -363,8 +386,10 @@
   */
  #define SDL_assert_always(condition) SDL_enabled_assert(condition)
  
@@ -92,7 +90,7 @@ index 3bedf8ff..a32c4c0f 100644
   *
   * @param data a pointer to the AssertData structure corresponding to the
   *             current assertion.
-@@ -383,7 +408,6 @@ using AssertionHandler = SDL_AssertionHandler;
+@@ -383,7 +408,6 @@
   *
   * @param data a pointer to the AssertData structure corresponding to the
   *             current assertion.
@@ -100,7 +98,7 @@ index 3bedf8ff..a32c4c0f 100644
   * @returns an AssertState value indicating how to handle the failure.
   *
   * @threadsafety This callback may be called from any thread that triggers an
-@@ -420,7 +444,8 @@ using AssertionHandlerCB =
+@@ -420,7 +444,8 @@
   */
  inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  {
@@ -110,7 +108,7 @@ index 3bedf8ff..a32c4c0f 100644
  }
  
  /**
-@@ -434,11 +459,10 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
+@@ -434,11 +459,10 @@
   * This callback may fire from any thread, but it runs wrapped in a mutex, so
   * it will only fire from one thread at a time.
   *
@@ -125,7 +123,7 @@ index 3bedf8ff..a32c4c0f 100644
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -448,9 +472,10 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
+@@ -448,9 +472,10 @@
   */
  inline void SetAssertionHandler(AssertionHandlerCB handler)
  {
@@ -138,7 +136,7 @@ index 3bedf8ff..a32c4c0f 100644
  /**
   * Get the default assertion handler.
   *
-@@ -459,8 +484,7 @@ inline void SetAssertionHandler(AssertionHandlerCB handler)
+@@ -459,8 +484,7 @@
   * is used for assertions when SetAssertionHandler() hasn't been used to
   * provide a different function.
   *
@@ -148,7 +146,7 @@ index 3bedf8ff..a32c4c0f 100644
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -477,9 +501,9 @@ inline AssertionHandler GetDefaultAssertionHandler()
+@@ -477,9 +501,9 @@
   * Get the current assertion handler.
   *
   * This returns the function pointer that is called when an assertion is
@@ -161,7 +159,7 @@ index 3bedf8ff..a32c4c0f 100644
   *
   * The parameter `puserdata` is a pointer to a void*, which will store the
   * "userdata" pointer that was passed to SetAssertionHandler(). This value
-@@ -498,7 +522,7 @@ inline AssertionHandler GetDefaultAssertionHandler()
+@@ -498,7 +522,7 @@
   */
  inline AssertionHandler GetAssertionHandler(void** puserdata)
  {
@@ -170,7 +168,7 @@ index 3bedf8ff..a32c4c0f 100644
  }
  
  /**
-@@ -506,17 +530,15 @@ inline AssertionHandler GetAssertionHandler(void** puserdata)
+@@ -506,17 +530,15 @@
   *
   * This returns the function pointer that is called when an assertion is
   * triggered. This is either the value last passed to
@@ -192,7 +190,7 @@ index 3bedf8ff..a32c4c0f 100644
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -526,7 +548,11 @@ inline AssertionHandler GetAssertionHandler(void** puserdata)
+@@ -526,7 +548,11 @@
   */
  inline AssertionHandlerCB GetAssertionHandler()
  {
@@ -205,7 +203,7 @@ index 3bedf8ff..a32c4c0f 100644
  }
  
  /**
-@@ -537,7 +563,7 @@ inline AssertionHandlerCB GetAssertionHandler()
+@@ -537,7 +563,7 @@
   *
   * The proper way to examine this data looks something like this:
   *
