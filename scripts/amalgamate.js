@@ -4,17 +4,19 @@ const { chdir, cwd } = require("process");
 /** @param {string[]} args  */
 function main(args) {
   let targetName = '';
+  let baseDir = "./include/SDL3pp";
   for (let i = 2; i < args.length; i++) {
     const arg = args[i];
-    if (arg.startsWith('-')) {
-      throw new Error("Invalid option " + arg);
-    }
-    else {
+    if (!arg.startsWith('-')) {
       targetName = arg;
+    } else if (arg == '--base-dir') {
+      baseDir = args[++i];
+    } else {
+      throw new Error("Invalid option " + arg);
     }
   }
 
-  chdir("./include/SDL3pp");
+  chdir(baseDir);
   const result = parseFileRecursive("SDL3pp.h");
 
   if (targetName) {
