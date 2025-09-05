@@ -1,5 +1,5 @@
---- include/SDL3pp/SDL3pp_assert.h	2025-09-05 10:07:18.195495478 -0300
-+++ build/snapshot/SDL3pp_assert.h	2025-09-05 10:07:16.697490594 -0300
+--- include/SDL3pp/SDL3pp_assert.h	2025-09-05 10:17:27.818519945 -0300
++++ build/snapshot/SDL3pp_assert.h	2025-09-05 10:17:26.457509723 -0300
 @@ -8,7 +8,7 @@
  namespace SDL {
  
@@ -36,12 +36,8 @@
  /**
   * Possible outcomes from a triggered assertion.
   *
-@@ -213,9 +217,11 @@
-                                    StringParam file,
-                                    int line)
- {
--  return SDL_ReportAssertion(, data, func, file, line);
-+  return SDL_ReportAssertion(data, func, file, line);
+@@ -216,6 +220,8 @@
+   return SDL_ReportAssertion(data, func, file, line);
  }
  
 +#ifdef SDL3PP_DOC
@@ -96,7 +92,7 @@
   */
  inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  {
--  SDL_SetAssertionHandler(, handler, userdata);
+-  SDL_SetAssertionHandler(handler, userdata);
 +  UniqueCallbackWrapper<AssertionHandlerCB>::erase();
 +  return SDL_SetAssertionHandler(handler, userdata);
  }
@@ -153,15 +149,6 @@
   *
   * The parameter `puserdata` is a pointer to a void*, which will store the
   * "userdata" pointer that was passed to SetAssertionHandler(). This value
-@@ -502,7 +523,7 @@
-  */
- inline AssertionHandler GetAssertionHandler(void** puserdata)
- {
--  return SDL_GetAssertionHandler(, puserdata);
-+  return SDL_GetAssertionHandler(puserdata);
- }
- 
- /**
 @@ -510,17 +531,15 @@
   *
   * This returns the function pointer that is called when an assertion is

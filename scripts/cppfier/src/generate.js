@@ -216,7 +216,7 @@ function generateBody(entry, prefix) {
   }
   if (entry.proto) return ";";
   const selfStr = entry.type && !entry.static && !entry.hints?.static && hint?.self;
-  const selfStrPrefix = (selfStr || "") + (entry.parameters?.length ? ", " : "");
+  const selfStrPrefix = (selfStr || "") + ((entry.parameters?.length && selfStr) ? ", " : "");
   const paramStr = selfStrPrefix + generateCallParameters(entry.parameters);
   const internalCallStr = `${sourceName}(${paramStr})`;
   const callStr = hint?.mayFail ? `CheckError(${internalCallStr})` : internalCallStr;

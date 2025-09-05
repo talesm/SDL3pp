@@ -1,5 +1,5 @@
---- include/SDL3pp/SDL3pp_bits.h	2025-09-05 10:04:10.708523237 -0300
-+++ build/snapshot/SDL3pp_bits.h	2025-09-05 10:04:09.385513455 -0300
+--- include/SDL3pp/SDL3pp_bits.h	2025-09-05 10:17:27.800519810 -0300
++++ build/snapshot/SDL3pp_bits.h	2025-09-05 10:17:26.457509723 -0300
 @@ -6,7 +6,7 @@
  namespace SDL {
  
@@ -9,27 +9,21 @@
   *
   * Functions for fiddling with bits and bitmasks.
   *
-@@ -31,9 +31,9 @@
+@@ -31,7 +31,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
 -inline int MostSignificantBitIndex32(Uint32 x)
 +constexpr int MostSignificantBitIndex32(Uint32 x)
  {
--  return SDL_MostSignificantBitIndex32(, x);
-+  return SDL_MostSignificantBitIndex32(x);
+   return SDL_MostSignificantBitIndex32(x);
  }
- 
- /**
-@@ -54,9 +54,9 @@
+@@ -54,7 +54,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
 -inline bool HasExactlyOneBitSet32(Uint32 x)
 +constexpr bool HasExactlyOneBitSet32(Uint32 x)
  {
--  return SDL_HasExactlyOneBitSet32(, x);
-+  return SDL_HasExactlyOneBitSet32(x);
+   return SDL_HasExactlyOneBitSet32(x);
  }
- 
- /// @}
