@@ -1,5 +1,6 @@
 {
   "targets": [
+    "SDL3pp_assert.h",
     "SDL3pp_bits.h"
   ],
   "api": "scripts/target.json",

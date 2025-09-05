@@ -99,8 +99,9 @@ function insertEntry(entries, entry, defaultName = "") {
   if (entries[key]) {
     const currEntry = entries[key];
     if (Array.isArray(currEntry)) {
+      if (!entry.doc && currEntry[0].doc) entry.doc = currEntry[0].doc;
       currEntry.push(entry);
-    } else if (currEntry.kind != 'function') {
+    } else if (currEntry.kind !== 'function') {
       if (entry.doc || !currEntry.doc) {
         if (entry.kind === "def") {
           currEntry.doc = entry.doc;
@@ -108,7 +109,8 @@ function insertEntry(entries, entry, defaultName = "") {
           entries[key] = entry;
         }
       }
-    } else if (entry.kind == 'function') {
+    } else if (entry.kind === 'function') {
+      if (!entry.doc && currEntry.doc) entry.doc = currEntry.doc;
       entries[key] = [currEntry, entry];
     }
   } else {

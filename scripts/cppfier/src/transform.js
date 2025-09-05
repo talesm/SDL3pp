@@ -42,12 +42,14 @@ function transformApi(config) {
 
   // Step 1: Expand types
   for (const [sourceName, sourceFile] of Object.entries(source.files)) {
+    context.setFile(sourceName);
     const fileConfig = fileTransformMap[sourceName];
     expandTypes(sourceFile.entries, fileConfig, context);
   }
 
   // Step 2: Transform Files
   for (const [sourceName, sourceFile] of Object.entries(source.files)) {
+    context.setFile(sourceName);
     const fileConfig = fileTransformMap[sourceName];
     context.enableException = fileConfig.enableException !== false;
     const targetName = fileConfig.name || transformIncludeName(sourceName, context);
@@ -89,6 +91,10 @@ class ApiContext {
 
     /** @type {Dict<ApiEntryTransformMap>} */
     this.includeAfterMap = {};
+    this.file = '';
+
+    /** @type {ApiEntryTransformMap} */
+    this.currentIncludeAfter = null;
 
     /** @type {StringMap} */
     this.paramTypeMap = {};
@@ -195,18 +201,24 @@ class ApiContext {
 
   /**
    * 
+   * @param {string} file 
+   */
+  setFile(file) {
+    const includeAfter = this.includeAfterMap[file];
+    if (!includeAfter) {
+      this.currentIncludeAfter = this.includeAfterMap[file] = {};
+    } else {
+      this.currentIncludeAfter = includeAfter;
+    }
+  }
+
+  /**
+   * 
    * @param {string}  file 
    * @param {string}  includeAfterKey 
    */
   getOrCreateIncludeAfter(file, includeAfterKey) {
-    // context.addIncludeAfter(file.name, file)
-    const includeAfter = this.includeAfterMap[file];
-    if (!includeAfter) {
-      /** @type {ApiEntryTransform[]} */
-      const newArray = [];
-      this.includeAfterMap[file] = { [includeAfterKey]: newArray };
-      return newArray;
-    }
+    const includeAfter = this.currentIncludeAfter;
 
     const includeTarget = includeAfter[includeAfterKey];
     if (Array.isArray(includeTarget)) return includeTarget;
@@ -272,7 +284,7 @@ function expandTypes(sourceEntries, file, context) {
   // expandWrappers(sourceEntries, file, context);
   expandEnumerations(sourceEntries, file, context);
   // expandNamespaces(sourceEntries, file, context);
-  // expandCallbacks(sourceEntries, file, context);
+  expandCallbacks(sourceEntries, file, context);
 
   const transformMap = file.transform ?? {};
 
@@ -316,7 +328,18 @@ function transformEntries(sourceEntries, file, context) {
   const targetEntries = {};
   const transformMap = file.transform;
   const defPrefix = file.definitionPrefix;
-  const includeAfter = context.includeAfterMap[file.name];
+
+  let lastSourceName = "__begin";
+  for (const [sourceName, transformEntry] of Object.entries(transformMap)) {
+    if (sourceEntries[sourceName]) {
+      lastSourceName = sourceName;
+      continue;
+    }
+    if (file.name === 'SDL3pp_assert.h') console.log(transformEntry);
+    if (!transformEntry.name) transformEntry.name = sourceName;
+    context.includeAfter(transformEntry, file.name, lastSourceName);
+  }
+  const includeAfter = context.currentIncludeAfter;
 
   insertEntryAndCheck(targetEntries, includeAfter.__begin ?? [], context, file);
 

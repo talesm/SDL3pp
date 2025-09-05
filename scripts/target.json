@@ -23,16 +23,6 @@
           "name": "main_func",
           "kind": "alias",
           "type": "SDL_main_func",
-          "parameters": [
-            {
-              "name": "argc",
-              "type": "int"
-            },
-            {
-              "name": "argv[]",
-              "type": "char *"
-            }
-          ],
           "sourceName": "SDL_main_func"
         },
         "SetMainReady": {
@@ -214,20 +204,6 @@
           "name": "AppInit_func",
           "kind": "alias",
           "type": "SDL_AppInit_func",
-          "parameters": [
-            {
-              "name": "appstate",
-              "type": "void **"
-            },
-            {
-              "name": "argc",
-              "type": "int"
-            },
-            {
-              "name": "argv[]",
-              "type": "char *"
-            }
-          ],
           "sourceName": "SDL_AppInit_func"
         },
         "AppIterate_func": {
@@ -235,12 +211,6 @@
           "name": "AppIterate_func",
           "kind": "alias",
           "type": "SDL_AppIterate_func",
-          "parameters": [
-            {
-              "name": "appstate",
-              "type": "void *"
-            }
-          ],
           "sourceName": "SDL_AppIterate_func"
         },
         "AppEvent_func": {
@@ -248,16 +218,6 @@
           "name": "AppEvent_func",
           "kind": "alias",
           "type": "SDL_AppEvent_func",
-          "parameters": [
-            {
-              "name": "appstate",
-              "type": "void *"
-            },
-            {
-              "name": "event",
-              "type": "SDL_Event *"
-            }
-          ],
           "sourceName": "SDL_AppEvent_func"
         },
         "AppQuit_func": {
@@ -265,16 +225,6 @@
           "name": "AppQuit_func",
           "kind": "alias",
           "type": "SDL_AppQuit_func",
-          "parameters": [
-            {
-              "name": "appstate",
-              "type": "void *"
-            },
-            {
-              "name": "result",
-              "type": "SDL_AppResult"
-            }
-          ],
           "sourceName": "SDL_AppQuit_func"
         },
         "InitSubSystem": {
@@ -340,13 +290,13 @@
           "name": "MainThreadCallback",
           "kind": "alias",
           "type": "SDL_MainThreadCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
           "sourceName": "SDL_MainThreadCallback"
+        },
+        "MainThreadCB": {
+          "kind": "alias",
+          "name": "MainThreadCB",
+          "type": "std::function<void()>",
+          "doc": "Callback run on the main thread.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa RunOnMainThread\n@sa MainThreadCallback"
         },
         "RunOnMainThread": {
           "doc": "Call a function on the main thread during event processing.\n\nIf this is called on the main thread, the callback is executed immediately.\nIf this is called on another thread, this callback is queued for execution\non the main thread during event processing.\n\nBe careful of deadlocks when using this functionality. You should not have\nthe main thread wait for the current thread while this function is being\ncalled with `wait_complete` true.\n\n@param callback the callback to call on the main thread.\n@param userdata a pointer that is passed to `callback`.\n@param wait_complete true to wait for the callback to complete, false to\n                     return immediately.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IsMainThread",
@@ -2296,25 +2246,13 @@
           "name": "HintCallback",
           "kind": "alias",
           "type": "SDL_HintCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "name",
-              "type": "const char *"
-            },
-            {
-              "name": "oldValue",
-              "type": "const char *"
-            },
-            {
-              "name": "newValue",
-              "type": "const char *"
-            }
-          ],
           "sourceName": "SDL_HintCallback"
+        },
+        "HintCB": {
+          "kind": "alias",
+          "name": "HintCB",
+          "type": "std::function<void(const char *, const char *, const char *)>",
+          "doc": "A callback used to send notifications of hint value changes.\n\nThis is called an initial time during AddHintCallback with the hint's\ncurrent value, and then again each time the hint's value changes.\n\n@param userdata what was passed as `userdata` to AddHintCallback().\n@param name what was passed as `name` to AddHintCallback().\n@param oldValue the previous hint value.\n@param newValue the new value hint is to be set to.\n\n@threadsafety This callback is fired from whatever thread is setting a new\n              hint value. SDL holds a lock on the hint subsystem when\n              calling this callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AddHintCallback\n@sa HintCallback"
         },
         "AddHintCallback": {
           "doc": "Add a function to watch a particular hint.\n\nThe callback function is called _during_ this function, to provide it an\ninitial value, and again each time the hint's value changes.\n\n@param name the hint to watch.\n@param callback An HintCallback function that will be called when the\n                hint value changes.\n@param userdata a pointer to pass to the callback function.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RemoveHintCallback",
@@ -2367,6 +2305,12 @@
       "name": "SDL3pp_properties.h",
       "doc": "@defgroup CategoryProperties Category Properties\n\nA property is a variable that can be created and retrieved by name at\nruntime.\n\nAll properties are part of a property group (PropertiesID). A property\ngroup can be created with the CreateProperties function and destroyed\nwith the DestroyProperties function.\n\nProperties can be added to and retrieved from a property group through the\nfollowing functions:\n\n- SetPointerProperty and GetPointerProperty operate on `void*`\n  pointer types.\n- SetStringProperty and GetStringProperty operate on string types.\n- SetNumberProperty and GetNumberProperty operate on signed 64-bit\n  integer types.\n- SetFloatProperty and GetFloatProperty operate on floating point\n  types.\n- SetBooleanProperty and GetBooleanProperty operate on boolean\n  types.\n\nProperties can be removed from a group by using ClearProperty.",
       "entries": {
+        "EnumeratePropertiesCB": {
+          "kind": "alias",
+          "name": "EnumeratePropertiesCB",
+          "type": "std::function<void(PropertiesRef props, const char *name)>",
+          "doc": "A callback used to enumerate all the properties in a group of properties.\n\nThis callback is called from EnumerateProperties(), and is called once\nper property in the set.\n\n@param userdata an app-defined pointer passed to the callback.\n@param props the PropertiesID that is being enumerated.\n@param name the next property name in the enumeration.\n\n@threadsafety EnumerateProperties holds a lock on `props` during this\n              callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EnumerateProperties\n@sa EnumeratePropertiesCallback"
+        },
         "PropertiesID": {
           "doc": "SDL properties ID\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "PropertiesID",
@@ -2502,17 +2446,13 @@
           "name": "CleanupPropertyCallback",
           "kind": "alias",
           "type": "SDL_CleanupPropertyCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "value",
-              "type": "void *"
-            }
-          ],
           "sourceName": "SDL_CleanupPropertyCallback"
+        },
+        "CleanupPropertyCB": {
+          "kind": "alias",
+          "name": "CleanupPropertyCB",
+          "type": "std::function<void(void *)>",
+          "doc": "A callback used to free resources when a property is deleted.\n\nThis should release any resources associated with `value` that are no\nlonger needed.\n\nThis callback is set per-property. Different properties in the same group\ncan have different cleanup callbacks.\n\nThis callback will be called _during_ SetPointerPropertyWithCleanup if\nthe function fails for any reason.\n\n@param userdata an app-defined pointer passed to the callback.\n@param value the pointer assigned to the property to clean up.\n\n@threadsafety This callback may fire without any locks held; if this is a\n              concern, the app should provide its own locking.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetPointerPropertyWithCleanup\n@sa CleanupPropertyCallback"
         },
         "SetPointerPropertyWithCleanup": {
           "doc": "Set a pointer property in a group of properties with a cleanup function\nthat is called when the property is deleted.\n\nThe cleanup function is also called if setting the property fails for any\nreason.\n\nFor simply setting basic data types, like numbers, bools, or strings, use\nSetNumberProperty, SetBooleanProperty, or SetStringProperty\ninstead, as those functions will handle cleanup on your behalf. This\nfunction is only for more complex, custom data.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property, or nullptr to delete the property.\n@param cleanup the function to call when this property is deleted, or nullptr\n               if no cleanup is necessary.\n@param userdata a pointer that is passed to the cleanup function.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPointerProperty\n@sa SetPointerProperty\n@sa CleanupPropertyCallback",
@@ -2830,20 +2770,6 @@
           "name": "EnumeratePropertiesCallback",
           "kind": "alias",
           "type": "SDL_EnumeratePropertiesCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "props",
-              "type": "SDL_PropertiesID"
-            },
-            {
-              "name": "name",
-              "type": "const char *"
-            }
-          ],
           "sourceName": "SDL_EnumeratePropertiesCallback"
         },
         "EnumerateProperties": {
@@ -2950,6 +2876,12 @@
       "name": "SDL3pp_log.h",
       "doc": "@defgroup CategoryLog Category Log\n\nSimple log messages with priorities and categories. A message's\nLogPriority signifies how important the message is. A message's\nLogCategory signifies from what domain it belongs to. Every category\nhas a minimum priority specified: when a message belongs to that category,\nit will only be sent out if it has that minimum priority or higher.\n\nSDL's own logs are sent below the default priority threshold, so they are\nquiet by default.\n\nYou can change the log verbosity programmatically using\nLogCategory.SetLogPriority() or with SetHint(SDL_HINT_LOGGING, ...), or with\nthe \"SDL_LOGGING\" environment variable. This variable is a comma separated\nset of category=level tokens that define the default logging levels for SDL\napplications.\n\nThe category can be a numeric category, one of \"app\", \"error\", \"assert\",\n\"system\", \"audio\", \"video\", \"render\", \"input\", \"test\", or `*` for any\nunspecified category.\n\nThe level can be a numeric level, one of \"trace\", \"verbose\", \"debug\",\n\"info\", \"warn\", \"error\", \"critical\", or \"quiet\" to disable that category.\n\nYou can omit the category if you want to set the logging level for all\ncategories.\n\nIf this hint isn't set, the default log levels are equivalent to:\n\n`app=info,assert=warn,test=verbose,*=error`\n\nHere's where the messages go on different platforms:\n\n- Windows: debug output stream\n- Android: log output\n- Others: standard error output (stderr)\n\nYou don't need to have a newline (`@n`) on the end of messages, the\nfunctions will do that for you. For consistent behavior cross-platform, you\nshouldn't have any newlines in messages, such as to log multiple lines in\none call; unusual platform-specific behavior can be observed in such usage.\nDo one log call per line instead, with no newlines in messages.\n\nEach log call is atomic, so you won't see log messages cut off one another\nwhen logging from multiple threads.",
       "entries": {
+        "LogOutputCB": {
+          "kind": "alias",
+          "name": "LogOutputCB",
+          "type": "std::function<void(LogCategory, LogPriority, const char *)>",
+          "doc": "The prototype for the log output callback function.\n\nThis function is called by SDL when there is new text to be logged. A mutex\nis held so that this function is never called by more than one thread at\nonce.\n\n@param userdata what was passed as `userdata` to\n                SetLogOutputFunction().\n@param category the category of the message.\n@param priority the priority of the message.\n@param message the message being output.\n\n@since This datatype is available since SDL 3.2.0.\n@sa LogOutputFunction"
+        },
         "LogCategory": {
           "doc": "The predefined log categories\n\nBy default the application and gpu categories are enabled at the INFO\nlevel, the assert category is enabled at the WARN level, test is enabled at\nthe VERBOSE level and all other categories are enabled at the ERROR level.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "LogCategory",
@@ -3590,24 +3522,6 @@
           "name": "LogOutputFunction",
           "kind": "alias",
           "type": "SDL_LogOutputFunction",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "category",
-              "type": "int"
-            },
-            {
-              "name": "priority",
-              "type": "SDL_LogPriority"
-            },
-            {
-              "name": "message",
-              "type": "const char *"
-            }
-          ],
           "sourceName": "SDL_LogOutputFunction"
         },
         "GetDefaultLogOutputFunction": {
@@ -3853,35 +3767,45 @@
           "name": "AssertionHandler",
           "kind": "alias",
           "type": "SDL_AssertionHandler",
-          "parameters": [
-            {
-              "name": "data",
-              "type": "const SDL_AssertData *"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
           "sourceName": "SDL_AssertionHandler"
         },
-        "SetAssertionHandler": {
-          "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon Quit()!\n\n@param handler the AssertionHandler function to call when an assertion\n               fails or nullptr for the default handler.\n@param userdata a pointer that is passed to `handler`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAssertionHandler",
-          "name": "SetAssertionHandler",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "handler",
-              "type": "AssertionHandler"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
-          "sourceName": "SDL_SetAssertionHandler"
+        "AssertionHandlerCB": {
+          "kind": "alias",
+          "name": "AssertionHandlerCB",
+          "type": "std::function<SDL_AssertState(const SDL_AssertData *)>",
+          "doc": "A callback that fires when an SDL assertion fails.\n\n@param data a pointer to the AssertData structure corresponding to the\n            current assertion.\n@param userdata what was passed as `userdata` to SetAssertionHandler().\n@returns an AssertState value indicating how to handle the failure.\n\n@threadsafety This callback may be called from any thread that triggers an\n              assert at any time.\n\n@since This datatype is available since SDL 3.2.0.\n@sa AssertionHandler"
         },
+        "SetAssertionHandler": [
+          {
+            "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon Quit()!\n\n@param handler the AssertionHandler function to call when an assertion\n               fails or nullptr for the default handler.\n@param userdata a pointer that is passed to `handler`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAssertionHandler",
+            "name": "SetAssertionHandler",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "handler",
+                "type": "AssertionHandler"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_SetAssertionHandler"
+          },
+          {
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "AssertionHandlerCB",
+                "name": "handler"
+              }
+            ],
+            "name": "SetAssertionHandler",
+            "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon Quit()!\n\n@param handler the AssertionHandler function to call when an assertion\n               fails or nullptr for the default handler.\n@param userdata a pointer that is passed to `handler`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAssertionHandler"
+          }
+        ],
         "GetDefaultAssertionHandler": {
           "doc": "Get the default assertion handler.\n\nThis returns the function pointer that is called by default when an\nassertion is triggered. This is an internal function provided by SDL, that\nis used for assertions when SetAssertionHandler() hasn't been used to\nprovide a different function.\n\n@returns the default AssertionHandler that is called when an assert\n         triggers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAssertionHandler",
           "name": "GetDefaultAssertionHandler",
@@ -3890,19 +3814,28 @@
           "parameters": [],
           "sourceName": "SDL_GetDefaultAssertionHandler"
         },
-        "GetAssertionHandler": {
-          "doc": "Get the current assertion handler.\n\nThis returns the function pointer that is called when an assertion is\ntriggered. This is either the value last passed to\nSetAssertionHandler(), or if no application-specified function is set,\nis equivalent to calling GetDefaultAssertionHandler().\n\nThe parameter `puserdata` is a pointer to a void*, which will store the\n\"userdata\" pointer that was passed to SetAssertionHandler(). This value\nwill always be nullptr for the default handler. If you don't care about this\ndata, it is safe to pass a nullptr pointer to this function to ignore it.\n\n@param puserdata pointer which is filled with the \"userdata\" pointer that\n                 was passed to SetAssertionHandler().\n@returns the AssertionHandler that is called when an assert triggers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAssertionHandler",
-          "name": "GetAssertionHandler",
-          "kind": "function",
-          "type": "AssertionHandler",
-          "parameters": [
-            {
-              "name": "puserdata",
-              "type": "void **"
-            }
-          ],
-          "sourceName": "SDL_GetAssertionHandler"
-        },
+        "GetAssertionHandler": [
+          {
+            "doc": "Get the current assertion handler.\n\nThis returns the function pointer that is called when an assertion is\ntriggered. This is either the value last passed to\nSetAssertionHandler(), or if no application-specified function is set,\nis equivalent to calling GetDefaultAssertionHandler().\n\nThe parameter `puserdata` is a pointer to a void*, which will store the\n\"userdata\" pointer that was passed to SetAssertionHandler(). This value\nwill always be nullptr for the default handler. If you don't care about this\ndata, it is safe to pass a nullptr pointer to this function to ignore it.\n\n@param puserdata pointer which is filled with the \"userdata\" pointer that\n                 was passed to SetAssertionHandler().\n@returns the AssertionHandler that is called when an assert triggers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAssertionHandler",
+            "name": "GetAssertionHandler",
+            "kind": "function",
+            "type": "AssertionHandler",
+            "parameters": [
+              {
+                "name": "puserdata",
+                "type": "void **"
+              }
+            ],
+            "sourceName": "SDL_GetAssertionHandler"
+          },
+          {
+            "kind": "function",
+            "type": "AssertionHandlerCB",
+            "parameters": [],
+            "name": "GetAssertionHandler",
+            "doc": "Get the current assertion handler.\n\nThis returns the function pointer that is called when an assertion is\ntriggered. This is either the value last passed to\nSetAssertionHandler(), or if no application-specified function is set,\nis equivalent to calling GetDefaultAssertionHandler().\n\nThe parameter `puserdata` is a pointer to a void*, which will store the\n\"userdata\" pointer that was passed to SetAssertionHandler(). This value\nwill always be nullptr for the default handler. If you don't care about this\ndata, it is safe to pass a nullptr pointer to this function to ignore it.\n\n@param puserdata pointer which is filled with the \"userdata\" pointer that\n                 was passed to SetAssertionHandler().\n@returns the AssertionHandler that is called when an assert triggers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAssertionHandler"
+          }
+        ],
         "GetAssertionReport": {
           "doc": "Get a list of all assertion failures.\n\nThis function gets all assertions triggered since the last call to\nResetAssertionReport(), or the start of the program.\n\nThe proper way to examine this data looks something like this:\n\n```c\nconst AssertData *item = GetAssertionReport();\nwhile (item) {\n   printf(\"'%s', %s (%s:%d), triggered %u times, always ignore: %s.\\@n\",\n          item->condition, item->function, item->filename,\n          item->linenum, item->trigger_count,\n          item->always_ignore ? \"yes\" : \"no\");\n   item = item->next;\n}\n```\n\n@returns a list of all failed assertions or nullptr if the list is empty. This\n         memory should not be modified or freed by the application. This\n         pointer remains valid until the next call to Quit() or\n         ResetAssertionReport().\n\n@threadsafety This function is not thread safe. Other threads calling\n              ResetAssertionReport() simultaneously, may render the\n              returned pointer invalid.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ResetAssertionReport",
           "name": "GetAssertionReport",
@@ -4527,34 +4460,26 @@
           "name": "EGLAttribArrayCallback",
           "kind": "alias",
           "type": "SDL_EGLAttribArrayCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
           "sourceName": "SDL_EGLAttribArrayCallback"
+        },
+        "EGLAttribArrayCB": {
+          "kind": "alias",
+          "name": "EGLAttribArrayCB",
+          "type": "std::function<SDL_EGLAttrib *()>",
+          "doc": "EGL platform attribute initialization callback.\n\nThis is called when SDL is attempting to create an EGL context, to let the\napp add extra attributes to its eglGetPlatformDisplay() call.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the CreateWindow\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks\n@sa EGLAttribArrayCallback"
         },
         "EGLIntArrayCallback": {
           "doc": "EGL surface/context attribute initialization callback types.\n\nThis is called when SDL is attempting to create an EGL surface, to let the\napp add extra attributes to its eglCreateWindowSurface() or\neglCreateContext calls.\n\nFor convenience, the EGLDisplay and EGLConfig to use are provided to the\ncallback.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the CreateWindow\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param display the EGL display to be used.\n@param config the EGL config to be used.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks",
           "name": "EGLIntArrayCallback",
           "kind": "alias",
           "type": "SDL_EGLIntArrayCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "display",
-              "type": "SDL_EGLDisplay"
-            },
-            {
-              "name": "config",
-              "type": "SDL_EGLConfig"
-            }
-          ],
           "sourceName": "SDL_EGLIntArrayCallback"
+        },
+        "EGLIntArrayCB": {
+          "kind": "alias",
+          "name": "EGLIntArrayCB",
+          "type": "std::function<SDL_EGLint *(SDL_EGLDisplay, SDL_EGLConfig)>",
+          "doc": "EGL surface/context attribute initialization callback types.\n\nThis is called when SDL is attempting to create an EGL surface, to let the\napp add extra attributes to its eglCreateWindowSurface() or\neglCreateContext calls.\n\nFor convenience, the EGLDisplay and EGLConfig to use are provided to the\ncallback.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the CreateWindow\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param display the EGL display to be used.\n@param config the EGL config to be used.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks\n@sa EGLIntArrayCallback"
         },
         "GLAttr": {
           "doc": "An enumeration of OpenGL configuration attributes.\n\nWhile you can set most OpenGL attributes normally, the attributes listed\nabove must be known before SDL creates the window that will be used with\nthe OpenGL context. These attributes are set and read with\nGL_SetAttribute() and GL_GetAttribute().\n\nIn some cases, these attributes are minimum requests; the GL does not\npromise to give you exactly what you asked for. It's possible to ask for a\n16-bit depth buffer and get a 24-bit one instead, for example, or to ask\nfor no stencil buffer and still have one available. Context creation should\nfail if the GL can't provide your requested attributes at a minimum, but\nyou should check to see exactly what you got.\n\n@since This enum is available since SDL 3.2.0.",
@@ -6944,20 +6869,6 @@
           "name": "HitTest",
           "kind": "alias",
           "type": "SDL_HitTest",
-          "parameters": [
-            {
-              "name": "win",
-              "type": "SDL_Window *"
-            },
-            {
-              "name": "area",
-              "type": "const SDL_Point *"
-            },
-            {
-              "name": "data",
-              "type": "void *"
-            }
-          ],
           "sourceName": "SDL_HitTest"
         },
         "SetWindowHitTest": {
@@ -14538,6 +14449,12 @@
             "mayFail": true
           }
         },
+        "ClipboardDataCB": {
+          "kind": "alias",
+          "name": "ClipboardDataCB",
+          "type": "std::function<SourceBytes(const char *mime_type)>",
+          "doc": "Callback function that will be called when data for the specified mime-type\nis requested by the OS.\n\nThe callback function is called with nullptr as the mime_type when the\nclipboard is cleared or new data is set. The clipboard is automatically\ncleared in Quit().\n\n@param userdata a pointer to the provided user data.\n@param mime_type the requested mime-type.\n@param size a pointer filled in with the length of the returned data.\n@returns a pointer to the data for the provided mime-type. Returning nullptr\n         or setting the length to 0 will cause no data to be sent to the\n         \"receiver\". It is up to the receiver to handle this. Essentially\n         returning no data is more or less undefined behavior and may cause\n         breakage in receiving applications. The returned data will not be\n         freed, so it needs to be retained and dealt with internally.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetClipboardData\n@sa ClipboardDataCallback"
+        },
         "HasPrimarySelectionText": {
           "doc": "Query whether the primary selection exists and contains a non-empty text\nstring.\n\n@returns true if the primary selection has text, or false if it does not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPrimarySelectionText\n@sa SetPrimarySelectionText",
           "name": "HasPrimarySelectionText",
@@ -14551,20 +14468,6 @@
           "name": "ClipboardDataCallback",
           "kind": "alias",
           "type": "SDL_ClipboardDataCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "mime_type",
-              "type": "const char *"
-            },
-            {
-              "name": "size",
-              "type": "size_t *"
-            }
-          ],
           "sourceName": "SDL_ClipboardDataCallback"
         },
         "ClipboardCleanupCallback": {
@@ -14572,13 +14475,13 @@
           "name": "ClipboardCleanupCallback",
           "kind": "alias",
           "type": "SDL_ClipboardCleanupCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
           "sourceName": "SDL_ClipboardCleanupCallback"
+        },
+        "ClipboardCleanupCB": {
+          "kind": "alias",
+          "name": "ClipboardCleanupCB",
+          "type": "std::function<void()>",
+          "doc": "Callback function that will be called when the clipboard is cleared, or when new\ndata is set.\n\n@param userdata a pointer to the provided user data.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetClipboardData\n@sa ClipboardCleanupCallback"
         },
         "SetClipboardData": {
           "doc": "Offer clipboard data to the OS.\n\nTell the operating system that the application is offering clipboard data\nfor each of the provided mime-types. Once another application requests the\ndata the callback function will be called, allowing it to generate and\nrespond with the data for the requested mime-type.\n\nThe size of text data does not include any terminator, and the text does\nnot need to be null-terminated (e.g., you can directly copy a portion of a\ndocument).\n\n@param callback a function pointer to the function that provides the\n                clipboard data.\n@param cleanup a function pointer to the function that cleans up the\n               clipboard data.\n@param userdata an opaque pointer that will be forwarded to the callbacks.\n@param mime_types a list of mime-types that are being offered. SDL copies the given list.\n@param num_mime_types the number of mime-types in the mime_types list.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ClearClipboardData\n@sa GetClipboardData\n@sa HasClipboardData",
@@ -14659,6 +14562,18 @@
       "name": "SDL3pp_audio.h",
       "doc": "@defgroup CategoryAudio Category Audio\n\nAudio functionality for the SDL library.\n\nAll audio in SDL3 revolves around AudioStream. Whether you want to play\nor record audio, convert it, stream it, buffer it, or mix it, you're going\nto be passing it through an audio stream.\n\nAudio streams are quite flexible; they can accept any amount of data at a\ntime, in any supported format, and output it as needed in any other format,\neven if the data format changes on either side halfway through.\n\nAn app opens an audio device and binds any number of audio streams to it,\nfeeding more data to the streams as available. When the device needs more\ndata, it will pull it from all bound streams and mix them together for\nplayback.\n\nAudio streams can also use an app-provided callback to supply data\non-demand, which maps pretty closely to the SDL2 audio model.\n\nSDL also provides a simple .WAV loader in LoadWAV (and LoadWAV\nif you aren't reading from a file) as a basic means to load sound data into\nyour program.\n\n## Logical audio devices\n\nIn SDL3, opening a physical device (like a SoundBlaster 16 Pro) gives you a\nlogical device ID that you can bind audio streams to. In almost all cases,\nlogical devices can be used anywhere in the API that a physical device is\nnormally used. However, since each device opening generates a new logical\ndevice, different parts of the program (say, a VoIP library, or\ntext-to-speech framework, or maybe some other sort of mixer on top of SDL)\ncan have their own device opens that do not interfere with each other; each\nlogical device will mix its separate audio down to a single buffer, fed to\nthe physical device, behind the scenes. As many logical devices as you like\ncan come and go; SDL will only have to open the physical device at the OS\nlevel once, and will manage all the logical devices on top of it\ninternally.\n\nOne other benefit of logical devices: if you don't open a specific physical\ndevice, instead opting for the default, SDL can automatically migrate those\nlogical devices to different hardware as circumstances change: a user\nplugged in headphones? The system default changed? SDL can transparently\nmigrate the logical devices to the correct physical device seamlessly and\nkeep playing; the app doesn't even have to know it happened if it doesn't\nwant to.\n\n## Simplified audio\n\nAs a simplified model for when a single source of audio is all that's\nneeded, an app can use OpenAudioDeviceStream, which is a single\nfunction to open an audio device, create an audio stream, bind that stream\nto the newly-opened device, and (optionally) provide a callback for\nobtaining audio data. When using this function, the primary interface is\nthe AudioStream and the device handle is mostly hidden away; destroying\na stream created through this function will also close the device, stream\nbindings cannot be changed, etc. One other quirk of this is that the device\nis started in a _paused_ state and must be explicitly resumed; this is\npartially to offer a clean migration for SDL2 apps and partially because\nthe app might have to do more setup before playback begins; in the\nnon-simplified form, nothing will play until a stream is bound to a device,\nso they start _unpaused_.\n\n## Channel layouts\n\nAudio data passing through SDL is uncompressed PCM data, interleaved. One\ncan provide their own decompression through an MP3, etc, decoder, but SDL\ndoes not provide this directly. Each interleaved channel of data is meant\nto be in a specific order.\n\nAbbreviations:\n\n- FRONT = single mono speaker\n- FL = front left speaker\n- FR = front right speaker\n- FC = front center speaker\n- BL = back left speaker\n- BR = back right speaker\n- SR = surround right speaker\n- SL = surround left speaker\n- BC = back center speaker\n- LFE = low-frequency speaker\n\nThese are listed in the order they are laid out in memory, so \"FL, FR\"\nmeans \"the front left speaker is laid out in memory first, then the front\nright, then it repeats for the next audio frame\".\n\n- 1 channel (mono) layout: FRONT\n- 2 channels (stereo) layout: FL, FR\n- 3 channels (2.1) layout: FL, FR, LFE\n- 4 channels (quad) layout: FL, FR, BL, BR\n- 5 channels (4.1) layout: FL, FR, LFE, BL, BR\n- 6 channels (5.1) layout: FL, FR, FC, LFE, BL, BR (last two can also be\n  SL, SR)\n- 7 channels (6.1) layout: FL, FR, FC, LFE, BC, SL, SR\n- 8 channels (7.1) layout: FL, FR, FC, LFE, BL, BR, SL, SR\n\nThis is the same order as DirectSound expects, but applied to all\nplatforms; SDL will swizzle the channels as necessary if a platform expects\nsomething different.\n\nAudioStream can also be provided channel maps to change this ordering\nto whatever is necessary, in other audio processing scenarios.",
       "entries": {
+        "AudioPostmixCB": {
+          "kind": "alias",
+          "name": "AudioPostmixCB",
+          "type": "std::function<void(const AudioSpec &spec, std::span<float> buffer)>",
+          "doc": "A callback that fires when data is about to be fed to an audio device.\n\nThis is useful for accessing the final mix, perhaps for writing a\nvisualizer or applying a final effect to the audio data before playback.\n\nThis callback should run as quickly as possible and not block for any\nsignificant time, as this callback delays submission of data to the audio\ndevice, which can cause audio playback problems.\n\nThe postmix callback _must_ be able to handle any audio data format\nspecified in `spec`, which can change between callbacks if the audio device\nchanged. However, this only covers frequency and channel count; data is\nalways provided here in AUDIO_F32 format.\n\nThe postmix callback runs _after_ logical device gain and audiostream gain\nhave been applied, which is to say you can make the output data louder at\nthis point than the gain settings would suggest.\n\n@param userdata a pointer provided by the app through\n                SetAudioPostmixCallback, for its own use.\n@param spec the current format of audio that is to be submitted to the\n            audio device.\n@param buffer the buffer of audio samples to be submitted. The callback can\n              inspect and/or modify this data.\n@param buflen the size of `buffer` in bytes.\n\n@threadsafety This will run from a background thread owned by SDL. The\n              application is responsible for locking resources the callback\n              touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetAudioPostmixCallback\n@sa AudioPostmixCallback"
+        },
+        "AudioStreamCB": {
+          "kind": "alias",
+          "name": "AudioStreamCB",
+          "type": "std::function<void(AudioStreamRef stream, int additional_amount, int total_amount)>",
+          "doc": "A callback that fires when data passes through an AudioStream.\n\nApps can (optionally) register a callback with an audio stream that is\ncalled when data is added with PutAudioStreamData, or requested with\nGetAudioStreamData.\n\nTwo values are offered here: one is the amount of additional data needed to\nsatisfy the immediate request (which might be zero if the stream already\nhas enough data queued) and the other is the total amount being requested.\nIn a Get call triggering a Put callback, these values can be different. In\na Put call triggering a Get callback, these values are always the same.\n\nByte counts might be slightly overestimated due to buffering or resampling,\nand may change from call to call.\n\nThis callback is not required to do anything. Generally this is useful for\nadding/reading data on demand, and the app will often put/get data as\nappropriate, but the system goes on with the data currently available to it\nif this callback does nothing.\n\n@param stream the SDL audio stream associated with this callback.\n@param additional_amount the amount of data, in bytes, that is needed right\n                         now.\n@param total_amount the total amount of data requested, in bytes, that is\n                    requested or available.\n@param userdata an opaque pointer provided by the app for their personal\n                use.\n\n@threadsafety This callbacks may run from any thread, so if you need to\n              protect shared data, you should use LockAudioStream to\n              serialize access; this lock will be held before your callback\n              is called, so your callback does not need to manage the lock\n              explicitly.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetAudioStreamGetCallback\n@sa SetAudioStreamPutCallback\n@sa AudioStreamCallback"
+        },
         "SDL_AUDIO_MASK_BITSIZE": {
           "doc": "Mask of bits in an AudioFormat that contains the format bit size.\n\nGenerally one should use SDL_AUDIO_BITSIZE instead of this macro directly.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_AUDIO_MASK_BITSIZE",
@@ -15673,24 +15588,6 @@
           "name": "AudioStreamCallback",
           "kind": "alias",
           "type": "SDL_AudioStreamCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "stream",
-              "type": "SDL_AudioStream *"
-            },
-            {
-              "name": "additional_amount",
-              "type": "int"
-            },
-            {
-              "name": "total_amount",
-              "type": "int"
-            }
-          ],
           "sourceName": "SDL_AudioStreamCallback"
         },
         "SetAudioStreamGetCallback": {
@@ -15787,24 +15684,6 @@
           "name": "AudioPostmixCallback",
           "kind": "alias",
           "type": "SDL_AudioPostmixCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "spec",
-              "type": "const SDL_AudioSpec *"
-            },
-            {
-              "name": "buffer",
-              "type": "float *"
-            },
-            {
-              "name": "buflen",
-              "type": "int"
-            }
-          ],
           "sourceName": "SDL_AudioPostmixCallback"
         },
         "SetAudioPostmixCallback": {
@@ -15957,6 +15836,12 @@
       "name": "SDL3pp_events.h",
       "doc": "@defgroup CategoryEvents Category Events\n\nEvent queue management.\n\nIt's extremely common--often required--that an app deal with SDL's event\nqueue. Almost all useful information about interactions with the real world\nflow through here: the user interacting with the computer and app, hardware\ncoming and going, the system changing in some way, etc.\n\nAn app generally takes a moment, perhaps at the start of a new frame, to\nexamine any events that have occured since the last time and process or\nignore them. This is generally done by calling PollEvent() in a loop\nuntil it returns false (or, if using the main callbacks, events are\nprovided one at a time in calls to SDL_AppEvent() before the next call to\nSDL_AppIterate(); in this scenario, the app does not call PollEvent()\nat all).\n\nThere is other forms of control, too: PeepEvents() has more\nfunctionality at the cost of more complexity, and WaitEvent() can block\nthe process until something interesting happens, which might be beneficial\nfor certain types of programs on low-power hardware. One may also call\nAddEventWatch() to set a callback when new events arrive.\n\nThe app is free to generate their own events, too: PushEvent allows the\napp to put events onto the queue for later retrieval; RegisterEvents\ncan guarantee that these events have a type that isn't in use by other\nparts of the system.",
       "entries": {
+        "EventFilterCB": {
+          "kind": "alias",
+          "name": "EventFilterCB",
+          "type": "std::function<bool(const Event &)>",
+          "doc": "A function pointer used for callbacks that watch the event queue.\n\n@param userdata what was passed as `userdata` to SetEventFilter() or\n                AddEventWatch, etc.\n@param event the event that triggered the callback.\n@returns true to permit event to be added to the queue, and false to\n         disallow it. When used with AddEventWatch, the return value is\n         ignored.\n\n@threadsafety SDL may call this callback at any time from any thread; the\n              application is responsible for locking resources the callback\n              touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetEventFilter\n@sa AddEventWatch\n@sa EventFilter"
+        },
         "EventType": {
           "doc": "The types of events that can be delivered.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "EventType",
@@ -17369,16 +17254,6 @@
           "name": "EventFilter",
           "kind": "alias",
           "type": "SDL_EventFilter",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "event",
-              "type": "SDL_Event *"
-            }
-          ],
           "sourceName": "SDL_EventFilter"
         },
         "SetEventFilter": {
@@ -22765,12 +22640,6 @@
           "name": "ThreadFunction",
           "kind": "alias",
           "type": "SDL_ThreadFunction",
-          "parameters": [
-            {
-              "name": "data",
-              "type": "void *"
-            }
-          ],
           "sourceName": "SDL_ThreadFunction"
         },
         "CreateThread": {
@@ -22952,12 +22821,6 @@
           "name": "TLSDestructorCallback",
           "kind": "alias",
           "type": "SDL_TLSDestructorCallback",
-          "parameters": [
-            {
-              "name": "value",
-              "type": "void *"
-            }
-          ],
           "sourceName": "SDL_TLSDestructorCallback"
         },
         "SetTLS": {
@@ -23919,21 +23782,13 @@
           "name": "TimerCallback",
           "kind": "alias",
           "type": "SDL_NSTimerCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "timerID",
-              "type": "SDL_TimerID"
-            },
-            {
-              "name": "interval",
-              "type": "Uint64"
-            }
-          ],
           "sourceName": "SDL_NSTimerCallback"
+        },
+        "TimerCB": {
+          "kind": "alias",
+          "name": "TimerCB",
+          "type": "std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>",
+          "doc": "Function prototype for the nanosecond timer callback function.\n\nThe callback function is passed the current timer interval and returns the\nnext timer interval, in nanoseconds. If the returned value is the same as\nthe one passed in, the periodic alarm continues, otherwise a new alarm is\nscheduled. If the callback returns 0, the periodic alarm is canceled and\nwill be removed.\n\n@param userdata an arbitrary pointer provided by the app through\n                SDL_AddTimer, for its own use.\n@param timerID the current timer being processed.\n@param interval the current callback time interval.\n@returns the new callback time interval, or 0 to disable further runs of\n         the callback.\n\n@threadsafety SDL may call this callback at any time from a background\n              thread; the application is responsible for locking resources\n              the callback touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AddTimer\n@sa TimerCallback"
         },
         "AddTimer": {
           "doc": "Call a callback function at a future time.\n\nThe callback function is passed the current timer interval and the user\nsupplied parameter from the AddTimer() call and should return the\nnext timer interval. If the value returned from the callback is 0, the\ntimer is canceled and will be removed.\n\nThe callback is run on a separate thread, and for short timeouts can\npotentially be called before this function returns.\n\nTimers take into account the amount of time it took to execute the\ncallback. For example, if the callback took 250 ns to execute and returned\n1000 (ns), the timer would only wait another 750 ns before its next\niteration.\n\nTiming may be inexact due to OS scheduling. Be sure to note the current\ntime with GetTicks() or GetPerformanceCounter() in case your\ncallback needs to adjust for variances.\n\n@param interval the timer delay, in nanoseconds, passed to `callback`.\n@param callback the SDL_TimerCallback function to call when the specified\n                `interval` elapses.\n@param userdata a pointer that is passed to `callback`.\n@returns a timer ID or 0 on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_AddTimer\n@sa RemoveTimer",
@@ -24217,6 +24072,12 @@
       "name": "SDL3pp_filesystem.h",
       "doc": "@defgroup CategoryFilesystem Category Filesystem\n\nSDL offers an API for examining and manipulating the system's filesystem.\nThis covers most things one would need to do with directories, except for\nactual file I/O (which is covered by [CategoryIOStream](CategoryIOStream)\nand [CategoryAsyncIO](CategoryAsyncIO) instead).\n\nThere are functions to answer necessary path questions:\n\n- Where is my app's data? GetBasePath().\n- Where can I safely write files? GetPrefPath().\n- Where are paths like Downloads, Desktop, Music? GetUserFolder().\n- What is this thing at this location? GetPathInfo().\n- What items live in this folder? EnumerateDirectory().\n- What items live in this folder by wildcard? GlobDirectory().\n- What is my current working directory? GetCurrentDirectory().\n\nSDL also offers functions to manipulate the directory tree: renaming,\nremoving, copying files.",
       "entries": {
+        "EnumerateDirectoryCB": {
+          "kind": "alias",
+          "name": "EnumerateDirectoryCB",
+          "type": "std::function<EnumerationResult(const char *dirname, const char *fname)>",
+          "doc": "Callback for directory enumeration.\n\nEnumeration of directory entries will continue until either all entries\nhave been provided to the callback, or the callback has requested a stop\nthrough its return value.\n\nReturning ENUM_CONTINUE will let enumeration proceed, calling the\ncallback with further entries. ENUM_SUCCESS and ENUM_FAILURE will\nterminate the enumeration early, and dictate the return value of the\nenumeration function itself.\n\n`dirname` is guaranteed to end with a path separator ('\\\\' on Windows, '/'\non most other platforms).\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param dirname the directory that is being enumerated.\n@param fname the next entry in the enumeration.\n@returns how the enumeration should proceed.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EnumerateDirectory\n@sa EnumerateDirectoryCallback"
+        },
         "GetBasePath": {
           "doc": "Get the directory where the application was run from.\n\nSDL caches the result of this call internally, but the first call to this\nfunction is not necessarily fast, so plan accordingly.\n\n**macOS and iOS Specific Functionality**: If the application is in a \".app\"\nbundle, this function returns the Resource directory (e.g.\nMyApp.app/Contents/Resources/). This behaviour can be overridden by adding\na property to the Info.plist file. Adding a string key with the name\nSDL_FILESYSTEM_BASE_DIR_TYPE with a supported value will change the\nbehaviour.\n\nSupported values for the SDL_FILESYSTEM_BASE_DIR_TYPE property (Given an\napplication in /Applications/SDLApp/MyApp.app):\n\n- `resource`: bundle resource directory (the default). For example:\n  `/Applications/SDLApp/MyApp.app/Contents/Resources`\n- `bundle`: the Bundle directory. For example:\n  `/Applications/SDLApp/MyApp.app/`\n- `parent`: the containing directory of the bundle. For example:\n  `/Applications/SDLApp/`\n\n**Nintendo 3DS Specific Functionality**: This function returns \"romfs\"\ndirectory of the application as it is uncommon to store resources outside\nthe executable. As such it is not a writable directory.\n\nThe returned path is guaranteed to end with a path separator ('\\\\' on\nWindows, '/' on most other platforms).\n\n@returns an absolute path in UTF-8 encoding to the application data\n         directory. nullptr will be returned on error or when the platform\n         doesn't implement this functionality, call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPrefPath",
           "name": "GetBasePath",
@@ -24470,20 +24331,6 @@
           "name": "EnumerateDirectoryCallback",
           "kind": "alias",
           "type": "SDL_EnumerateDirectoryCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "dirname",
-              "type": "const char *"
-            },
-            {
-              "name": "fname",
-              "type": "const char *"
-            }
-          ],
           "sourceName": "SDL_EnumerateDirectoryCallback"
         },
         "EnumerateDirectory": {
@@ -27299,21 +27146,13 @@
           "name": "DialogFileCallback",
           "kind": "alias",
           "type": "SDL_DialogFileCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "filelist",
-              "type": "const char *const *"
-            },
-            {
-              "name": "filter",
-              "type": "int"
-            }
-          ],
           "sourceName": "SDL_DialogFileCallback"
+        },
+        "DialogFileCB": {
+          "kind": "alias",
+          "name": "DialogFileCB",
+          "type": "std::function<void(const char *const *, int)>",
+          "doc": "Callback used by file dialog functions.\n\nThe specific usage is described in each function.\n\nIf `filelist` is:\n\n- nullptr, an error occurred. Details can be obtained with GetError().\n- A pointer to nullptr, the user either didn't choose any file or canceled the\n  dialog.\n- A pointer to non-`nullptr`, the user chose one or more files. The argument\n  is a null-terminated array of pointers to UTF-8 encoded strings, each\n  containing a path.\n\nThe filelist argument should not be freed; it will automatically be freed\nwhen the callback returns.\n\nThe filter argument is the index of the filter that was selected, or -1 if\nno filter was selected or if the platform or method doesn't support\nfetching the selected filter.\n\nIn Android, the `filelist` are `content://` URIs. They should be opened\nusing IOFromFile() with appropriate modes. This applies both to open\nand save file dialog.\n\n@param userdata an app-provided pointer, for the callback's use.\n@param filelist the file(s) chosen by the user.\n@param filter index of the selected filter.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties\n@sa DialogFileCallback"
         },
         "ShowOpenFileDialog": {
           "doc": "Displays a dialog that lets the user select a file on their filesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe nullptr if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nDepending on the platform, the user may be allowed to input paths that\ndon't yet exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to PumpEvents in their main loop.\n\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param window the window that the dialog should be modal for, may be nullptr.\n              Not all platforms support this option.\n@param filters a list of filters, may be nullptr. Not all platforms support\n               this option, and platforms that do support it may allow the\n               user to ignore the filters. If non-nullptr, it must remain\n               valid at least until the callback is invoked.\n@param nfilters the number of filters. Ignored if filters is nullptr.\n@param default_location the default folder or file to start the dialog at,\n                        may be nullptr. Not all platforms support this option.\n@param allow_many if non-zero, the user will be allowed to select multiple\n                  entries. Not all platforms support this option.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DialogFileCallback\n@sa DialogFileFilter\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
@@ -27524,6 +27363,12 @@
       "name": "SDL3pp_tray.h",
       "doc": "@defgroup CategoryTray Category Tray\n\nSDL offers a way to add items to the \"system tray\" (more correctly called\nthe \"notification area\" on Windows). On platforms that offer this concept,\nan SDL app can add a tray icon, submenus, checkboxes, and clickable\nentries, and register a callback that is fired when the user clicks on\nthese pieces.",
       "entries": {
+        "TrayCB": {
+          "kind": "alias",
+          "name": "TrayCB",
+          "type": "std::function<void(TrayEntryRef)>",
+          "doc": "A callback that is invoked when a tray entry is selected.\n\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param entry the tray entry that was selected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetTrayEntryCallback\n@sa TrayCallback"
+        },
         "Tray": {
           "doc": "An opaque handle representing a toplevel system tray object.\n\n@since This struct is available since SDL 3.2.0.",
           "name": "Tray",
@@ -27592,16 +27437,6 @@
           "name": "TrayCallback",
           "kind": "alias",
           "type": "SDL_TrayCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "entry",
-              "type": "SDL_TrayEntry *"
-            }
-          ],
           "sourceName": "SDL_TrayCallback"
         },
         "CreateTray": {
@@ -27978,17 +27813,13 @@
           "name": "WindowsMessageHook",
           "kind": "alias",
           "type": "SDL_WindowsMessageHook",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "msg",
-              "type": "MSG *"
-            }
-          ],
           "sourceName": "SDL_WindowsMessageHook"
+        },
+        "WindowsMessageHookCB": {
+          "kind": "alias",
+          "name": "WindowsMessageHookCB",
+          "type": "std::function<bool(MSG *msg)>",
+          "doc": "A callback to be used with SetWindowsMessageHook.\n\nThis callback may modify the message, and should return true if the message\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing a message directly from the Windows event loop, this\ncallback should do the minimum required work and return quickly.\n\n@param userdata the app-defined pointer provided to\n                SetWindowsMessageHook.\n@param msg a pointer to a Win32 event structure to process.\n@returns true to let event continue on, false to drop it.\n\n@threadsafety This may only be called (by SDL) from the thread handling the\n              Windows event loop.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetWindowsMessageHook\n@sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP\n@sa WindowsMessageHook"
         },
         "SetWindowsMessageHook": {
           "doc": "Set a callback for every Windows message, run before TranslateMessage().\n\nThe callback may modify the message, and should return true if the message\nshould continue to be processed, or false to prevent further processing.\n\n@param callback the WindowsMessageHook function to call.\n@param userdata a pointer to pass to every iteration of `callback`.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowsMessageHook\n@sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP",
@@ -28052,17 +27883,13 @@
           "name": "X11EventHook",
           "kind": "alias",
           "type": "SDL_X11EventHook",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "xevent",
-              "type": "XEvent *"
-            }
-          ],
           "sourceName": "SDL_X11EventHook"
+        },
+        "X11EventHookCB": {
+          "kind": "alias",
+          "name": "X11EventHookCB",
+          "type": "std::function<bool(XEvent *)>",
+          "doc": "A callback to be used with SetX11EventHook.\n\nThis callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing an event directly from the X11 event loop, this\ncallback should do the minimum required work and return quickly.\n\n@param userdata the app-defined pointer provided to SetX11EventHook.\n@param xevent a pointer to an Xlib XEvent union to process.\n@returns true to let event continue on, false to drop it.\n\n@threadsafety This may only be called (by SDL) from the thread handling the\n              X11 event loop.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetX11EventHook\n@sa X11EventHook"
         },
         "SetX11EventHook": {
           "doc": "Set a callback for every X11 event.\n\nThe callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\n@param callback the X11EventHook function to call.\n@param userdata a pointer to pass to every iteration of `callback`.\n\n@since This function is available since SDL 3.2.0.",
@@ -28130,13 +27957,13 @@
           "name": "iOSAnimationCallback",
           "kind": "alias",
           "type": "SDL_iOSAnimationCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
           "sourceName": "SDL_iOSAnimationCallback"
+        },
+        "iOSAnimationCB": {
+          "kind": "alias",
+          "name": "iOSAnimationCB",
+          "type": "std::function<void()>",
+          "doc": "The prototype for an Apple iOS animation callback.\n\nThis datatype is only useful on Apple iOS.\n\nAfter passing a function pointer of this type to\nSetiOSAnimationCallback, the system will call that function pointer at\na regular interval.\n\n@param userdata what was passed as `callbackParam` to\n                SetiOSAnimationCallback as `callbackParam`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetiOSAnimationCallback\n@sa iOSAnimationCallback"
         },
         "SetiOSAnimationCallback": {
           "doc": "Use this function to set the animation callback on Apple iOS.\n\nThe function prototype for `callback` is:\n\n```c\nvoid callback(void *callbackParam);\n```\n\nWhere its parameter, `callbackParam`, is what was passed as `callbackParam`\nto SetiOSAnimationCallback().\n\nThis function is only available on Apple iOS.\n\nFor more information see:\n\nhttps://wiki.libsdl.org/SDL3/README/ios\n\nNote that if you use the \"main callbacks\" instead of a standard C `main`\nfunction, you don't have to use this API, as SDL will manage this for you.\n\nDetails on main callbacks are here:\n\nhttps://wiki.libsdl.org/SDL3/README/main-functions\n\n@param window the window for which the animation callback should be set.\n@param interval the number of frames after which **callback** will be\n                called.\n@param callback the function to call for every frame.\n@param callbackParam a pointer that is passed to `callback`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetiOSEventPump",
@@ -28245,6 +28072,12 @@
           "type": "Uint32",
           "constexpr": true
         },
+        "RequestAndroidPermissionCB": {
+          "kind": "alias",
+          "name": "RequestAndroidPermissionCB",
+          "type": "std::function<void(const char *permission, bool granted)>",
+          "doc": "Callback that presents a response from a RequestAndroidPermission call.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param permission the Android-specific permission name that was requested.\n@param granted true if permission is granted, false if denied.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa RequestAndroidPermission\n@sa RequestAndroidPermissionCallback"
+        },
         "GetAndroidInternalStoragePath": {
           "doc": "Get the path used for internal storage for this Android application.\n\nThis path is unique to your application and cannot be written to by other\napplications.\n\nYour internal storage path is typically:\n`/data/data/your.app.package/files`.\n\nThis is a C wrapper over `android.content.Context.getFilesDir()`:\n\nhttps://developer.android.com/reference/android/content/Context#getFilesDir()\n\n@returns the path used for internal storage or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAndroidExternalStoragePath\n@sa GetAndroidCachePath",
           "name": "GetAndroidInternalStoragePath",
@@ -28288,20 +28121,6 @@
           "name": "RequestAndroidPermissionCallback",
           "kind": "alias",
           "type": "SDL_RequestAndroidPermissionCallback",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "permission",
-              "type": "const char *"
-            },
-            {
-              "name": "granted",
-              "type": "bool"
-            }
-          ],
           "sourceName": "SDL_RequestAndroidPermissionCallback"
         },
         "RequestAndroidPermission": {
@@ -28539,6 +28358,12 @@
       "name": "SDL3pp_stdinc.h",
       "doc": "@defgroup CategoryStdinc Category Stdinc\n\nSDL provides its own implementation of some of the most important C runtime\nfunctions.\n\nUsing these functions allows an app to have access to common C\nfunctionality without depending on a specific C runtime (or a C runtime at\nall). More importantly, the SDL implementations work identically across\nplatforms, so apps can avoid surprises like snprintf() behaving differently\nbetween Windows and Linux builds, or itoa() only existing on some\nplatforms.\n\nFor many of the most common functions, like memcpy, SDL might just call\nthrough to the usual C runtime behind the scenes, if it makes sense to do\nso (if it's faster and always available/reliable on a given platform),\nreducing library size and offering the most optimized option.\n\nSDL also offers other C-runtime-adjacent functionality in this header that\neither isn't, strictly speaking, part of any C runtime standards, like\ncrc32() and SDL_reinterpret_cast, etc. It also offers a few better\noptions, like strlcpy(), which functions as a safer form of strcpy().",
       "entries": {
+        "CompareCB": {
+          "kind": "alias",
+          "name": "CompareCB",
+          "type": "std::function<int(const void *, const void *)>",
+          "doc": "A callback used with SDL sorting and binary search functions.\n\n@param userdata the `userdata` pointer passed to the sort function.\n@param a a pointer to the first element being compared.\n@param b a pointer to the second element being compared.\n@returns -1 if `a` should be sorted before `b`, 1 if `b` should be sorted\n         before `a`, 0 if they are equal. If two elements are equal, their\n         order in the sorted array is undefined.\n\n@since This callback is available since SDL 3.2.0.\n\n@sa qsort_r\n@sa bsearch_r\n@sa CompareCallback_r"
+        },
         "SDL_NOLONGLONG": {
           "doc": "Don't let SDL use \"long long\" C types.\n\nSDL will define this if it believes the compiler doesn't understand the\n\"long long\" syntax for C datatypes. This can happen on older compilers.\n\nIf _your_ compiler doesn't support \"long long\" but SDL doesn't know it, it\nis safe to define this yourself to build against the SDL headers.\n\nIf this is defined, it will remove access to some C runtime support\nfunctions, like SDL_ulltoa and SDL_strtoll that refer to this datatype\nexplicitly. The rest of SDL will still be available.\n\nSDL's own source code cannot be built with a compiler that has this\ndefined, for various technical reasons.",
           "name": "SDL_NOLONGLONG",
@@ -29086,12 +28911,6 @@
           "name": "malloc_func",
           "kind": "alias",
           "type": "SDL_malloc_func",
-          "parameters": [
-            {
-              "name": "size",
-              "type": "size_t"
-            }
-          ],
           "sourceName": "SDL_malloc_func"
         },
         "calloc_func": {
@@ -29099,16 +28918,6 @@
           "name": "calloc_func",
           "kind": "alias",
           "type": "SDL_calloc_func",
-          "parameters": [
-            {
-              "name": "nmemb",
-              "type": "size_t"
-            },
-            {
-              "name": "size",
-              "type": "size_t"
-            }
-          ],
           "sourceName": "SDL_calloc_func"
         },
         "realloc_func": {
@@ -29116,16 +28925,6 @@
           "name": "realloc_func",
           "kind": "alias",
           "type": "SDL_realloc_func",
-          "parameters": [
-            {
-              "name": "mem",
-              "type": "void *"
-            },
-            {
-              "name": "size",
-              "type": "size_t"
-            }
-          ],
           "sourceName": "SDL_realloc_func"
         },
         "free_func": {
@@ -29133,12 +28932,6 @@
           "name": "free_func",
           "kind": "alias",
           "type": "SDL_free_func",
-          "parameters": [
-            {
-              "name": "mem",
-              "type": "void *"
-            }
-          ],
           "sourceName": "SDL_free_func"
         },
         "GetOriginalMemoryFunctions": {
@@ -29447,16 +29240,6 @@
           "name": "CompareCallback",
           "kind": "alias",
           "type": "SDL_CompareCallback",
-          "parameters": [
-            {
-              "name": "a",
-              "type": "const void *"
-            },
-            {
-              "name": "b",
-              "type": "const void *"
-            }
-          ],
           "sourceName": "SDL_CompareCallback"
         },
         "qsort": {
@@ -29518,20 +29301,6 @@
           "name": "CompareCallback_r",
           "kind": "alias",
           "type": "SDL_CompareCallback_r",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "a",
-              "type": "const void *"
-            },
-            {
-              "name": "b",
-              "type": "const void *"
-            }
-          ],
           "sourceName": "SDL_CompareCallback_r"
         },
         "qsort_r": {
@@ -32180,7 +31949,6 @@
           "name": "FunctionPointer",
           "kind": "alias",
           "type": "SDL_FunctionPointer",
-          "parameters": [],
           "sourceName": "SDL_FunctionPointer"
         }
       }

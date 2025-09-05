@@ -34,23 +34,9 @@ const transform = {
       ignoreEntries: [
         "__debugbreak"
       ],
-      includeAfter: {
-        "SDL_SetAssertionHandler": {
-          kind: "function",
-          name: "SetAssertionHandler",
-          type: "void",
-          parameters: [{ type: "AssertionHandlerCB", name: "handler" }]
-        },
-        "SDL_GetAssertionHandler": {
-          kind: "function",
-          name: "GetAssertionHandler",
-          type: "AssertionHandlerCB",
-          parameters: []
-        },
-      },
       transform: {
         "SDL_ReportAssertion": {
-          "parameters": [
+          parameters: [
             {},
             {},
             {},
@@ -59,7 +45,19 @@ const transform = {
               "name": "line"
             }
           ]
-        }
+        },
+        "SDL_SetAssertionHandler": {},
+        "SetAssertionHandler": {
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "AssertionHandlerCB", name: "handler" }]
+        },
+        "SDL_GetAssertionHandler": {},
+        "GetAssertionHandler": {
+          kind: "function",
+          type: "AssertionHandlerCB",
+          parameters: []
+        },
       }
     },
     "SDL_atomic.h": {

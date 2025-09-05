@@ -234,6 +234,13 @@ add_custom_target(SDL3pp_refresh
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
+# Generate the transform
+add_custom_command(OUTPUT ${TRANSFORM_JSON}
+    COMMAND node scripts/gen-transform ${TRANSFORM_JSON}
+    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/gen-transform.js
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
+
 # Target SDL3pp state
 add_custom_command(OUTPUT ${TARGET_JSON}
     COMMAND node scripts/cppfier transform ${CONFIG_TARGET}
