@@ -1,7 +1,8 @@
 {
   "targets": [
     "SDL3pp_assert.h",
-    "SDL3pp_bits.h"
+    "SDL3pp_bits.h",
+    "SDL3pp_blendmode.h"
   ],
   "api": "scripts/target.json",
   "baseDir": "include/SDL3pp/",
