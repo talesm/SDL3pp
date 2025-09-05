@@ -1,5 +1,5 @@
 diff --git a/include/SDL3pp/SDL3pp_assert.h b/include/SDL3pp/SDL3pp_assert.h
-index fff5c043..a32c4c0f 100644
+index 3bedf8ff..a32c4c0f 100644
 --- a/include/SDL3pp/SDL3pp_assert.h
 +++ b/include/SDL3pp/SDL3pp_assert.h
 @@ -1,10 +1,13 @@
@@ -35,55 +35,18 @@ index fff5c043..a32c4c0f 100644
   * ```
   *
   * @since This macro is available since SDL 3.2.0.
-@@ -143,7 +148,12 @@ namespace SDL {
-  *
-  * @since This macro is available since SDL 3.2.0.
-  */
--#define SDL_disabled_assert(condition)     do { (void) sizeof ((condition)); } while (SDL_NULL_WHILE_LOOP_CONDITION)
-+#define SDL_disabled_assert(condition)                                         \
-+  do {                                                                         \
-+    (void)sizeof((condition));                                                 \
-+  } while (SDL_NULL_WHILE_LOOP_CONDITION)
-+
-+#endif // SDL3PP_DOC
+@@ -148,6 +153,8 @@ namespace SDL {
+     (void)sizeof((condition));                                                 \
+   } while (SDL_NULL_WHILE_LOOP_CONDITION)
  
++#endif // SDL3PP_DOC
++
  /**
   * Possible outcomes from a triggered assertion.
-@@ -160,15 +170,20 @@ namespace SDL {
-  */
- using AssertState = SDL_AssertState;
- 
--constexpr AssertState ASSERTION_RETRY = SDL_ASSERTION_RETRY; ///< Retry the assert immediately.
-+constexpr AssertState ASSERTION_RETRY =
-+  SDL_ASSERTION_RETRY; ///< Retry the assert immediately.
- 
--constexpr AssertState ASSERTION_BREAK = SDL_ASSERTION_BREAK; ///< Make the debugger trigger a breakpoint.
-+constexpr AssertState ASSERTION_BREAK =
-+  SDL_ASSERTION_BREAK; ///< Make the debugger trigger a breakpoint.
- 
--constexpr AssertState ASSERTION_ABORT = SDL_ASSERTION_ABORT; ///< Terminate the program.
-+constexpr AssertState ASSERTION_ABORT =
-+  SDL_ASSERTION_ABORT; ///< Terminate the program.
- 
--constexpr AssertState ASSERTION_IGNORE = SDL_ASSERTION_IGNORE; ///< Ignore the assert.
-+constexpr AssertState ASSERTION_IGNORE =
-+  SDL_ASSERTION_IGNORE; ///< Ignore the assert.
- 
--constexpr AssertState ASSERTION_ALWAYS_IGNORE = SDL_ASSERTION_ALWAYS_IGNORE; ///< Ignore the assert from now on.
-+constexpr AssertState ASSERTION_ALWAYS_IGNORE =
-+  SDL_ASSERTION_ALWAYS_IGNORE; ///< Ignore the assert from now on.
- 
- /**
-  * Information about an assertion failure.
-@@ -196,11 +211,16 @@ using AssertData = SDL_AssertData;
   *
-  * @since This function is available since SDL 3.2.0.
-  */
--inline AssertState ReportAssertion(AssertData * data, StringParam func, StringParam file, int line)
-+inline AssertState ReportAssertion(AssertData* data,
-+                                   StringParam func,
-+                                   StringParam file,
-+                                   int line)
+@@ -209,9 +216,11 @@ inline AssertState ReportAssertion(AssertData* data,
+                                    StringParam file,
+                                    int line)
  {
 -  return SDL_ReportAssertion(, data, func, file, line);
 +  return SDL_ReportAssertion(data, func, file, line);
@@ -94,7 +57,7 @@ index fff5c043..a32c4c0f 100644
  /**
   * The macro used when an assertion triggers a breakpoint.
   *
-@@ -232,7 +252,21 @@ inline AssertState ReportAssertion(AssertData * data, StringParam func, StringPa
+@@ -243,7 +252,21 @@ inline AssertState ReportAssertion(AssertData* data,
   *
   * @since This macro is available since SDL 3.2.0.
   */
@@ -117,17 +80,7 @@ index fff5c043..a32c4c0f 100644
  
  /**
   * An assertion test that is normally performed only in debug builds.
-@@ -264,7 +298,8 @@ inline AssertState ReportAssertion(AssertData * data, StringParam func, StringPa
-  *
-  * @since This macro is available since SDL 3.2.0.
-  */
--#define SDL_assert(condition) if (assertion_enabled && (condition)) { trigger_assertion; }
-+#define SDL_assert(condition)                                                  \
-+  if (assertion_enabled && (condition)) { trigger_assertion; }
- 
- /**
-  * An assertion test that is performed even in release builds.
-@@ -351,8 +386,10 @@ inline AssertState ReportAssertion(AssertData * data, StringParam func, StringPa
+@@ -363,8 +386,10 @@ inline AssertState ReportAssertion(AssertData* data,
   */
  #define SDL_assert_always(condition) SDL_enabled_assert(condition)
  
@@ -139,7 +92,7 @@ index fff5c043..a32c4c0f 100644
   *
   * @param data a pointer to the AssertData structure corresponding to the
   *             current assertion.
-@@ -371,7 +408,6 @@ using AssertionHandler = SDL_AssertionHandler;
+@@ -383,7 +408,6 @@ using AssertionHandler = SDL_AssertionHandler;
   *
   * @param data a pointer to the AssertData structure corresponding to the
   *             current assertion.
@@ -147,22 +100,9 @@ index fff5c043..a32c4c0f 100644
   * @returns an AssertState value indicating how to handle the failure.
   *
   * @threadsafety This callback may be called from any thread that triggers an
-@@ -380,7 +416,8 @@ using AssertionHandler = SDL_AssertionHandler;
-  * @since This datatype is available since SDL 3.2.0.
-  * @sa AssertionHandler
+@@ -420,7 +444,8 @@ using AssertionHandlerCB =
   */
--using AssertionHandlerCB = std::function<SDL_AssertState(const SDL_AssertData *)>;
-+using AssertionHandlerCB =
-+  std::function<SDL_AssertState(const SDL_AssertData*)>;
- 
- /**
-  * Set an application-defined assertion handler.
-@@ -405,9 +442,10 @@ using AssertionHandlerCB = std::function<SDL_AssertState(const SDL_AssertData *)
-  *
-  * @sa GetAssertionHandler
-  */
--inline void SetAssertionHandler(AssertionHandler handler, void * userdata)
-+inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
+ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  {
 -  SDL_SetAssertionHandler(, handler, userdata);
 +  UniqueCallbackWrapper<AssertionHandlerCB>::erase();
@@ -170,7 +110,7 @@ index fff5c043..a32c4c0f 100644
  }
  
  /**
-@@ -421,11 +459,10 @@ inline void SetAssertionHandler(AssertionHandler handler, void * userdata)
+@@ -434,11 +459,10 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
   * This callback may fire from any thread, but it runs wrapped in a mutex, so
   * it will only fire from one thread at a time.
   *
@@ -185,7 +125,7 @@ index fff5c043..a32c4c0f 100644
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -435,9 +472,10 @@ inline void SetAssertionHandler(AssertionHandler handler, void * userdata)
+@@ -448,9 +472,10 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
   */
  inline void SetAssertionHandler(AssertionHandlerCB handler)
  {
@@ -198,7 +138,7 @@ index fff5c043..a32c4c0f 100644
  /**
   * Get the default assertion handler.
   *
-@@ -446,8 +484,7 @@ inline void SetAssertionHandler(AssertionHandlerCB handler)
+@@ -459,8 +484,7 @@ inline void SetAssertionHandler(AssertionHandlerCB handler)
   * is used for assertions when SetAssertionHandler() hasn't been used to
   * provide a different function.
   *
@@ -208,7 +148,7 @@ index fff5c043..a32c4c0f 100644
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -464,9 +501,9 @@ inline AssertionHandler GetDefaultAssertionHandler()
+@@ -477,9 +501,9 @@ inline AssertionHandler GetDefaultAssertionHandler()
   * Get the current assertion handler.
   *
   * This returns the function pointer that is called when an assertion is
@@ -221,19 +161,16 @@ index fff5c043..a32c4c0f 100644
   *
   * The parameter `puserdata` is a pointer to a void*, which will store the
   * "userdata" pointer that was passed to SetAssertionHandler(). This value
-@@ -483,9 +520,9 @@ inline AssertionHandler GetDefaultAssertionHandler()
-  *
-  * @sa SetAssertionHandler
+@@ -498,7 +522,7 @@ inline AssertionHandler GetDefaultAssertionHandler()
   */
--inline AssertionHandler GetAssertionHandler(void ** puserdata)
-+inline AssertionHandler GetAssertionHandler(void** puserdata)
+ inline AssertionHandler GetAssertionHandler(void** puserdata)
  {
 -  return SDL_GetAssertionHandler(, puserdata);
 +  return SDL_GetAssertionHandler(puserdata);
  }
  
  /**
-@@ -493,17 +530,15 @@ inline AssertionHandler GetAssertionHandler(void ** puserdata)
+@@ -506,17 +530,15 @@ inline AssertionHandler GetAssertionHandler(void** puserdata)
   *
   * This returns the function pointer that is called when an assertion is
   * triggered. This is either the value last passed to
@@ -255,7 +192,7 @@ index fff5c043..a32c4c0f 100644
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -513,7 +548,11 @@ inline AssertionHandler GetAssertionHandler(void ** puserdata)
+@@ -526,7 +548,11 @@ inline AssertionHandler GetAssertionHandler(void** puserdata)
   */
  inline AssertionHandlerCB GetAssertionHandler()
  {
@@ -268,7 +205,7 @@ index fff5c043..a32c4c0f 100644
  }
  
  /**
-@@ -524,7 +563,7 @@ inline AssertionHandlerCB GetAssertionHandler()
+@@ -537,7 +563,7 @@ inline AssertionHandlerCB GetAssertionHandler()
   *
   * The proper way to examine this data looks something like this:
   *
@@ -277,38 +214,3 @@ index fff5c043..a32c4c0f 100644
   * const AssertData *item = GetAssertionReport();
   * while (item) {
   *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
-@@ -535,10 +574,9 @@ inline AssertionHandlerCB GetAssertionHandler()
-  * }
-  * ```
-  *
-- * @returns a list of all failed assertions or nullptr if the list is empty. This
-- *          memory should not be modified or freed by the application. This
-- *          pointer remains valid until the next call to Quit() or
-- *          ResetAssertionReport().
-+ * @returns a list of all failed assertions or nullptr if the list is empty.
-+ * This memory should not be modified or freed by the application. This pointer
-+ * remains valid until the next call to Quit() or ResetAssertionReport().
-  *
-  * @threadsafety This function is not thread safe. Other threads calling
-  *               ResetAssertionReport() simultaneously, may render the
-@@ -548,7 +586,7 @@ inline AssertionHandlerCB GetAssertionHandler()
-  *
-  * @sa ResetAssertionReport
-  */
--inline const AssertData * GetAssertionReport()
-+inline const AssertData* GetAssertionReport()
- {
-   return SDL_GetAssertionReport();
- }
-@@ -569,10 +607,7 @@ inline const AssertData * GetAssertionReport()
-  *
-  * @sa GetAssertionReport
-  */
--inline void ResetAssertionReport()
--{
--  SDL_ResetAssertionReport();
--}
-+inline void ResetAssertionReport() { SDL_ResetAssertionReport(); }
- 
- /// @}
- 
