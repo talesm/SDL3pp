@@ -120,6 +120,7 @@ export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>
 export interface ApiEntryTransform extends ApiEntryBase {
   entries?: ApiSubEntryTransformLegacyMap;
   link?: ApiEntryTransform;
+  enum?: true | string | EnumerationDefinition;
 }
 
 export interface ApiResource extends ApiEntryTransform {
@@ -231,6 +232,13 @@ export interface ApiEnumeration extends ApiEntryTransform {
   newPrefix?: string;
   values?: string[];
   includeAfter?: string;
+  valueType?: string;
+}
+
+export interface EnumerationDefinition {
+  prefix?: string;
+  newPrefix?: string;
+  values?: string[];
   valueType?: string;
 }
 

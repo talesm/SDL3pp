@@ -6,11 +6,17 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryBlendmode Category Blendmode
+ * @defgroup CategoryBlendmode Blend modes
  *
  * Blend modes decide how two colors will mix together. There are both
  * standard modes for basic needs and a means to create custom modes,
  * dictating what sort of math to do on what color components.
+ *
+ * @{
+ */
+
+/**
+ * @name BlendModes
  *
  * @{
  */
@@ -26,45 +32,47 @@ namespace SDL {
  *
  * @sa ComposeCustomBlendMode
  */
-using BlendMode = SDL_BlendMode;
+using BlendMode = Uint32;
 
-/**
- * no blending: dstRGBA = srcRGBA
- */
-#define SDL_BLENDMODE_NONE 0x00000000u
+constexpr BlendMode BLENDMODE_NONE =
+  SDL_BLENDMODE_NONE; ///< no blending: dstRGBA = srcRGBA
 
 /**
  * alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA +
  * (dstA * (1-srcA))
  */
-#define SDL_BLENDMODE_BLEND 0x00000001u
+constexpr BlendMode BLENDMODE_BLEND = SDL_BLENDMODE_BLEND;
 
 /**
  * pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))
  */
-#define SDL_BLENDMODE_BLEND_PREMULTIPLIED 0x00000010u
+constexpr BlendMode BLENDMODE_BLEND_PREMULTIPLIED =
+  SDL_BLENDMODE_BLEND_PREMULTIPLIED;
 
 /**
  * additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA
  */
-#define SDL_BLENDMODE_ADD 0x00000002u
+constexpr BlendMode BLENDMODE_ADD = SDL_BLENDMODE_ADD;
 
 /**
  * pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA
  */
-#define SDL_BLENDMODE_ADD_PREMULTIPLIED 0x00000020u
+constexpr BlendMode BLENDMODE_ADD_PREMULTIPLIED =
+  SDL_BLENDMODE_ADD_PREMULTIPLIED;
 
 /**
  * color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA
  */
-#define SDL_BLENDMODE_MOD 0x00000004u
+constexpr BlendMode BLENDMODE_MOD = SDL_BLENDMODE_MOD;
 
 /**
  * color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA
  */
-#define SDL_BLENDMODE_MUL 0x00000008u
+constexpr BlendMode BLENDMODE_MUL = SDL_BLENDMODE_MUL;
 
-#define SDL_BLENDMODE_INVALID 0x7FFFFFFFu
+constexpr BlendMode BLENDMODE_INVALID = SDL_BLENDMODE_INVALID; ///< INVALID
+
+///@}
 
 /**
  * The blend operation used when combining source and destination pixel

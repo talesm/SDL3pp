@@ -731,9 +731,9 @@ const transform = {
       }
     },
     "SDL_blendmode.h": {
-      enumerations: {
+      transform: {
         "SDL_BlendMode": {
-          prefix: "SDL_BLENDMODE_"
+          enum: "SDL_BLENDMODE_",
         }
       }
     },

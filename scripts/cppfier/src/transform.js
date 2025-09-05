@@ -3,7 +3,7 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformLegacyMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, ApiEntryTransformMap } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformLegacyMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, ApiEntryTransformMap, EnumerationDefinition } from "./types"
  */
 
 /**
@@ -1067,41 +1067,51 @@ function expandResources(sourceEntries, file, context) {
 
 /**
  * 
+ * @param {ApiEntryTransform} entry 
+ */
+function getEnumDefinition(entry) {
+  const enumDef = entry.enum;
+  switch (typeof enumDef) {
+    case "string": return { prefix: enumDef };
+    case "boolean": return {};
+    case "object": return enumDef;
+    default: return undefined;
+  }
+}
+
+/**
+ * 
  * @param {ApiEntries}            sourceEntries 
  * @param {ApiFileTransform}      file,
  * @param {ApiContext}            context 
  */
 function expandEnumerations(sourceEntries, file, context) {
-  const enumerations = /* file.enumerations ?? */ {};
   for (const sourceType of Object.values(sourceEntries)) {
-    if (Array.isArray(sourceType) || sourceType.kind !== "enum" || enumerations[sourceType.name]) continue;
-    enumerations[sourceType.name] = {};
+    if (Array.isArray(sourceType) || sourceType.kind !== "enum") continue;
+    const transform = file.transform[sourceType.name];
+    if (!transform) {
+      file.transform[sourceType.name] = { enum: true };
+      continue;
+    }
+    if (!transform.kind && !transform.enum) transform.enum = true;
   }
-  for (const [type, enumTransform] of Object.entries(enumerations)) {
+  for (const [type, transform] of Object.entries(file.transform)) {
     const sourceEntry = sourceEntries[type];
     if (Array.isArray(sourceEntry)) continue;
 
-    combineObject(enumTransform, file.transform[type] ?? {});
-    file.transform[type] = enumTransform;
-    const targetType = enumTransform.name ?? transformName(type, context);
-    const includeAfterKey = enumTransform.includeAfter;
-    if (includeAfterKey) {
-      if (sourceEntry) {
-        context.includeAfter(targetType, file.name, includeAfterKey);
-      } else {
-        enumTransform.name = targetType;
-        context.includeAfter(enumTransform, file.name, includeAfterKey);
-      }
+    const definition = getEnumDefinition(transform);
+    if (!definition) continue;
+
+    const targetType = transform.name ?? transformName(type, context);
+
+    const valueType = definition.valueType ?? (transform.kind === "struct" ? type : targetType);
+    if (!transform.kind && !transform.type && sourceEntry?.kind !== "alias") {
+      transform.kind = "alias";
+      transform.type = type;
     }
 
-    const valueType = enumTransform.valueType ?? (enumTransform.kind === "struct" ? type : targetType);
-    if (!enumTransform.kind && !enumTransform.type && sourceEntry?.kind !== "alias") {
-      enumTransform.kind = "alias";
-      enumTransform.type = type;
-    }
-
-    let values = enumTransform.values ?? Object.keys(sourceEntry.entries ?? {});
-    const prefix = enumTransform.prefix ?? (type.toUpperCase() + "_");
+    let values = definition.values ?? Object.keys(sourceEntry.entries ?? {});
+    const prefix = definition.prefix ?? (type.toUpperCase() + "_");
     /** @type {StringMap} */
     const newNames = {};
     if (!values?.length) {
@@ -1111,7 +1121,7 @@ function expandEnumerations(sourceEntries, file, context) {
           && !e.parameters
           && e.name.startsWith(prefix))
         .map(e => /** @type {ApiEntry}*/(e).name);
-      const newPrefix = enumTransform.newPrefix;
+      const newPrefix = definition.newPrefix;
       if (newPrefix) {
         const oldPrefixLen = prefix.length;
         values.forEach(n => newNames[n] = newPrefix + n.slice(oldPrefixLen));
@@ -1134,20 +1144,12 @@ function expandEnumerations(sourceEntries, file, context) {
       context.addName(value, entry.name);
       if (!sourceEntries[value]) {
         entry.sourceName = value;
-        context.includeAfter(entry, file.name, includeAfterKey || type);
-      } else if (includeAfterKey) {
-        context.includeAfter(entry, file.name, includeAfterKey);
-        file.transform[value] = entry;
+        context.includeAfter(entry, file.name, type);
       } else {
         file.transform[value] = entry;
       }
     }
-
-    delete enumTransform.values;
-    delete enumTransform.prefix;
-    delete enumTransform.valueType;
-    delete enumTransform.includeAfter;
-    delete enumTransform.newPrefix;
+    delete transform.enum;
   }
 }
 

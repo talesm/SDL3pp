@@ -3237,166 +3237,6 @@
             }
           }
         },
-        "LOG_CATEGORY_APPLICATION": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_APPLICATION",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_APPLICATION",
-          "sourceName": "SDL_LOG_CATEGORY_APPLICATION"
-        },
-        "LOG_CATEGORY_ERROR": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_ERROR",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_ERROR",
-          "sourceName": "SDL_LOG_CATEGORY_ERROR"
-        },
-        "LOG_CATEGORY_ASSERT": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_ASSERT",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_ASSERT",
-          "sourceName": "SDL_LOG_CATEGORY_ASSERT"
-        },
-        "LOG_CATEGORY_SYSTEM": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_SYSTEM",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_SYSTEM",
-          "sourceName": "SDL_LOG_CATEGORY_SYSTEM"
-        },
-        "LOG_CATEGORY_AUDIO": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_AUDIO",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_AUDIO",
-          "sourceName": "SDL_LOG_CATEGORY_AUDIO"
-        },
-        "LOG_CATEGORY_VIDEO": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_VIDEO",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_VIDEO",
-          "sourceName": "SDL_LOG_CATEGORY_VIDEO"
-        },
-        "LOG_CATEGORY_RENDER": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_RENDER",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_RENDER",
-          "sourceName": "SDL_LOG_CATEGORY_RENDER"
-        },
-        "LOG_CATEGORY_INPUT": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_INPUT",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_INPUT",
-          "sourceName": "SDL_LOG_CATEGORY_INPUT"
-        },
-        "LOG_CATEGORY_TEST": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_TEST",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_TEST",
-          "sourceName": "SDL_LOG_CATEGORY_TEST"
-        },
-        "LOG_CATEGORY_GPU": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_GPU",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_GPU",
-          "sourceName": "SDL_LOG_CATEGORY_GPU"
-        },
-        "LOG_CATEGORY_RESERVED2": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_RESERVED2",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_RESERVED2",
-          "sourceName": "SDL_LOG_CATEGORY_RESERVED2"
-        },
-        "LOG_CATEGORY_RESERVED3": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_RESERVED3",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_RESERVED3",
-          "sourceName": "SDL_LOG_CATEGORY_RESERVED3"
-        },
-        "LOG_CATEGORY_RESERVED4": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_RESERVED4",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_RESERVED4",
-          "sourceName": "SDL_LOG_CATEGORY_RESERVED4"
-        },
-        "LOG_CATEGORY_RESERVED5": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_RESERVED5",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_RESERVED5",
-          "sourceName": "SDL_LOG_CATEGORY_RESERVED5"
-        },
-        "LOG_CATEGORY_RESERVED6": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_RESERVED6",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_RESERVED6",
-          "sourceName": "SDL_LOG_CATEGORY_RESERVED6"
-        },
-        "LOG_CATEGORY_RESERVED7": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_RESERVED7",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_RESERVED7",
-          "sourceName": "SDL_LOG_CATEGORY_RESERVED7"
-        },
-        "LOG_CATEGORY_RESERVED8": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_RESERVED8",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_RESERVED8",
-          "sourceName": "SDL_LOG_CATEGORY_RESERVED8"
-        },
-        "LOG_CATEGORY_RESERVED9": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_RESERVED9",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_RESERVED9",
-          "sourceName": "SDL_LOG_CATEGORY_RESERVED9"
-        },
-        "LOG_CATEGORY_RESERVED10": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_RESERVED10",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_RESERVED10",
-          "sourceName": "SDL_LOG_CATEGORY_RESERVED10"
-        },
-        "LOG_CATEGORY_CUSTOM": {
-          "kind": "var",
-          "name": "LOG_CATEGORY_CUSTOM",
-          "constexpr": true,
-          "type": "SDL_LogCategory",
-          "doc": "LOG_CATEGORY_CUSTOM",
-          "sourceName": "SDL_LOG_CATEGORY_CUSTOM"
-        },
         "LogPriority": {
           "doc": "The predefined log priorities\n\n@since This enum is available since SDL 3.2.0.",
           "name": "LogPriority",
@@ -3497,7 +3337,7 @@
           }
         },
         "Log": {
-          "doc": "Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.\n\n@param fmt a printf() style message format string.\n@param ... additional parameters matching % tokens in the `fmt` string, if\n           any.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LogCategory.LogCritical\n@sa LogCategory.LogDebug\n@sa LogCategory.LogError\n@sa LogCategory.LogInfo\n@sa LogCategory.LogUnformatted\n@sa LogUnformatted\n@sa LogCategory.LogTrace\n@sa LogCategory.LogVerbose\n@sa LogCategory.LogWarn",
+          "doc": "Log a message with SDL_LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.\n\n@param fmt a printf() style message format string.\n@param ... additional parameters matching % tokens in the `fmt` string, if\n           any.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LogCategory.LogCritical\n@sa LogCategory.LogDebug\n@sa LogCategory.LogError\n@sa LogCategory.LogInfo\n@sa LogCategory.LogUnformatted\n@sa LogUnformatted\n@sa LogCategory.LogTrace\n@sa LogCategory.LogVerbose\n@sa LogCategory.LogWarn",
           "name": "Log",
           "kind": "function",
           "type": "void",
@@ -12203,64 +12043,80 @@
           "doc": "A set of blend modes used in drawing operations.\n\nThese predefined blend modes are supported everywhere.\n\nAdditional values may be obtained from ComposeCustomBlendMode.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa ComposeCustomBlendMode",
           "name": "BlendMode",
           "kind": "alias",
-          "type": "SDL_BlendMode",
+          "type": "Uint32",
           "sourceName": "SDL_BlendMode"
         },
-        "SDL_BLENDMODE_NONE": {
+        "BLENDMODE_NONE": {
           "doc": "no blending: dstRGBA = srcRGBA",
-          "name": "SDL_BLENDMODE_NONE",
-          "kind": "def",
+          "name": "BLENDMODE_NONE",
+          "kind": "var",
           "value": "0x00000000u",
-          "sourceName": "SDL_BLENDMODE_NONE"
+          "sourceName": "SDL_BLENDMODE_NONE",
+          "constexpr": true,
+          "type": "BlendMode"
         },
-        "SDL_BLENDMODE_BLEND": {
+        "BLENDMODE_BLEND": {
           "doc": "alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA))",
-          "name": "SDL_BLENDMODE_BLEND",
-          "kind": "def",
+          "name": "BLENDMODE_BLEND",
+          "kind": "var",
           "value": "0x00000001u",
-          "sourceName": "SDL_BLENDMODE_BLEND"
+          "sourceName": "SDL_BLENDMODE_BLEND",
+          "constexpr": true,
+          "type": "BlendMode"
         },
-        "SDL_BLENDMODE_BLEND_PREMULTIPLIED": {
+        "BLENDMODE_BLEND_PREMULTIPLIED": {
           "doc": "pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))",
-          "name": "SDL_BLENDMODE_BLEND_PREMULTIPLIED",
-          "kind": "def",
+          "name": "BLENDMODE_BLEND_PREMULTIPLIED",
+          "kind": "var",
           "value": "0x00000010u",
-          "sourceName": "SDL_BLENDMODE_BLEND_PREMULTIPLIED"
+          "sourceName": "SDL_BLENDMODE_BLEND_PREMULTIPLIED",
+          "constexpr": true,
+          "type": "BlendMode"
         },
-        "SDL_BLENDMODE_ADD": {
+        "BLENDMODE_ADD": {
           "doc": "additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA",
-          "name": "SDL_BLENDMODE_ADD",
-          "kind": "def",
+          "name": "BLENDMODE_ADD",
+          "kind": "var",
           "value": "0x00000002u",
-          "sourceName": "SDL_BLENDMODE_ADD"
+          "sourceName": "SDL_BLENDMODE_ADD",
+          "constexpr": true,
+          "type": "BlendMode"
         },
-        "SDL_BLENDMODE_ADD_PREMULTIPLIED": {
+        "BLENDMODE_ADD_PREMULTIPLIED": {
           "doc": "pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA",
-          "name": "SDL_BLENDMODE_ADD_PREMULTIPLIED",
-          "kind": "def",
+          "name": "BLENDMODE_ADD_PREMULTIPLIED",
+          "kind": "var",
           "value": "0x00000020u",
-          "sourceName": "SDL_BLENDMODE_ADD_PREMULTIPLIED"
+          "sourceName": "SDL_BLENDMODE_ADD_PREMULTIPLIED",
+          "constexpr": true,
+          "type": "BlendMode"
         },
-        "SDL_BLENDMODE_MOD": {
+        "BLENDMODE_MOD": {
           "doc": "color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA",
-          "name": "SDL_BLENDMODE_MOD",
-          "kind": "def",
+          "name": "BLENDMODE_MOD",
+          "kind": "var",
           "value": "0x00000004u",
-          "sourceName": "SDL_BLENDMODE_MOD"
+          "sourceName": "SDL_BLENDMODE_MOD",
+          "constexpr": true,
+          "type": "BlendMode"
         },
-        "SDL_BLENDMODE_MUL": {
+        "BLENDMODE_MUL": {
           "doc": "color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA",
-          "name": "SDL_BLENDMODE_MUL",
-          "kind": "def",
+          "name": "BLENDMODE_MUL",
+          "kind": "var",
           "value": "0x00000008u",
-          "sourceName": "SDL_BLENDMODE_MUL"
+          "sourceName": "SDL_BLENDMODE_MUL",
+          "constexpr": true,
+          "type": "BlendMode"
         },
-        "SDL_BLENDMODE_INVALID": {
-          "doc": "",
-          "name": "SDL_BLENDMODE_INVALID",
-          "kind": "def",
+        "BLENDMODE_INVALID": {
+          "doc": "INVALID",
+          "name": "BLENDMODE_INVALID",
+          "kind": "var",
           "value": "0x7FFFFFFFu",
-          "sourceName": "SDL_BLENDMODE_INVALID"
+          "sourceName": "SDL_BLENDMODE_INVALID",
+          "constexpr": true,
+          "type": "BlendMode"
         },
         "BlendOperation": {
           "doc": "The blend operation used when combining source and destination pixel\ncomponents.\n\n@since This enum is available since SDL 3.2.0.",
@@ -13500,7 +13356,7 @@
           }
         },
         "SetSurfaceBlendMode": {
-          "doc": "Set the blend mode used for blit operations.\n\nTo copy a surface to another surface (or texture) without blending with the\nexisting data, the blendmode of the SOURCE surface should be set to\n`SDL_BLENDMODE_NONE`.\n\n@param surface the Surface structure to update.\n@param blendMode the BlendMode to use for blit blending.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetSurfaceBlendMode",
+          "doc": "Set the blend mode used for blit operations.\n\nTo copy a surface to another surface (or texture) without blending with the\nexisting data, the blendmode of the SOURCE surface should be set to\n`BLENDMODE_NONE`.\n\n@param surface the Surface structure to update.\n@param blendMode the BlendMode to use for blit blending.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetSurfaceBlendMode",
           "name": "SetSurfaceBlendMode",
           "kind": "function",
           "type": "void",
@@ -13937,7 +13793,7 @@
           }
         },
         "BlitSurface": {
-          "doc": "Performs a fast blit from the source surface to the destination surface\nwith clipping.\n\nIf either `srcrect` or `dstrect` are nullptr, the entire surface (`src` or\n`dst`) is copied while ensuring clipping to `dst->clip_rect`.\n\nThe blit function should not be called on a locked surface.\n\nThe blit semantics for surfaces with and without blending and colorkey are\ndefined as follows:\n\n```\n   RGBA->RGB:\n     Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source alpha-channel and per-surface alpha)\n      SDL_SRCCOLORKEY ignored.\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy RGB.\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      RGB values of the source color key, ignoring alpha in the\n      comparison.\n\n  RGB->RGBA:\n    Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source per-surface alpha)\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy RGB, set destination alpha to source per-surface alpha value.\n    both:\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      source color key.\n\n  RGBA->RGBA:\n    Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source alpha-channel and per-surface alpha)\n      SDL_SRCCOLORKEY ignored.\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy all of RGBA to the destination.\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      RGB values of the source color key, ignoring alpha in the\n      comparison.\n\n  RGB->RGB:\n    Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source per-surface alpha)\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy RGB.\n    both:\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      source color key.\n```\n\n@param src the Surface structure to be copied from.\n@param srcrect the Rect structure representing the rectangle to be\n               copied, or nullptr to copy the entire surface.\n@param dst the Surface structure that is the blit target.\n@param dstrect the Rect structure representing the x and y position in\n               the destination surface, or nullptr for (0,0). The width and\n               height are ignored, and are copied from `srcrect`. If you\n               want a specific width and height, you should use\n               BlitSurfaceScaled().\n@throws Error on failure.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.2.0.\n\n@sa BlitSurfaceScaled",
+          "doc": "Performs a fast blit from the source surface to the destination surface\nwith clipping.\n\nIf either `srcrect` or `dstrect` are nullptr, the entire surface (`src` or\n`dst`) is copied while ensuring clipping to `dst->clip_rect`.\n\nThe blit function should not be called on a locked surface.\n\nThe blit semantics for surfaces with and without blending and colorkey are\ndefined as follows:\n\n```\n   RGBA->RGB:\n     Source surface blend mode set to BLENDMODE_BLEND:\n      alpha-blend (using the source alpha-channel and per-surface alpha)\n      SDL_SRCCOLORKEY ignored.\n    Source surface blend mode set to BLENDMODE_NONE:\n      copy RGB.\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      RGB values of the source color key, ignoring alpha in the\n      comparison.\n\n  RGB->RGBA:\n    Source surface blend mode set to BLENDMODE_BLEND:\n      alpha-blend (using the source per-surface alpha)\n    Source surface blend mode set to BLENDMODE_NONE:\n      copy RGB, set destination alpha to source per-surface alpha value.\n    both:\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      source color key.\n\n  RGBA->RGBA:\n    Source surface blend mode set to BLENDMODE_BLEND:\n      alpha-blend (using the source alpha-channel and per-surface alpha)\n      SDL_SRCCOLORKEY ignored.\n    Source surface blend mode set to BLENDMODE_NONE:\n      copy all of RGBA to the destination.\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      RGB values of the source color key, ignoring alpha in the\n      comparison.\n\n  RGB->RGB:\n    Source surface blend mode set to BLENDMODE_BLEND:\n      alpha-blend (using the source per-surface alpha)\n    Source surface blend mode set to BLENDMODE_NONE:\n      copy RGB.\n    both:\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      source color key.\n```\n\n@param src the Surface structure to be copied from.\n@param srcrect the Rect structure representing the rectangle to be\n               copied, or nullptr to copy the entire surface.\n@param dst the Surface structure that is the blit target.\n@param dstrect the Rect structure representing the x and y position in\n               the destination surface, or nullptr for (0,0). The width and\n               height are ignored, and are copied from `srcrect`. If you\n               want a specific width and height, you should use\n               BlitSurfaceScaled().\n@throws Error on failure.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.2.0.\n\n@sa BlitSurfaceScaled",
           "name": "BlitSurface",
           "kind": "function",
           "type": "void",
