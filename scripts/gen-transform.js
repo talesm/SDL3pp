@@ -3255,9 +3255,8 @@ const transform = {
             invalidState: false
           }
         },
-      },
-      resources: {
         "SDL_Palette": {
+          resource: 'refcount',
           entries: {
             "SDL_CreatePalette": "ctor",
             "GetSize": {

@@ -122,6 +122,7 @@ export interface ApiEntryTransform extends ApiEntryBase {
   link?: ApiEntryTransform;
   enum?: true | string | EnumerationDefinition;
   wrapper?: true | WrapperDefinition;
+  resource?: true | string | ResourceDefinition;
   after?: string;
 }
 
@@ -168,6 +169,47 @@ export interface ApiResource extends ApiEntryTransform {
    * 
    */
   returnType?: "ref" | "unique" | "none";
+
+  /**
+   * If true or object, the object to lock
+   */
+  lock?: ApiLock | boolean;
+
+  /**
+   * The lock function name to be added to the lock class
+   */
+  lockFunction?: string;
+
+  /**
+   * The unlock function name to be added to the lock class
+   */
+  unlockFunction?: string;
+
+  /**
+   * Extra parameters to the base classes.
+   */
+  extraParameters?: string[]
+}
+
+export interface ResourceDefinition {
+
+  /**
+   * The source name of constructors
+   * 
+   * Anything marked as "ctor" is automatically added here
+   */
+  ctors?: string[]
+
+  /**
+   * The shared field name
+   */
+  shared?: string
+
+  /**
+   * Name of free function. By default it uses the first subentry with
+   * containing "Destroy", "Close" or "free" substring, in that order.
+   */
+  free?: string
 
   /**
    * If true or object, the object to lock

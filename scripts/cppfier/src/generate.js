@@ -167,7 +167,10 @@ function generateEntry(entry, prefix) {
  * @param {string}   prefix
  */
 function generateVar(entry, prefix) {
-  return generateDeclPrefix(entry, prefix) + (entry.sourceName ? ` = ${entry.sourceName}` : "") + ';';
+  let value = '';
+  if (entry.hints?.body) value = ` = ${entry.hints?.body}`;
+  else if (entry.sourceName) value = ` = ${entry.sourceName}`;
+  return generateDeclPrefix(entry, prefix) + value + ';';
 }
 
 /**

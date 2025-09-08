@@ -288,7 +288,7 @@ function isType(kind) {
  * @param {ApiContext}        context 
  */
 function expandTypes(sourceEntries, file, context) {
-  // expandResources(sourceEntries, file, context);
+  expandResources(sourceEntries, file, context);
   expandWrappers(sourceEntries, file, context);
   expandEnumerations(sourceEntries, file, context);
   // expandNamespaces(sourceEntries, file, context);
@@ -761,6 +761,21 @@ function expandWrappers(sourceEntries, file, context) {
   }
 }
 
+
+/**
+ * 
+ * @param {ApiEntryTransform} entry 
+ */
+function getResourceDefinition(entry) {
+  const resourceDef = entry.resource;
+  switch (typeof resourceDef) {
+    case "string": return { shared: resourceDef };
+    case "boolean": return resourceDef ? {} : null;
+    case "object": return resourceDef;
+    default: return undefined;
+  }
+}
+
 /**
  * 
  * @param {ApiEntries}        sourceEntries
@@ -772,88 +787,101 @@ function expandResources(sourceEntries, file, context) {
 
   /** @type {ApiEntry[]} */
   const referenceAliases = [];
-  for (const [sourceName, resourceEntry] of Object.entries(file.resources ?? {})) {
-    const uniqueName = resourceEntry.name || transformName(sourceName, context);
-    const refName = uniqueName + "Ref";
-    const unsafeName = uniqueName + "Unsafe";
-    const sharedName = uniqueName + "Shared";
-    const weakName = uniqueName + "Weak";
-    const detachedName = "Detached" + uniqueName;
-    const type = resourceEntry.type ?? sourceName;
+  for (const [sourceName, targetEntry] of Object.entries(file.transform ?? {})) {
+    const resourceEntry = getResourceDefinition(targetEntry);
+    if (!resourceEntry) continue;
+
+    const uniqueName = targetEntry.name || transformName(sourceName, context);
+
+    // const refName = uniqueName + "Ref";
+    // const unsafeName = uniqueName + "Unsafe";
+    // const sharedName = uniqueName + "Shared";
+    // const weakName = uniqueName + "Weak";
+    // const detachedName = "Detached" + uniqueName;
+    const type = targetEntry.type ?? sourceName;
     const sourceEntry =  /** @type {ApiEntry} */(sourceEntries[sourceName]);
     const isStruct = sourceEntry.kind === "struct" || (sourceEntry.kind === "alias" && sourceEntry.type.startsWith('struct '));
-    const pointerType = resourceEntry.pointerType ?? (isStruct ? `${type} *` : type);
+    const pointerType = (isStruct ? `${type} *` : type);
     const constPointerType = `const ${pointerType}`;
     const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
     context.addName(sourceName, uniqueName);
     referenceAliases.push({
-      name: refName, kind: "forward"
-    }, {
       name: uniqueName, kind: "forward"
-    }, {
-      name: sharedName,
-      kind: "alias",
-      type: `ResourceShared<${uniqueName}>`,
-      doc: `Handle to a shared ${title}.\n\n@cat resource\n\n@sa ${refName}\n@sa ${uniqueName}`,
-    }, {
-      name: weakName,
-      kind: "alias",
-      type: `ResourceWeak<${uniqueName}>`,
-      doc: `Weak handle to a shared ${title}.\n\n@cat resource\n\n@sa ${sharedName}\n@sa ${refName}`,
-    },
-    );
-    if (resourceEntry.aliasDetached) {
-      referenceAliases.push({
-        name: detachedName,
-        kind: "alias",
-        type: `DetachedResource<${refName}, ${uniqueName}>`,
-        doc: `A ${title} result that will be owned only if assigned to a ${uniqueName}.\n\nThis is designed as resource types to cases where ownership might not be required.`
-      });
-    }
-    context.addParamType(pointerType, refName);
-    context.addParamType(constPointerType, refName);
+    });
+    // if (targetEntry.aliasDetached) {
+    //   referenceAliases.push({
+    //     name: detachedName,
+    //     kind: "alias",
+    //     type: `DetachedResource<${refName}, ${uniqueName}>`,
+    //     doc: `A ${title} result that will be owned only if assigned to a ${uniqueName}.\n\nThis is designed as resource types to cases where ownership might not be required.`
+    //   });
+    // }
+    context.addParamType(pointerType, pointerType);
+    context.addParamType(constPointerType, constPointerType);
 
-    switch (resourceEntry.returnType) {
-      case "none": break;
-      case "unique":
-        context.addReturnType(pointerType, uniqueName);
-        context.addReturnType(constPointerType, uniqueName);
-        break;
-      default:
-        context.addReturnType(pointerType, refName);
-        context.addReturnType(constPointerType, refName);
-        break;
-    }
-    const refSubEntries = resourceEntry.entries || {};
-    const resourceType = `Resource<${pointerType}>`;
+    context.addReturnType(pointerType, uniqueName);
+    context.addReturnType(constPointerType, uniqueName);
 
     /** @type {Dict<ApiEntryTransform | ApiEntryBase[]>} */
-    const uniqueSubEntries = {};
+    const ctors = {
+      [uniqueName]: [{
+        kind: "function",
+        type: "",
+        constexpr: true,
+        parameters: [],
+        hints: { default: true },
+      }, {
+        kind: "function",
+        type: "",
+        constexpr: true,
+        explicit: true,
+        parameters: [{ name: "resource", type: pointerType }],
+        hints: { init: ["m_resource(resource)"] },
+      }, {
+        kind: "function",
+        type: "",
+        parameters: [{ name: "other", type: `const ${uniqueName} &` }],
+        hints: {
+          delete: !resourceEntry.shared,
+          init: resourceEntry.shared ? ["m_resource(other.m_resource)"] : undefined,
+          body: resourceEntry.shared ? `++m_resource->${resourceEntry.shared};` : undefined,
+        },
+      }, {
+        kind: "function",
+        type: "",
+        constexpr: true,
+        parameters: [{ name: "other", type: `${uniqueName} &&` }],
+        hints: {
+          init: ["m_resource(other.m_resource)"],
+          body: `other.m_resource = ${isStruct ? "nullptr" : "0"};`
+        },
+      }]
+    };
+    const subEntries = targetEntry.entries || {};
 
-    let extraUniqueCtors = refSubEntries[uniqueName];
+    // const uniqueSubEntries = {};
+
+    let extraUniqueCtors = subEntries[uniqueName];
     if (extraUniqueCtors) {
-      delete refSubEntries[uniqueName];
+      delete subEntries[uniqueName];
       if (typeof extraUniqueCtors === "string") {
-        extraUniqueCtors = [{ name: "Create", kind: "function", parameters: [] }];
+        extraUniqueCtors = [{ name: uniqueName, kind: "function", parameters: [] }];
       } else if (!Array.isArray(extraUniqueCtors)) {
         extraUniqueCtors = [extraUniqueCtors];
       }
       for (const entry of extraUniqueCtors) {
         entry.kind = "function";
-        entry.type = uniqueName;
-        entry.static = true;
+        entry.type = "";
         // @ts-ignore
-        insertEntry(uniqueSubEntries, entry, "Create");
+        insertEntry(ctors, entry, uniqueName);
       }
     }
     for (const sourceName of resourceEntry.ctors ?? []) {
-      const entry = refSubEntries[sourceName];
+      const entry = subEntries[sourceName] ?? {};
       if (typeof entry === "string") {
         system.warn(`${sourceName} can not be a custom ctor, only objects containing name property can be accepted.`);
         continue;
       }
-      delete refSubEntries[sourceName];
-      uniqueSubEntries[sourceName] = entry;
       if (Array.isArray(entry)) {
         entry.forEach(e => {
           e.static = true;
@@ -871,29 +899,27 @@ function expandResources(sourceEntries, file, context) {
       }
     }
 
-    // const staticCreateFunctions = !resourceEntry.noStaticCtors;
-    for (const [sourceName, entry] of Object.entries(refSubEntries)) {
+    // const staticCreateFunctions = !targetEntry.noStaticCtors;
+    for (const [sourceName, entry] of Object.entries(subEntries)) {
       if (typeof entry === "string") {
         if (entry === "ctor") {
-          delete refSubEntries[sourceName];
-          uniqueSubEntries[sourceName] = {
+          ctors[sourceName] = {
             kind: "function",
-            type: uniqueName,
-            static: true,
-            name: transformMemberName(sourceName, uniqueName, context),
-            hints: { wrapSelf: true },
+            type: "",
+            name: uniqueName,
             sourceName,
           };
         }
+        delete subEntries[sourceName];
       } else if (!Array.isArray(entry)) {
         if (entry.name === "ctor") {
-          delete refSubEntries[sourceName];
-          uniqueSubEntries[sourceName] = entry;
-          entry.static = true;
-          entry.type = uniqueName;
-          entry.name = transformMemberName(sourceName, uniqueName, context);
+          entry.kind = "function";
+          entry.type = "";
+          entry.name = uniqueName;
           if (!entry.sourceName && sourceEntries[sourceName]) entry.sourceName = sourceName;
-          addHints(entry, { wrapSelf: true });
+          // addHints(entry, { wrapSelf: true });
+          ctors[sourceName] = entry;
+          delete subEntries[sourceName];
         }
       }
     }
@@ -902,196 +928,201 @@ function expandResources(sourceEntries, file, context) {
     if (freeFunction) {
       const sourceName = freeFunction.name;
       freeFunction = transformEntry(freeFunction, context);
-      const freeTransformEntry = /** @type {ApiEntryTransform} */(refSubEntries[sourceName]) ?? {};
+      const freeTransformEntry = /** @type {ApiEntryTransform} */(subEntries[sourceName]) ?? {};
       combineObject(freeFunction, freeTransformEntry);
-      delete refSubEntries[sourceName];
-
-      freeTransformEntry.name = freeTransformEntry.name ?? makeNaturalName(transformName(sourceName, context), uniqueName);
-
-
-      refSubEntries.reset = freeFunction;
-
-      freeFunction.name = "reset";
+      freeFunction.name = freeTransformEntry.name ?? makeNaturalName(transformName(sourceName, context), uniqueName);
       freeFunction.doc = freeFunction.doc ? transformDoc(freeFunction.doc, context) : `frees up ${title}.`;
-      freeFunction.parameters = [{
-        name: "resource",
-        type: pointerType
-      }];
-      freeFunction.static = true;
       if (!freeFunction.hints?.body) {
-        let body = `${sourceName}(resource)`;
+        let body = `${sourceName}(m_resource)`;
         if (freeFunction.hints?.mayFail) {
           body = `CheckError(${body})`;
           if (freeFunction.type === "bool") freeFunction.type = "void";
         }
-        if (freeFunction.type !== "void") body = `return ${body}`;
-        body += ';';
+        body += `;\nm_resource = ${isStruct ? "nullptr" : "0"};`;
+        if (freeFunction.type !== "void") body = `auto r = ${body}\nreturn r;`;
         combineHints(freeFunction, { body });
       }
-      freeTransformEntry.type = freeFunction.type;
-      if (!freeTransformEntry.hints?.body) combineHints(freeTransformEntry, {
-        body: freeFunction.type === "void" ? "reset();" : "return reset();"
-      });
-      uniqueSubEntries[sourceName] = freeTransformEntry;
+      subEntries[sourceName] = freeFunction;
     }
-
-    /** @type {ApiEntryTransform} */
-    const entry = {
-      name: refName,
-      kind: "struct",
-      type: resourceType,
-      doc: transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource\n\n@sa ${uniqueName}`,
-      entries: {
-        "Resource::Resource": "alias",
-        ...refSubEntries,
+    targetEntry.doc = transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource`;
+    targetEntry.entries = {
+      "m_resource": {
+        kind: "var",
+        type: pointerType,
+        hints: { body: "nullptr" },
       },
-      hints: {
-        self: "get()",
-        super: "Resource"
-      }
+      ...ctors,
+      [`~${uniqueName}`]: {
+        kind: "function",
+        type: "",
+        parameters: [],
+        hints: { body: freeFunction ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);` : '' }
+      },
+      'operator=': {
+        kind: "function",
+        type: `${uniqueName} &`,
+        parameters: [{ name: 'other', type: uniqueName }],
+        hints: { body: "std::swap(m_resource, other.m_resource);" },
+      },
+      "get": {
+        kind: "function",
+        type: pointerType,
+        immutable: true,
+        parameters: [],
+        hints: { body: "return m_resource;" },
+      },
+      "release": {
+        kind: "function",
+        type: pointerType,
+        parameters: [],
+        hints: { body: "auto r = m_resource;\nm_resource = nullptr;\nreturn r;" },
+      },
+      ...subEntries,
     };
-    file.transform[sourceName] = entry;
+    addHints(targetEntry, {
+      self: "m_resource",
+      super: "m_resource",
+      private: true,
 
-    const includeAfterKey = resourceEntry.includeAfter ?? sourceName;
+    });
+
     const extraParametersStr = resourceEntry.extraParameters?.length
       ? (", " + resourceEntry.extraParameters.join(", ")) : "";
 
     /** @type {ApiEntryTransform[]} */
     const derivedEntries = [
-      {
-        name: uniqueName,
-        kind: "struct",
-        type: `ResourceUnique<${refName}${extraParametersStr}>`,
-        doc: `Handle to an owned ${title}.\n\n@cat resource\n\n@sa ${refName}`,
-        entries: {
-          "ResourceUnique::ResourceUnique": "alias",
-          ...uniqueSubEntries,
-        },
-        hints: { "self": uniqueName }
-      }, {
-        name: `${uniqueName}::share`,
-        kind: "function",
-        type: sharedName,
-        doc: `Move this ${title} into a ${sharedName}.`,
-        parameters: [],
-        hints: { body: `return ${sharedName}(std::move(*this));` }
-      }, {
-        name: unsafeName,
-        kind: "struct",
-        type: `ResourceUnsafe<${refName}${extraParametersStr}>`,
-        doc: `Unsafe Handle to ${title}.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ${refName}`,
-        entries: {
-          "ResourceUnsafe::ResourceUnsafe": "alias",
-          [unsafeName]: {
-            kind: "function",
-            type: "",
-            explicit: true,
-            constexpr: true,
-            parameters: [{
-              type: `${uniqueName} &&`,
-              name: "other"
-            }],
-            doc: `Constructs ${unsafeName} from ${uniqueName}.`,
-            hints: { init: [`${unsafeName}(other.release())`] },
-          },
-        },
-      },
+      // {
+      //   name: uniqueName,
+      //   kind: "struct",
+      //   type: `ResourceUnique<${refName}${extraParametersStr}>`,
+      //   doc: `Handle to an owned ${title}.\n\n@cat resource\n\n@sa ${refName}`,
+      //   entries: {
+      //     "ResourceUnique::ResourceUnique": "alias",
+      //     ...uniqueSubEntries,
+      //   },
+      //   hints: { "self": uniqueName }
+      // }, {
+      //   name: `${uniqueName}::share`,
+      //   kind: "function",
+      //   type: sharedName,
+      //   doc: `Move this ${title} into a ${sharedName}.`,
+      //   parameters: [],
+      //   hints: { body: `return ${sharedName}(std::move(*this));` }
+      // }, {
+      //   name: unsafeName,
+      //   kind: "struct",
+      //   type: `ResourceUnsafe<${refName}${extraParametersStr}>`,
+      //   doc: `Unsafe Handle to ${title}.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ${refName}`,
+      //   entries: {
+      //     "ResourceUnsafe::ResourceUnsafe": "alias",
+      //     [unsafeName]: {
+      //       kind: "function",
+      //       type: "",
+      //       explicit: true,
+      //       constexpr: true,
+      //       parameters: [{
+      //         type: `${uniqueName} &&`,
+      //         name: "other"
+      //       }],
+      //       doc: `Constructs ${unsafeName} from ${uniqueName}.`,
+      //       hints: { init: [`${unsafeName}(other.release())`] },
+      //     },
+      //   },
+      // },
     ];
-    const derivedNames = new Set([uniqueName, unsafeName, sharedName]);
-    if (resourceEntry.lock) {
-      const lockEntry = resourceEntry.lock !== true ? resourceEntry.lock : {};
-      lockEntry.kind = "struct";
-      if (!lockEntry.name) lockEntry.name = uniqueName + "Lock";
-      if (!lockEntry.type) lockEntry.type = `LockBase<${refName}>`;
-      if (!lockEntry.doc) lockEntry.doc = `Locks a ${uniqueName}.`;
-      combineHints(lockEntry, { super: lockEntry.type });
-      derivedNames.add(lockEntry.name);
-      referenceAliases.push({ kind: "forward", name: lockEntry.name });
-      derivedEntries.push(lockEntry);
-      const lockFunctionName = resourceEntry.lockFunction;
-      const unlockFunctionName = resourceEntry.unlockFunction;
-      const lockFunction = resourceEntry.entries[lockFunctionName];
-      if (typeof lockFunction === "string") {
-        resourceEntry.entries[lockFunctionName] = {
-          type: lockEntry.name,
-        };
-      }
+    /** @type {Set<string>} */
+    const derivedNames = new Set();
+    // if (resourceEntry.lock) {
+    //   const lockEntry = resourceEntry.lock !== true ? resourceEntry.lock : {};
+    //   lockEntry.kind = "struct";
+    //   if (!lockEntry.name) lockEntry.name = uniqueName + "Lock";
+    //   if (!lockEntry.type) lockEntry.type = `LockBase<${refName}>`;
+    //   if (!lockEntry.doc) lockEntry.doc = `Locks a ${uniqueName}.`;
+    //   combineHints(lockEntry, { super: lockEntry.type });
+    //   derivedNames.add(lockEntry.name);
+    //   referenceAliases.push({ kind: "forward", name: lockEntry.name });
+    //   derivedEntries.push(lockEntry);
+    //   const lockFunctionName = resourceEntry.lockFunction;
+    //   const unlockFunctionName = resourceEntry.unlockFunction;
+    //   const lockFunction = targetEntry.entries[lockFunctionName];
+    //   if (typeof lockFunction === "string") {
+    //     targetEntry.entries[lockFunctionName] = {
+    //       type: lockEntry.name,
+    //     };
+    //   }
 
-      lockEntry.entries = {
-        [lockEntry.name]: [{
-          kind: "function",
-          type: "",
-          constexpr: true,
-          proto: true,
-          parameters: [],
-          doc: "Creates an empty lock",
-          hints: { default: true }
-        }, {
-          kind: "function",
-          type: "",
-          constexpr: true,
-          parameters: [{ type: `${lockEntry.name} &&`, name: "other" }],
-          doc: "Move constructor",
-          hints: { init: ["LockBase(other.release())"] }
-        }],
-        [lockFunctionName]: "ctor",
-        [`~${lockEntry.name}`]: {
-          kind: "function",
-          type: "",
-          parameters: [],
-          doc: "Destructor\n\n@sa Unlock()",
-          hints: { body: "Unlock();" }
-        },
-        [unlockFunctionName]: {
-          name: "Unlock",
-          static: false,
-          hints: {
-            body: `CheckError(${unlockFunctionName}(release()));`,
-            removeParamThis: true,
-          },
-        },
-        "reset": {
-          kind: "function",
-          type: "void",
-          parameters: [],
-          doc: "Same as Unlock(), just for uniformity.",
-          hints: { body: "Unlock();" },
-        },
-        ...(lockEntry.entries ?? {})
-      };
-    }
+    //   lockEntry.entries = {
+    //     [lockEntry.name]: [{
+    //       kind: "function",
+    //       type: "",
+    //       constexpr: true,
+    //       proto: true,
+    //       parameters: [],
+    //       doc: "Creates an empty lock",
+    //       hints: { default: true }
+    //     }, {
+    //       kind: "function",
+    //       type: "",
+    //       constexpr: true,
+    //       parameters: [{ type: `${lockEntry.name} &&`, name: "other" }],
+    //       doc: "Move constructor",
+    //       hints: { init: ["LockBase(other.release())"] }
+    //     }],
+    //     [lockFunctionName]: "ctor",
+    //     [`~${lockEntry.name}`]: {
+    //       kind: "function",
+    //       type: "",
+    //       parameters: [],
+    //       doc: "Destructor\n\n@sa Unlock()",
+    //       hints: { body: "Unlock();" }
+    //     },
+    //     [unlockFunctionName]: {
+    //       name: "Unlock",
+    //       static: false,
+    //       hints: {
+    //         body: `CheckError(${unlockFunctionName}(release()));`,
+    //         removeParamThis: true,
+    //       },
+    //     },
+    //     "reset": {
+    //       kind: "function",
+    //       type: "void",
+    //       parameters: [],
+    //       doc: "Same as Unlock(), just for uniformity.",
+    //       hints: { body: "Unlock();" },
+    //     },
+    //     ...(lockEntry.entries ?? {})
+    //   };
+    // }
 
-    if (resourceEntry.includeAfter) {
-      context.includeAfter(refName, file.name, resourceEntry.includeAfter);
-      context.includeAfter(derivedEntries, file.name, resourceEntry.includeAfter);
-    } else {
-      context.prependIncludeAfter(derivedEntries, file.name, includeAfterKey);
-    }
-    let pointToIncludeFunc = includeAfterKey;
-    for (const [subName, subEntry] of Object.entries(refSubEntries)) {
-      if (Array.isArray(subEntry)) {
-        subEntry.forEach(e => {
-          if (derivedNames.has(e.type)) {
-            context.includeAfter(e, file.name, pointToIncludeFunc);
-          }
-        });
-      } else if (typeof subEntry === "string") {
-        if (!context.prefixToRemove.test(subName)) continue;
-        pointToIncludeFunc = subName;
-        if (subEntry === "ctor") continue;
-        const sourceEntry = /** @type {ApiEntry}*/(sourceEntries[subName]);
-        if (sourceEntry.kind === "function" && derivedNames.has(context.returnTypeMap[sourceEntry.type])) {
-          if (subEntry === "immutable") entry.entries[subName] = { proto: true, immutable: true };
-          else entry.entries[subName] = { proto: true };
-        }
-      } else {
-        if (context.prefixToRemove.test(subName)) pointToIncludeFunc = subName;
-        const sourceEntry = /** @type {ApiEntry}*/(sourceEntries[subName]);
-        if (subEntry.kind !== "function" && sourceEntry.kind !== "function") continue;
-        const returnType = subEntry.type ?? context.returnTypeMap[sourceEntry.type];
-        if (derivedNames.has(returnType)) subEntry.proto = true;
-      }
-    }
+    const includeAfterKey = targetEntry.after ?? sourceName;
+    // let pointToIncludeFunc = includeAfterKey;
+    context.includeAfter(derivedEntries, file.name, includeAfterKey);
+    // for (const [subName, subEntry] of Object.entries(refSubEntries)) {
+    //   if (Array.isArray(subEntry)) {
+    //     subEntry.forEach(e => {
+    //       if (derivedNames.has(e.type)) {
+    //         context.includeAfter(e, file.name, pointToIncludeFunc);
+    //       }
+    //     });
+    //   } else if (typeof subEntry === "string") {
+    //     if (!context.prefixToRemove.test(subName)) continue;
+    //     pointToIncludeFunc = subName;
+    //     if (subEntry === "ctor") continue;
+    //     const sourceEntry = /** @type {ApiEntry}*/(sourceEntries[subName]);
+    //     if (sourceEntry.kind === "function" && derivedNames.has(context.returnTypeMap[sourceEntry.type])) {
+    //       if (subEntry === "immutable") entry.entries[subName] = { proto: true, immutable: true };
+    //       else entry.entries[subName] = { proto: true };
+    //     }
+    //   } else {
+    //     if (context.prefixToRemove.test(subName)) pointToIncludeFunc = subName;
+    //     const sourceEntry = /** @type {ApiEntry}*/(sourceEntries[subName]);
+    //     if (subEntry.kind !== "function" && sourceEntry.kind !== "function") continue;
+    //     const returnType = subEntry.type ?? context.returnTypeMap[sourceEntry.type];
+    //     if (derivedNames.has(returnType)) subEntry.proto = true;
+    //   }
+    // }
+    delete targetEntry.resource;
   }
 }
 

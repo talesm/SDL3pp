@@ -722,7 +722,7 @@ public:
    * @sa MapRGBA()
    * @sa Surface.MapColor()
    */
-  inline Uint32 Map(Color color, PaletteRef palette) const;
+  inline Uint32 Map(Color color, SDL_Palette* palette) const;
 
   /**
    * Get RGBA values from a pixel in the specified format.
@@ -748,7 +748,7 @@ public:
    * @sa GetRGBA()
    * @sa Map()
    */
-  inline Color Get(Uint32 pixel, PaletteRef palette) const;
+  inline Color Get(Uint32 pixel, SDL_Palette* palette) const;
 };
 
 constexpr SDL_PixelFormat PIXELFORMAT_UNKNOWN =
@@ -1766,7 +1766,8 @@ struct Color : SDL_Color
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified.
    */
-  Uint32 Map(const PixelFormatDetails& format, PaletteRef palette) const;
+  Uint32 Map(const PixelFormatDetails& format,
+             const SDL_Palette* palette) const;
 
   /**
    * Get RGBA values from a pixel in the specified format.
@@ -1796,7 +1797,7 @@ struct Color : SDL_Color
    */
   static Color Get(Uint32 pixel,
                    const PixelFormatDetails& format,
-                   PaletteRef palette);
+                   SDL_Palette* palette);
 };
 
 /**
@@ -1941,23 +1942,25 @@ struct FColor : SDL_FColor
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa SetPaletteColors
- */
-using Palette = SDL_Palette;
-
-/**
- * A set of indexed colors representing a palette.
- *
- * @since This struct is available since SDL 3.2.0.
+ * @sa Palette.SetColors
  *
  * @cat resource
- *
- * @sa PaletteRef.SetColors
- * @sa Palette
  */
-struct PaletteRef : Resource<SDL_Palette*>
+class Palette
 {
-  using Resource::Resource;
+
+  SDL_Palette* m_resource = nullptr;
+
+  constexpr Palette() = default;
+
+  constexpr explicit Palette(SDL_Palette* resource)
+    : m_resource(resource)
+  {
+  }
+
+  Palette(const Palette& other) { ++m_resource->refcount; }
+
+  constexpr Palette(Palette&& other) { other.m_resource = nullptr; }
 
   /**
    * Create a palette structure with the specified number of color entries.
@@ -1965,7 +1968,7 @@ struct PaletteRef : Resource<SDL_Palette*>
    * The palette entries are initialized to white.
    *
    * @param ncolors represents the number of color entries in the color palette.
-   * @returns a new Palette structure on success.
+   * @post a new Palette structure on success.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -1973,25 +1976,40 @@ struct PaletteRef : Resource<SDL_Palette*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Palette.Destroy
-   * @sa PaletteRef.SetColors
-   * @sa SurfaceRef.SetPalette
+   * @sa Palette.SetColors
+   * @sa SetSurfacePalette
    */
-  static Palette Create(int ncolors)
+  Palette(int ncolors)
+    : m_resource(CheckError(SDL_CreatePalette(ncolors)))
   {
-    return Palette(CheckError(SDL_CreatePalette(ncolors)));
   }
 
-  /// Return the number of colors
-  constexpr int GetSize() const { return get()->ncolors; }
+  ~Palette() { SDL_DestroyPalette(m_resource); }
 
-  /// Get the index color
-  constexpr Color operator[](int index) const { return get()->colors[index]; }
+  Palette& operator=(Palette other) { std::swap(m_resource, other.m_resource); }
+
+  SDL_Palette* get() const { return m_resource; }
+
+  SDL_Palette* release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  constexpr int GetSize() const { return m_resource->ncolors; }
+
+  constexpr Color operator[](int index) const
+  {
+    return m_resource->colors[index];
+  }
 
   /**
    * Set a range of colors in a palette.
    *
    * @param colors an array of Color structures to copy into the palette.
    * @param firstcolor the index of the first palette entry to modify.
+   * @param ncolors the number of entries to modify.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread, as long as
@@ -2001,20 +2019,26 @@ struct PaletteRef : Resource<SDL_Palette*>
    */
   void SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
   {
-    CheckError(
-      SDL_SetPaletteColors(get(), colors.data(), firstcolor, colors.size()));
+    CheckError(SDL_SetPaletteColors(
+      m_resource, colors.data(), firstcolor, colors.size()));
   }
 
   /**
-   * Free a palette created with Palette.Create().
+   * Free a palette created with Palette.Palette().
+   *
    *
    * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Palette.Create
+   * @sa Palette.Palette
    */
-  void Destroy() { reset(); }
+  void Destroy()
+  {
+    SDL_DestroyPalette(m_resource);
+    m_resource = nullptr;
+  }
 };
 
 /**
@@ -2111,28 +2135,6 @@ inline const PixelFormatDetails* GetPixelFormatDetails(PixelFormat format)
 }
 
 /**
- * Create a palette structure with the specified number of color entries.
- *
- * The palette entries are initialized to white.
- *
- * @param ncolors represents the number of color entries in the color palette.
- * @returns a new Palette structure on success.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa DestroyPalette
- * @sa SetPaletteColors
- * @sa SetSurfacePalette
- */
-inline Palette* CreatePalette(int ncolors)
-{
-  return CheckError(SDL_CreatePalette(ncolors));
-}
-
-/**
  * Set a range of colors in a palette.
  *
  * @param palette the Palette structure to modify.
@@ -2146,27 +2148,13 @@ inline Palette* CreatePalette(int ncolors)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetPaletteColors(Palette* palette,
-                             const SDL_Color& colors,
-                             int firstcolor,
-                             int ncolors)
+inline void SetPaletteColors(SDL_Palette* palette,
+                             SpanRef<const SDL_Color> colors,
+                             int firstcolor)
 {
-  CheckError(SDL_SetPaletteColors(palette, colors, firstcolor, ncolors));
+  CheckError(
+    SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
 }
-
-/**
- * Free a palette created with CreatePalette().
- *
- * @param palette the Palette structure to be freed.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified or destroyed in another thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa CreatePalette
- */
-inline void DestroyPalette(Palette* palette) { SDL_DestroyPalette(palette); }
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.
@@ -2205,7 +2193,7 @@ inline void DestroyPalette(Palette* palette) { SDL_DestroyPalette(palette); }
  * @sa MapSurfaceRGB
  */
 inline Uint32 MapRGB(const PixelFormatDetails* format,
-                     const Palette* palette,
+                     const SDL_Palette* palette,
                      Uint8 r,
                      Uint8 g,
                      Uint8 b)
@@ -2251,7 +2239,7 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
  * @sa MapSurfaceRGBA
  */
 inline Uint32 MapRGBA(const PixelFormatDetails* format,
-                      const Palette* palette,
+                      const SDL_Palette* palette,
                       Uint8 r,
                       Uint8 g,
                       Uint8 b,
@@ -2288,7 +2276,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails* format,
  */
 inline void GetRGB(Uint32 pixel,
                    const PixelFormatDetails* format,
-                   const Palette* palette,
+                   const SDL_Palette* palette,
                    Uint8* r,
                    Uint8* g,
                    Uint8* b)
@@ -2328,7 +2316,7 @@ inline void GetRGB(Uint32 pixel,
  */
 inline void GetRGBA(Uint32 pixel,
                     const PixelFormatDetails* format,
-                    const Palette* palette,
+                    const SDL_Palette* palette,
                     Uint8* r,
                     Uint8* g,
                     Uint8* b,
@@ -2340,26 +2328,28 @@ inline void GetRGBA(Uint32 pixel,
 /// @}
 
 inline Uint32 Color::Map(const PixelFormatDetails& format,
-                         PaletteRef palette = nullptr) const
+                         const SDL_Palette* palette = nullptr) const
 {
-  return MapRGBA(format, palette.get(), r, g, b, a);
+  return MapRGBA(&format, palette, r, g, b, a);
 }
 
 inline Color Color::Get(Uint32 pixel,
                         const PixelFormatDetails& format,
-                        PaletteRef palette = nullptr)
+                        SDL_Palette* palette = nullptr)
 {
   Color c;
-  GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
+  GetRGBA(pixel, &format, palette, &c.r, &c.g, &c.b, &c.a);
   return c;
 }
 
-inline Uint32 PixelFormat::Map(Color color, PaletteRef palette = nullptr) const
+inline Uint32 PixelFormat::Map(Color color,
+                               SDL_Palette* palette = nullptr) const
 {
   return color.Map(*GetDetails(), palette);
 }
 
-inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
+inline Color PixelFormat::Get(Uint32 pixel,
+                              SDL_Palette* palette = nullptr) const
 {
   return Color::Get(pixel, *GetDetails(), palette);
 }

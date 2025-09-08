@@ -12693,11 +12693,213 @@
           }
         },
         "Palette": {
-          "doc": "A set of indexed colors representing a palette.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SetPaletteColors",
+          "doc": "A set of indexed colors representing a palette.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Palette.SetColors\n\n@cat resource",
           "name": "Palette",
-          "kind": "alias",
+          "kind": "struct",
           "sourceName": "SDL_Palette",
-          "type": "SDL_Palette"
+          "entries": {
+            "m_resource": {
+              "kind": "var",
+              "type": "SDL_Palette *",
+              "hints": {
+                "body": "nullptr"
+              },
+              "name": "m_resource",
+              "doc": ""
+            },
+            "Palette": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "hints": {
+                  "default": true
+                },
+                "name": "Palette",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "name": "resource",
+                    "type": "SDL_Palette *"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_resource(resource)"
+                  ]
+                },
+                "name": "Palette",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Palette &"
+                  }
+                ],
+                "hints": {
+                  "delete": false,
+                  "init": [
+                    "m_resource(other.m_resource)"
+                  ],
+                  "body": "++m_resource->refcount;"
+                },
+                "name": "Palette",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "Palette &&"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_resource(other.m_resource)"
+                  ],
+                  "body": "other.m_resource = nullptr;"
+                },
+                "name": "Palette",
+                "doc": ""
+              },
+              {
+                "doc": "Create a palette structure with the specified number of color entries.\n\nThe palette entries are initialized to white.\n\n@param ncolors represents the number of color entries in the color palette.\n@post a new Palette structure on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Destroy\n@sa Palette.SetColors\n@sa SetSurfacePalette",
+                "name": "Palette",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "ncolors",
+                    "type": "int"
+                  }
+                ],
+                "sourceName": "SDL_CreatePalette",
+                "hints": {
+                  "mayFail": true
+                }
+              }
+            ],
+            "~Palette": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyPalette(m_resource);"
+              },
+              "name": "~Palette",
+              "doc": ""
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Palette &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Palette"
+                }
+              ],
+              "hints": {
+                "body": "std::swap(m_resource, other.m_resource);"
+              },
+              "name": "operator=",
+              "doc": ""
+            },
+            "get": {
+              "kind": "function",
+              "type": "SDL_Palette *",
+              "immutable": true,
+              "parameters": [],
+              "hints": {
+                "body": "return m_resource;"
+              },
+              "name": "get",
+              "doc": ""
+            },
+            "release": {
+              "kind": "function",
+              "type": "SDL_Palette *",
+              "parameters": [],
+              "hints": {
+                "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
+              },
+              "name": "release",
+              "doc": ""
+            },
+            "GetSize": {
+              "kind": "function",
+              "type": "int",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "name": "GetSize",
+              "doc": ""
+            },
+            "operator[]": {
+              "kind": "function",
+              "type": "Color",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "index"
+                }
+              ],
+              "name": "operator[]",
+              "doc": ""
+            },
+            "SetColors": {
+              "doc": "Set a range of colors in a palette.\n\n@param colors an array of Color structures to copy into the palette.\n@param firstcolor the index of the first palette entry to modify.\n@param ncolors the number of entries to modify.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "SetColors",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "colors",
+                  "type": "SpanRef<const SDL_Color>"
+                },
+                {
+                  "name": "firstcolor",
+                  "type": "int",
+                  "default": "0"
+                }
+              ],
+              "sourceName": "SDL_SetPaletteColors",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "Destroy": {
+              "doc": "Free a palette created with Palette.Palette().\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyPalette",
+              "hints": {
+                "body": "SDL_DestroyPalette(m_resource);\nm_resource = nullptr;"
+              }
+            }
+          },
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true
+          }
         },
         "GetPixelFormatName": {
           "doc": "Get the human readable name of a pixel format.\n\n@param format the pixel format to query.\n@returns the human readable name of the specified pixel format or\n         \"PIXELFORMAT_UNKNOWN\" if the format isn't recognized.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -12791,10 +12993,10 @@
           "sourceName": "SDL_GetPixelFormatDetails"
         },
         "CreatePalette": {
-          "doc": "Create a palette structure with the specified number of color entries.\n\nThe palette entries are initialized to white.\n\n@param ncolors represents the number of color entries in the color palette.\n@returns a new Palette structure on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DestroyPalette\n@sa SetPaletteColors\n@sa SetSurfacePalette",
+          "doc": "Create a palette structure with the specified number of color entries.\n\nThe palette entries are initialized to white.\n\n@param ncolors represents the number of color entries in the color palette.\n@returns a new Palette structure on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Destroy\n@sa Palette.SetColors\n@sa SetSurfacePalette",
           "name": "CreatePalette",
           "kind": "function",
-          "type": "Palette *",
+          "type": "Palette",
           "parameters": [
             {
               "name": "ncolors",
@@ -12814,7 +13016,7 @@
           "parameters": [
             {
               "name": "palette",
-              "type": "Palette *"
+              "type": "SDL_Palette *"
             },
             {
               "name": "colors",
@@ -12835,14 +13037,14 @@
           }
         },
         "DestroyPalette": {
-          "doc": "Free a palette created with CreatePalette().\n\n@param palette the Palette structure to be freed.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CreatePalette",
+          "doc": "Free a palette created with Palette.Palette().\n\n@param palette the Palette structure to be freed.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette",
           "name": "DestroyPalette",
           "kind": "function",
           "type": "void",
           "parameters": [
             {
               "name": "palette",
-              "type": "Palette *"
+              "type": "SDL_Palette *"
             }
           ],
           "sourceName": "SDL_DestroyPalette"
@@ -12859,7 +13061,7 @@
             },
             {
               "name": "palette",
-              "type": "const Palette *"
+              "type": "const SDL_Palette *"
             },
             {
               "name": "r",
@@ -12888,7 +13090,7 @@
             },
             {
               "name": "palette",
-              "type": "const Palette *"
+              "type": "const SDL_Palette *"
             },
             {
               "name": "r",
@@ -12925,7 +13127,7 @@
             },
             {
               "name": "palette",
-              "type": "const Palette *"
+              "type": "const SDL_Palette *"
             },
             {
               "name": "r",
@@ -12958,7 +13160,7 @@
             },
             {
               "name": "palette",
-              "type": "const Palette *"
+              "type": "const SDL_Palette *"
             },
             {
               "name": "r",
@@ -15378,10 +15580,10 @@
           "sourceName": "SDL_GetSurfaceColorspace"
         },
         "CreateSurfacePalette": {
-          "doc": "Create a palette and associate it with a surface.\n\nThis function creates a palette compatible with the provided surface. The\npalette is then returned for you to modify, and the surface will\nautomatically use the new palette in future operations. You do not need to\ndestroy the returned palette, it will be freed when the reference count\nreaches 0, usually when the surface is destroyed.\n\nBitmap surfaces (with format PIXELFORMAT_INDEX1LSB or\nPIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as\nwhite and 1 as black. Other surfaces will get a palette initialized with\nwhite in every entry.\n\nIf this function is called for a surface that already has a palette, a new\npalette will be created to replace it.\n\n@param surface the Surface structure to update.\n@returns a new Palette structure on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetPaletteColors",
+          "doc": "Create a palette and associate it with a surface.\n\nThis function creates a palette compatible with the provided surface. The\npalette is then returned for you to modify, and the surface will\nautomatically use the new palette in future operations. You do not need to\ndestroy the returned palette, it will be freed when the reference count\nreaches 0, usually when the surface is destroyed.\n\nBitmap surfaces (with format PIXELFORMAT_INDEX1LSB or\nPIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as\nwhite and 1 as black. Other surfaces will get a palette initialized with\nwhite in every entry.\n\nIf this function is called for a surface that already has a palette, a new\npalette will be created to replace it.\n\n@param surface the Surface structure to update.\n@returns a new Palette structure on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.SetColors",
           "name": "CreateSurfacePalette",
           "kind": "function",
-          "type": "Palette *",
+          "type": "Palette",
           "parameters": [
             {
               "name": "surface",
@@ -15394,7 +15596,7 @@
           }
         },
         "SetSurfacePalette": {
-          "doc": "Set the palette used by a surface.\n\nA single palette can be shared with many surfaces.\n\n@param surface the Surface structure to update.\n@param palette the Palette structure to use.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CreatePalette\n@sa GetSurfacePalette",
+          "doc": "Set the palette used by a surface.\n\nA single palette can be shared with many surfaces.\n\n@param surface the Surface structure to update.\n@param palette the Palette structure to use.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette\n@sa GetSurfacePalette",
           "name": "SetSurfacePalette",
           "kind": "function",
           "type": "void",
@@ -15405,7 +15607,7 @@
             },
             {
               "name": "palette",
-              "type": "Palette *"
+              "type": "SDL_Palette *"
             }
           ],
           "sourceName": "SDL_SetSurfacePalette",
@@ -15417,7 +15619,7 @@
           "doc": "Get the palette used by a surface.\n\n@param surface the Surface structure to query.\n@returns a pointer to the palette used by the surface, or nullptr if there is\n         no palette used.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetSurfacePalette",
           "name": "GetSurfacePalette",
           "kind": "function",
-          "type": "Palette *",
+          "type": "Palette",
           "parameters": [
             {
               "name": "surface",
@@ -15944,7 +16146,7 @@
             },
             {
               "name": "palette",
-              "type": "Palette *"
+              "type": "SDL_Palette *"
             },
             {
               "name": "colorspace",
