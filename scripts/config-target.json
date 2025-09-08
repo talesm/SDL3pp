@@ -4,6 +4,7 @@
     "SDL3pp_bits.h",
     "SDL3pp_blendmode.h",
     "SDL3pp_error.h",
+    "SDL3pp_pixels.h",
     "SDL3pp_rect.h"
   ],
   "api": "scripts/target.json",

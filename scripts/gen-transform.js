@@ -2931,28 +2931,21 @@ const transform = {
       }
     },
     "SDL_pixels.h": {
-      includeAfter: {
-        "__begin": {
-          name: "Color",
-          kind: "forward"
+      includes: ["SDL3/SDL_version.h"],
+      localIncludes: ["SDL3pp_spanRef.h", "SDL3pp_error.h"],
+      transform: {
+        "Color": { kind: "forward" },
+        "SDL_PixelFormatDetails": {
+          kind: "alias",
+          type: "SDL_PixelFormatDetails",
+          after: "SDL_PackedLayout"
         },
-        "SDL_PackedLayout": {
-          name: "PixelFormatDetails",
-        }
-      },
-      enumerations: {
         "SDL_PixelFormat": {
-          prefix: "SDL_PIXELFORMAT_",
-        },
-        "SDL_Colorspace": {
-          prefix: "SDL_COLORSPACE_",
-        }
-      },
-      wrappers: {
-        "SDL_PixelFormat": {
-          kind: "struct",
-          type: "",
-          attribute: "format",
+          kind: 'struct',
+          enum: "SDL_PIXELFORMAT_",
+          wrapper: {
+            attribute: "format",
+          },
           entries: {
             "SDL_DEFINE_PIXELFORMAT": {
               "kind": "function",
@@ -3124,9 +3117,9 @@ const transform = {
           }
         },
         "SDL_Colorspace": {
-          "kind": "struct",
-          "type": "",
-          "entries": {
+          kind: "struct",
+          enum: "SDL_COLORSPACE_",
+          entries: {
             "SDL_DEFINE_COLORSPACE": {
               "kind": "function",
               "name": "Colorspace",
@@ -3250,14 +3243,18 @@ const transform = {
           }
         },
         "SDL_Color": {
-          "ordered": true,
-          "invalidState": false
+          wrapper: {
+            ordered: true,
+            invalidState: false
+          }
         },
         "SDL_FColor": {
-          "attribute": "color",
-          "ordered": true,
-          "invalidState": false
-        }
+          wrapper: {
+            attribute: "color",
+            ordered: true,
+            invalidState: false
+          }
+        },
       },
       resources: {
         "SDL_Palette": {

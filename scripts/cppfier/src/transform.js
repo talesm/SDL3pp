@@ -301,13 +301,16 @@ function expandTypes(sourceEntries, file, context) {
     if (!isType(sourceEntry.kind)) continue;
     const targetDelta = transformMap[sourceName];
     const name = transformName(sourceName, context);
-    if (!targetDelta) {
+    if (targetDelta) {
+      if (!targetDelta.name) targetDelta.name = name;
+      if (targetDelta.after) context.includeAfter(targetDelta.name, file.name, targetDelta.after);
+    } else {
       transformMap[sourceName] = {
         name,
         kind: "alias",
         type: sourceName
       };
-    } else if (!targetDelta.name) targetDelta.name = name;
+    }
     const targetName = targetDelta?.name ?? name;
     if (targetName == sourceName) {
       context.blacklist.add(sourceName);
@@ -343,7 +346,6 @@ function transformEntries(sourceEntries, file, context) {
       lastSourceName = sourceName;
       continue;
     }
-    if (file.name === 'SDL3pp_assert.h') console.log(transformEntry);
     if (!transformEntry.name) transformEntry.name = sourceName;
     context.includeAfter(transformEntry, file.name, lastSourceName);
   }
@@ -374,8 +376,10 @@ function transformEntries(sourceEntries, file, context) {
           const linkedEntry = deepClone(targetEntry);
           const nextLink = link.link;
           delete link.link;
-          combineObject(linkedEntry, link);
-          insertEntryAndCheck(targetEntries, linkedEntry, context, file);
+          if (link.kind || sourceEntry.kind !== 'def') {
+            combineObject(linkedEntry, link);
+            insertEntryAndCheck(targetEntries, linkedEntry, context, file);
+          }
           link = nextLink;
         }
         delete targetDelta.link;
@@ -1259,18 +1263,6 @@ function transformSubEntries(targetEntry, context, file, targetEntries) {
       continue;
     }
     const nameChange = makeRenameEntry(entry, nameCandidate, type);
-    // const currEntry = context.checkGlossary(key);
-    // if (currEntry) {
-    //   combineObject(currEntry, nameChange);
-    //   insertEntry(entries, currEntry);
-    //   const lastEntry = file.transform[key];
-    //   if (!lastEntry) {
-    //     file.transform[key] = {};
-    //   } else if (context.blacklist.has(key)) {
-    //     delete targetEntries[nameCandidate];
-    //     delete targetEntries[defPrefix + nameCandidate];
-    //   }
-    // } else 
     if (!entries[nameChange.name]) {
       insertEntry(entries, { name: nameChange.name, kind: "def" });
     }
@@ -1287,6 +1279,11 @@ function transformSubEntries(targetEntry, context, file, targetEntries) {
       if (!currLink.name) currLink.name = transformName(key, context);
     } else {
       file.transform[key] = nameChange;
+      const currEntry = file.transform[key];
+      if (currEntry && currEntry.kind === 'def') {
+        combineObject(currEntry, nameChange);
+        continue;
+      }
       if (!context.blacklist.has(key)) {
         file.transform[key].link = { name: transformName(key, context) };
       }

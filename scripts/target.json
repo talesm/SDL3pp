@@ -9773,7 +9773,7 @@
             },
             {
               "name": "color",
-              "type": "const FColor *"
+              "type": "const SDL_FColor &"
             },
             {
               "name": "color_stride",
@@ -10045,6 +10045,11 @@
       "name": "SDL3pp_pixels.h",
       "doc": "@defgroup CategoryPixels Category Pixels\n\nSDL offers facilities for pixel management.\n\nLargely these facilities deal with pixel _format_: what does this set of\nbits represent?\n\nIf you mostly want to think of a pixel as some combination of red, green,\nblue, and maybe alpha intensities, this is all pretty straightforward, and\nin many cases, is enough information to build a perfectly fine game.\n\nHowever, the actual definition of a pixel is more complex than that:\n\nPixels are a representation of a color in a particular color space.\n\nThe first characteristic of a color space is the color type. SDL\nunderstands two different color types, RGB and YCbCr, or in SDL also\nreferred to as YUV.\n\nRGB colors consist of red, green, and blue channels of color that are added\ntogether to represent the colors we see on the screen.\n\nhttps://en.wikipedia.org/wiki/RGB_color_model\n\nYCbCr colors represent colors as a Y luma brightness component and red and\nblue chroma color offsets. This color representation takes advantage of the\nfact that the human eye is more sensitive to brightness than the color in\nan image. The Cb and Cr components are often compressed and have lower\nresolution than the luma component.\n\nhttps://en.wikipedia.org/wiki/YCbCr\n\nWhen the color information in YCbCr is compressed, the Y pixels are left at\nfull resolution and each Cr and Cb pixel represents an average of the color\ninformation in a block of Y pixels. The chroma location determines where in\nthat block of pixels the color information is coming from.\n\nThe color range defines how much of the pixel to use when converting a\npixel into a color on the display. When the full color range is used, the\nentire numeric range of the pixel bits is significant. When narrow color\nrange is used, for historical reasons, the pixel uses only a portion of the\nnumeric range to represent colors.\n\nThe color primaries and white point are a definition of the colors in the\ncolor space relative to the standard XYZ color space.\n\nhttps://en.wikipedia.org/wiki/CIE_1931_color_space\n\nThe transfer characteristic, or opto-electrical transfer function (OETF),\nis the way a color is converted from mathematically linear space into a\nnon-linear output signals.\n\nhttps://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics\n\nThe matrix coefficients are used to convert between YCbCr and RGB colors.",
       "entries": {
+        "Color-forward": {
+          "kind": "forward",
+          "name": "Color",
+          "doc": ""
+        },
         "SDL_ALPHA_OPAQUE": {
           "doc": "A fully opaque 8-bit alpha value.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_ALPHA_TRANSPARENT",
           "name": "SDL_ALPHA_OPAQUE",
@@ -10436,6 +10441,14 @@
           "doc": "1010102",
           "sourceName": "SDL_PACKEDLAYOUT_1010102"
         },
+        "PixelFormatDetails": {
+          "doc": "Details about the format of a pixel.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PixelFormatDetails",
+          "kind": "alias",
+          "sourceName": "SDL_PixelFormatDetails",
+          "type": "SDL_PixelFormatDetails",
+          "after": "SDL_PackedLayout"
+        },
         "SDL_DEFINE_PIXELFOURCC": {
           "doc": "A macro for defining custom FourCC pixel formats.\n\nFor example, defining PIXELFORMAT_YV12 looks like this:\n\n```c\nSDL_DEFINE_PIXELFOURCC('Y', 'V', '1', '2')\n```\n\n@param A the first character of the FourCC code.\n@param B the second character of the FourCC code.\n@param C the third character of the FourCC code.\n@param D the fourth character of the FourCC code.\n@returns a format value in the style of PixelFormat.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_DEFINE_PIXELFOURCC",
@@ -10596,15 +10609,283 @@
         "PixelFormat": {
           "doc": "Pixel format.\n\nSDL's pixel formats have the following naming convention:\n\n- Names with a list of components and a single bit count, such as RGB24 and\n  ABGR32, define a platform-independent encoding into bytes in the order\n  specified. For example, in RGB24 data, each pixel is encoded in 3 bytes\n  (red, green, blue) in that order, and in ABGR32 data, each pixel is\n  encoded in 4 bytes (alpha, blue, green, red) in that order. Use these\n  names if the property of a format that is important to you is the order\n  of the bytes in memory or on disk.\n- Names with a bit count per component, such as ARGB8888 and XRGB1555, are\n  \"packed\" into an appropriately-sized integer in the platform's native\n  endianness. For example, ARGB8888 is a sequence of 32-bit integers; in\n  each integer, the most significant bits are alpha, and the least\n  significant bits are blue. On a little-endian CPU such as x86, the least\n  significant bits of each integer are arranged first in memory, but on a\n  big-endian CPU such as s390x, the most significant bits are arranged\n  first. Use these names if the property of a format that is important to\n  you is the meaning of each bit position within a native-endianness\n  integer.\n- In indexed formats such as INDEX4LSB, each pixel is represented by\n  encoding an index into the palette into the indicated number of bits,\n  with multiple pixels packed into each byte if appropriate. In LSB\n  formats, the first (leftmost) pixel is stored in the least-significant\n  bits of the byte; in MSB formats, it's stored in the most-significant\n  bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly\n  fills one byte.\n\nThe 32-bit byte-array encodings such as RGBA32 are aliases for the\nappropriate 8888 encoding for the current platform. For example, RGBA32 is\nan alias for ABGR8888 on little-endian CPUs like x86, or an alias for\nRGBA8888 on big-endian CPUs.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "PixelFormat",
-          "kind": "alias",
+          "kind": "struct",
           "sourceName": "SDL_PixelFormat",
-          "type": "SDL_PixelFormat"
+          "entries": {
+            "m_format": {
+              "kind": "var",
+              "name": "m_format",
+              "type": "SDL_PixelFormat",
+              "doc": ""
+            },
+            "PixelFormat": {
+              "kind": "function",
+              "name": "PixelFormat",
+              "type": "",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "SDL_PixelFormat",
+                  "name": "format",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Wraps PixelFormat.\n\n@param format the value to be wrapped",
+              "hints": {
+                "init": [
+                  "m_format(format)"
+                ]
+              }
+            },
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const PixelFormat &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
+                }
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "SDL_PixelFormat",
+                    "name": "format"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator==(PixelFormat(format));"
+                }
+              }
+            ],
+            "operator SDL_PixelFormat": {
+              "kind": "function",
+              "name": "operator SDL_PixelFormat",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Unwraps to the underlying PixelFormat.\n\n@returns the underlying PixelFormat.",
+              "hints": {
+                "body": "return m_format;"
+              }
+            },
+            "operator bool": {
+              "kind": "function",
+              "name": "operator bool",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return m_format != 0;"
+              }
+            },
+            "GetType": {
+              "name": "GetType",
+              "kind": "def",
+              "doc": ""
+            },
+            "GetOrder": {
+              "name": "GetOrder",
+              "kind": "def",
+              "doc": ""
+            },
+            "GetLayout": {
+              "name": "GetLayout",
+              "kind": "def",
+              "doc": ""
+            },
+            "GetBitsPerPixel": {
+              "name": "GetBitsPerPixel",
+              "kind": "def",
+              "doc": ""
+            },
+            "GetBytesPerPixel": {
+              "name": "GetBytesPerPixel",
+              "kind": "def",
+              "doc": ""
+            },
+            "IsIndexed": {
+              "name": "IsIndexed",
+              "kind": "def",
+              "doc": ""
+            },
+            "IsPacked": {
+              "name": "IsPacked",
+              "kind": "def",
+              "doc": ""
+            },
+            "IsArray": {
+              "name": "IsArray",
+              "kind": "def",
+              "doc": ""
+            },
+            "Is10Bit": {
+              "name": "Is10Bit",
+              "kind": "def",
+              "doc": ""
+            },
+            "IsFloat": {
+              "name": "IsFloat",
+              "kind": "def",
+              "doc": ""
+            },
+            "IsAlpha": {
+              "name": "IsAlpha",
+              "kind": "def",
+              "doc": ""
+            },
+            "IsFourCC": {
+              "name": "IsFourCC",
+              "kind": "def",
+              "doc": ""
+            },
+            "GetName": {
+              "doc": "Get the human readable name of a pixel format.\n\n@returns the human readable name of the specified pixel format or\n         \"PIXELFORMAT_UNKNOWN\" if the format isn't recognized.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetName",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [],
+              "sourceName": "SDL_GetPixelFormatName",
+              "immutable": true
+            },
+            "GetMasks": {
+              "doc": "Convert one of the enumerated pixel formats to a bpp value and RGBA masks.\n\n@param bpp a bits per pixel value; usually 15, 16, or 32.\n@param Rmask a pointer filled in with the red mask for the format.\n@param Gmask a pointer filled in with the green mask for the format.\n@param Bmask a pointer filled in with the blue mask for the format.\n@param Amask a pointer filled in with the alpha mask for the format.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.ForMasks",
+              "name": "GetMasks",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "bpp",
+                  "type": "int *"
+                },
+                {
+                  "name": "Rmask",
+                  "type": "Uint32 *"
+                },
+                {
+                  "name": "Gmask",
+                  "type": "Uint32 *"
+                },
+                {
+                  "name": "Bmask",
+                  "type": "Uint32 *"
+                },
+                {
+                  "name": "Amask",
+                  "type": "Uint32 *"
+                }
+              ],
+              "sourceName": "SDL_GetMasksForPixelFormat",
+              "hints": {
+                "mayFail": true
+              },
+              "immutable": true
+            },
+            "ForMasks": {
+              "doc": "Convert a bpp value and RGBA masks to an enumerated pixel format.\n\nThis will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't\npossible.\n\n@param bpp a bits per pixel value; usually 15, 16, or 32.\n@param Rmask the red mask for the format.\n@param Gmask the green mask for the format.\n@param Bmask the blue mask for the format.\n@param Amask the alpha mask for the format.\n@returns the PixelFormat value corresponding to the format masks, or\n         PIXELFORMAT_UNKNOWN if there isn't a match.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.GetMasks",
+              "name": "ForMasks",
+              "kind": "function",
+              "type": "PixelFormat",
+              "parameters": [
+                {
+                  "name": "bpp",
+                  "type": "int"
+                },
+                {
+                  "name": "Rmask",
+                  "type": "Uint32"
+                },
+                {
+                  "name": "Gmask",
+                  "type": "Uint32"
+                },
+                {
+                  "name": "Bmask",
+                  "type": "Uint32"
+                },
+                {
+                  "name": "Amask",
+                  "type": "Uint32"
+                }
+              ],
+              "sourceName": "SDL_GetPixelFormatForMasks",
+              "static": true
+            },
+            "GetDetails": {
+              "doc": "Create an PixelFormatDetails structure corresponding to a pixel format.\n\nReturned structure may come from a shared global cache (i.e. not newly\nallocated), and hence should not be modified, especially the palette. Weird\nerrors such as `Blit combination not supported` may occur.\n\n@returns a pointer to a PixelFormatDetails structure or nullptr on\n         failure; call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetDetails",
+              "kind": "function",
+              "type": "const PixelFormatDetails *",
+              "parameters": [],
+              "sourceName": "SDL_GetPixelFormatDetails",
+              "immutable": true
+            },
+            "Map": {
+              "kind": "function",
+              "type": "Uint32",
+              "immutable": true,
+              "proto": true,
+              "parameters": [
+                {
+                  "type": "Color",
+                  "name": "color"
+                },
+                {
+                  "type": "PaletteRef",
+                  "name": "palette"
+                }
+              ],
+              "name": "Map",
+              "doc": ""
+            },
+            "Get": {
+              "kind": "function",
+              "type": "Color",
+              "immutable": true,
+              "proto": true,
+              "parameters": [
+                {
+                  "type": "Uint32",
+                  "name": "pixel"
+                },
+                {
+                  "type": "PaletteRef",
+                  "name": "palette"
+                }
+              ],
+              "name": "Get",
+              "doc": ""
+            }
+          },
+          "hints": {
+            "self": "m_format"
+          },
+          "type": ""
         },
         "PIXELFORMAT_UNKNOWN": {
           "kind": "var",
           "name": "PIXELFORMAT_UNKNOWN",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "UNKNOWN",
           "sourceName": "SDL_PIXELFORMAT_UNKNOWN"
         },
@@ -10612,7 +10893,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX1LSB",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX1LSB",
           "sourceName": "SDL_PIXELFORMAT_INDEX1LSB"
         },
@@ -10620,7 +10901,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX1MSB",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX1MSB",
           "sourceName": "SDL_PIXELFORMAT_INDEX1MSB"
         },
@@ -10628,7 +10909,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX2LSB",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX2LSB",
           "sourceName": "SDL_PIXELFORMAT_INDEX2LSB"
         },
@@ -10636,7 +10917,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX2MSB",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX2MSB",
           "sourceName": "SDL_PIXELFORMAT_INDEX2MSB"
         },
@@ -10644,7 +10925,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX4LSB",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX4LSB",
           "sourceName": "SDL_PIXELFORMAT_INDEX4LSB"
         },
@@ -10652,7 +10933,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX4MSB",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX4MSB",
           "sourceName": "SDL_PIXELFORMAT_INDEX4MSB"
         },
@@ -10660,7 +10941,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX8",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX8",
           "sourceName": "SDL_PIXELFORMAT_INDEX8"
         },
@@ -10668,7 +10949,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGB332",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGB332",
           "sourceName": "SDL_PIXELFORMAT_RGB332"
         },
@@ -10676,7 +10957,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XRGB4444",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XRGB4444",
           "sourceName": "SDL_PIXELFORMAT_XRGB4444"
         },
@@ -10684,7 +10965,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XBGR4444",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XBGR4444",
           "sourceName": "SDL_PIXELFORMAT_XBGR4444"
         },
@@ -10692,7 +10973,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XRGB1555",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XRGB1555",
           "sourceName": "SDL_PIXELFORMAT_XRGB1555"
         },
@@ -10700,7 +10981,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XBGR1555",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XBGR1555",
           "sourceName": "SDL_PIXELFORMAT_XBGR1555"
         },
@@ -10708,7 +10989,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB4444",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB4444",
           "sourceName": "SDL_PIXELFORMAT_ARGB4444"
         },
@@ -10716,7 +10997,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA4444",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA4444",
           "sourceName": "SDL_PIXELFORMAT_RGBA4444"
         },
@@ -10724,7 +11005,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR4444",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR4444",
           "sourceName": "SDL_PIXELFORMAT_ABGR4444"
         },
@@ -10732,7 +11013,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA4444",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA4444",
           "sourceName": "SDL_PIXELFORMAT_BGRA4444"
         },
@@ -10740,7 +11021,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB1555",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB1555",
           "sourceName": "SDL_PIXELFORMAT_ARGB1555"
         },
@@ -10748,7 +11029,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA5551",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA5551",
           "sourceName": "SDL_PIXELFORMAT_RGBA5551"
         },
@@ -10756,7 +11037,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR1555",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR1555",
           "sourceName": "SDL_PIXELFORMAT_ABGR1555"
         },
@@ -10764,7 +11045,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA5551",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA5551",
           "sourceName": "SDL_PIXELFORMAT_BGRA5551"
         },
@@ -10772,7 +11053,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGB565",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGB565",
           "sourceName": "SDL_PIXELFORMAT_RGB565"
         },
@@ -10780,7 +11061,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGR565",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGR565",
           "sourceName": "SDL_PIXELFORMAT_BGR565"
         },
@@ -10788,7 +11069,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGB24",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGB24",
           "sourceName": "SDL_PIXELFORMAT_RGB24"
         },
@@ -10796,7 +11077,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGR24",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGR24",
           "sourceName": "SDL_PIXELFORMAT_BGR24"
         },
@@ -10804,7 +11085,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XRGB8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XRGB8888",
           "sourceName": "SDL_PIXELFORMAT_XRGB8888"
         },
@@ -10812,7 +11093,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBX8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBX8888",
           "sourceName": "SDL_PIXELFORMAT_RGBX8888"
         },
@@ -10820,7 +11101,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XBGR8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XBGR8888",
           "sourceName": "SDL_PIXELFORMAT_XBGR8888"
         },
@@ -10828,7 +11109,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRX8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRX8888",
           "sourceName": "SDL_PIXELFORMAT_BGRX8888"
         },
@@ -10836,7 +11117,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB8888",
           "sourceName": "SDL_PIXELFORMAT_ARGB8888"
         },
@@ -10844,7 +11125,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA8888",
           "sourceName": "SDL_PIXELFORMAT_RGBA8888"
         },
@@ -10852,7 +11133,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR8888",
           "sourceName": "SDL_PIXELFORMAT_ABGR8888"
         },
@@ -10860,7 +11141,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA8888",
           "sourceName": "SDL_PIXELFORMAT_BGRA8888"
         },
@@ -10868,7 +11149,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XRGB2101010",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XRGB2101010",
           "sourceName": "SDL_PIXELFORMAT_XRGB2101010"
         },
@@ -10876,7 +11157,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XBGR2101010",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XBGR2101010",
           "sourceName": "SDL_PIXELFORMAT_XBGR2101010"
         },
@@ -10884,7 +11165,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB2101010",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB2101010",
           "sourceName": "SDL_PIXELFORMAT_ARGB2101010"
         },
@@ -10892,7 +11173,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR2101010",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR2101010",
           "sourceName": "SDL_PIXELFORMAT_ABGR2101010"
         },
@@ -10900,7 +11181,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGB48",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGB48",
           "sourceName": "SDL_PIXELFORMAT_RGB48"
         },
@@ -10908,7 +11189,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGR48",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGR48",
           "sourceName": "SDL_PIXELFORMAT_BGR48"
         },
@@ -10916,7 +11197,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA64",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA64",
           "sourceName": "SDL_PIXELFORMAT_RGBA64"
         },
@@ -10924,7 +11205,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB64",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB64",
           "sourceName": "SDL_PIXELFORMAT_ARGB64"
         },
@@ -10932,7 +11213,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA64",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA64",
           "sourceName": "SDL_PIXELFORMAT_BGRA64"
         },
@@ -10940,7 +11221,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR64",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR64",
           "sourceName": "SDL_PIXELFORMAT_ABGR64"
         },
@@ -10948,7 +11229,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGB48_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGB48_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_RGB48_FLOAT"
         },
@@ -10956,7 +11237,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGR48_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGR48_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_BGR48_FLOAT"
         },
@@ -10964,7 +11245,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA64_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA64_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_RGBA64_FLOAT"
         },
@@ -10972,7 +11253,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB64_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB64_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_ARGB64_FLOAT"
         },
@@ -10980,7 +11261,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA64_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA64_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_BGRA64_FLOAT"
         },
@@ -10988,7 +11269,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR64_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR64_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_ABGR64_FLOAT"
         },
@@ -10996,7 +11277,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGB96_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGB96_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_RGB96_FLOAT"
         },
@@ -11004,7 +11285,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGR96_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGR96_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_BGR96_FLOAT"
         },
@@ -11012,7 +11293,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA128_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA128_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_RGBA128_FLOAT"
         },
@@ -11020,7 +11301,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB128_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB128_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_ARGB128_FLOAT"
         },
@@ -11028,7 +11309,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA128_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA128_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_BGRA128_FLOAT"
         },
@@ -11036,7 +11317,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR128_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR128_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_ABGR128_FLOAT"
         },
@@ -11044,7 +11325,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_YV12",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Planar mode: Y + V + U (3 planes)",
           "sourceName": "SDL_PIXELFORMAT_YV12"
         },
@@ -11052,7 +11333,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_IYUV",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Planar mode: Y + U + V (3 planes)",
           "sourceName": "SDL_PIXELFORMAT_IYUV"
         },
@@ -11060,7 +11341,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_YUY2",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Packed mode: Y0+U0+Y1+V0 (1 plane)",
           "sourceName": "SDL_PIXELFORMAT_YUY2"
         },
@@ -11068,7 +11349,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_UYVY",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Packed mode: U0+Y0+V0+Y1 (1 plane)",
           "sourceName": "SDL_PIXELFORMAT_UYVY"
         },
@@ -11076,7 +11357,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_YVYU",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Packed mode: Y0+V0+Y1+U0 (1 plane)",
           "sourceName": "SDL_PIXELFORMAT_YVYU"
         },
@@ -11084,7 +11365,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_NV12",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Planar mode: Y + U/V interleaved (2 planes)",
           "sourceName": "SDL_PIXELFORMAT_NV12"
         },
@@ -11092,7 +11373,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_NV21",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Planar mode: Y + V/U interleaved (2 planes)",
           "sourceName": "SDL_PIXELFORMAT_NV21"
         },
@@ -11100,7 +11381,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_P010",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Planar mode: Y + U/V interleaved (2 planes)",
           "sourceName": "SDL_PIXELFORMAT_P010"
         },
@@ -11108,7 +11389,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_EXTERNAL_OES",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Android video texture format.",
           "sourceName": "SDL_PIXELFORMAT_EXTERNAL_OES"
         },
@@ -11116,7 +11397,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_MJPG",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Motion JPEG.",
           "sourceName": "SDL_PIXELFORMAT_MJPG"
         },
@@ -11124,7 +11405,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA32",
           "sourceName": "SDL_PIXELFORMAT_RGBA32"
         },
@@ -11132,7 +11413,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB32",
           "sourceName": "SDL_PIXELFORMAT_ARGB32"
         },
@@ -11140,7 +11421,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA32",
           "sourceName": "SDL_PIXELFORMAT_BGRA32"
         },
@@ -11148,7 +11429,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR32",
           "sourceName": "SDL_PIXELFORMAT_ABGR32"
         },
@@ -11156,7 +11437,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBX32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBX32",
           "sourceName": "SDL_PIXELFORMAT_RGBX32"
         },
@@ -11164,7 +11445,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XRGB32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XRGB32",
           "sourceName": "SDL_PIXELFORMAT_XRGB32"
         },
@@ -11172,7 +11453,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRX32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRX32",
           "sourceName": "SDL_PIXELFORMAT_BGRX32"
         },
@@ -11180,7 +11461,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XBGR32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XBGR32",
           "sourceName": "SDL_PIXELFORMAT_XBGR32"
         },
@@ -11818,15 +12099,76 @@
         "Colorspace": {
           "doc": "Colorspace definitions.\n\nSince similar colorspaces may vary in their details (matrix, transfer\nfunction, etc.), this is not an exhaustive list, but rather a\nrepresentative sample of the kinds of colorspaces supported in SDL.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa ColorPrimaries\n@sa ColorRange\n@sa ColorType\n@sa MatrixCoefficients\n@sa TransferCharacteristics",
           "name": "Colorspace",
-          "kind": "alias",
+          "kind": "struct",
           "sourceName": "SDL_Colorspace",
-          "type": "SDL_Colorspace"
+          "entries": {
+            "Colorspace": {
+              "name": "Colorspace",
+              "kind": "def",
+              "doc": ""
+            },
+            "GetType": {
+              "name": "GetType",
+              "kind": "def",
+              "doc": ""
+            },
+            "GetRange": {
+              "name": "GetRange",
+              "kind": "def",
+              "doc": ""
+            },
+            "GetChroma": {
+              "name": "GetChroma",
+              "kind": "def",
+              "doc": ""
+            },
+            "GetPrimaries": {
+              "name": "GetPrimaries",
+              "kind": "def",
+              "doc": ""
+            },
+            "GetTransfer": {
+              "name": "GetTransfer",
+              "kind": "def",
+              "doc": ""
+            },
+            "GetMatrix": {
+              "name": "GetMatrix",
+              "kind": "def",
+              "doc": ""
+            },
+            "IsMatrixBT601": {
+              "name": "IsMatrixBT601",
+              "kind": "def",
+              "doc": ""
+            },
+            "IsMatrixBT709": {
+              "name": "IsMatrixBT709",
+              "kind": "def",
+              "doc": ""
+            },
+            "IsMatrixBT2020_NCL": {
+              "name": "IsMatrixBT2020_NCL",
+              "kind": "def",
+              "doc": ""
+            },
+            "IsLimitedRange": {
+              "name": "IsLimitedRange",
+              "kind": "def",
+              "doc": ""
+            },
+            "IsFullRange": {
+              "name": "IsFullRange",
+              "kind": "def",
+              "doc": ""
+            }
+          }
         },
         "COLORSPACE_UNKNOWN": {
           "kind": "var",
           "name": "COLORSPACE_UNKNOWN",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "UNKNOWN",
           "sourceName": "SDL_COLORSPACE_UNKNOWN"
         },
@@ -11834,7 +12176,7 @@
           "kind": "var",
           "name": "COLORSPACE_SRGB",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.",
           "sourceName": "SDL_COLORSPACE_SRGB"
         },
@@ -11842,7 +12184,7 @@
           "kind": "var",
           "name": "COLORSPACE_SRGB_LINEAR",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "[object Object]",
           "sourceName": "SDL_COLORSPACE_SRGB_LINEAR"
         },
@@ -11850,7 +12192,7 @@
           "kind": "var",
           "name": "COLORSPACE_HDR10",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "[object Object]",
           "sourceName": "SDL_COLORSPACE_HDR10"
         },
@@ -11858,7 +12200,7 @@
           "kind": "var",
           "name": "COLORSPACE_JPEG",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.",
           "sourceName": "SDL_COLORSPACE_JPEG"
         },
@@ -11866,7 +12208,7 @@
           "kind": "var",
           "name": "COLORSPACE_BT601_LIMITED",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.",
           "sourceName": "SDL_COLORSPACE_BT601_LIMITED"
         },
@@ -11874,7 +12216,7 @@
           "kind": "var",
           "name": "COLORSPACE_BT601_FULL",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.",
           "sourceName": "SDL_COLORSPACE_BT601_FULL"
         },
@@ -11882,7 +12224,7 @@
           "kind": "var",
           "name": "COLORSPACE_BT709_LIMITED",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.",
           "sourceName": "SDL_COLORSPACE_BT709_LIMITED"
         },
@@ -11890,7 +12232,7 @@
           "kind": "var",
           "name": "COLORSPACE_BT709_FULL",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.",
           "sourceName": "SDL_COLORSPACE_BT709_FULL"
         },
@@ -11898,7 +12240,7 @@
           "kind": "var",
           "name": "COLORSPACE_BT2020_LIMITED",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020.",
           "sourceName": "SDL_COLORSPACE_BT2020_LIMITED"
         },
@@ -11906,7 +12248,7 @@
           "kind": "var",
           "name": "COLORSPACE_BT2020_FULL",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020.",
           "sourceName": "SDL_COLORSPACE_BT2020_FULL"
         },
@@ -11914,7 +12256,7 @@
           "kind": "var",
           "name": "COLORSPACE_RGB_DEFAULT",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "The default colorspace for RGB surfaces if no colorspace is specified.",
           "sourceName": "SDL_COLORSPACE_RGB_DEFAULT"
         },
@@ -11922,23 +12264,433 @@
           "kind": "var",
           "name": "COLORSPACE_YUV_DEFAULT",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "The default colorspace for YUV surfaces if no colorspace is specified.",
           "sourceName": "SDL_COLORSPACE_YUV_DEFAULT"
         },
         "Color": {
           "doc": "A structure that represents a color as RGBA components.\n\nThe bits of this structure can be directly reinterpreted as an\ninteger-packed color which uses the PIXELFORMAT_RGBA32 format\n(PIXELFORMAT_ABGR8888 on little-endian systems and\nPIXELFORMAT_RGBA8888 on big-endian systems).\n\n@since This struct is available since SDL 3.2.0.",
           "name": "Color",
-          "kind": "alias",
+          "kind": "struct",
           "sourceName": "SDL_Color",
-          "type": "SDL_Color"
+          "hints": {
+            "self": "this",
+            "super": "SDL_Color"
+          },
+          "type": "SDL_Color",
+          "entries": {
+            "Color": [
+              {
+                "kind": "function",
+                "name": "Color",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Color &",
+                    "name": "color",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps Color.\n\n@param color the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_Color(color)"
+                  ]
+                }
+              },
+              {
+                "kind": "function",
+                "name": "Color",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "Uint8",
+                    "name": "r"
+                  },
+                  {
+                    "type": "Uint8",
+                    "name": "g"
+                  },
+                  {
+                    "type": "Uint8",
+                    "name": "b"
+                  },
+                  {
+                    "type": "Uint8",
+                    "name": "a"
+                  }
+                ],
+                "doc": "Constructs from its fields.\n\n@param r the value for r.\n@param g the value for g.\n@param b the value for b.\n@param a the value for a.",
+                "hints": {
+                  "init": [
+                    "SDL_Color{r, g, b, a}"
+                  ]
+                }
+              }
+            ],
+            "operator<=>": [
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Color &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
+                }
+              },
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Color &",
+                    "name": "color"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator<=>(Color(color));"
+                }
+              }
+            ],
+            "GetR": {
+              "kind": "function",
+              "name": "GetR",
+              "type": "Uint8",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the r.\n\n@returns current r value.",
+              "hints": {
+                "body": "return r;"
+              }
+            },
+            "SetR": {
+              "kind": "function",
+              "name": "SetR",
+              "type": "Color &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Uint8",
+                  "name": "newR"
+                }
+              ],
+              "doc": "Set the r.\n\n@param newR the new r value.\n@returns Reference to self.",
+              "hints": {
+                "body": "r = newR;\nreturn *this;"
+              }
+            },
+            "GetG": {
+              "kind": "function",
+              "name": "GetG",
+              "type": "Uint8",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the g.\n\n@returns current g value.",
+              "hints": {
+                "body": "return g;"
+              }
+            },
+            "SetG": {
+              "kind": "function",
+              "name": "SetG",
+              "type": "Color &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Uint8",
+                  "name": "newG"
+                }
+              ],
+              "doc": "Set the g.\n\n@param newG the new g value.\n@returns Reference to self.",
+              "hints": {
+                "body": "g = newG;\nreturn *this;"
+              }
+            },
+            "GetB": {
+              "kind": "function",
+              "name": "GetB",
+              "type": "Uint8",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the b.\n\n@returns current b value.",
+              "hints": {
+                "body": "return b;"
+              }
+            },
+            "SetB": {
+              "kind": "function",
+              "name": "SetB",
+              "type": "Color &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Uint8",
+                  "name": "newB"
+                }
+              ],
+              "doc": "Set the b.\n\n@param newB the new b value.\n@returns Reference to self.",
+              "hints": {
+                "body": "b = newB;\nreturn *this;"
+              }
+            },
+            "GetA": {
+              "kind": "function",
+              "name": "GetA",
+              "type": "Uint8",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the a.\n\n@returns current a value.",
+              "hints": {
+                "body": "return a;"
+              }
+            },
+            "SetA": {
+              "kind": "function",
+              "name": "SetA",
+              "type": "Color &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Uint8",
+                  "name": "newA"
+                }
+              ],
+              "doc": "Set the a.\n\n@param newA the new a value.\n@returns Reference to self.",
+              "hints": {
+                "body": "a = newA;\nreturn *this;"
+              }
+            }
+          }
         },
         "FColor": {
           "doc": "The bits of this structure can be directly reinterpreted as a float-packed\ncolor which uses the PIXELFORMAT_RGBA128_FLOAT format\n\n@since This struct is available since SDL 3.2.0.",
           "name": "FColor",
-          "kind": "alias",
+          "kind": "struct",
           "sourceName": "SDL_FColor",
-          "type": "SDL_FColor"
+          "hints": {
+            "self": "this",
+            "super": "SDL_FColor"
+          },
+          "type": "SDL_FColor",
+          "entries": {
+            "FColor": [
+              {
+                "kind": "function",
+                "name": "FColor",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FColor &",
+                    "name": "color",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps FColor.\n\n@param color the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_FColor(color)"
+                  ]
+                }
+              },
+              {
+                "kind": "function",
+                "name": "FColor",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "float",
+                    "name": "r"
+                  },
+                  {
+                    "type": "float",
+                    "name": "g"
+                  },
+                  {
+                    "type": "float",
+                    "name": "b"
+                  },
+                  {
+                    "type": "float",
+                    "name": "a"
+                  }
+                ],
+                "doc": "Constructs from its fields.\n\n@param r the value for r.\n@param g the value for g.\n@param b the value for b.\n@param a the value for a.",
+                "hints": {
+                  "init": [
+                    "SDL_FColor{r, g, b, a}"
+                  ]
+                }
+              }
+            ],
+            "operator<=>": [
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const FColor &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
+                }
+              },
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FColor &",
+                    "name": "color"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator<=>(FColor(color));"
+                }
+              }
+            ],
+            "GetR": {
+              "kind": "function",
+              "name": "GetR",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the r.\n\n@returns current r value.",
+              "hints": {
+                "body": "return r;"
+              }
+            },
+            "SetR": {
+              "kind": "function",
+              "name": "SetR",
+              "type": "FColor &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newR"
+                }
+              ],
+              "doc": "Set the r.\n\n@param newR the new r value.\n@returns Reference to self.",
+              "hints": {
+                "body": "r = newR;\nreturn *this;"
+              }
+            },
+            "GetG": {
+              "kind": "function",
+              "name": "GetG",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the g.\n\n@returns current g value.",
+              "hints": {
+                "body": "return g;"
+              }
+            },
+            "SetG": {
+              "kind": "function",
+              "name": "SetG",
+              "type": "FColor &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newG"
+                }
+              ],
+              "doc": "Set the g.\n\n@param newG the new g value.\n@returns Reference to self.",
+              "hints": {
+                "body": "g = newG;\nreturn *this;"
+              }
+            },
+            "GetB": {
+              "kind": "function",
+              "name": "GetB",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the b.\n\n@returns current b value.",
+              "hints": {
+                "body": "return b;"
+              }
+            },
+            "SetB": {
+              "kind": "function",
+              "name": "SetB",
+              "type": "FColor &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newB"
+                }
+              ],
+              "doc": "Set the b.\n\n@param newB the new b value.\n@returns Reference to self.",
+              "hints": {
+                "body": "b = newB;\nreturn *this;"
+              }
+            },
+            "GetA": {
+              "kind": "function",
+              "name": "GetA",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the a.\n\n@returns current a value.",
+              "hints": {
+                "body": "return a;"
+              }
+            },
+            "SetA": {
+              "kind": "function",
+              "name": "SetA",
+              "type": "FColor &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newA"
+                }
+              ],
+              "doc": "Set the a.\n\n@param newA the new a value.\n@returns Reference to self.",
+              "hints": {
+                "body": "a = newA;\nreturn *this;"
+              }
+            }
+          }
         },
         "Palette": {
           "doc": "A set of indexed colors representing a palette.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SetPaletteColors",
@@ -11946,13 +12698,6 @@
           "kind": "alias",
           "sourceName": "SDL_Palette",
           "type": "SDL_Palette"
-        },
-        "PixelFormatDetails": {
-          "doc": "Details about the format of a pixel.\n\n@since This struct is available since SDL 3.2.0.",
-          "name": "PixelFormatDetails",
-          "kind": "alias",
-          "sourceName": "SDL_PixelFormatDetails",
-          "type": "SDL_PixelFormatDetails"
         },
         "GetPixelFormatName": {
           "doc": "Get the human readable name of a pixel format.\n\n@param format the pixel format to query.\n@returns the human readable name of the specified pixel format or\n         \"PIXELFORMAT_UNKNOWN\" if the format isn't recognized.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -11968,7 +12713,7 @@
           "sourceName": "SDL_GetPixelFormatName"
         },
         "GetMasksForPixelFormat": {
-          "doc": "Convert one of the enumerated pixel formats to a bpp value and RGBA masks.\n\n@param format one of the PixelFormat values.\n@param bpp a bits per pixel value; usually 15, 16, or 32.\n@param Rmask a pointer filled in with the red mask for the format.\n@param Gmask a pointer filled in with the green mask for the format.\n@param Bmask a pointer filled in with the blue mask for the format.\n@param Amask a pointer filled in with the alpha mask for the format.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPixelFormatForMasks",
+          "doc": "Convert one of the enumerated pixel formats to a bpp value and RGBA masks.\n\n@param format one of the PixelFormat values.\n@param bpp a bits per pixel value; usually 15, 16, or 32.\n@param Rmask a pointer filled in with the red mask for the format.\n@param Gmask a pointer filled in with the green mask for the format.\n@param Bmask a pointer filled in with the blue mask for the format.\n@param Amask a pointer filled in with the alpha mask for the format.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.ForMasks",
           "name": "GetMasksForPixelFormat",
           "kind": "function",
           "type": "void",
@@ -12004,7 +12749,7 @@
           }
         },
         "GetPixelFormatForMasks": {
-          "doc": "Convert a bpp value and RGBA masks to an enumerated pixel format.\n\nThis will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't\npossible.\n\n@param bpp a bits per pixel value; usually 15, 16, or 32.\n@param Rmask the red mask for the format.\n@param Gmask the green mask for the format.\n@param Bmask the blue mask for the format.\n@param Amask the alpha mask for the format.\n@returns the PixelFormat value corresponding to the format masks, or\n         PIXELFORMAT_UNKNOWN if there isn't a match.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetMasksForPixelFormat",
+          "doc": "Convert a bpp value and RGBA masks to an enumerated pixel format.\n\nThis will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't\npossible.\n\n@param bpp a bits per pixel value; usually 15, 16, or 32.\n@param Rmask the red mask for the format.\n@param Gmask the green mask for the format.\n@param Bmask the blue mask for the format.\n@param Amask the alpha mask for the format.\n@returns the PixelFormat value corresponding to the format masks, or\n         PIXELFORMAT_UNKNOWN if there isn't a match.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.GetMasks",
           "name": "GetPixelFormatForMasks",
           "kind": "function",
           "type": "PixelFormat",
@@ -12073,7 +12818,7 @@
             },
             {
               "name": "colors",
-              "type": "const Color *"
+              "type": "const SDL_Color &"
             },
             {
               "name": "firstcolor",
@@ -12103,7 +12848,7 @@
           "sourceName": "SDL_DestroyPalette"
         },
         "MapRGB": {
-          "doc": "Map an RGB triple to an opaque pixel value for a given pixel format.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the specified pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPixelFormatDetails\n@sa GetRGB\n@sa MapRGBA\n@sa MapSurfaceRGB",
+          "doc": "Map an RGB triple to an opaque pixel value for a given pixel format.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the specified pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.GetDetails\n@sa GetRGB\n@sa MapRGBA\n@sa MapSurfaceRGB",
           "name": "MapRGB",
           "kind": "function",
           "type": "Uint32",
@@ -12132,7 +12877,7 @@
           "sourceName": "SDL_MapRGB"
         },
         "MapRGBA": {
-          "doc": "Map an RGBA quadruple to a pixel value for a given pixel format.\n\nThis function maps the RGBA color value to the specified pixel format and\nreturns the pixel value best approximating the given RGBA color value for\nthe given pixel format.\n\nIf the specified pixel format has no alpha component the alpha value will\nbe ignored (as it will be in formats with a palette).\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@param a the alpha component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPixelFormatDetails\n@sa GetRGBA\n@sa MapRGB\n@sa MapSurfaceRGBA",
+          "doc": "Map an RGBA quadruple to a pixel value for a given pixel format.\n\nThis function maps the RGBA color value to the specified pixel format and\nreturns the pixel value best approximating the given RGBA color value for\nthe given pixel format.\n\nIf the specified pixel format has no alpha component the alpha value will\nbe ignored (as it will be in formats with a palette).\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@param a the alpha component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.GetDetails\n@sa GetRGBA\n@sa MapRGB\n@sa MapSurfaceRGBA",
           "name": "MapRGBA",
           "kind": "function",
           "type": "Uint32",
@@ -12165,7 +12910,7 @@
           "sourceName": "SDL_MapRGBA"
         },
         "GetRGB": {
-          "doc": "Get RGB values from a pixel in the specified format.\n\nThis function uses the entire 8-bit [0..255] range when converting color\ncomponents from pixel formats with less than 8-bits per RGB component\n(e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,\n0xff, 0xff] not [0xf8, 0xfc, 0xf8]).\n\n@param pixel a pixel value.\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r a pointer filled in with the red component, may be nullptr.\n@param g a pointer filled in with the green component, may be nullptr.\n@param b a pointer filled in with the blue component, may be nullptr.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPixelFormatDetails\n@sa GetRGBA\n@sa MapRGB\n@sa MapRGBA",
+          "doc": "Get RGB values from a pixel in the specified format.\n\nThis function uses the entire 8-bit [0..255] range when converting color\ncomponents from pixel formats with less than 8-bits per RGB component\n(e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,\n0xff, 0xff] not [0xf8, 0xfc, 0xf8]).\n\n@param pixel a pixel value.\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r a pointer filled in with the red component, may be nullptr.\n@param g a pointer filled in with the green component, may be nullptr.\n@param b a pointer filled in with the blue component, may be nullptr.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.GetDetails\n@sa GetRGBA\n@sa MapRGB\n@sa MapRGBA",
           "name": "GetRGB",
           "kind": "function",
           "type": "void",
@@ -12198,7 +12943,7 @@
           "sourceName": "SDL_GetRGB"
         },
         "GetRGBA": {
-          "doc": "Get RGBA values from a pixel in the specified format.\n\nThis function uses the entire 8-bit [0..255] range when converting color\ncomponents from pixel formats with less than 8-bits per RGB component\n(e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,\n0xff, 0xff] not [0xf8, 0xfc, 0xf8]).\n\nIf the surface has no alpha component, the alpha will be returned as 0xff\n(100% opaque).\n\n@param pixel a pixel value.\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r a pointer filled in with the red component, may be nullptr.\n@param g a pointer filled in with the green component, may be nullptr.\n@param b a pointer filled in with the blue component, may be nullptr.\n@param a a pointer filled in with the alpha component, may be nullptr.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPixelFormatDetails\n@sa GetRGB\n@sa MapRGB\n@sa MapRGBA",
+          "doc": "Get RGBA values from a pixel in the specified format.\n\nThis function uses the entire 8-bit [0..255] range when converting color\ncomponents from pixel formats with less than 8-bits per RGB component\n(e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,\n0xff, 0xff] not [0xf8, 0xfc, 0xf8]).\n\nIf the surface has no alpha component, the alpha will be returned as 0xff\n(100% opaque).\n\n@param pixel a pixel value.\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r a pointer filled in with the red component, may be nullptr.\n@param g a pointer filled in with the green component, may be nullptr.\n@param b a pointer filled in with the blue component, may be nullptr.\n@param a a pointer filled in with the alpha component, may be nullptr.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.GetDetails\n@sa GetRGB\n@sa MapRGB\n@sa MapRGBA",
           "name": "GetRGBA",
           "kind": "function",
           "type": "void",
@@ -12236,7 +12981,12 @@
         }
       },
       "includes": [
+        "SDL3/SDL_version.h",
         "SDL3/SDL_pixels.h"
+      ],
+      "localIncludes": [
+        "SDL3pp_spanRef.h",
+        "SDL3pp_error.h"
       ]
     },
     "SDL3pp_blendmode.h": {
@@ -25184,26 +25934,6 @@
           ],
           "sourceName": "SDL_AddAtomicInt"
         },
-        "AtomicIncRef": {
-          "doc": "Increment an atomic variable used as a reference count.\n\n***Note: If you don't know what this macro is for, you shouldn't use it!***\n\n@param a a pointer to an AtomicInt to increment.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa AtomicInt.AtomicDecRef",
-          "name": "AtomicIncRef",
-          "kind": "def",
-          "parameters": [
-            "a"
-          ],
-          "value": "SDL_AddAtomicInt(a, 1)",
-          "sourceName": "SDL_AtomicIncRef"
-        },
-        "AtomicDecRef": {
-          "doc": "Decrement an atomic variable used as a reference count.\n\n***Note: If you don't know what this macro is for, you shouldn't use it!***\n\n@param a a pointer to an AtomicInt to decrement.\n@returns true if the variable reached zero after decrementing, false\n         otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa AtomicInt.AtomicIncRef",
-          "name": "AtomicDecRef",
-          "kind": "def",
-          "parameters": [
-            "a"
-          ],
-          "value": "(SDL_AddAtomicInt(a, -1) == 1)",
-          "sourceName": "SDL_AtomicDecRef"
-        },
         "AtomicU32": {
           "doc": "A type representing an atomic unsigned 32-bit value.\n\nThis can be used to manage a value that is synchronized across multiple\nCPUs without a race condition; when an app sets a value with\nAtomicU32.Set all other threads, regardless of the CPU it is running on,\nwill see that value when retrieved with AtomicU32.Get, regardless of CPU\ncaches, etc.\n\nThis is also useful for atomic compare-and-swap operations: a thread can\nchange the value as long as its current value matches expectations. When\ndone in a loop, one can guarantee data consistency across threads without a\nlock (but the usual warnings apply: if you don't know what you're doing, or\nyou don't do it carefully, you can confidently cause any number of\ndisasters with this, so in most cases, you _should_ use a mutex instead of\nthis!).\n\nThis is a struct so people don't accidentally use numeric operations on it\ndirectly. You have to use SDL atomic functions.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa AtomicU32.CompareAndSwap\n@sa AtomicU32.Get\n@sa AtomicU32.Set",
           "name": "AtomicU32",
@@ -36290,7 +37020,7 @@
             },
             {
               "name": "fg",
-              "type": "Color"
+              "type": "SDL_Color"
             }
           ],
           "sourceName": "TTF_RenderText_Solid"
@@ -36315,7 +37045,7 @@
             },
             {
               "name": "fg",
-              "type": "Color"
+              "type": "SDL_Color"
             },
             {
               "name": "wrapLength",
@@ -36340,7 +37070,7 @@
             },
             {
               "name": "fg",
-              "type": "Color"
+              "type": "SDL_Color"
             }
           ],
           "sourceName": "TTF_RenderGlyph_Solid"
@@ -36365,11 +37095,11 @@
             },
             {
               "name": "fg",
-              "type": "Color"
+              "type": "SDL_Color"
             },
             {
               "name": "bg",
-              "type": "Color"
+              "type": "SDL_Color"
             }
           ],
           "sourceName": "TTF_RenderText_Shaded"
@@ -36394,11 +37124,11 @@
             },
             {
               "name": "fg",
-              "type": "Color"
+              "type": "SDL_Color"
             },
             {
               "name": "bg",
-              "type": "Color"
+              "type": "SDL_Color"
             },
             {
               "name": "wrap_width",
@@ -36423,11 +37153,11 @@
             },
             {
               "name": "fg",
-              "type": "Color"
+              "type": "SDL_Color"
             },
             {
               "name": "bg",
-              "type": "Color"
+              "type": "SDL_Color"
             }
           ],
           "sourceName": "TTF_RenderGlyph_Shaded"
@@ -36452,7 +37182,7 @@
             },
             {
               "name": "fg",
-              "type": "Color"
+              "type": "SDL_Color"
             }
           ],
           "sourceName": "TTF_RenderText_Blended"
@@ -36477,7 +37207,7 @@
             },
             {
               "name": "fg",
-              "type": "Color"
+              "type": "SDL_Color"
             },
             {
               "name": "wrap_width",
@@ -36502,7 +37232,7 @@
             },
             {
               "name": "fg",
-              "type": "Color"
+              "type": "SDL_Color"
             }
           ],
           "sourceName": "TTF_RenderGlyph_Blended"
@@ -36527,11 +37257,11 @@
             },
             {
               "name": "fg",
-              "type": "Color"
+              "type": "SDL_Color"
             },
             {
               "name": "bg",
-              "type": "Color"
+              "type": "SDL_Color"
             }
           ],
           "sourceName": "TTF_RenderText_LCD"
@@ -36556,11 +37286,11 @@
             },
             {
               "name": "fg",
-              "type": "Color"
+              "type": "SDL_Color"
             },
             {
               "name": "bg",
-              "type": "Color"
+              "type": "SDL_Color"
             },
             {
               "name": "wrap_width",
@@ -36585,11 +37315,11 @@
             },
             {
               "name": "fg",
-              "type": "Color"
+              "type": "SDL_Color"
             },
             {
               "name": "bg",
-              "type": "Color"
+              "type": "SDL_Color"
             }
           ],
           "sourceName": "TTF_RenderGlyph_LCD"

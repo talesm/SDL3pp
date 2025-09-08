@@ -122,6 +122,7 @@ export interface ApiEntryTransform extends ApiEntryBase {
   link?: ApiEntryTransform;
   enum?: true | string | EnumerationDefinition;
   wrapper?: true | WrapperDefinition;
+  after?: string;
 }
 
 export interface ApiResource extends ApiEntryTransform {
