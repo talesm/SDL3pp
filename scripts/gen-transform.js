@@ -4075,6 +4075,42 @@ const transform = {
             }
           }
         },
+        "SDL_GetRectEnclosingPoints": {
+          type: "bool",
+          static: true,
+          parameters: [
+            {
+              type: "SpanRef<const SDL_Point>",
+              name: "points"
+            },
+            {
+              type: "OptionalRef<const SDL_Rect>",
+              name: "clip"
+            },
+            {
+              type: "SDL_Rect *",
+              name: "result"
+            }
+          ]
+        },
+        "SDL_GetRectEnclosingPointsFloat": {
+          type: "bool",
+          static: true,
+          parameters: [
+            {
+              type: "SpanRef<const SDL_FPoint>",
+              name: "points"
+            },
+            {
+              type: "OptionalRef<const SDL_FRect>",
+              name: "clip"
+            },
+            {
+              type: "SDL_FRect *",
+              name: "result"
+            }
+          ]
+        },
       },
     },
     "SDL_render.h": {

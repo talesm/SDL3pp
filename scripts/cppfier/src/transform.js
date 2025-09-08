@@ -534,7 +534,7 @@ function expandWrappers(sourceEntries, file, context) {
     const type = isStruct || !sourceEntry.type?.startsWith("struct ") ? sourceType : sourceType + " *";
     const constexpr = transform.constexpr !== false;
     const paramName = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
-    const paramType = isStruct ? `const ${type} &` : type;
+    const paramType = isStruct ? `const ${sourceType} &` : type;
     const attribute = "m_" + paramName;
 
     /** @type {string[]} */
@@ -631,7 +631,7 @@ function expandWrappers(sourceEntries, file, context) {
       }]);
     } else if (wrapper.comparable) {
       const body = 'return ' + fields.map(f => `${f} == other.${f}`).join(' && ') + ';';
-      insertEntry(entries, {
+      insertEntry(entries, [{
         kind: "function",
         name: "operator==",
         type: "bool",
@@ -643,7 +643,19 @@ function expandWrappers(sourceEntries, file, context) {
         }],
         doc: "Compares with the underlying type",
         hints: { body },
-      });
+      }, {
+        kind: "function",
+        name: "operator==",
+        type: "bool",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: `const ${targetType} &`,
+          name: "other",
+        }],
+        doc: "Compares with the underlying type",
+        hints: { body: `return *this == (${paramType})(other);` },
+      }]);
     }
     if (wrapper.nullable) insertEntry(entries, {
       kind: "function",
@@ -674,7 +686,7 @@ function expandWrappers(sourceEntries, file, context) {
       immutable: true,
       parameters: [],
       doc: `Check if valid.\n\n@returns True if valid state, false otherwise.`,
-      hints: { body: isStruct ? `return *this != ${targetType}{};` : `return ${attribute} != 0;` }
+      hints: { body: isStruct ? `return *this != ${sourceType}{};` : `return ${attribute} != 0;` }
     });
 
     if (isStruct) {
@@ -711,10 +723,10 @@ function expandWrappers(sourceEntries, file, context) {
             doc: `Set the ${name}.\n\n@param new${capName} the new ${name} value.\n@returns Reference to self.`,
             hints: { body: `${name} = new${capName};\nreturn *this;` },
           }]);
-          // context.addParamType(type, type);
-          // context.addParamType(`${type} *`, `${type} *`);
-          // context.addParamType(`const ${type}`, `const ${type}`);
-          // context.addParamType(`const ${type} *`, `const ${type} &`);
+          context.addParamType(sourceType, sourceType);
+          context.addParamType(`${sourceType} *`, `${sourceType} *`);
+          context.addParamType(`const ${sourceType}`, `const ${sourceType}`);
+          context.addParamType(`const ${sourceType} *`, `const ${sourceType} &`);
         }
         insertEntry(entries, {
           kind: "function",
@@ -1247,16 +1259,19 @@ function transformSubEntries(targetEntry, context, file, targetEntries) {
       continue;
     }
     const nameChange = makeRenameEntry(entry, nameCandidate, type);
-    const currEntry = context.checkGlossary(key);
-    if (currEntry) {
-      combineObject(currEntry, nameChange);
-      insertEntry(entries, currEntry);
-      const lastEntry = file.transform[key];
-      if (!lastEntry) {
-        delete targetEntries[nameCandidate];
-        delete targetEntries[defPrefix + nameCandidate];
-      }
-    } else if (!entries[nameChange.name]) {
+    // const currEntry = context.checkGlossary(key);
+    // if (currEntry) {
+    //   combineObject(currEntry, nameChange);
+    //   insertEntry(entries, currEntry);
+    //   const lastEntry = file.transform[key];
+    //   if (!lastEntry) {
+    //     file.transform[key] = {};
+    //   } else if (context.blacklist.has(key)) {
+    //     delete targetEntries[nameCandidate];
+    //     delete targetEntries[defPrefix + nameCandidate];
+    //   }
+    // } else 
+    if (!entries[nameChange.name]) {
       insertEntry(entries, { name: nameChange.name, kind: "def" });
     }
     if (typeof entry !== "string" && entry.proto && nameChange.type !== "") {
@@ -1266,9 +1281,15 @@ function transformSubEntries(targetEntry, context, file, targetEntries) {
       nameChange.name = `${type}.${nameChange.name}`;
     }
     if (file.transform[key]) {
-      file.transform[key].link = nameChange;
+      const currLink = file.transform[key];
+      file.transform[key] = nameChange;
+      file.transform[key].link = currLink;
+      if (!currLink.name) currLink.name = transformName(key, context);
     } else {
       file.transform[key] = nameChange;
+      if (!context.blacklist.has(key)) {
+        file.transform[key].link = { name: transformName(key, context) };
+      }
     }
   }
   return entries;

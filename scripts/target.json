@@ -3321,6 +3321,57 @@
           "doc": "LOG_PRIORITY_COUNT",
           "sourceName": "SDL_LOG_PRIORITY_COUNT"
         },
+        "SetLogPriorities": {
+          "doc": "Set the priority of all log categories.\n\n@param priority the LogPriority to assign.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LogCategory.ResetLogPriorities\n@sa LogCategory.SetLogPriority",
+          "name": "SetLogPriorities",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "priority",
+              "type": "LogPriority"
+            }
+          ],
+          "sourceName": "SDL_SetLogPriorities"
+        },
+        "SetLogPriority": {
+          "doc": "Set the priority of a particular log category.\n\n@param category the category to assign a priority to.\n@param priority the LogPriority to assign.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LogCategory.GetLogPriority\n@sa LogCategory.ResetLogPriorities\n@sa LogCategory.SetLogPriorities",
+          "name": "SetLogPriority",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "category",
+              "type": "int"
+            },
+            {
+              "name": "priority",
+              "type": "LogPriority"
+            }
+          ],
+          "sourceName": "SDL_SetLogPriority"
+        },
+        "GetLogPriority": {
+          "doc": "Get the priority of a particular log category.\n\n@param category the category to query.\n@returns the LogPriority for the requested category.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LogCategory.SetLogPriority",
+          "name": "GetLogPriority",
+          "kind": "function",
+          "type": "LogPriority",
+          "parameters": [
+            {
+              "name": "category",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_GetLogPriority"
+        },
+        "ResetLogPriorities": {
+          "doc": "Reset all priorities to default.\n\nThis is called by Quit().\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LogCategory.SetLogPriorities\n@sa LogCategory.SetLogPriority",
+          "name": "ResetLogPriorities",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_ResetLogPriorities"
+        },
         "SetLogPriorityPrefix": {
           "doc": "Set the text prepended to log messages of a given priority.\n\nBy default LOG_PRIORITY_INFO and below have no prefix, and\nLOG_PRIORITY_WARN and higher have a prefix showing their priority, e.g.\n\"WARNING: \".\n\n@param priority the LogPriority to modify.\n@param prefix the prefix to use for that log priority, or nullptr to use no\n              prefix.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LogCategory.SetLogPriorities\n@sa LogCategory.SetLogPriority",
           "name": "SetLogPriorityPrefix",
@@ -3363,6 +3414,154 @@
               "name": "ARGS"
             }
           ]
+        },
+        "LogTrace": {
+          "doc": "Log a message with LOG_PRIORITY_TRACE.\n\n@param category the category of the message.\n@param fmt a printf() style message format string.\n@param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Log\n@sa LogCategory.LogCritical\n@sa LogCategory.LogDebug\n@sa LogCategory.LogError\n@sa LogCategory.LogInfo\n@sa LogCategory.LogUnformatted\n@sa LogUnformatted\n@sa LogCategory.LogTrace\n@sa LogCategory.LogVerbose\n@sa LogCategory.LogWarn",
+          "name": "LogTrace",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "category",
+              "type": "int"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_LogTrace"
+        },
+        "LogVerbose": {
+          "doc": "Log a message with LOG_PRIORITY_VERBOSE.\n\n@param category the category of the message.\n@param fmt a printf() style message format string.\n@param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Log\n@sa LogCategory.LogCritical\n@sa LogCategory.LogDebug\n@sa LogCategory.LogError\n@sa LogCategory.LogInfo\n@sa LogCategory.LogUnformatted\n@sa LogUnformatted\n@sa LogCategory.LogWarn",
+          "name": "LogVerbose",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "category",
+              "type": "int"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_LogVerbose"
+        },
+        "LogDebug": {
+          "doc": "Log a message with LOG_PRIORITY_DEBUG.\n\n@param category the category of the message.\n@param fmt a printf() style message format string.\n@param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Log\n@sa LogCategory.LogCritical\n@sa LogCategory.LogError\n@sa LogCategory.LogInfo\n@sa LogCategory.LogUnformatted\n@sa LogUnformatted\n@sa LogCategory.LogTrace\n@sa LogCategory.LogVerbose\n@sa LogCategory.LogWarn",
+          "name": "LogDebug",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "category",
+              "type": "int"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_LogDebug"
+        },
+        "LogInfo": {
+          "doc": "Log a message with LOG_PRIORITY_INFO.\n\n@param category the category of the message.\n@param fmt a printf() style message format string.\n@param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Log\n@sa LogCategory.LogCritical\n@sa LogCategory.LogDebug\n@sa LogCategory.LogError\n@sa LogCategory.LogUnformatted\n@sa LogUnformatted\n@sa LogCategory.LogTrace\n@sa LogCategory.LogVerbose\n@sa LogCategory.LogWarn",
+          "name": "LogInfo",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "category",
+              "type": "int"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_LogInfo"
+        },
+        "LogWarn": {
+          "doc": "Log a message with LOG_PRIORITY_WARN.\n\n@param category the category of the message.\n@param fmt a printf() style message format string.\n@param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Log\n@sa LogCategory.LogCritical\n@sa LogCategory.LogDebug\n@sa LogCategory.LogError\n@sa LogCategory.LogInfo\n@sa LogCategory.LogUnformatted\n@sa LogUnformatted\n@sa LogCategory.LogTrace\n@sa LogCategory.LogVerbose",
+          "name": "LogWarn",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "category",
+              "type": "int"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_LogWarn"
+        },
+        "LogError": {
+          "doc": "Log a message with LOG_PRIORITY_ERROR.\n\n@param category the category of the message.\n@param fmt a printf() style message format string.\n@param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Log\n@sa LogCategory.LogCritical\n@sa LogCategory.LogDebug\n@sa LogCategory.LogInfo\n@sa LogCategory.LogUnformatted\n@sa LogUnformatted\n@sa LogCategory.LogTrace\n@sa LogCategory.LogVerbose\n@sa LogCategory.LogWarn",
+          "name": "LogError",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "category",
+              "type": "int"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_LogError"
+        },
+        "LogCritical": {
+          "doc": "Log a message with LOG_PRIORITY_CRITICAL.\n\n@param category the category of the message.\n@param fmt a printf() style message format string.\n@param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Log\n@sa LogCategory.LogDebug\n@sa LogCategory.LogError\n@sa LogCategory.LogInfo\n@sa LogCategory.LogUnformatted\n@sa LogUnformatted\n@sa LogCategory.LogTrace\n@sa LogCategory.LogVerbose\n@sa LogCategory.LogWarn",
+          "name": "LogCritical",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "category",
+              "type": "int"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_LogCritical"
+        },
+        "LogMessage": {
+          "doc": "Log a message with the specified category and priority.\n\n@param category the category of the message.\n@param priority the priority of the message.\n@param fmt a printf() style message format string.\n@param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Log\n@sa LogCategory.LogCritical\n@sa LogCategory.LogDebug\n@sa LogCategory.LogError\n@sa LogCategory.LogInfo\n@sa LogUnformatted\n@sa LogCategory.LogTrace\n@sa LogCategory.LogVerbose\n@sa LogCategory.LogWarn",
+          "name": "LogMessage",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "category",
+              "type": "int"
+            },
+            {
+              "name": "priority",
+              "type": "LogPriority"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_LogMessage"
         },
         "LogUnformatted": {
           "doc": "Log a message with the specified category and priority.\n\n@param category the category of the message.\n@param priority the priority of the message.\n@param fmt a printf() style message format string.\n@param ap a variable argument list.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Log\n@sa LogCategory.LogCritical\n@sa LogCategory.LogDebug\n@sa LogCategory.LogError\n@sa LogCategory.LogInfo\n@sa LogCategory.LogUnformatted\n@sa LogCategory.LogTrace\n@sa LogCategory.LogVerbose\n@sa LogCategory.LogWarn",
@@ -4806,7 +5005,7 @@
             },
             {
               "name": "rect",
-              "type": "Rect *"
+              "type": "SDL_Rect *"
             }
           ],
           "sourceName": "SDL_GetDisplayBounds",
@@ -4826,7 +5025,7 @@
             },
             {
               "name": "rect",
-              "type": "Rect *"
+              "type": "SDL_Rect *"
             }
           ],
           "sourceName": "SDL_GetDisplayUsableBounds",
@@ -5890,7 +6089,7 @@
             },
             {
               "name": "rect",
-              "type": "Rect *"
+              "type": "SDL_Rect *"
             }
           ],
           "sourceName": "SDL_GetWindowSafeArea",
@@ -8648,7 +8847,7 @@
             },
             {
               "name": "rect",
-              "type": "FRect *"
+              "type": "SDL_FRect *"
             }
           ],
           "sourceName": "SDL_GetRenderLogicalPresentationRect",
@@ -8772,7 +8971,7 @@
             },
             {
               "name": "rect",
-              "type": "Rect *"
+              "type": "SDL_Rect *"
             }
           ],
           "sourceName": "SDL_GetRenderViewport",
@@ -8805,7 +9004,7 @@
             },
             {
               "name": "rect",
-              "type": "Rect *"
+              "type": "SDL_Rect *"
             }
           ],
           "sourceName": "SDL_GetRenderSafeArea",
@@ -8845,7 +9044,7 @@
             },
             {
               "name": "rect",
-              "type": "Rect *"
+              "type": "SDL_Rect *"
             }
           ],
           "sourceName": "SDL_GetRenderClipRect",
@@ -12377,23 +12576,42 @@
                 "doc": "Wraps Point.\n\n@param p the value to be wrapped"
               }
             ],
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const SDL_Point &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Point &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return x == other.x && y == other.y;"
                 }
-              ],
-              "doc": "Compares with the underlying type",
-              "hints": {
-                "body": "return x == other.x && y == other.y;"
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Point &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return *this == (const SDL_Point &)(other);"
+                }
               }
-            },
+            ],
             "operator bool": {
               "kind": "function",
               "name": "operator bool",
@@ -12404,7 +12622,7 @@
               "parameters": [],
               "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
               "hints": {
-                "body": "return *this != Point{};"
+                "body": "return *this != SDL_Point{};"
               }
             },
             "GetX": {
@@ -12534,23 +12752,42 @@
                 }
               }
             ],
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const SDL_FPoint &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FPoint &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return x == other.x && y == other.y;"
                 }
-              ],
-              "doc": "Compares with the underlying type",
-              "hints": {
-                "body": "return x == other.x && y == other.y;"
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const FPoint &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return *this == (const SDL_FPoint &)(other);"
+                }
               }
-            },
+            ],
             "operator bool": {
               "kind": "function",
               "name": "operator bool",
@@ -12561,7 +12798,7 @@
               "parameters": [],
               "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
               "hints": {
-                "body": "return *this != FPoint{};"
+                "body": "return *this != SDL_FPoint{};"
               }
             },
             "GetX": {
@@ -12715,23 +12952,42 @@
                 "doc": "Wraps Rect.\n\n@param r the value to be wrapped"
               }
             ],
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const SDL_Rect &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Rect &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
                 }
-              ],
-              "doc": "Compares with the underlying type",
-              "hints": {
-                "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Rect &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return *this == (const SDL_Rect &)(other);"
+                }
               }
-            },
+            ],
             "operator bool": {
               "doc": "@sa Empty()",
               "kind": "function",
@@ -13263,23 +13519,42 @@
                 "doc": "Wraps FRect.\n\n@param r the value to be wrapped"
               }
             ],
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const SDL_FRect &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FRect &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
                 }
-              ],
-              "doc": "Compares with the underlying type",
-              "hints": {
-                "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const FRect &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return *this == (const SDL_FRect &)(other);"
+                }
               }
-            },
+            ],
             "operator bool": {
               "doc": "@sa Empty()",
               "kind": "function",
@@ -13718,6 +13993,364 @@
             "super": "SDL_FRect"
           },
           "type": "SDL_FRect"
+        },
+        "RectToFRect": {
+          "doc": "Convert an Rect to FRect\n\n@param rect a pointer to an Rect.\n@param frect a pointer filled in with the floating point representation of\n             `rect`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "RectToFRect",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "rect",
+              "type": "const SDL_Rect &"
+            },
+            {
+              "name": "frect",
+              "type": "SDL_FRect *"
+            }
+          ],
+          "sourceName": "SDL_RectToFRect"
+        },
+        "PointInRect": {
+          "doc": "Determine whether a point resides inside a rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not nullptr,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)\nas \"inside\" and (0,1) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param p the point to test.\n@param r the rectangle to test.\n@returns true if `p` is contained by `r`, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "PointInRect",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "p",
+              "type": "const SDL_Point &"
+            },
+            {
+              "name": "r",
+              "type": "const SDL_Rect &"
+            }
+          ],
+          "sourceName": "SDL_PointInRect"
+        },
+        "RectEmpty": {
+          "doc": "Determine whether a rectangle has no area.\n\nA rectangle is considered \"empty\" for this function if `r` is nullptr, or if\n`r`'s width and/or height are <= 0.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param r the rectangle to test.\n@returns true if the rectangle is \"empty\", false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "RectEmpty",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "r",
+              "type": "const SDL_Rect &"
+            }
+          ],
+          "sourceName": "SDL_RectEmpty"
+        },
+        "RectsEqual": {
+          "doc": "Determine whether two rectangles are equal.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height match.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param a the first rectangle to test.\n@param b the second rectangle to test.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "RectsEqual",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "const SDL_Rect &"
+            },
+            {
+              "name": "b",
+              "type": "const SDL_Rect &"
+            }
+          ],
+          "sourceName": "SDL_RectsEqual"
+        },
+        "HasRectIntersection": {
+          "doc": "Determine whether two rectangles intersect.\n\nIf either pointer is nullptr the function will return false.\n\n@param A an Rect structure representing the first rectangle.\n@param B an Rect structure representing the second rectangle.\n@returns true if there is an intersection, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Rect.GetIntersection",
+          "name": "HasRectIntersection",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "A",
+              "type": "const SDL_Rect &"
+            },
+            {
+              "name": "B",
+              "type": "const SDL_Rect &"
+            }
+          ],
+          "sourceName": "SDL_HasRectIntersection"
+        },
+        "GetRectIntersection": {
+          "doc": "Calculate the intersection of two rectangles.\n\nIf `result` is nullptr then this function will return false.\n\n@param A an Rect structure representing the first rectangle.\n@param B an Rect structure representing the second rectangle.\n@param result an Rect structure filled in with the intersection of\n              rectangles `A` and `B`.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Rect.HasIntersection",
+          "name": "GetRectIntersection",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "A",
+              "type": "const SDL_Rect &"
+            },
+            {
+              "name": "B",
+              "type": "const SDL_Rect &"
+            },
+            {
+              "name": "result",
+              "type": "SDL_Rect *"
+            }
+          ],
+          "sourceName": "SDL_GetRectIntersection"
+        },
+        "GetRectUnion": {
+          "doc": "Calculate the union of two rectangles.\n\n@param A an Rect structure representing the first rectangle.\n@param B an Rect structure representing the second rectangle.\n@param result an Rect structure filled in with the union of rectangles\n              `A` and `B`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetRectUnion",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "A",
+              "type": "const SDL_Rect &"
+            },
+            {
+              "name": "B",
+              "type": "const SDL_Rect &"
+            },
+            {
+              "name": "result",
+              "type": "SDL_Rect *"
+            }
+          ],
+          "sourceName": "SDL_GetRectUnion",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "GetRectEnclosingPoints": {
+          "doc": "Calculate a minimal rectangle enclosing a set of points.\n\nIf `clip` is not nullptr then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of Point structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an Rect used for clipping or nullptr to enclose all points.\n@param result an Rect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetRectEnclosingPoints",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "points",
+              "type": "SpanRef<const SDL_Point>"
+            },
+            {
+              "name": "clip",
+              "type": "OptionalRef<const SDL_Rect>"
+            },
+            {
+              "name": "result",
+              "type": "SDL_Rect *"
+            }
+          ],
+          "sourceName": "SDL_GetRectEnclosingPoints",
+          "static": true
+        },
+        "GetRectAndLineIntersection": {
+          "doc": "Calculate the intersection of a rectangle and line segment.\n\nThis function is used to clip a line segment to a rectangle. A line segment\ncontained entirely within the rectangle or that does not intersect will\nremain unchanged. A line segment that crosses the rectangle at either or\nboth ends will be clipped to the boundary of the rectangle and the new\ncoordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.\n\n@param rect an Rect structure representing the rectangle to intersect.\n@param X1 a pointer to the starting X-coordinate of the line.\n@param Y1 a pointer to the starting Y-coordinate of the line.\n@param X2 a pointer to the ending X-coordinate of the line.\n@param Y2 a pointer to the ending Y-coordinate of the line.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetRectAndLineIntersection",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "rect",
+              "type": "const SDL_Rect &"
+            },
+            {
+              "name": "X1",
+              "type": "int *"
+            },
+            {
+              "name": "Y1",
+              "type": "int *"
+            },
+            {
+              "name": "X2",
+              "type": "int *"
+            },
+            {
+              "name": "Y2",
+              "type": "int *"
+            }
+          ],
+          "sourceName": "SDL_GetRectAndLineIntersection"
+        },
+        "PointInRectFloat": {
+          "doc": "Determine whether a point resides inside a floating point rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not nullptr,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand <= the rectangle's x+w and y+h. So a 1x1 rectangle considers point\n(0,0) and (0,1) as \"inside\" and (0,2) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param p the point to test.\n@param r the rectangle to test.\n@returns true if `p` is contained by `r`, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "PointInRectFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "p",
+              "type": "const SDL_FPoint &"
+            },
+            {
+              "name": "r",
+              "type": "const SDL_FRect &"
+            }
+          ],
+          "sourceName": "SDL_PointInRectFloat"
+        },
+        "RectEmptyFloat": {
+          "doc": "Determine whether a floating point rectangle can contain any point.\n\nA rectangle is considered \"empty\" for this function if `r` is nullptr, or if\n`r`'s width and/or height are < 0.0f.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param r the rectangle to test.\n@returns true if the rectangle is \"empty\", false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "RectEmptyFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "r",
+              "type": "const SDL_FRect &"
+            }
+          ],
+          "sourceName": "SDL_RectEmptyFloat"
+        },
+        "RectsEqualEpsilon": {
+          "doc": "Determine whether two floating point rectangles are equal, within some\ngiven epsilon.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height are within `epsilon` of each other. If you don't know\nwhat value to use for `epsilon`, you should call the FRect.Equal\nfunction instead.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param a the first rectangle to test.\n@param b the second rectangle to test.\n@param epsilon the epsilon value for comparison.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FRect.Equal",
+          "name": "RectsEqualEpsilon",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "const SDL_FRect &"
+            },
+            {
+              "name": "b",
+              "type": "const SDL_FRect &"
+            },
+            {
+              "name": "epsilon",
+              "type": "float"
+            }
+          ],
+          "sourceName": "SDL_RectsEqualEpsilon"
+        },
+        "RectsEqualFloat": {
+          "doc": "Determine whether two floating point rectangles are equal, within a default\nepsilon.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height are within SDL_FLT_EPSILON of each other. This is often\na reasonable way to compare two floating point rectangles and deal with the\nslight precision variations in floating point calculations that tend to pop\nup.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param a the first rectangle to test.\n@param b the second rectangle to test.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FRect.EqualEpsilon",
+          "name": "RectsEqualFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "const SDL_FRect &"
+            },
+            {
+              "name": "b",
+              "type": "const SDL_FRect &"
+            }
+          ],
+          "sourceName": "SDL_RectsEqualFloat"
+        },
+        "HasRectIntersectionFloat": {
+          "doc": "Determine whether two rectangles intersect with float precision.\n\nIf either pointer is nullptr the function will return false.\n\n@param A an FRect structure representing the first rectangle.\n@param B an FRect structure representing the second rectangle.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Rect.GetIntersection",
+          "name": "HasRectIntersectionFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "A",
+              "type": "const SDL_FRect &"
+            },
+            {
+              "name": "B",
+              "type": "const SDL_FRect &"
+            }
+          ],
+          "sourceName": "SDL_HasRectIntersectionFloat"
+        },
+        "GetRectIntersectionFloat": {
+          "doc": "Calculate the intersection of two rectangles with float precision.\n\nIf `result` is nullptr then this function will return false.\n\n@param A an FRect structure representing the first rectangle.\n@param B an FRect structure representing the second rectangle.\n@param result an FRect structure filled in with the intersection of\n              rectangles `A` and `B`.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FRect.HasIntersection",
+          "name": "GetRectIntersectionFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "A",
+              "type": "const SDL_FRect &"
+            },
+            {
+              "name": "B",
+              "type": "const SDL_FRect &"
+            },
+            {
+              "name": "result",
+              "type": "SDL_FRect *"
+            }
+          ],
+          "sourceName": "SDL_GetRectIntersectionFloat"
+        },
+        "GetRectUnionFloat": {
+          "doc": "Calculate the union of two rectangles with float precision.\n\n@param A an FRect structure representing the first rectangle.\n@param B an FRect structure representing the second rectangle.\n@param result an FRect structure filled in with the union of rectangles\n              `A` and `B`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetRectUnionFloat",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "A",
+              "type": "const SDL_FRect &"
+            },
+            {
+              "name": "B",
+              "type": "const SDL_FRect &"
+            },
+            {
+              "name": "result",
+              "type": "SDL_FRect *"
+            }
+          ],
+          "sourceName": "SDL_GetRectUnionFloat",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "GetRectEnclosingPointsFloat": {
+          "doc": "Calculate a minimal rectangle enclosing a set of points with float\nprecision.\n\nIf `clip` is not nullptr then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of FPoint structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an FRect used for clipping or nullptr to enclose all points.\n@param result an FRect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetRectEnclosingPointsFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "points",
+              "type": "SpanRef<const SDL_FPoint>"
+            },
+            {
+              "name": "clip",
+              "type": "OptionalRef<const SDL_FRect>"
+            },
+            {
+              "name": "result",
+              "type": "SDL_FRect *"
+            }
+          ],
+          "sourceName": "SDL_GetRectEnclosingPointsFloat",
+          "static": true
+        },
+        "GetRectAndLineIntersectionFloat": {
+          "doc": "Calculate the intersection of a rectangle and line segment with float\nprecision.\n\nThis function is used to clip a line segment to a rectangle. A line segment\ncontained entirely within the rectangle or that does not intersect will\nremain unchanged. A line segment that crosses the rectangle at either or\nboth ends will be clipped to the boundary of the rectangle and the new\ncoordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.\n\n@param rect an FRect structure representing the rectangle to intersect.\n@param X1 a pointer to the starting X-coordinate of the line.\n@param Y1 a pointer to the starting Y-coordinate of the line.\n@param X2 a pointer to the ending X-coordinate of the line.\n@param Y2 a pointer to the ending Y-coordinate of the line.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetRectAndLineIntersectionFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "rect",
+              "type": "const SDL_FRect &"
+            },
+            {
+              "name": "X1",
+              "type": "float *"
+            },
+            {
+              "name": "Y1",
+              "type": "float *"
+            },
+            {
+              "name": "X2",
+              "type": "float *"
+            },
+            {
+              "name": "Y2",
+              "type": "float *"
+            }
+          ],
+          "sourceName": "SDL_GetRectAndLineIntersectionFloat"
         }
       },
       "includes": [
@@ -14462,7 +15095,7 @@
             },
             {
               "name": "rect",
-              "type": "Rect *"
+              "type": "SDL_Rect *"
             }
           ],
           "sourceName": "SDL_GetSurfaceClipRect",
@@ -18830,7 +19463,7 @@
             },
             {
               "name": "rect",
-              "type": "Rect *"
+              "type": "SDL_Rect *"
             },
             {
               "name": "cursor",
@@ -24483,6 +25116,94 @@
             }
           }
         },
+        "CompareAndSwapAtomicInt": {
+          "doc": "Set an atomic variable to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicInt variable to be modified.\n@param oldval the old value.\n@param newval the new value.\n@returns true if the atomic variable was set, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.Get\n@sa AtomicInt.Set",
+          "name": "CompareAndSwapAtomicInt",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicInt *"
+            },
+            {
+              "name": "oldval",
+              "type": "int"
+            },
+            {
+              "name": "newval",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_CompareAndSwapAtomicInt"
+        },
+        "SetAtomicInt": {
+          "doc": "Set an atomic variable to a value.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicInt variable to be modified.\n@param v the desired value.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.Get",
+          "name": "SetAtomicInt",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicInt *"
+            },
+            {
+              "name": "v",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_SetAtomicInt"
+        },
+        "GetAtomicInt": {
+          "doc": "Get the value of an atomic variable.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicInt variable.\n@returns the current value of an atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.Set",
+          "name": "GetAtomicInt",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicInt *"
+            }
+          ],
+          "sourceName": "SDL_GetAtomicInt"
+        },
+        "AddAtomicInt": {
+          "doc": "Add to an atomic variable.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicInt variable to be modified.\n@param v the desired value to add.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.AtomicDecRef\n@sa AtomicInt.AtomicIncRef",
+          "name": "AddAtomicInt",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicInt *"
+            },
+            {
+              "name": "v",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_AddAtomicInt"
+        },
+        "AtomicIncRef": {
+          "doc": "Increment an atomic variable used as a reference count.\n\n***Note: If you don't know what this macro is for, you shouldn't use it!***\n\n@param a a pointer to an AtomicInt to increment.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa AtomicInt.AtomicDecRef",
+          "name": "AtomicIncRef",
+          "kind": "def",
+          "parameters": [
+            "a"
+          ],
+          "value": "SDL_AddAtomicInt(a, 1)",
+          "sourceName": "SDL_AtomicIncRef"
+        },
+        "AtomicDecRef": {
+          "doc": "Decrement an atomic variable used as a reference count.\n\n***Note: If you don't know what this macro is for, you shouldn't use it!***\n\n@param a a pointer to an AtomicInt to decrement.\n@returns true if the variable reached zero after decrementing, false\n         otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa AtomicInt.AtomicIncRef",
+          "name": "AtomicDecRef",
+          "kind": "def",
+          "parameters": [
+            "a"
+          ],
+          "value": "(SDL_AddAtomicInt(a, -1) == 1)",
+          "sourceName": "SDL_AtomicDecRef"
+        },
         "AtomicU32": {
           "doc": "A type representing an atomic unsigned 32-bit value.\n\nThis can be used to manage a value that is synchronized across multiple\nCPUs without a race condition; when an app sets a value with\nAtomicU32.Set all other threads, regardless of the CPU it is running on,\nwill see that value when retrieved with AtomicU32.Get, regardless of CPU\ncaches, etc.\n\nThis is also useful for atomic compare-and-swap operations: a thread can\nchange the value as long as its current value matches expectations. When\ndone in a loop, one can guarantee data consistency across threads without a\nlock (but the usual warnings apply: if you don't know what you're doing, or\nyou don't do it carefully, you can confidently cause any number of\ndisasters with this, so in most cases, you _should_ use a mutex instead of\nthis!).\n\nThis is a struct so people don't accidentally use numeric operations on it\ndirectly. You have to use SDL atomic functions.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa AtomicU32.CompareAndSwap\n@sa AtomicU32.Get\n@sa AtomicU32.Set",
           "name": "AtomicU32",
@@ -24600,6 +25321,57 @@
               "sourceName": "SDL_GetAtomicU32"
             }
           }
+        },
+        "CompareAndSwapAtomicU32": {
+          "doc": "Set an atomic variable to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicU32 variable to be modified.\n@param oldval the old value.\n@param newval the new value.\n@returns true if the atomic variable was set, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicU32.Get\n@sa AtomicU32.Set",
+          "name": "CompareAndSwapAtomicU32",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicU32 *"
+            },
+            {
+              "name": "oldval",
+              "type": "Uint32"
+            },
+            {
+              "name": "newval",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_CompareAndSwapAtomicU32"
+        },
+        "SetAtomicU32": {
+          "doc": "Set an atomic variable to a value.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicU32 variable to be modified.\n@param v the desired value.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicU32.Get",
+          "name": "SetAtomicU32",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicU32 *"
+            },
+            {
+              "name": "v",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_SetAtomicU32"
+        },
+        "GetAtomicU32": {
+          "doc": "Get the value of an atomic variable.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicU32 variable.\n@returns the current value of an atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicU32.Set",
+          "name": "GetAtomicU32",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicU32 *"
+            }
+          ],
+          "sourceName": "SDL_GetAtomicU32"
         },
         "CompareAndSwapAtomicPointer": {
           "doc": "Set a pointer to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to a pointer.\n@param oldval the old pointer value.\n@param newval the new pointer value.\n@returns true if the pointer was set, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.CompareAndSwap\n@sa GetAtomicPointer\n@sa SetAtomicPointer",
@@ -28107,6 +28879,26 @@
               },
               "immutable": true
             }
+          }
+        },
+        "ShowMessageBox": {
+          "doc": "Create a modal message box.\n\nIf your needs aren't complex, it might be easier to use\nShowSimpleMessageBox.\n\nThis function should be called on the thread that created the parent\nwindow, or on the main thread if the messagebox has no parent. It will\nblock execution of that thread until the user clicks a button or closes the\nmessagebox.\n\nThis function may be called at any time, even before InitSubSystem(). This makes\nit useful for reporting errors like a failure to create a renderer or\nOpenGL context.\n\nOn X11, SDL rolls its own dialog box with X11 primitives instead of a\nformal toolkit like GTK+ or Qt.\n\nNote that if InitSubSystem() would fail because there isn't any available video\ntarget, this function is likely to fail for the same reasons. If this is a\nconcern, check the return value from this function and fall back to writing\nto stderr if you can.\n\n@param messageboxdata the MessageBox structure with title, text and\n                      other options.\n@param buttonid the pointer to which user id of hit button should be\n                copied.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ShowSimpleMessageBox",
+          "name": "ShowMessageBox",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "messageboxdata",
+              "type": "const MessageBox *"
+            },
+            {
+              "name": "buttonid",
+              "type": "int *"
+            }
+          ],
+          "sourceName": "SDL_ShowMessageBox",
+          "hints": {
+            "mayFail": true
           }
         },
         "ShowSimpleMessageBox": {
@@ -33037,6 +33829,40 @@
               "immutable": true
             }
           }
+        },
+        "GUIDToString": {
+          "doc": "Get an ASCII string representation for a given GUID.\n\n@param guid the GUID you wish to convert to string.\n@param pszGUID buffer in which to write the ASCII string.\n@param cbGUID the size of pszGUID, should be at least 33 bytes.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GUID.GUID",
+          "name": "GUIDToString",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "guid",
+              "type": "GUID"
+            },
+            {
+              "name": "pszGUID",
+              "type": "char *"
+            },
+            {
+              "name": "cbGUID",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_GUIDToString"
+        },
+        "StringToGUID": {
+          "doc": "Convert a GUID string into a GUID structure.\n\nPerforms no error checking. If this function is given a string containing\nan invalid GUID, the function will silently succeed, but the GUID generated\nwill not be useful.\n\n@param pchGUID string containing an ASCII representation of a GUID.\n@returns a GUID structure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GUID.ToString",
+          "name": "StringToGUID",
+          "kind": "function",
+          "type": "GUID",
+          "parameters": [
+            {
+              "name": "pchGUID",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_StringToGUID"
         }
       },
       "includes": [
