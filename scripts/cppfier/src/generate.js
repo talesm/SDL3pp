@@ -251,7 +251,7 @@ function generateDeclPrefix(entry, prefix) {
   const staticStr = entry.static ? "static " : "";
   const explicitStr = entry.explicit ? "explicit " : "";
   const specifier = entry.constexpr ? "constexpr " : (prefix ? "" : "inline ");
-  return `${prefix}${staticStr}${specifier}${explicitStr}${entry.type} ${entry.name}`;
+  return `${prefix}${staticStr}${specifier}${explicitStr}${entry.type ?? "auto"} ${entry.name}`;
 }
 
 /**

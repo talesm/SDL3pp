@@ -37,7 +37,7 @@ struct FRect;
  * @cat wrap-extending-struct
  *
  * @sa Rect.GetEnclosingPoints
- * @sa Point.IsInRect
+ * @sa Point.InRect
  */
 struct Point : SDL_Point
 {
@@ -63,7 +63,9 @@ struct Point : SDL_Point
   }
 
   /**
-   * Explicit conversion from FPoint
+   * Wraps Point.
+   *
+   * @param p the value to be wrapped
    */
   constexpr explicit Point(const SDL_FPoint& p)
     : SDL_Point{int(p.x), int(p.y)}
@@ -120,9 +122,9 @@ struct Point : SDL_Point
   constexpr int GetY() const { return y; }
 
   /**
-   * Set the y.
+   * Set the y coordinate.
    *
-   * @param newY the new y value.
+   * @param newY the new y coordinate.
    * @returns Reference to self.
    */
   constexpr Point& SetY(int newY)
@@ -151,7 +153,10 @@ struct Point : SDL_Point
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsInRect(const Rect& r) const;
+  constexpr bool InRect(const SDL_Rect& r) const
+  {
+    return SDL_PointInRect(this, &r);
+  }
 
   /**
    * Get point's memberwise negation
@@ -477,7 +482,7 @@ struct Point : SDL_Point
  * @cat wrap-extending-struct
  *
  * @sa FRect.GetEnclosingPoints
- * @sa FPoint.IsInRect
+ * @sa FPoint.InRect
  */
 struct FPoint : SDL_FPoint
 {
@@ -523,7 +528,7 @@ struct FPoint : SDL_FPoint
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return x != 0 && y != 0; }
+  constexpr explicit operator bool() const { return *this != FPoint{}; }
 
   /**
    * Get the x coordinate.
@@ -583,7 +588,7 @@ struct FPoint : SDL_FPoint
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsInRect(const FRect& r) const;
+  constexpr bool InRect(const SDL_FRect& r) const;
 
   /**
    * Get point's memberwise negation
@@ -821,7 +826,7 @@ struct FPoint : SDL_FPoint
  * @sa Rect.Equal
  * @sa Rect.HasIntersection
  * @sa Rect.GetIntersection
- * @sa Rect.IntersectLine
+ * @sa Rect.GetLineIntersection
  * @sa Rect.GetUnion
  * @sa Rect.GetEnclosingPoints
  */
@@ -877,7 +882,7 @@ struct Rect : SDL_Rect
   /**
    * @sa Empty()
    */
-  constexpr operator bool() const { return !Empty(); }
+  constexpr explicit operator bool() const { return !Empty(); }
 
   /**
    * Get left x coordinate.
@@ -1132,6 +1137,30 @@ struct Rect : SDL_Rect
   constexpr Point GetCentroid() const { return Point(x + w / 2, y + h / 2); }
 
   /**
+   * Calculate the intersection of a rectangle and line segment
+   *
+   * @param[in,out] p1 Starting coordinates of the line
+   * @param[in,out] p2 Ending coordinates of the line
+   *
+   * @returns True if there is an intersection, false otherwise
+   *
+   * This function is used to clip a line segment to a
+   * rectangle. A line segment contained entirely within the
+   * rectangle or that does not intersect will remain unchanged.
+   * A line segment that crosses the rectangle at either or both
+   * ends will be clipped to the boundary of the rectangle and
+   * the new coordinates saved in p1 and/or p2 as necessary.
+   *
+   */
+  bool GetLineIntersection(SDL_Point* p1, SDL_Point* p2) const
+  {
+    return GetLineIntersection(p1 ? &p1->x : nullptr,
+                               p1 ? &p1->y : nullptr,
+                               p2 ? &p2->x : nullptr,
+                               p2 ? &p2->y : nullptr);
+  }
+
+  /**
    * Calculate the intersection of a rectangle and line segment.
    *
    * This function is used to clip a line segment to a rectangle. A line segment
@@ -1148,33 +1177,9 @@ struct Rect : SDL_Rect
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool IntersectLine(int* X1, int* Y1, int* X2, int* Y2) const
+  bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const
   {
     return SDL_GetRectAndLineIntersection(this, X1, Y1, X2, Y2);
-  }
-
-  /**
-   * Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] p1 Starting coordinates of the line
-   * @param[in,out] p2 Ending coordinates of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in p1 and/or p2 as necessary.
-   *
-   */
-  bool IntersectLine(Point* p1, Point* p2) const
-  {
-    return IntersectLine(p1 ? &p1->x : nullptr,
-                         p1 ? &p1->y : nullptr,
-                         p2 ? &p2->x : nullptr,
-                         p2 ? &p2->y : nullptr);
   }
 
   /**
@@ -1187,15 +1192,17 @@ struct Rect : SDL_Rect
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr operator FRect() const;
-
-  /**
-   * @sa operator FRect()
-   */
   constexpr operator SDL_FRect() const
   {
-    return {float(x), float(y), float(w), float(h)};
+    SDL_FRect r;
+    SDL_RectToFRect(this, &r);
+    return r;
   }
+
+  /**
+   * @sa operator ToFRect()
+   */
+  constexpr operator FRect() const;
 
   /**
    * Determine whether a rectangle has no area.
@@ -1234,7 +1241,7 @@ struct Rect : SDL_Rect
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool Equal(const Rect& other) const
+  constexpr bool Equal(const SDL_Rect& other) const
   {
     return SDL_RectsEqual(this, &other);
   }
@@ -1247,7 +1254,7 @@ struct Rect : SDL_Rect
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const Point& p) const
+  constexpr bool Contains(const SDL_Point& p) const
   {
     return SDL_PointInRect(&p, this);
   }
@@ -1260,7 +1267,7 @@ struct Rect : SDL_Rect
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const Rect& other) const
+  constexpr bool Contains(const SDL_Rect& other) const
   {
     return GetUnion(other) == *this;
   }
@@ -1275,9 +1282,9 @@ struct Rect : SDL_Rect
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetIntersection()
+   * @sa Rect.GetIntersection
    */
-  bool HasIntersection(const Rect& other) const
+  constexpr bool HasIntersection(const SDL_Rect& other) const
   {
     return SDL_HasRectIntersection(this, &other);
   }
@@ -1295,7 +1302,7 @@ struct Rect : SDL_Rect
    *
    * @sa Rect.HasIntersection
    */
-  constexpr std::optional<Rect> GetIntersection(const Rect& other) const
+  constexpr std::optional<Rect> GetIntersection(const SDL_Rect& other) const
   {
     if (Rect result; SDL_GetRectIntersection(this, &other, &result)) {
       return result;
@@ -1312,7 +1319,7 @@ struct Rect : SDL_Rect
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr Rect GetUnion(const Rect& other) const
+  constexpr Rect GetUnion(const SDL_Rect& other) const
   {
     Rect result;
     CheckError(SDL_GetRectUnion(this, &other, &result));
@@ -1452,10 +1459,10 @@ struct Rect : SDL_Rect
  * @sa FRect.EqualEpsilon
  * @sa FRect.HasIntersection
  * @sa FRect.GetIntersection
- * @sa FRect.IntersectLine
+ * @sa FRect.GetLineIntersection
  * @sa FRect.GetUnion
  * @sa FRect.GetEnclosingPoints
- * @sa FPoint.IsInRect
+ * @sa FPoint.InRect
  */
 struct FRect : SDL_FRect
 {
@@ -1597,11 +1604,11 @@ struct FRect : SDL_FRect
    *             points.
    * @returns a FRect structure filled in with the minimal enclosing
    *          rectangle or an empty FRect if all the points were outside of
-   * the clipping rectangle.
+   *          the clipping rectangle.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static FRect GetEnclosingPoints(
+  static constexpr FRect GetEnclosingPoints(
     SpanRef<const SDL_FPoint> points,
     OptionalRef<const SDL_FRect> clip = std::nullopt)
   {
@@ -1778,7 +1785,7 @@ struct FRect : SDL_FRect
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool IntersectLine(float* X1, float* Y1, float* X2, float* Y2) const
+  bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const
   {
     return SDL_GetRectAndLineIntersectionFloat(this, X1, Y1, X2, Y2);
   }
@@ -1799,12 +1806,12 @@ struct FRect : SDL_FRect
    * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  bool IntersectLine(FPoint* p1, FPoint* p2) const
+  bool GetLineIntersection(FPoint* p1, FPoint* p2) const
   {
-    return IntersectLine(p1 ? &p1->x : nullptr,
-                         p1 ? &p1->y : nullptr,
-                         p2 ? &p2->x : nullptr,
-                         p2 ? &p2->y : nullptr);
+    return GetLineIntersection(p1 ? &p1->x : nullptr,
+                               p1 ? &p1->y : nullptr,
+                               p2 ? &p2->x : nullptr,
+                               p2 ? &p2->y : nullptr);
   }
 
   /**
@@ -1850,7 +1857,7 @@ struct FRect : SDL_FRect
    *
    * @sa FRect.Equal
    */
-  constexpr bool EqualEpsilon(const FRect& other, const float epsilon) const
+  constexpr bool EqualEpsilon(const SDL_FRect& other, const float epsilon) const
   {
     return SDL_RectsEqualEpsilon(this, &other, epsilon);
   }
@@ -1878,7 +1885,7 @@ struct FRect : SDL_FRect
    *
    * @sa FRect.EqualEpsilon
    */
-  constexpr bool Equal(const FRect& other) const
+  constexpr bool Equal(const SDL_FRect& other) const
   {
     return SDL_RectsEqualFloat(this, &other);
   }
@@ -1891,7 +1898,7 @@ struct FRect : SDL_FRect
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const FPoint& p) const
+  constexpr bool Contains(const SDL_FPoint& p) const
   {
     return SDL_PointInRectFloat(&p, this);
   }
@@ -1904,7 +1911,7 @@ struct FRect : SDL_FRect
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const FRect& other) const
+  constexpr bool Contains(const SDL_FRect& other) const
   {
     return GetUnion(other) == *this;
   }
@@ -1921,7 +1928,7 @@ struct FRect : SDL_FRect
    *
    * @sa Rect.GetIntersection
    */
-  bool HasIntersection(const FRect& other) const
+  constexpr bool HasIntersection(const SDL_FRect& other) const
   {
     return SDL_HasRectIntersectionFloat(this, &other);
   }
@@ -1939,7 +1946,7 @@ struct FRect : SDL_FRect
    *
    * @sa FRect.HasIntersection
    */
-  FRect GetIntersection(const FRect& other) const
+  constexpr FRect GetIntersection(const SDL_FRect& other) const
   {
     if (FRect result; SDL_GetRectIntersectionFloat(this, &other, &result)) {
       return result;
@@ -1956,7 +1963,7 @@ struct FRect : SDL_FRect
    *
    * @since This function is available since SDL 3.2.0.
    */
-  FRect GetUnion(const FRect& other) const
+  constexpr FRect GetUnion(const SDL_FRect& other) const
   {
     FRect result;
     CheckError(SDL_GetRectUnionFloat(this, &other, &result));
@@ -2083,16 +2090,6 @@ struct FRect : SDL_FRect
   }
 };
 
-constexpr bool Point::IsInRect(const Rect& r) const
-{
-  return SDL_PointInRect(this, &r);
-}
-
-constexpr bool FPoint::IsInRect(const FRect& r) const
-{
-  return SDL_PointInRectFloat(this, &r);
-}
-
 /// @}
 
 constexpr Point::operator FPoint() const { return {float(x), float(y)}; }
@@ -2186,8 +2183,6 @@ constexpr Rect::operator FRect() const
 {
   return {float(x), float(y), float(w), float(h)};
 }
-
-#pragma endregion impl
 
 } // namespace SDL
 

@@ -203,6 +203,7 @@ set(LEGACY_CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target-legacy.json
 set(TRANSFORM_JSON ${PROJECT_SOURCE_DIR}/scripts/transform.json)
 set(TARGET_JSON ${PROJECT_SOURCE_DIR}/scripts/target.json)
 set(CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target.json)
+file(GLOB CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/src/*.js)
 
 # Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source_xml.json
@@ -235,6 +236,7 @@ add_custom_command(OUTPUT ${LEGACY_TARGET_JSON}
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json 
             ${LEGACY_CONFIG_TARGET} 
             ${LEGACY_TRANSFORM_JSON}
+            ${CPPFIER_SOURCES}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
@@ -258,6 +260,7 @@ add_custom_command(OUTPUT ${TARGET_JSON}
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json 
             ${CONFIG_TARGET} 
             ${TRANSFORM_JSON}
+            ${CPPFIER_SOURCES}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 

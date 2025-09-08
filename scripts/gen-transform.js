@@ -3549,15 +3549,14 @@ const transform = {
             },
             "SDL_PointInRect": {
               kind: "function",
-              name: "IsInRect",
+              name: "InRect",
               constexpr: true,
-              proto: true,
               parameters: [
                 {
                   name: "this"
                 },
                 {
-                  type: "const Rect &"
+                  type: "const SDL_Rect &"
                 }
               ]
             }
@@ -3571,15 +3570,14 @@ const transform = {
           entries: {
             "SDL_PointInRectFloat": {
               kind: "function",
-              name: "IsInRect",
+              name: "InRect",
               constexpr: true,
-              proto: true,
               parameters: [
                 {
                   name: "this"
                 },
                 {
-                  type: "const FRect &"
+                  type: "const SDL_FRect &"
                 }
               ]
             }
@@ -3587,7 +3585,7 @@ const transform = {
         },
         "SDL_Rect": {
           wrapper: {
-            attribute: "p",
+            attribute: "r",
             comparable: true,
           },
           entries: {
@@ -3610,13 +3608,13 @@ const transform = {
               static: true,
               parameters: [
                 {
-                  "type": "SpanRef<const SDL_Point>",
-                  "name": "points"
+                  type: "SpanRef<const SDL_Point>",
+                  name: "points"
                 },
                 {
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "name": "clip",
-                  "default": "std::nullopt"
+                  type: "OptionalRef<const SDL_Rect>",
+                  name: "clip",
+                  default: "std::nullopt"
                 }
               ]
             },
@@ -3624,40 +3622,42 @@ const transform = {
               {
                 kind: "function",
                 name: "FromCenter",
+                constexpr: true,
                 static: true,
                 type: "Rect",
                 parameters: [
                   {
-                    "name": "cx",
-                    "type": "int"
+                    name: "cx",
+                    type: "int"
                   },
                   {
-                    "name": "cy",
-                    "type": "int"
+                    name: "cy",
+                    type: "int"
                   },
                   {
-                    "name": "w",
-                    "type": "int"
+                    name: "w",
+                    type: "int"
                   },
                   {
-                    "name": "h",
-                    "type": "int"
+                    name: "h",
+                    type: "int"
                   }
                 ]
               },
               {
                 kind: "function",
                 name: "FromCenter",
+                constexpr: true,
                 static: true,
                 type: "Rect",
                 parameters: [
                   {
-                    "name": "center",
-                    "type": "const Point &"
+                    name: "center",
+                    type: "const Point &"
                   },
                   {
-                    "name": "size",
-                    "type": "const Point &"
+                    name: "size",
+                    type: "const Point &"
                   }
                 ]
               }
@@ -3667,38 +3667,41 @@ const transform = {
                 kind: "function",
                 name: "FromCorners",
                 static: true,
+                constexpr: true,
                 type: "Rect",
                 parameters: [
                   {
-                    "name": "x1",
-                    "type": "int"
+                    name: "x1",
+                    type: "int"
                   },
                   {
-                    "name": "y1",
-                    "type": "int"
+                    name: "y1",
+                    type: "int"
                   },
                   {
-                    "name": "x2",
-                    "type": "int"
+                    name: "x2",
+                    type: "int"
                   },
                   {
-                    "name": "y2",
-                    "type": "int"
+                    name: "y2",
+                    type: "int"
                   }
                 ]
               },
               {
                 kind: "function",
                 name: "FromCorners",
+                constexpr: true,
+                static: true,
                 type: "Rect",
                 parameters: [
                   {
-                    "name": "p1",
-                    "type": "const Point &"
+                    name: "p1",
+                    type: "const SDL_Point &"
                   },
                   {
-                    "name": "p2",
-                    "type": "const Point &"
+                    name: "p2",
+                    type: "const SDL_Point &"
                   }
                 ]
               }
@@ -3713,121 +3716,123 @@ const transform = {
             "GetBottomRight": "function",
             "GetSize": "function",
             "GetCentroid": "function",
+            "GetLineIntersection": {
+              kind: "function",
+              type: "bool",
+              parameters: [{
+                type: "SDL_Point *",
+                name: "p1"
+              }, {
+                type: "SDL_Point *",
+                name: "p2"
+              }]
+            },
             "SDL_GetRectAndLineIntersection": {
-              "kind": "function",
-              "name": "IntersectLine"
+              kind: "function",
+              name: "GetLineIntersection"
             },
             "SDL_RectToFRect": {
-              "name": "operator FRect",
-              "static": false,
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [],
-              "type": ""
+              name: "operator SDL_FRect",
+              static: false,
+              immutable: true,
+              constexpr: true,
+              parameters: [],
+              type: ""
             },
-            "operator SDL_FRect": {
-              "doc": "@sa operator FRect()",
-              "kind": "function",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [],
-              "type": ""
+            "operator FRect": {
+              doc: "@sa operator ToFRect()",
+              name: "operator FRect",
+              static: false,
+              immutable: true,
+              constexpr: true,
+              parameters: [],
+              type: ""
             },
             "SDL_RectEmpty": {
-              "constexpr": true
+              constexpr: true
             },
             "operator bool": {
-              "doc": "@sa Empty()",
-              "kind": "function",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [],
-              "type": ""
+              doc: "@sa Empty()",
+              kind: "function",
+              immutable: true,
+              explicit: true,
+              constexpr: true,
+              parameters: [],
+              type: ""
             },
             "SDL_RectsEqual": {
-              "name": "Equal",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "name": "this",
-                  "type": "const Rect &"
-                },
-                {
-                  "name": "other",
-                  "type": "const Rect &"
-                }
-              ]
-            },
-            "Contains": [
-              {
-                "kind": "function",
-                "type": "bool",
-                "parameters": [
-                  {
-                    "name": "p",
-                    "type": "const Point &"
-                  }
-                ],
-                "constexpr": true,
-                "immutable": true
+              name: "Equal",
+              immutable: true,
+              constexpr: true,
+              parameters: [{
+                name: "this",
               },
               {
-                "kind": "function",
-                "type": "bool",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Rect &"
-                  }
-                ],
-                "constexpr": true,
-                "immutable": true
-              }
-            ],
-            "SDL_HasRectIntersection": {
-              "kind": "function",
-              "immutable": true,
-              "parameters": [
+                name: "other",
+                type: "const SDL_Rect &"
+              }]
+            },
+            Contains: [{
+              kind: "function",
+              type: "bool",
+              constexpr: true,
+              immutable: true,
+              parameters: [
                 {
-                  "name": "this",
-                  "type": "const Rect &"
+                  name: "p",
+                  type: "const SDL_Point &"
+                }
+              ],
+            },
+            {
+              kind: "function",
+              type: "bool",
+              constexpr: true,
+              immutable: true,
+              parameters: [
+                {
+                  name: "other",
+                  type: "const SDL_Rect &"
+                }
+              ],
+            }],
+            "SDL_HasRectIntersection": {
+              kind: "function",
+              constexpr: true,
+              immutable: true,
+              parameters: [
+                {
+                  name: "this",
                 },
                 {
-                  "name": "other",
-                  "type": "const Rect &"
+                  name: "other",
+                  type: "const SDL_Rect &"
                 }
               ]
             },
             "SDL_GetRectIntersection": {
-              "kind": "function",
-              "type": "std::optional<Rect>",
-              "immutable": true,
-              "parameters": [
-                {
-                  "name": "this",
-                  "type": "const Rect &"
-                },
-                {
-                  "name": "other",
-                  "type": "const Rect &"
-                }
-              ]
+              kind: "function",
+              type: "std::optional<Rect>",
+              constexpr: true,
+              immutable: true,
+              parameters: [{
+                name: "this",
+              }, {
+                name: "other",
+                type: "const SDL_Rect &"
+              }]
             },
             "SDL_GetRectUnion": {
-              "kind": "function",
-              "type": "Rect",
-              "immutable": true,
-              "parameters": [
-                {
-                  "name": "this",
-                  "type": "const Rect &"
-                },
-                {
-                  "name": "other",
-                  "type": "const Rect &"
-                }
-              ]
+              kind: "function",
+              type: "Rect",
+              immutable: true,
+              constexpr: true,
+              parameters: [{
+                name: "this",
+              }, {
+                name: "other",
+                type: "const SDL_Rect &"
+              }]
             }
           }
         },
@@ -3838,117 +3843,119 @@ const transform = {
           },
           entries: {
             "FRect": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
+              kind: "function",
+              constexpr: true,
+              type: "",
+              parameters: [
                 {
-                  "name": "corner",
-                  "type": "const SDL_FPoint &"
+                  name: "corner",
+                  type: "const SDL_FPoint &"
                 },
                 {
-                  "name": "size",
-                  "type": "const SDL_FPoint &"
+                  name: "size",
+                  type: "const SDL_FPoint &"
                 }
               ]
             },
             "SDL_GetRectEnclosingPointsFloat": {
               type: "FRect",
+              constexpr: true,
               parameters: [
                 {
-                  "type": "SpanRef<const SDL_FPoint>",
-                  "name": "points"
+                  type: "SpanRef<const SDL_FPoint>",
+                  name: "points"
                 },
                 {
-                  "type": "OptionalRef<const SDL_FRect>",
-                  "name": "clip",
-                  "default": "std::nullopt"
+                  type: "OptionalRef<const SDL_FRect>",
+                  name: "clip",
+                  default: "std::nullopt"
                 }
               ]
             },
-            "FromCenter": [
-              {
-                "kind": "function",
-                "name": "FromCenter",
-                "type": "FRect",
-                "static": true,
-                "parameters": [
-                  {
-                    "name": "cx",
-                    "type": "float"
-                  },
-                  {
-                    "name": "cy",
-                    "type": "float"
-                  },
-                  {
-                    "name": "w",
-                    "type": "float"
-                  },
-                  {
-                    "name": "h",
-                    "type": "float"
-                  }
-                ]
-              },
-              {
-                "kind": "function",
-                "name": "FromCenter",
-                "type": "FRect",
-                "static": true,
-                "parameters": [
-                  {
-                    "name": "center",
-                    "type": "const FPoint &"
-                  },
-                  {
-                    "name": "size",
-                    "type": "const FPoint &"
-                  }
-                ]
-              }
-            ],
-            "FromCorners": [
-              {
-                "kind": "function",
-                "name": "FromCorners",
-                "type": "FRect",
-                "static": true,
-                "parameters": [
-                  {
-                    "name": "x1",
-                    "type": "float"
-                  },
-                  {
-                    "name": "y1",
-                    "type": "float"
-                  },
-                  {
-                    "name": "x2",
-                    "type": "float"
-                  },
-                  {
-                    "name": "y2",
-                    "type": "float"
-                  }
-                ]
-              },
-              {
-                "kind": "function",
-                "name": "FromCorners",
-                "static": true,
-                "type": "FRect",
-                "parameters": [
-                  {
-                    "name": "p1",
-                    "type": "const FPoint &"
-                  },
-                  {
-                    "name": "p2",
-                    "type": "const FPoint &"
-                  }
-                ]
-              }
-            ],
+            "FromCenter": [{
+              kind: "function",
+              name: "FromCenter",
+              type: "FRect",
+              constexpr: true,
+              static: true,
+              parameters: [
+                {
+                  name: "cx",
+                  type: "float"
+                },
+                {
+                  name: "cy",
+                  type: "float"
+                },
+                {
+                  name: "w",
+                  type: "float"
+                },
+                {
+                  name: "h",
+                  type: "float"
+                }
+              ]
+            },
+            {
+              kind: "function",
+              name: "FromCenter",
+              type: "FRect",
+              static: true,
+              constexpr: true,
+              parameters: [
+                {
+                  name: "center",
+                  type: "const SDL_FPoint &"
+                },
+                {
+                  name: "size",
+                  type: "const SDL_FPoint &"
+                }
+              ]
+            }],
+            "FromCorners": [{
+              kind: "function",
+              name: "FromCorners",
+              type: "FRect",
+              constexpr: true,
+              static: true,
+              parameters: [
+                {
+                  name: "x1",
+                  type: "float"
+                },
+                {
+                  name: "y1",
+                  type: "float"
+                },
+                {
+                  name: "x2",
+                  type: "float"
+                },
+                {
+                  name: "y2",
+                  type: "float"
+                }
+              ]
+            },
+            {
+              kind: "function",
+              name: "FromCorners",
+              static: true,
+              constexpr: true,
+              type: "FRect",
+              parameters: [
+                {
+                  name: "p1",
+                  type: "const SDL_FPoint &"
+                },
+                {
+                  name: "p2",
+                  type: "const SDL_FPoint &"
+                }
+              ]
+            }],
             "GetX2": "function",
             "SetX2": "function",
             "GetY2": "function",
@@ -3960,141 +3967,115 @@ const transform = {
             "GetSize": "function",
             "GetCentroid": "function",
             "SDL_GetRectAndLineIntersectionFloat": {
-              "name": "IntersectLine"
+              name: "GetLineIntersection"
             },
             "SDL_RectEmptyFloat": {
-              "constexpr": true
+              name: "Empty",
+              constexpr: true
             },
             "operator bool": {
-              "doc": "@sa Empty()",
-              "kind": "function",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [],
-              "type": ""
+              doc: "@sa Empty()",
+              kind: "function",
+              immutable: true,
+              explicit: true,
+              constexpr: true,
+              parameters: [],
+              type: ""
             },
             "SDL_RectsEqualEpsilon": {
-              "name": "EqualEpsilon",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "name": "this",
-                  "type": "const FRect &"
-                },
-                {
-                  "name": "other",
-                  "type": "const FRect &"
-                },
-                {
-                  "name": "epsilon",
-                  "type": "const float"
-                }
-              ]
+              name: "EqualEpsilon",
+              immutable: true,
+              constexpr: true,
+              parameters: [{
+                name: "this"
+              },
+              {
+                name: "other",
+                type: "const SDL_FRect &"
+              },
+              {
+                name: "epsilon",
+                type: "const float"
+              }]
             },
             "SDL_RectsEqualFloat": {
-              "name": "Equal",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "name": "this",
-                  "type": "const FRect &"
-                },
-                {
-                  "name": "other",
-                  "type": "const FRect &"
-                }
-              ]
+              name: "Equal",
+              immutable: true,
+              constexpr: true,
+              parameters: [{
+                name: "this",
+              },
+              {
+                name: "other",
+                type: "const SDL_FRect &"
+              }]
             },
             "Contains": [
               {
-                "kind": "function",
-                "type": "bool",
-                "parameters": [
-                  {
-                    "name": "p",
-                    "type": "const FPoint &"
-                  }
-                ],
-                "constexpr": true,
-                "immutable": true
+                kind: "function",
+                type: "bool",
+                parameters: [{
+                  name: "p",
+                  type: "const SDL_FPoint &"
+                }],
+                constexpr: true,
+                immutable: true
               },
               {
-                "kind": "function",
-                "type": "bool",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const FRect &"
-                  }
-                ],
-                "constexpr": true,
-                "immutable": true
+                kind: "function",
+                type: "bool",
+                parameters: [{
+                  name: "other",
+                  type: "const SDL_FRect &"
+                }],
+                constexpr: true,
+                immutable: true
               }
             ],
             "SDL_HasRectIntersectionFloat": {
-              "kind": "function",
-              "immutable": true,
-              "parameters": [
-                {
-                  "name": "this",
-                  "type": "const FRect &"
-                },
-                {
-                  "name": "other",
-                  "type": "const FRect &"
-                }
-              ]
+              kind: "function",
+              immutable: true,
+              constexpr: true,
+              parameters: [{
+                name: "this",
+                type: "const FRect &"
+              },
+              {
+                name: "other",
+                type: "const SDL_FRect &"
+              }]
             },
             "SDL_GetRectIntersectionFloat": {
-              "kind": "function",
-              "type": "FRect",
-              "immutable": true,
-              "parameters": [
-                {
-                  "name": "this",
-                  "type": "const FRect &"
-                },
-                {
-                  "name": "other",
-                  "type": "const FRect &"
-                }
+              kind: "function",
+              type: "FRect",
+              immutable: true,
+              constexpr: true,
+              parameters: [{
+                name: "this",
+              },
+              {
+                name: "other",
+                type: "const SDL_FRect &"
+              }
               ]
             },
             "SDL_GetRectUnionFloat": {
-              "kind": "function",
-              "type": "FRect",
-              "immutable": true,
-              "parameters": [
-                {
-                  "name": "this",
-                  "type": "const FRect &"
-                },
-                {
-                  "name": "other",
-                  "type": "const FRect &"
-                }
-              ]
+              kind: "function",
+              type: "FRect",
+              immutable: true,
+              constexpr: true,
+              parameters: [{
+                name: "this",
+                type: "const FRect &"
+              },
+              {
+                name: "other",
+                type: "const SDL_FRect &"
+              }]
             }
           }
         },
       },
-      includeAfter: {
-        "__end": [
-          {
-            "kind": "function",
-            "name": "Rect.IntersectLine"
-          },
-          {
-            "kind": "function",
-            "name": "FRect.IntersectLine"
-          }
-        ]
-      },
-      wrappers: {
-
-      }
     },
     "SDL_render.h": {
       ignoreEntries: [
