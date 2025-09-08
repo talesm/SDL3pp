@@ -12377,42 +12377,23 @@
                 "doc": "Wraps Point.\n\n@param p the value to be wrapped"
               }
             ],
-            "operator==": [
-              {
-                "kind": "function",
-                "name": "operator==",
-                "type": "bool",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const Point &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Default comparison operator",
-                "hints": {
-                  "body": "return x == other.x && y == other.y;"
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const SDL_Point &",
+                  "name": "other"
                 }
-              },
-              {
-                "kind": "function",
-                "name": "operator==",
-                "type": "bool",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const SDL_Point &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Compares with the underlying type",
-                "hints": {
-                  "body": "return x == other.x && y == other.y;"
-                }
+              ],
+              "doc": "Compares with the underlying type",
+              "hints": {
+                "body": "return x == other.x && y == other.y;"
               }
-            ],
+            },
             "operator bool": {
               "kind": "function",
               "name": "operator bool",
@@ -12553,42 +12534,23 @@
                 }
               }
             ],
-            "operator==": [
-              {
-                "kind": "function",
-                "name": "operator==",
-                "type": "bool",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const FPoint &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Default comparison operator",
-                "hints": {
-                  "body": "return x == other.x && y == other.y;"
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const SDL_FPoint &",
+                  "name": "other"
                 }
-              },
-              {
-                "kind": "function",
-                "name": "operator==",
-                "type": "bool",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const SDL_FPoint &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Compares with the underlying type",
-                "hints": {
-                  "body": "return x == other.x && y == other.y;"
-                }
+              ],
+              "doc": "Compares with the underlying type",
+              "hints": {
+                "body": "return x == other.x && y == other.y;"
               }
-            ],
+            },
             "operator bool": {
               "kind": "function",
               "name": "operator bool",
@@ -12753,42 +12715,23 @@
                 "doc": "Wraps Rect.\n\n@param r the value to be wrapped"
               }
             ],
-            "operator==": [
-              {
-                "kind": "function",
-                "name": "operator==",
-                "type": "bool",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const Rect &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Default comparison operator",
-                "hints": {
-                  "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const SDL_Rect &",
+                  "name": "other"
                 }
-              },
-              {
-                "kind": "function",
-                "name": "operator==",
-                "type": "bool",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const SDL_Rect &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Compares with the underlying type",
-                "hints": {
-                  "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
-                }
+              ],
+              "doc": "Compares with the underlying type",
+              "hints": {
+                "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
               }
-            ],
+            },
             "operator bool": {
               "doc": "@sa Empty()",
               "kind": "function",
@@ -13320,42 +13263,23 @@
                 "doc": "Wraps FRect.\n\n@param r the value to be wrapped"
               }
             ],
-            "operator==": [
-              {
-                "kind": "function",
-                "name": "operator==",
-                "type": "bool",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const FRect &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Default comparison operator",
-                "hints": {
-                  "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const SDL_FRect &",
+                  "name": "other"
                 }
-              },
-              {
-                "kind": "function",
-                "name": "operator==",
-                "type": "bool",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const SDL_FRect &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Compares with the underlying type",
-                "hints": {
-                  "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
-                }
+              ],
+              "doc": "Compares with the underlying type",
+              "hints": {
+                "body": "return x == other.x && y == other.y && w == other.w && h == other.h;"
               }
-            ],
+            },
             "operator bool": {
               "doc": "@sa Empty()",
               "kind": "function",

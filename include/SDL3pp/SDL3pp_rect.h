@@ -73,14 +73,6 @@ struct Point : SDL_Point
   }
 
   /**
-   * Default comparison operator
-   */
-  constexpr bool operator==(const Point& other) const
-  {
-    return x == other.x && y == other.y;
-  }
-
-  /**
    * Compares with the underlying type
    */
   constexpr bool operator==(const SDL_Point& other) const
@@ -508,14 +500,6 @@ struct FPoint : SDL_FPoint
   }
 
   /**
-   * Default comparison operator
-   */
-  constexpr bool operator==(const FPoint& other) const
-  {
-    return x == other.x && y == other.y;
-  }
-
-  /**
    * Compares with the underlying type
    */
   constexpr bool operator==(const SDL_FPoint& other) const
@@ -867,16 +851,11 @@ struct Rect : SDL_Rect
   }
 
   /**
-   * Default comparison operator
-   */
-  constexpr bool operator==(const Rect& other) const { return Equal(other); }
-
-  /**
    * Compares with the underlying type
    */
-  constexpr bool operator==(const SDL_Rect& r) const
+  constexpr bool operator==(const SDL_Rect& other) const
   {
-    return operator==(Rect(r));
+    return Equal(other);
   }
 
   /**
@@ -1498,16 +1477,11 @@ struct FRect : SDL_FRect
   }
 
   /**
-   * Default comparison operator
-   */
-  constexpr bool operator==(const FRect& other) const { return Equal(other); }
-
-  /**
    * Compares with the underlying type
    */
   constexpr bool operator==(const SDL_FRect& other) const
   {
-    return Equal(FRect(other));
+    return Equal(other);
   }
 
   /**

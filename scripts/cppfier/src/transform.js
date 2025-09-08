@@ -631,19 +631,7 @@ function expandWrappers(sourceEntries, file, context) {
       }]);
     } else if (wrapper.comparable) {
       const body = 'return ' + fields.map(f => `${f} == other.${f}`).join(' && ') + ';';
-      insertEntry(entries, [{
-        kind: "function",
-        name: "operator==",
-        type: "bool",
-        constexpr,
-        immutable: true,
-        parameters: [{
-          type: `const ${targetType} &`,
-          name: "other",
-        }],
-        doc: "Default comparison operator",
-        hints: { body },
-      }, {
+      insertEntry(entries, {
         kind: "function",
         name: "operator==",
         type: "bool",
@@ -655,8 +643,7 @@ function expandWrappers(sourceEntries, file, context) {
         }],
         doc: "Compares with the underlying type",
         hints: { body },
-      }]);
-
+      });
     }
     if (wrapper.nullable) insertEntry(entries, {
       kind: "function",
