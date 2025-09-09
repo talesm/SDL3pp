@@ -10045,6 +10045,117 @@
       "name": "SDL3pp_pixels.h",
       "doc": "@defgroup CategoryPixels Category Pixels\n\nSDL offers facilities for pixel management.\n\nLargely these facilities deal with pixel _format_: what does this set of\nbits represent?\n\nIf you mostly want to think of a pixel as some combination of red, green,\nblue, and maybe alpha intensities, this is all pretty straightforward, and\nin many cases, is enough information to build a perfectly fine game.\n\nHowever, the actual definition of a pixel is more complex than that:\n\nPixels are a representation of a color in a particular color space.\n\nThe first characteristic of a color space is the color type. SDL\nunderstands two different color types, RGB and YCbCr, or in SDL also\nreferred to as YUV.\n\nRGB colors consist of red, green, and blue channels of color that are added\ntogether to represent the colors we see on the screen.\n\nhttps://en.wikipedia.org/wiki/RGB_color_model\n\nYCbCr colors represent colors as a Y luma brightness component and red and\nblue chroma color offsets. This color representation takes advantage of the\nfact that the human eye is more sensitive to brightness than the color in\nan image. The Cb and Cr components are often compressed and have lower\nresolution than the luma component.\n\nhttps://en.wikipedia.org/wiki/YCbCr\n\nWhen the color information in YCbCr is compressed, the Y pixels are left at\nfull resolution and each Cr and Cb pixel represents an average of the color\ninformation in a block of Y pixels. The chroma location determines where in\nthat block of pixels the color information is coming from.\n\nThe color range defines how much of the pixel to use when converting a\npixel into a color on the display. When the full color range is used, the\nentire numeric range of the pixel bits is significant. When narrow color\nrange is used, for historical reasons, the pixel uses only a portion of the\nnumeric range to represent colors.\n\nThe color primaries and white point are a definition of the colors in the\ncolor space relative to the standard XYZ color space.\n\nhttps://en.wikipedia.org/wiki/CIE_1931_color_space\n\nThe transfer characteristic, or opto-electrical transfer function (OETF),\nis the way a color is converted from mathematically linear space into a\nnon-linear output signals.\n\nhttps://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics\n\nThe matrix coefficients are used to convert between YCbCr and RGB colors.",
       "entries": {
+        "Palette-forward": {
+          "name": "Palette",
+          "kind": "forward",
+          "doc": ""
+        },
+        "PaletteParam": {
+          "name": "PaletteParam",
+          "kind": "struct",
+          "doc": "Safely wrap Palette for non owning parameters",
+          "entries": {
+            "value": {
+              "kind": "var",
+              "name": "value",
+              "type": "SDL_Palette *",
+              "doc": ""
+            },
+            "PaletteParam": {
+              "kind": "function",
+              "name": "PaletteParam",
+              "constexpr": true,
+              "type": "",
+              "parameters": [
+                {
+                  "type": "SDL_Palette *",
+                  "name": "value"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "value(value)"
+                ]
+              },
+              "doc": ""
+            },
+            "operator SDL_Palette *": {
+              "kind": "function",
+              "name": "operator SDL_Palette *",
+              "constexpr": true,
+              "immutable": true,
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "return value;"
+              },
+              "doc": ""
+            }
+          }
+        },
+        "PaletteConstParam": {
+          "name": "PaletteConstParam",
+          "kind": "struct",
+          "doc": "Safely wrap Palette for non owning const parameters",
+          "entries": {
+            "value": {
+              "kind": "var",
+              "name": "value",
+              "type": "const SDL_Palette *",
+              "doc": ""
+            },
+            "PaletteConstParam": [
+              {
+                "kind": "function",
+                "name": "PaletteConstParam",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "SDL_Palette *",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(value)"
+                  ]
+                },
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "PaletteConstParam",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "PaletteParam",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(value.value)"
+                  ]
+                },
+                "doc": ""
+              }
+            ],
+            "operator const SDL_Palette *": {
+              "kind": "function",
+              "name": "operator const SDL_Palette *",
+              "constexpr": true,
+              "immutable": true,
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "return value;"
+              },
+              "doc": ""
+            }
+          }
+        },
         "Color-forward": {
           "kind": "forward",
           "name": "Color",
@@ -10850,7 +10961,7 @@
                   "name": "color"
                 },
                 {
-                  "type": "PaletteRef",
+                  "type": "PaletteConstParam",
                   "name": "palette"
                 }
               ],
@@ -12814,7 +12925,7 @@
                 }
               ],
               "hints": {
-                "body": "std::swap(m_resource, other.m_resource);"
+                "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
               },
               "name": "operator=",
               "doc": ""
@@ -12823,6 +12934,7 @@
               "kind": "function",
               "type": "SDL_Palette *",
               "immutable": true,
+              "constexpr": true,
               "parameters": [],
               "hints": {
                 "body": "return m_resource;"
@@ -12833,11 +12945,24 @@
             "release": {
               "kind": "function",
               "type": "SDL_Palette *",
+              "constexpr": true,
               "parameters": [],
               "hints": {
                 "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
               },
               "name": "release",
+              "doc": ""
+            },
+            "operator PaletteParam": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "return {m_resource};"
+              },
+              "name": "operator PaletteParam",
               "doc": ""
             },
             "GetSize": {
@@ -13017,19 +13142,16 @@
           "parameters": [
             {
               "name": "palette",
-              "type": "SDL_Palette *"
+              "type": "PaletteParam"
             },
             {
               "name": "colors",
-              "type": "const SDL_Color &"
+              "type": "SpanRef<const SDL_Color>"
             },
             {
               "name": "firstcolor",
-              "type": "int"
-            },
-            {
-              "name": "ncolors",
-              "type": "int"
+              "type": "int",
+              "default": "0"
             }
           ],
           "sourceName": "SDL_SetPaletteColors",
@@ -13062,7 +13184,7 @@
             },
             {
               "name": "palette",
-              "type": "const SDL_Palette *"
+              "type": "PaletteConstParam"
             },
             {
               "name": "r",
@@ -13091,7 +13213,7 @@
             },
             {
               "name": "palette",
-              "type": "const SDL_Palette *"
+              "type": "PaletteConstParam"
             },
             {
               "name": "r",
@@ -13128,7 +13250,7 @@
             },
             {
               "name": "palette",
-              "type": "const SDL_Palette *"
+              "type": "PaletteConstParam"
             },
             {
               "name": "r",
@@ -13161,7 +13283,7 @@
             },
             {
               "name": "palette",
-              "type": "const SDL_Palette *"
+              "type": "PaletteConstParam"
             },
             {
               "name": "r",
@@ -15584,7 +15706,7 @@
           "doc": "Create a palette and associate it with a surface.\n\nThis function creates a palette compatible with the provided surface. The\npalette is then returned for you to modify, and the surface will\nautomatically use the new palette in future operations. You do not need to\ndestroy the returned palette, it will be freed when the reference count\nreaches 0, usually when the surface is destroyed.\n\nBitmap surfaces (with format PIXELFORMAT_INDEX1LSB or\nPIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as\nwhite and 1 as black. Other surfaces will get a palette initialized with\nwhite in every entry.\n\nIf this function is called for a surface that already has a palette, a new\npalette will be created to replace it.\n\n@param surface the Surface structure to update.\n@returns a new Palette structure on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.SetColors",
           "name": "CreateSurfacePalette",
           "kind": "function",
-          "type": "Palette",
+          "type": "SDL_Palette *",
           "parameters": [
             {
               "name": "surface",
@@ -15608,7 +15730,7 @@
             },
             {
               "name": "palette",
-              "type": "SDL_Palette *"
+              "type": "PaletteParam"
             }
           ],
           "sourceName": "SDL_SetSurfacePalette",
@@ -15620,7 +15742,7 @@
           "doc": "Get the palette used by a surface.\n\n@param surface the Surface structure to query.\n@returns a pointer to the palette used by the surface, or nullptr if there is\n         no palette used.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetSurfacePalette",
           "name": "GetSurfacePalette",
           "kind": "function",
-          "type": "Palette",
+          "type": "SDL_Palette *",
           "parameters": [
             {
               "name": "surface",
@@ -16147,7 +16269,7 @@
             },
             {
               "name": "palette",
-              "type": "SDL_Palette *"
+              "type": "PaletteParam"
             },
             {
               "name": "colorspace",

@@ -789,6 +789,8 @@ function expandResources(sourceEntries, file, context) {
     if (!resourceEntry) continue;
 
     const uniqueName = targetEntry.name || transformName(sourceName, context);
+    const paramType = `${uniqueName}Param`;
+    const constParamType = `${uniqueName}ConstParam`;
 
     // const refName = uniqueName + "Ref";
     // const unsafeName = uniqueName + "Unsafe";
@@ -805,6 +807,74 @@ function expandResources(sourceEntries, file, context) {
     referenceAliases.push({
       name: uniqueName, kind: "forward"
     });
+
+    referenceAliases.push({
+      name: paramType,
+      kind: 'struct',
+      doc: `Safely wrap ${uniqueName} for non owning parameters`,
+      entries: {
+        'value': {
+          kind: 'var',
+          name: 'value',
+          type: pointerType
+        },
+        [paramType]: {
+          kind: 'function',
+          name: paramType,
+          constexpr: true,
+          type: '',
+          parameters: [{ type: pointerType, name: 'value' }],
+          hints: { init: ['value(value)'] }
+        },
+        [`operator ${pointerType}`]: {
+          kind: 'function',
+          name: `operator ${pointerType}`,
+          constexpr: true,
+          immutable: true,
+          type: '',
+          parameters: [],
+          hints: { body: 'return value;' }
+        }
+      },
+    });
+    if (resourceEntry.enableConstParam) {
+      referenceAliases.push({
+        name: constParamType,
+        kind: 'struct',
+        doc: `Safely wrap ${uniqueName} for non owning const parameters`,
+        entries: {
+          'value': {
+            kind: 'var',
+            name: 'value',
+            type: constPointerType
+          },
+          [constParamType]: [{
+            kind: 'function',
+            name: constParamType,
+            constexpr: true,
+            type: '',
+            parameters: [{ type: pointerType, name: 'value' }],
+            hints: { init: ['value(value)'] }
+          }, {
+            kind: 'function',
+            name: constParamType,
+            constexpr: true,
+            type: '',
+            parameters: [{ type: paramType, name: 'value' }],
+            hints: { init: ['value(value.value)'] }
+          }],
+          [`operator ${constPointerType}`]: {
+            kind: 'function',
+            name: `operator ${constPointerType}`,
+            constexpr: true,
+            immutable: true,
+            type: '',
+            parameters: [],
+            hints: { body: 'return value;' }
+          }
+        },
+      });
+    }
     // if (targetEntry.aliasDetached) {
     //   referenceAliases.push({
     //     name: detachedName,
@@ -813,11 +883,11 @@ function expandResources(sourceEntries, file, context) {
     //     doc: `A ${title} result that will be owned only if assigned to a ${uniqueName}.\n\nThis is designed as resource types to cases where ownership might not be required.`
     //   });
     // }
-    context.addParamType(pointerType, pointerType);
-    context.addParamType(constPointerType, constPointerType);
+    context.addParamType(pointerType, paramType);
+    context.addParamType(constPointerType, resourceEntry.enableConstParam ? constParamType : paramType);
 
-    context.addReturnType(pointerType, uniqueName);
-    context.addReturnType(constPointerType, uniqueName);
+    context.addReturnType(pointerType, pointerType);
+    context.addReturnType(constPointerType, constPointerType);
 
     /** @type {Dict<ApiEntryTransform | ApiEntryBase[]>} */
     const ctors = {
@@ -898,6 +968,8 @@ function expandResources(sourceEntries, file, context) {
 
     // const staticCreateFunctions = !targetEntry.noStaticCtors;
     for (const [sourceName, entry] of Object.entries(subEntries)) {
+      const ctorTransform = file.transform[sourceName];
+      let isCtor = false;
       if (typeof entry === "string") {
         if (entry === "ctor") {
           ctors[sourceName] = {
@@ -907,16 +979,21 @@ function expandResources(sourceEntries, file, context) {
             sourceName,
           };
         }
+        isCtor = true;
+      } else if (!Array.isArray(entry) && entry.name === "ctor") {
+        entry.kind = "function";
+        entry.type = "";
+        entry.name = uniqueName;
+        if (!entry.sourceName && sourceEntries[sourceName]) entry.sourceName = sourceName;
+        ctors[sourceName] = entry;
+        isCtor = true;
+      }
+      if (isCtor) {
         delete subEntries[sourceName];
-      } else if (!Array.isArray(entry)) {
-        if (entry.name === "ctor") {
-          entry.kind = "function";
-          entry.type = "";
-          entry.name = uniqueName;
-          if (!entry.sourceName && sourceEntries[sourceName]) entry.sourceName = sourceName;
-          // addHints(entry, { wrapSelf: true });
-          ctors[sourceName] = entry;
-          delete subEntries[sourceName];
+        if (!ctorTransform) {
+          file.transform[sourceName] = { type: uniqueName };
+        } else if (!ctorTransform.type) {
+          ctorTransform.type = uniqueName;
         }
       }
     }
@@ -940,6 +1017,9 @@ function expandResources(sourceEntries, file, context) {
         combineHints(freeFunction, { body });
       }
       subEntries[sourceName] = freeFunction;
+      if (!file.transform[sourceName]) {
+        file.transform[sourceName] = { parameters: [{ type: pointerType }] };
+      }
     }
     targetEntry.doc = transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource`;
     targetEntry.entries = {
@@ -959,20 +1039,30 @@ function expandResources(sourceEntries, file, context) {
         kind: "function",
         type: `${uniqueName} &`,
         parameters: [{ name: 'other', type: uniqueName }],
-        hints: { body: "std::swap(m_resource, other.m_resource);" },
+        hints: { body: "std::swap(m_resource, other.m_resource);\nreturn *this;" },
       },
       "get": {
         kind: "function",
         type: pointerType,
         immutable: true,
+        constexpr: true,
         parameters: [],
         hints: { body: "return m_resource;" },
       },
       "release": {
         kind: "function",
         type: pointerType,
+        constexpr: true,
         parameters: [],
         hints: { body: "auto r = m_resource;\nm_resource = nullptr;\nreturn r;" },
+      },
+      [`operator ${paramType}`]: {
+        kind: "function",
+        type: '',
+        immutable: true,
+        constexpr: true,
+        parameters: [],
+        hints: { body: "return {m_resource};" },
       },
       ...subEntries,
     };
@@ -983,8 +1073,8 @@ function expandResources(sourceEntries, file, context) {
 
     });
 
-    const extraParametersStr = resourceEntry.extraParameters?.length
-      ? (", " + resourceEntry.extraParameters.join(", ")) : "";
+    // const extraParametersStr = resourceEntry.extraParameters?.length
+    //   ? (", " + resourceEntry.extraParameters.join(", ")) : "";
 
     /** @type {ApiEntryTransform[]} */
     const derivedEntries = [
@@ -1027,8 +1117,8 @@ function expandResources(sourceEntries, file, context) {
       //   },
       // },
     ];
-    /** @type {Set<string>} */
-    const derivedNames = new Set();
+    // /** @type {Set<string>} */
+    // const derivedNames = new Set();
     // if (resourceEntry.lock) {
     //   const lockEntry = resourceEntry.lock !== true ? resourceEntry.lock : {};
     //   lockEntry.kind = "struct";
@@ -1121,6 +1211,7 @@ function expandResources(sourceEntries, file, context) {
     // }
     delete targetEntry.resource;
   }
+  context.includeAfter(referenceAliases, '__begin');
 }
 
 /**

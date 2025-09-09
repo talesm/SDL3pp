@@ -231,6 +231,11 @@ export interface ResourceDefinition {
    * Extra parameters to the base classes.
    */
   extraParameters?: string[]
+
+  /**
+   * Enable const parameters
+   */
+  enableConstParam?: boolean
 }
 
 export interface ApiLock extends ApiEntryTransform {

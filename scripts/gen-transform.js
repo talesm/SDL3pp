@@ -3093,7 +3093,7 @@ const transform = {
                   "name": "color"
                 },
                 {
-                  "type": "PaletteRef",
+                  "type": "PaletteConstParam",
                   "name": "palette"
                 }
               ]
@@ -3256,7 +3256,10 @@ const transform = {
           }
         },
         "SDL_Palette": {
-          resource: 'refcount',
+          resource: {
+            shared: 'refcount',
+            enableConstParam: true,
+          },
           entries: {
             "SDL_CreatePalette": "ctor",
             "GetSize": {
@@ -3293,6 +3296,20 @@ const transform = {
               ]
             }
           }
+        },
+        "SDL_SetPaletteColors": {
+          parameters: [
+            {},
+            {
+              name: "colors",
+              type: "SpanRef<const SDL_Color>"
+            },
+            {
+              name: "firstcolor",
+              type: "int",
+              default: "0"
+            }
+          ]
         }
       }
     },

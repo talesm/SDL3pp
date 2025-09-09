@@ -45,7 +45,7 @@
 // #include "SDL3pp_mouse.h"
 // #include "SDL3pp_mutex.h"
 // #include "SDL3pp_pen.h"
-// #include "SDL3pp_pixels.h"
+#include "SDL3pp_pixels.h"
 // #include "SDL3pp_platform.h"
 // #include "SDL3pp_power.h"
 // #include "SDL3pp_process.h"
