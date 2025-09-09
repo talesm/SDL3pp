@@ -3109,7 +3109,7 @@ const transform = {
                   "name": "pixel"
                 },
                 {
-                  "type": "PaletteRef",
+                  "type": "PaletteConstParam",
                   "name": "palette"
                 }
               ]

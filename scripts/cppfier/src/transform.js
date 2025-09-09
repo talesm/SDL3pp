@@ -789,6 +789,8 @@ function expandResources(sourceEntries, file, context) {
     if (!resourceEntry) continue;
 
     const uniqueName = targetEntry.name || transformName(sourceName, context);
+    const rawName = resourceEntry.rawName || `${uniqueName}Raw`;
+    const constRawName = `const ${rawName}`;
     const paramType = `${uniqueName}Param`;
     const constParamType = `${uniqueName}ConstParam`;
 
@@ -804,9 +806,8 @@ function expandResources(sourceEntries, file, context) {
     const constPointerType = `const ${pointerType}`;
     const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
     context.addName(sourceName, uniqueName);
-    referenceAliases.push({
-      name: uniqueName, kind: "forward"
-    });
+    referenceAliases.push({ name: uniqueName, kind: "forward" });
+    referenceAliases.push({ name: rawName, kind: "alias", type: pointerType });
 
     referenceAliases.push({
       name: paramType,
@@ -816,19 +817,26 @@ function expandResources(sourceEntries, file, context) {
         'value': {
           kind: 'var',
           name: 'value',
-          type: pointerType
+          type: rawName
         },
-        [paramType]: {
+        [paramType]: [{
           kind: 'function',
           name: paramType,
           constexpr: true,
           type: '',
-          parameters: [{ type: pointerType, name: 'value' }],
+          parameters: [{ type: rawName, name: 'value' }],
           hints: { init: ['value(value)'] }
-        },
-        [`operator ${pointerType}`]: {
+        }, {
           kind: 'function',
-          name: `operator ${pointerType}`,
+          name: paramType,
+          constexpr: true,
+          type: '',
+          parameters: [{ type: "std::nullptr_t", name: "_" }],
+          hints: { init: [`value(${isStruct ? "nullptr" : "0"})`] }
+        }],
+        [`operator ${rawName}`]: {
+          kind: 'function',
+          name: `operator ${rawName}`,
           constexpr: true,
           immutable: true,
           type: '',
@@ -846,14 +854,14 @@ function expandResources(sourceEntries, file, context) {
           'value': {
             kind: 'var',
             name: 'value',
-            type: constPointerType
+            type: constRawName
           },
           [constParamType]: [{
             kind: 'function',
             name: constParamType,
             constexpr: true,
             type: '',
-            parameters: [{ type: pointerType, name: 'value' }],
+            parameters: [{ type: constRawName, name: 'value' }],
             hints: { init: ['value(value)'] }
           }, {
             kind: 'function',
@@ -862,10 +870,17 @@ function expandResources(sourceEntries, file, context) {
             type: '',
             parameters: [{ type: paramType, name: 'value' }],
             hints: { init: ['value(value.value)'] }
-          }],
-          [`operator ${constPointerType}`]: {
+          }, {
             kind: 'function',
-            name: `operator ${constPointerType}`,
+            name: constParamType,
+            constexpr: true,
+            type: '',
+            parameters: [{ type: "std::nullptr_t", name: "_" }],
+            hints: { init: [`value(${isStruct ? "nullptr" : "0"})`] }
+          }],
+          [`operator ${constRawName}`]: {
+            kind: 'function',
+            name: `operator ${constRawName}`,
             constexpr: true,
             immutable: true,
             type: '',
@@ -886,8 +901,8 @@ function expandResources(sourceEntries, file, context) {
     context.addParamType(pointerType, paramType);
     context.addParamType(constPointerType, resourceEntry.enableConstParam ? constParamType : paramType);
 
-    context.addReturnType(pointerType, pointerType);
-    context.addReturnType(constPointerType, constPointerType);
+    context.addReturnType(pointerType, rawName);
+    context.addReturnType(constPointerType, constRawName);
 
     /** @type {Dict<ApiEntryTransform | ApiEntryBase[]>} */
     const ctors = {
@@ -902,7 +917,7 @@ function expandResources(sourceEntries, file, context) {
         type: "",
         constexpr: true,
         explicit: true,
-        parameters: [{ name: "resource", type: pointerType }],
+        parameters: [{ name: "resource", type: constRawName }],
         hints: { init: ["m_resource(resource)"] },
       }, {
         kind: "function",
@@ -1018,14 +1033,14 @@ function expandResources(sourceEntries, file, context) {
       }
       subEntries[sourceName] = freeFunction;
       if (!file.transform[sourceName]) {
-        file.transform[sourceName] = { parameters: [{ type: pointerType }] };
+        file.transform[sourceName] = { parameters: [{ type: rawName }] };
       }
     }
     targetEntry.doc = transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource`;
     targetEntry.entries = {
       "m_resource": {
         kind: "var",
-        type: pointerType,
+        type: rawName,
         hints: { body: "nullptr" },
       },
       ...ctors,
@@ -1043,7 +1058,7 @@ function expandResources(sourceEntries, file, context) {
       },
       "get": {
         kind: "function",
-        type: pointerType,
+        type: rawName,
         immutable: true,
         constexpr: true,
         parameters: [],
@@ -1051,7 +1066,7 @@ function expandResources(sourceEntries, file, context) {
       },
       "release": {
         kind: "function",
-        type: pointerType,
+        type: rawName,
         constexpr: true,
         parameters: [],
         hints: { body: "auto r = m_resource;\nm_resource = nullptr;\nreturn r;" },

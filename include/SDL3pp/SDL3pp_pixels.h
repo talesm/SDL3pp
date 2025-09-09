@@ -71,19 +71,26 @@ namespace SDL {
 // Forward decl
 struct Palette;
 
+using PaletteRaw = SDL_Palette*;
+
 /**
  * Safely wrap Palette for non owning parameters
  */
 struct PaletteParam
 {
-  SDL_Palette* value;
+  PaletteRaw value;
 
-  constexpr PaletteParam(SDL_Palette* value)
+  constexpr PaletteParam(PaletteRaw value)
     : value(value)
   {
   }
 
-  constexpr operator SDL_Palette*() const { return value; }
+  constexpr PaletteParam(std::nullptr_t _)
+    : value(nullptr)
+  {
+  }
+
+  constexpr operator PaletteRaw() const { return value; }
 };
 
 /**
@@ -91,9 +98,9 @@ struct PaletteParam
  */
 struct PaletteConstParam
 {
-  const SDL_Palette* value;
+  const PaletteRaw value;
 
-  constexpr PaletteConstParam(SDL_Palette* value)
+  constexpr PaletteConstParam(const PaletteRaw value)
     : value(value)
   {
   }
@@ -103,7 +110,12 @@ struct PaletteConstParam
   {
   }
 
-  constexpr operator const SDL_Palette*() const { return value; }
+  constexpr PaletteConstParam(std::nullptr_t _)
+    : value(nullptr)
+  {
+  }
+
+  constexpr operator const PaletteRaw() const { return value; }
 };
 
 // Forward decl
@@ -760,7 +772,7 @@ public:
    * @sa MapRGBA()
    * @sa Surface.MapColor()
    */
-  inline Uint32 Map(Color color, PaletteConstParam palette) const;
+  Uint32 Map(Color color, PaletteConstParam palette) const;
 
   /**
    * Get RGBA values from a pixel in the specified format.
@@ -786,7 +798,7 @@ public:
    * @sa GetRGBA()
    * @sa Map()
    */
-  inline Color Get(Uint32 pixel, PaletteConstParam palette) const;
+  Color Get(Uint32 pixel, PaletteConstParam palette) const;
 };
 
 constexpr SDL_PixelFormat PIXELFORMAT_UNKNOWN =
@@ -1986,12 +1998,12 @@ struct FColor : SDL_FColor
 class Palette
 {
 
-  SDL_Palette* m_resource = nullptr;
+  PaletteRaw m_resource = nullptr;
 
 public:
   constexpr Palette() = default;
 
-  constexpr explicit Palette(SDL_Palette* resource)
+  constexpr explicit Palette(const PaletteRaw resource)
     : m_resource(resource)
   {
   }
@@ -2030,9 +2042,9 @@ public:
     return *this;
   }
 
-  constexpr SDL_Palette* get() const { return m_resource; }
+  constexpr PaletteRaw get() const { return m_resource; }
 
-  constexpr SDL_Palette* release()
+  constexpr PaletteRaw release()
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -2234,10 +2246,7 @@ inline void SetPaletteColors(PaletteParam palette,
  *
  * @sa Palette.Palette
  */
-inline void DestroyPalette(SDL_Palette* palette)
-{
-  SDL_DestroyPalette(palette);
-}
+inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.

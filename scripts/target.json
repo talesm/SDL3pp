@@ -10050,6 +10050,12 @@
           "kind": "forward",
           "doc": ""
         },
+        "PaletteRaw": {
+          "name": "PaletteRaw",
+          "kind": "alias",
+          "type": "SDL_Palette *",
+          "doc": ""
+        },
         "PaletteParam": {
           "name": "PaletteParam",
           "kind": "struct",
@@ -10058,30 +10064,50 @@
             "value": {
               "kind": "var",
               "name": "value",
-              "type": "SDL_Palette *",
+              "type": "PaletteRaw",
               "doc": ""
             },
-            "PaletteParam": {
-              "kind": "function",
-              "name": "PaletteParam",
-              "constexpr": true,
-              "type": "",
-              "parameters": [
-                {
-                  "type": "SDL_Palette *",
-                  "name": "value"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "value(value)"
-                ]
+            "PaletteParam": [
+              {
+                "kind": "function",
+                "name": "PaletteParam",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "PaletteRaw",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(value)"
+                  ]
+                },
+                "doc": ""
               },
-              "doc": ""
-            },
-            "operator SDL_Palette *": {
+              {
+                "kind": "function",
+                "name": "PaletteParam",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "std::nullptr_t",
+                    "name": "_"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(nullptr)"
+                  ]
+                },
+                "doc": ""
+              }
+            ],
+            "operator PaletteRaw": {
               "kind": "function",
-              "name": "operator SDL_Palette *",
+              "name": "operator PaletteRaw",
               "constexpr": true,
               "immutable": true,
               "type": "",
@@ -10101,7 +10127,7 @@
             "value": {
               "kind": "var",
               "name": "value",
-              "type": "const SDL_Palette *",
+              "type": "const PaletteRaw",
               "doc": ""
             },
             "PaletteConstParam": [
@@ -10112,7 +10138,7 @@
                 "type": "",
                 "parameters": [
                   {
-                    "type": "SDL_Palette *",
+                    "type": "const PaletteRaw",
                     "name": "value"
                   }
                 ],
@@ -10140,11 +10166,29 @@
                   ]
                 },
                 "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "PaletteConstParam",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "std::nullptr_t",
+                    "name": "_"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(nullptr)"
+                  ]
+                },
+                "doc": ""
               }
             ],
-            "operator const SDL_Palette *": {
+            "operator const PaletteRaw": {
               "kind": "function",
-              "name": "operator const SDL_Palette *",
+              "name": "operator const PaletteRaw",
               "constexpr": true,
               "immutable": true,
               "type": "",
@@ -10979,7 +11023,7 @@
                   "name": "pixel"
                 },
                 {
-                  "type": "PaletteRef",
+                  "type": "PaletteConstParam",
                   "name": "palette"
                 }
               ],
@@ -12811,7 +12855,7 @@
           "entries": {
             "m_resource": {
               "kind": "var",
-              "type": "SDL_Palette *",
+              "type": "PaletteRaw",
               "hints": {
                 "body": "nullptr"
               },
@@ -12839,7 +12883,7 @@
                 "parameters": [
                   {
                     "name": "resource",
-                    "type": "SDL_Palette *"
+                    "type": "const PaletteRaw"
                   }
                 ],
                 "hints": {
@@ -12932,7 +12976,7 @@
             },
             "get": {
               "kind": "function",
-              "type": "SDL_Palette *",
+              "type": "PaletteRaw",
               "immutable": true,
               "constexpr": true,
               "parameters": [],
@@ -12944,7 +12988,7 @@
             },
             "release": {
               "kind": "function",
-              "type": "SDL_Palette *",
+              "type": "PaletteRaw",
               "constexpr": true,
               "parameters": [],
               "hints": {
@@ -13167,7 +13211,7 @@
           "parameters": [
             {
               "name": "palette",
-              "type": "SDL_Palette *"
+              "type": "PaletteRaw"
             }
           ],
           "sourceName": "SDL_DestroyPalette"
@@ -15706,7 +15750,7 @@
           "doc": "Create a palette and associate it with a surface.\n\nThis function creates a palette compatible with the provided surface. The\npalette is then returned for you to modify, and the surface will\nautomatically use the new palette in future operations. You do not need to\ndestroy the returned palette, it will be freed when the reference count\nreaches 0, usually when the surface is destroyed.\n\nBitmap surfaces (with format PIXELFORMAT_INDEX1LSB or\nPIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as\nwhite and 1 as black. Other surfaces will get a palette initialized with\nwhite in every entry.\n\nIf this function is called for a surface that already has a palette, a new\npalette will be created to replace it.\n\n@param surface the Surface structure to update.\n@returns a new Palette structure on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.SetColors",
           "name": "CreateSurfacePalette",
           "kind": "function",
-          "type": "SDL_Palette *",
+          "type": "PaletteRaw",
           "parameters": [
             {
               "name": "surface",
@@ -15742,7 +15786,7 @@
           "doc": "Get the palette used by a surface.\n\n@param surface the Surface structure to query.\n@returns a pointer to the palette used by the surface, or nullptr if there is\n         no palette used.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetSurfacePalette",
           "name": "GetSurfacePalette",
           "kind": "function",
-          "type": "SDL_Palette *",
+          "type": "PaletteRaw",
           "parameters": [
             {
               "name": "surface",

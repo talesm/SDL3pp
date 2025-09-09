@@ -213,6 +213,11 @@ export interface ResourceDefinition {
   free?: string
 
   /**
+   * Name of raw resource type
+   */
+  rawName?: string;
+
+  /**
    * If true or object, the object to lock
    */
   lock?: ApiLock | boolean;
