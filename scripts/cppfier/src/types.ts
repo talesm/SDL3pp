@@ -50,6 +50,7 @@ export interface EntryHint {
   removeParamThis?: boolean;
   private?: boolean;
   wrapSelf?: boolean;
+  changeAccess?: 'public' | 'private';
 }
 
 export interface VersionTag {

@@ -1951,6 +1951,7 @@ class Palette
 
   SDL_Palette* m_resource = nullptr;
 
+public:
   constexpr Palette() = default;
 
   constexpr explicit Palette(SDL_Palette* resource)

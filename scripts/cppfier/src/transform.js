@@ -826,7 +826,7 @@ function expandResources(sourceEntries, file, context) {
         type: "",
         constexpr: true,
         parameters: [],
-        hints: { default: true },
+        hints: { default: true, changeAccess: "public" },
       }, {
         kind: "function",
         type: "",

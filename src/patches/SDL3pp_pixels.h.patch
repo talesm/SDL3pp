@@ -1,5 +1,5 @@
---- include/SDL3pp/SDL3pp_pixels.h	2025-09-08 18:16:18.823135199 -0300
-+++ build/snapshot/SDL3pp_pixels.h	2025-09-08 18:16:17.182131584 -0300
+--- include/SDL3pp/SDL3pp_pixels.h	2025-09-09 08:30:15.159602649 -0300
++++ build/snapshot/SDL3pp_pixels.h	2025-09-09 08:30:12.103119094 -0300
 @@ -9,7 +9,7 @@
  namespace SDL {
  
@@ -172,9 +172,8 @@
 - * @since This macro is available since SDL 3.2.0.
 - */
 -#define SDL_PIXELORDER(format) (((format) >> 20) & 0x0F)
-+#endif // SDL3PP_DOC
- 
- /**
+-
+-/**
 - * A macro to retrieve the layout of an PixelFormat.
 - *
 - * This is usually a value from the PackedLayout enumeration, or zero if a
@@ -236,8 +235,9 @@
 -                                         ? 2                                   \
 -                                         : 1)                                  \
 -                                    : (((format) >> 0) & 0xFF))
--
--/**
++#endif // SDL3PP_DOC
+ 
+ /**
 - * A macro to determine if an PixelFormat is an indexed format.
 - *
 - * Note that this macro double-evaluates its parameter, so do not use
@@ -1103,8 +1103,7 @@
 +  {
 +    return operator==(Colorspace(colorspace));
 +  }
- 
--#define GetType
++
 +  /// True if a valid colorspace
 +  /**
 +   * Unwraps to the underlying Colorspace.
@@ -1112,7 +1111,8 @@
 +   * @returns the underlying Colorspace.
 +   */
 +  constexpr operator SDL_Colorspace() const { return m_colorspace; }
-+
+ 
+-#define GetType
 +  /**
 +   * Check if valid.
 +   *
@@ -1625,7 +1625,7 @@
     * @returns Reference to self.
     */
    constexpr FColor& SetA(float newA)
-@@ -1789,11 +1997,11 @@
+@@ -1790,11 +1998,11 @@
      return r;
    }
  
@@ -1639,7 +1639,7 @@
    }
  
    /**
-@@ -1811,7 +2019,8 @@
+@@ -1812,7 +2020,8 @@
     */
    void SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
    {
@@ -1649,7 +1649,7 @@
    }
  
    /**
-@@ -1926,28 +2135,6 @@
+@@ -1927,28 +2136,6 @@
  }
  
  /**
@@ -1678,7 +1678,7 @@
   * Set a range of colors in a palette.
   *
   * @param palette the Palette structure to modify.
-@@ -1962,28 +2149,11 @@
+@@ -1963,28 +2150,11 @@
   * @since This function is available since SDL 3.2.0.
   */
  inline void SetPaletteColors(SDL_Palette* palette,
@@ -1711,7 +1711,7 @@
  }
  
  /**
-@@ -2157,6 +2327,33 @@
+@@ -2158,6 +2328,33 @@
  
  /// @}
  

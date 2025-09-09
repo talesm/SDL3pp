@@ -127,9 +127,10 @@ function generateEntry(entry, prefix) {
   const doc = generateDocString(entry.doc, prefix) + "\n";
   const template = generateTemplateSignature(entry.template, prefix);
   const version = entry.since;
-  if (!version) return doGenerate(entry);
+  const accessMod = entry.hints?.changeAccess ? `${prefix.slice(2)}${entry.hints?.changeAccess}:\n` : '';
+  if (!version) return accessMod + doGenerate(entry);
   const versionStr = `${version.tag}_VERSION_ATLEAST(${version.major}, ${version.minor}, ${version.patch})`;
-  return `#if ${versionStr}\n\n${doGenerate(entry)}\n\n#endif // ${versionStr}`;
+  return `${accessMod}#if ${versionStr}\n\n${doGenerate(entry)}\n\n#endif // ${versionStr}`;
 
   /** @param {ApiEntry} entry  */
   function doGenerate(entry) {

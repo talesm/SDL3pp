@@ -12714,7 +12714,8 @@
                 "constexpr": true,
                 "parameters": [],
                 "hints": {
-                  "default": true
+                  "default": true,
+                  "changeAccess": "public"
                 },
                 "name": "Palette",
                 "doc": ""
