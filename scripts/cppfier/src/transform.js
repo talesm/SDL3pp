@@ -222,10 +222,9 @@ class ApiContext {
 
   /**
    * 
-   * @param {string}  file 
    * @param {string}  includeAfterKey 
    */
-  getOrCreateIncludeAfter(file, includeAfterKey) {
+  getOrCreateIncludeAfter(includeAfterKey) {
     const includeAfter = this.currentIncludeAfter;
 
     const includeTarget = includeAfter[includeAfterKey];
@@ -236,11 +235,10 @@ class ApiContext {
   /**
    * Add to includeAfter field
    * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
-   * @param {string}                                        file 
    * @param {string}                                        includeAfterKey 
    */
-  includeAfter(entryOrName, file, includeAfterKey) {
-    const includeTarget = this.getOrCreateIncludeAfter(file, includeAfterKey);
+  includeAfter(entryOrName, includeAfterKey) {
+    const includeTarget = this.getOrCreateIncludeAfter(includeAfterKey);
     if (Array.isArray(entryOrName)) {
       includeTarget.push(...entryOrName);
     } else {
@@ -251,11 +249,10 @@ class ApiContext {
   /**
    * Prepend to includeAfter field
    * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
-   * @param {string}                                        file 
    * @param {string}                                        includeAfterKey 
    */
-  prependIncludeAfter(entryOrName, file, includeAfterKey) {
-    const includeTarget = this.getOrCreateIncludeAfter(file, includeAfterKey);
+  prependIncludeAfter(entryOrName, includeAfterKey) {
+    const includeTarget = this.getOrCreateIncludeAfter(includeAfterKey);
     if (Array.isArray(entryOrName)) {
       includeTarget.unshift(...entryOrName);
     } else {
@@ -303,7 +300,7 @@ function expandTypes(sourceEntries, file, context) {
     const name = transformName(sourceName, context);
     if (targetDelta) {
       if (!targetDelta.name) targetDelta.name = name;
-      if (targetDelta.after) context.includeAfter(targetDelta.name, file.name, targetDelta.after);
+      if (targetDelta.after) context.includeAfter(targetDelta.name, targetDelta.after);
     } else {
       transformMap[sourceName] = {
         name,
@@ -347,7 +344,7 @@ function transformEntries(sourceEntries, file, context) {
       continue;
     }
     if (!transformEntry.name) transformEntry.name = sourceName;
-    context.includeAfter(transformEntry, file.name, lastSourceName);
+    context.includeAfter(transformEntry, lastSourceName);
   }
   const includeAfter = context.currentIncludeAfter;
 
@@ -437,7 +434,7 @@ function expandNamespaces(sourceEntries, transform, context) {
         context.addName(key, `${nsName}.${entry.name}`);
       }
     });
-    context.includeAfter(ns, transform.name, sourceEntriesListed[0][0]);
+    context.includeAfter(ns, sourceEntriesListed[0][0]);
   }
 }
 
@@ -479,7 +476,7 @@ function expandCallbacks(sourceEntries, file, context) {
           doc: transformDoc(sourceEntry.doc ?? "", context) + `\n@sa ${name}`,
           ...(file.transform[callbackName] ?? {})
         };
-        context.prependIncludeAfter(callbackEntry, file.name, sourceName);
+        context.prependIncludeAfter(callbackEntry, sourceName);
         break;
       }
     }
@@ -1097,7 +1094,7 @@ function expandResources(sourceEntries, file, context) {
 
     const includeAfterKey = targetEntry.after ?? sourceName;
     // let pointToIncludeFunc = includeAfterKey;
-    context.includeAfter(derivedEntries, file.name, includeAfterKey);
+    context.includeAfter(derivedEntries, includeAfterKey);
     // for (const [subName, subEntry] of Object.entries(refSubEntries)) {
     //   if (Array.isArray(subEntry)) {
     //     subEntry.forEach(e => {
@@ -1205,7 +1202,7 @@ function expandEnumerations(sourceEntries, file, context) {
       context.addName(value, entry.name);
       if (!sourceEntries[value]) {
         entry.sourceName = value;
-        context.includeAfter(entry, file.name, type);
+        context.includeAfter(entry, type);
       } else {
         file.transform[value] = entry;
       }
