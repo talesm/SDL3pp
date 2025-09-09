@@ -204,7 +204,7 @@ export interface ResourceDefinition {
   /**
    * The shared field name
    */
-  shared?: string
+  shared?: boolean | string
 
   /**
    * Name of free function. By default it uses the first subentry with

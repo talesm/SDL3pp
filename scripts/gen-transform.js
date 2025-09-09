@@ -3361,26 +3361,6 @@ const transform = {
       }
     },
     "SDL_properties.h": {
-      includeAfter: {
-        "__begin": [
-          { "name": "PropertyType" },
-          { "name": "CleanupPropertyCallback" },
-          {
-            "name": "CleanupPropertyCB",
-          },
-          { "name": "EnumeratePropertiesCallback" },
-          { "name": "PropertiesRef", kind: "forward" },
-          {
-            "name": "EnumeratePropertiesCB",
-          },
-        ],
-      },
-      enumerations: {
-        "SDL_PropertyType": {
-          includeAfter: "__begin",
-          prefix: "SDL_PROPERTY_TYPE_"
-        }
-      },
       resources: {
         "SDL_PropertiesID": {
           name: "Properties",
@@ -3531,9 +3511,27 @@ const transform = {
         }
       },
       transform: {
+        "SDL_PropertiesID": {
+          name: "Properties",
+          resource: {
+            lock: true,
+            lockFunction: "SDL_LockProperties",
+            unlockFunction: "SDL_UnlockProperties",
+            ctors: ["SDL_CreateProperties"],
+            rawName: "PropertiesID",
+            shared: true,
+          },
+        },
+        "SDL_PropertyType": {
+          enum: "SDL_PROPERTY_TYPE_"
+        },
+        "SDL_EnumeratePropertiesCallback": {
+          "kind": "alias",
+          "type": "SDL_EnumeratePropertiesCallback",
+        },
         "EnumeratePropertiesCB": {
           type: "std::function<void(PropertiesRef props, const char *name)>"
-        }
+        },
       }
     },
     "SDL_rect.h": {

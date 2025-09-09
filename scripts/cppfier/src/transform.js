@@ -793,6 +793,7 @@ function expandResources(sourceEntries, file, context) {
     const constRawName = `const ${rawName}`;
     const paramType = `${uniqueName}Param`;
     const constParamType = `${uniqueName}ConstParam`;
+    if (!targetEntry.kind) targetEntry.kind = 'struct';
 
     // const refName = uniqueName + "Ref";
     // const unsafeName = uniqueName + "Unsafe";
@@ -904,6 +905,15 @@ function expandResources(sourceEntries, file, context) {
     context.addReturnType(pointerType, rawName);
     context.addReturnType(constPointerType, constRawName);
 
+    /** @type {EntryHint} */
+    const copyCtorHints = {};
+    if (!resourceEntry.shared) {
+      copyCtorHints.delete = true;
+    } else if (resourceEntry.shared !== true) {
+      copyCtorHints.init = ["m_resource(other.m_resource)"];
+      copyCtorHints.body = `++m_resource->${resourceEntry.shared};`;
+    }
+
     /** @type {Dict<ApiEntryTransform | ApiEntryBase[]>} */
     const ctors = {
       [uniqueName]: [{
@@ -923,11 +933,7 @@ function expandResources(sourceEntries, file, context) {
         kind: "function",
         type: "",
         parameters: [{ name: "other", type: `const ${uniqueName} &` }],
-        hints: {
-          delete: !resourceEntry.shared,
-          init: resourceEntry.shared ? ["m_resource(other.m_resource)"] : undefined,
-          body: resourceEntry.shared ? `++m_resource->${resourceEntry.shared};` : undefined,
-        },
+        hints: copyCtorHints,
       }, {
         kind: "function",
         type: "",
@@ -960,6 +966,8 @@ function expandResources(sourceEntries, file, context) {
     }
     for (const sourceName of resourceEntry.ctors ?? []) {
       const entry = subEntries[sourceName] ?? {};
+      delete subEntries[sourceName];
+      const ctorTransform = file.transform[sourceName];
       if (typeof entry === "string") {
         system.warn(`${sourceName} can not be a custom ctor, only objects containing name property can be accepted.`);
         continue;
@@ -978,6 +986,13 @@ function expandResources(sourceEntries, file, context) {
         if (!entry.name) entry.name = transformMemberName(sourceName, uniqueName, context);
         if (!entry.sourceName && sourceEntries[sourceName]) entry.sourceName = sourceName;
         addHints(entry, { wrapSelf: true });
+      }
+      ctors[sourceName] = entry;
+      if (!ctorTransform) {
+        file.transform[sourceName] = { type: uniqueName, hints: { wrapSelf: true } };
+      } else if (!ctorTransform.type) {
+        file.transform[sourceName].type = uniqueName;
+        addHints(ctorTransform, { wrapSelf: true });
       }
     }
 
@@ -1006,9 +1021,10 @@ function expandResources(sourceEntries, file, context) {
       if (isCtor) {
         delete subEntries[sourceName];
         if (!ctorTransform) {
-          file.transform[sourceName] = { type: uniqueName };
+          file.transform[sourceName] = { type: uniqueName, hints: { wrapSelf: true } };
         } else if (!ctorTransform.type) {
           ctorTransform.type = uniqueName;
+          addHints(ctorTransform, { wrapSelf: true });
         }
       }
     }
