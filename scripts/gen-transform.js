@@ -2938,7 +2938,7 @@ const transform = {
         "SDL_PixelFormatDetails": {
           kind: "alias",
           type: "SDL_PixelFormatDetails",
-          after: "SDL_PackedLayout"
+          after: "__begin"
         },
         "SDL_PixelFormat": {
           kind: 'struct',

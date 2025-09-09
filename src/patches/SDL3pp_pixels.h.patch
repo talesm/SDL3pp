@@ -1,5 +1,5 @@
---- include/SDL3pp/SDL3pp_pixels.h	2025-09-09 12:13:04.164825483 -0300
-+++ build/snapshot/SDL3pp_pixels.h	2025-09-09 12:13:02.613843523 -0300
+--- include/SDL3pp/SDL3pp_pixels.h	2025-09-09 17:59:21.443777897 -0300
++++ build/snapshot/SDL3pp_pixels.h	2025-09-09 17:59:19.892766458 -0300
 @@ -9,7 +9,7 @@
  namespace SDL {
  
@@ -25,16 +25,16 @@
    const PaletteRaw value;
  
    constexpr PaletteConstParam(const PaletteRaw value)
-@@ -123,6 +121,8 @@
- // Forward decl
- struct Color;
+@@ -130,6 +128,8 @@
+  */
+ using PixelFormatDetails = SDL_PixelFormatDetails;
  
 +#ifdef SDL3PP_DOC
 +
  /**
   * A fully opaque 8-bit alpha value.
   *
-@@ -159,6 +159,13 @@
+@@ -166,6 +166,13 @@
   */
  #define SDL_ALPHA_TRANSPARENT_FLOAT 0.0f
  
@@ -48,7 +48,7 @@
  /**
   * Pixel type.
   *
-@@ -192,6 +199,13 @@
+@@ -199,6 +206,13 @@
  
  constexpr PixelType PIXELTYPE_INDEX2 = SDL_PIXELTYPE_INDEX2; ///< INDEX2
  
@@ -62,7 +62,7 @@
  /**
   * Bitmap pixel order, high bit -> low bit.
   *
-@@ -205,6 +219,13 @@
+@@ -212,6 +226,13 @@
  
  constexpr BitmapOrder BITMAPORDER_1234 = SDL_BITMAPORDER_1234; ///< 1234
  
@@ -76,7 +76,7 @@
  /**
   * Packed component order, high bit -> low bit.
   *
-@@ -230,6 +251,13 @@
+@@ -237,6 +258,13 @@
  
  constexpr PackedOrder PACKEDORDER_BGRA = SDL_PACKEDORDER_BGRA; ///< BGRA
  
@@ -90,7 +90,7 @@
  /**
   * Array component order, low byte -> high byte.
   *
-@@ -251,6 +279,13 @@
+@@ -258,6 +286,13 @@
  
  constexpr ArrayOrder ARRAYORDER_ABGR = SDL_ARRAYORDER_ABGR; ///< ABGR
  
@@ -104,19 +104,12 @@
  /**
   * Packed component layout.
   *
-@@ -278,6 +313,8 @@
+@@ -285,6 +320,10 @@
  constexpr PackedLayout PACKEDLAYOUT_1010102 =
    SDL_PACKEDLAYOUT_1010102; ///< 1010102
  
 +/// @}
 +
- /**
-  * Details about the format of a pixel.
-  *
-@@ -285,6 +322,8 @@
-  */
- using PixelFormatDetails = SDL_PixelFormatDetails;
- 
 +#ifdef SDL3PP_DOC
 +
  /**

@@ -121,6 +121,13 @@ struct PaletteConstParam
 // Forward decl
 struct Color;
 
+/**
+ * Details about the format of a pixel.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using PixelFormatDetails = SDL_PixelFormatDetails;
+
 #ifdef SDL3PP_DOC
 
 /**
@@ -314,13 +321,6 @@ constexpr PackedLayout PACKEDLAYOUT_1010102 =
   SDL_PACKEDLAYOUT_1010102; ///< 1010102
 
 /// @}
-
-/**
- * Details about the format of a pixel.
- *
- * @since This struct is available since SDL 3.2.0.
- */
-using PixelFormatDetails = SDL_PixelFormatDetails;
 
 #ifdef SDL3PP_DOC
 

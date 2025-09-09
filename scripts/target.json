@@ -10446,6 +10446,14 @@
           "name": "Color",
           "doc": ""
         },
+        "PixelFormatDetails": {
+          "doc": "Details about the format of a pixel.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PixelFormatDetails",
+          "kind": "alias",
+          "sourceName": "SDL_PixelFormatDetails",
+          "type": "SDL_PixelFormatDetails",
+          "after": "__begin"
+        },
         "SDL_ALPHA_OPAQUE": {
           "doc": "A fully opaque 8-bit alpha value.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_ALPHA_TRANSPARENT",
           "name": "SDL_ALPHA_OPAQUE",
@@ -10836,14 +10844,6 @@
           "type": "PackedLayout",
           "doc": "1010102",
           "sourceName": "SDL_PACKEDLAYOUT_1010102"
-        },
-        "PixelFormatDetails": {
-          "doc": "Details about the format of a pixel.\n\n@since This struct is available since SDL 3.2.0.",
-          "name": "PixelFormatDetails",
-          "kind": "alias",
-          "sourceName": "SDL_PixelFormatDetails",
-          "type": "SDL_PixelFormatDetails",
-          "after": "SDL_PackedLayout"
         },
         "SDL_DEFINE_PIXELFOURCC": {
           "doc": "A macro for defining custom FourCC pixel formats.\n\nFor example, defining PIXELFORMAT_YV12 looks like this:\n\n```c\nSDL_DEFINE_PIXELFOURCC('Y', 'V', '1', '2')\n```\n\n@param A the first character of the FourCC code.\n@param B the second character of the FourCC code.\n@param C the third character of the FourCC code.\n@param D the fourth character of the FourCC code.\n@returns a format value in the style of PixelFormat.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",

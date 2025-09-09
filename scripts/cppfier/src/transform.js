@@ -97,11 +97,11 @@ class ApiContext {
 
     this.minVersions = transform.minVersions ?? {};
 
-    /** @type {Dict<ApiEntryTransformMap>} */
+    /** @type {Dict<Dict<ApiEntryTransform[]>>} */
     this.includeAfterMap = {};
     this.file = '';
 
-    /** @type {ApiEntryTransformMap} */
+    /** @type {Dict<ApiEntryTransform[]>} */
     this.currentIncludeAfter = null;
 
     /** @type {StringMap} */
@@ -300,7 +300,6 @@ function expandTypes(sourceEntries, file, context) {
     const name = transformName(sourceName, context);
     if (targetDelta) {
       if (!targetDelta.name) targetDelta.name = name;
-      if (targetDelta.after) context.includeAfter(targetDelta.name, targetDelta.after);
     } else {
       transformMap[sourceName] = {
         name,
@@ -341,6 +340,11 @@ function transformEntries(sourceEntries, file, context) {
   for (const [sourceName, transformEntry] of Object.entries(transformMap)) {
     if (sourceEntries[sourceName]) {
       lastSourceName = sourceName;
+      if (transformEntry.after) {
+        const targetName = transformEntry.name ?? transformName(sourceName, context);
+        transformEntry.name = targetName;
+        context.includeAfter(targetName, transformEntry.after);
+      }
       continue;
     }
     if (!transformEntry.name) transformEntry.name = sourceName;
@@ -1371,7 +1375,7 @@ function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
     entry.forEach(e => insertEntryAndCheck(entries, e, context, transform, defaultName));
     return;
   }
-  if (entry.entries) entry.entries = transformSubEntries(entry, context, transform, entries);
+  if (entry.entries) entry.entries = transformSubEntries(entry, context, transform);
   insertEntry(entries, /** @type {ApiEntry}*/(entry), defaultName);
   if (entry.kind === 'ns' || entry.kind === "struct") {
     const currType = context.types[entry.name];
@@ -1388,9 +1392,8 @@ function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
  * @param {ApiEntryTransform} targetEntry the entry we are inserting from
  * @param {ApiContext}        context 
  * @param {ApiFileTransform}  file 
- * @param {ApiEntries}        targetEntries
  */
-function transformSubEntries(targetEntry, context, file, targetEntries) {
+function transformSubEntries(targetEntry, context, file) {
   /** @type {ApiEntries} */
   const entries = {};
   const type = targetEntry.name;
