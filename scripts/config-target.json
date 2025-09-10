@@ -4,6 +4,7 @@
     "SDL_bits.h",
     "SDL_blendmode.h",
     "SDL_error.h",
+    "SDL_log.h",
     "SDL_pixels.h",
     "SDL_properties.h",
     "SDL_rect.h"

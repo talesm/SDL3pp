@@ -2285,106 +2285,66 @@ const transform = {
       }
     },
     "SDL_log.h": {
-      enumerations: {
-        "SDL_LogPriority": {
-          includeAfter: "__begin",
-          prefix: "SDL_LOG_PRIORITY_"
-        },
-        "SDL_LogCategory": {
-          prefix: "SDL_LOG_CATEGORY_",
-          valueType: "LogCategory"
-        }
-      },
-      includeAfter: {
-        "SDL_GetLogOutputFunction": {
-          "name": "GetLogOutputFunction",
-          "kind": "function",
-          "type": "LogOutputCB",
-          "parameters": []
-        },
-        "SDL_SetLogOutputFunction": [
-          {
-            "name": "SetLogOutputFunction",
-            "kind": "function",
-            "type": "void",
-            "parameters": [
-              {
-                "type": "LogOutputCB",
-                "name": "callback"
-              }
-            ]
-          },
-          {
-            "name": "ResetLogOutputFunction",
-            "kind": "function",
-            "type": "void",
-            "parameters": []
-          }
-        ]
-      },
+      includes: ["format"],
+      localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_strings.h"],
       transform: {
+        "SDL_LogPriority": {
+          after: "__begin",
+          enum: "SDL_LOG_PRIORITY_"
+        },
+        "SDL_GetLogOutputFunction": {},
+        "GetLogOutputFunction": {
+          name: "GetLogOutputFunction",
+          kind: "function",
+          type: "LogOutputCB",
+          parameters: [],
+          after: "SDL_GetLogOutputFunction",
+        },
+        "SDL_SetLogOutputFunction": {},
+        "SetLogOutputFunction": {
+          name: "SetLogOutputFunction",
+          kind: "function",
+          type: "void",
+          after: "SDL_SetLogOutputFunction",
+          parameters: [{
+            type: "LogOutputCB",
+            name: "callback"
+          }]
+        },
+        "ResetLogOutputFunction": {
+          kind: "function",
+          type: "void",
+          parameters: []
+        },
         "LogOutputCB": {
           type: "std::function<void(LogCategory, LogPriority, const char *)>"
         },
         "SDL_LogCategory": {
-          "kind": "struct",
-          "type": "",
-          "entries": {
-            "m_category": {
-              "kind": "var",
-              "type": "int"
+          kind: "struct",
+          type: "",
+          enum: {
+            prefix: "SDL_LOG_CATEGORY_",
+            valueType: "LogCategory"
+          },
+          wrapper: {
+            attribute: 'category',
+            ordered: true,
+          },
+          after: "__begin",
+          entries: {
+            "LogCategory": {
+              kind: "function",
+              type: "",
+              explicit: true,
+              constexpr: true,
+              parameters: [{
+                type: "int",
+                name: "category"
+              }]
             },
-            "LogCategory": [
-              {
-                "kind": "function",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "int",
-                    "name": "category"
-                  }
-                ]
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "SDL_LogCategory",
-                    "name": "category"
-                  }
-                ]
-              }
-            ],
-            "operator int": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "parameters": []
-            },
-            "operator SDL_LogCategory": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "parameters": []
-            },
-            "operator<=>": {
-              "kind": "function",
-              "immutable": true,
-              "type": "auto",
-              "parameters": [
-                {
-                  "type": "const LogCategory &",
-                  "name": "other"
-                }
-              ]
-            },
-            "SDL_SetLogPriorities": "function",
             "SDL_SetLogPriority": {
               "static": false,
+              "immutable": true,
               "parameters": [
                 {
                   "type": "LogPriority",
@@ -2396,12 +2356,10 @@ const transform = {
               "immutable": true,
               "parameters": []
             },
-            "SDL_ResetLogPriorities": {
-              "static": true
-            },
-            "SDL_LogMessage": {
-              "name": "LogUnformatted",
+            "LogUnformatted": {
+              "kind": "function",
               "immutable": true,
+              "type": "void",
               "parameters": [
                 {
                   "type": "LogPriority",
@@ -2413,9 +2371,7 @@ const transform = {
                 }
               ]
             },
-            "Log": {
-              "kind": "function",
-              "type": "void",
+            "SDL_LogMessage": {
               "immutable": true,
               "template": [
                 {
@@ -2590,6 +2546,154 @@ const transform = {
               "name": "args"
             }
           ]
+        },
+        "SDL_LogMessage": {
+          template: [{
+            type: "class...",
+            name: "ARGS"
+          }],
+          parameters: [{
+            type: "LogCategory",
+            name: "category"
+          },
+          {
+            type: "LogPriority",
+            name: "priority"
+          },
+          {
+            type: "std::string_view",
+            name: "fmt"
+          },
+          {
+            type: "ARGS...",
+            name: "args"
+          }]
+        },
+        "SDL_LogTrace": {
+          template: [{
+            type: "class...",
+            name: "ARGS"
+          }],
+          parameters: [{
+            type: "LogCategory",
+            name: "category"
+          },
+          {
+            type: "std::string_view",
+            name: "fmt"
+          },
+          {
+            type: "ARGS &&...",
+            name: "args"
+          }]
+        },
+        "SDL_LogVerbose": {
+          template: [{
+            type: "class...",
+            name: "ARGS"
+          }],
+          parameters: [{
+            type: "LogCategory",
+            name: "category"
+          },
+          {
+            type: "std::string_view",
+            name: "fmt"
+          },
+          {
+            type: "ARGS &&...",
+            name: "args"
+          }]
+        },
+        "SDL_LogDebug": {
+          template: [{
+            type: "class...",
+            name: "ARGS"
+          }],
+          parameters: [{
+            type: "LogCategory",
+            name: "category"
+          },
+          {
+            type: "std::string_view",
+            name: "fmt"
+          },
+          {
+            type: "ARGS &&...",
+            name: "args"
+          }]
+        },
+        "SDL_LogInfo": {
+          template: [{
+            type: "class...",
+            name: "ARGS"
+          }],
+          parameters: [{
+            type: "LogCategory",
+            name: "category"
+          },
+          {
+            type: "std::string_view",
+            name: "fmt"
+          },
+          {
+            type: "ARGS &&...",
+            name: "args"
+          }]
+        },
+        "SDL_LogWarn": {
+          template: [{
+            type: "class...",
+            name: "ARGS"
+          }],
+          parameters: [{
+            type: "LogCategory",
+            name: "category"
+          },
+          {
+            type: "std::string_view",
+            name: "fmt"
+          },
+          {
+            type: "ARGS &&...",
+            name: "args"
+          }]
+        },
+        "SDL_LogError": {
+          template: [{
+            type: "class...",
+            name: "ARGS"
+          }],
+          parameters: [{
+            type: "LogCategory",
+            name: "category"
+          },
+          {
+            type: "std::string_view",
+            name: "fmt"
+          },
+          {
+            type: "ARGS &&...",
+            name: "args"
+          }]
+        },
+        "SDL_LogCritical": {
+          template: [{
+            type: "class...",
+            name: "ARGS"
+          }],
+          parameters: [{
+            type: "LogCategory",
+            name: "category"
+          },
+          {
+            type: "std::string_view",
+            name: "fmt"
+          },
+          {
+            type: "ARGS &&...",
+            name: "args"
+          }]
         },
         "SDL_LogMessageV": {
           "name": "LogUnformatted",

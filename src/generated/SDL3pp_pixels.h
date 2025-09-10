@@ -624,11 +624,12 @@ constexpr PackedLayout PACKEDLAYOUT_1010102 =
  *
  * @since This enum is available since SDL 3.2.0.
  */
-struct PixelFormat
+class PixelFormat
 {
 
   SDL_PixelFormat m_format;
 
+public:
   /**
    * Wraps PixelFormat.
    *

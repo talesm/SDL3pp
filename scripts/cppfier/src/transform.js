@@ -563,11 +563,16 @@ function expandWrappers(sourceEntries, file, context) {
     /** @type {ApiEntries} */
     const entries = {};
 
-    if (!isStruct) insertEntry(entries, {
-      kind: "var",
-      name: attribute,
-      type: type,
-    });
+    if (!isStruct) {
+      insertEntry(entries, {
+        kind: "var",
+        name: attribute,
+        type: type,
+      });
+      addHints(transform, {
+        private: true,
+      });
+    }
 
     if (wrapper.genCtor !== false) insertEntry(entries, {
       kind: "function",
@@ -581,7 +586,8 @@ function expandWrappers(sourceEntries, file, context) {
       }],
       doc: `Wraps ${sourceType}.\n\n@param ${paramName} the value to be wrapped`,
       hints: {
-        init: [`${isStruct ? sourceType : attribute}(${paramName})`]
+        init: [`${isStruct ? sourceType : attribute}(${paramName})`],
+        changeAccess: isStruct ? undefined : 'public',
       }
     });
     if (wrapper.ordered) {
