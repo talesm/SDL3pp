@@ -309,6 +309,11 @@ export interface WrapperDefinition {
    * Defaults to true if ordered is false and not a struct
    */
   comparable?: boolean
+
+  /**
+   * Param type for generated methods
+   */
+  paramType?: string
 }
 
 export interface ApiEnumeration extends ApiEntryTransform {

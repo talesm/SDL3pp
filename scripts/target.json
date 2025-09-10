@@ -521,6 +521,24 @@
             }
           }
         },
+        "PixelFormatRaw": {
+          "name": "PixelFormatRaw",
+          "kind": "alias",
+          "type": "SDL_PixelFormat",
+          "doc": ""
+        },
+        "ColorRaw": {
+          "name": "ColorRaw",
+          "kind": "alias",
+          "type": "SDL_Color",
+          "doc": ""
+        },
+        "FColorRaw": {
+          "name": "FColorRaw",
+          "kind": "alias",
+          "type": "SDL_FColor",
+          "doc": ""
+        },
         "Color-forward": {
           "kind": "forward",
           "name": "Color",
@@ -2763,7 +2781,7 @@
                 "constexpr": true,
                 "parameters": [
                   {
-                    "type": "const SDL_Color &",
+                    "type": "ColorRaw",
                     "name": "color",
                     "default": "{}"
                   }
@@ -2832,7 +2850,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "const SDL_Color &",
+                    "type": "ColorRaw",
                     "name": "color"
                   }
                 ],
@@ -2975,7 +2993,7 @@
                 "constexpr": true,
                 "parameters": [
                   {
-                    "type": "const SDL_FColor &",
+                    "type": "const FColorRaw &",
                     "name": "color",
                     "default": "{}"
                   }
@@ -3044,7 +3062,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "const SDL_FColor &",
+                    "type": "const FColorRaw &",
                     "name": "color"
                   }
                 ],
@@ -3938,6 +3956,30 @@
       "name": "SDL3pp_rect.h",
       "doc": "@defgroup CategoryRect Category Rect\n\nSome helper functions for managing rectangles and 2D points, in both\ninteger and floating point versions.",
       "entries": {
+        "PointRaw": {
+          "name": "PointRaw",
+          "kind": "alias",
+          "type": "SDL_Point",
+          "doc": ""
+        },
+        "FPointRaw": {
+          "name": "FPointRaw",
+          "kind": "alias",
+          "type": "SDL_FPoint",
+          "doc": ""
+        },
+        "RectRaw": {
+          "name": "RectRaw",
+          "kind": "alias",
+          "type": "SDL_Rect",
+          "doc": ""
+        },
+        "FRectRaw": {
+          "name": "FRectRaw",
+          "kind": "alias",
+          "type": "SDL_FRect",
+          "doc": ""
+        },
         "FPoint-forward": {
           "kind": "forward",
           "name": "FPoint",
@@ -3967,7 +4009,7 @@
                 "constexpr": true,
                 "parameters": [
                   {
-                    "type": "const SDL_Point &",
+                    "type": "const PointRaw &",
                     "name": "p",
                     "default": "{}"
                   }
@@ -4025,7 +4067,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "const SDL_Point &",
+                    "type": "const PointRaw &",
                     "name": "other"
                   }
                 ],
@@ -4048,7 +4090,7 @@
                 ],
                 "doc": "Compares with the underlying type",
                 "hints": {
-                  "body": "return *this == (const SDL_Point &)(other);"
+                  "body": "return *this == (const PointRaw &)(other);"
                 }
               }
             ],
@@ -4157,7 +4199,7 @@
                 "constexpr": true,
                 "parameters": [
                   {
-                    "type": "const SDL_FPoint &",
+                    "type": "const FPointRaw &",
                     "name": "p",
                     "default": "{}"
                   }
@@ -4201,7 +4243,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "const SDL_FPoint &",
+                    "type": "const FPointRaw &",
                     "name": "other"
                   }
                 ],
@@ -4224,7 +4266,7 @@
                 ],
                 "doc": "Compares with the underlying type",
                 "hints": {
-                  "body": "return *this == (const SDL_FPoint &)(other);"
+                  "body": "return *this == (const FPointRaw &)(other);"
                 }
               }
             ],
@@ -4333,7 +4375,7 @@
                 "constexpr": true,
                 "parameters": [
                   {
-                    "type": "const SDL_Rect &",
+                    "type": "const RectRaw &",
                     "name": "r",
                     "default": "{}"
                   }
@@ -4401,7 +4443,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "const SDL_Rect &",
+                    "type": "const RectRaw &",
                     "name": "other"
                   }
                 ],
@@ -4424,7 +4466,7 @@
                 ],
                 "doc": "Compares with the underlying type",
                 "hints": {
-                  "body": "return *this == (const SDL_Rect &)(other);"
+                  "body": "return *this == (const RectRaw &)(other);"
                 }
               }
             ],
@@ -4899,7 +4941,7 @@
                 "constexpr": true,
                 "parameters": [
                   {
-                    "type": "const SDL_FRect &",
+                    "type": "const FRectRaw &",
                     "name": "r",
                     "default": "{}"
                   }
@@ -4968,7 +5010,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "const SDL_FRect &",
+                    "type": "const FRectRaw &",
                     "name": "other"
                   }
                 ],
@@ -4991,7 +5033,7 @@
                 ],
                 "doc": "Compares with the underlying type",
                 "hints": {
-                  "body": "return *this == (const SDL_FRect &)(other);"
+                  "body": "return *this == (const FRectRaw &)(other);"
                 }
               }
             ],
@@ -5446,7 +5488,7 @@
             },
             {
               "name": "frect",
-              "type": "SDL_FRect *"
+              "type": "FRectRaw *"
             }
           ],
           "sourceName": "SDL_RectToFRect"
@@ -5531,7 +5573,7 @@
             },
             {
               "name": "result",
-              "type": "SDL_Rect *"
+              "type": "RectRaw *"
             }
           ],
           "sourceName": "SDL_GetRectIntersection"
@@ -5552,7 +5594,7 @@
             },
             {
               "name": "result",
-              "type": "SDL_Rect *"
+              "type": "RectRaw *"
             }
           ],
           "sourceName": "SDL_GetRectUnion",
@@ -5712,7 +5754,7 @@
             },
             {
               "name": "result",
-              "type": "SDL_FRect *"
+              "type": "FRectRaw *"
             }
           ],
           "sourceName": "SDL_GetRectIntersectionFloat"
@@ -5733,7 +5775,7 @@
             },
             {
               "name": "result",
-              "type": "SDL_FRect *"
+              "type": "FRectRaw *"
             }
           ],
           "sourceName": "SDL_GetRectUnionFloat",

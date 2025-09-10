@@ -120,6 +120,12 @@ struct PaletteConstParam
   constexpr operator const PaletteRaw() const { return value; }
 };
 
+using PixelFormatRaw = SDL_PixelFormat;
+
+using ColorRaw = SDL_Color;
+
+using FColorRaw = SDL_FColor;
+
 // Forward decl
 struct Color;
 
@@ -1552,7 +1558,7 @@ struct Color : SDL_Color
    *
    * @param color the value to be wrapped
    */
-  constexpr Color(const SDL_Color& color = {})
+  constexpr Color(ColorRaw color = {})
     : SDL_Color(color)
   {
   }
@@ -1578,7 +1584,7 @@ struct Color : SDL_Color
   /**
    * Compares with the underlying type
    */
-  constexpr auto operator<=>(const SDL_Color& color) const
+  constexpr auto operator<=>(ColorRaw color) const
   {
     return operator<=>(Color(color));
   }
@@ -1673,7 +1679,7 @@ struct FColor : SDL_FColor
    *
    * @param color the value to be wrapped
    */
-  constexpr FColor(const SDL_FColor& color = {})
+  constexpr FColor(const FColorRaw& color = {})
     : SDL_FColor(color)
   {
   }
@@ -1699,7 +1705,7 @@ struct FColor : SDL_FColor
   /**
    * Compares with the underlying type
    */
-  constexpr auto operator<=>(const SDL_FColor& color) const
+  constexpr auto operator<=>(const FColorRaw& color) const
   {
     return operator<=>(FColor(color));
   }

@@ -3245,7 +3245,8 @@ const transform = {
         "SDL_Color": {
           wrapper: {
             ordered: true,
-            invalidState: false
+            invalidState: false,
+            paramType: 'ColorRaw',
           }
         },
         "SDL_FColor": {

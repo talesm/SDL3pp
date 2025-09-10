@@ -288,7 +288,7 @@ function expandTypes(sourceEntries, file, context) {
   expandResources(sourceEntries, file, context);
   expandWrappers(sourceEntries, file, context);
   expandEnumerations(sourceEntries, file, context);
-  // expandNamespaces(sourceEntries, file, context);
+  expandNamespaces(sourceEntries, file, context);
   expandCallbacks(sourceEntries, file, context);
 
   const transformMap = file.transform ?? {};
@@ -539,8 +539,10 @@ function expandWrappers(sourceEntries, file, context) {
     const type = isStruct || !sourceEntry.type?.startsWith("struct ") ? sourceType : sourceType + " *";
     const constexpr = transform.constexpr !== false;
     const paramName = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
-    const paramType = isStruct ? `const ${sourceType} &` : type;
+    const rawType = `${targetType}Raw`;
+    const paramType = wrapper.paramType ?? (isStruct ? `const ${rawType} &` : type);
     const attribute = "m_" + paramName;
+    context.includeAfter({ name: rawType, kind: 'alias', type: sourceType }, '__begin');
 
     /** @type {string[]} */
     const fields = [];
@@ -728,10 +730,10 @@ function expandWrappers(sourceEntries, file, context) {
             doc: `Set the ${name}.\n\n@param new${capName} the new ${name} value.\n@returns Reference to self.`,
             hints: { body: `${name} = new${capName};\nreturn *this;` },
           }]);
-          context.addParamType(sourceType, sourceType);
-          context.addParamType(`${sourceType} *`, `${sourceType} *`);
-          context.addParamType(`const ${sourceType}`, `const ${sourceType}`);
-          context.addParamType(`const ${sourceType} *`, `const ${sourceType} &`);
+          context.addParamType(sourceType, rawType);
+          context.addParamType(`${sourceType} *`, `${rawType} *`);
+          context.addParamType(`const ${sourceType}`, `const ${rawType}`);
+          context.addParamType(`const ${sourceType} *`, `const ${rawType} &`);
         }
         insertEntry(entries, {
           kind: "function",

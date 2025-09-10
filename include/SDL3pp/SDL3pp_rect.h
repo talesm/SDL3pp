@@ -17,6 +17,14 @@ namespace SDL {
  * @{
  */
 
+using PointRaw = SDL_Point;
+
+using FPointRaw = SDL_FPoint;
+
+using RectRaw = SDL_Rect;
+
+using FRectRaw = SDL_FRect;
+
 // Forward decl
 struct FPoint;
 
@@ -46,7 +54,7 @@ struct Point : SDL_Point
    *
    * @param p the value to be wrapped
    */
-  constexpr Point(const SDL_Point& p = {})
+  constexpr Point(const PointRaw& p = {})
     : SDL_Point(p)
   {
   }
@@ -75,7 +83,7 @@ struct Point : SDL_Point
   /**
    * Compares with the underlying type
    */
-  constexpr bool operator==(const SDL_Point& other) const
+  constexpr bool operator==(const PointRaw& other) const
   {
     return x == other.x && y == other.y;
   }
@@ -85,7 +93,7 @@ struct Point : SDL_Point
    */
   constexpr bool operator==(const Point& other) const
   {
-    return *this == (const SDL_Point&)(other);
+    return *this == (const PointRaw&)(other);
   }
 
   /**
@@ -491,7 +499,7 @@ struct FPoint : SDL_FPoint
    *
    * @param p the value to be wrapped
    */
-  constexpr FPoint(const SDL_FPoint& p = {})
+  constexpr FPoint(const FPointRaw& p = {})
     : SDL_FPoint(p)
   {
   }
@@ -510,7 +518,7 @@ struct FPoint : SDL_FPoint
   /**
    * Compares with the underlying type
    */
-  constexpr bool operator==(const SDL_FPoint& other) const
+  constexpr bool operator==(const FPointRaw& other) const
   {
     return x == other.x && y == other.y;
   }
@@ -520,7 +528,7 @@ struct FPoint : SDL_FPoint
    */
   constexpr bool operator==(const FPoint& other) const
   {
-    return *this == (const SDL_FPoint&)(other);
+    return *this == (const FPointRaw&)(other);
   }
 
   /**
@@ -837,7 +845,7 @@ struct Rect : SDL_Rect
    *
    * @param r the value to be wrapped
    */
-  constexpr Rect(const SDL_Rect& r = {})
+  constexpr Rect(const RectRaw& r = {})
     : SDL_Rect(r)
   {
   }
@@ -869,7 +877,7 @@ struct Rect : SDL_Rect
   /**
    * Compares with the underlying type
    */
-  constexpr bool operator==(const SDL_Rect& other) const
+  constexpr bool operator==(const RectRaw& other) const
   {
     return Equal(other);
   }
@@ -879,7 +887,7 @@ struct Rect : SDL_Rect
    */
   constexpr bool operator==(const Rect& other) const
   {
-    return *this == (const SDL_Rect&)(other);
+    return *this == (const RectRaw&)(other);
   }
 
   /**
@@ -1474,7 +1482,7 @@ struct FRect : SDL_FRect
    *
    * @param r the value to be wrapped
    */
-  constexpr FRect(const SDL_FRect& r = {})
+  constexpr FRect(const FRectRaw& r = {})
     : SDL_FRect(r)
   {
   }
@@ -1503,7 +1511,7 @@ struct FRect : SDL_FRect
   /**
    * Compares with the underlying type
    */
-  constexpr bool operator==(const SDL_FRect& other) const
+  constexpr bool operator==(const FRectRaw& other) const
   {
     return Equal(other);
   }
@@ -1513,7 +1521,7 @@ struct FRect : SDL_FRect
    */
   constexpr bool operator==(const FRect& other) const
   {
-    return *this == (const SDL_FRect&)(other);
+    return *this == (const FRectRaw&)(other);
   }
 
   /**
@@ -2107,7 +2115,7 @@ struct FRect : SDL_FRect
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void RectToFRect(const SDL_Rect& rect, SDL_FRect* frect)
+inline void RectToFRect(const SDL_Rect& rect, FRectRaw* frect)
 {
   SDL_RectToFRect(&rect, frect);
 }
@@ -2219,7 +2227,7 @@ inline bool HasRectIntersection(const SDL_Rect& A, const SDL_Rect& B)
  */
 inline bool GetRectIntersection(const SDL_Rect& A,
                                 const SDL_Rect& B,
-                                SDL_Rect* result)
+                                RectRaw* result)
 {
   return SDL_GetRectIntersection(&A, &B, result);
 }
@@ -2235,7 +2243,7 @@ inline bool GetRectIntersection(const SDL_Rect& A,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GetRectUnion(const SDL_Rect& A, const SDL_Rect& B, SDL_Rect* result)
+inline void GetRectUnion(const SDL_Rect& A, const SDL_Rect& B, RectRaw* result)
 {
   CheckError(SDL_GetRectUnion(&A, &B, result));
 }
@@ -2437,7 +2445,7 @@ inline bool HasRectIntersectionFloat(const SDL_FRect& A, const SDL_FRect& B)
  */
 inline bool GetRectIntersectionFloat(const SDL_FRect& A,
                                      const SDL_FRect& B,
-                                     SDL_FRect* result)
+                                     FRectRaw* result)
 {
   return SDL_GetRectIntersectionFloat(&A, &B, result);
 }
@@ -2455,7 +2463,7 @@ inline bool GetRectIntersectionFloat(const SDL_FRect& A,
  */
 inline void GetRectUnionFloat(const SDL_FRect& A,
                               const SDL_FRect& B,
-                              SDL_FRect* result)
+                              FRectRaw* result)
 {
   CheckError(SDL_GetRectUnionFloat(&A, &B, result));
 }
