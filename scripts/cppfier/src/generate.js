@@ -8,7 +8,6 @@ const { existsSync, mkdirSync } = require("fs");
  * @typedef {object} GenerateApiConfig
  * @prop {Api}      api
  * @prop {string}   baseDir
- * @prop {string}   templateDir
  */
 
 /**
@@ -16,7 +15,7 @@ const { existsSync, mkdirSync } = require("fs");
  * @param {GenerateApiConfig} config 
  */
 function generateApi(config) {
-  const { api, baseDir, templateDir } = config;
+  const { api, baseDir } = config;
   const files = Object.keys(api.files);
   if (!existsSync(baseDir)) {
     system.warn(`target dir does not exist, creating it: ${baseDir}`);

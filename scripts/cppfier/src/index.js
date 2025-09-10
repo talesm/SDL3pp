@@ -255,7 +255,6 @@ function generate(args) {
     /** @type {Api} */
     api: null,
     baseDir: "",
-    templateDir: "",
   };
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -273,7 +272,6 @@ function generate(args) {
     switch (arg) {
       case '-a': config.api = readJSONSync(args[++i].replaceAll("\\", '/')); break;
       case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
-      case '-t': config.templateDir = args[++i].replaceAll("\\", '/'); break;
       case '-c': mergeInto(config, readJSONSync(args[++i].replaceAll("\\", '/'))); break;
       default:
         throw new Error(`Invalid option ${arg}`);
