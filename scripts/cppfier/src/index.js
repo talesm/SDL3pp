@@ -395,21 +395,21 @@ function transform(args) {
     transform: null,
     api: "",
     baseDir: "",
+    /** @type {string[]} */
+    sources: [],
   };
-  /** @type {string[]} */
-  const files = [];
   let printConfig = false;
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg == "--") {
-      files.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+      config.sources.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
       break;
     }
     if (!arg.startsWith('-')) {
       if (arg.endsWith(".json")) {
         mergeTransformInto(config, readJSONSync(arg.replaceAll("\\", '/')));
       } else
-        files.push(arg.replaceAll("\\", '/'));
+        config.sources.push(arg.replaceAll("\\", '/'));
       continue;
     }
     switch (arg) {
@@ -433,7 +433,8 @@ function transform(args) {
         throw new Error(`Invalid option ${arg}`);
     }
   }
-  if (files?.length) {
+  if (config.sources?.length) {
+    const files = config.sources;
     if (!config.baseDir && files[0].includes('/')) {
       config.baseDir = files[0].slice(0, files[0].lastIndexOf("/") + 1);
       for (let i = 1; i < files?.length; i++) {

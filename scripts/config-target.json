@@ -1,11 +1,11 @@
 {
-  "targets": [
-    "SDL3pp_assert.h",
-    "SDL3pp_bits.h",
-    "SDL3pp_blendmode.h",
-    "SDL3pp_error.h",
-    "SDL3pp_pixels.h",
-    "SDL3pp_rect.h"
+  "sources": [
+    "SDL_assert.h",
+    "SDL_bits.h",
+    "SDL_blendmode.h",
+    "SDL_error.h",
+    "SDL_pixels.h",
+    "SDL_rect.h"
   ],
   "api": "scripts/target.json",
   "baseDir": "include/SDL3pp/",
