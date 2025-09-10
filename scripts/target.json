@@ -4050,7 +4050,7 @@
                 "explicit": true,
                 "parameters": [
                   {
-                    "type": "const SDL_FPoint &",
+                    "type": "const FPointRaw &",
                     "name": "p"
                   }
                 ],
@@ -4171,7 +4171,7 @@
               "parameters": [
                 {
                   "name": "r",
-                  "type": "const SDL_Rect &"
+                  "type": "const RectRaw &"
                 }
               ],
               "sourceName": "SDL_PointInRect",
@@ -4347,7 +4347,7 @@
               "parameters": [
                 {
                   "name": "r",
-                  "type": "const SDL_FRect &"
+                  "type": "const FRectRaw &"
                 }
               ],
               "sourceName": "SDL_PointInRectFloat",
@@ -4423,11 +4423,11 @@
                 "parameters": [
                   {
                     "name": "corner",
-                    "type": "const SDL_Point &"
+                    "type": "const PointRaw &"
                   },
                   {
                     "name": "size",
-                    "type": "const SDL_Point &"
+                    "type": "const PointRaw &"
                   }
                 ],
                 "name": "Rect",
@@ -4693,11 +4693,11 @@
                 "parameters": [
                   {
                     "name": "p1",
-                    "type": "const SDL_Point &"
+                    "type": "const PointRaw &"
                   },
                   {
                     "name": "p2",
-                    "type": "const SDL_Point &"
+                    "type": "const PointRaw &"
                   }
                 ],
                 "doc": ""
@@ -4759,11 +4759,11 @@
                 "type": "bool",
                 "parameters": [
                   {
-                    "type": "SDL_Point *",
+                    "type": "PointRaw *",
                     "name": "p1"
                   },
                   {
-                    "type": "SDL_Point *",
+                    "type": "PointRaw *",
                     "name": "p2"
                   }
                 ],
@@ -4835,7 +4835,7 @@
               "parameters": [
                 {
                   "name": "other",
-                  "type": "const SDL_Rect &"
+                  "type": "const RectRaw &"
                 }
               ],
               "sourceName": "SDL_RectsEqual",
@@ -4851,7 +4851,7 @@
                 "parameters": [
                   {
                     "name": "p",
-                    "type": "const SDL_Point &"
+                    "type": "const PointRaw &"
                   }
                 ],
                 "name": "Contains",
@@ -4865,7 +4865,7 @@
                 "parameters": [
                   {
                     "name": "other",
-                    "type": "const SDL_Rect &"
+                    "type": "const RectRaw &"
                   }
                 ],
                 "name": "Contains",
@@ -4880,7 +4880,7 @@
               "parameters": [
                 {
                   "name": "other",
-                  "type": "const SDL_Rect &"
+                  "type": "const RectRaw &"
                 }
               ],
               "sourceName": "SDL_HasRectIntersection",
@@ -4895,7 +4895,7 @@
               "parameters": [
                 {
                   "name": "other",
-                  "type": "const SDL_Rect &"
+                  "type": "const RectRaw &"
                 }
               ],
               "sourceName": "SDL_GetRectIntersection",
@@ -4910,7 +4910,7 @@
               "parameters": [
                 {
                   "name": "other",
-                  "type": "const SDL_Rect &"
+                  "type": "const RectRaw &"
                 }
               ],
               "sourceName": "SDL_GetRectUnion",
@@ -4990,11 +4990,11 @@
                 "parameters": [
                   {
                     "name": "corner",
-                    "type": "const SDL_FPoint &"
+                    "type": "const FPointRaw &"
                   },
                   {
                     "name": "size",
-                    "type": "const SDL_FPoint &"
+                    "type": "const FPointRaw &"
                   }
                 ],
                 "name": "FRect",
@@ -5215,11 +5215,11 @@
                 "parameters": [
                   {
                     "name": "center",
-                    "type": "const SDL_FPoint &"
+                    "type": "const FPointRaw &"
                   },
                   {
                     "name": "size",
-                    "type": "const SDL_FPoint &"
+                    "type": "const FPointRaw &"
                   }
                 ],
                 "doc": ""
@@ -5261,11 +5261,11 @@
                 "parameters": [
                   {
                     "name": "p1",
-                    "type": "const SDL_FPoint &"
+                    "type": "const FPointRaw &"
                   },
                   {
                     "name": "p2",
-                    "type": "const SDL_FPoint &"
+                    "type": "const FPointRaw &"
                   }
                 ],
                 "doc": ""
@@ -5365,7 +5365,7 @@
               "parameters": [
                 {
                   "name": "other",
-                  "type": "const SDL_FRect &"
+                  "type": "const FRectRaw &"
                 },
                 {
                   "name": "epsilon",
@@ -5384,7 +5384,7 @@
               "parameters": [
                 {
                   "name": "other",
-                  "type": "const SDL_FRect &"
+                  "type": "const FRectRaw &"
                 }
               ],
               "sourceName": "SDL_RectsEqualFloat",
@@ -5398,7 +5398,7 @@
                 "parameters": [
                   {
                     "name": "p",
-                    "type": "const SDL_FPoint &"
+                    "type": "const FPointRaw &"
                   }
                 ],
                 "constexpr": true,
@@ -5412,7 +5412,7 @@
                 "parameters": [
                   {
                     "name": "other",
-                    "type": "const SDL_FRect &"
+                    "type": "const FRectRaw &"
                   }
                 ],
                 "constexpr": true,
@@ -5429,7 +5429,7 @@
               "parameters": [
                 {
                   "name": "other",
-                  "type": "const SDL_FRect &"
+                  "type": "const FRectRaw &"
                 }
               ],
               "sourceName": "SDL_HasRectIntersectionFloat",
@@ -5444,7 +5444,7 @@
               "parameters": [
                 {
                   "name": "other",
-                  "type": "const SDL_FRect &"
+                  "type": "const FRectRaw &"
                 }
               ],
               "sourceName": "SDL_GetRectIntersectionFloat",
@@ -5459,7 +5459,7 @@
               "parameters": [
                 {
                   "name": "other",
-                  "type": "const SDL_FRect &"
+                  "type": "const FRectRaw &"
                 }
               ],
               "sourceName": "SDL_GetRectUnionFloat",
@@ -5484,7 +5484,7 @@
           "parameters": [
             {
               "name": "rect",
-              "type": "const SDL_Rect &"
+              "type": "const RectRaw &"
             },
             {
               "name": "frect",
@@ -5501,11 +5501,11 @@
           "parameters": [
             {
               "name": "p",
-              "type": "const SDL_Point &"
+              "type": "const PointRaw &"
             },
             {
               "name": "r",
-              "type": "const SDL_Rect &"
+              "type": "const RectRaw &"
             }
           ],
           "sourceName": "SDL_PointInRect"
@@ -5518,7 +5518,7 @@
           "parameters": [
             {
               "name": "r",
-              "type": "const SDL_Rect &"
+              "type": "const RectRaw &"
             }
           ],
           "sourceName": "SDL_RectEmpty"
@@ -5531,11 +5531,11 @@
           "parameters": [
             {
               "name": "a",
-              "type": "const SDL_Rect &"
+              "type": "const RectRaw &"
             },
             {
               "name": "b",
-              "type": "const SDL_Rect &"
+              "type": "const RectRaw &"
             }
           ],
           "sourceName": "SDL_RectsEqual"
@@ -5548,11 +5548,11 @@
           "parameters": [
             {
               "name": "A",
-              "type": "const SDL_Rect &"
+              "type": "const RectRaw &"
             },
             {
               "name": "B",
-              "type": "const SDL_Rect &"
+              "type": "const RectRaw &"
             }
           ],
           "sourceName": "SDL_HasRectIntersection"
@@ -5565,11 +5565,11 @@
           "parameters": [
             {
               "name": "A",
-              "type": "const SDL_Rect &"
+              "type": "const RectRaw &"
             },
             {
               "name": "B",
-              "type": "const SDL_Rect &"
+              "type": "const RectRaw &"
             },
             {
               "name": "result",
@@ -5586,11 +5586,11 @@
           "parameters": [
             {
               "name": "A",
-              "type": "const SDL_Rect &"
+              "type": "const RectRaw &"
             },
             {
               "name": "B",
-              "type": "const SDL_Rect &"
+              "type": "const RectRaw &"
             },
             {
               "name": "result",
@@ -5618,7 +5618,7 @@
             },
             {
               "name": "result",
-              "type": "SDL_Rect *"
+              "type": "RectRaw *"
             }
           ],
           "sourceName": "SDL_GetRectEnclosingPoints",
@@ -5632,7 +5632,7 @@
           "parameters": [
             {
               "name": "rect",
-              "type": "const SDL_Rect &"
+              "type": "const RectRaw &"
             },
             {
               "name": "X1",
@@ -5661,11 +5661,11 @@
           "parameters": [
             {
               "name": "p",
-              "type": "const SDL_FPoint &"
+              "type": "const FPointRaw &"
             },
             {
               "name": "r",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             }
           ],
           "sourceName": "SDL_PointInRectFloat"
@@ -5678,7 +5678,7 @@
           "parameters": [
             {
               "name": "r",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             }
           ],
           "sourceName": "SDL_RectEmptyFloat"
@@ -5691,11 +5691,11 @@
           "parameters": [
             {
               "name": "a",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             },
             {
               "name": "b",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             },
             {
               "name": "epsilon",
@@ -5712,11 +5712,11 @@
           "parameters": [
             {
               "name": "a",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             },
             {
               "name": "b",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             }
           ],
           "sourceName": "SDL_RectsEqualFloat"
@@ -5729,11 +5729,11 @@
           "parameters": [
             {
               "name": "A",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             },
             {
               "name": "B",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             }
           ],
           "sourceName": "SDL_HasRectIntersectionFloat"
@@ -5746,11 +5746,11 @@
           "parameters": [
             {
               "name": "A",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             },
             {
               "name": "B",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             },
             {
               "name": "result",
@@ -5767,11 +5767,11 @@
           "parameters": [
             {
               "name": "A",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             },
             {
               "name": "B",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             },
             {
               "name": "result",
@@ -5799,7 +5799,7 @@
             },
             {
               "name": "result",
-              "type": "SDL_FRect *"
+              "type": "FRectRaw *"
             }
           ],
           "sourceName": "SDL_GetRectEnclosingPointsFloat",
@@ -5813,7 +5813,7 @@
           "parameters": [
             {
               "name": "rect",
-              "type": "const SDL_FRect &"
+              "type": "const FRectRaw &"
             },
             {
               "name": "X1",

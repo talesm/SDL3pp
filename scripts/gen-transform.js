@@ -21,11 +21,7 @@ const transform = {
   },
   paramTypeMap: {
     "const char *": "StringParam",
-    "const SDL_Point *": "const SDL_Point &",
-    "const SDL_FPoint *": "const SDL_FPoint &",
-    "const SDL_Rect *": "const SDL_Rect &",
-    "const SDL_FRect *": "const SDL_FRect &",
-    "TTF_TextEngine *": "TextEngineRef",
+    "TTF_TextEngine *": "TextEngineParam",
   },
   returnTypeMap: {
     "TTF_TextEngine *": "TextEngine"
@@ -419,7 +415,7 @@ const transform = {
             "SDL_OpenAudioDevice": {
               name: "ctor",
               parameters: [
-                { type: "AudioDeviceRef" },
+                { type: "AudioDeviceParam" },
                 { type: "OptionalRef<const SDL_AudioSpec>" }
               ]
             },
@@ -428,7 +424,7 @@ const transform = {
               constexpr: true,
               immutable: true,
               type: "auto",
-              parameters: [{ type: "AudioDeviceRef", name: "other" }],
+              parameters: [{ type: "AudioDeviceParam", name: "other" }],
               hints: { default: true }
             },
             "SDL_GetAudioDeviceName": "immutable",
@@ -499,7 +495,7 @@ const transform = {
               parameters: [
                 {
                   name: "devid",
-                  type: "AudioDeviceRef"
+                  type: "AudioDeviceParam"
                 },
                 {
                   name: "spec",
@@ -516,7 +512,7 @@ const transform = {
               parameters: [
                 {
                   name: "devid",
-                  type: "AudioDeviceRef"
+                  type: "AudioDeviceParam"
                 },
                 {
                   name: "spec",
@@ -629,7 +625,7 @@ const transform = {
               type: "void",
               doc: "@see AudioDeviceRef.BindAudioStream",
               parameters: [{
-                type: "AudioDeviceRef",
+                type: "AudioDeviceParam",
                 name: "devid"
               }]
             },
@@ -648,12 +644,12 @@ const transform = {
         "SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK": {
           kind: "var",
           constexpr: true,
-          type: "AudioDeviceRef"
+          type: "AudioDeviceRaw"
         },
         "SDL_AUDIO_DEVICE_DEFAULT_RECORDING": {
           kind: "var",
           constexpr: true,
-          type: "AudioDeviceRef"
+          type: "AudioDeviceRaw"
         },
         "SDL_AUDIO_FRAMESIZE": {
           kind: "function",
@@ -836,7 +832,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowRef"
+              "type": "WindowParam"
             },
             {
               "name": "filters",
@@ -863,7 +859,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowRef"
+              "type": "WindowParam"
             },
             {
               "name": "filters",
@@ -886,7 +882,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowRef"
+              "type": "WindowParam"
             },
             {
               "name": "default_location",
@@ -913,7 +909,7 @@ const transform = {
             },
             {
               "name": "props",
-              "type": "PropertiesRef"
+              "type": "PropertiesID"
             }
           ]
         }
@@ -936,7 +932,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowRef"
+              "type": "WindowParam"
             },
             {
               "name": "filters",
@@ -964,7 +960,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowRef"
+              "type": "WindowParam"
             },
             {
               "name": "filters",
@@ -988,7 +984,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowRef"
+              "type": "WindowParam"
             },
             {
               "name": "default_location",
@@ -2679,7 +2675,7 @@ const transform = {
                     name: "flags"
                   },
                   {
-                    type: "WindowRef",
+                    type: "WindowParam",
                     name: "window"
                   },
                   {
@@ -2705,7 +2701,7 @@ const transform = {
           }
         },
         "SDL_ShowSimpleMessageBox": {
-          parameters: [{}, {}, {}, { type: "WindowRef" }]
+          parameters: [{}, {}, {}, { type: "WindowParam" }]
         }
       }
     },
@@ -2747,15 +2743,15 @@ const transform = {
               parameters: [
                 { type: "const Uint8 *" },
                 { type: "const Uint8 *" },
-                { type: "const SDL_Point &", name: "size" },
-                { type: "const SDL_Point &", name: "hot" },
+                { type: "const PointRaw &", name: "size" },
+                { type: "const PointRaw &", name: "hot" },
               ],
             },
             "SDL_CreateColorCursor": {
               name: "ctor",
               parameters: [
                 {},
-                { type: "const SDL_Point &", name: "hot" },
+                { type: "const PointRaw &", name: "hot" },
               ],
             },
             "SDL_CreateSystemCursor": "ctor",
@@ -3540,7 +3536,7 @@ const transform = {
               explicit: true,
               parameters: [
                 {
-                  type: "const SDL_FPoint &",
+                  type: "const FPointRaw &",
                   name: "p"
                 }
               ]
@@ -3554,7 +3550,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SDL_Rect &"
+                  type: "const RectRaw &"
                 }
               ]
             }
@@ -3575,7 +3571,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SDL_FRect &"
+                  type: "const FRectRaw &"
                 }
               ]
             }
@@ -3593,11 +3589,11 @@ const transform = {
               parameters: [
                 {
                   name: "corner",
-                  type: "const SDL_Point &"
+                  type: "const PointRaw &"
                 },
                 {
                   name: "size",
-                  type: "const SDL_Point &"
+                  type: "const PointRaw &"
                 }
               ]
             },
@@ -3695,11 +3691,11 @@ const transform = {
                 parameters: [
                   {
                     name: "p1",
-                    type: "const SDL_Point &"
+                    type: "const PointRaw &"
                   },
                   {
                     name: "p2",
-                    type: "const SDL_Point &"
+                    type: "const PointRaw &"
                   }
                 ]
               }
@@ -3718,10 +3714,10 @@ const transform = {
               kind: "function",
               type: "bool",
               parameters: [{
-                type: "SDL_Point *",
+                type: "PointRaw *",
                 name: "p1"
               }, {
-                type: "SDL_Point *",
+                type: "PointRaw *",
                 name: "p2"
               }]
             },
@@ -3767,7 +3763,7 @@ const transform = {
               },
               {
                 name: "other",
-                type: "const SDL_Rect &"
+                type: "const RectRaw &"
               }]
             },
             Contains: [{
@@ -3778,7 +3774,7 @@ const transform = {
               parameters: [
                 {
                   name: "p",
-                  type: "const SDL_Point &"
+                  type: "const PointRaw &"
                 }
               ],
             },
@@ -3790,7 +3786,7 @@ const transform = {
               parameters: [
                 {
                   name: "other",
-                  type: "const SDL_Rect &"
+                  type: "const RectRaw &"
                 }
               ],
             }],
@@ -3804,7 +3800,7 @@ const transform = {
                 },
                 {
                   name: "other",
-                  type: "const SDL_Rect &"
+                  type: "const RectRaw &"
                 }
               ]
             },
@@ -3817,7 +3813,7 @@ const transform = {
                 name: "this",
               }, {
                 name: "other",
-                type: "const SDL_Rect &"
+                type: "const RectRaw &"
               }]
             },
             "SDL_GetRectUnion": {
@@ -3829,7 +3825,7 @@ const transform = {
                 name: "this",
               }, {
                 name: "other",
-                type: "const SDL_Rect &"
+                type: "const RectRaw &"
               }]
             }
           }
@@ -3847,11 +3843,11 @@ const transform = {
               parameters: [
                 {
                   name: "corner",
-                  type: "const SDL_FPoint &"
+                  type: "const FPointRaw &"
                 },
                 {
                   name: "size",
-                  type: "const SDL_FPoint &"
+                  type: "const FPointRaw &"
                 }
               ]
             },
@@ -3904,11 +3900,11 @@ const transform = {
               parameters: [
                 {
                   name: "center",
-                  type: "const SDL_FPoint &"
+                  type: "const FPointRaw &"
                 },
                 {
                   name: "size",
-                  type: "const SDL_FPoint &"
+                  type: "const FPointRaw &"
                 }
               ]
             }],
@@ -3946,11 +3942,11 @@ const transform = {
               parameters: [
                 {
                   name: "p1",
-                  type: "const SDL_FPoint &"
+                  type: "const FPointRaw &"
                 },
                 {
                   name: "p2",
-                  type: "const SDL_FPoint &"
+                  type: "const FPointRaw &"
                 }
               ]
             }],
@@ -3989,7 +3985,7 @@ const transform = {
               },
               {
                 name: "other",
-                type: "const SDL_FRect &"
+                type: "const FRectRaw &"
               },
               {
                 name: "epsilon",
@@ -4005,7 +4001,7 @@ const transform = {
               },
               {
                 name: "other",
-                type: "const SDL_FRect &"
+                type: "const FRectRaw &"
               }]
             },
             "Contains": [
@@ -4014,7 +4010,7 @@ const transform = {
                 type: "bool",
                 parameters: [{
                   name: "p",
-                  type: "const SDL_FPoint &"
+                  type: "const FPointRaw &"
                 }],
                 constexpr: true,
                 immutable: true
@@ -4024,7 +4020,7 @@ const transform = {
                 type: "bool",
                 parameters: [{
                   name: "other",
-                  type: "const SDL_FRect &"
+                  type: "const FRectRaw &"
                 }],
                 constexpr: true,
                 immutable: true
@@ -4040,7 +4036,7 @@ const transform = {
               },
               {
                 name: "other",
-                type: "const SDL_FRect &"
+                type: "const FRectRaw &"
               }]
             },
             "SDL_GetRectIntersectionFloat": {
@@ -4053,7 +4049,7 @@ const transform = {
               },
               {
                 name: "other",
-                type: "const SDL_FRect &"
+                type: "const FRectRaw &"
               }
               ]
             },
@@ -4068,7 +4064,7 @@ const transform = {
               },
               {
                 name: "other",
-                type: "const SDL_FRect &"
+                type: "const FRectRaw &"
               }]
             }
           }
@@ -4086,7 +4082,7 @@ const transform = {
               name: "clip"
             },
             {
-              type: "SDL_Rect *",
+              type: "RectRaw *",
               name: "result"
             }
           ]
@@ -4104,7 +4100,7 @@ const transform = {
               name: "clip"
             },
             {
-              type: "SDL_FRect *",
+              type: "FRectRaw *",
               name: "result"
             }
           ]
@@ -4125,7 +4121,7 @@ const transform = {
               name: "ctor",
               parameters: [
                 {
-                  "type": "WindowRef",
+                  "type": "WindowParam",
                   "name": "window"
                 }
               ]
@@ -4171,7 +4167,7 @@ const transform = {
               proto: true,
               parameters: [
                 {},
-                { type: "TextureRef" }
+                { type: "TextureParam" }
               ]
             },
             "SDL_GetRenderTarget": {
@@ -4184,7 +4180,7 @@ const transform = {
               static: false,
               parameters: [
                 {
-                  type: "const SDL_Point &",
+                  type: "const PointRaw &",
                   name: "size"
                 },
                 {
@@ -4198,7 +4194,7 @@ const transform = {
               "type": "void",
               "parameters": [
                 {
-                  "type": "SDL_Point *",
+                  "type": "PointRaw *",
                   "name": "size"
                 },
                 {
@@ -4223,7 +4219,7 @@ const transform = {
               "immutable": true,
               "parameters": [
                 {
-                  "type": "const SDL_FPoint &",
+                  "type": "const FPointRaw &",
                   "name": "window_coord"
                 }
               ]
@@ -4234,7 +4230,7 @@ const transform = {
               "immutable": true,
               "parameters": [
                 {
-                  "type": "const SDL_FPoint &",
+                  "type": "const FPointRaw &",
                   "name": "coord"
                 }
               ]
@@ -4301,7 +4297,7 @@ const transform = {
               static: false,
               parameters: [
                 {
-                  type: "const SDL_FPoint &",
+                  type: "const FPointRaw &",
                   name: "scale"
                 }
               ]
@@ -4321,7 +4317,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SDL_Color",
+                  "type": "ColorRaw",
                   "name": "c"
                 }
               ]
@@ -4331,7 +4327,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SDL_FColor",
+                  "type": "Const FColorRaw &",
                   "name": "c"
                 }
               ]
@@ -4349,7 +4345,7 @@ const transform = {
                 "type": "void",
                 "parameters": [
                   {
-                    "type": "SDL_Color *",
+                    "type": "ColorRaw *",
                     "name": "c"
                   }
                 ]
@@ -4360,7 +4356,7 @@ const transform = {
                 "type": "void",
                 "parameters": [
                   {
-                    "type": "SDL_FColor *",
+                    "type": "FColorRaw *",
                     "name": "c"
                   }
                 ]
@@ -4397,7 +4393,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "const SDL_FPoint &",
+                  "type": "const FPointRaw &",
                   "name": "p"
                 }
               ]
@@ -4415,11 +4411,11 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "const SDL_FPoint &",
+                  "type": "const FPointRaw &",
                   "name": "p1"
                 },
                 {
-                  "type": "const SDL_FPoint &",
+                  "type": "const FPointRaw &",
                   "name": "p2"
                 }
               ]
@@ -4475,7 +4471,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureParam"
                 },
                 {
                   "name": "srcrect",
@@ -4493,7 +4489,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureParam"
                 },
                 {
                   "name": "srcrect",
@@ -4523,7 +4519,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureParam"
                 },
                 {
                   "name": "srcrect",
@@ -4549,7 +4545,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureParam"
                 },
                 {
                   "name": "srcrect",
@@ -4571,7 +4567,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureParam"
                 },
                 {
                   "name": "srcrect",
@@ -4609,7 +4605,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureParam"
                 },
                 {
                   "name": "vertices",
@@ -4628,7 +4624,7 @@ const transform = {
                 {},
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureParam"
                 },
                 {
                   "name": "xy",
@@ -4760,7 +4756,7 @@ const transform = {
               },
               "texture": {
                 kind: "var",
-                type: "TextureRef"
+                type: "TextureParam"
               },
             },
             hints: { private: true },
@@ -4773,7 +4769,7 @@ const transform = {
               proto: true,
               parameters: [
                 {
-                  type: "RendererRef",
+                  type: "RendererParam",
                   name: "renderer"
                 },
                 {
@@ -4786,11 +4782,11 @@ const transform = {
               proto: true,
               parameters: [
                 {
-                  type: "RendererRef",
+                  type: "RendererParam",
                   name: "renderer"
                 },
                 {
-                  type: "IOStreamRef",
+                  type: "IOStreamParam",
                   name: "src"
                 }
               ]
@@ -4800,7 +4796,7 @@ const transform = {
               parameters: [
                 {
                   name: "renderer",
-                  type: "RendererRef"
+                  type: "RendererParam"
                 },
                 {
                   name: "format",
@@ -4812,7 +4808,7 @@ const transform = {
                 },
                 {
                   name: "size",
-                  type: "const SDL_Point &"
+                  type: "const PointRaw &"
                 }
               ]
             },
@@ -4822,7 +4818,7 @@ const transform = {
               kind: "function",
               parameters: [
                 {
-                  type: "RendererRef",
+                  type: "RendererParam",
                   name: "renderer"
                 },
                 {
@@ -4834,11 +4830,11 @@ const transform = {
               kind: "function",
               parameters: [
                 {
-                  type: "RendererRef",
+                  type: "RendererParam",
                   name: "renderer"
                 },
                 {
-                  type: "IOStreamRef",
+                  type: "IOStreamParam",
                   name: "src"
                 }
               ]
@@ -5046,7 +5042,7 @@ const transform = {
           parameters: [
             {},
             {
-              type: "const SDL_Point &",
+              type: "const PointRaw &",
               name: "size"
             },
             {
@@ -5566,7 +5562,7 @@ const transform = {
           ]
         },
         "SDL_GetEnvironment": {
-          "type": "EnvironmentRef"
+          "type": "EnvironmentRaw"
         },
         "SDL_iconv_string": {
           "type": "OwnPtr<char>"
@@ -5878,7 +5874,7 @@ const transform = {
               proto: true,
               static: true,
               parameters: [{
-                type: "IOStreamRef",
+                type: "IOStreamParam",
                 name: "src"
               }],
             }],
@@ -5887,7 +5883,7 @@ const transform = {
               parameters: [
                 {
                   name: "size",
-                  type: "const SDL_Point &"
+                  type: "const PointRaw &"
                 },
                 {
                   name: "format",
@@ -5900,7 +5896,7 @@ const transform = {
               parameters: [
                 {
                   name: "size",
-                  type: "const SDL_Point &"
+                  type: "const PointRaw &"
                 },
                 {
                   name: "format",
@@ -5957,7 +5953,7 @@ const transform = {
               type: "Surface",
               parameters: [
                 {
-                  type: "IOStreamRef"
+                  type: "IOStreamParam"
                 }
               ]
             },
@@ -6096,7 +6092,7 @@ const transform = {
               parameters: [
                 {},
                 {
-                  type: "SDL_FColor",
+                  type: "Const FColorRaw &",
                   name: "color"
                 }
               ]
@@ -6107,7 +6103,7 @@ const transform = {
                 type: "void",
                 parameters: [
                   {
-                    type: "SDL_Color",
+                    type: "ColorRaw",
                     name: "color"
                   }
                 ]
@@ -6132,7 +6128,7 @@ const transform = {
                   name: "rect"
                 },
                 {
-                  type: "SDL_Color",
+                  type: "ColorRaw",
                   name: "color"
                 }
               ]
@@ -6159,7 +6155,7 @@ const transform = {
                   name: "rects"
                 },
                 {
-                  type: "SDL_Color",
+                  type: "ColorRaw",
                   name: "color"
                 }
               ]
@@ -6184,7 +6180,7 @@ const transform = {
               type: "void",
               parameters: [
                 {
-                  type: "SurfaceRef",
+                  type: "SurfaceParam",
                   name: "src"
                 },
                 {
@@ -6192,7 +6188,7 @@ const transform = {
                   name: "srcrect"
                 },
                 {
-                  type: "const SDL_Point &",
+                  type: "const PointRaw &",
                   name: "dstpos"
                 }
               ]
@@ -6204,7 +6200,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "SurfaceRef",
+                  type: "SurfaceParam",
                   name: "src"
                 },
                 {
@@ -6224,15 +6220,15 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "SurfaceRef",
+                  type: "SurfaceParam",
                   name: "src"
                 },
                 {
-                  type: "const SDL_Rect &",
+                  type: "const RectRaw &",
                   name: "srcrect"
                 },
                 {
-                  type: "const SDL_Rect &",
+                  type: "const RectRaw &",
                   name: "dstrect"
                 }
               ]
@@ -6244,7 +6240,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "SurfaceRef",
+                  type: "SurfaceParam",
                   name: "src"
                 },
                 {
@@ -6268,15 +6264,15 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "SurfaceRef",
+                  type: "SurfaceParam",
                   name: "src"
                 },
                 {
-                  type: "const SDL_Rect &",
+                  type: "const RectRaw &",
                   name: "srcrect"
                 },
                 {
-                  type: "const SDL_Rect &",
+                  type: "const RectRaw &",
                   name: "dstrect"
                 },
                 {
@@ -6298,7 +6294,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "SurfaceRef",
+                  type: "SurfaceParam",
                   name: "src"
                 },
                 {
@@ -6323,7 +6319,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "SurfaceRef",
+                  type: "SurfaceParam",
                   name: "src"
                 },
                 {
@@ -6344,7 +6340,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "SurfaceRef",
+                  type: "SurfaceParam",
                   name: "src"
                 },
                 {
@@ -6371,7 +6367,7 @@ const transform = {
               type: "void",
               parameters: [
                 {
-                  type: "SurfaceRef",
+                  type: "SurfaceParam",
                   name: "src"
                 },
                 {
@@ -6408,7 +6404,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "SurfaceRef",
+                  type: "SurfaceParam",
                   name: "src"
                 },
                 {
@@ -6451,7 +6447,7 @@ const transform = {
               immutable: true,
               parameters: [
                 {
-                  type: "SDL_Color",
+                  type: "ColorRaw",
                   name: "color"
                 }
               ]
@@ -6474,7 +6470,7 @@ const transform = {
                 type: "Color",
                 parameters: [
                   {
-                    type: "const SDL_Point &",
+                    type: "const PointRaw &",
                     name: "p"
                   },
                 ]
@@ -6486,11 +6482,11 @@ const transform = {
                 type: "void",
                 parameters: [
                   {
-                    type: "const SDL_Point &",
+                    type: "const PointRaw &",
                     name: "p"
                   },
                   {
-                    type: "SDL_Color *",
+                    type: "ColorRaw *",
                     name: "c"
                   }
                 ]
@@ -6502,11 +6498,11 @@ const transform = {
                 type: "void",
                 parameters: [
                   {
-                    type: "const SDL_Point &",
+                    type: "const PointRaw &",
                     name: "p"
                   },
                   {
-                    type: "SDL_FColor *",
+                    type: "FColorRaw *",
                     name: "c"
                   }
                 ]
@@ -6519,7 +6515,7 @@ const transform = {
               parameters: [
                 {},
                 {
-                  type: "const SDL_Point &",
+                  type: "const PointRaw &",
                   name: "p"
                 },
                 {
@@ -6547,7 +6543,7 @@ const transform = {
               parameters: [
                 {},
                 {
-                  type: "const SDL_Point &",
+                  type: "const PointRaw &",
                   name: "p"
                 },
                 {
@@ -6573,11 +6569,11 @@ const transform = {
               parameters: [
                 {},
                 {
-                  type: "const SDL_Point &",
+                  type: "const PointRaw &",
                   name: "p"
                 },
                 {
-                  type: "SDL_Color",
+                  type: "ColorRaw",
                   name: "c"
                 }
               ]
@@ -6588,11 +6584,11 @@ const transform = {
               parameters: [
                 {},
                 {
-                  type: "const SDL_Point &",
+                  type: "const PointRaw &",
                   name: "p"
                 },
                 {
-                  type: "SDL_FColor",
+                  type: "Const FColorRaw &",
                   name: "c"
                 }
               ]
@@ -6655,7 +6651,7 @@ const transform = {
           parameters: [
             {},
             {
-              type: "IOStreamRef"
+              type: "IOStreamParam"
             }
           ]
         }
@@ -6692,7 +6688,7 @@ const transform = {
           parameters: [
             {
               name: "window",
-              type: "WindowRef"
+              type: "WindowParam"
             },
             {
               name: "interval",
@@ -7056,13 +7052,13 @@ const transform = {
             },
             "SDL_GetTrayMenuParentEntry": {
               name: "GetParentEntry",
-              type: "TrayEntryRef",
+              type: "TrayEntryParam",
               immutable: true,
               proto: true,
             },
             "SDL_GetTrayMenuParentTray": {
               name: "GetParentTray",
-              type: "TrayRef",
+              type: "TrayParam",
               immutable: true,
               proto: true,
             },
@@ -7077,7 +7073,7 @@ const transform = {
       includeAfter: {
         "__begin": [
           {
-            "name": "WindowRef",
+            "name": "WindowParam",
             "kind": "forward",
           },
           {
@@ -7085,7 +7081,7 @@ const transform = {
             "kind": "forward",
           },
           {
-            "name": "RendererRef",
+            "name": "RendererParam",
             "kind": "forward",
           },
           {
@@ -7262,7 +7258,7 @@ const transform = {
                 },
                 {
                   name: "size",
-                  type: "const SDL_Point &"
+                  type: "const PointRaw &"
                 },
                 {
                   name: "flags",
@@ -7277,15 +7273,15 @@ const transform = {
               parameters: [
                 {
                   name: "parent",
-                  type: "WindowRef"
+                  type: "WindowParam"
                 },
                 {
                   name: "offset",
-                  type: "const SDL_Point &"
+                  type: "const PointRaw &"
                 },
                 {
                   name: "size",
-                  type: "const SDL_Point &"
+                  type: "const PointRaw &"
                 },
                 {
                   name: "flags",
@@ -7345,7 +7341,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "const SDL_Point &",
+                  "type": "const PointRaw &",
                   "name": "p"
                 }
               ]
@@ -7361,7 +7357,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "const SDL_Point &",
+                  "type": "const PointRaw &",
                   "name": "p"
                 }
               ]
@@ -7393,7 +7389,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "const SDL_Point &",
+                  "type": "const PointRaw &",
                   "name": "p"
                 }
               ]
@@ -7403,7 +7399,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "const SDL_Point &",
+                  "type": "const PointRaw &",
                   "name": "p"
                 }
               ]
@@ -7450,14 +7446,14 @@ const transform = {
             "SDL_SetWindowMouseRect": "function",
             "SDL_GetWindowMouseRect": {
               immutable: true,
-              type: "const SDL_Rect *"
+              type: "const RectRaw *"
             },
             "SDL_SetWindowOpacity": "function",
             "SDL_GetWindowOpacity": "immutable",
             "SDL_SetWindowParent": {
               parameters: [
                 {},
-                { type: "WindowRef" }
+                { type: "WindowParam" }
               ]
             },
             "SDL_SetWindowModal": "function",
@@ -7466,7 +7462,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "const SDL_Point &",
+                  "type": "const PointRaw &",
                   "name": "p"
                 }
               ]
@@ -7505,7 +7501,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "WindowRef",
+                  "type": "WindowParam",
                   "name": "window"
                 }
               ]
@@ -7757,10 +7753,10 @@ const transform = {
           "type": "WindowFlags"
         },
         "SDL_GL_GetCurrentWindow": {
-          type: "WindowRef"
+          type: "WindowRaw"
         },
         "SDL_GL_GetCurrentContext": {
-          type: "GLContextRef"
+          type: "GLContextRaw"
         },
       }
     },
@@ -7784,7 +7780,7 @@ const transform = {
               parameters: [
                 {
                   "name": "src",
-                  "type": "IOStreamRef"
+                  "type": "IOStreamParam"
                 }
               ]
             },
@@ -7793,7 +7789,7 @@ const transform = {
               parameters: [
                 {
                   "name": "src",
-                  "type": "IOStreamRef"
+                  "type": "IOStreamParam"
                 },
                 {
                   "name": "type",
@@ -7827,7 +7823,7 @@ const transform = {
             },
             "GetFrame": {
               kind: "function",
-              type: "SurfaceRef",
+              type: "Surface",
               immutable: true,
               parameters: [
                 {
@@ -7860,7 +7856,7 @@ const transform = {
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "type",
@@ -7878,7 +7874,7 @@ const transform = {
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             }
           ]
         },
@@ -7891,11 +7887,11 @@ const transform = {
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef"
+              "type": "RendererParam"
             },
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             }
           ]
         },
@@ -7905,11 +7901,11 @@ const transform = {
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef"
+              "type": "RendererParam"
             },
             {
               "name": "src",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "type",
@@ -8010,11 +8006,11 @@ const transform = {
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceRef"
+              "type": "SurfaceParam"
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "quality",
@@ -8027,11 +8023,11 @@ const transform = {
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceRef"
+              "type": "SurfaceParam"
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             }
           ]
         },
@@ -8040,11 +8036,11 @@ const transform = {
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceRef"
+              "type": "SurfaceParam"
             },
             {
               "name": "dst",
-              "type": "IOStreamRef"
+              "type": "IOStreamParam"
             },
             {
               "name": "quality",
@@ -8430,7 +8426,7 @@ const transform = {
                   "name": "p"
                 },
                 {
-                  "type": "SurfaceRef",
+                  "type": "SurfaceParam",
                   "name": "surface"
                 }
               ]
@@ -8450,11 +8446,11 @@ const transform = {
               "type": "",
               "parameters": [
                 {
-                  "type": "TextEngineRef",
+                  "type": "TextEngineParam",
                   "name": "engine"
                 },
                 {
-                  "type": "FontRef",
+                  "type": "FontParam",
                   "name": "font"
                 },
                 {
@@ -8469,12 +8465,12 @@ const transform = {
                 {},
                 {
                   name: "engine",
-                  type: "TextEngineRef"
+                  type: "TextEngineParam"
                 }
               ],
             },
             "TTF_GetTextEngine": {
-              type: "TextEngineRef",
+              type: "TextEngineParam",
               immutable: true
             },
             "TTF_SetTextFont": "function",
@@ -8753,7 +8749,7 @@ const transform = {
           "entries": {
             "m_text": {
               "kind": "var",
-              "type": "TextRef"
+              "type": "TextParam"
             },
             "m_subString": {
               "kind": "var",
@@ -8767,7 +8763,7 @@ const transform = {
                 "parameters": [
                   {
                     "name": "text",
-                    "type": "TextRef"
+                    "type": "TextParam"
                   }
                 ]
               },
