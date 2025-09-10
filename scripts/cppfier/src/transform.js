@@ -754,7 +754,11 @@ function expandWrappers(sourceEntries, file, context) {
       insertEntry(entries, /** @type {ApiEntry} */(currentCtors), targetType);
       delete transform.entries[targetType];
     }
-    transform.entries = { ...entries, ...(transform.entries ?? {}) };
+    const blockedNames = new Set(Object.keys(entries));
+    blockedNames.add(targetType);
+    if (transform.entries) Object.keys(transform.entries).forEach(k => blockedNames.add(k));
+    const detectedMethods = detectMethods(sourceEntries, file.transform, sourceType, rawType, blockedNames);
+    transform.entries = { ...entries, ...(transform.entries ?? {}), ...detectedMethods };
     if (type !== sourceType) {
       context.addParamType(type, targetType);
       context.addReturnType(type, targetType);
@@ -762,6 +766,92 @@ function expandWrappers(sourceEntries, file, context) {
 
     delete transform.wrapper;
   }
+}
+
+
+
+/**
+ * 
+ * @param {ApiEntries}            sourceEntries 
+ * @param {ApiEntryTransformMap}  transformEntries 
+ * @param {string}                sourceType 
+ * @param {string}                paramType 
+ * @param {Set<string>}           blockedNames 
+ */
+function detectMethods(sourceEntries, transformEntries, sourceType, paramType, blockedNames) {
+  /** @type {ApiSubEntryTransformLegacyMap} */
+  const foundEntries = {};
+  for (let [sourceName, transformEntryArray] of Object.entries(transformEntries)) {
+    if (blockedNames.has(sourceName) || foundEntries[sourceName]) continue;
+    const sourceEntry = /** @type {ApiEntryTransform}*/(sourceEntries[sourceName]);
+    const resultArray = [];
+    if (!Array.isArray(transformEntryArray)) transformEntryArray = [transformEntryArray];
+    /** @type {ApiEntryTransform[]} */
+    for (const transformEntry of transformEntryArray) {
+      if (transformEntry.kind !== 'function' && (transformEntry.kind || sourceEntry?.kind !== 'function')) continue;
+      if (!transformEntry.parameters?.length) continue;
+      const parameters = transformEntry.parameters;
+      if (!parameters) continue;
+      if (parameters.length === 0) {
+        blockedNames.add(sourceName);
+        continue;
+      }
+      const param0 = parameters[0];
+      if (typeof param0 === 'string') {
+        blockedNames.add(sourceName);
+        continue;
+      }
+      if (!param0.type) continue;
+      const m = paramMatchesVariants(param0, [paramType, `const ${paramType} &`, `${paramType} *`, `const ${paramType} *`]);
+      if (!m) {
+        blockedNames.add(sourceName);
+        continue;
+      }
+      if (!sourceEntry) parameters.shift();
+      resultArray.push({
+        ...transformEntry,
+        immutable: m === 'immutable'
+      });
+    }
+    if (resultArray.length === 0) continue;
+    foundEntries[sourceName] = resultArray.length === 1 ? resultArray[0] : resultArray;
+  }
+  for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
+    if (blockedNames.has(sourceName) || foundEntries[sourceName]) continue;
+    if (Array.isArray(sourceEntry)) continue;
+    if (sourceEntry.kind !== "function") continue;
+    const parameters = sourceEntry.parameters;
+    if (!parameters?.length) continue;
+    const param0 = parameters[0];
+    if (typeof param0 === 'string') continue;
+    const m = paramMatchesVariants(param0, [sourceType, `${sourceType} *`, `const ${sourceType}`, `const ${sourceType} *`]);
+    if (!m) continue;
+    const transformEntry = /** @type {ApiEntryTransform}*/(transformEntries[sourceName]);
+    const targetName = transformEntry?.name;
+    const targetParameters = transformEntry?.parameters;
+    if (targetName || targetParameters) {
+      foundEntries[sourceName] = {
+        name: targetName,
+        parameters: targetParameters,
+        immutable: m === 'immutable' || undefined
+      };
+    } else {
+      foundEntries[sourceName] = m;
+    }
+  }
+  return foundEntries;
+}
+
+/**
+ * 
+ * @param {ApiParameter}  param0 
+ * @param {string[]}      variants 
+ */
+function paramMatchesVariants(param0, variants) {
+  for (const variant of variants) {
+    if (param0.type === variant) return variant.startsWith('const ') ? 'immutable' : 'function';
+  }
+  return false;
 }
 
 
@@ -953,8 +1043,6 @@ function expandResources(sourceEntries, file, context) {
     };
     const subEntries = targetEntry.entries || {};
 
-    // const uniqueSubEntries = {};
-
     let extraUniqueCtors = subEntries[uniqueName];
     if (extraUniqueCtors) {
       delete subEntries[uniqueName];
@@ -1034,6 +1122,11 @@ function expandResources(sourceEntries, file, context) {
         }
       }
     }
+    const blockedNames = new Set(Object.keys(subEntries));
+    blockedNames.add(uniqueName);
+    Object.keys(ctors).forEach(k => blockedNames.add(k));
+    const detectedMethods = detectMethods(sourceEntries, file.transform, sourceName, rawName, blockedNames);
+    combineObject(subEntries, detectedMethods);
 
     let freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free ?? "reset"]) ?? scanFreeFunction(sourceEntries, uniqueName, pointerType);
     if (freeFunction) {
@@ -1058,6 +1151,7 @@ function expandResources(sourceEntries, file, context) {
         file.transform[sourceName] = { parameters: [{ type: rawName }] };
       }
     }
+
     targetEntry.doc = transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource`;
     targetEntry.entries = {
       "m_resource": {
@@ -1795,5 +1889,5 @@ function resolveDocRefs(doc, context) {
   return doc.replaceAll(context.referenceCandidate, ref => context.getName(ref));
 }
 
-
 exports.transformApi = transformApi;
+

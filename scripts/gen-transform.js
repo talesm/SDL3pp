@@ -3281,20 +3281,6 @@ const transform = {
                   name: "index"
                 }
               ]
-            },
-            "SDL_SetPaletteColors": {
-              parameters: [
-                {},
-                {
-                  name: "colors",
-                  type: "SpanRef<const SDL_Color>"
-                },
-                {
-                  name: "firstcolor",
-                  type: "int",
-                  default: "0"
-                }
-              ]
             }
           }
         },
