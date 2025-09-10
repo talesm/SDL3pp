@@ -1,6 +1,8 @@
 #!/bin/bash
 
 mkdir -p src/patches
+mkdir -p include/SDL3pp
+cp src/generated/*.h include/SDL3pp/
 for file in include/SDL3pp/*; do
   if [ -f "$file" ]; then # Check if it's a regular file (not a directory)
     filename=$(basename "$file")

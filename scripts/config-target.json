@@ -8,7 +8,7 @@
     "SDL_rect.h"
   ],
   "api": "scripts/target.json",
-  "baseDir": "include/SDL3pp/",
+  "baseDir": "src/generated/",
   "templateDir": "src/templates/",
   "sourceApi": "scripts/source.json",
   "transform": "scripts/transform.json"

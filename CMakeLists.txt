@@ -266,6 +266,7 @@ add_custom_command(OUTPUT ${TARGET_JSON}
 
 # Generate sources
 add_custom_target(SDL3pp_generate
+    COMMAND mkdir -p ${PROJECT_SOURCE_DIR}/src/generated/
     COMMAND node scripts/cppfier generate ${CONFIG_TARGET}
     COMMAND scripts/applyFormat.sh ${CONFIG_TARGET}
     DEPENDS ${CONFIG_TARGET} ${TARGET_JSON}
