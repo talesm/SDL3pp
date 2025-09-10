@@ -3344,165 +3344,24 @@ const transform = {
       }
     },
     "SDL_properties.h": {
-      resources: {
-        "SDL_PropertiesID": {
-          name: "Properties",
-          lock: true,
-          lockFunction: "SDL_LockProperties",
-          unlockFunction: "SDL_UnlockProperties",
-          ctors: ["SDL_CreateProperties"],
-          entries: {
-            "SDL_CreateProperties": {
-              name: "Create",
-            },
-            "SDL_CopyProperties": {
-              kind: "function",
-              name: "CopyPropertiesTo",
-              immutable: true
-            },
-            "SDL_LockProperties": {
-              type: "PropertiesLock",
-              proto: true,
-              reference: 1
-            },
-            "SetPointerWithCleanup": {
-              kind: "function",
-              static: false,
-              type: "void",
-              parameters: [
-                {
-                  "type": "StringParam",
-                  "name": "name"
-                },
-                {
-                  "type": "void *",
-                  "name": "value"
-                },
-                {
-                  "type": "CleanupPropertyCB",
-                  "name": "cleanup"
-                }
-              ]
-            },
-            "SDL_SetPointerPropertyWithCleanup": {
-              "kind": "function",
-              "name": "SetPointerWithCleanup"
-            },
-            "SDL_SetPointerProperty": {
-              "kind": "function",
-              "name": "SetPointer"
-            },
-            "SDL_SetStringProperty": {
-              "kind": "function",
-              "name": "SetString"
-            },
-            "SDL_SetNumberProperty": {
-              "kind": "function",
-              "name": "SetNumber"
-            },
-            "SDL_SetFloatProperty": {
-              "kind": "function",
-              "name": "SetFloat"
-            },
-            "SDL_SetBooleanProperty": {
-              "kind": "function",
-              "name": "SetBoolean"
-            },
-            "SDL_HasProperty": {
-              "kind": "function",
-              "name": "Has",
-              "immutable": true
-            },
-            "SDL_GetPropertyType": {
-              "kind": "function",
-              "name": "GetType",
-              "immutable": true
-            },
-            "SDL_GetPointerProperty": {
-              "kind": "function",
-              "name": "GetPointer",
-              "immutable": true
-            },
-            "SDL_GetStringProperty": {
-              "kind": "function",
-              "name": "GetString",
-              "immutable": true
-            },
-            "SDL_GetNumberProperty": {
-              "kind": "function",
-              "name": "GetNumber",
-              "immutable": true
-            },
-            "SDL_GetFloatProperty": {
-              "kind": "function",
-              "name": "GetFloat",
-              "immutable": true
-            },
-            "SDL_GetBooleanProperty": {
-              "kind": "function",
-              "name": "GetBoolean",
-              "immutable": true
-            },
-            "SDL_ClearProperty": {
-              "kind": "function",
-              "name": "Clear"
-            },
-            "Enumerate": [
-              {
-                kind: "function",
-                type: "void",
-                immutable: true,
-                template: [
-                  {
-                    type: "std::output_iterator<const char *>",
-                    name: "IT"
-                  }
-                ],
-                parameters: [
-                  {
-                    type: "IT",
-                    name: "outputIter"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "void",
-                immutable: true,
-                proto: true,
-                parameters: [
-                  {
-                    type: "EnumeratePropertiesCB",
-                    name: "callback"
-                  }
-                ]
-              }
-            ],
-            "SDL_EnumerateProperties": {
-              "kind": "function",
-              "name": "Enumerate",
-              "immutable": true
-            },
-            "GetCount": {
-              kind: "function",
-              immutable: true,
-              type: "Uint64",
-              parameters: [],
-              proto: true,
-            },
-          }
-        }
-      },
+      localIncludes: ['SDL3pp_callbackWrapper.h', 'SDL3pp_error.h', 'SDL3pp_strings.h'],
       transform: {
         "SDL_PropertiesID": {
           name: "Properties",
           resource: {
-            lock: true,
-            lockFunction: "SDL_LockProperties",
-            unlockFunction: "SDL_UnlockProperties",
             ctors: ["SDL_CreateProperties"],
+            free: "SDL_DestroyProperties",
             rawName: "PropertiesID",
             shared: true,
+            enableAutoMethods: false,
+          },
+          entries: {
+            "SDL_CreateProperties": {
+              name: "Create",
+            },
+            "SDL_DestroyProperties": {
+              name: "Destroy",
+            },
           },
         },
         "SDL_PropertyType": {
@@ -3513,7 +3372,49 @@ const transform = {
           "type": "SDL_EnumeratePropertiesCallback",
         },
         "EnumeratePropertiesCB": {
-          type: "std::function<void(PropertiesRef props, const char *name)>"
+          type: "std::function<void(PropertiesID props, const char *name)>"
+        },
+        "SetPointerPropertyWithCleanup": {
+          kind: "function",
+          static: false,
+          type: "void",
+          after: "SDL_SetPointerPropertyWithCleanup",
+          parameters: [{
+            type: "PropertiesParam",
+            name: "props"
+          }, {
+            type: "StringParam",
+            name: "name"
+          },
+          {
+            type: "void *",
+            name: "value"
+          },
+          {
+            type: "CleanupPropertyCB",
+            name: "cleanup"
+          }]
+        },
+        "SDL_EnumerateProperties": {},
+        "EnumerateProperties": {
+          kind: "function",
+          type: "void",
+          after: "SDL_EnumerateProperties",
+          parameters: [{
+            type: "PropertiesParam",
+            name: "props"
+          }, {
+            type: "EnumeratePropertiesCB",
+            name: "callback"
+          }]
+        },
+        "CountProperties": {
+          kind: "function",
+          type: "Uint64",
+          parameters: [{
+            type: "PropertiesParam",
+            name: "props"
+          }],
         },
       }
     },

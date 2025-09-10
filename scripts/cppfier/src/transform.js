@@ -891,17 +891,14 @@ function expandResources(sourceEntries, file, context) {
     const constParamType = `${uniqueName}ConstParam`;
     if (!targetEntry.kind) targetEntry.kind = 'struct';
 
-    // const refName = uniqueName + "Ref";
-    // const unsafeName = uniqueName + "Unsafe";
-    // const sharedName = uniqueName + "Shared";
-    // const weakName = uniqueName + "Weak";
-    // const detachedName = "Detached" + uniqueName;
     const type = targetEntry.type ?? sourceName;
     const sourceEntry =  /** @type {ApiEntry} */(sourceEntries[sourceName]);
     const isStruct = sourceEntry.kind === "struct" || (sourceEntry.kind === "alias" && sourceEntry.type.startsWith('struct '));
     const pointerType = (isStruct ? `${type} *` : type);
     const constPointerType = `const ${pointerType}`;
+    const nullValue = isStruct ? 'nullptr' : '0';
     const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
+    if (sourceEntry.type && !targetEntry.type) targetEntry.type = '';
     context.addName(sourceName, uniqueName);
     referenceAliases.push({ name: uniqueName, kind: "forward" });
     referenceAliases.push({ name: rawName, kind: "alias", type: pointerType });
@@ -929,7 +926,7 @@ function expandResources(sourceEntries, file, context) {
           constexpr: true,
           type: '',
           parameters: [{ type: "std::nullptr_t", name: "_" }],
-          hints: { init: [`value(${isStruct ? "nullptr" : "0"})`] }
+          hints: { init: [`value(${nullValue})`] }
         }],
         [`operator ${rawName}`]: {
           kind: 'function',
@@ -973,7 +970,7 @@ function expandResources(sourceEntries, file, context) {
             constexpr: true,
             type: '',
             parameters: [{ type: "std::nullptr_t", name: "_" }],
-            hints: { init: [`value(${isStruct ? "nullptr" : "0"})`] }
+            hints: { init: [`value(${nullValue})`] }
           }],
           [`operator ${constRawName}`]: {
             kind: 'function',
@@ -987,14 +984,6 @@ function expandResources(sourceEntries, file, context) {
         },
       });
     }
-    // if (targetEntry.aliasDetached) {
-    //   referenceAliases.push({
-    //     name: detachedName,
-    //     kind: "alias",
-    //     type: `DetachedResource<${refName}, ${uniqueName}>`,
-    //     doc: `A ${title} result that will be owned only if assigned to a ${uniqueName}.\n\nThis is designed as resource types to cases where ownership might not be required.`
-    //   });
-    // }
     context.addParamType(pointerType, paramType);
     context.addParamType(constPointerType, resourceEntry.enableConstParam ? constParamType : paramType);
 
@@ -1037,7 +1026,7 @@ function expandResources(sourceEntries, file, context) {
         parameters: [{ name: "other", type: `${uniqueName} &&` }],
         hints: {
           init: ["m_resource(other.m_resource)"],
-          body: `other.m_resource = ${isStruct ? "nullptr" : "0"};`
+          body: `other.m_resource = ${nullValue};`
         },
       }]
     };
@@ -1122,11 +1111,13 @@ function expandResources(sourceEntries, file, context) {
         }
       }
     }
-    const blockedNames = new Set(Object.keys(subEntries));
-    blockedNames.add(uniqueName);
-    Object.keys(ctors).forEach(k => blockedNames.add(k));
-    const detectedMethods = detectMethods(sourceEntries, file.transform, sourceName, rawName, blockedNames);
-    combineObject(subEntries, detectedMethods);
+    if (resourceEntry.enableAutoMethods !== false) {
+      const blockedNames = new Set(Object.keys(subEntries));
+      blockedNames.add(uniqueName);
+      Object.keys(ctors).forEach(k => blockedNames.add(k));
+      const detectedMethods = detectMethods(sourceEntries, file.transform, sourceName, rawName, blockedNames);
+      combineObject(subEntries, detectedMethods);
+    }
 
     let freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free ?? "reset"]) ?? scanFreeFunction(sourceEntries, uniqueName, pointerType);
     if (freeFunction) {
@@ -1142,7 +1133,7 @@ function expandResources(sourceEntries, file, context) {
           body = `CheckError(${body})`;
           if (freeFunction.type === "bool") freeFunction.type = "void";
         }
-        body += `;\nm_resource = ${isStruct ? "nullptr" : "0"};`;
+        body += `;\nm_resource = ${nullValue};`;
         if (freeFunction.type !== "void") body = `auto r = ${body}\nreturn r;`;
         combineHints(freeFunction, { body });
       }
@@ -1157,7 +1148,7 @@ function expandResources(sourceEntries, file, context) {
       "m_resource": {
         kind: "var",
         type: rawName,
-        hints: { body: "nullptr" },
+        hints: { body: nullValue },
       },
       ...ctors,
       [`~${uniqueName}`]: {
@@ -1185,7 +1176,7 @@ function expandResources(sourceEntries, file, context) {
         type: rawName,
         constexpr: true,
         parameters: [],
-        hints: { body: "auto r = m_resource;\nm_resource = nullptr;\nreturn r;" },
+        hints: { body: `auto r = m_resource;\nm_resource = ${nullValue};\nreturn r;` },
       },
       [`operator ${paramType}`]: {
         kind: "function",

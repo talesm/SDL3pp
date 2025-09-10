@@ -1,5 +1,5 @@
---- src/generated/SDL3pp_pixels.h	2025-09-10 09:03:19.772284276 -0300
-+++ include/SDL3pp/SDL3pp_pixels.h	2025-09-10 09:01:21.593306486 -0300
+--- src/generated/SDL3pp_pixels.h	2025-09-10 15:03:42.074331481 -0300
++++ include/SDL3pp/SDL3pp_pixels.h	2025-09-10 15:03:06.845207672 -0300
 @@ -9,7 +9,7 @@
  namespace SDL {
  
@@ -1654,15 +1654,6 @@
    }
  
    /**
-@@ -2009,7 +2215,7 @@
-  */
- inline Palette CreatePalette(int ncolors)
- {
--  return CheckError(SDL_CreatePalette(ncolors));
-+  return Palette{CheckError(SDL_CreatePalette(ncolors))};
- }
- 
- /**
 @@ -2030,7 +2236,8 @@
                               SpanRef<const SDL_Color> colors,
                               int firstcolor = 0)

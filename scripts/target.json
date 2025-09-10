@@ -1,5 +1,823 @@
 {
   "files": {
+    "SDL3pp_properties.h": {
+      "name": "SDL3pp_properties.h",
+      "doc": "@defgroup CategoryProperties Category Properties\n\nA property is a variable that can be created and retrieved by name at\nruntime.\n\nAll properties are part of a property group (Properties). A property\ngroup can be created with the Properties.Create function and destroyed\nwith the Properties.Destroy function.\n\nProperties can be added to and retrieved from a property group through the\nfollowing functions:\n\n- SetPointerProperty and GetPointerProperty operate on `void*`\n  pointer types.\n- SetStringProperty and GetStringProperty operate on string types.\n- SetNumberProperty and GetNumberProperty operate on signed 64-bit\n  integer types.\n- SetFloatProperty and GetFloatProperty operate on floating point\n  types.\n- SetBooleanProperty and GetBooleanProperty operate on boolean\n  types.\n\nProperties can be removed from a group by using ClearProperty.",
+      "entries": {
+        "Properties-forward": {
+          "name": "Properties",
+          "kind": "forward",
+          "doc": ""
+        },
+        "PropertiesID": {
+          "name": "PropertiesID",
+          "kind": "alias",
+          "type": "SDL_PropertiesID",
+          "doc": ""
+        },
+        "PropertiesParam": {
+          "name": "PropertiesParam",
+          "kind": "struct",
+          "doc": "Safely wrap Properties for non owning parameters",
+          "entries": {
+            "value": {
+              "kind": "var",
+              "name": "value",
+              "type": "PropertiesID",
+              "doc": ""
+            },
+            "PropertiesParam": [
+              {
+                "kind": "function",
+                "name": "PropertiesParam",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "PropertiesID",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(value)"
+                  ]
+                },
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "PropertiesParam",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "std::nullptr_t",
+                    "name": "_"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(0)"
+                  ]
+                },
+                "doc": ""
+              }
+            ],
+            "operator PropertiesID": {
+              "kind": "function",
+              "name": "operator PropertiesID",
+              "constexpr": true,
+              "immutable": true,
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "return value;"
+              },
+              "doc": ""
+            }
+          }
+        },
+        "Properties": {
+          "doc": "SDL properties ID\n\n@since This datatype is available since SDL 3.2.0.\n\n@cat resource",
+          "name": "Properties",
+          "kind": "struct",
+          "type": "",
+          "sourceName": "SDL_PropertiesID",
+          "entries": {
+            "m_resource": {
+              "kind": "var",
+              "type": "PropertiesID",
+              "hints": {
+                "body": "0"
+              },
+              "name": "m_resource",
+              "doc": ""
+            },
+            "Properties": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "hints": {
+                  "default": true,
+                  "changeAccess": "public"
+                },
+                "name": "Properties",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "name": "resource",
+                    "type": "const PropertiesID"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_resource(resource)"
+                  ]
+                },
+                "name": "Properties",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Properties &"
+                  }
+                ],
+                "hints": {},
+                "name": "Properties",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "Properties &&"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_resource(other.m_resource)"
+                  ],
+                  "body": "other.m_resource = 0;"
+                },
+                "name": "Properties",
+                "doc": ""
+              }
+            ],
+            "Create": {
+              "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when SDL_Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Destroy",
+              "name": "Create",
+              "kind": "function",
+              "type": "Properties",
+              "parameters": [],
+              "sourceName": "SDL_CreateProperties",
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
+            },
+            "~Properties": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyProperties(m_resource);"
+              },
+              "name": "~Properties",
+              "doc": ""
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Properties &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Properties"
+                }
+              ],
+              "hints": {
+                "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
+              },
+              "name": "operator=",
+              "doc": ""
+            },
+            "get": {
+              "kind": "function",
+              "type": "PropertiesID",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "return m_resource;"
+              },
+              "name": "get",
+              "doc": ""
+            },
+            "release": {
+              "kind": "function",
+              "type": "PropertiesID",
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "auto r = m_resource;\nm_resource = 0;\nreturn r;"
+              },
+              "name": "release",
+              "doc": ""
+            },
+            "operator PropertiesParam": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "return {m_resource};"
+              },
+              "name": "operator PropertiesParam",
+              "doc": ""
+            },
+            "Destroy": {
+              "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyProperties",
+              "hints": {
+                "body": "SDL_DestroyProperties(m_resource);\nm_resource = 0;"
+              }
+            }
+          },
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true
+          }
+        },
+        "PropertyType": {
+          "doc": "SDL property type\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "PropertyType",
+          "kind": "alias",
+          "sourceName": "SDL_PropertyType",
+          "type": "SDL_PropertyType"
+        },
+        "PROPERTY_TYPE_INVALID": {
+          "kind": "var",
+          "name": "PROPERTY_TYPE_INVALID",
+          "constexpr": true,
+          "type": "PropertyType",
+          "doc": "INVALID",
+          "sourceName": "SDL_PROPERTY_TYPE_INVALID"
+        },
+        "PROPERTY_TYPE_POINTER": {
+          "kind": "var",
+          "name": "PROPERTY_TYPE_POINTER",
+          "constexpr": true,
+          "type": "PropertyType",
+          "doc": "POINTER",
+          "sourceName": "SDL_PROPERTY_TYPE_POINTER"
+        },
+        "PROPERTY_TYPE_STRING": {
+          "kind": "var",
+          "name": "PROPERTY_TYPE_STRING",
+          "constexpr": true,
+          "type": "PropertyType",
+          "doc": "STRING",
+          "sourceName": "SDL_PROPERTY_TYPE_STRING"
+        },
+        "PROPERTY_TYPE_NUMBER": {
+          "kind": "var",
+          "name": "PROPERTY_TYPE_NUMBER",
+          "constexpr": true,
+          "type": "PropertyType",
+          "doc": "NUMBER",
+          "sourceName": "SDL_PROPERTY_TYPE_NUMBER"
+        },
+        "PROPERTY_TYPE_FLOAT": {
+          "kind": "var",
+          "name": "PROPERTY_TYPE_FLOAT",
+          "constexpr": true,
+          "type": "PropertyType",
+          "doc": "FLOAT",
+          "sourceName": "SDL_PROPERTY_TYPE_FLOAT"
+        },
+        "PROPERTY_TYPE_BOOLEAN": {
+          "kind": "var",
+          "name": "PROPERTY_TYPE_BOOLEAN",
+          "constexpr": true,
+          "type": "PropertyType",
+          "doc": "BOOLEAN",
+          "sourceName": "SDL_PROPERTY_TYPE_BOOLEAN"
+        },
+        "GetGlobalProperties": {
+          "doc": "Get the global SDL properties.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetGlobalProperties",
+          "kind": "function",
+          "type": "PropertiesID",
+          "parameters": [],
+          "sourceName": "SDL_GetGlobalProperties",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "CreateProperties": {
+          "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when SDL_Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Destroy",
+          "name": "CreateProperties",
+          "kind": "function",
+          "type": "Properties",
+          "parameters": [],
+          "sourceName": "SDL_CreateProperties",
+          "hints": {
+            "wrapSelf": true
+          }
+        },
+        "CopyProperties": {
+          "doc": "Copy a group of properties.\n\nCopy all the properties from one group of properties to another, with the\nexception of properties requiring cleanup (set using\nSetPointerPropertyWithCleanup()), which will not be copied. Any\nproperty that already exists on `dst` will be overwritten.\n\n@param src the properties to copy.\n@param dst the destination properties.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "CopyProperties",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "dst",
+              "type": "PropertiesParam"
+            }
+          ],
+          "sourceName": "SDL_CopyProperties",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "LockProperties": {
+          "doc": "Lock a group of properties.\n\nObtain a multi-threaded lock for these properties. Other threads will wait\nwhile trying to lock these properties until they are unlocked. Properties\nmust be unlocked before they are destroyed.\n\nThe lock is automatically taken when setting individual properties, this\nfunction is only needed when you want to set several properties atomically\nor want to guarantee that properties being queried aren't freed in another\nthread.\n\n@param props the properties to lock.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa UnlockProperties",
+          "name": "LockProperties",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            }
+          ],
+          "sourceName": "SDL_LockProperties",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "UnlockProperties": {
+          "doc": "Unlock a group of properties.\n\n@param props the properties to unlock.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LockProperties",
+          "name": "UnlockProperties",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            }
+          ],
+          "sourceName": "SDL_UnlockProperties"
+        },
+        "CleanupPropertyCallback": {
+          "doc": "A callback used to free resources when a property is deleted.\n\nThis should release any resources associated with `value` that are no\nlonger needed.\n\nThis callback is set per-property. Different properties in the same group\ncan have different cleanup callbacks.\n\nThis callback will be called _during_ SetPointerPropertyWithCleanup if\nthe function fails for any reason.\n\n@param userdata an app-defined pointer passed to the callback.\n@param value the pointer assigned to the property to clean up.\n\n@threadsafety This callback may fire without any locks held; if this is a\n              concern, the app should provide its own locking.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetPointerPropertyWithCleanup",
+          "name": "CleanupPropertyCallback",
+          "kind": "alias",
+          "type": "SDL_CleanupPropertyCallback",
+          "sourceName": "SDL_CleanupPropertyCallback"
+        },
+        "CleanupPropertyCB": {
+          "kind": "alias",
+          "name": "CleanupPropertyCB",
+          "type": "std::function<void(void *)>",
+          "doc": "A callback used to free resources when a property is deleted.\n\nThis should release any resources associated with `value` that are no\nlonger needed.\n\nThis callback is set per-property. Different properties in the same group\ncan have different cleanup callbacks.\n\nThis callback will be called _during_ SetPointerPropertyWithCleanup if\nthe function fails for any reason.\n\n@param userdata an app-defined pointer passed to the callback.\n@param value the pointer assigned to the property to clean up.\n\n@threadsafety This callback may fire without any locks held; if this is a\n              concern, the app should provide its own locking.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetPointerPropertyWithCleanup\n@sa CleanupPropertyCallback"
+        },
+        "SetPointerPropertyWithCleanup": [
+          {
+            "doc": "Set a pointer property in a group of properties with a cleanup function\nthat is called when the property is deleted.\n\nThe cleanup function is also called if setting the property fails for any\nreason.\n\nFor simply setting basic data types, like numbers, bools, or strings, use\nSetNumberProperty, SetBooleanProperty, or SetStringProperty\ninstead, as those functions will handle cleanup on your behalf. This\nfunction is only for more complex, custom data.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property, or nullptr to delete the property.\n@param cleanup the function to call when this property is deleted, or nullptr\n               if no cleanup is necessary.\n@param userdata a pointer that is passed to the cleanup function.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPointerProperty\n@sa SetPointerProperty\n@sa CleanupPropertyCallback",
+            "name": "SetPointerPropertyWithCleanup",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "props",
+                "type": "PropertiesParam"
+              },
+              {
+                "name": "name",
+                "type": "StringParam"
+              },
+              {
+                "name": "value",
+                "type": "void *"
+              },
+              {
+                "name": "cleanup",
+                "type": "CleanupPropertyCallback"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_SetPointerPropertyWithCleanup",
+            "hints": {
+              "mayFail": true
+            }
+          },
+          {
+            "kind": "function",
+            "static": false,
+            "type": "void",
+            "after": "SDL_SetPointerPropertyWithCleanup",
+            "parameters": [
+              {
+                "type": "PropertiesParam",
+                "name": "props"
+              },
+              {
+                "type": "StringParam",
+                "name": "name"
+              },
+              {
+                "type": "void *",
+                "name": "value"
+              },
+              {
+                "type": "CleanupPropertyCB",
+                "name": "cleanup"
+              }
+            ],
+            "name": "SetPointerPropertyWithCleanup",
+            "doc": "Set a pointer property in a group of properties with a cleanup function\nthat is called when the property is deleted.\n\nThe cleanup function is also called if setting the property fails for any\nreason.\n\nFor simply setting basic data types, like numbers, bools, or strings, use\nSetNumberProperty, SetBooleanProperty, or SetStringProperty\ninstead, as those functions will handle cleanup on your behalf. This\nfunction is only for more complex, custom data.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property, or nullptr to delete the property.\n@param cleanup the function to call when this property is deleted, or nullptr\n               if no cleanup is necessary.\n@param userdata a pointer that is passed to the cleanup function.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPointerProperty\n@sa SetPointerProperty\n@sa CleanupPropertyCallback"
+          }
+        ],
+        "SetPointerProperty": {
+          "doc": "Set a pointer property in a group of properties.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property, or nullptr to delete the property.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPointerProperty\n@sa HasProperty\n@sa SetBooleanProperty\n@sa SetFloatProperty\n@sa SetNumberProperty\n@sa SetPointerPropertyWithCleanup\n@sa SetStringProperty",
+          "name": "SetPointerProperty",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "value",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_SetPointerProperty",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "SetStringProperty": {
+          "doc": "Set a string property in a group of properties.\n\nThis function makes a copy of the string; the caller does not have to\npreserve the data after this call completes.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property, or nullptr to delete the property.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetStringProperty",
+          "name": "SetStringProperty",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "value",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_SetStringProperty",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "SetNumberProperty": {
+          "doc": "Set an integer property in a group of properties.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetNumberProperty",
+          "name": "SetNumberProperty",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint64"
+            }
+          ],
+          "sourceName": "SDL_SetNumberProperty",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "SetFloatProperty": {
+          "doc": "Set a floating point property in a group of properties.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetFloatProperty",
+          "name": "SetFloatProperty",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "value",
+              "type": "float"
+            }
+          ],
+          "sourceName": "SDL_SetFloatProperty",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "SetBooleanProperty": {
+          "doc": "Set a boolean property in a group of properties.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetBooleanProperty",
+          "name": "SetBooleanProperty",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "value",
+              "type": "bool"
+            }
+          ],
+          "sourceName": "SDL_SetBooleanProperty",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "HasProperty": {
+          "doc": "Return whether a property exists in a group of properties.\n\n@param props the properties to query.\n@param name the name of the property to query.\n@returns true if the property exists, or false if it doesn't.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPropertyType",
+          "name": "HasProperty",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_HasProperty"
+        },
+        "GetPropertyType": {
+          "doc": "Get the type of a property in a group of properties.\n\n@param props the properties to query.\n@param name the name of the property to query.\n@returns the type of the property, or PROPERTY_TYPE_INVALID if it is\n         not set.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasProperty",
+          "name": "GetPropertyType",
+          "kind": "function",
+          "type": "PropertyType",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_GetPropertyType"
+        },
+        "GetPointerProperty": {
+          "doc": "Get a pointer property from a group of properties.\n\nBy convention, the names of properties that SDL exposes on objects will\nstart with \"SDL.\", and properties that SDL uses internally will start with\n\"SDL.internal.\". These should be considered read-only and should not be\nmodified by applications.\n\n@param props the properties to query.\n@param name the name of the property to query.\n@param default_value the default value of the property.\n@returns the value of the property, or `default_value` if it is not set or\n         not a pointer property.\n\n@threadsafety It is safe to call this function from any thread, although\n              the data returned is not protected and could potentially be\n              freed if you call SetPointerProperty() or\n              ClearProperty() on these properties from another thread.\n              If you need to avoid this, use LockProperties() and\n              UnlockProperties().\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetBooleanProperty\n@sa GetFloatProperty\n@sa GetNumberProperty\n@sa GetPropertyType\n@sa GetStringProperty\n@sa HasProperty\n@sa SetPointerProperty",
+          "name": "GetPointerProperty",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "default_value",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_GetPointerProperty"
+        },
+        "GetStringProperty": {
+          "doc": "Get a string property from a group of properties.\n\n@param props the properties to query.\n@param name the name of the property to query.\n@param default_value the default value of the property.\n@returns the value of the property, or `default_value` if it is not set or\n         not a string property.\n\n@threadsafety It is safe to call this function from any thread, although\n              the data returned is not protected and could potentially be\n              freed if you call SetStringProperty() or\n              ClearProperty() on these properties from another thread.\n              If you need to avoid this, use LockProperties() and\n              UnlockProperties().\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPropertyType\n@sa HasProperty\n@sa SetStringProperty",
+          "name": "GetStringProperty",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "default_value",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_GetStringProperty"
+        },
+        "GetNumberProperty": {
+          "doc": "Get a number property from a group of properties.\n\nYou can use GetPropertyType() to query whether the property exists and\nis a number property.\n\n@param props the properties to query.\n@param name the name of the property to query.\n@param default_value the default value of the property.\n@returns the value of the property, or `default_value` if it is not set or\n         not a number property.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPropertyType\n@sa HasProperty\n@sa SetNumberProperty",
+          "name": "GetNumberProperty",
+          "kind": "function",
+          "type": "Sint64",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "default_value",
+              "type": "Sint64"
+            }
+          ],
+          "sourceName": "SDL_GetNumberProperty"
+        },
+        "GetFloatProperty": {
+          "doc": "Get a floating point property from a group of properties.\n\nYou can use GetPropertyType() to query whether the property exists and\nis a floating point property.\n\n@param props the properties to query.\n@param name the name of the property to query.\n@param default_value the default value of the property.\n@returns the value of the property, or `default_value` if it is not set or\n         not a float property.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPropertyType\n@sa HasProperty\n@sa SetFloatProperty",
+          "name": "GetFloatProperty",
+          "kind": "function",
+          "type": "float",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "default_value",
+              "type": "float"
+            }
+          ],
+          "sourceName": "SDL_GetFloatProperty"
+        },
+        "GetBooleanProperty": {
+          "doc": "Get a boolean property from a group of properties.\n\nYou can use GetPropertyType() to query whether the property exists and\nis a boolean property.\n\n@param props the properties to query.\n@param name the name of the property to query.\n@param default_value the default value of the property.\n@returns the value of the property, or `default_value` if it is not set or\n         not a boolean property.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPropertyType\n@sa HasProperty\n@sa SetBooleanProperty",
+          "name": "GetBooleanProperty",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "default_value",
+              "type": "bool"
+            }
+          ],
+          "sourceName": "SDL_GetBooleanProperty"
+        },
+        "ClearProperty": {
+          "doc": "Clear a property from a group of properties.\n\n@param props the properties to modify.\n@param name the name of the property to clear.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ClearProperty",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesParam"
+            },
+            {
+              "name": "name",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_ClearProperty",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "EnumeratePropertiesCallback": {
+          "doc": "A callback used to enumerate all the properties in a group of properties.\n\nThis callback is called from EnumerateProperties(), and is called once\nper property in the set.\n\n@param userdata an app-defined pointer passed to the callback.\n@param props the Properties that is being enumerated.\n@param name the next property name in the enumeration.\n\n@threadsafety EnumerateProperties holds a lock on `props` during this\n              callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EnumerateProperties",
+          "name": "EnumeratePropertiesCallback",
+          "kind": "alias",
+          "type": "SDL_EnumeratePropertiesCallback",
+          "sourceName": "SDL_EnumeratePropertiesCallback"
+        },
+        "EnumeratePropertiesCB": {
+          "kind": "alias",
+          "name": "EnumeratePropertiesCB",
+          "type": "std::function<void(PropertiesID props, const char *name)>",
+          "doc": "A callback used to enumerate all the properties in a group of properties.\n\nThis callback is called from EnumerateProperties(), and is called once\nper property in the set.\n\n@param userdata an app-defined pointer passed to the callback.\n@param props the Properties that is being enumerated.\n@param name the next property name in the enumeration.\n\n@threadsafety EnumerateProperties holds a lock on `props` during this\n              callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EnumerateProperties\n@sa EnumeratePropertiesCallback"
+        },
+        "EnumerateProperties": [
+          {
+            "doc": "Enumerate the properties contained in a group of properties.\n\nThe callback function is called for each property in the group of\nproperties. The properties are locked during enumeration.\n\n@param props the properties to query.\n@param callback the function to call for each property.\n@param userdata a pointer that is passed to `callback`.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+            "name": "EnumerateProperties",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "props",
+                "type": "PropertiesParam"
+              },
+              {
+                "name": "callback",
+                "type": "EnumeratePropertiesCallback"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_EnumerateProperties",
+            "hints": {
+              "mayFail": true
+            }
+          },
+          {
+            "kind": "function",
+            "type": "void",
+            "after": "SDL_EnumerateProperties",
+            "parameters": [
+              {
+                "type": "PropertiesParam",
+                "name": "props"
+              },
+              {
+                "type": "EnumeratePropertiesCB",
+                "name": "callback"
+              }
+            ],
+            "name": "EnumerateProperties",
+            "doc": "Enumerate the properties contained in a group of properties.\n\nThe callback function is called for each property in the group of\nproperties. The properties are locked during enumeration.\n\n@param props the properties to query.\n@param callback the function to call for each property.\n@param userdata a pointer that is passed to `callback`.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0."
+          }
+        ],
+        "CountProperties": {
+          "kind": "function",
+          "type": "Uint64",
+          "parameters": [
+            {
+              "type": "PropertiesParam",
+              "name": "props"
+            }
+          ],
+          "name": "CountProperties",
+          "doc": ""
+        },
+        "DestroyProperties": {
+          "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n@param props the properties to destroy.\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create",
+          "name": "DestroyProperties",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesID"
+            }
+          ],
+          "sourceName": "SDL_DestroyProperties"
+        }
+      },
+      "includes": [
+        "SDL3/SDL_properties.h"
+      ],
+      "localIncludes": [
+        "SDL3pp_callbackWrapper.h",
+        "SDL3pp_error.h",
+        "SDL3pp_strings.h"
+      ]
+    },
     "SDL3pp_error.h": {
       "name": "SDL3pp_error.h",
       "doc": "@defgroup CategoryError Category Error\n\nSimple error message routines for SDL.\n\nMost apps will interface with these APIs in exactly one function: when\nalmost any SDL function call reports failure, you can get a human-readable\nstring of the problem from GetError().\n\nThese strings are maintained per-thread, and apps are welcome to set their\nown errors, which is popular when building libraries on top of SDL for\nother apps to consume. These strings are set by calling SetErrorUnformatted().\n\nA common usage pattern is to have a function that returns true for success\nand false for failure, and do this when something fails:\n\n```c\nif (something_went_wrong) {\n   return SetErrorUnformatted(\"The thing broke in this specific way: %d\", errcode);\n}\n```\n\nIt's also common to just return `false` in this case if the failing thing\nis known to call SetErrorUnformatted(), so errors simply propagate through.",

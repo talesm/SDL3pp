@@ -5,6 +5,7 @@
     "SDL_blendmode.h",
     "SDL_error.h",
     "SDL_pixels.h",
+    "SDL_properties.h",
     "SDL_rect.h"
   ],
   "api": "scripts/target.json",

@@ -49,7 +49,7 @@
 // #include "SDL3pp_platform.h"
 // #include "SDL3pp_power.h"
 // #include "SDL3pp_process.h"
-// #include "SDL3pp_properties.h"
+#include "SDL3pp_properties.h"
 #include "SDL3pp_rect.h"
 // #include "SDL3pp_render.h"
 // #include "SDL3pp_scancode.h"

@@ -218,24 +218,9 @@ export interface ResourceDefinition {
   rawName?: string;
 
   /**
-   * If true or object, the object to lock
+   * Enable automatic method detection. Defaults to true
    */
-  lock?: ApiLock | boolean;
-
-  /**
-   * The lock function name to be added to the lock class
-   */
-  lockFunction?: string;
-
-  /**
-   * The unlock function name to be added to the lock class
-   */
-  unlockFunction?: string;
-
-  /**
-   * Extra parameters to the base classes.
-   */
-  extraParameters?: string[]
+  enableAutoMethods?: boolean;
 
   /**
    * Enable const parameters

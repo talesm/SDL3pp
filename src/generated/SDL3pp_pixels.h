@@ -2009,7 +2009,7 @@ inline const PixelFormatDetails* GetPixelFormatDetails(PixelFormat format)
  */
 inline Palette CreatePalette(int ncolors)
 {
-  return CheckError(SDL_CreatePalette(ncolors));
+  return Palette(CheckError(SDL_CreatePalette(ncolors)));
 }
 
 /**

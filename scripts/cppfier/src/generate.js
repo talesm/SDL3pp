@@ -227,8 +227,8 @@ function generateBody(entry, prefix) {
     const superStr = hint?.super ?? "T";
     return `\n${prefix}  : ${superStr}(${callStr})\n${prefix}{}`;
   }
-  if (hint?.wrapSelf && entry.type == hint?.self) {
-    return `\n${prefix}{\n${prefix}  return ${hint.self}(${callStr});\n${prefix}}`;
+  if (hint?.wrapSelf && entry.type) {
+    return `\n${prefix}{\n${prefix}  return ${entry.type}(${callStr});\n${prefix}}`;
   }
   const returnStr = entry.type === "void" ? "" : "return ";
   return `\n${prefix}{\n${prefix}  ${returnStr}${callStr};\n${prefix}}`;
