@@ -1,5 +1,5 @@
---- src/generated/SDL3pp_log.h	2025-09-10 17:41:48.259937153 -0300
-+++ include/SDL3pp/SDL3pp_log.h	2025-09-10 17:41:10.822945156 -0300
+--- src/generated/SDL3pp_log.h	2025-09-11 11:29:10.902933940 -0300
++++ include/SDL3pp/SDL3pp_log.h	2025-09-11 11:28:29.245513525 -0300
 @@ -10,7 +10,7 @@
  namespace SDL {
  
@@ -165,7 +165,7 @@
                    ARGS... args) const
    {
 -    SDL_LogMessage(m_category, priority, fmt, args);
-+    LogUnformatted(priority, std::vformat(fmt, std::make_format_args(args...)));
++    LogUnformatted(priority, std::vformat(fmt, std::make_format_args(args))...);
    }
  
    /**
@@ -460,85 +460,84 @@
   * @sa LogCategory.LogCritical
   * @sa LogCategory.LogDebug
   * @sa LogCategory.LogError
-@@ -579,7 +644,8 @@
+@@ -579,7 +644,7 @@
  template<class... ARGS>
  inline void Log(std::string_view fmt, ARGS&&... args)
  {
 -  SDL_Log(fmt, args);
-+  LOG_CATEGORY_APPLICATION.Log(
-+    LOG_PRIORITY_INFO, fmt, std::forward<ARGS>(args)...);
++  LOG_CATEGORY_APPLICATION.LogInfo(fmt, std::forward<ARGS>(args)...);
  }
  
  /**
-@@ -608,7 +674,7 @@
+@@ -608,7 +673,7 @@
  template<class... ARGS>
  inline void LogTrace(LogCategory category, std::string_view fmt, ARGS&&... args)
  {
 -  SDL_LogTrace(category, fmt, args);
-+  category.LogTrace(fmt, std::forward<ARGS...>(args));
++  category.LogTrace(fmt, std::forward<ARGS>(args)...);
  }
  
  /**
-@@ -637,7 +703,7 @@
+@@ -637,7 +702,7 @@
                         std::string_view fmt,
                         ARGS&&... args)
  {
 -  SDL_LogVerbose(category, fmt, args);
-+  category.LogVerbose(fmt, std::forward<ARGS...>(args));
++  category.LogVerbose(fmt, std::forward<ARGS>(args)...);
  }
  
  /**
-@@ -665,7 +731,7 @@
+@@ -665,7 +730,7 @@
  template<class... ARGS>
  inline void LogDebug(LogCategory category, std::string_view fmt, ARGS&&... args)
  {
 -  SDL_LogDebug(category, fmt, args);
-+  category.LogDebug(fmt, std::forward<ARGS...>(args));
++  category.LogDebug(fmt, std::forward<ARGS>(args)...);
  }
  
  /**
-@@ -693,7 +759,7 @@
+@@ -693,7 +758,7 @@
  template<class... ARGS>
  inline void LogInfo(LogCategory category, std::string_view fmt, ARGS&&... args)
  {
 -  SDL_LogInfo(category, fmt, args);
-+  category.LogInfo(fmt, std::forward<ARGS...>(args));
++  category.LogInfo(fmt, std::forward<ARGS>(args)...);
  }
  
  /**
-@@ -721,7 +787,7 @@
+@@ -721,7 +786,7 @@
  template<class... ARGS>
  inline void LogWarn(LogCategory category, std::string_view fmt, ARGS&&... args)
  {
 -  SDL_LogWarn(category, fmt, args);
-+  category.LogWarn(fmt, std::forward<ARGS...>(args));
++  category.LogWarn(fmt, std::forward<ARGS>(args)...);
  }
  
  /**
-@@ -749,7 +815,7 @@
+@@ -749,7 +814,7 @@
  template<class... ARGS>
  inline void LogError(LogCategory category, std::string_view fmt, ARGS&&... args)
  {
 -  SDL_LogError(category, fmt, args);
-+  category.LogError(fmt, std::forward<ARGS...>(args));
++  category.LogError(fmt, std::forward<ARGS>(args)...);
  }
  
  /**
-@@ -779,7 +845,7 @@
+@@ -779,7 +844,7 @@
                          std::string_view fmt,
                          ARGS&&... args)
  {
 -  SDL_LogCritical(category, fmt, args);
-+  category.LogCritical(fmt, std::forward<ARGS...>(args));
++  category.LogCritical(fmt, std::forward<ARGS>(args)...);
  }
  
  /**
-@@ -811,16 +877,14 @@
+@@ -811,16 +876,14 @@
                         std::string_view fmt,
                         ARGS... args)
  {
 -  SDL_LogMessage(category, priority, fmt, args);
-+  category.LogMessage(priority, fmt, std::forward<ARGS...>(args));
++  category.LogMessage(priority, fmt, std::forward<ARGS>(args)...);
  }
  
  /**
@@ -554,7 +553,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -836,7 +900,10 @@
+@@ -836,7 +899,10 @@
   * @sa LogCategory.LogVerbose
   * @sa LogCategory.LogWarn
   */
@@ -566,7 +565,7 @@
  
  /**
   * The prototype for the log output callback function.
-@@ -862,13 +929,14 @@
+@@ -862,13 +928,14 @@
   * is held so that this function is never called by more than one thread at
   * once.
   *
@@ -583,7 +582,7 @@
   * @sa LogOutputFunction
   */
  using LogOutputCB = std::function<void(LogCategory, LogPriority, const char*)>;
-@@ -882,8 +950,8 @@
+@@ -882,8 +949,8 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
@@ -594,7 +593,7 @@
   */
  inline LogOutputFunction GetDefaultLogOutputFunction()
  {
-@@ -893,8 +961,7 @@
+@@ -893,8 +960,7 @@
  /**
   * Get the current log output function.
   *
@@ -604,7 +603,7 @@
   * @param userdata a pointer filled in with the pointer that is passed to
   *                 `callback`.
   *
-@@ -902,8 +969,8 @@
+@@ -902,8 +968,8 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
@@ -615,7 +614,7 @@
   */
  inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
  {
-@@ -913,21 +980,33 @@
+@@ -913,21 +979,33 @@
  /**
   * Get the current log output function.
   *
@@ -654,7 +653,7 @@
  }
  
  /**
-@@ -942,33 +1021,54 @@
+@@ -942,33 +1020,54 @@
   *
   * @sa GetDefaultLogOutputFunction
   * @sa GetLogOutputFunction

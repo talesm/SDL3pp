@@ -1,5 +1,5 @@
---- src/generated/SDL3pp_pixels.h	2025-09-10 16:41:48.420683642 -0300
-+++ include/SDL3pp/SDL3pp_pixels.h	2025-09-10 16:36:26.072965764 -0300
+--- src/generated/SDL3pp_pixels.h	2025-09-11 11:29:10.927934193 -0300
++++ include/SDL3pp/SDL3pp_pixels.h	2025-09-11 11:28:44.080663188 -0300
 @@ -9,7 +9,7 @@
  namespace SDL {
  
@@ -322,9 +322,8 @@
 -  (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
 -   ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32) &&                       \
 -    (SDL_PIXELLAYOUT(format) == SDL_PACKEDLAYOUT_2101010)))
-+#endif // SDL3PP_DOC
- 
- /**
+-
+-/**
 - * A macro to determine if an PixelFormat is a floating point format.
 - *
 - * Note that this macro double-evaluates its parameter, so do not use
@@ -341,8 +340,9 @@
 -  (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
 -   ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) ||                       \
 -    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))
--
--/**
++#endif // SDL3PP_DOC
+ 
+ /**
 - * A macro to determine if an PixelFormat has an alpha channel.
 - *
 - * Note that this macro double-evaluates its parameter, so do not use
@@ -700,21 +700,7 @@
    Color Get(Uint32 pixel, PaletteConstParam palette) const;
  };
  
-@@ -970,9 +995,13 @@
- constexpr SDL_PixelFormat PIXELFORMAT_EXTERNAL_OES =
-   SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format.
- 
-+#if SDL_VERSION_ATLEAST(3, 2, 10)
-+
- constexpr SDL_PixelFormat PIXELFORMAT_MJPG =
-   SDL_PIXELFORMAT_MJPG; ///< Motion JPEG.
- 
-+#endif // SDL_VERSION_ATLEAST(3, 2, 10)
-+
- constexpr SDL_PixelFormat PIXELFORMAT_RGBA32 =
-   SDL_PIXELFORMAT_RGBA32; ///< RGBA32
- 
-@@ -997,6 +1026,13 @@
+@@ -1001,6 +1026,13 @@
  constexpr SDL_PixelFormat PIXELFORMAT_XBGR32 =
    SDL_PIXELFORMAT_XBGR32; ///< XBGR32
  
@@ -728,7 +714,7 @@
  /**
   * Colorspace color type.
   *
-@@ -1012,6 +1048,13 @@
+@@ -1016,6 +1048,13 @@
  constexpr ColorType COLOR_TYPE_YCBCR =
    SDL_COLOR_TYPE_YCBCR; ///< COLOR_TYPE_YCBCR
  
@@ -742,7 +728,7 @@
  /**
   * Colorspace color range, as described by
   * https://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en
-@@ -1024,16 +1067,22 @@
+@@ -1028,16 +1067,22 @@
    SDL_COLOR_RANGE_UNKNOWN; ///< COLOR_RANGE_UNKNOWN
  
  /**
@@ -768,7 +754,7 @@
  /**
   * Colorspace color primaries, as described by
   * https://www.itu.int/rec/T-REC-H.273-201612-S/en
-@@ -1089,6 +1138,13 @@
+@@ -1093,6 +1138,13 @@
  constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM =
    SDL_COLOR_PRIMARIES_CUSTOM; ///< COLOR_PRIMARIES_CUSTOM
  
@@ -782,7 +768,7 @@
  /**
   * Colorspace transfer characteristics.
   *
-@@ -1165,6 +1221,13 @@
+@@ -1169,6 +1221,13 @@
  constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_CUSTOM =
    SDL_TRANSFER_CHARACTERISTICS_CUSTOM; ///< TRANSFER_CHARACTERISTICS_CUSTOM
  
@@ -796,7 +782,7 @@
  /**
   * Colorspace matrix coefficients.
   *
-@@ -1224,6 +1287,13 @@
+@@ -1228,6 +1287,13 @@
  constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
    SDL_MATRIX_COEFFICIENTS_CUSTOM; ///< MATRIX_COEFFICIENTS_CUSTOM
  
@@ -810,7 +796,7 @@
  /**
   * Colorspace chroma sample location.
   *
-@@ -1236,14 +1306,14 @@
+@@ -1240,14 +1306,14 @@
  
  /**
   * In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge
@@ -827,7 +813,7 @@
   * one-half pixel down compared to the top-left pixel.
   */
  constexpr ChromaLocation CHROMA_LOCATION_CENTER = SDL_CHROMA_LOCATION_CENTER;
-@@ -1255,187 +1325,12 @@
+@@ -1259,187 +1325,12 @@
   */
  constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  
@@ -1018,7 +1004,7 @@
  
  /**
   * Colorspace definitions.
-@@ -1446,38 +1341,256 @@
+@@ -1450,38 +1341,256 @@
   *
   * @since This enum is available since SDL 3.2.0.
   *
@@ -1035,8 +1021,7 @@
 +class Colorspace
  {
 +  SDL_Colorspace m_colorspace;
- 
--#define Colorspace
++
 +public:
 +  /**
 +   * Wraps Colorspace.
@@ -1047,8 +1032,7 @@
 +    : m_colorspace(colorspace)
 +  {
 +  }
- 
--#define GetType
++
 +  /**
 +   * Define custom Colorspace formats.
 +   *
@@ -1093,14 +1077,13 @@
 +                                                        chroma)))
 +  {
 +  }
- 
--#define GetRange
++
 +  /**
 +   * Default comparison operator
 +   */
 +  constexpr bool operator==(const Colorspace& other) const = default;
  
--#define GetChroma
+-#define Colorspace
 +  /**
 +   * Compares with the underlying type
 +   */
@@ -1109,7 +1092,7 @@
 +    return operator==(Colorspace(colorspace));
 +  }
  
--#define GetPrimaries
+-#define GetType
 +  /// True if a valid colorspace
 +  /**
 +   * Unwraps to the underlying Colorspace.
@@ -1118,7 +1101,7 @@
 +   */
 +  constexpr operator SDL_Colorspace() const { return m_colorspace; }
  
--#define GetTransfer
+-#define GetRange
 +  /**
 +   * Check if valid.
 +   *
@@ -1126,7 +1109,7 @@
 +   */
 +  constexpr explicit operator bool() const { return m_colorspace != 0; }
  
--#define GetMatrix
+-#define GetChroma
 +  /**
 +   * Retrieve the type of a Colorspace.
 +   *
@@ -1141,7 +1124,7 @@
 +    return SDL_COLORSPACETYPE(m_colorspace);
 +  }
  
--#define IsMatrixBT601
+-#define GetPrimaries
 +  /**
 +   * Retrieve the range of a Colorspace.
 +   *
@@ -1155,7 +1138,8 @@
 +  {
 +    return SDL_COLORSPACERANGE(m_colorspace);
 +  }
-+
+ 
+-#define GetTransfer
 +  /**
 +   * Retrieve the chroma sample location of an Colorspace.
 +   *
@@ -1170,7 +1154,7 @@
 +    return SDL_COLORSPACECHROMA(m_colorspace);
 +  }
  
--#define IsMatrixBT709
+-#define GetMatrix
 +  /**
 +   * Retrieve the primaries of an Colorspace.
 +   *
@@ -1212,7 +1196,8 @@
 +  {
 +    return SDL_COLORSPACEMATRIX(m_colorspace);
 +  }
-+
+ 
+-#define IsMatrixBT601
 +  /**
 +   * Determine if a Colorspace uses BT601 (or BT470BG) matrix coefficients.
 +   *
@@ -1226,7 +1211,8 @@
 +  {
 +    return SDL_ISCOLORSPACE_MATRIX_BT601(m_colorspace);
 +  }
-+
+ 
+-#define IsMatrixBT709
 +  /**
 +   * Determine if an Colorspace uses BT709 matrix coefficients.
 +   *
@@ -1288,7 +1274,7 @@
  };
  
  constexpr SDL_Colorspace COLORSPACE_UNKNOWN =
-@@ -1542,6 +1655,8 @@
+@@ -1546,6 +1655,8 @@
   */
  constexpr SDL_Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  
@@ -1297,7 +1283,7 @@
  /**
   * A structure that represents a color as RGBA components.
   *
-@@ -1551,6 +1666,9 @@
+@@ -1555,6 +1666,9 @@
   * PIXELFORMAT_RGBA8888 on big-endian systems).
   *
   * @since This struct is available since SDL 3.2.0.
@@ -1307,7 +1293,7 @@
   */
  struct Color : SDL_Color
  {
-@@ -1567,12 +1685,12 @@
+@@ -1571,12 +1685,12 @@
    /**
     * Constructs from its fields.
     *
@@ -1325,7 +1311,7 @@
      : SDL_Color{r, g, b, a}
    {
    }
-@@ -1580,7 +1698,16 @@
+@@ -1584,7 +1698,16 @@
    /**
     * Default comparison operator
     */
@@ -1343,7 +1329,7 @@
  
    /**
     * Compares with the underlying type
-@@ -1591,16 +1718,16 @@
+@@ -1595,16 +1718,16 @@
    }
  
    /**
@@ -1364,7 +1350,7 @@
     * @returns Reference to self.
     */
    constexpr Color& SetR(Uint8 newR)
-@@ -1610,16 +1737,17 @@
+@@ -1614,16 +1737,17 @@
    }
  
    /**
@@ -1386,7 +1372,7 @@
     * @returns Reference to self.
     */
    constexpr Color& SetG(Uint8 newG)
-@@ -1629,16 +1757,17 @@
+@@ -1633,16 +1757,17 @@
    }
  
    /**
@@ -1408,7 +1394,7 @@
     * @returns Reference to self.
     */
    constexpr Color& SetB(Uint8 newB)
-@@ -1648,16 +1777,17 @@
+@@ -1652,16 +1777,17 @@
    }
  
    /**
@@ -1430,7 +1416,7 @@
     * @returns Reference to self.
     */
    constexpr Color& SetA(Uint8 newA)
-@@ -1665,6 +1795,64 @@
+@@ -1669,6 +1795,64 @@
      a = newA;
      return *this;
    }
@@ -1495,7 +1481,7 @@
  };
  
  /**
-@@ -1672,11 +1860,15 @@
+@@ -1676,11 +1860,15 @@
   * color which uses the PIXELFORMAT_RGBA128_FLOAT format
   *
   * @since This struct is available since SDL 3.2.0.
@@ -1512,7 +1498,7 @@
     *
     * @param color the value to be wrapped
     */
-@@ -1693,7 +1885,7 @@
+@@ -1697,7 +1885,7 @@
     * @param b the value for b.
     * @param a the value for a.
     */
@@ -1521,7 +1507,7 @@
      : SDL_FColor{r, g, b, a}
    {
    }
-@@ -1701,7 +1893,16 @@
+@@ -1705,7 +1893,16 @@
    /**
     * Default comparison operator
     */
@@ -1539,7 +1525,7 @@
  
    /**
     * Compares with the underlying type
-@@ -1712,16 +1913,16 @@
+@@ -1716,16 +1913,16 @@
    }
  
    /**
@@ -1560,7 +1546,7 @@
     * @returns Reference to self.
     */
    constexpr FColor& SetR(float newR)
-@@ -1731,16 +1932,17 @@
+@@ -1735,16 +1932,17 @@
    }
  
    /**
@@ -1582,7 +1568,7 @@
     * @returns Reference to self.
     */
    constexpr FColor& SetG(float newG)
-@@ -1750,16 +1952,17 @@
+@@ -1754,16 +1952,17 @@
    }
  
    /**
@@ -1604,7 +1590,7 @@
     * @returns Reference to self.
     */
    constexpr FColor& SetB(float newB)
-@@ -1769,16 +1972,17 @@
+@@ -1773,16 +1972,17 @@
    }
  
    /**
@@ -1626,7 +1612,7 @@
     * @returns Reference to self.
     */
    constexpr FColor& SetA(float newA)
-@@ -1855,11 +2059,11 @@
+@@ -1859,11 +2059,11 @@
  
    constexpr operator PaletteParam() const { return {m_resource}; }
  
@@ -1640,7 +1626,7 @@
    }
  
    /**
-@@ -1877,7 +2081,8 @@
+@@ -1881,7 +2081,8 @@
     */
    void SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
    {
@@ -1650,7 +1636,7 @@
    }
  
    /**
-@@ -2031,7 +2236,8 @@
+@@ -2035,7 +2236,8 @@
                               SpanRef<const SDL_Color> colors,
                               int firstcolor = 0)
  {
@@ -1660,7 +1646,7 @@
  }
  
  /**
-@@ -2219,6 +2425,33 @@
+@@ -2223,6 +2425,33 @@
  
  /// @}
  

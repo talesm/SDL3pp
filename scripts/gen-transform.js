@@ -3216,6 +3216,9 @@ const transform = {
             }
           }
         },
+        "SDL_PIXELFORMAT_MJPG": {
+          since: { tag: "SDL", major: 3, minor: 2, patch: 10 },
+        },
         "SDL_Colorspace": {
           kind: "struct",
           enum: "SDL_COLORSPACE_",

@@ -970,8 +970,12 @@ constexpr SDL_PixelFormat PIXELFORMAT_P010 =
 constexpr SDL_PixelFormat PIXELFORMAT_EXTERNAL_OES =
   SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format.
 
+#if SDL_VERSION_ATLEAST(3, 2, 10)
+
 constexpr SDL_PixelFormat PIXELFORMAT_MJPG =
   SDL_PIXELFORMAT_MJPG; ///< Motion JPEG.
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
 constexpr SDL_PixelFormat PIXELFORMAT_RGBA32 =
   SDL_PIXELFORMAT_RGBA32; ///< RGBA32

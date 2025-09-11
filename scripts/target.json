@@ -3749,6 +3749,12 @@
           "name": "PIXELFORMAT_MJPG",
           "constexpr": true,
           "type": "SDL_PixelFormat",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 2,
+            "patch": 10
+          },
           "doc": "Motion JPEG.",
           "sourceName": "SDL_PIXELFORMAT_MJPG"
         },

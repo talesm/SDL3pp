@@ -1405,25 +1405,28 @@ function expandEnumerations(sourceEntries, file, context) {
       }
     }
     for (const value of values) {
+      const valueSource = sourceEntries[value];
+      const valueTransform = file.transform[value];
+      delete file.transform[value];
       /** @type {ApiEntryTransform & ApiEntry} */
-      const entry = {
+      const valueTarget = {
         kind: "var",
-        name: file.transform?.[value]?.name ?? newNames[value] ?? transformName(value, context),
+        name: newNames[value] ?? transformName(value, context),
         constexpr: true,
         type: valueType,
       };
-      combineObject(entry, file.transform?.[value] || {});
-      if (!entry.doc) {
+      combineObject(valueTarget, valueTransform || {});
+      if (!valueTarget.doc) {
         // @ts-ignore
-        const sourceDoc = sourceEntries[value]?.doc ?? sourceEntry.entries?.[value]?.doc;
-        entry.doc = sourceDoc || (value.startsWith(prefix) ? value.slice(prefix.length) : entry.name);
+        const sourceDoc = valueSource?.doc ?? sourceEntry.entries?.[value]?.doc;
+        valueTarget.doc = sourceDoc || (value.startsWith(prefix) ? value.slice(prefix.length) : valueTarget.name);
       }
-      context.addName(value, entry.name);
-      if (!sourceEntries[value]) {
-        entry.sourceName = value;
-        context.includeAfter(entry, type);
+      context.addName(value, valueTarget.name);
+      if (!valueSource) {
+        valueTarget.sourceName = value;
+        context.includeAfter(valueTarget, type);
       } else {
-        file.transform[value] = entry;
+        file.transform[value] = valueTarget;
       }
     }
     delete transform.enum;
