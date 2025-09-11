@@ -34,7 +34,7 @@
 // #include "SDL3pp_guid.h"
 // #include "SDL3pp_haptic.h"
 // #include "SDL3pp_hidapi.h"
-// #include "SDL3pp_hints.h"
+#include "SDL3pp_hints.h"
 #include "SDL3pp_init.h"
 // #include "SDL3pp_intrin.h"
 // #include "SDL3pp_iostream.h"
