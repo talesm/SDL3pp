@@ -1516,27 +1516,29 @@ const transform = {
       }
     },
     "SDL_hints.h": {
-      enumerations: {
+      localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_strings.h"],
+      transform: {
         "SDL_HintPriority": {
-          prefix: "SDL_HINT_",
-          values: [
-            "SDL_HINT_DEFAULT",
-            "SDL_HINT_NORMAL",
-            "SDL_HINT_OVERRIDE"
-          ]
-        }
-      },
-      includeAfter: {
-        "SDL_HintCallback": {
+          enum: {
+            prefix: "SDL_HINT_",
+            values: [
+              "SDL_HINT_DEFAULT",
+              "SDL_HINT_NORMAL",
+              "SDL_HINT_OVERRIDE"
+            ]
+          }
+        },
+        "HintCallbackHandle": {
+          after: "SDL_HintCallback",
           doc: "Handle returned by AddHintCallback()",
           kind: "struct",
           name: "HintCallbackHandle",
           type: "CallbackHandle",
           entries: { "CallbackHandle::CallbackHandle": "alias" }
         },
-        "SDL_AddHintCallback": {
+        "SDL_AddHintCallback": {},
+        "AddHintCallback": {
           kind: "function",
-          name: "AddHintCallback",
           type: "HintCallbackHandle",
           parameters: [{
             name: "name",
@@ -1547,9 +1549,9 @@ const transform = {
             type: "HintCB"
           }],
         },
-        "SDL_RemoveHintCallback": {
+        "SDL_RemoveHintCallback": {},
+        "RemoveHintCallback": {
           kind: "function",
-          name: "RemoveHintCallback",
           type: "void",
           parameters: [{
             name: "name",

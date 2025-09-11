@@ -1,0 +1,40 @@
+12c12
+<  * @defgroup CategoryHints Category Hints
+---
+>  * @defgroup CategoryHints Configuration Variables
+27a28,29
+> #ifdef SDL3PP_DOC
+> 
+1291c1293
+<  * The variable can also take the form of @file, in which case the named file
+---
+>  * The variable can also take the form of file, in which case the named file
+4327a4330,4331
+> #endif // SDL3PP_DOC
+> 
+4514d4517
+< 
+4552c4555
+<  * @param userdata a pointer to pass to the callback function.
+---
+>  * @returns a handle to be used on RemoveHintCallback()
+4563c4566,4572
+<   static_assert(false, "Not implemented");
+---
+>   using Wrapper = CallbackWrapper<HintCB>;
+>   auto cb = Wrapper::Wrap(std::move(callback));
+>   if (!SDL_AddHintCallback(name, &Wrapper::Call, cb)) {
+>     Wrapper::release(cb);
+>     throw Error{};
+>   }
+>   return HintCallbackHandle{cb};
+4591,4593c4600
+<  * @param callback an HintCallback function that will be called when the
+<  *                 hint value changes.
+<  * @param userdata a pointer being passed to the callback function.
+---
+>  * @param handle the handle for the HintCallback function to be removed
+4603c4610
+<   static_assert(false, "Not implemented");
+---
+>   CallbackWrapper<HintCB>::release(handle);

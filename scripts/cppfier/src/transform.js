@@ -398,7 +398,7 @@ function transformEntries(sourceEntries, file, context) {
       continue;
     }
     if (!transformEntry.name) transformEntry.name = sourceName;
-    context.includeAfter(transformEntry, lastSourceName);
+    context.includeAfter(transformEntry, transformEntry.after ?? lastSourceName);
   }
   const includeBefore = context.currentIncludeBefore;
   const includeAfter = context.currentIncludeAfter;
