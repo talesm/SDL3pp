@@ -395,10 +395,11 @@ function transformEntries(sourceEntries, file, context) {
         transformEntry.name = targetName;
         context.includeAfter(targetName, transformEntry.after);
       }
-      continue;
+    } else {
+      if (!transformEntry.name) transformEntry.name = sourceName;
+      lastSourceName = transformEntry.after ?? lastSourceName;
+      context.includeAfter(transformEntry, lastSourceName);
     }
-    if (!transformEntry.name) transformEntry.name = sourceName;
-    context.includeAfter(transformEntry, transformEntry.after ?? lastSourceName);
   }
   const includeBefore = context.currentIncludeBefore;
   const includeAfter = context.currentIncludeAfter;

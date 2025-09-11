@@ -70,6 +70,12 @@ inline bool SetErrorUnformatted(StringParam message)
   return SDL_SetError(message);
 }
 
+template<class... ARGS>
+inline bool SetError(std::string_view fmt, ARGS... args)
+{
+  static_assert(false, "Not implemented");
+}
+
 /**
  * Set an error indicating that memory allocation failed.
  *
@@ -119,6 +125,55 @@ inline bool OutOfMemory() { return SDL_OutOfMemory(); }
  * @sa SetErrorUnformatted
  */
 inline const char* GetError() { return SDL_GetError(); }
+
+struct Error : std::exception
+{
+
+  std::string m_message;
+
+  /**
+   * Default ctor.
+   */
+  Error()
+    : m_message(SDL_GetError())
+  {
+  }
+
+  /**
+   * Default ctor.
+   */
+  Error(std::string message)
+    : m_message(std::move(message))
+  {
+  }
+
+  /**
+   * Returns the explanatory string.
+   */
+  const char* what() const { return GetError(); }
+
+  constexpr const std::string& str() const
+  {
+    static_assert(false, "Not implemented");
+  }
+};
+
+constexpr void CheckError(bool result)
+{
+  static_assert(false, "Not implemented");
+}
+
+template<class T>
+constexpr T CheckError(T result)
+{
+  static_assert(false, "Not implemented");
+}
+
+template<class T>
+constexpr T CheckError(T result, T invalidValue)
+{
+  static_assert(false, "Not implemented");
+}
 
 /**
  * Clear any previous error message for this thread.

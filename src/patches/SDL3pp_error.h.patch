@@ -34,12 +34,11 @@
 <  * @sa SDL_SetErrorV
 ---
 >  * @sa SetError
-70c66,107
+70c66
 <   return SDL_SetError(message);
 ---
 >   return SDL_SetError("%s", static_cast<const char*>(message));
-> }
-> 
+72a69,102
 > /**
 >  * Set the SDL error message for the current thread.
 >  *
@@ -74,47 +73,42 @@
 >  * @sa SetError
 >  * @return false
 >  */
-> template<class... ARGS>
-> inline bool SetError(std::string_view fmt, ARGS... args)
-> {
+76c106,107
+<   static_assert(false, "Not implemented");
+---
 >   return SetError(
 >     std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
-123a161,241
+129c160,164
+< struct Error : std::exception
+---
+> /**
 >  * An exception that returns GetError()
 >  *
 >  */
 > class Error : public std::exception
-> {
->   std::string m_message;
-> 
+131d165
+< 
+133a168
 > public:
->   /**
->    * Default ctor.
->    */
->   Error()
->     : m_message(SDL_GetError())
->   {
->   }
-> 
->   /**
+143c178
+<    * Default ctor.
+---
 >    * Constructs from string
->    */
->   Error(std::string message)
->     : m_message(std::move(message))
->   {
->   }
-> 
->   /**
->    * Returns the explanatory string.
->    */
+153c188
+<   const char* what() const { return GetError(); }
+---
 >   constexpr const char* what() const noexcept { return m_message.c_str(); }
-> 
+155,158c190,193
+<   constexpr const std::string& str() const
+<   {
+<     static_assert(false, "Not implemented");
+<   }
+---
 >   /**
 >    * Returns the explanatory string.
 >    */
 >   constexpr const std::string& str() const noexcept { return m_message; }
-> };
-> 
+160a196,203
 > /**
 >  * Check and throw if returned value from SDL is an error.
 >  *
@@ -123,11 +117,11 @@
 >  *
 >  * @param result the result returned
 >  */
-> constexpr void CheckError(bool result)
-> {
+163c206
+<   static_assert(false, "Not implemented");
+---
 >   if (!result) throw Error();
-> }
-> 
+165a209,216
 > /**
 >  * Check and throw if returned value from SDL is an error.
 >  *
@@ -136,13 +130,12 @@
 >  *
 >  * @param result the result returned
 >  */
-> template<class T>
-> constexpr T CheckError(T result)
-> {
+169c220,221
+<   static_assert(false, "Not implemented");
+---
 >   if (!result) throw Error();
 >   return result;
-> }
-> 
+171a224,233
 > /**
 >  * Check and throw if returned value from SDL is an error.
 >  *
@@ -153,25 +146,22 @@
 >  * @param invalidValue the value that if equal to result indicates this is
 >  *                     invalid.
 >  */
-> template<class T>
-> constexpr T CheckError(T result, T invalidValue)
-> {
+175c237,238
+<   static_assert(false, "Not implemented");
+---
 >   if (result == invalidValue) throw Error();
 >   return result;
-> }
-> 
-> /**
-136a255,256
+191a255,256
 > #ifdef SDL3PP_DOC
 > 
-140c260
+195c260
 <  * This simply calls SetErrorUnformatted() with a standardized error string, for
 ---
 >  * This simply calls SetError() with a standardized error string, for
-152c272
+207c272
 <  * This simply calls SetErrorUnformatted() with a standardized error string, for
 ---
 >  * This simply calls SetError() with a standardized error string, for
-172a293,294
+227a293,294
 > 
 > #endif // SDL3PP_DOC

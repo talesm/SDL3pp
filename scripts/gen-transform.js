@@ -1005,29 +1005,34 @@ const transform = {
         "SDL_SetErrorV"
       ],
       includeAfter: {
+        "SDL_GetError": [],
+      },
+      transform: {
         "SDL_SetError": {
-          "kind": "function",
-          "name": "SetError",
-          "type": "bool",
-          "template": [
-            {
-              "type": "class...",
-              "name": "ARGS"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "std::string_view",
-              "name": "fmt"
-            },
-            {
-              "type": "ARGS...",
-              "name": "args"
-            }
-          ]
+          name: "SetErrorUnformatted",
+          parameters: [{
+            type: "StringParam",
+            name: "message"
+          }]
         },
-        "SDL_GetError": [{
-          name: "Error",
+        "SetError": {
+          kind: "function",
+          type: "bool",
+          template: [{
+            type: "class...",
+            name: "ARGS"
+          }],
+          parameters: [{
+            type: "std::string_view",
+            name: "fmt"
+          },
+          {
+            type: "ARGS...",
+            name: "args"
+          }]
+        },
+        "Error": {
+          after: "SDL_GetError",
           kind: "struct",
           type: "std::exception",
           entries: {
@@ -1063,20 +1068,23 @@ const transform = {
               parameters: []
             }
           }
-        }, {
+        },
+        "CheckError": {
           name: "CheckError",
           kind: "function",
           type: "void",
           constexpr: true,
           parameters: [{ type: "bool", name: "result" }]
-        }, {
+        },
+        "CheckError#2": {
           name: "CheckError",
           kind: "function",
           type: "T",
           constexpr: true,
           template: [{ type: "class", name: "T" }],
           parameters: [{ type: "T", name: "result" }]
-        }, {
+        },
+        "CheckError#3": {
           name: "CheckError",
           kind: "function",
           type: "T",
@@ -1085,17 +1093,6 @@ const transform = {
           parameters: [
             { type: "T", name: "result" },
             { type: "T", name: "invalidValue" },
-          ]
-        }],
-      },
-      transform: {
-        "SDL_SetError": {
-          "name": "SetErrorUnformatted",
-          "parameters": [
-            {
-              "type": "StringParam",
-              "name": "message"
-            }
           ]
         }
       }

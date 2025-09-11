@@ -3281,6 +3281,28 @@
           ],
           "sourceName": "SDL_SetError"
         },
+        "SetError": {
+          "kind": "function",
+          "type": "bool",
+          "template": [
+            {
+              "type": "class...",
+              "name": "ARGS"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "std::string_view",
+              "name": "fmt"
+            },
+            {
+              "type": "ARGS...",
+              "name": "args"
+            }
+          ],
+          "name": "SetError",
+          "doc": ""
+        },
         "OutOfMemory": {
           "doc": "Set an error indicating that memory allocation failed.\n\nThis function does not do any memory allocation.\n\n@returns false.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "OutOfMemory",
@@ -3297,6 +3319,129 @@
           "parameters": [],
           "sourceName": "SDL_GetError"
         },
+        "Error": {
+          "after": "SDL_GetError",
+          "kind": "struct",
+          "type": "std::exception",
+          "entries": {
+            "m_message": {
+              "kind": "var",
+              "type": "std::string",
+              "name": "m_message",
+              "doc": ""
+            },
+            "Error": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [],
+                "doc": "Default ctor.",
+                "hints": {
+                  "init": [
+                    "m_message(SDL_GetError())"
+                  ]
+                },
+                "name": "Error"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "std::string",
+                    "name": "message"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_message(std::move(message))"
+                  ]
+                },
+                "name": "Error",
+                "doc": "Default ctor."
+              }
+            ],
+            "what": {
+              "kind": "function",
+              "type": "const char *",
+              "immutable": true,
+              "parameters": [],
+              "doc": "Returns the explanatory string.",
+              "hints": {
+                "body": "return GetError();"
+              },
+              "name": "what"
+            },
+            "str": {
+              "kind": "function",
+              "type": "const std::string &",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "name": "str",
+              "doc": ""
+            }
+          },
+          "name": "Error",
+          "doc": ""
+        },
+        "CheckError": [
+          {
+            "name": "CheckError",
+            "kind": "function",
+            "type": "void",
+            "constexpr": true,
+            "parameters": [
+              {
+                "type": "bool",
+                "name": "result"
+              }
+            ],
+            "doc": ""
+          },
+          {
+            "name": "CheckError",
+            "kind": "function",
+            "type": "T",
+            "constexpr": true,
+            "template": [
+              {
+                "type": "class",
+                "name": "T"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "T",
+                "name": "result"
+              }
+            ],
+            "doc": ""
+          },
+          {
+            "name": "CheckError",
+            "kind": "function",
+            "type": "T",
+            "constexpr": true,
+            "template": [
+              {
+                "type": "class",
+                "name": "T"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "T",
+                "name": "result"
+              },
+              {
+                "type": "T",
+                "name": "invalidValue"
+              }
+            ],
+            "doc": ""
+          }
+        ],
         "ClearError": {
           "doc": "Clear any previous error message for this thread.\n\n@returns true.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetError\n@sa SetErrorUnformatted",
           "name": "ClearError",
