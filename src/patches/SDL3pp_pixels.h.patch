@@ -1,1682 +1,1431 @@
---- src/generated/SDL3pp_pixels.h	2025-09-11 11:29:10.927934193 -0300
-+++ include/SDL3pp/SDL3pp_pixels.h	2025-09-11 11:28:44.080663188 -0300
-@@ -9,7 +9,7 @@
- namespace SDL {
- 
- /**
-- * @defgroup CategoryPixels Category Pixels
-+ * @defgroup CategoryPixels Pixel Formats and Conversion Routines
-  *
-  * SDL offers facilities for pixel management.
-  *
-@@ -78,7 +78,6 @@
-  */
- struct PaletteParam
- {
--
-   PaletteRaw value;
- 
-   constexpr PaletteParam(PaletteRaw value)
-@@ -99,7 +98,6 @@
-  */
- struct PaletteConstParam
- {
--
-   const PaletteRaw value;
- 
-   constexpr PaletteConstParam(const PaletteRaw value)
-@@ -136,6 +134,8 @@
-  */
- using PixelFormatDetails = SDL_PixelFormatDetails;
- 
-+#ifdef SDL3PP_DOC
-+
- /**
-  * A fully opaque 8-bit alpha value.
-  *
-@@ -172,6 +172,13 @@
-  */
- #define SDL_ALPHA_TRANSPARENT_FLOAT 0.0f
- 
-+#endif // SDL3PP_DOC
-+
-+/**
-+ * @name PixelTypes
-+ * @{
-+ */
-+
- /**
-  * Pixel type.
-  *
-@@ -205,6 +212,13 @@
- 
- constexpr PixelType PIXELTYPE_INDEX2 = SDL_PIXELTYPE_INDEX2; ///< INDEX2
- 
-+/// @}
-+
-+/**
-+ * @name BitmapOrders
-+ * @{
-+ */
-+
- /**
-  * Bitmap pixel order, high bit -> low bit.
-  *
-@@ -218,6 +232,13 @@
- 
- constexpr BitmapOrder BITMAPORDER_1234 = SDL_BITMAPORDER_1234; ///< 1234
- 
-+/// @}
-+
-+/**
-+ * @name PackedOrders
-+ * @{
-+ */
-+
- /**
-  * Packed component order, high bit -> low bit.
-  *
-@@ -243,6 +264,13 @@
- 
- constexpr PackedOrder PACKEDORDER_BGRA = SDL_PACKEDORDER_BGRA; ///< BGRA
- 
-+/// @}
-+
-+/**
-+ * @name ArrayOrders
-+ * @{
-+ */
-+
- /**
-  * Array component order, low byte -> high byte.
-  *
-@@ -264,6 +292,13 @@
- 
- constexpr ArrayOrder ARRAYORDER_ABGR = SDL_ARRAYORDER_ABGR; ///< ABGR
- 
-+/// @}
-+
-+/**
-+ * @name PackedLayouts
-+ * @{
-+ */
-+
- /**
-  * Packed component layout.
-  *
-@@ -291,6 +326,10 @@
- constexpr PackedLayout PACKEDLAYOUT_1010102 =
-   SDL_PACKEDLAYOUT_1010102; ///< 1010102
- 
-+/// @}
-+
-+#ifdef SDL3PP_DOC
-+
- /**
-  * A macro for defining custom FourCC pixel formats.
-  *
-@@ -313,33 +352,6 @@
- #define SDL_DEFINE_PIXELFOURCC(A, B, C, D) SDL_FOURCC(A, B, C, D)
- 
- /**
-- * A macro for defining custom non-FourCC pixel formats.
-- *
-- * For example, defining PIXELFORMAT_RGBA8888 looks like this:
-- *
-- * ```c
-- * SDL_DEFINE_PIXELFORMAT(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
-- * PACKEDLAYOUT_8888, 32, 4)
-- * ```
-- *
-- * @param type the type of the new format, probably a PixelType value.
-- * @param order the order of the new format, probably a BitmapOrder,
-- *              PackedOrder, or ArrayOrder value.
-- * @param layout the layout of the new format, probably an PackedLayout
-- *               value or zero.
-- * @param bits the number of bits per pixel of the new format.
-- * @param bytes the number of bytes per pixel of the new format.
-- * @returns a format value in the style of PixelFormat.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)               \
--  ((1 << 28) | ((type) << 24) | ((order) << 20) | ((layout) << 16) |           \
--   ((bits) << 8) | ((bytes) << 0))
--
--/**
-  * A macro to retrieve the flags of an PixelFormat.
-  *
-  * This macro is generally not needed directly by an app, which should use
-@@ -354,238 +366,12 @@
-  */
- #define SDL_PIXELFLAG(format) (((format) >> 28) & 0x0F)
- 
--/**
-- * A macro to retrieve the type of an PixelFormat.
-- *
-- * This is usually a value from the PixelType enumeration.
-- *
-- * @param format an PixelFormat to check.
-- * @returns the type of `format`.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_PIXELTYPE(format) (((format) >> 24) & 0x0F)
--
--/**
-- * A macro to retrieve the order of an PixelFormat.
-- *
-- * This is usually a value from the BitmapOrder, PackedOrder, or
-- * ArrayOrder enumerations, depending on the format type.
-- *
-- * @param format an PixelFormat to check.
-- * @returns the order of `format`.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_PIXELORDER(format) (((format) >> 20) & 0x0F)
--
--/**
-- * A macro to retrieve the layout of an PixelFormat.
-- *
-- * This is usually a value from the PackedLayout enumeration, or zero if a
-- * layout doesn't make sense for the format type.
-- *
-- * @param format an PixelFormat to check.
-- * @returns the layout of `format`.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_PIXELLAYOUT(format) (((format) >> 16) & 0x0F)
--
--/**
-- * A macro to determine an PixelFormat's bits per pixel.
-- *
-- * Note that this macro double-evaluates its parameter, so do not use
-- * expressions with side-effects here.
-- *
-- * FourCC formats will report zero here, as it rarely makes sense to measure
-- * them per-pixel.
-- *
-- * @param format an PixelFormat to check.
-- * @returns the bits-per-pixel of `format`.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- *
-- * @sa SDL_BYTESPERPIXEL
-- */
--#define SDL_BITSPERPIXEL(format)                                               \
--  (SDL_ISPIXELFORMAT_FOURCC(format) ? 0 : (((format) >> 8) & 0xFF))
--
--/**
-- * A macro to determine an PixelFormat's bytes per pixel.
-- *
-- * Note that this macro double-evaluates its parameter, so do not use
-- * expressions with side-effects here.
-- *
-- * FourCC formats do their best here, but many of them don't have a meaningful
-- * measurement of bytes per pixel.
-- *
-- * @param format an PixelFormat to check.
-- * @returns the bytes-per-pixel of `format`.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- *
-- * @sa SDL_BITSPERPIXEL
-- */
--#define SDL_BYTESPERPIXEL(format)                                              \
--  (SDL_ISPIXELFORMAT_FOURCC(format) ? ((((format) == SDL_PIXELFORMAT_YUY2) ||  \
--                                        ((format) == SDL_PIXELFORMAT_UYVY) ||  \
--                                        ((format) == SDL_PIXELFORMAT_YVYU) ||  \
--                                        ((format) == SDL_PIXELFORMAT_P010))    \
--                                         ? 2                                   \
--                                         : 1)                                  \
--                                    : (((format) >> 0) & 0xFF))
--
--/**
-- * A macro to determine if an PixelFormat is an indexed format.
-- *
-- * Note that this macro double-evaluates its parameter, so do not use
-- * expressions with side-effects here.
-- *
-- * @param format an PixelFormat to check.
-- * @returns true if the format is indexed, false otherwise.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_ISPIXELFORMAT_INDEXED(format)                                      \
--  (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
--   ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX1) ||                         \
--    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX2) ||                         \
--    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX4) ||                         \
--    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX8)))
--
--/**
-- * A macro to determine if an PixelFormat is a packed format.
-- *
-- * Note that this macro double-evaluates its parameter, so do not use
-- * expressions with side-effects here.
-- *
-- * @param format an PixelFormat to check.
-- * @returns true if the format is packed, false otherwise.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_ISPIXELFORMAT_PACKED(format)                                       \
--  (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
--   ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED8) ||                        \
--    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED16) ||                       \
--    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32)))
--
--/**
-- * A macro to determine if an PixelFormat is an array format.
-- *
-- * Note that this macro double-evaluates its parameter, so do not use
-- * expressions with side-effects here.
-- *
-- * @param format an PixelFormat to check.
-- * @returns true if the format is an array, false otherwise.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_ISPIXELFORMAT_ARRAY(format)                                        \
--  (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
--   ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU8) ||                        \
--    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU16) ||                       \
--    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU32) ||                       \
--    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) ||                       \
--    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))
--
--/**
-- * A macro to determine if an PixelFormat is a 10-bit format.
-- *
-- * Note that this macro double-evaluates its parameter, so do not use
-- * expressions with side-effects here.
-- *
-- * @param format an PixelFormat to check.
-- * @returns true if the format is 10-bit, false otherwise.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_ISPIXELFORMAT_10BIT(format)                                        \
--  (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
--   ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32) &&                       \
--    (SDL_PIXELLAYOUT(format) == SDL_PACKEDLAYOUT_2101010)))
--
--/**
-- * A macro to determine if an PixelFormat is a floating point format.
-- *
-- * Note that this macro double-evaluates its parameter, so do not use
-- * expressions with side-effects here.
-- *
-- * @param format an PixelFormat to check.
-- * @returns true if the format is 10-bit, false otherwise.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_ISPIXELFORMAT_FLOAT(format)                                        \
--  (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
--   ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) ||                       \
--    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))
-+#endif // SDL3PP_DOC
- 
- /**
-- * A macro to determine if an PixelFormat has an alpha channel.
-- *
-- * Note that this macro double-evaluates its parameter, so do not use
-- * expressions with side-effects here.
-- *
-- * @param format an PixelFormat to check.
-- * @returns true if the format has alpha, false otherwise.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_ISPIXELFORMAT_ALPHA(format)                                        \
--  ((SDL_ISPIXELFORMAT_PACKED(format) &&                                        \
--    ((SDL_PIXELORDER(format) == SDL_PACKEDORDER_ARGB) ||                       \
--     (SDL_PIXELORDER(format) == SDL_PACKEDORDER_RGBA) ||                       \
--     (SDL_PIXELORDER(format) == SDL_PACKEDORDER_ABGR) ||                       \
--     (SDL_PIXELORDER(format) == SDL_PACKEDORDER_BGRA))) ||                     \
--   (SDL_ISPIXELFORMAT_ARRAY(format) &&                                         \
--    ((SDL_PIXELORDER(format) == SDL_ARRAYORDER_ARGB) ||                        \
--     (SDL_PIXELORDER(format) == SDL_ARRAYORDER_RGBA) ||                        \
--     (SDL_PIXELORDER(format) == SDL_ARRAYORDER_ABGR) ||                        \
--     (SDL_PIXELORDER(format) == SDL_ARRAYORDER_BGRA))))
--
--/**
-- * A macro to determine if an PixelFormat is a "FourCC" format.
-- *
-- * This covers custom and other unusual formats.
-- *
-- * Note that this macro double-evaluates its parameter, so do not use
-- * expressions with side-effects here.
-- *
-- * @param format an PixelFormat to check.
-- * @returns true if the format has alpha, false otherwise.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-+ * @name PixelFormats
-+ * @{
-  */
--#define SDL_ISPIXELFORMAT_FOURCC(                                              \
--  format) /* The flag is set to 1 because 0x1? is not in the printable ASCII   \
--             range */                                                          \
--  ((format) && (SDL_PIXELFLAG(format) != 1))
- 
- /**
-  * Pixel format.
-@@ -623,10 +409,14 @@
-  * RGBA8888 on big-endian CPUs.
-  *
-  * @since This enum is available since SDL 3.2.0.
-+ *
-+ * @cat wrap-state
-+ *
-+ * @sa wrap-state
-+ * @sa PixelFormats
-  */
- class PixelFormat
- {
--
-   SDL_PixelFormat m_format;
- 
- public:
-@@ -641,6 +431,39 @@
-   }
- 
-   /**
-+   * Defining custom non-FourCC pixel formats.
-+   *
-+   * For example, defining PIXELFORMAT_RGBA8888 looks like this:
-+   *
-+   * ```c
-+   * PixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
-+   * PACKEDLAYOUT_8888, 32, 4)
-+   * ```
-+   *
-+   * @param type the type of the new format, probably a PixelType value.
-+   * @param order the order of the new format, probably a BitmapOrder,
-+   *              PackedOrder, or ArrayOrder value.
-+   * @param layout the layout of the new format, probably an PackedLayout
-+   *               value or zero.
-+   * @param bits the number of bits per pixel of the new format.
-+   * @param bytes the number of bytes per pixel of the new format.
-+   * @post a format value in the style of PixelFormat.
-+   *
-+   * @threadsafety It is safe to call this macro from any thread.
-+   *
-+   * @since This macro is available since SDL 3.2.0.
-+   */
-+  constexpr PixelFormat(SDL_PixelType type,
-+                        int order,
-+                        SDL_PackedLayout layout,
-+                        int bits,
-+                        int bytes)
-+    : m_format(SDL_PixelFormat(
-+        SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
-+  {
-+  }
-+
-+  /**
-    * Default comparison operator
-    */
-   constexpr bool operator==(const PixelFormat& other) const = default;
-@@ -667,29 +490,175 @@
-    */
-   constexpr explicit operator bool() const { return m_format != 0; }
- 
--#define GetType
-+  /**
-+   * Retrieve the type.
-+   *
-+   * @returns the type as PixelType.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr PixelType GetType() const
-+  {
-+    return PixelType(SDL_PIXELTYPE(m_format));
-+  }
- 
--#define GetOrder
-+  /**
-+   * Retrieve the order.
-+   *
-+   * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
-+   * enumerations, depending on the format type.
-+   *
-+   * @returns the order.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr int GetOrder() const { return SDL_PIXELORDER(m_format); }
- 
--#define GetLayout
-+  /**
-+   * Retrieve the layout.
-+   *
-+   * This is usually a value from the PackedLayout enumeration, or zero if a
-+   * layout doesn't make sense for the format type.
-+   *
-+   * @returns the layout
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr PackedLayout GetLayout() const
-+  {
-+    return PackedLayout(SDL_PIXELLAYOUT(m_format));
-+  }
- 
--#define GetBitsPerPixel
-+  /**
-+   * Determine this's bits per pixel.
-+   *
-+   * FourCC formats will report zero here, as it rarely makes sense to measure
-+   * them per-pixel.
-+   *
-+   * @returns the bits-per-pixel.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   *
-+   * @sa GetBytesPerPixel
-+   */
-+  constexpr int GetBitsPerPixel() const { return SDL_BITSPERPIXEL(m_format); }
- 
--#define GetBytesPerPixel
-+  /**
-+   * Determine this's bytes per pixel.
-+   *
-+   * Note that this macro double-evaluates its parameter, so do not use
-+   * expressions with side-effects here.
-+   *
-+   * FourCC formats do their best here, but many of them don't have a meaningful
-+   * measurement of bytes per pixel.
-+   *
-+   * @return the bytes-per-pixel.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   *
-+   * @sa GetBitsPerPixel
-+   */
-+  constexpr int GetBytesPerPixel() const { return SDL_BYTESPERPIXEL(m_format); }
- 
--#define IsIndexed
-+  /**
-+   * Determine if this is an indexed format.
-+   *
-+   * @returns true if the format is indexed, false otherwise.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr bool IsIndexed() const
-+  {
-+    return SDL_ISPIXELFORMAT_INDEXED(m_format);
-+  }
- 
--#define IsPacked
-+/**
-+ * A macro to determine if an PixelFormat is a packed format.
-+ *
-+ * Note that this macro double-evaluates its parameter, so do not use
-+ * expressions with side-effects here.
-+ *
-+ * @param format an PixelFormat to check.
-+ * @returns true if the format is packed, false otherwise.
-+ *
-+ * @threadsafety It is safe to call this macro from any thread.
-+ *
-+ * @since This macro is available since SDL 3.2.0.
-+ */
-+#define SDL_ISPIXELFORMAT_PACKED(format)                                       \
-+  (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
-+   ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED8) ||                        \
-+    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED16) ||                       \
-+    (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32)))
- 
--#define IsArray
-+  /**
-+   * Determine if this is an array format.
-+   *
-+   * @returns true if the format is an array, false otherwise.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr bool IsArray() const { return SDL_ISPIXELFORMAT_ARRAY(m_format); }
- 
--#define Is10Bit
-+  /**
-+   * Determine if this is a 10-bit format.
-+   *
-+   * @returns true if the format is 10-bit, false otherwise.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr bool Is10Bit() const { return SDL_ISPIXELFORMAT_10BIT(m_format); }
- 
--#define IsFloat
-+  /**
-+   * Determine if this is a floating point format.
-+   *
-+   * @returns true if the format is 10-bit, false otherwise.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr bool IsFloat() const { return SDL_ISPIXELFORMAT_FLOAT(m_format); }
- 
--#define IsAlpha
-+  /**
-+   * Determine if this has an alpha channel.
-+   *
-+   * @returns true if the format has alpha, false otherwise.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr bool IsAlpha() const { return SDL_ISPIXELFORMAT_ALPHA(m_format); }
- 
--#define IsFourCC
-+  /**
-+   * Determine if this is a "FourCC" format.
-+   *
-+   * This covers custom and other unusual formats.
-+   *
-+   * @returns true if the format has alpha, false otherwise.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr bool IsFourCC() const { return SDL_ISPIXELFORMAT_FOURCC(m_format); }
- 
-   /**
-    * Get the human readable name of a pixel format.
-@@ -777,8 +746,64 @@
-     return SDL_GetPixelFormatDetails(m_format);
-   }
- 
-+  /**
-+   * Map an RGBA quadruple to a pixel value for a given pixel format.
-+   *
-+   * This function maps the RGBA color value to the specified pixel format and
-+   * returns the pixel value best approximating the given RGBA color value for
-+   * the given pixel format.
-+   *
-+   * If the specified pixel format has no alpha component the alpha value will
-+   * be ignored (as it will be in formats with a palette).
-+   *
-+   * If the format has a palette (8-bit) the index of the closest matching color
-+   * in the palette will be returned.
-+   *
-+   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
-+   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
-+   * format the return value can be assigned to a Uint16, and similarly a Uint8
-+   * for an 8-bpp format).
-+   *
-+   * @param color the color components of the pixel in the range 0-255.
-+   * @param palette an optional palette for indexed formats, may be NULL.
-+   * @returns a pixel value.
-+   *
-+   * @threadsafety It is safe to call this function from any thread, as long as
-+   *               the palette is not modified.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   *
-+   * @sa GetPixelFormatDetails()
-+   * @sa Get()
-+   * @sa MapRGBA()
-+   * @sa Surface.MapColor()
-+   */
-   Uint32 Map(Color color, PaletteConstParam palette) const;
- 
-+  /**
-+   * Get RGBA values from a pixel in the specified format.
-+   *
-+   * This function uses the entire 8-bit [0..255] range when converting color
-+   * components from pixel formats with less than 8-bits per RGB component
-+   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
-+   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
-+   *
-+   * If the surface has no alpha component, the alpha will be returned as 0xff
-+   * (100% opaque).
-+   *
-+   * @param pixel a pixel value.
-+   * @param palette an optional palette for indexed formats, may be NULL.
-+   * @returns a color value.
-+   *
-+   * @threadsafety It is safe to call this function from any thread, as long as
-+   *               the palette is not modified.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   *
-+   * @sa GetPixelFormatDetails()
-+   * @sa GetRGBA()
-+   * @sa Map()
-+   */
-   Color Get(Uint32 pixel, PaletteConstParam palette) const;
- };
- 
-@@ -1001,6 +1026,13 @@
- constexpr SDL_PixelFormat PIXELFORMAT_XBGR32 =
-   SDL_PIXELFORMAT_XBGR32; ///< XBGR32
- 
-+/// @}
-+
-+/**
-+ * @name ColorTypes
-+ * @{
-+ */
-+
- /**
-  * Colorspace color type.
-  *
-@@ -1016,6 +1048,13 @@
- constexpr ColorType COLOR_TYPE_YCBCR =
-   SDL_COLOR_TYPE_YCBCR; ///< COLOR_TYPE_YCBCR
- 
-+/// @}
-+
-+/**
-+ * @name ColorRanges
-+ * @{
-+ */
-+
- /**
-  * Colorspace color range, as described by
-  * https://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en
-@@ -1028,16 +1067,22 @@
-   SDL_COLOR_RANGE_UNKNOWN; ///< COLOR_RANGE_UNKNOWN
- 
- /**
-- * Narrow range, e.g.  16-235 for 8-bit RGB and luma, and 16-240 for 8-bit
-- * chroma
-+ * Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma
-  */
- constexpr ColorRange COLOR_RANGE_LIMITED = SDL_COLOR_RANGE_LIMITED;
- 
- /**
-- * Full range, e.g.  0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
-+ * Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
-  */
- constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
- 
-+/// @}
-+
-+/**
-+ * @name ColorPrimaries
-+ * @{
-+ */
-+
- /**
-  * Colorspace color primaries, as described by
-  * https://www.itu.int/rec/T-REC-H.273-201612-S/en
-@@ -1093,6 +1138,13 @@
- constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM =
-   SDL_COLOR_PRIMARIES_CUSTOM; ///< COLOR_PRIMARIES_CUSTOM
- 
-+/// @}
-+
-+/**
-+ * @name TransferCharacteristics
-+ * @{
-+ */
-+
- /**
-  * Colorspace transfer characteristics.
-  *
-@@ -1169,6 +1221,13 @@
- constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_CUSTOM =
-   SDL_TRANSFER_CHARACTERISTICS_CUSTOM; ///< TRANSFER_CHARACTERISTICS_CUSTOM
- 
-+/// @}
-+
-+/**
-+ * @name MatrixCoefficients
-+ * @{
-+ */
-+
- /**
-  * Colorspace matrix coefficients.
-  *
-@@ -1228,6 +1287,13 @@
- constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
-   SDL_MATRIX_COEFFICIENTS_CUSTOM; ///< MATRIX_COEFFICIENTS_CUSTOM
- 
-+/// @}
-+
-+/**
-+ * @name ChromaLocations
-+ * @{
-+ */
-+
- /**
-  * Colorspace chroma sample location.
-  *
-@@ -1240,14 +1306,14 @@
- 
- /**
-  * In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge
-- * of the 2x2 square.  In other words, they have the same horizontal location as
-+ * of the 2x2 square. In other words, they have the same horizontal location as
-  * the top-left pixel, but is shifted one-half pixel down vertically.
-  */
- constexpr ChromaLocation CHROMA_LOCATION_LEFT = SDL_CHROMA_LOCATION_LEFT;
- 
- /**
-  * In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2
-- * square.  In other words, they are offset one-half pixel to the right and
-+ * square. In other words, they are offset one-half pixel to the right and
-  * one-half pixel down compared to the top-left pixel.
-  */
- constexpr ChromaLocation CHROMA_LOCATION_CENTER = SDL_CHROMA_LOCATION_CENTER;
-@@ -1259,187 +1325,12 @@
-  */
- constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
- 
--/**
-- * A macro for defining custom Colorspace formats.
-- *
-- * For example, defining COLORSPACE_SRGB looks like this:
-- *
-- * ```c
-- * SDL_DEFINE_COLORSPACE(COLOR_TYPE_RGB,
-- *                       COLOR_RANGE_FULL,
-- *                       COLOR_PRIMARIES_BT709,
-- *                       TRANSFER_CHARACTERISTICS_SRGB,
-- *                       MATRIX_COEFFICIENTS_IDENTITY,
-- *                       CHROMA_LOCATION_NONE)
-- * ```
-- *
-- * @param type the type of the new format, probably an ColorType value.
-- * @param range the range of the new format, probably a ColorRange value.
-- * @param primaries the primaries of the new format, probably an
-- *                  ColorPrimaries value.
-- * @param transfer the transfer characteristics of the new format, probably an
-- *                 TransferCharacteristics value.
-- * @param matrix the matrix coefficients of the new format, probably an
-- *               MatrixCoefficients value.
-- * @param chroma the chroma sample location of the new format, probably an
-- *               ChromaLocation value.
-- * @returns a format value in the style of Colorspace.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_DEFINE_COLORSPACE(                                                 \
--  type, range, primaries, transfer, matrix, chroma)                            \
--  (((Uint32)(type) << 28) | ((Uint32)(range) << 24) |                          \
--   ((Uint32)(chroma) << 20) | ((Uint32)(primaries) << 10) |                    \
--   ((Uint32)(transfer) << 5) | ((Uint32)(matrix) << 0))
--
--/**
-- * A macro to retrieve the type of an Colorspace.
-- *
-- * @param cspace an Colorspace to check.
-- * @returns the ColorType for `cspace`.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_COLORSPACETYPE(cspace) (SDL_ColorType)(((cspace) >> 28) & 0x0F)
--
--/**
-- * A macro to retrieve the range of an Colorspace.
-- *
-- * @param cspace an Colorspace to check.
-- * @returns the ColorRange of `cspace`.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_COLORSPACERANGE(cspace) (SDL_ColorRange)(((cspace) >> 24) & 0x0F)
--
--/**
-- * A macro to retrieve the chroma sample location of an Colorspace.
-- *
-- * @param cspace an Colorspace to check.
-- * @returns the ChromaLocation of `cspace`.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_COLORSPACECHROMA(cspace)                                           \
--  (SDL_ChromaLocation)(((cspace) >> 20) & 0x0F)
--
--/**
-- * A macro to retrieve the primaries of an Colorspace.
-- *
-- * @param cspace an Colorspace to check.
-- * @returns the ColorPrimaries of `cspace`.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_COLORSPACEPRIMARIES(cspace)                                        \
--  (SDL_ColorPrimaries)(((cspace) >> 10) & 0x1F)
--
--/**
-- * A macro to retrieve the transfer characteristics of an Colorspace.
-- *
-- * @param cspace an Colorspace to check.
-- * @returns the TransferCharacteristics of `cspace`.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_COLORSPACETRANSFER(cspace)                                         \
--  (SDL_TransferCharacteristics)(((cspace) >> 5) & 0x1F)
--
--/**
-- * A macro to retrieve the matrix coefficients of an Colorspace.
-- *
-- * @param cspace an Colorspace to check.
-- * @returns the MatrixCoefficients of `cspace`.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_COLORSPACEMATRIX(cspace) (SDL_MatrixCoefficients)((cspace) & 0x1F)
--
--/**
-- * A macro to determine if an Colorspace uses BT601 (or BT470BG) matrix
-- * coefficients.
-- *
-- * Note that this macro double-evaluates its parameter, so do not use
-- * expressions with side-effects here.
-- *
-- * @param cspace an Colorspace to check.
-- * @returns true if BT601 or BT470BG, false otherwise.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_ISCOLORSPACE_MATRIX_BT601(cspace)                                  \
--  (SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT601 ||            \
--   SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT470BG)
--
--/**
-- * A macro to determine if an Colorspace uses BT709 matrix coefficients.
-- *
-- * @param cspace an Colorspace to check.
-- * @returns true if BT709, false otherwise.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_ISCOLORSPACE_MATRIX_BT709(cspace)                                  \
--  (SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT709)
--
--/**
-- * A macro to determine if an Colorspace uses BT2020_NCL matrix
-- * coefficients.
-- *
-- * @param cspace an Colorspace to check.
-- * @returns true if BT2020_NCL, false otherwise.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace)                             \
--  (SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT2020_NCL)
--
--/**
-- * A macro to determine if an Colorspace has a limited range.
-- *
-- * @param cspace an Colorspace to check.
-- * @returns true if limited range, false otherwise.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-- */
--#define SDL_ISCOLORSPACE_LIMITED_RANGE(cspace)                                 \
--  (SDL_COLORSPACERANGE(cspace) != SDL_COLOR_RANGE_FULL)
-+/// @}
- 
- /**
-- * A macro to determine if an Colorspace has a full range.
-- *
-- * @param cspace an Colorspace to check.
-- * @returns true if full range, false otherwise.
-- *
-- * @threadsafety It is safe to call this macro from any thread.
-- *
-- * @since This macro is available since SDL 3.2.0.
-+ * @name Colorspaces
-+ * @{
-  */
--#define SDL_ISCOLORSPACE_FULL_RANGE(cspace)                                    \
--  (SDL_COLORSPACERANGE(cspace) == SDL_COLOR_RANGE_FULL)
- 
- /**
-  * Colorspace definitions.
-@@ -1450,38 +1341,256 @@
-  *
-  * @since This enum is available since SDL 3.2.0.
-  *
-+ * @cat wrap-state
-+ *
-+ * @sa Colorspaces
-  * @sa ColorPrimaries
-  * @sa ColorRange
-  * @sa ColorType
-  * @sa MatrixCoefficients
-  * @sa TransferCharacteristics
-  */
--struct Colorspace
-+class Colorspace
- {
-+  SDL_Colorspace m_colorspace;
-+
-+public:
-+  /**
-+   * Wraps Colorspace.
-+   *
-+   * @param colorspace the value to be wrapped
-+   */
-+  constexpr Colorspace(SDL_Colorspace colorspace = {})
-+    : m_colorspace(colorspace)
-+  {
-+  }
-+
-+  /**
-+   * Define custom Colorspace formats.
-+   *
-+   * For example, defining COLORSPACE_SRGB looks like this:
-+   *
-+   * ```cpp
-+   * Colorspace colorspace(COLOR_TYPE_RGB,
-+   *                       COLOR_RANGE_FULL,
-+   *                       COLOR_PRIMARIES_BT709,
-+   *                       TRANSFER_CHARACTERISTICS_SRGB,
-+   *                       MATRIX_COEFFICIENTS_IDENTITY,
-+   *                       CHROMA_LOCATION_NONE)
-+   * ```
-+   *
-+   * @param type the type of the new format, probably an ColorType value.
-+   * @param range the range of the new format, probably a ColorRange value.
-+   * @param primaries the primaries of the new format, probably an
-+   *                  ColorPrimaries value.
-+   * @param transfer the transfer characteristics of the new format, probably an
-+   *                 TransferCharacteristics value.
-+   * @param matrix the matrix coefficients of the new format, probably an
-+   *               MatrixCoefficients value.
-+   * @param chroma the chroma sample location of the new format, probably an
-+   *               ChromaLocation value.
-+   * @post a format value in the style of Colorspace.
-+   *
-+   * @threadsafety It is safe to call this macro from any thread.
-+   *
-+   * @since This macro is available since SDL 3.2.0.
-+   */
-+  constexpr Colorspace(ColorType type,
-+                       ColorRange range,
-+                       ColorPrimaries primaries,
-+                       TransferCharacteristics transfer,
-+                       MatrixCoefficients matrix,
-+                       ChromaLocation chroma)
-+    : m_colorspace(SDL_Colorspace(SDL_DEFINE_COLORSPACE(type,
-+                                                        range,
-+                                                        primaries,
-+                                                        transfer,
-+                                                        matrix,
-+                                                        chroma)))
-+  {
-+  }
-+
-+  /**
-+   * Default comparison operator
-+   */
-+  constexpr bool operator==(const Colorspace& other) const = default;
- 
--#define Colorspace
-+  /**
-+   * Compares with the underlying type
-+   */
-+  constexpr bool operator==(SDL_Colorspace colorspace) const
-+  {
-+    return operator==(Colorspace(colorspace));
-+  }
- 
--#define GetType
-+  /// True if a valid colorspace
-+  /**
-+   * Unwraps to the underlying Colorspace.
-+   *
-+   * @returns the underlying Colorspace.
-+   */
-+  constexpr operator SDL_Colorspace() const { return m_colorspace; }
- 
--#define GetRange
-+  /**
-+   * Check if valid.
-+   *
-+   * @returns True if valid state, false otherwise.
-+   */
-+  constexpr explicit operator bool() const { return m_colorspace != 0; }
- 
--#define GetChroma
-+  /**
-+   * Retrieve the type of a Colorspace.
-+   *
-+   * @returns the ColorType for `cspace`.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr ColorType GetType() const
-+  {
-+    return SDL_COLORSPACETYPE(m_colorspace);
-+  }
- 
--#define GetPrimaries
-+  /**
-+   * Retrieve the range of a Colorspace.
-+   *
-+   * @returns the ColorRange of `cspace`.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr ColorRange GetRange() const
-+  {
-+    return SDL_COLORSPACERANGE(m_colorspace);
-+  }
- 
--#define GetTransfer
-+  /**
-+   * Retrieve the chroma sample location of an Colorspace.
-+   *
-+   * @returns the ChromaLocation of `cspace`.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr ChromaLocation GetChroma() const
-+  {
-+    return SDL_COLORSPACECHROMA(m_colorspace);
-+  }
- 
--#define GetMatrix
-+  /**
-+   * Retrieve the primaries of an Colorspace.
-+   *
-+   * @returns the ColorPrimaries of `cspace`.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr ColorPrimaries GetPrimaries() const
-+  {
-+    return SDL_COLORSPACEPRIMARIES(m_colorspace);
-+  }
-+
-+  /**
-+   * Retrieve the transfer characteristics of an Colorspace.
-+   *
-+   * @returns the TransferCharacteristics of `cspace`.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr TransferCharacteristics GetTransfer() const
-+  {
-+    return SDL_COLORSPACETRANSFER(m_colorspace);
-+  }
-+
-+  /**
-+   * Retrieve the matrix coefficients of an Colorspace.
-+   *
-+   * @returns the MatrixCoefficients of `cspace`.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr MatrixCoefficients GetMatrix() const
-+  {
-+    return SDL_COLORSPACEMATRIX(m_colorspace);
-+  }
- 
--#define IsMatrixBT601
-+  /**
-+   * Determine if a Colorspace uses BT601 (or BT470BG) matrix coefficients.
-+   *
-+   * @returns true if BT601 or BT470BG, false otherwise.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr bool IsMatrixBT601() const
-+  {
-+    return SDL_ISCOLORSPACE_MATRIX_BT601(m_colorspace);
-+  }
- 
--#define IsMatrixBT709
-+  /**
-+   * Determine if an Colorspace uses BT709 matrix coefficients.
-+   *
-+   * @returns true if BT709, false otherwise.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr bool IsMatrixBT709() const
-+  {
-+    return SDL_ISCOLORSPACE_MATRIX_BT709(m_colorspace);
-+  }
- 
--#define IsMatrixBT2020_NCL
-+  /**
-+   * Determine if an Colorspace uses BT2020_NCL matrix coefficients.
-+   *
-+   * @returns true if BT2020_NCL, false otherwise.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr bool IsMatrixBT2020_NCL() const
-+  {
-+    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(m_colorspace);
-+  }
- 
--#define IsLimitedRange
-+  /**
-+   * A function to determine if an Colorspace has a limited range.
-+   *
-+   * @returns true if limited range, false otherwise.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr bool IsLimitedRange() const
-+  {
-+    return SDL_ISCOLORSPACE_LIMITED_RANGE(m_colorspace);
-+  }
- 
--#define IsFullRange
-+  /**
-+   * A function to determine if an Colorspace has a full range.
-+   *
-+   * @returns true if full range, false otherwise.
-+   *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   */
-+  constexpr bool IsFullRange() const
-+  {
-+    return SDL_ISCOLORSPACE_FULL_RANGE(m_colorspace);
-+  }
- };
- 
- constexpr SDL_Colorspace COLORSPACE_UNKNOWN =
-@@ -1546,6 +1655,8 @@
-  */
- constexpr SDL_Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
- 
-+/// @}
-+
- /**
-  * A structure that represents a color as RGBA components.
-  *
-@@ -1555,6 +1666,9 @@
-  * PIXELFORMAT_RGBA8888 on big-endian systems).
-  *
-  * @since This struct is available since SDL 3.2.0.
-+ *
-+ * @cat wrap-extending-struct
-+ * @sa FColor
-  */
- struct Color : SDL_Color
- {
-@@ -1571,12 +1685,12 @@
-   /**
-    * Constructs from its fields.
-    *
--   * @param r the value for r.
--   * @param g the value for g.
--   * @param b the value for b.
--   * @param a the value for a.
-+   * @param r the value for channel r.
-+   * @param g the value for channel g.
-+   * @param b the value for channel b.
-+   * @param a the value for channel a.
-    */
--  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-+  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
-     : SDL_Color{r, g, b, a}
-   {
-   }
-@@ -1584,7 +1698,16 @@
-   /**
-    * Default comparison operator
-    */
--  constexpr auto operator<=>(const Color& other) const = default;
-+  constexpr auto operator<=>(const Color& other) const
-+  {
-+    auto c = r <=> other.r;
-+    if (c != std::strong_ordering::equal) return c;
-+    c = g <=> other.g;
-+    if (c != std::strong_ordering::equal) return c;
-+    c = b <=> other.b;
-+    if (c != std::strong_ordering::equal) return c;
-+    return a <=> other.a;
-+  }
- 
-   /**
-    * Compares with the underlying type
-@@ -1595,16 +1718,16 @@
-   }
- 
-   /**
--   * Get the r.
-+   * Get the red component from the color.
-    *
--   * @returns current r value.
-+   * @returns The red component from the color.
-    */
-   constexpr Uint8 GetR() const { return r; }
- 
-   /**
--   * Set the r.
-+   * Set the red component from the color.
-    *
--   * @param newR the new r value.
-+   * @param newR New red component value.
-    * @returns Reference to self.
-    */
-   constexpr Color& SetR(Uint8 newR)
-@@ -1614,16 +1737,17 @@
-   }
- 
-   /**
--   * Get the g.
-+   * Get the green component from the color.
-+   *
-+   * @returns The green component from the color.
-    *
--   * @returns current g value.
-    */
-   constexpr Uint8 GetG() const { return g; }
- 
-   /**
--   * Set the g.
-+   * Set the green component from the color.
-    *
--   * @param newG the new g value.
-+   * @param newG New green component value.
-    * @returns Reference to self.
-    */
-   constexpr Color& SetG(Uint8 newG)
-@@ -1633,16 +1757,17 @@
-   }
- 
-   /**
--   * Get the b.
-+   * Get the blue component from the color.
-+   *
-+   * @returns The blue component from the color.
-    *
--   * @returns current b value.
-    */
-   constexpr Uint8 GetB() const { return b; }
- 
-   /**
--   * Set the b.
-+   * Set the blue component from the color.
-    *
--   * @param newB the new b value.
-+   * @param newB New blue component value.
-    * @returns Reference to self.
-    */
-   constexpr Color& SetB(Uint8 newB)
-@@ -1652,16 +1777,17 @@
-   }
- 
-   /**
--   * Get the a.
-+   * Get the alpha component from the color.
-+   *
-+   * @returns The alpha component from the color.
-    *
--   * @returns current a value.
-    */
-   constexpr Uint8 GetA() const { return a; }
- 
-   /**
--   * Set the a.
-+   * Set the alpha component from the color.
-    *
--   * @param newA the new a value.
-+   * @param newA New alpha component value.
-    * @returns Reference to self.
-    */
-   constexpr Color& SetA(Uint8 newA)
-@@ -1669,6 +1795,64 @@
-     a = newA;
-     return *this;
-   }
-+
-+  /**
-+   * Map an RGBA quadruple to a pixel value for a given pixel format.
-+   *
-+   * This function maps the RGBA color value to the specified pixel format and
-+   * returns the pixel value best approximating the given RGBA color value for
-+   * the given pixel format.
-+   *
-+   * If the specified pixel format has no alpha component the alpha value will
-+   * be ignored (as it will be in formats with a palette).
-+   *
-+   * If the format has a palette (8-bit) the index of the closest matching color
-+   * in the palette will be returned.
-+   *
-+   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
-+   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
-+   * format the return value can be assigned to a Uint16, and similarly a Uint8
-+   * for an 8-bpp format).
-+   *
-+   * @param format a pointer to PixelFormatDetails describing the pixel
-+   *               format.
-+   * @param palette an optional palette for indexed formats, may be NULL.
-+   * @returns a pixel value.
-+   *
-+   * @threadsafety It is safe to call this function from any thread, as long as
-+   *               the palette is not modified.
-+   */
-+  Uint32 Map(const PixelFormatDetails& format, PaletteConstParam palette) const;
-+
-+  /**
-+   * Get RGBA values from a pixel in the specified format.
-+   *
-+   * This function uses the entire 8-bit [0..255] range when converting color
-+   * components from pixel formats with less than 8-bits per RGB component
-+   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
-+   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
-+   *
-+   * If the surface has no alpha component, the alpha will be returned as 0xff
-+   * (100% opaque).
-+   *
-+   * @param pixel a pixel value.
-+   * @param format a pointer to SDL_PixelFormatDetails describing the pixel
-+   *               format.
-+   * @param palette an optional palette for indexed formats, may be NULL.
-+   * @returns a color value.
-+   *
-+   * @threadsafety It is safe to call this function from any thread, as long as
-+   *               the palette is not modified.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   *
-+   * @sa PixelFormat.GetDetails()
-+   * @sa GetRGBA()
-+   * @sa Map()
-+   */
-+  static Color Get(Uint32 pixel,
-+                   const PixelFormatDetails& format,
-+                   PaletteConstParam palette);
- };
- 
- /**
-@@ -1676,11 +1860,15 @@
-  * color which uses the PIXELFORMAT_RGBA128_FLOAT format
-  *
-  * @since This struct is available since SDL 3.2.0.
-+ *
-+ * @cat wrap-extending-struct
-+ *
-+ * @sa Color
-  */
- struct FColor : SDL_FColor
- {
-   /**
--   * Wraps FColor.
-+   * Wraps SDL_FColor.
-    *
-    * @param color the value to be wrapped
-    */
-@@ -1697,7 +1885,7 @@
-    * @param b the value for b.
-    * @param a the value for a.
-    */
--  constexpr FColor(float r, float g, float b, float a)
-+  constexpr FColor(float r, float g, float b, float a = 1)
-     : SDL_FColor{r, g, b, a}
-   {
-   }
-@@ -1705,7 +1893,16 @@
-   /**
-    * Default comparison operator
-    */
--  constexpr auto operator<=>(const FColor& other) const = default;
-+  constexpr auto operator<=>(const FColor& other) const
-+  {
-+    auto c = r <=> other.r;
-+    if (c != std::partial_ordering::equivalent) return c;
-+    c = g <=> other.g;
-+    if (c != std::partial_ordering::equivalent) return c;
-+    c = b <=> other.b;
-+    if (c != std::partial_ordering::equivalent) return c;
-+    return a <=> other.a;
-+  }
- 
-   /**
-    * Compares with the underlying type
-@@ -1716,16 +1913,16 @@
-   }
- 
-   /**
--   * Get the r.
-+   * Get the red component from the color.
-    *
--   * @returns current r value.
-+   * @returns The red component from the color.
-    */
-   constexpr float GetR() const { return r; }
- 
-   /**
--   * Set the r.
-+   * Set the red component from the color.
-    *
--   * @param newR the new r value.
-+   * @param newR New red component value.
-    * @returns Reference to self.
-    */
-   constexpr FColor& SetR(float newR)
-@@ -1735,16 +1932,17 @@
-   }
- 
-   /**
--   * Get the g.
-+   * Get the green component from the color.
-+   *
-+   * @returns The green component from the color.
-    *
--   * @returns current g value.
-    */
-   constexpr float GetG() const { return g; }
- 
-   /**
--   * Set the g.
-+   * Set the green component from the color.
-    *
--   * @param newG the new g value.
-+   * @param newG New green component value.
-    * @returns Reference to self.
-    */
-   constexpr FColor& SetG(float newG)
-@@ -1754,16 +1952,17 @@
-   }
- 
-   /**
--   * Get the b.
-+   * Get the blue component from the color.
-+   *
-+   * @returns The blue component from the color.
-    *
--   * @returns current b value.
-    */
-   constexpr float GetB() const { return b; }
- 
-   /**
--   * Set the b.
-+   * Set the blue component from the color.
-    *
--   * @param newB the new b value.
-+   * @param newB New blue component value.
-    * @returns Reference to self.
-    */
-   constexpr FColor& SetB(float newB)
-@@ -1773,16 +1972,17 @@
-   }
- 
-   /**
--   * Get the a.
-+   * Get the alpha component from the color.
-+   *
-+   * @returns The alpha component from the color.
-    *
--   * @returns current a value.
-    */
-   constexpr float GetA() const { return a; }
- 
-   /**
--   * Set the a.
-+   * Set the alpha component from the color.
-    *
--   * @param newA the new a value.
-+   * @param newA New alpha component value.
-    * @returns Reference to self.
-    */
-   constexpr FColor& SetA(float newA)
-@@ -1859,11 +2059,11 @@
- 
-   constexpr operator PaletteParam() const { return {m_resource}; }
- 
--  constexpr int GetSize() const { static_assert(false, "Not implemented"); }
-+  constexpr int GetSize() const { return m_resource->ncolors; }
- 
-   constexpr Color operator[](int index) const
-   {
--    static_assert(false, "Not implemented");
-+    return m_resource->colors[index];
-   }
- 
-   /**
-@@ -1881,7 +2081,8 @@
-    */
-   void SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
-   {
--    CheckError(SDL_SetPaletteColors(m_resource, colors, firstcolor));
-+    CheckError(SDL_SetPaletteColors(
-+      m_resource, colors.data(), firstcolor, colors.size()));
-   }
- 
-   /**
-@@ -2035,7 +2236,8 @@
-                              SpanRef<const SDL_Color> colors,
-                              int firstcolor = 0)
- {
--  CheckError(SDL_SetPaletteColors(palette, colors, firstcolor));
-+  CheckError(
-+    SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
- }
- 
- /**
-@@ -2223,6 +2425,33 @@
- 
- /// @}
- 
-+inline Uint32 Color::Map(const PixelFormatDetails& format,
-+                         PaletteConstParam palette = nullptr) const
-+{
-+  return MapRGBA(&format, palette, r, g, b, a);
-+}
-+
-+inline Color Color::Get(Uint32 pixel,
-+                        const PixelFormatDetails& format,
-+                        PaletteConstParam palette = nullptr)
-+{
-+  Color c;
-+  GetRGBA(pixel, &format, palette, &c.r, &c.g, &c.b, &c.a);
-+  return c;
-+}
-+
-+inline Uint32 PixelFormat::Map(Color color,
-+                               PaletteConstParam palette = nullptr) const
-+{
-+  return color.Map(*GetDetails(), palette);
-+}
-+
-+inline Color PixelFormat::Get(Uint32 pixel,
-+                              PaletteConstParam palette = nullptr) const
-+{
-+  return Color::Get(pixel, *GetDetails(), palette);
-+}
-+
- } // namespace SDL
- 
- #endif /* SDL3PP_PIXELS_H_ */
+12c12
+<  * @defgroup CategoryPixels Category Pixels
+---
+>  * @defgroup CategoryPixels Pixel Formats and Conversion Routines
+81d80
+< 
+102d100
+< 
+138a137,138
+> #ifdef SDL3PP_DOC
+> 
+174a175,181
+> #endif // SDL3PP_DOC
+> 
+> /**
+>  * @name PixelTypes
+>  * @{
+>  */
+> 
+207a215,221
+> /// @}
+> 
+> /**
+>  * @name BitmapOrders
+>  * @{
+>  */
+> 
+220a235,241
+> /// @}
+> 
+> /**
+>  * @name PackedOrders
+>  * @{
+>  */
+> 
+245a267,273
+> /// @}
+> 
+> /**
+>  * @name ArrayOrders
+>  * @{
+>  */
+> 
+266a295,301
+> /// @}
+> 
+> /**
+>  * @name PackedLayouts
+>  * @{
+>  */
+> 
+293a329,332
+> /// @}
+> 
+> #ifdef SDL3PP_DOC
+> 
+316,342d354
+<  * A macro for defining custom non-FourCC pixel formats.
+<  *
+<  * For example, defining PIXELFORMAT_RGBA8888 looks like this:
+<  *
+<  * ```c
+<  * SDL_DEFINE_PIXELFORMAT(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
+<  * PACKEDLAYOUT_8888, 32, 4)
+<  * ```
+<  *
+<  * @param type the type of the new format, probably a PixelType value.
+<  * @param order the order of the new format, probably a BitmapOrder,
+<  *              PackedOrder, or ArrayOrder value.
+<  * @param layout the layout of the new format, probably an PackedLayout
+<  *               value or zero.
+<  * @param bits the number of bits per pixel of the new format.
+<  * @param bytes the number of bytes per pixel of the new format.
+<  * @returns a format value in the style of PixelFormat.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)               \
+<   ((1 << 28) | ((type) << 24) | ((order) << 20) | ((layout) << 16) |           \
+<    ((bits) << 8) | ((bytes) << 0))
+< 
+< /**
+357,543c369
+< /**
+<  * A macro to retrieve the type of an PixelFormat.
+<  *
+<  * This is usually a value from the PixelType enumeration.
+<  *
+<  * @param format an PixelFormat to check.
+<  * @returns the type of `format`.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_PIXELTYPE(format) (((format) >> 24) & 0x0F)
+< 
+< /**
+<  * A macro to retrieve the order of an PixelFormat.
+<  *
+<  * This is usually a value from the BitmapOrder, PackedOrder, or
+<  * ArrayOrder enumerations, depending on the format type.
+<  *
+<  * @param format an PixelFormat to check.
+<  * @returns the order of `format`.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_PIXELORDER(format) (((format) >> 20) & 0x0F)
+< 
+< /**
+<  * A macro to retrieve the layout of an PixelFormat.
+<  *
+<  * This is usually a value from the PackedLayout enumeration, or zero if a
+<  * layout doesn't make sense for the format type.
+<  *
+<  * @param format an PixelFormat to check.
+<  * @returns the layout of `format`.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_PIXELLAYOUT(format) (((format) >> 16) & 0x0F)
+< 
+< /**
+<  * A macro to determine an PixelFormat's bits per pixel.
+<  *
+<  * Note that this macro double-evaluates its parameter, so do not use
+<  * expressions with side-effects here.
+<  *
+<  * FourCC formats will report zero here, as it rarely makes sense to measure
+<  * them per-pixel.
+<  *
+<  * @param format an PixelFormat to check.
+<  * @returns the bits-per-pixel of `format`.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  *
+<  * @sa SDL_BYTESPERPIXEL
+<  */
+< #define SDL_BITSPERPIXEL(format)                                               \
+<   (SDL_ISPIXELFORMAT_FOURCC(format) ? 0 : (((format) >> 8) & 0xFF))
+< 
+< /**
+<  * A macro to determine an PixelFormat's bytes per pixel.
+<  *
+<  * Note that this macro double-evaluates its parameter, so do not use
+<  * expressions with side-effects here.
+<  *
+<  * FourCC formats do their best here, but many of them don't have a meaningful
+<  * measurement of bytes per pixel.
+<  *
+<  * @param format an PixelFormat to check.
+<  * @returns the bytes-per-pixel of `format`.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  *
+<  * @sa SDL_BITSPERPIXEL
+<  */
+< #define SDL_BYTESPERPIXEL(format)                                              \
+<   (SDL_ISPIXELFORMAT_FOURCC(format) ? ((((format) == SDL_PIXELFORMAT_YUY2) ||  \
+<                                         ((format) == SDL_PIXELFORMAT_UYVY) ||  \
+<                                         ((format) == SDL_PIXELFORMAT_YVYU) ||  \
+<                                         ((format) == SDL_PIXELFORMAT_P010))    \
+<                                          ? 2                                   \
+<                                          : 1)                                  \
+<                                     : (((format) >> 0) & 0xFF))
+< 
+< /**
+<  * A macro to determine if an PixelFormat is an indexed format.
+<  *
+<  * Note that this macro double-evaluates its parameter, so do not use
+<  * expressions with side-effects here.
+<  *
+<  * @param format an PixelFormat to check.
+<  * @returns true if the format is indexed, false otherwise.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_ISPIXELFORMAT_INDEXED(format)                                      \
+<   (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
+<    ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX1) ||                         \
+<     (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX2) ||                         \
+<     (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX4) ||                         \
+<     (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX8)))
+< 
+< /**
+<  * A macro to determine if an PixelFormat is a packed format.
+<  *
+<  * Note that this macro double-evaluates its parameter, so do not use
+<  * expressions with side-effects here.
+<  *
+<  * @param format an PixelFormat to check.
+<  * @returns true if the format is packed, false otherwise.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_ISPIXELFORMAT_PACKED(format)                                       \
+<   (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
+<    ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED8) ||                        \
+<     (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED16) ||                       \
+<     (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32)))
+< 
+< /**
+<  * A macro to determine if an PixelFormat is an array format.
+<  *
+<  * Note that this macro double-evaluates its parameter, so do not use
+<  * expressions with side-effects here.
+<  *
+<  * @param format an PixelFormat to check.
+<  * @returns true if the format is an array, false otherwise.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_ISPIXELFORMAT_ARRAY(format)                                        \
+<   (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
+<    ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU8) ||                        \
+<     (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU16) ||                       \
+<     (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU32) ||                       \
+<     (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) ||                       \
+<     (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))
+< 
+< /**
+<  * A macro to determine if an PixelFormat is a 10-bit format.
+<  *
+<  * Note that this macro double-evaluates its parameter, so do not use
+<  * expressions with side-effects here.
+<  *
+<  * @param format an PixelFormat to check.
+<  * @returns true if the format is 10-bit, false otherwise.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_ISPIXELFORMAT_10BIT(format)                                        \
+<   (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
+<    ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32) &&                       \
+<     (SDL_PIXELLAYOUT(format) == SDL_PACKEDLAYOUT_2101010)))
+< 
+< /**
+<  * A macro to determine if an PixelFormat is a floating point format.
+<  *
+<  * Note that this macro double-evaluates its parameter, so do not use
+<  * expressions with side-effects here.
+<  *
+<  * @param format an PixelFormat to check.
+<  * @returns true if the format is 10-bit, false otherwise.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_ISPIXELFORMAT_FLOAT(format)                                        \
+<   (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
+<    ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) ||                       \
+<     (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))
+---
+> #endif // SDL3PP_DOC
+546,583c372,373
+<  * A macro to determine if an PixelFormat has an alpha channel.
+<  *
+<  * Note that this macro double-evaluates its parameter, so do not use
+<  * expressions with side-effects here.
+<  *
+<  * @param format an PixelFormat to check.
+<  * @returns true if the format has alpha, false otherwise.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_ISPIXELFORMAT_ALPHA(format)                                        \
+<   ((SDL_ISPIXELFORMAT_PACKED(format) &&                                        \
+<     ((SDL_PIXELORDER(format) == SDL_PACKEDORDER_ARGB) ||                       \
+<      (SDL_PIXELORDER(format) == SDL_PACKEDORDER_RGBA) ||                       \
+<      (SDL_PIXELORDER(format) == SDL_PACKEDORDER_ABGR) ||                       \
+<      (SDL_PIXELORDER(format) == SDL_PACKEDORDER_BGRA))) ||                     \
+<    (SDL_ISPIXELFORMAT_ARRAY(format) &&                                         \
+<     ((SDL_PIXELORDER(format) == SDL_ARRAYORDER_ARGB) ||                        \
+<      (SDL_PIXELORDER(format) == SDL_ARRAYORDER_RGBA) ||                        \
+<      (SDL_PIXELORDER(format) == SDL_ARRAYORDER_ABGR) ||                        \
+<      (SDL_PIXELORDER(format) == SDL_ARRAYORDER_BGRA))))
+< 
+< /**
+<  * A macro to determine if an PixelFormat is a "FourCC" format.
+<  *
+<  * This covers custom and other unusual formats.
+<  *
+<  * Note that this macro double-evaluates its parameter, so do not use
+<  * expressions with side-effects here.
+<  *
+<  * @param format an PixelFormat to check.
+<  * @returns true if the format has alpha, false otherwise.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @name PixelFormats
+>  * @{
+585,588d374
+< #define SDL_ISPIXELFORMAT_FOURCC(                                              \
+<   format) /* The flag is set to 1 because 0x1? is not in the printable ASCII   \
+<              range */                                                          \
+<   ((format) && (SDL_PIXELFLAG(format) != 1))
+625a412,416
+>  *
+>  * @cat wrap-state
+>  *
+>  * @sa wrap-state
+>  * @sa PixelFormats
+629d419
+< 
+643a434,466
+>    * Defining custom non-FourCC pixel formats.
+>    *
+>    * For example, defining PIXELFORMAT_RGBA8888 looks like this:
+>    *
+>    * ```c
+>    * PixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
+>    * PACKEDLAYOUT_8888, 32, 4)
+>    * ```
+>    *
+>    * @param type the type of the new format, probably a PixelType value.
+>    * @param order the order of the new format, probably a BitmapOrder,
+>    *              PackedOrder, or ArrayOrder value.
+>    * @param layout the layout of the new format, probably an PackedLayout
+>    *               value or zero.
+>    * @param bits the number of bits per pixel of the new format.
+>    * @param bytes the number of bytes per pixel of the new format.
+>    * @post a format value in the style of PixelFormat.
+>    *
+>    * @threadsafety It is safe to call this macro from any thread.
+>    *
+>    * @since This macro is available since SDL 3.2.0.
+>    */
+>   constexpr PixelFormat(SDL_PixelType type,
+>                         int order,
+>                         SDL_PackedLayout layout,
+>                         int bits,
+>                         int bytes)
+>     : m_format(SDL_PixelFormat(
+>         SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
+>   {
+>   }
+> 
+>   /**
+670c493,505
+< #define GetType
+---
+>   /**
+>    * Retrieve the type.
+>    *
+>    * @returns the type as PixelType.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr PixelType GetType() const
+>   {
+>     return PixelType(SDL_PIXELTYPE(m_format));
+>   }
+672c507,519
+< #define GetOrder
+---
+>   /**
+>    * Retrieve the order.
+>    *
+>    * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
+>    * enumerations, depending on the format type.
+>    *
+>    * @returns the order.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr int GetOrder() const { return SDL_PIXELORDER(m_format); }
+674c521,536
+< #define GetLayout
+---
+>   /**
+>    * Retrieve the layout.
+>    *
+>    * This is usually a value from the PackedLayout enumeration, or zero if a
+>    * layout doesn't make sense for the format type.
+>    *
+>    * @returns the layout
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr PackedLayout GetLayout() const
+>   {
+>     return PackedLayout(SDL_PIXELLAYOUT(m_format));
+>   }
+676c538,552
+< #define GetBitsPerPixel
+---
+>   /**
+>    * Determine this's bits per pixel.
+>    *
+>    * FourCC formats will report zero here, as it rarely makes sense to measure
+>    * them per-pixel.
+>    *
+>    * @returns the bits-per-pixel.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa GetBytesPerPixel
+>    */
+>   constexpr int GetBitsPerPixel() const { return SDL_BITSPERPIXEL(m_format); }
+678c554,571
+< #define GetBytesPerPixel
+---
+>   /**
+>    * Determine this's bytes per pixel.
+>    *
+>    * Note that this macro double-evaluates its parameter, so do not use
+>    * expressions with side-effects here.
+>    *
+>    * FourCC formats do their best here, but many of them don't have a meaningful
+>    * measurement of bytes per pixel.
+>    *
+>    * @return the bytes-per-pixel.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa GetBitsPerPixel
+>    */
+>   constexpr int GetBytesPerPixel() const { return SDL_BYTESPERPIXEL(m_format); }
+680c573,585
+< #define IsIndexed
+---
+>   /**
+>    * Determine if this is an indexed format.
+>    *
+>    * @returns true if the format is indexed, false otherwise.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr bool IsIndexed() const
+>   {
+>     return SDL_ISPIXELFORMAT_INDEXED(m_format);
+>   }
+682c587,604
+< #define IsPacked
+---
+> /**
+>  * A macro to determine if an PixelFormat is a packed format.
+>  *
+>  * Note that this macro double-evaluates its parameter, so do not use
+>  * expressions with side-effects here.
+>  *
+>  * @param format an PixelFormat to check.
+>  * @returns true if the format is packed, false otherwise.
+>  *
+>  * @threadsafety It is safe to call this macro from any thread.
+>  *
+>  * @since This macro is available since SDL 3.2.0.
+>  */
+> #define SDL_ISPIXELFORMAT_PACKED(format)                                       \
+>   (!SDL_ISPIXELFORMAT_FOURCC(format) &&                                        \
+>    ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED8) ||                        \
+>     (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED16) ||                       \
+>     (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32)))
+684c606,615
+< #define IsArray
+---
+>   /**
+>    * Determine if this is an array format.
+>    *
+>    * @returns true if the format is an array, false otherwise.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr bool IsArray() const { return SDL_ISPIXELFORMAT_ARRAY(m_format); }
+686c617,626
+< #define Is10Bit
+---
+>   /**
+>    * Determine if this is a 10-bit format.
+>    *
+>    * @returns true if the format is 10-bit, false otherwise.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr bool Is10Bit() const { return SDL_ISPIXELFORMAT_10BIT(m_format); }
+688c628,637
+< #define IsFloat
+---
+>   /**
+>    * Determine if this is a floating point format.
+>    *
+>    * @returns true if the format is 10-bit, false otherwise.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr bool IsFloat() const { return SDL_ISPIXELFORMAT_FLOAT(m_format); }
+690c639,648
+< #define IsAlpha
+---
+>   /**
+>    * Determine if this has an alpha channel.
+>    *
+>    * @returns true if the format has alpha, false otherwise.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr bool IsAlpha() const { return SDL_ISPIXELFORMAT_ALPHA(m_format); }
+692c650,661
+< #define IsFourCC
+---
+>   /**
+>    * Determine if this is a "FourCC" format.
+>    *
+>    * This covers custom and other unusual formats.
+>    *
+>    * @returns true if the format has alpha, false otherwise.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr bool IsFourCC() const { return SDL_ISPIXELFORMAT_FOURCC(m_format); }
+779a749,780
+>   /**
+>    * Map an RGBA quadruple to a pixel value for a given pixel format.
+>    *
+>    * This function maps the RGBA color value to the specified pixel format and
+>    * returns the pixel value best approximating the given RGBA color value for
+>    * the given pixel format.
+>    *
+>    * If the specified pixel format has no alpha component the alpha value will
+>    * be ignored (as it will be in formats with a palette).
+>    *
+>    * If the format has a palette (8-bit) the index of the closest matching color
+>    * in the palette will be returned.
+>    *
+>    * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+>    * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+>    * format the return value can be assigned to a Uint16, and similarly a Uint8
+>    * for an 8-bpp format).
+>    *
+>    * @param color the color components of the pixel in the range 0-255.
+>    * @param palette an optional palette for indexed formats, may be NULL.
+>    * @returns a pixel value.
+>    *
+>    * @threadsafety It is safe to call this function from any thread, as long as
+>    *               the palette is not modified.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa GetPixelFormatDetails()
+>    * @sa Get()
+>    * @sa MapRGBA()
+>    * @sa Surface.MapColor()
+>    */
+781a783,806
+>   /**
+>    * Get RGBA values from a pixel in the specified format.
+>    *
+>    * This function uses the entire 8-bit [0..255] range when converting color
+>    * components from pixel formats with less than 8-bits per RGB component
+>    * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+>    * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+>    *
+>    * If the surface has no alpha component, the alpha will be returned as 0xff
+>    * (100% opaque).
+>    *
+>    * @param pixel a pixel value.
+>    * @param palette an optional palette for indexed formats, may be NULL.
+>    * @returns a color value.
+>    *
+>    * @threadsafety It is safe to call this function from any thread, as long as
+>    *               the palette is not modified.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa GetPixelFormatDetails()
+>    * @sa GetRGBA()
+>    * @sa Map()
+>    */
+1003a1029,1035
+> /// @}
+> 
+> /**
+>  * @name ColorTypes
+>  * @{
+>  */
+> 
+1018a1051,1057
+> /// @}
+> 
+> /**
+>  * @name ColorRanges
+>  * @{
+>  */
+> 
+1031,1032c1070
+<  * Narrow range, e.g.  16-235 for 8-bit RGB and luma, and 16-240 for 8-bit
+<  * chroma
+---
+>  * Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma
+1037c1075
+<  * Full range, e.g.  0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
+---
+>  * Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
+1040a1079,1085
+> /// @}
+> 
+> /**
+>  * @name ColorPrimaries
+>  * @{
+>  */
+> 
+1095a1141,1147
+> /// @}
+> 
+> /**
+>  * @name TransferCharacteristics
+>  * @{
+>  */
+> 
+1171a1224,1230
+> /// @}
+> 
+> /**
+>  * @name MatrixCoefficients
+>  * @{
+>  */
+> 
+1230a1290,1296
+> /// @}
+> 
+> /**
+>  * @name ChromaLocations
+>  * @{
+>  */
+> 
+1243c1309
+<  * of the 2x2 square.  In other words, they have the same horizontal location as
+---
+>  * of the 2x2 square. In other words, they have the same horizontal location as
+1250c1316
+<  * square.  In other words, they are offset one-half pixel to the right and
+---
+>  * square. In other words, they are offset one-half pixel to the right and
+1262,1429c1328
+< /**
+<  * A macro for defining custom Colorspace formats.
+<  *
+<  * For example, defining COLORSPACE_SRGB looks like this:
+<  *
+<  * ```c
+<  * SDL_DEFINE_COLORSPACE(COLOR_TYPE_RGB,
+<  *                       COLOR_RANGE_FULL,
+<  *                       COLOR_PRIMARIES_BT709,
+<  *                       TRANSFER_CHARACTERISTICS_SRGB,
+<  *                       MATRIX_COEFFICIENTS_IDENTITY,
+<  *                       CHROMA_LOCATION_NONE)
+<  * ```
+<  *
+<  * @param type the type of the new format, probably an ColorType value.
+<  * @param range the range of the new format, probably a ColorRange value.
+<  * @param primaries the primaries of the new format, probably an
+<  *                  ColorPrimaries value.
+<  * @param transfer the transfer characteristics of the new format, probably an
+<  *                 TransferCharacteristics value.
+<  * @param matrix the matrix coefficients of the new format, probably an
+<  *               MatrixCoefficients value.
+<  * @param chroma the chroma sample location of the new format, probably an
+<  *               ChromaLocation value.
+<  * @returns a format value in the style of Colorspace.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_DEFINE_COLORSPACE(                                                 \
+<   type, range, primaries, transfer, matrix, chroma)                            \
+<   (((Uint32)(type) << 28) | ((Uint32)(range) << 24) |                          \
+<    ((Uint32)(chroma) << 20) | ((Uint32)(primaries) << 10) |                    \
+<    ((Uint32)(transfer) << 5) | ((Uint32)(matrix) << 0))
+< 
+< /**
+<  * A macro to retrieve the type of an Colorspace.
+<  *
+<  * @param cspace an Colorspace to check.
+<  * @returns the ColorType for `cspace`.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_COLORSPACETYPE(cspace) (SDL_ColorType)(((cspace) >> 28) & 0x0F)
+< 
+< /**
+<  * A macro to retrieve the range of an Colorspace.
+<  *
+<  * @param cspace an Colorspace to check.
+<  * @returns the ColorRange of `cspace`.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_COLORSPACERANGE(cspace) (SDL_ColorRange)(((cspace) >> 24) & 0x0F)
+< 
+< /**
+<  * A macro to retrieve the chroma sample location of an Colorspace.
+<  *
+<  * @param cspace an Colorspace to check.
+<  * @returns the ChromaLocation of `cspace`.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_COLORSPACECHROMA(cspace)                                           \
+<   (SDL_ChromaLocation)(((cspace) >> 20) & 0x0F)
+< 
+< /**
+<  * A macro to retrieve the primaries of an Colorspace.
+<  *
+<  * @param cspace an Colorspace to check.
+<  * @returns the ColorPrimaries of `cspace`.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_COLORSPACEPRIMARIES(cspace)                                        \
+<   (SDL_ColorPrimaries)(((cspace) >> 10) & 0x1F)
+< 
+< /**
+<  * A macro to retrieve the transfer characteristics of an Colorspace.
+<  *
+<  * @param cspace an Colorspace to check.
+<  * @returns the TransferCharacteristics of `cspace`.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_COLORSPACETRANSFER(cspace)                                         \
+<   (SDL_TransferCharacteristics)(((cspace) >> 5) & 0x1F)
+< 
+< /**
+<  * A macro to retrieve the matrix coefficients of an Colorspace.
+<  *
+<  * @param cspace an Colorspace to check.
+<  * @returns the MatrixCoefficients of `cspace`.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_COLORSPACEMATRIX(cspace) (SDL_MatrixCoefficients)((cspace) & 0x1F)
+< 
+< /**
+<  * A macro to determine if an Colorspace uses BT601 (or BT470BG) matrix
+<  * coefficients.
+<  *
+<  * Note that this macro double-evaluates its parameter, so do not use
+<  * expressions with side-effects here.
+<  *
+<  * @param cspace an Colorspace to check.
+<  * @returns true if BT601 or BT470BG, false otherwise.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_ISCOLORSPACE_MATRIX_BT601(cspace)                                  \
+<   (SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT601 ||            \
+<    SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT470BG)
+< 
+< /**
+<  * A macro to determine if an Colorspace uses BT709 matrix coefficients.
+<  *
+<  * @param cspace an Colorspace to check.
+<  * @returns true if BT709, false otherwise.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_ISCOLORSPACE_MATRIX_BT709(cspace)                                  \
+<   (SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT709)
+< 
+< /**
+<  * A macro to determine if an Colorspace uses BT2020_NCL matrix
+<  * coefficients.
+<  *
+<  * @param cspace an Colorspace to check.
+<  * @returns true if BT2020_NCL, false otherwise.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace)                             \
+<   (SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT2020_NCL)
+< 
+< /**
+<  * A macro to determine if an Colorspace has a limited range.
+<  *
+<  * @param cspace an Colorspace to check.
+<  * @returns true if limited range, false otherwise.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_ISCOLORSPACE_LIMITED_RANGE(cspace)                                 \
+<   (SDL_COLORSPACERANGE(cspace) != SDL_COLOR_RANGE_FULL)
+---
+> /// @}
+1432,1439c1331,1332
+<  * A macro to determine if an Colorspace has a full range.
+<  *
+<  * @param cspace an Colorspace to check.
+<  * @returns true if full range, false otherwise.
+<  *
+<  * @threadsafety It is safe to call this macro from any thread.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @name Colorspaces
+>  * @{
+1441,1442d1333
+< #define SDL_ISCOLORSPACE_FULL_RANGE(cspace)                                    \
+<   (SDL_COLORSPACERANGE(cspace) == SDL_COLOR_RANGE_FULL)
+1452a1344,1346
+>  * @cat wrap-state
+>  *
+>  * @sa Colorspaces
+1459c1353
+< struct Colorspace
+---
+> class Colorspace
+1460a1355,1416
+>   SDL_Colorspace m_colorspace;
+> 
+> public:
+>   /**
+>    * Wraps Colorspace.
+>    *
+>    * @param colorspace the value to be wrapped
+>    */
+>   constexpr Colorspace(SDL_Colorspace colorspace = {})
+>     : m_colorspace(colorspace)
+>   {
+>   }
+> 
+>   /**
+>    * Define custom Colorspace formats.
+>    *
+>    * For example, defining COLORSPACE_SRGB looks like this:
+>    *
+>    * ```cpp
+>    * Colorspace colorspace(COLOR_TYPE_RGB,
+>    *                       COLOR_RANGE_FULL,
+>    *                       COLOR_PRIMARIES_BT709,
+>    *                       TRANSFER_CHARACTERISTICS_SRGB,
+>    *                       MATRIX_COEFFICIENTS_IDENTITY,
+>    *                       CHROMA_LOCATION_NONE)
+>    * ```
+>    *
+>    * @param type the type of the new format, probably an ColorType value.
+>    * @param range the range of the new format, probably a ColorRange value.
+>    * @param primaries the primaries of the new format, probably an
+>    *                  ColorPrimaries value.
+>    * @param transfer the transfer characteristics of the new format, probably an
+>    *                 TransferCharacteristics value.
+>    * @param matrix the matrix coefficients of the new format, probably an
+>    *               MatrixCoefficients value.
+>    * @param chroma the chroma sample location of the new format, probably an
+>    *               ChromaLocation value.
+>    * @post a format value in the style of Colorspace.
+>    *
+>    * @threadsafety It is safe to call this macro from any thread.
+>    *
+>    * @since This macro is available since SDL 3.2.0.
+>    */
+>   constexpr Colorspace(ColorType type,
+>                        ColorRange range,
+>                        ColorPrimaries primaries,
+>                        TransferCharacteristics transfer,
+>                        MatrixCoefficients matrix,
+>                        ChromaLocation chroma)
+>     : m_colorspace(SDL_Colorspace(SDL_DEFINE_COLORSPACE(type,
+>                                                         range,
+>                                                         primaries,
+>                                                         transfer,
+>                                                         matrix,
+>                                                         chroma)))
+>   {
+>   }
+> 
+>   /**
+>    * Default comparison operator
+>    */
+>   constexpr bool operator==(const Colorspace& other) const = default;
+1462c1418,1424
+< #define Colorspace
+---
+>   /**
+>    * Compares with the underlying type
+>    */
+>   constexpr bool operator==(SDL_Colorspace colorspace) const
+>   {
+>     return operator==(Colorspace(colorspace));
+>   }
+1464c1426,1432
+< #define GetType
+---
+>   /// True if a valid colorspace
+>   /**
+>    * Unwraps to the underlying Colorspace.
+>    *
+>    * @returns the underlying Colorspace.
+>    */
+>   constexpr operator SDL_Colorspace() const { return m_colorspace; }
+1466c1434,1439
+< #define GetRange
+---
+>   /**
+>    * Check if valid.
+>    *
+>    * @returns True if valid state, false otherwise.
+>    */
+>   constexpr explicit operator bool() const { return m_colorspace != 0; }
+1468c1441,1453
+< #define GetChroma
+---
+>   /**
+>    * Retrieve the type of a Colorspace.
+>    *
+>    * @returns the ColorType for `cspace`.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr ColorType GetType() const
+>   {
+>     return SDL_COLORSPACETYPE(m_colorspace);
+>   }
+1470c1455,1467
+< #define GetPrimaries
+---
+>   /**
+>    * Retrieve the range of a Colorspace.
+>    *
+>    * @returns the ColorRange of `cspace`.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr ColorRange GetRange() const
+>   {
+>     return SDL_COLORSPACERANGE(m_colorspace);
+>   }
+1472c1469,1481
+< #define GetTransfer
+---
+>   /**
+>    * Retrieve the chroma sample location of an Colorspace.
+>    *
+>    * @returns the ChromaLocation of `cspace`.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr ChromaLocation GetChroma() const
+>   {
+>     return SDL_COLORSPACECHROMA(m_colorspace);
+>   }
+1474c1483,1523
+< #define GetMatrix
+---
+>   /**
+>    * Retrieve the primaries of an Colorspace.
+>    *
+>    * @returns the ColorPrimaries of `cspace`.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr ColorPrimaries GetPrimaries() const
+>   {
+>     return SDL_COLORSPACEPRIMARIES(m_colorspace);
+>   }
+> 
+>   /**
+>    * Retrieve the transfer characteristics of an Colorspace.
+>    *
+>    * @returns the TransferCharacteristics of `cspace`.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr TransferCharacteristics GetTransfer() const
+>   {
+>     return SDL_COLORSPACETRANSFER(m_colorspace);
+>   }
+> 
+>   /**
+>    * Retrieve the matrix coefficients of an Colorspace.
+>    *
+>    * @returns the MatrixCoefficients of `cspace`.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr MatrixCoefficients GetMatrix() const
+>   {
+>     return SDL_COLORSPACEMATRIX(m_colorspace);
+>   }
+1476c1525,1537
+< #define IsMatrixBT601
+---
+>   /**
+>    * Determine if a Colorspace uses BT601 (or BT470BG) matrix coefficients.
+>    *
+>    * @returns true if BT601 or BT470BG, false otherwise.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr bool IsMatrixBT601() const
+>   {
+>     return SDL_ISCOLORSPACE_MATRIX_BT601(m_colorspace);
+>   }
+1478c1539,1551
+< #define IsMatrixBT709
+---
+>   /**
+>    * Determine if an Colorspace uses BT709 matrix coefficients.
+>    *
+>    * @returns true if BT709, false otherwise.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr bool IsMatrixBT709() const
+>   {
+>     return SDL_ISCOLORSPACE_MATRIX_BT709(m_colorspace);
+>   }
+1480c1553,1565
+< #define IsMatrixBT2020_NCL
+---
+>   /**
+>    * Determine if an Colorspace uses BT2020_NCL matrix coefficients.
+>    *
+>    * @returns true if BT2020_NCL, false otherwise.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr bool IsMatrixBT2020_NCL() const
+>   {
+>     return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(m_colorspace);
+>   }
+1482c1567,1579
+< #define IsLimitedRange
+---
+>   /**
+>    * A function to determine if an Colorspace has a limited range.
+>    *
+>    * @returns true if limited range, false otherwise.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr bool IsLimitedRange() const
+>   {
+>     return SDL_ISCOLORSPACE_LIMITED_RANGE(m_colorspace);
+>   }
+1484c1581,1593
+< #define IsFullRange
+---
+>   /**
+>    * A function to determine if an Colorspace has a full range.
+>    *
+>    * @returns true if full range, false otherwise.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   constexpr bool IsFullRange() const
+>   {
+>     return SDL_ISCOLORSPACE_FULL_RANGE(m_colorspace);
+>   }
+1548a1658,1659
+> /// @}
+> 
+1557a1669,1671
+>  *
+>  * @cat wrap-extending-struct
+>  * @sa FColor
+1574,1577c1688,1691
+<    * @param r the value for r.
+<    * @param g the value for g.
+<    * @param b the value for b.
+<    * @param a the value for a.
+---
+>    * @param r the value for channel r.
+>    * @param g the value for channel g.
+>    * @param b the value for channel b.
+>    * @param a the value for channel a.
+1579c1693
+<   constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+---
+>   constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
+1587c1701,1710
+<   constexpr auto operator<=>(const Color& other) const = default;
+---
+>   constexpr auto operator<=>(const Color& other) const
+>   {
+>     auto c = r <=> other.r;
+>     if (c != std::strong_ordering::equal) return c;
+>     c = g <=> other.g;
+>     if (c != std::strong_ordering::equal) return c;
+>     c = b <=> other.b;
+>     if (c != std::strong_ordering::equal) return c;
+>     return a <=> other.a;
+>   }
+1598c1721
+<    * Get the r.
+---
+>    * Get the red component from the color.
+1600c1723
+<    * @returns current r value.
+---
+>    * @returns The red component from the color.
+1605c1728
+<    * Set the r.
+---
+>    * Set the red component from the color.
+1607c1730
+<    * @param newR the new r value.
+---
+>    * @param newR New red component value.
+1617c1740,1742
+<    * Get the g.
+---
+>    * Get the green component from the color.
+>    *
+>    * @returns The green component from the color.
+1619d1743
+<    * @returns current g value.
+1624c1748
+<    * Set the g.
+---
+>    * Set the green component from the color.
+1626c1750
+<    * @param newG the new g value.
+---
+>    * @param newG New green component value.
+1636c1760,1762
+<    * Get the b.
+---
+>    * Get the blue component from the color.
+>    *
+>    * @returns The blue component from the color.
+1638d1763
+<    * @returns current b value.
+1643c1768
+<    * Set the b.
+---
+>    * Set the blue component from the color.
+1645c1770
+<    * @param newB the new b value.
+---
+>    * @param newB New blue component value.
+1655c1780,1782
+<    * Get the a.
+---
+>    * Get the alpha component from the color.
+>    *
+>    * @returns The alpha component from the color.
+1657d1783
+<    * @returns current a value.
+1662c1788
+<    * Set the a.
+---
+>    * Set the alpha component from the color.
+1664c1790
+<    * @param newA the new a value.
+---
+>    * @param newA New alpha component value.
+1671a1798,1855
+> 
+>   /**
+>    * Map an RGBA quadruple to a pixel value for a given pixel format.
+>    *
+>    * This function maps the RGBA color value to the specified pixel format and
+>    * returns the pixel value best approximating the given RGBA color value for
+>    * the given pixel format.
+>    *
+>    * If the specified pixel format has no alpha component the alpha value will
+>    * be ignored (as it will be in formats with a palette).
+>    *
+>    * If the format has a palette (8-bit) the index of the closest matching color
+>    * in the palette will be returned.
+>    *
+>    * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+>    * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+>    * format the return value can be assigned to a Uint16, and similarly a Uint8
+>    * for an 8-bpp format).
+>    *
+>    * @param format a pointer to PixelFormatDetails describing the pixel
+>    *               format.
+>    * @param palette an optional palette for indexed formats, may be NULL.
+>    * @returns a pixel value.
+>    *
+>    * @threadsafety It is safe to call this function from any thread, as long as
+>    *               the palette is not modified.
+>    */
+>   Uint32 Map(const PixelFormatDetails& format, PaletteConstParam palette) const;
+> 
+>   /**
+>    * Get RGBA values from a pixel in the specified format.
+>    *
+>    * This function uses the entire 8-bit [0..255] range when converting color
+>    * components from pixel formats with less than 8-bits per RGB component
+>    * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+>    * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+>    *
+>    * If the surface has no alpha component, the alpha will be returned as 0xff
+>    * (100% opaque).
+>    *
+>    * @param pixel a pixel value.
+>    * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+>    *               format.
+>    * @param palette an optional palette for indexed formats, may be NULL.
+>    * @returns a color value.
+>    *
+>    * @threadsafety It is safe to call this function from any thread, as long as
+>    *               the palette is not modified.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa PixelFormat.GetDetails()
+>    * @sa GetRGBA()
+>    * @sa Map()
+>    */
+>   static Color Get(Uint32 pixel,
+>                    const PixelFormatDetails& format,
+>                    PaletteConstParam palette);
+1678a1863,1866
+>  *
+>  * @cat wrap-extending-struct
+>  *
+>  * @sa Color
+1683c1871
+<    * Wraps FColor.
+---
+>    * Wraps SDL_FColor.
+1700c1888
+<   constexpr FColor(float r, float g, float b, float a)
+---
+>   constexpr FColor(float r, float g, float b, float a = 1)
+1708c1896,1905
+<   constexpr auto operator<=>(const FColor& other) const = default;
+---
+>   constexpr auto operator<=>(const FColor& other) const
+>   {
+>     auto c = r <=> other.r;
+>     if (c != std::partial_ordering::equivalent) return c;
+>     c = g <=> other.g;
+>     if (c != std::partial_ordering::equivalent) return c;
+>     c = b <=> other.b;
+>     if (c != std::partial_ordering::equivalent) return c;
+>     return a <=> other.a;
+>   }
+1719c1916
+<    * Get the r.
+---
+>    * Get the red component from the color.
+1721c1918
+<    * @returns current r value.
+---
+>    * @returns The red component from the color.
+1726c1923
+<    * Set the r.
+---
+>    * Set the red component from the color.
+1728c1925
+<    * @param newR the new r value.
+---
+>    * @param newR New red component value.
+1738c1935,1937
+<    * Get the g.
+---
+>    * Get the green component from the color.
+>    *
+>    * @returns The green component from the color.
+1740d1938
+<    * @returns current g value.
+1745c1943
+<    * Set the g.
+---
+>    * Set the green component from the color.
+1747c1945
+<    * @param newG the new g value.
+---
+>    * @param newG New green component value.
+1757c1955,1957
+<    * Get the b.
+---
+>    * Get the blue component from the color.
+>    *
+>    * @returns The blue component from the color.
+1759d1958
+<    * @returns current b value.
+1764c1963
+<    * Set the b.
+---
+>    * Set the blue component from the color.
+1766c1965
+<    * @param newB the new b value.
+---
+>    * @param newB New blue component value.
+1776c1975,1977
+<    * Get the a.
+---
+>    * Get the alpha component from the color.
+>    *
+>    * @returns The alpha component from the color.
+1778d1978
+<    * @returns current a value.
+1783c1983
+<    * Set the a.
+---
+>    * Set the alpha component from the color.
+1785c1985
+<    * @param newA the new a value.
+---
+>    * @param newA New alpha component value.
+1862c2062
+<   constexpr int GetSize() const { static_assert(false, "Not implemented"); }
+---
+>   constexpr int GetSize() const { return m_resource->ncolors; }
+1866c2066
+<     static_assert(false, "Not implemented");
+---
+>     return m_resource->colors[index];
+1884c2084,2085
+<     CheckError(SDL_SetPaletteColors(m_resource, colors, firstcolor));
+---
+>     CheckError(SDL_SetPaletteColors(
+>       m_resource, colors.data(), firstcolor, colors.size()));
+2038c2239,2240
+<   CheckError(SDL_SetPaletteColors(palette, colors, firstcolor));
+---
+>   CheckError(
+>     SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
+2224a2427,2453
+> 
+> inline Uint32 Color::Map(const PixelFormatDetails& format,
+>                          PaletteConstParam palette = nullptr) const
+> {
+>   return MapRGBA(&format, palette, r, g, b, a);
+> }
+> 
+> inline Color Color::Get(Uint32 pixel,
+>                         const PixelFormatDetails& format,
+>                         PaletteConstParam palette = nullptr)
+> {
+>   Color c;
+>   GetRGBA(pixel, &format, palette, &c.r, &c.g, &c.b, &c.a);
+>   return c;
+> }
+> 
+> inline Uint32 PixelFormat::Map(Color color,
+>                                PaletteConstParam palette = nullptr) const
+> {
+>   return color.Map(*GetDetails(), palette);
+> }
+> 
+> inline Color PixelFormat::Get(Uint32 pixel,
+>                               PaletteConstParam palette = nullptr) const
+> {
+>   return Color::Get(pixel, *GetDetails(), palette);
+> }
