@@ -68,6 +68,27 @@ using LogCategoryRaw = SDL_LogCategory;
  */
 using LogPriority = SDL_LogPriority;
 
+constexpr LogPriority LOG_PRIORITY_INVALID =
+  SDL_LOG_PRIORITY_INVALID; ///< INVALID
+
+constexpr LogPriority LOG_PRIORITY_TRACE = SDL_LOG_PRIORITY_TRACE; ///< TRACE
+
+constexpr LogPriority LOG_PRIORITY_VERBOSE =
+  SDL_LOG_PRIORITY_VERBOSE; ///< VERBOSE
+
+constexpr LogPriority LOG_PRIORITY_DEBUG = SDL_LOG_PRIORITY_DEBUG; ///< DEBUG
+
+constexpr LogPriority LOG_PRIORITY_INFO = SDL_LOG_PRIORITY_INFO; ///< INFO
+
+constexpr LogPriority LOG_PRIORITY_WARN = SDL_LOG_PRIORITY_WARN; ///< WARN
+
+constexpr LogPriority LOG_PRIORITY_ERROR = SDL_LOG_PRIORITY_ERROR; ///< ERROR
+
+constexpr LogPriority LOG_PRIORITY_CRITICAL =
+  SDL_LOG_PRIORITY_CRITICAL; ///< CRITICAL
+
+constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT; ///< COUNT
+
 /**
  * The predefined log categories
  *
@@ -442,27 +463,6 @@ constexpr LogCategory LOG_CATEGORY_RESERVED10 =
   SDL_LOG_CATEGORY_RESERVED10; ///< RESERVED10
 
 constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM; ///< CUSTOM
-
-constexpr LogPriority LOG_PRIORITY_INVALID =
-  SDL_LOG_PRIORITY_INVALID; ///< INVALID
-
-constexpr LogPriority LOG_PRIORITY_TRACE = SDL_LOG_PRIORITY_TRACE; ///< TRACE
-
-constexpr LogPriority LOG_PRIORITY_VERBOSE =
-  SDL_LOG_PRIORITY_VERBOSE; ///< VERBOSE
-
-constexpr LogPriority LOG_PRIORITY_DEBUG = SDL_LOG_PRIORITY_DEBUG; ///< DEBUG
-
-constexpr LogPriority LOG_PRIORITY_INFO = SDL_LOG_PRIORITY_INFO; ///< INFO
-
-constexpr LogPriority LOG_PRIORITY_WARN = SDL_LOG_PRIORITY_WARN; ///< WARN
-
-constexpr LogPriority LOG_PRIORITY_ERROR = SDL_LOG_PRIORITY_ERROR; ///< ERROR
-
-constexpr LogPriority LOG_PRIORITY_CRITICAL =
-  SDL_LOG_PRIORITY_CRITICAL; ///< CRITICAL
-
-constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT; ///< COUNT
 
 /**
  * Set the priority of all log categories.

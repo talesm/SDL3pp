@@ -1455,6 +1455,9 @@ function expandEnumerations(sourceEntries, file, context) {
         values.forEach(n => newNames[n] = newPrefix + n.slice(oldPrefixLen));
       }
     }
+    const after = transform.after;
+    if (after) context.includeAfter(targetType, after);
+
     for (const value of values) {
       const valueSource = sourceEntries[value];
       const valueTransform = file.transform[value];
@@ -1475,7 +1478,9 @@ function expandEnumerations(sourceEntries, file, context) {
       context.addName(value, valueTarget.name);
       if (!valueSource) {
         valueTarget.sourceName = value;
-        context.includeAfter(valueTarget, type);
+        context.includeAfter(valueTarget, after ?? type);
+      } else if (after) {
+        context.includeAfter(valueTarget, after);
       } else {
         file.transform[value] = valueTarget;
       }

@@ -1315,6 +1315,78 @@
           "after": "__begin",
           "type": "SDL_LogPriority"
         },
+        "LOG_PRIORITY_INVALID": {
+          "kind": "var",
+          "name": "LOG_PRIORITY_INVALID",
+          "constexpr": true,
+          "type": "LogPriority",
+          "doc": "INVALID",
+          "sourceName": "SDL_LOG_PRIORITY_INVALID"
+        },
+        "LOG_PRIORITY_TRACE": {
+          "kind": "var",
+          "name": "LOG_PRIORITY_TRACE",
+          "constexpr": true,
+          "type": "LogPriority",
+          "doc": "TRACE",
+          "sourceName": "SDL_LOG_PRIORITY_TRACE"
+        },
+        "LOG_PRIORITY_VERBOSE": {
+          "kind": "var",
+          "name": "LOG_PRIORITY_VERBOSE",
+          "constexpr": true,
+          "type": "LogPriority",
+          "doc": "VERBOSE",
+          "sourceName": "SDL_LOG_PRIORITY_VERBOSE"
+        },
+        "LOG_PRIORITY_DEBUG": {
+          "kind": "var",
+          "name": "LOG_PRIORITY_DEBUG",
+          "constexpr": true,
+          "type": "LogPriority",
+          "doc": "DEBUG",
+          "sourceName": "SDL_LOG_PRIORITY_DEBUG"
+        },
+        "LOG_PRIORITY_INFO": {
+          "kind": "var",
+          "name": "LOG_PRIORITY_INFO",
+          "constexpr": true,
+          "type": "LogPriority",
+          "doc": "INFO",
+          "sourceName": "SDL_LOG_PRIORITY_INFO"
+        },
+        "LOG_PRIORITY_WARN": {
+          "kind": "var",
+          "name": "LOG_PRIORITY_WARN",
+          "constexpr": true,
+          "type": "LogPriority",
+          "doc": "WARN",
+          "sourceName": "SDL_LOG_PRIORITY_WARN"
+        },
+        "LOG_PRIORITY_ERROR": {
+          "kind": "var",
+          "name": "LOG_PRIORITY_ERROR",
+          "constexpr": true,
+          "type": "LogPriority",
+          "doc": "ERROR",
+          "sourceName": "SDL_LOG_PRIORITY_ERROR"
+        },
+        "LOG_PRIORITY_CRITICAL": {
+          "kind": "var",
+          "name": "LOG_PRIORITY_CRITICAL",
+          "constexpr": true,
+          "type": "LogPriority",
+          "doc": "CRITICAL",
+          "sourceName": "SDL_LOG_PRIORITY_CRITICAL"
+        },
+        "LOG_PRIORITY_COUNT": {
+          "kind": "var",
+          "name": "LOG_PRIORITY_COUNT",
+          "constexpr": true,
+          "type": "LogPriority",
+          "doc": "COUNT",
+          "sourceName": "SDL_LOG_PRIORITY_COUNT"
+        },
         "LogCategory": {
           "doc": "The predefined log categories\n\nBy default the application and gpu categories are enabled at the INFO\nlevel, the assert category is enabled at the WARN level, test is enabled at\nthe VERBOSE level and all other categories are enabled at the ERROR level.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "LogCategory",
@@ -1836,78 +1908,6 @@
           "type": "LogCategory",
           "doc": "CUSTOM",
           "sourceName": "SDL_LOG_CATEGORY_CUSTOM"
-        },
-        "LOG_PRIORITY_INVALID": {
-          "kind": "var",
-          "name": "LOG_PRIORITY_INVALID",
-          "constexpr": true,
-          "type": "LogPriority",
-          "doc": "INVALID",
-          "sourceName": "SDL_LOG_PRIORITY_INVALID"
-        },
-        "LOG_PRIORITY_TRACE": {
-          "kind": "var",
-          "name": "LOG_PRIORITY_TRACE",
-          "constexpr": true,
-          "type": "LogPriority",
-          "doc": "TRACE",
-          "sourceName": "SDL_LOG_PRIORITY_TRACE"
-        },
-        "LOG_PRIORITY_VERBOSE": {
-          "kind": "var",
-          "name": "LOG_PRIORITY_VERBOSE",
-          "constexpr": true,
-          "type": "LogPriority",
-          "doc": "VERBOSE",
-          "sourceName": "SDL_LOG_PRIORITY_VERBOSE"
-        },
-        "LOG_PRIORITY_DEBUG": {
-          "kind": "var",
-          "name": "LOG_PRIORITY_DEBUG",
-          "constexpr": true,
-          "type": "LogPriority",
-          "doc": "DEBUG",
-          "sourceName": "SDL_LOG_PRIORITY_DEBUG"
-        },
-        "LOG_PRIORITY_INFO": {
-          "kind": "var",
-          "name": "LOG_PRIORITY_INFO",
-          "constexpr": true,
-          "type": "LogPriority",
-          "doc": "INFO",
-          "sourceName": "SDL_LOG_PRIORITY_INFO"
-        },
-        "LOG_PRIORITY_WARN": {
-          "kind": "var",
-          "name": "LOG_PRIORITY_WARN",
-          "constexpr": true,
-          "type": "LogPriority",
-          "doc": "WARN",
-          "sourceName": "SDL_LOG_PRIORITY_WARN"
-        },
-        "LOG_PRIORITY_ERROR": {
-          "kind": "var",
-          "name": "LOG_PRIORITY_ERROR",
-          "constexpr": true,
-          "type": "LogPriority",
-          "doc": "ERROR",
-          "sourceName": "SDL_LOG_PRIORITY_ERROR"
-        },
-        "LOG_PRIORITY_CRITICAL": {
-          "kind": "var",
-          "name": "LOG_PRIORITY_CRITICAL",
-          "constexpr": true,
-          "type": "LogPriority",
-          "doc": "CRITICAL",
-          "sourceName": "SDL_LOG_PRIORITY_CRITICAL"
-        },
-        "LOG_PRIORITY_COUNT": {
-          "kind": "var",
-          "name": "LOG_PRIORITY_COUNT",
-          "constexpr": true,
-          "type": "LogPriority",
-          "doc": "COUNT",
-          "sourceName": "SDL_LOG_PRIORITY_COUNT"
         },
         "SetLogPriorities": {
           "doc": "Set the priority of all log categories.\n\n@param priority the LogPriority to assign.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ResetLogPriorities\n@sa LogCategory.SetLogPriority",
