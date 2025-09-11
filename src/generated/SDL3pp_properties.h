@@ -89,7 +89,7 @@ public:
   /**
    * Create a group of properties.
    *
-   * All properties are automatically destroyed when SDL_Quit() is called.
+   * All properties are automatically destroyed when Quit() is called.
    *
    * @returns an ID for a new group of properties, or 0 on failure; call
    *          GetError() for more information.
@@ -183,7 +183,7 @@ inline PropertiesID GetGlobalProperties()
 /**
  * Create a group of properties.
  *
- * All properties are automatically destroyed when SDL_Quit() is called.
+ * All properties are automatically destroyed when Quit() is called.
  *
  * @returns an ID for a new group of properties, or 0 on failure; call
  *          GetError() for more information.

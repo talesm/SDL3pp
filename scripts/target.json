@@ -1,5 +1,415 @@
 {
   "files": {
+    "SDL3pp_init.h": {
+      "name": "SDL3pp_init.h",
+      "doc": "@defgroup CategoryInit Category Init\n\nAll SDL programs need to initialize the library before starting to work\nwith it.\n\nAlmost everything can simply call Init() near startup, with a handful\nof flags to specify subsystems to touch. These are here to make sure SDL\ndoes not even attempt to touch low-level pieces of the operating system\nthat you don't intend to use. For example, you might be using SDL for video\nand input but chose an external library for audio, and in this case you\nwould just need to leave off the `INIT_AUDIO` flag to make sure that\nexternal library has complete control.\n\nMost apps, when terminating, should call Quit(). This will clean up\n(nearly) everything that SDL might have allocated, and crucially, it'll\nmake sure that the display's resolution is back to what the user expects if\nyou had previously changed it for your game.\n\nSDL3 apps are strongly encouraged to call SetAppMetadata() at startup\nto fill in details about the program. This is completely optional, but it\nhelps in small ways (we can provide an About dialog box for the macOS menu,\nwe can name the app in the system's audio mixer, etc). Those that want to\nprovide a _lot_ of information should look at the more-detailed\nSetAppMetadataProperty().",
+      "entries": {
+        "InitFlags": {
+          "doc": "Initialization flags for Init and/or InitSubSystem\n\nThese are the flags which may be passed to Init(). You should specify\nthe subsystems which you will be using in your application.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa Init\n@sa Quit\n@sa InitSubSystem\n@sa QuitSubSystem\n@sa WasInit",
+          "name": "InitFlags",
+          "kind": "alias",
+          "type": "Uint32",
+          "sourceName": "SDL_InitFlags"
+        },
+        "INIT_AUDIO": {
+          "doc": "`INIT_AUDIO` implies `INIT_EVENTS`",
+          "name": "INIT_AUDIO",
+          "kind": "var",
+          "value": "0x00000010u",
+          "sourceName": "SDL_INIT_AUDIO",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_VIDEO": {
+          "doc": "`INIT_VIDEO` implies `INIT_EVENTS`, should be initialized on the main thread",
+          "name": "INIT_VIDEO",
+          "kind": "var",
+          "value": "0x00000020u",
+          "sourceName": "SDL_INIT_VIDEO",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_JOYSTICK": {
+          "doc": "`INIT_JOYSTICK` implies `INIT_EVENTS`",
+          "name": "INIT_JOYSTICK",
+          "kind": "var",
+          "value": "0x00000200u",
+          "sourceName": "SDL_INIT_JOYSTICK",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_HAPTIC": {
+          "doc": "HAPTIC",
+          "name": "INIT_HAPTIC",
+          "kind": "var",
+          "value": "0x00001000u",
+          "sourceName": "SDL_INIT_HAPTIC",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_GAMEPAD": {
+          "doc": "`INIT_GAMEPAD` implies `INIT_JOYSTICK`",
+          "name": "INIT_GAMEPAD",
+          "kind": "var",
+          "value": "0x00002000u",
+          "sourceName": "SDL_INIT_GAMEPAD",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_EVENTS": {
+          "doc": "EVENTS",
+          "name": "INIT_EVENTS",
+          "kind": "var",
+          "value": "0x00004000u",
+          "sourceName": "SDL_INIT_EVENTS",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_SENSOR": {
+          "doc": "`INIT_SENSOR` implies `INIT_EVENTS`",
+          "name": "INIT_SENSOR",
+          "kind": "var",
+          "value": "0x00008000u",
+          "sourceName": "SDL_INIT_SENSOR",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_CAMERA": {
+          "doc": "`INIT_CAMERA` implies `INIT_EVENTS`",
+          "name": "INIT_CAMERA",
+          "kind": "var",
+          "value": "0x00010000u",
+          "sourceName": "SDL_INIT_CAMERA",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "AppResult": {
+          "doc": "Return values for optional main callbacks.\n\nReturning APP_SUCCESS or APP_FAILURE from SDL_AppInit,\nSDL_AppEvent, or SDL_AppIterate will terminate the program and report\nsuccess/failure to the operating system. What that means is\nplatform-dependent. On Unix, for example, on success, the process error\ncode will be zero, and on failure it will be 1. This interface doesn't\nallow you to return specific exit codes, just whether there was an error\ngenerally or not.\n\nReturning APP_CONTINUE from these functions will let the app continue\nto run.\n\nSee\n[Main callbacks in SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)\nfor complete details.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "AppResult",
+          "kind": "alias",
+          "sourceName": "SDL_AppResult",
+          "type": "SDL_AppResult"
+        },
+        "APP_CONTINUE": {
+          "kind": "var",
+          "name": "APP_CONTINUE",
+          "constexpr": true,
+          "type": "AppResult",
+          "doc": "Value that requests that the app continue from the main callbacks.",
+          "sourceName": "SDL_APP_CONTINUE"
+        },
+        "APP_SUCCESS": {
+          "kind": "var",
+          "name": "APP_SUCCESS",
+          "constexpr": true,
+          "type": "AppResult",
+          "doc": "Value that requests termination with success from the main callbacks.",
+          "sourceName": "SDL_APP_SUCCESS"
+        },
+        "APP_FAILURE": {
+          "kind": "var",
+          "name": "APP_FAILURE",
+          "constexpr": true,
+          "type": "AppResult",
+          "doc": "Value that requests termination with error from the main callbacks.",
+          "sourceName": "SDL_APP_FAILURE"
+        },
+        "AppInit_func": {
+          "doc": "Function pointer typedef for SDL_AppInit.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppInit directly.\n\n@param appstate a place where the app can optionally store a pointer for\n                future use.\n@param argc the standard ANSI C main's argc; number of elements in `argv`.\n@param argv the standard ANSI C main's argv; array of command line\n            arguments.\n@returns APP_FAILURE to terminate with an error, APP_SUCCESS to\n         terminate with success, APP_CONTINUE to continue.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "AppInit_func",
+          "kind": "alias",
+          "type": "SDL_AppInit_func",
+          "sourceName": "SDL_AppInit_func"
+        },
+        "AppIterate_func": {
+          "doc": "Function pointer typedef for SDL_AppIterate.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppIterate directly.\n\n@param appstate an optional pointer, provided by the app in SDL_AppInit.\n@returns APP_FAILURE to terminate with an error, APP_SUCCESS to\n         terminate with success, APP_CONTINUE to continue.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "AppIterate_func",
+          "kind": "alias",
+          "type": "SDL_AppIterate_func",
+          "sourceName": "SDL_AppIterate_func"
+        },
+        "AppEvent_func": {
+          "doc": "Function pointer typedef for SDL_AppEvent.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppEvent directly.\n\n@param appstate an optional pointer, provided by the app in SDL_AppInit.\n@param event the new event for the app to examine.\n@returns APP_FAILURE to terminate with an error, APP_SUCCESS to\n         terminate with success, APP_CONTINUE to continue.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "AppEvent_func",
+          "kind": "alias",
+          "type": "SDL_AppEvent_func",
+          "sourceName": "SDL_AppEvent_func"
+        },
+        "AppQuit_func": {
+          "doc": "Function pointer typedef for SDL_AppQuit.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppEvent directly.\n\n@param appstate an optional pointer, provided by the app in SDL_AppInit.\n@param result the result code that terminated the app (success or failure).\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "AppQuit_func",
+          "kind": "alias",
+          "type": "SDL_AppQuit_func",
+          "sourceName": "SDL_AppQuit_func"
+        },
+        "Init": {
+          "doc": "Initialize the SDL library.\n\nInit() simply forwards to calling InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nInitSubSystem() might be preferred.\n\nThe file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)\nsubsystems are initialized by default. Message boxes\n(SDL_ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nInit fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `INIT_HAPTIC`: haptic (force feedback) subsystem\n- `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `INIT_EVENTS`: events subsystem\n- `INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call QuitSubSystem()\nfor each InitSubSystem() to correctly shutdown a subsystem manually (or\ncall Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling Init, using either SetAppMetadata() or\nSetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAppMetadata\n@sa SetAppMetadataProperty\n@sa InitSubSystem\n@sa Quit\n@sa SDL_SetMainReady\n@sa WasInit",
+          "name": "Init",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "flags",
+              "type": "InitFlags"
+            }
+          ],
+          "sourceName": "SDL_Init",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "InitSubSystem": {
+          "doc": "Compatibility function to initialize the SDL library.\n\nThis function and Init() are interchangeable.\n\n@param flags any of the flags used by Init(); see Init for details.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Init\n@sa Quit\n@sa QuitSubSystem",
+          "name": "InitSubSystem",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "flags",
+              "type": "InitFlags"
+            }
+          ],
+          "sourceName": "SDL_InitSubSystem",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "QuitSubSystem": {
+          "doc": "Shut down specific SDL subsystems.\n\nYou still need to call Quit() even if you close all open subsystems\nwith QuitSubSystem().\n\n@param flags any of the flags used by Init(); see Init for details.\n\n@since This function is available since SDL 3.2.0.\n\n@sa InitSubSystem\n@sa Quit",
+          "name": "QuitSubSystem",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "flags",
+              "type": "InitFlags"
+            }
+          ],
+          "sourceName": "SDL_QuitSubSystem"
+        },
+        "WasInit": {
+          "doc": "Get a mask of the specified subsystems which are currently initialized.\n\n@param flags any of the flags used by Init(); see Init for details.\n@returns a mask of all initialized subsystems if `flags` is 0, otherwise it\n         returns the initialization status of the specified subsystems.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Init\n@sa InitSubSystem",
+          "name": "WasInit",
+          "kind": "function",
+          "type": "InitFlags",
+          "parameters": [
+            {
+              "name": "flags",
+              "type": "InitFlags"
+            }
+          ],
+          "sourceName": "SDL_WasInit"
+        },
+        "Quit": {
+          "doc": "Clean up all initialized subsystems.\n\nYou should call this function even if you have already shutdown each\ninitialized subsystem with QuitSubSystem(). It is safe to call this\nfunction even in the case of errors in initialization.\n\nYou can use this function with atexit() to ensure that it is run when your\napplication is shutdown, but it is not wise to do this from a library or\nother dynamically loaded code.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Init\n@sa QuitSubSystem",
+          "name": "Quit",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_Quit"
+        },
+        "IsMainThread": {
+          "doc": "Return whether this is the main thread.\n\nOn Apple platforms, the main thread is the thread that runs your program's\nmain() entry point. On other platforms, the main thread is the one that\ncalls Init(INIT_VIDEO), which should usually be the one that runs\nyour program's main() entry point. If you are using the main callbacks,\nSDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the\nmain thread.\n\n@returns true if this thread is the main thread, or false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RunOnMainThread",
+          "name": "IsMainThread",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_IsMainThread"
+        },
+        "MainThreadCallback": {
+          "doc": "Callback run on the main thread.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa RunOnMainThread",
+          "name": "MainThreadCallback",
+          "kind": "alias",
+          "type": "SDL_MainThreadCallback",
+          "sourceName": "SDL_MainThreadCallback"
+        },
+        "MainThreadCB": {
+          "kind": "alias",
+          "name": "MainThreadCB",
+          "type": "std::function<void()>",
+          "doc": "Callback run on the main thread.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa RunOnMainThread\n@sa MainThreadCallback"
+        },
+        "RunOnMainThread": [
+          {
+            "doc": "Call a function on the main thread during event processing.\n\nIf this is called on the main thread, the callback is executed immediately.\nIf this is called on another thread, this callback is queued for execution\non the main thread during event processing.\n\nBe careful of deadlocks when using this functionality. You should not have\nthe main thread wait for the current thread while this function is being\ncalled with `wait_complete` true.\n\n@param callback the callback to call on the main thread.\n@param userdata a pointer that is passed to `callback`.\n@param wait_complete true to wait for the callback to complete, false to\n                     return immediately.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IsMainThread",
+            "name": "RunOnMainThread",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "callback",
+                "type": "MainThreadCallback"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              },
+              {
+                "name": "wait_complete",
+                "type": "bool"
+              }
+            ],
+            "sourceName": "SDL_RunOnMainThread",
+            "hints": {
+              "mayFail": true
+            }
+          },
+          {
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "MainThreadCB",
+                "name": "callback"
+              },
+              {
+                "type": "bool",
+                "name": "wait_complete"
+              }
+            ],
+            "name": "RunOnMainThread",
+            "doc": "Call a function on the main thread during event processing.\n\nIf this is called on the main thread, the callback is executed immediately.\nIf this is called on another thread, this callback is queued for execution\non the main thread during event processing.\n\nBe careful of deadlocks when using this functionality. You should not have\nthe main thread wait for the current thread while this function is being\ncalled with `wait_complete` true.\n\n@param callback the callback to call on the main thread.\n@param userdata a pointer that is passed to `callback`.\n@param wait_complete true to wait for the callback to complete, false to\n                     return immediately.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IsMainThread"
+          }
+        ],
+        "SetAppMetadata": {
+          "doc": "Specify basic metadata about your app.\n\nYou can optionally provide metadata about your app to SDL. This is not\nrequired, but strongly encouraged.\n\nThere are several locations where SDL can make use of metadata (an \"About\"\nbox in the macOS menu bar, the name of the app can be shown on some audio\nmixers, etc). Any piece of metadata can be left as nullptr, if a specific\ndetail doesn't make sense for the app.\n\nThis function should be called as early as possible, before Init.\nMultiple calls to this function are allowed, but various state might not\nchange once it has been set up with a previous call to this function.\n\nPassing a nullptr removes any previous metadata.\n\nThis is a simplified interface for the most important information. You can\nsupply significantly more detailed metadata with\nSetAppMetadataProperty().\n\n@param appname The name of the application (\"My Game 2: Bad Guy's\n               Revenge!\").\n@param appversion The version of the application (\"1.0.0beta5\" or a git\n                  hash, or whatever makes sense).\n@param appidentifier A unique string in reverse-domain format that\n                     identifies this app (\"com.example.mygame2\").\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAppMetadataProperty",
+          "name": "SetAppMetadata",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "appname",
+              "type": "StringParam"
+            },
+            {
+              "name": "appversion",
+              "type": "StringParam"
+            },
+            {
+              "name": "appidentifier",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_SetAppMetadata",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "SetAppMetadataProperty": {
+          "doc": "Specify metadata about your app through a set of properties.\n\nYou can optionally provide metadata about your app to SDL. This is not\nrequired, but strongly encouraged.\n\nThere are several locations where SDL can make use of metadata (an \"About\"\nbox in the macOS menu bar, the name of the app can be shown on some audio\nmixers, etc). Any piece of metadata can be left out, if a specific detail\ndoesn't make sense for the app.\n\nThis function should be called as early as possible, before Init.\nMultiple calls to this function are allowed, but various state might not\nchange once it has been set up with a previous call to this function.\n\nOnce set, this metadata can be read using GetAppMetadataProperty().\n\nThese are the supported properties:\n\n- `prop::appMetaData.NAME_STRING`: The human-readable name of the\n  application, like \"My Game 2: Bad Guy's Revenge!\". This will show up\n  anywhere the OS shows the name of the application separately from window\n  titles, such as volume control applets, etc. This defaults to \"SDL\n  Application\".\n- `prop::appMetaData.VERSION_STRING`: The version of the app that is\n  running; there are no rules on format, so \"1.0.3beta2\" and \"April 22nd,\n  2024\" and a git hash are all valid options. This has no default.\n- `prop::appMetaData.IDENTIFIER_STRING`: A unique string that\n  identifies this app. This must be in reverse-domain format, like\n  \"com.example.mygame2\". This string is used by desktop compositors to\n  identify and group windows together, as well as match applications with\n  associated desktop settings and icons. If you plan to package your\n  application in a container such as Flatpak, the app ID should match the\n  name of your Flatpak container as well. This has no default.\n- `prop::appMetaData.CREATOR_STRING`: The human-readable name of the\n  creator/developer/maker of this app, like \"MojoWorkshop, LLC\"\n- `prop::appMetaData.COPYRIGHT_STRING`: The human-readable copyright\n  notice, like \"Copyright (c) 2024 MojoWorkshop, LLC\" or whatnot. Keep this\n  to one line, don't paste a copy of a whole software license in here. This\n  has no default.\n- `prop::appMetaData.URL_STRING`: A URL to the app on the web. Maybe a\n  product page, or a storefront, or even a GitHub repository, for user's\n  further information This has no default.\n- `prop::appMetaData.TYPE_STRING`: The type of application this is.\n  Currently this string can be \"game\" for a video game, \"mediaplayer\" for a\n  media player, or generically \"application\" if nothing else applies.\n  Future versions of SDL might add new types. This defaults to\n  \"application\".\n\n@param name the name of the metadata property to set.\n@param value the value of the property, or nullptr to remove that property.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAppMetadataProperty\n@sa SetAppMetadata",
+          "name": "SetAppMetadataProperty",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "value",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_SetAppMetadataProperty",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "prop::appMetaData": {
+          "kind": "ns",
+          "name": "prop::appMetaData",
+          "entries": {
+            "NAME_STRING": {
+              "doc": "",
+              "name": "NAME_STRING",
+              "kind": "var",
+              "value": "\"SDL.app.metadata.name\"",
+              "sourceName": "SDL_PROP_APP_METADATA_NAME_STRING",
+              "type": "auto",
+              "constexpr": true
+            },
+            "VERSION_STRING": {
+              "doc": "",
+              "name": "VERSION_STRING",
+              "kind": "var",
+              "value": "\"SDL.app.metadata.version\"",
+              "sourceName": "SDL_PROP_APP_METADATA_VERSION_STRING",
+              "type": "auto",
+              "constexpr": true
+            },
+            "IDENTIFIER_STRING": {
+              "doc": "",
+              "name": "IDENTIFIER_STRING",
+              "kind": "var",
+              "value": "\"SDL.app.metadata.identifier\"",
+              "sourceName": "SDL_PROP_APP_METADATA_IDENTIFIER_STRING",
+              "type": "auto",
+              "constexpr": true
+            },
+            "CREATOR_STRING": {
+              "doc": "",
+              "name": "CREATOR_STRING",
+              "kind": "var",
+              "value": "\"SDL.app.metadata.creator\"",
+              "sourceName": "SDL_PROP_APP_METADATA_CREATOR_STRING",
+              "type": "auto",
+              "constexpr": true
+            },
+            "COPYRIGHT_STRING": {
+              "doc": "",
+              "name": "COPYRIGHT_STRING",
+              "kind": "var",
+              "value": "\"SDL.app.metadata.copyright\"",
+              "sourceName": "SDL_PROP_APP_METADATA_COPYRIGHT_STRING",
+              "type": "auto",
+              "constexpr": true
+            },
+            "URL_STRING": {
+              "doc": "",
+              "name": "URL_STRING",
+              "kind": "var",
+              "value": "\"SDL.app.metadata.url\"",
+              "sourceName": "SDL_PROP_APP_METADATA_URL_STRING",
+              "type": "auto",
+              "constexpr": true
+            },
+            "TYPE_STRING": {
+              "doc": "",
+              "name": "TYPE_STRING",
+              "kind": "var",
+              "value": "\"SDL.app.metadata.type\"",
+              "sourceName": "SDL_PROP_APP_METADATA_TYPE_STRING",
+              "type": "auto",
+              "constexpr": true
+            }
+          },
+          "doc": ""
+        },
+        "GetAppMetadataProperty": {
+          "doc": "Get metadata about your app.\n\nThis returns metadata previously set using SetAppMetadata() or\nSetAppMetadataProperty(). See SetAppMetadataProperty() for the list\nof available properties and their meanings.\n\n@param name the name of the metadata property to get.\n@returns the current value of the metadata property, or the default if it\n         is not set, nullptr for properties with no default.\n\n@threadsafety It is safe to call this function from any thread, although\n              the string returned is not protected and could potentially be\n              freed if you call SetAppMetadataProperty() to set that\n              property from another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAppMetadata\n@sa SetAppMetadataProperty",
+          "name": "GetAppMetadataProperty",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_GetAppMetadataProperty"
+        }
+      },
+      "includes": [
+        "atomic",
+        "SDL3/SDL_init.h"
+      ],
+      "localIncludes": [
+        "SDL3pp_callbackWrapper.h",
+        "SDL3pp_error.h",
+        "SDL3pp_log.h",
+        "SDL3pp_strings.h"
+      ]
+    },
     "SDL3pp_properties.h": {
       "name": "SDL3pp_properties.h",
       "doc": "@defgroup CategoryProperties Category Properties\n\nA property is a variable that can be created and retrieved by name at\nruntime.\n\nAll properties are part of a property group (Properties). A property\ngroup can be created with the Properties.Create function and destroyed\nwith the Properties.Destroy function.\n\nProperties can be added to and retrieved from a property group through the\nfollowing functions:\n\n- SetPointerProperty and GetPointerProperty operate on `void*`\n  pointer types.\n- SetStringProperty and GetStringProperty operate on string types.\n- SetNumberProperty and GetNumberProperty operate on signed 64-bit\n  integer types.\n- SetFloatProperty and GetFloatProperty operate on floating point\n  types.\n- SetBooleanProperty and GetBooleanProperty operate on boolean\n  types.\n\nProperties can be removed from a group by using ClearProperty.",
@@ -160,7 +570,7 @@
               }
             ],
             "Create": {
-              "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when SDL_Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Destroy",
+              "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Destroy",
               "name": "Create",
               "kind": "function",
               "type": "Properties",
@@ -316,7 +726,7 @@
           }
         },
         "CreateProperties": {
-          "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when SDL_Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Destroy",
+          "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Destroy",
           "name": "CreateProperties",
           "kind": "function",
           "type": "Properties",
@@ -1543,7 +1953,7 @@
           "sourceName": "SDL_GetLogPriority"
         },
         "ResetLogPriorities": {
-          "doc": "Reset all priorities to default.\n\nThis is called by SDL_Quit().\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetLogPriorities\n@sa LogCategory.SetLogPriority",
+          "doc": "Reset all priorities to default.\n\nThis is called by Quit().\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetLogPriorities\n@sa LogCategory.SetLogPriority",
           "name": "ResetLogPriorities",
           "kind": "function",
           "type": "void",
@@ -2133,7 +2543,7 @@
         },
         "SetAssertionHandler": [
           {
-            "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon SDL_Quit()!\n\n@param handler the AssertionHandler function to call when an assertion\n               fails or nullptr for the default handler.\n@param userdata a pointer that is passed to `handler`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAssertionHandler",
+            "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon Quit()!\n\n@param handler the AssertionHandler function to call when an assertion\n               fails or nullptr for the default handler.\n@param userdata a pointer that is passed to `handler`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAssertionHandler",
             "name": "SetAssertionHandler",
             "kind": "function",
             "type": "void",
@@ -2159,7 +2569,7 @@
               }
             ],
             "name": "SetAssertionHandler",
-            "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon SDL_Quit()!\n\n@param handler the AssertionHandler function to call when an assertion\n               fails or nullptr for the default handler.\n@param userdata a pointer that is passed to `handler`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAssertionHandler"
+            "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon Quit()!\n\n@param handler the AssertionHandler function to call when an assertion\n               fails or nullptr for the default handler.\n@param userdata a pointer that is passed to `handler`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAssertionHandler"
           }
         ],
         "GetDefaultAssertionHandler": {
@@ -2193,7 +2603,7 @@
           }
         ],
         "GetAssertionReport": {
-          "doc": "Get a list of all assertion failures.\n\nThis function gets all assertions triggered since the last call to\nResetAssertionReport(), or the start of the program.\n\nThe proper way to examine this data looks something like this:\n\n```c\nconst AssertData *item = GetAssertionReport();\nwhile (item) {\n   printf(\"'%s', %s (%s:%d), triggered %u times, always ignore: %s.\\@n\",\n          item->condition, item->function, item->filename,\n          item->linenum, item->trigger_count,\n          item->always_ignore ? \"yes\" : \"no\");\n   item = item->next;\n}\n```\n\n@returns a list of all failed assertions or nullptr if the list is empty. This\n         memory should not be modified or freed by the application. This\n         pointer remains valid until the next call to SDL_Quit() or\n         ResetAssertionReport().\n\n@threadsafety This function is not thread safe. Other threads calling\n              ResetAssertionReport() simultaneously, may render the\n              returned pointer invalid.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ResetAssertionReport",
+          "doc": "Get a list of all assertion failures.\n\nThis function gets all assertions triggered since the last call to\nResetAssertionReport(), or the start of the program.\n\nThe proper way to examine this data looks something like this:\n\n```c\nconst AssertData *item = GetAssertionReport();\nwhile (item) {\n   printf(\"'%s', %s (%s:%d), triggered %u times, always ignore: %s.\\@n\",\n          item->condition, item->function, item->filename,\n          item->linenum, item->trigger_count,\n          item->always_ignore ? \"yes\" : \"no\");\n   item = item->next;\n}\n```\n\n@returns a list of all failed assertions or nullptr if the list is empty. This\n         memory should not be modified or freed by the application. This\n         pointer remains valid until the next call to Quit() or\n         ResetAssertionReport().\n\n@threadsafety This function is not thread safe. Other threads calling\n              ResetAssertionReport() simultaneously, may render the\n              returned pointer invalid.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ResetAssertionReport",
           "name": "GetAssertionReport",
           "kind": "function",
           "type": "const AssertData *",

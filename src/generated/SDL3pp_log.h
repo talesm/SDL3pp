@@ -520,7 +520,7 @@ inline LogPriority GetLogPriority(int category)
 /**
  * Reset all priorities to default.
  *
- * This is called by SDL_Quit().
+ * This is called by Quit().
  *
  * @threadsafety It is safe to call this function from any thread.
  *

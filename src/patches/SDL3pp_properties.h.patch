@@ -16,10 +16,6 @@
 >  * @sa Properties.Create
 74d76
 < 
-92c94
-<    * All properties are automatically destroyed when SDL_Quit() is called.
----
->    * All properties are automatically destroyed when Quit() is called.
 94,95c96,97
 <    * @returns an ID for a new group of properties, or 0 on failure; call
 <    *          GetError() for more information.

@@ -187,7 +187,7 @@ inline PropertiesID GetGlobalProperties()
 /**
  * Create a group of properties.
  *
- * All properties are automatically destroyed when SDL_Quit() is called.
+ * All properties are automatically destroyed when Quit() is called.
  *
  * @returns a valid ID for a new group of properties on success;
  * @throws Error on failure.

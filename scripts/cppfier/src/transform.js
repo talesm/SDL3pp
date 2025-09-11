@@ -98,9 +98,13 @@ class ApiContext {
     this.minVersions = transform.minVersions ?? {};
 
     /** @type {Dict<Dict<ApiEntryTransform[]>>} */
+    this.includeBeforeMap = {};
+    /** @type {Dict<Dict<ApiEntryTransform[]>>} */
     this.includeAfterMap = {};
     this.file = '';
 
+    /** @type {Dict<ApiEntryTransform[]>} */
+    this.currentIncludeBefore = null;
     /** @type {Dict<ApiEntryTransform[]>} */
     this.currentIncludeAfter = null;
 
@@ -212,12 +216,30 @@ class ApiContext {
    * @param {string} file 
    */
   setFile(file) {
+    const includeBefore = this.includeBeforeMap[file];
+    if (!includeBefore) {
+      this.currentIncludeBefore = this.includeBeforeMap[file] = {};
+    } else {
+      this.currentIncludeBefore = includeBefore;
+    }
     const includeAfter = this.includeAfterMap[file];
     if (!includeAfter) {
       this.currentIncludeAfter = this.includeAfterMap[file] = {};
     } else {
       this.currentIncludeAfter = includeAfter;
     }
+  }
+
+  /**
+   * 
+   * @param {string}  includeBeforeKey 
+   */
+  getOrCreateIncludeBefore(includeBeforeKey) {
+    const includeBefore = this.currentIncludeBefore;
+
+    const includeTarget = includeBefore[includeBeforeKey];
+    if (Array.isArray(includeTarget)) return includeTarget;
+    return includeBefore[includeBeforeKey] = includeTarget ? [includeTarget] : [];
   }
 
   /**
@@ -230,6 +252,34 @@ class ApiContext {
     const includeTarget = includeAfter[includeAfterKey];
     if (Array.isArray(includeTarget)) return includeTarget;
     return includeAfter[includeAfterKey] = includeTarget ? [includeTarget] : [];
+  }
+
+  /**
+   * Add to includeBefore field
+   * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
+   * @param {string}                                        includeBeforeKey 
+   */
+  includeBefore(entryOrName, includeBeforeKey) {
+    const includeTarget = this.getOrCreateIncludeBefore(includeBeforeKey);
+    if (Array.isArray(entryOrName)) {
+      includeTarget.push(...entryOrName);
+    } else {
+      includeTarget.push((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
+    }
+  }
+
+  /**
+   * Prepend to includeBefore field
+   * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
+   * @param {string}                                        includeBeforeKey 
+   */
+  prependIncludeBefore(entryOrName, includeBeforeKey) {
+    const includeTarget = this.getOrCreateIncludeBefore(includeBeforeKey);
+    if (Array.isArray(entryOrName)) {
+      includeTarget.unshift(...entryOrName);
+    } else {
+      includeTarget.unshift((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
+    }
   }
 
   /**
@@ -350,13 +400,16 @@ function transformEntries(sourceEntries, file, context) {
     if (!transformEntry.name) transformEntry.name = sourceName;
     context.includeAfter(transformEntry, lastSourceName);
   }
+  const includeBefore = context.currentIncludeBefore;
   const includeAfter = context.currentIncludeAfter;
 
+  insertEntryAndCheck(targetEntries, includeBefore.__begin ?? [], context, file);
   insertEntryAndCheck(targetEntries, includeAfter.__begin ?? [], context, file);
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
     if (context.blacklist.has(sourceName)) continue;
     let targetName = transformName(sourceName, context);
+    insertEntryAndCheck(targetEntries, includeBefore[sourceName] ?? [], context, file);
     if (Array.isArray(sourceEntry)) {
       const targetDelta = transformMap[sourceName];
       insertEntry(targetEntries, sourceEntry.map(e => {
@@ -401,6 +454,7 @@ function transformEntries(sourceEntries, file, context) {
     }
     insertEntryAndCheck(targetEntries, includeAfter[sourceName] ?? [], context, file);
   }
+  insertEntryAndCheck(targetEntries, includeBefore.__end ?? [], context, file);
   insertEntryAndCheck(targetEntries, includeAfter.__end ?? [], context, file);
 
   return targetEntries;
@@ -409,36 +463,33 @@ function transformEntries(sourceEntries, file, context) {
 /**
  * 
  * @param {ApiEntries}    sourceEntries 
- * @param {ApiFileTransform} transform,
+ * @param {ApiFileTransform} file,
  * @param {ApiContext}    context 
  */
-function expandNamespaces(sourceEntries, transform, context) {
-  const namespacesMap = transform.namespacesMap ?? {};
+function expandNamespaces(sourceEntries, file, context) {
+  const namespacesMap = file.namespacesMap ?? {};
   for (const [prefix, nsName] of Object.entries(namespacesMap)) {
-    /** @type {ApiEntry} */
-    const ns = {
-      kind: "ns",
-      name: nsName,
-      entries: {}
-    };
+    /** @type {ApiEntryTransformMap} */
+    const nsEntries = {};
     const sourceEntriesListed = Object.entries(sourceEntries)
       .filter(([key]) => key.startsWith(prefix));
-    sourceEntriesListed.forEach(([key, entry]) => {
-      ns.entries[key] = entry;
-      if (Array.isArray(entry)) {
-        entry.forEach(e => e.name = e.name.slice(prefix.length));
-      } else {
-        entry.name = entry.name.slice(prefix.length);
-        if (entry.kind === "def") {
-          entry.kind = "var";
-          entry.type = "auto";
-          entry.constexpr = true;
-          entry.sourceName = key;
-        }
-        context.addName(key, `${nsName}.${entry.name}`);
+    for (const [key, entry] of sourceEntriesListed) {
+      if (Array.isArray(entry)) continue;
+      const transformEntry = file.transform[key] || {};
+      const localName = entry.name.slice(prefix.length);
+      file.transform[key] = transformEntry;
+      transformEntry.name = nsName + '.' + localName;
+
+      if (entry.kind === "def" && !transformEntry.kind) {
+        transformEntry.kind = "var";
+        transformEntry.type = "auto";
+        transformEntry.constexpr = true;
       }
-    });
-    context.includeAfter(ns, sourceEntriesListed[0][0]);
+      context.addName(key, `${nsName}.${localName}`);
+    }
+    if (sourceEntriesListed.length) {
+      context.includeBefore({ kind: "ns", name: nsName, entries: nsEntries }, sourceEntriesListed[0][0]);
+    }
   }
 }
 

@@ -410,7 +410,7 @@ using AssertionHandlerCB =
  * This callback may fire from any thread, but it runs wrapped in a mutex, so
  * it will only fire from one thread at a time.
  *
- * This callback is NOT reset to SDL's internal handler upon SDL_Quit()!
+ * This callback is NOT reset to SDL's internal handler upon Quit()!
  *
  * @param handler the AssertionHandler function to call when an assertion
  *                fails or nullptr for the default handler.
@@ -438,7 +438,7 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  * This callback may fire from any thread, but it runs wrapped in a mutex, so
  * it will only fire from one thread at a time.
  *
- * This callback is NOT reset to SDL's internal handler upon SDL_Quit()!
+ * This callback is NOT reset to SDL's internal handler upon Quit()!
  *
  * @param handler the AssertionHandler function to call when an assertion
  *                fails or nullptr for the default handler.
@@ -554,7 +554,7 @@ inline AssertionHandlerCB GetAssertionHandler()
  *
  * @returns a list of all failed assertions or nullptr if the list is empty.
  * This memory should not be modified or freed by the application. This pointer
- * remains valid until the next call to SDL_Quit() or ResetAssertionReport().
+ * remains valid until the next call to Quit() or ResetAssertionReport().
  *
  * @threadsafety This function is not thread safe. Other threads calling
  *               ResetAssertionReport() simultaneously, may render the
