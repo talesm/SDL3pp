@@ -2438,6 +2438,7 @@ const transform = {
       }
     },
     "SDL_main.h": {
+      localIncludes: ["SDL3pp_init.h"],
       definitionPrefix: "SDL3PP_",
       ignoreEntries: [
         "main",
@@ -2451,18 +2452,7 @@ const transform = {
         "SDL_AppQuit"
       ],
       enableException: false,
-      includeAfter: {
-        "__begin": [
-          {
-            kind: "def",
-            name: "SDL_MAIN_HANDLED"
-          },
-          {
-            kind: "def",
-            name: "SDL_MAIN_USE_CALLBACKS"
-          }
-        ]
-      }
+      transform: {}
     },
     "SDL_messagebox.h": {
       enumerations: {

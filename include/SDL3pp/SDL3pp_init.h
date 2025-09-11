@@ -142,7 +142,7 @@ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
 /**
  * Function pointer typedef for SDL_AppInit.
  *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind
  * the scenes for apps using the optional main callbacks. Apps that want to
  * use this should just implement SDL_AppInit directly.
  *
@@ -161,7 +161,7 @@ using AppInit_func = SDL_AppInit_func;
 /**
  * Function pointer typedef for SDL_AppIterate.
  *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind
  * the scenes for apps using the optional main callbacks. Apps that want to
  * use this should just implement SDL_AppIterate directly.
  *
@@ -176,7 +176,7 @@ using AppIterate_func = SDL_AppIterate_func;
 /**
  * Function pointer typedef for SDL_AppEvent.
  *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind
  * the scenes for apps using the optional main callbacks. Apps that want to
  * use this should just implement SDL_AppEvent directly.
  *
@@ -192,7 +192,7 @@ using AppEvent_func = SDL_AppEvent_func;
 /**
  * Function pointer typedef for SDL_AppQuit.
  *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind
  * the scenes for apps using the optional main callbacks. Apps that want to
  * use this should just implement SDL_AppEvent directly.
  *
@@ -256,7 +256,7 @@ using AppQuit_func = SDL_AppQuit_func;
  * @sa SetAppMetadataProperty
  * @sa InitSubSystem
  * @sa Quit
- * @sa SDL_SetMainReady
+ * @sa SetMainReady
  * @sa WasInit
  */
 inline void Init(InitFlags flags) { CheckError(SDL_Init(flags)); }

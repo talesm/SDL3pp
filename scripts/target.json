@@ -1,5 +1,112 @@
 {
   "files": {
+    "SDL3pp_main.h": {
+      "name": "SDL3pp_main.h",
+      "doc": "@defgroup CategoryMain Category Main\n\nRedefine main() if necessary so that it is called by SDL.\n\nIn order to make this consistent on all platforms, the application's main()\nshould look like this:\n\n```c\n#include <SDL3/SDL.h>\n#include <SDL3/SDL_main.h>\n\nint main(int argc, char *argv[])\n{\n}\n```\n\nSDL will take care of platform specific details on how it gets called.\n\nThis is also where an app can be configured to use the main callbacks, via\nthe SDL3PP_MAIN_USE_CALLBACKS macro.\n\nSDL_main.h is a \"single-header library,\" which is to say that including\nthis header inserts code into your program, and you should only include it\nonce in most cases. SDL.h does not include this header automatically.\n\nFor more information, see:\n\nhttps://wiki.libsdl.org/SDL3/README/main-functions",
+      "entries": {
+        "SDL3PP_MAIN_HANDLED": {
+          "doc": "Inform SDL that the app is providing an entry point instead of SDL.\n\nSDL does not define this macro, but will check if it is defined when\nincluding `SDL_main.h`. If defined, SDL will expect the app to provide the\nproper entry point for the platform, and all the other magic details\nneeded, like manually calling SetMainReady.\n\nPlease see [README/main-functions](README/main-functions), (or\ndocs/README-main-functions.md in the source tree) for a more detailed\nexplanation.\n\n@since This macro is used by the headers since SDL 3.2.0.",
+          "name": "SDL3PP_MAIN_HANDLED",
+          "kind": "def",
+          "value": "1",
+          "sourceName": "SDL_MAIN_HANDLED"
+        },
+        "SDL3PP_MAIN_USE_CALLBACKS": {
+          "doc": "Inform SDL to use the main callbacks instead of main.\n\nSDL does not define this macro, but will check if it is defined when\nincluding `SDL_main.h`. If defined, SDL will expect the app to provide\nseveral functions: SDL_AppInit, SDL_AppEvent, SDL_AppIterate, and\nSDL_AppQuit. The app should not provide a `main` function in this case, and\ndoing so will likely cause the build to fail.\n\nPlease see [README/main-functions](README/main-functions), (or\ndocs/README-main-functions.md in the source tree) for a more detailed\nexplanation.\n\n@since This macro is used by the headers since SDL 3.2.0.\n\n@sa SDL_AppInit\n@sa SDL_AppEvent\n@sa SDL_AppIterate\n@sa SDL_AppQuit",
+          "name": "SDL3PP_MAIN_USE_CALLBACKS",
+          "kind": "def",
+          "value": "1",
+          "sourceName": "SDL_MAIN_USE_CALLBACKS"
+        },
+        "main_func": {
+          "doc": "The prototype for the application's main() function\n\n@param argc an ANSI-C style main function's argc.\n@param argv an ANSI-C style main function's argv.\n@returns an ANSI-C main return code; generally 0 is considered successful\n         program completion, and small non-zero values are considered\n         errors.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "main_func",
+          "kind": "alias",
+          "type": "SDL_main_func",
+          "sourceName": "SDL_main_func"
+        },
+        "SetMainReady": {
+          "doc": "Circumvent failure of Init() when not using SDL_main() as an entry\npoint.\n\nThis function is defined in SDL_main.h, along with the preprocessor rule to\nredefine main() as SDL_main(). Thus to ensure that your main() function\nwill not be changed it is necessary to define SDL3PP_MAIN_HANDLED before\nincluding SDL.h.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Init",
+          "name": "SetMainReady",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_SetMainReady"
+        },
+        "RunApp": {
+          "doc": "Initializes and launches an SDL application, by doing platform-specific\ninitialization before calling your mainFunction and cleanups after it\nreturns, if that is needed for a specific platform, otherwise it just calls\nmainFunction.\n\nYou can use this if you want to use your own main() implementation without\nusing SDL_main (like when using SDL3PP_MAIN_HANDLED). When using this, you do\n*not* need SetMainReady().\n\n@param argc the argc parameter from the application's main() function, or 0\n            if the platform's main-equivalent has no argc.\n@param argv the argv parameter from the application's main() function, or\n            nullptr if the platform's main-equivalent has no argv.\n@param mainFunction your SDL app's C-style main(). NOT the function you're\n                    calling this from! Its name doesn't matter; it doesn't\n                    literally have to be `main`.\n@param reserved should be nullptr (reserved for future use, will probably be\n                platform-specific then).\n@returns the return value from mainFunction: 0 on success, otherwise\n         failure; GetError() might have more information on the\n         failure.\n\n@threadsafety Generally this is called once, near startup, from the\n              process's initial thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "RunApp",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "argc",
+              "type": "int"
+            },
+            {
+              "name": "argv[]",
+              "type": "char *"
+            },
+            {
+              "name": "mainFunction",
+              "type": "main_func"
+            },
+            {
+              "name": "reserved",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_RunApp"
+        },
+        "EnterAppMainCallbacks": {
+          "doc": "An entry point for SDL's use in SDL3PP_MAIN_USE_CALLBACKS.\n\nGenerally, you should not call this function directly. This only exists to\nhand off work into SDL as soon as possible, where it has a lot more control\nand functionality available, and make the inline code in SDL_main.h as\nsmall as possible.\n\nNot all platforms use this, it's actual use is hidden in a magic\nheader-only library, and you should not call this directly unless you\n_really_ know what you're doing.\n\n@param argc standard Unix main argc.\n@param argv standard Unix main argv.\n@param appinit the application's SDL_AppInit function.\n@param appiter the application's SDL_AppIterate function.\n@param appevent the application's SDL_AppEvent function.\n@param appquit the application's SDL_AppQuit function.\n@returns standard Unix main return value.\n\n@threadsafety It is not safe to call this anywhere except as the only\n              function call in SDL_main.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "EnterAppMainCallbacks",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "argc",
+              "type": "int"
+            },
+            {
+              "name": "argv[]",
+              "type": "char *"
+            },
+            {
+              "name": "appinit",
+              "type": "AppInit_func"
+            },
+            {
+              "name": "appiter",
+              "type": "AppIterate_func"
+            },
+            {
+              "name": "appevent",
+              "type": "AppEvent_func"
+            },
+            {
+              "name": "appquit",
+              "type": "AppQuit_func"
+            }
+          ],
+          "sourceName": "SDL_EnterAppMainCallbacks"
+        },
+        "GDKSuspendComplete": {
+          "doc": "Callback from the application to let the suspend continue.\n\nThis function is only needed for Xbox GDK support; all other platforms will\ndo nothing and set an \"unsupported\" error message.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GDKSuspendComplete",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_GDKSuspendComplete"
+        }
+      },
+      "includes": [
+        "SDL3/SDL_main.h"
+      ],
+      "localIncludes": [
+        "SDL3pp_init.h"
+      ]
+    },
     "SDL3pp_init.h": {
       "name": "SDL3pp_init.h",
       "doc": "@defgroup CategoryInit Category Init\n\nAll SDL programs need to initialize the library before starting to work\nwith it.\n\nAlmost everything can simply call Init() near startup, with a handful\nof flags to specify subsystems to touch. These are here to make sure SDL\ndoes not even attempt to touch low-level pieces of the operating system\nthat you don't intend to use. For example, you might be using SDL for video\nand input but chose an external library for audio, and in this case you\nwould just need to leave off the `INIT_AUDIO` flag to make sure that\nexternal library has complete control.\n\nMost apps, when terminating, should call Quit(). This will clean up\n(nearly) everything that SDL might have allocated, and crucially, it'll\nmake sure that the display's resolution is back to what the user expects if\nyou had previously changed it for your game.\n\nSDL3 apps are strongly encouraged to call SetAppMetadata() at startup\nto fill in details about the program. This is completely optional, but it\nhelps in small ways (we can provide an About dialog box for the macOS menu,\nwe can name the app in the system's audio mixer, etc). Those that want to\nprovide a _lot_ of information should look at the more-detailed\nSetAppMetadataProperty().",
@@ -115,35 +222,35 @@
           "sourceName": "SDL_APP_FAILURE"
         },
         "AppInit_func": {
-          "doc": "Function pointer typedef for SDL_AppInit.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppInit directly.\n\n@param appstate a place where the app can optionally store a pointer for\n                future use.\n@param argc the standard ANSI C main's argc; number of elements in `argv`.\n@param argv the standard ANSI C main's argv; array of command line\n            arguments.\n@returns APP_FAILURE to terminate with an error, APP_SUCCESS to\n         terminate with success, APP_CONTINUE to continue.\n\n@since This datatype is available since SDL 3.2.0.",
+          "doc": "Function pointer typedef for SDL_AppInit.\n\nThese are used by EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppInit directly.\n\n@param appstate a place where the app can optionally store a pointer for\n                future use.\n@param argc the standard ANSI C main's argc; number of elements in `argv`.\n@param argv the standard ANSI C main's argv; array of command line\n            arguments.\n@returns APP_FAILURE to terminate with an error, APP_SUCCESS to\n         terminate with success, APP_CONTINUE to continue.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "AppInit_func",
           "kind": "alias",
           "type": "SDL_AppInit_func",
           "sourceName": "SDL_AppInit_func"
         },
         "AppIterate_func": {
-          "doc": "Function pointer typedef for SDL_AppIterate.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppIterate directly.\n\n@param appstate an optional pointer, provided by the app in SDL_AppInit.\n@returns APP_FAILURE to terminate with an error, APP_SUCCESS to\n         terminate with success, APP_CONTINUE to continue.\n\n@since This datatype is available since SDL 3.2.0.",
+          "doc": "Function pointer typedef for SDL_AppIterate.\n\nThese are used by EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppIterate directly.\n\n@param appstate an optional pointer, provided by the app in SDL_AppInit.\n@returns APP_FAILURE to terminate with an error, APP_SUCCESS to\n         terminate with success, APP_CONTINUE to continue.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "AppIterate_func",
           "kind": "alias",
           "type": "SDL_AppIterate_func",
           "sourceName": "SDL_AppIterate_func"
         },
         "AppEvent_func": {
-          "doc": "Function pointer typedef for SDL_AppEvent.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppEvent directly.\n\n@param appstate an optional pointer, provided by the app in SDL_AppInit.\n@param event the new event for the app to examine.\n@returns APP_FAILURE to terminate with an error, APP_SUCCESS to\n         terminate with success, APP_CONTINUE to continue.\n\n@since This datatype is available since SDL 3.2.0.",
+          "doc": "Function pointer typedef for SDL_AppEvent.\n\nThese are used by EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppEvent directly.\n\n@param appstate an optional pointer, provided by the app in SDL_AppInit.\n@param event the new event for the app to examine.\n@returns APP_FAILURE to terminate with an error, APP_SUCCESS to\n         terminate with success, APP_CONTINUE to continue.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "AppEvent_func",
           "kind": "alias",
           "type": "SDL_AppEvent_func",
           "sourceName": "SDL_AppEvent_func"
         },
         "AppQuit_func": {
-          "doc": "Function pointer typedef for SDL_AppQuit.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppEvent directly.\n\n@param appstate an optional pointer, provided by the app in SDL_AppInit.\n@param result the result code that terminated the app (success or failure).\n\n@since This datatype is available since SDL 3.2.0.",
+          "doc": "Function pointer typedef for SDL_AppQuit.\n\nThese are used by EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppEvent directly.\n\n@param appstate an optional pointer, provided by the app in SDL_AppInit.\n@param result the result code that terminated the app (success or failure).\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "AppQuit_func",
           "kind": "alias",
           "type": "SDL_AppQuit_func",
           "sourceName": "SDL_AppQuit_func"
         },
         "Init": {
-          "doc": "Initialize the SDL library.\n\nInit() simply forwards to calling InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nInitSubSystem() might be preferred.\n\nThe file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)\nsubsystems are initialized by default. Message boxes\n(SDL_ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nInit fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `INIT_HAPTIC`: haptic (force feedback) subsystem\n- `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `INIT_EVENTS`: events subsystem\n- `INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call QuitSubSystem()\nfor each InitSubSystem() to correctly shutdown a subsystem manually (or\ncall Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling Init, using either SetAppMetadata() or\nSetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAppMetadata\n@sa SetAppMetadataProperty\n@sa InitSubSystem\n@sa Quit\n@sa SDL_SetMainReady\n@sa WasInit",
+          "doc": "Initialize the SDL library.\n\nInit() simply forwards to calling InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nInitSubSystem() might be preferred.\n\nThe file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)\nsubsystems are initialized by default. Message boxes\n(SDL_ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nInit fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `INIT_HAPTIC`: haptic (force feedback) subsystem\n- `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `INIT_EVENTS`: events subsystem\n- `INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call QuitSubSystem()\nfor each InitSubSystem() to correctly shutdown a subsystem manually (or\ncall Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling Init, using either SetAppMetadata() or\nSetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAppMetadata\n@sa SetAppMetadataProperty\n@sa InitSubSystem\n@sa Quit\n@sa SetMainReady\n@sa WasInit",
           "name": "Init",
           "kind": "function",
           "type": "void",
