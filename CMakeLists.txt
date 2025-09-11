@@ -46,35 +46,54 @@ endif(SDL3PP_DISABLE_STRING_PARAM)
 
 # The SDL3pp library
 add_library(SDL3pp_lib INTERFACE)
-target_include_directories(SDL3pp_lib INTERFACE include/legacy)
+target_include_directories(SDL3pp_lib INTERFACE include)
 target_link_libraries(SDL3pp_lib INTERFACE ${SDL3PP_DEPENDENCIES})
 
-# The SDL3pp library
-add_library(SDL3pp_lib_new INTERFACE)
-target_include_directories(SDL3pp_lib_new INTERFACE include)
-target_link_libraries(SDL3pp_lib_new INTERFACE ${SDL3PP_DEPENDENCIES})
-
+add_library(SDL3pp_legacy_lib INTERFACE)
+target_include_directories(SDL3pp_legacy_lib INTERFACE include/legacy)
+target_link_libraries(SDL3pp_legacy_lib INTERFACE ${SDL3PP_DEPENDENCIES})
 
 file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
 
 # The amalgamation header
 set(SDL3PP_AMALGAMATION_DIR "${PROJECT_SOURCE_DIR}/amalgamation" CACHE FILEPATH "Amalgamation output directory")
+set(SDL3PP_AMALGAMATION_FILENAME "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp.h")
+set(SDL3PP_AMALGAMATION_MAIN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_main.h")
+file(GLOB SDL3PP_WRAPPED_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include/SDL3pp/*.h)
+
 set(SDL3PP_AMALGAMATION_LEGACY_DIR ${SDL3PP_AMALGAMATION_DIR}/legacy)
 set(SDL3PP_AMALGAMATION_LEGACY_FILENAME "${SDL3PP_AMALGAMATION_LEGACY_DIR}/SDL3pp/SDL3pp.h")
 set(SDL3PP_AMALGAMATION_LEGACY_MAIN "${SDL3PP_AMALGAMATION_LEGACY_DIR}/SDL3pp/SDL3pp_main.h")
 file(GLOB SDL3PP_WRAPPED_LEGACY_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include/legacy/SDL3pp/*.h)
 
-add_library(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_LEGACY_FILENAME} ${SDL3PP_AMALGAMATION_LEGACY_MAIN})
-target_include_directories(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_LEGACY_DIR})
+add_library(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_MAIN})
+target_include_directories(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_DIR})
 target_link_libraries(SDL3pp_amalgamated INTERFACE ${SDL3PP_DEPENDENCIES})
+
+add_library(SDL3pp_legacy_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_LEGACY_FILENAME} ${SDL3PP_AMALGAMATION_LEGACY_MAIN})
+target_include_directories(SDL3pp_legacy_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_LEGACY_DIR})
+target_link_libraries(SDL3pp_legacy_amalgamated INTERFACE ${SDL3PP_DEPENDENCIES})
 
 option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" ON)
 
 if (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
+    add_library(SDL3pp_legacy ALIAS SDL3pp_legacy_amalgamated)
     add_library(SDL3pp ALIAS SDL3pp_amalgamated)
 else (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
+    add_library(SDL3pp_legacy ALIAS SDL3pp_legacy_lib)
     add_library(SDL3pp ALIAS SDL3pp_lib)
 endif(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
+
+add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_FILENAME}
+    COMMAND node scripts/amalgamate --base-dir include/SDL3pp/ ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
+    DEPENDS ${SDL3PP_WRAPPED_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/amalgamate.js
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_MAIN}
+    COMMAND cp include/SDL3pp/SDL3pp_main.h ${SDL3PP_AMALGAMATION_MAIN}
+    DEPENDS "include/SDL3pp/SDL3pp_main.h"
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_LEGACY_FILENAME}
     COMMAND node scripts/amalgamate --base-dir include/legacy/SDL3pp/ ${SDL3PP_AMALGAMATION_LEGACY_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
@@ -82,7 +101,7 @@ add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_LEGACY_FILENAME}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_LEGACY_MAIN}
-    COMMAND cp include/SDL3pp/SDL3pp_main.h ${SDL3PP_AMALGAMATION_LEGACY_MAIN}
+    COMMAND cp include/legacy/SDL3pp/SDL3pp_main.h ${SDL3PP_AMALGAMATION_LEGACY_MAIN}
     DEPENDS "include/legacy/SDL3pp/SDL3pp_main.h"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -97,12 +116,12 @@ enable_testing()
 
 file(GLOB LEGACY_UNITTEST CONFIGURE_DEPENDS test/legacy/SDL3pp*.cpp)
 add_executable(SDL3pp_unitTests_legacy ${LEGACY_UNITTEST})
-target_link_libraries(SDL3pp_unitTests_legacy PRIVATE SDL3pp_lib test_main)
+target_link_libraries(SDL3pp_unitTests_legacy PRIVATE SDL3pp_legacy_lib test_main)
 # add_test(NAME SDL3pp_unitTests_legacy COMMAND SDL3pp_unitTests_legacy)
 
 file(GLOB UNITTEST CONFIGURE_DEPENDS test/SDL3pp*.cpp)
 add_executable(SDL3pp_unitTests ${UNITTEST})
-target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp_lib_new test_main)
+target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp_lib test_main)
 add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
 
 # The documentation
