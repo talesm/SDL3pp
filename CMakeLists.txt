@@ -95,17 +95,6 @@ add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_MAIN}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_LEGACY_FILENAME}
-    COMMAND node scripts/amalgamate --base-dir include/legacy/SDL3pp/ ${SDL3PP_AMALGAMATION_LEGACY_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
-    DEPENDS ${SDL3PP_WRAPPED_LEGACY_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/amalgamate.js
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
-add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_LEGACY_MAIN}
-    COMMAND cp include/legacy/SDL3pp/SDL3pp_main.h ${SDL3PP_AMALGAMATION_LEGACY_MAIN}
-    DEPENDS "include/legacy/SDL3pp/SDL3pp_main.h"
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
 # Examples
 add_subdirectory(examples)
 
@@ -215,10 +204,6 @@ endif (DOXYGEN_FOUND)
 #########################
 ## Refresh the headers ##
 #########################
-set(LEGACY_TRANSFORM_JSON ${PROJECT_SOURCE_DIR}/scripts/transform-legacy.json)
-set(LEGACY_TARGET_JSON ${PROJECT_SOURCE_DIR}/scripts/target-legacy.json)
-set(LEGACY_CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target-legacy.json)
-
 set(TRANSFORM_JSON ${PROJECT_SOURCE_DIR}/scripts/transform.json)
 set(TARGET_JSON ${PROJECT_SOURCE_DIR}/scripts/target.json)
 set(CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target.json)
@@ -233,36 +218,6 @@ add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source_xml.json
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
     COMMAND node scripts/gen-source
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source_xml.json ${PROJECT_SOURCE_DIR}/scripts/gen-source.js
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-)
-
-# Current SDL3pp state
-add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/current.json
-    COMMAND node scripts/cppfier parse ${LEGACY_CONFIG_TARGET}
-    DEPENDS ${SDL3PP_WRAPPED_LEGACY_HEADERS} ${LEGACY_CONFIG_TARGET}
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-)
-
-add_custom_command(OUTPUT ${LEGACY_TRANSFORM_JSON}
-    COMMAND node scripts/gen-transform-legacy ${LEGACY_TRANSFORM_JSON}
-    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/gen-transform-legacy.js
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-)
-
-# Target SDL3pp state legacy
-add_custom_command(OUTPUT ${LEGACY_TARGET_JSON}
-    COMMAND node scripts/cppfier transform-legacy ${LEGACY_CONFIG_TARGET}
-    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json 
-            ${LEGACY_CONFIG_TARGET} 
-            ${LEGACY_TRANSFORM_JSON}
-            ${CPPFIER_SOURCES}
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-)
-
-# Merge source and current towards target
-add_custom_target(SDL3pp_refresh
-    COMMAND node scripts/cppfier update-legacy ${LEGACY_CONFIG_TARGET}
-    DEPENDS ${LEGACY_TARGET_JSON} ${LEGACY_CONFIG_TARGET} ${PROJECT_SOURCE_DIR}/scripts/current.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
@@ -293,7 +248,7 @@ add_custom_target(SDL3pp_generate
 )
 
 # Apply patches
-add_custom_target(SDL3pp_refresh_new
+add_custom_target(SDL3pp_refresh
     COMMAND scripts/applyPatches.sh
     DEPENDS SDL3pp_generate
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
