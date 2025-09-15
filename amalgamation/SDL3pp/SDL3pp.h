@@ -12227,9 +12227,9 @@ inline const char* GetEnvironmentVariable(EnvironmentParam env,
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline char** GetEnvironmentVariables(EnvironmentParam env)
+inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
 {
-  return SDL_GetEnvironmentVariables(env);
+  return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
 }
 
 /**

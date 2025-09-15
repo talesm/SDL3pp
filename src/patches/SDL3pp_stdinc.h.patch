@@ -302,6 +302,14 @@
 <   return Environment(SDL_GetEnvironmentVariable(env, name));
 ---
 >   return SDL_GetEnvironmentVariable(env, name);
+1089c1146
+< inline char** GetEnvironmentVariables(EnvironmentParam env)
+---
+> inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
+1091c1148
+<   return SDL_GetEnvironmentVariables(env);
+---
+>   return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
 1115,1118c1172,1175
 < inline Environment SetEnvironmentVariable(EnvironmentParam env,
 <                                           StringParam name,

@@ -2,7 +2,7 @@
 #define SDL3PP_MAIN_H_
 
 #include <SDL3/SDL_main.h>
-#include "SDL3pp_init.h"
+#include "SDL3pp.h"
 
 namespace SDL {
 

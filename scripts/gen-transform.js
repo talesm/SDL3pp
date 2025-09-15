@@ -2437,7 +2437,7 @@ const transform = {
       }
     },
     "SDL_main.h": {
-      localIncludes: ["SDL3pp_init.h"],
+      localIncludes: ["SDL3pp.h"],
       definitionPrefix: "SDL3PP_",
       ignoreEntries: [
         "main",

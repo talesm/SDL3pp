@@ -104,7 +104,7 @@
         "SDL3/SDL_main.h"
       ],
       "localIncludes": [
-        "SDL3pp_init.h"
+        "SDL3pp.h"
       ]
     },
     "SDL3pp_init.h": {
