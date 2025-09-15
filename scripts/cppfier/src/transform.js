@@ -385,23 +385,6 @@ function transformEntries(sourceEntries, file, context) {
   const targetEntries = {};
   const transformMap = file.transform;
 
-  let lastSourceName = "__begin";
-  for (const [sourceName, transformEntry] of Object.entries(transformMap)) {
-    if (sourceEntries[sourceName]) {
-      lastSourceName = sourceName;
-      if (transformEntry.after) {
-        const targetName = transformEntry.name ?? transformName(sourceName, context);
-        transformEntry.name = targetName;
-        context.includeAfter(targetName, transformEntry.after);
-      }
-    } else {
-      if (!transformEntry.name) transformEntry.name = sourceName;
-      lastSourceName = transformEntry.after ?? lastSourceName;
-      context.includeAfter(transformEntry, lastSourceName);
-    }
-    delete transformEntry.after;
-  }
-
   const sortedEntries = makeSortedEntryArray(sourceEntries, file, context);
   for (const targetEntry of sortedEntries) {
     const sourceName = targetEntry.sourceName;
@@ -436,6 +419,31 @@ function transformEntries(sourceEntries, file, context) {
  */
 function makeSortedEntryArray(sourceEntries, file, context) {
   const transformEntries = file.transform ?? {};
+
+  let lastSourceName = "__begin";
+  for (const [sourceName, transformEntry] of Object.entries(transformEntries)) {
+    if (sourceEntries[sourceName]) {
+      lastSourceName = sourceName;
+      const targetName = transformEntry.name ?? transformName(sourceName, context);
+      transformEntry.name = targetName;
+      if (transformEntry.before) {
+        context.includeBefore(targetName, transformEntry.after);
+      } else if (transformEntry.after) {
+        context.includeAfter(targetName, transformEntry.after);
+      }
+    } else {
+      if (!transformEntry.name) transformEntry.name = sourceName;
+      if (transformEntry.before) {
+        lastSourceName = transformEntry.before;
+        context.includeBefore(transformEntry, lastSourceName);
+      } else {
+        lastSourceName = transformEntry.after ?? lastSourceName;
+        context.includeAfter(transformEntry, lastSourceName);
+      }
+    }
+    delete transformEntry.after;
+  }
+
   /** @type {Dict<ApiEntry>} */
   const sortedEntries = {};
   /** @type {Dict<number>} */

@@ -5,6 +5,7 @@
 #include "SDL3pp_error.h"
 #include "SDL3pp_optionalRef.h"
 #include "SDL3pp_spanRef.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 

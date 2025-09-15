@@ -3246,7 +3246,7 @@ const transform = {
       }
     },
     "SDL_rect.h": {
-      localIncludes: ['SDL3pp_error.h', 'SDL3pp_optionalRef.h', 'SDL3pp_spanRef.h'],
+      localIncludes: ['SDL3pp_error.h', 'SDL3pp_optionalRef.h', 'SDL3pp_spanRef.h', 'SDL3pp_stdinc.h'],
       transform: {
         "FPoint": { kind: 'forward' },
         "Rect": { kind: 'forward' },
@@ -4800,6 +4800,15 @@ const transform = {
       }
     },
     "SDL_stdinc.h": {
+      includes: ["chrono"],
+      localIncludes: [
+        "SDL3pp_callbackWrapper.h",
+        "SDL3pp_error.h",
+        "SDL3pp_optionalRef.h",
+        "SDL3pp_ownPtr.h",
+        "SDL3pp_spanRef.h",
+        "SDL3pp_strings.h",
+      ],
       ignoreEntries: [
         "alloca",
         "bool",
@@ -4843,180 +4852,9 @@ const transform = {
         "SDL_WPRINTF_VARARG_FUNCV",
         "true"
       ],
-      includeAfter: {
-        "SDL_rand_bits": {
-          "kind": "struct",
-          "name": "Random",
-          "entries": {
-            "m_state": {
-              "kind": "var",
-              "type": "Uint64"
-            },
-            "Random": {
-              "kind": "function",
-              "constexpr": true,
-              "type": "",
-              "parameters": [
-                {
-                  "type": "Uint64",
-                  "name": "state",
-                  "default": "0"
-                }
-              ]
-            },
-            "operator Uint64": {
-              "kind": "function",
-              "constexpr": true,
-              "type": "",
-              "parameters": []
-            },
-            "SDL_rand_r": {
-              "name": "rand",
-              "static": false,
-              "parameters": [
-                {
-                  "type": "Sint32",
-                  "name": "n"
-                }
-              ]
-            },
-            "SDL_randf_r": {
-              "name": "randf",
-              "static": false,
-              "parameters": []
-            },
-            "SDL_rand_bits_r": {
-              "name": "rand_bits",
-              "static": false,
-              "parameters": []
-            }
-          }
-        },
-        "SDL_qsort_r": {
-          name: "qsort_r",
-          kind: "function",
-          type: "void",
-          parameters: [
-            {
-              name: "base",
-              type: "void *"
-            },
-            {
-              name: "nmemb",
-              type: "size_t"
-            },
-            {
-              name: "size",
-              type: "size_t"
-            },
-            {
-              name: "compare",
-              type: "CompareCB"
-            }
-          ]
-        },
-        "SDL_bsearch_r": {
-          name: "bsearch_r",
-          kind: "function",
-          type: "void *",
-          parameters: [
-            {
-              name: "key",
-              type: "const void *"
-            },
-            {
-              name: "base",
-              type: "const void *"
-            },
-            {
-              name: "nmemb",
-              type: "size_t"
-            },
-            {
-              name: "size",
-              type: "size_t"
-            },
-            {
-              name: "compare",
-              type: "CompareCB"
-            }
-          ]
-        },
-      },
-      includeBefore: {
-        "SDL_Time": [{
-          kind: "alias",
-          name: "Seconds",
-          type: "std::chrono::duration<float>",
-          doc: "Duration in seconds (float)."
-        }, {
-          kind: "alias",
-          name: "Nanoseconds",
-          type: "std::chrono::nanoseconds",
-          doc: "Duration in Nanoseconds (Uint64)."
-        }, {
-          kind: "function",
-          name: "ToSeconds",
-          type: "float",
-          constexpr: true,
-          parameters: [{
-            type: "Seconds",
-            name: "duration"
-          }],
-          doc: "Converts a time duration to seconds (float)."
-        }, {
-          kind: "function",
-          name: "FromSeconds",
-          type: "Seconds",
-          constexpr: true,
-          parameters: [{
-            type: "float",
-            name: "duration"
-          }],
-          doc: "Converts a float to seconds representation."
-        }, {
-          kind: "function",
-          name: "ToNS",
-          type: "Sint64",
-          constexpr: true,
-          parameters: [{
-            type: "std::chrono::nanoseconds",
-            name: "duration"
-          }],
-          doc: "Converts a time duration to seconds (float)."
-        }, {
-          kind: "function",
-          name: "FromNS",
-          type: "Nanoseconds",
-          constexpr: true,
-          parameters: [{
-            type: "Sint64",
-            name: "duration"
-          }],
-          doc: "Converts a float to seconds representation."
-        }, {
-          kind: "function",
-          name: "Time.ToSeconds",
-          type: "float",
-          constexpr: true,
-          immutable: true,
-          parameters: [],
-          doc: "Converts a time to seconds (float) since epoch."
-        }, {
-          kind: "function",
-          name: "Time.FromSeconds",
-          type: "Time",
-          constexpr: true,
-          static: true,
-          parameters: [{
-            type: "float",
-            name: "interval"
-          }],
-          doc: "Converts a time to seconds (float) since epoch."
-        }],
-      },
-      resources: {
+      transform: {
         "SDL_Environment": {
+          resource: true,
           entries: {
             "SDL_CreateEnvironment": "ctor",
             "SDL_GetEnvironmentVariable": "function",
@@ -5034,9 +4872,11 @@ const transform = {
         },
         "SDL_iconv_t": {
           name: "IConv",
-          type: "SDL_iconv_data_t",
-          free: "SDL_iconv_close",
-          ctors: ["SDL_iconv_open"],
+          resource: {
+            // type: "SDL_iconv_data_t",
+            free: "SDL_iconv_close",
+            ctors: ["SDL_iconv_open"],
+          },
           entries: {
             "SDL_iconv_open": { name: "open" },
             "SDL_iconv": "function",
@@ -5046,10 +4886,65 @@ const transform = {
               hints: { mayFail: true },
             },
           }
-        }
-      },
-      transform: {
+        },
         "CompareCallback_rCB": { name: "CompareCB" },
+        "Seconds": {
+          before: "SDL_Time",
+          kind: "alias",
+          type: "std::chrono::duration<float>",
+          doc: "Duration in seconds (float)."
+        },
+        "Nanoseconds": {
+          before: "SDL_Time",
+          kind: "alias",
+          name: "Nanoseconds",
+          type: "std::chrono::nanoseconds",
+          doc: "Duration in Nanoseconds (Uint64)."
+        },
+        "ToSeconds": {
+          before: "SDL_Time",
+          kind: "function",
+          type: "float",
+          constexpr: true,
+          parameters: [{
+            type: "Seconds",
+            name: "duration"
+          }],
+          doc: "Converts a time duration to seconds (float)."
+        },
+        "FromSeconds": {
+          before: "SDL_Time",
+          kind: "function",
+          type: "Seconds",
+          constexpr: true,
+          parameters: [{
+            type: "float",
+            name: "duration"
+          }],
+          doc: "Converts a float to seconds representation."
+        },
+        "ToNS": {
+          before: "SDL_Time",
+          kind: "function",
+          type: "Sint64",
+          constexpr: true,
+          parameters: [{
+            type: "std::chrono::nanoseconds",
+            name: "duration"
+          }],
+          doc: "Converts a time duration to seconds (float)."
+        },
+        "FromNS": {
+          before: "SDL_Time",
+          kind: "function",
+          type: "Nanoseconds",
+          constexpr: true,
+          parameters: [{
+            type: "Sint64",
+            name: "duration"
+          }],
+          doc: "Converts a float to seconds representation."
+        },
         "SDL_Time": {
           kind: "struct",
           type: "",
@@ -5128,8 +5023,26 @@ const transform = {
             "ToPosix": {},
             "FromWindows": {},
             "ToWindows": {},
-            "ToSeconds": {},
-            "FromSeconds": {},
+            "ToSeconds": {
+              kind: "function",
+              type: "float",
+              constexpr: true,
+              immutable: true,
+              parameters: [],
+              doc: "Converts a time to seconds (float) since epoch."
+            },
+            "FromSeconds": {
+              kind: "function",
+              name: "Time.FromSeconds",
+              type: "Time",
+              constexpr: true,
+              static: true,
+              parameters: [{
+                type: "float",
+                name: "interval"
+              }],
+              doc: "Converts a time to seconds (float) since epoch."
+            },
             "operator+=": {
               "kind": "function",
               "type": "Time &",
@@ -5470,6 +5383,96 @@ const transform = {
         "SDL_sinf": { name: "sin" },
         "SDL_sqrtf": { name: "sqrt" },
         "SDL_tanf": { name: "tan" },
+        "Random": {
+          after: "SDL_rand_bits",
+          kind: "struct",
+          entries: {
+            "m_state": {
+              kind: "var",
+              type: "Uint64"
+            },
+            "Random": {
+              kind: "function",
+              constexpr: true,
+              type: "",
+              parameters: [{
+                type: "Uint64",
+                name: "state",
+                default: "0"
+              }]
+            },
+            "operator Uint64": {
+              kind: "function",
+              constexpr: true,
+              type: "",
+              parameters: []
+            },
+            "SDL_rand_r": {
+              name: "rand",
+              static: false,
+              parameters: [{
+                type: "Sint32",
+                name: "n"
+              }]
+            },
+            "SDL_randf_r": {
+              name: "randf",
+              static: false,
+              parameters: []
+            },
+            "SDL_rand_bits_r": {
+              name: "rand_bits",
+              static: false,
+              parameters: []
+            }
+          }
+        },
+        "qsort_r": {
+          after: "SDL_qsort_r",
+          kind: "function",
+          type: "void",
+          parameters: [{
+            name: "base",
+            type: "void *"
+          },
+          {
+            name: "nmemb",
+            type: "size_t"
+          },
+          {
+            name: "size",
+            type: "size_t"
+          },
+          {
+            name: "compare",
+            type: "CompareCB"
+          }]
+        },
+        "bsearch_r": {
+          after: "SDL_bsearch_r",
+          kind: "function",
+          type: "void *",
+          parameters: [{
+            name: "key",
+            type: "const void *"
+          },
+          {
+            name: "base",
+            type: "const void *"
+          },
+          {
+            name: "nmemb",
+            type: "size_t"
+          },
+          {
+            name: "size",
+            type: "size_t"
+          },
+          {
+            name: "compare",
+            type: "CompareCB"
+          }]
+        },
       }
     },
     "SDL_storage.h": {

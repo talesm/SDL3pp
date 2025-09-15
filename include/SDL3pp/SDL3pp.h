@@ -59,7 +59,7 @@
 // #include "SDL3pp_render.h"
 // #include "SDL3pp_scancode.h"
 // #include "SDL3pp_sensor.h"
-// #include "SDL3pp_stdinc.h"
+#include "SDL3pp_stdinc.h"
 // #include "SDL3pp_storage.h"
 // #include "SDL3pp_surface.h"
 // #include "SDL3pp_system.h"

@@ -12,4 +12,4 @@ for file in src/generated/*.h; do
     diff "$file" "include/SDL3pp/$filename" > "src/patches/$filename.patch"
   fi
 done
-cmake --build  build/ -t SDL3pp_refresh_new
+cmake --build  build/ -t SDL3pp_refresh

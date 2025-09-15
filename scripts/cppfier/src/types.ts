@@ -124,6 +124,7 @@ export interface ApiEntryTransform extends ApiEntryBase {
   enum?: true | string | EnumerationDefinition;
   wrapper?: true | WrapperDefinition;
   resource?: true | string | ResourceDefinition;
+  before?: string;
   after?: string;
 }
 
