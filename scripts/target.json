@@ -1341,7 +1341,7 @@
           "sourceName": "SDL_HINT_JOYSTICK_THROTTLE_DEVICES_EXCLUDED"
         },
         "SDL_HINT_JOYSTICK_WGI": {
-          "doc": "A variable controlling whether Windows.Gaming.Input should be used for\ncontroller handling.\n\nThe variable can be set to the following values:\n\n- \"0\": WGI is not used.\n- \"1\": WGI is used. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable controlling whether Windows.Gaming.Input should be used for\ncontroller handling.\n\nThe variable can be set to the following values:\n\n- \"0\": WGI is not used. (default)\n- \"1\": WGI is used.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_JOYSTICK_WGI",
           "kind": "def",
           "value": "\"SDL_JOYSTICK_WGI\"",

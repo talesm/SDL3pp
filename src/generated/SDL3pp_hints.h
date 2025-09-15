@@ -2135,8 +2135,8 @@ namespace SDL {
  *
  * The variable can be set to the following values:
  *
- * - "0": WGI is not used.
- * - "1": WGI is used. (default)
+ * - "0": WGI is not used. (default)
+ * - "1": WGI is used.
  *
  * This hint should be set before SDL is initialized.
  *
