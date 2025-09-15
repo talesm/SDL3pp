@@ -399,6 +399,7 @@ function transformEntries(sourceEntries, file, context) {
       lastSourceName = transformEntry.after ?? lastSourceName;
       context.includeAfter(transformEntry, lastSourceName);
     }
+    delete transformEntry.after;
   }
 
   const sortedEntries = makeSortedEntryArray(sourceEntries, file, context);
@@ -443,17 +444,18 @@ function makeSortedEntryArray(sourceEntries, file, context) {
   const defPrefix = file.definitionPrefix;
   const includeBefore = context.currentIncludeBefore;
   const includeAfter = context.currentIncludeAfter;
-
-  if (includeBefore.__begin) includeBefore.__begin.forEach(addTransform);
-  if (includeAfter.__begin) includeAfter.__begin.forEach(addTransform);
-
   const processedSourceNames = new Set();
+
+  if (includeBefore.__begin) addIncluded(includeBefore.__begin);
+  if (includeAfter.__begin) addIncluded(includeAfter.__begin);
+
   const sourceArray = Object.values(sourceEntries);
   for (let i = 0; i < sourceArray.length; i++) {
     const sourceEntry = sourceArray[i];
     if (Array.isArray(sourceEntry)) continue;
     const sourceName = sourceEntry.name;
     if (processedSourceNames.has(sourceName)) continue;
+    processedSourceNames.add(sourceName);
 
     const targetEntry = {
       ...transformEntry(sourceEntry, context),
@@ -466,8 +468,12 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     } else if (context.blacklist.has(sourceName)) {
       continue;
     }
+    const targetName = targetEntry.name;
+    const firstAppearance = !processedSourceNames.has(targetName);
+    processedSourceNames.add(targetName);
 
-    includeBefore[sourceName]?.forEach(addTransform);
+    addIncluded(includeBefore[sourceName]);
+    if (firstAppearance) addIncluded(includeBefore[targetName]);
 
     if (targetEntry.kind === "def") {
       const targetName = targetEntry.name;
@@ -477,13 +483,36 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     }
     addTransform(targetEntry);
 
-    includeAfter[sourceName]?.forEach(addTransform);
+    if (firstAppearance) addIncluded(includeAfter[targetName]);
+    addIncluded(includeAfter[sourceName]);
   }
 
-  if (includeBefore.__end) includeBefore.__end.forEach(addTransform);
-  if (includeAfter.__end) includeAfter.__end.forEach(addTransform);
+  if (includeBefore.__end) addIncluded(includeBefore.__end);
+  if (includeAfter.__end) addIncluded(includeAfter.__end);
 
   return Object.values(sortedEntries);
+
+  /**
+   * 
+   * @param {ApiEntryTransform[]=} transformEntries 
+   */
+  function addIncluded(transformEntries) {
+    if (!transformEntries) return;
+    for (let i = 0; i < transformEntries.length; i++) {
+      const transformEntry = transformEntries[i];
+      const name = transformEntry.name;
+      let checkSubIncludes = true;
+      if (processedSourceNames.has(name)) {
+        checkSubIncludes = false;
+        if (transformEntry.kind !== 'function') continue;
+      } else processedSourceNames.add(name);
+
+
+      if (checkSubIncludes) addIncluded(includeBefore[name]);
+      addTransform(/** @type {ApiEntry}*/(transformEntry));
+      if (checkSubIncludes) addIncluded(includeAfter[name]);
+    }
+  }
 
   /**
    * 
@@ -1472,23 +1501,23 @@ function expandEnumerations(sourceEntries, file, context) {
     }
     if (!transform.kind && !transform.enum) transform.enum = true;
   }
-  for (const [type, transform] of Object.entries(file.transform)) {
-    const sourceEntry = sourceEntries[type];
+  for (const [sourceName, transform] of Object.entries(file.transform)) {
+    const sourceEntry = sourceEntries[sourceName];
     if (Array.isArray(sourceEntry)) continue;
 
     const definition = getEnumDefinition(transform);
     if (!definition) continue;
 
-    const targetType = transform.name ?? transformName(type, context);
+    const targetName = transform.name ?? transformName(sourceName, context);
 
-    const valueType = definition.valueType ?? (transform.kind === "struct" ? type : targetType);
+    const valueType = definition.valueType ?? (transform.kind === "struct" ? sourceName : targetName);
     if (!transform.kind && !transform.type && sourceEntry?.kind !== "alias") {
       transform.kind = "alias";
-      transform.type = type;
+      transform.type = sourceName;
     }
 
     let values = definition.values ?? Object.keys(sourceEntry.entries ?? {});
-    const prefix = definition.prefix ?? (type.toUpperCase() + "_");
+    const prefix = definition.prefix ?? (sourceName.toUpperCase() + "_");
     /** @type {StringMap} */
     const newNames = {};
     if (!values?.length) {
@@ -1505,7 +1534,7 @@ function expandEnumerations(sourceEntries, file, context) {
       }
     }
     const after = transform.after;
-    if (after) context.includeAfter(targetType, after);
+    if (after) context.includeAfter(targetName, after);
 
     for (const value of values) {
       const valueSource = sourceEntries[value];
@@ -1517,6 +1546,7 @@ function expandEnumerations(sourceEntries, file, context) {
         name: newNames[value] ?? transformName(value, context),
         constexpr: true,
         type: valueType,
+        after: targetName,
       };
       combineObject(valueTarget, valueTransform || {});
       if (!valueTarget.doc) {
@@ -1525,14 +1555,8 @@ function expandEnumerations(sourceEntries, file, context) {
         valueTarget.doc = sourceDoc || (value.startsWith(prefix) ? value.slice(prefix.length) : valueTarget.name);
       }
       context.addName(value, valueTarget.name);
-      if (!valueSource) {
-        valueTarget.sourceName = value;
-        context.includeAfter(valueTarget, after ?? type);
-      } else if (after) {
-        context.includeAfter(valueTarget, after);
-      } else {
-        file.transform[value] = valueTarget;
-      }
+      if (!valueSource) valueTarget.sourceName = value;
+      file.transform[value] = valueTarget;
     }
     delete transform.enum;
   }

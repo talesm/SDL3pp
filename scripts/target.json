@@ -2342,7 +2342,6 @@
           "doc": "A callback used to send notifications of hint value changes.\n\nThis is called an initial time during AddHintCallback with the hint's\ncurrent value, and then again each time the hint's value changes.\n\n@param userdata what was passed as `userdata` to AddHintCallback().\n@param name what was passed as `name` to AddHintCallback().\n@param oldValue the previous hint value.\n@param newValue the new value hint is to be set to.\n\n@threadsafety This callback is fired from whatever thread is setting a new\n              hint value. SDL holds a lock on the hint subsystem when\n              calling this callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AddHintCallback\n@sa HintCallback"
         },
         "HintCallbackHandle": {
-          "after": "SDL_HintCallback",
           "doc": "Handle returned by AddHintCallback()",
           "kind": "struct",
           "name": "HintCallbackHandle",
@@ -2871,7 +2870,6 @@
             "kind": "function",
             "static": false,
             "type": "void",
-            "after": "SDL_SetPointerPropertyWithCleanup",
             "parameters": [
               {
                 "type": "PropertiesParam",
@@ -3214,7 +3212,6 @@
           {
             "kind": "function",
             "type": "void",
-            "after": "SDL_EnumerateProperties",
             "parameters": [
               {
                 "type": "PropertiesParam",
@@ -3320,7 +3317,6 @@
           "sourceName": "SDL_GetError"
         },
         "Error": {
-          "after": "SDL_GetError",
           "kind": "struct",
           "type": "std::exception",
           "entries": {
@@ -3493,7 +3489,6 @@
           "name": "LogPriority",
           "kind": "alias",
           "sourceName": "SDL_LogPriority",
-          "after": "__begin",
           "type": "SDL_LogPriority"
         },
         "LOG_PRIORITY_INVALID": {
@@ -3574,7 +3569,6 @@
           "kind": "struct",
           "sourceName": "SDL_LogCategory",
           "type": "",
-          "after": "__begin",
           "entries": {
             "m_category": {
               "kind": "var",
@@ -4461,7 +4455,6 @@
             "kind": "function",
             "type": "LogOutputCB",
             "parameters": [],
-            "after": "SDL_GetLogOutputFunction",
             "doc": "Get the current log output function.\n\n@param callback an LogOutputFunction filled in with the current log\n                callback.\n@param userdata a pointer filled in with the pointer that is passed to\n                `callback`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetDefaultLogOutputFunction\n@sa SetLogOutputFunction"
           }
         ],
@@ -4487,7 +4480,6 @@
             "name": "SetLogOutputFunction",
             "kind": "function",
             "type": "void",
-            "after": "SDL_SetLogOutputFunction",
             "parameters": [
               {
                 "type": "LogOutputCB",
@@ -4995,8 +4987,7 @@
           "name": "PixelFormatDetails",
           "kind": "alias",
           "sourceName": "SDL_PixelFormatDetails",
-          "type": "SDL_PixelFormatDetails",
-          "after": "__begin"
+          "type": "SDL_PixelFormatDetails"
         },
         "SDL_ALPHA_OPAQUE": {
           "doc": "A fully opaque 8-bit alpha value.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_ALPHA_TRANSPARENT",
