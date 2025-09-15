@@ -384,7 +384,6 @@ function transformEntries(sourceEntries, file, context) {
   /** @type {ApiEntries} */
   const targetEntries = {};
   const transformMap = file.transform;
-  const defPrefix = file.definitionPrefix;
 
   let lastSourceName = "__begin";
   for (const [sourceName, transformEntry] of Object.entries(transformMap)) {
@@ -401,64 +400,113 @@ function transformEntries(sourceEntries, file, context) {
       context.includeAfter(transformEntry, lastSourceName);
     }
   }
+
+  const sortedEntries = makeSortedEntryArray(sourceEntries, file, context);
+  for (const targetEntry of sortedEntries) {
+    const sourceName = targetEntry.sourceName;
+    if (sourceName) context.addGlossary(sourceName, targetEntry);
+    const targetDelta = transformMap[sourceName];
+    if (targetDelta) {
+      for (let link = targetDelta.link; link;) {
+        const linkedEntry = deepClone(targetEntry);
+        const nextLink = link.link;
+        delete link.link;
+        if (link.kind || targetEntry.kind !== 'def') {
+          combineObject(linkedEntry, link);
+          insertEntryAndCheck(targetEntries, linkedEntry, context, file);
+        }
+        link = nextLink;
+      }
+      delete targetDelta.link;
+      combineObject(targetEntry, targetDelta);
+    }
+    if (sourceName) context.addName(sourceName, targetEntry.name?.replaceAll('::', '.'));
+    insertEntryAndCheck(targetEntries, targetEntry, context, file);
+  }
+
+  return targetEntries;
+}
+
+/**
+ * 
+ * @param {ApiEntries}    sourceEntries 
+ * @param {ApiFileTransform} file,
+ * @param {ApiContext}    context 
+ */
+function makeSortedEntryArray(sourceEntries, file, context) {
+  const transformEntries = file.transform ?? {};
+  /** @type {Dict<ApiEntry>} */
+  const sortedEntries = {};
+  /** @type {Dict<number>} */
+  const countInstance = {};
+
+  const defPrefix = file.definitionPrefix;
   const includeBefore = context.currentIncludeBefore;
   const includeAfter = context.currentIncludeAfter;
 
-  insertEntryAndCheck(targetEntries, includeBefore.__begin ?? [], context, file);
-  insertEntryAndCheck(targetEntries, includeAfter.__begin ?? [], context, file);
+  if (includeBefore.__begin) includeBefore.__begin.forEach(addTransform);
+  if (includeAfter.__begin) includeAfter.__begin.forEach(addTransform);
 
-  for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
-    if (context.blacklist.has(sourceName)) continue;
-    let targetName = transformName(sourceName, context);
-    insertEntryAndCheck(targetEntries, includeBefore[sourceName] ?? [], context, file);
-    if (Array.isArray(sourceEntry)) {
-      const targetDelta = transformMap[sourceName];
-      insertEntry(targetEntries, sourceEntry.map(e => {
-        const targetEntry = transformEntry(e, context);
-        if (targetDelta) {
-          if (!targetDelta.name) targetDelta.name = targetName;
-          combineObject(targetEntry, targetDelta);
-        } else targetEntry.name = targetName;
-        context.addName(sourceName, targetEntry.name?.replaceAll('::', '.'));
-        return targetEntry;
-      }));
-    } else {
-      const targetEntry = transformEntry(sourceEntry, context);
-      context.addGlossary(sourceName, targetEntry);
-      const targetDelta = transformMap[sourceName];
-      if (targetDelta) {
-        for (let link = targetDelta.link; link;) {
-          const linkedEntry = deepClone(targetEntry);
-          const nextLink = link.link;
-          delete link.link;
-          if (link.kind || sourceEntry.kind !== 'def') {
-            combineObject(linkedEntry, link);
-            insertEntryAndCheck(targetEntries, linkedEntry, context, file);
-          }
-          link = nextLink;
-        }
-        delete targetDelta.link;
-        if (targetDelta.name) targetName = targetDelta.name;
-        else targetDelta.name = targetName;
-        combineObject(targetEntry, targetDelta);
-      } else targetEntry.name = targetName;
-      if (targetEntry.kind === "def") {
-        if (!targetName.startsWith(defPrefix)) {
-          targetName = defPrefix + targetName;
-          targetEntry.name = targetName;
-        }
-        context.addName(sourceName, targetEntry.name);
-      } else {
-        context.addName(sourceName, targetEntry.name?.replaceAll('::', '.'));
-      }
-      insertEntryAndCheck(targetEntries, targetEntry, context, file, targetName);
+  const processedSourceNames = new Set();
+  const sourceArray = Object.values(sourceEntries);
+  for (let i = 0; i < sourceArray.length; i++) {
+    const sourceEntry = sourceArray[i];
+    if (Array.isArray(sourceEntry)) continue;
+    const sourceName = sourceEntry.name;
+    if (processedSourceNames.has(sourceName)) continue;
+
+    const targetEntry = {
+      ...transformEntry(sourceEntry, context),
+      name: transformName(sourceName, context)
+    };
+    const targetDelta = transformEntries[sourceName];
+    if (targetDelta) {
+      targetEntry.name = targetDelta.name ?? targetEntry.name;
+      targetEntry.kind = targetDelta.kind ?? targetEntry.kind;
+    } else if (context.blacklist.has(sourceName)) {
+      continue;
     }
-    insertEntryAndCheck(targetEntries, includeAfter[sourceName] ?? [], context, file);
-  }
-  insertEntryAndCheck(targetEntries, includeBefore.__end ?? [], context, file);
-  insertEntryAndCheck(targetEntries, includeAfter.__end ?? [], context, file);
 
-  return targetEntries;
+    includeBefore[sourceName]?.forEach(addTransform);
+
+    if (targetEntry.kind === "def") {
+      const targetName = targetEntry.name;
+      if (!targetName.startsWith(defPrefix)) {
+        targetEntry.name = defPrefix + targetName;
+      }
+    }
+    addTransform(targetEntry);
+
+    includeAfter[sourceName]?.forEach(addTransform);
+  }
+
+  if (includeBefore.__end) includeBefore.__end.forEach(addTransform);
+  if (includeAfter.__end) includeAfter.__end.forEach(addTransform);
+
+  return Object.values(sortedEntries);
+
+  /**
+   * 
+   * @param {ApiEntry} transformEntry 
+   */
+  function addTransform(transformEntry) {
+    const currEntry = sortedEntries[transformEntry.name];
+    const currKind = currEntry?.kind;
+    const nextName = transformEntry.kind === 'forward' ? transformEntry.name + '#forward' : transformEntry.name;
+    if (!currKind) {
+      sortedEntries[nextName] = transformEntry;
+      return;
+    }
+    const nextKind = transformEntry.kind;
+    if (currKind === 'function') {
+      if (nextKind !== 'function') return;
+      const n = (countInstance[nextName] ?? 1) + 1;
+      countInstance[nextName] = n;
+      sortedEntries[`${nextName}#${n}`] = transformEntry;
+      return;
+    }
+    combineObject(currEntry, transformEntry);
+  }
 }
 
 /**

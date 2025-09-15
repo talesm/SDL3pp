@@ -17,7 +17,7 @@ export interface ApiFile {
   localIncludes?: string[];
 }
 
-export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns";
+export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns" | 'plc';
 
 export interface ApiEntryBase {
   name?: string;
