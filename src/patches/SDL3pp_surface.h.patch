@@ -1,0 +1,41 @@
+19c19
+<  * @defgroup CategorySurface Category Surface
+---
+>  * @defgroup CategorySurface Surface Creation and Simple Drawing
+88,95d87
+<  * Evaluates to true if the surface needs to be locked before access.
+<  *
+<  * @since This macro is available since SDL 3.2.0.
+<  */
+< #define SDL_MUSTLOCK(S)                                                        \
+<   (((S)->flags & SDL_SURFACE_LOCK_NEEDED) == SDL_SURFACE_LOCK_NEEDED)
+< 
+< /**
+151a144,145
+>  * @cat resource
+>  *
+154,155d147
+<  *
+<  * @cat resource
+179,180c171
+<    * @param width the width of the surface.
+<    * @param height the height of the surface.
+---
+>    * @param size the width and height of the surface.
+193c184
+<     : m_resource(SDL_CreateSurface(size, format))
+---
+>     : m_resource(SDL_CreateSurface(size.x, size.y, format))
+210,211c201
+<    * @param width the width of the surface.
+<    * @param height the height of the surface.
+---
+>    * @param size the width and height of the surface.
+226c216
+<     : m_resource(SDL_CreateSurfaceFrom(size, format, pixels, pitch))
+---
+>     : m_resource(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch))
+252c242
+<     return Surface(SDL_LoadBMP_IO(src));
+---
+>     return Surface(SDL_LoadBMP_IO(src, false));

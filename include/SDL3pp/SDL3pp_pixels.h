@@ -2033,7 +2033,7 @@ public:
    *
    * @sa Palette.Destroy
    * @sa Palette.SetColors
-   * @sa SDL_SetSurfacePalette
+   * @sa Surface.SetPalette
    */
   Palette(int ncolors)
     : m_resource(CheckError(SDL_CreatePalette(ncolors)))
@@ -2211,7 +2211,7 @@ inline const PixelFormatDetails* GetPixelFormatDetails(PixelFormat format)
  *
  * @sa Palette.Destroy
  * @sa Palette.SetColors
- * @sa SDL_SetSurfacePalette
+ * @sa Surface.SetPalette
  */
 inline Palette CreatePalette(int ncolors)
 {
@@ -2288,7 +2288,7 @@ inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
  * @sa PixelFormat.GetDetails
  * @sa GetRGB
  * @sa MapRGBA
- * @sa SDL_MapSurfaceRGB
+ * @sa Surface.MapColor
  */
 inline Uint32 MapRGB(const PixelFormatDetails* format,
                      PaletteConstParam palette,
@@ -2334,7 +2334,7 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
  * @sa PixelFormat.GetDetails
  * @sa GetRGBA
  * @sa MapRGB
- * @sa SDL_MapSurfaceRGBA
+ * @sa Surface.MapColor
  */
 inline Uint32 MapRGBA(const PixelFormatDetails* format,
                       PaletteConstParam palette,

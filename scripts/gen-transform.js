@@ -4470,7 +4470,7 @@ const transform = {
           lock: {
             name: "TextureLock",
             kind: "struct",
-            type: "LockBase<SurfaceRef>",
+            type: "LockBase<SurfaceRaw>",
             entries: {
               "SDL_LockTexture": {
                 "name": "ctor",
@@ -5581,34 +5581,30 @@ const transform = {
       },
     },
     "SDL_surface.h": {
-      resources: {
+      includes: ['SDL3/SDL_version.h'],
+      localIncludes: [
+        "SDL3pp_blendmode.h",
+        "SDL3pp_error.h",
+        "SDL3pp_iostream.h",
+        "SDL3pp_optionalRef.h",
+        "SDL3pp_pixels.h",
+        "SDL3pp_properties.h",
+        "SDL3pp_rect.h",
+        "SDL3pp_spanRef.h",
+        "SDL3pp_strings.h",
+      ],
+      namespacesMap: {
+        "SDL_PROP_SURFACE_": "prop::Surface"
+      },
+      transform: {
         "SDL_Surface": {
-          lock: true,
-          lockFunction: "SDL_LockSurface",
-          unlockFunction: "SDL_UnlockSurface",
-          ctors: ["SDL_LoadBMP_IO"],
+          resource: {
+            // lock: true,
+            // lockFunction: "SDL_LockSurface",
+            // unlockFunction: "SDL_UnlockSurface",
+            ctors: ["SDL_LoadBMP_IO"],
+          },
           entries: {
-            "Surface": [{
-              name: "Load",
-              kind: "function",
-              type: "Surface",
-              proto: true,
-              static: true,
-              parameters: [{
-                type: "StringParam",
-                name: "file"
-              }],
-            }, {
-              name: "Load",
-              kind: "function",
-              type: "Surface",
-              proto: true,
-              static: true,
-              parameters: [{
-                type: "IOStreamParam",
-                name: "src"
-              }],
-            }],
             "SDL_CreateSurface": {
               name: "ctor",
               parameters: [
@@ -5660,7 +5656,7 @@ const transform = {
             "SDL_GetSurfaceImages": {
               kind: "function",
               immutable: true,
-              type: "OwnArray<SurfaceRef>",
+              type: "OwnArray<SurfaceRaw>",
               parameters: []
             },
             "SDL_RemoveSurfaceAlternateImages": {
@@ -5675,10 +5671,7 @@ const transform = {
               type: "bool",
               parameters: []
             },
-            "SDL_LockSurface": {
-              type: "SurfaceLock",
-              reference: 1
-            },
+            "SDL_LockSurface": "function",
             "SDL_LoadBMP_IO": {
               name: "LoadBMP",
               type: "Surface",
@@ -5688,7 +5681,6 @@ const transform = {
                 }
               ]
             },
-            "SDL_LoadBMP": "ctor",
             "SDL_SetSurfaceRLE": "function",
             "SDL_SurfaceHasRLE": "immutable",
             "SetColorKey": {
@@ -5906,7 +5898,7 @@ const transform = {
                 }
               ]
             },
-            "Blit": {
+            "BlitAt": {
               kind: "function",
               type: "void",
               parameters: [
@@ -6241,7 +6233,6 @@ const transform = {
             ],
             "SDL_ReadSurfacePixel": {
               kind: "function",
-              name: "ReadPixel",
               immutable: true,
               parameters: [
                 {},
@@ -6269,7 +6260,6 @@ const transform = {
             },
             "SDL_ReadSurfacePixelFloat": {
               kind: "function",
-              name: "ReadPixel",
               immutable: true,
               parameters: [
                 {},
@@ -6311,7 +6301,6 @@ const transform = {
             },
             "SDL_WriteSurfacePixelFloat": {
               kind: "function",
-              name: "WritePixel",
               parameters: [
                 {},
                 {
@@ -6361,31 +6350,34 @@ const transform = {
               parameters: []
             }
           }
-        }
-      },
-      enumerations: {
+        },
         "SDL_SurfaceFlags": {
-          values: [
-            "SDL_SURFACE_PREALLOCATED",
-            "SDL_SURFACE_LOCK_NEEDED",
-            "SDL_SURFACE_LOCKED",
-            "SDL_SURFACE_SIMD_ALIGNED"
-          ]
-        }
-      },
-      namespacesMap: {
-        "SDL_PROP_SURFACE_": "prop::Surface"
-      },
-      transform: {
-        "SDL_SaveBMP_IO": {
-          name: "SaveBMP",
-          parameters: [
-            {},
-            {
-              type: "IOStreamParam"
-            }
-          ]
-        }
+          enum: {
+            values: [
+              "SDL_SURFACE_PREALLOCATED",
+              "SDL_SURFACE_LOCK_NEEDED",
+              "SDL_SURFACE_LOCKED",
+              "SDL_SURFACE_SIMD_ALIGNED"
+            ]
+          }
+        },
+        "SDL_SCALEMODE_INVALID": {
+          since: {
+            tag: "SDL",
+            major: 3,
+            minor: 2,
+            patch: 10,
+          }
+        },
+        // "SDL_SaveBMP_IO": {
+        //   name: "SaveBMP",
+        //   parameters: [
+        //     {},
+        //     {
+        //       type: "IOStreamParam"
+        //     }
+        //   ]
+        // }
       }
     },
     "SDL_system.h": {
