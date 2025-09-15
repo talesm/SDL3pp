@@ -449,9 +449,7 @@ function makeSortedEntryArray(sourceEntries, file, context) {
   if (includeBefore.__begin) addIncluded(includeBefore.__begin);
   if (includeAfter.__begin) addIncluded(includeAfter.__begin);
 
-  const sourceArray = Object.values(sourceEntries);
-  for (let i = 0; i < sourceArray.length; i++) {
-    const sourceEntry = sourceArray[i];
+  for (const sourceEntry of Object.values(sourceEntries)) {
     if (Array.isArray(sourceEntry)) continue;
     const sourceName = sourceEntry.name;
     if (processedSourceNames.has(sourceName)) continue;
