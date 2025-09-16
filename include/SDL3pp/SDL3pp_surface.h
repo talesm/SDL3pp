@@ -224,8 +224,8 @@ public:
    * will result in a memory leak.
    *
    * @param src the data stream for the surface.
-   * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
-   *                in the case of an error.
+   * @param closeio if true, calls IOStream.Close() on `src` before returning,
+   * even in the case of an error.
    * @returns a pointer to a new Surface structure or nullptr on failure; call
    *          GetError() for more information.
    *
@@ -1490,8 +1490,8 @@ public:
    * not supported.
    *
    * @param dst a data stream to save to.
-   * @param closeio if true, calls SDL_CloseIO() on `dst` before returning, even
-   *                in the case of an error.
+   * @param closeio if true, calls IOStream.Close() on `dst` before returning,
+   * even in the case of an error.
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
@@ -1501,7 +1501,7 @@ public:
    * @sa Surface.LoadBMP
    * @sa Surface.SaveBMP
    */
-  void SaveBMP_IO(SDL_IOStream* dst, bool closeio)
+  void SaveBMP_IO(IOStreamParam dst, bool closeio)
   {
     CheckError(SDL_SaveBMP_IO(m_resource, dst, closeio));
   }
@@ -2068,8 +2068,8 @@ inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
  * will result in a memory leak.
  *
  * @param src the data stream for the surface.
- * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
- *                in the case of an error.
+ * @param closeio if true, calls IOStream.Close() on `src` before returning,
+ * even in the case of an error.
  * @returns a pointer to a new Surface structure or nullptr on failure; call
  *          GetError() for more information.
  *
@@ -2081,7 +2081,7 @@ inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
  * @sa LoadBMP
  * @sa Surface.SaveBMP_IO
  */
-inline Surface LoadBMP_IO(SDL_IOStream* src, bool closeio)
+inline Surface LoadBMP_IO(IOStreamParam src, bool closeio = false)
 {
   return Surface(SDL_LoadBMP_IO(src, closeio));
 }
@@ -2117,8 +2117,8 @@ inline SurfaceRaw LoadBMP(StringParam file) { return SDL_LoadBMP(file); }
  *
  * @param surface the Surface structure containing the image to be saved.
  * @param dst a data stream to save to.
- * @param closeio if true, calls SDL_CloseIO() on `dst` before returning, even
- *                in the case of an error.
+ * @param closeio if true, calls IOStream.Close() on `dst` before returning,
+ * even in the case of an error.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2128,7 +2128,9 @@ inline SurfaceRaw LoadBMP(StringParam file) { return SDL_LoadBMP(file); }
  * @sa Surface.LoadBMP
  * @sa Surface.SaveBMP
  */
-inline void SaveBMP_IO(SurfaceParam surface, SDL_IOStream* dst, bool closeio)
+inline void SaveBMP_IO(SurfaceParam surface,
+                       IOStreamParam dst,
+                       bool closeio = false)
 {
   CheckError(SDL_SaveBMP_IO(surface, dst, closeio));
 }

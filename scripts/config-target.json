@@ -6,6 +6,7 @@
     "SDL_error.h",
     "SDL_hints.h",
     "SDL_init.h",
+    "SDL_iostream.h",
     "SDL_log.h",
     "SDL_main.h",
     "SDL_pixels.h",

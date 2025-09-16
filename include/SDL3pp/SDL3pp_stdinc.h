@@ -478,32 +478,32 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * You can use it like this:
  *
  * ```cpp
- * SDL_IOStreamInterface iface;
+ * IOStreamInterface iface;
  *
  * SDL_INIT_INTERFACE(&iface);
  *
  * // Fill in the interface function pointers with your implementation
  * iface.seek = ...
  *
- * stream = SDL_OpenIO(&iface, nullptr);
+ * stream = IOStream.Open(&iface, nullptr);
  * ```
  *
  * If you are using designated initializers, you can use the size of the
  * interface as the version, e.g.
  *
  * ```cpp
- * SDL_IOStreamInterface iface = {
+ * IOStreamInterface iface = {
  *     .version = sizeof(iface),
  *     .seek = ...
  * };
- * stream = SDL_OpenIO(&iface, nullptr);
+ * stream = IOStream.Open(&iface, nullptr);
  * ```
  *
  * @threadsafety It is safe to call this macro from any thread.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL_IOStreamInterface
+ * @sa IOStreamInterface
  * @sa SDL_StorageInterface
  * @sa SDL_VirtualJoystickDesc
  */

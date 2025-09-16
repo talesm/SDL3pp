@@ -1588,21 +1588,15 @@ const transform = {
       }
     },
     "SDL_iostream.h": {
-      includeAfter: {
-        "SDL_LoadFile": {
-          name: "LoadFileAs",
-          kind: "function",
-          template: [{ type: "class", name: "T" }],
-          type: "OwnArray<T>",
-          parameters: [{
-            type: "StringParam",
-            name: "file"
-          }]
-        },
+      localIncludes: ['SDL3pp_properties.h', 'SDL3pp_stdinc.h'],
+      namespacesMap: {
+        "SDL_PROP_IOSTREAM_": "prop::IOStream"
       },
-      resources: {
+      transform: {
         "SDL_IOStream": {
-          ctors: ["SDL_IOFromFile", "SDL_IOFromMem", "SDL_IOFromConstMem", "SDL_IOFromDynamicMem", "SDL_OpenIO"],
+          resource: {
+            ctors: ["SDL_IOFromFile", "SDL_IOFromMem", "SDL_IOFromConstMem", "SDL_IOFromDynamicMem", "SDL_OpenIO"],
+          },
           entries: {
             "SDL_IOFromFile": { name: "FromFile" },
             "SDL_IOFromMem": {
@@ -1853,15 +1847,19 @@ const transform = {
               parameters: []
             },
           }
-        }
-      },
-      namespacesMap: {
-        "SDL_PROP_IOSTREAM_": "prop::IOStream"
-      },
-      transform: {
+        },
         "SDL_LoadFile": {
           type: "StringResult",
           parameters: [{}]
+        },
+        "LoadFileAs": {
+          kind: "function",
+          template: [{ type: "class", name: "T" }],
+          type: "OwnArray<T>",
+          parameters: [{
+            type: "StringParam",
+            name: "file"
+          }]
         },
         "SDL_SaveFile": {
           type: "void",

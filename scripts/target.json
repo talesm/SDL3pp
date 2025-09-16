@@ -250,7 +250,7 @@
           "sourceName": "SDL_AppQuit_func"
         },
         "Init": {
-          "doc": "Initialize the SDL library.\n\nInit() simply forwards to calling InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nInitSubSystem() might be preferred.\n\nThe file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)\nsubsystems are initialized by default. Message boxes\n(SDL_ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nInit fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `INIT_HAPTIC`: haptic (force feedback) subsystem\n- `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `INIT_EVENTS`: events subsystem\n- `INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call QuitSubSystem()\nfor each InitSubSystem() to correctly shutdown a subsystem manually (or\ncall Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling Init, using either SetAppMetadata() or\nSetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAppMetadata\n@sa SetAppMetadataProperty\n@sa InitSubSystem\n@sa Quit\n@sa SetMainReady\n@sa WasInit",
+          "doc": "Initialize the SDL library.\n\nInit() simply forwards to calling InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nInitSubSystem() might be preferred.\n\nThe file I/O (for example: IOStream.FromFile) and threading (SDL_CreateThread)\nsubsystems are initialized by default. Message boxes\n(SDL_ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nInit fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `INIT_HAPTIC`: haptic (force feedback) subsystem\n- `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `INIT_EVENTS`: events subsystem\n- `INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call QuitSubSystem()\nfor each InitSubSystem() to correctly shutdown a subsystem manually (or\ncall Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling Init, using either SetAppMetadata() or\nSetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAppMetadata\n@sa SetAppMetadataProperty\n@sa InitSubSystem\n@sa Quit\n@sa SetMainReady\n@sa WasInit",
           "name": "Init",
           "kind": "function",
           "type": "void",
@@ -10614,7 +10614,7 @@
               }
             ],
             "LoadBMP": {
-              "doc": "Load a BMP image from a seekable SDL data stream.\n\nThe new surface should be freed with Surface.Destroy(). Not doing so\nwill result in a memory leak.\n\n@param src the data stream for the surface.\n@param closeio if true, calls SDL_CloseIO() on `src` before returning, even\n               in the case of an error.\n@returns a pointer to a new Surface structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Destroy\n@sa LoadBMP\n@sa Surface.SaveBMP_IO",
+              "doc": "Load a BMP image from a seekable SDL data stream.\n\nThe new surface should be freed with Surface.Destroy(). Not doing so\nwill result in a memory leak.\n\n@param src the data stream for the surface.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@returns a pointer to a new Surface structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Destroy\n@sa LoadBMP\n@sa Surface.SaveBMP_IO",
               "name": "LoadBMP",
               "kind": "function",
               "type": "Surface",
@@ -11780,14 +11780,14 @@
               "sourceName": "SDL_UnlockSurface"
             },
             "SaveBMP_IO": {
-              "doc": "Save a surface to a seekable SDL data stream in BMP format.\n\nSurfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the\nBMP directly. Other RGB formats with 8-bit or higher get converted to a\n24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit\nsurface before they are saved. YUV and paletted 1-bit and 4-bit formats are\nnot supported.\n\n@param dst a data stream to save to.\n@param closeio if true, calls SDL_CloseIO() on `dst` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.LoadBMP\n@sa Surface.SaveBMP",
+              "doc": "Save a surface to a seekable SDL data stream in BMP format.\n\nSurfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the\nBMP directly. Other RGB formats with 8-bit or higher get converted to a\n24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit\nsurface before they are saved. YUV and paletted 1-bit and 4-bit formats are\nnot supported.\n\n@param dst a data stream to save to.\n@param closeio if true, calls IOStream.Close() on `dst` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.LoadBMP\n@sa Surface.SaveBMP",
               "name": "SaveBMP_IO",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
                   "name": "dst",
-                  "type": "SDL_IOStream *"
+                  "type": "IOStreamParam"
                 },
                 {
                   "name": "closeio",
@@ -12271,14 +12271,14 @@
           "sourceName": "SDL_UnlockSurface"
         },
         "LoadBMP_IO": {
-          "doc": "Load a BMP image from a seekable SDL data stream.\n\nThe new surface should be freed with Surface.Destroy(). Not doing so\nwill result in a memory leak.\n\n@param src the data stream for the surface.\n@param closeio if true, calls SDL_CloseIO() on `src` before returning, even\n               in the case of an error.\n@returns a pointer to a new Surface structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Destroy\n@sa LoadBMP\n@sa Surface.SaveBMP_IO",
+          "doc": "Load a BMP image from a seekable SDL data stream.\n\nThe new surface should be freed with Surface.Destroy(). Not doing so\nwill result in a memory leak.\n\n@param src the data stream for the surface.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@returns a pointer to a new Surface structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Destroy\n@sa LoadBMP\n@sa Surface.SaveBMP_IO",
           "name": "LoadBMP_IO",
           "kind": "function",
           "type": "Surface",
           "parameters": [
             {
               "name": "src",
-              "type": "SDL_IOStream *"
+              "type": "IOStreamParam"
             },
             {
               "name": "closeio",
@@ -12304,7 +12304,7 @@
           "sourceName": "SDL_LoadBMP"
         },
         "SaveBMP_IO": {
-          "doc": "Save a surface to a seekable SDL data stream in BMP format.\n\nSurfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the\nBMP directly. Other RGB formats with 8-bit or higher get converted to a\n24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit\nsurface before they are saved. YUV and paletted 1-bit and 4-bit formats are\nnot supported.\n\n@param surface the Surface structure containing the image to be saved.\n@param dst a data stream to save to.\n@param closeio if true, calls SDL_CloseIO() on `dst` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.LoadBMP\n@sa Surface.SaveBMP",
+          "doc": "Save a surface to a seekable SDL data stream in BMP format.\n\nSurfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the\nBMP directly. Other RGB formats with 8-bit or higher get converted to a\n24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit\nsurface before they are saved. YUV and paletted 1-bit and 4-bit formats are\nnot supported.\n\n@param surface the Surface structure containing the image to be saved.\n@param dst a data stream to save to.\n@param closeio if true, calls IOStream.Close() on `dst` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.LoadBMP\n@sa Surface.SaveBMP",
           "name": "SaveBMP_IO",
           "kind": "function",
           "type": "void",
@@ -12315,7 +12315,7 @@
             },
             {
               "name": "dst",
-              "type": "SDL_IOStream *"
+              "type": "IOStreamParam"
             },
             {
               "name": "closeio",
@@ -13487,6 +13487,2161 @@
         "SDL3pp_strings.h"
       ]
     },
+    "SDL3pp_iostream.h": {
+      "name": "SDL3pp_iostream.h",
+      "doc": "@defgroup CategoryIOStream Category IOStream\n\nSDL provides an abstract interface for reading and writing data streams. It\noffers implementations for files, memory, etc, and the app can provide\ntheir own implementations, too.\n\nIOStream is not related to the standard C++ iostream class, other than\nboth are abstract interfaces to read/write data.",
+      "entries": {
+        "IOStream-forward": {
+          "name": "IOStream",
+          "kind": "forward",
+          "doc": ""
+        },
+        "IOStreamRaw": {
+          "name": "IOStreamRaw",
+          "kind": "alias",
+          "type": "SDL_IOStream *",
+          "doc": ""
+        },
+        "IOStreamParam": {
+          "name": "IOStreamParam",
+          "kind": "struct",
+          "doc": "Safely wrap IOStream for non owning parameters",
+          "entries": {
+            "value": {
+              "kind": "var",
+              "name": "value",
+              "type": "IOStreamRaw",
+              "doc": ""
+            },
+            "IOStreamParam": [
+              {
+                "kind": "function",
+                "name": "IOStreamParam",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "IOStreamRaw",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(value)"
+                  ]
+                },
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "IOStreamParam",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "std::nullptr_t",
+                    "name": "_"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(nullptr)"
+                  ]
+                },
+                "doc": ""
+              }
+            ],
+            "operator IOStreamRaw": {
+              "kind": "function",
+              "name": "operator IOStreamRaw",
+              "constexpr": true,
+              "immutable": true,
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "return value;"
+              },
+              "doc": ""
+            }
+          }
+        },
+        "IOStatus": {
+          "doc": "IOStream status, set by a read or write operation.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "IOStatus",
+          "kind": "alias",
+          "sourceName": "SDL_IOStatus",
+          "type": "SDL_IOStatus"
+        },
+        "IO_STATUS_READY": {
+          "kind": "var",
+          "name": "IO_STATUS_READY",
+          "constexpr": true,
+          "type": "IOStatus",
+          "doc": "Everything is ready (no errors and not EOF).",
+          "sourceName": "SDL_IO_STATUS_READY"
+        },
+        "IO_STATUS_ERROR": {
+          "kind": "var",
+          "name": "IO_STATUS_ERROR",
+          "constexpr": true,
+          "type": "IOStatus",
+          "doc": "Read or write I/O error.",
+          "sourceName": "SDL_IO_STATUS_ERROR"
+        },
+        "IO_STATUS_EOF": {
+          "kind": "var",
+          "name": "IO_STATUS_EOF",
+          "constexpr": true,
+          "type": "IOStatus",
+          "doc": "End of file.",
+          "sourceName": "SDL_IO_STATUS_EOF"
+        },
+        "IO_STATUS_NOT_READY": {
+          "kind": "var",
+          "name": "IO_STATUS_NOT_READY",
+          "constexpr": true,
+          "type": "IOStatus",
+          "doc": "Non blocking I/O, not ready.",
+          "sourceName": "SDL_IO_STATUS_NOT_READY"
+        },
+        "IO_STATUS_READONLY": {
+          "kind": "var",
+          "name": "IO_STATUS_READONLY",
+          "constexpr": true,
+          "type": "IOStatus",
+          "doc": "Tried to write a read-only buffer.",
+          "sourceName": "SDL_IO_STATUS_READONLY"
+        },
+        "IO_STATUS_WRITEONLY": {
+          "kind": "var",
+          "name": "IO_STATUS_WRITEONLY",
+          "constexpr": true,
+          "type": "IOStatus",
+          "doc": "Tried to read a write-only buffer.",
+          "sourceName": "SDL_IO_STATUS_WRITEONLY"
+        },
+        "IOWhence": {
+          "doc": "Possible `whence` values for IOStream seeking.\n\nThese map to the same \"whence\" concept that `fseek` or `lseek` use in the\nstandard C runtime.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "IOWhence",
+          "kind": "alias",
+          "sourceName": "SDL_IOWhence",
+          "type": "SDL_IOWhence"
+        },
+        "IO_SEEK_SET": {
+          "kind": "var",
+          "name": "IO_SEEK_SET",
+          "constexpr": true,
+          "type": "IOWhence",
+          "doc": "Seek from the beginning of data.",
+          "sourceName": "SDL_IO_SEEK_SET"
+        },
+        "IO_SEEK_CUR": {
+          "kind": "var",
+          "name": "IO_SEEK_CUR",
+          "constexpr": true,
+          "type": "IOWhence",
+          "doc": "Seek relative to current read point.",
+          "sourceName": "SDL_IO_SEEK_CUR"
+        },
+        "IO_SEEK_END": {
+          "kind": "var",
+          "name": "IO_SEEK_END",
+          "constexpr": true,
+          "type": "IOWhence",
+          "doc": "Seek relative to the end of data.",
+          "sourceName": "SDL_IO_SEEK_END"
+        },
+        "IOStreamInterface": {
+          "doc": "The function pointers that drive an IOStream.\n\nApplications can provide this struct to IOStream.Open() to create their own\nimplementation of IOStream. This is not necessarily required, as SDL\nalready offers several common types of I/O streams, via functions like\nIOStream.FromFile() and IOStream.FromMem().\n\nThis structure should be initialized using SDL_INIT_INTERFACE()\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_INIT_INTERFACE",
+          "name": "IOStreamInterface",
+          "kind": "alias",
+          "sourceName": "SDL_IOStreamInterface",
+          "type": "SDL_IOStreamInterface"
+        },
+        "IOStream": {
+          "doc": "The read/write operation structure.\n\nThis operates as an opaque handle. There are several APIs to create various\ntypes of I/O streams, or an app can supply an IOStreamInterface to\nIOStream.Open() to provide their own stream implementation behind this\nstruct's abstract interface.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource",
+          "name": "IOStream",
+          "kind": "struct",
+          "type": "",
+          "sourceName": "SDL_IOStream",
+          "entries": {
+            "m_resource": {
+              "kind": "var",
+              "type": "IOStreamRaw",
+              "hints": {
+                "body": "nullptr"
+              },
+              "name": "m_resource",
+              "doc": ""
+            },
+            "IOStream": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "hints": {
+                  "default": true,
+                  "changeAccess": "public"
+                },
+                "name": "IOStream",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "name": "resource",
+                    "type": "const IOStreamRaw"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_resource(resource)"
+                  ]
+                },
+                "name": "IOStream",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const IOStream &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "IOStream",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "IOStream &&"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_resource(other.m_resource)"
+                  ],
+                  "body": "other.m_resource = nullptr;"
+                },
+                "name": "IOStream",
+                "doc": ""
+              }
+            ],
+            "FromFile": {
+              "doc": "Use this function to create a new IOStream structure for reading from\nand/or writing to a named file.\n\nThe `mode` string is treated roughly the same as in a call to the C\nlibrary's fopen(), even if SDL doesn't happen to use fopen() behind the\nscenes.\n\nAvailable `mode` strings:\n\n- \"r\": Open a file for reading. The file must exist.\n- \"w\": Create an empty file for writing. If a file with the same name\n  already exists its content is erased and the file is treated as a new\n  empty file.\n- \"a\": Append to a file. Writing operations append data at the end of the\n  file. The file is created if it does not exist.\n- \"r+\": Open a file for update both reading and writing. The file must\n  exist.\n- \"w+\": Create an empty file for both reading and writing. If a file with\n  the same name already exists its content is erased and the file is\n  treated as a new empty file.\n- \"a+\": Open a file for reading and appending. All writing operations are\n  performed at the end of the file, protecting the previous content to be\n  overwritten. You can reposition (fseek, rewind) the internal pointer to\n  anywhere in the file for reading, but writing operations will move it\n  back to the end of file. The file is created if it does not exist.\n\n**NOTE**: In order to open a file as a binary file, a \"b\" character has to\nbe included in the `mode` string. This additional \"b\" character can either\nbe appended at the end of the string (thus making the following compound\nmodes: \"rb\", \"wb\", \"ab\", \"r+b\", \"w+b\", \"a+b\") or be inserted between the\nletter and the \"+\" sign for the mixed modes (\"rb+\", \"wb+\", \"ab+\").\nAdditional characters may follow the sequence, although they should have no\neffect. For example, \"t\" is sometimes appended to make explicit the file is\na text file.\n\nThis function supports Unicode filenames, but they must be encoded in UTF-8\nformat, regardless of the underlying operating system.\n\nIn Android, IOStream.FromFile() can be used to open content:// URIs. As a\nfallback, IOStream.FromFile() will transparently open a matching filename in\nthe app's `assets`.\n\nClosing the IOStream will close SDL's internal file handle.\n\nThe following properties may be set at creation time by SDL:\n\n- `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast\n  to a win32 `HANDLE`, that this IOStream is using to access the\n  filesystem. If the program isn't running on Windows, or SDL used some\n  other method to access the filesystem, this property will not be set.\n- `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a\n  stdio `FILE *`, that this IOStream is using to access the filesystem.\n  If SDL used some other method to access the filesystem, this property\n  will not be set. PLEASE NOTE that if SDL is using a different C runtime\n  than your app, trying to use this pointer will almost certainly result in\n  a crash! This is mostly a problem on Windows; make sure you build SDL and\n  your app with the same compiler and settings to avoid it.\n- `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this\n  IOStream is using to access the filesystem.\n- `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast\n  to an Android NDK `AAsset *`, that this IOStream is using to access\n  the filesystem. If SDL used some other method to access the filesystem,\n  this property will not be set.\n\n@param file a UTF-8 string representing the filename to open.\n@param mode an ASCII string representing the mode to be used for opening\n            the file.\n@returns a pointer to the IOStream structure that is created or nullptr on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Close\n@sa IOStream.Flush\n@sa IOStream.Read\n@sa IOStream.Seek\n@sa IOStream.Tell\n@sa IOStream.Write",
+              "name": "FromFile",
+              "kind": "function",
+              "type": "IOStream",
+              "parameters": [
+                {
+                  "name": "file",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "mode",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_IOFromFile",
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
+            },
+            "FromMem": {
+              "doc": "Use this function to prepare a read-write memory buffer for use with\nIOStream.\n\nThis function sets up an IOStream struct based on a memory area of a\ncertain size, for both read and write access.\n\nThis memory buffer is not copied by the IOStream; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to make sure the IOStream never writes to the memory\nbuffer, you should use IOStream.FromConstMem() with a read-only buffer of\nmemory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a buffer to feed an IOStream stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStream structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.FromConstMem\n@sa IOStream.Close\n@sa IOStream.Flush\n@sa IOStream.Read\n@sa IOStream.Seek\n@sa IOStream.Tell\n@sa IOStream.Write",
+              "name": "FromMem",
+              "kind": "function",
+              "type": "IOStream",
+              "parameters": [
+                {
+                  "name": "mem",
+                  "type": "TargetBytes"
+                }
+              ],
+              "sourceName": "SDL_IOFromMem",
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
+            },
+            "FromConstMem": {
+              "doc": "Use this function to prepare a read-only memory buffer for use with\nIOStream.\n\nThis function sets up an IOStream struct based on a memory area of a\ncertain size. It assumes the memory area is not writable.\n\nAttempting to write to this IOStream stream will report an error\nwithout writing to the memory buffer.\n\nThis memory buffer is not copied by the IOStream; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to write to a memory buffer, you should use IOStream.FromMem()\nwith a writable buffer of memory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a read-only buffer to feed an IOStream stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStream structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.FromMem\n@sa IOStream.Close\n@sa IOStream.Read\n@sa IOStream.Seek\n@sa IOStream.Tell",
+              "name": "FromConstMem",
+              "kind": "function",
+              "type": "IOStream",
+              "parameters": [
+                {
+                  "name": "mem",
+                  "type": "SourceBytes"
+                }
+              ],
+              "sourceName": "SDL_IOFromConstMem",
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
+            },
+            "FromDynamicMem": {
+              "doc": "Use this function to create an IOStream that is backed by dynamically\nallocated memory.\n\nThis supports the following properties to provide access to the memory and\ncontrol over allocations:\n\n- `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal\n  memory of the stream. This can be set to nullptr to transfer ownership of\n  the memory to the application, which should free the memory with\n  free(). If this is done, the next operation on the stream must be\n  IOStream.Close().\n- `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in\n  multiples of this size, defaulting to 1024.\n\n@returns a pointer to a new IOStream structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Close\n@sa IOStream.Read\n@sa IOStream.Seek\n@sa IOStream.Tell\n@sa IOStream.Write",
+              "name": "FromDynamicMem",
+              "kind": "function",
+              "type": "IOStream",
+              "parameters": [],
+              "sourceName": "SDL_IOFromDynamicMem",
+              "static": true,
+              "hints": {
+                "wrapSelf": true
+              }
+            },
+            "Open": {
+              "doc": "Create a custom IOStream.\n\nApplications do not need to use this function unless they are providing\ntheir own IOStream implementation. If you just need an IOStream to\nread/write a common data source, you should use the built-in\nimplementations in SDL, like IOStream.FromFile() or IOStream.FromMem(), etc.\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this IOStream, initialized\n             using SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@returns a pointer to the allocated memory on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Close\n@sa SDL_INIT_INTERFACE\n@sa IOStream.FromConstMem\n@sa IOStream.FromFile\n@sa IOStream.FromMem",
+              "name": "Open",
+              "kind": "function",
+              "type": "IOStream",
+              "parameters": [
+                {
+                  "name": "iface",
+                  "type": "const IOStreamInterface *"
+                },
+                {
+                  "name": "userdata",
+                  "type": "void *"
+                }
+              ],
+              "sourceName": "SDL_OpenIO",
+              "hints": {
+                "mayFail": true,
+                "wrapSelf": true
+              },
+              "static": true
+            },
+            "~IOStream": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_CloseIO(m_resource);"
+              },
+              "name": "~IOStream",
+              "doc": ""
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "IOStream &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "IOStream"
+                }
+              ],
+              "hints": {
+                "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
+              },
+              "name": "operator=",
+              "doc": ""
+            },
+            "get": {
+              "kind": "function",
+              "type": "IOStreamRaw",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "return m_resource;"
+              },
+              "name": "get",
+              "doc": ""
+            },
+            "release": {
+              "kind": "function",
+              "type": "IOStreamRaw",
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
+              },
+              "name": "release",
+              "doc": ""
+            },
+            "operator IOStreamParam": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "return {m_resource};"
+              },
+              "name": "operator IOStreamParam",
+              "doc": ""
+            },
+            "Close": {
+              "doc": "Close and free an allocated IOStream structure.\n\nIOStream.Close() closes and cleans up the IOStream stream. It releases any\nresources used by the stream and frees the IOStream itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the IOStream is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call IOStream.Flush() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Open",
+              "name": "Close",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_CloseIO",
+              "hints": {
+                "mayFail": true,
+                "body": "CheckError(SDL_CloseIO(m_resource));\nm_resource = nullptr;"
+              }
+            },
+            "GetProperties": {
+              "doc": "Get the properties associated with an IOStream.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetProperties",
+              "kind": "function",
+              "type": "PropertiesID",
+              "parameters": [],
+              "sourceName": "SDL_GetIOProperties",
+              "hints": {
+                "mayFail": true
+              },
+              "immutable": true
+            },
+            "GetStatus": {
+              "doc": "Query the stream status of an IOStream.\n\nThis information can be useful to decide if a short read or write was due\nto an error, an EOF, or a non-blocking operation that isn't yet ready to\ncomplete.\n\nAn IOStream's status is only expected to change after a IOStream.Read or\nIOStream.Write call; don't expect it to change if you just call this query\nfunction in a tight loop.\n\n@returns an IOStatus enum with the current state.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetStatus",
+              "kind": "function",
+              "type": "IOStatus",
+              "parameters": [],
+              "sourceName": "SDL_GetIOStatus",
+              "immutable": true
+            },
+            "GetSize": {
+              "doc": "Use this function to get the size of the data stream in an IOStream.\n\n@returns the size of the data stream in the IOStream on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetSize",
+              "kind": "function",
+              "type": "Sint64",
+              "parameters": [],
+              "sourceName": "SDL_GetIOSize",
+              "hints": {
+                "mayFail": true
+              },
+              "immutable": true
+            },
+            "Seek": {
+              "doc": "Seek within an IOStream data stream.\n\nThis function seeks to byte `offset`, relative to `whence`.\n\n`whence` may be any of the following values:\n\n- `IO_SEEK_SET`: seek from the beginning of data\n- `IO_SEEK_CUR`: seek relative to current read point\n- `IO_SEEK_END`: seek relative to the end of data\n\nIf this stream can not seek, it will return -1.\n\n@param offset an offset in bytes, relative to `whence` location; can be\n              negative.\n@param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`,\n              `IO_SEEK_END`.\n@returns the final offset in the data stream after the seek or -1 on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Tell",
+              "name": "Seek",
+              "kind": "function",
+              "type": "Sint64",
+              "parameters": [
+                {
+                  "name": "offset",
+                  "type": "Sint64"
+                },
+                {
+                  "name": "whence",
+                  "type": "IOWhence"
+                }
+              ],
+              "sourceName": "SDL_SeekIO"
+            },
+            "Tell": {
+              "doc": "Determine the current read/write offset in an IOStream data stream.\n\nIOStream.Tell is actually a wrapper function that calls the IOStream's\n`seek` method, with an offset of 0 bytes from `IO_SEEK_CUR`, to\nsimplify application development.\n\n               current offset.\n@returns the current offset in the stream, or -1 if the information can not\n         be determined.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Seek",
+              "name": "Tell",
+              "kind": "function",
+              "type": "Sint64",
+              "parameters": [],
+              "sourceName": "SDL_TellIO",
+              "immutable": true
+            },
+            "Read": [
+              {
+                "kind": "function",
+                "type": "std::string",
+                "parameters": [
+                  {
+                    "type": "size_t",
+                    "name": "size",
+                    "default": "-1"
+                  }
+                ],
+                "name": "Read",
+                "doc": ""
+              },
+              {
+                "doc": "Read from a data source.\n\nThis function reads up `size` bytes from the data source to the area\npointed at by `ptr`. This function may read less bytes than requested.\n\nThis function will return zero when the data stream is completely read, and\nIOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and\nthe stream is not at EOF, IOStream.GetStatus() will return a different error\nvalue and GetError() will offer a human-readable message.\n\n@param ptr a pointer to a buffer to read data into.\n@param size the number of bytes to read from the data source.\n@returns the number of bytes read, or 0 on end of file or other failure;\n         call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Write\n@sa IOStream.GetStatus",
+                "name": "Read",
+                "kind": "function",
+                "type": "size_t",
+                "parameters": [
+                  {
+                    "name": "buf",
+                    "type": "TargetBytes"
+                  }
+                ],
+                "sourceName": "SDL_ReadIO"
+              }
+            ],
+            "Write": {
+              "doc": "Write to an IOStream data stream.\n\nThis function writes exactly `size` bytes from the area pointed at by `ptr`\nto the stream. If this fails for any reason, it'll return less than `size`\nto demonstrate how far the write progressed. On success, it returns `size`.\n\nOn error, this function still attempts to write as much as possible, so it\nmight return a positive value less than the requested write size.\n\nThe caller can use IOStream.GetStatus() to determine if the problem is\nrecoverable, such as a non-blocking write that can simply be retried later,\nor a fatal error.\n\n@param ptr a pointer to a buffer containing data to write.\n@param size the number of bytes to write.\n@returns the number of bytes written, which will be less than `size` on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.printf\n@sa IOStream.Read\n@sa IOStream.Seek\n@sa IOStream.Flush\n@sa IOStream.GetStatus",
+              "name": "Write",
+              "kind": "function",
+              "type": "size_t",
+              "parameters": [
+                {
+                  "name": "buf",
+                  "type": "SourceBytes"
+                }
+              ],
+              "sourceName": "SDL_WriteIO"
+            },
+            "print": {
+              "kind": "function",
+              "type": "size_t",
+              "doc": "@cat formatted-string",
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "fmt"
+                },
+                {
+                  "type": "auto...",
+                  "name": "args"
+                }
+              ],
+              "name": "print"
+            },
+            "println": {
+              "kind": "function",
+              "type": "size_t",
+              "doc": "@cat formatted-string",
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "fmt"
+                },
+                {
+                  "type": "auto...",
+                  "name": "args"
+                }
+              ],
+              "name": "println"
+            },
+            "printf": {
+              "doc": "Print to an IOStream data stream.\n\nThis function does formatted printing to the stream.\n\n@param fmt a printf() style format string.\n@param ... additional parameters matching % tokens in the `fmt` string, if\n           any.\n@returns the number of bytes written or 0 on failure; call GetError()\n         for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.vprintf\n@sa IOStream.Write",
+              "name": "printf",
+              "kind": "function",
+              "type": "size_t",
+              "parameters": [
+                {
+                  "name": "fmt",
+                  "type": "SDL_PRINTF_FORMAT_STRING const char *"
+                },
+                "..."
+              ],
+              "sourceName": "SDL_IOprintf"
+            },
+            "vprintf": {
+              "doc": "Print to an IOStream data stream.\n\nThis function does formatted printing to the stream.\n\n@param fmt a printf() style format string.\n@param ap a variable argument list.\n@returns the number of bytes written or 0 on failure; call GetError()\n         for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.printf\n@sa IOStream.Write",
+              "name": "vprintf",
+              "kind": "function",
+              "type": "size_t",
+              "parameters": [
+                {
+                  "name": "fmt",
+                  "type": "SDL_PRINTF_FORMAT_STRING const char *"
+                },
+                {
+                  "name": "ap",
+                  "type": "va_list"
+                }
+              ],
+              "sourceName": "SDL_IOvprintf"
+            },
+            "Flush": {
+              "doc": "Flush any buffered data in the stream.\n\nThis function makes sure that any buffered data is written to the stream.\nNormally this isn't necessary but if the stream is a pipe or socket it\nguarantees that any pending data is sent.\n\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Open\n@sa IOStream.Write",
+              "name": "Flush",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_FlushIO",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "LoadFile": {
+              "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFile\n@sa IOStream.SaveFile",
+              "name": "LoadFile",
+              "kind": "function",
+              "type": "StringResult",
+              "parameters": [],
+              "sourceName": "SDL_LoadFile_IO"
+            },
+            "LoadFileAs": {
+              "kind": "function",
+              "template": [
+                {
+                  "type": "class",
+                  "name": "T"
+                }
+              ],
+              "type": "OwnArray<T>",
+              "parameters": [],
+              "name": "LoadFileAs",
+              "doc": ""
+            },
+            "SaveFile": {
+              "doc": "Save all the data into an SDL data stream.\n\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveFile\n@sa IOStream.LoadFile",
+              "name": "SaveFile",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "SourceBytes"
+                }
+              ],
+              "sourceName": "SDL_SaveFile_IO",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadU8": {
+              "doc": "Use this function to read a byte from an IOStream.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the IOStream to read from.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadU8",
+              "kind": "function",
+              "type": "Uint8",
+              "parameters": [],
+              "sourceName": "SDL_ReadU8",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadS8": {
+              "doc": "Use this function to read a signed byte from an IOStream.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the IOStream to read from.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadS8",
+              "kind": "function",
+              "type": "Sint8",
+              "parameters": [],
+              "sourceName": "SDL_ReadS8",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadU16LE": {
+              "doc": "Use this function to read 16 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadU16LE",
+              "kind": "function",
+              "type": "Uint16",
+              "parameters": [],
+              "sourceName": "SDL_ReadU16LE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadS16LE": {
+              "doc": "Use this function to read 16 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadS16LE",
+              "kind": "function",
+              "type": "Sint16",
+              "parameters": [],
+              "sourceName": "SDL_ReadS16LE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadU16BE": {
+              "doc": "Use this function to read 16 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadU16BE",
+              "kind": "function",
+              "type": "Uint16",
+              "parameters": [],
+              "sourceName": "SDL_ReadU16BE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadS16BE": {
+              "doc": "Use this function to read 16 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadS16BE",
+              "kind": "function",
+              "type": "Sint16",
+              "parameters": [],
+              "sourceName": "SDL_ReadS16BE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadU32LE": {
+              "doc": "Use this function to read 32 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadU32LE",
+              "kind": "function",
+              "type": "Uint32",
+              "parameters": [],
+              "sourceName": "SDL_ReadU32LE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadS32LE": {
+              "doc": "Use this function to read 32 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadS32LE",
+              "kind": "function",
+              "type": "Sint32",
+              "parameters": [],
+              "sourceName": "SDL_ReadS32LE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadU32BE": {
+              "doc": "Use this function to read 32 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadU32BE",
+              "kind": "function",
+              "type": "Uint32",
+              "parameters": [],
+              "sourceName": "SDL_ReadU32BE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadS32BE": {
+              "doc": "Use this function to read 32 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadS32BE",
+              "kind": "function",
+              "type": "Sint32",
+              "parameters": [],
+              "sourceName": "SDL_ReadS32BE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadU64LE": {
+              "doc": "Use this function to read 64 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadU64LE",
+              "kind": "function",
+              "type": "Uint64",
+              "parameters": [],
+              "sourceName": "SDL_ReadU64LE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadS64LE": {
+              "doc": "Use this function to read 64 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadS64LE",
+              "kind": "function",
+              "type": "Sint64",
+              "parameters": [],
+              "sourceName": "SDL_ReadS64LE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadU64BE": {
+              "doc": "Use this function to read 64 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadU64BE",
+              "kind": "function",
+              "type": "Uint64",
+              "parameters": [],
+              "sourceName": "SDL_ReadU64BE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "ReadS64BE": {
+              "doc": "Use this function to read 64 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "ReadS64BE",
+              "kind": "function",
+              "type": "Sint64",
+              "parameters": [],
+              "sourceName": "SDL_ReadS64BE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "TryReadU8": {
+              "kind": "function",
+              "type": "std::optional<Uint8>",
+              "parameters": [],
+              "name": "TryReadU8",
+              "doc": ""
+            },
+            "TryReadS8": {
+              "kind": "function",
+              "type": "std::optional<Sint8>",
+              "parameters": [],
+              "name": "TryReadS8",
+              "doc": ""
+            },
+            "TryReadU16LE": {
+              "kind": "function",
+              "type": "std::optional<Uint16>",
+              "parameters": [],
+              "name": "TryReadU16LE",
+              "doc": ""
+            },
+            "TryReadS16LE": {
+              "kind": "function",
+              "type": "std::optional<Sint16>",
+              "parameters": [],
+              "name": "TryReadS16LE",
+              "doc": ""
+            },
+            "TryReadU16BE": {
+              "kind": "function",
+              "type": "std::optional<Uint16>",
+              "parameters": [],
+              "name": "TryReadU16BE",
+              "doc": ""
+            },
+            "TryReadS16BE": {
+              "kind": "function",
+              "type": "std::optional<Sint16>",
+              "parameters": [],
+              "name": "TryReadS16BE",
+              "doc": ""
+            },
+            "TryReadU32LE": {
+              "kind": "function",
+              "type": "std::optional<Uint32>",
+              "parameters": [],
+              "name": "TryReadU32LE",
+              "doc": ""
+            },
+            "TryReadS32LE": {
+              "kind": "function",
+              "type": "std::optional<Sint32>",
+              "parameters": [],
+              "name": "TryReadS32LE",
+              "doc": ""
+            },
+            "TryReadU32BE": {
+              "kind": "function",
+              "type": "std::optional<Uint32>",
+              "parameters": [],
+              "name": "TryReadU32BE",
+              "doc": ""
+            },
+            "TryReadS32BE": {
+              "kind": "function",
+              "type": "std::optional<Sint32>",
+              "parameters": [],
+              "name": "TryReadS32BE",
+              "doc": ""
+            },
+            "TryReadU64LE": {
+              "kind": "function",
+              "type": "std::optional<Uint64>",
+              "parameters": [],
+              "name": "TryReadU64LE",
+              "doc": ""
+            },
+            "TryReadS64LE": {
+              "kind": "function",
+              "type": "std::optional<Sint64>",
+              "parameters": [],
+              "name": "TryReadS64LE",
+              "doc": ""
+            },
+            "TryReadU64BE": {
+              "kind": "function",
+              "type": "std::optional<Uint64>",
+              "parameters": [],
+              "name": "TryReadU64BE",
+              "doc": ""
+            },
+            "TryReadS64BE": {
+              "kind": "function",
+              "type": "std::optional<Sint64>",
+              "parameters": [],
+              "name": "TryReadS64BE",
+              "doc": ""
+            },
+            "WriteU8": {
+              "doc": "Use this function to write a byte to an IOStream.\n\n@param value the byte value to write.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteU8",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Uint8"
+                }
+              ],
+              "sourceName": "SDL_WriteU8",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteS8": {
+              "doc": "Use this function to write a signed byte to an IOStream.\n\n@param value the byte value to write.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteS8",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Sint8"
+                }
+              ],
+              "sourceName": "SDL_WriteS8",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteU16LE": {
+              "doc": "Use this function to write 16 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteU16LE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Uint16"
+                }
+              ],
+              "sourceName": "SDL_WriteU16LE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteS16LE": {
+              "doc": "Use this function to write 16 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteS16LE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Sint16"
+                }
+              ],
+              "sourceName": "SDL_WriteS16LE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteU16BE": {
+              "doc": "Use this function to write 16 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteU16BE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Uint16"
+                }
+              ],
+              "sourceName": "SDL_WriteU16BE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteS16BE": {
+              "doc": "Use this function to write 16 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteS16BE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Sint16"
+                }
+              ],
+              "sourceName": "SDL_WriteS16BE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteU32LE": {
+              "doc": "Use this function to write 32 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteU32LE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Uint32"
+                }
+              ],
+              "sourceName": "SDL_WriteU32LE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteS32LE": {
+              "doc": "Use this function to write 32 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteS32LE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Sint32"
+                }
+              ],
+              "sourceName": "SDL_WriteS32LE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteU32BE": {
+              "doc": "Use this function to write 32 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteU32BE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Uint32"
+                }
+              ],
+              "sourceName": "SDL_WriteU32BE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteS32BE": {
+              "doc": "Use this function to write 32 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteS32BE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Sint32"
+                }
+              ],
+              "sourceName": "SDL_WriteS32BE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteU64LE": {
+              "doc": "Use this function to write 64 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteU64LE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Uint64"
+                }
+              ],
+              "sourceName": "SDL_WriteU64LE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteS64LE": {
+              "doc": "Use this function to write 64 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteS64LE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Sint64"
+                }
+              ],
+              "sourceName": "SDL_WriteS64LE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteU64BE": {
+              "doc": "Use this function to write 64 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteU64BE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Uint64"
+                }
+              ],
+              "sourceName": "SDL_WriteU64BE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "WriteS64BE": {
+              "doc": "Use this function to write 64 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WriteS64BE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "Sint64"
+                }
+              ],
+              "sourceName": "SDL_WriteS64BE",
+              "hints": {
+                "mayFail": true
+              }
+            }
+          },
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true
+          }
+        },
+        "IOFromFile": {
+          "doc": "Use this function to create a new IOStream structure for reading from\nand/or writing to a named file.\n\nThe `mode` string is treated roughly the same as in a call to the C\nlibrary's fopen(), even if SDL doesn't happen to use fopen() behind the\nscenes.\n\nAvailable `mode` strings:\n\n- \"r\": Open a file for reading. The file must exist.\n- \"w\": Create an empty file for writing. If a file with the same name\n  already exists its content is erased and the file is treated as a new\n  empty file.\n- \"a\": Append to a file. Writing operations append data at the end of the\n  file. The file is created if it does not exist.\n- \"r+\": Open a file for update both reading and writing. The file must\n  exist.\n- \"w+\": Create an empty file for both reading and writing. If a file with\n  the same name already exists its content is erased and the file is\n  treated as a new empty file.\n- \"a+\": Open a file for reading and appending. All writing operations are\n  performed at the end of the file, protecting the previous content to be\n  overwritten. You can reposition (fseek, rewind) the internal pointer to\n  anywhere in the file for reading, but writing operations will move it\n  back to the end of file. The file is created if it does not exist.\n\n**NOTE**: In order to open a file as a binary file, a \"b\" character has to\nbe included in the `mode` string. This additional \"b\" character can either\nbe appended at the end of the string (thus making the following compound\nmodes: \"rb\", \"wb\", \"ab\", \"r+b\", \"w+b\", \"a+b\") or be inserted between the\nletter and the \"+\" sign for the mixed modes (\"rb+\", \"wb+\", \"ab+\").\nAdditional characters may follow the sequence, although they should have no\neffect. For example, \"t\" is sometimes appended to make explicit the file is\na text file.\n\nThis function supports Unicode filenames, but they must be encoded in UTF-8\nformat, regardless of the underlying operating system.\n\nIn Android, IOStream.FromFile() can be used to open content:// URIs. As a\nfallback, IOStream.FromFile() will transparently open a matching filename in\nthe app's `assets`.\n\nClosing the IOStream will close SDL's internal file handle.\n\nThe following properties may be set at creation time by SDL:\n\n- `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast\n  to a win32 `HANDLE`, that this IOStream is using to access the\n  filesystem. If the program isn't running on Windows, or SDL used some\n  other method to access the filesystem, this property will not be set.\n- `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a\n  stdio `FILE *`, that this IOStream is using to access the filesystem.\n  If SDL used some other method to access the filesystem, this property\n  will not be set. PLEASE NOTE that if SDL is using a different C runtime\n  than your app, trying to use this pointer will almost certainly result in\n  a crash! This is mostly a problem on Windows; make sure you build SDL and\n  your app with the same compiler and settings to avoid it.\n- `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this\n  IOStream is using to access the filesystem.\n- `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast\n  to an Android NDK `AAsset *`, that this IOStream is using to access\n  the filesystem. If SDL used some other method to access the filesystem,\n  this property will not be set.\n\n@param file a UTF-8 string representing the filename to open.\n@param mode an ASCII string representing the mode to be used for opening\n            the file.\n@returns a pointer to the IOStream structure that is created or nullptr on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Close\n@sa IOStream.Flush\n@sa IOStream.Read\n@sa IOStream.Seek\n@sa IOStream.Tell\n@sa IOStream.Write",
+          "name": "IOFromFile",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "file",
+              "type": "StringParam"
+            },
+            {
+              "name": "mode",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_IOFromFile",
+          "hints": {
+            "wrapSelf": true
+          }
+        },
+        "prop::IOStream": {
+          "kind": "ns",
+          "name": "prop::IOStream",
+          "entries": {
+            "WINDOWS_HANDLE_POINTER": {
+              "doc": "",
+              "name": "WINDOWS_HANDLE_POINTER",
+              "kind": "var",
+              "value": "\"SDL.iostream.windows.handle\"",
+              "sourceName": "SDL_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER",
+              "type": "auto",
+              "constexpr": true
+            },
+            "STDIO_FILE_POINTER": {
+              "doc": "",
+              "name": "STDIO_FILE_POINTER",
+              "kind": "var",
+              "value": "\"SDL.iostream.stdio.file\"",
+              "sourceName": "SDL_PROP_IOSTREAM_STDIO_FILE_POINTER",
+              "type": "auto",
+              "constexpr": true
+            },
+            "FILE_DESCRIPTOR_NUMBER": {
+              "doc": "",
+              "name": "FILE_DESCRIPTOR_NUMBER",
+              "kind": "var",
+              "value": "\"SDL.iostream.file_descriptor\"",
+              "sourceName": "SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER",
+              "type": "auto",
+              "constexpr": true
+            },
+            "ANDROID_AASSET_POINTER": {
+              "doc": "",
+              "name": "ANDROID_AASSET_POINTER",
+              "kind": "var",
+              "value": "\"SDL.iostream.android.aasset\"",
+              "sourceName": "SDL_PROP_IOSTREAM_ANDROID_AASSET_POINTER",
+              "type": "auto",
+              "constexpr": true
+            },
+            "MEMORY_POINTER": {
+              "doc": "",
+              "name": "MEMORY_POINTER",
+              "kind": "var",
+              "value": "\"SDL.iostream.memory.base\"",
+              "sourceName": "SDL_PROP_IOSTREAM_MEMORY_POINTER",
+              "type": "auto",
+              "constexpr": true
+            },
+            "MEMORY_SIZE_NUMBER": {
+              "doc": "",
+              "name": "MEMORY_SIZE_NUMBER",
+              "kind": "var",
+              "value": "\"SDL.iostream.memory.size\"",
+              "sourceName": "SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER",
+              "type": "auto",
+              "constexpr": true
+            },
+            "DYNAMIC_MEMORY_POINTER": {
+              "doc": "",
+              "name": "DYNAMIC_MEMORY_POINTER",
+              "kind": "var",
+              "value": "\"SDL.iostream.dynamic.memory\"",
+              "sourceName": "SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER",
+              "type": "auto",
+              "constexpr": true
+            },
+            "DYNAMIC_CHUNKSIZE_NUMBER": {
+              "doc": "",
+              "name": "DYNAMIC_CHUNKSIZE_NUMBER",
+              "kind": "var",
+              "value": "\"SDL.iostream.dynamic.chunksize\"",
+              "sourceName": "SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER",
+              "type": "auto",
+              "constexpr": true
+            }
+          },
+          "doc": ""
+        },
+        "IOFromMem": {
+          "doc": "Use this function to prepare a read-write memory buffer for use with\nIOStream.\n\nThis function sets up an IOStream struct based on a memory area of a\ncertain size, for both read and write access.\n\nThis memory buffer is not copied by the IOStream; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to make sure the IOStream never writes to the memory\nbuffer, you should use IOStream.FromConstMem() with a read-only buffer of\nmemory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a buffer to feed an IOStream stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStream structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.FromConstMem\n@sa IOStream.Close\n@sa IOStream.Flush\n@sa IOStream.Read\n@sa IOStream.Seek\n@sa IOStream.Tell\n@sa IOStream.Write",
+          "name": "IOFromMem",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "mem",
+              "type": "void *"
+            },
+            {
+              "name": "size",
+              "type": "size_t"
+            }
+          ],
+          "sourceName": "SDL_IOFromMem",
+          "hints": {
+            "wrapSelf": true
+          }
+        },
+        "IOFromConstMem": {
+          "doc": "Use this function to prepare a read-only memory buffer for use with\nIOStream.\n\nThis function sets up an IOStream struct based on a memory area of a\ncertain size. It assumes the memory area is not writable.\n\nAttempting to write to this IOStream stream will report an error\nwithout writing to the memory buffer.\n\nThis memory buffer is not copied by the IOStream; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to write to a memory buffer, you should use IOStream.FromMem()\nwith a writable buffer of memory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a read-only buffer to feed an IOStream stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStream structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.FromMem\n@sa IOStream.Close\n@sa IOStream.Read\n@sa IOStream.Seek\n@sa IOStream.Tell",
+          "name": "IOFromConstMem",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "mem",
+              "type": "const void *"
+            },
+            {
+              "name": "size",
+              "type": "size_t"
+            }
+          ],
+          "sourceName": "SDL_IOFromConstMem",
+          "hints": {
+            "wrapSelf": true
+          }
+        },
+        "IOFromDynamicMem": {
+          "doc": "Use this function to create an IOStream that is backed by dynamically\nallocated memory.\n\nThis supports the following properties to provide access to the memory and\ncontrol over allocations:\n\n- `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal\n  memory of the stream. This can be set to nullptr to transfer ownership of\n  the memory to the application, which should free the memory with\n  free(). If this is done, the next operation on the stream must be\n  IOStream.Close().\n- `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in\n  multiples of this size, defaulting to 1024.\n\n@returns a pointer to a new IOStream structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Close\n@sa IOStream.Read\n@sa IOStream.Seek\n@sa IOStream.Tell\n@sa IOStream.Write",
+          "name": "IOFromDynamicMem",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [],
+          "sourceName": "SDL_IOFromDynamicMem",
+          "hints": {
+            "wrapSelf": true
+          }
+        },
+        "OpenIO": {
+          "doc": "Create a custom IOStream.\n\nApplications do not need to use this function unless they are providing\ntheir own IOStream implementation. If you just need an IOStream to\nread/write a common data source, you should use the built-in\nimplementations in SDL, like IOStream.FromFile() or IOStream.FromMem(), etc.\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this IOStream, initialized\n             using SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@returns a pointer to the allocated memory on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Close\n@sa SDL_INIT_INTERFACE\n@sa IOStream.FromConstMem\n@sa IOStream.FromFile\n@sa IOStream.FromMem",
+          "name": "OpenIO",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "iface",
+              "type": "const IOStreamInterface *"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_OpenIO",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "CloseIO": {
+          "doc": "Close and free an allocated IOStream structure.\n\nIOStream.Close() closes and cleans up the IOStream stream. It releases any\nresources used by the stream and frees the IOStream itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the IOStream is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call IOStream.Flush() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@param context IOStream structure to close.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Open",
+          "name": "CloseIO",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "context",
+              "type": "IOStreamRaw"
+            }
+          ],
+          "sourceName": "SDL_CloseIO",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "GetIOProperties": {
+          "doc": "Get the properties associated with an IOStream.\n\n@param context a pointer to an IOStream structure.\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetIOProperties",
+          "kind": "function",
+          "type": "PropertiesID",
+          "parameters": [
+            {
+              "name": "context",
+              "type": "IOStreamParam"
+            }
+          ],
+          "sourceName": "SDL_GetIOProperties",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "GetIOStatus": {
+          "doc": "Query the stream status of an IOStream.\n\nThis information can be useful to decide if a short read or write was due\nto an error, an EOF, or a non-blocking operation that isn't yet ready to\ncomplete.\n\nAn IOStream's status is only expected to change after a IOStream.Read or\nIOStream.Write call; don't expect it to change if you just call this query\nfunction in a tight loop.\n\n@param context the IOStream to query.\n@returns an IOStatus enum with the current state.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetIOStatus",
+          "kind": "function",
+          "type": "IOStatus",
+          "parameters": [
+            {
+              "name": "context",
+              "type": "IOStreamParam"
+            }
+          ],
+          "sourceName": "SDL_GetIOStatus"
+        },
+        "GetIOSize": {
+          "doc": "Use this function to get the size of the data stream in an IOStream.\n\n@param context the IOStream to get the size of the data stream from.\n@returns the size of the data stream in the IOStream on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetIOSize",
+          "kind": "function",
+          "type": "Sint64",
+          "parameters": [
+            {
+              "name": "context",
+              "type": "IOStreamParam"
+            }
+          ],
+          "sourceName": "SDL_GetIOSize",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "SeekIO": {
+          "doc": "Seek within an IOStream data stream.\n\nThis function seeks to byte `offset`, relative to `whence`.\n\n`whence` may be any of the following values:\n\n- `IO_SEEK_SET`: seek from the beginning of data\n- `IO_SEEK_CUR`: seek relative to current read point\n- `IO_SEEK_END`: seek relative to the end of data\n\nIf this stream can not seek, it will return -1.\n\n@param context a pointer to an IOStream structure.\n@param offset an offset in bytes, relative to `whence` location; can be\n              negative.\n@param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`,\n              `IO_SEEK_END`.\n@returns the final offset in the data stream after the seek or -1 on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Tell",
+          "name": "SeekIO",
+          "kind": "function",
+          "type": "Sint64",
+          "parameters": [
+            {
+              "name": "context",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "offset",
+              "type": "Sint64"
+            },
+            {
+              "name": "whence",
+              "type": "IOWhence"
+            }
+          ],
+          "sourceName": "SDL_SeekIO"
+        },
+        "TellIO": {
+          "doc": "Determine the current read/write offset in an IOStream data stream.\n\nIOStream.Tell is actually a wrapper function that calls the IOStream's\n`seek` method, with an offset of 0 bytes from `IO_SEEK_CUR`, to\nsimplify application development.\n\n@param context an IOStream data stream object from which to get the\n               current offset.\n@returns the current offset in the stream, or -1 if the information can not\n         be determined.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Seek",
+          "name": "TellIO",
+          "kind": "function",
+          "type": "Sint64",
+          "parameters": [
+            {
+              "name": "context",
+              "type": "IOStreamParam"
+            }
+          ],
+          "sourceName": "SDL_TellIO"
+        },
+        "ReadIO": {
+          "doc": "Read from a data source.\n\nThis function reads up `size` bytes from the data source to the area\npointed at by `ptr`. This function may read less bytes than requested.\n\nThis function will return zero when the data stream is completely read, and\nIOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and\nthe stream is not at EOF, IOStream.GetStatus() will return a different error\nvalue and GetError() will offer a human-readable message.\n\n@param context a pointer to an IOStream structure.\n@param ptr a pointer to a buffer to read data into.\n@param size the number of bytes to read from the data source.\n@returns the number of bytes read, or 0 on end of file or other failure;\n         call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Write\n@sa IOStream.GetStatus",
+          "name": "ReadIO",
+          "kind": "function",
+          "type": "size_t",
+          "parameters": [
+            {
+              "name": "context",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "ptr",
+              "type": "void *"
+            },
+            {
+              "name": "size",
+              "type": "size_t"
+            }
+          ],
+          "sourceName": "SDL_ReadIO"
+        },
+        "WriteIO": {
+          "doc": "Write to an IOStream data stream.\n\nThis function writes exactly `size` bytes from the area pointed at by `ptr`\nto the stream. If this fails for any reason, it'll return less than `size`\nto demonstrate how far the write progressed. On success, it returns `size`.\n\nOn error, this function still attempts to write as much as possible, so it\nmight return a positive value less than the requested write size.\n\nThe caller can use IOStream.GetStatus() to determine if the problem is\nrecoverable, such as a non-blocking write that can simply be retried later,\nor a fatal error.\n\n@param context a pointer to an IOStream structure.\n@param ptr a pointer to a buffer containing data to write.\n@param size the number of bytes to write.\n@returns the number of bytes written, which will be less than `size` on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.printf\n@sa IOStream.Read\n@sa IOStream.Seek\n@sa IOStream.Flush\n@sa IOStream.GetStatus",
+          "name": "WriteIO",
+          "kind": "function",
+          "type": "size_t",
+          "parameters": [
+            {
+              "name": "context",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "ptr",
+              "type": "const void *"
+            },
+            {
+              "name": "size",
+              "type": "size_t"
+            }
+          ],
+          "sourceName": "SDL_WriteIO"
+        },
+        "IOprintf": {
+          "doc": "Print to an IOStream data stream.\n\nThis function does formatted printing to the stream.\n\n@param context a pointer to an IOStream structure.\n@param fmt a printf() style format string.\n@param ... additional parameters matching % tokens in the `fmt` string, if\n           any.\n@returns the number of bytes written or 0 on failure; call GetError()\n         for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.vprintf\n@sa IOStream.Write",
+          "name": "IOprintf",
+          "kind": "function",
+          "type": "size_t",
+          "parameters": [
+            {
+              "name": "context",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_IOprintf"
+        },
+        "IOvprintf": {
+          "doc": "Print to an IOStream data stream.\n\nThis function does formatted printing to the stream.\n\n@param context a pointer to an IOStream structure.\n@param fmt a printf() style format string.\n@param ap a variable argument list.\n@returns the number of bytes written or 0 on failure; call GetError()\n         for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.printf\n@sa IOStream.Write",
+          "name": "IOvprintf",
+          "kind": "function",
+          "type": "size_t",
+          "parameters": [
+            {
+              "name": "context",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            {
+              "name": "ap",
+              "type": "va_list"
+            }
+          ],
+          "sourceName": "SDL_IOvprintf"
+        },
+        "FlushIO": {
+          "doc": "Flush any buffered data in the stream.\n\nThis function makes sure that any buffered data is written to the stream.\nNormally this isn't necessary but if the stream is a pipe or socket it\nguarantees that any pending data is sent.\n\n@param context IOStream structure to flush.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Open\n@sa IOStream.Write",
+          "name": "FlushIO",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "context",
+              "type": "IOStreamParam"
+            }
+          ],
+          "sourceName": "SDL_FlushIO",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "LoadFile_IO": {
+          "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param src the IOStream to read all available data from.\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFile\n@sa IOStream.SaveFile",
+          "name": "LoadFile_IO",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "datasize",
+              "type": "size_t *"
+            },
+            {
+              "name": "closeio",
+              "type": "bool"
+            }
+          ],
+          "sourceName": "SDL_LoadFile_IO"
+        },
+        "LoadFile": {
+          "doc": "Load all the data from a file path.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param file the path to read all available data from.\n@param datasize if not nullptr, will store the number of bytes read.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.LoadFile\n@sa SaveFile",
+          "name": "LoadFile",
+          "kind": "function",
+          "type": "StringResult",
+          "parameters": [
+            {
+              "name": "file",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_LoadFile"
+        },
+        "LoadFileAs": {
+          "kind": "function",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "type": "OwnArray<T>",
+          "parameters": [
+            {
+              "type": "StringParam",
+              "name": "file"
+            }
+          ],
+          "name": "LoadFileAs",
+          "doc": ""
+        },
+        "SaveFile_IO": {
+          "doc": "Save all the data into an SDL data stream.\n\n@param src the IOStream to write all data to.\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveFile\n@sa IOStream.LoadFile",
+          "name": "SaveFile_IO",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "data",
+              "type": "const void *"
+            },
+            {
+              "name": "datasize",
+              "type": "size_t"
+            },
+            {
+              "name": "closeio",
+              "type": "bool"
+            }
+          ],
+          "sourceName": "SDL_SaveFile_IO",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "SaveFile": {
+          "doc": "Save all the data into a file path.\n\n@param file the path to write all available data into.\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.SaveFile\n@sa LoadFile",
+          "name": "SaveFile",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "file",
+              "type": "StringParam"
+            },
+            {
+              "name": "data",
+              "type": "SourceBytes"
+            }
+          ],
+          "sourceName": "SDL_SaveFile",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadU8": {
+          "doc": "Use this function to read a byte from an IOStream.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the IOStream to read from.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadU8",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint8 *"
+            }
+          ],
+          "sourceName": "SDL_ReadU8",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadS8": {
+          "doc": "Use this function to read a signed byte from an IOStream.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the IOStream to read from.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadS8",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint8 *"
+            }
+          ],
+          "sourceName": "SDL_ReadS8",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadU16LE": {
+          "doc": "Use this function to read 16 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadU16LE",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint16 *"
+            }
+          ],
+          "sourceName": "SDL_ReadU16LE",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadS16LE": {
+          "doc": "Use this function to read 16 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadS16LE",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint16 *"
+            }
+          ],
+          "sourceName": "SDL_ReadS16LE",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadU16BE": {
+          "doc": "Use this function to read 16 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadU16BE",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint16 *"
+            }
+          ],
+          "sourceName": "SDL_ReadU16BE",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadS16BE": {
+          "doc": "Use this function to read 16 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadS16BE",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint16 *"
+            }
+          ],
+          "sourceName": "SDL_ReadS16BE",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadU32LE": {
+          "doc": "Use this function to read 32 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadU32LE",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint32 *"
+            }
+          ],
+          "sourceName": "SDL_ReadU32LE",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadS32LE": {
+          "doc": "Use this function to read 32 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadS32LE",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint32 *"
+            }
+          ],
+          "sourceName": "SDL_ReadS32LE",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadU32BE": {
+          "doc": "Use this function to read 32 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadU32BE",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint32 *"
+            }
+          ],
+          "sourceName": "SDL_ReadU32BE",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadS32BE": {
+          "doc": "Use this function to read 32 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadS32BE",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint32 *"
+            }
+          ],
+          "sourceName": "SDL_ReadS32BE",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadU64LE": {
+          "doc": "Use this function to read 64 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadU64LE",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint64 *"
+            }
+          ],
+          "sourceName": "SDL_ReadU64LE",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadS64LE": {
+          "doc": "Use this function to read 64 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadS64LE",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint64 *"
+            }
+          ],
+          "sourceName": "SDL_ReadS64LE",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadU64BE": {
+          "doc": "Use this function to read 64 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadU64BE",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint64 *"
+            }
+          ],
+          "sourceName": "SDL_ReadU64BE",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "ReadS64BE": {
+          "doc": "Use this function to read 64 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReadS64BE",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint64 *"
+            }
+          ],
+          "sourceName": "SDL_ReadS64BE",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "WriteU8": {
+          "doc": "Use this function to write a byte to an IOStream.\n\n@param dst the IOStream to write to.\n@param value the byte value to write.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteU8",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint8"
+            }
+          ],
+          "sourceName": "SDL_WriteU8",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteS8": {
+          "doc": "Use this function to write a signed byte to an IOStream.\n\n@param dst the IOStream to write to.\n@param value the byte value to write.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteS8",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint8"
+            }
+          ],
+          "sourceName": "SDL_WriteS8",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteU16LE": {
+          "doc": "Use this function to write 16 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteU16LE",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint16"
+            }
+          ],
+          "sourceName": "SDL_WriteU16LE",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteS16LE": {
+          "doc": "Use this function to write 16 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteS16LE",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint16"
+            }
+          ],
+          "sourceName": "SDL_WriteS16LE",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteU16BE": {
+          "doc": "Use this function to write 16 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteU16BE",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint16"
+            }
+          ],
+          "sourceName": "SDL_WriteU16BE",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteS16BE": {
+          "doc": "Use this function to write 16 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteS16BE",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint16"
+            }
+          ],
+          "sourceName": "SDL_WriteS16BE",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteU32LE": {
+          "doc": "Use this function to write 32 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteU32LE",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_WriteU32LE",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteS32LE": {
+          "doc": "Use this function to write 32 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteS32LE",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint32"
+            }
+          ],
+          "sourceName": "SDL_WriteS32LE",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteU32BE": {
+          "doc": "Use this function to write 32 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteU32BE",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_WriteU32BE",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteS32BE": {
+          "doc": "Use this function to write 32 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteS32BE",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint32"
+            }
+          ],
+          "sourceName": "SDL_WriteS32BE",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteU64LE": {
+          "doc": "Use this function to write 64 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteU64LE",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint64"
+            }
+          ],
+          "sourceName": "SDL_WriteU64LE",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteS64LE": {
+          "doc": "Use this function to write 64 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteS64LE",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint64"
+            }
+          ],
+          "sourceName": "SDL_WriteS64LE",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteU64BE": {
+          "doc": "Use this function to write 64 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteU64BE",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Uint64"
+            }
+          ],
+          "sourceName": "SDL_WriteU64BE",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        },
+        "WriteS64BE": {
+          "doc": "Use this function to write 64 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "WriteS64BE",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "IOStreamParam"
+            },
+            {
+              "name": "value",
+              "type": "Sint64"
+            }
+          ],
+          "sourceName": "SDL_WriteS64BE",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true
+          }
+        }
+      },
+      "includes": [
+        "SDL3/SDL_iostream.h"
+      ],
+      "localIncludes": [
+        "SDL3pp_properties.h",
+        "SDL3pp_stdinc.h"
+      ]
+    },
     "SDL3pp_bits.h": {
       "name": "SDL3pp_bits.h",
       "doc": "@defgroup CategoryBits Category Bits\n\nFunctions for fiddling with bits and bitmasks.",
@@ -14229,7 +16384,7 @@
           "sourceName": "SDL_FLT_EPSILON"
         },
         "SDL_INIT_INTERFACE": {
-          "doc": "A macro to initialize an SDL interface.\n\nThis macro will initialize an SDL interface structure and should be called\nbefore you fill out the fields with your implementation.\n\nYou can use it like this:\n\n```c\nSDL_IOStreamInterface iface;\n\nSDL_INIT_INTERFACE(&iface);\n\n// Fill in the interface function pointers with your implementation\niface.seek = ...\n\nstream = SDL_OpenIO(&iface, nullptr);\n```\n\nIf you are using designated initializers, you can use the size of the\ninterface as the version, e.g.\n\n```c\nSDL_IOStreamInterface iface = {\n    .version = sizeof(iface),\n    .seek = ...\n};\nstream = SDL_OpenIO(&iface, nullptr);\n```\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_IOStreamInterface\n@sa SDL_StorageInterface\n@sa SDL_VirtualJoystickDesc",
+          "doc": "A macro to initialize an SDL interface.\n\nThis macro will initialize an SDL interface structure and should be called\nbefore you fill out the fields with your implementation.\n\nYou can use it like this:\n\n```c\nIOStreamInterface iface;\n\nSDL_INIT_INTERFACE(&iface);\n\n// Fill in the interface function pointers with your implementation\niface.seek = ...\n\nstream = IOStream.Open(&iface, nullptr);\n```\n\nIf you are using designated initializers, you can use the size of the\ninterface as the version, e.g.\n\n```c\nIOStreamInterface iface = {\n    .version = sizeof(iface),\n    .seek = ...\n};\nstream = IOStream.Open(&iface, nullptr);\n```\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa IOStreamInterface\n@sa SDL_StorageInterface\n@sa SDL_VirtualJoystickDesc",
           "name": "SDL_INIT_INTERFACE",
           "kind": "def",
           "parameters": [
