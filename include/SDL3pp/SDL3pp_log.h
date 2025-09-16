@@ -130,7 +130,7 @@ public:
    *
    * @param category the value to be wrapped
    */
-  constexpr LogCategory(SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION)
+  constexpr LogCategory(LogCategoryRaw category = SDL_LOG_CATEGORY_APPLICATION)
     : m_category(category)
   {
   }
@@ -153,7 +153,7 @@ public:
   /**
    * Compares with the underlying type
    */
-  constexpr auto operator<=>(SDL_LogCategory category) const
+  constexpr auto operator<=>(LogCategoryRaw category) const
   {
     return operator<=>(LogCategory(category));
   }

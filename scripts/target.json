@@ -3584,7 +3584,7 @@
                 "constexpr": true,
                 "parameters": [
                   {
-                    "type": "SDL_LogCategory",
+                    "type": "LogCategoryRaw",
                     "name": "category",
                     "default": "{}"
                   }
@@ -3638,7 +3638,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "SDL_LogCategory",
+                    "type": "LogCategoryRaw",
                     "name": "category"
                   }
                 ],
@@ -5393,150 +5393,6 @@
           "value": "SDL_FOURCC(A, B, C, D)",
           "sourceName": "SDL_DEFINE_PIXELFOURCC"
         },
-        "SDL_DEFINE_PIXELFORMAT": {
-          "doc": "A macro for defining custom non-FourCC pixel formats.\n\nFor example, defining PIXELFORMAT_RGBA8888 looks like this:\n\n```c\nSDL_DEFINE_PIXELFORMAT(PIXELTYPE_PACKED32, PACKEDORDER_RGBA, PACKEDLAYOUT_8888, 32, 4)\n```\n\n@param type the type of the new format, probably a PixelType value.\n@param order the order of the new format, probably a BitmapOrder,\n             PackedOrder, or ArrayOrder value.\n@param layout the layout of the new format, probably an PackedLayout\n              value or zero.\n@param bits the number of bits per pixel of the new format.\n@param bytes the number of bytes per pixel of the new format.\n@returns a format value in the style of PixelFormat.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_DEFINE_PIXELFORMAT",
-          "kind": "def",
-          "parameters": [
-            "type",
-            "order",
-            "layout",
-            "bits",
-            "bytes"
-          ],
-          "value": "    ((1 << 28) | ((type) << 24) | ((order) << 20) | ((layout) << 16) | \\\n     ((bits) << 8) | ((bytes) << 0))",
-          "sourceName": "SDL_DEFINE_PIXELFORMAT"
-        },
-        "SDL_PIXELFLAG": {
-          "doc": "A macro to retrieve the flags of an PixelFormat.\n\nThis macro is generally not needed directly by an app, which should use\nspecific tests, like SDL_ISPIXELFORMAT_FOURCC, instead.\n\n@param format an PixelFormat to check.\n@returns the flags of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_PIXELFLAG",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "(((format) >> 28) & 0x0F)",
-          "sourceName": "SDL_PIXELFLAG"
-        },
-        "SDL_PIXELTYPE": {
-          "doc": "A macro to retrieve the type of an PixelFormat.\n\nThis is usually a value from the PixelType enumeration.\n\n@param format an PixelFormat to check.\n@returns the type of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_PIXELTYPE",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "(((format) >> 24) & 0x0F)",
-          "sourceName": "SDL_PIXELTYPE"
-        },
-        "SDL_PIXELORDER": {
-          "doc": "A macro to retrieve the order of an PixelFormat.\n\nThis is usually a value from the BitmapOrder, PackedOrder, or\nArrayOrder enumerations, depending on the format type.\n\n@param format an PixelFormat to check.\n@returns the order of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_PIXELORDER",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "(((format) >> 20) & 0x0F)",
-          "sourceName": "SDL_PIXELORDER"
-        },
-        "SDL_PIXELLAYOUT": {
-          "doc": "A macro to retrieve the layout of an PixelFormat.\n\nThis is usually a value from the PackedLayout enumeration, or zero if a\nlayout doesn't make sense for the format type.\n\n@param format an PixelFormat to check.\n@returns the layout of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_PIXELLAYOUT",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "(((format) >> 16) & 0x0F)",
-          "sourceName": "SDL_PIXELLAYOUT"
-        },
-        "SDL_BITSPERPIXEL": {
-          "doc": "A macro to determine an PixelFormat's bits per pixel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\nFourCC formats will report zero here, as it rarely makes sense to measure\nthem per-pixel.\n\n@param format an PixelFormat to check.\n@returns the bits-per-pixel of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_BYTESPERPIXEL",
-          "name": "SDL_BITSPERPIXEL",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "    (SDL_ISPIXELFORMAT_FOURCC(format) ? 0 : (((format) >> 8) & 0xFF))",
-          "sourceName": "SDL_BITSPERPIXEL"
-        },
-        "SDL_BYTESPERPIXEL": {
-          "doc": "A macro to determine an PixelFormat's bytes per pixel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\nFourCC formats do their best here, but many of them don't have a meaningful\nmeasurement of bytes per pixel.\n\n@param format an PixelFormat to check.\n@returns the bytes-per-pixel of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_BITSPERPIXEL",
-          "name": "SDL_BYTESPERPIXEL",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "    (SDL_ISPIXELFORMAT_FOURCC(format) ? \\\n        ((((format) == SDL_PIXELFORMAT_YUY2) || \\\n          ((format) == SDL_PIXELFORMAT_UYVY) || \\\n          ((format) == SDL_PIXELFORMAT_YVYU) || \\\n          ((format) == SDL_PIXELFORMAT_P010)) ? 2 : 1) : (((format) >> 0) & 0xFF))",
-          "sourceName": "SDL_BYTESPERPIXEL"
-        },
-        "SDL_ISPIXELFORMAT_INDEXED": {
-          "doc": "A macro to determine if an PixelFormat is an indexed format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is indexed, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_ISPIXELFORMAT_INDEXED",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX1) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX2) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX4) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX8)))",
-          "sourceName": "SDL_ISPIXELFORMAT_INDEXED"
-        },
-        "SDL_ISPIXELFORMAT_PACKED": {
-          "doc": "A macro to determine if an PixelFormat is a packed format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is packed, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_ISPIXELFORMAT_PACKED",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED8) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32)))",
-          "sourceName": "SDL_ISPIXELFORMAT_PACKED"
-        },
-        "SDL_ISPIXELFORMAT_ARRAY": {
-          "doc": "A macro to determine if an PixelFormat is an array format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is an array, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_ISPIXELFORMAT_ARRAY",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU8) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU32) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))",
-          "sourceName": "SDL_ISPIXELFORMAT_ARRAY"
-        },
-        "SDL_ISPIXELFORMAT_10BIT": {
-          "doc": "A macro to determine if an PixelFormat is a 10-bit format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is 10-bit, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_ISPIXELFORMAT_10BIT",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "      (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n       ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32) && \\\n        (SDL_PIXELLAYOUT(format) == SDL_PACKEDLAYOUT_2101010)))",
-          "sourceName": "SDL_ISPIXELFORMAT_10BIT"
-        },
-        "SDL_ISPIXELFORMAT_FLOAT": {
-          "doc": "A macro to determine if an PixelFormat is a floating point format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is 10-bit, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_ISPIXELFORMAT_FLOAT",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "      (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n       ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) || \\\n        (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))",
-          "sourceName": "SDL_ISPIXELFORMAT_FLOAT"
-        },
-        "SDL_ISPIXELFORMAT_ALPHA": {
-          "doc": "A macro to determine if an PixelFormat has an alpha channel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format has alpha, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_ISPIXELFORMAT_ALPHA",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "    ((SDL_ISPIXELFORMAT_PACKED(format) && \\\n      ((SDL_PIXELORDER(format) == SDL_PACKEDORDER_ARGB) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_RGBA) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_ABGR) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_BGRA))) || \\\n     (SDL_ISPIXELFORMAT_ARRAY(format) && \\\n      ((SDL_PIXELORDER(format) == SDL_ARRAYORDER_ARGB) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_RGBA) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_ABGR) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_BGRA))))",
-          "sourceName": "SDL_ISPIXELFORMAT_ALPHA"
-        },
-        "SDL_ISPIXELFORMAT_FOURCC": {
-          "doc": "A macro to determine if an PixelFormat is a \"FourCC\" format.\n\nThis covers custom and other unusual formats.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format has alpha, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_ISPIXELFORMAT_FOURCC",
-          "kind": "def",
-          "parameters": [
-            "format"
-          ],
-          "value": "    /* The flag is set to 1 because 0x1? is not in the printable ASCII range */ \\\n    ((format) && (SDL_PIXELFLAG(format) != 1))",
-          "sourceName": "SDL_ISPIXELFORMAT_FOURCC"
-        },
         "PixelFormat": {
           "doc": "Pixel format.\n\nSDL's pixel formats have the following naming convention:\n\n- Names with a list of components and a single bit count, such as RGB24 and\n  ABGR32, define a platform-independent encoding into bytes in the order\n  specified. For example, in RGB24 data, each pixel is encoded in 3 bytes\n  (red, green, blue) in that order, and in ABGR32 data, each pixel is\n  encoded in 4 bytes (alpha, blue, green, red) in that order. Use these\n  names if the property of a format that is important to you is the order\n  of the bytes in memory or on disk.\n- Names with a bit count per component, such as ARGB8888 and XRGB1555, are\n  \"packed\" into an appropriately-sized integer in the platform's native\n  endianness. For example, ARGB8888 is a sequence of 32-bit integers; in\n  each integer, the most significant bits are alpha, and the least\n  significant bits are blue. On a little-endian CPU such as x86, the least\n  significant bits of each integer are arranged first in memory, but on a\n  big-endian CPU such as s390x, the most significant bits are arranged\n  first. Use these names if the property of a format that is important to\n  you is the meaning of each bit position within a native-endianness\n  integer.\n- In indexed formats such as INDEX4LSB, each pixel is represented by\n  encoding an index into the palette into the indicated number of bits,\n  with multiple pixels packed into each byte if appropriate. In LSB\n  formats, the first (leftmost) pixel is stored in the least-significant\n  bits of the byte; in MSB formats, it's stored in the most-significant\n  bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly\n  fills one byte.\n\nThe 32-bit byte-array encodings such as RGBA32 are aliases for the\nappropriate 8888 encoding for the current platform. For example, RGBA32 is\nan alias for ABGR8888 on little-endian CPUs like x86, or an alias for\nRGBA8888 on big-endian CPUs.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "PixelFormat",
@@ -5549,26 +5405,60 @@
               "type": "SDL_PixelFormat",
               "doc": ""
             },
-            "PixelFormat": {
-              "kind": "function",
-              "name": "PixelFormat",
-              "type": "",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "SDL_PixelFormat",
-                  "name": "format",
-                  "default": "{}"
-                }
-              ],
-              "doc": "Wraps PixelFormat.\n\n@param format the value to be wrapped",
-              "hints": {
-                "init": [
-                  "m_format(format)"
+            "PixelFormat": [
+              {
+                "kind": "function",
+                "name": "PixelFormat",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "PixelFormatRaw",
+                    "name": "format",
+                    "default": "{}"
+                  }
                 ],
-                "changeAccess": "public"
+                "doc": "Wraps PixelFormat.\n\n@param format the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "m_format(format)"
+                  ],
+                  "changeAccess": "public"
+                }
+              },
+              {
+                "doc": "A macro for defining custom non-FourCC pixel formats.\n\nFor example, defining PIXELFORMAT_RGBA8888 looks like this:\n\n```c\nPixelFormat.PixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA, PACKEDLAYOUT_8888, 32, 4)\n```\n\n@param type the type of the new format, probably a PixelType value.\n@param order the order of the new format, probably a BitmapOrder,\n             PackedOrder, or ArrayOrder value.\n@param layout the layout of the new format, probably an PackedLayout\n              value or zero.\n@param bits the number of bits per pixel of the new format.\n@param bytes the number of bytes per pixel of the new format.\n@post a format value in the style of PixelFormat.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+                "name": "PixelFormat",
+                "kind": "function",
+                "parameters": [
+                  {
+                    "type": "PixelType",
+                    "name": "type"
+                  },
+                  {
+                    "type": "int",
+                    "name": "order"
+                  },
+                  {
+                    "type": "PackedLayout",
+                    "name": "layout"
+                  },
+                  {
+                    "type": "int",
+                    "name": "bits"
+                  },
+                  {
+                    "type": "int",
+                    "name": "bytes"
+                  }
+                ],
+                "value": "    ((1 << 28) | ((type) << 24) | ((order) << 20) | ((layout) << 16) | \\\n     ((bits) << 8) | ((bytes) << 0))",
+                "sourceName": "SDL_DEFINE_PIXELFORMAT",
+                "type": "",
+                "constexpr": true,
+                "after": "SDL_PixelFormat"
               }
-            },
+            ],
             "operator==": [
               {
                 "kind": "function",
@@ -5595,7 +5485,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "SDL_PixelFormat",
+                    "type": "PixelFormatRaw",
                     "name": "format"
                   }
                 ],
@@ -5631,64 +5521,136 @@
               }
             },
             "GetType": {
+              "doc": "A macro to retrieve the type of an PixelFormat.\n\nThis is usually a value from the PixelType enumeration.\n\n@param format an PixelFormat to check.\n@returns the type of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "GetType",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "(((format) >> 24) & 0x0F)",
+              "sourceName": "SDL_PIXELTYPE",
+              "type": "PixelType",
+              "immutable": true,
+              "constexpr": true
             },
             "GetOrder": {
+              "doc": "A macro to retrieve the order of an PixelFormat.\n\nThis is usually a value from the BitmapOrder, PackedOrder, or\nArrayOrder enumerations, depending on the format type.\n\n@param format an PixelFormat to check.\n@returns the order of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "GetOrder",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "(((format) >> 20) & 0x0F)",
+              "sourceName": "SDL_PIXELORDER",
+              "type": "int",
+              "immutable": true,
+              "constexpr": true
             },
             "GetLayout": {
+              "doc": "A macro to retrieve the layout of an PixelFormat.\n\nThis is usually a value from the PackedLayout enumeration, or zero if a\nlayout doesn't make sense for the format type.\n\n@param format an PixelFormat to check.\n@returns the layout of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "GetLayout",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "(((format) >> 16) & 0x0F)",
+              "sourceName": "SDL_PIXELLAYOUT",
+              "type": "PackedLayout",
+              "immutable": true,
+              "constexpr": true
             },
             "GetBitsPerPixel": {
+              "doc": "A macro to determine an PixelFormat's bits per pixel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\nFourCC formats will report zero here, as it rarely makes sense to measure\nthem per-pixel.\n\n@param format an PixelFormat to check.\n@returns the bits-per-pixel of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa PixelFormat.GetBytesPerPixel",
               "name": "GetBitsPerPixel",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "    (SDL_ISPIXELFORMAT_FOURCC(format) ? 0 : (((format) >> 8) & 0xFF))",
+              "sourceName": "SDL_BITSPERPIXEL",
+              "type": "int",
+              "immutable": true,
+              "constexpr": true
             },
             "GetBytesPerPixel": {
+              "doc": "A macro to determine an PixelFormat's bytes per pixel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\nFourCC formats do their best here, but many of them don't have a meaningful\nmeasurement of bytes per pixel.\n\n@param format an PixelFormat to check.\n@returns the bytes-per-pixel of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa PixelFormat.GetBitsPerPixel",
               "name": "GetBytesPerPixel",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "    (SDL_ISPIXELFORMAT_FOURCC(format) ? \\\n        ((((format) == SDL_PIXELFORMAT_YUY2) || \\\n          ((format) == SDL_PIXELFORMAT_UYVY) || \\\n          ((format) == SDL_PIXELFORMAT_YVYU) || \\\n          ((format) == SDL_PIXELFORMAT_P010)) ? 2 : 1) : (((format) >> 0) & 0xFF))",
+              "sourceName": "SDL_BYTESPERPIXEL",
+              "type": "int",
+              "immutable": true,
+              "constexpr": true
             },
             "IsIndexed": {
+              "doc": "A macro to determine if an PixelFormat is an indexed format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is indexed, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "IsIndexed",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX1) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX2) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX4) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX8)))",
+              "sourceName": "SDL_ISPIXELFORMAT_INDEXED",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
             },
             "IsPacked": {
+              "doc": "A macro to determine if an PixelFormat is a packed format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is packed, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "IsPacked",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED8) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32)))",
+              "sourceName": "SDL_ISPIXELFORMAT_PACKED",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
             },
             "IsArray": {
+              "doc": "A macro to determine if an PixelFormat is an array format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is an array, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "IsArray",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU8) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU32) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))",
+              "sourceName": "SDL_ISPIXELFORMAT_ARRAY",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
             },
             "Is10Bit": {
+              "doc": "A macro to determine if an PixelFormat is a 10-bit format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is 10-bit, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "Is10Bit",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "      (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n       ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32) && \\\n        (SDL_PIXELLAYOUT(format) == SDL_PACKEDLAYOUT_2101010)))",
+              "sourceName": "SDL_ISPIXELFORMAT_10BIT",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
             },
             "IsFloat": {
+              "doc": "A macro to determine if an PixelFormat is a floating point format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is 10-bit, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "IsFloat",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "      (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n       ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) || \\\n        (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))",
+              "sourceName": "SDL_ISPIXELFORMAT_FLOAT",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
             },
             "IsAlpha": {
+              "doc": "A macro to determine if an PixelFormat has an alpha channel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format has alpha, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "IsAlpha",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "    ((SDL_ISPIXELFORMAT_PACKED(format) && \\\n      ((SDL_PIXELORDER(format) == SDL_PACKEDORDER_ARGB) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_RGBA) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_ABGR) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_BGRA))) || \\\n     (SDL_ISPIXELFORMAT_ARRAY(format) && \\\n      ((SDL_PIXELORDER(format) == SDL_ARRAYORDER_ARGB) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_RGBA) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_ABGR) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_BGRA))))",
+              "sourceName": "SDL_ISPIXELFORMAT_ALPHA",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
             },
             "IsFourCC": {
+              "doc": "A macro to determine if an PixelFormat is a \"FourCC\" format.\n\nThis covers custom and other unusual formats.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format has alpha, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "IsFourCC",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "    /* The flag is set to 1 because 0x1? is not in the printable ASCII range */ \\\n    ((format) && (SDL_PIXELFLAG(format) != 1))",
+              "sourceName": "SDL_ISPIXELFORMAT_FOURCC",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
             },
             "GetName": {
               "doc": "Get the human readable name of a pixel format.\n\n@returns the human readable name of the specified pixel format or\n         \"PIXELFORMAT_UNKNOWN\" if the format isn't recognized.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -6403,6 +6365,227 @@
           "type": "SDL_PixelFormat",
           "doc": "XBGR32",
           "sourceName": "SDL_PIXELFORMAT_XBGR32"
+        },
+        "DEFINE_PIXELFORMAT": {
+          "doc": "A macro for defining custom non-FourCC pixel formats.\n\nFor example, defining PIXELFORMAT_RGBA8888 looks like this:\n\n```c\nPixelFormat.PixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA, PACKEDLAYOUT_8888, 32, 4)\n```\n\n@param type the type of the new format, probably a PixelType value.\n@param order the order of the new format, probably a BitmapOrder,\n             PackedOrder, or ArrayOrder value.\n@param layout the layout of the new format, probably an PackedLayout\n              value or zero.\n@param bits the number of bits per pixel of the new format.\n@param bytes the number of bytes per pixel of the new format.\n@returns a format value in the style of PixelFormat.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "DEFINE_PIXELFORMAT",
+          "kind": "function",
+          "parameters": [
+            {
+              "type": "PixelType",
+              "name": "type"
+            },
+            {
+              "type": "int",
+              "name": "order"
+            },
+            {
+              "type": "PackedLayout",
+              "name": "layout"
+            },
+            {
+              "type": "int",
+              "name": "bits"
+            },
+            {
+              "type": "int",
+              "name": "bytes"
+            }
+          ],
+          "value": "    ((1 << 28) | ((type) << 24) | ((order) << 20) | ((layout) << 16) | \\\n     ((bits) << 8) | ((bytes) << 0))",
+          "sourceName": "SDL_DEFINE_PIXELFORMAT",
+          "type": "PixelFormat",
+          "constexpr": true
+        },
+        "SDL_PIXELFLAG": {
+          "doc": "A macro to retrieve the flags of an PixelFormat.\n\nThis macro is generally not needed directly by an app, which should use\nspecific tests, like PixelFormat.IsFourCC, instead.\n\n@param format an PixelFormat to check.\n@returns the flags of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PIXELFLAG",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ],
+          "value": "(((format) >> 28) & 0x0F)",
+          "sourceName": "SDL_PIXELFLAG"
+        },
+        "PIXELTYPE": {
+          "doc": "A macro to retrieve the type of an PixelFormat.\n\nThis is usually a value from the PixelType enumeration.\n\n@param format an PixelFormat to check.\n@returns the type of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "PIXELTYPE",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "PixelFormatRaw"
+            }
+          ],
+          "value": "(((format) >> 24) & 0x0F)",
+          "sourceName": "SDL_PIXELTYPE",
+          "type": "PixelType",
+          "constexpr": true
+        },
+        "PIXELORDER": {
+          "doc": "A macro to retrieve the order of an PixelFormat.\n\nThis is usually a value from the BitmapOrder, PackedOrder, or\nArrayOrder enumerations, depending on the format type.\n\n@param format an PixelFormat to check.\n@returns the order of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "PIXELORDER",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "PixelFormatRaw"
+            }
+          ],
+          "value": "(((format) >> 20) & 0x0F)",
+          "sourceName": "SDL_PIXELORDER",
+          "type": "int",
+          "constexpr": true
+        },
+        "PIXELLAYOUT": {
+          "doc": "A macro to retrieve the layout of an PixelFormat.\n\nThis is usually a value from the PackedLayout enumeration, or zero if a\nlayout doesn't make sense for the format type.\n\n@param format an PixelFormat to check.\n@returns the layout of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "PIXELLAYOUT",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "PixelFormatRaw"
+            }
+          ],
+          "value": "(((format) >> 16) & 0x0F)",
+          "sourceName": "SDL_PIXELLAYOUT",
+          "type": "PackedLayout",
+          "constexpr": true
+        },
+        "BITSPERPIXEL": {
+          "doc": "A macro to determine an PixelFormat's bits per pixel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\nFourCC formats will report zero here, as it rarely makes sense to measure\nthem per-pixel.\n\n@param format an PixelFormat to check.\n@returns the bits-per-pixel of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa PixelFormat.GetBytesPerPixel",
+          "name": "BITSPERPIXEL",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "PixelFormatRaw"
+            }
+          ],
+          "value": "    (SDL_ISPIXELFORMAT_FOURCC(format) ? 0 : (((format) >> 8) & 0xFF))",
+          "sourceName": "SDL_BITSPERPIXEL",
+          "type": "int",
+          "constexpr": true
+        },
+        "BYTESPERPIXEL": {
+          "doc": "A macro to determine an PixelFormat's bytes per pixel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\nFourCC formats do their best here, but many of them don't have a meaningful\nmeasurement of bytes per pixel.\n\n@param format an PixelFormat to check.\n@returns the bytes-per-pixel of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa PixelFormat.GetBitsPerPixel",
+          "name": "BYTESPERPIXEL",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "PixelFormatRaw"
+            }
+          ],
+          "value": "    (SDL_ISPIXELFORMAT_FOURCC(format) ? \\\n        ((((format) == SDL_PIXELFORMAT_YUY2) || \\\n          ((format) == SDL_PIXELFORMAT_UYVY) || \\\n          ((format) == SDL_PIXELFORMAT_YVYU) || \\\n          ((format) == SDL_PIXELFORMAT_P010)) ? 2 : 1) : (((format) >> 0) & 0xFF))",
+          "sourceName": "SDL_BYTESPERPIXEL",
+          "type": "int",
+          "constexpr": true
+        },
+        "ISPIXELFORMAT_INDEXED": {
+          "doc": "A macro to determine if an PixelFormat is an indexed format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is indexed, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "ISPIXELFORMAT_INDEXED",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "PixelFormatRaw"
+            }
+          ],
+          "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX1) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX2) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX4) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX8)))",
+          "sourceName": "SDL_ISPIXELFORMAT_INDEXED",
+          "type": "bool",
+          "constexpr": true
+        },
+        "ISPIXELFORMAT_PACKED": {
+          "doc": "A macro to determine if an PixelFormat is a packed format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is packed, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "ISPIXELFORMAT_PACKED",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "PixelFormatRaw"
+            }
+          ],
+          "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED8) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32)))",
+          "sourceName": "SDL_ISPIXELFORMAT_PACKED",
+          "type": "bool",
+          "constexpr": true
+        },
+        "ISPIXELFORMAT_ARRAY": {
+          "doc": "A macro to determine if an PixelFormat is an array format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is an array, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "ISPIXELFORMAT_ARRAY",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "PixelFormatRaw"
+            }
+          ],
+          "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU8) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU32) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))",
+          "sourceName": "SDL_ISPIXELFORMAT_ARRAY",
+          "type": "bool",
+          "constexpr": true
+        },
+        "ISPIXELFORMAT_10BIT": {
+          "doc": "A macro to determine if an PixelFormat is a 10-bit format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is 10-bit, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "ISPIXELFORMAT_10BIT",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "PixelFormatRaw"
+            }
+          ],
+          "value": "      (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n       ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32) && \\\n        (SDL_PIXELLAYOUT(format) == SDL_PACKEDLAYOUT_2101010)))",
+          "sourceName": "SDL_ISPIXELFORMAT_10BIT",
+          "type": "bool",
+          "constexpr": true
+        },
+        "ISPIXELFORMAT_FLOAT": {
+          "doc": "A macro to determine if an PixelFormat is a floating point format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format is 10-bit, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "ISPIXELFORMAT_FLOAT",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "PixelFormatRaw"
+            }
+          ],
+          "value": "      (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n       ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) || \\\n        (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))",
+          "sourceName": "SDL_ISPIXELFORMAT_FLOAT",
+          "type": "bool",
+          "constexpr": true
+        },
+        "ISPIXELFORMAT_ALPHA": {
+          "doc": "A macro to determine if an PixelFormat has an alpha channel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format has alpha, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "ISPIXELFORMAT_ALPHA",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "PixelFormatRaw"
+            }
+          ],
+          "value": "    ((SDL_ISPIXELFORMAT_PACKED(format) && \\\n      ((SDL_PIXELORDER(format) == SDL_PACKEDORDER_ARGB) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_RGBA) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_ABGR) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_BGRA))) || \\\n     (SDL_ISPIXELFORMAT_ARRAY(format) && \\\n      ((SDL_PIXELORDER(format) == SDL_ARRAYORDER_ARGB) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_RGBA) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_ABGR) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_BGRA))))",
+          "sourceName": "SDL_ISPIXELFORMAT_ALPHA",
+          "type": "bool",
+          "constexpr": true
+        },
+        "ISPIXELFORMAT_FOURCC": {
+          "doc": "A macro to determine if an PixelFormat is a \"FourCC\" format.\n\nThis covers custom and other unusual formats.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an PixelFormat to check.\n@returns true if the format has alpha, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "ISPIXELFORMAT_FOURCC",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "PixelFormatRaw"
+            }
+          ],
+          "value": "    /* The flag is set to 1 because 0x1? is not in the printable ASCII range */ \\\n    ((format) && (SDL_PIXELFLAG(format) != 1))",
+          "sourceName": "SDL_ISPIXELFORMAT_FOURCC",
+          "type": "bool",
+          "constexpr": true
         },
         "ColorType": {
           "doc": "Colorspace color type.\n\n@since This enum is available since SDL 3.2.0.",
@@ -7815,6 +7998,17 @@
               "name": "operator[]",
               "doc": ""
             },
+            "Destroy": {
+              "doc": "Free a palette created with Palette.Palette().\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyPalette",
+              "hints": {
+                "body": "SDL_DestroyPalette(m_resource);\nm_resource = nullptr;"
+              }
+            },
             "SetColors": {
               "doc": "Set a range of colors in a palette.\n\n@param colors an array of Color structures to copy into the palette.\n@param firstcolor the index of the first palette entry to modify.\n@param ncolors the number of entries to modify.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "SetColors",
@@ -7834,17 +8028,6 @@
               "sourceName": "SDL_SetPaletteColors",
               "hints": {
                 "mayFail": true
-              }
-            },
-            "Destroy": {
-              "doc": "Free a palette created with Palette.Palette().\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyPalette",
-              "hints": {
-                "body": "SDL_DestroyPalette(m_resource);\nm_resource = nullptr;"
               }
             }
           },
@@ -9966,7 +10149,8 @@
               "type": "const RectRaw &"
             }
           ],
-          "sourceName": "SDL_RectEmpty"
+          "sourceName": "SDL_RectEmpty",
+          "constexpr": true
         },
         "RectsEqual": {
           "doc": "Determine whether two rectangles are equal.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height match.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param a the first rectangle to test.\n@param b the second rectangle to test.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -9992,60 +10176,55 @@
           "type": "bool",
           "parameters": [
             {
-              "name": "A",
+              "name": "self",
               "type": "const RectRaw &"
             },
             {
-              "name": "B",
+              "name": "other",
               "type": "const RectRaw &"
             }
           ],
-          "sourceName": "SDL_HasRectIntersection"
+          "sourceName": "SDL_HasRectIntersection",
+          "constexpr": true
         },
         "GetRectIntersection": {
           "doc": "Calculate the intersection of two rectangles.\n\nIf `result` is nullptr then this function will return false.\n\n@param A an Rect structure representing the first rectangle.\n@param B an Rect structure representing the second rectangle.\n@param result an Rect structure filled in with the intersection of\n              rectangles `A` and `B`.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Rect.HasIntersection",
           "name": "GetRectIntersection",
           "kind": "function",
-          "type": "bool",
+          "type": "std::optional<Rect>",
           "parameters": [
             {
-              "name": "A",
+              "name": "self",
               "type": "const RectRaw &"
             },
             {
-              "name": "B",
+              "name": "other",
               "type": "const RectRaw &"
-            },
-            {
-              "name": "result",
-              "type": "RectRaw *"
             }
           ],
-          "sourceName": "SDL_GetRectIntersection"
+          "sourceName": "SDL_GetRectIntersection",
+          "constexpr": true
         },
         "GetRectUnion": {
           "doc": "Calculate the union of two rectangles.\n\n@param A an Rect structure representing the first rectangle.\n@param B an Rect structure representing the second rectangle.\n@param result an Rect structure filled in with the union of rectangles\n              `A` and `B`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetRectUnion",
           "kind": "function",
-          "type": "void",
+          "type": "Rect",
           "parameters": [
             {
-              "name": "A",
+              "name": "self",
               "type": "const RectRaw &"
             },
             {
-              "name": "B",
+              "name": "other",
               "type": "const RectRaw &"
-            },
-            {
-              "name": "result",
-              "type": "RectRaw *"
             }
           ],
           "sourceName": "SDL_GetRectUnion",
           "hints": {
             "mayFail": true
-          }
+          },
+          "constexpr": true
         },
         "GetRectEnclosingPoints": {
           "doc": "Calculate a minimal rectangle enclosing a set of points.\n\nIf `clip` is not nullptr then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of Point structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an Rect used for clipping or nullptr to enclose all points.\n@param result an Rect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
@@ -10173,60 +10352,55 @@
           "type": "bool",
           "parameters": [
             {
-              "name": "A",
+              "name": "self",
               "type": "const FRectRaw &"
             },
             {
-              "name": "B",
+              "name": "other",
               "type": "const FRectRaw &"
             }
           ],
-          "sourceName": "SDL_HasRectIntersectionFloat"
+          "sourceName": "SDL_HasRectIntersectionFloat",
+          "constexpr": true
         },
         "GetRectIntersectionFloat": {
           "doc": "Calculate the intersection of two rectangles with float precision.\n\nIf `result` is nullptr then this function will return false.\n\n@param A an FRect structure representing the first rectangle.\n@param B an FRect structure representing the second rectangle.\n@param result an FRect structure filled in with the intersection of\n              rectangles `A` and `B`.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FRect.HasIntersection",
           "name": "GetRectIntersectionFloat",
           "kind": "function",
-          "type": "bool",
+          "type": "FRect",
           "parameters": [
             {
-              "name": "A",
+              "name": "self",
               "type": "const FRectRaw &"
             },
             {
-              "name": "B",
+              "name": "other",
               "type": "const FRectRaw &"
-            },
-            {
-              "name": "result",
-              "type": "FRectRaw *"
             }
           ],
-          "sourceName": "SDL_GetRectIntersectionFloat"
+          "sourceName": "SDL_GetRectIntersectionFloat",
+          "constexpr": true
         },
         "GetRectUnionFloat": {
           "doc": "Calculate the union of two rectangles with float precision.\n\n@param A an FRect structure representing the first rectangle.\n@param B an FRect structure representing the second rectangle.\n@param result an FRect structure filled in with the union of rectangles\n              `A` and `B`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetRectUnionFloat",
           "kind": "function",
-          "type": "void",
+          "type": "FRect",
           "parameters": [
             {
-              "name": "A",
+              "name": "self",
               "type": "const FRectRaw &"
             },
             {
-              "name": "B",
+              "name": "other",
               "type": "const FRectRaw &"
-            },
-            {
-              "name": "result",
-              "type": "FRectRaw *"
             }
           ],
           "sourceName": "SDL_GetRectUnionFloat",
           "hints": {
             "mayFail": true
-          }
+          },
+          "constexpr": true
         },
         "GetRectEnclosingPointsFloat": {
           "doc": "Calculate a minimal rectangle enclosing a set of points with float\nprecision.\n\nIf `clip` is not nullptr then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of FPoint structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an FRect used for clipping or nullptr to enclose all points.\n@param result an FRect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
@@ -10411,15 +10585,20 @@
           "constexpr": true,
           "type": "SurfaceFlags"
         },
-        "SDL_MUSTLOCK": {
+        "MUSTLOCK": {
           "doc": "Evaluates to true if the surface needs to be locked before access.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_MUSTLOCK",
-          "kind": "def",
+          "name": "MUSTLOCK",
+          "kind": "function",
           "parameters": [
-            "S"
+            {
+              "name": "S",
+              "type": "SurfaceParam"
+            }
           ],
           "value": "(((S)->flags & SDL_SURFACE_LOCK_NEEDED) == SDL_SURFACE_LOCK_NEEDED)",
-          "sourceName": "SDL_MUSTLOCK"
+          "sourceName": "SDL_MUSTLOCK",
+          "constexpr": true,
+          "type": "bool"
         },
         "ScaleMode": {
           "doc": "The scaling mode.\n\n@since This enum is available since SDL 3.2.0.",
@@ -11761,7 +11940,7 @@
               "sourceName": "SDL_SurfaceHasAlternateImages"
             },
             "Lock": {
-              "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to Surface.Lock() / Surface.Unlock(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSurface.Unlock() to release it.\n\nNot all surfaces require locking. If `SDL_MUSTLOCK(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@throws Error on failure.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_MUSTLOCK\n@sa Surface.Unlock",
+              "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to Surface.Lock() / Surface.Unlock(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSurface.Unlock() to release it.\n\nNot all surfaces require locking. If `MUSTLOCK(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@throws Error on failure.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MUSTLOCK\n@sa Surface.Unlock",
               "name": "Lock",
               "kind": "function",
               "type": "void",
@@ -12214,15 +12393,11 @@
           "doc": "Get an array including all versions of a surface.\n\nThis returns all versions of a surface, with the surface being queried as\nthe first element in the returned array.\n\nFreeing the array of surfaces does not affect the surfaces in the array.\nThey are still referenced by the surface being queried and will be cleaned\nup normally.\n\n@param surface the Surface structure to query.\n@param count a pointer filled in with the number of surface pointers\n             returned, may be nullptr.\n@returns a nullptr terminated array of Surface pointers or nullptr on\n         failure; call GetError() for more information. This should be\n         freed with free() when it is no longer needed.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.AddAlternateImage\n@sa Surface.RemoveAlternateImages\n@sa Surface.HasAlternateImages",
           "name": "GetSurfaceImages",
           "kind": "function",
-          "type": "SDL_Surface **",
+          "type": "OwnArray<SurfaceRaw>",
           "parameters": [
             {
               "name": "surface",
               "type": "SurfaceParam"
-            },
-            {
-              "name": "count",
-              "type": "int *"
             }
           ],
           "sourceName": "SDL_GetSurfaceImages"
@@ -12241,7 +12416,7 @@
           "sourceName": "SDL_RemoveSurfaceAlternateImages"
         },
         "LockSurface": {
-          "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to Surface.Lock() / Surface.Unlock(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSurface.Unlock() to release it.\n\nNot all surfaces require locking. If `SDL_MUSTLOCK(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@param surface the Surface structure to be locked.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_MUSTLOCK\n@sa Surface.Unlock",
+          "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to Surface.Lock() / Surface.Unlock(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSurface.Unlock() to release it.\n\nNot all surfaces require locking. If `MUSTLOCK(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@param surface the Surface structure to be locked.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MUSTLOCK\n@sa Surface.Unlock",
           "name": "LockSurface",
           "kind": "function",
           "type": "Surface",
@@ -12395,12 +12570,8 @@
               "type": "SurfaceParam"
             },
             {
-              "name": "enabled",
-              "type": "bool"
-            },
-            {
               "name": "key",
-              "type": "Uint32"
+              "type": "std::optional<Uint32>"
             }
           ],
           "sourceName": "SDL_SetSurfaceColorKey",
@@ -12528,15 +12699,11 @@
           "doc": "Get the additional alpha value used in blit operations.\n\n@param surface the Surface structure to query.\n@param alpha a pointer filled in with the current alpha value.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetColorMod\n@sa Surface.SetAlphaMod",
           "name": "GetSurfaceAlphaMod",
           "kind": "function",
-          "type": "void",
+          "type": "Uint8",
           "parameters": [
             {
               "name": "surface",
               "type": "SurfaceParam"
-            },
-            {
-              "name": "alpha",
-              "type": "Uint8 *"
             }
           ],
           "sourceName": "SDL_GetSurfaceAlphaMod",
@@ -12569,15 +12736,11 @@
           "doc": "Get the blend mode used for blit operations.\n\n@param surface the Surface structure to query.\n@param blendMode a pointer filled in with the current BlendMode.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetBlendMode",
           "name": "GetSurfaceBlendMode",
           "kind": "function",
-          "type": "void",
+          "type": "BlendMode",
           "parameters": [
             {
               "name": "surface",
               "type": "SurfaceParam"
-            },
-            {
-              "name": "blendMode",
-              "type": "BlendMode *"
             }
           ],
           "sourceName": "SDL_GetSurfaceBlendMode",
@@ -12597,7 +12760,7 @@
             },
             {
               "name": "rect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<const SDL_Rect>"
             }
           ],
           "sourceName": "SDL_SetSurfaceClipRect"
@@ -12606,15 +12769,11 @@
           "doc": "Get the clipping rectangle for a surface.\n\nWhen `surface` is the destination of a blit, only the area within the clip\nrectangle is drawn into.\n\n@param surface the Surface structure representing the surface to be\n               clipped.\n@param rect an Rect structure filled in with the clipping rectangle for\n            the surface.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetClipRect",
           "name": "GetSurfaceClipRect",
           "kind": "function",
-          "type": "void",
+          "type": "Rect",
           "parameters": [
             {
               "name": "surface",
               "type": "SurfaceParam"
-            },
-            {
-              "name": "rect",
-              "type": "RectRaw *"
             }
           ],
           "sourceName": "SDL_GetSurfaceClipRect",
@@ -12942,7 +13101,7 @@
             },
             {
               "name": "rect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<const SDL_Rect>"
             },
             {
               "name": "color",
@@ -12966,11 +13125,7 @@
             },
             {
               "name": "rects",
-              "type": "const RectRaw &"
-            },
-            {
-              "name": "count",
-              "type": "int"
+              "type": "SpanRef<const SDL_Rect>"
             },
             {
               "name": "color",
@@ -12994,7 +13149,7 @@
             },
             {
               "name": "srcrect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<const SDL_Rect>"
             },
             {
               "name": "dst",
@@ -13002,13 +13157,37 @@
             },
             {
               "name": "dstrect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<const SDL_Rect>"
             }
           ],
           "sourceName": "SDL_BlitSurface",
           "hints": {
             "mayFail": true
           }
+        },
+        "BlitSurfaceAt": {
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "type": "SurfaceParam",
+              "name": "src"
+            },
+            {
+              "type": "OptionalRef<const SDL_Rect>",
+              "name": "srcrect"
+            },
+            {
+              "type": "SurfaceParam",
+              "name": "dst"
+            },
+            {
+              "type": "const PointRaw &",
+              "name": "dstpos"
+            }
+          ],
+          "name": "BlitSurfaceAt",
+          "doc": ""
         },
         "BlitSurfaceUnchecked": {
           "doc": "Perform low-level surface blitting only.\n\nThis is a semi-private blit function and it performs low-level surface\nblitting, assuming the input rectangles have already been clipped.\n\n@param src the Surface structure to be copied from.\n@param srcrect the Rect structure representing the rectangle to be\n               copied, may not be nullptr.\n@param dst the Surface structure that is the blit target.\n@param dstrect the Rect structure representing the target rectangle in\n               the destination surface, may not be nullptr.\n@throws Error on failure.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Blit",
@@ -13050,7 +13229,7 @@
             },
             {
               "name": "srcrect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<const SDL_Rect>"
             },
             {
               "name": "dst",
@@ -13058,7 +13237,7 @@
             },
             {
               "name": "dstrect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<const SDL_Rect>"
             },
             {
               "name": "scaleMode",
@@ -13114,7 +13293,7 @@
             },
             {
               "name": "srcrect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<SDL_Rect>"
             },
             {
               "name": "dst",
@@ -13122,7 +13301,7 @@
             },
             {
               "name": "dstrect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<SDL_Rect>"
             },
             {
               "name": "scaleMode",
@@ -13136,8 +13315,8 @@
           "since": {
             "tag": "SDL",
             "major": 3,
-            "minor": 4,
-            "patch": 0
+            "minor": 2,
+            "patch": 4
           }
         },
         "BlitSurfaceTiled": {
@@ -13152,7 +13331,7 @@
             },
             {
               "name": "srcrect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<const SDL_Rect>"
             },
             {
               "name": "dst",
@@ -13160,7 +13339,7 @@
             },
             {
               "name": "dstrect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<const SDL_Rect>"
             }
           ],
           "sourceName": "SDL_BlitSurfaceTiled",
@@ -13180,7 +13359,7 @@
             },
             {
               "name": "srcrect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<const SDL_Rect>"
             },
             {
               "name": "scale",
@@ -13188,7 +13367,7 @@
             },
             {
               "name": "scaleMode",
-              "type": "ScaleMode"
+              "type": "SDL_ScaleMode"
             },
             {
               "name": "dst",
@@ -13196,7 +13375,7 @@
             },
             {
               "name": "dstrect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<const SDL_Rect>"
             }
           ],
           "sourceName": "SDL_BlitSurfaceTiledWithScale",
@@ -13204,58 +13383,100 @@
             "mayFail": true
           }
         },
-        "BlitSurface9Grid": {
-          "doc": "Perform a scaled blit using the 9-grid algorithm to a destination surface,\nwhich may be of a different format.\n\nThe pixels in the source surface are split into a 3x3 grid, using the\ndifferent corner sizes for each corner, and the sides and center making up\nthe remaining pixels. The corners are then scaled using `scale` and fit\ninto the corners of the destination rectangle. The sides and center are\nthen stretched into place to cover the remaining destination rectangle.\n\n@param src the Surface structure to be copied from.\n@param srcrect the Rect structure representing the rectangle to be used\n               for the 9-grid, or nullptr to use the entire surface.\n@param left_width the width, in pixels, of the left corners in `srcrect`.\n@param right_width the width, in pixels, of the right corners in `srcrect`.\n@param top_height the height, in pixels, of the top corners in `srcrect`.\n@param bottom_height the height, in pixels, of the bottom corners in\n                     `srcrect`.\n@param scale the scale used to transform the corner of `srcrect` into the\n             corner of `dstrect`, or 0.0f for an unscaled blit.\n@param scaleMode scale algorithm to be used.\n@param dst the Surface structure that is the blit target.\n@param dstrect the Rect structure representing the target rectangle in\n               the destination surface, or nullptr to fill the entire surface.\n@throws Error on failure.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Blit",
-          "name": "BlitSurface9Grid",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "SurfaceParam"
-            },
-            {
-              "name": "srcrect",
-              "type": "const RectRaw &"
-            },
-            {
-              "name": "left_width",
-              "type": "int"
-            },
-            {
-              "name": "right_width",
-              "type": "int"
-            },
-            {
-              "name": "top_height",
-              "type": "int"
-            },
-            {
-              "name": "bottom_height",
-              "type": "int"
-            },
-            {
-              "name": "scale",
-              "type": "float"
-            },
-            {
-              "name": "scaleMode",
-              "type": "ScaleMode"
-            },
-            {
-              "name": "dst",
-              "type": "SurfaceParam"
-            },
-            {
-              "name": "dstrect",
-              "type": "const RectRaw &"
+        "BlitSurface9Grid": [
+          {
+            "doc": "Perform a scaled blit using the 9-grid algorithm to a destination surface,\nwhich may be of a different format.\n\nThe pixels in the source surface are split into a 3x3 grid, using the\ndifferent corner sizes for each corner, and the sides and center making up\nthe remaining pixels. The corners are then scaled using `scale` and fit\ninto the corners of the destination rectangle. The sides and center are\nthen stretched into place to cover the remaining destination rectangle.\n\n@param src the Surface structure to be copied from.\n@param srcrect the Rect structure representing the rectangle to be used\n               for the 9-grid, or nullptr to use the entire surface.\n@param left_width the width, in pixels, of the left corners in `srcrect`.\n@param right_width the width, in pixels, of the right corners in `srcrect`.\n@param top_height the height, in pixels, of the top corners in `srcrect`.\n@param bottom_height the height, in pixels, of the bottom corners in\n                     `srcrect`.\n@param scale the scale used to transform the corner of `srcrect` into the\n             corner of `dstrect`, or 0.0f for an unscaled blit.\n@param scaleMode scale algorithm to be used.\n@param dst the Surface structure that is the blit target.\n@param dstrect the Rect structure representing the target rectangle in\n               the destination surface, or nullptr to fill the entire surface.\n@throws Error on failure.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Blit",
+            "name": "BlitSurface9Grid",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "src",
+                "type": "SurfaceParam"
+              },
+              {
+                "name": "srcrect",
+                "type": "OptionalRef<const SDL_Rect>"
+              },
+              {
+                "name": "left_width",
+                "type": "int"
+              },
+              {
+                "name": "right_width",
+                "type": "int"
+              },
+              {
+                "name": "top_height",
+                "type": "int"
+              },
+              {
+                "name": "bottom_height",
+                "type": "int"
+              },
+              {
+                "name": "scale",
+                "type": "float"
+              },
+              {
+                "name": "scaleMode",
+                "type": "SDL_ScaleMode"
+              },
+              {
+                "name": "dst",
+                "type": "SurfaceParam"
+              },
+              {
+                "name": "dstrect",
+                "type": "OptionalRef<const SDL_Rect>"
+              }
+            ],
+            "sourceName": "SDL_BlitSurface9Grid",
+            "hints": {
+              "mayFail": true
             }
-          ],
-          "sourceName": "SDL_BlitSurface9Grid",
-          "hints": {
-            "mayFail": true
+          },
+          {
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "SurfaceParam",
+                "name": "src"
+              },
+              {
+                "type": "OptionalRef<const SDL_Rect>",
+                "name": "srcrect"
+              },
+              {
+                "type": "int",
+                "name": "left_width"
+              },
+              {
+                "type": "int",
+                "name": "right_width"
+              },
+              {
+                "type": "int",
+                "name": "top_height"
+              },
+              {
+                "type": "int",
+                "name": "bottom_height"
+              },
+              {
+                "type": "SurfaceParam",
+                "name": "dst"
+              },
+              {
+                "type": "OptionalRef<const SDL_Rect>",
+                "name": "dstrect"
+              }
+            ],
+            "name": "BlitSurface9Grid",
+            "doc": "Perform a scaled blit using the 9-grid algorithm to a destination surface,\nwhich may be of a different format.\n\nThe pixels in the source surface are split into a 3x3 grid, using the\ndifferent corner sizes for each corner, and the sides and center making up\nthe remaining pixels. The corners are then scaled using `scale` and fit\ninto the corners of the destination rectangle. The sides and center are\nthen stretched into place to cover the remaining destination rectangle.\n\n@param src the Surface structure to be copied from.\n@param srcrect the Rect structure representing the rectangle to be used\n               for the 9-grid, or nullptr to use the entire surface.\n@param left_width the width, in pixels, of the left corners in `srcrect`.\n@param right_width the width, in pixels, of the right corners in `srcrect`.\n@param top_height the height, in pixels, of the top corners in `srcrect`.\n@param bottom_height the height, in pixels, of the bottom corners in\n                     `srcrect`.\n@param scale the scale used to transform the corner of `srcrect` into the\n             corner of `dstrect`, or 0.0f for an unscaled blit.\n@param scaleMode scale algorithm to be used.\n@param dst the Surface structure that is the blit target.\n@param dstrect the Rect structure representing the target rectangle in\n               the destination surface, or nullptr to fill the entire surface.\n@throws Error on failure.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Blit"
           }
-        },
+        ],
         "MapSurfaceRGB": {
           "doc": "Map an RGB triple to an opaque pixel value for a surface.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the surface has a palette, the index of the closest matching color in\nthe palette will be returned.\n\nIf the surface pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param surface the surface to use for the pixel format and palette.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.MapColor",
           "name": "MapSurfaceRGB",
@@ -13321,12 +13542,8 @@
               "type": "SurfaceParam"
             },
             {
-              "name": "x",
-              "type": "int"
-            },
-            {
-              "name": "y",
-              "type": "int"
+              "name": "p",
+              "type": "const PointRaw &"
             },
             {
               "name": "r",
@@ -13361,12 +13578,8 @@
               "type": "SurfaceParam"
             },
             {
-              "name": "x",
-              "type": "int"
-            },
-            {
-              "name": "y",
-              "type": "int"
+              "name": "p",
+              "type": "const PointRaw &"
             },
             {
               "name": "r",
@@ -13401,28 +13614,12 @@
               "type": "SurfaceParam"
             },
             {
-              "name": "x",
-              "type": "int"
+              "name": "p",
+              "type": "const PointRaw &"
             },
             {
-              "name": "y",
-              "type": "int"
-            },
-            {
-              "name": "r",
-              "type": "Uint8"
-            },
-            {
-              "name": "g",
-              "type": "Uint8"
-            },
-            {
-              "name": "b",
-              "type": "Uint8"
-            },
-            {
-              "name": "a",
-              "type": "Uint8"
+              "name": "c",
+              "type": "ColorRaw"
             }
           ],
           "sourceName": "SDL_WriteSurfacePixel",
@@ -13441,28 +13638,12 @@
               "type": "SurfaceParam"
             },
             {
-              "name": "x",
-              "type": "int"
+              "name": "p",
+              "type": "const PointRaw &"
             },
             {
-              "name": "y",
-              "type": "int"
-            },
-            {
-              "name": "r",
-              "type": "float"
-            },
-            {
-              "name": "g",
-              "type": "float"
-            },
-            {
-              "name": "b",
-              "type": "float"
-            },
-            {
-              "name": "a",
-              "type": "float"
+              "name": "c",
+              "type": "Const FColorRaw &"
             }
           ],
           "sourceName": "SDL_WriteSurfacePixelFloat",
@@ -15063,17 +15244,8 @@
           "doc": "Use this function to read a byte from an IOStream.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the IOStream to read from.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadU8",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Uint8 *"
-            }
-          ],
+          "type": "Uint8",
+          "parameters": [],
           "sourceName": "SDL_ReadU8",
           "hints": {
             "mayFail": true
@@ -15083,17 +15255,8 @@
           "doc": "Use this function to read a signed byte from an IOStream.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the IOStream to read from.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadS8",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Sint8 *"
-            }
-          ],
+          "type": "Sint8",
+          "parameters": [],
           "sourceName": "SDL_ReadS8",
           "hints": {
             "mayFail": true
@@ -15103,17 +15266,8 @@
           "doc": "Use this function to read 16 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadU16LE",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Uint16 *"
-            }
-          ],
+          "type": "Uint16",
+          "parameters": [],
           "sourceName": "SDL_ReadU16LE",
           "hints": {
             "mayFail": true
@@ -15123,17 +15277,8 @@
           "doc": "Use this function to read 16 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadS16LE",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Sint16 *"
-            }
-          ],
+          "type": "Sint16",
+          "parameters": [],
           "sourceName": "SDL_ReadS16LE",
           "hints": {
             "mayFail": true
@@ -15143,17 +15288,8 @@
           "doc": "Use this function to read 16 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadU16BE",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Uint16 *"
-            }
-          ],
+          "type": "Uint16",
+          "parameters": [],
           "sourceName": "SDL_ReadU16BE",
           "hints": {
             "mayFail": true
@@ -15163,17 +15299,8 @@
           "doc": "Use this function to read 16 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadS16BE",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Sint16 *"
-            }
-          ],
+          "type": "Sint16",
+          "parameters": [],
           "sourceName": "SDL_ReadS16BE",
           "hints": {
             "mayFail": true
@@ -15183,17 +15310,8 @@
           "doc": "Use this function to read 32 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadU32LE",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Uint32 *"
-            }
-          ],
+          "type": "Uint32",
+          "parameters": [],
           "sourceName": "SDL_ReadU32LE",
           "hints": {
             "mayFail": true
@@ -15203,17 +15321,8 @@
           "doc": "Use this function to read 32 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadS32LE",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Sint32 *"
-            }
-          ],
+          "type": "Sint32",
+          "parameters": [],
           "sourceName": "SDL_ReadS32LE",
           "hints": {
             "mayFail": true
@@ -15223,17 +15332,8 @@
           "doc": "Use this function to read 32 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadU32BE",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Uint32 *"
-            }
-          ],
+          "type": "Uint32",
+          "parameters": [],
           "sourceName": "SDL_ReadU32BE",
           "hints": {
             "mayFail": true
@@ -15243,17 +15343,8 @@
           "doc": "Use this function to read 32 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadS32BE",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Sint32 *"
-            }
-          ],
+          "type": "Sint32",
+          "parameters": [],
           "sourceName": "SDL_ReadS32BE",
           "hints": {
             "mayFail": true
@@ -15263,17 +15354,8 @@
           "doc": "Use this function to read 64 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadU64LE",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Uint64 *"
-            }
-          ],
+          "type": "Uint64",
+          "parameters": [],
           "sourceName": "SDL_ReadU64LE",
           "hints": {
             "mayFail": true
@@ -15283,17 +15365,8 @@
           "doc": "Use this function to read 64 bits of little-endian data from an\nIOStream and return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadS64LE",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Sint64 *"
-            }
-          ],
+          "type": "Sint64",
+          "parameters": [],
           "sourceName": "SDL_ReadS64LE",
           "hints": {
             "mayFail": true
@@ -15303,17 +15376,8 @@
           "doc": "Use this function to read 64 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadU64BE",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Uint64 *"
-            }
-          ],
+          "type": "Uint64",
+          "parameters": [],
           "sourceName": "SDL_ReadU64BE",
           "hints": {
             "mayFail": true
@@ -15323,17 +15387,8 @@
           "doc": "Use this function to read 64 bits of big-endian data from an IOStream\nand return in native format.\n\nSDL byteswaps the data only if necessary, so the data returned will be in\nthe native byte order.\n\nThis function will return false when the data stream is completely read,\nand IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStream.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the stream from which to read data.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ReadS64BE",
           "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "value",
-              "type": "Sint64 *"
-            }
-          ],
+          "type": "Sint64",
+          "parameters": [],
           "sourceName": "SDL_ReadS64BE",
           "hints": {
             "mayFail": true
@@ -16126,21 +16181,18 @@
           "constexpr": true
         },
         "Seconds": {
-          "before": "SDL_Time",
           "kind": "alias",
           "type": "std::chrono::duration<float>",
           "doc": "Duration in seconds (float).",
           "name": "Seconds"
         },
         "Nanoseconds": {
-          "before": "SDL_Time",
           "kind": "alias",
           "name": "Nanoseconds",
           "type": "std::chrono::nanoseconds",
           "doc": "Duration in Nanoseconds (Uint64)."
         },
         "ToSeconds": {
-          "before": "SDL_Time",
           "kind": "function",
           "type": "float",
           "constexpr": true,
@@ -16154,7 +16206,6 @@
           "name": "ToSeconds"
         },
         "FromSeconds": {
-          "before": "SDL_Time",
           "kind": "function",
           "type": "Seconds",
           "constexpr": true,
@@ -16168,7 +16219,6 @@
           "name": "FromSeconds"
         },
         "ToNS": {
-          "before": "SDL_Time",
           "kind": "function",
           "type": "Sint64",
           "constexpr": true,
@@ -16182,7 +16232,6 @@
           "name": "ToNS"
         },
         "FromNS": {
-          "before": "SDL_Time",
           "kind": "function",
           "type": "Nanoseconds",
           "constexpr": true,
@@ -16768,6 +16817,17 @@
               "name": "GetVariableCount",
               "doc": ""
             },
+            "Destroy": {
+              "doc": "Destroy a set of environment variables.\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Environment.Environment",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyEnvironment",
+              "hints": {
+                "body": "SDL_DestroyEnvironment(m_resource);\nm_resource = nullptr;"
+              }
+            },
             "GetVariable": {
               "doc": "Get the value of a variable in the environment.\n\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or nullptr if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariables\n@sa Environment.SetVariable\n@sa Environment.UnsetVariable",
               "name": "GetVariable",
@@ -16819,17 +16879,6 @@
               "sourceName": "SDL_UnsetEnvironmentVariable",
               "hints": {
                 "mayFail": true
-              }
-            },
-            "Destroy": {
-              "doc": "Destroy a set of environment variables.\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Environment.Environment",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyEnvironment",
-              "hints": {
-                "body": "SDL_DestroyEnvironment(m_resource);\nm_resource = nullptr;"
               }
             }
           },
@@ -16887,7 +16936,7 @@
           "doc": "Get all variables in the environment.\n\n@param env the environment to query.\n@returns a nullptr terminated array of pointers to environment variables in\n         the form \"variable=value\" or nullptr on failure; call GetError()\n         for more information. This is a single allocation that should be\n         freed with free() when it is no longer needed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariables\n@sa Environment.SetVariable\n@sa Environment.UnsetVariable",
           "name": "GetEnvironmentVariables",
           "kind": "function",
-          "type": "char **",
+          "type": "OwnArray<char *>",
           "parameters": [
             {
               "name": "env",
@@ -18845,20 +18894,30 @@
               "name": "m_state",
               "doc": ""
             },
-            "Random": {
-              "kind": "function",
-              "constexpr": true,
-              "type": "",
-              "parameters": [
-                {
-                  "type": "Uint64",
-                  "name": "state",
-                  "default": "0"
-                }
-              ],
-              "name": "Random",
-              "doc": ""
-            },
+            "Random": [
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [],
+                "name": "Random",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "constexpr": true,
+                "explicit": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "Uint64",
+                    "name": "state"
+                  }
+                ],
+                "name": "Random",
+                "doc": ""
+              }
+            ],
             "operator Uint64": {
               "kind": "function",
               "constexpr": true,

@@ -1074,7 +1074,7 @@ inline bool PointInRect(const PointRaw& p, const RectRaw& r)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(r); }
+constexpr bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(r); }
 
 /**
  * Determine whether two rectangles are equal.
@@ -1115,9 +1115,9 @@ inline bool RectsEqual(const RectRaw& a, const RectRaw& b)
  *
  * @sa Rect.GetIntersection
  */
-inline bool HasRectIntersection(const RectRaw& A, const RectRaw& B)
+constexpr bool HasRectIntersection(const RectRaw& self, const RectRaw& other)
 {
-  return SDL_HasRectIntersection(A, B);
+  return SDL_HasRectIntersection(self, other);
 }
 
 /**
@@ -1135,11 +1135,10 @@ inline bool HasRectIntersection(const RectRaw& A, const RectRaw& B)
  *
  * @sa Rect.HasIntersection
  */
-inline bool GetRectIntersection(const RectRaw& A,
-                                const RectRaw& B,
-                                RectRaw* result)
+constexpr std::optional<Rect> GetRectIntersection(const RectRaw& self,
+                                                  const RectRaw& other)
 {
-  return SDL_GetRectIntersection(A, B, result);
+  return SDL_GetRectIntersection(self, other);
 }
 
 /**
@@ -1153,9 +1152,9 @@ inline bool GetRectIntersection(const RectRaw& A,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GetRectUnion(const RectRaw& A, const RectRaw& B, RectRaw* result)
+constexpr Rect GetRectUnion(const RectRaw& self, const RectRaw& other)
 {
-  CheckError(SDL_GetRectUnion(A, B, result));
+  return CheckError(SDL_GetRectUnion(self, other));
 }
 
 /**
@@ -1330,9 +1329,10 @@ inline bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
  *
  * @sa Rect.GetIntersection
  */
-inline bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
+constexpr bool HasRectIntersectionFloat(const FRectRaw& self,
+                                        const FRectRaw& other)
 {
-  return SDL_HasRectIntersectionFloat(A, B);
+  return SDL_HasRectIntersectionFloat(self, other);
 }
 
 /**
@@ -1350,11 +1350,10 @@ inline bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
  *
  * @sa FRect.HasIntersection
  */
-inline bool GetRectIntersectionFloat(const FRectRaw& A,
-                                     const FRectRaw& B,
-                                     FRectRaw* result)
+constexpr FRect GetRectIntersectionFloat(const FRectRaw& self,
+                                         const FRectRaw& other)
 {
-  return SDL_GetRectIntersectionFloat(A, B, result);
+  return SDL_GetRectIntersectionFloat(self, other);
 }
 
 /**
@@ -1368,11 +1367,9 @@ inline bool GetRectIntersectionFloat(const FRectRaw& A,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GetRectUnionFloat(const FRectRaw& A,
-                              const FRectRaw& B,
-                              FRectRaw* result)
+constexpr FRect GetRectUnionFloat(const FRectRaw& self, const FRectRaw& other)
 {
-  CheckError(SDL_GetRectUnionFloat(A, B, result));
+  return CheckError(SDL_GetRectUnionFloat(self, other));
 }
 
 /**

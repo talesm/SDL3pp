@@ -2,55 +2,82 @@
 <  * @defgroup CategorySurface Category Surface
 ---
 >  * @defgroup CategorySurface Surface Creation and Simple Drawing
-88,95d87
-<  * Evaluates to true if the surface needs to be locked before access.
-<  *
-<  * @since This macro is available since SDL 3.2.0.
-<  */
-< #define SDL_MUSTLOCK(S)                                                        \
-<   (((S)->flags & SDL_SURFACE_LOCK_NEEDED) == SDL_SURFACE_LOCK_NEEDED)
-< 
-< /**
-151a144,145
+92c92
+< constexpr bool MUSTLOCK(SurfaceParam S) { return SDL_MUSTLOCK(S); }
+---
+> constexpr bool MUSTLOCK(SurfaceParam S) { return SDL_MUSTLOCK((S.value)); }
+150a151,152
 >  * @cat resource
 >  *
-154,155d147
+153,154d154
 <  *
 <  * @cat resource
-179,180c171
+178,179c178
 <    * @param width the width of the surface.
 <    * @param height the height of the surface.
 ---
 >    * @param size the width and height of the surface.
-193c184
+192c191
 <     : m_resource(SDL_CreateSurface(size, format))
 ---
 >     : m_resource(SDL_CreateSurface(size.x, size.y, format))
-210,211c201
+209,210c208
 <    * @param width the width of the surface.
 <    * @param height the height of the surface.
 ---
 >    * @param size the width and height of the surface.
-226c216
+225c223
 <     : m_resource(SDL_CreateSurfaceFrom(size, format, pixels, pitch))
 ---
 >     : m_resource(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch))
-252c242
+251c249
 <     return Surface(SDL_LoadBMP_IO(src));
 ---
 >     return Surface(SDL_LoadBMP_IO(src, false));
-1810,1813d1799
+1809,1812d1806
 < #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 < 
 < #if SDL_VERSION_ATLEAST(3, 2, 6)
 < 
-2098c2084
+2057c2051
+< inline Surface LockSurface(SurfaceParam surface)
+---
+> inline void LockSurface(SurfaceParam surface)
+2059c2053
+<   return Surface(CheckError(SDL_LockSurface(surface)));
+---
+>   CheckError(SDL_LockSurface(surface));
+2097c2091
 < inline Surface LoadBMP_IO(IOStreamParam src, bool closeio)
 ---
 > inline Surface LoadBMP_IO(IOStreamParam src, bool closeio = false)
-2145c2131,2133
+2144c2138,2140
 < inline void SaveBMP_IO(SurfaceParam surface, IOStreamParam dst, bool closeio)
 ---
 > inline void SaveBMP_IO(SurfaceParam surface,
 >                        IOStreamParam dst,
 >                        bool closeio = false)
+2936c2932
+<   static_assert(false, "Not implemented");
+---
+>   BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
+3343c3339
+<   CheckError(SDL_ReadSurfacePixel(surface, p, r, g, b, a));
+---
+>   CheckError(SDL_ReadSurfacePixel(surface, p.x, p.y, r, g, b, a));
+3376c3372
+<   CheckError(SDL_ReadSurfacePixelFloat(surface, p, r, g, b, a));
+---
+>   CheckError(SDL_ReadSurfacePixelFloat(surface, p.x, p.y, r, g, b, a));
+3405c3401
+<   CheckError(SDL_WriteSurfacePixel(surface, p, c));
+---
+>   CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
+3429c3425
+<                                    Const FColorRaw& c)
+---
+>                                    const FColorRaw& c)
+3431c3427
+<   CheckError(SDL_WriteSurfacePixelFloat(surface, p, c));
+---
+>   CheckError(SDL_WriteSurfacePixelFloat(surface, p.x, p.y, c.r, c.g, c.b, c.a));

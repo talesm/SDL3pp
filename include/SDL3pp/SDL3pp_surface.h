@@ -85,6 +85,13 @@ constexpr SurfaceFlags SURFACE_LOCKED =
 constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
 
 /**
+ * Evaluates to true if the surface needs to be locked before access.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr bool MUSTLOCK(SurfaceParam S) { return SDL_MUSTLOCK((S.value)); }
+
+/**
  * The scaling mode.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -1449,7 +1456,7 @@ public:
    * `surface->format`. Once you are done accessing the surface, you should use
    * Surface.Unlock() to release it.
    *
-   * Not all surfaces require locking. If `SDL_MUSTLOCK(surface)` evaluates to
+   * Not all surfaces require locking. If `MUSTLOCK(surface)` evaluates to
    * 0, then you can read and write to the surface at any time, and the pixel
    * format of the surface will not change.
    *
@@ -1461,7 +1468,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_MUSTLOCK
+   * @sa MUSTLOCK
    * @sa Surface.Unlock
    */
   void Lock() { CheckError(SDL_LockSurface(m_resource)); }
@@ -1991,9 +1998,9 @@ inline Surface SurfaceHasAlternateImages(SurfaceParam surface)
  * @sa Surface.RemoveAlternateImages
  * @sa Surface.HasAlternateImages
  */
-inline SDL_Surface** GetSurfaceImages(SurfaceParam surface, int* count)
+inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceParam surface)
 {
-  return SDL_GetSurfaceImages(surface, count);
+  return SDL_GetSurfaceImages(surface);
 }
 
 /**
@@ -2025,7 +2032,7 @@ inline void RemoveSurfaceAlternateImages(SurfaceParam surface)
  * `surface->format`. Once you are done accessing the surface, you should use
  * Surface.Unlock() to release it.
  *
- * Not all surfaces require locking. If `SDL_MUSTLOCK(surface)` evaluates to
+ * Not all surfaces require locking. If `MUSTLOCK(surface)` evaluates to
  * 0, then you can read and write to the surface at any time, and the pixel
  * format of the surface will not change.
  *
@@ -2038,12 +2045,12 @@ inline void RemoveSurfaceAlternateImages(SurfaceParam surface)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_MUSTLOCK
+ * @sa MUSTLOCK
  * @sa Surface.Unlock
  */
-inline Surface LockSurface(SurfaceParam surface)
+inline void LockSurface(SurfaceParam surface)
 {
-  return Surface(CheckError(SDL_LockSurface(surface)));
+  CheckError(SDL_LockSurface(surface));
 }
 
 /**
@@ -2225,9 +2232,9 @@ inline Surface SurfaceHasRLE(SurfaceParam surface)
  * @sa Surface.SetRLE
  * @sa Surface.HasColorKey
  */
-inline void SetSurfaceColorKey(SurfaceParam surface, bool enabled, Uint32 key)
+inline void SetSurfaceColorKey(SurfaceParam surface, std::optional<Uint32> key)
 {
-  CheckError(SDL_SetSurfaceColorKey(surface, enabled, key));
+  CheckError(SDL_SetSurfaceColorKey(surface, key));
 }
 
 /**
@@ -2366,9 +2373,9 @@ inline Surface SetSurfaceAlphaMod(SurfaceParam surface, Uint8 alpha)
  * @sa Surface.GetColorMod
  * @sa Surface.SetAlphaMod
  */
-inline void GetSurfaceAlphaMod(SurfaceParam surface, Uint8* alpha)
+inline Uint8 GetSurfaceAlphaMod(SurfaceParam surface)
 {
-  CheckError(SDL_GetSurfaceAlphaMod(surface, alpha));
+  return CheckError(SDL_GetSurfaceAlphaMod(surface));
 }
 
 /**
@@ -2406,9 +2413,9 @@ inline Surface SetSurfaceBlendMode(SurfaceParam surface, BlendMode blendMode)
  *
  * @sa Surface.SetBlendMode
  */
-inline void GetSurfaceBlendMode(SurfaceParam surface, BlendMode* blendMode)
+inline BlendMode GetSurfaceBlendMode(SurfaceParam surface)
 {
-  CheckError(SDL_GetSurfaceBlendMode(surface, blendMode));
+  return CheckError(SDL_GetSurfaceBlendMode(surface));
 }
 
 /**
@@ -2432,7 +2439,8 @@ inline void GetSurfaceBlendMode(SurfaceParam surface, BlendMode* blendMode)
  *
  * @sa Surface.GetClipRect
  */
-inline bool SetSurfaceClipRect(SurfaceParam surface, const RectRaw& rect)
+inline bool SetSurfaceClipRect(SurfaceParam surface,
+                               OptionalRef<const SDL_Rect> rect)
 {
   return SDL_SetSurfaceClipRect(surface, rect);
 }
@@ -2455,9 +2463,9 @@ inline bool SetSurfaceClipRect(SurfaceParam surface, const RectRaw& rect)
  *
  * @sa Surface.SetClipRect
  */
-inline void GetSurfaceClipRect(SurfaceParam surface, RectRaw* rect)
+inline Rect GetSurfaceClipRect(SurfaceParam surface)
 {
-  CheckError(SDL_GetSurfaceClipRect(surface, rect));
+  return CheckError(SDL_GetSurfaceClipRect(surface));
 }
 
 /**
@@ -2800,7 +2808,9 @@ inline void ClearSurface(SurfaceParam surface,
  *
  * @sa Surface.FillRects
  */
-inline void FillSurfaceRect(SurfaceParam dst, const RectRaw& rect, Uint32 color)
+inline void FillSurfaceRect(SurfaceParam dst,
+                            OptionalRef<const SDL_Rect> rect,
+                            Uint32 color)
 {
   CheckError(SDL_FillSurfaceRect(dst, rect, color));
 }
@@ -2830,11 +2840,10 @@ inline void FillSurfaceRect(SurfaceParam dst, const RectRaw& rect, Uint32 color)
  * @sa Surface.FillRect
  */
 inline void FillSurfaceRects(SurfaceParam dst,
-                             const RectRaw& rects,
-                             int count,
+                             SpanRef<const SDL_Rect> rects,
                              Uint32 color)
 {
-  CheckError(SDL_FillSurfaceRects(dst, rects, count, color));
+  CheckError(SDL_FillSurfaceRects(dst, rects, color));
 }
 
 /**
@@ -2908,11 +2917,19 @@ inline void FillSurfaceRects(SurfaceParam dst,
  * @sa Surface.BlitScaled
  */
 inline void BlitSurface(SurfaceParam src,
-                        const RectRaw& srcrect,
+                        OptionalRef<const SDL_Rect> srcrect,
                         SurfaceParam dst,
-                        const RectRaw& dstrect)
+                        OptionalRef<const SDL_Rect> dstrect)
 {
   CheckError(SDL_BlitSurface(src, srcrect, dst, dstrect));
+}
+
+inline void BlitSurfaceAt(SurfaceParam src,
+                          OptionalRef<const SDL_Rect> srcrect,
+                          SurfaceParam dst,
+                          const PointRaw& dstpos)
+{
+  BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
 }
 
 /**
@@ -2966,9 +2983,9 @@ inline void BlitSurfaceUnchecked(SurfaceParam src,
  * @sa Surface.Blit
  */
 inline void BlitSurfaceScaled(SurfaceParam src,
-                              const RectRaw& srcrect,
+                              OptionalRef<const SDL_Rect> srcrect,
                               SurfaceParam dst,
-                              const RectRaw& dstrect,
+                              OptionalRef<const SDL_Rect> dstrect,
                               ScaleMode scaleMode)
 {
   CheckError(SDL_BlitSurfaceScaled(src, srcrect, dst, dstrect, scaleMode));
@@ -3006,7 +3023,7 @@ inline void BlitSurfaceUncheckedScaled(SurfaceParam src,
     SDL_BlitSurfaceUncheckedScaled(src, srcrect, dst, dstrect, scaleMode));
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 2, 4)
 
 /**
  * Perform a stretched pixel copy from one surface to another.
@@ -3029,15 +3046,15 @@ inline void BlitSurfaceUncheckedScaled(SurfaceParam src,
  * @sa Surface.BlitScaled
  */
 inline void StretchSurface(SurfaceParam src,
-                           const RectRaw& srcrect,
+                           OptionalRef<SDL_Rect> srcrect,
                            SurfaceParam dst,
-                           const RectRaw& dstrect,
+                           OptionalRef<SDL_Rect> dstrect,
                            ScaleMode scaleMode)
 {
   CheckError(SDL_StretchSurface(src, srcrect, dst, dstrect, scaleMode));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 2, 4)
 
 /**
  * Perform a tiled blit to a destination surface, which may be of a different
@@ -3063,9 +3080,9 @@ inline void StretchSurface(SurfaceParam src,
  * @sa Surface.Blit
  */
 inline void BlitSurfaceTiled(SurfaceParam src,
-                             const RectRaw& srcrect,
+                             OptionalRef<const SDL_Rect> srcrect,
                              SurfaceParam dst,
-                             const RectRaw& dstrect)
+                             OptionalRef<const SDL_Rect> dstrect)
 {
   CheckError(SDL_BlitSurfaceTiled(src, srcrect, dst, dstrect));
 }
@@ -3098,11 +3115,11 @@ inline void BlitSurfaceTiled(SurfaceParam src,
  * @sa Surface.Blit
  */
 inline void BlitSurfaceTiledWithScale(SurfaceParam src,
-                                      const RectRaw& srcrect,
+                                      OptionalRef<const SDL_Rect> srcrect,
                                       float scale,
-                                      ScaleMode scaleMode,
+                                      SDL_ScaleMode scaleMode,
                                       SurfaceParam dst,
-                                      const RectRaw& dstrect)
+                                      OptionalRef<const SDL_Rect> dstrect)
 {
   CheckError(SDL_BlitSurfaceTiledWithScale(
     src, srcrect, scale, scaleMode, dst, dstrect));
@@ -3143,15 +3160,15 @@ inline void BlitSurfaceTiledWithScale(SurfaceParam src,
  * @sa Surface.Blit
  */
 inline void BlitSurface9Grid(SurfaceParam src,
-                             const RectRaw& srcrect,
+                             OptionalRef<const SDL_Rect> srcrect,
                              int left_width,
                              int right_width,
                              int top_height,
                              int bottom_height,
                              float scale,
-                             ScaleMode scaleMode,
+                             SDL_ScaleMode scaleMode,
                              SurfaceParam dst,
-                             const RectRaw& dstrect)
+                             OptionalRef<const SDL_Rect> dstrect)
 {
   CheckError(SDL_BlitSurface9Grid(src,
                                   srcrect,
@@ -3163,6 +3180,52 @@ inline void BlitSurface9Grid(SurfaceParam src,
                                   scaleMode,
                                   dst,
                                   dstrect));
+}
+
+/**
+ * Perform a scaled blit using the 9-grid algorithm to a destination surface,
+ * which may be of a different format.
+ *
+ * The pixels in the source surface are split into a 3x3 grid, using the
+ * different corner sizes for each corner, and the sides and center making up
+ * the remaining pixels. The corners are then scaled using `scale` and fit
+ * into the corners of the destination rectangle. The sides and center are
+ * then stretched into place to cover the remaining destination rectangle.
+ *
+ * @param src the Surface structure to be copied from.
+ * @param srcrect the Rect structure representing the rectangle to be used
+ *                for the 9-grid, or nullptr to use the entire surface.
+ * @param left_width the width, in pixels, of the left corners in `srcrect`.
+ * @param right_width the width, in pixels, of the right corners in `srcrect`.
+ * @param top_height the height, in pixels, of the top corners in `srcrect`.
+ * @param bottom_height the height, in pixels, of the bottom corners in
+ *                      `srcrect`.
+ * @param scale the scale used to transform the corner of `srcrect` into the
+ *              corner of `dstrect`, or 0.0f for an unscaled blit.
+ * @param scaleMode scale algorithm to be used.
+ * @param dst the Surface structure that is the blit target.
+ * @param dstrect the Rect structure representing the target rectangle in
+ *                the destination surface, or nullptr to fill the entire
+ * surface.
+ * @throws Error on failure.
+ *
+ * @threadsafety Only one thread should be using the `src` and `dst` surfaces
+ *               at any given time.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Surface.Blit
+ */
+inline void BlitSurface9Grid(SurfaceParam src,
+                             OptionalRef<const SDL_Rect> srcrect,
+                             int left_width,
+                             int right_width,
+                             int top_height,
+                             int bottom_height,
+                             SurfaceParam dst,
+                             OptionalRef<const SDL_Rect> dstrect)
+{
+  static_assert(false, "Not implemented");
 }
 
 /**
@@ -3267,14 +3330,13 @@ inline Uint32 MapSurfaceRGBA(SurfaceParam surface,
  * @since This function is available since SDL 3.2.0.
  */
 inline void ReadSurfacePixel(SurfaceParam surface,
-                             int x,
-                             int y,
+                             const PointRaw& p,
                              Uint8* r,
                              Uint8* g,
                              Uint8* b,
                              Uint8* a)
 {
-  CheckError(SDL_ReadSurfacePixel(surface, x, y, r, g, b, a));
+  CheckError(SDL_ReadSurfacePixel(surface, p.x, p.y, r, g, b, a));
 }
 
 /**
@@ -3301,14 +3363,13 @@ inline void ReadSurfacePixel(SurfaceParam surface,
  * @since This function is available since SDL 3.2.0.
  */
 inline void ReadSurfacePixelFloat(SurfaceParam surface,
-                                  int x,
-                                  int y,
+                                  const PointRaw& p,
                                   float* r,
                                   float* g,
                                   float* b,
                                   float* a)
 {
-  CheckError(SDL_ReadSurfacePixelFloat(surface, x, y, r, g, b, a));
+  CheckError(SDL_ReadSurfacePixelFloat(surface, p.x, p.y, r, g, b, a));
 }
 
 /**
@@ -3334,14 +3395,10 @@ inline void ReadSurfacePixelFloat(SurfaceParam surface,
  * @since This function is available since SDL 3.2.0.
  */
 inline void WriteSurfacePixel(SurfaceParam surface,
-                              int x,
-                              int y,
-                              Uint8 r,
-                              Uint8 g,
-                              Uint8 b,
-                              Uint8 a)
+                              const PointRaw& p,
+                              ColorRaw c)
 {
-  CheckError(SDL_WriteSurfacePixel(surface, x, y, r, g, b, a));
+  CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
 }
 
 /**
@@ -3364,14 +3421,10 @@ inline void WriteSurfacePixel(SurfaceParam surface,
  * @since This function is available since SDL 3.2.0.
  */
 inline void WriteSurfacePixelFloat(SurfaceParam surface,
-                                   int x,
-                                   int y,
-                                   float r,
-                                   float g,
-                                   float b,
-                                   float a)
+                                   const PointRaw& p,
+                                   const FColorRaw& c)
 {
-  CheckError(SDL_WriteSurfacePixelFloat(surface, x, y, r, g, b, a));
+  CheckError(SDL_WriteSurfacePixelFloat(surface, p.x, p.y, c.r, c.g, c.b, c.a));
 }
 
 /// @}

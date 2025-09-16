@@ -455,7 +455,7 @@ const transform = {
             "SDL_BindAudioStreams": {
               proto: true,
               parameters: [
-                { name: "this" },
+                {},
                 { type: "std::span<AudioStreamRef>" }
               ]
             },
@@ -557,7 +557,7 @@ const transform = {
             },
             "SDL_SetAudioStreamFormat": {
               parameters: [
-                { name: "this" },
+                {},
                 { type: "OptionalRef<const AudioSpec>" },
                 { type: "OptionalRef<const AudioSpec>" },
               ]
@@ -2761,18 +2761,20 @@ const transform = {
         "SDL_PixelFormat": {
           kind: 'struct',
           enum: "SDL_PIXELFORMAT_",
+          before: "SDL_DEFINE_PIXELFORMAT",
           wrapper: {
             attribute: "format",
           },
           entries: {
             "SDL_DEFINE_PIXELFORMAT": {
-              "kind": "function",
-              "name": "PixelFormat",
-              "type": "",
-              "constexpr": true,
-              "parameters": [
+              kind: "function",
+              name: "PixelFormat",
+              type: "",
+              constexpr: true,
+              after: "SDL_PixelFormat",
+              parameters: [
                 {
-                  "type": "SDL_PixelType",
+                  "type": "PixelType",
                   "name": "type"
                 },
                 {
@@ -2780,7 +2782,7 @@ const transform = {
                   "name": "order"
                 },
                 {
-                  "type": "SDL_PackedLayout",
+                  "type": "PackedLayout",
                   "name": "layout"
                 },
                 {
@@ -3273,7 +3275,7 @@ const transform = {
               constexpr: true,
               parameters: [
                 {
-                  name: "this"
+                  name: "self"
                 },
                 {
                   type: "const RectRaw &"
@@ -3294,7 +3296,7 @@ const transform = {
               constexpr: true,
               parameters: [
                 {
-                  name: "this"
+                  name: "self"
                 },
                 {
                   type: "const FRectRaw &"
@@ -3485,7 +3487,7 @@ const transform = {
               immutable: true,
               constexpr: true,
               parameters: [{
-                name: "this",
+                name: "self",
               },
               {
                 name: "other",
@@ -3522,7 +3524,7 @@ const transform = {
               immutable: true,
               parameters: [
                 {
-                  name: "this",
+                  name: "self",
                 },
                 {
                   name: "other",
@@ -3536,7 +3538,7 @@ const transform = {
               constexpr: true,
               immutable: true,
               parameters: [{
-                name: "this",
+                name: "self",
               }, {
                 name: "other",
                 type: "const RectRaw &"
@@ -3548,7 +3550,7 @@ const transform = {
               immutable: true,
               constexpr: true,
               parameters: [{
-                name: "this",
+                name: "self",
               }, {
                 name: "other",
                 type: "const RectRaw &"
@@ -3707,7 +3709,7 @@ const transform = {
               immutable: true,
               constexpr: true,
               parameters: [{
-                name: "this"
+                name: "self"
               },
               {
                 name: "other",
@@ -3723,7 +3725,7 @@ const transform = {
               immutable: true,
               constexpr: true,
               parameters: [{
-                name: "this",
+                name: "self",
               },
               {
                 name: "other",
@@ -3757,8 +3759,7 @@ const transform = {
               immutable: true,
               constexpr: true,
               parameters: [{
-                name: "this",
-                type: "const FRect &"
+                name: "self",
               },
               {
                 name: "other",
@@ -3771,7 +3772,7 @@ const transform = {
               immutable: true,
               constexpr: true,
               parameters: [{
-                name: "this",
+                name: "self",
               },
               {
                 name: "other",
@@ -3785,8 +3786,7 @@ const transform = {
               immutable: true,
               constexpr: true,
               parameters: [{
-                name: "this",
-                type: "const FRect &"
+                name: "self",
               },
               {
                 name: "other",
@@ -4425,7 +4425,6 @@ const transform = {
             "SDL_RenderDebugText": {
               parameters: [
                 {
-                  "name": "this"
                 },
                 {
                   "type": "FPoint",
@@ -5389,16 +5388,21 @@ const transform = {
               kind: "var",
               type: "Uint64"
             },
-            "Random": {
+            "Random": [{
               kind: "function",
               constexpr: true,
               type: "",
+              parameters: []
+            }, {
+              kind: "function",
+              constexpr: true,
+              explicit: true,
+              type: "",
               parameters: [{
                 type: "Uint64",
-                name: "state",
-                default: "0"
+                name: "state"
               }]
-            },
+            }],
             "operator Uint64": {
               kind: "function",
               constexpr: true,
@@ -5425,6 +5429,9 @@ const transform = {
             }
           }
         },
+        "SDL_rand_r": {},
+        "SDL_randf_r": {},
+        "SDL_rand_bits_r": {},
         "qsort_r": {
           after: "SDL_qsort_r",
           kind: "function",
@@ -5502,7 +5509,7 @@ const transform = {
             "SDL_ReadStorageFile": {
               immutable: true,
               parameters: [
-                { name: "this" },
+                {},
                 { name: "path", type: "StringParam" },
                 { name: "destination", type: "TargetBytes" }
               ]
@@ -5522,7 +5529,7 @@ const transform = {
             "SDL_WriteStorageFile": {
               type: "void",
               parameters: [
-                { name: "this" },
+                {},
                 { name: "path", type: "StringParam" },
                 { name: "source", type: "SourceBytes" }
               ]
@@ -5694,7 +5701,7 @@ const transform = {
             "SDL_SetSurfaceColorKey": {
               kind: "function",
               parameters: [
-                { name: "this" },
+                {},
                 {
                   type: "std::optional<Uint32>",
                   name: "key"
@@ -5818,7 +5825,7 @@ const transform = {
                 }
               ]
             },
-            Fill: [
+            "Fill": [
               {
                 kind: "function",
                 type: "void",
@@ -5918,7 +5925,6 @@ const transform = {
               kind: "function",
               parameters: [
                 {
-                  name: "this"
                 },
                 {
                   type: "SurfaceParam",
@@ -5938,7 +5944,6 @@ const transform = {
               kind: "function",
               parameters: [
                 {
-                  name: "this"
                 },
                 {
                   type: "SurfaceParam",
@@ -5958,7 +5963,6 @@ const transform = {
               kind: "function",
               parameters: [
                 {
-                  name: "this"
                 },
                 {
                   type: "SurfaceParam",
@@ -5982,7 +5986,6 @@ const transform = {
               kind: "function",
               parameters: [
                 {
-                  name: "this"
                 },
                 {
                   type: "SurfaceParam",
@@ -6012,7 +6015,6 @@ const transform = {
               },
               parameters: [
                 {
-                  name: "this"
                 },
                 {
                   type: "SurfaceParam",
@@ -6037,7 +6039,6 @@ const transform = {
               name: "BlitTiled",
               parameters: [
                 {
-                  name: "this"
                 },
                 {
                   type: "SurfaceParam",
@@ -6058,7 +6059,6 @@ const transform = {
               name: "BlitTiledWithScale",
               parameters: [
                 {
-                  name: "this"
                 },
                 {
                   type: "SurfaceParam",
@@ -6122,7 +6122,6 @@ const transform = {
               name: "Blit9GridWithScale",
               parameters: [
                 {
-                  name: "this"
                 },
                 {
                   type: "SurfaceParam",
@@ -6383,15 +6382,264 @@ const transform = {
             patch: 6,
           }
         },
-        // "SDL_SaveBMP_IO": {
-        //   name: "SaveBMP",
-        //   parameters: [
-        //     {},
-        //     {
-        //       type: "IOStreamParam"
-        //     }
-        //   ]
-        // }
+        "SDL_BlitSurface": {
+          kind: "function",
+          parameters: [{
+            type: "SurfaceParam",
+            name: "src"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "srcrect"
+          },
+          {
+            type: "SurfaceParam",
+            name: "dst"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "dstrect"
+          }]
+        },
+        "BlitSurfaceAt": {
+          kind: "function",
+          type: "void",
+          parameters: [{
+            type: "SurfaceParam",
+            name: "src"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "srcrect"
+          },
+          {
+            type: "SurfaceParam",
+            name: "dst"
+          },
+          {
+            type: "const PointRaw &",
+            name: "dstpos"
+          }]
+        },
+        "SDL_BlitSurfaceUnchecked": {
+          kind: "function",
+          parameters: [{
+            type: "SurfaceParam",
+            name: "src"
+          },
+          {
+            type: "const RectRaw &",
+            name: "srcrect"
+          },
+          {
+            type: "SurfaceParam",
+            name: "dst"
+          },
+          {
+            type: "const RectRaw &",
+            name: "dstrect"
+          }]
+        },
+        "SDL_BlitSurfaceScaled": {
+          kind: "function",
+          parameters: [{
+            type: "SurfaceParam",
+            name: "src"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "srcrect"
+          },
+          {
+            type: "SurfaceParam",
+            name: "dst"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "dstrect"
+          },
+          {
+            type: "ScaleMode",
+            name: "scaleMode"
+          }]
+        },
+        "SDL_BlitSurfaceUncheckedScaled": {
+          kind: "function",
+          parameters: [{
+            type: "SurfaceParam",
+            name: "src"
+          },
+          {
+            type: "const RectRaw &",
+            name: "srcrect"
+          },
+          {
+            type: "SurfaceParam",
+            name: "dst"
+          },
+          {
+            type: "const RectRaw &",
+            name: "dstrect"
+          },
+          {
+            type: "ScaleMode",
+            name: "scaleMode"
+          }]
+        },
+        "SDL_StretchSurface": {
+          kind: "function",
+          since: {
+            tag: "SDL",
+            major: 3,
+            minor: 2,
+            patch: 4
+          },
+          parameters: [{
+            type: "SurfaceParam",
+            name: "src"
+          },
+          {
+            type: "OptionalRef<SDL_Rect>",
+            name: "srcrect"
+          },
+          {
+            type: "SurfaceParam",
+            name: "dst"
+          },
+          {
+            type: "OptionalRef<SDL_Rect>",
+            name: "dstrect"
+          },
+          {
+            type: "ScaleMode",
+            name: "scaleMode"
+          }]
+        },
+        "SDL_BlitSurfaceTiled": {
+          kind: "function",
+          parameters: [{
+            type: "SurfaceParam",
+            name: "src"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "srcrect"
+          },
+          {
+            type: "SurfaceParam",
+            name: "dst"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "dstrect"
+          }]
+        },
+        "SDL_BlitSurfaceTiledWithScale": {
+          kind: "function",
+          parameters: [{
+            type: "SurfaceParam",
+            name: "src"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "srcrect"
+          },
+          {
+            type: "float",
+            name: "scale"
+          },
+          {
+            type: "SDL_ScaleMode",
+            name: "scaleMode"
+          },
+          {
+            type: "SurfaceParam",
+            name: "dst"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "dstrect"
+          }]
+        },
+        "SDL_BlitSurface9Grid": {
+          kind: "function",
+          parameters: [{
+            type: "SurfaceParam",
+            name: "src"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "srcrect"
+          },
+          {
+            type: "int",
+            name: "left_width"
+          },
+          {
+            type: "int",
+            name: "right_width"
+          },
+          {
+            type: "int",
+            name: "top_height"
+          },
+          {
+            type: "int",
+            name: "bottom_height"
+          },
+          {
+            type: "float",
+            name: "scale"
+          },
+          {
+            type: "SDL_ScaleMode",
+            name: "scaleMode"
+          },
+          {
+            type: "SurfaceParam",
+            name: "dst"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "dstrect"
+          }]
+        },
+        "BlitSurface9Grid": {
+          kind: "function",
+          type: "void",
+          parameters: [{
+            type: "SurfaceParam",
+            name: "src"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "srcrect"
+          },
+          {
+            type: "int",
+            name: "left_width"
+          },
+          {
+            type: "int",
+            name: "right_width"
+          },
+          {
+            type: "int",
+            name: "top_height"
+          },
+          {
+            type: "int",
+            name: "bottom_height"
+          },
+          {
+            type: "SurfaceParam",
+            name: "dst"
+          },
+          {
+            type: "OptionalRef<const SDL_Rect>",
+            name: "dstrect"
+          }]
+        },
       }
     },
     "SDL_system.h": {

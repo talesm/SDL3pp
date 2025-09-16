@@ -909,6 +909,23 @@ public:
   Uint64 GetVariableCount() { static_assert(false, "Not implemented"); }
 
   /**
+   * Destroy a set of environment variables.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the environment is no longer in use.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Environment.Environment
+   */
+  void Destroy()
+  {
+    SDL_DestroyEnvironment(m_resource);
+    m_resource = nullptr;
+  }
+
+  /**
    * Get the value of a variable in the environment.
    *
    * @param name the name of the variable to get.
@@ -975,23 +992,6 @@ public:
   void UnsetVariable(StringParam name)
   {
     CheckError(SDL_UnsetEnvironmentVariable(m_resource, name));
-  }
-
-  /**
-   * Destroy a set of environment variables.
-   *
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the environment is no longer in use.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Environment.Environment
-   */
-  void Destroy()
-  {
-    SDL_DestroyEnvironment(m_resource);
-    m_resource = nullptr;
   }
 };
 
@@ -1086,7 +1086,7 @@ inline Environment GetEnvironmentVariable(EnvironmentParam env,
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline char** GetEnvironmentVariables(EnvironmentParam env)
+inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
 {
   return SDL_GetEnvironmentVariables(env);
 }
@@ -4015,7 +4015,9 @@ struct Random
 
   Uint64 m_state;
 
-  constexpr Random(Uint64 state = 0) {}
+  constexpr Random() {}
+
+  constexpr explicit Random(Uint64 state) {}
 
   constexpr operator Uint64() { static_assert(false, "Not implemented"); }
 

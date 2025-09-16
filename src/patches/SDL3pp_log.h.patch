@@ -30,9 +30,9 @@
 103d124
 < 
 112c133
-<   constexpr LogCategory(SDL_LogCategory category = {})
+<   constexpr LogCategory(LogCategoryRaw category = {})
 ---
->   constexpr LogCategory(SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION)
+>   constexpr LogCategory(LogCategoryRaw category = SDL_LOG_CATEGORY_APPLICATION)
 122c143,146
 <   constexpr explicit LogCategory(int category) {}
 ---
