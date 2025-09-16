@@ -39,3 +39,8 @@
 <     return Surface(SDL_LoadBMP_IO(src));
 ---
 >     return Surface(SDL_LoadBMP_IO(src, false));
+1809,1812d1798
+< 
+< #endif // SDL_VERSION_ATLEAST(3, 2, 6)
+< 
+< #if SDL_VERSION_ATLEAST(3, 2, 6)

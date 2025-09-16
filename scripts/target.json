@@ -12057,6 +12057,12 @@
               "kind": "var",
               "value": "\"SDL.surface.hotspot.x\"",
               "sourceName": "SDL_PROP_SURFACE_HOTSPOT_X_NUMBER",
+              "since": {
+                "tag": "SDL",
+                "major": 3,
+                "minor": 2,
+                "patch": 6
+              },
               "type": "auto",
               "constexpr": true
             },
@@ -12066,6 +12072,12 @@
               "kind": "var",
               "value": "\"SDL.surface.hotspot.y\"",
               "sourceName": "SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER",
+              "since": {
+                "tag": "SDL",
+                "major": 3,
+                "minor": 2,
+                "patch": 6
+              },
               "type": "auto",
               "constexpr": true
             }

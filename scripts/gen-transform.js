@@ -6369,6 +6369,22 @@ const transform = {
             patch: 10,
           }
         },
+        "SDL_PROP_SURFACE_HOTSPOT_X_NUMBER": {
+          since: {
+            tag: "SDL",
+            major: 3,
+            minor: 2,
+            patch: 6,
+          }
+        },
+        "SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER": {
+          since: {
+            tag: "SDL",
+            major: 3,
+            minor: 2,
+            patch: 6,
+          }
+        },
         // "SDL_SaveBMP_IO": {
         //   name: "SaveBMP",
         //   parameters: [
