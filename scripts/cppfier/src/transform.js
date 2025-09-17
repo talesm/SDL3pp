@@ -1313,7 +1313,6 @@ function expandResources(sourceEntries, file, context) {
       }
     }
 
-    // const staticCreateFunctions = !targetEntry.noStaticCtors;
     for (const [sourceName, entry] of Object.entries(subEntries)) {
       const ctorTransform = file.transform[sourceName];
       let isCtor = false;
@@ -1430,142 +1429,13 @@ function expandResources(sourceEntries, file, context) {
 
     });
 
-    // const extraParametersStr = resourceEntry.extraParameters?.length
-    //   ? (", " + resourceEntry.extraParameters.join(", ")) : "";
 
     /** @type {ApiEntryTransform[]} */
     const derivedEntries = [
-      // {
-      //   name: uniqueName,
-      //   kind: "struct",
-      //   type: `ResourceUnique<${refName}${extraParametersStr}>`,
-      //   doc: `Handle to an owned ${title}.\n\n@cat resource\n\n@sa ${refName}`,
-      //   entries: {
-      //     "ResourceUnique::ResourceUnique": "alias",
-      //     ...uniqueSubEntries,
-      //   },
-      //   hints: { "self": uniqueName }
-      // }, {
-      //   name: `${uniqueName}::share`,
-      //   kind: "function",
-      //   type: sharedName,
-      //   doc: `Move this ${title} into a ${sharedName}.`,
-      //   parameters: [],
-      //   hints: { body: `return ${sharedName}(std::move(*this));` }
-      // }, {
-      //   name: unsafeName,
-      //   kind: "struct",
-      //   type: `ResourceUnsafe<${refName}${extraParametersStr}>`,
-      //   doc: `Unsafe Handle to ${title}.\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ${refName}`,
-      //   entries: {
-      //     "ResourceUnsafe::ResourceUnsafe": "alias",
-      //     [unsafeName]: {
-      //       kind: "function",
-      //       type: "",
-      //       explicit: true,
-      //       constexpr: true,
-      //       parameters: [{
-      //         type: `${uniqueName} &&`,
-      //         name: "other"
-      //       }],
-      //       doc: `Constructs ${unsafeName} from ${uniqueName}.`,
-      //       hints: { init: [`${unsafeName}(other.release())`] },
-      //     },
-      //   },
-      // },
     ];
-    // /** @type {Set<string>} */
-    // const derivedNames = new Set();
-    // if (resourceEntry.lock) {
-    //   const lockEntry = resourceEntry.lock !== true ? resourceEntry.lock : {};
-    //   lockEntry.kind = "struct";
-    //   if (!lockEntry.name) lockEntry.name = uniqueName + "Lock";
-    //   if (!lockEntry.type) lockEntry.type = `LockBase<${refName}>`;
-    //   if (!lockEntry.doc) lockEntry.doc = `Locks a ${uniqueName}.`;
-    //   combineHints(lockEntry, { super: lockEntry.type });
-    //   derivedNames.add(lockEntry.name);
-    //   referenceAliases.push({ kind: "forward", name: lockEntry.name });
-    //   derivedEntries.push(lockEntry);
-    //   const lockFunctionName = resourceEntry.lockFunction;
-    //   const unlockFunctionName = resourceEntry.unlockFunction;
-    //   const lockFunction = targetEntry.entries[lockFunctionName];
-    //   if (typeof lockFunction === "string") {
-    //     targetEntry.entries[lockFunctionName] = {
-    //       type: lockEntry.name,
-    //     };
-    //   }
 
-    //   lockEntry.entries = {
-    //     [lockEntry.name]: [{
-    //       kind: "function",
-    //       type: "",
-    //       constexpr: true,
-    //       proto: true,
-    //       parameters: [],
-    //       doc: "Creates an empty lock",
-    //       hints: { default: true }
-    //     }, {
-    //       kind: "function",
-    //       type: "",
-    //       constexpr: true,
-    //       parameters: [{ type: `${lockEntry.name} &&`, name: "other" }],
-    //       doc: "Move constructor",
-    //       hints: { init: ["LockBase(other.release())"] }
-    //     }],
-    //     [lockFunctionName]: "ctor",
-    //     [`~${lockEntry.name}`]: {
-    //       kind: "function",
-    //       type: "",
-    //       parameters: [],
-    //       doc: "Destructor\n\n@sa Unlock()",
-    //       hints: { body: "Unlock();" }
-    //     },
-    //     [unlockFunctionName]: {
-    //       name: "Unlock",
-    //       static: false,
-    //       hints: {
-    //         body: `CheckError(${unlockFunctionName}(release()));`,
-    //         removeParamThis: true,
-    //       },
-    //     },
-    //     "reset": {
-    //       kind: "function",
-    //       type: "void",
-    //       parameters: [],
-    //       doc: "Same as Unlock(), just for uniformity.",
-    //       hints: { body: "Unlock();" },
-    //     },
-    //     ...(lockEntry.entries ?? {})
-    //   };
-    // }
-
-    const includeAfterKey = targetEntry.after ?? sourceName;
-    // let pointToIncludeFunc = includeAfterKey;
+    const includeAfterKey = uniqueName;
     context.includeAfter(derivedEntries, includeAfterKey);
-    // for (const [subName, subEntry] of Object.entries(refSubEntries)) {
-    //   if (Array.isArray(subEntry)) {
-    //     subEntry.forEach(e => {
-    //       if (derivedNames.has(e.type)) {
-    //         context.includeAfter(e, file.name, pointToIncludeFunc);
-    //       }
-    //     });
-    //   } else if (typeof subEntry === "string") {
-    //     if (!context.prefixToRemove.test(subName)) continue;
-    //     pointToIncludeFunc = subName;
-    //     if (subEntry === "ctor") continue;
-    //     const sourceEntry = /** @type {ApiEntry}*/(sourceEntries[subName]);
-    //     if (sourceEntry.kind === "function" && derivedNames.has(context.returnTypeMap[sourceEntry.type])) {
-    //       if (subEntry === "immutable") entry.entries[subName] = { proto: true, immutable: true };
-    //       else entry.entries[subName] = { proto: true };
-    //     }
-    //   } else {
-    //     if (context.prefixToRemove.test(subName)) pointToIncludeFunc = subName;
-    //     const sourceEntry = /** @type {ApiEntry}*/(sourceEntries[subName]);
-    //     if (subEntry.kind !== "function" && sourceEntry.kind !== "function") continue;
-    //     const returnType = subEntry.type ?? context.returnTypeMap[sourceEntry.type];
-    //     if (derivedNames.has(returnType)) subEntry.proto = true;
-    //   }
-    // }
     delete targetEntry.resource;
   }
   context.includeAfter(referenceAliases, '__begin');
