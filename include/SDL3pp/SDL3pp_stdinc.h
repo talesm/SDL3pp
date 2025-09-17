@@ -929,6 +929,28 @@ public:
   constexpr operator EnvironmentParam() const { return {m_resource}; }
 
   /**
+   * Get the value of a variable in the environment.
+   *
+   * @param name the name of the variable to get.
+   * @returns a pointer to the value of the variable or nullptr if it can't be
+   *          found.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetEnvironment
+   * @sa Environment.Environment
+   * @sa Environment.GetVariables
+   * @sa Environment.SetVariable
+   * @sa Environment.UnsetVariable
+   */
+  const char* GetVariable(StringParam name)
+  {
+    return SDL_GetEnvironmentVariable(m_resource, name);
+  }
+
+  /**
    * Get all variables in the environment.
    *
    * @returns a nullptr terminated array of pointers to environment variables in
@@ -964,45 +986,6 @@ public:
     Uint64 count = 0;
     for (auto& var : GetVariables()) count += 1;
     return count;
-  }
-
-  /**
-   * Destroy a set of environment variables.
-   *
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the environment is no longer in use.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Environment.Environment
-   */
-  void Destroy()
-  {
-    SDL_DestroyEnvironment(m_resource);
-    m_resource = nullptr;
-  }
-
-  /**
-   * Get the value of a variable in the environment.
-   *
-   * @param name the name of the variable to get.
-   * @returns a pointer to the value of the variable or nullptr if it can't be
-   *          found.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetEnvironment
-   * @sa Environment.Environment
-   * @sa Environment.GetVariables
-   * @sa Environment.SetVariable
-   * @sa Environment.UnsetVariable
-   */
-  const char* GetVariable(StringParam name)
-  {
-    return SDL_GetEnvironmentVariable(m_resource, name);
   }
 
   /**
@@ -1050,6 +1033,23 @@ public:
   void UnsetVariable(StringParam name)
   {
     CheckError(SDL_UnsetEnvironmentVariable(m_resource, name));
+  }
+
+  /**
+   * Destroy a set of environment variables.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the environment is no longer in use.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Environment.Environment
+   */
+  void Destroy()
+  {
+    SDL_DestroyEnvironment(m_resource);
+    m_resource = nullptr;
   }
 };
 
@@ -5635,6 +5635,45 @@ public:
   constexpr IConv(IConv&& other) { other.m_resource = nullptr; }
 
   /**
+   * This function allocates a context for the specified character set
+   * conversion.
+   *
+   * @param tocode The target character encoding, must not be nullptr.
+   * @param fromcode The source character encoding, must not be nullptr.
+   * @returns a handle that must be freed with IConv.close, or
+   *          SDL_ICONV_ERROR on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConv.iconv
+   * @sa IConv.close
+   * @sa iconv_string
+   */
+  IConv(StringParam tocode, StringParam fromcode)
+    : m_resource(SDL_iconv_open(tocode, fromcode))
+  {
+  }
+
+  ~IConv() { SDL_iconv_close(m_resource); }
+
+  IConv& operator=(IConv other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  constexpr IConvRaw get() const { return m_resource; }
+
+  constexpr IConvRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  constexpr operator IConvParam() const { return {m_resource}; }
+
+  /**
    * This function converts text between encodings, reading from and writing to
    * a buffer.
    *
@@ -5676,6 +5715,24 @@ public:
   {
     return CheckError(
       SDL_iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft));
+  }
+
+  /**
+   * This function frees a context used for character set conversion.
+   *
+   * @param cd The character set conversion handle.
+   * @returns 0 on success, or -1 on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConv.iconv
+   * @sa IConv.open
+   * @sa iconv_string
+   */
+  void close()
+  {
+    CheckError(SDL_iconv_close(m_resource));
+    m_resource = nullptr;
   }
 };
 

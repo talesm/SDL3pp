@@ -10976,6 +10976,43 @@
               "name": "operator SurfaceParam",
               "doc": ""
             },
+            "GetProperties": {
+              "doc": "Get the properties associated with a surface.\n\nThe following properties are understood by SDL:\n\n- `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 203 for HDR10 surfaces and 1.0 for floating point surfaces.\n- `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the maximum dynamic range used by the content, in\n  terms of the SDR white point. This defaults to 0.0, which disables tone\n  mapping.\n- `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator\n  used when compressing from a surface with high dynamic range to another\n  with lower dynamic range. Currently this supports \"chrome\", which uses\n  the same tone mapping that Chrome uses for HDR content, the form \"*=N\",\n  where N is a floating point scale factor applied in linear space, and\n  \"none\", which disables tone mapping. This defaults to \"chrome\".\n- `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the\n  left edge of the image, if this surface is being used as a cursor.\n- `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the\n  top edge of the image, if this surface is being used as a cursor.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetProperties",
+              "kind": "function",
+              "type": "PropertiesID",
+              "parameters": [],
+              "sourceName": "SDL_GetSurfaceProperties",
+              "hints": {
+                "mayFail": true
+              },
+              "immutable": true
+            },
+            "SetColorspace": {
+              "doc": "Set the colorspace used by a surface.\n\nSetting the colorspace doesn't change the pixels, only how they are\ninterpreted in color operations.\n\n@param colorspace an Colorspace value describing the surface\n                  colorspace.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetColorspace",
+              "name": "SetColorspace",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "colorspace",
+                  "type": "Colorspace"
+                }
+              ],
+              "sourceName": "SDL_SetSurfaceColorspace",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "GetColorspace": {
+              "doc": "Get the colorspace used by a surface.\n\nThe colorspace defaults to COLORSPACE_SRGB_LINEAR for floating point\nformats, COLORSPACE_HDR10 for 10-bit formats, COLORSPACE_SRGB for\nother RGB surfaces and COLORSPACE_BT709_FULL for YUV textures.\n\n@returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if\n         the surface is nullptr.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetColorspace",
+              "name": "GetColorspace",
+              "kind": "function",
+              "type": "Colorspace",
+              "parameters": [],
+              "sourceName": "SDL_GetSurfaceColorspace",
+              "immutable": true
+            },
             "CreatePalette": {
               "doc": "Create a palette and associate it with a surface.\n\nThis function creates a palette compatible with the provided surface. The\npalette is then returned for you to modify, and the surface will\nautomatically use the new palette in future operations. You do not need to\ndestroy the returned palette, it will be freed when the reference count\nreaches 0, usually when the surface is destroyed.\n\nBitmap surfaces (with format PIXELFORMAT_INDEX1LSB or\nPIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as\nwhite and 1 as black. Other surfaces will get a palette initialized with\nwhite in every entry.\n\nIf this function is called for a surface that already has a palette, a new\npalette will be created to replace it.\n\n@returns a new Palette structure on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.SetColors",
               "name": "CreatePalette",
@@ -10986,6 +11023,31 @@
               "hints": {
                 "mayFail": true
               }
+            },
+            "SetPalette": {
+              "doc": "Set the palette used by a surface.\n\nA single palette can be shared with many surfaces.\n\n@param palette the Palette structure to use.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette\n@sa Surface.GetPalette",
+              "name": "SetPalette",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "palette",
+                  "type": "PaletteParam"
+                }
+              ],
+              "sourceName": "SDL_SetSurfacePalette",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "GetPalette": {
+              "doc": "Get the palette used by a surface.\n\n@returns a pointer to the palette used by the surface, or nullptr if there is\n         no palette used.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetPalette",
+              "name": "GetPalette",
+              "kind": "function",
+              "type": "PaletteRaw",
+              "parameters": [],
+              "sourceName": "SDL_GetSurfacePalette",
+              "immutable": true
             },
             "AddAlternateImage": {
               "doc": "Add an alternate version of a surface.\n\nThis function adds an alternate version of this surface, usually used for\ncontent with high DPI representations like cursors or icons. The size,\nformat, and content do not need to match the original surface, and these\nalternate versions will not be updated when the original surface changes.\n\nThis function adds a reference to the alternate version, so you should call\nSurface.Destroy() on the image after this call.\n\n@param image a pointer to an alternate Surface to associate with this\n             surface.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.RemoveAlternateImages\n@sa Surface.GetImages\n@sa Surface.HasAlternateImages",
@@ -11002,6 +11064,15 @@
               "hints": {
                 "mayFail": true
               }
+            },
+            "HasAlternateImages": {
+              "doc": "Return whether a surface has alternate versions available.\n\n@returns true if alternate versions are available or false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.AddAlternateImage\n@sa Surface.RemoveAlternateImages\n@sa Surface.GetImages",
+              "name": "HasAlternateImages",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_SurfaceHasAlternateImages",
+              "immutable": true
             },
             "GetImages": {
               "doc": "Get an array including all versions of a surface.\n\nThis returns all versions of a surface, with the surface being queried as\nthe first element in the returned array.\n\nFreeing the array of surfaces does not affect the surfaces in the array.\nThey are still referenced by the surface being queried and will be cleaned\nup normally.\n\n@param surface the Surface structure to query.\n@param count a pointer filled in with the number of surface pointers\n             returned, may be nullptr.\n@returns a nullptr terminated array of Surface pointers or nullptr on\n         failure; call GetError() for more information. This should be\n         freed with free() when it is no longer needed.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.AddAlternateImage\n@sa Surface.RemoveAlternateImages\n@sa Surface.HasAlternateImages",
@@ -11024,6 +11095,42 @@
               "name": "MustLock",
               "kind": "def",
               "doc": ""
+            },
+            "Lock": {
+              "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to Surface.Lock() / Surface.Unlock(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSurface.Unlock() to release it.\n\nNot all surfaces require locking. If `MUSTLOCK(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@throws Error on failure.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MUSTLOCK\n@sa Surface.Unlock",
+              "name": "Lock",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_LockSurface",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "SetRLE": {
+              "doc": "Set the RLE acceleration hint for a surface.\n\nIf RLE is enabled, color key and alpha blending blits are much faster, but\nthe surface must be locked before directly accessing the pixels.\n\n@param enabled true to enable RLE acceleration, false to disable it.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Blit\n@sa Surface.Lock\n@sa Surface.Unlock",
+              "name": "SetRLE",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "enabled",
+                  "type": "bool"
+                }
+              ],
+              "sourceName": "SDL_SetSurfaceRLE",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "HasRLE": {
+              "doc": "Returns whether the surface is RLE enabled.\n\nIt is safe to pass a nullptr `surface` here; it will return false.\n\n@returns true if the surface is RLE enabled, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetRLE",
+              "name": "HasRLE",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_SurfaceHasRLE",
+              "immutable": true
             },
             "SetColorKey": [
               {
@@ -11062,6 +11169,15 @@
               "name": "ClearColorKey",
               "doc": ""
             },
+            "HasColorKey": {
+              "doc": "Returns whether the surface has a color key.\n\nIt is safe to pass a nullptr `surface` here; it will return false.\n\n@returns true if the surface has a color key, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetColorKey\n@sa Surface.GetColorKey",
+              "name": "HasColorKey",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_SurfaceHasColorKey",
+              "immutable": true
+            },
             "GetColorKey": [
               {
                 "kind": "function",
@@ -11098,9 +11214,75 @@
                 "sourceName": "SDL_GetSurfaceColorKey",
                 "hints": {
                   "mayFail": true
-                }
+                },
+                "immutable": true
               }
             ],
+            "SetColorMod": {
+              "doc": "Set an additional color value multiplied into blit operations.\n\nWhen this surface is blitted, during the blit operation each source color\nchannel is modulated by the appropriate color value according to the\nfollowing formula:\n\n`srcC = srcC * (color / 255)`\n\n@param r the red color value multiplied into blit operations.\n@param g the green color value multiplied into blit operations.\n@param b the blue color value multiplied into blit operations.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetColorMod\n@sa Surface.SetAlphaMod",
+              "name": "SetColorMod",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "r",
+                  "type": "Uint8"
+                },
+                {
+                  "name": "g",
+                  "type": "Uint8"
+                },
+                {
+                  "name": "b",
+                  "type": "Uint8"
+                }
+              ],
+              "sourceName": "SDL_SetSurfaceColorMod",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "GetColorMod": {
+              "doc": "Get the additional color value multiplied into blit operations.\n\n@param r a pointer filled in with the current red color value.\n@param g a pointer filled in with the current green color value.\n@param b a pointer filled in with the current blue color value.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetAlphaMod\n@sa Surface.SetColorMod",
+              "name": "GetColorMod",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "r",
+                  "type": "Uint8 *"
+                },
+                {
+                  "name": "g",
+                  "type": "Uint8 *"
+                },
+                {
+                  "name": "b",
+                  "type": "Uint8 *"
+                }
+              ],
+              "sourceName": "SDL_GetSurfaceColorMod",
+              "hints": {
+                "mayFail": true
+              },
+              "immutable": true
+            },
+            "SetAlphaMod": {
+              "doc": "Set an additional alpha value used in blit operations.\n\nWhen this surface is blitted, during the blit operation the source alpha\nvalue is modulated by this alpha value according to the following formula:\n\n`srcA = srcA * (alpha / 255)`\n\n@param alpha the alpha value multiplied into blit operations.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetAlphaMod\n@sa Surface.SetColorMod",
+              "name": "SetAlphaMod",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "alpha",
+                  "type": "Uint8"
+                }
+              ],
+              "sourceName": "SDL_SetSurfaceAlphaMod",
+              "hints": {
+                "mayFail": true
+              }
+            },
             "GetAlphaMod": {
               "doc": "Get the additional alpha value used in blit operations.\n\n@param alpha a pointer filled in with the current alpha value.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetColorMod\n@sa Surface.SetAlphaMod",
               "name": "GetAlphaMod",
@@ -11132,6 +11314,22 @@
               "parameters": [],
               "name": "GetMod",
               "doc": ""
+            },
+            "SetBlendMode": {
+              "doc": "Set the blend mode used for blit operations.\n\nTo copy a surface to another surface (or texture) without blending with the\nexisting data, the blendmode of the SOURCE surface should be set to\n`BLENDMODE_NONE`.\n\n@param blendMode the BlendMode to use for blit blending.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetBlendMode",
+              "name": "SetBlendMode",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "blendMode",
+                  "type": "BlendMode"
+                }
+              ],
+              "sourceName": "SDL_SetSurfaceBlendMode",
+              "hints": {
+                "mayFail": true
+              }
             },
             "GetBlendMode": {
               "doc": "Get the blend mode used for blit operations.\n\n@param blendMode a pointer filled in with the current BlendMode.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetBlendMode",
@@ -11979,84 +12177,6 @@
                 "body": "SDL_DestroySurface(m_resource);\nm_resource = nullptr;"
               }
             },
-            "GetProperties": {
-              "doc": "Get the properties associated with a surface.\n\nThe following properties are understood by SDL:\n\n- `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 203 for HDR10 surfaces and 1.0 for floating point surfaces.\n- `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the maximum dynamic range used by the content, in\n  terms of the SDR white point. This defaults to 0.0, which disables tone\n  mapping.\n- `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator\n  used when compressing from a surface with high dynamic range to another\n  with lower dynamic range. Currently this supports \"chrome\", which uses\n  the same tone mapping that Chrome uses for HDR content, the form \"*=N\",\n  where N is a floating point scale factor applied in linear space, and\n  \"none\", which disables tone mapping. This defaults to \"chrome\".\n- `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the\n  left edge of the image, if this surface is being used as a cursor.\n- `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the\n  top edge of the image, if this surface is being used as a cursor.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "GetProperties",
-              "kind": "function",
-              "type": "PropertiesID",
-              "parameters": [],
-              "sourceName": "SDL_GetSurfaceProperties",
-              "hints": {
-                "mayFail": true
-              }
-            },
-            "SetColorspace": {
-              "doc": "Set the colorspace used by a surface.\n\nSetting the colorspace doesn't change the pixels, only how they are\ninterpreted in color operations.\n\n@param colorspace an Colorspace value describing the surface\n                  colorspace.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetColorspace",
-              "name": "SetColorspace",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "colorspace",
-                  "type": "Colorspace"
-                }
-              ],
-              "sourceName": "SDL_SetSurfaceColorspace",
-              "hints": {
-                "mayFail": true
-              }
-            },
-            "GetColorspace": {
-              "doc": "Get the colorspace used by a surface.\n\nThe colorspace defaults to COLORSPACE_SRGB_LINEAR for floating point\nformats, COLORSPACE_HDR10 for 10-bit formats, COLORSPACE_SRGB for\nother RGB surfaces and COLORSPACE_BT709_FULL for YUV textures.\n\n@returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if\n         the surface is nullptr.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetColorspace",
-              "name": "GetColorspace",
-              "kind": "function",
-              "type": "Colorspace",
-              "parameters": [],
-              "sourceName": "SDL_GetSurfaceColorspace"
-            },
-            "SetPalette": {
-              "doc": "Set the palette used by a surface.\n\nA single palette can be shared with many surfaces.\n\n@param palette the Palette structure to use.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette\n@sa Surface.GetPalette",
-              "name": "SetPalette",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "palette",
-                  "type": "PaletteParam"
-                }
-              ],
-              "sourceName": "SDL_SetSurfacePalette",
-              "hints": {
-                "mayFail": true
-              }
-            },
-            "GetPalette": {
-              "doc": "Get the palette used by a surface.\n\n@returns a pointer to the palette used by the surface, or nullptr if there is\n         no palette used.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetPalette",
-              "name": "GetPalette",
-              "kind": "function",
-              "type": "PaletteRaw",
-              "parameters": [],
-              "sourceName": "SDL_GetSurfacePalette"
-            },
-            "HasAlternateImages": {
-              "doc": "Return whether a surface has alternate versions available.\n\n@returns true if alternate versions are available or false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.AddAlternateImage\n@sa Surface.RemoveAlternateImages\n@sa Surface.GetImages",
-              "name": "HasAlternateImages",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [],
-              "sourceName": "SDL_SurfaceHasAlternateImages"
-            },
-            "Lock": {
-              "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to Surface.Lock() / Surface.Unlock(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSurface.Unlock() to release it.\n\nNot all surfaces require locking. If `MUSTLOCK(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@throws Error on failure.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MUSTLOCK\n@sa Surface.Unlock",
-              "name": "Lock",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_LockSurface",
-              "hints": {
-                "mayFail": true
-              }
-            },
             "Unlock": {
               "doc": "Release a surface after directly accessing the pixels.\n\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Lock",
               "name": "Unlock",
@@ -12097,118 +12217,6 @@
                 }
               ],
               "sourceName": "SDL_SaveBMP",
-              "hints": {
-                "mayFail": true
-              }
-            },
-            "SetRLE": {
-              "doc": "Set the RLE acceleration hint for a surface.\n\nIf RLE is enabled, color key and alpha blending blits are much faster, but\nthe surface must be locked before directly accessing the pixels.\n\n@param enabled true to enable RLE acceleration, false to disable it.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Blit\n@sa Surface.Lock\n@sa Surface.Unlock",
-              "name": "SetRLE",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "enabled",
-                  "type": "bool"
-                }
-              ],
-              "sourceName": "SDL_SetSurfaceRLE",
-              "hints": {
-                "mayFail": true
-              }
-            },
-            "HasRLE": {
-              "doc": "Returns whether the surface is RLE enabled.\n\nIt is safe to pass a nullptr `surface` here; it will return false.\n\n@returns true if the surface is RLE enabled, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetRLE",
-              "name": "HasRLE",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [],
-              "sourceName": "SDL_SurfaceHasRLE"
-            },
-            "HasColorKey": {
-              "doc": "Returns whether the surface has a color key.\n\nIt is safe to pass a nullptr `surface` here; it will return false.\n\n@returns true if the surface has a color key, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetColorKey\n@sa Surface.GetColorKey",
-              "name": "HasColorKey",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [],
-              "sourceName": "SDL_SurfaceHasColorKey"
-            },
-            "SetColorMod": {
-              "doc": "Set an additional color value multiplied into blit operations.\n\nWhen this surface is blitted, during the blit operation each source color\nchannel is modulated by the appropriate color value according to the\nfollowing formula:\n\n`srcC = srcC * (color / 255)`\n\n@param r the red color value multiplied into blit operations.\n@param g the green color value multiplied into blit operations.\n@param b the blue color value multiplied into blit operations.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetColorMod\n@sa Surface.SetAlphaMod",
-              "name": "SetColorMod",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "r",
-                  "type": "Uint8"
-                },
-                {
-                  "name": "g",
-                  "type": "Uint8"
-                },
-                {
-                  "name": "b",
-                  "type": "Uint8"
-                }
-              ],
-              "sourceName": "SDL_SetSurfaceColorMod",
-              "hints": {
-                "mayFail": true
-              }
-            },
-            "GetColorMod": {
-              "doc": "Get the additional color value multiplied into blit operations.\n\n@param r a pointer filled in with the current red color value.\n@param g a pointer filled in with the current green color value.\n@param b a pointer filled in with the current blue color value.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetAlphaMod\n@sa Surface.SetColorMod",
-              "name": "GetColorMod",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "r",
-                  "type": "Uint8 *"
-                },
-                {
-                  "name": "g",
-                  "type": "Uint8 *"
-                },
-                {
-                  "name": "b",
-                  "type": "Uint8 *"
-                }
-              ],
-              "sourceName": "SDL_GetSurfaceColorMod",
-              "hints": {
-                "mayFail": true
-              }
-            },
-            "SetAlphaMod": {
-              "doc": "Set an additional alpha value used in blit operations.\n\nWhen this surface is blitted, during the blit operation the source alpha\nvalue is modulated by this alpha value according to the following formula:\n\n`srcA = srcA * (alpha / 255)`\n\n@param alpha the alpha value multiplied into blit operations.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetAlphaMod\n@sa Surface.SetColorMod",
-              "name": "SetAlphaMod",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "alpha",
-                  "type": "Uint8"
-                }
-              ],
-              "sourceName": "SDL_SetSurfaceAlphaMod",
-              "hints": {
-                "mayFail": true
-              }
-            },
-            "SetBlendMode": {
-              "doc": "Set the blend mode used for blit operations.\n\nTo copy a surface to another surface (or texture) without blending with the\nexisting data, the blendmode of the SOURCE surface should be set to\n`BLENDMODE_NONE`.\n\n@param blendMode the BlendMode to use for blit blending.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetBlendMode",
-              "name": "SetBlendMode",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "blendMode",
-                  "type": "BlendMode"
-                }
-              ],
-              "sourceName": "SDL_SetSurfaceBlendMode",
               "hints": {
                 "mayFail": true
               }
@@ -12293,7 +12301,7 @@
           "doc": "Get the properties associated with a surface.\n\nThe following properties are understood by SDL:\n\n- `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 203 for HDR10 surfaces and 1.0 for floating point surfaces.\n- `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the maximum dynamic range used by the content, in\n  terms of the SDR white point. This defaults to 0.0, which disables tone\n  mapping.\n- `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator\n  used when compressing from a surface with high dynamic range to another\n  with lower dynamic range. Currently this supports \"chrome\", which uses\n  the same tone mapping that Chrome uses for HDR content, the form \"*=N\",\n  where N is a floating point scale factor applied in linear space, and\n  \"none\", which disables tone mapping. This defaults to \"chrome\".\n- `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the\n  left edge of the image, if this surface is being used as a cursor.\n- `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the\n  top edge of the image, if this surface is being used as a cursor.\n\n@param surface the Surface structure to query.\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetSurfaceProperties",
           "kind": "function",
-          "type": "Surface",
+          "type": "PropertiesID",
           "parameters": [
             {
               "name": "surface",
@@ -12302,8 +12310,7 @@
           ],
           "sourceName": "SDL_GetSurfaceProperties",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "prop::Surface": {
@@ -12374,7 +12381,7 @@
           "doc": "Set the colorspace used by a surface.\n\nSetting the colorspace doesn't change the pixels, only how they are\ninterpreted in color operations.\n\n@param surface the Surface structure to update.\n@param colorspace an Colorspace value describing the surface\n                  colorspace.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetColorspace",
           "name": "SetSurfaceColorspace",
           "kind": "function",
-          "type": "Surface",
+          "type": "void",
           "parameters": [
             {
               "name": "surface",
@@ -12387,25 +12394,21 @@
           ],
           "sourceName": "SDL_SetSurfaceColorspace",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "GetSurfaceColorspace": {
           "doc": "Get the colorspace used by a surface.\n\nThe colorspace defaults to COLORSPACE_SRGB_LINEAR for floating point\nformats, COLORSPACE_HDR10 for 10-bit formats, COLORSPACE_SRGB for\nother RGB surfaces and COLORSPACE_BT709_FULL for YUV textures.\n\n@param surface the Surface structure to query.\n@returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if\n         the surface is nullptr.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetColorspace",
           "name": "GetSurfaceColorspace",
           "kind": "function",
-          "type": "Surface",
+          "type": "Colorspace",
           "parameters": [
             {
               "name": "surface",
               "type": "SurfaceParam"
             }
           ],
-          "sourceName": "SDL_GetSurfaceColorspace",
-          "hints": {
-            "wrapSelf": true
-          }
+          "sourceName": "SDL_GetSurfaceColorspace"
         },
         "CreateSurfacePalette": {
           "doc": "Create a palette and associate it with a surface.\n\nThis function creates a palette compatible with the provided surface. The\npalette is then returned for you to modify, and the surface will\nautomatically use the new palette in future operations. You do not need to\ndestroy the returned palette, it will be freed when the reference count\nreaches 0, usually when the surface is destroyed.\n\nBitmap surfaces (with format PIXELFORMAT_INDEX1LSB or\nPIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as\nwhite and 1 as black. Other surfaces will get a palette initialized with\nwhite in every entry.\n\nIf this function is called for a surface that already has a palette, a new\npalette will be created to replace it.\n\n@param surface the Surface structure to update.\n@returns a new Palette structure on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.SetColors",
@@ -12427,7 +12430,7 @@
           "doc": "Set the palette used by a surface.\n\nA single palette can be shared with many surfaces.\n\n@param surface the Surface structure to update.\n@param palette the Palette structure to use.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette\n@sa Surface.GetPalette",
           "name": "SetSurfacePalette",
           "kind": "function",
-          "type": "Surface",
+          "type": "void",
           "parameters": [
             {
               "name": "surface",
@@ -12440,25 +12443,21 @@
           ],
           "sourceName": "SDL_SetSurfacePalette",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "GetSurfacePalette": {
           "doc": "Get the palette used by a surface.\n\n@param surface the Surface structure to query.\n@returns a pointer to the palette used by the surface, or nullptr if there is\n         no palette used.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetPalette",
           "name": "GetSurfacePalette",
           "kind": "function",
-          "type": "Surface",
+          "type": "PaletteRaw",
           "parameters": [
             {
               "name": "surface",
               "type": "SurfaceParam"
             }
           ],
-          "sourceName": "SDL_GetSurfacePalette",
-          "hints": {
-            "wrapSelf": true
-          }
+          "sourceName": "SDL_GetSurfacePalette"
         },
         "AddSurfaceAlternateImage": {
           "doc": "Add an alternate version of a surface.\n\nThis function adds an alternate version of this surface, usually used for\ncontent with high DPI representations like cursors or icons. The size,\nformat, and content do not need to match the original surface, and these\nalternate versions will not be updated when the original surface changes.\n\nThis function adds a reference to the alternate version, so you should call\nSurface.Destroy() on the image after this call.\n\n@param surface the Surface structure to update.\n@param image a pointer to an alternate Surface to associate with this\n             surface.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.RemoveAlternateImages\n@sa Surface.GetImages\n@sa Surface.HasAlternateImages",
@@ -12484,17 +12483,14 @@
           "doc": "Return whether a surface has alternate versions available.\n\n@param surface the Surface structure to query.\n@returns true if alternate versions are available or false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.AddAlternateImage\n@sa Surface.RemoveAlternateImages\n@sa Surface.GetImages",
           "name": "SurfaceHasAlternateImages",
           "kind": "function",
-          "type": "Surface",
+          "type": "bool",
           "parameters": [
             {
               "name": "surface",
               "type": "SurfaceParam"
             }
           ],
-          "sourceName": "SDL_SurfaceHasAlternateImages",
-          "hints": {
-            "wrapSelf": true
-          }
+          "sourceName": "SDL_SurfaceHasAlternateImages"
         },
         "GetSurfaceImages": {
           "doc": "Get an array including all versions of a surface.\n\nThis returns all versions of a surface, with the surface being queried as\nthe first element in the returned array.\n\nFreeing the array of surfaces does not affect the surfaces in the array.\nThey are still referenced by the surface being queried and will be cleaned\nup normally.\n\n@param surface the Surface structure to query.\n@param count a pointer filled in with the number of surface pointers\n             returned, may be nullptr.\n@returns a nullptr terminated array of Surface pointers or nullptr on\n         failure; call GetError() for more information. This should be\n         freed with free() when it is no longer needed.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.AddAlternateImage\n@sa Surface.RemoveAlternateImages\n@sa Surface.HasAlternateImages",
@@ -12526,7 +12522,7 @@
           "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to Surface.Lock() / Surface.Unlock(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSurface.Unlock() to release it.\n\nNot all surfaces require locking. If `MUSTLOCK(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@param surface the Surface structure to be locked.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MUSTLOCK\n@sa Surface.Unlock",
           "name": "LockSurface",
           "kind": "function",
-          "type": "Surface",
+          "type": "void",
           "parameters": [
             {
               "name": "surface",
@@ -12535,8 +12531,7 @@
           ],
           "sourceName": "SDL_LockSurface",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "UnlockSurface": {
@@ -12633,7 +12628,7 @@
           "doc": "Set the RLE acceleration hint for a surface.\n\nIf RLE is enabled, color key and alpha blending blits are much faster, but\nthe surface must be locked before directly accessing the pixels.\n\n@param surface the Surface structure to optimize.\n@param enabled true to enable RLE acceleration, false to disable it.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Blit\n@sa Surface.Lock\n@sa Surface.Unlock",
           "name": "SetSurfaceRLE",
           "kind": "function",
-          "type": "Surface",
+          "type": "void",
           "parameters": [
             {
               "name": "surface",
@@ -12646,25 +12641,21 @@
           ],
           "sourceName": "SDL_SetSurfaceRLE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "SurfaceHasRLE": {
           "doc": "Returns whether the surface is RLE enabled.\n\nIt is safe to pass a nullptr `surface` here; it will return false.\n\n@param surface the Surface structure to query.\n@returns true if the surface is RLE enabled, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetRLE",
           "name": "SurfaceHasRLE",
           "kind": "function",
-          "type": "Surface",
+          "type": "bool",
           "parameters": [
             {
               "name": "surface",
               "type": "SurfaceParam"
             }
           ],
-          "sourceName": "SDL_SurfaceHasRLE",
-          "hints": {
-            "wrapSelf": true
-          }
+          "sourceName": "SDL_SurfaceHasRLE"
         },
         "SetSurfaceColorKey": {
           "doc": "Set the color key (transparent pixel) in a surface.\n\nThe color key defines a pixel value that will be treated as transparent in\na blit. For example, one can use this to specify that cyan pixels should be\nconsidered transparent, and therefore not rendered.\n\nIt is a pixel of the format used by the surface, as generated by\nMapRGB().\n\n@param surface the Surface structure to update.\n@param enabled true to enable color key, false to disable color key.\n@param key the transparent pixel.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetColorKey\n@sa Surface.SetRLE\n@sa Surface.HasColorKey",
@@ -12690,23 +12681,20 @@
           "doc": "Returns whether the surface has a color key.\n\nIt is safe to pass a nullptr `surface` here; it will return false.\n\n@param surface the Surface structure to query.\n@returns true if the surface has a color key, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetColorKey\n@sa Surface.GetColorKey",
           "name": "SurfaceHasColorKey",
           "kind": "function",
-          "type": "Surface",
+          "type": "bool",
           "parameters": [
             {
               "name": "surface",
               "type": "SurfaceParam"
             }
           ],
-          "sourceName": "SDL_SurfaceHasColorKey",
-          "hints": {
-            "wrapSelf": true
-          }
+          "sourceName": "SDL_SurfaceHasColorKey"
         },
         "GetSurfaceColorKey": {
           "doc": "Get the color key (transparent pixel) for a surface.\n\nThe color key is a pixel of the format used by the surface, as generated by\nMapRGB().\n\nIf the surface doesn't have color key enabled this function returns false.\n\n@param surface the Surface structure to query.\n@param key a pointer filled in with the transparent pixel.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetColorKey\n@sa Surface.HasColorKey",
           "name": "GetSurfaceColorKey",
           "kind": "function",
-          "type": "Surface",
+          "type": "void",
           "parameters": [
             {
               "name": "surface",
@@ -12719,15 +12707,14 @@
           ],
           "sourceName": "SDL_GetSurfaceColorKey",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "SetSurfaceColorMod": {
           "doc": "Set an additional color value multiplied into blit operations.\n\nWhen this surface is blitted, during the blit operation each source color\nchannel is modulated by the appropriate color value according to the\nfollowing formula:\n\n`srcC = srcC * (color / 255)`\n\n@param surface the Surface structure to update.\n@param r the red color value multiplied into blit operations.\n@param g the green color value multiplied into blit operations.\n@param b the blue color value multiplied into blit operations.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetColorMod\n@sa Surface.SetAlphaMod",
           "name": "SetSurfaceColorMod",
           "kind": "function",
-          "type": "Surface",
+          "type": "void",
           "parameters": [
             {
               "name": "surface",
@@ -12748,15 +12735,14 @@
           ],
           "sourceName": "SDL_SetSurfaceColorMod",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "GetSurfaceColorMod": {
           "doc": "Get the additional color value multiplied into blit operations.\n\n@param surface the Surface structure to query.\n@param r a pointer filled in with the current red color value.\n@param g a pointer filled in with the current green color value.\n@param b a pointer filled in with the current blue color value.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetAlphaMod\n@sa Surface.SetColorMod",
           "name": "GetSurfaceColorMod",
           "kind": "function",
-          "type": "Surface",
+          "type": "void",
           "parameters": [
             {
               "name": "surface",
@@ -12777,15 +12763,14 @@
           ],
           "sourceName": "SDL_GetSurfaceColorMod",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "SetSurfaceAlphaMod": {
           "doc": "Set an additional alpha value used in blit operations.\n\nWhen this surface is blitted, during the blit operation the source alpha\nvalue is modulated by this alpha value according to the following formula:\n\n`srcA = srcA * (alpha / 255)`\n\n@param surface the Surface structure to update.\n@param alpha the alpha value multiplied into blit operations.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetAlphaMod\n@sa Surface.SetColorMod",
           "name": "SetSurfaceAlphaMod",
           "kind": "function",
-          "type": "Surface",
+          "type": "void",
           "parameters": [
             {
               "name": "surface",
@@ -12798,8 +12783,7 @@
           ],
           "sourceName": "SDL_SetSurfaceAlphaMod",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "GetSurfaceAlphaMod": {
@@ -12822,7 +12806,7 @@
           "doc": "Set the blend mode used for blit operations.\n\nTo copy a surface to another surface (or texture) without blending with the\nexisting data, the blendmode of the SOURCE surface should be set to\n`BLENDMODE_NONE`.\n\n@param surface the Surface structure to update.\n@param blendMode the BlendMode to use for blit blending.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetBlendMode",
           "name": "SetSurfaceBlendMode",
           "kind": "function",
-          "type": "Surface",
+          "type": "void",
           "parameters": [
             {
               "name": "surface",
@@ -12835,8 +12819,7 @@
           ],
           "sourceName": "SDL_SetSurfaceBlendMode",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "GetSurfaceBlendMode": {
@@ -15505,7 +15488,7 @@
           "doc": "Use this function to write a byte to an IOStream.\n\n@param dst the IOStream to write to.\n@param value the byte value to write.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteU8",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15518,15 +15501,14 @@
           ],
           "sourceName": "SDL_WriteU8",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteS8": {
           "doc": "Use this function to write a signed byte to an IOStream.\n\n@param dst the IOStream to write to.\n@param value the byte value to write.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteS8",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15539,15 +15521,14 @@
           ],
           "sourceName": "SDL_WriteS8",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteU16LE": {
           "doc": "Use this function to write 16 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteU16LE",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15560,15 +15541,14 @@
           ],
           "sourceName": "SDL_WriteU16LE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteS16LE": {
           "doc": "Use this function to write 16 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteS16LE",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15581,15 +15561,14 @@
           ],
           "sourceName": "SDL_WriteS16LE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteU16BE": {
           "doc": "Use this function to write 16 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteU16BE",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15602,15 +15581,14 @@
           ],
           "sourceName": "SDL_WriteU16BE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteS16BE": {
           "doc": "Use this function to write 16 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteS16BE",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15623,15 +15601,14 @@
           ],
           "sourceName": "SDL_WriteS16BE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteU32LE": {
           "doc": "Use this function to write 32 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteU32LE",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15644,15 +15621,14 @@
           ],
           "sourceName": "SDL_WriteU32LE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteS32LE": {
           "doc": "Use this function to write 32 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteS32LE",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15665,15 +15641,14 @@
           ],
           "sourceName": "SDL_WriteS32LE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteU32BE": {
           "doc": "Use this function to write 32 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteU32BE",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15686,15 +15661,14 @@
           ],
           "sourceName": "SDL_WriteU32BE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteS32BE": {
           "doc": "Use this function to write 32 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteS32BE",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15707,15 +15681,14 @@
           ],
           "sourceName": "SDL_WriteS32BE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteU64LE": {
           "doc": "Use this function to write 64 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteU64LE",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15728,15 +15701,14 @@
           ],
           "sourceName": "SDL_WriteU64LE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteS64LE": {
           "doc": "Use this function to write 64 bits in native format to an IOStream as\nlittle-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in little-endian\nformat.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteS64LE",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15749,15 +15721,14 @@
           ],
           "sourceName": "SDL_WriteS64LE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteU64BE": {
           "doc": "Use this function to write 64 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteU64BE",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15770,15 +15741,14 @@
           ],
           "sourceName": "SDL_WriteU64BE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "WriteS64BE": {
           "doc": "Use this function to write 64 bits in native format to an IOStream as\nbig-endian data.\n\nSDL byteswaps the data only if necessary, so the application always\nspecifies native format, and the data written will be in big-endian format.\n\n@param dst the stream to which data will be written.\n@param value the data to be written, in native format.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "WriteS64BE",
           "kind": "function",
-          "type": "IOStream",
+          "type": "void",
           "parameters": [
             {
               "name": "dst",
@@ -15791,8 +15761,7 @@
           ],
           "sourceName": "SDL_WriteS64BE",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         }
       },
@@ -16909,6 +16878,19 @@
               "name": "operator EnvironmentParam",
               "doc": ""
             },
+            "GetVariable": {
+              "doc": "Get the value of a variable in the environment.\n\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or nullptr if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariables\n@sa Environment.SetVariable\n@sa Environment.UnsetVariable",
+              "name": "GetVariable",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [
+                {
+                  "name": "name",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_GetEnvironmentVariable"
+            },
             "GetVariables": {
               "doc": "Get all variables in the environment.\n\n@returns a nullptr terminated array of pointers to environment variables in\n         the form \"variable=value\" or nullptr on failure; call GetError()\n         for more information. This is a single allocation that should be\n         freed with free() when it is no longer needed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariables\n@sa Environment.SetVariable\n@sa Environment.UnsetVariable",
               "name": "GetVariables",
@@ -16923,30 +16905,6 @@
               "parameters": [],
               "name": "GetVariableCount",
               "doc": ""
-            },
-            "Destroy": {
-              "doc": "Destroy a set of environment variables.\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Environment.Environment",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyEnvironment",
-              "hints": {
-                "body": "SDL_DestroyEnvironment(m_resource);\nm_resource = nullptr;"
-              }
-            },
-            "GetVariable": {
-              "doc": "Get the value of a variable in the environment.\n\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or nullptr if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariables\n@sa Environment.SetVariable\n@sa Environment.UnsetVariable",
-              "name": "GetVariable",
-              "kind": "function",
-              "type": "const char *",
-              "parameters": [
-                {
-                  "name": "name",
-                  "type": "StringParam"
-                }
-              ],
-              "sourceName": "SDL_GetEnvironmentVariable"
             },
             "SetVariable": {
               "doc": "Set the value of a variable in the environment.\n\n@param name the name of the variable to set.\n@param value the value of the variable to set.\n@param overwrite true to overwrite the variable if it exists, false to\n                 return success without setting the variable if it already\n                 exists.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariable\n@sa Environment.GetVariables\n@sa Environment.UnsetVariable",
@@ -16987,6 +16945,17 @@
               "hints": {
                 "mayFail": true
               }
+            },
+            "Destroy": {
+              "doc": "Destroy a set of environment variables.\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Environment.Environment",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyEnvironment",
+              "hints": {
+                "body": "SDL_DestroyEnvironment(m_resource);\nm_resource = nullptr;"
+              }
             }
           },
           "hints": {
@@ -17023,7 +16992,7 @@
           "doc": "Get the value of a variable in the environment.\n\n@param env the environment to query.\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or nullptr if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariables\n@sa Environment.SetVariable\n@sa Environment.UnsetVariable",
           "name": "GetEnvironmentVariable",
           "kind": "function",
-          "type": "Environment",
+          "type": "const char *",
           "parameters": [
             {
               "name": "env",
@@ -17034,10 +17003,7 @@
               "type": "StringParam"
             }
           ],
-          "sourceName": "SDL_GetEnvironmentVariable",
-          "hints": {
-            "wrapSelf": true
-          }
+          "sourceName": "SDL_GetEnvironmentVariable"
         },
         "GetEnvironmentVariables": {
           "doc": "Get all variables in the environment.\n\n@param env the environment to query.\n@returns a nullptr terminated array of pointers to environment variables in\n         the form \"variable=value\" or nullptr on failure; call GetError()\n         for more information. This is a single allocation that should be\n         freed with free() when it is no longer needed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariables\n@sa Environment.SetVariable\n@sa Environment.UnsetVariable",
@@ -17056,7 +17022,7 @@
           "doc": "Set the value of a variable in the environment.\n\n@param env the environment to modify.\n@param name the name of the variable to set.\n@param value the value of the variable to set.\n@param overwrite true to overwrite the variable if it exists, false to\n                 return success without setting the variable if it already\n                 exists.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariable\n@sa Environment.GetVariables\n@sa Environment.UnsetVariable",
           "name": "SetEnvironmentVariable",
           "kind": "function",
-          "type": "Environment",
+          "type": "void",
           "parameters": [
             {
               "name": "env",
@@ -17077,15 +17043,14 @@
           ],
           "sourceName": "SDL_SetEnvironmentVariable",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "UnsetEnvironmentVariable": {
           "doc": "Clear a variable from the environment.\n\n@param env the environment to modify.\n@param name the name of the variable to unset.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariable\n@sa Environment.GetVariables\n@sa Environment.SetVariable\n@sa Environment.UnsetVariable",
           "name": "UnsetEnvironmentVariable",
           "kind": "function",
-          "type": "Environment",
+          "type": "void",
           "parameters": [
             {
               "name": "env",
@@ -17098,8 +17063,7 @@
           ],
           "sourceName": "SDL_UnsetEnvironmentVariable",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "DestroyEnvironment": {
@@ -19986,24 +19950,6 @@
               "name": "operator IConvParam",
               "doc": ""
             },
-            "close": {
-              "doc": "This function frees a context used for character set conversion.\n\n@param cd The character set conversion handle.\n@returns 0 on success, or -1 on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConv.iconv\n@sa IConv.open\n@sa iconv_string",
-              "name": "close",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "cd",
-                  "type": "SDL_iconv_t"
-                }
-              ],
-              "sourceName": "SDL_iconv_close",
-              "hints": {
-                "mayFail": true,
-                "body": "CheckError(SDL_iconv_close(m_resource));\nm_resource = nullptr;"
-              },
-              "static": true
-            },
             "iconv": {
               "doc": "This function converts text between encodings, reading from and writing to\na buffer.\n\nIt returns the number of successful conversions on success. On error,\nSDL_ICONV_E2BIG is returned when the output buffer is too small, or\nSDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,\nor SDL_ICONV_EINVAL is returned when an incomplete input sequence is\nencountered.\n\nOn exit:\n\n- inbuf will point to the beginning of the next multibyte sequence. On\n  error, this is the location of the problematic input sequence. On\n  success, this is the end of the input sequence.\n- inbytesleft will be set to the number of bytes left to convert, which\n  will be 0 on success.\n- outbuf will point to the location where to store the next output byte.\n- outbytesleft will be set to the number of bytes left in the output\n  buffer.\n\n          IConv.open().\n@param inbuf Address of variable that points to the first character of the\n             input sequence.\n@param inbytesleft The number of bytes in the input buffer.\n@param outbuf Address of variable that points to the output buffer.\n@param outbytesleft The number of bytes in the output buffer.\n@returns the number of conversions on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConv.open\n@sa IConv.close\n@sa iconv_string",
               "name": "iconv",
@@ -20031,6 +19977,24 @@
               "hints": {
                 "mayFail": true
               }
+            },
+            "close": {
+              "doc": "This function frees a context used for character set conversion.\n\n@param cd The character set conversion handle.\n@returns 0 on success, or -1 on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConv.iconv\n@sa IConv.open\n@sa iconv_string",
+              "name": "close",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "cd",
+                  "type": "SDL_iconv_t"
+                }
+              ],
+              "sourceName": "SDL_iconv_close",
+              "hints": {
+                "mayFail": true,
+                "body": "CheckError(SDL_iconv_close(m_resource));\nm_resource = nullptr;"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -20079,7 +20043,7 @@
           "doc": "This function converts text between encodings, reading from and writing to\na buffer.\n\nIt returns the number of successful conversions on success. On error,\nSDL_ICONV_E2BIG is returned when the output buffer is too small, or\nSDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,\nor SDL_ICONV_EINVAL is returned when an incomplete input sequence is\nencountered.\n\nOn exit:\n\n- inbuf will point to the beginning of the next multibyte sequence. On\n  error, this is the location of the problematic input sequence. On\n  success, this is the end of the input sequence.\n- inbytesleft will be set to the number of bytes left to convert, which\n  will be 0 on success.\n- outbuf will point to the location where to store the next output byte.\n- outbytesleft will be set to the number of bytes left in the output\n  buffer.\n\n@param cd The character set conversion context, created in\n          IConv.open().\n@param inbuf Address of variable that points to the first character of the\n             input sequence.\n@param inbytesleft The number of bytes in the input buffer.\n@param outbuf Address of variable that points to the output buffer.\n@param outbytesleft The number of bytes in the output buffer.\n@returns the number of conversions on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConv.open\n@sa IConv.close\n@sa iconv_string",
           "name": "iconv",
           "kind": "function",
-          "type": "IConv",
+          "type": "size_t",
           "parameters": [
             {
               "name": "cd",
@@ -20104,8 +20068,7 @@
           ],
           "sourceName": "SDL_iconv",
           "hints": {
-            "mayFail": true,
-            "wrapSelf": true
+            "mayFail": true
           }
         },
         "SDL_ICONV_ERROR": {

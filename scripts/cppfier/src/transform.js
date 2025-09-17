@@ -1288,8 +1288,8 @@ function expandResources(sourceEntries, file, context) {
             name: uniqueName,
             sourceName,
           };
+          isCtor = true;
         }
-        isCtor = true;
       } else if (!Array.isArray(entry) && entry.name === "ctor") {
         entry.kind = "function";
         entry.type = "";

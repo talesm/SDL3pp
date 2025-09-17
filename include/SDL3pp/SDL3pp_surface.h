@@ -269,6 +269,84 @@ public:
   constexpr operator SurfaceParam() const { return {m_resource}; }
 
   /**
+   * Get the properties associated with a surface.
+   *
+   * The following properties are understood by SDL:
+   *
+   * - `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   *   surfaces, this defines the value of 100% diffuse white, with higher
+   *   values being displayed in the High Dynamic Range headroom. This defaults
+   *   to 203 for HDR10 surfaces and 1.0 for floating point surfaces.
+   * - `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   *   surfaces, this defines the maximum dynamic range used by the content, in
+   *   terms of the SDR white point. This defaults to 0.0, which disables tone
+   *   mapping.
+   * - `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator
+   *   used when compressing from a surface with high dynamic range to another
+   *   with lower dynamic range. Currently this supports "chrome", which uses
+   *   the same tone mapping that Chrome uses for HDR content, the form "*=N",
+   *   where N is a floating point scale factor applied in linear space, and
+   *   "none", which disables tone mapping. This defaults to "chrome".
+   * - `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the
+   *   left edge of the image, if this surface is being used as a cursor.
+   * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the
+   *   top edge of the image, if this surface is being used as a cursor.
+   *
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  PropertiesID GetProperties() const
+  {
+    return CheckError(SDL_GetSurfaceProperties(m_resource));
+  }
+
+  /**
+   * Set the colorspace used by a surface.
+   *
+   * Setting the colorspace doesn't change the pixels, only how they are
+   * interpreted in color operations.
+   *
+   * @param colorspace an Colorspace value describing the surface
+   *                   colorspace.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.GetColorspace
+   */
+  void SetColorspace(Colorspace colorspace)
+  {
+    CheckError(SDL_SetSurfaceColorspace(m_resource, colorspace));
+  }
+
+  /**
+   * Get the colorspace used by a surface.
+   *
+   * The colorspace defaults to COLORSPACE_SRGB_LINEAR for floating point
+   * formats, COLORSPACE_HDR10 for 10-bit formats, COLORSPACE_SRGB for
+   * other RGB surfaces and COLORSPACE_BT709_FULL for YUV textures.
+   *
+   * @returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if
+   *          the surface is nullptr.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.SetColorspace
+   */
+  Colorspace GetColorspace() const
+  {
+    return SDL_GetSurfaceColorspace(m_resource);
+  }
+
+  /**
    * Create a palette and associate it with a surface.
    *
    * This function creates a palette compatible with the provided surface. The
@@ -300,6 +378,40 @@ public:
   }
 
   /**
+   * Set the palette used by a surface.
+   *
+   * A single palette can be shared with many surfaces.
+   *
+   * @param palette the Palette structure to use.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Palette.Palette
+   * @sa Surface.GetPalette
+   */
+  void SetPalette(PaletteParam palette)
+  {
+    CheckError(SDL_SetSurfacePalette(m_resource, palette));
+  }
+
+  /**
+   * Get the palette used by a surface.
+   *
+   * @returns a pointer to the palette used by the surface, or nullptr if there
+   * is no palette used.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.SetPalette
+   */
+  PaletteRaw GetPalette() const { return SDL_GetSurfacePalette(m_resource); }
+
+  /**
    * Add an alternate version of a surface.
    *
    * This function adds an alternate version of this surface, usually used for
@@ -325,6 +437,24 @@ public:
   void AddAlternateImage(SurfaceParam image)
   {
     CheckError(SDL_AddSurfaceAlternateImage(m_resource, image));
+  }
+
+  /**
+   * Return whether a surface has alternate versions available.
+   *
+   * @returns true if alternate versions are available or false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.AddAlternateImage
+   * @sa Surface.RemoveAlternateImages
+   * @sa Surface.GetImages
+   */
+  bool HasAlternateImages() const
+  {
+    return SDL_SurfaceHasAlternateImages(m_resource);
   }
 
   /**
@@ -376,6 +506,68 @@ public:
 
 #define MustLock
 
+  /**
+   * Set up a surface for directly accessing the pixels.
+   *
+   * Between calls to Surface.Lock() / Surface.Unlock(), you can write to
+   * and read from `surface->pixels`, using the pixel format stored in
+   * `surface->format`. Once you are done accessing the surface, you should use
+   * Surface.Unlock() to release it.
+   *
+   * Not all surfaces require locking. If `MUSTLOCK(surface)` evaluates to
+   * 0, then you can read and write to the surface at any time, and the pixel
+   * format of the surface will not change.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe. The locking referred to by
+   *               this function is making the pixels available for direct
+   *               access, not thread-safe locking.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MUSTLOCK
+   * @sa Surface.Unlock
+   */
+  void Lock() { CheckError(SDL_LockSurface(m_resource)); }
+
+  /**
+   * Set the RLE acceleration hint for a surface.
+   *
+   * If RLE is enabled, color key and alpha blending blits are much faster, but
+   * the surface must be locked before directly accessing the pixels.
+   *
+   * @param enabled true to enable RLE acceleration, false to disable it.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Blit
+   * @sa Surface.Lock
+   * @sa Surface.Unlock
+   */
+  void SetRLE(bool enabled)
+  {
+    CheckError(SDL_SetSurfaceRLE(m_resource, enabled));
+  }
+
+  /**
+   * Returns whether the surface is RLE enabled.
+   *
+   * It is safe to pass a nullptr `surface` here; it will return false.
+   *
+   * @returns true if the surface is RLE enabled, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.SetRLE
+   */
+  bool HasRLE() const { return SDL_SurfaceHasRLE(m_resource); }
+
   void SetColorKey(Color key) { static_assert(false, "Not implemented"); }
 
   /**
@@ -407,6 +599,22 @@ public:
 
   void ClearColorKey() { static_assert(false, "Not implemented"); }
 
+  /**
+   * Returns whether the surface has a color key.
+   *
+   * It is safe to pass a nullptr `surface` here; it will return false.
+   *
+   * @returns true if the surface has a color key, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.SetColorKey
+   * @sa Surface.GetColorKey
+   */
+  bool HasColorKey() const { return SDL_SurfaceHasColorKey(m_resource); }
+
   Color GetColorKey() const { static_assert(false, "Not implemented"); }
 
   void GetColorKey(Color* key) const
@@ -432,9 +640,78 @@ public:
    * @sa Surface.SetColorKey
    * @sa Surface.HasColorKey
    */
-  void GetColorKey(Uint32* key)
+  void GetColorKey(Uint32* key) const
   {
     CheckError(SDL_GetSurfaceColorKey(m_resource, key));
+  }
+
+  /**
+   * Set an additional color value multiplied into blit operations.
+   *
+   * When this surface is blitted, during the blit operation each source color
+   * channel is modulated by the appropriate color value according to the
+   * following formula:
+   *
+   * `srcC = srcC * (color / 255)`
+   *
+   * @param r the red color value multiplied into blit operations.
+   * @param g the green color value multiplied into blit operations.
+   * @param b the blue color value multiplied into blit operations.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.GetColorMod
+   * @sa Surface.SetAlphaMod
+   */
+  void SetColorMod(Uint8 r, Uint8 g, Uint8 b)
+  {
+    CheckError(SDL_SetSurfaceColorMod(m_resource, r, g, b));
+  }
+
+  /**
+   * Get the additional color value multiplied into blit operations.
+   *
+   * @param r a pointer filled in with the current red color value.
+   * @param g a pointer filled in with the current green color value.
+   * @param b a pointer filled in with the current blue color value.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.GetAlphaMod
+   * @sa Surface.SetColorMod
+   */
+  void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
+  {
+    CheckError(SDL_GetSurfaceColorMod(m_resource, r, g, b));
+  }
+
+  /**
+   * Set an additional alpha value used in blit operations.
+   *
+   * When this surface is blitted, during the blit operation the source alpha
+   * value is modulated by this alpha value according to the following formula:
+   *
+   * `srcA = srcA * (alpha / 255)`
+   *
+   * @param alpha the alpha value multiplied into blit operations.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.GetAlphaMod
+   * @sa Surface.SetColorMod
+   */
+  void SetAlphaMod(Uint8 alpha)
+  {
+    CheckError(SDL_SetSurfaceAlphaMod(m_resource, alpha));
   }
 
   /**
@@ -458,6 +735,27 @@ public:
   void SetMod(Color color) { static_assert(false, "Not implemented"); }
 
   Color GetMod() const { static_assert(false, "Not implemented"); }
+
+  /**
+   * Set the blend mode used for blit operations.
+   *
+   * To copy a surface to another surface (or texture) without blending with the
+   * existing data, the blendmode of the SOURCE surface should be set to
+   * `BLENDMODE_NONE`.
+   *
+   * @param blendMode the BlendMode to use for blit blending.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.GetBlendMode
+   */
+  void SetBlendMode(BlendMode blendMode)
+  {
+    CheckError(SDL_SetSurfaceBlendMode(m_resource, blendMode));
+  }
 
   /**
    * Get the blend mode used for blit operations.
@@ -1322,158 +1620,6 @@ public:
   }
 
   /**
-   * Get the properties associated with a surface.
-   *
-   * The following properties are understood by SDL:
-   *
-   * - `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
-   *   surfaces, this defines the value of 100% diffuse white, with higher
-   *   values being displayed in the High Dynamic Range headroom. This defaults
-   *   to 203 for HDR10 surfaces and 1.0 for floating point surfaces.
-   * - `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
-   *   surfaces, this defines the maximum dynamic range used by the content, in
-   *   terms of the SDR white point. This defaults to 0.0, which disables tone
-   *   mapping.
-   * - `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator
-   *   used when compressing from a surface with high dynamic range to another
-   *   with lower dynamic range. Currently this supports "chrome", which uses
-   *   the same tone mapping that Chrome uses for HDR content, the form "*=N",
-   *   where N is a floating point scale factor applied in linear space, and
-   *   "none", which disables tone mapping. This defaults to "chrome".
-   * - `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the
-   *   left edge of the image, if this surface is being used as a cursor.
-   * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the
-   *   top edge of the image, if this surface is being used as a cursor.
-   *
-   * @returns a valid property ID on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  PropertiesID GetProperties()
-  {
-    return CheckError(SDL_GetSurfaceProperties(m_resource));
-  }
-
-  /**
-   * Set the colorspace used by a surface.
-   *
-   * Setting the colorspace doesn't change the pixels, only how they are
-   * interpreted in color operations.
-   *
-   * @param colorspace an Colorspace value describing the surface
-   *                   colorspace.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.GetColorspace
-   */
-  void SetColorspace(Colorspace colorspace)
-  {
-    CheckError(SDL_SetSurfaceColorspace(m_resource, colorspace));
-  }
-
-  /**
-   * Get the colorspace used by a surface.
-   *
-   * The colorspace defaults to COLORSPACE_SRGB_LINEAR for floating point
-   * formats, COLORSPACE_HDR10 for 10-bit formats, COLORSPACE_SRGB for
-   * other RGB surfaces and COLORSPACE_BT709_FULL for YUV textures.
-   *
-   * @returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if
-   *          the surface is nullptr.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.SetColorspace
-   */
-  Colorspace GetColorspace() { return SDL_GetSurfaceColorspace(m_resource); }
-
-  /**
-   * Set the palette used by a surface.
-   *
-   * A single palette can be shared with many surfaces.
-   *
-   * @param palette the Palette structure to use.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Palette.Palette
-   * @sa Surface.GetPalette
-   */
-  void SetPalette(PaletteParam palette)
-  {
-    CheckError(SDL_SetSurfacePalette(m_resource, palette));
-  }
-
-  /**
-   * Get the palette used by a surface.
-   *
-   * @returns a pointer to the palette used by the surface, or nullptr if there
-   * is no palette used.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.SetPalette
-   */
-  PaletteRaw GetPalette() { return SDL_GetSurfacePalette(m_resource); }
-
-  /**
-   * Return whether a surface has alternate versions available.
-   *
-   * @returns true if alternate versions are available or false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.AddAlternateImage
-   * @sa Surface.RemoveAlternateImages
-   * @sa Surface.GetImages
-   */
-  bool HasAlternateImages()
-  {
-    return SDL_SurfaceHasAlternateImages(m_resource);
-  }
-
-  /**
-   * Set up a surface for directly accessing the pixels.
-   *
-   * Between calls to Surface.Lock() / Surface.Unlock(), you can write to
-   * and read from `surface->pixels`, using the pixel format stored in
-   * `surface->format`. Once you are done accessing the surface, you should use
-   * Surface.Unlock() to release it.
-   *
-   * Not all surfaces require locking. If `MUSTLOCK(surface)` evaluates to
-   * 0, then you can read and write to the surface at any time, and the pixel
-   * format of the surface will not change.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe. The locking referred to by
-   *               this function is making the pixels available for direct
-   *               access, not thread-safe locking.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa MUSTLOCK
-   * @sa Surface.Unlock
-   */
-  void Lock() { CheckError(SDL_LockSurface(m_resource)); }
-
-  /**
    * Release a surface after directly accessing the pixels.
    *
    *
@@ -1533,149 +1679,6 @@ public:
    * @sa Surface.SaveBMP_IO
    */
   void SaveBMP(StringParam file) { CheckError(SDL_SaveBMP(m_resource, file)); }
-
-  /**
-   * Set the RLE acceleration hint for a surface.
-   *
-   * If RLE is enabled, color key and alpha blending blits are much faster, but
-   * the surface must be locked before directly accessing the pixels.
-   *
-   * @param enabled true to enable RLE acceleration, false to disable it.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.Blit
-   * @sa Surface.Lock
-   * @sa Surface.Unlock
-   */
-  void SetRLE(bool enabled)
-  {
-    CheckError(SDL_SetSurfaceRLE(m_resource, enabled));
-  }
-
-  /**
-   * Returns whether the surface is RLE enabled.
-   *
-   * It is safe to pass a nullptr `surface` here; it will return false.
-   *
-   * @returns true if the surface is RLE enabled, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.SetRLE
-   */
-  bool HasRLE() { return SDL_SurfaceHasRLE(m_resource); }
-
-  /**
-   * Returns whether the surface has a color key.
-   *
-   * It is safe to pass a nullptr `surface` here; it will return false.
-   *
-   * @returns true if the surface has a color key, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.SetColorKey
-   * @sa Surface.GetColorKey
-   */
-  bool HasColorKey() { return SDL_SurfaceHasColorKey(m_resource); }
-
-  /**
-   * Set an additional color value multiplied into blit operations.
-   *
-   * When this surface is blitted, during the blit operation each source color
-   * channel is modulated by the appropriate color value according to the
-   * following formula:
-   *
-   * `srcC = srcC * (color / 255)`
-   *
-   * @param r the red color value multiplied into blit operations.
-   * @param g the green color value multiplied into blit operations.
-   * @param b the blue color value multiplied into blit operations.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.GetColorMod
-   * @sa Surface.SetAlphaMod
-   */
-  void SetColorMod(Uint8 r, Uint8 g, Uint8 b)
-  {
-    CheckError(SDL_SetSurfaceColorMod(m_resource, r, g, b));
-  }
-
-  /**
-   * Get the additional color value multiplied into blit operations.
-   *
-   * @param r a pointer filled in with the current red color value.
-   * @param g a pointer filled in with the current green color value.
-   * @param b a pointer filled in with the current blue color value.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.GetAlphaMod
-   * @sa Surface.SetColorMod
-   */
-  void GetColorMod(Uint8* r, Uint8* g, Uint8* b)
-  {
-    CheckError(SDL_GetSurfaceColorMod(m_resource, r, g, b));
-  }
-
-  /**
-   * Set an additional alpha value used in blit operations.
-   *
-   * When this surface is blitted, during the blit operation the source alpha
-   * value is modulated by this alpha value according to the following formula:
-   *
-   * `srcA = srcA * (alpha / 255)`
-   *
-   * @param alpha the alpha value multiplied into blit operations.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.GetAlphaMod
-   * @sa Surface.SetColorMod
-   */
-  void SetAlphaMod(Uint8 alpha)
-  {
-    CheckError(SDL_SetSurfaceAlphaMod(m_resource, alpha));
-  }
-
-  /**
-   * Set the blend mode used for blit operations.
-   *
-   * To copy a surface to another surface (or texture) without blending with the
-   * existing data, the blendmode of the SOURCE surface should be set to
-   * `BLENDMODE_NONE`.
-   *
-   * @param blendMode the BlendMode to use for blit blending.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.GetBlendMode
-   */
-  void SetBlendMode(BlendMode blendMode)
-  {
-    CheckError(SDL_SetSurfaceBlendMode(m_resource, blendMode));
-  }
 };
 
 /**
@@ -1786,9 +1789,9 @@ inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Surface GetSurfaceProperties(SurfaceParam surface)
+inline PropertiesID GetSurfaceProperties(SurfaceParam surface)
 {
-  return Surface(CheckError(SDL_GetSurfaceProperties(surface)));
+  return CheckError(SDL_GetSurfaceProperties(surface));
 }
 
 namespace prop::Surface {
@@ -1827,9 +1830,9 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  *
  * @sa Surface.GetColorspace
  */
-inline Surface SetSurfaceColorspace(SurfaceParam surface, Colorspace colorspace)
+inline void SetSurfaceColorspace(SurfaceParam surface, Colorspace colorspace)
 {
-  return Surface(CheckError(SDL_SetSurfaceColorspace(surface, colorspace)));
+  CheckError(SDL_SetSurfaceColorspace(surface, colorspace));
 }
 
 /**
@@ -1849,9 +1852,9 @@ inline Surface SetSurfaceColorspace(SurfaceParam surface, Colorspace colorspace)
  *
  * @sa Surface.SetColorspace
  */
-inline Surface GetSurfaceColorspace(SurfaceParam surface)
+inline Colorspace GetSurfaceColorspace(SurfaceParam surface)
 {
-  return Surface(SDL_GetSurfaceColorspace(surface));
+  return SDL_GetSurfaceColorspace(surface);
 }
 
 /**
@@ -1902,9 +1905,9 @@ inline PaletteRaw CreateSurfacePalette(SurfaceParam surface)
  * @sa Palette.Palette
  * @sa Surface.GetPalette
  */
-inline Surface SetSurfacePalette(SurfaceParam surface, PaletteParam palette)
+inline void SetSurfacePalette(SurfaceParam surface, PaletteParam palette)
 {
-  return Surface(CheckError(SDL_SetSurfacePalette(surface, palette)));
+  CheckError(SDL_SetSurfacePalette(surface, palette));
 }
 
 /**
@@ -1920,9 +1923,9 @@ inline Surface SetSurfacePalette(SurfaceParam surface, PaletteParam palette)
  *
  * @sa Surface.SetPalette
  */
-inline Surface GetSurfacePalette(SurfaceParam surface)
+inline PaletteRaw GetSurfacePalette(SurfaceParam surface)
 {
-  return Surface(SDL_GetSurfacePalette(surface));
+  return SDL_GetSurfacePalette(surface);
 }
 
 /**
@@ -1968,9 +1971,9 @@ inline void AddSurfaceAlternateImage(SurfaceParam surface, SurfaceParam image)
  * @sa Surface.RemoveAlternateImages
  * @sa Surface.GetImages
  */
-inline Surface SurfaceHasAlternateImages(SurfaceParam surface)
+inline bool SurfaceHasAlternateImages(SurfaceParam surface)
 {
-  return Surface(SDL_SurfaceHasAlternateImages(surface));
+  return SDL_SurfaceHasAlternateImages(surface);
 }
 
 /**
@@ -2185,9 +2188,9 @@ inline void SaveBMP(SurfaceParam surface, StringParam file)
  * @sa Surface.Lock
  * @sa Surface.Unlock
  */
-inline Surface SetSurfaceRLE(SurfaceParam surface, bool enabled)
+inline void SetSurfaceRLE(SurfaceParam surface, bool enabled)
 {
-  return Surface(CheckError(SDL_SetSurfaceRLE(surface, enabled)));
+  CheckError(SDL_SetSurfaceRLE(surface, enabled));
 }
 
 /**
@@ -2204,9 +2207,9 @@ inline Surface SetSurfaceRLE(SurfaceParam surface, bool enabled)
  *
  * @sa Surface.SetRLE
  */
-inline Surface SurfaceHasRLE(SurfaceParam surface)
+inline bool SurfaceHasRLE(SurfaceParam surface)
 {
-  return Surface(SDL_SurfaceHasRLE(surface));
+  return SDL_SurfaceHasRLE(surface);
 }
 
 /**
@@ -2252,9 +2255,9 @@ inline void SetSurfaceColorKey(SurfaceParam surface, std::optional<Uint32> key)
  * @sa Surface.SetColorKey
  * @sa Surface.GetColorKey
  */
-inline Surface SurfaceHasColorKey(SurfaceParam surface)
+inline bool SurfaceHasColorKey(SurfaceParam surface)
 {
-  return Surface(SDL_SurfaceHasColorKey(surface));
+  return SDL_SurfaceHasColorKey(surface);
 }
 
 /**
@@ -2276,9 +2279,9 @@ inline Surface SurfaceHasColorKey(SurfaceParam surface)
  * @sa Surface.SetColorKey
  * @sa Surface.HasColorKey
  */
-inline Surface GetSurfaceColorKey(SurfaceParam surface, Uint32* key)
+inline void GetSurfaceColorKey(SurfaceParam surface, Uint32* key)
 {
-  return Surface(CheckError(SDL_GetSurfaceColorKey(surface, key)));
+  CheckError(SDL_GetSurfaceColorKey(surface, key));
 }
 
 /**
@@ -2303,12 +2306,9 @@ inline Surface GetSurfaceColorKey(SurfaceParam surface, Uint32* key)
  * @sa Surface.GetColorMod
  * @sa Surface.SetAlphaMod
  */
-inline Surface SetSurfaceColorMod(SurfaceParam surface,
-                                  Uint8 r,
-                                  Uint8 g,
-                                  Uint8 b)
+inline void SetSurfaceColorMod(SurfaceParam surface, Uint8 r, Uint8 g, Uint8 b)
 {
-  return Surface(CheckError(SDL_SetSurfaceColorMod(surface, r, g, b)));
+  CheckError(SDL_SetSurfaceColorMod(surface, r, g, b));
 }
 
 /**
@@ -2327,12 +2327,12 @@ inline Surface SetSurfaceColorMod(SurfaceParam surface,
  * @sa Surface.GetAlphaMod
  * @sa Surface.SetColorMod
  */
-inline Surface GetSurfaceColorMod(SurfaceParam surface,
-                                  Uint8* r,
-                                  Uint8* g,
-                                  Uint8* b)
+inline void GetSurfaceColorMod(SurfaceParam surface,
+                               Uint8* r,
+                               Uint8* g,
+                               Uint8* b)
 {
-  return Surface(CheckError(SDL_GetSurfaceColorMod(surface, r, g, b)));
+  CheckError(SDL_GetSurfaceColorMod(surface, r, g, b));
 }
 
 /**
@@ -2354,9 +2354,9 @@ inline Surface GetSurfaceColorMod(SurfaceParam surface,
  * @sa Surface.GetAlphaMod
  * @sa Surface.SetColorMod
  */
-inline Surface SetSurfaceAlphaMod(SurfaceParam surface, Uint8 alpha)
+inline void SetSurfaceAlphaMod(SurfaceParam surface, Uint8 alpha)
 {
-  return Surface(CheckError(SDL_SetSurfaceAlphaMod(surface, alpha)));
+  CheckError(SDL_SetSurfaceAlphaMod(surface, alpha));
 }
 
 /**
@@ -2395,9 +2395,9 @@ inline Uint8 GetSurfaceAlphaMod(SurfaceParam surface)
  *
  * @sa Surface.GetBlendMode
  */
-inline Surface SetSurfaceBlendMode(SurfaceParam surface, BlendMode blendMode)
+inline void SetSurfaceBlendMode(SurfaceParam surface, BlendMode blendMode)
 {
-  return Surface(CheckError(SDL_SetSurfaceBlendMode(surface, blendMode)));
+  CheckError(SDL_SetSurfaceBlendMode(surface, blendMode));
 }
 
 /**
@@ -2924,6 +2924,73 @@ inline void BlitSurface(SurfaceParam src,
   CheckError(SDL_BlitSurface(src, srcrect, dst, dstrect));
 }
 
+/**
+ * Performs a fast blit from the source surface to the destination surface
+ * with clipping.
+ *
+ * If either `srcrect` or `dstrect` are nullptr, the entire surface (`src` or
+ * `dst`) is copied while ensuring clipping to `dst->clip_rect`.
+ *
+ * The blit function should not be called on a locked surface.
+ *
+ * The blit semantics for surfaces with and without blending and colorkey are
+ * defined as follows:
+ *
+ * ```
+ *    RGBA->RGB:
+ *      Source surface blend mode set to BLENDMODE_BLEND:
+ *       alpha-blend (using the source alpha-channel and per-surface alpha)
+ *       SDL_SRCCOLORKEY ignored.
+ *     Source surface blend mode set to BLENDMODE_NONE:
+ *       copy RGB.
+ *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+ *       RGB values of the source color key, ignoring alpha in the
+ *       comparison.
+ *
+ *   RGB->RGBA:
+ *     Source surface blend mode set to BLENDMODE_BLEND:
+ *       alpha-blend (using the source per-surface alpha)
+ *     Source surface blend mode set to BLENDMODE_NONE:
+ *       copy RGB, set destination alpha to source per-surface alpha value.
+ *     both:
+ *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+ *       source color key.
+ *
+ *   RGBA->RGBA:
+ *     Source surface blend mode set to BLENDMODE_BLEND:
+ *       alpha-blend (using the source alpha-channel and per-surface alpha)
+ *       SDL_SRCCOLORKEY ignored.
+ *     Source surface blend mode set to BLENDMODE_NONE:
+ *       copy all of RGBA to the destination.
+ *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+ *       RGB values of the source color key, ignoring alpha in the
+ *       comparison.
+ *
+ *   RGB->RGB:
+ *     Source surface blend mode set to BLENDMODE_BLEND:
+ *       alpha-blend (using the source per-surface alpha)
+ *     Source surface blend mode set to BLENDMODE_NONE:
+ *       copy RGB.
+ *     both:
+ *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+ *       source color key.
+ * ```
+ *
+ * @param src the Surface structure to be copied from.
+ * @param srcrect the Rect structure representing the rectangle to be
+ *                copied, or nullptr to copy the entire surface.
+ * @param dst the Surface structure that is the blit target.
+ * @param dstpos the Point structure representing the x and y position in
+ *                the destination surface.
+ * @throws Error on failure.
+ *
+ * @threadsafety Only one thread should be using the `src` and `dst` surfaces
+ *               at any given time.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Surface.BlitSurface
+ */
 inline void BlitSurfaceAt(SurfaceParam src,
                           OptionalRef<const RectRaw> srcrect,
                           SurfaceParam dst,

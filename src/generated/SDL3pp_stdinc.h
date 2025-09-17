@@ -884,6 +884,28 @@ public:
   constexpr operator EnvironmentParam() const { return {m_resource}; }
 
   /**
+   * Get the value of a variable in the environment.
+   *
+   * @param name the name of the variable to get.
+   * @returns a pointer to the value of the variable or nullptr if it can't be
+   *          found.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetEnvironment
+   * @sa Environment.Environment
+   * @sa Environment.GetVariables
+   * @sa Environment.SetVariable
+   * @sa Environment.UnsetVariable
+   */
+  const char* GetVariable(StringParam name)
+  {
+    return SDL_GetEnvironmentVariable(m_resource, name);
+  }
+
+  /**
    * Get all variables in the environment.
    *
    * @returns a nullptr terminated array of pointers to environment variables in
@@ -907,45 +929,6 @@ public:
   }
 
   Uint64 GetVariableCount() { static_assert(false, "Not implemented"); }
-
-  /**
-   * Destroy a set of environment variables.
-   *
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the environment is no longer in use.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Environment.Environment
-   */
-  void Destroy()
-  {
-    SDL_DestroyEnvironment(m_resource);
-    m_resource = nullptr;
-  }
-
-  /**
-   * Get the value of a variable in the environment.
-   *
-   * @param name the name of the variable to get.
-   * @returns a pointer to the value of the variable or nullptr if it can't be
-   *          found.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetEnvironment
-   * @sa Environment.Environment
-   * @sa Environment.GetVariables
-   * @sa Environment.SetVariable
-   * @sa Environment.UnsetVariable
-   */
-  const char* GetVariable(StringParam name)
-  {
-    return SDL_GetEnvironmentVariable(m_resource, name);
-  }
 
   /**
    * Set the value of a variable in the environment.
@@ -992,6 +975,23 @@ public:
   void UnsetVariable(StringParam name)
   {
     CheckError(SDL_UnsetEnvironmentVariable(m_resource, name));
+  }
+
+  /**
+   * Destroy a set of environment variables.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the environment is no longer in use.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Environment.Environment
+   */
+  void Destroy()
+  {
+    SDL_DestroyEnvironment(m_resource);
+    m_resource = nullptr;
   }
 };
 
@@ -1061,10 +1061,10 @@ inline Environment CreateEnvironment(bool populated)
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline Environment GetEnvironmentVariable(EnvironmentParam env,
+inline const char* GetEnvironmentVariable(EnvironmentParam env,
                                           StringParam name)
 {
-  return Environment(SDL_GetEnvironmentVariable(env, name));
+  return SDL_GetEnvironmentVariable(env, name);
 }
 
 /**
@@ -1112,13 +1112,12 @@ inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
  * @sa Environment.GetVariables
  * @sa Environment.UnsetVariable
  */
-inline Environment SetEnvironmentVariable(EnvironmentParam env,
-                                          StringParam name,
-                                          StringParam value,
-                                          bool overwrite)
+inline void SetEnvironmentVariable(EnvironmentParam env,
+                                   StringParam name,
+                                   StringParam value,
+                                   bool overwrite)
 {
-  return Environment(
-    CheckError(SDL_SetEnvironmentVariable(env, name, value, overwrite)));
+  CheckError(SDL_SetEnvironmentVariable(env, name, value, overwrite));
 }
 
 /**
@@ -1139,10 +1138,9 @@ inline Environment SetEnvironmentVariable(EnvironmentParam env,
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline Environment UnsetEnvironmentVariable(EnvironmentParam env,
-                                            StringParam name)
+inline void UnsetEnvironmentVariable(EnvironmentParam env, StringParam name)
 {
-  return Environment(CheckError(SDL_UnsetEnvironmentVariable(env, name)));
+  CheckError(SDL_UnsetEnvironmentVariable(env, name));
 }
 
 /**
@@ -5551,24 +5549,6 @@ public:
   constexpr operator IConvParam() const { return {m_resource}; }
 
   /**
-   * This function frees a context used for character set conversion.
-   *
-   * @param cd The character set conversion handle.
-   * @returns 0 on success, or -1 on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConv.iconv
-   * @sa IConv.open
-   * @sa iconv_string
-   */
-  static void close(SDL_iconv_t cd)
-  {
-    CheckError(SDL_iconv_close(m_resource));
-    m_resource = nullptr;
-  }
-
-  /**
    * This function converts text between encodings, reading from and writing to
    * a buffer.
    *
@@ -5611,6 +5591,24 @@ public:
   {
     return CheckError(
       SDL_iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft));
+  }
+
+  /**
+   * This function frees a context used for character set conversion.
+   *
+   * @param cd The character set conversion handle.
+   * @returns 0 on success, or -1 on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConv.iconv
+   * @sa IConv.open
+   * @sa iconv_string
+   */
+  static void close(SDL_iconv_t cd)
+  {
+    CheckError(SDL_iconv_close(m_resource));
+    m_resource = nullptr;
   }
 };
 
@@ -5686,14 +5684,13 @@ inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
  * @sa IConv.close
  * @sa iconv_string
  */
-inline IConv iconv(IConv cd,
-                   const char** inbuf,
-                   size_t* inbytesleft,
-                   char** outbuf,
-                   size_t* outbytesleft)
+inline size_t iconv(IConv cd,
+                    const char** inbuf,
+                    size_t* inbytesleft,
+                    char** outbuf,
+                    size_t* outbytesleft)
 {
-  return IConv(
-    CheckError(SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft)));
+  return CheckError(SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft));
 }
 
 /**

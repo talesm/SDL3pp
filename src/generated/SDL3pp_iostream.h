@@ -2290,9 +2290,9 @@ inline Sint64 ReadS64BE() { return CheckError(SDL_ReadS64BE()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteU8(IOStreamParam dst, Uint8 value)
+inline void WriteU8(IOStreamParam dst, Uint8 value)
 {
-  return IOStream(CheckError(SDL_WriteU8(dst, value)));
+  CheckError(SDL_WriteU8(dst, value));
 }
 
 /**
@@ -2306,9 +2306,9 @@ inline IOStream WriteU8(IOStreamParam dst, Uint8 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteS8(IOStreamParam dst, Sint8 value)
+inline void WriteS8(IOStreamParam dst, Sint8 value)
 {
-  return IOStream(CheckError(SDL_WriteS8(dst, value)));
+  CheckError(SDL_WriteS8(dst, value));
 }
 
 /**
@@ -2327,9 +2327,9 @@ inline IOStream WriteS8(IOStreamParam dst, Sint8 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteU16LE(IOStreamParam dst, Uint16 value)
+inline void WriteU16LE(IOStreamParam dst, Uint16 value)
 {
-  return IOStream(CheckError(SDL_WriteU16LE(dst, value)));
+  CheckError(SDL_WriteU16LE(dst, value));
 }
 
 /**
@@ -2348,9 +2348,9 @@ inline IOStream WriteU16LE(IOStreamParam dst, Uint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteS16LE(IOStreamParam dst, Sint16 value)
+inline void WriteS16LE(IOStreamParam dst, Sint16 value)
 {
-  return IOStream(CheckError(SDL_WriteS16LE(dst, value)));
+  CheckError(SDL_WriteS16LE(dst, value));
 }
 
 /**
@@ -2368,9 +2368,9 @@ inline IOStream WriteS16LE(IOStreamParam dst, Sint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteU16BE(IOStreamParam dst, Uint16 value)
+inline void WriteU16BE(IOStreamParam dst, Uint16 value)
 {
-  return IOStream(CheckError(SDL_WriteU16BE(dst, value)));
+  CheckError(SDL_WriteU16BE(dst, value));
 }
 
 /**
@@ -2388,9 +2388,9 @@ inline IOStream WriteU16BE(IOStreamParam dst, Uint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteS16BE(IOStreamParam dst, Sint16 value)
+inline void WriteS16BE(IOStreamParam dst, Sint16 value)
 {
-  return IOStream(CheckError(SDL_WriteS16BE(dst, value)));
+  CheckError(SDL_WriteS16BE(dst, value));
 }
 
 /**
@@ -2409,9 +2409,9 @@ inline IOStream WriteS16BE(IOStreamParam dst, Sint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteU32LE(IOStreamParam dst, Uint32 value)
+inline void WriteU32LE(IOStreamParam dst, Uint32 value)
 {
-  return IOStream(CheckError(SDL_WriteU32LE(dst, value)));
+  CheckError(SDL_WriteU32LE(dst, value));
 }
 
 /**
@@ -2430,9 +2430,9 @@ inline IOStream WriteU32LE(IOStreamParam dst, Uint32 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteS32LE(IOStreamParam dst, Sint32 value)
+inline void WriteS32LE(IOStreamParam dst, Sint32 value)
 {
-  return IOStream(CheckError(SDL_WriteS32LE(dst, value)));
+  CheckError(SDL_WriteS32LE(dst, value));
 }
 
 /**
@@ -2450,9 +2450,9 @@ inline IOStream WriteS32LE(IOStreamParam dst, Sint32 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteU32BE(IOStreamParam dst, Uint32 value)
+inline void WriteU32BE(IOStreamParam dst, Uint32 value)
 {
-  return IOStream(CheckError(SDL_WriteU32BE(dst, value)));
+  CheckError(SDL_WriteU32BE(dst, value));
 }
 
 /**
@@ -2470,9 +2470,9 @@ inline IOStream WriteU32BE(IOStreamParam dst, Uint32 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteS32BE(IOStreamParam dst, Sint32 value)
+inline void WriteS32BE(IOStreamParam dst, Sint32 value)
 {
-  return IOStream(CheckError(SDL_WriteS32BE(dst, value)));
+  CheckError(SDL_WriteS32BE(dst, value));
 }
 
 /**
@@ -2491,9 +2491,9 @@ inline IOStream WriteS32BE(IOStreamParam dst, Sint32 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteU64LE(IOStreamParam dst, Uint64 value)
+inline void WriteU64LE(IOStreamParam dst, Uint64 value)
 {
-  return IOStream(CheckError(SDL_WriteU64LE(dst, value)));
+  CheckError(SDL_WriteU64LE(dst, value));
 }
 
 /**
@@ -2512,9 +2512,9 @@ inline IOStream WriteU64LE(IOStreamParam dst, Uint64 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteS64LE(IOStreamParam dst, Sint64 value)
+inline void WriteS64LE(IOStreamParam dst, Sint64 value)
 {
-  return IOStream(CheckError(SDL_WriteS64LE(dst, value)));
+  CheckError(SDL_WriteS64LE(dst, value));
 }
 
 /**
@@ -2532,9 +2532,9 @@ inline IOStream WriteS64LE(IOStreamParam dst, Sint64 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteU64BE(IOStreamParam dst, Uint64 value)
+inline void WriteU64BE(IOStreamParam dst, Uint64 value)
 {
-  return IOStream(CheckError(SDL_WriteU64BE(dst, value)));
+  CheckError(SDL_WriteU64BE(dst, value));
 }
 
 /**
@@ -2552,9 +2552,9 @@ inline IOStream WriteU64BE(IOStreamParam dst, Uint64 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStream WriteS64BE(IOStreamParam dst, Sint64 value)
+inline void WriteS64BE(IOStreamParam dst, Sint64 value)
 {
-  return IOStream(CheckError(SDL_WriteS64BE(dst, value)));
+  CheckError(SDL_WriteS64BE(dst, value));
 }
 
 /// @}

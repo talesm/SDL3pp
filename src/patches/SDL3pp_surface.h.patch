@@ -34,46 +34,106 @@
 <     return Surface(SDL_LoadBMP_IO(src));
 ---
 >     return Surface(SDL_LoadBMP_IO(src, false));
-1809,1812d1806
+1812,1815d1809
 < #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 < 
 < #if SDL_VERSION_ATLEAST(3, 2, 6)
 < 
-2057c2051
-< inline Surface LockSurface(SurfaceParam surface)
----
-> inline void LockSurface(SurfaceParam surface)
-2059c2053
-<   return Surface(CheckError(SDL_LockSurface(surface)));
----
->   CheckError(SDL_LockSurface(surface));
-2097c2091
+2100c2094
 < inline Surface LoadBMP_IO(IOStreamParam src, bool closeio)
 ---
 > inline Surface LoadBMP_IO(IOStreamParam src, bool closeio = false)
-2144c2138,2140
+2147c2141,2143
 < inline void SaveBMP_IO(SurfaceParam surface, IOStreamParam dst, bool closeio)
 ---
 > inline void SaveBMP_IO(SurfaceParam surface,
 >                        IOStreamParam dst,
 >                        bool closeio = false)
-2936c2932
+2930a2927,2993
+> /**
+>  * Performs a fast blit from the source surface to the destination surface
+>  * with clipping.
+>  *
+>  * If either `srcrect` or `dstrect` are nullptr, the entire surface (`src` or
+>  * `dst`) is copied while ensuring clipping to `dst->clip_rect`.
+>  *
+>  * The blit function should not be called on a locked surface.
+>  *
+>  * The blit semantics for surfaces with and without blending and colorkey are
+>  * defined as follows:
+>  *
+>  * ```
+>  *    RGBA->RGB:
+>  *      Source surface blend mode set to BLENDMODE_BLEND:
+>  *       alpha-blend (using the source alpha-channel and per-surface alpha)
+>  *       SDL_SRCCOLORKEY ignored.
+>  *     Source surface blend mode set to BLENDMODE_NONE:
+>  *       copy RGB.
+>  *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+>  *       RGB values of the source color key, ignoring alpha in the
+>  *       comparison.
+>  *
+>  *   RGB->RGBA:
+>  *     Source surface blend mode set to BLENDMODE_BLEND:
+>  *       alpha-blend (using the source per-surface alpha)
+>  *     Source surface blend mode set to BLENDMODE_NONE:
+>  *       copy RGB, set destination alpha to source per-surface alpha value.
+>  *     both:
+>  *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+>  *       source color key.
+>  *
+>  *   RGBA->RGBA:
+>  *     Source surface blend mode set to BLENDMODE_BLEND:
+>  *       alpha-blend (using the source alpha-channel and per-surface alpha)
+>  *       SDL_SRCCOLORKEY ignored.
+>  *     Source surface blend mode set to BLENDMODE_NONE:
+>  *       copy all of RGBA to the destination.
+>  *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+>  *       RGB values of the source color key, ignoring alpha in the
+>  *       comparison.
+>  *
+>  *   RGB->RGB:
+>  *     Source surface blend mode set to BLENDMODE_BLEND:
+>  *       alpha-blend (using the source per-surface alpha)
+>  *     Source surface blend mode set to BLENDMODE_NONE:
+>  *       copy RGB.
+>  *     both:
+>  *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+>  *       source color key.
+>  * ```
+>  *
+>  * @param src the Surface structure to be copied from.
+>  * @param srcrect the Rect structure representing the rectangle to be
+>  *                copied, or nullptr to copy the entire surface.
+>  * @param dst the Surface structure that is the blit target.
+>  * @param dstpos the Point structure representing the x and y position in
+>  *                the destination surface.
+>  * @throws Error on failure.
+>  *
+>  * @threadsafety Only one thread should be using the `src` and `dst` surfaces
+>  *               at any given time.
+>  *
+>  * @since This function is available since SDL 3.2.0.
+>  *
+>  * @sa Surface.BlitSurface
+>  */
+2936c2999
 <   static_assert(false, "Not implemented");
 ---
 >   BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
-3343c3339
+3343c3406
 <   CheckError(SDL_ReadSurfacePixel(surface, p, r, g, b, a));
 ---
 >   CheckError(SDL_ReadSurfacePixel(surface, p.x, p.y, r, g, b, a));
-3376c3372
+3376c3439
 <   CheckError(SDL_ReadSurfacePixelFloat(surface, p, r, g, b, a));
 ---
 >   CheckError(SDL_ReadSurfacePixelFloat(surface, p.x, p.y, r, g, b, a));
-3405c3401
+3405c3468
 <   CheckError(SDL_WriteSurfacePixel(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
-3431c3427
+3431c3494
 <   CheckError(SDL_WriteSurfacePixelFloat(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixelFloat(surface, p.x, p.y, c.r, c.g, c.b, c.a));
