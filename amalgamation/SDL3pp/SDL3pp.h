@@ -7066,9 +7066,9 @@ public:
   /**
    * Unwraps to the underlying LogCategory.
    *
-   * @returns the underlying LogCategory.
+   * @returns the underlying LogCategoryRaw.
    */
-  constexpr operator SDL_LogCategory() const { return m_category; }
+  constexpr operator LogCategoryRaw() const { return m_category; }
 
   /**
    * Check if valid.
@@ -8430,9 +8430,9 @@ public:
   /**
    * Unwraps to the underlying PixelFormat.
    *
-   * @returns the underlying PixelFormat.
+   * @returns the underlying PixelFormatRaw.
    */
-  constexpr operator SDL_PixelFormat() const { return m_format; }
+  constexpr operator PixelFormatRaw() const { return m_format; }
 
   /**
    * Check if valid.
@@ -8765,224 +8765,207 @@ public:
   Color Get(Uint32 pixel, PaletteConstParam palette) const;
 };
 
-constexpr SDL_PixelFormat PIXELFORMAT_UNKNOWN =
+constexpr PixelFormat PIXELFORMAT_UNKNOWN =
   SDL_PIXELFORMAT_UNKNOWN; ///< UNKNOWN
 
-constexpr SDL_PixelFormat PIXELFORMAT_INDEX1LSB =
+constexpr PixelFormat PIXELFORMAT_INDEX1LSB =
   SDL_PIXELFORMAT_INDEX1LSB; ///< INDEX1LSB
 
-constexpr SDL_PixelFormat PIXELFORMAT_INDEX1MSB =
+constexpr PixelFormat PIXELFORMAT_INDEX1MSB =
   SDL_PIXELFORMAT_INDEX1MSB; ///< INDEX1MSB
 
-constexpr SDL_PixelFormat PIXELFORMAT_INDEX2LSB =
+constexpr PixelFormat PIXELFORMAT_INDEX2LSB =
   SDL_PIXELFORMAT_INDEX2LSB; ///< INDEX2LSB
 
-constexpr SDL_PixelFormat PIXELFORMAT_INDEX2MSB =
+constexpr PixelFormat PIXELFORMAT_INDEX2MSB =
   SDL_PIXELFORMAT_INDEX2MSB; ///< INDEX2MSB
 
-constexpr SDL_PixelFormat PIXELFORMAT_INDEX4LSB =
+constexpr PixelFormat PIXELFORMAT_INDEX4LSB =
   SDL_PIXELFORMAT_INDEX4LSB; ///< INDEX4LSB
 
-constexpr SDL_PixelFormat PIXELFORMAT_INDEX4MSB =
+constexpr PixelFormat PIXELFORMAT_INDEX4MSB =
   SDL_PIXELFORMAT_INDEX4MSB; ///< INDEX4MSB
 
-constexpr SDL_PixelFormat PIXELFORMAT_INDEX8 =
-  SDL_PIXELFORMAT_INDEX8; ///< INDEX8
+constexpr PixelFormat PIXELFORMAT_INDEX8 = SDL_PIXELFORMAT_INDEX8; ///< INDEX8
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGB332 =
-  SDL_PIXELFORMAT_RGB332; ///< RGB332
+constexpr PixelFormat PIXELFORMAT_RGB332 = SDL_PIXELFORMAT_RGB332; ///< RGB332
 
-constexpr SDL_PixelFormat PIXELFORMAT_XRGB4444 =
+constexpr PixelFormat PIXELFORMAT_XRGB4444 =
   SDL_PIXELFORMAT_XRGB4444; ///< XRGB4444
 
-constexpr SDL_PixelFormat PIXELFORMAT_XBGR4444 =
+constexpr PixelFormat PIXELFORMAT_XBGR4444 =
   SDL_PIXELFORMAT_XBGR4444; ///< XBGR4444
 
-constexpr SDL_PixelFormat PIXELFORMAT_XRGB1555 =
+constexpr PixelFormat PIXELFORMAT_XRGB1555 =
   SDL_PIXELFORMAT_XRGB1555; ///< XRGB1555
 
-constexpr SDL_PixelFormat PIXELFORMAT_XBGR1555 =
+constexpr PixelFormat PIXELFORMAT_XBGR1555 =
   SDL_PIXELFORMAT_XBGR1555; ///< XBGR1555
 
-constexpr SDL_PixelFormat PIXELFORMAT_ARGB4444 =
+constexpr PixelFormat PIXELFORMAT_ARGB4444 =
   SDL_PIXELFORMAT_ARGB4444; ///< ARGB4444
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGBA4444 =
+constexpr PixelFormat PIXELFORMAT_RGBA4444 =
   SDL_PIXELFORMAT_RGBA4444; ///< RGBA4444
 
-constexpr SDL_PixelFormat PIXELFORMAT_ABGR4444 =
+constexpr PixelFormat PIXELFORMAT_ABGR4444 =
   SDL_PIXELFORMAT_ABGR4444; ///< ABGR4444
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGRA4444 =
+constexpr PixelFormat PIXELFORMAT_BGRA4444 =
   SDL_PIXELFORMAT_BGRA4444; ///< BGRA4444
 
-constexpr SDL_PixelFormat PIXELFORMAT_ARGB1555 =
+constexpr PixelFormat PIXELFORMAT_ARGB1555 =
   SDL_PIXELFORMAT_ARGB1555; ///< ARGB1555
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGBA5551 =
+constexpr PixelFormat PIXELFORMAT_RGBA5551 =
   SDL_PIXELFORMAT_RGBA5551; ///< RGBA5551
 
-constexpr SDL_PixelFormat PIXELFORMAT_ABGR1555 =
+constexpr PixelFormat PIXELFORMAT_ABGR1555 =
   SDL_PIXELFORMAT_ABGR1555; ///< ABGR1555
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGRA5551 =
+constexpr PixelFormat PIXELFORMAT_BGRA5551 =
   SDL_PIXELFORMAT_BGRA5551; ///< BGRA5551
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGB565 =
-  SDL_PIXELFORMAT_RGB565; ///< RGB565
+constexpr PixelFormat PIXELFORMAT_RGB565 = SDL_PIXELFORMAT_RGB565; ///< RGB565
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGR565 =
-  SDL_PIXELFORMAT_BGR565; ///< BGR565
+constexpr PixelFormat PIXELFORMAT_BGR565 = SDL_PIXELFORMAT_BGR565; ///< BGR565
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGB24 = SDL_PIXELFORMAT_RGB24; ///< RGB24
+constexpr PixelFormat PIXELFORMAT_RGB24 = SDL_PIXELFORMAT_RGB24; ///< RGB24
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGR24 = SDL_PIXELFORMAT_BGR24; ///< BGR24
+constexpr PixelFormat PIXELFORMAT_BGR24 = SDL_PIXELFORMAT_BGR24; ///< BGR24
 
-constexpr SDL_PixelFormat PIXELFORMAT_XRGB8888 =
+constexpr PixelFormat PIXELFORMAT_XRGB8888 =
   SDL_PIXELFORMAT_XRGB8888; ///< XRGB8888
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGBX8888 =
+constexpr PixelFormat PIXELFORMAT_RGBX8888 =
   SDL_PIXELFORMAT_RGBX8888; ///< RGBX8888
 
-constexpr SDL_PixelFormat PIXELFORMAT_XBGR8888 =
+constexpr PixelFormat PIXELFORMAT_XBGR8888 =
   SDL_PIXELFORMAT_XBGR8888; ///< XBGR8888
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGRX8888 =
+constexpr PixelFormat PIXELFORMAT_BGRX8888 =
   SDL_PIXELFORMAT_BGRX8888; ///< BGRX8888
 
-constexpr SDL_PixelFormat PIXELFORMAT_ARGB8888 =
+constexpr PixelFormat PIXELFORMAT_ARGB8888 =
   SDL_PIXELFORMAT_ARGB8888; ///< ARGB8888
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGBA8888 =
+constexpr PixelFormat PIXELFORMAT_RGBA8888 =
   SDL_PIXELFORMAT_RGBA8888; ///< RGBA8888
 
-constexpr SDL_PixelFormat PIXELFORMAT_ABGR8888 =
+constexpr PixelFormat PIXELFORMAT_ABGR8888 =
   SDL_PIXELFORMAT_ABGR8888; ///< ABGR8888
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGRA8888 =
+constexpr PixelFormat PIXELFORMAT_BGRA8888 =
   SDL_PIXELFORMAT_BGRA8888; ///< BGRA8888
 
-constexpr SDL_PixelFormat PIXELFORMAT_XRGB2101010 =
+constexpr PixelFormat PIXELFORMAT_XRGB2101010 =
   SDL_PIXELFORMAT_XRGB2101010; ///< XRGB2101010
 
-constexpr SDL_PixelFormat PIXELFORMAT_XBGR2101010 =
+constexpr PixelFormat PIXELFORMAT_XBGR2101010 =
   SDL_PIXELFORMAT_XBGR2101010; ///< XBGR2101010
 
-constexpr SDL_PixelFormat PIXELFORMAT_ARGB2101010 =
+constexpr PixelFormat PIXELFORMAT_ARGB2101010 =
   SDL_PIXELFORMAT_ARGB2101010; ///< ARGB2101010
 
-constexpr SDL_PixelFormat PIXELFORMAT_ABGR2101010 =
+constexpr PixelFormat PIXELFORMAT_ABGR2101010 =
   SDL_PIXELFORMAT_ABGR2101010; ///< ABGR2101010
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGB48 = SDL_PIXELFORMAT_RGB48; ///< RGB48
+constexpr PixelFormat PIXELFORMAT_RGB48 = SDL_PIXELFORMAT_RGB48; ///< RGB48
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGR48 = SDL_PIXELFORMAT_BGR48; ///< BGR48
+constexpr PixelFormat PIXELFORMAT_BGR48 = SDL_PIXELFORMAT_BGR48; ///< BGR48
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGBA64 =
-  SDL_PIXELFORMAT_RGBA64; ///< RGBA64
+constexpr PixelFormat PIXELFORMAT_RGBA64 = SDL_PIXELFORMAT_RGBA64; ///< RGBA64
 
-constexpr SDL_PixelFormat PIXELFORMAT_ARGB64 =
-  SDL_PIXELFORMAT_ARGB64; ///< ARGB64
+constexpr PixelFormat PIXELFORMAT_ARGB64 = SDL_PIXELFORMAT_ARGB64; ///< ARGB64
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGRA64 =
-  SDL_PIXELFORMAT_BGRA64; ///< BGRA64
+constexpr PixelFormat PIXELFORMAT_BGRA64 = SDL_PIXELFORMAT_BGRA64; ///< BGRA64
 
-constexpr SDL_PixelFormat PIXELFORMAT_ABGR64 =
-  SDL_PIXELFORMAT_ABGR64; ///< ABGR64
+constexpr PixelFormat PIXELFORMAT_ABGR64 = SDL_PIXELFORMAT_ABGR64; ///< ABGR64
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGB48_FLOAT =
+constexpr PixelFormat PIXELFORMAT_RGB48_FLOAT =
   SDL_PIXELFORMAT_RGB48_FLOAT; ///< RGB48_FLOAT
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGR48_FLOAT =
+constexpr PixelFormat PIXELFORMAT_BGR48_FLOAT =
   SDL_PIXELFORMAT_BGR48_FLOAT; ///< BGR48_FLOAT
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGBA64_FLOAT =
+constexpr PixelFormat PIXELFORMAT_RGBA64_FLOAT =
   SDL_PIXELFORMAT_RGBA64_FLOAT; ///< RGBA64_FLOAT
 
-constexpr SDL_PixelFormat PIXELFORMAT_ARGB64_FLOAT =
+constexpr PixelFormat PIXELFORMAT_ARGB64_FLOAT =
   SDL_PIXELFORMAT_ARGB64_FLOAT; ///< ARGB64_FLOAT
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGRA64_FLOAT =
+constexpr PixelFormat PIXELFORMAT_BGRA64_FLOAT =
   SDL_PIXELFORMAT_BGRA64_FLOAT; ///< BGRA64_FLOAT
 
-constexpr SDL_PixelFormat PIXELFORMAT_ABGR64_FLOAT =
+constexpr PixelFormat PIXELFORMAT_ABGR64_FLOAT =
   SDL_PIXELFORMAT_ABGR64_FLOAT; ///< ABGR64_FLOAT
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGB96_FLOAT =
+constexpr PixelFormat PIXELFORMAT_RGB96_FLOAT =
   SDL_PIXELFORMAT_RGB96_FLOAT; ///< RGB96_FLOAT
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGR96_FLOAT =
+constexpr PixelFormat PIXELFORMAT_BGR96_FLOAT =
   SDL_PIXELFORMAT_BGR96_FLOAT; ///< BGR96_FLOAT
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGBA128_FLOAT =
+constexpr PixelFormat PIXELFORMAT_RGBA128_FLOAT =
   SDL_PIXELFORMAT_RGBA128_FLOAT; ///< RGBA128_FLOAT
 
-constexpr SDL_PixelFormat PIXELFORMAT_ARGB128_FLOAT =
+constexpr PixelFormat PIXELFORMAT_ARGB128_FLOAT =
   SDL_PIXELFORMAT_ARGB128_FLOAT; ///< ARGB128_FLOAT
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGRA128_FLOAT =
+constexpr PixelFormat PIXELFORMAT_BGRA128_FLOAT =
   SDL_PIXELFORMAT_BGRA128_FLOAT; ///< BGRA128_FLOAT
 
-constexpr SDL_PixelFormat PIXELFORMAT_ABGR128_FLOAT =
+constexpr PixelFormat PIXELFORMAT_ABGR128_FLOAT =
   SDL_PIXELFORMAT_ABGR128_FLOAT; ///< ABGR128_FLOAT
 
-constexpr SDL_PixelFormat PIXELFORMAT_YV12 =
+constexpr PixelFormat PIXELFORMAT_YV12 =
   SDL_PIXELFORMAT_YV12; ///< Planar mode: Y + V + U (3 planes)
 
-constexpr SDL_PixelFormat PIXELFORMAT_IYUV =
+constexpr PixelFormat PIXELFORMAT_IYUV =
   SDL_PIXELFORMAT_IYUV; ///< Planar mode: Y + U + V (3 planes)
 
-constexpr SDL_PixelFormat PIXELFORMAT_YUY2 =
+constexpr PixelFormat PIXELFORMAT_YUY2 =
   SDL_PIXELFORMAT_YUY2; ///< Packed mode: Y0+U0+Y1+V0 (1 plane)
 
-constexpr SDL_PixelFormat PIXELFORMAT_UYVY =
+constexpr PixelFormat PIXELFORMAT_UYVY =
   SDL_PIXELFORMAT_UYVY; ///< Packed mode: U0+Y0+V0+Y1 (1 plane)
 
-constexpr SDL_PixelFormat PIXELFORMAT_YVYU =
+constexpr PixelFormat PIXELFORMAT_YVYU =
   SDL_PIXELFORMAT_YVYU; ///< Packed mode: Y0+V0+Y1+U0 (1 plane)
 
-constexpr SDL_PixelFormat PIXELFORMAT_NV12 =
+constexpr PixelFormat PIXELFORMAT_NV12 =
   SDL_PIXELFORMAT_NV12; ///< Planar mode: Y + U/V interleaved (2 planes)
 
-constexpr SDL_PixelFormat PIXELFORMAT_NV21 =
+constexpr PixelFormat PIXELFORMAT_NV21 =
   SDL_PIXELFORMAT_NV21; ///< Planar mode: Y + V/U interleaved (2 planes)
 
-constexpr SDL_PixelFormat PIXELFORMAT_P010 =
+constexpr PixelFormat PIXELFORMAT_P010 =
   SDL_PIXELFORMAT_P010; ///< Planar mode: Y + U/V interleaved (2 planes)
 
-constexpr SDL_PixelFormat PIXELFORMAT_EXTERNAL_OES =
+constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES =
   SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format.
 
 #if SDL_VERSION_ATLEAST(3, 2, 10)
 
-constexpr SDL_PixelFormat PIXELFORMAT_MJPG =
-  SDL_PIXELFORMAT_MJPG; ///< Motion JPEG.
+constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG; ///< Motion JPEG.
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGBA32 =
-  SDL_PIXELFORMAT_RGBA32; ///< RGBA32
+constexpr PixelFormat PIXELFORMAT_RGBA32 = SDL_PIXELFORMAT_RGBA32; ///< RGBA32
 
-constexpr SDL_PixelFormat PIXELFORMAT_ARGB32 =
-  SDL_PIXELFORMAT_ARGB32; ///< ARGB32
+constexpr PixelFormat PIXELFORMAT_ARGB32 = SDL_PIXELFORMAT_ARGB32; ///< ARGB32
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGRA32 =
-  SDL_PIXELFORMAT_BGRA32; ///< BGRA32
+constexpr PixelFormat PIXELFORMAT_BGRA32 = SDL_PIXELFORMAT_BGRA32; ///< BGRA32
 
-constexpr SDL_PixelFormat PIXELFORMAT_ABGR32 =
-  SDL_PIXELFORMAT_ABGR32; ///< ABGR32
+constexpr PixelFormat PIXELFORMAT_ABGR32 = SDL_PIXELFORMAT_ABGR32; ///< ABGR32
 
-constexpr SDL_PixelFormat PIXELFORMAT_RGBX32 =
-  SDL_PIXELFORMAT_RGBX32; ///< RGBX32
+constexpr PixelFormat PIXELFORMAT_RGBX32 = SDL_PIXELFORMAT_RGBX32; ///< RGBX32
 
-constexpr SDL_PixelFormat PIXELFORMAT_XRGB32 =
-  SDL_PIXELFORMAT_XRGB32; ///< XRGB32
+constexpr PixelFormat PIXELFORMAT_XRGB32 = SDL_PIXELFORMAT_XRGB32; ///< XRGB32
 
-constexpr SDL_PixelFormat PIXELFORMAT_BGRX32 =
-  SDL_PIXELFORMAT_BGRX32; ///< BGRX32
+constexpr PixelFormat PIXELFORMAT_BGRX32 = SDL_PIXELFORMAT_BGRX32; ///< BGRX32
 
-constexpr SDL_PixelFormat PIXELFORMAT_XBGR32 =
-  SDL_PIXELFORMAT_XBGR32; ///< XBGR32
+constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32; ///< XBGR32
 
 /// @}
 
@@ -9588,16 +9571,16 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  */
 class Colorspace
 {
-  SDL_Colorspace m_colorspace;
+  SDL_Colorspace m_cspace;
 
 public:
   /**
    * Wraps Colorspace.
    *
-   * @param colorspace the value to be wrapped
+   * @param cspace the value to be wrapped
    */
-  constexpr Colorspace(SDL_Colorspace colorspace = {})
-    : m_colorspace(colorspace)
+  constexpr Colorspace(SDL_Colorspace cspace = {})
+    : m_cspace(cspace)
   {
   }
 
@@ -9637,12 +9620,12 @@ public:
                        TransferCharacteristics transfer,
                        MatrixCoefficients matrix,
                        ChromaLocation chroma)
-    : m_colorspace(SDL_Colorspace(SDL_DEFINE_COLORSPACE(type,
-                                                        range,
-                                                        primaries,
-                                                        transfer,
-                                                        matrix,
-                                                        chroma)))
+    : m_cspace(SDL_Colorspace(SDL_DEFINE_COLORSPACE(type,
+                                                    range,
+                                                    primaries,
+                                                    transfer,
+                                                    matrix,
+                                                    chroma)))
   {
   }
 
@@ -9663,16 +9646,16 @@ public:
   /**
    * Unwraps to the underlying Colorspace.
    *
-   * @returns the underlying Colorspace.
+   * @returns the underlying ColorspaceRaw.
    */
-  constexpr operator SDL_Colorspace() const { return m_colorspace; }
+  constexpr operator ColorspaceRaw() const { return m_cspace; }
 
   /**
    * Check if valid.
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return m_colorspace != 0; }
+  constexpr explicit operator bool() const { return m_cspace != 0; }
 
   /**
    * Retrieve the type of a Colorspace.
@@ -9683,10 +9666,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr ColorType GetType() const
-  {
-    return SDL_COLORSPACETYPE(m_colorspace);
-  }
+  constexpr ColorType GetType() const { return SDL_COLORSPACETYPE(m_cspace); }
 
   /**
    * Retrieve the range of a Colorspace.
@@ -9699,7 +9679,7 @@ public:
    */
   constexpr ColorRange GetRange() const
   {
-    return SDL_COLORSPACERANGE(m_colorspace);
+    return SDL_COLORSPACERANGE(m_cspace);
   }
 
   /**
@@ -9713,7 +9693,7 @@ public:
    */
   constexpr ChromaLocation GetChroma() const
   {
-    return SDL_COLORSPACECHROMA(m_colorspace);
+    return SDL_COLORSPACECHROMA(m_cspace);
   }
 
   /**
@@ -9727,7 +9707,7 @@ public:
    */
   constexpr ColorPrimaries GetPrimaries() const
   {
-    return SDL_COLORSPACEPRIMARIES(m_colorspace);
+    return SDL_COLORSPACEPRIMARIES(m_cspace);
   }
 
   /**
@@ -9741,7 +9721,7 @@ public:
    */
   constexpr TransferCharacteristics GetTransfer() const
   {
-    return SDL_COLORSPACETRANSFER(m_colorspace);
+    return SDL_COLORSPACETRANSFER(m_cspace);
   }
 
   /**
@@ -9755,7 +9735,7 @@ public:
    */
   constexpr MatrixCoefficients GetMatrix() const
   {
-    return SDL_COLORSPACEMATRIX(m_colorspace);
+    return SDL_COLORSPACEMATRIX(m_cspace);
   }
 
   /**
@@ -9769,7 +9749,7 @@ public:
    */
   constexpr bool IsMatrixBT601() const
   {
-    return SDL_ISCOLORSPACE_MATRIX_BT601(m_colorspace);
+    return SDL_ISCOLORSPACE_MATRIX_BT601(m_cspace);
   }
 
   /**
@@ -9783,7 +9763,7 @@ public:
    */
   constexpr bool IsMatrixBT709() const
   {
-    return SDL_ISCOLORSPACE_MATRIX_BT709(m_colorspace);
+    return SDL_ISCOLORSPACE_MATRIX_BT709(m_cspace);
   }
 
   /**
@@ -9797,7 +9777,7 @@ public:
    */
   constexpr bool IsMatrixBT2020_NCL() const
   {
-    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(m_colorspace);
+    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(m_cspace);
   }
 
   /**
@@ -9811,7 +9791,7 @@ public:
    */
   constexpr bool IsLimitedRange() const
   {
-    return SDL_ISCOLORSPACE_LIMITED_RANGE(m_colorspace);
+    return SDL_ISCOLORSPACE_LIMITED_RANGE(m_cspace);
   }
 
   /**
@@ -9825,71 +9805,67 @@ public:
    */
   constexpr bool IsFullRange() const
   {
-    return SDL_ISCOLORSPACE_FULL_RANGE(m_colorspace);
+    return SDL_ISCOLORSPACE_FULL_RANGE(m_cspace);
   }
 };
 
-constexpr SDL_Colorspace COLORSPACE_UNKNOWN =
-  SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
+constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.
  */
-constexpr SDL_Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
+constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
 
-constexpr SDL_Colorspace COLORSPACE_SRGB_LINEAR =
+constexpr Colorspace COLORSPACE_SRGB_LINEAR =
   SDL_COLORSPACE_SRGB_LINEAR; ///< [object Object]
 
-constexpr SDL_Colorspace COLORSPACE_HDR10 =
+constexpr Colorspace COLORSPACE_HDR10 =
   SDL_COLORSPACE_HDR10; ///< [object Object]
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.
  */
-constexpr SDL_Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
+constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
  */
-constexpr SDL_Colorspace COLORSPACE_BT601_LIMITED =
-  SDL_COLORSPACE_BT601_LIMITED;
+constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
  */
-constexpr SDL_Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
+constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
  */
-constexpr SDL_Colorspace COLORSPACE_BT709_LIMITED =
-  SDL_COLORSPACE_BT709_LIMITED;
+constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
  */
-constexpr SDL_Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
+constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020.
  */
-constexpr SDL_Colorspace COLORSPACE_BT2020_LIMITED =
-  SDL_COLORSPACE_BT2020_LIMITED;
+constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020.
  */
-constexpr SDL_Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
+constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
 
 /**
  * The default colorspace for RGB surfaces if no colorspace is specified.
  */
-constexpr SDL_Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
+constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
 
 /**
  * The default colorspace for YUV surfaces if no colorspace is specified.
  */
-constexpr SDL_Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
+constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
 
 /// @}
 
@@ -10116,7 +10092,7 @@ constexpr bool ISCOLORSPACE_FULL_RANGE(ColorspaceRaw cspace)
  * @cat wrap-extending-struct
  * @sa FColor
  */
-struct Color : SDL_Color
+struct Color : ColorRaw
 {
   /**
    * Wraps Color.
@@ -10124,7 +10100,7 @@ struct Color : SDL_Color
    * @param color the value to be wrapped
    */
   constexpr Color(ColorRaw color = {})
-    : SDL_Color(color)
+    : ColorRaw(color)
   {
   }
 
@@ -10137,7 +10113,7 @@ struct Color : SDL_Color
    * @param a the value for channel a.
    */
   constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
-    : SDL_Color{r, g, b, a}
+    : ColorRaw{r, g, b, a}
   {
   }
 
@@ -10311,7 +10287,7 @@ struct Color : SDL_Color
  *
  * @sa Color
  */
-struct FColor : SDL_FColor
+struct FColor : FColorRaw
 {
   /**
    * Wraps SDL_FColor.
@@ -10319,7 +10295,7 @@ struct FColor : SDL_FColor
    * @param color the value to be wrapped
    */
   constexpr FColor(const FColorRaw& color = {})
-    : SDL_FColor(color)
+    : FColorRaw(color)
   {
   }
 
@@ -10332,7 +10308,7 @@ struct FColor : SDL_FColor
    * @param a the value for a.
    */
   constexpr FColor(float r, float g, float b, float a = 1)
-    : SDL_FColor{r, g, b, a}
+    : FColorRaw{r, g, b, a}
   {
   }
 
@@ -21590,7 +21566,7 @@ struct FRect;
  * @sa Rect.GetEnclosingPoints
  * @sa Point.InRect
  */
-struct Point : SDL_Point
+struct Point : PointRaw
 {
   /**
    * Wraps Point.
@@ -21598,7 +21574,7 @@ struct Point : SDL_Point
    * @param p the value to be wrapped
    */
   constexpr Point(const PointRaw& p = {})
-    : SDL_Point(p)
+    : PointRaw(p)
   {
   }
 
@@ -21609,7 +21585,7 @@ struct Point : SDL_Point
    * @param y the value for y.
    */
   constexpr Point(int x, int y)
-    : SDL_Point{x, y}
+    : PointRaw{x, y}
   {
   }
 
@@ -21644,7 +21620,7 @@ struct Point : SDL_Point
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != SDL_Point{}; }
+  constexpr explicit operator bool() const { return *this != PointRaw{}; }
 
   /**
    * Get x coordinate
@@ -22035,7 +22011,7 @@ struct Point : SDL_Point
  * @sa FRect.GetEnclosingPoints
  * @sa FPoint.InRect
  */
-struct FPoint : SDL_FPoint
+struct FPoint : FPointRaw
 {
   /**
    * Wraps FPoint.
@@ -22043,7 +22019,7 @@ struct FPoint : SDL_FPoint
    * @param p the value to be wrapped
    */
   constexpr FPoint(const FPointRaw& p = {})
-    : SDL_FPoint(p)
+    : FPointRaw(p)
   {
   }
 
@@ -22054,7 +22030,7 @@ struct FPoint : SDL_FPoint
    * @param y the value for y.
    */
   constexpr FPoint(float x, float y)
-    : SDL_FPoint{x, y}
+    : FPointRaw{x, y}
   {
   }
 
@@ -22079,7 +22055,7 @@ struct FPoint : SDL_FPoint
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != SDL_FPoint{}; }
+  constexpr explicit operator bool() const { return *this != FPointRaw{}; }
 
   /**
    * Get the x coordinate.
@@ -22381,7 +22357,7 @@ struct FPoint : SDL_FPoint
  * @sa Rect.GetUnion
  * @sa Rect.GetEnclosingPoints
  */
-struct Rect : SDL_Rect
+struct Rect : RectRaw
 {
   /**
    * Wraps Rect.
@@ -22389,7 +22365,7 @@ struct Rect : SDL_Rect
    * @param r the value to be wrapped
    */
   constexpr Rect(const RectRaw& r = {})
-    : SDL_Rect(r)
+    : RectRaw(r)
   {
   }
 
@@ -22402,7 +22378,7 @@ struct Rect : SDL_Rect
    * @param h the height.
    */
   constexpr Rect(int x, int y, int w, int h)
-    : SDL_Rect{x, y, w, h}
+    : RectRaw{x, y, w, h}
   {
   }
 
@@ -22744,7 +22720,7 @@ struct Rect : SDL_Rect
    */
   constexpr operator SDL_FRect() const
   {
-    SDL_FRect r;
+    FRectRaw r;
     SDL_RectToFRect(this, &r);
     return r;
   }
@@ -23014,7 +22990,7 @@ struct Rect : SDL_Rect
  * @sa FRect.GetEnclosingPoints
  * @sa FPoint.InRect
  */
-struct FRect : SDL_FRect
+struct FRect : FRectRaw
 {
   /**
    * Wraps FRect.
@@ -23022,7 +22998,7 @@ struct FRect : SDL_FRect
    * @param r the value to be wrapped
    */
   constexpr FRect(const FRectRaw& r = {})
-    : SDL_FRect(r)
+    : FRectRaw(r)
   {
   }
 
@@ -23035,7 +23011,7 @@ struct FRect : SDL_FRect
    * @param h the height.
    */
   constexpr FRect(float x, float y, float w, float h)
-    : SDL_FRect{x, y, w, h}
+    : FRectRaw{x, y, w, h}
   {
   }
 

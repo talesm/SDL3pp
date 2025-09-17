@@ -981,11 +981,11 @@
 ---
 >    * @return A FRect filled in with the floating point representation of
 527c1203,1208
-<   constexpr operator SDL_FRect() const : SDL_Rect(SDL_RectToFRect()) {}
+<   constexpr operator SDL_FRect() const : RectRaw(SDL_RectToFRect()) {}
 ---
 >   constexpr operator SDL_FRect() const
 >   {
->     SDL_FRect r;
+>     FRectRaw r;
 >     SDL_RectToFRect(this, &r);
 >     return r;
 >   }

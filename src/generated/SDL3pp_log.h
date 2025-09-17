@@ -137,9 +137,9 @@ public:
   /**
    * Unwraps to the underlying LogCategory.
    *
-   * @returns the underlying LogCategory.
+   * @returns the underlying LogCategoryRaw.
    */
-  constexpr operator SDL_LogCategory() const { return m_category; }
+  constexpr operator LogCategoryRaw() const { return m_category; }
 
   /**
    * Check if valid.

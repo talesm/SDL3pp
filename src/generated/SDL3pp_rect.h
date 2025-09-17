@@ -43,7 +43,7 @@ struct FRect;
  * @sa Rect.GetEnclosingPoints
  * @sa Point.InRect
  */
-struct Point : SDL_Point
+struct Point : PointRaw
 {
   /**
    * Wraps Point.
@@ -51,7 +51,7 @@ struct Point : SDL_Point
    * @param p the value to be wrapped
    */
   constexpr Point(const PointRaw& p = {})
-    : SDL_Point(p)
+    : PointRaw(p)
   {
   }
 
@@ -62,7 +62,7 @@ struct Point : SDL_Point
    * @param y the value for y.
    */
   constexpr Point(int x, int y)
-    : SDL_Point{x, y}
+    : PointRaw{x, y}
   {
   }
 
@@ -94,7 +94,7 @@ struct Point : SDL_Point
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != SDL_Point{}; }
+  constexpr explicit operator bool() const { return *this != PointRaw{}; }
 
   /**
    * Get the x.
@@ -168,7 +168,7 @@ struct Point : SDL_Point
  * @sa FRect.GetEnclosingPoints
  * @sa FPoint.InRect
  */
-struct FPoint : SDL_FPoint
+struct FPoint : FPointRaw
 {
   /**
    * Wraps FPoint.
@@ -176,7 +176,7 @@ struct FPoint : SDL_FPoint
    * @param p the value to be wrapped
    */
   constexpr FPoint(const FPointRaw& p = {})
-    : SDL_FPoint(p)
+    : FPointRaw(p)
   {
   }
 
@@ -187,7 +187,7 @@ struct FPoint : SDL_FPoint
    * @param y the value for y.
    */
   constexpr FPoint(float x, float y)
-    : SDL_FPoint{x, y}
+    : FPointRaw{x, y}
   {
   }
 
@@ -212,7 +212,7 @@ struct FPoint : SDL_FPoint
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != SDL_FPoint{}; }
+  constexpr explicit operator bool() const { return *this != FPointRaw{}; }
 
   /**
    * Get the x.
@@ -291,7 +291,7 @@ struct FPoint : SDL_FPoint
  * @sa Rect.GetUnion
  * @sa Rect.GetEnclosingPoints
  */
-struct Rect : SDL_Rect
+struct Rect : RectRaw
 {
   /**
    * Wraps Rect.
@@ -299,7 +299,7 @@ struct Rect : SDL_Rect
    * @param r the value to be wrapped
    */
   constexpr Rect(const RectRaw& r = {})
-    : SDL_Rect(r)
+    : RectRaw(r)
   {
   }
 
@@ -312,7 +312,7 @@ struct Rect : SDL_Rect
    * @param h the value for h.
    */
   constexpr Rect(int x, int y, int w, int h)
-    : SDL_Rect{x, y, w, h}
+    : RectRaw{x, y, w, h}
   {
   }
 
@@ -524,7 +524,7 @@ struct Rect : SDL_Rect
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr operator SDL_FRect() const : SDL_Rect(SDL_RectToFRect()) {}
+  constexpr operator SDL_FRect() const : RectRaw(SDL_RectToFRect()) {}
 
   /**
    * @sa operator ToFRect()
@@ -653,7 +653,7 @@ struct Rect : SDL_Rect
  * @sa FRect.GetEnclosingPoints
  * @sa FPoint.InRect
  */
-struct FRect : SDL_FRect
+struct FRect : FRectRaw
 {
   /**
    * Wraps FRect.
@@ -661,7 +661,7 @@ struct FRect : SDL_FRect
    * @param r the value to be wrapped
    */
   constexpr FRect(const FRectRaw& r = {})
-    : SDL_FRect(r)
+    : FRectRaw(r)
   {
   }
 
@@ -674,7 +674,7 @@ struct FRect : SDL_FRect
    * @param h the value for h.
    */
   constexpr FRect(float x, float y, float w, float h)
-    : SDL_FRect{x, y, w, h}
+    : FRectRaw{x, y, w, h}
   {
   }
 

@@ -730,7 +730,7 @@ function expandWrappers(sourceEntries, file, context) {
       }],
       doc: `Wraps ${sourceType}.\n\n@param ${paramName} the value to be wrapped`,
       hints: {
-        init: [`${isStruct ? sourceType : attribute}(${paramName})`],
+        init: [`${isStruct ? rawType : attribute}(${paramName})`],
         changeAccess: isStruct ? undefined : 'public',
       }
     });
@@ -826,12 +826,12 @@ function expandWrappers(sourceEntries, file, context) {
     });
     if (!isStruct) insertEntry(entries, {
       kind: "function",
-      name: `operator ${type}`,
+      name: `operator ${rawType}`,
       type: "",
       constexpr,
       immutable: true,
       parameters: [],
-      doc: `Unwraps to the underlying ${sourceType}.\n\n@returns the underlying ${type}.`,
+      doc: `Unwraps to the underlying ${sourceType}.\n\n@returns the underlying ${rawType}.`,
       hints: { body: `return ${attribute};` }
     });
     if (wrapper.invalidState !== false) insertEntry(entries, {
@@ -843,12 +843,12 @@ function expandWrappers(sourceEntries, file, context) {
       immutable: true,
       parameters: [],
       doc: `Check if valid.\n\n@returns True if valid state, false otherwise.`,
-      hints: { body: isStruct ? `return *this != ${sourceType}{};` : `return ${attribute} != 0;` }
+      hints: { body: isStruct ? `return *this != ${rawType}{};` : `return ${attribute} != 0;` }
     });
 
     if (isStruct) {
-      transform.type = sourceType;
-      transform.hints.super = sourceType;
+      transform.type = rawType;
+      transform.hints.super = rawType;
 
       if (wrapper.genMembers !== false) {
         /** @type {ApiParameter[]} */
@@ -892,7 +892,7 @@ function expandWrappers(sourceEntries, file, context) {
           constexpr,
           parameters,
           doc: `Constructs from its fields.\n\n` + parameters.map(p => `@param ${p.name} the value for ${p.name}.`).join("\n"),
-          hints: { init: [`${sourceType}{${parameters.map(p => p.name).join(", ")}}`] },
+          hints: { init: [`${rawType}{${parameters.map(p => p.name).join(", ")}}`] },
         });
       }
     } else {
@@ -1610,7 +1610,7 @@ function expandEnumerations(sourceEntries, file, context) {
 
     const targetName = transform.name ?? transformName(sourceName, context);
 
-    const valueType = definition.valueType ?? (transform.kind === "struct" ? sourceName : targetName);
+    const valueType = definition.valueType ?? targetName;
     if (!transform.kind && !transform.type && sourceEntry?.kind !== "alias") {
       transform.kind = "alias";
       transform.type = sourceName;
