@@ -10649,6 +10649,87 @@
             }
           }
         },
+        "SurfaceConstParam": {
+          "name": "SurfaceConstParam",
+          "kind": "struct",
+          "doc": "Safely wrap Surface for non owning const parameters",
+          "entries": {
+            "value": {
+              "kind": "var",
+              "name": "value",
+              "type": "const SurfaceRaw",
+              "doc": ""
+            },
+            "SurfaceConstParam": [
+              {
+                "kind": "function",
+                "name": "SurfaceConstParam",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const SurfaceRaw",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(value)"
+                  ]
+                },
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "SurfaceConstParam",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "SurfaceParam",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(value.value)"
+                  ]
+                },
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "SurfaceConstParam",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "std::nullptr_t",
+                    "name": "_"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(nullptr)"
+                  ]
+                },
+                "doc": ""
+              }
+            ],
+            "operator const SurfaceRaw": {
+              "kind": "function",
+              "name": "operator const SurfaceRaw",
+              "constexpr": true,
+              "immutable": true,
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "return value;"
+              },
+              "doc": ""
+            }
+          }
+        },
         "SurfaceFlags": {
           "doc": "The flags on an Surface.\n\nThese are generally considered read-only.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "SurfaceFlags",
@@ -10832,7 +10913,10 @@
                   }
                 ],
                 "hints": {
-                  "delete": true
+                  "init": [
+                    "m_resource(other.m_resource)"
+                  ],
+                  "body": "++m_resource->refcount;"
                 },
                 "name": "Surface",
                 "doc": ""

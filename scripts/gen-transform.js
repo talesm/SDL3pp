@@ -5606,7 +5606,9 @@ const transform = {
             // lock: true,
             // lockFunction: "SDL_LockSurface",
             // unlockFunction: "SDL_UnlockSurface",
+            shared: 'refcount',
             ctors: ["SDL_LoadBMP_IO"],
+            enableConstParam: true,
           },
           entries: {
             "SDL_CreateSurface": {

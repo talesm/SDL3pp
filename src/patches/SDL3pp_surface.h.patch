@@ -2,54 +2,58 @@
 <  * @defgroup CategorySurface Category Surface
 ---
 >  * @defgroup CategorySurface Surface Creation and Simple Drawing
-92c92
+118c118
 < constexpr bool MUSTLOCK(SurfaceParam S) { return SDL_MUSTLOCK(S); }
 ---
 > constexpr bool MUSTLOCK(SurfaceParam S) { return SDL_MUSTLOCK((S.value)); }
-150a151,152
+176a177,178
 >  * @cat resource
 >  *
-153,154d154
+179,180d180
 <  *
 <  * @cat resource
-178,179c178
+195c195
+<   Surface(const Surface& other) { ++m_resource->refcount; }
+---
+>   constexpr Surface(const Surface& other) { ++m_resource->refcount; }
+204,205c204
 <    * @param width the width of the surface.
 <    * @param height the height of the surface.
 ---
 >    * @param size the width and height of the surface.
-192c191
+218c217
 <     : m_resource(SDL_CreateSurface(size, format))
 ---
 >     : m_resource(SDL_CreateSurface(size.x, size.y, format))
-209,210c208
+235,236c234
 <    * @param width the width of the surface.
 <    * @param height the height of the surface.
 ---
 >    * @param size the width and height of the surface.
-225c223
+251c249
 <     : m_resource(SDL_CreateSurfaceFrom(size, format, pixels, pitch))
 ---
 >     : m_resource(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch))
-251c249
+277c275
 <     return Surface(SDL_LoadBMP_IO(src));
 ---
 >     return Surface(SDL_LoadBMP_IO(src, false));
-1812,1815d1809
+1838,1841d1835
 < #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 < 
 < #if SDL_VERSION_ATLEAST(3, 2, 6)
 < 
-2100c2094
+2126c2120
 < inline Surface LoadBMP_IO(IOStreamParam src, bool closeio)
 ---
 > inline Surface LoadBMP_IO(IOStreamParam src, bool closeio = false)
-2147c2141,2143
+2173c2167,2169
 < inline void SaveBMP_IO(SurfaceParam surface, IOStreamParam dst, bool closeio)
 ---
 > inline void SaveBMP_IO(SurfaceParam surface,
 >                        IOStreamParam dst,
 >                        bool closeio = false)
-2930a2927,2993
+2956a2953,3019
 > /**
 >  * Performs a fast blit from the source surface to the destination surface
 >  * with clipping.
@@ -117,23 +121,23 @@
 >  *
 >  * @sa Surface.BlitSurface
 >  */
-2936c2999
+2962c3025
 <   static_assert(false, "Not implemented");
 ---
 >   BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
-3343c3406
+3369c3432
 <   CheckError(SDL_ReadSurfacePixel(surface, p, r, g, b, a));
 ---
 >   CheckError(SDL_ReadSurfacePixel(surface, p.x, p.y, r, g, b, a));
-3376c3439
+3402c3465
 <   CheckError(SDL_ReadSurfacePixelFloat(surface, p, r, g, b, a));
 ---
 >   CheckError(SDL_ReadSurfacePixelFloat(surface, p.x, p.y, r, g, b, a));
-3405c3468
+3431c3494
 <   CheckError(SDL_WriteSurfacePixel(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
-3431c3494
+3457c3520
 <   CheckError(SDL_WriteSurfacePixelFloat(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixelFloat(surface, p.x, p.y, c.r, c.g, c.b, c.a));

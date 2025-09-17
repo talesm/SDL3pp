@@ -62,6 +62,32 @@ struct SurfaceParam
 };
 
 /**
+ * Safely wrap Surface for non owning const parameters
+ */
+struct SurfaceConstParam
+{
+
+  const SurfaceRaw value;
+
+  constexpr SurfaceConstParam(const SurfaceRaw value)
+    : value(value)
+  {
+  }
+
+  constexpr SurfaceConstParam(SurfaceParam value)
+    : value(value.value)
+  {
+  }
+
+  constexpr SurfaceConstParam(std::nullptr_t _)
+    : value(nullptr)
+  {
+  }
+
+  constexpr operator const SurfaceRaw() const { return value; }
+};
+
+/**
  * The flags on an Surface.
  *
  * These are generally considered read-only.
@@ -166,7 +192,7 @@ public:
   {
   }
 
-  Surface(const Surface& other) = delete;
+  Surface(const Surface& other) { ++m_resource->refcount; }
 
   constexpr Surface(Surface&& other) { other.m_resource = nullptr; }
 
