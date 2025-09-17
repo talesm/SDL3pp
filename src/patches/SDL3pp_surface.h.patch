@@ -3,9 +3,9 @@
 ---
 >  * @defgroup CategorySurface Surface Creation and Simple Drawing
 118c118
-< constexpr bool MUSTLOCK(SurfaceParam S) { return SDL_MUSTLOCK(S); }
+< constexpr bool MUSTLOCK(SurfaceConstParam S) { return SDL_MUSTLOCK(S); }
 ---
-> constexpr bool MUSTLOCK(SurfaceParam S) { return SDL_MUSTLOCK((S.value)); }
+> constexpr bool MUSTLOCK(SurfaceConstParam S) { return SDL_MUSTLOCK((S.value)); }
 176a177,178
 >  * @cat resource
 >  *

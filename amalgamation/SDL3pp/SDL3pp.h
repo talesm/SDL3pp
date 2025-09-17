@@ -7027,7 +7027,7 @@ constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT; ///< COUNT
  */
 class LogCategory
 {
-  SDL_LogCategory m_category;
+  LogCategoryRaw m_category;
 
 public:
   /**
@@ -8371,7 +8371,7 @@ constexpr PackedLayout PACKEDLAYOUT_1010102 =
  */
 class PixelFormat
 {
-  SDL_PixelFormat m_format;
+  PixelFormatRaw m_format;
 
 public:
   /**
@@ -10521,7 +10521,7 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetPixelFormatName(PixelFormat format)
+inline const char* GetPixelFormatName(PixelFormatRaw format)
 {
   return SDL_GetPixelFormatName(format);
 }
@@ -10598,7 +10598,7 @@ inline PixelFormat GetPixelFormatForMasks(int bpp,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const PixelFormatDetails* GetPixelFormatDetails(PixelFormat format)
+inline const PixelFormatDetails* GetPixelFormatDetails(PixelFormatRaw format)
 {
   return SDL_GetPixelFormatDetails(format);
 }

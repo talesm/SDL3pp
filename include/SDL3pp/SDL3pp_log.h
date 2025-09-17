@@ -122,7 +122,7 @@ constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT; ///< COUNT
  */
 class LogCategory
 {
-  SDL_LogCategory m_category;
+  LogCategoryRaw m_category;
 
 public:
   /**

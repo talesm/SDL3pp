@@ -115,7 +115,7 @@ constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr bool MUSTLOCK(SurfaceParam S) { return SDL_MUSTLOCK((S.value)); }
+constexpr bool MUSTLOCK(SurfaceConstParam S) { return SDL_MUSTLOCK((S.value)); }
 
 /**
  * The scaling mode.
@@ -1815,7 +1815,7 @@ inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesID GetSurfaceProperties(SurfaceParam surface)
+inline PropertiesID GetSurfaceProperties(SurfaceConstParam surface)
 {
   return CheckError(SDL_GetSurfaceProperties(surface));
 }
@@ -1878,7 +1878,7 @@ inline void SetSurfaceColorspace(SurfaceParam surface, Colorspace colorspace)
  *
  * @sa Surface.SetColorspace
  */
-inline Colorspace GetSurfaceColorspace(SurfaceParam surface)
+inline Colorspace GetSurfaceColorspace(SurfaceConstParam surface)
 {
   return SDL_GetSurfaceColorspace(surface);
 }
@@ -1949,7 +1949,7 @@ inline void SetSurfacePalette(SurfaceParam surface, PaletteParam palette)
  *
  * @sa Surface.SetPalette
  */
-inline PaletteRaw GetSurfacePalette(SurfaceParam surface)
+inline PaletteRaw GetSurfacePalette(SurfaceConstParam surface)
 {
   return SDL_GetSurfacePalette(surface);
 }
@@ -1997,7 +1997,7 @@ inline void AddSurfaceAlternateImage(SurfaceParam surface, SurfaceParam image)
  * @sa Surface.RemoveAlternateImages
  * @sa Surface.GetImages
  */
-inline bool SurfaceHasAlternateImages(SurfaceParam surface)
+inline bool SurfaceHasAlternateImages(SurfaceConstParam surface)
 {
   return SDL_SurfaceHasAlternateImages(surface);
 }
@@ -2027,7 +2027,7 @@ inline bool SurfaceHasAlternateImages(SurfaceParam surface)
  * @sa Surface.RemoveAlternateImages
  * @sa Surface.HasAlternateImages
  */
-inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceParam surface)
+inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstParam surface)
 {
   return SDL_GetSurfaceImages(surface);
 }
@@ -2233,7 +2233,7 @@ inline void SetSurfaceRLE(SurfaceParam surface, bool enabled)
  *
  * @sa Surface.SetRLE
  */
-inline bool SurfaceHasRLE(SurfaceParam surface)
+inline bool SurfaceHasRLE(SurfaceConstParam surface)
 {
   return SDL_SurfaceHasRLE(surface);
 }
@@ -2281,7 +2281,7 @@ inline void SetSurfaceColorKey(SurfaceParam surface, std::optional<Uint32> key)
  * @sa Surface.SetColorKey
  * @sa Surface.GetColorKey
  */
-inline bool SurfaceHasColorKey(SurfaceParam surface)
+inline bool SurfaceHasColorKey(SurfaceConstParam surface)
 {
   return SDL_SurfaceHasColorKey(surface);
 }
@@ -2305,7 +2305,7 @@ inline bool SurfaceHasColorKey(SurfaceParam surface)
  * @sa Surface.SetColorKey
  * @sa Surface.HasColorKey
  */
-inline void GetSurfaceColorKey(SurfaceParam surface, Uint32* key)
+inline void GetSurfaceColorKey(SurfaceConstParam surface, Uint32* key)
 {
   CheckError(SDL_GetSurfaceColorKey(surface, key));
 }
@@ -2353,7 +2353,7 @@ inline void SetSurfaceColorMod(SurfaceParam surface, Uint8 r, Uint8 g, Uint8 b)
  * @sa Surface.GetAlphaMod
  * @sa Surface.SetColorMod
  */
-inline void GetSurfaceColorMod(SurfaceParam surface,
+inline void GetSurfaceColorMod(SurfaceConstParam surface,
                                Uint8* r,
                                Uint8* g,
                                Uint8* b)
@@ -2399,7 +2399,7 @@ inline void SetSurfaceAlphaMod(SurfaceParam surface, Uint8 alpha)
  * @sa Surface.GetColorMod
  * @sa Surface.SetAlphaMod
  */
-inline Uint8 GetSurfaceAlphaMod(SurfaceParam surface)
+inline Uint8 GetSurfaceAlphaMod(SurfaceConstParam surface)
 {
   return CheckError(SDL_GetSurfaceAlphaMod(surface));
 }
@@ -2439,7 +2439,7 @@ inline void SetSurfaceBlendMode(SurfaceParam surface, BlendMode blendMode)
  *
  * @sa Surface.SetBlendMode
  */
-inline BlendMode GetSurfaceBlendMode(SurfaceParam surface)
+inline BlendMode GetSurfaceBlendMode(SurfaceConstParam surface)
 {
   return CheckError(SDL_GetSurfaceBlendMode(surface));
 }
@@ -2489,7 +2489,7 @@ inline bool SetSurfaceClipRect(SurfaceParam surface,
  *
  * @sa Surface.SetClipRect
  */
-inline Rect GetSurfaceClipRect(SurfaceParam surface)
+inline Rect GetSurfaceClipRect(SurfaceConstParam surface)
 {
   return CheckError(SDL_GetSurfaceClipRect(surface));
 }
@@ -3422,7 +3422,7 @@ inline Uint32 MapSurfaceRGBA(SurfaceParam surface,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReadSurfacePixel(SurfaceParam surface,
+inline void ReadSurfacePixel(SurfaceConstParam surface,
                              const PointRaw& p,
                              Uint8* r,
                              Uint8* g,
@@ -3455,7 +3455,7 @@ inline void ReadSurfacePixel(SurfaceParam surface,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReadSurfacePixelFloat(SurfaceParam surface,
+inline void ReadSurfacePixelFloat(SurfaceConstParam surface,
                                   const PointRaw& p,
                                   float* r,
                                   float* g,

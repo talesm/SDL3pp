@@ -683,7 +683,8 @@ function expandWrappers(sourceEntries, file, context) {
     const constexpr = transform.constexpr !== false;
     const paramName = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
     const rawType = `${targetType}Raw`;
-    const paramType = wrapper.paramType ?? (isStruct ? `const ${rawType} &` : rawType);
+    const paramType = wrapper.paramType ?? (isStruct ? `${rawType} *` : targetType);
+    const constParamType = wrapper.paramType ?? (isStruct ? `const ${rawType} &` : rawType);
     const attribute = "m_" + paramName;
     context.includeAfter({ name: rawType, kind: 'alias', type: sourceType }, '__begin');
 
@@ -710,7 +711,7 @@ function expandWrappers(sourceEntries, file, context) {
       insertEntry(entries, {
         kind: "var",
         name: attribute,
-        type: type,
+        type: rawType,
       });
       addHints(transform, {
         private: true,
@@ -723,7 +724,7 @@ function expandWrappers(sourceEntries, file, context) {
       type: "",
       constexpr,
       parameters: [{
-        type: paramType,
+        type: constParamType,
         name: paramName,
         default: wrapper.defaultValue ?? "{}"
       }],
@@ -753,7 +754,7 @@ function expandWrappers(sourceEntries, file, context) {
         constexpr,
         immutable: true,
         parameters: [{
-          type: paramType,
+          type: constParamType,
           name: paramName,
         }],
         doc: "Compares with the underlying type",
@@ -779,7 +780,7 @@ function expandWrappers(sourceEntries, file, context) {
         constexpr,
         immutable: true,
         parameters: [{
-          type: paramType,
+          type: constParamType,
           name: paramName,
         }],
         doc: "Compares with the underlying type",
@@ -794,7 +795,7 @@ function expandWrappers(sourceEntries, file, context) {
         constexpr,
         immutable: true,
         parameters: [{
-          type: paramType,
+          type: constParamType,
           name: "other",
         }],
         doc: "Compares with the underlying type",
@@ -810,7 +811,7 @@ function expandWrappers(sourceEntries, file, context) {
           name: "other",
         }],
         doc: "Compares with the underlying type",
-        hints: { body: `return *this == (${paramType})(other);` },
+        hints: { body: `return *this == (${constParamType})(other);` },
       }]);
     }
     if (wrapper.nullable) insertEntry(entries, {
@@ -907,7 +908,7 @@ function expandWrappers(sourceEntries, file, context) {
     blockedNames.add(targetType);
     if (transform.entries) Object.keys(transform.entries).forEach(k => blockedNames.add(k));
     const detectedMethods = detectMethods(sourceEntries, file.transform, sourceType, rawType, blockedNames);
-    mirrorMethods(sourceEntries, file.transform, transform.entries ?? {}, rawType, paramType, targetType);
+    mirrorMethods(sourceEntries, file.transform, transform.entries ?? {}, paramType, constParamType, targetType);
     transform.entries = { ...entries, ...(transform.entries ?? {}), ...detectedMethods };
     if (type !== sourceType) {
       context.addParamType(type, targetType);
@@ -937,33 +938,65 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
 
     const transformEntry = transformEntries[sourceName];
     if (transformEntry) continue;
+    /** @type {ApiEntryTransform} */
+    let targetEntry;
     if (typeof subEntry === 'string' || (sourceEntry.kind !== 'def' && subEntry.name)) {
-      transformEntries[sourceName] = {};
-      continue;
+      targetEntry = {};
+      if (subEntry === 'immutable') targetEntry.immutable = true;
+    } else {
+      targetEntry = deepClone(subEntry);
+      if (targetEntry.type === "") targetEntry.type = resultType;
     }
-    const targetEntry = deepClone(subEntry);
-    transformEntries[sourceName] = targetEntry;
-    if (targetEntry.type === "") targetEntry.type = resultType;
-    if (targetEntry.parameters && (!subEntry.static)) {
-      const p0 = targetEntry.parameters[0];
-      if (!p0 || typeof p0 === "string" || p0.type) {
-        switch (typeof sourceEntry.parameters[0]) {
-          case 'object':
-            targetEntry.parameters.unshift({});
-            break;
-          case 'string': {
-            const sourceParam0 = sourceEntry.parameters[0];
-            if (typeof p0 !== "object" || sourceParam0 !== p0.name) {
-              targetEntry.parameters.unshift({ name: sourceParam0, type: constParamType });
-            }
-            break;
-          }
-        }
-      }
-    }
+    mirrorParameters(sourceEntry, targetEntry);
     delete targetEntry.name;
     delete targetEntry.static;
     delete targetEntry.immutable;
+    transformEntries[sourceName] = targetEntry;
+  }
+
+  /**
+   * 
+   * @param {ApiEntry}          sourceEntry
+   * @param {ApiEntryTransform} targetEntry
+   */
+  function mirrorParameters(sourceEntry, targetEntry) {
+    if (targetEntry.static) return;
+
+    /**@type {ApiParameters} */
+    const targetParameters = targetEntry.parameters ?? sourceEntry?.parameters?.map(p => (typeof p === 'string' ? p : {}));
+    if (!targetParameters) return;
+
+    const needSaveParameters = !targetEntry.parameters;
+    let parametersChanged = false;
+    const targetParam0 = targetParameters[0];
+
+    const sourceParam0 = sourceEntry.parameters[0];
+    if (!targetParam0 || typeof targetParam0 === "string" || targetParam0.type) {
+      switch (typeof sourceParam0) {
+        case 'object':
+          const selfParam = { name: sourceParam0.name };
+          if (sourceParam0.type?.includes(resultType)) {
+            selfParam.type = targetEntry.immutable ? constParamType : paramType;
+          }
+          targetParameters.unshift(selfParam);
+          parametersChanged = true;
+          break;
+        case 'string':
+          if (typeof targetParam0 !== "object" || sourceParam0 !== targetParam0.name) {
+            targetParameters.unshift({ name: sourceParam0, type: constParamType });
+            parametersChanged = true;
+          }
+          break;
+      }
+    } else if (typeof sourceParam0 !== 'object' || typeof targetParam0 !== "object") {
+      return;
+    } else if (!targetParam0.name || targetParam0.name == sourceParam0.name) {
+      if (sourceParam0.type?.includes(resultType)) {
+        targetParam0.type = (targetEntry.immutable || sourceParam0.type.startsWith('const ')) ? constParamType : paramType;
+        parametersChanged = true;
+      }
+    }
+    if (needSaveParameters && parametersChanged) targetEntry.parameters = targetParameters;
   }
 }
 
@@ -1340,7 +1373,7 @@ function expandResources(sourceEntries, file, context) {
       blockedNames.add(uniqueName);
       Object.keys(ctors).forEach(k => blockedNames.add(k));
       const detectedMethods = detectMethods(sourceEntries, file.transform, sourceName, rawName, blockedNames);
-      mirrorMethods(sourceEntries, file.transform, subEntries, constParamType, paramType, uniqueName);
+      mirrorMethods(sourceEntries, file.transform, subEntries, paramType, constParamType, uniqueName);
       combineObject(subEntries, detectedMethods);
     }
 

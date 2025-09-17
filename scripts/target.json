@@ -3573,7 +3573,7 @@
             "m_category": {
               "kind": "var",
               "name": "m_category",
-              "type": "SDL_LogCategory",
+              "type": "LogCategoryRaw",
               "doc": ""
             },
             "LogCategory": [
@@ -5509,7 +5509,7 @@
             "m_format": {
               "kind": "var",
               "name": "m_format",
-              "type": "SDL_PixelFormat",
+              "type": "PixelFormatRaw",
               "doc": ""
             },
             "PixelFormat": [
@@ -8152,7 +8152,7 @@
           "parameters": [
             {
               "name": "format",
-              "type": "PixelFormat"
+              "type": "PixelFormatRaw"
             }
           ],
           "sourceName": "SDL_GetPixelFormatName"
@@ -8230,7 +8230,7 @@
           "parameters": [
             {
               "name": "format",
-              "type": "PixelFormat"
+              "type": "PixelFormatRaw"
             }
           ],
           "sourceName": "SDL_GetPixelFormatDetails"
@@ -10780,7 +10780,7 @@
           "parameters": [
             {
               "name": "S",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             }
           ],
           "value": "(((S)->flags & SDL_SURFACE_LOCK_NEEDED) == SDL_SURFACE_LOCK_NEEDED)",
@@ -12389,7 +12389,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             }
           ],
           "sourceName": "SDL_GetSurfaceProperties",
@@ -12489,7 +12489,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             }
           ],
           "sourceName": "SDL_GetSurfaceColorspace"
@@ -12538,7 +12538,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             }
           ],
           "sourceName": "SDL_GetSurfacePalette"
@@ -12571,7 +12571,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             }
           ],
           "sourceName": "SDL_SurfaceHasAlternateImages"
@@ -12584,7 +12584,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             }
           ],
           "sourceName": "SDL_GetSurfaceImages"
@@ -12736,7 +12736,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             }
           ],
           "sourceName": "SDL_SurfaceHasRLE"
@@ -12769,7 +12769,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             }
           ],
           "sourceName": "SDL_SurfaceHasColorKey"
@@ -12782,7 +12782,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             },
             {
               "name": "key",
@@ -12830,7 +12830,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             },
             {
               "name": "r",
@@ -12878,7 +12878,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             }
           ],
           "sourceName": "SDL_GetSurfaceAlphaMod",
@@ -12914,7 +12914,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             }
           ],
           "sourceName": "SDL_GetSurfaceBlendMode",
@@ -12947,7 +12947,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             }
           ],
           "sourceName": "SDL_GetSurfaceClipRect",
@@ -13713,7 +13713,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             },
             {
               "name": "p",
@@ -13749,7 +13749,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             },
             {
               "name": "p",
