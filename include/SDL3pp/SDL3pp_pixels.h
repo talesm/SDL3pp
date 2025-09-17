@@ -2,9 +2,9 @@
 #define SDL3PP_PIXELS_H_
 
 #include <SDL3/SDL_pixels.h>
-#include <SDL3/SDL_version.h>
 #include "SDL3pp_error.h"
 #include "SDL3pp_spanRef.h"
+#include "SDL3pp_version.h"
 
 namespace SDL {
 

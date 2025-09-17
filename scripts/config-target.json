@@ -13,7 +13,8 @@
     "SDL_properties.h",
     "SDL_rect.h",
     "SDL_stdinc.h",
-    "SDL_surface.h"
+    "SDL_surface.h",
+    "SDL_version.h"
   ],
   "api": "scripts/target.json",
   "baseDir": "src/generated/",

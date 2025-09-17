@@ -2,7 +2,6 @@
 #define SDL3PP_SURFACE_H_
 
 #include <SDL3/SDL_surface.h>
-#include <SDL3/SDL_version.h>
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_error.h"
 #include "SDL3pp_iostream.h"
@@ -12,6 +11,7 @@
 #include "SDL3pp_rect.h"
 #include "SDL3pp_spanRef.h"
 #include "SDL3pp_strings.h"
+#include "SDL3pp_version.h"
 
 namespace SDL {
 

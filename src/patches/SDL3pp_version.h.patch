@@ -1,0 +1,10 @@
+9c9
+<  * @defgroup CategoryVersion Category Version
+---
+>  * @defgroup CategoryVersion Querying SDL Version
+16a17,18
+> #ifdef SDL3PP_DOC
+> 
+106a109,110
+> 
+> #endif // SDL3PP_DOC

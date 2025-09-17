@@ -2749,8 +2749,7 @@ const transform = {
       }
     },
     "SDL_pixels.h": {
-      includes: ["SDL3/SDL_version.h"],
-      localIncludes: ["SDL3pp_spanRef.h", "SDL3pp_error.h"],
+      localIncludes: ["SDL3pp_spanRef.h", "SDL3pp_error.h", "SDL3pp_version.h"],
       transform: {
         "Color": { kind: "forward" },
         "SDL_PixelFormatDetails": {
@@ -5586,7 +5585,6 @@ const transform = {
       },
     },
     "SDL_surface.h": {
-      includes: ['SDL3/SDL_version.h'],
       localIncludes: [
         "SDL3pp_blendmode.h",
         "SDL3pp_error.h",
@@ -5597,6 +5595,7 @@ const transform = {
         "SDL3pp_rect.h",
         "SDL3pp_spanRef.h",
         "SDL3pp_strings.h",
+        "SDL3pp_version.h",
       ],
       namespacesMap: {
         "SDL_PROP_SURFACE_": "prop::Surface"

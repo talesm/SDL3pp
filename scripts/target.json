@@ -4800,6 +4800,113 @@
         "SDL3pp_strings.h"
       ]
     },
+    "SDL3pp_version.h": {
+      "name": "SDL3pp_version.h",
+      "doc": "@defgroup CategoryVersion Category Version\n\nFunctionality to query the current SDL version, both as headers the app was\ncompiled against, and a library the app is linked to.",
+      "entries": {
+        "SDL_MAJOR_VERSION": {
+          "doc": "The current major version of SDL headers.\n\nIf this were SDL version 3.2.1, this value would be 3.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_MAJOR_VERSION",
+          "kind": "def",
+          "value": "3",
+          "sourceName": "SDL_MAJOR_VERSION"
+        },
+        "SDL_MINOR_VERSION": {
+          "doc": "The current minor version of the SDL headers.\n\nIf this were SDL version 3.2.1, this value would be 2.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_MINOR_VERSION",
+          "kind": "def",
+          "value": "2",
+          "sourceName": "SDL_MINOR_VERSION"
+        },
+        "SDL_MICRO_VERSION": {
+          "doc": "The current micro (or patchlevel) version of the SDL headers.\n\nIf this were SDL version 3.2.1, this value would be 1.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_MICRO_VERSION",
+          "kind": "def",
+          "value": "23",
+          "sourceName": "SDL_MICRO_VERSION"
+        },
+        "SDL_VERSIONNUM": {
+          "doc": "This macro turns the version numbers into a numeric value.\n\n(1,2,3) becomes 1002003.\n\n@param major the major version number.\n@param minor the minorversion number.\n@param patch the patch version number.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_VERSIONNUM",
+          "kind": "def",
+          "parameters": [
+            "major",
+            "minor",
+            "patch"
+          ],
+          "value": "    ((major) * 1000000 + (minor) * 1000 + (patch))",
+          "sourceName": "SDL_VERSIONNUM"
+        },
+        "SDL_VERSIONNUM_MAJOR": {
+          "doc": "This macro extracts the major version from a version number\n\n1002003 becomes 1.\n\n@param version the version number.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_VERSIONNUM_MAJOR",
+          "kind": "def",
+          "parameters": [
+            "version"
+          ],
+          "value": "((version) / 1000000)",
+          "sourceName": "SDL_VERSIONNUM_MAJOR"
+        },
+        "SDL_VERSIONNUM_MINOR": {
+          "doc": "This macro extracts the minor version from a version number\n\n1002003 becomes 2.\n\n@param version the version number.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_VERSIONNUM_MINOR",
+          "kind": "def",
+          "parameters": [
+            "version"
+          ],
+          "value": "(((version) / 1000) % 1000)",
+          "sourceName": "SDL_VERSIONNUM_MINOR"
+        },
+        "SDL_VERSIONNUM_MICRO": {
+          "doc": "This macro extracts the micro version from a version number\n\n1002003 becomes 3.\n\n@param version the version number.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_VERSIONNUM_MICRO",
+          "kind": "def",
+          "parameters": [
+            "version"
+          ],
+          "value": "((version) % 1000)",
+          "sourceName": "SDL_VERSIONNUM_MICRO"
+        },
+        "SDL_VERSION": {
+          "doc": "This is the version number macro for the current SDL version.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa GetVersion",
+          "name": "SDL_VERSION",
+          "kind": "def",
+          "value": "    SDL_VERSIONNUM(SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION)",
+          "sourceName": "SDL_VERSION"
+        },
+        "SDL_VERSION_ATLEAST": {
+          "doc": "This macro will evaluate to true if compiled with SDL at least X.Y.Z.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_VERSION_ATLEAST",
+          "kind": "def",
+          "parameters": [
+            "X",
+            "Y",
+            "Z"
+          ],
+          "value": "    (SDL_VERSION >= SDL_VERSIONNUM(X, Y, Z))",
+          "sourceName": "SDL_VERSION_ATLEAST"
+        },
+        "GetVersion": {
+          "doc": "Get the version of SDL that is linked against your program.\n\nIf you are linking to SDL dynamically, then it is possible that the current\nversion will be different than the version you compiled against. This\nfunction returns the current version, while SDL_VERSION is the version you\ncompiled with.\n\nThis function may be called safely at any time, even before Init().\n\n@returns the version of the linked library.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetRevision",
+          "name": "GetVersion",
+          "kind": "function",
+          "type": "int",
+          "parameters": [],
+          "sourceName": "SDL_GetVersion"
+        },
+        "GetRevision": {
+          "doc": "Get the code revision of SDL that is linked against your program.\n\nThis value is the revision of the code you are linked with and may be\ndifferent from the code you are compiling with, which is found in the\nconstant SDL_REVISION.\n\nThe revision is arbitrary string (a hash value) uniquely identifying the\nexact revision of the SDL library in use, and is only useful in comparing\nagainst other revisions. It is NOT an incrementing number.\n\nIf SDL wasn't built from a git repository with the appropriate tools, this\nwill return an empty string.\n\nYou shouldn't use this function for anything but logging it for debugging\npurposes. The string is not intended to be reliable in any way.\n\n@returns an arbitrary string, uniquely identifying the exact revision of\n         the SDL library in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetVersion",
+          "name": "GetRevision",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [],
+          "sourceName": "SDL_GetRevision"
+        }
+      },
+      "includes": [
+        "SDL3/SDL_version.h"
+      ]
+    },
     "SDL3pp_pixels.h": {
       "name": "SDL3pp_pixels.h",
       "doc": "@defgroup CategoryPixels Category Pixels\n\nSDL offers facilities for pixel management.\n\nLargely these facilities deal with pixel _format_: what does this set of\nbits represent?\n\nIf you mostly want to think of a pixel as some combination of red, green,\nblue, and maybe alpha intensities, this is all pretty straightforward, and\nin many cases, is enough information to build a perfectly fine game.\n\nHowever, the actual definition of a pixel is more complex than that:\n\nPixels are a representation of a color in a particular color space.\n\nThe first characteristic of a color space is the color type. SDL\nunderstands two different color types, RGB and YCbCr, or in SDL also\nreferred to as YUV.\n\nRGB colors consist of red, green, and blue channels of color that are added\ntogether to represent the colors we see on the screen.\n\nhttps://en.wikipedia.org/wiki/RGB_color_model\n\nYCbCr colors represent colors as a Y luma brightness component and red and\nblue chroma color offsets. This color representation takes advantage of the\nfact that the human eye is more sensitive to brightness than the color in\nan image. The Cb and Cr components are often compressed and have lower\nresolution than the luma component.\n\nhttps://en.wikipedia.org/wiki/YCbCr\n\nWhen the color information in YCbCr is compressed, the Y pixels are left at\nfull resolution and each Cr and Cb pixel represents an average of the color\ninformation in a block of Y pixels. The chroma location determines where in\nthat block of pixels the color information is coming from.\n\nThe color range defines how much of the pixel to use when converting a\npixel into a color on the display. When the full color range is used, the\nentire numeric range of the pixel bits is significant. When narrow color\nrange is used, for historical reasons, the pixel uses only a portion of the\nnumeric range to represent colors.\n\nThe color primaries and white point are a definition of the colors in the\ncolor space relative to the standard XYZ color space.\n\nhttps://en.wikipedia.org/wiki/CIE_1931_color_space\n\nThe transfer characteristic, or opto-electrical transfer function (OETF),\nis the way a color is converted from mathematically linear space into a\nnon-linear output signals.\n\nhttps://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics\n\nThe matrix coefficients are used to convert between YCbCr and RGB colors.",
@@ -8317,12 +8424,12 @@
         }
       },
       "includes": [
-        "SDL3/SDL_version.h",
         "SDL3/SDL_pixels.h"
       ],
       "localIncludes": [
         "SDL3pp_spanRef.h",
-        "SDL3pp_error.h"
+        "SDL3pp_error.h",
+        "SDL3pp_version.h"
       ]
     },
     "SDL3pp_blendmode.h": {
@@ -13653,7 +13760,6 @@
         }
       },
       "includes": [
-        "SDL3/SDL_version.h",
         "SDL3/SDL_surface.h"
       ],
       "localIncludes": [
@@ -13665,7 +13771,8 @@
         "SDL3pp_properties.h",
         "SDL3pp_rect.h",
         "SDL3pp_spanRef.h",
-        "SDL3pp_strings.h"
+        "SDL3pp_strings.h",
+        "SDL3pp_version.h"
       ]
     },
     "SDL3pp_iostream.h": {
