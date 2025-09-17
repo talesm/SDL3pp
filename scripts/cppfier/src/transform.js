@@ -944,17 +944,20 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
     const targetEntry = deepClone(subEntry);
     transformEntries[sourceName] = targetEntry;
     if (targetEntry.type === "") targetEntry.type = resultType;
-    if (targetEntry.parameters && (subEntry.static === false || subEntry.immutable)) {
-
+    if (targetEntry.parameters && (!subEntry.static)) {
       const p0 = targetEntry.parameters[0];
       if (!p0 || typeof p0 === "string" || p0.type) {
         switch (typeof sourceEntry.parameters[0]) {
           case 'object':
             targetEntry.parameters.unshift({});
             break;
-          case 'string':
-            targetEntry.parameters.unshift({ name: sourceEntry.parameters[0], type: constParamType });
+          case 'string': {
+            const sourceParam0 = sourceEntry.parameters[0];
+            if (typeof p0 !== "object" || sourceParam0 !== p0.name) {
+              targetEntry.parameters.unshift({ name: sourceParam0, type: constParamType });
+            }
             break;
+          }
         }
       }
     }

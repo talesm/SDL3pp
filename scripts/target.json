@@ -15335,7 +15335,12 @@
           "name": "ReadU8",
           "kind": "function",
           "type": "Uint8",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadU8",
           "hints": {
             "mayFail": true
@@ -15346,7 +15351,12 @@
           "name": "ReadS8",
           "kind": "function",
           "type": "Sint8",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadS8",
           "hints": {
             "mayFail": true
@@ -15357,7 +15367,12 @@
           "name": "ReadU16LE",
           "kind": "function",
           "type": "Uint16",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadU16LE",
           "hints": {
             "mayFail": true
@@ -15368,7 +15383,12 @@
           "name": "ReadS16LE",
           "kind": "function",
           "type": "Sint16",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadS16LE",
           "hints": {
             "mayFail": true
@@ -15379,7 +15399,12 @@
           "name": "ReadU16BE",
           "kind": "function",
           "type": "Uint16",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadU16BE",
           "hints": {
             "mayFail": true
@@ -15390,7 +15415,12 @@
           "name": "ReadS16BE",
           "kind": "function",
           "type": "Sint16",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadS16BE",
           "hints": {
             "mayFail": true
@@ -15401,7 +15431,12 @@
           "name": "ReadU32LE",
           "kind": "function",
           "type": "Uint32",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadU32LE",
           "hints": {
             "mayFail": true
@@ -15412,7 +15447,12 @@
           "name": "ReadS32LE",
           "kind": "function",
           "type": "Sint32",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadS32LE",
           "hints": {
             "mayFail": true
@@ -15423,7 +15463,12 @@
           "name": "ReadU32BE",
           "kind": "function",
           "type": "Uint32",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadU32BE",
           "hints": {
             "mayFail": true
@@ -15434,7 +15479,12 @@
           "name": "ReadS32BE",
           "kind": "function",
           "type": "Sint32",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadS32BE",
           "hints": {
             "mayFail": true
@@ -15445,7 +15495,12 @@
           "name": "ReadU64LE",
           "kind": "function",
           "type": "Uint64",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadU64LE",
           "hints": {
             "mayFail": true
@@ -15456,7 +15511,12 @@
           "name": "ReadS64LE",
           "kind": "function",
           "type": "Sint64",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadS64LE",
           "hints": {
             "mayFail": true
@@ -15467,7 +15527,12 @@
           "name": "ReadU64BE",
           "kind": "function",
           "type": "Uint64",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadU64BE",
           "hints": {
             "mayFail": true
@@ -15478,7 +15543,12 @@
           "name": "ReadS64BE",
           "kind": "function",
           "type": "Sint64",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "src",
+              "type": "IOStreamParam"
+            }
+          ],
           "sourceName": "SDL_ReadS64BE",
           "hints": {
             "mayFail": true

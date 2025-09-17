@@ -1995,7 +1995,7 @@ inline void SaveFile(StringParam file, SourceBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint8 ReadU8() { return CheckError(SDL_ReadU8()); }
+inline Uint8 ReadU8(IOStreamParam src) { return CheckError(SDL_ReadU8(src)); }
 
 /**
  * Use this function to read a signed byte from an IOStream.
@@ -2013,7 +2013,7 @@ inline Uint8 ReadU8() { return CheckError(SDL_ReadU8()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint8 ReadS8() { return CheckError(SDL_ReadS8()); }
+inline Sint8 ReadS8(IOStreamParam src) { return CheckError(SDL_ReadS8(src)); }
 
 /**
  * Use this function to read 16 bits of little-endian data from an
@@ -2035,7 +2035,10 @@ inline Sint8 ReadS8() { return CheckError(SDL_ReadS8()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint16 ReadU16LE() { return CheckError(SDL_ReadU16LE()); }
+inline Uint16 ReadU16LE(IOStreamParam src)
+{
+  return CheckError(SDL_ReadU16LE(src));
+}
 
 /**
  * Use this function to read 16 bits of little-endian data from an
@@ -2057,7 +2060,10 @@ inline Uint16 ReadU16LE() { return CheckError(SDL_ReadU16LE()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint16 ReadS16LE() { return CheckError(SDL_ReadS16LE()); }
+inline Sint16 ReadS16LE(IOStreamParam src)
+{
+  return CheckError(SDL_ReadS16LE(src));
+}
 
 /**
  * Use this function to read 16 bits of big-endian data from an IOStream
@@ -2079,7 +2085,10 @@ inline Sint16 ReadS16LE() { return CheckError(SDL_ReadS16LE()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint16 ReadU16BE() { return CheckError(SDL_ReadU16BE()); }
+inline Uint16 ReadU16BE(IOStreamParam src)
+{
+  return CheckError(SDL_ReadU16BE(src));
+}
 
 /**
  * Use this function to read 16 bits of big-endian data from an IOStream
@@ -2101,7 +2110,10 @@ inline Uint16 ReadU16BE() { return CheckError(SDL_ReadU16BE()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint16 ReadS16BE() { return CheckError(SDL_ReadS16BE()); }
+inline Sint16 ReadS16BE(IOStreamParam src)
+{
+  return CheckError(SDL_ReadS16BE(src));
+}
 
 /**
  * Use this function to read 32 bits of little-endian data from an
@@ -2123,7 +2135,10 @@ inline Sint16 ReadS16BE() { return CheckError(SDL_ReadS16BE()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint32 ReadU32LE() { return CheckError(SDL_ReadU32LE()); }
+inline Uint32 ReadU32LE(IOStreamParam src)
+{
+  return CheckError(SDL_ReadU32LE(src));
+}
 
 /**
  * Use this function to read 32 bits of little-endian data from an
@@ -2145,7 +2160,10 @@ inline Uint32 ReadU32LE() { return CheckError(SDL_ReadU32LE()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint32 ReadS32LE() { return CheckError(SDL_ReadS32LE()); }
+inline Sint32 ReadS32LE(IOStreamParam src)
+{
+  return CheckError(SDL_ReadS32LE(src));
+}
 
 /**
  * Use this function to read 32 bits of big-endian data from an IOStream
@@ -2167,7 +2185,10 @@ inline Sint32 ReadS32LE() { return CheckError(SDL_ReadS32LE()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint32 ReadU32BE() { return CheckError(SDL_ReadU32BE()); }
+inline Uint32 ReadU32BE(IOStreamParam src)
+{
+  return CheckError(SDL_ReadU32BE(src));
+}
 
 /**
  * Use this function to read 32 bits of big-endian data from an IOStream
@@ -2189,7 +2210,10 @@ inline Uint32 ReadU32BE() { return CheckError(SDL_ReadU32BE()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint32 ReadS32BE() { return CheckError(SDL_ReadS32BE()); }
+inline Sint32 ReadS32BE(IOStreamParam src)
+{
+  return CheckError(SDL_ReadS32BE(src));
+}
 
 /**
  * Use this function to read 64 bits of little-endian data from an
@@ -2211,7 +2235,10 @@ inline Sint32 ReadS32BE() { return CheckError(SDL_ReadS32BE()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint64 ReadU64LE() { return CheckError(SDL_ReadU64LE()); }
+inline Uint64 ReadU64LE(IOStreamParam src)
+{
+  return CheckError(SDL_ReadU64LE(src));
+}
 
 /**
  * Use this function to read 64 bits of little-endian data from an
@@ -2233,7 +2260,10 @@ inline Uint64 ReadU64LE() { return CheckError(SDL_ReadU64LE()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint64 ReadS64LE() { return CheckError(SDL_ReadS64LE()); }
+inline Sint64 ReadS64LE(IOStreamParam src)
+{
+  return CheckError(SDL_ReadS64LE(src));
+}
 
 /**
  * Use this function to read 64 bits of big-endian data from an IOStream
@@ -2255,7 +2285,10 @@ inline Sint64 ReadS64LE() { return CheckError(SDL_ReadS64LE()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint64 ReadU64BE() { return CheckError(SDL_ReadU64BE()); }
+inline Uint64 ReadU64BE(IOStreamParam src)
+{
+  return CheckError(SDL_ReadU64BE(src));
+}
 
 /**
  * Use this function to read 64 bits of big-endian data from an IOStream
@@ -2277,7 +2310,10 @@ inline Uint64 ReadU64BE() { return CheckError(SDL_ReadU64BE()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint64 ReadS64BE() { return CheckError(SDL_ReadS64BE()); }
+inline Sint64 ReadS64BE(IOStreamParam src)
+{
+  return CheckError(SDL_ReadS64BE(src));
+}
 
 /**
  * Use this function to write a byte to an IOStream.
