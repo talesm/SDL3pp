@@ -34,26 +34,17 @@
 <     : m_resource(SDL_CreateSurfaceFrom(size, format, pixels, pitch))
 ---
 >     : m_resource(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch))
-277c275
-<     return Surface(SDL_LoadBMP_IO(src));
+324c322,323
+<     static_assert(false, "Not implemented");
 ---
->     return Surface(SDL_LoadBMP_IO(src, false));
-1838,1841d1835
+>     ++surface.value->refcount;
+>     return Surface(surface.value);
+1869,1872d1867
 < #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 < 
 < #if SDL_VERSION_ATLEAST(3, 2, 6)
 < 
-2126c2120
-< inline Surface LoadBMP_IO(IOStreamParam src, bool closeio)
----
-> inline Surface LoadBMP_IO(IOStreamParam src, bool closeio = false)
-2173c2167,2169
-< inline void SaveBMP_IO(SurfaceParam surface, IOStreamParam dst, bool closeio)
----
-> inline void SaveBMP_IO(SurfaceParam surface,
->                        IOStreamParam dst,
->                        bool closeio = false)
-2956a2953,3019
+2989a2985,3051
 > /**
 >  * Performs a fast blit from the source surface to the destination surface
 >  * with clipping.
@@ -121,23 +112,23 @@
 >  *
 >  * @sa Surface.BlitSurface
 >  */
-2962c3025
+2995c3057
 <   static_assert(false, "Not implemented");
 ---
 >   BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
-3369c3432
+3402c3464
 <   CheckError(SDL_ReadSurfacePixel(surface, p, r, g, b, a));
 ---
 >   CheckError(SDL_ReadSurfacePixel(surface, p.x, p.y, r, g, b, a));
-3402c3465
+3435c3497
 <   CheckError(SDL_ReadSurfacePixelFloat(surface, p, r, g, b, a));
 ---
 >   CheckError(SDL_ReadSurfacePixelFloat(surface, p.x, p.y, r, g, b, a));
-3431c3494
+3464c3526
 <   CheckError(SDL_WriteSurfacePixel(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
-3457c3520
+3490c3552
 <   CheckError(SDL_WriteSurfacePixelFloat(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixelFloat(surface, p.x, p.y, c.r, c.g, c.b, c.a));

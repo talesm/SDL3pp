@@ -10481,6 +10481,12 @@ public:
 
   constexpr operator PaletteParam() const { return {m_resource}; }
 
+  static constexpr Palette Borrow(PaletteParam palette)
+  {
+    ++palette.value->refcount;
+    return Palette(palette.value);
+  }
+
   constexpr int GetSize() const { return m_resource->ncolors; }
 
   constexpr Color operator[](int index) const

@@ -25,7 +25,7 @@ namespace SDL {
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
- * There is also a simple .bmp loader, LoadBMP(). SDL itself does not
+ * There is also a simple .bmp loader, Surface.LoadBMP(). SDL itself does not
  * provide loaders for various other file formats, but there are several
  * excellent external libraries that do, including its own satellite library,
  * SDL_image:
@@ -269,12 +269,35 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Surface.Destroy
-   * @sa LoadBMP
-   * @sa Surface.SaveBMP_IO
+   * @sa Surface.LoadBMP
+   * @sa Surface.SaveBMP
    */
-  static Surface LoadBMP(IOStreamParam src)
+  static Surface LoadBMP(IOStreamParam src, bool closeio = false)
   {
-    return Surface(SDL_LoadBMP_IO(src));
+    return Surface(SDL_LoadBMP_IO(src, closeio));
+  }
+
+  /**
+   * Load a BMP image from a file.
+   *
+   * The new surface should be freed with Surface.Destroy(). Not doing so
+   * will result in a memory leak.
+   *
+   * @param file the BMP file to load.
+   * @returns a pointer to a new Surface structure or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Destroy
+   * @sa Surface.LoadBMP
+   * @sa Surface.SaveBMP
+   */
+  static Surface LoadBMP(StringParam file)
+  {
+    return Surface(SDL_LoadBMP(file));
   }
 
   ~Surface() { SDL_DestroySurface(m_resource); }
@@ -295,6 +318,11 @@ public:
   }
 
   constexpr operator SurfaceParam() const { return {m_resource}; }
+
+  static constexpr Surface Borrow(SurfaceParam surface)
+  {
+    static_assert(false, "Not implemented");
+  }
 
   /**
    * Get the properties associated with a surface.
@@ -400,7 +428,7 @@ public:
    *
    * @sa Palette.SetColors
    */
-  PaletteRaw CreatePalette()
+  Palette CreatePalette()
   {
     return CheckError(SDL_CreateSurfacePalette(m_resource));
   }
@@ -437,7 +465,7 @@ public:
    *
    * @sa Surface.SetPalette
    */
-  PaletteRaw GetPalette() const { return SDL_GetSurfacePalette(m_resource); }
+  Palette GetPalette() const { return SDL_GetSurfacePalette(m_resource); }
 
   /**
    * Add an alternate version of a surface.
@@ -558,6 +586,70 @@ public:
    * @sa Surface.Unlock
    */
   void Lock() { CheckError(SDL_LockSurface(m_resource)); }
+
+  /**
+   * Release a surface after directly accessing the pixels.
+   *
+   *
+   * @threadsafety This function is not thread safe. The locking referred to by
+   *               this function is making the pixels available for direct
+   *               access, not thread-safe locking.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Lock
+   */
+  void Unlock() { SDL_UnlockSurface(m_resource); }
+
+  /**
+   * Save a surface to a seekable SDL data stream in BMP format.
+   *
+   * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
+   * BMP directly. Other RGB formats with 8-bit or higher get converted to a
+   * 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit
+   * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
+   * not supported.
+   *
+   * @param dst a data stream to save to.
+   * @param closeio if true, calls IOStream.Close() on `dst` before returning,
+   * even in the case of an error.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.LoadBMP
+   * @sa Surface.SaveBMP
+   */
+  void SaveBMP(IOStreamParam dst, bool closeio = false) const
+  {
+    CheckError(SDL_SaveBMP_IO(m_resource, dst, closeio));
+  }
+
+  /**
+   * Save a surface to a file.
+   *
+   * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
+   * BMP directly. Other RGB formats with 8-bit or higher get converted to a
+   * 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit
+   * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
+   * not supported.
+   *
+   * @param file a file to save to.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.LoadBMP
+   * @sa Surface.SaveBMP
+   */
+  void SaveBMP(StringParam file) const
+  {
+    CheckError(SDL_SaveBMP(m_resource, file));
+  }
 
   /**
    * Set the RLE acceleration hint for a surface.
@@ -1646,67 +1738,6 @@ public:
     SDL_DestroySurface(m_resource);
     m_resource = nullptr;
   }
-
-  /**
-   * Release a surface after directly accessing the pixels.
-   *
-   *
-   * @threadsafety This function is not thread safe. The locking referred to by
-   *               this function is making the pixels available for direct
-   *               access, not thread-safe locking.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.Lock
-   */
-  void Unlock() { SDL_UnlockSurface(m_resource); }
-
-  /**
-   * Save a surface to a seekable SDL data stream in BMP format.
-   *
-   * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
-   * BMP directly. Other RGB formats with 8-bit or higher get converted to a
-   * 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit
-   * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
-   * not supported.
-   *
-   * @param dst a data stream to save to.
-   * @param closeio if true, calls IOStream.Close() on `dst` before returning,
-   * even in the case of an error.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.LoadBMP
-   * @sa Surface.SaveBMP
-   */
-  void SaveBMP_IO(IOStreamParam dst, bool closeio)
-  {
-    CheckError(SDL_SaveBMP_IO(m_resource, dst, closeio));
-  }
-
-  /**
-   * Save a surface to a file.
-   *
-   * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
-   * BMP directly. Other RGB formats with 8-bit or higher get converted to a
-   * 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit
-   * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
-   * not supported.
-   *
-   * @param file a file to save to.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa LoadBMP
-   * @sa Surface.SaveBMP_IO
-   */
-  void SaveBMP(StringParam file) { CheckError(SDL_SaveBMP(m_resource, file)); }
 };
 
 /**
@@ -1916,7 +1947,7 @@ inline Colorspace GetSurfaceColorspace(SurfaceConstParam surface)
  *
  * @sa Palette.SetColors
  */
-inline PaletteRaw CreateSurfacePalette(SurfaceParam surface)
+inline Palette CreateSurfacePalette(SurfaceParam surface)
 {
   return CheckError(SDL_CreateSurfacePalette(surface));
 }
@@ -1955,7 +1986,7 @@ inline void SetSurfacePalette(SurfaceParam surface, PaletteParam palette)
  *
  * @sa Surface.SetPalette
  */
-inline PaletteRaw GetSurfacePalette(SurfaceConstParam surface)
+inline Palette GetSurfacePalette(SurfaceConstParam surface)
 {
   return SDL_GetSurfacePalette(surface);
 }
@@ -2120,10 +2151,10 @@ inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Surface.Destroy
- * @sa LoadBMP
- * @sa Surface.SaveBMP_IO
+ * @sa Surface.LoadBMP
+ * @sa Surface.SaveBMP
  */
-inline Surface LoadBMP_IO(IOStreamParam src, bool closeio)
+inline Surface LoadBMP(IOStreamParam src, bool closeio = false)
 {
   return Surface(SDL_LoadBMP_IO(src, closeio));
 }
@@ -2146,7 +2177,7 @@ inline Surface LoadBMP_IO(IOStreamParam src, bool closeio)
  * @sa Surface.LoadBMP
  * @sa Surface.SaveBMP
  */
-inline SurfaceRaw LoadBMP(StringParam file) { return SDL_LoadBMP(file); }
+inline Surface LoadBMP(StringParam file) { return Surface(SDL_LoadBMP(file)); }
 
 /**
  * Save a surface to a seekable SDL data stream in BMP format.
@@ -2170,7 +2201,9 @@ inline SurfaceRaw LoadBMP(StringParam file) { return SDL_LoadBMP(file); }
  * @sa Surface.LoadBMP
  * @sa Surface.SaveBMP
  */
-inline void SaveBMP_IO(SurfaceParam surface, IOStreamParam dst, bool closeio)
+inline void SaveBMP(SurfaceConstParam surface,
+                    IOStreamParam dst,
+                    bool closeio = false)
 {
   CheckError(SDL_SaveBMP_IO(surface, dst, closeio));
 }
@@ -2192,10 +2225,10 @@ inline void SaveBMP_IO(SurfaceParam surface, IOStreamParam dst, bool closeio)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LoadBMP
- * @sa Surface.SaveBMP_IO
+ * @sa Surface.LoadBMP
+ * @sa Surface.SaveBMP
  */
-inline void SaveBMP(SurfaceParam surface, StringParam file)
+inline void SaveBMP(SurfaceConstParam surface, StringParam file)
 {
   CheckError(SDL_SaveBMP(surface, file));
 }

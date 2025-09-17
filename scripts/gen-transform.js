@@ -3135,6 +3135,13 @@ const transform = {
           },
           entries: {
             "SDL_CreatePalette": "ctor",
+            "Borrow": {
+              kind: "function",
+              static: true,
+              constexpr: true,
+              type: "Palette",
+              parameters: [{ name: "palette", type: "PaletteParam" }]
+            },
             "GetSize": {
               kind: "function",
               type: "int",
@@ -4613,6 +4620,13 @@ const transform = {
                 }
               ]
             }],
+            "Borrow": {
+              kind: "function",
+              static: true,
+              constexpr: true,
+              type: "Texture",
+              parameters: [{ name: "texture", type: "TextureParam" }]
+            },
             "SDL_GetTextureProperties": "immutable",
             "SDL_GetRendererFromTexture": {
               "name": "GetRenderer",
@@ -5653,11 +5667,8 @@ const transform = {
       transform: {
         "SDL_Surface": {
           resource: {
-            // lock: true,
-            // lockFunction: "SDL_LockSurface",
-            // unlockFunction: "SDL_UnlockSurface",
             shared: 'refcount',
-            ctors: ["SDL_LoadBMP_IO"],
+            ctors: ["SDL_LoadBMP_IO", "SDL_LoadBMP"],
             enableConstParam: true,
           },
           entries: {
@@ -5695,19 +5706,20 @@ const transform = {
                 }
               ]
             },
+            "Borrow": {
+              kind: "function",
+              static: true,
+              constexpr: true,
+              type: "Surface",
+              parameters: [{ name: "surface", type: "SurfaceParam" }]
+            },
             "SDL_GetSurfaceProperties": "immutable",
             "SDL_SetSurfaceColorspace": "function",
             "SDL_GetSurfaceColorspace": "immutable",
-            "SDL_CreateSurfacePalette": {
-              kind: "function",
-              name: "CreatePalette"
-            },
+            "SDL_CreateSurfacePalette": { type: "Palette" },
             "SDL_SetSurfacePalette": "function",
-            "SDL_GetSurfacePalette": "immutable",
-            "SDL_AddSurfaceAlternateImage": {
-              kind: "function",
-              name: "AddAlternateImage"
-            },
+            "SDL_GetSurfacePalette": { immutable: true, type: "Palette" },
+            "SDL_AddSurfaceAlternateImage": "function",
             "SDL_SurfaceHasAlternateImages": "immutable",
             "SDL_GetSurfaceImages": {
               kind: "function",
@@ -5728,15 +5740,23 @@ const transform = {
               parameters: []
             },
             "SDL_LockSurface": "function",
+            "SDL_UnlockSurface": "function",
             "SDL_LoadBMP_IO": {
               name: "LoadBMP",
               type: "Surface",
-              parameters: [
-                {
-                  type: "IOStreamParam"
-                }
-              ]
+              static: true,
+              parameters: [{}, { default: "false" }]
             },
+            "SDL_LoadBMP": {
+              type: "Surface",
+              static: true,
+            },
+            "SDL_SaveBMP_IO": {
+              name: "SaveBMP",
+              immutable: true,
+              parameters: [{}, {}, { default: "false" }]
+            },
+            "SDL_SaveBMP": "immutable",
             "SDL_SetSurfaceRLE": "function",
             "SDL_SurfaceHasRLE": "immutable",
             "SetColorKey": {
@@ -6690,6 +6710,14 @@ const transform = {
             type: "OptionalRef<const RectRaw>",
             name: "dstrect"
           }]
+        },
+        "SDL_LoadBMP_IO": {
+          name: "LoadBMP",
+          parameters: [{}, { default: "false" }]
+        },
+        "SDL_SaveBMP_IO": {
+          name: "SaveBMP",
+          parameters: [{ type: "SurfaceConstParam" }, {}, { default: "false" }],
         },
       }
     },

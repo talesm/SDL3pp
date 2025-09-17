@@ -939,30 +939,35 @@
 <    * @param newA the new a value.
 ---
 >    * @param newA New alpha component value.
-2317c2515
+2319c2517,2518
+<     static_assert(false, "Not implemented");
+---
+>     ++palette.value->refcount;
+>     return Palette(palette.value);
+2322c2521
 <   constexpr int GetSize() const { static_assert(false, "Not implemented"); }
 ---
 >   constexpr int GetSize() const { return m_resource->ncolors; }
-2321c2519
+2326c2525
 <     static_assert(false, "Not implemented");
 ---
 >     return m_resource->colors[index];
-2346d2543
+2351d2549
 <    * @param ncolors the number of entries to modify.
-2352a2550,2551
+2357a2556,2557
 >    *
 >    * @sa Palette.Palette
-2356c2555,2556
+2361c2561,2562
 <     CheckError(SDL_SetPaletteColors(m_resource, colors, firstcolor));
 ---
 >     CheckError(SDL_SetPaletteColors(
 >       m_resource, colors.data(), firstcolor, colors.size()));
-2493c2693,2694
+2498c2699,2700
 <   CheckError(SDL_SetPaletteColors(palette, colors, firstcolor));
 ---
 >   CheckError(
 >     SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
-2679a2881,2907
+2684a2887,2913
 > 
 > inline Uint32 Color::Map(const PixelFormatDetails& format,
 >                          PaletteConstParam palette = nullptr) const

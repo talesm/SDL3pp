@@ -2314,6 +2314,11 @@ public:
 
   constexpr operator PaletteParam() const { return {m_resource}; }
 
+  static constexpr Palette Borrow(PaletteParam palette)
+  {
+    static_assert(false, "Not implemented");
+  }
+
   constexpr int GetSize() const { static_assert(false, "Not implemented"); }
 
   constexpr Color operator[](int index) const
