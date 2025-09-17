@@ -2805,7 +2805,7 @@ const transform = {
           entries: {
             "SDL_DEFINE_PIXELFORMAT": {
               kind: "function",
-              name: "PixelFormat",
+              name: "ctor",
               type: "",
               constexpr: true,
               after: "SDL_PixelFormat",
@@ -2987,10 +2987,14 @@ const transform = {
         "SDL_Colorspace": {
           kind: "struct",
           enum: "SDL_COLORSPACE_",
+          wrapper: {
+            attribute: "cspace",
+          },
+          before: "SDL_DEFINE_COLORSPACE",
           entries: {
             "SDL_DEFINE_COLORSPACE": {
               "kind": "function",
-              "name": "Colorspace",
+              "name": "ctor",
               "type": "",
               "constexpr": true,
               "parameters": [

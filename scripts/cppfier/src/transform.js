@@ -946,6 +946,7 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
     } else {
       targetEntry = deepClone(subEntry);
       if (targetEntry.type === "") targetEntry.type = resultType;
+      if (subEntry.name === "ctor") targetEntry.static = true;
     }
     mirrorParameters(sourceEntry, targetEntry);
     delete targetEntry.name;

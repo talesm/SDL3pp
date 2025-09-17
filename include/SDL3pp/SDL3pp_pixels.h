@@ -120,6 +120,8 @@ struct PaletteConstParam
 
 using PixelFormatRaw = SDL_PixelFormat;
 
+using ColorspaceRaw = SDL_Colorspace;
+
 using ColorRaw = SDL_Color;
 
 using FColorRaw = SDL_FColor;
@@ -1592,191 +1594,6 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
 
 /// @}
 
-#ifdef SDL3PP_DOC
-
-/**
- * A macro for defining custom Colorspace formats.
- *
- * For example, defining COLORSPACE_SRGB looks like this:
- *
- * ```c
- * SDL_DEFINE_COLORSPACE(COLOR_TYPE_RGB,
- *                       COLOR_RANGE_FULL,
- *                       COLOR_PRIMARIES_BT709,
- *                       TRANSFER_CHARACTERISTICS_SRGB,
- *                       MATRIX_COEFFICIENTS_IDENTITY,
- *                       CHROMA_LOCATION_NONE)
- * ```
- *
- * @param type the type of the new format, probably an ColorType value.
- * @param range the range of the new format, probably a ColorRange value.
- * @param primaries the primaries of the new format, probably an
- *                  ColorPrimaries value.
- * @param transfer the transfer characteristics of the new format, probably an
- *                 TransferCharacteristics value.
- * @param matrix the matrix coefficients of the new format, probably an
- *               MatrixCoefficients value.
- * @param chroma the chroma sample location of the new format, probably an
- *               ChromaLocation value.
- * @returns a format value in the style of Colorspace.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_DEFINE_COLORSPACE(                                                 \
-  type, range, primaries, transfer, matrix, chroma)                            \
-  (((Uint32)(type) << 28) | ((Uint32)(range) << 24) |                          \
-   ((Uint32)(chroma) << 20) | ((Uint32)(primaries) << 10) |                    \
-   ((Uint32)(transfer) << 5) | ((Uint32)(matrix) << 0))
-
-/**
- * A macro to retrieve the type of an Colorspace.
- *
- * @param cspace an Colorspace to check.
- * @returns the ColorType for `cspace`.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_COLORSPACETYPE(cspace) (SDL_ColorType)(((cspace) >> 28) & 0x0F)
-
-/**
- * A macro to retrieve the range of an Colorspace.
- *
- * @param cspace an Colorspace to check.
- * @returns the ColorRange of `cspace`.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_COLORSPACERANGE(cspace) (SDL_ColorRange)(((cspace) >> 24) & 0x0F)
-
-/**
- * A macro to retrieve the chroma sample location of an Colorspace.
- *
- * @param cspace an Colorspace to check.
- * @returns the ChromaLocation of `cspace`.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_COLORSPACECHROMA(cspace)                                           \
-  (SDL_ChromaLocation)(((cspace) >> 20) & 0x0F)
-
-/**
- * A macro to retrieve the primaries of an Colorspace.
- *
- * @param cspace an Colorspace to check.
- * @returns the ColorPrimaries of `cspace`.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_COLORSPACEPRIMARIES(cspace)                                        \
-  (SDL_ColorPrimaries)(((cspace) >> 10) & 0x1F)
-
-/**
- * A macro to retrieve the transfer characteristics of an Colorspace.
- *
- * @param cspace an Colorspace to check.
- * @returns the TransferCharacteristics of `cspace`.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_COLORSPACETRANSFER(cspace)                                         \
-  (SDL_TransferCharacteristics)(((cspace) >> 5) & 0x1F)
-
-/**
- * A macro to retrieve the matrix coefficients of an Colorspace.
- *
- * @param cspace an Colorspace to check.
- * @returns the MatrixCoefficients of `cspace`.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_COLORSPACEMATRIX(cspace) (SDL_MatrixCoefficients)((cspace) & 0x1F)
-
-/**
- * A macro to determine if an Colorspace uses BT601 (or BT470BG) matrix
- * coefficients.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
- *
- * @param cspace an Colorspace to check.
- * @returns true if BT601 or BT470BG, false otherwise.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_ISCOLORSPACE_MATRIX_BT601(cspace)                                  \
-  (SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT601 ||            \
-   SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT470BG)
-
-/**
- * A macro to determine if an Colorspace uses BT709 matrix coefficients.
- *
- * @param cspace an Colorspace to check.
- * @returns true if BT709, false otherwise.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_ISCOLORSPACE_MATRIX_BT709(cspace)                                  \
-  (SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT709)
-
-/**
- * A macro to determine if an Colorspace uses BT2020_NCL matrix
- * coefficients.
- *
- * @param cspace an Colorspace to check.
- * @returns true if BT2020_NCL, false otherwise.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace)                             \
-  (SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT2020_NCL)
-
-/**
- * A macro to determine if an Colorspace has a limited range.
- *
- * @param cspace an Colorspace to check.
- * @returns true if limited range, false otherwise.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_ISCOLORSPACE_LIMITED_RANGE(cspace)                                 \
-  (SDL_COLORSPACERANGE(cspace) != SDL_COLOR_RANGE_FULL)
-
-/**
- * A macro to determine if an Colorspace has a full range.
- *
- * @param cspace an Colorspace to check.
- * @returns true if full range, false otherwise.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_ISCOLORSPACE_FULL_RANGE(cspace)                                    \
-  (SDL_COLORSPACERANGE(cspace) == SDL_COLOR_RANGE_FULL)
-
-#endif // SDL3PP_DOC
 /**
  * @name Colorspaces
  * @{
@@ -2106,6 +1923,216 @@ constexpr SDL_Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
 constexpr SDL_Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
 
 /// @}
+
+/**
+ * A macro for defining custom Colorspace formats.
+ *
+ * For example, defining COLORSPACE_SRGB looks like this:
+ *
+ * ```c
+ * Colorspace.Colorspace(COLOR_TYPE_RGB,
+ *                       COLOR_RANGE_FULL,
+ *                       COLOR_PRIMARIES_BT709,
+ *                       TRANSFER_CHARACTERISTICS_SRGB,
+ *                       MATRIX_COEFFICIENTS_IDENTITY,
+ *                       CHROMA_LOCATION_NONE)
+ * ```
+ *
+ * @param type the type of the new format, probably an ColorType value.
+ * @param range the range of the new format, probably a ColorRange value.
+ * @param primaries the primaries of the new format, probably an
+ *                  ColorPrimaries value.
+ * @param transfer the transfer characteristics of the new format, probably an
+ *                 TransferCharacteristics value.
+ * @param matrix the matrix coefficients of the new format, probably an
+ *               MatrixCoefficients value.
+ * @param chroma the chroma sample location of the new format, probably an
+ *               ChromaLocation value.
+ * @returns a format value in the style of Colorspace.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Colorspace DEFINE_COLORSPACE(ColorType type,
+                                       ColorRange range,
+                                       ColorPrimaries primaries,
+                                       TransferCharacteristics transfer,
+                                       MatrixCoefficients matrix,
+                                       ChromaLocation chroma)
+{
+  return Colorspace(type, range, primaries, transfer, matrix, chroma);
+}
+
+/**
+ * A macro to retrieve the type of an Colorspace.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns the ColorType for `cspace`.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr ColorType COLORSPACETYPE(ColorspaceRaw cspace)
+{
+  return SDL_COLORSPACETYPE(cspace);
+}
+
+/**
+ * A macro to retrieve the range of an Colorspace.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns the ColorRange of `cspace`.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr ColorRange COLORSPACERANGE(ColorspaceRaw cspace)
+{
+  return SDL_COLORSPACERANGE(cspace);
+}
+
+/**
+ * A macro to retrieve the chroma sample location of an Colorspace.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns the ChromaLocation of `cspace`.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr ChromaLocation COLORSPACECHROMA(ColorspaceRaw cspace)
+{
+  return SDL_COLORSPACECHROMA(cspace);
+}
+
+/**
+ * A macro to retrieve the primaries of an Colorspace.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns the ColorPrimaries of `cspace`.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr ColorPrimaries COLORSPACEPRIMARIES(ColorspaceRaw cspace)
+{
+  return SDL_COLORSPACEPRIMARIES(cspace);
+}
+
+/**
+ * A macro to retrieve the transfer characteristics of an Colorspace.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns the TransferCharacteristics of `cspace`.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr TransferCharacteristics COLORSPACETRANSFER(ColorspaceRaw cspace)
+{
+  return SDL_COLORSPACETRANSFER(cspace);
+}
+
+/**
+ * A macro to retrieve the matrix coefficients of an Colorspace.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns the MatrixCoefficients of `cspace`.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr MatrixCoefficients COLORSPACEMATRIX(ColorspaceRaw cspace)
+{
+  return SDL_COLORSPACEMATRIX(cspace);
+}
+
+/**
+ * A macro to determine if an Colorspace uses BT601 (or BT470BG) matrix
+ * coefficients.
+ *
+ * Note that this macro double-evaluates its parameter, so do not use
+ * expressions with side-effects here.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns true if BT601 or BT470BG, false otherwise.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr bool ISCOLORSPACE_MATRIX_BT601(ColorspaceRaw cspace)
+{
+  return SDL_ISCOLORSPACE_MATRIX_BT601(cspace);
+}
+
+/**
+ * A macro to determine if an Colorspace uses BT709 matrix coefficients.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns true if BT709, false otherwise.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr bool ISCOLORSPACE_MATRIX_BT709(ColorspaceRaw cspace)
+{
+  return SDL_ISCOLORSPACE_MATRIX_BT709(cspace);
+}
+
+/**
+ * A macro to determine if an Colorspace uses BT2020_NCL matrix
+ * coefficients.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns true if BT2020_NCL, false otherwise.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr bool ISCOLORSPACE_MATRIX_BT2020_NCL(ColorspaceRaw cspace)
+{
+  return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace);
+}
+
+/**
+ * A macro to determine if an Colorspace has a limited range.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns true if limited range, false otherwise.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr bool ISCOLORSPACE_LIMITED_RANGE(ColorspaceRaw cspace)
+{
+  return SDL_ISCOLORSPACE_LIMITED_RANGE(cspace);
+}
+
+/**
+ * A macro to determine if an Colorspace has a full range.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns true if full range, false otherwise.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr bool ISCOLORSPACE_FULL_RANGE(ColorspaceRaw cspace)
+{
+  return SDL_ISCOLORSPACE_FULL_RANGE(cspace);
+}
 
 /**
  * A structure that represents a color as RGBA components.
