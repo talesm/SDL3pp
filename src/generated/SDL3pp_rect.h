@@ -440,9 +440,8 @@ struct Rect : SDL_Rect
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static Rect GetEnclosingPoints(
-    SpanRef<const SDL_Point> points,
-    OptionalRef<const SDL_Rect> clip = std::nullopt)
+  static Rect GetEnclosingPoints(SpanRef<const PointRaw> points,
+                                 OptionalRef<const RectRaw> clip = std::nullopt)
   {
     return SDL_GetRectEnclosingPoints(points, clip);
   }
@@ -805,8 +804,8 @@ struct FRect : SDL_FRect
    * @since This function is available since SDL 3.2.0.
    */
   static constexpr FRect GetEnclosingPoints(
-    SpanRef<const SDL_FPoint> points,
-    OptionalRef<const SDL_FRect> clip = std::nullopt)
+    SpanRef<const FPointRaw> points,
+    OptionalRef<const FRectRaw> clip = std::nullopt)
   {
     return SDL_GetRectEnclosingPointsFloat(points, clip);
   }
@@ -1174,8 +1173,8 @@ constexpr Rect GetRectUnion(const RectRaw& self, const RectRaw& other)
  *
  * @since This function is available since SDL 3.2.0.
  */
-static inline bool GetRectEnclosingPoints(SpanRef<const SDL_Point> points,
-                                          OptionalRef<const SDL_Rect> clip,
+static inline bool GetRectEnclosingPoints(SpanRef<const PointRaw> points,
+                                          OptionalRef<const RectRaw> clip,
                                           RectRaw* result)
 {
   return SDL_GetRectEnclosingPoints(points, clip, result);
@@ -1390,10 +1389,9 @@ constexpr FRect GetRectUnionFloat(const FRectRaw& self, const FRectRaw& other)
  *
  * @since This function is available since SDL 3.2.0.
  */
-static inline bool GetRectEnclosingPointsFloat(
-  SpanRef<const SDL_FPoint> points,
-  OptionalRef<const SDL_FRect> clip,
-  FRectRaw* result)
+static inline bool GetRectEnclosingPointsFloat(SpanRef<const FPointRaw> points,
+                                               OptionalRef<const FRectRaw> clip,
+                                               FRectRaw* result)
 {
   return SDL_GetRectEnclosingPointsFloat(points, clip, result);
 }

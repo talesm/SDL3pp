@@ -498,7 +498,7 @@ public:
    *
    * @sa Surface.GetClipRect
    */
-  bool SetClipRect(OptionalRef<const SDL_Rect> rect)
+  bool SetClipRect(OptionalRef<const RectRaw> rect)
   {
     return SDL_SetSurfaceClipRect(m_resource, rect);
   }
@@ -682,7 +682,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Clear(Const FColorRaw& color)
+  void Clear(const FColorRaw& color)
   {
     CheckError(SDL_ClearSurface(m_resource, color));
   }
@@ -691,7 +691,7 @@ public:
 
   void Fill(Uint32 color) { static_assert(false, "Not implemented"); }
 
-  void FillRect(OptionalRef<const SDL_Rect> rect, ColorRaw color)
+  void FillRect(OptionalRef<const RectRaw> rect, ColorRaw color)
   {
     static_assert(false, "Not implemented");
   }
@@ -719,12 +719,12 @@ public:
    *
    * @sa Surface.FillRects
    */
-  void FillRect(OptionalRef<const SDL_Rect> rect, Uint32 color)
+  void FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
   {
     CheckError(SDL_FillSurfaceRect(m_resource, rect, color));
   }
 
-  void FillRects(SpanRef<const SDL_Rect> rects, ColorRaw color)
+  void FillRects(SpanRef<const RectRaw> rects, ColorRaw color)
   {
     static_assert(false, "Not implemented");
   }
@@ -752,13 +752,13 @@ public:
    *
    * @sa Surface.FillRect
    */
-  void FillRects(SpanRef<const SDL_Rect> rects, Uint32 color)
+  void FillRects(SpanRef<const RectRaw> rects, Uint32 color)
   {
     CheckError(SDL_FillSurfaceRects(m_resource, rects, color));
   }
 
   void BlitAt(SurfaceParam src,
-              OptionalRef<const SDL_Rect> srcrect,
+              OptionalRef<const RectRaw> srcrect,
               const PointRaw& dstpos)
   {
     static_assert(false, "Not implemented");
@@ -834,8 +834,8 @@ public:
    * @sa Surface.BlitScaled
    */
   void Blit(SurfaceParam src,
-            OptionalRef<const SDL_Rect> srcrect,
-            OptionalRef<const SDL_Rect> dstrect)
+            OptionalRef<const RectRaw> srcrect,
+            OptionalRef<const RectRaw> dstrect)
   {
     CheckError(SDL_BlitSurface(m_resource, src, srcrect, dstrect));
   }
@@ -888,8 +888,8 @@ public:
    * @sa Surface.Blit
    */
   void BlitScaled(SurfaceParam src,
-                  OptionalRef<const SDL_Rect> srcrect,
-                  OptionalRef<const SDL_Rect> dstrect,
+                  OptionalRef<const RectRaw> srcrect,
+                  OptionalRef<const RectRaw> dstrect,
                   ScaleMode scaleMode)
   {
     CheckError(
@@ -948,8 +948,8 @@ public:
    * @sa Surface.BlitScaled
    */
   void Stretch(SurfaceParam src,
-               OptionalRef<SDL_Rect> srcrect,
-               OptionalRef<SDL_Rect> dstrect,
+               OptionalRef<RectRaw> srcrect,
+               OptionalRef<RectRaw> dstrect,
                ScaleMode scaleMode)
   {
     CheckError(
@@ -981,8 +981,8 @@ public:
    * @sa Surface.Blit
    */
   void BlitTiled(SurfaceParam src,
-                 OptionalRef<const SDL_Rect> srcrect,
-                 OptionalRef<const SDL_Rect> dstrect)
+                 OptionalRef<const RectRaw> srcrect,
+                 OptionalRef<const RectRaw> dstrect)
   {
     CheckError(SDL_BlitSurfaceTiled(m_resource, src, srcrect, dstrect));
   }
@@ -1014,22 +1014,22 @@ public:
    * @sa Surface.Blit
    */
   void BlitTiledWithScale(SurfaceParam src,
-                          OptionalRef<const SDL_Rect> srcrect,
+                          OptionalRef<const RectRaw> srcrect,
                           float scale,
                           SDL_ScaleMode scaleMode,
-                          OptionalRef<const SDL_Rect> dstrect)
+                          OptionalRef<const RectRaw> dstrect)
   {
     CheckError(SDL_BlitSurfaceTiledWithScale(
       m_resource, src, srcrect, scale, scaleMode, dstrect));
   }
 
   void Blit9Grid(SurfaceParam src,
-                 OptionalRef<const SDL_Rect> srcrect,
+                 OptionalRef<const RectRaw> srcrect,
                  int left_width,
                  int right_width,
                  int top_height,
                  int bottom_height,
-                 OptionalRef<const SDL_Rect> dstrect)
+                 OptionalRef<const RectRaw> dstrect)
   {
     static_assert(false, "Not implemented");
   }
@@ -1068,14 +1068,14 @@ public:
    * @sa Surface.Blit
    */
   void Blit9GridWithScale(SurfaceParam src,
-                          OptionalRef<const SDL_Rect> srcrect,
+                          OptionalRef<const RectRaw> srcrect,
                           int left_width,
                           int right_width,
                           int top_height,
                           int bottom_height,
                           float scale,
                           SDL_ScaleMode scaleMode,
-                          OptionalRef<const SDL_Rect> dstrect)
+                          OptionalRef<const RectRaw> dstrect)
   {
     CheckError(SDL_BlitSurface9Grid(m_resource,
                                     src,
@@ -1287,7 +1287,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WritePixel(const PointRaw& p, Const FColorRaw& c)
+  void WritePixel(const PointRaw& p, const FColorRaw& c)
   {
     CheckError(SDL_WriteSurfacePixelFloat(m_resource, p, c));
   }
@@ -2444,7 +2444,7 @@ inline BlendMode GetSurfaceBlendMode(SurfaceParam surface)
  * @sa Surface.GetClipRect
  */
 inline bool SetSurfaceClipRect(SurfaceParam surface,
-                               OptionalRef<const SDL_Rect> rect)
+                               OptionalRef<const RectRaw> rect)
 {
   return SDL_SetSurfaceClipRect(surface, rect);
 }
@@ -2813,7 +2813,7 @@ inline void ClearSurface(SurfaceParam surface,
  * @sa Surface.FillRects
  */
 inline void FillSurfaceRect(SurfaceParam dst,
-                            OptionalRef<const SDL_Rect> rect,
+                            OptionalRef<const RectRaw> rect,
                             Uint32 color)
 {
   CheckError(SDL_FillSurfaceRect(dst, rect, color));
@@ -2844,7 +2844,7 @@ inline void FillSurfaceRect(SurfaceParam dst,
  * @sa Surface.FillRect
  */
 inline void FillSurfaceRects(SurfaceParam dst,
-                             SpanRef<const SDL_Rect> rects,
+                             SpanRef<const RectRaw> rects,
                              Uint32 color)
 {
   CheckError(SDL_FillSurfaceRects(dst, rects, color));
@@ -2921,15 +2921,15 @@ inline void FillSurfaceRects(SurfaceParam dst,
  * @sa Surface.BlitScaled
  */
 inline void BlitSurface(SurfaceParam src,
-                        OptionalRef<const SDL_Rect> srcrect,
+                        OptionalRef<const RectRaw> srcrect,
                         SurfaceParam dst,
-                        OptionalRef<const SDL_Rect> dstrect)
+                        OptionalRef<const RectRaw> dstrect)
 {
   CheckError(SDL_BlitSurface(src, srcrect, dst, dstrect));
 }
 
 inline void BlitSurfaceAt(SurfaceParam src,
-                          OptionalRef<const SDL_Rect> srcrect,
+                          OptionalRef<const RectRaw> srcrect,
                           SurfaceParam dst,
                           const PointRaw& dstpos)
 {
@@ -2987,9 +2987,9 @@ inline void BlitSurfaceUnchecked(SurfaceParam src,
  * @sa Surface.Blit
  */
 inline void BlitSurfaceScaled(SurfaceParam src,
-                              OptionalRef<const SDL_Rect> srcrect,
+                              OptionalRef<const RectRaw> srcrect,
                               SurfaceParam dst,
-                              OptionalRef<const SDL_Rect> dstrect,
+                              OptionalRef<const RectRaw> dstrect,
                               ScaleMode scaleMode)
 {
   CheckError(SDL_BlitSurfaceScaled(src, srcrect, dst, dstrect, scaleMode));
@@ -3050,9 +3050,9 @@ inline void BlitSurfaceUncheckedScaled(SurfaceParam src,
  * @sa Surface.BlitScaled
  */
 inline void StretchSurface(SurfaceParam src,
-                           OptionalRef<SDL_Rect> srcrect,
+                           OptionalRef<RectRaw> srcrect,
                            SurfaceParam dst,
-                           OptionalRef<SDL_Rect> dstrect,
+                           OptionalRef<RectRaw> dstrect,
                            ScaleMode scaleMode)
 {
   CheckError(SDL_StretchSurface(src, srcrect, dst, dstrect, scaleMode));
@@ -3084,9 +3084,9 @@ inline void StretchSurface(SurfaceParam src,
  * @sa Surface.Blit
  */
 inline void BlitSurfaceTiled(SurfaceParam src,
-                             OptionalRef<const SDL_Rect> srcrect,
+                             OptionalRef<const RectRaw> srcrect,
                              SurfaceParam dst,
-                             OptionalRef<const SDL_Rect> dstrect)
+                             OptionalRef<const RectRaw> dstrect)
 {
   CheckError(SDL_BlitSurfaceTiled(src, srcrect, dst, dstrect));
 }
@@ -3119,11 +3119,11 @@ inline void BlitSurfaceTiled(SurfaceParam src,
  * @sa Surface.Blit
  */
 inline void BlitSurfaceTiledWithScale(SurfaceParam src,
-                                      OptionalRef<const SDL_Rect> srcrect,
+                                      OptionalRef<const RectRaw> srcrect,
                                       float scale,
                                       SDL_ScaleMode scaleMode,
                                       SurfaceParam dst,
-                                      OptionalRef<const SDL_Rect> dstrect)
+                                      OptionalRef<const RectRaw> dstrect)
 {
   CheckError(SDL_BlitSurfaceTiledWithScale(
     src, srcrect, scale, scaleMode, dst, dstrect));
@@ -3164,7 +3164,7 @@ inline void BlitSurfaceTiledWithScale(SurfaceParam src,
  * @sa Surface.Blit
  */
 inline void BlitSurface9Grid(SurfaceParam src,
-                             OptionalRef<const SDL_Rect> srcrect,
+                             OptionalRef<const RectRaw> srcrect,
                              int left_width,
                              int right_width,
                              int top_height,
@@ -3172,7 +3172,7 @@ inline void BlitSurface9Grid(SurfaceParam src,
                              float scale,
                              SDL_ScaleMode scaleMode,
                              SurfaceParam dst,
-                             OptionalRef<const SDL_Rect> dstrect)
+                             OptionalRef<const RectRaw> dstrect)
 {
   CheckError(SDL_BlitSurface9Grid(src,
                                   srcrect,
@@ -3221,13 +3221,13 @@ inline void BlitSurface9Grid(SurfaceParam src,
  * @sa Surface.Blit
  */
 inline void BlitSurface9Grid(SurfaceParam src,
-                             OptionalRef<const SDL_Rect> srcrect,
+                             OptionalRef<const RectRaw> srcrect,
                              int left_width,
                              int right_width,
                              int top_height,
                              int bottom_height,
                              SurfaceParam dst,
-                             OptionalRef<const SDL_Rect> dstrect)
+                             OptionalRef<const RectRaw> dstrect)
 {
   static_assert(false, "Not implemented");
 }
@@ -3426,7 +3426,7 @@ inline void WriteSurfacePixel(SurfaceParam surface,
  */
 inline void WriteSurfacePixelFloat(SurfaceParam surface,
                                    const PointRaw& p,
-                                   Const FColorRaw& c)
+                                   const FColorRaw& c)
 {
   CheckError(SDL_WriteSurfacePixelFloat(surface, p, c));
 }

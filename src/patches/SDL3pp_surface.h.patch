@@ -73,10 +73,6 @@
 <   CheckError(SDL_WriteSurfacePixel(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
-3429c3425
-<                                    Const FColorRaw& c)
----
->                                    const FColorRaw& c)
 3431c3427
 <   CheckError(SDL_WriteSurfacePixelFloat(surface, p, c));
 ---

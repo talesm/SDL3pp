@@ -8017,7 +8017,7 @@
               "parameters": [
                 {
                   "name": "colors",
-                  "type": "SpanRef<const SDL_Color>"
+                  "type": "SpanRef<const ColorRaw>"
                 },
                 {
                   "name": "firstcolor",
@@ -8157,7 +8157,7 @@
             },
             {
               "name": "colors",
-              "type": "SpanRef<const SDL_Color>"
+              "type": "SpanRef<const ColorRaw>"
             },
             {
               "name": "firstcolor",
@@ -9228,11 +9228,11 @@
               "parameters": [
                 {
                   "name": "points",
-                  "type": "SpanRef<const SDL_Point>"
+                  "type": "SpanRef<const PointRaw>"
                 },
                 {
                   "name": "clip",
-                  "type": "OptionalRef<const SDL_Rect>",
+                  "type": "OptionalRef<const RectRaw>",
                   "default": "std::nullopt"
                 }
               ],
@@ -9795,11 +9795,11 @@
               "parameters": [
                 {
                   "name": "points",
-                  "type": "SpanRef<const SDL_FPoint>"
+                  "type": "SpanRef<const FPointRaw>"
                 },
                 {
                   "name": "clip",
-                  "type": "OptionalRef<const SDL_FRect>",
+                  "type": "OptionalRef<const FRectRaw>",
                   "default": "std::nullopt"
                 }
               ],
@@ -10234,11 +10234,11 @@
           "parameters": [
             {
               "name": "points",
-              "type": "SpanRef<const SDL_Point>"
+              "type": "SpanRef<const PointRaw>"
             },
             {
               "name": "clip",
-              "type": "OptionalRef<const SDL_Rect>"
+              "type": "OptionalRef<const RectRaw>"
             },
             {
               "name": "result",
@@ -10410,11 +10410,11 @@
           "parameters": [
             {
               "name": "points",
-              "type": "SpanRef<const SDL_FPoint>"
+              "type": "SpanRef<const FPointRaw>"
             },
             {
               "name": "clip",
-              "type": "OptionalRef<const SDL_FRect>"
+              "type": "OptionalRef<const FRectRaw>"
             },
             {
               "name": "result",
@@ -11046,7 +11046,7 @@
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 }
               ],
               "sourceName": "SDL_SetSurfaceClipRect",
@@ -11184,7 +11184,7 @@
               "parameters": [
                 {
                   "name": "color",
-                  "type": "Const FColorRaw &"
+                  "type": "const FColorRaw &"
                 }
               ],
               "sourceName": "SDL_ClearSurface",
@@ -11225,7 +11225,7 @@
                 "type": "void",
                 "parameters": [
                   {
-                    "type": "OptionalRef<const SDL_Rect>",
+                    "type": "OptionalRef<const RectRaw>",
                     "name": "rect"
                   },
                   {
@@ -11244,7 +11244,7 @@
                 "parameters": [
                   {
                     "name": "rect",
-                    "type": "OptionalRef<const SDL_Rect>"
+                    "type": "OptionalRef<const RectRaw>"
                   },
                   {
                     "name": "color",
@@ -11263,7 +11263,7 @@
                 "type": "void",
                 "parameters": [
                   {
-                    "type": "SpanRef<const SDL_Rect>",
+                    "type": "SpanRef<const RectRaw>",
                     "name": "rects"
                   },
                   {
@@ -11282,7 +11282,7 @@
                 "parameters": [
                   {
                     "name": "rects",
-                    "type": "SpanRef<const SDL_Rect>"
+                    "type": "SpanRef<const RectRaw>"
                   },
                   {
                     "name": "color",
@@ -11304,7 +11304,7 @@
                   "name": "src"
                 },
                 {
-                  "type": "OptionalRef<const SDL_Rect>",
+                  "type": "OptionalRef<const RectRaw>",
                   "name": "srcrect"
                 },
                 {
@@ -11327,11 +11327,11 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 }
               ],
               "sourceName": "SDL_BlitSurface",
@@ -11375,11 +11375,11 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 },
                 {
                   "name": "scaleMode",
@@ -11431,11 +11431,11 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<SDL_Rect>"
+                  "type": "OptionalRef<RectRaw>"
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<SDL_Rect>"
+                  "type": "OptionalRef<RectRaw>"
                 },
                 {
                   "name": "scaleMode",
@@ -11465,11 +11465,11 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 }
               ],
               "sourceName": "SDL_BlitSurfaceTiled",
@@ -11489,7 +11489,7 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 },
                 {
                   "name": "scale",
@@ -11501,7 +11501,7 @@
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 }
               ],
               "sourceName": "SDL_BlitSurfaceTiledWithScale",
@@ -11519,7 +11519,7 @@
                   "name": "src"
                 },
                 {
-                  "type": "OptionalRef<const SDL_Rect>",
+                  "type": "OptionalRef<const RectRaw>",
                   "name": "srcrect"
                 },
                 {
@@ -11539,7 +11539,7 @@
                   "name": "bottom_height"
                 },
                 {
-                  "type": "OptionalRef<const SDL_Rect>",
+                  "type": "OptionalRef<const RectRaw>",
                   "name": "dstrect"
                 }
               ],
@@ -11557,7 +11557,7 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 },
                 {
                   "name": "left_width",
@@ -11585,7 +11585,7 @@
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 }
               ],
               "sourceName": "SDL_BlitSurface9Grid",
@@ -11804,7 +11804,7 @@
                   },
                   {
                     "name": "c",
-                    "type": "Const FColorRaw &"
+                    "type": "const FColorRaw &"
                   }
                 ],
                 "sourceName": "SDL_WriteSurfacePixelFloat",
@@ -12760,7 +12760,7 @@
             },
             {
               "name": "rect",
-              "type": "OptionalRef<const SDL_Rect>"
+              "type": "OptionalRef<const RectRaw>"
             }
           ],
           "sourceName": "SDL_SetSurfaceClipRect"
@@ -13101,7 +13101,7 @@
             },
             {
               "name": "rect",
-              "type": "OptionalRef<const SDL_Rect>"
+              "type": "OptionalRef<const RectRaw>"
             },
             {
               "name": "color",
@@ -13125,7 +13125,7 @@
             },
             {
               "name": "rects",
-              "type": "SpanRef<const SDL_Rect>"
+              "type": "SpanRef<const RectRaw>"
             },
             {
               "name": "color",
@@ -13149,7 +13149,7 @@
             },
             {
               "name": "srcrect",
-              "type": "OptionalRef<const SDL_Rect>"
+              "type": "OptionalRef<const RectRaw>"
             },
             {
               "name": "dst",
@@ -13157,7 +13157,7 @@
             },
             {
               "name": "dstrect",
-              "type": "OptionalRef<const SDL_Rect>"
+              "type": "OptionalRef<const RectRaw>"
             }
           ],
           "sourceName": "SDL_BlitSurface",
@@ -13174,7 +13174,7 @@
               "name": "src"
             },
             {
-              "type": "OptionalRef<const SDL_Rect>",
+              "type": "OptionalRef<const RectRaw>",
               "name": "srcrect"
             },
             {
@@ -13229,7 +13229,7 @@
             },
             {
               "name": "srcrect",
-              "type": "OptionalRef<const SDL_Rect>"
+              "type": "OptionalRef<const RectRaw>"
             },
             {
               "name": "dst",
@@ -13237,7 +13237,7 @@
             },
             {
               "name": "dstrect",
-              "type": "OptionalRef<const SDL_Rect>"
+              "type": "OptionalRef<const RectRaw>"
             },
             {
               "name": "scaleMode",
@@ -13293,7 +13293,7 @@
             },
             {
               "name": "srcrect",
-              "type": "OptionalRef<SDL_Rect>"
+              "type": "OptionalRef<RectRaw>"
             },
             {
               "name": "dst",
@@ -13301,7 +13301,7 @@
             },
             {
               "name": "dstrect",
-              "type": "OptionalRef<SDL_Rect>"
+              "type": "OptionalRef<RectRaw>"
             },
             {
               "name": "scaleMode",
@@ -13331,7 +13331,7 @@
             },
             {
               "name": "srcrect",
-              "type": "OptionalRef<const SDL_Rect>"
+              "type": "OptionalRef<const RectRaw>"
             },
             {
               "name": "dst",
@@ -13339,7 +13339,7 @@
             },
             {
               "name": "dstrect",
-              "type": "OptionalRef<const SDL_Rect>"
+              "type": "OptionalRef<const RectRaw>"
             }
           ],
           "sourceName": "SDL_BlitSurfaceTiled",
@@ -13359,7 +13359,7 @@
             },
             {
               "name": "srcrect",
-              "type": "OptionalRef<const SDL_Rect>"
+              "type": "OptionalRef<const RectRaw>"
             },
             {
               "name": "scale",
@@ -13375,7 +13375,7 @@
             },
             {
               "name": "dstrect",
-              "type": "OptionalRef<const SDL_Rect>"
+              "type": "OptionalRef<const RectRaw>"
             }
           ],
           "sourceName": "SDL_BlitSurfaceTiledWithScale",
@@ -13396,7 +13396,7 @@
               },
               {
                 "name": "srcrect",
-                "type": "OptionalRef<const SDL_Rect>"
+                "type": "OptionalRef<const RectRaw>"
               },
               {
                 "name": "left_width",
@@ -13428,7 +13428,7 @@
               },
               {
                 "name": "dstrect",
-                "type": "OptionalRef<const SDL_Rect>"
+                "type": "OptionalRef<const RectRaw>"
               }
             ],
             "sourceName": "SDL_BlitSurface9Grid",
@@ -13445,7 +13445,7 @@
                 "name": "src"
               },
               {
-                "type": "OptionalRef<const SDL_Rect>",
+                "type": "OptionalRef<const RectRaw>",
                 "name": "srcrect"
               },
               {
@@ -13469,7 +13469,7 @@
                 "name": "dst"
               },
               {
-                "type": "OptionalRef<const SDL_Rect>",
+                "type": "OptionalRef<const RectRaw>",
                 "name": "dstrect"
               }
             ],
@@ -13643,7 +13643,7 @@
             },
             {
               "name": "c",
-              "type": "Const FColorRaw &"
+              "type": "const FColorRaw &"
             }
           ],
           "sourceName": "SDL_WriteSurfacePixelFloat",

@@ -2097,7 +2097,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
+  void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0)
   {
     CheckError(SDL_SetPaletteColors(m_resource, colors, firstcolor));
   }
@@ -2233,7 +2233,7 @@ inline Palette CreatePalette(int ncolors)
  * @since This function is available since SDL 3.2.0.
  */
 inline void SetPaletteColors(PaletteParam palette,
-                             SpanRef<const SDL_Color> colors,
+                             SpanRef<const ColorRaw> colors,
                              int firstcolor = 0)
 {
   CheckError(SDL_SetPaletteColors(palette, colors, firstcolor));

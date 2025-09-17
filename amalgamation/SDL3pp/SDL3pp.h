@@ -10353,7 +10353,7 @@ public:
    *
    * @sa Palette.Palette
    */
-  void SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
+  void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0)
   {
     CheckError(SDL_SetPaletteColors(
       m_resource, colors.data(), firstcolor, colors.size()));
@@ -10490,7 +10490,7 @@ inline Palette CreatePalette(int ncolors)
  * @since This function is available since SDL 3.2.0.
  */
 inline void SetPaletteColors(PaletteParam palette,
-                             SpanRef<const SDL_Color> colors,
+                             SpanRef<const ColorRaw> colors,
                              int firstcolor = 0)
 {
   CheckError(
@@ -19238,9 +19238,8 @@ struct Rect : SDL_Rect
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static Rect GetEnclosingPoints(
-    SpanRef<const SDL_Point> points,
-    OptionalRef<const SDL_Rect> clip = std::nullopt)
+  static Rect GetEnclosingPoints(SpanRef<const PointRaw> points,
+                                 OptionalRef<const RectRaw> clip = std::nullopt)
   {
     Rect result;
     if (SDL_GetRectEnclosingPoints(
@@ -19874,8 +19873,8 @@ struct FRect : SDL_FRect
    * @since This function is available since SDL 3.2.0.
    */
   static constexpr FRect GetEnclosingPoints(
-    SpanRef<const SDL_FPoint> points,
-    OptionalRef<const SDL_FRect> clip = std::nullopt)
+    SpanRef<const FPointRaw> points,
+    OptionalRef<const FRectRaw> clip = std::nullopt)
   {
     if (FRect result; SDL_GetRectEnclosingPointsFloat(
           points.data(), points.size(), clip, &result)) {
@@ -20519,8 +20518,8 @@ constexpr Rect GetRectUnion(const RectRaw& self, const RectRaw& other)
  *
  * @since This function is available since SDL 3.2.0.
  */
-static inline bool GetRectEnclosingPoints(SpanRef<const SDL_Point> points,
-                                          OptionalRef<const SDL_Rect> clip,
+static inline bool GetRectEnclosingPoints(SpanRef<const PointRaw> points,
+                                          OptionalRef<const RectRaw> clip,
                                           RectRaw* result)
 {
   return SDL_GetRectEnclosingPoints(points.data(), points.size(), clip, result);
@@ -20738,10 +20737,9 @@ constexpr FRect GetRectUnionFloat(const FRectRaw& self, const FRectRaw& other)
  *
  * @since This function is available since SDL 3.2.0.
  */
-static inline bool GetRectEnclosingPointsFloat(
-  SpanRef<const SDL_FPoint> points,
-  OptionalRef<const SDL_FRect> clip,
-  FRectRaw* result)
+static inline bool GetRectEnclosingPointsFloat(SpanRef<const FPointRaw> points,
+                                               OptionalRef<const FRectRaw> clip,
+                                               FRectRaw* result)
 {
   return SDL_GetRectEnclosingPointsFloat(
     points.data(), points.size(), clip, result);

@@ -416,7 +416,7 @@ const transform = {
               name: "ctor",
               parameters: [
                 { type: "AudioDeviceParam" },
-                { type: "OptionalRef<const SDL_AudioSpec>" }
+                { type: "OptionalRef<const AudioSpecRaw>" }
               ]
             },
             "operator<=>": {
@@ -3112,7 +3112,7 @@ const transform = {
             {},
             {
               name: "colors",
-              type: "SpanRef<const SDL_Color>"
+              type: "SpanRef<const ColorRaw>"
             },
             {
               name: "firstcolor",
@@ -3330,11 +3330,11 @@ const transform = {
               static: true,
               parameters: [
                 {
-                  type: "SpanRef<const SDL_Point>",
+                  type: "SpanRef<const PointRaw>",
                   name: "points"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "clip",
                   default: "std::nullopt"
                 }
@@ -3584,11 +3584,11 @@ const transform = {
               constexpr: true,
               parameters: [
                 {
-                  type: "SpanRef<const SDL_FPoint>",
+                  type: "SpanRef<const FPointRaw>",
                   name: "points"
                 },
                 {
-                  type: "OptionalRef<const SDL_FRect>",
+                  type: "OptionalRef<const FRectRaw>",
                   name: "clip",
                   default: "std::nullopt"
                 }
@@ -3800,11 +3800,11 @@ const transform = {
           static: true,
           parameters: [
             {
-              type: "SpanRef<const SDL_Point>",
+              type: "SpanRef<const PointRaw>",
               name: "points"
             },
             {
-              type: "OptionalRef<const SDL_Rect>",
+              type: "OptionalRef<const RectRaw>",
               name: "clip"
             },
             {
@@ -3818,11 +3818,11 @@ const transform = {
           static: true,
           parameters: [
             {
-              type: "SpanRef<const SDL_FPoint>",
+              type: "SpanRef<const FPointRaw>",
               name: "points"
             },
             {
-              type: "OptionalRef<const SDL_FRect>",
+              type: "OptionalRef<const FRectRaw>",
               name: "clip"
             },
             {
@@ -3972,7 +3972,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "OptionalRef<const SDL_Rect>",
+                  "type": "OptionalRef<const RectRaw>",
                   "name": "rect"
                 }
               ]
@@ -4003,7 +4003,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "OptionalRef<const SDL_Rect>",
+                  "type": "OptionalRef<const RectRaw>",
                   "name": "rect"
                 }
               ]
@@ -4053,7 +4053,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "Const FColorRaw &",
+                  "type": "const FColorRaw &",
                   "name": "c"
                 }
               ]
@@ -4128,7 +4128,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SpanRef<const SDL_FPoint>",
+                  "type": "SpanRef<const FPointRaw>",
                   "name": "points"
                 }
               ]
@@ -4150,7 +4150,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SpanRef<const SDL_FPoint>",
+                  "type": "SpanRef<const FPointRaw>",
                   "name": "points"
                 }
               ]
@@ -4159,7 +4159,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "OptionalRef<const SDL_FRect>",
+                  "type": "OptionalRef<const FRectRaw>",
                   "name": "rect"
                 }
               ]
@@ -4168,7 +4168,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SpanRef<const SDL_FRect>",
+                  "type": "SpanRef<const FRectRaw>",
                   "name": "rects"
                 }
               ]
@@ -4177,7 +4177,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "OptionalRef<const SDL_FRect>",
+                  "type": "OptionalRef<const FRectRaw>",
                   "name": "rect"
                 }
               ]
@@ -4186,7 +4186,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SpanRef<const SDL_FRect>",
+                  "type": "SpanRef<const FRectRaw>",
                   "name": "rects"
                 }
               ]
@@ -4201,11 +4201,11 @@ const transform = {
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<const SDL_FRect>"
+                  "type": "OptionalRef<const FRectRaw>"
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<const SDL_FRect>"
+                  "type": "OptionalRef<const FRectRaw>"
                 }
               ]
             },
@@ -4219,11 +4219,11 @@ const transform = {
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<const SDL_FRect>"
+                  "type": "OptionalRef<const FRectRaw>"
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<const SDL_FRect>"
+                  "type": "OptionalRef<const FRectRaw>"
                 },
                 {
                   "name": "angle",
@@ -4231,7 +4231,7 @@ const transform = {
                 },
                 {
                   "name": "center",
-                  "type": "OptionalRef<const SDL_FPoint>"
+                  "type": "OptionalRef<const FPointRaw>"
                 },
                 {
                   "name": "flip",
@@ -4249,19 +4249,19 @@ const transform = {
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<const SDL_FRect>"
+                  "type": "OptionalRef<const FRectRaw>"
                 },
                 {
                   "name": "origin",
-                  "type": "OptionalRef<const SDL_FPoint>"
+                  "type": "OptionalRef<const FPointRaw>"
                 },
                 {
                   "name": "right",
-                  "type": "OptionalRef<const SDL_FPoint>"
+                  "type": "OptionalRef<const FPointRaw>"
                 },
                 {
                   "name": "down",
-                  "type": "OptionalRef<const SDL_FPoint>"
+                  "type": "OptionalRef<const FPointRaw>"
                 }
               ]
             },
@@ -4275,7 +4275,7 @@ const transform = {
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<const SDL_FRect>"
+                  "type": "OptionalRef<const FRectRaw>"
                 },
                 {
                   "name": "scale",
@@ -4283,7 +4283,7 @@ const transform = {
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<const SDL_FRect>"
+                  "type": "OptionalRef<const FRectRaw>"
                 }
               ]
             },
@@ -4297,7 +4297,7 @@ const transform = {
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<const SDL_FRect>"
+                  "type": "OptionalRef<const FRectRaw>"
                 },
                 {
                   "name": "left_width",
@@ -4321,7 +4321,7 @@ const transform = {
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<const SDL_FRect>"
+                  "type": "OptionalRef<const FRectRaw>"
                 }
               ]
             },
@@ -4401,7 +4401,7 @@ const transform = {
               parameters: [
                 {
                   name: "rect",
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   default: "{}",
                 }
               ]
@@ -4475,7 +4475,7 @@ const transform = {
                   {},
                   {
                     "name": "rect",
-                    "type": "OptionalRef<const SDL_Rect>"
+                    "type": "OptionalRef<const RectRaw>"
                   }
                 ]
               },
@@ -4654,7 +4654,7 @@ const transform = {
               "parameters": [
                 {},
                 {
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 },
                 {},
                 {}
@@ -4666,7 +4666,7 @@ const transform = {
                 {},
                 {
                   "name": "rect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 },
                 {
                   "name": "Yplane",
@@ -4699,7 +4699,7 @@ const transform = {
               "parameters": [
                 {},
                 {
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 },
                 {
                   "name": "Yplane",
@@ -4726,7 +4726,7 @@ const transform = {
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const RectRaw>"
                 }
               ]
             },
@@ -5771,7 +5771,7 @@ const transform = {
                 {
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>"
+                  type: "OptionalRef<const RectRaw>"
                 }
               ]
             },
@@ -5820,7 +5820,7 @@ const transform = {
               parameters: [
                 {},
                 {
-                  type: "Const FColorRaw &",
+                  type: "const FColorRaw &",
                   name: "color"
                 }
               ]
@@ -5852,7 +5852,7 @@ const transform = {
               type: "void",
               parameters: [
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "rect"
                 },
                 {
@@ -5865,7 +5865,7 @@ const transform = {
               parameters: [
                 {},
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "rect"
                 },
                 {
@@ -5879,7 +5879,7 @@ const transform = {
               type: "void",
               parameters: [
                 {
-                  type: "SpanRef<const SDL_Rect>",
+                  type: "SpanRef<const RectRaw>",
                   name: "rects"
                 },
                 {
@@ -5894,7 +5894,7 @@ const transform = {
                 {
                 },
                 {
-                  type: "SpanRef<const SDL_Rect>",
+                  type: "SpanRef<const RectRaw>",
                   name: "rects"
                 },
                 {
@@ -5912,7 +5912,7 @@ const transform = {
                   name: "src"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "srcrect"
                 },
                 {
@@ -5931,11 +5931,11 @@ const transform = {
                   name: "src"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "srcrect"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "dstrect"
                 }
               ]
@@ -5969,11 +5969,11 @@ const transform = {
                   name: "src"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "srcrect"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "dstrect"
                 },
                 {
@@ -6021,11 +6021,11 @@ const transform = {
                   name: "src"
                 },
                 {
-                  type: "OptionalRef<SDL_Rect>",
+                  type: "OptionalRef<RectRaw>",
                   name: "srcrect"
                 },
                 {
-                  type: "OptionalRef<SDL_Rect>",
+                  type: "OptionalRef<RectRaw>",
                   name: "dstrect"
                 },
                 {
@@ -6045,11 +6045,11 @@ const transform = {
                   name: "src"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "srcrect"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "dstrect"
                 }
               ]
@@ -6065,7 +6065,7 @@ const transform = {
                   name: "src"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "srcrect"
                 },
                 {
@@ -6077,7 +6077,7 @@ const transform = {
                   name: "scaleMode"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "dstrect"
                 }
               ]
@@ -6092,7 +6092,7 @@ const transform = {
                   name: "src"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "srcrect"
                 },
                 {
@@ -6112,7 +6112,7 @@ const transform = {
                   name: "bottom_height"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "dstrect"
                 }
               ]
@@ -6128,7 +6128,7 @@ const transform = {
                   name: "src"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "srcrect"
                 },
                 {
@@ -6156,7 +6156,7 @@ const transform = {
                   name: "scaleMode"
                 },
                 {
-                  type: "OptionalRef<const SDL_Rect>",
+                  type: "OptionalRef<const RectRaw>",
                   name: "dstrect"
                 }
               ]
@@ -6305,7 +6305,7 @@ const transform = {
                   name: "p"
                 },
                 {
-                  type: "Const FColorRaw &",
+                  type: "const FColorRaw &",
                   name: "c"
                 }
               ]
@@ -6389,7 +6389,7 @@ const transform = {
             name: "src"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "srcrect"
           },
           {
@@ -6397,7 +6397,7 @@ const transform = {
             name: "dst"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "dstrect"
           }]
         },
@@ -6409,7 +6409,7 @@ const transform = {
             name: "src"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "srcrect"
           },
           {
@@ -6447,7 +6447,7 @@ const transform = {
             name: "src"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "srcrect"
           },
           {
@@ -6455,7 +6455,7 @@ const transform = {
             name: "dst"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "dstrect"
           },
           {
@@ -6499,7 +6499,7 @@ const transform = {
             name: "src"
           },
           {
-            type: "OptionalRef<SDL_Rect>",
+            type: "OptionalRef<RectRaw>",
             name: "srcrect"
           },
           {
@@ -6507,7 +6507,7 @@ const transform = {
             name: "dst"
           },
           {
-            type: "OptionalRef<SDL_Rect>",
+            type: "OptionalRef<RectRaw>",
             name: "dstrect"
           },
           {
@@ -6522,7 +6522,7 @@ const transform = {
             name: "src"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "srcrect"
           },
           {
@@ -6530,7 +6530,7 @@ const transform = {
             name: "dst"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "dstrect"
           }]
         },
@@ -6541,7 +6541,7 @@ const transform = {
             name: "src"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "srcrect"
           },
           {
@@ -6557,7 +6557,7 @@ const transform = {
             name: "dst"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "dstrect"
           }]
         },
@@ -6568,7 +6568,7 @@ const transform = {
             name: "src"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "srcrect"
           },
           {
@@ -6600,7 +6600,7 @@ const transform = {
             name: "dst"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "dstrect"
           }]
         },
@@ -6612,7 +6612,7 @@ const transform = {
             name: "src"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "srcrect"
           },
           {
@@ -6636,7 +6636,7 @@ const transform = {
             name: "dst"
           },
           {
-            type: "OptionalRef<const SDL_Rect>",
+            type: "OptionalRef<const RectRaw>",
             name: "dstrect"
           }]
         },
@@ -7419,7 +7419,7 @@ const transform = {
               "parameters": [
                 {},
                 {
-                  "type": "SpanRef<const SDL_Rect>"
+                  "type": "SpanRef<const RectRaw>"
                 }
               ]
             },
