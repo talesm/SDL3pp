@@ -141,36 +141,36 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL_ALPHA_TRANSPARENT
+ * @sa ALPHA_TRANSPARENT
  */
-#define SDL_ALPHA_OPAQUE 255
+constexpr Uint8 ALPHA_OPAQUE = SDL_ALPHA_OPAQUE;
 
 /**
  * A fully opaque floating point alpha value.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL_ALPHA_TRANSPARENT_FLOAT
+ * @sa ALPHA_TRANSPARENT_FLOAT
  */
-#define SDL_ALPHA_OPAQUE_FLOAT 1.0f
+constexpr float ALPHA_OPAQUE_FLOAT = SDL_ALPHA_OPAQUE_FLOAT;
 
 /**
  * A fully transparent 8-bit alpha value.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL_ALPHA_OPAQUE
+ * @sa ALPHA_OPAQUE
  */
-#define SDL_ALPHA_TRANSPARENT 0
+constexpr Uint8 ALPHA_TRANSPARENT = SDL_ALPHA_TRANSPARENT;
 
 /**
  * A fully transparent floating point alpha value.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL_ALPHA_OPAQUE_FLOAT
+ * @sa ALPHA_OPAQUE_FLOAT
  */
-#define SDL_ALPHA_TRANSPARENT_FLOAT 0.0f
+constexpr float ALPHA_TRANSPARENT_FLOAT = SDL_ALPHA_TRANSPARENT_FLOAT;
 
 /**
  * Pixel type.
@@ -297,7 +297,7 @@ constexpr PackedLayout PACKEDLAYOUT_1010102 =
  * For example, defining PIXELFORMAT_YV12 looks like this:
  *
  * ```c
- * SDL_DEFINE_PIXELFOURCC('Y', 'V', '1', '2')
+ * DEFINE_PIXELFOURCC('Y', 'V', '1', '2')
  * ```
  *
  * @param A the first character of the FourCC code.
@@ -310,7 +310,10 @@ constexpr PackedLayout PACKEDLAYOUT_1010102 =
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_DEFINE_PIXELFOURCC(A, B, C, D) SDL_FOURCC(A, B, C, D)
+constexpr Uint32 DEFINE_PIXELFOURCC(Uint8 A, Uint8 B, Uint8 C, Uint8 D)
+{
+  return SDL_DEFINE_PIXELFOURCC(A, B, C, D);
+}
 
 /**
  * Pixel format.
@@ -423,6 +426,21 @@ public:
    * @returns True if valid state, false otherwise.
    */
   constexpr explicit operator bool() const { return m_format != 0; }
+
+  /**
+   * A macro to retrieve the flags of an PixelFormat.
+   *
+   * This macro is generally not needed directly by an app, which should use
+   * specific tests, like PixelFormat.IsFourCC, instead.
+   *
+   * @param format an PixelFormat to check.
+   * @returns the flags of `format`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr Uint8 GetFlags() const { return SDL_PIXELFLAG(m_format); }
 
   /**
    * A macro to retrieve the type of an PixelFormat.
@@ -973,7 +991,10 @@ constexpr PixelFormat DEFINE_PIXELFORMAT(PixelType type,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_PIXELFLAG(format) (((format) >> 28) & 0x0F)
+constexpr Uint8 PIXELFLAG(PixelFormatRaw format)
+{
+  return SDL_PIXELFLAG(format);
+}
 
 /**
  * A macro to retrieve the type of an PixelFormat.

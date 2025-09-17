@@ -2757,6 +2757,44 @@ const transform = {
           type: "SDL_PixelFormatDetails",
           after: "__begin"
         },
+        "SDL_ALPHA_OPAQUE": {
+          kind: "var",
+          type: "Uint8",
+          constexpr: true,
+        },
+        "SDL_ALPHA_OPAQUE_FLOAT": {
+          kind: "var",
+          type: "float",
+          constexpr: true,
+        },
+        "SDL_ALPHA_TRANSPARENT": {
+          kind: "var",
+          type: "Uint8",
+          constexpr: true,
+        },
+        "SDL_ALPHA_TRANSPARENT_FLOAT": {
+          kind: "var",
+          type: "float",
+          constexpr: true,
+        },
+        "SDL_DEFINE_PIXELFOURCC": {
+          kind: "function",
+          type: "Uint32",
+          constexpr: true,
+          parameters: [{
+            name: "A",
+            type: "Uint8"
+          }, {
+            name: "B",
+            type: "Uint8"
+          }, {
+            name: "C",
+            type: "Uint8"
+          }, {
+            name: "D",
+            type: "Uint8"
+          }]
+        },
         "SDL_PixelFormat": {
           kind: 'struct',
           enum: "SDL_PIXELFORMAT_",
@@ -2793,6 +2831,14 @@ const transform = {
                   "name": "bytes"
                 }
               ]
+            },
+            "SDL_PIXELFLAG": {
+              kind: "function",
+              name: "GetFlags",
+              parameters: [],
+              type: "Uint8",
+              immutable: true,
+              constexpr: true,
             },
             "SDL_PIXELTYPE": {
               "kind": "function",
