@@ -5726,10 +5726,7 @@ const transform = {
               type: "OwnArray<SurfaceRaw>",
               parameters: []
             },
-            "SDL_RemoveSurfaceAlternateImages": {
-              kind: "function",
-              name: "RemoveAlternateImages"
-            },
+            "SDL_RemoveSurfaceAlternateImages": "function",
             "SDL_MUSTLOCK": {
               kind: "function",
               name: "MustLock",
@@ -5758,16 +5755,6 @@ const transform = {
             "SDL_SaveBMP": "immutable",
             "SDL_SetSurfaceRLE": "function",
             "SDL_SurfaceHasRLE": "immutable",
-            "SetColorKey": {
-              kind: "function",
-              type: "void",
-              parameters: [
-                {
-                  type: "Color",
-                  name: "key"
-                }
-              ]
-            },
             "SDL_SetSurfaceColorKey": {
               kind: "function",
               parameters: [
@@ -5784,26 +5771,11 @@ const transform = {
               parameters: []
             },
             "SDL_SurfaceHasColorKey": "immutable",
-            "GetColorKey": [
-              {
-                kind: "function",
-                immutable: true,
-                type: "Color",
-                parameters: []
-              },
-              {
-                kind: "function",
-                immutable: true,
-                type: "void",
-                parameters: [
-                  {
-                    type: "Color *",
-                    name: "key"
-                  }
-                ]
-              }
-            ],
-            "SDL_GetSurfaceColorKey": "immutable",
+            "SDL_GetSurfaceColorKey": {
+              immutable: true,
+              type: "std::optional<Uint32>",
+              parameters: [{}],
+            },
             "SDL_SetSurfaceColorMod": "function",
             "SDL_GetSurfaceColorMod": "immutable",
             "SDL_SetSurfaceAlphaMod": "function",
@@ -5838,11 +5810,8 @@ const transform = {
               kind: "function",
               static: false,
               parameters: [
-                {
-                },
-                {
-                  type: "OptionalRef<const RectRaw>"
-                }
+                {},
+                { type: "OptionalRef<const RectRaw>" },
               ]
             },
             "ResetClipRect": {
@@ -5856,37 +5825,26 @@ const transform = {
               type: "Rect",
               parameters: [{}]
             },
-            "SDL_FlipSurface": {
-              kind: "function",
-              name: "Flip"
-            },
+            "SDL_FlipSurface": "function",
             "SDL_DuplicateSurface": {
-              name: "Duplicate",
               type: "Surface",
               immutable: true
             },
             "SDL_ScaleSurface": {
-              name: "Scale",
               type: "Surface",
               immutable: true
             },
             "SDL_ConvertSurface": {
-              name: "Convert",
               type: "Surface",
               immutable: true
             },
             "SDL_ConvertSurfaceAndColorspace": {
-              name: "Convert",
               type: "Surface",
+              name: "Convert",
               immutable: true
             },
-            "SDL_PremultiplySurfaceAlpha": {
-              name: "PremultiplyAlpha"
-            },
+            "SDL_PremultiplySurfaceAlpha": "function",
             "SDL_ClearSurface": {
-              kind: "function",
-              name: "Clear",
-              static: false,
               parameters: [
                 {},
                 {
@@ -5895,38 +5853,12 @@ const transform = {
                 }
               ]
             },
-            "Fill": [
-              {
-                kind: "function",
-                type: "void",
-                parameters: [
-                  {
-                    type: "ColorRaw",
-                    name: "color"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "void",
-                parameters: [
-                  {
-                    type: "Uint32",
-                    name: "color"
-                  }
-                ]
-              }
-            ],
-            "FillRect": {
+            "Fill": {
               kind: "function",
               type: "void",
               parameters: [
                 {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "rect"
-                },
-                {
-                  type: "ColorRaw",
+                  type: "Uint32",
                   name: "color"
                 }
               ]
@@ -5940,20 +5872,6 @@ const transform = {
                 },
                 {
                   type: "Uint32",
-                  name: "color"
-                }
-              ]
-            },
-            "FillRects": {
-              kind: "function",
-              type: "void",
-              parameters: [
-                {
-                  type: "SpanRef<const RectRaw>",
-                  name: "rects"
-                },
-                {
-                  type: "ColorRaw",
                   name: "color"
                 }
               ]
@@ -5973,24 +5891,6 @@ const transform = {
                 }
               ]
             },
-            "BlitAt": {
-              kind: "function",
-              type: "void",
-              parameters: [
-                {
-                  type: "SurfaceParam",
-                  name: "src"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "srcrect"
-                },
-                {
-                  type: "const PointRaw &",
-                  name: "dstpos"
-                }
-              ]
-            },
             "SDL_BlitSurface": {
               kind: "function",
               parameters: [
@@ -6007,6 +5907,24 @@ const transform = {
                 {
                   type: "OptionalRef<const RectRaw>",
                   name: "dstrect"
+                }
+              ]
+            },
+            "BlitAt": {
+              kind: "function",
+              type: "void",
+              parameters: [
+                {
+                  type: "SurfaceParam",
+                  name: "src"
+                },
+                {
+                  type: "OptionalRef<const RectRaw>",
+                  name: "srcrect"
+                },
+                {
+                  type: "const PointRaw &",
+                  name: "dstpos"
                 }
               ]
             },
@@ -6252,54 +6170,30 @@ const transform = {
               name: "MapColor",
               immutable: true
             },
-            "ReadPixel": [
-              {
-                kind: "function",
-                name: "ReadPixel",
-                immutable: true,
-                type: "Color",
-                parameters: [
-                  {
-                    type: "const PointRaw &",
-                    name: "p"
-                  },
-                ]
-              },
-              {
-                kind: "function",
-                name: "ReadPixel",
-                immutable: true,
-                type: "void",
-                parameters: [
-                  {
-                    type: "const PointRaw &",
-                    name: "p"
-                  },
-                  {
-                    type: "ColorRaw *",
-                    name: "c"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                name: "ReadPixel",
-                immutable: true,
-                type: "void",
-                parameters: [
-                  {
-                    type: "const PointRaw &",
-                    name: "p"
-                  },
-                  {
-                    type: "FColorRaw *",
-                    name: "c"
-                  }
-                ]
-              }
-            ],
-            "SDL_ReadSurfacePixel": {
+            "ReadPixel": {
               kind: "function",
+              name: "ReadPixel",
+              immutable: true,
+              type: "Color",
+              parameters: [
+                {
+                  type: "const PointRaw &",
+                  name: "p"
+                },
+              ]
+            },
+            "ReadPixelFloat": {
+              kind: "function",
+              immutable: true,
+              type: "FColor",
+              parameters: [
+                {
+                  type: "const PointRaw &",
+                  name: "p"
+                },
+              ]
+            },
+            "SDL_ReadSurfacePixel": {
               immutable: true,
               parameters: [
                 {},
@@ -6326,7 +6220,6 @@ const transform = {
               ]
             },
             "SDL_ReadSurfacePixelFloat": {
-              kind: "function",
               immutable: true,
               parameters: [
                 {},

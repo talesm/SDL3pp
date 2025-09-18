@@ -688,8 +688,6 @@ public:
    */
   bool HasRLE() const { return SDL_SurfaceHasRLE(m_resource); }
 
-  void SetColorKey(Color key) { static_assert(false, "Not implemented"); }
-
   /**
    * Set the color key (transparent pixel) in a surface.
    *
@@ -735,13 +733,6 @@ public:
    */
   bool HasColorKey() const { return SDL_SurfaceHasColorKey(m_resource); }
 
-  Color GetColorKey() const { static_assert(false, "Not implemented"); }
-
-  void GetColorKey(Color* key) const
-  {
-    static_assert(false, "Not implemented");
-  }
-
   /**
    * Get the color key (transparent pixel) for a surface.
    *
@@ -760,9 +751,9 @@ public:
    * @sa Surface.SetColorKey
    * @sa Surface.HasColorKey
    */
-  void GetColorKey(Uint32* key) const
+  std::optional<Uint32> GetColorKey() const
   {
-    CheckError(SDL_GetSurfaceColorKey(m_resource, key));
+    return CheckError(SDL_GetSurfaceColorKey(m_resource));
   }
 
   /**
@@ -1103,14 +1094,7 @@ public:
     CheckError(SDL_ClearSurface(m_resource, color));
   }
 
-  void Fill(ColorRaw color) { static_assert(false, "Not implemented"); }
-
   void Fill(Uint32 color) { static_assert(false, "Not implemented"); }
-
-  void FillRect(OptionalRef<const RectRaw> rect, ColorRaw color)
-  {
-    static_assert(false, "Not implemented");
-  }
 
   /**
    * Perform a fast fill of a rectangle with a specific color.
@@ -1140,11 +1124,6 @@ public:
     CheckError(SDL_FillSurfaceRect(m_resource, rect, color));
   }
 
-  void FillRects(SpanRef<const RectRaw> rects, ColorRaw color)
-  {
-    static_assert(false, "Not implemented");
-  }
-
   /**
    * Perform a fast fill of a set of rectangles with a specific color.
    *
@@ -1171,13 +1150,6 @@ public:
   void FillRects(SpanRef<const RectRaw> rects, Uint32 color)
   {
     CheckError(SDL_FillSurfaceRects(m_resource, rects, color));
-  }
-
-  void BlitAt(SurfaceParam src,
-              OptionalRef<const RectRaw> srcrect,
-              const PointRaw& dstpos)
-  {
-    static_assert(false, "Not implemented");
   }
 
   /**
@@ -1254,6 +1226,13 @@ public:
             OptionalRef<const RectRaw> dstrect)
   {
     CheckError(SDL_BlitSurface(m_resource, src, srcrect, dstrect));
+  }
+
+  void BlitAt(SurfaceParam src,
+              OptionalRef<const RectRaw> srcrect,
+              const PointRaw& dstpos)
+  {
+    static_assert(false, "Not implemented");
   }
 
   /**
@@ -1584,16 +1563,6 @@ public:
     static_assert(false, "Not implemented");
   }
 
-  void ReadPixel(const PointRaw& p, ColorRaw* c) const
-  {
-    static_assert(false, "Not implemented");
-  }
-
-  void ReadPixel(const PointRaw& p, FColorRaw* c) const
-  {
-    static_assert(false, "Not implemented");
-  }
-
   /**
    * Retrieves a single pixel from a surface.
    *
@@ -1657,6 +1626,11 @@ public:
                  float* a) const
   {
     CheckError(SDL_ReadSurfacePixelFloat(m_resource, p, r, g, b, a));
+  }
+
+  FColor ReadPixelFloat(const PointRaw& p) const
+  {
+    static_assert(false, "Not implemented");
   }
 
   /**
@@ -2342,9 +2316,9 @@ inline bool SurfaceHasColorKey(SurfaceConstParam surface)
  * @sa Surface.SetColorKey
  * @sa Surface.HasColorKey
  */
-inline void GetSurfaceColorKey(SurfaceConstParam surface, Uint32* key)
+inline std::optional<Uint32> GetSurfaceColorKey(SurfaceConstParam surface)
 {
-  CheckError(SDL_GetSurfaceColorKey(surface, key));
+  return CheckError(SDL_GetSurfaceColorKey(surface));
 }
 
 /**
@@ -2565,7 +2539,7 @@ inline void FlipSurface(SurfaceParam surface, FlipMode flip)
  *
  * @sa Surface.Destroy
  */
-inline SurfaceRaw DuplicateSurface(SurfaceParam surface)
+inline Surface DuplicateSurface(SurfaceConstParam surface)
 {
   return SDL_DuplicateSurface(surface);
 }
@@ -2589,10 +2563,10 @@ inline SurfaceRaw DuplicateSurface(SurfaceParam surface)
  *
  * @sa Surface.Destroy
  */
-inline SurfaceRaw ScaleSurface(SurfaceParam surface,
-                               int width,
-                               int height,
-                               ScaleMode scaleMode)
+inline Surface ScaleSurface(SurfaceConstParam surface,
+                            int width,
+                            int height,
+                            ScaleMode scaleMode)
 {
   return SDL_ScaleSurface(surface, width, height, scaleMode);
 }
@@ -2623,7 +2597,7 @@ inline SurfaceRaw ScaleSurface(SurfaceParam surface,
  * @sa Surface.Convert
  * @sa Surface.Destroy
  */
-inline SurfaceRaw ConvertSurface(SurfaceParam surface, PixelFormat format)
+inline Surface ConvertSurface(SurfaceConstParam surface, PixelFormat format)
 {
   return SDL_ConvertSurface(surface, format);
 }
@@ -2838,13 +2812,9 @@ inline void PremultiplySurfaceAlpha(SurfaceParam surface, bool linear)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ClearSurface(SurfaceParam surface,
-                         float r,
-                         float g,
-                         float b,
-                         float a)
+inline void ClearSurface(SurfaceParam surface, const FColorRaw& color)
 {
-  CheckError(SDL_ClearSurface(surface, r, g, b, a));
+  CheckError(SDL_ClearSurface(surface, color));
 }
 
 /**
