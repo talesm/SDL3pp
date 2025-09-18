@@ -342,30 +342,26 @@ function isType(kind) {
  * @param {ApiContext}        context 
  */
 function expandTypes(sourceEntries, file, context) {
-  expandResources(sourceEntries, file, context);
-  expandWrappers(sourceEntries, file, context);
-  expandEnumerations(sourceEntries, file, context);
   expandNamespaces(sourceEntries, file, context);
-  expandCallbacks(sourceEntries, file, context);
+  expandWrappers(sourceEntries, file, context);
+  expandResources(sourceEntries, file, context);
+  expandEnumerations(sourceEntries, file, context);
 
   const transformMap = file.transform ?? {};
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
     if (context.blacklist.has(sourceName) || Array.isArray(sourceEntry)) continue;
     if (!isType(sourceEntry.kind)) continue;
-    const targetDelta = transformMap[sourceName];
-    const name = transformName(sourceName, context);
-    if (targetDelta) {
-      if (!targetDelta.name) targetDelta.name = name;
-    } else {
-      transformMap[sourceName] = {
-        name,
-        kind: "alias",
-        type: sourceName
-      };
+    const targetDelta = getOrCreateDelta(sourceName);
+    const targetName = targetDelta.name;
+    if (sourceEntry.kind === "callback") {
+      expandCallback(sourceName, sourceEntry, targetName);
     }
-    const targetName = targetDelta?.name ?? name;
-    if (targetName == sourceName) {
+    if (!targetDelta.kind) {
+      targetDelta.kind = "alias";
+      if (!targetDelta.type) targetDelta.type = sourceName;
+    }
+    if (targetName === sourceName) {
       context.blacklist.add(sourceName);
       continue;
     }
@@ -378,6 +374,43 @@ function expandTypes(sourceEntries, file, context) {
     context.addReturnType(`${sourceName} *`, `${targetName} *`);
     context.addReturnType(`const ${sourceName}`, `const ${targetName}`);
     context.addReturnType(`const ${sourceName} *`, `const ${targetName} *`);
+  }
+
+  function getOrCreateDelta(sourceName) {
+    const targetDelta = transformMap[sourceName];
+    const name = transformName(sourceName, context);
+    if (!targetDelta) return transformMap[sourceName] = { name };
+    if (!targetDelta.name) targetDelta.name = name;
+    return targetDelta;
+  }
+
+  /**
+   * 
+   * @param {string}    sourceName 
+   * @param {ApiEntry}  sourceEntry 
+   * @param {string}    name 
+   */
+  function expandCallback(sourceName, sourceEntry, name) {
+    const parameters = sourceEntry.parameters;
+    delete sourceEntry.parameters;
+    for (let i = 0; i < parameters.length; i++) {
+      const parameter = parameters[i];
+      if (typeof parameter !== "string" && parameter.type === "void *" && parameter.name === "userdata") {
+        const typeParams = parameters.map(p => (typeof p === "string") ? p : p.type);
+        const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
+        typeParams.splice(i, 1);
+        /** @type {ApiEntryTransform}  */
+        const callbackEntry = {
+          kind: "alias",
+          name: callbackName,
+          type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
+          doc: transformDoc(sourceEntry.doc ?? "", context) + `\n@sa ${name}`,
+          ...(file.transform[callbackName] ?? {})
+        };
+        context.prependIncludeAfter(callbackEntry, sourceName);
+        break;
+      }
+    }
   }
 }
 
@@ -581,51 +614,6 @@ function expandNamespaces(sourceEntries, file, context) {
     }
     if (sourceEntriesListed.length) {
       context.includeBefore({ kind: "ns", name: nsName, entries: nsEntries }, sourceEntriesListed[0][0]);
-    }
-  }
-}
-
-/**
- * 
- * @param {ApiEntries}        sourceEntries 
- * @param {ApiFileTransform}  file,
- * @param {ApiContext}        context 
- */
-function expandCallbacks(sourceEntries, file, context) {
-  const transformMap = file.transform;
-  for (const sourceEntry of Object.values(sourceEntries)) {
-    if (Array.isArray(sourceEntry) || sourceEntry.kind !== "callback") continue;
-    const sourceName = sourceEntry.name;
-    const targetDelta = transformMap[sourceName];
-    const name = targetDelta?.name ?? transformName(sourceName, context);
-    if (!targetDelta) {
-      transformMap[sourceName] = {
-        name,
-        kind: "alias",
-        type: sourceName
-      };
-    } else if (!targetDelta.name) {
-      targetDelta.name = name;
-    }
-    const parameters = sourceEntry.parameters;
-    delete sourceEntry.parameters;
-    for (let i = 0; i < parameters.length; i++) {
-      const parameter = parameters[i];
-      if (typeof parameter !== "string" && parameter.type === "void *" && parameter.name === "userdata") {
-        const typeParams = parameters.map(p => (typeof p === "string") ? p : p.type);
-        const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
-        typeParams.splice(i, 1);
-        /** @type {ApiEntryTransform}  */
-        const callbackEntry = {
-          kind: "alias",
-          name: callbackName,
-          type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
-          doc: transformDoc(sourceEntry.doc ?? "", context) + `\n@sa ${name}`,
-          ...(file.transform[callbackName] ?? {})
-        };
-        context.prependIncludeAfter(callbackEntry, sourceName);
-        break;
-      }
     }
   }
 }
@@ -1481,9 +1469,13 @@ function expandEnumerations(sourceEntries, file, context) {
     const targetName = transform.name ?? transformName(sourceName, context);
 
     const valueType = definition.valueType ?? targetName;
-    if (!transform.kind && !transform.type && sourceEntry?.kind !== "alias") {
-      transform.kind = "alias";
-      transform.type = sourceName;
+    if (!transform.kind && !transform.type) {
+      if (sourceEntry.kind === 'alias') {
+        transform.type = sourceEntry.type;
+      } else {
+        transform.kind = "alias";
+        transform.type = sourceName;
+      }
     }
 
     let values = definition.values ?? Object.keys(sourceEntry.entries ?? {});
@@ -1710,16 +1702,6 @@ function getTypeFromPath(path, context) {
 }
 
 /**
- * Get element type from path
- * @param {string[]}    path 
- * @param {ApiContext}  context 
- */
-function getFromPath(path, context) {
-  const obj = getTypeFromPath(path, context);
-  return obj.entries[path[path.length - 1]];
-}
-
-/**
  * Validate and report entries
  * @param {ApiEntries} targetEntries
  */
@@ -1880,14 +1862,6 @@ function transformFileDoc(docStr, context) {
   if (!docStr) return "";
   docStr = docStr.replace(/^# Category(\w+)/, `@defgroup Category$1 Category $1`);
   return transformDoc(docStr, context);
-}
-
-/** 
- * @param {string}      docStr
- * @param {ApiContext}  context   
- **/
-function transformMemberDoc(docStr, context) {
-  return transformDoc(docStr, context).replace(/@param \w+.*\n/, "");
 }
 
 /** 

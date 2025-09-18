@@ -68,6 +68,14 @@ namespace SDL {
  * @{
  */
 
+using PixelFormatRaw = SDL_PixelFormat;
+
+using ColorspaceRaw = SDL_Colorspace;
+
+using ColorRaw = SDL_Color;
+
+using FColorRaw = SDL_FColor;
+
 // Forward decl
 struct Palette;
 
@@ -119,14 +127,6 @@ struct PaletteConstParam
 
   constexpr operator const PaletteRaw() const { return value; }
 };
-
-using PixelFormatRaw = SDL_PixelFormat;
-
-using ColorspaceRaw = SDL_Colorspace;
-
-using ColorRaw = SDL_Color;
-
-using FColorRaw = SDL_FColor;
 
 // Forward decl
 struct Color;
