@@ -3,7 +3,7 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformLegacyMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, ApiEntryTransformMap, EnumerationDefinition, QuickTransform } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformLegacyMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, ApiEntryTransformMap, EnumerationDefinition, QuickTransform, WrapperDefinition } from "./types"
  */
 
 /**
@@ -343,8 +343,6 @@ function isType(kind) {
  */
 function expandTypes(sourceEntries, file, context) {
   expandNamespaces(sourceEntries, file, context);
-  expandWrappers(sourceEntries, file, context);
-  expandResources(sourceEntries, file, context);
 
   const transformMap = file.transform ?? {};
 
@@ -354,9 +352,10 @@ function expandTypes(sourceEntries, file, context) {
     const targetDelta = getOrCreateDelta(sourceName);
     const targetName = targetDelta.name;
     if (sourceEntry.kind === "callback") expandCallback(sourceName, sourceEntry, targetName);
-    const enumDef = getEnumDefinition(targetDelta);
-    if (enumDef || sourceEntry.kind === "enum")
-      expandEnumeration(sourceName, sourceEntry, targetName, targetDelta, enumDef ?? {});
+    if (targetDelta.resource) expandResource(sourceName, sourceEntry, targetName, targetDelta);
+    if (targetDelta.wrapper) expandWrapper(sourceName, sourceEntry, targetName, targetDelta);
+    if (targetDelta.enum || sourceEntry.kind === "enum")
+      expandEnumeration(sourceName, sourceEntry, targetName, targetDelta);
 
     if (!targetDelta.kind) {
       targetDelta.kind = "alias";
@@ -416,13 +415,596 @@ function expandTypes(sourceEntries, file, context) {
 
   /**
    * 
+   * @param {string}            sourceType 
+   * @param {ApiEntry}          sourceEntry 
+   * @param {string}            targetType 
+   * @param {ApiEntryTransform} transform
+   */
+  function expandWrapper(sourceType, sourceEntry, targetType, transform) {
+    const wrapper = transform.wrapper === true ? {} : transform.wrapper;
+    const isStruct = sourceEntry.kind === "struct" && !transform.type;
+    if (!transform.kind) transform.kind = "struct";
+
+    const type = isStruct || !sourceEntry.type?.startsWith("struct ") ? sourceType : sourceType + " *";
+    const constexpr = transform.constexpr !== false;
+    const paramName = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
+    const rawType = `${targetType}Raw`;
+    const paramType = wrapper.paramType ?? (isStruct ? `${rawType} *` : targetType);
+    const constParamType = wrapper.paramType ?? (isStruct ? `const ${rawType} &` : rawType);
+    const attribute = "m_" + paramName;
+    context.includeBefore({ name: rawType, kind: 'alias', type: sourceType }, '__begin');
+
+    /** @type {string[]} */
+    const fields = [];
+    if (isStruct) {
+      for (const e of Object.values(sourceEntry.entries)) {
+        if (!Array.isArray(e)) fields.push(e.name);
+      }
+
+      addHints(transform, {
+        self: 'this',
+      });
+    } else {
+      addHints(transform, {
+        self: attribute,
+      });
+    }
+
+    /** @type {ApiEntries} */
+    const entries = {};
+
+    if (!isStruct) {
+      insertEntry(entries, {
+        kind: "var",
+        name: attribute,
+        type: rawType,
+      });
+      addHints(transform, {
+        private: true,
+      });
+    }
+
+    if (wrapper.genCtor !== false) insertEntry(entries, {
+      kind: "function",
+      name: targetType,
+      type: "",
+      constexpr,
+      parameters: [{
+        type: constParamType,
+        name: paramName,
+        default: wrapper.defaultValue ?? "{}"
+      }],
+      doc: `Wraps ${sourceType}.\n\n@param ${paramName} the value to be wrapped`,
+      hints: {
+        init: [`${isStruct ? rawType : attribute}(${paramName})`],
+        changeAccess: isStruct ? undefined : 'public',
+      }
+    });
+    if (wrapper.ordered) {
+      insertEntry(entries, [{
+        kind: "function",
+        name: "operator<=>",
+        type: "auto",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: `const ${targetType} &`,
+          name: "other",
+        }],
+        doc: "Default comparison operator",
+        hints: { default: true, }
+      }, {
+        kind: "function",
+        name: "operator<=>",
+        type: "auto",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: constParamType,
+          name: paramName,
+        }],
+        doc: "Compares with the underlying type",
+        hints: { body: `return operator<=>(${targetType}(${paramName}));`, }
+      }]);
+    } else if (!isStruct) {
+      insertEntry(entries, [{
+        kind: "function",
+        name: "operator==",
+        type: "bool",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: `const ${targetType} &`,
+          name: "other",
+        }],
+        doc: "Default comparison operator",
+        hints: { default: true, }
+      }, {
+        kind: "function",
+        name: "operator==",
+        type: "bool",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: constParamType,
+          name: paramName,
+        }],
+        doc: "Compares with the underlying type",
+        hints: { body: `return operator==(${targetType}(${paramName}));`, }
+      }]);
+    } else if (wrapper.comparable) {
+      const body = 'return ' + fields.map(f => `${f} == other.${f}`).join(' && ') + ';';
+      insertEntry(entries, [{
+        kind: "function",
+        name: "operator==",
+        type: "bool",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: constParamType,
+          name: "other",
+        }],
+        doc: "Compares with the underlying type",
+        hints: { body },
+      }, {
+        kind: "function",
+        name: "operator==",
+        type: "bool",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: `const ${targetType} &`,
+          name: "other",
+        }],
+        doc: "Compares with the underlying type",
+        hints: { body: `return *this == (${constParamType})(other);` },
+      }]);
+    }
+    if (wrapper.nullable) insertEntry(entries, {
+      kind: "function",
+      name: "operator==",
+      type: "bool",
+      constexpr,
+      immutable: true,
+      parameters: [{ type: "std::nullptr_t", name: "_" }],
+      doc: `Compare with nullptr.\n\n@returns True if invalid state, false otherwise.`,
+      hints: { body: "return !bool(*this);" }
+    });
+    if (!isStruct) insertEntry(entries, {
+      kind: "function",
+      name: `operator ${rawType}`,
+      type: "",
+      constexpr,
+      immutable: true,
+      parameters: [],
+      doc: `Unwraps to the underlying ${sourceType}.\n\n@returns the underlying ${rawType}.`,
+      hints: { body: `return ${attribute};` }
+    });
+    if (wrapper.invalidState !== false) insertEntry(entries, {
+      kind: "function",
+      name: "operator bool",
+      type: "",
+      constexpr,
+      explicit: true,
+      immutable: true,
+      parameters: [],
+      doc: `Check if valid.\n\n@returns True if valid state, false otherwise.`,
+      hints: { body: isStruct ? `return *this != ${rawType}{};` : `return ${attribute} != 0;` }
+    });
+
+    if (isStruct) {
+      transform.type = rawType;
+      transform.hints.super = rawType;
+
+      if (wrapper.genMembers !== false) {
+        /** @type {ApiParameter[]} */
+        const parameters = [];
+        for (const attrib of Object.values(sourceEntry.entries)) {
+          if (Array.isArray(attrib) || attrib.kind !== "var") continue;
+          const name = attrib.name;
+          const type = attrib.type;
+          parameters.push({ type, name });
+          const capName = name[0].toUpperCase() + name.slice(1);
+          insertEntry(entries, [{
+            kind: "function",
+            name: `Get${capName}`,
+            type,
+            constexpr,
+            immutable: true,
+            parameters: [],
+            doc: `Get the ${name}.\n\n@returns current ${name} value.`,
+            hints: { body: `return ${name};` },
+          }, {
+            kind: "function",
+            name: `Set${capName}`,
+            type: `${targetType} &`,
+            constexpr,
+            parameters: [{
+              type,
+              name: `new${capName}`
+            }],
+            doc: `Set the ${name}.\n\n@param new${capName} the new ${name} value.\n@returns Reference to self.`,
+            hints: { body: `${name} = new${capName};\nreturn *this;` },
+          }]);
+          context.addParamType(sourceType, rawType);
+          context.addParamType(`${sourceType} *`, `${rawType} *`);
+          context.addParamType(`const ${sourceType}`, `const ${rawType}`);
+          context.addParamType(`const ${sourceType} *`, `const ${rawType} &`);
+        }
+        insertEntry(entries, {
+          kind: "function",
+          name: targetType,
+          type: "",
+          constexpr,
+          parameters,
+          doc: `Constructs from its fields.\n\n` + parameters.map(p => `@param ${p.name} the value for ${p.name}.`).join("\n"),
+          hints: { init: [`${rawType}{${parameters.map(p => p.name).join(", ")}}`] },
+        });
+      }
+    } else {
+      transform.type = "";
+    }
+
+    const currentCtors = transform.entries?.[targetType];
+    if (currentCtors) {
+      insertEntry(entries, /** @type {ApiEntry} */(currentCtors), targetType);
+      delete transform.entries[targetType];
+    }
+    const blockedNames = new Set(Object.keys(entries));
+    blockedNames.add(targetType);
+    if (transform.entries) Object.keys(transform.entries).forEach(k => blockedNames.add(k));
+    const detectedMethods = detectMethods(sourceEntries, file.transform, sourceType, rawType, blockedNames);
+    mirrorMethods(sourceEntries, file.transform, transform.entries ?? {}, paramType, constParamType, targetType);
+    transform.entries = { ...entries, ...(transform.entries ?? {}), ...detectedMethods };
+    if (type !== sourceType) {
+      context.addParamType(type, targetType);
+      context.addReturnType(type, targetType);
+    }
+
+    delete transform.wrapper;
+  }
+
+  /**
+   * 
+   * @param {string}            sourceName 
+   * @param {ApiEntry}          sourceEntry 
+   * @param {string}            targetName 
+   * @param {ApiEntryTransform} targetEntry
+   */
+  function expandResource(sourceName, sourceEntry, targetName, targetEntry) {
+    const resourceEntry = getResourceDefinition(targetEntry) ?? {};
+
+    const rawName = resourceEntry.rawName || `${targetName}Raw`;
+    const constRawName = `const ${rawName}`;
+    const paramType = `${targetName}Param`;
+    const constParamType = resourceEntry.enableConstParam ? `${targetName}ConstParam` : paramType;
+    if (!targetEntry.kind) targetEntry.kind = 'struct';
+
+    const type = targetEntry.type ?? sourceName;
+    const isStruct = sourceEntry.kind === "struct" || (sourceEntry.kind === "alias" && sourceEntry.type.startsWith('struct '));
+    const pointerType = (isStruct ? `${type} *` : type);
+    const constPointerType = `const ${pointerType}`;
+    const nullValue = isStruct ? 'nullptr' : '0';
+    const title = targetName[0].toLowerCase() + targetName.slice(1);
+    if (sourceEntry.type && !targetEntry.type) targetEntry.type = '';
+    context.addName(sourceName, targetName);
+    /** @type {ApiEntryTransform[]} */
+    const referenceAliases = [];
+    referenceAliases.push({ name: targetName, kind: "forward" });
+    referenceAliases.push({ name: rawName, kind: "alias", type: pointerType });
+
+    referenceAliases.push({
+      name: paramType,
+      kind: 'struct',
+      doc: `Safely wrap ${targetName} for non owning parameters`,
+      entries: {
+        'value': {
+          kind: 'var',
+          name: 'value',
+          type: rawName
+        },
+        [paramType]: [{
+          kind: 'function',
+          name: paramType,
+          constexpr: true,
+          type: '',
+          parameters: [{ type: rawName, name: 'value' }],
+          hints: { init: ['value(value)'] }
+        }, {
+          kind: 'function',
+          name: paramType,
+          constexpr: true,
+          type: '',
+          parameters: [{ type: "std::nullptr_t", name: "_" }],
+          hints: { init: [`value(${nullValue})`] }
+        }],
+        [`operator ${rawName}`]: {
+          kind: 'function',
+          name: `operator ${rawName}`,
+          constexpr: true,
+          immutable: true,
+          type: '',
+          parameters: [],
+          hints: { body: 'return value;' }
+        }
+      },
+    });
+    if (resourceEntry.enableConstParam) {
+      referenceAliases.push({
+        name: constParamType,
+        kind: 'struct',
+        doc: `Safely wrap ${targetName} for non owning const parameters`,
+        entries: {
+          'value': {
+            kind: 'var',
+            name: 'value',
+            type: constRawName
+          },
+          [constParamType]: [{
+            kind: 'function',
+            name: constParamType,
+            constexpr: true,
+            type: '',
+            parameters: [{ type: constRawName, name: 'value' }],
+            hints: { init: ['value(value)'] }
+          }, {
+            kind: 'function',
+            name: constParamType,
+            constexpr: true,
+            type: '',
+            parameters: [{ type: paramType, name: 'value' }],
+            hints: { init: ['value(value.value)'] }
+          }, {
+            kind: 'function',
+            name: constParamType,
+            constexpr: true,
+            type: '',
+            parameters: [{ type: "std::nullptr_t", name: "_" }],
+            hints: { init: [`value(${nullValue})`] }
+          }],
+          [`operator ${constRawName}`]: {
+            kind: 'function',
+            name: `operator ${constRawName}`,
+            constexpr: true,
+            immutable: true,
+            type: '',
+            parameters: [],
+            hints: { body: 'return value;' }
+          }
+        },
+      });
+    }
+    context.addParamType(pointerType, paramType);
+    context.addParamType(constPointerType, resourceEntry.enableConstParam ? constParamType : paramType);
+
+    context.addReturnType(pointerType, rawName);
+    context.addReturnType(constPointerType, constRawName);
+
+    /** @type {EntryHint} */
+    const copyCtorHints = {};
+    if (!resourceEntry.shared) {
+      copyCtorHints.delete = true;
+    } else if (resourceEntry.shared !== true) {
+      copyCtorHints.init = ["m_resource(other.m_resource)"];
+      copyCtorHints.body = `++m_resource->${resourceEntry.shared};`;
+    }
+
+    /** @type {Dict<ApiEntryTransform | ApiEntryBase[]>} */
+    const ctors = {
+      [targetName]: [{
+        kind: "function",
+        type: "",
+        constexpr: true,
+        parameters: [],
+        hints: { default: true, changeAccess: "public" },
+      }, {
+        kind: "function",
+        type: "",
+        constexpr: true,
+        explicit: true,
+        parameters: [{ name: "resource", type: constRawName }],
+        hints: { init: ["m_resource(resource)"] },
+      }, {
+        kind: "function",
+        type: "",
+        parameters: [{ name: "other", type: `const ${targetName} &` }],
+        hints: copyCtorHints,
+      }, {
+        kind: "function",
+        type: "",
+        constexpr: true,
+        parameters: [{ name: "other", type: `${targetName} &&` }],
+        hints: {
+          init: ["m_resource(other.m_resource)"],
+          body: `other.m_resource = ${nullValue};`
+        },
+      }]
+    };
+    const subEntries = targetEntry.entries || {};
+
+    let extraUniqueCtors = subEntries[targetName];
+    if (extraUniqueCtors) {
+      delete subEntries[targetName];
+      if (typeof extraUniqueCtors === "string") {
+        extraUniqueCtors = [{ name: targetName, kind: "function", parameters: [] }];
+      } else if (!Array.isArray(extraUniqueCtors)) {
+        extraUniqueCtors = [extraUniqueCtors];
+      }
+      for (const entry of extraUniqueCtors) {
+        entry.kind = "function";
+        entry.type = "";
+        // @ts-ignore
+        insertEntry(ctors, entry, targetName);
+      }
+    }
+    for (const sourceName of resourceEntry.ctors ?? []) {
+      const entry = subEntries[sourceName] ?? {};
+      delete subEntries[sourceName];
+      const ctorTransform = file.transform[sourceName];
+      if (typeof entry === "string") {
+        system.warn(`${sourceName} can not be a custom ctor, only objects containing name property can be accepted.`);
+        continue;
+      }
+      if (Array.isArray(entry)) {
+        entry.forEach(e => {
+          e.static = true;
+          e.type = targetName;
+          if (!e.name) e.name = transformMemberName(sourceName, targetName, context);
+          if (!e.sourceName && sourceEntries[sourceName]) e.sourceName = sourceName;
+          addHints(e, { wrapSelf: true });
+        });
+      } else {
+        entry.static = true;
+        entry.type = targetName;
+        if (!entry.name) entry.name = transformMemberName(sourceName, targetName, context);
+        if (!entry.sourceName && sourceEntries[sourceName]) entry.sourceName = sourceName;
+        addHints(entry, { wrapSelf: true });
+      }
+      ctors[sourceName] = entry;
+      if (!ctorTransform) {
+        file.transform[sourceName] = { type: targetName, hints: { wrapSelf: true } };
+      } else if (!ctorTransform.type) {
+        file.transform[sourceName].type = targetName;
+        addHints(ctorTransform, { wrapSelf: true });
+      }
+    }
+
+    for (const [sourceName, entry] of Object.entries(subEntries)) {
+      const ctorTransform = file.transform[sourceName];
+      let isCtor = false;
+      if (typeof entry === "string") {
+        if (entry === "ctor") {
+          ctors[sourceName] = {
+            kind: "function",
+            type: "",
+            name: targetName,
+            sourceName,
+          };
+          isCtor = true;
+        }
+      } else if (!Array.isArray(entry) && entry.name === "ctor") {
+        entry.kind = "function";
+        entry.type = "";
+        entry.name = targetName;
+        if (!entry.sourceName && sourceEntries[sourceName]) entry.sourceName = sourceName;
+        ctors[sourceName] = entry;
+        isCtor = true;
+      }
+      if (isCtor) {
+        delete subEntries[sourceName];
+        if (!ctorTransform) {
+          file.transform[sourceName] = { type: targetName, hints: { wrapSelf: true } };
+        } else if (!ctorTransform.type) {
+          ctorTransform.type = targetName;
+          addHints(ctorTransform, { wrapSelf: true });
+        }
+      }
+    }
+
+    let freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free ?? "reset"]) ?? scanFreeFunction(sourceEntries, targetName, pointerType);
+    if (freeFunction) {
+      const sourceName = freeFunction.name;
+      freeFunction = transformEntry(freeFunction, context);
+      const freeTransformEntry = /** @type {ApiEntryTransform} */(subEntries[sourceName]) ?? {};
+      combineObject(freeFunction, freeTransformEntry);
+      freeFunction.name = freeTransformEntry.name ?? makeNaturalName(transformName(sourceName, context), targetName);
+      freeFunction.doc = freeFunction.doc ? transformDoc(freeFunction.doc, context) : `frees up ${title}.`;
+      if (!freeFunction.hints?.body) {
+        let body = `${sourceName}(m_resource)`;
+        if (freeFunction.hints?.mayFail) {
+          body = `CheckError(${body})`;
+          if (freeFunction.type === "bool") freeFunction.type = "void";
+        }
+        body += `;\nm_resource = ${nullValue};`;
+        if (freeFunction.type !== "void") body = `auto r = ${body}\nreturn r;`;
+        combineHints(freeFunction, { body });
+      }
+      subEntries[sourceName] = freeFunction;
+      if (!file.transform[sourceName]) {
+        file.transform[sourceName] = { parameters: [{ type: rawName }] };
+      }
+    }
+    if (resourceEntry.enableAutoMethods !== false) {
+      const blockedNames = new Set(Object.keys(subEntries));
+      blockedNames.add(targetName);
+      Object.keys(ctors).forEach(k => blockedNames.add(k));
+      const detectedMethods = detectMethods(sourceEntries, file.transform, sourceName, rawName, blockedNames);
+      mirrorMethods(sourceEntries, file.transform, subEntries, paramType, constParamType, targetName);
+      combineObject(subEntries, detectedMethods);
+    }
+
+    targetEntry.doc = transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource`;
+    targetEntry.entries = {
+      "m_resource": {
+        kind: "var",
+        type: rawName,
+        hints: { body: nullValue },
+      },
+      ...ctors,
+      [`~${targetName}`]: {
+        kind: "function",
+        type: "",
+        parameters: [],
+        hints: { body: freeFunction ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);` : '' }
+      },
+      'operator=': {
+        kind: "function",
+        type: `${targetName} &`,
+        parameters: [{ name: 'other', type: targetName }],
+        hints: { body: "std::swap(m_resource, other.m_resource);\nreturn *this;" },
+      },
+      "get": {
+        kind: "function",
+        type: rawName,
+        immutable: true,
+        constexpr: true,
+        parameters: [],
+        hints: { body: "return m_resource;" },
+      },
+      "release": {
+        kind: "function",
+        type: rawName,
+        constexpr: true,
+        parameters: [],
+        hints: { body: `auto r = m_resource;\nm_resource = ${nullValue};\nreturn r;` },
+      },
+      [`operator ${paramType}`]: {
+        kind: "function",
+        type: '',
+        immutable: true,
+        constexpr: true,
+        parameters: [],
+        hints: { body: "return {m_resource};" },
+      },
+      ...subEntries,
+    };
+    addHints(targetEntry, {
+      self: "m_resource",
+      super: "m_resource",
+      private: true,
+
+    });
+
+    /** @type {ApiEntryTransform[]} */
+    const derivedEntries = [
+    ];
+
+    const includeAfterKey = targetName;
+
+    context.includeBefore(referenceAliases, '__begin');
+    context.includeAfter(derivedEntries, includeAfterKey);
+    delete targetEntry.resource;
+  }
+
+  /**
+   * 
    * @param {string}                sourceName 
    * @param {ApiEntry}              sourceEntry 
    * @param {string}                targetName 
    * @param {ApiEntryTransform}     transform
-   * @param {EnumerationDefinition} definition 
    */
-  function expandEnumeration(sourceName, sourceEntry, targetName, transform, definition) {
+  function expandEnumeration(sourceName, sourceEntry, targetName, transform) {
+    const definition = getEnumDefinition(transform) ?? {};
     const valueType = definition.valueType ?? targetName;
     if (!transform.kind && !transform.type) {
       if (sourceEntry.kind === 'alias') {
@@ -713,267 +1295,6 @@ function combineHints(entry, hints) {
 
 /**
  * 
- * @param {ApiEntries}       sourceEntries 
- * @param {ApiFileTransform} file,
- * @param {ApiContext}       context 
- */
-function expandWrappers(sourceEntries, file, context) {
-  for (const [sourceType, transform] of Object.entries(file.transform)) {
-    if (transform.kind && transform.kind !== 'struct') continue;
-
-    const wrapper = transform.wrapper === true ? {} : transform.wrapper;
-    if (!wrapper) continue;
-
-    const sourceEntry = sourceEntries[sourceType];
-    if (!sourceEntry || Array.isArray(sourceEntry)) continue;
-
-    transform.kind = "struct";
-    const targetType = transform.name ?? transformName(sourceType, context);
-    transform.name = targetType;
-    const isStruct = sourceEntry.kind === "struct" && !transform.type;
-
-    const type = isStruct || !sourceEntry.type?.startsWith("struct ") ? sourceType : sourceType + " *";
-    const constexpr = transform.constexpr !== false;
-    const paramName = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
-    const rawType = `${targetType}Raw`;
-    const paramType = wrapper.paramType ?? (isStruct ? `${rawType} *` : targetType);
-    const constParamType = wrapper.paramType ?? (isStruct ? `const ${rawType} &` : rawType);
-    const attribute = "m_" + paramName;
-    context.includeAfter({ name: rawType, kind: 'alias', type: sourceType }, '__begin');
-
-    /** @type {string[]} */
-    const fields = [];
-    if (isStruct) {
-      for (const e of Object.values(sourceEntry.entries)) {
-        if (!Array.isArray(e)) fields.push(e.name);
-      }
-
-      addHints(transform, {
-        self: 'this',
-      });
-    } else {
-      addHints(transform, {
-        self: attribute,
-      });
-    }
-
-    /** @type {ApiEntries} */
-    const entries = {};
-
-    if (!isStruct) {
-      insertEntry(entries, {
-        kind: "var",
-        name: attribute,
-        type: rawType,
-      });
-      addHints(transform, {
-        private: true,
-      });
-    }
-
-    if (wrapper.genCtor !== false) insertEntry(entries, {
-      kind: "function",
-      name: targetType,
-      type: "",
-      constexpr,
-      parameters: [{
-        type: constParamType,
-        name: paramName,
-        default: wrapper.defaultValue ?? "{}"
-      }],
-      doc: `Wraps ${sourceType}.\n\n@param ${paramName} the value to be wrapped`,
-      hints: {
-        init: [`${isStruct ? rawType : attribute}(${paramName})`],
-        changeAccess: isStruct ? undefined : 'public',
-      }
-    });
-    if (wrapper.ordered) {
-      insertEntry(entries, [{
-        kind: "function",
-        name: "operator<=>",
-        type: "auto",
-        constexpr,
-        immutable: true,
-        parameters: [{
-          type: `const ${targetType} &`,
-          name: "other",
-        }],
-        doc: "Default comparison operator",
-        hints: { default: true, }
-      }, {
-        kind: "function",
-        name: "operator<=>",
-        type: "auto",
-        constexpr,
-        immutable: true,
-        parameters: [{
-          type: constParamType,
-          name: paramName,
-        }],
-        doc: "Compares with the underlying type",
-        hints: { body: `return operator<=>(${targetType}(${paramName}));`, }
-      }]);
-    } else if (!isStruct) {
-      insertEntry(entries, [{
-        kind: "function",
-        name: "operator==",
-        type: "bool",
-        constexpr,
-        immutable: true,
-        parameters: [{
-          type: `const ${targetType} &`,
-          name: "other",
-        }],
-        doc: "Default comparison operator",
-        hints: { default: true, }
-      }, {
-        kind: "function",
-        name: "operator==",
-        type: "bool",
-        constexpr,
-        immutable: true,
-        parameters: [{
-          type: constParamType,
-          name: paramName,
-        }],
-        doc: "Compares with the underlying type",
-        hints: { body: `return operator==(${targetType}(${paramName}));`, }
-      }]);
-    } else if (wrapper.comparable) {
-      const body = 'return ' + fields.map(f => `${f} == other.${f}`).join(' && ') + ';';
-      insertEntry(entries, [{
-        kind: "function",
-        name: "operator==",
-        type: "bool",
-        constexpr,
-        immutable: true,
-        parameters: [{
-          type: constParamType,
-          name: "other",
-        }],
-        doc: "Compares with the underlying type",
-        hints: { body },
-      }, {
-        kind: "function",
-        name: "operator==",
-        type: "bool",
-        constexpr,
-        immutable: true,
-        parameters: [{
-          type: `const ${targetType} &`,
-          name: "other",
-        }],
-        doc: "Compares with the underlying type",
-        hints: { body: `return *this == (${constParamType})(other);` },
-      }]);
-    }
-    if (wrapper.nullable) insertEntry(entries, {
-      kind: "function",
-      name: "operator==",
-      type: "bool",
-      constexpr,
-      immutable: true,
-      parameters: [{ type: "std::nullptr_t", name: "_" }],
-      doc: `Compare with nullptr.\n\n@returns True if invalid state, false otherwise.`,
-      hints: { body: "return !bool(*this);" }
-    });
-    if (!isStruct) insertEntry(entries, {
-      kind: "function",
-      name: `operator ${rawType}`,
-      type: "",
-      constexpr,
-      immutable: true,
-      parameters: [],
-      doc: `Unwraps to the underlying ${sourceType}.\n\n@returns the underlying ${rawType}.`,
-      hints: { body: `return ${attribute};` }
-    });
-    if (wrapper.invalidState !== false) insertEntry(entries, {
-      kind: "function",
-      name: "operator bool",
-      type: "",
-      constexpr,
-      explicit: true,
-      immutable: true,
-      parameters: [],
-      doc: `Check if valid.\n\n@returns True if valid state, false otherwise.`,
-      hints: { body: isStruct ? `return *this != ${rawType}{};` : `return ${attribute} != 0;` }
-    });
-
-    if (isStruct) {
-      transform.type = rawType;
-      transform.hints.super = rawType;
-
-      if (wrapper.genMembers !== false) {
-        /** @type {ApiParameter[]} */
-        const parameters = [];
-        for (const attrib of Object.values(sourceEntry.entries)) {
-          if (Array.isArray(attrib) || attrib.kind !== "var") continue;
-          const name = attrib.name;
-          const type = attrib.type;
-          parameters.push({ type, name });
-          const capName = name[0].toUpperCase() + name.slice(1);
-          insertEntry(entries, [{
-            kind: "function",
-            name: `Get${capName}`,
-            type,
-            constexpr,
-            immutable: true,
-            parameters: [],
-            doc: `Get the ${name}.\n\n@returns current ${name} value.`,
-            hints: { body: `return ${name};` },
-          }, {
-            kind: "function",
-            name: `Set${capName}`,
-            type: `${targetType} &`,
-            constexpr,
-            parameters: [{
-              type,
-              name: `new${capName}`
-            }],
-            doc: `Set the ${name}.\n\n@param new${capName} the new ${name} value.\n@returns Reference to self.`,
-            hints: { body: `${name} = new${capName};\nreturn *this;` },
-          }]);
-          context.addParamType(sourceType, rawType);
-          context.addParamType(`${sourceType} *`, `${rawType} *`);
-          context.addParamType(`const ${sourceType}`, `const ${rawType}`);
-          context.addParamType(`const ${sourceType} *`, `const ${rawType} &`);
-        }
-        insertEntry(entries, {
-          kind: "function",
-          name: targetType,
-          type: "",
-          constexpr,
-          parameters,
-          doc: `Constructs from its fields.\n\n` + parameters.map(p => `@param ${p.name} the value for ${p.name}.`).join("\n"),
-          hints: { init: [`${rawType}{${parameters.map(p => p.name).join(", ")}}`] },
-        });
-      }
-    } else {
-      transform.type = "";
-    }
-
-    const currentCtors = transform.entries?.[targetType];
-    if (currentCtors) {
-      insertEntry(entries, /** @type {ApiEntry} */(currentCtors), targetType);
-      delete transform.entries[targetType];
-    }
-    const blockedNames = new Set(Object.keys(entries));
-    blockedNames.add(targetType);
-    if (transform.entries) Object.keys(transform.entries).forEach(k => blockedNames.add(k));
-    const detectedMethods = detectMethods(sourceEntries, file.transform, sourceType, rawType, blockedNames);
-    mirrorMethods(sourceEntries, file.transform, transform.entries ?? {}, paramType, constParamType, targetType);
-    transform.entries = { ...entries, ...(transform.entries ?? {}), ...detectedMethods };
-    if (type !== sourceType) {
-      context.addParamType(type, targetType);
-      context.addReturnType(type, targetType);
-    }
-
-    delete transform.wrapper;
-  }
-}
-
-/**
- * 
  * @param {ApiEntries}            sourceEntries 
  * @param {Dict<ApiEntryTransform>}  transformEntries 
  * @param {Dict<ApiEntryTransform | ApiEntryBase[] | QuickTransform>} transformSubEntries 
@@ -1154,344 +1475,6 @@ function getResourceDefinition(entry) {
     case "object": return resourceDef;
     default: return undefined;
   }
-}
-
-/**
- * 
- * @param {ApiEntries}        sourceEntries
- * @param {ApiFileTransform}  file 
- * @param {ApiContext}        context 
- */
-function expandResources(sourceEntries, file, context) {
-  // TODO try to auto detect sourceEntries
-
-  /** @type {ApiEntry[]} */
-  const referenceAliases = [];
-  for (const [sourceName, targetEntry] of Object.entries(file.transform ?? {})) {
-    const resourceEntry = getResourceDefinition(targetEntry);
-    if (!resourceEntry) continue;
-
-    const uniqueName = targetEntry.name || transformName(sourceName, context);
-    const rawName = resourceEntry.rawName || `${uniqueName}Raw`;
-    const constRawName = `const ${rawName}`;
-    const paramType = `${uniqueName}Param`;
-    const constParamType = resourceEntry.enableConstParam ? `${uniqueName}ConstParam` : paramType;
-    if (!targetEntry.kind) targetEntry.kind = 'struct';
-
-    const type = targetEntry.type ?? sourceName;
-    const sourceEntry =  /** @type {ApiEntry} */(sourceEntries[sourceName]);
-    const isStruct = sourceEntry.kind === "struct" || (sourceEntry.kind === "alias" && sourceEntry.type.startsWith('struct '));
-    const pointerType = (isStruct ? `${type} *` : type);
-    const constPointerType = `const ${pointerType}`;
-    const nullValue = isStruct ? 'nullptr' : '0';
-    const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
-    if (sourceEntry.type && !targetEntry.type) targetEntry.type = '';
-    context.addName(sourceName, uniqueName);
-    referenceAliases.push({ name: uniqueName, kind: "forward" });
-    referenceAliases.push({ name: rawName, kind: "alias", type: pointerType });
-
-    referenceAliases.push({
-      name: paramType,
-      kind: 'struct',
-      doc: `Safely wrap ${uniqueName} for non owning parameters`,
-      entries: {
-        'value': {
-          kind: 'var',
-          name: 'value',
-          type: rawName
-        },
-        [paramType]: [{
-          kind: 'function',
-          name: paramType,
-          constexpr: true,
-          type: '',
-          parameters: [{ type: rawName, name: 'value' }],
-          hints: { init: ['value(value)'] }
-        }, {
-          kind: 'function',
-          name: paramType,
-          constexpr: true,
-          type: '',
-          parameters: [{ type: "std::nullptr_t", name: "_" }],
-          hints: { init: [`value(${nullValue})`] }
-        }],
-        [`operator ${rawName}`]: {
-          kind: 'function',
-          name: `operator ${rawName}`,
-          constexpr: true,
-          immutable: true,
-          type: '',
-          parameters: [],
-          hints: { body: 'return value;' }
-        }
-      },
-    });
-    if (resourceEntry.enableConstParam) {
-      referenceAliases.push({
-        name: constParamType,
-        kind: 'struct',
-        doc: `Safely wrap ${uniqueName} for non owning const parameters`,
-        entries: {
-          'value': {
-            kind: 'var',
-            name: 'value',
-            type: constRawName
-          },
-          [constParamType]: [{
-            kind: 'function',
-            name: constParamType,
-            constexpr: true,
-            type: '',
-            parameters: [{ type: constRawName, name: 'value' }],
-            hints: { init: ['value(value)'] }
-          }, {
-            kind: 'function',
-            name: constParamType,
-            constexpr: true,
-            type: '',
-            parameters: [{ type: paramType, name: 'value' }],
-            hints: { init: ['value(value.value)'] }
-          }, {
-            kind: 'function',
-            name: constParamType,
-            constexpr: true,
-            type: '',
-            parameters: [{ type: "std::nullptr_t", name: "_" }],
-            hints: { init: [`value(${nullValue})`] }
-          }],
-          [`operator ${constRawName}`]: {
-            kind: 'function',
-            name: `operator ${constRawName}`,
-            constexpr: true,
-            immutable: true,
-            type: '',
-            parameters: [],
-            hints: { body: 'return value;' }
-          }
-        },
-      });
-    }
-    context.addParamType(pointerType, paramType);
-    context.addParamType(constPointerType, resourceEntry.enableConstParam ? constParamType : paramType);
-
-    context.addReturnType(pointerType, rawName);
-    context.addReturnType(constPointerType, constRawName);
-
-    /** @type {EntryHint} */
-    const copyCtorHints = {};
-    if (!resourceEntry.shared) {
-      copyCtorHints.delete = true;
-    } else if (resourceEntry.shared !== true) {
-      copyCtorHints.init = ["m_resource(other.m_resource)"];
-      copyCtorHints.body = `++m_resource->${resourceEntry.shared};`;
-    }
-
-    /** @type {Dict<ApiEntryTransform | ApiEntryBase[]>} */
-    const ctors = {
-      [uniqueName]: [{
-        kind: "function",
-        type: "",
-        constexpr: true,
-        parameters: [],
-        hints: { default: true, changeAccess: "public" },
-      }, {
-        kind: "function",
-        type: "",
-        constexpr: true,
-        explicit: true,
-        parameters: [{ name: "resource", type: constRawName }],
-        hints: { init: ["m_resource(resource)"] },
-      }, {
-        kind: "function",
-        type: "",
-        parameters: [{ name: "other", type: `const ${uniqueName} &` }],
-        hints: copyCtorHints,
-      }, {
-        kind: "function",
-        type: "",
-        constexpr: true,
-        parameters: [{ name: "other", type: `${uniqueName} &&` }],
-        hints: {
-          init: ["m_resource(other.m_resource)"],
-          body: `other.m_resource = ${nullValue};`
-        },
-      }]
-    };
-    const subEntries = targetEntry.entries || {};
-
-    let extraUniqueCtors = subEntries[uniqueName];
-    if (extraUniqueCtors) {
-      delete subEntries[uniqueName];
-      if (typeof extraUniqueCtors === "string") {
-        extraUniqueCtors = [{ name: uniqueName, kind: "function", parameters: [] }];
-      } else if (!Array.isArray(extraUniqueCtors)) {
-        extraUniqueCtors = [extraUniqueCtors];
-      }
-      for (const entry of extraUniqueCtors) {
-        entry.kind = "function";
-        entry.type = "";
-        // @ts-ignore
-        insertEntry(ctors, entry, uniqueName);
-      }
-    }
-    for (const sourceName of resourceEntry.ctors ?? []) {
-      const entry = subEntries[sourceName] ?? {};
-      delete subEntries[sourceName];
-      const ctorTransform = file.transform[sourceName];
-      if (typeof entry === "string") {
-        system.warn(`${sourceName} can not be a custom ctor, only objects containing name property can be accepted.`);
-        continue;
-      }
-      if (Array.isArray(entry)) {
-        entry.forEach(e => {
-          e.static = true;
-          e.type = uniqueName;
-          if (!e.name) e.name = transformMemberName(sourceName, uniqueName, context);
-          if (!e.sourceName && sourceEntries[sourceName]) e.sourceName = sourceName;
-          addHints(e, { wrapSelf: true });
-        });
-      } else {
-        entry.static = true;
-        entry.type = uniqueName;
-        if (!entry.name) entry.name = transformMemberName(sourceName, uniqueName, context);
-        if (!entry.sourceName && sourceEntries[sourceName]) entry.sourceName = sourceName;
-        addHints(entry, { wrapSelf: true });
-      }
-      ctors[sourceName] = entry;
-      if (!ctorTransform) {
-        file.transform[sourceName] = { type: uniqueName, hints: { wrapSelf: true } };
-      } else if (!ctorTransform.type) {
-        file.transform[sourceName].type = uniqueName;
-        addHints(ctorTransform, { wrapSelf: true });
-      }
-    }
-
-    for (const [sourceName, entry] of Object.entries(subEntries)) {
-      const ctorTransform = file.transform[sourceName];
-      let isCtor = false;
-      if (typeof entry === "string") {
-        if (entry === "ctor") {
-          ctors[sourceName] = {
-            kind: "function",
-            type: "",
-            name: uniqueName,
-            sourceName,
-          };
-          isCtor = true;
-        }
-      } else if (!Array.isArray(entry) && entry.name === "ctor") {
-        entry.kind = "function";
-        entry.type = "";
-        entry.name = uniqueName;
-        if (!entry.sourceName && sourceEntries[sourceName]) entry.sourceName = sourceName;
-        ctors[sourceName] = entry;
-        isCtor = true;
-      }
-      if (isCtor) {
-        delete subEntries[sourceName];
-        if (!ctorTransform) {
-          file.transform[sourceName] = { type: uniqueName, hints: { wrapSelf: true } };
-        } else if (!ctorTransform.type) {
-          ctorTransform.type = uniqueName;
-          addHints(ctorTransform, { wrapSelf: true });
-        }
-      }
-    }
-
-    let freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free ?? "reset"]) ?? scanFreeFunction(sourceEntries, uniqueName, pointerType);
-    if (freeFunction) {
-      const sourceName = freeFunction.name;
-      freeFunction = transformEntry(freeFunction, context);
-      const freeTransformEntry = /** @type {ApiEntryTransform} */(subEntries[sourceName]) ?? {};
-      combineObject(freeFunction, freeTransformEntry);
-      freeFunction.name = freeTransformEntry.name ?? makeNaturalName(transformName(sourceName, context), uniqueName);
-      freeFunction.doc = freeFunction.doc ? transformDoc(freeFunction.doc, context) : `frees up ${title}.`;
-      if (!freeFunction.hints?.body) {
-        let body = `${sourceName}(m_resource)`;
-        if (freeFunction.hints?.mayFail) {
-          body = `CheckError(${body})`;
-          if (freeFunction.type === "bool") freeFunction.type = "void";
-        }
-        body += `;\nm_resource = ${nullValue};`;
-        if (freeFunction.type !== "void") body = `auto r = ${body}\nreturn r;`;
-        combineHints(freeFunction, { body });
-      }
-      subEntries[sourceName] = freeFunction;
-      if (!file.transform[sourceName]) {
-        file.transform[sourceName] = { parameters: [{ type: rawName }] };
-      }
-    }
-    if (resourceEntry.enableAutoMethods !== false) {
-      const blockedNames = new Set(Object.keys(subEntries));
-      blockedNames.add(uniqueName);
-      Object.keys(ctors).forEach(k => blockedNames.add(k));
-      const detectedMethods = detectMethods(sourceEntries, file.transform, sourceName, rawName, blockedNames);
-      mirrorMethods(sourceEntries, file.transform, subEntries, paramType, constParamType, uniqueName);
-      combineObject(subEntries, detectedMethods);
-    }
-
-    targetEntry.doc = transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource`;
-    targetEntry.entries = {
-      "m_resource": {
-        kind: "var",
-        type: rawName,
-        hints: { body: nullValue },
-      },
-      ...ctors,
-      [`~${uniqueName}`]: {
-        kind: "function",
-        type: "",
-        parameters: [],
-        hints: { body: freeFunction ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);` : '' }
-      },
-      'operator=': {
-        kind: "function",
-        type: `${uniqueName} &`,
-        parameters: [{ name: 'other', type: uniqueName }],
-        hints: { body: "std::swap(m_resource, other.m_resource);\nreturn *this;" },
-      },
-      "get": {
-        kind: "function",
-        type: rawName,
-        immutable: true,
-        constexpr: true,
-        parameters: [],
-        hints: { body: "return m_resource;" },
-      },
-      "release": {
-        kind: "function",
-        type: rawName,
-        constexpr: true,
-        parameters: [],
-        hints: { body: `auto r = m_resource;\nm_resource = ${nullValue};\nreturn r;` },
-      },
-      [`operator ${paramType}`]: {
-        kind: "function",
-        type: '',
-        immutable: true,
-        constexpr: true,
-        parameters: [],
-        hints: { body: "return {m_resource};" },
-      },
-      ...subEntries,
-    };
-    addHints(targetEntry, {
-      self: "m_resource",
-      super: "m_resource",
-      private: true,
-
-    });
-
-
-    /** @type {ApiEntryTransform[]} */
-    const derivedEntries = [
-    ];
-
-    const includeAfterKey = uniqueName;
-    context.includeAfter(derivedEntries, includeAfterKey);
-    delete targetEntry.resource;
-  }
-  context.includeAfter(referenceAliases, '__begin');
 }
 
 /**
