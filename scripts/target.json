@@ -12416,10 +12416,25 @@
                   "mayFail": true
                 },
                 "immutable": true
+              }
+            ],
+            "ReadPixelFloat": [
+              {
+                "kind": "function",
+                "immutable": true,
+                "type": "FColor",
+                "parameters": [
+                  {
+                    "type": "const PointRaw &",
+                    "name": "p"
+                  }
+                ],
+                "name": "ReadPixelFloat",
+                "doc": ""
               },
               {
                 "doc": "Retrieves a single pixel from a surface.\n\nThis function prioritizes correctness over speed: it is suitable for unit\ntests, but is not intended for use in a game engine.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param r a pointer filled in with the red channel, normally in the range\n         0-1, or nullptr to ignore this channel.\n@param g a pointer filled in with the green channel, normally in the range\n         0-1, or nullptr to ignore this channel.\n@param b a pointer filled in with the blue channel, normally in the range\n         0-1, or nullptr to ignore this channel.\n@param a a pointer filled in with the alpha channel, normally in the range\n         0-1, or nullptr to ignore this channel.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
-                "name": "ReadPixel",
+                "name": "ReadPixelFloat",
                 "kind": "function",
                 "type": "void",
                 "parameters": [
@@ -12451,61 +12466,46 @@
                 "immutable": true
               }
             ],
-            "ReadPixelFloat": {
+            "WritePixel": {
+              "doc": "Writes a single pixel to a surface.\n\nThis function prioritizes correctness over speed: it is suitable for unit\ntests, but is not intended for use in a game engine.\n\nLike MapRGBA, this uses the entire 0..255 range when converting color\ncomponents from pixel formats with less than 8 bits per RGB component.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param r the red channel value, 0-255.\n@param g the green channel value, 0-255.\n@param b the blue channel value, 0-255.\n@param a the alpha channel value, 0-255.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WritePixel",
               "kind": "function",
-              "immutable": true,
-              "type": "FColor",
+              "type": "void",
               "parameters": [
                 {
-                  "type": "const PointRaw &",
-                  "name": "p"
+                  "name": "p",
+                  "type": "const PointRaw &"
+                },
+                {
+                  "name": "c",
+                  "type": "ColorRaw"
                 }
               ],
-              "name": "ReadPixelFloat",
-              "doc": ""
-            },
-            "WritePixel": [
-              {
-                "doc": "Writes a single pixel to a surface.\n\nThis function prioritizes correctness over speed: it is suitable for unit\ntests, but is not intended for use in a game engine.\n\nLike MapRGBA, this uses the entire 0..255 range when converting color\ncomponents from pixel formats with less than 8 bits per RGB component.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param r the red channel value, 0-255.\n@param g the green channel value, 0-255.\n@param b the blue channel value, 0-255.\n@param a the alpha channel value, 0-255.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
-                "name": "WritePixel",
-                "kind": "function",
-                "type": "void",
-                "parameters": [
-                  {
-                    "name": "p",
-                    "type": "const PointRaw &"
-                  },
-                  {
-                    "name": "c",
-                    "type": "ColorRaw"
-                  }
-                ],
-                "sourceName": "SDL_WriteSurfacePixel",
-                "hints": {
-                  "mayFail": true
-                }
-              },
-              {
-                "doc": "Writes a single pixel to a surface.\n\nThis function prioritizes correctness over speed: it is suitable for unit\ntests, but is not intended for use in a game engine.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param r the red channel value, normally in the range 0-1.\n@param g the green channel value, normally in the range 0-1.\n@param b the blue channel value, normally in the range 0-1.\n@param a the alpha channel value, normally in the range 0-1.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
-                "name": "WritePixel",
-                "kind": "function",
-                "type": "void",
-                "parameters": [
-                  {
-                    "name": "p",
-                    "type": "const PointRaw &"
-                  },
-                  {
-                    "name": "c",
-                    "type": "const FColorRaw &"
-                  }
-                ],
-                "sourceName": "SDL_WriteSurfacePixelFloat",
-                "hints": {
-                  "mayFail": true
-                }
+              "sourceName": "SDL_WriteSurfacePixel",
+              "hints": {
+                "mayFail": true
               }
-            ],
+            },
+            "WritePixelFloat": {
+              "doc": "Writes a single pixel to a surface.\n\nThis function prioritizes correctness over speed: it is suitable for unit\ntests, but is not intended for use in a game engine.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param r the red channel value, normally in the range 0-1.\n@param g the green channel value, normally in the range 0-1.\n@param b the blue channel value, normally in the range 0-1.\n@param a the alpha channel value, normally in the range 0-1.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "WritePixelFloat",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "p",
+                  "type": "const PointRaw &"
+                },
+                {
+                  "name": "c",
+                  "type": "const FColorRaw &"
+                }
+              ],
+              "sourceName": "SDL_WriteSurfacePixelFloat",
+              "hints": {
+                "mayFail": true
+              }
+            },
             "GetWidth": {
               "kind": "function",
               "immutable": true,

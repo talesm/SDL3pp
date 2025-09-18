@@ -1885,7 +1885,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WritePixel(const PointRaw& p, const FColorRaw& c)
+  void WritePixelFloat(const PointRaw& p, const FColorRaw& c)
   {
     CheckError(
       SDL_WriteSurfacePixelFloat(m_resource, p.x, p.y, c.r, c.g, c.b, c.a));

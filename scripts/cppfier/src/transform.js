@@ -1716,7 +1716,8 @@ function transformMemberName(name, typeName, context) {
  */
 function makeNaturalName(name, typeName) {
   typeName = normalizeTypeName(typeName);
-  const replaceRegexp = new RegExp(typeName.startsWith("F") ? "F?" + typeName.slice(1) : typeName);
+  if (!typeName.startsWith("F")) return name.replace(new RegExp(typeName), "");
+  const replaceRegexp = new RegExp("F?" + typeName.slice(1));
   name = name.replace(replaceRegexp, "");
   if (/Float$/.test(name)) name = name.slice(0, name.length - 5);
   return name;

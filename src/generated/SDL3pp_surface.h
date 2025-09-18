@@ -1602,6 +1602,11 @@ public:
     CheckError(SDL_ReadSurfacePixel(m_resource, p, r, g, b, a));
   }
 
+  FColor ReadPixelFloat(const PointRaw& p) const
+  {
+    static_assert(false, "Not implemented");
+  }
+
   /**
    * Retrieves a single pixel from a surface.
    *
@@ -1624,18 +1629,13 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void ReadPixel(const PointRaw& p,
-                 float* r,
-                 float* g,
-                 float* b,
-                 float* a) const
+  void ReadPixelFloat(const PointRaw& p,
+                      float* r,
+                      float* g,
+                      float* b,
+                      float* a) const
   {
     CheckError(SDL_ReadSurfacePixelFloat(m_resource, p, r, g, b, a));
-  }
-
-  FColor ReadPixelFloat(const PointRaw& p) const
-  {
-    static_assert(false, "Not implemented");
   }
 
   /**
@@ -1682,7 +1682,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WritePixel(const PointRaw& p, const FColorRaw& c)
+  void WritePixelFloat(const PointRaw& p, const FColorRaw& c)
   {
     CheckError(SDL_WriteSurfacePixelFloat(m_resource, p, c));
   }

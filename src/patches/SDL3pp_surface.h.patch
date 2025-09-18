@@ -504,23 +504,7 @@
 <     CheckError(SDL_ReadSurfacePixel(m_resource, p, r, g, b, a));
 ---
 >     CheckError(SDL_ReadSurfacePixel(m_resource, p.x, p.y, r, g, b, a));
-1611,1612c1809,1828
-<    * @param x the horizontal coordinate, 0 <= x < width.
-<    * @param y the vertical coordinate, 0 <= y < height.
----
->    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
->    * @returns color on success.
->    * @throws Error on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    */
->   FColor ReadPixelFloat(const PointRaw& p) const
->   {
->     FColor c;
->     ReadPixelFloat(p, &c.r, &c.g, &c.b, &c.a);
->     return c;
->   }
-> 
+1604a1803,1814
 >   /**
 >    * Retrieves a single pixel from a surface.
 >    *
@@ -528,25 +512,24 @@
 >    * tests, but is not intended for use in a game engine.
 >    *
 >    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
-1627,1631c1843,1847
-<   void ReadPixel(const PointRaw& p,
-<                  float* r,
-<                  float* g,
-<                  float* b,
-<                  float* a) const
----
->   void ReadPixelFloat(const PointRaw& p,
->                       float* r,
->                       float* g,
->                       float* b,
->                       float* a) const
-1633,1638c1849
-<     CheckError(SDL_ReadSurfacePixelFloat(m_resource, p, r, g, b, a));
-<   }
-< 
-<   FColor ReadPixelFloat(const PointRaw& p) const
-<   {
+>    * @returns color on success.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function is not thread safe.
+>    */
+1607c1817,1819
 <     static_assert(false, "Not implemented");
+---
+>     FColor c;
+>     ReadPixelFloat(p, &c.r, &c.g, &c.b, &c.a);
+>     return c;
+1616,1617c1828
+<    * @param x the horizontal coordinate, 0 <= x < width.
+<    * @param y the vertical coordinate, 0 <= y < height.
+---
+>    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+1638c1849
+<     CheckError(SDL_ReadSurfacePixelFloat(m_resource, p, r, g, b, a));
 ---
 >     CheckError(SDL_ReadSurfacePixelFloat(m_resource, p.x, p.y, r, g, b, a));
 1650,1655c1861,1862
