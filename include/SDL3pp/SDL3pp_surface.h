@@ -536,7 +536,7 @@ public:
   {
     int count = 0;
     auto data = SDL_GetSurfaceImages(m_resource, &count);
-    return OwnArray<SurfaceRaw>{CheckError(data), count};
+    return OwnArray<SurfaceRaw>(CheckError(data), count);
   }
 
   /**
@@ -2146,7 +2146,7 @@ inline Colorspace GetSurfaceColorspace(SurfaceConstParam surface)
  */
 inline Palette CreateSurfacePalette(SurfaceParam surface)
 {
-  return CheckError(SDL_CreateSurfacePalette(surface));
+  return Palette::Borrow(CheckError(SDL_CreateSurfacePalette(surface)));
 }
 
 /**
@@ -2185,7 +2185,7 @@ inline void SetSurfacePalette(SurfaceParam surface, PaletteParam palette)
  */
 inline Palette GetSurfacePalette(SurfaceConstParam surface)
 {
-  return SDL_GetSurfacePalette(surface);
+  return Palette::Borrow(SDL_GetSurfacePalette(surface));
 }
 
 /**
@@ -2265,7 +2265,7 @@ inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstParam surface)
 {
   int count = 0;
   auto data = SDL_GetSurfaceImages(surface, &count);
-  return OwnArray<SurfaceRaw>{CheckError(data), count};
+  return OwnArray<SurfaceRaw>(CheckError(data), count);
 }
 
 /**
@@ -2499,7 +2499,7 @@ inline bool SurfaceHasRLE(SurfaceConstParam surface)
  */
 inline void SetSurfaceColorKey(SurfaceParam surface, std::optional<Uint32> key)
 {
-  CheckError(SDL_SetSurfaceColorKey(surface, key));
+  CheckError(SDL_SetSurfaceColorKey(surface, key.has_value(), key.value_or(0)));
 }
 
 /**
@@ -2680,7 +2680,9 @@ inline void SetSurfaceBlendMode(SurfaceParam surface, BlendMode blendMode)
  */
 inline BlendMode GetSurfaceBlendMode(SurfaceConstParam surface)
 {
-  return CheckError(SDL_GetSurfaceBlendMode(surface));
+  BlendMode blendmode;
+  CheckError(SDL_GetSurfaceBlendMode(surface, &blendmode));
+  return blendmode;
 }
 
 /**
@@ -2730,7 +2732,9 @@ inline bool SetSurfaceClipRect(SurfaceParam surface,
  */
 inline Rect GetSurfaceClipRect(SurfaceConstParam surface)
 {
-  return CheckError(SDL_GetSurfaceClipRect(surface));
+  Rect r;
+  CheckError(SDL_GetSurfaceClipRect(surface, &r));
+  return r;
 }
 
 /**
@@ -2769,7 +2773,7 @@ inline void FlipSurface(SurfaceParam surface, FlipMode flip)
  */
 inline Surface DuplicateSurface(SurfaceConstParam surface)
 {
-  return SDL_DuplicateSurface(surface);
+  return Surface(SDL_DuplicateSurface(surface));
 }
 
 /**
@@ -2796,7 +2800,7 @@ inline Surface ScaleSurface(SurfaceConstParam surface,
                             int height,
                             ScaleMode scaleMode)
 {
-  return SDL_ScaleSurface(surface, width, height, scaleMode);
+  return Surface(SDL_ScaleSurface(surface, width, height, scaleMode));
 }
 
 /**
@@ -2827,7 +2831,7 @@ inline Surface ScaleSurface(SurfaceConstParam surface,
  */
 inline Surface ConvertSurface(SurfaceConstParam surface, PixelFormat format)
 {
-  return SDL_ConvertSurface(surface, format);
+  return Surface(SDL_ConvertSurface(surface, format));
 }
 
 /**
@@ -3104,7 +3108,7 @@ inline void FillSurfaceRects(SurfaceParam dst,
                              SpanRef<const RectRaw> rects,
                              Uint32 color)
 {
-  CheckError(SDL_FillSurfaceRects(dst, rects, color));
+  CheckError(SDL_FillSurfaceRects(dst, rects.data(), rects.size(), color));
 }
 
 /**
@@ -3286,7 +3290,7 @@ inline void BlitSurfaceUnchecked(SurfaceParam src,
                                  SurfaceParam dst,
                                  const RectRaw& dstrect)
 {
-  CheckError(SDL_BlitSurfaceUnchecked(src, srcrect, dst, dstrect));
+  CheckError(SDL_BlitSurfaceUnchecked(src, &srcrect, dst, &dstrect));
 }
 
 /**
@@ -3348,7 +3352,7 @@ inline void BlitSurfaceUncheckedScaled(SurfaceParam src,
                                        ScaleMode scaleMode)
 {
   CheckError(
-    SDL_BlitSurfaceUncheckedScaled(src, srcrect, dst, dstrect, scaleMode));
+    SDL_BlitSurfaceUncheckedScaled(src, &srcrect, dst, &dstrect, scaleMode));
 }
 
 #if SDL_VERSION_ATLEAST(3, 2, 4)
@@ -3553,7 +3557,16 @@ inline void BlitSurface9Grid(SurfaceParam src,
                              SurfaceParam dst,
                              OptionalRef<const RectRaw> dstrect)
 {
-  static_assert(false, "Not implemented");
+  BlitSurface9Grid(src,
+                   srcrect,
+                   left_width,
+                   right_width,
+                   top_height,
+                   bottom_height,
+                   0.0,
+                   SDL_SCALEMODE_NEAREST,
+                   dst,
+                   dstrect);
 }
 
 /**

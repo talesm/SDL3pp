@@ -80,7 +80,7 @@
 ---
 >     int count = 0;
 >     auto data = SDL_GetSurfaceImages(m_resource, &count);
->     return OwnArray<SurfaceRaw>{CheckError(data), count};
+>     return OwnArray<SurfaceRaw>(CheckError(data), count);
 563c559,564
 < #define MustLock
 ---
@@ -630,12 +630,24 @@
 < 
 < #if SDL_VERSION_ATLEAST(3, 2, 6)
 < 
+1926c2149
+<   return CheckError(SDL_CreateSurfacePalette(surface));
+---
+>   return Palette::Borrow(CheckError(SDL_CreateSurfacePalette(surface)));
+1965c2188
+<   return SDL_GetSurfacePalette(surface);
+---
+>   return Palette::Borrow(SDL_GetSurfacePalette(surface));
 2043c2266,2268
 <   return SDL_GetSurfaceImages(surface);
 ---
 >   int count = 0;
 >   auto data = SDL_GetSurfaceImages(surface, &count);
->   return OwnArray<SurfaceRaw>{CheckError(data), count};
+>   return OwnArray<SurfaceRaw>(CheckError(data), count);
+2277c2502
+<   CheckError(SDL_SetSurfaceColorKey(surface, key));
+---
+>   CheckError(SDL_SetSurfaceColorKey(surface, key.has_value(), key.value_or(0)));
 2321c2546,2547
 <   return CheckError(SDL_GetSurfaceColorKey(surface));
 ---
@@ -647,11 +659,39 @@
 >   Uint8 alpha;
 >   CheckError(SDL_GetSurfaceAlphaMod(surface, &alpha));
 >   return alpha;
-2817c3045
+2455c2683,2685
+<   return CheckError(SDL_GetSurfaceBlendMode(surface));
+---
+>   BlendMode blendmode;
+>   CheckError(SDL_GetSurfaceBlendMode(surface, &blendmode));
+>   return blendmode;
+2505c2735,2737
+<   return CheckError(SDL_GetSurfaceClipRect(surface));
+---
+>   Rect r;
+>   CheckError(SDL_GetSurfaceClipRect(surface, &r));
+>   return r;
+2544c2776
+<   return SDL_DuplicateSurface(surface);
+---
+>   return Surface(SDL_DuplicateSurface(surface));
+2571c2803
+<   return SDL_ScaleSurface(surface, width, height, scaleMode);
+---
+>   return Surface(SDL_ScaleSurface(surface, width, height, scaleMode));
+2602c2834
+<   return SDL_ConvertSurface(surface, format);
+---
+>   return Surface(SDL_ConvertSurface(surface, format));
+2817c3049
 <   CheckError(SDL_ClearSurface(surface, color));
 ---
 >   CheckError(SDL_ClearSurface(surface, color.r, color.g, color.b, color.a));
-2959a3188,3254
+2879c3111
+<   CheckError(SDL_FillSurfaceRects(dst, rects, color));
+---
+>   CheckError(SDL_FillSurfaceRects(dst, rects.data(), rects.size(), color));
+2959a3192,3258
 > /**
 >  * Performs a fast blit from the source surface to the destination surface
 >  * with clipping.
@@ -719,23 +759,44 @@
 >  *
 >  * @sa Surface.BlitSurface
 >  */
-2965c3260
+2965c3264
 <   static_assert(false, "Not implemented");
 ---
 >   BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
-3372c3667
+2994c3293
+<   CheckError(SDL_BlitSurfaceUnchecked(src, srcrect, dst, dstrect));
+---
+>   CheckError(SDL_BlitSurfaceUnchecked(src, &srcrect, dst, &dstrect));
+3056c3355
+<     SDL_BlitSurfaceUncheckedScaled(src, srcrect, dst, dstrect, scaleMode));
+---
+>     SDL_BlitSurfaceUncheckedScaled(src, &srcrect, dst, &dstrect, scaleMode));
+3261c3560,3569
+<   static_assert(false, "Not implemented");
+---
+>   BlitSurface9Grid(src,
+>                    srcrect,
+>                    left_width,
+>                    right_width,
+>                    top_height,
+>                    bottom_height,
+>                    0.0,
+>                    SDL_SCALEMODE_NEAREST,
+>                    dst,
+>                    dstrect);
+3372c3680
 <   CheckError(SDL_ReadSurfacePixel(surface, p, r, g, b, a));
 ---
 >   CheckError(SDL_ReadSurfacePixel(surface, p.x, p.y, r, g, b, a));
-3405c3700
+3405c3713
 <   CheckError(SDL_ReadSurfacePixelFloat(surface, p, r, g, b, a));
 ---
 >   CheckError(SDL_ReadSurfacePixelFloat(surface, p.x, p.y, r, g, b, a));
-3434c3729
+3434c3742
 <   CheckError(SDL_WriteSurfacePixel(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
-3460c3755
+3460c3768
 <   CheckError(SDL_WriteSurfacePixelFloat(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixelFloat(surface, p.x, p.y, c.r, c.g, c.b, c.a));
