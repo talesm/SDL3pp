@@ -11539,12 +11539,18 @@
               "sourceName": "SDL_RemoveSurfaceAlternateImages"
             },
             "MustLock": {
+              "doc": "Evaluates to true if the surface needs to be locked before access.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "MustLock",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "(((S)->flags & SDL_SURFACE_LOCK_NEEDED) == SDL_SURFACE_LOCK_NEEDED)",
+              "sourceName": "SDL_MUSTLOCK",
+              "constexpr": true,
+              "immutable": true,
+              "type": "bool"
             },
             "Lock": {
-              "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to Surface.Lock() / Surface.Unlock(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSurface.Unlock() to release it.\n\nNot all surfaces require locking. If `MUSTLOCK(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@throws Error on failure.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MUSTLOCK\n@sa Surface.Unlock",
+              "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to Surface.Lock() / Surface.Unlock(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSurface.Unlock() to release it.\n\nNot all surfaces require locking. If `Surface.MustLock(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@throws Error on failure.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.MustLock\n@sa Surface.Unlock",
               "name": "Lock",
               "kind": "function",
               "type": "void",
@@ -12857,7 +12863,7 @@
           "sourceName": "SDL_RemoveSurfaceAlternateImages"
         },
         "LockSurface": {
-          "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to Surface.Lock() / Surface.Unlock(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSurface.Unlock() to release it.\n\nNot all surfaces require locking. If `MUSTLOCK(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@param surface the Surface structure to be locked.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MUSTLOCK\n@sa Surface.Unlock",
+          "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to Surface.Lock() / Surface.Unlock(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSurface.Unlock() to release it.\n\nNot all surfaces require locking. If `Surface.MustLock(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@param surface the Surface structure to be locked.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe. The locking referred to by\n              this function is making the pixels available for direct\n              access, not thread-safe locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.MustLock\n@sa Surface.Unlock",
           "name": "LockSurface",
           "kind": "function",
           "type": "void",

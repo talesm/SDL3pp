@@ -24706,7 +24706,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MUSTLOCK
+   * @sa Surface.MustLock
    * @sa Surface.Unlock
    */
   void Lock() { CheckError(SDL_LockSurface(m_resource)); }
@@ -26420,7 +26420,7 @@ inline void RemoveSurfaceAlternateImages(SurfaceParam surface)
  * `surface->format`. Once you are done accessing the surface, you should use
  * Surface.Unlock() to release it.
  *
- * Not all surfaces require locking. If `MUSTLOCK(surface)` evaluates to
+ * Not all surfaces require locking. If `Surface.MustLock()` evaluates to
  * 0, then you can read and write to the surface at any time, and the pixel
  * format of the surface will not change.
  *
@@ -26433,7 +26433,7 @@ inline void RemoveSurfaceAlternateImages(SurfaceParam surface)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa MUSTLOCK
+ * @sa Surface.MustLock
  * @sa Surface.Unlock
  */
 inline void LockSurface(SurfaceParam surface)

@@ -1176,6 +1176,7 @@ function makeSortedEntryArray(sourceEntries, file, context) {
       }
     }
     addTransform(targetEntry);
+    if (targetDelta?.entries) targetDelta.entries = transformSubEntries(targetDelta);
 
     if (firstAppearance) addIncluded(includeAfter[targetName]);
     addIncluded(includeAfter[sourceName]);
@@ -1216,6 +1217,7 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     const currEntry = sortedEntries[transformEntry.name];
     const currKind = currEntry?.kind;
     const nextName = transformEntry.kind === 'forward' ? transformEntry.name + '#forward' : transformEntry.name;
+    if (transformEntry.entries) transformEntry.entries = transformSubEntries(transformEntry);
     if (!currKind) {
       sortedEntries[nextName] = transformEntry;
       return;
@@ -1229,6 +1231,52 @@ function makeSortedEntryArray(sourceEntries, file, context) {
       return;
     }
     combineObject(currEntry, transformEntry);
+  }
+
+  /**
+   * @param {ApiEntryTransform} targetEntry the entry we are inserting from
+   */
+  function transformSubEntries(targetEntry) {
+    /** @type {ApiEntries} */
+    const entries = {};
+    const type = targetEntry.name;
+    for (const [key, entry] of Object.entries(targetEntry.entries)) {
+      if (Array.isArray(entry)) {
+        insertEntry(entries, /** @type {ApiEntry[]}*/(entry), key);
+        continue;
+      }
+      const sourceEntry = context.source[key];
+      const nameCandidate = transformName(key, context);
+      if (!sourceEntry) {
+        if (typeof entry === "string") {
+          insertEntry(entries,/** @type {ApiEntry} */({
+            kind: entry,
+            name: key,
+          }));
+          continue;
+        }
+        insertEntry(entries, /** @type {ApiEntry}*/(entry), key);
+        continue;
+      }
+      const nameChange = makeRenameEntry(entry, nameCandidate, type);
+      if (context.blacklist.has(key)) addTransform(nameChange);
+      if (!entries[nameChange.name]) {
+        insertEntry(entries, { name: nameChange.name, kind: "plc" });
+      }
+      if (typeof entry !== "string" && entry.proto && nameChange.type !== "") {
+        nameChange.name = `${type}::${nameChange.name}`;
+        delete nameChange.proto;
+      } else {
+        nameChange.name = `${type}.${nameChange.name}`;
+      }
+      const currLink = file.transform[key];
+      file.transform[key] = nameChange;
+      if (currLink) {
+        if (!currLink.name) currLink.name = transformName(key, context);
+        file.transform[key].link = currLink;
+      }
+    }
+    return entries;
   }
 }
 
@@ -1529,7 +1577,6 @@ function insertEntryAndCheck(entries, entry, context, file, defaultName) {
     entry.forEach(e => insertEntryAndCheck(entries, e, context, file, defaultName));
     return;
   }
-  if (entry.entries) entry.entries = transformSubEntries(entry, context, file);
   insertEntry(entries, /** @type {ApiEntry}*/(entry), defaultName);
   if (entry.kind === 'ns' || entry.kind === "struct") {
     const currType = context.types[entry.name];
@@ -1539,54 +1586,6 @@ function insertEntryAndCheck(entries, entry, context, file, defaultName) {
       context.types[entry.name] = /**@type {ApiType}*/(entry);
     }
   }
-}
-
-/**
- * 
- * @param {ApiEntryTransform} targetEntry the entry we are inserting from
- * @param {ApiContext}        context 
- * @param {ApiFileTransform}  file 
- */
-function transformSubEntries(targetEntry, context, file) {
-  /** @type {ApiEntries} */
-  const entries = {};
-  const type = targetEntry.name;
-  for (const [key, entry] of Object.entries(targetEntry.entries)) {
-    if (Array.isArray(entry)) {
-      insertEntry(entries, /** @type {ApiEntry[]}*/(entry), key);
-      continue;
-    }
-    const sourceEntry = context.source[key];
-    const nameCandidate = transformName(key, context);
-    if (!sourceEntry) {
-      if (typeof entry === "string") {
-        insertEntry(entries,/** @type {ApiEntry} */({
-          kind: entry,
-          name: key,
-        }));
-        continue;
-      }
-      insertEntry(entries, /** @type {ApiEntry}*/(entry), key);
-      continue;
-    }
-    const nameChange = makeRenameEntry(entry, nameCandidate, type);
-    if (!entries[nameChange.name]) {
-      insertEntry(entries, { name: nameChange.name, kind: "def" });
-    }
-    if (typeof entry !== "string" && entry.proto && nameChange.type !== "") {
-      nameChange.name = `${type}::${nameChange.name}`;
-      delete nameChange.proto;
-    } else {
-      nameChange.name = `${type}.${nameChange.name}`;
-    }
-    const currLink = file.transform[key];
-    file.transform[key] = nameChange;
-    if (currLink) {
-      if (!currLink.name) currLink.name = transformName(key, context);
-      file.transform[key].link = currLink;
-    }
-  }
-  return entries;
 }
 
 /**
