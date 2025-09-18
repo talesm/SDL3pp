@@ -2058,7 +2058,6 @@ const transform = {
             attribute: 'category',
             ordered: true,
           },
-          after: "__begin",
           entries: {
             "LogCategory": {
               kind: "function",

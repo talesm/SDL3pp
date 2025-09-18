@@ -345,7 +345,6 @@ function expandTypes(sourceEntries, file, context) {
   expandNamespaces(sourceEntries, file, context);
   expandWrappers(sourceEntries, file, context);
   expandResources(sourceEntries, file, context);
-  expandEnumerations(sourceEntries, file, context);
 
   const transformMap = file.transform ?? {};
 
@@ -354,9 +353,11 @@ function expandTypes(sourceEntries, file, context) {
     if (!isType(sourceEntry.kind)) continue;
     const targetDelta = getOrCreateDelta(sourceName);
     const targetName = targetDelta.name;
-    if (sourceEntry.kind === "callback") {
-      expandCallback(sourceName, sourceEntry, targetName);
-    }
+    if (sourceEntry.kind === "callback") expandCallback(sourceName, sourceEntry, targetName);
+    const enumDef = getEnumDefinition(targetDelta);
+    if (enumDef || sourceEntry.kind === "enum")
+      expandEnumeration(sourceName, sourceEntry, targetName, targetDelta, enumDef ?? {});
+
     if (!targetDelta.kind) {
       targetDelta.kind = "alias";
       if (!targetDelta.type) targetDelta.type = sourceName;
@@ -411,6 +412,70 @@ function expandTypes(sourceEntries, file, context) {
         break;
       }
     }
+  }
+
+  /**
+   * 
+   * @param {string}                sourceName 
+   * @param {ApiEntry}              sourceEntry 
+   * @param {string}                targetName 
+   * @param {ApiEntryTransform}     transform
+   * @param {EnumerationDefinition} definition 
+   */
+  function expandEnumeration(sourceName, sourceEntry, targetName, transform, definition) {
+    const valueType = definition.valueType ?? targetName;
+    if (!transform.kind && !transform.type) {
+      if (sourceEntry.kind === 'alias') {
+        transform.type = sourceEntry.type;
+      } else {
+        transform.kind = "alias";
+        transform.type = sourceName;
+      }
+    }
+
+    let values = definition.values ?? Object.keys(sourceEntry.entries ?? {});
+    const prefix = definition.prefix ?? (sourceName.toUpperCase() + "_");
+    /** @type {StringMap} */
+    const newNames = {};
+    if (!values?.length) {
+      values = Object.values(sourceEntries)
+        .filter(e => !Array.isArray(e)
+          && e.kind === "def"
+          && !e.parameters
+          && e.name.startsWith(prefix))
+        .map(e => /** @type {ApiEntry}*/(e).name);
+      const newPrefix = definition.newPrefix;
+      if (newPrefix) {
+        const oldPrefixLen = prefix.length;
+        values.forEach(n => newNames[n] = newPrefix + n.slice(oldPrefixLen));
+      }
+    }
+    const after = transform.after;
+    if (after) context.includeAfter(targetName, after);
+
+    for (const value of values) {
+      const valueSource = sourceEntries[value];
+      const valueTransform = file.transform[value];
+      delete file.transform[value];
+      /** @type {ApiEntryTransform & ApiEntry} */
+      const valueTarget = {
+        kind: "var",
+        name: newNames[value] ?? transformName(value, context),
+        constexpr: true,
+        type: valueType,
+        after: targetName,
+      };
+      combineObject(valueTarget, valueTransform || {});
+      if (!valueTarget.doc) {
+        // @ts-ignore
+        const sourceDoc = valueSource?.doc ?? sourceEntry.entries?.[value]?.doc;
+        valueTarget.doc = sourceDoc || (value.startsWith(prefix) ? value.slice(prefix.length) : valueTarget.name);
+      }
+      context.addName(value, valueTarget.name);
+      if (!valueSource) valueTarget.sourceName = value;
+      file.transform[value] = valueTarget;
+    }
+    delete transform.enum;
   }
 }
 
@@ -1440,87 +1505,6 @@ function getEnumDefinition(entry) {
     case "boolean": return {};
     case "object": return enumDef;
     default: return undefined;
-  }
-}
-
-/**
- * 
- * @param {ApiEntries}            sourceEntries 
- * @param {ApiFileTransform}      file,
- * @param {ApiContext}            context 
- */
-function expandEnumerations(sourceEntries, file, context) {
-  for (const sourceType of Object.values(sourceEntries)) {
-    if (Array.isArray(sourceType) || sourceType.kind !== "enum") continue;
-    const transform = file.transform[sourceType.name];
-    if (!transform) {
-      file.transform[sourceType.name] = { enum: true };
-      continue;
-    }
-    if (!transform.kind && !transform.enum) transform.enum = true;
-  }
-  for (const [sourceName, transform] of Object.entries(file.transform)) {
-    const sourceEntry = sourceEntries[sourceName];
-    if (Array.isArray(sourceEntry)) continue;
-
-    const definition = getEnumDefinition(transform);
-    if (!definition) continue;
-
-    const targetName = transform.name ?? transformName(sourceName, context);
-
-    const valueType = definition.valueType ?? targetName;
-    if (!transform.kind && !transform.type) {
-      if (sourceEntry.kind === 'alias') {
-        transform.type = sourceEntry.type;
-      } else {
-        transform.kind = "alias";
-        transform.type = sourceName;
-      }
-    }
-
-    let values = definition.values ?? Object.keys(sourceEntry.entries ?? {});
-    const prefix = definition.prefix ?? (sourceName.toUpperCase() + "_");
-    /** @type {StringMap} */
-    const newNames = {};
-    if (!values?.length) {
-      values = Object.values(sourceEntries)
-        .filter(e => !Array.isArray(e)
-          && e.kind === "def"
-          && !e.parameters
-          && e.name.startsWith(prefix))
-        .map(e => /** @type {ApiEntry}*/(e).name);
-      const newPrefix = definition.newPrefix;
-      if (newPrefix) {
-        const oldPrefixLen = prefix.length;
-        values.forEach(n => newNames[n] = newPrefix + n.slice(oldPrefixLen));
-      }
-    }
-    const after = transform.after;
-    if (after) context.includeAfter(targetName, after);
-
-    for (const value of values) {
-      const valueSource = sourceEntries[value];
-      const valueTransform = file.transform[value];
-      delete file.transform[value];
-      /** @type {ApiEntryTransform & ApiEntry} */
-      const valueTarget = {
-        kind: "var",
-        name: newNames[value] ?? transformName(value, context),
-        constexpr: true,
-        type: valueType,
-        after: targetName,
-      };
-      combineObject(valueTarget, valueTransform || {});
-      if (!valueTarget.doc) {
-        // @ts-ignore
-        const sourceDoc = valueSource?.doc ?? sourceEntry.entries?.[value]?.doc;
-        valueTarget.doc = sourceDoc || (value.startsWith(prefix) ? value.slice(prefix.length) : valueTarget.name);
-      }
-      context.addName(value, valueTarget.name);
-      if (!valueSource) valueTarget.sourceName = value;
-      file.transform[value] = valueTarget;
-    }
-    delete transform.enum;
   }
 }
 
