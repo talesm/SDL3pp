@@ -81,6 +81,9 @@ struct Palette;
 
 using PaletteRaw = SDL_Palette*;
 
+// Forward decl
+struct PaletteRef;
+
 /**
  * Safely wrap Palette for non owning parameters
  */

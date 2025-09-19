@@ -3227,7 +3227,6 @@ const transform = {
             ctors: ["SDL_CreateProperties"],
             free: "SDL_DestroyProperties",
             rawName: "PropertiesID",
-            shared: true,
             enableAutoMethods: false,
           },
           entries: {

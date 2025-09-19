@@ -42,6 +42,9 @@ struct Properties;
 
 using PropertiesID = SDL_PropertiesID;
 
+// Forward decl
+struct PropertiesRef;
+
 /**
  * Safely wrap Properties for non owning parameters
  */
@@ -84,9 +87,13 @@ public:
   {
   }
 
-  constexpr Properties(const Properties& other) {}
+  constexpr Properties(const Properties& other) = delete;
 
   constexpr Properties(Properties&& other) { other.m_resource = 0; }
+
+  constexpr Properties(const PropertiesRef& other) = delete;
+
+  constexpr Properties(PropertiesRef&& other) = delete;
 
   /**
    * Create a group of properties.

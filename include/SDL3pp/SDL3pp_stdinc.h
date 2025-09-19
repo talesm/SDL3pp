@@ -43,6 +43,9 @@ struct Environment;
 
 using EnvironmentRaw = SDL_Environment*;
 
+// Forward decl
+struct EnvironmentRef;
+
 /**
  * Safely wrap Environment for non owning parameters
  */
@@ -68,6 +71,9 @@ struct EnvironmentParam
 struct IConv;
 
 using IConvRaw = SDL_iconv_t;
+
+// Forward decl
+struct IConvRef;
 
 /**
  * Safely wrap IConv for non owning parameters
@@ -883,6 +889,10 @@ public:
   constexpr Environment(const Environment& other) = delete;
 
   constexpr Environment(Environment&& other) { other.m_resource = nullptr; }
+
+  constexpr Environment(const EnvironmentRef& other) = delete;
+
+  constexpr Environment(EnvironmentRef&& other) = delete;
 
   /**
    * Create a set of environment variables
@@ -5633,6 +5643,10 @@ public:
   constexpr IConv(const IConv& other) = delete;
 
   constexpr IConv(IConv&& other) { other.m_resource = nullptr; }
+
+  constexpr IConv(const IConvRef& other) = delete;
+
+  constexpr IConv(IConvRef&& other) = delete;
 
   /**
    * This function allocates a context for the specified character set

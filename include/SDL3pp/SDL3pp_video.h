@@ -44,6 +44,9 @@ struct Window;
 
 using WindowRaw = SDL_Window*;
 
+// Forward decl
+struct WindowRef;
+
 /**
  * Safely wrap Window for non owning parameters
  */
@@ -69,6 +72,9 @@ struct WindowParam
 struct GLContext;
 
 using GLContextRaw = SDL_GLContext*;
+
+// Forward decl
+struct GLContextRef;
 
 /**
  * Safely wrap GLContext for non owning parameters
@@ -610,6 +616,10 @@ public:
   constexpr Window(const Window& other) = delete;
 
   constexpr Window(Window&& other) { other.m_resource = nullptr; }
+
+  constexpr Window(const WindowRef& other) = delete;
+
+  constexpr Window(WindowRef&& other) = delete;
 
   /**
    * Create a window with the specified dimensions and flags.
@@ -2815,6 +2825,10 @@ public:
   constexpr GLContext(const GLContext& other) = delete;
 
   constexpr GLContext(GLContext&& other) { other.m_resource = nullptr; }
+
+  constexpr GLContext(const GLContextRef& other) = delete;
+
+  constexpr GLContext(GLContextRef&& other) = delete;
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.

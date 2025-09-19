@@ -2460,6 +2460,11 @@
           "type": "SDL_PropertiesID",
           "doc": ""
         },
+        "PropertiesRef-forward": {
+          "name": "PropertiesRef",
+          "kind": "forward",
+          "doc": ""
+        },
         "PropertiesParam": {
           "name": "PropertiesParam",
           "kind": "struct",
@@ -2581,7 +2586,9 @@
                     "type": "const Properties &"
                   }
                 ],
-                "hints": {},
+                "hints": {
+                  "delete": true
+                },
                 "name": "Properties",
                 "doc": ""
               },
@@ -2600,6 +2607,38 @@
                     "m_resource(other.m_resource)"
                   ],
                   "body": "other.m_resource = 0;"
+                },
+                "name": "Properties",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const PropertiesRef &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Properties",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "PropertiesRef &&"
+                  }
+                ],
+                "hints": {
+                  "delete": true
                 },
                 "name": "Properties",
                 "doc": ""
@@ -4929,6 +4968,11 @@
           "type": "SDL_Window *",
           "doc": ""
         },
+        "WindowRef-forward": {
+          "name": "WindowRef",
+          "kind": "forward",
+          "doc": ""
+        },
         "WindowParam": {
           "name": "WindowParam",
           "kind": "struct",
@@ -5001,6 +5045,11 @@
           "name": "GLContextRaw",
           "kind": "alias",
           "type": "SDL_GLContext *",
+          "doc": ""
+        },
+        "GLContextRef-forward": {
+          "name": "GLContextRef",
+          "kind": "forward",
           "doc": ""
         },
         "GLContextParam": {
@@ -5535,6 +5584,38 @@
                     "m_resource(other.m_resource)"
                   ],
                   "body": "other.m_resource = nullptr;"
+                },
+                "name": "Window",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const WindowRef &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Window",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "WindowRef &&"
+                  }
+                ],
+                "hints": {
+                  "delete": true
                 },
                 "name": "Window",
                 "doc": ""
@@ -7082,6 +7163,38 @@
                     "m_resource(other.m_resource)"
                   ],
                   "body": "other.m_resource = nullptr;"
+                },
+                "name": "GLContext",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const GLContextRef &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "GLContext",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "GLContextRef &&"
+                  }
+                ],
+                "hints": {
+                  "delete": true
                 },
                 "name": "GLContext",
                 "doc": ""
@@ -10238,6 +10351,11 @@
           "name": "PaletteRaw",
           "kind": "alias",
           "type": "SDL_Palette *",
+          "doc": ""
+        },
+        "PaletteRef-forward": {
+          "name": "PaletteRef",
+          "kind": "forward",
           "doc": ""
         },
         "PaletteParam": {
@@ -16209,6 +16327,11 @@
           "type": "SDL_Surface *",
           "doc": ""
         },
+        "SurfaceRef-forward": {
+          "name": "SurfaceRef",
+          "kind": "forward",
+          "doc": ""
+        },
         "SurfaceParam": {
           "name": "SurfaceParam",
           "kind": "struct",
@@ -19412,6 +19535,11 @@
           "type": "SDL_IOStream *",
           "doc": ""
         },
+        "IOStreamRef-forward": {
+          "name": "IOStreamRef",
+          "kind": "forward",
+          "doc": ""
+        },
         "IOStreamParam": {
           "name": "IOStreamParam",
           "kind": "struct",
@@ -19647,6 +19775,38 @@
                     "m_resource(other.m_resource)"
                   ],
                   "body": "other.m_resource = nullptr;"
+                },
+                "name": "IOStream",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const IOStreamRef &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "IOStream",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "IOStreamRef &&"
+                  }
+                ],
+                "hints": {
+                  "delete": true
                 },
                 "name": "IOStream",
                 "doc": ""
@@ -21533,6 +21693,11 @@
           "type": "SDL_Environment *",
           "doc": ""
         },
+        "EnvironmentRef-forward": {
+          "name": "EnvironmentRef",
+          "kind": "forward",
+          "doc": ""
+        },
         "EnvironmentParam": {
           "name": "EnvironmentParam",
           "kind": "struct",
@@ -21605,6 +21770,11 @@
           "name": "IConvRaw",
           "kind": "alias",
           "type": "SDL_iconv_t *",
+          "doc": ""
+        },
+        "IConvRef-forward": {
+          "name": "IConvRef",
+          "kind": "forward",
           "doc": ""
         },
         "IConvParam": {
@@ -22511,6 +22681,38 @@
                     "m_resource(other.m_resource)"
                   ],
                   "body": "other.m_resource = nullptr;"
+                },
+                "name": "Environment",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const EnvironmentRef &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Environment",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "EnvironmentRef &&"
+                  }
+                ],
+                "hints": {
+                  "delete": true
                 },
                 "name": "Environment",
                 "doc": ""
@@ -25576,6 +25778,38 @@
                     "m_resource(other.m_resource)"
                   ],
                   "body": "other.m_resource = nullptr;"
+                },
+                "name": "IConv",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const IConvRef &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "IConv",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "IConvRef &&"
+                  }
+                ],
+                "hints": {
+                  "delete": true
                 },
                 "name": "IConv",
                 "doc": ""

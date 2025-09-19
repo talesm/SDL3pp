@@ -227,6 +227,11 @@ export interface ResourceDefinition {
    * Enable const parameters
    */
   enableConstParam?: boolean
+
+  /**
+   * Enable ref type. Default to true if non shared and owning !== false
+   */
+  ref?: boolean
 }
 
 export interface ApiLock extends ApiEntryTransform {

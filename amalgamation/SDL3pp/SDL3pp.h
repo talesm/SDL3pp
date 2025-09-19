@@ -8050,6 +8050,9 @@ struct Palette;
 
 using PaletteRaw = SDL_Palette*;
 
+// Forward decl
+struct PaletteRef;
+
 /**
  * Safely wrap Palette for non owning parameters
  */
@@ -10918,6 +10921,9 @@ struct Properties;
 
 using PropertiesID = SDL_PropertiesID;
 
+// Forward decl
+struct PropertiesRef;
+
 /**
  * Safely wrap Properties for non owning parameters
  */
@@ -10960,9 +10966,13 @@ public:
   {
   }
 
-  constexpr Properties(const Properties& other) {}
+  constexpr Properties(const Properties& other) = delete;
 
   constexpr Properties(Properties&& other) { other.m_resource = 0; }
+
+  constexpr Properties(const PropertiesRef& other) = delete;
+
+  constexpr Properties(PropertiesRef&& other) = delete;
 
   /**
    * Create a group of properties.
@@ -11740,6 +11750,9 @@ struct Environment;
 
 using EnvironmentRaw = SDL_Environment*;
 
+// Forward decl
+struct EnvironmentRef;
+
 /**
  * Safely wrap Environment for non owning parameters
  */
@@ -11765,6 +11778,9 @@ struct EnvironmentParam
 struct IConv;
 
 using IConvRaw = SDL_iconv_t;
+
+// Forward decl
+struct IConvRef;
 
 /**
  * Safely wrap IConv for non owning parameters
@@ -12580,6 +12596,10 @@ public:
   constexpr Environment(const Environment& other) = delete;
 
   constexpr Environment(Environment&& other) { other.m_resource = nullptr; }
+
+  constexpr Environment(const EnvironmentRef& other) = delete;
+
+  constexpr Environment(EnvironmentRef&& other) = delete;
 
   /**
    * Create a set of environment variables
@@ -17331,6 +17351,10 @@ public:
 
   constexpr IConv(IConv&& other) { other.m_resource = nullptr; }
 
+  constexpr IConv(const IConvRef& other) = delete;
+
+  constexpr IConv(IConvRef&& other) = delete;
+
   /**
    * This function allocates a context for the specified character set
    * conversion.
@@ -18512,6 +18536,9 @@ struct IOStream;
 
 using IOStreamRaw = SDL_IOStream*;
 
+// Forward decl
+struct IOStreamRef;
+
 /**
  * Safely wrap IOStream for non owning parameters
  */
@@ -18620,6 +18647,10 @@ public:
   constexpr IOStream(const IOStream& other) = delete;
 
   constexpr IOStream(IOStream&& other) { other.m_resource = nullptr; }
+
+  constexpr IOStream(const IOStreamRef& other) = delete;
+
+  constexpr IOStream(IOStreamRef&& other) = delete;
 
   /**
    * Use this function to create a new IOStream structure for reading from
@@ -24165,6 +24196,9 @@ constexpr Rect::operator FRect() const
 struct Surface;
 
 using SurfaceRaw = SDL_Surface*;
+
+// Forward decl
+struct SurfaceRef;
 
 /**
  * Safely wrap Surface for non owning parameters

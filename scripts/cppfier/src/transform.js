@@ -679,6 +679,9 @@ function expandTypes(sourceEntries, file, context) {
     const paramType = `${targetName}Param`;
     const constParamType = resourceEntry.enableConstParam ? `${targetName}ConstParam` : paramType;
     if (!targetEntry.kind) targetEntry.kind = 'struct';
+    const hasShared = !!resourceEntry.shared;
+    const hasRef = resourceEntry.ref !== false;
+    const refName = `${targetName}Ref`;
 
     const type = targetEntry.type ?? sourceName;
     const isStruct = sourceEntry.kind === "struct" || (sourceEntry.kind === "alias" && sourceEntry.type.startsWith('struct '));
@@ -692,6 +695,7 @@ function expandTypes(sourceEntries, file, context) {
     const referenceAliases = [];
     referenceAliases.push({ name: targetName, kind: "forward" });
     referenceAliases.push({ name: rawName, kind: "alias", type: pointerType });
+    if (hasRef) referenceAliases.push({ name: refName, kind: "forward" });
 
     referenceAliases.push({
       name: paramType,
@@ -780,7 +784,7 @@ function expandTypes(sourceEntries, file, context) {
     context.addReturnType(pointerType, rawName);
     context.addReturnType(constPointerType, constRawName);
 
-    /** @type {Dict<ApiEntryTransform | ApiEntryBase[]>} */
+    /** @type {ApiEntryTransformMap} */
     const ctors = {
       [targetName]: [{
         kind: "function",
@@ -812,7 +816,7 @@ function expandTypes(sourceEntries, file, context) {
         },
       }]
     };
-    if (resourceEntry.shared) {
+    if (hasShared) {
       /** @type {EntryHint} */
       const copyCtorHints = {};
       ctors[targetName][2].hints = copyCtorHints;
@@ -829,6 +833,21 @@ function expandTypes(sourceEntries, file, context) {
           doc: "Safely borrows the resource"
         };
       }
+    } else if (hasRef) {
+      // @ts-ignore
+      insertEntry(ctors, [{
+        kind: "function",
+        type: "",
+        constexpr: true,
+        parameters: [{ name: "other", type: `const ${refName} &` }],
+        hints: { delete: true },
+      }, {
+        kind: "function",
+        type: "",
+        constexpr: true,
+        parameters: [{ name: "other", type: `${refName} &&` }],
+        hints: { delete: true },
+      }], targetName);
     }
     const subEntries = targetEntry.entries || {};
 
@@ -992,17 +1011,14 @@ function expandTypes(sourceEntries, file, context) {
       self: "m_resource",
       super: "m_resource",
       private: true,
-
     });
 
     /** @type {ApiEntryTransform[]} */
     const derivedEntries = [
     ];
 
-    const includeAfterKey = targetName;
-
     context.includeBefore(referenceAliases, '__begin');
-    context.includeAfter(derivedEntries, includeAfterKey);
+    context.includeAfter(derivedEntries, targetName);
     delete targetEntry.resource;
   }
 

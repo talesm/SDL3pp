@@ -40,6 +40,9 @@ struct Surface;
 
 using SurfaceRaw = SDL_Surface*;
 
+// Forward decl
+struct SurfaceRef;
+
 /**
  * Safely wrap Surface for non owning parameters
  */

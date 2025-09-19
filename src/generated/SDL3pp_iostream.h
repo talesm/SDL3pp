@@ -25,6 +25,9 @@ struct IOStream;
 
 using IOStreamRaw = SDL_IOStream*;
 
+// Forward decl
+struct IOStreamRef;
+
 /**
  * Safely wrap IOStream for non owning parameters
  */
@@ -133,6 +136,10 @@ public:
   constexpr IOStream(const IOStream& other) = delete;
 
   constexpr IOStream(IOStream&& other) { other.m_resource = nullptr; }
+
+  constexpr IOStream(const IOStreamRef& other) = delete;
+
+  constexpr IOStream(IOStreamRef&& other) = delete;
 
   /**
    * Use this function to create a new IOStream structure for reading from
