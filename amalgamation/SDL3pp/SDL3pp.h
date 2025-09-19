@@ -2595,7 +2595,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * show up in a system control panel that lets the user adjust the volume on
  * specific audio streams instead of using one giant master volume slider.
  * Note that this is unrelated to the icon used by the windowing system, which
- * may be set with SDL_SetWindowIcon (or via desktop file on Wayland).
+ * may be set with Window.SetIcon (or via desktop file on Wayland).
  *
  * Setting this to "" or leaving it unset will have SDL use a reasonable
  * default, "applications-games", which is likely to be installed. See
@@ -2956,10 +2956,10 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_FILE_DIALOG_DRIVER "SDL_FILE_DIALOG_DRIVER"
 
 /**
- * Override for SDL_GetDisplayUsableBounds().
+ * Override for Display.GetUsableBounds().
  *
  * If set, this hint will override the expected results for
- * SDL_GetDisplayUsableBounds() for display index 0. Generally you don't want
+ * Display.GetUsableBounds() for display index 0. Generally you don't want
  * to do this, but this allows an embedded system to request that some of the
  * screen be reserved for other uses when paired with a well-behaved
  * application.
@@ -3121,7 +3121,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * - "X": Enable 3D acceleration, using X where X is one of the valid
  *   rendering drivers. (e.g. "direct3d", "opengl", etc.)
  *
- * This hint should be set before calling SDL_GetWindowSurface()
+ * This hint should be set before calling Window.GetSurface()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -5038,11 +5038,11 @@ inline bool ClearError() { return SDL_ClearError(); }
  * particular OpenGL ES implementation, e.g ANGLE, or emulator, e.g. those
  * from ARM, Imagination or Qualcomm. - Resolving OpenGL ES function addresses
  * at link time by linking with the OpenGL ES library instead of querying them
- * at run time with SDL_GL_GetProcAddress().
+ * at run time with GL_GetProcAddress().
  *
  * Caution: for an application to work with the default behaviour across
  * different OpenGL drivers it must query the OpenGL ES function addresses at
- * run time using SDL_GL_GetProcAddress().
+ * run time using GL_GetProcAddress().
  *
  * This variable is ignored on most platforms because OpenGL ES is native or
  * not supported.
@@ -5383,7 +5383,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * inhibiting the screensaver or other power-saving features.
  *
  * This hint lets you specify the "activity name" sent to the OS when
- * SDL_DisableScreenSaver() is used (or the screensaver is automatically
+ * DisableScreenSaver() is used (or the screensaver is automatically
  * disabled). The contents of this hint are used when the screensaver is
  * disabled. You should use a string that describes what your program is doing
  * (and, therefore, why the screensaver is disabled). For example, "Playing a
@@ -5392,7 +5392,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * Setting this to "" or leaving it unset will have SDL use a reasonable
  * default: "Playing a game" or something similar.
  *
- * This hint should be set before calling SDL_DisableScreenSaver()
+ * This hint should be set before calling DisableScreenSaver()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -5590,7 +5590,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * When this hint is set, displays with matching name strings will be
  * prioritized in the list of displays, as exposed by calling
- * SDL_GetDisplays(), with the first listed becoming the primary display. The
+ * Display.GetAll(), with the first listed becoming the primary display. The
  * naming convention can vary depending on the environment, but it is usually
  * a connector name (e.g. 'DP-1', 'DP-2', 'HDMI-A-1',etc...).
  *
@@ -5700,10 +5700,10 @@ inline bool ClearError() { return SDL_ClearError(); }
  * The variable can be set to the following values:
  *
  * - "0": Disable Spaces support (FULLSCREEN_DESKTOP won't use them and
- *   SDL_WINDOW_RESIZABLE windows won't offer the "fullscreen" button on their
+ *   WINDOW_RESIZABLE windows won't offer the "fullscreen" button on their
  *   titlebars).
  * - "1": Enable Spaces support (FULLSCREEN_DESKTOP will use them and
- *   SDL_WINDOW_RESIZABLE windows will offer the "fullscreen" button on their
+ *   WINDOW_RESIZABLE windows will offer the "fullscreen" button on their
  *   titlebars). (default)
  *
  * This hint should be set before creating a window.
@@ -5723,7 +5723,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * - "1": The menu will be accessible when the window is in a fullscreen
  *   space.
  * - "auto": The menu will be hidden if fullscreen mode was toggled on
- *   programmatically via `SDL_SetWindowFullscreen()`, and accessible if
+ *   programmatically via `Window.SetFullscreen()`, and accessible if
  *   fullscreen was entered via the "fullscreen" button on the window title
  *   bar. (default)
  *
@@ -5776,7 +5776,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * return of the requesting function. Setting this hint will cause such
  * operations to block after every call until the pending operation has
  * completed. Setting this to '1' is the equivalent of calling
- * SDL_SyncWindow() after every function call.
+ * Window.Sync() after every function call.
  *
  * Be aware that amount of time spent blocking while waiting for window
  * operations to complete can be quite lengthy, as animations may have to
@@ -6264,13 +6264,13 @@ inline bool ClearError() { return SDL_ClearError(); }
 
 /**
  * A variable controlling whether the window is activated when the
- * SDL_RaiseWindow function is called.
+ * Window.Raise function is called.
  *
  * The variable can be set to the following values:
  *
- * - "0": The window is not activated when the SDL_RaiseWindow function is
+ * - "0": The window is not activated when the Window.Raise function is
  *   called.
- * - "1": The window is activated when the SDL_RaiseWindow function is called.
+ * - "1": The window is activated when the Window.Raise function is called.
  *   (default)
  *
  * This hint can be set anytime.
@@ -6281,13 +6281,13 @@ inline bool ClearError() { return SDL_ClearError(); }
 
 /**
  * A variable controlling whether the window is activated when the
- * SDL_ShowWindow function is called.
+ * Window.Show function is called.
  *
  * The variable can be set to the following values:
  *
- * - "0": The window is not activated when the SDL_ShowWindow function is
+ * - "0": The window is not activated when the Window.Show function is
  *   called.
- * - "1": The window is activated when the SDL_ShowWindow function is called.
+ * - "1": The window is activated when the Window.Show function is called.
  *   (default)
  *
  * This hint can be set anytime.
@@ -6535,10 +6535,10 @@ inline bool ClearError() { return SDL_ClearError(); }
 /**
  * A variable specifying the type of an X11 window.
  *
- * During SDL_CreateWindow, SDL uses the _NET_WM_WINDOW_TYPE X11 property to
+ * During Window.Window, SDL uses the _NET_WM_WINDOW_TYPE X11 property to
  * report to the window manager the type of window it wants to create. This
- * might be set to various things if SDL_WINDOW_TOOLTIP or
- * SDL_WINDOW_POPUP_MENU, etc, were specified. For "normal" windows that
+ * might be set to various things if WINDOW_TOOLTIP or
+ * WINDOW_POPUP_MENU, etc, were specified. For "normal" windows that
  * haven't set a specific type, this hint can be used to specify a custom
  * type. For example, a dock window might set this to
  * "_NET_WM_WINDOW_TYPE_DOCK".

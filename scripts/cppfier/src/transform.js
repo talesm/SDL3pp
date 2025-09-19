@@ -428,7 +428,7 @@ function expandTypes(sourceEntries, file, context) {
     const type = isStruct || !sourceEntry.type?.startsWith("struct ") ? sourceType : sourceType + " *";
     const constexpr = transform.constexpr !== false;
     const paramName = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
-    const rawType = `${targetType}Raw`;
+    const rawType = wrapper.rawName || `${targetType}Raw`;
     const paramType = wrapper.paramType ?? (isStruct ? `${rawType} *` : targetType);
     const constParamType = wrapper.paramType ?? (isStruct ? `const ${rawType} &` : rawType);
     const attribute = "m_" + paramName;

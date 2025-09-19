@@ -1915,29 +1915,29 @@ const transform = {
           "name": "Keycode::Keycode"
         },
         "SDL_StartTextInput": {
-          name: "WindowRef::StartTextInput",
+          name: "Window::StartTextInput",
         },
         "SDL_StartTextInputWithProperties": {
-          name: "WindowRef::StartTextInput",
+          name: "Window::StartTextInput",
         },
         "SDL_TextInputActive": {
-          name: "WindowRef::IsTextInputActive",
+          name: "Window::IsTextInputActive",
           immutable: true,
         },
         "SDL_StopTextInput": {
-          name: "WindowRef::StopTextInput",
+          name: "Window::StopTextInput",
         },
         "SDL_ClearComposition": {
-          name: "WindowRef::ClearComposition",
+          name: "Window::ClearComposition",
         },
         "SDL_SetTextInputArea": {
-          name: "WindowRef::SetTextInputArea",
+          name: "Window::SetTextInputArea",
         },
         "SDL_GetTextInputArea": {
-          name: "WindowRef::GetTextInputArea",
+          name: "Window::GetTextInputArea",
         },
         "SDL_ScreenKeyboardShown": {
-          name: "WindowRef::IsScreenKeyboardShown",
+          name: "Window::IsScreenKeyboardShown",
           immutable: true,
         }
       }
@@ -2595,16 +2595,16 @@ const transform = {
           parameters: []
         },
         "SDL_WarpMouseInWindow": {
-          name: "WindowRef::WarpMouse"
+          name: "Window::WarpMouse"
         },
         "SDL_WarpMouseGlobal": {
           name: "WarpMouse"
         },
         "SDL_SetWindowRelativeMouseMode": {
-          name: "WindowRef::SetRelativeMouseMode"
+          name: "Window::SetRelativeMouseMode"
         },
         "SDL_GetWindowRelativeMouseMode": {
-          name: "WindowRef::GetRelativeMouseMode",
+          name: "Window::GetRelativeMouseMode",
           immutable: true,
         }
       }
@@ -4840,7 +4840,7 @@ const transform = {
           ]
         },
         "SDL_GetRenderer": {
-          name: "WindowRef::GetRenderer",
+          name: "Window::GetRenderer",
           immutable: true,
         },
       }
@@ -7026,6 +7026,11 @@ const transform = {
       }
     },
     "SDL_video.h": {
+      localIncludes: [
+        "SDL3pp_properties.h",
+        "SDL3pp_rect.h",
+        "SDL3pp_surface.h",
+      ],
       includeAfter: {
         "__begin": [
           {
@@ -7037,7 +7042,7 @@ const transform = {
             "kind": "forward",
           },
           {
-            "name": "RendererParam",
+            "name": "Renderer",
             "kind": "forward",
           },
           {
@@ -7200,9 +7205,92 @@ const transform = {
           }
         ]
       },
-      resources: {
+      namespacesMap: {
+        "SDL_PROP_GLOBAL_": "prop::Global",
+        "SDL_PROP_DISPLAY_": "prop::Display",
+        "SDL_PROP_WINDOW_": "prop::Window"
+      },
+      transform: {
+        "SDL_DisplayOrientation": { before: "SDL_DisplayID" },
+        "SDL_DisplayMode": { before: "SDL_DisplayID" },
+        "SDL_DisplayID": {
+          name: "Display",
+          wrapper: {
+            attribute: "displayID",
+            rawName: "DisplayID",
+          },
+          entries: {
+            "SDL_GetDisplays": {
+              "kind": "function",
+              "name": "GetAll",
+              "type": "OwnArray<DisplayID>",
+              "parameters": []
+            },
+            "SDL_GetPrimaryDisplay": {
+              "kind": "function",
+              "name": "GetPrimary"
+            },
+            "SDL_GetDisplayProperties": "immutable",
+            "SDL_GetDisplayName": "immutable",
+            "SDL_GetDisplayBounds": {
+              "kind": "function",
+              "type": "Rect",
+              "parameters": [],
+              "immutable": true
+            },
+            "SDL_GetDisplayUsableBounds": {
+              "kind": "function",
+              "type": "Rect",
+              "parameters": [],
+              "immutable": true
+            },
+            "SDL_GetNaturalDisplayOrientation": {
+              "kind": "function",
+              "immutable": true,
+              "name": "GetNaturalOrientation"
+            },
+            "SDL_GetCurrentDisplayOrientation": {
+              "kind": "function",
+              "immutable": true,
+              "name": "GetCurrentOrientation"
+            },
+            "SDL_GetDisplayContentScale": "immutable",
+            "SDL_GetFullscreenDisplayModes": {
+              "kind": "function",
+              "name": "GetFullscreenModes",
+              "immutable": true,
+              "type": "OwnArray<DisplayMode *>",
+              "parameters": []
+            },
+            "SDL_GetClosestFullscreenDisplayMode": {
+              "kind": "function",
+              "name": "GetClosestFullscreenMode",
+              "immutable": true,
+              "type": "DisplayMode",
+              "parameters": [
+                {},
+                {},
+                {},
+                {},
+                {}
+              ]
+            },
+            "SDL_GetDesktopDisplayMode": {
+              "kind": "function",
+              "name": "GetDesktopMode",
+              "immutable": true
+            },
+            "SDL_GetCurrentDisplayMode": {
+              "kind": "function",
+              "name": "GetCurrentMode",
+              "immutable": true
+            },
+            "SDL_GetDisplayForPoint": "function",
+            "SDL_GetDisplayForRect": "function"
+          }
+        },
         "SDL_Window": {
-          free: "SDL_DestroyWindow",
+          resource: { free: "SDL_DestroyWindow" },
           entries: {
             "SDL_CreateWindow": {
               kind: "function",
@@ -7446,141 +7534,9 @@ const transform = {
             },
           }
         },
-        "SDL_GLContext": {
-          type: "SDL_GLContextState",
-          free: "SDL_GL_DestroyContext",
-          ctors: ["SDL_GL_CreateContext"],
-          entries: {
-            "SDL_GL_CreateContext": { name: "Create" },
-            "SDL_GL_MakeCurrent": {
-              "name": "MakeCurrent",
-              "static": false,
-              "parameters": [
-                {
-                  "type": "WindowParam",
-                  "name": "window"
-                }
-              ]
-            },
-            "SDL_GL_DestroyContext": {
-              name: "Destroy",
-              hints: { mayFail: true },
-            },
-          }
-        }
-      },
-      enumerations: {
-        "SDL_GLProfile": {
-          "prefix": "SDL_GL_CONTEXT_PROFILE_"
-        },
-        "SDL_GLContextFlag": {
-          "prefix": "SDL_GL_CONTEXT_",
-          "values": [
-            "SDL_GL_CONTEXT_DEBUG_FLAG",
-            "SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG",
-            "SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG",
-            "SDL_GL_CONTEXT_RESET_ISOLATION_FLAG"
-          ]
-        },
-        "SDL_GLContextReleaseFlag": {
-          "prefix": "SDL_GL_CONTEXT_RELEASE_",
-          "values": [
-            "SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE",
-            "SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH"
-          ]
-        },
-        "SDL_GLContextResetNotification": {
-          "prefix": "SDL_GL_CONTEXT_RESET_",
-          "values": [
-            "SDL_GL_CONTEXT_RESET_NO_NOTIFICATION",
-            "SDL_GL_CONTEXT_RESET_LOSE_CONTEXT"
-          ]
-        }
-      },
-      namespacesMap: {
-        "SDL_PROP_GLOBAL_": "prop::Global",
-        "SDL_PROP_DISPLAY_": "prop::Display",
-        "SDL_PROP_WINDOW_": "prop::Window"
-      },
-      wrappers: {
-        "SDL_DisplayID": {
-          "name": "Display",
-          "attribute": "displayID",
-          "entries": {
-            "SDL_GetDisplays": {
-              "kind": "function",
-              "name": "GetAll",
-              "type": "OwnArray<Display>",
-              "parameters": []
-            },
-            "SDL_GetPrimaryDisplay": {
-              "kind": "function",
-              "name": "GetPrimary"
-            },
-            "SDL_GetDisplayProperties": "immutable",
-            "SDL_GetDisplayName": "immutable",
-            "SDL_GetDisplayBounds": {
-              "kind": "function",
-              "type": "Rect",
-              "parameters": [],
-              "immutable": true
-            },
-            "SDL_GetDisplayUsableBounds": {
-              "kind": "function",
-              "type": "Rect",
-              "parameters": [],
-              "immutable": true
-            },
-            "SDL_GetNaturalDisplayOrientation": {
-              "kind": "function",
-              "immutable": true,
-              "name": "GetNaturalOrientation"
-            },
-            "SDL_GetCurrentDisplayOrientation": {
-              "kind": "function",
-              "immutable": true,
-              "name": "GetCurrentOrientation"
-            },
-            "SDL_GetDisplayContentScale": "immutable",
-            "SDL_GetFullscreenDisplayModes": {
-              "kind": "function",
-              "name": "GetFullscreenModes",
-              "immutable": true,
-              "type": "OwnArray<DisplayMode *>",
-              "parameters": []
-            },
-            "SDL_GetClosestFullscreenDisplayMode": {
-              "kind": "function",
-              "name": "GetClosestFullscreenMode",
-              "immutable": true,
-              "type": "DisplayMode",
-              "parameters": [
-                {},
-                {},
-                {},
-                {},
-                {}
-              ]
-            },
-            "SDL_GetDesktopDisplayMode": {
-              "kind": "function",
-              "name": "GetDesktopMode",
-              "immutable": true
-            },
-            "SDL_GetCurrentDisplayMode": {
-              "kind": "function",
-              "name": "GetCurrentMode",
-              "immutable": true
-            },
-            "SDL_GetDisplayForPoint": "function",
-            "SDL_GetDisplayForRect": "function"
-          }
-        }
-      },
-      transform: {
         "SDL_GetWindows": {
           "kind": "function",
-          "type": "OwnArray<WindowRef>",
+          "type": "OwnArray<WindowRaw>",
           "parameters": []
         },
         "SDL_WINDOW_FULLSCREEN": {
@@ -7707,6 +7663,59 @@ const transform = {
           "kind": "var",
           "constexpr": true,
           "type": "WindowFlags"
+        },
+
+        "SDL_GLProfile": {
+          enum: { prefix: "SDL_GL_CONTEXT_PROFILE_" }
+        },
+        "SDL_GLContextFlag": {
+          enum: {
+            prefix: "SDL_GL_CONTEXT_",
+            values: [
+              "SDL_GL_CONTEXT_DEBUG_FLAG",
+              "SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG",
+              "SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG",
+              "SDL_GL_CONTEXT_RESET_ISOLATION_FLAG"
+            ]
+          }
+        },
+        "SDL_GLContextReleaseFlag": {
+          enum: {
+            prefix: "SDL_GL_CONTEXT_RELEASE_",
+            values: [
+              "SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE",
+              "SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH"
+            ]
+          }
+        },
+        "SDL_GLContextResetNotification": {
+          enum: {
+            prefix: "SDL_GL_CONTEXT_RESET_",
+            values: [
+              "SDL_GL_CONTEXT_RESET_NO_NOTIFICATION",
+              "SDL_GL_CONTEXT_RESET_LOSE_CONTEXT"
+            ]
+          }
+        },
+        "SDL_GLContext": {
+          resource: { free: "SDL_GL_DestroyContext" },
+          entries: {
+            "SDL_GL_CreateContext": { name: "ctor" },
+            "SDL_GL_MakeCurrent": {
+              "name": "MakeCurrent",
+              "static": false,
+              "parameters": [
+                {
+                  "type": "WindowParam",
+                  "name": "window"
+                }
+              ]
+            },
+            "SDL_GL_DestroyContext": {
+              name: "Destroy",
+              hints: { mayFail: true },
+            },
+          }
         },
         "SDL_GL_GetCurrentWindow": {
           type: "WindowRaw"

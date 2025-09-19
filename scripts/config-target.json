@@ -14,7 +14,8 @@
     "SDL_rect.h",
     "SDL_stdinc.h",
     "SDL_surface.h",
-    "SDL_version.h"
+    "SDL_version.h",
+    "SDL_video.h"
   ],
   "api": "scripts/target.json",
   "baseDir": "src/generated/",

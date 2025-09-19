@@ -300,6 +300,11 @@ export interface WrapperDefinition {
    * Param type for generated methods
    */
   paramType?: string
+
+  /**
+   * Name of raw resource type
+   */
+  rawName?: string;
 }
 
 export interface ApiEnumeration extends ApiEntryTransform {
