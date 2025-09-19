@@ -680,7 +680,7 @@ function expandTypes(sourceEntries, file, context) {
     const constParamType = resourceEntry.enableConstParam ? `${targetName}ConstParam` : paramType;
     if (!targetEntry.kind) targetEntry.kind = 'struct';
     const hasShared = !!resourceEntry.shared;
-    const hasRef = resourceEntry.ref !== false;
+    const hasRef = resourceEntry.ref ?? !resourceEntry.shared;
     const refName = `${targetName}Ref`;
 
     const type = targetEntry.type ?? sourceName;
@@ -781,7 +781,13 @@ function expandTypes(sourceEntries, file, context) {
     context.addParamType(pointerType, paramType);
     context.addParamType(constPointerType, resourceEntry.enableConstParam ? constParamType : paramType);
 
-    context.addReturnType(pointerType, rawName);
+    if (hasRef) {
+      context.addReturnType(pointerType, refName);
+    } else if (hasShared) {
+      context.addReturnType(pointerType, targetName);
+    } else {
+      context.addReturnType(pointerType, rawName);
+    }
     context.addReturnType(constPointerType, constRawName);
 
     /** @type {ApiEntryTransformMap} */
@@ -1014,8 +1020,53 @@ function expandTypes(sourceEntries, file, context) {
     });
 
     /** @type {ApiEntryTransform[]} */
-    const derivedEntries = [
-    ];
+    const derivedEntries = [];
+
+    if (hasRef) {
+      if (hasShared) {
+        derivedEntries.push({
+          kind: 'struct',
+          name: refName,
+          type: targetName,
+          doc: `Safe reference for ${targetName}.`,
+          entries: {
+            [refName]: {
+              kind: 'function',
+              type: "",
+              parameters: [{
+                type: paramType,
+                name: "resource"
+              }],
+              hints: { init: [`${targetName}(${targetName}::Borrow(resource))`] }
+            }
+          }
+        });
+      } else {
+        derivedEntries.push({
+          kind: 'struct',
+          name: refName,
+          type: targetName,
+          doc: `Semi-safe reference for ${targetName}.`,
+          entries: {
+            [refName]: {
+              kind: 'function',
+              type: "",
+              parameters: [{
+                type: paramType,
+                name: "resource"
+              }],
+              hints: { init: [`${targetName}(resource.value)`] }
+            },
+            [`~${refName}`]: {
+              kind: 'function',
+              type: "",
+              parameters: [],
+              hints: { body: "release();" }
+            }
+          }
+        });
+      }
+    }
 
     context.includeBefore(referenceAliases, '__begin');
     context.includeAfter(derivedEntries, targetName);
@@ -1226,6 +1277,8 @@ function makeSortedEntryArray(sourceEntries, file, context) {
       if (processedSourceNames.has(name)) {
         checkSubIncludes = false;
         if (transformEntry.kind !== 'function') continue;
+      } else if (transformEntry.kind === 'forward') {
+        checkSubIncludes = false;
       } else processedSourceNames.add(name);
 
 

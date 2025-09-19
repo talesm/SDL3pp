@@ -40,9 +40,6 @@ struct Surface;
 
 using SurfaceRaw = SDL_Surface*;
 
-// Forward decl
-struct SurfaceRef;
-
 /**
  * Safely wrap Surface for non owning parameters
  */
@@ -360,9 +357,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesID GetProperties() const
+  PropertiesRef GetProperties() const
   {
-    return CheckError(SDL_GetSurfaceProperties(m_resource));
+    return {CheckError(SDL_GetSurfaceProperties(m_resource))};
   }
 
   /**
@@ -2055,9 +2052,9 @@ inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesID GetSurfaceProperties(SurfaceConstParam surface)
+inline PropertiesRef GetSurfaceProperties(SurfaceConstParam surface)
 {
-  return CheckError(SDL_GetSurfaceProperties(surface));
+  return {CheckError(SDL_GetSurfaceProperties(surface))};
 }
 
 namespace prop::Surface {
@@ -2867,14 +2864,14 @@ inline Surface ConvertSurface(SurfaceConstParam surface, PixelFormat format)
  * @sa Surface.Convert
  * @sa Surface.Destroy
  */
-inline SurfaceRaw ConvertSurfaceAndColorspace(SurfaceParam surface,
-                                              PixelFormat format,
-                                              PaletteParam palette,
-                                              Colorspace colorspace,
-                                              PropertiesParam props)
+inline Surface ConvertSurfaceAndColorspace(SurfaceParam surface,
+                                           PixelFormat format,
+                                           PaletteParam palette,
+                                           Colorspace colorspace,
+                                           PropertiesParam props)
 {
-  return SDL_ConvertSurfaceAndColorspace(
-    surface, format, palette, colorspace, props);
+  return Surface{SDL_ConvertSurfaceAndColorspace(
+    surface, format, palette, colorspace, props)};
 }
 
 /**

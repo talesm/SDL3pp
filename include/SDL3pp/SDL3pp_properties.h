@@ -155,6 +155,20 @@ public:
 };
 
 /**
+ * Semi-safe reference for Properties.
+ */
+struct PropertiesRef : Properties
+{
+
+  PropertiesRef(PropertiesParam resource)
+    : Properties(resource.value)
+  {
+  }
+
+  ~PropertiesRef() { release(); }
+};
+
+/**
  * SDL property type
  *
  * @since This enum is available since SDL 3.2.0.
@@ -186,9 +200,9 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesID GetGlobalProperties()
+inline PropertiesRef GetGlobalProperties()
 {
-  return CheckError(SDL_GetGlobalProperties());
+  return {CheckError(SDL_GetGlobalProperties())};
 }
 
 /**

@@ -81,9 +81,6 @@ struct Palette;
 
 using PaletteRaw = SDL_Palette*;
 
-// Forward decl
-struct PaletteRef;
-
 /**
  * Safely wrap Palette for non owning parameters
  */
@@ -176,6 +173,8 @@ constexpr Uint8 ALPHA_TRANSPARENT = SDL_ALPHA_TRANSPARENT;
 constexpr float ALPHA_TRANSPARENT_FLOAT = SDL_ALPHA_TRANSPARENT_FLOAT;
 
 /**
+ * Pixel type.
+ *
  * @name PixelTypes
  * @{
  */
@@ -2566,6 +2565,18 @@ public:
   {
     CheckError(SDL_SetPaletteColors(
       m_resource, colors.data(), firstcolor, colors.size()));
+  }
+};
+
+/**
+ * Safe reference for Palette.
+ */
+struct PaletteRef : Palette
+{
+
+  PaletteRef(PaletteParam resource)
+    : Palette(Palette::Borrow(resource))
+  {
   }
 };
 

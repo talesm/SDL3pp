@@ -2734,6 +2734,41 @@
             "private": true
           }
         },
+        "PropertiesRef": {
+          "kind": "struct",
+          "name": "PropertiesRef",
+          "type": "Properties",
+          "doc": "Semi-safe reference for Properties.",
+          "entries": {
+            "PropertiesRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "type": "PropertiesParam",
+                  "name": "resource"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "Properties(resource.value)"
+                ]
+              },
+              "name": "PropertiesRef",
+              "doc": ""
+            },
+            "~PropertiesRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "release();"
+              },
+              "name": "~PropertiesRef",
+              "doc": ""
+            }
+          }
+        },
         "PropertyType": {
           "doc": "SDL property type\n\n@since This enum is available since SDL 3.2.0.",
           "name": "PropertyType",
@@ -2793,7 +2828,7 @@
           "doc": "Get the global SDL properties.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetGlobalProperties",
           "kind": "function",
-          "type": "PropertiesID",
+          "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetGlobalProperties",
           "hints": {
@@ -5286,7 +5321,7 @@
               "doc": "Get the properties associated with a display.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR\n  headroom above the SDR white point. This is for informational and\n  diagnostic purposes only, as not all platforms provide this information\n  at the display level.\n\nOn KMS/DRM:\n\n- `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the \"panel\n  orientation\" property for the display in degrees of clockwise rotation.\n  Note that this is provided only as a hint, and the application is\n  responsible for any coordinate transformations needed to conform to the\n  requested display orientation.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetProperties",
               "kind": "function",
-              "type": "PropertiesID",
+              "type": "PropertiesRef",
               "parameters": [],
               "sourceName": "SDL_GetDisplayProperties",
               "hints": {
@@ -5839,7 +5874,7 @@
               "doc": "Get parent of a window.\n\n@returns the parent of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window",
               "name": "GetParent",
               "kind": "function",
-              "type": "WindowRaw",
+              "type": "WindowRef",
               "parameters": [],
               "sourceName": "SDL_GetWindowParent",
               "hints": {
@@ -5851,7 +5886,7 @@
               "doc": "Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Window.SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the\n  SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn iOS:\n\n- `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when Window.GL_Swap is called.\n- `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated\n  with the window (e.g. the X in /dev/dri/cardX)\n- `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n\nOn OpenVR:\n\n- `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the\n  associated overlay window.\n\nOn Vivante:\n\n- `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn Windows:\n\n- `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window\n- `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window\n- `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with\n  the window\n- `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with\n  the window\n- `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated\n  with the window\n- `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetProperties",
               "kind": "function",
-              "type": "PropertiesID",
+              "type": "PropertiesRef",
               "parameters": [],
               "sourceName": "SDL_GetWindowProperties",
               "hints": {
@@ -6368,7 +6403,7 @@
               "doc": "Get the SDL surface associated with the window.\n\nA new surface will be created with the optimal format for the window, if\nnecessary. This surface will be freed when the window is destroyed. Do not\nfree this surface.\n\nThis surface will be invalidated if the window is resized. After resizing a\nwindow this function must be called again to return a valid surface.\n\nYou may not combine this with 3D or the rendering API on this window.\n\nThis function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`.\n\n@returns the surface associated with the window, or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.DestroySurface\n@sa Window.HasSurface\n@sa Window.UpdateSurface\n@sa Window.UpdateSurfaceRects",
               "name": "GetSurface",
               "kind": "function",
-              "type": "SurfaceRaw",
+              "type": "Surface",
               "parameters": [],
               "sourceName": "SDL_GetWindowSurface"
             },
@@ -6673,7 +6708,7 @@
               "doc": "Get a window from a stored ID.\n\nThe numeric ID is what SDL_WindowEvent references, and is necessary to map\nthese events to specific Window objects.\n\n@param id the ID of the window.\n@returns the window associated with `id` or nullptr if it doesn't exist; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetID",
               "name": "FromID",
               "kind": "function",
-              "type": "WindowRaw",
+              "type": "WindowRef",
               "parameters": [
                 {
                   "name": "id",
@@ -6687,7 +6722,7 @@
               "doc": "Get the window that currently has an input grab enabled.\n\n@returns the window if input is grabbed or nullptr otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.SetMouseGrab\n@sa Window.SetKeyboardGrab",
               "name": "GetGrabbed",
               "kind": "function",
-              "type": "WindowRaw",
+              "type": "WindowRef",
               "parameters": [],
               "sourceName": "SDL_GetGrabbedWindow",
               "static": true
@@ -6751,6 +6786,41 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true
+          }
+        },
+        "WindowRef": {
+          "kind": "struct",
+          "name": "WindowRef",
+          "type": "Window",
+          "doc": "Semi-safe reference for Window.",
+          "entries": {
+            "WindowRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "type": "WindowParam",
+                  "name": "resource"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "Window(resource.value)"
+                ]
+              },
+              "name": "WindowRef",
+              "doc": ""
+            },
+            "~WindowRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "release();"
+              },
+              "name": "~WindowRef",
+              "doc": ""
+            }
           }
         },
         "WindowFlags": {
@@ -7309,6 +7379,41 @@
             "private": true
           }
         },
+        "GLContextRef": {
+          "kind": "struct",
+          "name": "GLContextRef",
+          "type": "GLContext",
+          "doc": "Semi-safe reference for GLContext.",
+          "entries": {
+            "GLContextRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "type": "GLContextParam",
+                  "name": "resource"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "GLContext(resource.value)"
+                ]
+              },
+              "name": "GLContextRef",
+              "doc": ""
+            },
+            "~GLContextRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "release();"
+              },
+              "name": "~GLContextRef",
+              "doc": ""
+            }
+          }
+        },
         "EGLDisplay": {
           "doc": "Opaque type for an EGL display.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "EGLDisplay",
@@ -7793,7 +7898,7 @@
           "doc": "Get the properties associated with a display.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR\n  headroom above the SDR white point. This is for informational and\n  diagnostic purposes only, as not all platforms provide this information\n  at the display level.\n\nOn KMS/DRM:\n\n- `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the \"panel\n  orientation\" property for the display in degrees of clockwise rotation.\n  Note that this is provided only as a hint, and the application is\n  responsible for any coordinate transformations needed to conform to the\n  requested display orientation.\n\n@param displayID the instance ID of the display to query.\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetDisplayProperties",
           "kind": "function",
-          "type": "PropertiesID",
+          "type": "PropertiesRef",
           "parameters": [
             {
               "name": "displayID",
@@ -8872,7 +8977,7 @@
           "doc": "Get a window from a stored ID.\n\nThe numeric ID is what SDL_WindowEvent references, and is necessary to map\nthese events to specific Window objects.\n\n@param id the ID of the window.\n@returns the window associated with `id` or nullptr if it doesn't exist; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetID",
           "name": "GetWindowFromID",
           "kind": "function",
-          "type": "WindowRaw",
+          "type": "WindowRef",
           "parameters": [
             {
               "name": "id",
@@ -8885,7 +8990,7 @@
           "doc": "Get parent of a window.\n\n@param window the window to query.\n@returns the parent of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window",
           "name": "GetWindowParent",
           "kind": "function",
-          "type": "WindowRaw",
+          "type": "WindowRef",
           "parameters": [
             {
               "name": "window",
@@ -8901,7 +9006,7 @@
           "doc": "Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Window.SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the\n  SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn iOS:\n\n- `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when Window.GL_Swap is called.\n- `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated\n  with the window (e.g. the X in /dev/dri/cardX)\n- `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n\nOn OpenVR:\n\n- `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the\n  associated overlay window.\n\nOn Vivante:\n\n- `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn Windows:\n\n- `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window\n- `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window\n- `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with\n  the window\n- `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with\n  the window\n- `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated\n  with the window\n- `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@param window the window to query.\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetWindowProperties",
           "kind": "function",
-          "type": "PropertiesID",
+          "type": "PropertiesRef",
           "parameters": [
             {
               "name": "window",
@@ -9484,7 +9589,7 @@
           "doc": "Get the SDL surface associated with the window.\n\nA new surface will be created with the optimal format for the window, if\nnecessary. This surface will be freed when the window is destroyed. Do not\nfree this surface.\n\nThis surface will be invalidated if the window is resized. After resizing a\nwindow this function must be called again to return a valid surface.\n\nYou may not combine this with 3D or the rendering API on this window.\n\nThis function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`.\n\n@param window the window to query.\n@returns the surface associated with the window, or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.DestroySurface\n@sa Window.HasSurface\n@sa Window.UpdateSurface\n@sa Window.UpdateSurfaceRects",
           "name": "GetWindowSurface",
           "kind": "function",
-          "type": "SurfaceRaw",
+          "type": "Surface",
           "parameters": [
             {
               "name": "window",
@@ -9669,7 +9774,7 @@
           "doc": "Get the window that currently has an input grab enabled.\n\n@returns the window if input is grabbed or nullptr otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.SetMouseGrab\n@sa Window.SetKeyboardGrab",
           "name": "GetGrabbedWindow",
           "kind": "function",
-          "type": "WindowRaw",
+          "type": "WindowRef",
           "parameters": [],
           "sourceName": "SDL_GetGrabbedWindow"
         },
@@ -10351,11 +10456,6 @@
           "name": "PaletteRaw",
           "kind": "alias",
           "type": "SDL_Palette *",
-          "doc": ""
-        },
-        "PaletteRef-forward": {
-          "name": "PaletteRef",
-          "kind": "forward",
           "doc": ""
         },
         "PaletteParam": {
@@ -16327,11 +16427,6 @@
           "type": "SDL_Surface *",
           "doc": ""
         },
-        "SurfaceRef-forward": {
-          "name": "SurfaceRef",
-          "kind": "forward",
-          "doc": ""
-        },
         "SurfaceParam": {
           "name": "SurfaceParam",
           "kind": "struct",
@@ -16852,7 +16947,7 @@
               "doc": "Get the properties associated with a surface.\n\nThe following properties are understood by SDL:\n\n- `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 203 for HDR10 surfaces and 1.0 for floating point surfaces.\n- `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the maximum dynamic range used by the content, in\n  terms of the SDR white point. This defaults to 0.0, which disables tone\n  mapping.\n- `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator\n  used when compressing from a surface with high dynamic range to another\n  with lower dynamic range. Currently this supports \"chrome\", which uses\n  the same tone mapping that Chrome uses for HDR content, the form \"*=N\",\n  where N is a floating point scale factor applied in linear space, and\n  \"none\", which disables tone mapping. This defaults to \"chrome\".\n- `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the\n  left edge of the image, if this surface is being used as a cursor.\n- `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the\n  top edge of the image, if this surface is being used as a cursor.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetProperties",
               "kind": "function",
-              "type": "PropertiesID",
+              "type": "PropertiesRef",
               "parameters": [],
               "sourceName": "SDL_GetSurfaceProperties",
               "hints": {
@@ -18070,7 +18165,7 @@
           "doc": "Get the properties associated with a surface.\n\nThe following properties are understood by SDL:\n\n- `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 203 for HDR10 surfaces and 1.0 for floating point surfaces.\n- `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the maximum dynamic range used by the content, in\n  terms of the SDR white point. This defaults to 0.0, which disables tone\n  mapping.\n- `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator\n  used when compressing from a surface with high dynamic range to another\n  with lower dynamic range. Currently this supports \"chrome\", which uses\n  the same tone mapping that Chrome uses for HDR content, the form \"*=N\",\n  where N is a floating point scale factor applied in linear space, and\n  \"none\", which disables tone mapping. This defaults to \"chrome\".\n- `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the\n  left edge of the image, if this surface is being used as a cursor.\n- `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the\n  top edge of the image, if this surface is being used as a cursor.\n\n@param surface the Surface structure to query.\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetSurfaceProperties",
           "kind": "function",
-          "type": "PropertiesID",
+          "type": "PropertiesRef",
           "parameters": [
             {
               "name": "surface",
@@ -18724,7 +18819,7 @@
           "doc": "Copy an existing surface to a new surface of the specified format and\ncolorspace.\n\nThis function converts an existing surface to a new format and colorspace\nand returns the new surface. This will perform any pixel format and\ncolorspace conversion needed.\n\nIf the original surface has alternate images, the new surface will have a\nreference to them as well.\n\n@param surface the existing Surface structure to convert.\n@param format the new pixel format.\n@param palette an optional palette to use for indexed formats, may be nullptr.\n@param colorspace the new colorspace.\n@param props an Properties with additional color properties, or 0.\n@returns the new Surface structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Convert\n@sa Surface.Destroy",
           "name": "ConvertSurfaceAndColorspace",
           "kind": "function",
-          "type": "SurfaceRaw",
+          "type": "Surface",
           "parameters": [
             {
               "name": "surface",
@@ -19977,7 +20072,7 @@
               "doc": "Get the properties associated with an IOStream.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetProperties",
               "kind": "function",
-              "type": "PropertiesID",
+              "type": "PropertiesRef",
               "parameters": [],
               "sourceName": "SDL_GetIOProperties",
               "hints": {
@@ -20667,6 +20762,41 @@
             "private": true
           }
         },
+        "IOStreamRef": {
+          "kind": "struct",
+          "name": "IOStreamRef",
+          "type": "IOStream",
+          "doc": "Semi-safe reference for IOStream.",
+          "entries": {
+            "IOStreamRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "type": "IOStreamParam",
+                  "name": "resource"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "IOStream(resource.value)"
+                ]
+              },
+              "name": "IOStreamRef",
+              "doc": ""
+            },
+            "~IOStreamRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "release();"
+              },
+              "name": "~IOStreamRef",
+              "doc": ""
+            }
+          }
+        },
         "IOFromFile": {
           "doc": "Use this function to create a new IOStream structure for reading from\nand/or writing to a named file.\n\nThe `mode` string is treated roughly the same as in a call to the C\nlibrary's fopen(), even if SDL doesn't happen to use fopen() behind the\nscenes.\n\nAvailable `mode` strings:\n\n- \"r\": Open a file for reading. The file must exist.\n- \"w\": Create an empty file for writing. If a file with the same name\n  already exists its content is erased and the file is treated as a new\n  empty file.\n- \"a\": Append to a file. Writing operations append data at the end of the\n  file. The file is created if it does not exist.\n- \"r+\": Open a file for update both reading and writing. The file must\n  exist.\n- \"w+\": Create an empty file for both reading and writing. If a file with\n  the same name already exists its content is erased and the file is\n  treated as a new empty file.\n- \"a+\": Open a file for reading and appending. All writing operations are\n  performed at the end of the file, protecting the previous content to be\n  overwritten. You can reposition (fseek, rewind) the internal pointer to\n  anywhere in the file for reading, but writing operations will move it\n  back to the end of file. The file is created if it does not exist.\n\n**NOTE**: In order to open a file as a binary file, a \"b\" character has to\nbe included in the `mode` string. This additional \"b\" character can either\nbe appended at the end of the string (thus making the following compound\nmodes: \"rb\", \"wb\", \"ab\", \"r+b\", \"w+b\", \"a+b\") or be inserted between the\nletter and the \"+\" sign for the mixed modes (\"rb+\", \"wb+\", \"ab+\").\nAdditional characters may follow the sequence, although they should have no\neffect. For example, \"t\" is sometimes appended to make explicit the file is\na text file.\n\nThis function supports Unicode filenames, but they must be encoded in UTF-8\nformat, regardless of the underlying operating system.\n\nIn Android, IOStream.FromFile() can be used to open content:// URIs. As a\nfallback, IOStream.FromFile() will transparently open a matching filename in\nthe app's `assets`.\n\nClosing the IOStream will close SDL's internal file handle.\n\nThe following properties may be set at creation time by SDL:\n\n- `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast\n  to a win32 `HANDLE`, that this IOStream is using to access the\n  filesystem. If the program isn't running on Windows, or SDL used some\n  other method to access the filesystem, this property will not be set.\n- `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a\n  stdio `FILE *`, that this IOStream is using to access the filesystem.\n  If SDL used some other method to access the filesystem, this property\n  will not be set. PLEASE NOTE that if SDL is using a different C runtime\n  than your app, trying to use this pointer will almost certainly result in\n  a crash! This is mostly a problem on Windows; make sure you build SDL and\n  your app with the same compiler and settings to avoid it.\n- `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this\n  IOStream is using to access the filesystem.\n- `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast\n  to an Android NDK `AAsset *`, that this IOStream is using to access\n  the filesystem. If SDL used some other method to access the filesystem,\n  this property will not be set.\n\n@param file a UTF-8 string representing the filename to open.\n@param mode an ASCII string representing the mode to be used for opening\n            the file.\n@returns a pointer to the IOStream structure that is created or nullptr on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Close\n@sa IOStream.Flush\n@sa IOStream.Read\n@sa IOStream.Seek\n@sa IOStream.Tell\n@sa IOStream.Write",
           "name": "IOFromFile",
@@ -20858,7 +20988,7 @@
           "doc": "Get the properties associated with an IOStream.\n\n@param context a pointer to an IOStream structure.\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetIOProperties",
           "kind": "function",
-          "type": "PropertiesID",
+          "type": "PropertiesRef",
           "parameters": [
             {
               "name": "context",
@@ -22875,6 +23005,41 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true
+          }
+        },
+        "EnvironmentRef": {
+          "kind": "struct",
+          "name": "EnvironmentRef",
+          "type": "Environment",
+          "doc": "Semi-safe reference for Environment.",
+          "entries": {
+            "EnvironmentRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "type": "EnvironmentParam",
+                  "name": "resource"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "Environment(resource.value)"
+                ]
+              },
+              "name": "EnvironmentRef",
+              "doc": ""
+            },
+            "~EnvironmentRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "release();"
+              },
+              "name": "~EnvironmentRef",
+              "doc": ""
+            }
           }
         },
         "GetEnvironment": {
@@ -25947,6 +26112,41 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true
+          }
+        },
+        "IConvRef": {
+          "kind": "struct",
+          "name": "IConvRef",
+          "type": "IConv",
+          "doc": "Semi-safe reference for IConv.",
+          "entries": {
+            "IConvRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "type": "IConvParam",
+                  "name": "resource"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "IConv(resource.value)"
+                ]
+              },
+              "name": "IConvRef",
+              "doc": ""
+            },
+            "~IConvRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "release();"
+              },
+              "name": "~IConvRef",
+              "doc": ""
+            }
           }
         },
         "iconv_open": {

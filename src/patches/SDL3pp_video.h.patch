@@ -2,3 +2,55 @@
 <  * @defgroup CategoryVideo Category Video
 ---
 >  * @defgroup CategoryVideo Display and Window Management
+255c255
+<     return CheckError(SDL_GetDisplayProperties(m_displayID));
+---
+>     return {CheckError(SDL_GetDisplayProperties(m_displayID))};
+1129c1129
+<     return CheckError(SDL_GetWindowParent(m_resource));
+---
+>     return {CheckError(SDL_GetWindowParent(m_resource))};
+1253c1253
+<     return CheckError(SDL_GetWindowProperties(m_resource));
+---
+>     return {CheckError(SDL_GetWindowProperties(m_resource))};
+2003c2003
+<   Surface GetSurface() { return SDL_GetWindowSurface(m_resource); }
+---
+>   SurfaceRef GetSurface() { return {SDL_GetWindowSurface(m_resource)}; }
+2488c2488
+<   static WindowRef FromID(WindowID id) { return SDL_GetWindowFromID(id); }
+---
+>   static WindowRef FromID(WindowID id) { return {SDL_GetWindowFromID(id)}; }
+2502c2502
+<   static WindowRef GetGrabbed() { return SDL_GetGrabbedWindow(); }
+---
+>   static WindowRef GetGrabbed() { return {SDL_GetGrabbedWindow()}; }
+3444c3444
+<   return CheckError(SDL_GetDisplayProperties(displayID));
+---
+>   return {CheckError(SDL_GetDisplayProperties(displayID))};
+4454c4454
+<   return SDL_GetWindowFromID(id);
+---
+>   return {SDL_GetWindowFromID(id)};
+4472c4472
+<   return CheckError(SDL_GetWindowParent(window));
+---
+>   return {CheckError(SDL_GetWindowParent(window))};
+4597c4597
+<   return CheckError(SDL_GetWindowProperties(window));
+---
+>   return {CheckError(SDL_GetWindowProperties(window))};
+5400c5400
+< inline Surface GetWindowSurface(WindowParam window)
+---
+> inline SurfaceRef GetWindowSurface(WindowParam window)
+5402c5402
+<   return SDL_GetWindowSurface(window);
+---
+>   return {SDL_GetWindowSurface(window)};
+5637c5637
+< inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
+---
+> inline WindowRef GetGrabbedWindow() { return {SDL_GetGrabbedWindow()}; }

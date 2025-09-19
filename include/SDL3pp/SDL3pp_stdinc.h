@@ -1064,6 +1064,20 @@ public:
 };
 
 /**
+ * Semi-safe reference for Environment.
+ */
+struct EnvironmentRef : Environment
+{
+
+  EnvironmentRef(EnvironmentParam resource)
+    : Environment(resource.value)
+  {
+  }
+
+  ~EnvironmentRef() { release(); }
+};
+
+/**
  * Get the process environment.
  *
  * This is initialized at application start and is not affected by setenv()
@@ -5748,6 +5762,20 @@ public:
     CheckError(SDL_iconv_close(m_resource));
     m_resource = nullptr;
   }
+};
+
+/**
+ * Semi-safe reference for IConv.
+ */
+struct IConvRef : IConv
+{
+
+  IConvRef(IConvParam resource)
+    : IConv(resource.value)
+  {
+  }
+
+  ~IConvRef() { release(); }
 };
 
 /**

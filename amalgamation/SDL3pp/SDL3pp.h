@@ -8050,9 +8050,6 @@ struct Palette;
 
 using PaletteRaw = SDL_Palette*;
 
-// Forward decl
-struct PaletteRef;
-
 /**
  * Safely wrap Palette for non owning parameters
  */
@@ -8145,6 +8142,8 @@ constexpr Uint8 ALPHA_TRANSPARENT = SDL_ALPHA_TRANSPARENT;
 constexpr float ALPHA_TRANSPARENT_FLOAT = SDL_ALPHA_TRANSPARENT_FLOAT;
 
 /**
+ * Pixel type.
+ *
  * @name PixelTypes
  * @{
  */
@@ -10539,6 +10538,18 @@ public:
 };
 
 /**
+ * Safe reference for Palette.
+ */
+struct PaletteRef : Palette
+{
+
+  PaletteRef(PaletteParam resource)
+    : Palette(Palette::Borrow(resource))
+  {
+  }
+};
+
+/**
  * Get the human readable name of a pixel format.
  *
  * @param format the pixel format to query.
@@ -11034,6 +11045,20 @@ public:
 };
 
 /**
+ * Semi-safe reference for Properties.
+ */
+struct PropertiesRef : Properties
+{
+
+  PropertiesRef(PropertiesParam resource)
+    : Properties(resource.value)
+  {
+  }
+
+  ~PropertiesRef() { release(); }
+};
+
+/**
  * SDL property type
  *
  * @since This enum is available since SDL 3.2.0.
@@ -11065,9 +11090,9 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesID GetGlobalProperties()
+inline PropertiesRef GetGlobalProperties()
 {
-  return CheckError(SDL_GetGlobalProperties());
+  return {CheckError(SDL_GetGlobalProperties())};
 }
 
 /**
@@ -12768,6 +12793,20 @@ public:
     SDL_DestroyEnvironment(m_resource);
     m_resource = nullptr;
   }
+};
+
+/**
+ * Semi-safe reference for Environment.
+ */
+struct EnvironmentRef : Environment
+{
+
+  EnvironmentRef(EnvironmentParam resource)
+    : Environment(resource.value)
+  {
+  }
+
+  ~EnvironmentRef() { release(); }
 };
 
 /**
@@ -17458,6 +17497,20 @@ public:
 };
 
 /**
+ * Semi-safe reference for IConv.
+ */
+struct IConvRef : IConv
+{
+
+  IConvRef(IConvParam resource)
+    : IConv(resource.value)
+  {
+  }
+
+  ~IConvRef() { release(); }
+};
+
+/**
  * This function allocates a context for the specified character set
  * conversion.
  *
@@ -18955,9 +19008,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesID GetProperties() const
+  PropertiesRef GetProperties() const
   {
-    return CheckError(SDL_GetIOProperties(m_resource));
+    return {CheckError(SDL_GetIOProperties(m_resource))};
   }
 
   /**
@@ -20248,6 +20301,19 @@ public:
 };
 
 /**
+ * Semi-safe reference for IOStream.
+ */
+struct IOStreamRef : IOStream
+{
+  IOStreamRef(IOStreamParam resource)
+    : IOStream(resource.value)
+  {
+  }
+
+  ~IOStreamRef() { release(); }
+};
+
+/**
  * Use this function to create a new IOStream structure for reading from
  * and/or writing to a named file.
  *
@@ -20552,9 +20618,9 @@ inline void CloseIO(IOStreamRaw context) { CheckError(SDL_CloseIO(context)); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesID GetIOProperties(IOStreamParam context)
+inline PropertiesRef GetIOProperties(IOStreamParam context)
 {
-  return CheckError(SDL_GetIOProperties(context));
+  return {CheckError(SDL_GetIOProperties(context))};
 }
 
 /**
@@ -24197,9 +24263,6 @@ struct Surface;
 
 using SurfaceRaw = SDL_Surface*;
 
-// Forward decl
-struct SurfaceRef;
-
 /**
  * Safely wrap Surface for non owning parameters
  */
@@ -24517,9 +24580,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesID GetProperties() const
+  PropertiesRef GetProperties() const
   {
-    return CheckError(SDL_GetSurfaceProperties(m_resource));
+    return {CheckError(SDL_GetSurfaceProperties(m_resource))};
   }
 
   /**
@@ -26212,9 +26275,9 @@ inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesID GetSurfaceProperties(SurfaceConstParam surface)
+inline PropertiesRef GetSurfaceProperties(SurfaceConstParam surface)
 {
-  return CheckError(SDL_GetSurfaceProperties(surface));
+  return {CheckError(SDL_GetSurfaceProperties(surface))};
 }
 
 namespace prop::Surface {
@@ -27024,14 +27087,14 @@ inline Surface ConvertSurface(SurfaceConstParam surface, PixelFormat format)
  * @sa Surface.Convert
  * @sa Surface.Destroy
  */
-inline SurfaceRaw ConvertSurfaceAndColorspace(SurfaceParam surface,
-                                              PixelFormat format,
-                                              PaletteParam palette,
-                                              Colorspace colorspace,
-                                              PropertiesParam props)
+inline Surface ConvertSurfaceAndColorspace(SurfaceParam surface,
+                                           PixelFormat format,
+                                           PaletteParam palette,
+                                           Colorspace colorspace,
+                                           PropertiesParam props)
 {
-  return SDL_ConvertSurfaceAndColorspace(
-    surface, format, palette, colorspace, props);
+  return Surface{SDL_ConvertSurfaceAndColorspace(
+    surface, format, palette, colorspace, props)};
 }
 
 /**

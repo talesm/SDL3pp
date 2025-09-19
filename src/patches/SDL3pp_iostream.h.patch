@@ -58,6 +58,10 @@
 <    *          information.
 ---
 >    * @throws Error on failure.
+449c449
+<     return CheckError(SDL_GetIOProperties(m_resource));
+---
+>     return {CheckError(SDL_GetIOProperties(m_resource))};
 481c481,486
 <   Sint64 GetSize() const { return CheckError(SDL_GetIOSize(m_resource)); }
 ---
@@ -740,10 +744,16 @@
 ---
 >     if (Sint64 value; SDL_ReadS64BE(get(), &value)) return value;
 >     return {};
-1816a2207,2208
+1354d1743
+< 
+1670c2059
+<   return CheckError(SDL_GetIOProperties(context));
+---
+>   return {CheckError(SDL_GetIOProperties(context))};
+1830a2220,2221
 >  * @warning this is not typesafe! Prefer using print() and println()
 >  *
-1837c2229,2236
+1851c2242,2249
 <   return SDL_IOprintf(context, fmt, ...);
 ---
 >   va_list ap;
@@ -754,17 +764,17 @@
 >   va_end(ap);
 > 
 >   return result;
-1920,1921d2318
+1934,1935d2331
 <  * The data should be freed with free().
 <  *
-1923,1925c2320,2321
+1937,1939c2333,2334
 <  * @param datasize if not nullptr, will store the number of bytes read.
 <  * @returns the data or nullptr on failure; call GetError() for more
 <  *          information.
 ---
 >  * @returns the data.
 >  * @throws Error on failure.
-1934c2330,2335
+1948c2343,2348
 < inline StringResult LoadFile(StringParam file) { return SDL_LoadFile(file); }
 ---
 > inline StringResult LoadFile(StringParam file)
@@ -773,7 +783,7 @@
 >   auto data = static_cast<char*>(SDL_LoadFile(file, &datasize));
 >   return StringResult{CheckError(data), datasize};
 > }
-1935a2337,2354
+1949a2350,2367
 > /**
 >  * Load all the data from a file path.
 >  *
@@ -792,19 +802,19 @@
 >  * @sa IOStream.LoadFile
 >  * @sa SaveFile
 >  */
-1939c2358,2360
+1953c2371,2373
 <   static_assert(false, "Not implemented");
 ---
 >   size_t datasize = 0;
 >   auto data = static_cast<T*>(SDL_LoadFile(file, &datasize));
 >   return OwnArray<T>{CheckError(data), datasize / sizeof(T)};
-1974d2394
+1988d2407
 <  * @param datasize the number of bytes to be written.
-1986c2406
+2000c2419
 <   CheckError(SDL_SaveFile(file, data));
 ---
 >   CheckError(SDL_SaveFile(file, data.data, data.size_bytes));
-2005c2425,2430
+2019c2438,2443
 < inline Uint8 ReadU8(IOStreamParam src) { return CheckError(SDL_ReadU8(src)); }
 ---
 > inline Uint8 ReadU8(IOStreamParam src)
@@ -813,7 +823,7 @@
 >   CheckError(SDL_ReadU8(src, &value));
 >   return value;
 > }
-2023c2448,2453
+2037c2461,2466
 < inline Sint8 ReadS8(IOStreamParam src) { return CheckError(SDL_ReadS8(src)); }
 ---
 > inline Sint8 ReadS8(IOStreamParam src)
@@ -822,73 +832,73 @@
 >   CheckError(SDL_ReadS8(src, &value));
 >   return value;
 > }
-2047c2477,2479
+2061c2490,2492
 <   return CheckError(SDL_ReadU16LE(src));
 ---
 >   Uint16 value;
 >   CheckError(SDL_ReadU16LE(src, &value));
 >   return value;
-2072c2504,2506
+2086c2517,2519
 <   return CheckError(SDL_ReadS16LE(src));
 ---
 >   Sint16 value;
 >   CheckError(SDL_ReadS16LE(src, &value));
 >   return value;
-2097c2531,2533
+2111c2544,2546
 <   return CheckError(SDL_ReadU16BE(src));
 ---
 >   Uint16 value;
 >   CheckError(SDL_ReadU16BE(src, &value));
 >   return value;
-2122c2558,2560
+2136c2571,2573
 <   return CheckError(SDL_ReadS16BE(src));
 ---
 >   Sint16 value;
 >   CheckError(SDL_ReadS16BE(src, &value));
 >   return value;
-2147c2585,2587
+2161c2598,2600
 <   return CheckError(SDL_ReadU32LE(src));
 ---
 >   Uint32 value;
 >   CheckError(SDL_ReadU32LE(src, &value));
 >   return value;
-2172c2612,2614
+2186c2625,2627
 <   return CheckError(SDL_ReadS32LE(src));
 ---
 >   Sint32 value;
 >   CheckError(SDL_ReadS32LE(src, &value));
 >   return value;
-2197c2639,2641
+2211c2652,2654
 <   return CheckError(SDL_ReadU32BE(src));
 ---
 >   Uint32 value;
 >   CheckError(SDL_ReadU32BE(src, &value));
 >   return value;
-2222c2666,2668
+2236c2679,2681
 <   return CheckError(SDL_ReadS32BE(src));
 ---
 >   Sint32 value;
 >   CheckError(SDL_ReadS32BE(src, &value));
 >   return value;
-2247c2693,2695
+2261c2706,2708
 <   return CheckError(SDL_ReadU64LE(src));
 ---
 >   Uint64 value;
 >   CheckError(SDL_ReadU64LE(src, &value));
 >   return value;
-2272c2720,2722
+2286c2733,2735
 <   return CheckError(SDL_ReadS64LE(src));
 ---
 >   Sint64 value;
 >   CheckError(SDL_ReadS64LE(src, &value));
 >   return value;
-2297c2747,2749
+2311c2760,2762
 <   return CheckError(SDL_ReadU64BE(src));
 ---
 >   Uint64 value;
 >   CheckError(SDL_ReadU64BE(src, &value));
 >   return value;
-2322c2774,2776
+2336c2787,2789
 <   return CheckError(SDL_ReadS64BE(src));
 ---
 >   Sint64 value;

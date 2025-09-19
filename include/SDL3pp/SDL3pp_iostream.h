@@ -444,9 +444,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesID GetProperties() const
+  PropertiesRef GetProperties() const
   {
-    return CheckError(SDL_GetIOProperties(m_resource));
+    return {CheckError(SDL_GetIOProperties(m_resource))};
   }
 
   /**
@@ -1737,6 +1737,19 @@ public:
 };
 
 /**
+ * Semi-safe reference for IOStream.
+ */
+struct IOStreamRef : IOStream
+{
+  IOStreamRef(IOStreamParam resource)
+    : IOStream(resource.value)
+  {
+  }
+
+  ~IOStreamRef() { release(); }
+};
+
+/**
  * Use this function to create a new IOStream structure for reading from
  * and/or writing to a named file.
  *
@@ -2041,9 +2054,9 @@ inline void CloseIO(IOStreamRaw context) { CheckError(SDL_CloseIO(context)); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesID GetIOProperties(IOStreamParam context)
+inline PropertiesRef GetIOProperties(IOStreamParam context)
 {
-  return CheckError(SDL_GetIOProperties(context));
+  return {CheckError(SDL_GetIOProperties(context))};
 }
 
 /**

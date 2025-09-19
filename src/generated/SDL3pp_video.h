@@ -250,7 +250,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesID GetProperties() const
+  PropertiesRef GetProperties() const
   {
     return CheckError(SDL_GetDisplayProperties(m_displayID));
   }
@@ -1124,7 +1124,7 @@ public:
    *
    * @sa Window.Window
    */
-  WindowRaw GetParent() const
+  WindowRef GetParent() const
   {
     return CheckError(SDL_GetWindowParent(m_resource));
   }
@@ -1248,7 +1248,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesID GetProperties() const
+  PropertiesRef GetProperties() const
   {
     return CheckError(SDL_GetWindowProperties(m_resource));
   }
@@ -2000,7 +2000,7 @@ public:
    * @sa Window.UpdateSurface
    * @sa Window.UpdateSurfaceRects
    */
-  SurfaceRaw GetSurface() { return SDL_GetWindowSurface(m_resource); }
+  Surface GetSurface() { return SDL_GetWindowSurface(m_resource); }
 
   /**
    * Toggle VSync for the window surface.
@@ -2485,7 +2485,7 @@ public:
    *
    * @sa Window.GetID
    */
-  static WindowRaw FromID(WindowID id) { return SDL_GetWindowFromID(id); }
+  static WindowRef FromID(WindowID id) { return SDL_GetWindowFromID(id); }
 
   /**
    * Get the window that currently has an input grab enabled.
@@ -2499,7 +2499,7 @@ public:
    * @sa Window.SetMouseGrab
    * @sa Window.SetKeyboardGrab
    */
-  static WindowRaw GetGrabbed() { return SDL_GetGrabbedWindow(); }
+  static WindowRef GetGrabbed() { return SDL_GetGrabbedWindow(); }
 
   /**
    * Destroy a window.
@@ -2597,6 +2597,20 @@ public:
    * @since This function is available since SDL 3.2.0.
    */
   void GL_Swap() { CheckError(SDL_GL_SwapWindow(m_resource)); }
+};
+
+/**
+ * Semi-safe reference for Window.
+ */
+struct WindowRef : Window
+{
+
+  WindowRef(WindowParam resource)
+    : Window(resource.value)
+  {
+  }
+
+  ~WindowRef() { release(); }
 };
 
 /**
@@ -2913,6 +2927,20 @@ public:
     CheckError(SDL_GL_DestroyContext(m_resource));
     m_resource = nullptr;
   }
+};
+
+/**
+ * Semi-safe reference for GLContext.
+ */
+struct GLContextRef : GLContext
+{
+
+  GLContextRef(GLContextParam resource)
+    : GLContext(resource.value)
+  {
+  }
+
+  ~GLContextRef() { release(); }
 };
 
 /**
@@ -3411,7 +3439,7 @@ inline Display GetPrimaryDisplay()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesID GetDisplayProperties(DisplayID displayID)
+inline PropertiesRef GetDisplayProperties(DisplayID displayID)
 {
   return CheckError(SDL_GetDisplayProperties(displayID));
 }
@@ -4421,7 +4449,7 @@ inline WindowID GetWindowID(WindowParam window)
  *
  * @sa Window.GetID
  */
-inline WindowRaw GetWindowFromID(WindowParam id)
+inline WindowRef GetWindowFromID(WindowParam id)
 {
   return SDL_GetWindowFromID(id);
 }
@@ -4439,7 +4467,7 @@ inline WindowRaw GetWindowFromID(WindowParam id)
  *
  * @sa Window.Window
  */
-inline WindowRaw GetWindowParent(WindowParam window)
+inline WindowRef GetWindowParent(WindowParam window)
 {
   return CheckError(SDL_GetWindowParent(window));
 }
@@ -4564,7 +4592,7 @@ inline WindowRaw GetWindowParent(WindowParam window)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesID GetWindowProperties(WindowParam window)
+inline PropertiesRef GetWindowProperties(WindowParam window)
 {
   return CheckError(SDL_GetWindowProperties(window));
 }
@@ -5369,7 +5397,7 @@ inline bool WindowHasSurface(WindowParam window)
  * @sa Window.UpdateSurface
  * @sa Window.UpdateSurfaceRects
  */
-inline SurfaceRaw GetWindowSurface(WindowParam window)
+inline Surface GetWindowSurface(WindowParam window)
 {
   return SDL_GetWindowSurface(window);
 }
@@ -5606,7 +5634,7 @@ inline bool GetWindowMouseGrab(WindowParam window)
  * @sa Window.SetMouseGrab
  * @sa Window.SetKeyboardGrab
  */
-inline WindowRaw GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
+inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 
 /**
  * Confines the cursor to the specified area of a window.
