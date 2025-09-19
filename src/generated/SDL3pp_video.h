@@ -607,7 +607,7 @@ public:
   {
   }
 
-  Window(const Window& other) = delete;
+  constexpr Window(const Window& other) = delete;
 
   constexpr Window(Window&& other) { other.m_resource = nullptr; }
 
@@ -2812,7 +2812,7 @@ public:
   {
   }
 
-  GLContext(const GLContext& other) = delete;
+  constexpr GLContext(const GLContext& other) = delete;
 
   constexpr GLContext(GLContext&& other) { other.m_resource = nullptr; }
 

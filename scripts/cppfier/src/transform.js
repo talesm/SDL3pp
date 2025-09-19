@@ -807,6 +807,7 @@ function expandTypes(sourceEntries, file, context) {
       }, {
         kind: "function",
         type: "",
+        constexpr: true,
         parameters: [{ name: "other", type: `const ${targetName} &` }],
         hints: copyCtorHints,
       }, {

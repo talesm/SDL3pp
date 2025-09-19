@@ -84,7 +84,7 @@ public:
   {
   }
 
-  Properties(const Properties& other) {}
+  constexpr Properties(const Properties& other) {}
 
   constexpr Properties(Properties&& other) { other.m_resource = 0; }
 

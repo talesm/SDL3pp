@@ -880,7 +880,7 @@ public:
   {
   }
 
-  Environment(const Environment& other) = delete;
+  constexpr Environment(const Environment& other) = delete;
 
   constexpr Environment(Environment&& other) { other.m_resource = nullptr; }
 
@@ -5630,7 +5630,7 @@ public:
   {
   }
 
-  IConv(const IConv& other) = delete;
+  constexpr IConv(const IConv& other) = delete;
 
   constexpr IConv(IConv&& other) { other.m_resource = nullptr; }
 

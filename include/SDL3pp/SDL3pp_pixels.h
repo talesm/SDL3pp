@@ -2467,7 +2467,7 @@ public:
   {
   }
 
-  Palette(const Palette& other) { ++m_resource->refcount; }
+  constexpr Palette(const Palette& other) { ++m_resource->refcount; }
 
   constexpr Palette(Palette&& other) { other.m_resource = nullptr; }
 

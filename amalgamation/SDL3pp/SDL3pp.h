@@ -10436,7 +10436,7 @@ public:
   {
   }
 
-  Palette(const Palette& other) { ++m_resource->refcount; }
+  constexpr Palette(const Palette& other) { ++m_resource->refcount; }
 
   constexpr Palette(Palette&& other) { other.m_resource = nullptr; }
 
@@ -10957,7 +10957,7 @@ public:
   {
   }
 
-  Properties(const Properties& other) {}
+  constexpr Properties(const Properties& other) {}
 
   constexpr Properties(Properties&& other) { other.m_resource = 0; }
 
@@ -12574,7 +12574,7 @@ public:
   {
   }
 
-  Environment(const Environment& other) = delete;
+  constexpr Environment(const Environment& other) = delete;
 
   constexpr Environment(Environment&& other) { other.m_resource = nullptr; }
 
@@ -17324,7 +17324,7 @@ public:
   {
   }
 
-  IConv(const IConv& other) = delete;
+  constexpr IConv(const IConv& other) = delete;
 
   constexpr IConv(IConv&& other) { other.m_resource = nullptr; }
 
@@ -18614,7 +18614,7 @@ public:
   {
   }
 
-  IOStream(const IOStream& other) = delete;
+  constexpr IOStream(const IOStream& other) = delete;
 
   constexpr IOStream(IOStream&& other) { other.m_resource = nullptr; }
 

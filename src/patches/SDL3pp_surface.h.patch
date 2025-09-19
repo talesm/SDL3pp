@@ -12,10 +12,6 @@
 179,180d180
 <  *
 <  * @cat resource
-195c195
-<   Surface(const Surface& other) { ++m_resource->refcount; }
----
->   constexpr Surface(const Surface& other) { ++m_resource->refcount; }
 204,205c204
 <    * @param width the width of the surface.
 <    * @param height the height of the surface.

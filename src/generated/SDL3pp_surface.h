@@ -192,7 +192,7 @@ public:
   {
   }
 
-  Surface(const Surface& other) { ++m_resource->refcount; }
+  constexpr Surface(const Surface& other) { ++m_resource->refcount; }
 
   constexpr Surface(Surface&& other) { other.m_resource = nullptr; }
 

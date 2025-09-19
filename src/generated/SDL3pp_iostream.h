@@ -130,7 +130,7 @@ public:
   {
   }
 
-  IOStream(const IOStream& other) = delete;
+  constexpr IOStream(const IOStream& other) = delete;
 
   constexpr IOStream(IOStream&& other) { other.m_resource = nullptr; }
 
