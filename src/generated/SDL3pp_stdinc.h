@@ -843,7 +843,10 @@ public:
 
   constexpr Environment(const Environment& other) = delete;
 
-  constexpr Environment(Environment&& other) { other.m_resource = nullptr; }
+  constexpr Environment(Environment&& other)
+    : Environment(other.release())
+  {
+  }
 
   constexpr Environment(const EnvironmentRef& other) = delete;
 
@@ -5531,7 +5534,10 @@ public:
 
   constexpr IConv(const IConv& other) = delete;
 
-  constexpr IConv(IConv&& other) { other.m_resource = nullptr; }
+  constexpr IConv(IConv&& other)
+    : IConv(other.release())
+  {
+  }
 
   constexpr IConv(const IConvRef& other) = delete;
 

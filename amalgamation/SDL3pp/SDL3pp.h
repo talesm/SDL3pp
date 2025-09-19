@@ -10440,7 +10440,10 @@ public:
 
   constexpr Palette(const Palette& other) { ++m_resource->refcount; }
 
-  constexpr Palette(Palette&& other) { other.m_resource = nullptr; }
+  constexpr Palette(Palette&& other)
+    : Palette(other.release())
+  {
+  }
 
   /**
    * Create a palette structure with the specified number of color entries.
@@ -10979,7 +10982,10 @@ public:
 
   constexpr Properties(const Properties& other) = delete;
 
-  constexpr Properties(Properties&& other) { other.m_resource = 0; }
+  constexpr Properties(Properties&& other)
+    : Properties(other.release())
+  {
+  }
 
   constexpr Properties(const PropertiesRef& other) = delete;
 
@@ -12620,7 +12626,10 @@ public:
 
   constexpr Environment(const Environment& other) = delete;
 
-  constexpr Environment(Environment&& other) { other.m_resource = nullptr; }
+  constexpr Environment(Environment&& other)
+    : Environment(other.release())
+  {
+  }
 
   constexpr Environment(const EnvironmentRef& other) = delete;
 
@@ -17388,7 +17397,10 @@ public:
 
   constexpr IConv(const IConv& other) = delete;
 
-  constexpr IConv(IConv&& other) { other.m_resource = nullptr; }
+  constexpr IConv(IConv&& other)
+    : IConv(other.release())
+  {
+  }
 
   constexpr IConv(const IConvRef& other) = delete;
 
@@ -18699,7 +18711,10 @@ public:
 
   constexpr IOStream(const IOStream& other) = delete;
 
-  constexpr IOStream(IOStream&& other) { other.m_resource = nullptr; }
+  constexpr IOStream(IOStream&& other)
+    : IOStream(other.release())
+  {
+  }
 
   constexpr IOStream(const IOStreamRef& other) = delete;
 
@@ -24417,7 +24432,10 @@ public:
 
   constexpr Surface(const Surface& other) { ++m_resource->refcount; }
 
-  constexpr Surface(Surface&& other) { other.m_resource = nullptr; }
+  constexpr Surface(Surface&& other)
+    : Surface(other.release())
+  {
+  }
 
   /**
    * Allocate a new surface with a specific pixel format.

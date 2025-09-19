@@ -7676,7 +7676,10 @@ const transform = {
           }
         },
         "SDL_GLContext": {
-          resource: { free: "SDL_GL_DestroyContext" },
+          resource: {
+            free: "SDL_GL_DestroyContext",
+            owning: false,
+          },
           entries: {
             "SDL_GL_CreateContext": { name: "ctor" },
             "SDL_GL_MakeCurrent": {

@@ -229,7 +229,12 @@ export interface ResourceDefinition {
   enableConstParam?: boolean
 
   /**
-   * Enable ref type. Default to true if non shared and owning !== false
+   * Enable ref type. Default to false
+   */
+  owning?: boolean
+
+  /**
+   * Enable ref type. Default to true if non shared and owning are both false
    */
   ref?: boolean
 }

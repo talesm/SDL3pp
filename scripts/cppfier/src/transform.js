@@ -680,8 +680,10 @@ function expandTypes(sourceEntries, file, context) {
     const constParamType = resourceEntry.enableConstParam ? `${targetName}ConstParam` : paramType;
     if (!targetEntry.kind) targetEntry.kind = 'struct';
     const hasShared = !!resourceEntry.shared;
-    const hasRef = resourceEntry.ref ?? !resourceEntry.shared;
+    const hasScoped = resourceEntry.owning === false;
+    const hasRef = resourceEntry.ref ?? !(hasShared || hasScoped);
     const refName = `${targetName}Ref`;
+    const scopedName = `${targetName}Scoped`;
 
     const type = targetEntry.type ?? sourceName;
     const isStruct = sourceEntry.kind === "struct" || (sourceEntry.kind === "alias" && sourceEntry.type.startsWith('struct '));
@@ -696,6 +698,7 @@ function expandTypes(sourceEntries, file, context) {
     referenceAliases.push({ name: targetName, kind: "forward" });
     referenceAliases.push({ name: rawName, kind: "alias", type: pointerType });
     if (hasRef) referenceAliases.push({ name: refName, kind: "forward" });
+    if (hasScoped) referenceAliases.push({ name: scopedName, kind: "forward" });
 
     referenceAliases.push({
       name: paramType,
@@ -783,7 +786,7 @@ function expandTypes(sourceEntries, file, context) {
 
     if (hasRef) {
       context.addReturnType(pointerType, refName);
-    } else if (hasShared) {
+    } else if (hasShared || hasScoped) {
       context.addReturnType(pointerType, targetName);
     } else {
       context.addReturnType(pointerType, rawName);
@@ -817,8 +820,7 @@ function expandTypes(sourceEntries, file, context) {
         constexpr: true,
         parameters: [{ name: "other", type: `${targetName} &&` }],
         hints: {
-          init: ["m_resource(other.m_resource)"],
-          body: `other.m_resource = ${nullValue};`
+          init: [`${targetName}(other.release())`]
         },
       }]
     };
@@ -839,7 +841,10 @@ function expandTypes(sourceEntries, file, context) {
           doc: "Safely borrows the resource"
         };
       }
-    } else if (hasRef) {
+    } else if (hasScoped) {
+      ctors[targetName][2].hints = { default: true };
+    }
+    if (hasRef) {
       // @ts-ignore
       insertEntry(ctors, [{
         kind: "function",
@@ -980,7 +985,7 @@ function expandTypes(sourceEntries, file, context) {
         kind: "function",
         type: "",
         parameters: [],
-        hints: { body: freeFunction ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);` : '' }
+        hints: { body: (freeFunction && !hasScoped) ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);` : '' }
       },
       'operator=': {
         kind: "function",
@@ -1022,51 +1027,59 @@ function expandTypes(sourceEntries, file, context) {
     /** @type {ApiEntryTransform[]} */
     const derivedEntries = [];
 
-    if (hasRef) {
-      if (hasShared) {
-        derivedEntries.push({
-          kind: 'struct',
-          name: refName,
-          type: targetName,
-          doc: `Safe reference for ${targetName}.`,
-          entries: {
-            [refName]: {
-              kind: 'function',
-              type: "",
-              parameters: [{
-                type: paramType,
-                name: "resource"
-              }],
-              hints: { init: [`${targetName}(${targetName}::Borrow(resource))`] }
-            }
-          }
-        });
-      } else {
-        derivedEntries.push({
-          kind: 'struct',
-          name: refName,
-          type: targetName,
-          doc: `Semi-safe reference for ${targetName}.`,
-          entries: {
-            [refName]: {
-              kind: 'function',
-              type: "",
-              parameters: [{
-                type: paramType,
-                name: "resource"
-              }],
-              hints: { init: [`${targetName}(resource.value)`] }
-            },
-            [`~${refName}`]: {
-              kind: 'function',
-              type: "",
-              parameters: [],
-              hints: { body: "release();" }
-            }
-          }
-        });
+    if (hasRef) derivedEntries.push({
+      kind: 'struct',
+      name: refName,
+      type: targetName,
+      doc: `Semi-safe reference for ${targetName}.`,
+      entries: {
+        [refName]: {
+          kind: 'function',
+          type: "",
+          parameters: [{
+            type: paramType,
+            name: "resource"
+          }],
+          hints: { init: [`${targetName}(resource.value)`] }
+        },
+        [`~${refName}`]: {
+          kind: 'function',
+          type: "",
+          parameters: [],
+          hints: { body: "release();" }
+        }
       }
-    }
+    });
+    if (hasScoped) derivedEntries.push({
+      kind: 'struct',
+      name: scopedName,
+      type: targetName,
+      doc: `RAII owning version ${targetName}.`,
+      entries: {
+        [`${targetName}::${targetName}`]: "alias",
+        [scopedName]: [{
+          kind: "function",
+          type: "",
+          constexpr: true,
+          parameters: [{ name: "other", type: `const ${targetName} &` }],
+          hints: { delete: true },
+        }, {
+          kind: "function",
+          type: "",
+          constexpr: true,
+          parameters: [{ name: "other", type: `${targetName} &&` }],
+          hints: {
+            init: [`${targetName}(other.release())`]
+          }
+        }],
+        [`~${scopedName}`]: {
+          kind: 'function',
+          type: "",
+          parameters: [],
+          hints: { body: `${freeFunction?.name ?? "Destroy"}();` }
+        }
+      }
+    });
 
     context.includeBefore(referenceAliases, '__begin');
     context.includeAfter(derivedEntries, targetName);

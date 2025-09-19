@@ -194,7 +194,10 @@ public:
 
   constexpr Surface(const Surface& other) { ++m_resource->refcount; }
 
-  constexpr Surface(Surface&& other) { other.m_resource = nullptr; }
+  constexpr Surface(Surface&& other)
+    : Surface(other.release())
+  {
+  }
 
   /**
    * Allocate a new surface with a specific pixel format.

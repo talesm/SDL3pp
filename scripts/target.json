@@ -2604,9 +2604,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "m_resource(other.m_resource)"
-                  ],
-                  "body": "other.m_resource = 0;"
+                    "Properties(other.release())"
+                  ]
                 },
                 "name": "Properties",
                 "doc": ""
@@ -5082,8 +5081,8 @@
           "type": "SDL_GLContext *",
           "doc": ""
         },
-        "GLContextRef-forward": {
-          "name": "GLContextRef",
+        "GLContextScoped-forward": {
+          "name": "GLContextScoped",
           "kind": "forward",
           "doc": ""
         },
@@ -5616,9 +5615,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "m_resource(other.m_resource)"
-                  ],
-                  "body": "other.m_resource = nullptr;"
+                    "Window(other.release())"
+                  ]
                 },
                 "name": "Window",
                 "doc": ""
@@ -7213,7 +7211,7 @@
                   }
                 ],
                 "hints": {
-                  "delete": true
+                  "default": true
                 },
                 "name": "GLContext",
                 "doc": ""
@@ -7230,41 +7228,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "m_resource(other.m_resource)"
-                  ],
-                  "body": "other.m_resource = nullptr;"
-                },
-                "name": "GLContext",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const GLContextRef &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "GLContext",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "GLContextRef &&"
-                  }
-                ],
-                "hints": {
-                  "delete": true
+                    "GLContext(other.release())"
+                  ]
                 },
                 "name": "GLContext",
                 "doc": ""
@@ -7288,7 +7253,7 @@
               "type": "",
               "parameters": [],
               "hints": {
-                "body": "SDL_GL_DestroyContext(m_resource);"
+                "body": ""
               },
               "name": "~GLContext",
               "doc": ""
@@ -7379,37 +7344,61 @@
             "private": true
           }
         },
-        "GLContextRef": {
+        "GLContextScoped": {
           "kind": "struct",
-          "name": "GLContextRef",
+          "name": "GLContextScoped",
           "type": "GLContext",
-          "doc": "Semi-safe reference for GLContext.",
+          "doc": "RAII owning version GLContext.",
           "entries": {
-            "GLContextRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "GLContextParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "GLContext(resource.value)"
-                ]
-              },
-              "name": "GLContextRef",
+            "GLContext::GLContext": {
+              "kind": "alias",
+              "name": "GLContext::GLContext",
               "doc": ""
             },
-            "~GLContextRef": {
+            "GLContextScoped": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const GLContext &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "GLContextScoped",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "GLContext &&"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "GLContext(other.release())"
+                  ]
+                },
+                "name": "GLContextScoped",
+                "doc": ""
+              }
+            ],
+            "~GLContextScoped": {
               "kind": "function",
               "type": "",
               "parameters": [],
               "hints": {
-                "body": "release();"
+                "body": "Destroy();"
               },
-              "name": "~GLContextRef",
+              "name": "~GLContextScoped",
               "doc": ""
             }
           }
@@ -13822,9 +13811,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "m_resource(other.m_resource)"
-                  ],
-                  "body": "other.m_resource = nullptr;"
+                    "Palette(other.release())"
+                  ]
                 },
                 "name": "Palette",
                 "doc": ""
@@ -16775,9 +16763,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "m_resource(other.m_resource)"
-                  ],
-                  "body": "other.m_resource = nullptr;"
+                    "Surface(other.release())"
+                  ]
                 },
                 "name": "Surface",
                 "doc": ""
@@ -19867,9 +19854,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "m_resource(other.m_resource)"
-                  ],
-                  "body": "other.m_resource = nullptr;"
+                    "IOStream(other.release())"
+                  ]
                 },
                 "name": "IOStream",
                 "doc": ""
@@ -22808,9 +22794,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "m_resource(other.m_resource)"
-                  ],
-                  "body": "other.m_resource = nullptr;"
+                    "Environment(other.release())"
+                  ]
                 },
                 "name": "Environment",
                 "doc": ""
@@ -25940,9 +25925,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "m_resource(other.m_resource)"
-                  ],
-                  "body": "other.m_resource = nullptr;"
+                    "IConv(other.release())"
+                  ]
                 },
                 "name": "IConv",
                 "doc": ""

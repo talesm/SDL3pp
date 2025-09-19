@@ -87,7 +87,10 @@ public:
 
   constexpr Properties(const Properties& other) = delete;
 
-  constexpr Properties(Properties&& other) { other.m_resource = 0; }
+  constexpr Properties(Properties&& other)
+    : Properties(other.release())
+  {
+  }
 
   constexpr Properties(const PropertiesRef& other) = delete;
 

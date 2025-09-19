@@ -16,40 +16,40 @@
 >  * @sa Properties.Create
 77d79
 < 
-101,102c103,104
+104,105c106,107
 <    * @returns an ID for a new group of properties, or 0 on failure; call
 <    *          GetError() for more information.
 ---
 >    * @returns a valid ID for a new group of properties on success;
 >    * @throws Error on failure.
-110c112,115
+113c115,118
 <   static Properties Create() { return Properties(SDL_CreateProperties()); }
 ---
 >   static Properties Create()
 >   {
 >     return Properties(CheckError(SDL_CreateProperties()));
 >   }
-137d141
+140d144
 <    *
-201c205
+204c208
 <   return CheckError(SDL_GetGlobalProperties());
 ---
 >   return {CheckError(SDL_GetGlobalProperties())};
-209,210c213,214
+212,213c216,217
 <  * @returns an ID for a new group of properties, or 0 on failure; call
 <  *          GetError() for more information.
 ---
 >  * @returns a valid ID for a new group of properties on success;
 >  * @throws Error on failure.
-220c224
+223c227
 <   return Properties(SDL_CreateProperties());
 ---
 >   return Properties(CheckError(SDL_CreateProperties()));
-322d325
+325d328
 <  * @param userdata an app-defined pointer passed to the callback.
-392d394
+395d397
 <  * @param userdata a pointer that is passed to the cleanup function.
-408c410,415
+411c413,418
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<CleanupPropertyCB>;
@@ -58,11 +58,11 @@
 >                                     value,
 >                                     &Wrapper::CallOnce,
 >                                     Wrapper::Wrap(std::move(cleanup)));
-753d759
+756d762
 <  * @param userdata an app-defined pointer passed to the callback.
-798d803
+801d806
 <  * @param userdata a pointer that is passed to `callback`.
-808c813,819
+811c816,822
 <   static_assert(false, "Not implemented");
 ---
 >   return EnumerateProperties(
@@ -72,13 +72,13 @@
 >       f(props, name);
 >     },
 >     &callback);
-810a822,826
+813a825,829
 > /**
 >  * Returns the number of properties this has
 >  *
 >  * This uses Enumerate() internally, so might not be so fast
 >  */
-813c829,831
+816c832,834
 <   static_assert(false, "Not implemented");
 ---
 >   Uint64 count = 0;

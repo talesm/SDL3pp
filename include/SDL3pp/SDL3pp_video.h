@@ -74,7 +74,7 @@ struct GLContext;
 using GLContextRaw = SDL_GLContext*;
 
 // Forward decl
-struct GLContextRef;
+struct GLContextScoped;
 
 /**
  * Safely wrap GLContext for non owning parameters
@@ -615,7 +615,10 @@ public:
 
   constexpr Window(const Window& other) = delete;
 
-  constexpr Window(Window&& other) { other.m_resource = nullptr; }
+  constexpr Window(Window&& other)
+    : Window(other.release())
+  {
+  }
 
   constexpr Window(const WindowRef& other) = delete;
 
@@ -2836,13 +2839,12 @@ public:
   {
   }
 
-  constexpr GLContext(const GLContext& other) = delete;
+  constexpr GLContext(const GLContext& other) = default;
 
-  constexpr GLContext(GLContext&& other) { other.m_resource = nullptr; }
-
-  constexpr GLContext(const GLContextRef& other) = delete;
-
-  constexpr GLContext(GLContextRef&& other) = delete;
+  constexpr GLContext(GLContext&& other)
+    : GLContext(other.release())
+  {
+  }
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -2871,7 +2873,7 @@ public:
   {
   }
 
-  ~GLContext() { SDL_GL_DestroyContext(m_resource); }
+  ~GLContext() {}
 
   GLContext& operator=(GLContext other)
   {
@@ -2930,17 +2932,21 @@ public:
 };
 
 /**
- * Semi-safe reference for GLContext.
+ * RAII owning version GLContext.
  */
-struct GLContextRef : GLContext
+struct GLContextScoped : GLContext
 {
 
-  GLContextRef(GLContextParam resource)
-    : GLContext(resource.value)
+  using GLContext::GLContext;
+
+  constexpr GLContextScoped(const GLContext& other) = delete;
+
+  constexpr GLContextScoped(GLContext&& other)
+    : GLContext(other.release())
   {
   }
 
-  ~GLContextRef() { release(); }
+  ~GLContextScoped() { Destroy(); }
 };
 
 /**

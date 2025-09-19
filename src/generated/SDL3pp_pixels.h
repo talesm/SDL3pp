@@ -2271,7 +2271,10 @@ public:
 
   constexpr Palette(const Palette& other) { ++m_resource->refcount; }
 
-  constexpr Palette(Palette&& other) { other.m_resource = nullptr; }
+  constexpr Palette(Palette&& other)
+    : Palette(other.release())
+  {
+  }
 
   /**
    * Create a palette structure with the specified number of color entries.
