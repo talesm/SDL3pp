@@ -780,15 +780,6 @@ function expandTypes(sourceEntries, file, context) {
     context.addReturnType(pointerType, rawName);
     context.addReturnType(constPointerType, constRawName);
 
-    /** @type {EntryHint} */
-    const copyCtorHints = {};
-    if (!resourceEntry.shared) {
-      copyCtorHints.delete = true;
-    } else if (resourceEntry.shared !== true) {
-      copyCtorHints.init = ["m_resource(other.m_resource)"];
-      copyCtorHints.body = `++m_resource->${resourceEntry.shared};`;
-    }
-
     /** @type {Dict<ApiEntryTransform | ApiEntryBase[]>} */
     const ctors = {
       [targetName]: [{
@@ -809,7 +800,7 @@ function expandTypes(sourceEntries, file, context) {
         type: "",
         constexpr: true,
         parameters: [{ name: "other", type: `const ${targetName} &` }],
-        hints: copyCtorHints,
+        hints: { delete: true },
       }, {
         kind: "function",
         type: "",
@@ -821,6 +812,24 @@ function expandTypes(sourceEntries, file, context) {
         },
       }]
     };
+    if (resourceEntry.shared) {
+      /** @type {EntryHint} */
+      const copyCtorHints = {};
+      ctors[targetName][2].hints = copyCtorHints;
+      if (resourceEntry.shared !== true) {
+        copyCtorHints.init = ["m_resource(other.m_resource)"];
+        copyCtorHints.body = `++m_resource->${resourceEntry.shared};`;
+        ctors["Borrow"] = {
+          kind: "function",
+          static: true,
+          constexpr: true,
+          type: targetName,
+          parameters: [{ name: "resource", type: paramType }],
+          hints: { body: `++resource.value->${resourceEntry.shared};\nreturn ${targetName}(resource.value);` },
+          doc: "Safely borrows the resource"
+        };
+      }
+    }
     const subEntries = targetEntry.entries || {};
 
     let extraUniqueCtors = subEntries[targetName];

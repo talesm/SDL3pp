@@ -251,6 +251,15 @@ public:
   }
 
   /**
+   * Safely borrows the resource
+   */
+  static constexpr Surface Borrow(SurfaceParam resource)
+  {
+    ++resource.value->refcount;
+    return Surface(resource.value);
+  }
+
+  /**
    * Load a BMP image from a seekable SDL data stream.
    *
    * The new surface should be freed with Surface.Destroy(). Not doing so
@@ -316,12 +325,6 @@ public:
   }
 
   constexpr operator SurfaceParam() const { return {m_resource}; }
-
-  static constexpr Surface Borrow(SurfaceParam surface)
-  {
-    ++surface.value->refcount;
-    return Surface(surface.value);
-  }
 
   /**
    * Get the properties associated with a surface.

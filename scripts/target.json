@@ -13628,6 +13628,23 @@
                 }
               }
             ],
+            "Borrow": {
+              "kind": "function",
+              "static": true,
+              "constexpr": true,
+              "type": "Palette",
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "PaletteParam"
+                }
+              ],
+              "hints": {
+                "body": "++resource.value->refcount;\nreturn Palette(resource.value);"
+              },
+              "doc": "Safely borrows the resource",
+              "name": "Borrow"
+            },
             "~Palette": {
               "kind": "function",
               "type": "",
@@ -13686,20 +13703,6 @@
                 "body": "return {m_resource};"
               },
               "name": "operator PaletteParam",
-              "doc": ""
-            },
-            "Borrow": {
-              "kind": "function",
-              "static": true,
-              "constexpr": true,
-              "type": "Palette",
-              "parameters": [
-                {
-                  "name": "palette",
-                  "type": "PaletteParam"
-                }
-              ],
-              "name": "Borrow",
               "doc": ""
             },
             "GetSize": {
@@ -16604,6 +16607,23 @@
                 "sourceName": "SDL_CreateSurfaceFrom"
               }
             ],
+            "Borrow": {
+              "kind": "function",
+              "static": true,
+              "constexpr": true,
+              "type": "Surface",
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "SurfaceParam"
+                }
+              ],
+              "hints": {
+                "body": "++resource.value->refcount;\nreturn Surface(resource.value);"
+              },
+              "doc": "Safely borrows the resource",
+              "name": "Borrow"
+            },
             "LoadBMP": [
               {
                 "doc": "Load a BMP image from a seekable SDL data stream.\n\nThe new surface should be freed with Surface.Destroy(). Not doing so\nwill result in a memory leak.\n\n@param src the data stream for the surface.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@returns a pointer to a new Surface structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Destroy\n@sa Surface.LoadBMP\n@sa Surface.SaveBMP",
@@ -16703,20 +16723,6 @@
                 "body": "return {m_resource};"
               },
               "name": "operator SurfaceParam",
-              "doc": ""
-            },
-            "Borrow": {
-              "kind": "function",
-              "static": true,
-              "constexpr": true,
-              "type": "Surface",
-              "parameters": [
-                {
-                  "name": "surface",
-                  "type": "SurfaceParam"
-                }
-              ],
-              "name": "Borrow",
               "doc": ""
             },
             "GetProperties": {

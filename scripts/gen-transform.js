@@ -3134,13 +3134,6 @@ const transform = {
           },
           entries: {
             "SDL_CreatePalette": "ctor",
-            "Borrow": {
-              kind: "function",
-              static: true,
-              constexpr: true,
-              type: "Palette",
-              parameters: [{ name: "palette", type: "PaletteParam" }]
-            },
             "GetSize": {
               kind: "function",
               type: "int",
@@ -4619,13 +4612,6 @@ const transform = {
                 }
               ]
             }],
-            "Borrow": {
-              kind: "function",
-              static: true,
-              constexpr: true,
-              type: "Texture",
-              parameters: [{ name: "texture", type: "TextureParam" }]
-            },
             "SDL_GetTextureProperties": "immutable",
             "SDL_GetRendererFromTexture": {
               "name": "GetRenderer",
@@ -5704,13 +5690,6 @@ const transform = {
                   type: "int"
                 }
               ]
-            },
-            "Borrow": {
-              kind: "function",
-              static: true,
-              constexpr: true,
-              type: "Surface",
-              parameters: [{ name: "surface", type: "SurfaceParam" }]
             },
             "SDL_GetSurfaceProperties": "immutable",
             "SDL_SetSurfaceColorspace": "function",

@@ -2295,6 +2295,15 @@ public:
   {
   }
 
+  /**
+   * Safely borrows the resource
+   */
+  static constexpr Palette Borrow(PaletteParam resource)
+  {
+    ++resource.value->refcount;
+    return Palette(resource.value);
+  }
+
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
   Palette& operator=(Palette other)
@@ -2313,11 +2322,6 @@ public:
   }
 
   constexpr operator PaletteParam() const { return {m_resource}; }
-
-  static constexpr Palette Borrow(PaletteParam palette)
-  {
-    static_assert(false, "Not implemented");
-  }
 
   constexpr int GetSize() const { static_assert(false, "Not implemented"); }
 
