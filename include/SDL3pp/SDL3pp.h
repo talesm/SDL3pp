@@ -27,7 +27,7 @@
 // #include "SDL3pp_dialog.h"
 // #include "SDL3pp_endian.h"
 #include "SDL3pp_error.h"
-// #include "SDL3pp_events.h"
+#include "SDL3pp_events.h"
 #include "SDL3pp_filesystem.h"
 // #include "SDL3pp_gamepad.h"
 // #include "SDL3pp_gpu.h"

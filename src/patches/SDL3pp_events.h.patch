@@ -1,0 +1,300 @@
+42a43,49
+>  * @defgroup EventTypes Event Types
+>  *
+>  * Event types for Event.
+>  * @{
+>  */
+> 
+> /**
+473a481,482
+> /// @}
+> 
+845a855,860
+>  * @name EventActions
+>  * The type of action to request from PeepEvents().
+>  * @{
+>  */
+> 
+> /**
+864a880,881
+> /// @}
+> 
+869a887,888
+>  * ## remarks
+>  *
+910,911c929,930
+<                       Uint32 minType,
+<                       Uint32 maxType)
+---
+>                       Uint32 minType = EVENT_FIRST,
+>                       Uint32 maxType = EVENT_LAST)
+952c971
+< inline bool HasEvents(Uint32 minType, Uint32 maxType)
+---
+> inline bool HasEvents(Uint32 minType = EVENT_FIRST, Uint32 maxType = EVENT_LAST)
+1010c1029,1030
+< inline void FlushEvents(Uint32 minType, Uint32 maxType)
+---
+> inline void FlushEvents(Uint32 minType = EVENT_FIRST,
+>                         Uint32 maxType = EVENT_LAST)
+1036c1056
+<  * ```c
+---
+>  * ```cpp
+1038,1039c1058,1059
+<  *     Event event;
+<  *     while (PollEvent(&event)) {  // poll until all events are handled!
+---
+>  *     SDL::Event event;
+>  *     while (SDL::PollEvent(&event)) {  // poll until all events are handled!
+1064,1070c1084
+<  * If `event` is not nullptr, the next event is removed from the queue and
+<  * stored in the Event structure pointed to by `event`. The 1 returned refers to
+<  * this event, immediately stored in the SDL Event structure -- not an event
+<  * to follow.
+<  *
+<  * If `event` is nullptr, it simply returns 1 if there is an event in the queue,
+<  * but will not remove it from the queue.
+---
+>  * The next event is removed from the queue and returned.
+1084,1085c1098
+<  *     Event event;
+<  *     while (PollEvent(&event)) {  // poll until all events are handled!
+---
+>  *     while (auto event = SDL::PollEvent()) {
+1093,1095c1106,1107
+<  * @param event the Event structure to be filled with the next event from
+<  *              the queue, or nullptr.
+<  * @returns true if this got an event or false if there are none available.
+---
+>  * @returns Event if this got an event or std::nullopt if there are none
+>  * available.
+1107c1119,1120
+<   static_assert(false, "Not implemented");
+---
+>   if (Event event; PollEvent(&event)) return event;
+>   return std::nullopt;
+1136,1137c1149
+<  * If `event` is not nullptr, the next event is removed from the queue and
+<  * stored in the Event structure pointed to by `event`.
+---
+>  * The next event is removed from the queue and returned.
+1142,1143c1154
+<  * @param event the Event structure to be filled in with the next event
+<  *              from the queue, or nullptr.
+---
+>  * @returns Event on success.
+1154c1165,1170
+< inline Event WaitEvent() { static_assert(false, "Not implemented"); }
+---
+> inline Event WaitEvent()
+> {
+>   Event event;
+>   WaitEvent(&event);
+>   return event;
+> }
+1193,1195d1208
+<  * If `event` is not nullptr, the next event is removed from the queue and
+<  * stored in the Event structure pointed to by `event`.
+<  *
+1202,1203d1214
+<  * @param event the Event structure to be filled in with the next event
+<  *              from the queue, or nullptr.
+1206,1207c1217,1218
+<  * @returns true if this got an event or false if the timeout elapsed without
+<  *          any events available.
+---
+>  * @returns the Event if this got an event or std::nullopt if the timeout
+>  * elapsed without any events available.
+1219c1230,1231
+<   static_assert(false, "Not implemented");
+---
+>   if (Event event; WaitEventTimeout(&event, timeoutMS)) return event;
+>   return std::nullopt;
+1237,1238c1249,1250
+<  * @param timeoutMS the maximum number of milliseconds to wait for the next
+<  *                  available event.
+---
+>  * @param timeoutDuration the duration to wait for the next available event,
+>  *                        with millisecond precision
+1253c1265
+<   static_assert(false, "Not implemented");
+---
+>   return WaitEventTimeout(event, std::max(timeoutDuration.count(), 1l));
+1257,1261c1269,1270
+<  * Wait until the specified timeout (in milliseconds) for the next available
+<  * event.
+<  *
+<  * If `event` is not nullptr, the next event is removed from the queue and
+<  * stored in the Event structure pointed to by `event`.
+---
+>  * Wait until the specified timeout (with milliseconds precision) for the next
+>  * available event.
+1269,1274c1278,1281
+<  * @param event the Event structure to be filled in with the next event
+<  *              from the queue, or nullptr.
+<  * @param timeoutMS the maximum number of milliseconds to wait for the next
+<  *                  available event.
+<  * @returns true if this got an event or false if the timeout elapsed without
+<  *          any events available.
+---
+>  * @param timeoutDuration the duration to wait for the next available event,
+>  *                        with millisecond precision.
+>  * @returns the Event if this got an event or std::nullopt if the timeout
+>  * elapsed without any events available.
+1287c1294,1295
+<   static_assert(false, "Not implemented");
+---
+>   if (Event event; WaitEventTimeout(&event, timeoutDuration)) return event;
+>   return std::nullopt;
+1354c1362
+<   static_assert(false, "Not implemented");
+---
+>   PushEvent(const_cast<Event*>(&event));
+1377a1386,1406
+> /**
+>  * A std::function used for callbacks that watch the event queue.
+>  *
+>  * @param event the event that triggered the callback.
+>  * @returns true to permit event to be added to the queue, and false to
+>  *          disallow it. When used with AddEventWatch(), the return value is
+>  *          ignored.
+>  *
+>  * @threadsafety SDL may call this callback at any time from any thread; the
+>  *               application is responsible for locking resources the callback
+>  *               touches that need to be protected.
+>  *
+>  * @since This datatype is available since SDL 3.2.0.
+>  *
+>  * @cat listener-callback
+>  *
+>  * @sa listener-callback
+>  * @sa SetEventFilter()
+>  * @sa AddEventWatch()
+>  * @sa EventFilter
+>  */
+1381c1410,1413
+<  * Handle returned by AddEventWatch()
+---
+>  * Handle returned by AddEventWatch(EventFilterCB)
+>  *
+>  * This can be used later to remove the event filter
+>  * RemoveEventWatch(EventFilterHandle).
+1429c1461,1462
+<   SDL_SetEventFilter(filter, userdata);
+---
+>   UniqueCallbackWrapper<EventFilterCB>::erase();
+>   return SDL_SetEventFilter(filter, userdata);
+1458,1459c1491
+<  * @param filter an EventFilter function to call when an event happens.
+<  * @param userdata a pointer that is passed to `filter`.
+---
+>  * @param filter an EventFilterCB function to call when an event happens.
+1464a1497,1499
+>  * @cat listener-callback
+>  *
+>  * @sa listener-callback
+1473c1508,1513
+<   static_assert(false, "Not implemented");
+---
+>   using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
+>   SDL_SetEventFilter(
+>     [](void* userdata, SDL_Event* event) {
+>       return Wrapper::Call(userdata, *event);
+>     },
+>     Wrapper::Wrap(std::move(filter)));
+1504,1507c1544,1545
+<  * @param filter the current callback function will be stored here.
+<  * @param userdata the pointer that is passed to the current event filter will
+<  *                 be stored here.
+<  * @throws Error on failure.
+---
+>  * @returns EventFilterCB on success or false if there is no event filter
+>  * set.
+1512a1551,1553
+>  * @cat listener-callback
+>  *
+>  * @sa listener-callback
+1517c1558,1570
+<   static_assert(false, "Not implemented");
+---
+>   using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
+> 
+>   EventFilter filter;
+>   void* userdata;
+>   GetEventFilter(&filter, &userdata);
+>   if (!userdata)
+>     return [filter](const Event& event) {
+>       return filter(nullptr, const_cast<Event*>(&event));
+>     };
+>   if (auto cb = Wrapper::at(userdata)) return cb;
+>   return [filter, userdata](const Event& event) {
+>     return filter(userdata, const_cast<Event*>(&event));
+>   };
+1519a1573
+> /// @private
+1522c1576,1577
+<   static_assert(false, "Not implemented");
+---
+>   auto& f = *static_cast<EventFilterCB*>(userdata);
+>   return f(*event);
+1577,1578c1632,1634
+<  * @param filter an EventFilter function to call when an event happens.
+<  * @param userdata a pointer that is passed to `filter`.
+---
+>  * @param filter an EventFilterCB to call when an event happens.
+>  * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
+>  *          success.
+1584a1641,1643
+>  * @cat listener-callback
+>  *
+>  * @sa listener-callback
+1590c1649,1655
+<   static_assert(false, "Not implemented");
+---
+>   using Wrapper = CallbackWrapper<EventFilterCB>;
+>   auto cb = Wrapper::Wrap(std::move(filter));
+>   if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
+>     Wrapper::release(cb);
+>     throw Error{};
+>   }
+>   return EventWatchHandle{cb};
+1616,1620c1681
+<  * This function takes the same input as AddEventWatch() to identify and
+<  * delete the corresponding callback.
+<  *
+<  * @param filter the function originally passed to AddEventWatch().
+<  * @param userdata the pointer originally passed to AddEventWatch().
+---
+>  * @param handle the handle returned by SDL_AddEventWatch(EventFilterCB).
+1626c1687,1690
+<  * @sa AddEventWatch
+---
+>  * @cat listener-callback
+>  *
+>  * @sa listener-callback
+>  * @sa AddEventWatch(EventFilterCB)
+1630c1694,1695
+<   static_assert(false, "Not implemented");
+---
+>   using Wrapper = CallbackWrapper<EventFilterCB>;
+>   Wrapper::release(handle);
+1665d1729
+<  * @param userdata a pointer that is passed to `filter`.
+1670a1735,1737
+>  * @cat immediate-callback
+>  *
+>  * @sa immediate-callback
+1676c1743,1748
+<   static_assert(false, "Not implemented");
+---
+>   return FilterEvents(
+>     [](void* userdata, SDL_Event* event) {
+>       auto& f = *static_cast<EventFilterCB*>(userdata);
+>       return f(*event);
+>     },
+>     &filter);
+1746c1818
+<   return CheckError(SDL_GetWindowFromEvent(event));
+---
+>   return {CheckError(SDL_GetWindowFromEvent(&event))};

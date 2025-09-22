@@ -1250,61 +1250,60 @@ const transform = {
       }
     },
     "SDL_events.h": {
-      includeAfter: {
-        "SDL_PollEvent": {
-          "kind": "function",
-          "name": "PollEvent",
-          "type": "std::optional<Event>",
-          "parameters": []
+      localIncludes: ["SDL3pp_stdinc.h", "SDL3pp_video.h"],
+      transform: {
+        "PollEvent": {
+          kind: "function",
+          after: "SDL_PollEvent",
+          type: "std::optional<Event>",
+          parameters: []
         },
-        "SDL_WaitEvent": {
-          "kind": "function",
-          "name": "WaitEvent",
-          "type": "Event",
-          "parameters": []
+        "WaitEvent": {
+          kind: "function",
+          after: "SDL_WaitEvent",
+          type: "Event",
+          parameters: []
         },
-        "SDL_WaitEventTimeout": [
-          {
-            "kind": "function",
-            "name": "WaitEventTimeout",
-            "type": "std::optional<Event>",
-            "parameters": [
-              {
-                "type": "Sint32",
-                "name": "timeoutMS"
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "name": "WaitEventTimeout",
-            "type": "bool",
-            "parameters": [
-              {
-                "type": "Event *",
-                "name": "event"
-              },
-              {
-                "type": "std::chrono::milliseconds",
-                "name": "timeoutDuration"
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "name": "WaitEventTimeout",
-            "type": "std::optional<Event>",
-            "parameters": [
-              {
-                "type": "std::chrono::milliseconds",
-                "name": "timeoutDuration"
-              }
-            ]
-          }
-        ],
-        "SDL_PushEvent": {
+        "WaitEventTimeout": {
+          kind: "function",
+          after: "SDL_WaitEventTimeout",
+          type: "std::optional<Event>",
+          parameters: [
+            {
+              "type": "Sint32",
+              "name": "timeoutMS"
+            }
+          ]
+        },
+        "WaitEventTimeout#2": {
+          kind: "function",
+          name: "WaitEventTimeout",
+          type: "bool",
+          parameters: [
+            {
+              "type": "Event *",
+              "name": "event"
+            },
+            {
+              "type": "std::chrono::milliseconds",
+              "name": "timeoutDuration"
+            }
+          ]
+        },
+        "WaitEventTimeout#3": {
+          kind: "function",
+          name: "WaitEventTimeout",
+          type: "std::optional<Event>",
+          parameters: [
+            {
+              "type": "std::chrono::milliseconds",
+              "name": "timeoutDuration"
+            }
+          ]
+        },
+        "PushEvent": {
           "kind": "function",
-          "name": "PushEvent",
+          "after": "SDL_PushEvent",
           "type": "void",
           "parameters": [
             {
@@ -1313,18 +1312,16 @@ const transform = {
             }
           ]
         },
-        "SDL_EventFilter": [
-          {
-            doc: "Handle returned by AddEventWatch()",
-            kind: "struct",
-            name: "EventWatchHandle",
-            type: "CallbackHandle",
-            entries: { "CallbackHandle::CallbackHandle": "alias" }
-          }
-        ],
-        "SDL_SetEventFilter": {
+        "EventWatchHandle": {
+          doc: "Handle returned by AddEventWatch()",
+          kind: "struct",
+          after: "SDL_EventFilter",
+          type: "CallbackHandle",
+          entries: { "CallbackHandle::CallbackHandle": "alias" }
+        },
+        "SetEventFilter": {
           "kind": "function",
-          "name": "SetEventFilter",
+          "after": "SDL_SetEventFilter",
           "type": "void",
           "parameters": [
             {
@@ -1334,32 +1331,29 @@ const transform = {
             }
           ]
         },
-        "SDL_GetEventFilter": [
-          {
-            "kind": "function",
-            "name": "GetEventFilter",
-            "type": "EventFilterCB",
-            "parameters": []
-          },
-          {
-            "kind": "function",
-            "name": "EventWatchAuxCallback",
-            "type": "bool",
-            "parameters": [
-              {
-                "type": "void *",
-                "name": "userdata"
-              },
-              {
-                "type": "Event *",
-                "name": "event"
-              }
-            ]
-          }
-        ],
-        "SDL_AddEventWatch": {
+        "GetEventFilter": {
+          kind: "function",
+          after: "SDL_GetEventFilter",
+          type: "EventFilterCB",
+          parameters: []
+        },
+        "EventWatchAuxCallback": {
+          kind: "function",
+          type: "bool",
+          parameters: [
+            {
+              "type": "void *",
+              "name": "userdata"
+            },
+            {
+              "type": "Event *",
+              "name": "event"
+            }
+          ]
+        },
+        "AddEventWatch": {
           "kind": "function",
-          "name": "AddEventWatch",
+          "after": "SDL_AddEventWatch",
           "type": "EventWatchHandle",
           "parameters": [
             {
@@ -1368,9 +1362,9 @@ const transform = {
             }
           ]
         },
-        "SDL_RemoveEventWatch": {
+        "RemoveEventWatch": {
           "kind": "function",
-          "name": "RemoveEventWatch",
+          "after": "SDL_RemoveEventWatch",
           "type": "void",
           "parameters": [
             {
@@ -1379,9 +1373,9 @@ const transform = {
             }
           ]
         },
-        "SDL_FilterEvents": {
+        "FilterEvents": {
           "kind": "function",
-          "name": "FilterEvents",
+          "after": "SDL_FilterEvents",
           "type": "void",
           "parameters": [
             {
@@ -1389,15 +1383,18 @@ const transform = {
               "name": "filter"
             }
           ]
-        }
-      },
-      enumerations: {
+        },
         "SDL_EventType": {
-          prefix: "SDL_EVENT_"
+          enum: "SDL_EVENT_"
+        },
+        "EventFilterCB": {
+          kind: "alias",
+          type: "std::function<bool(const Event &)>",
+          after: "EventFilter",
+        },
+        "SDL_GetWindowFromEvent": {
+          parameters: [{ type: "const Event &" }]
         }
-      },
-      transform: {
-        "EventFilterCB": { type: "std::function<bool(const Event &)>" },
       }
     },
     "SDL_filesystem.h": {

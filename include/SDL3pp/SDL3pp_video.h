@@ -32,7 +32,7 @@ namespace SDL {
  * The video subsystem covers a lot of functionality, out of necessity, so it
  * is worth perusing the list of functions just to see what's available, but
  * most apps can get by with simply creating a window and listening for
- * events, so start with Window.Window() and SDL_PollEvent().
+ * events, so start with Window.Window() and PollEvent().
  *
  * @{
  */
@@ -874,7 +874,7 @@ public:
    * Window.GetSizeInPixels() or SDL_GetRenderOutputSize() to query the
    * drawable size in pixels. Note that the drawable size can vary after the
    * window is created and should be queried again if you get an
-   * SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
+   * EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
    *
    * If the window is created with any of the WINDOW_OPENGL or
    * WINDOW_VULKAN flags, then the corresponding LoadLibrary function
@@ -1226,8 +1226,8 @@ public:
    * change is required, call Window.Sync() to block until the changes have
    * taken effect.
    *
-   * When the new mode takes effect, an SDL_EVENT_WINDOW_RESIZED and/or an
-   * SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode
+   * When the new mode takes effect, an EVENT_WINDOW_RESIZED and/or an
+   * EVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode
    * dimensions.
    *
    * @param mode a pointer to the display mode to use, which can be nullptr for
@@ -1301,7 +1301,7 @@ public:
   /**
    * Get the numeric ID of a window.
    *
-   * The numeric ID is what SDL_WindowEvent references, and is necessary to map
+   * The numeric ID is what WindowEvent references, and is necessary to map
    * these events to specific Window objects.
    *
    * @returns the ID of the window on success.
@@ -1337,16 +1337,16 @@ public:
    *   window
    * - `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR
    *   headroom above the SDR white point. This property can change dynamically
-   *   when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.
+   *   when EVENT_WINDOW_HDR_STATE_CHANGED is sent.
    * - `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
    *   COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the
    *   SDR white level in scRGB colorspace, and on Apple platforms this is
    *   always 1.0 for EDR content. This property can change dynamically when
-   *   SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.
+   *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
    * - `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range
    *   that can be displayed, in terms of the SDR white point. When HDR is not
    *   enabled, this will be 1.0. This property can change dynamically when
-   *   SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.
+   *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
    *
    * On Android:
    *
@@ -1577,7 +1577,7 @@ public:
    * this function. If an immediate change is required, call Window.Sync() to
    * block until the changes have taken effect.
    *
-   * When the window position changes, an SDL_EVENT_WINDOW_MOVED event will be
+   * When the window position changes, an EVENT_WINDOW_MOVED event will be
    * emitted with the window's new coordinates. Note that the new coordinates
    * may not match the exact coordinates requested, as some windowing systems
    * can restrict the position of the window in certain scenarios (e.g.
@@ -1665,7 +1665,7 @@ public:
    * function. If an immediate change is required, call Window.Sync() to
    * block until the changes have taken effect.
    *
-   * When the window size changes, an SDL_EVENT_WINDOW_RESIZED event will be
+   * When the window size changes, an EVENT_WINDOW_RESIZED event will be
    * emitted with the new window dimensions. Note that the new dimensions may
    * not match the exact size requested, as some windowing systems can restrict
    * the window size in certain scenarios (e.g. constraining the size of the
@@ -1780,7 +1780,7 @@ public:
    * this function. If an immediate change is required, call Window.Sync() to
    * block until the changes have taken effect.
    *
-   * When the window size changes, an SDL_EVENT_WINDOW_RESIZED event will be
+   * When the window size changes, an EVENT_WINDOW_RESIZED event will be
    * emitted with the new window dimensions. Note that the new dimensions may
    * not match the exact aspect ratio requested, as some windowing systems can
    * restrict the window size in certain scenarios (e.g. constraining the size
@@ -2088,7 +2088,7 @@ public:
    * The result of this request is subject to desktop window manager policy,
    * particularly if raising the requested window would result in stealing focus
    * from another application. If the window is successfully raised and gains
-   * input focus, an SDL_EVENT_WINDOW_FOCUS_GAINED event will be emitted, and
+   * input focus, an EVENT_WINDOW_FOCUS_GAINED event will be emitted, and
    * the window will have the WINDOW_INPUT_FOCUS flag set.
    *
    * @throws Error on failure.
@@ -2110,7 +2110,7 @@ public:
    * function. If an immediate change is required, call Window.Sync() to
    * block until the changes have taken effect.
    *
-   * When the window state changes, an SDL_EVENT_WINDOW_MAXIMIZED event will be
+   * When the window state changes, an EVENT_WINDOW_MAXIMIZED event will be
    * emitted. Note that, as this is just a request, the windowing system can
    * deny the state change.
    *
@@ -2142,7 +2142,7 @@ public:
    * function. If an immediate change is required, call Window.Sync() to
    * block until the changes have taken effect.
    *
-   * When the window state changes, an SDL_EVENT_WINDOW_MINIMIZED event will be
+   * When the window state changes, an EVENT_WINDOW_MINIMIZED event will be
    * emitted. Note that, as this is just a request, the windowing system can
    * deny the state change.
    *
@@ -2170,7 +2170,7 @@ public:
    * function. If an immediate change is required, call Window.Sync() to
    * block until the changes have taken effect.
    *
-   * When the window state changes, an SDL_EVENT_WINDOW_RESTORED event will be
+   * When the window state changes, an EVENT_WINDOW_RESTORED event will be
    * emitted. Note that, as this is just a request, the windowing system can
    * deny the state change.
    *
@@ -2198,8 +2198,8 @@ public:
    * of this function. If an immediate change is required, call Window.Sync()
    * to block until the changes have taken effect.
    *
-   * When the window state changes, an SDL_EVENT_WINDOW_ENTER_FULLSCREEN or
-   * SDL_EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this
+   * When the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or
+   * EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this
    * is just a request, it can be denied by the windowing system.
    *
    * @param fullscreen true for fullscreen mode, false for windowed mode.
@@ -2813,7 +2813,7 @@ public:
   /**
    * Get a window from a stored ID.
    *
-   * The numeric ID is what SDL_WindowEvent references, and is necessary to map
+   * The numeric ID is what WindowEvent references, and is necessary to map
    * these events to specific Window objects.
    *
    * @param id the ID of the window.
@@ -3995,8 +3995,8 @@ inline float GetWindowDisplayScale(WindowParam window)
  * change is required, call Window.Sync() to block until the changes have
  * taken effect.
  *
- * When the new mode takes effect, an SDL_EVENT_WINDOW_RESIZED and/or an
- * SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode
+ * When the new mode takes effect, an EVENT_WINDOW_RESIZED and/or an
+ * EVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode
  * dimensions.
  *
  * @param window the window to affect.
@@ -4140,7 +4140,7 @@ inline OwnArray<WindowRef> GetWindows()
  * Window.GetSizeInPixels() or SDL_GetRenderOutputSize() to query the
  * drawable size in pixels. Note that the drawable size can vary after the
  * window is created and should be queried again if you get an
- * SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
+ * EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
  *
  * If the window is created with any of the WINDOW_OPENGL or
  * WINDOW_VULKAN flags, then the corresponding LoadLibrary function
@@ -4583,7 +4583,7 @@ constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
 /**
  * Get the numeric ID of a window.
  *
- * The numeric ID is what SDL_WindowEvent references, and is necessary to map
+ * The numeric ID is what WindowEvent references, and is necessary to map
  * these events to specific Window objects.
  *
  * @param window the window to query.
@@ -4604,7 +4604,7 @@ inline WindowID GetWindowID(WindowParam window)
 /**
  * Get a window from a stored ID.
  *
- * The numeric ID is what SDL_WindowEvent references, and is necessary to map
+ * The numeric ID is what WindowEvent references, and is necessary to map
  * these events to specific Window objects.
  *
  * @param id the ID of the window.
@@ -4659,16 +4659,16 @@ inline WindowRef Window::GetParent() const
  *   window
  * - `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR
  *   headroom above the SDR white point. This property can change dynamically
- *   when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.
+ *   when EVENT_WINDOW_HDR_STATE_CHANGED is sent.
  * - `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
  *   COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the
  *   SDR white level in scRGB colorspace, and on Apple platforms this is
  *   always 1.0 for EDR content. This property can change dynamically when
- *   SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.
+ *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
  * - `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range
  *   that can be displayed, in terms of the SDR white point. When HDR is not
  *   enabled, this will be 1.0. This property can change dynamically when
- *   SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.
+ *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
  *
  * On Android:
  *
@@ -4878,7 +4878,7 @@ inline void SetWindowIcon(WindowParam window, SurfaceParam icon)
  * this function. If an immediate change is required, call Window.Sync() to
  * block until the changes have taken effect.
  *
- * When the window position changes, an SDL_EVENT_WINDOW_MOVED event will be
+ * When the window position changes, an EVENT_WINDOW_MOVED event will be
  * emitted with the window's new coordinates. Note that the new coordinates
  * may not match the exact coordinates requested, as some windowing systems
  * can restrict the position of the window in certain scenarios (e.g.
@@ -4944,7 +4944,7 @@ inline void GetWindowPosition(WindowParam window, int* x, int* y)
  * function. If an immediate change is required, call Window.Sync() to
  * block until the changes have taken effect.
  *
- * When the window size changes, an SDL_EVENT_WINDOW_RESIZED event will be
+ * When the window size changes, an EVENT_WINDOW_RESIZED event will be
  * emitted with the new window dimensions. Note that the new dimensions may
  * not match the exact size requested, as some windowing systems can restrict
  * the window size in certain scenarios (e.g. constraining the size of the
@@ -5033,7 +5033,7 @@ inline Rect GetWindowSafeArea(WindowParam window)
  * this function. If an immediate change is required, call Window.Sync() to
  * block until the changes have taken effect.
  *
- * When the window size changes, an SDL_EVENT_WINDOW_RESIZED event will be
+ * When the window size changes, an EVENT_WINDOW_RESIZED event will be
  * emitted with the new window dimensions. Note that the new dimensions may
  * not match the exact aspect ratio requested, as some windowing systems can
  * restrict the window size in certain scenarios (e.g. constraining the size
@@ -5344,7 +5344,7 @@ inline void HideWindow(WindowParam window)
  * The result of this request is subject to desktop window manager policy,
  * particularly if raising the requested window would result in stealing focus
  * from another application. If the window is successfully raised and gains
- * input focus, an SDL_EVENT_WINDOW_FOCUS_GAINED event will be emitted, and
+ * input focus, an EVENT_WINDOW_FOCUS_GAINED event will be emitted, and
  * the window will have the WINDOW_INPUT_FOCUS flag set.
  *
  * @param window the window to raise.
@@ -5370,7 +5370,7 @@ inline void RaiseWindow(WindowParam window)
  * function. If an immediate change is required, call Window.Sync() to
  * block until the changes have taken effect.
  *
- * When the window state changes, an SDL_EVENT_WINDOW_MAXIMIZED event will be
+ * When the window state changes, an EVENT_WINDOW_MAXIMIZED event will be
  * emitted. Note that, as this is just a request, the windowing system can
  * deny the state change.
  *
@@ -5406,7 +5406,7 @@ inline void MaximizeWindow(WindowParam window)
  * function. If an immediate change is required, call Window.Sync() to
  * block until the changes have taken effect.
  *
- * When the window state changes, an SDL_EVENT_WINDOW_MINIMIZED event will be
+ * When the window state changes, an EVENT_WINDOW_MINIMIZED event will be
  * emitted. Note that, as this is just a request, the windowing system can
  * deny the state change.
  *
@@ -5438,7 +5438,7 @@ inline void MinimizeWindow(WindowParam window)
  * function. If an immediate change is required, call Window.Sync() to
  * block until the changes have taken effect.
  *
- * When the window state changes, an SDL_EVENT_WINDOW_RESTORED event will be
+ * When the window state changes, an EVENT_WINDOW_RESTORED event will be
  * emitted. Note that, as this is just a request, the windowing system can
  * deny the state change.
  *
@@ -5470,8 +5470,8 @@ inline void RestoreWindow(WindowParam window)
  * of this function. If an immediate change is required, call Window.Sync()
  * to block until the changes have taken effect.
  *
- * When the window state changes, an SDL_EVENT_WINDOW_ENTER_FULLSCREEN or
- * SDL_EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this
+ * When the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or
+ * EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this
  * is just a request, it can be denied by the windowing system.
  *
  * @param window the window to change.

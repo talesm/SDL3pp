@@ -550,7 +550,7 @@
           "sourceName": "SDL_HINT_ANDROID_LOW_LATENCY_AUDIO"
         },
         "SDL_HINT_ANDROID_TRAP_BACK_BUTTON": {
-          "doc": "A variable to control whether we trap the Android back button to handle it\nmanually.\n\nThis is necessary for the right mouse button to work on some Android\ndevices, or to be able to trap the back button for use in your code\nreliably. If this hint is true, the back button will show up as an\nSDL_EVENT_KEY_DOWN / SDL_EVENT_KEY_UP pair with a keycode of\nSDL_SCANCODE_AC_BACK.\n\nThe variable can be set to the following values:\n\n- \"0\": Back button will be handled as usual for system. (default)\n- \"1\": Back button will be trapped, allowing you to handle the key press\n  manually. (This will also let right mouse click work on systems where the\n  right mouse button functions as back.)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable to control whether we trap the Android back button to handle it\nmanually.\n\nThis is necessary for the right mouse button to work on some Android\ndevices, or to be able to trap the back button for use in your code\nreliably. If this hint is true, the back button will show up as an\nEVENT_KEY_DOWN / EVENT_KEY_UP pair with a keycode of\nSDL_SCANCODE_AC_BACK.\n\nThe variable can be set to the following values:\n\n- \"0\": Back button will be handled as usual for system. (default)\n- \"1\": Back button will be trapped, allowing you to handle the key press\n  manually. (This will also let right mouse click work on systems where the\n  right mouse button functions as back.)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_ANDROID_TRAP_BACK_BUTTON",
           "kind": "def",
           "value": "\"SDL_ANDROID_TRAP_BACK_BUTTON\"",
@@ -935,7 +935,7 @@
           "sourceName": "SDL_HINT_HIDAPI_IGNORE_DEVICES"
         },
         "SDL_HINT_IME_IMPLEMENTED_UI": {
-          "doc": "A variable describing what IME UI elements the application can display.\n\nBy default IME UI is handled using native components by the OS where\npossible, however this can interfere with or not be visible when exclusive\nfullscreen mode is used.\n\nThe variable can be set to a comma separated list containing the following\nitems:\n\n- \"none\" or \"0\": The application can't render any IME elements, and native\n  UI should be used. (default)\n- \"composition\": The application handles SDL_EVENT_TEXT_EDITING events and\n  can render the composition text.\n- \"candidates\": The application handles SDL_EVENT_TEXT_EDITING_CANDIDATES\n  and can render the candidate list.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable describing what IME UI elements the application can display.\n\nBy default IME UI is handled using native components by the OS where\npossible, however this can interfere with or not be visible when exclusive\nfullscreen mode is used.\n\nThe variable can be set to a comma separated list containing the following\nitems:\n\n- \"none\" or \"0\": The application can't render any IME elements, and native\n  UI should be used. (default)\n- \"composition\": The application handles EVENT_TEXT_EDITING events and\n  can render the composition text.\n- \"candidates\": The application handles EVENT_TEXT_EDITING_CANDIDATES\n  and can render the candidate list.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_IME_IMPLEMENTED_UI",
           "kind": "def",
           "value": "\"SDL_IME_IMPLEMENTED_UI\"",
@@ -1438,7 +1438,7 @@
           "sourceName": "SDL_HINT_MAC_OPTION_AS_ALT"
         },
         "SDL_HINT_MAC_SCROLL_MOMENTUM": {
-          "doc": "A variable controlling whether SDL_EVENT_MOUSE_WHEEL event values will have\nmomentum on macOS.\n\nThe variable can be set to the following values:\n\n- \"0\": The mouse wheel events will have no momentum. (default)\n- \"1\": The mouse wheel events will have momentum.\n\nThis hint needs to be set before Init().\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable controlling whether EVENT_MOUSE_WHEEL event values will have\nmomentum on macOS.\n\nThe variable can be set to the following values:\n\n- \"0\": The mouse wheel events will have no momentum. (default)\n- \"1\": The mouse wheel events will have momentum.\n\nThis hint needs to be set before Init().\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MAC_SCROLL_MOMENTUM",
           "kind": "def",
           "value": "\"SDL_MAC_SCROLL_MOMENTUM\"",
@@ -1550,7 +1550,7 @@
           "sourceName": "SDL_HINT_MUTE_CONSOLE_KEYBOARD"
         },
         "SDL_HINT_NO_SIGNAL_HANDLERS": {
-          "doc": "Tell SDL not to catch the SIGINT or SIGTERM signals on POSIX platforms.\n\nThe variable can be set to the following values:\n\n- \"0\": SDL will install a SIGINT and SIGTERM handler, and when it catches a\n  signal, convert it into an SDL_EVENT_QUIT event. (default)\n- \"1\": SDL will not install a signal handler at all.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "Tell SDL not to catch the SIGINT or SIGTERM signals on POSIX platforms.\n\nThe variable can be set to the following values:\n\n- \"0\": SDL will install a SIGINT and SIGTERM handler, and when it catches a\n  signal, convert it into an EVENT_QUIT event. (default)\n- \"1\": SDL will not install a signal handler at all.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_NO_SIGNAL_HANDLERS",
           "kind": "def",
           "value": "\"SDL_NO_SIGNAL_HANDLERS\"",
@@ -1592,21 +1592,21 @@
           "sourceName": "SDL_HINT_ORIENTATIONS"
         },
         "SDL_HINT_POLL_SENTINEL": {
-          "doc": "A variable controlling the use of a sentinel event when polling the event\nqueue.\n\nWhen polling for events, SDL_PumpEvents is used to gather new events from\ndevices. If a device keeps producing new events between calls to\nSDL_PumpEvents, a poll loop will become stuck until the new events stop.\nThis is most noticeable when moving a high frequency mouse.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable poll sentinels.\n- \"1\": Enable poll sentinels. (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable controlling the use of a sentinel event when polling the event\nqueue.\n\nWhen polling for events, PumpEvents is used to gather new events from\ndevices. If a device keeps producing new events between calls to\nPumpEvents, a poll loop will become stuck until the new events stop.\nThis is most noticeable when moving a high frequency mouse.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable poll sentinels.\n- \"1\": Enable poll sentinels. (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_POLL_SENTINEL",
           "kind": "def",
           "value": "\"SDL_POLL_SENTINEL\"",
           "sourceName": "SDL_HINT_POLL_SENTINEL"
         },
         "SDL_HINT_PREFERRED_LOCALES": {
-          "doc": "Override for SDL_GetPreferredLocales().\n\nIf set, this will be favored over anything the OS might report for the\nuser's preferred locales. Changing this hint at runtime will not generate a\nSDL_EVENT_LOCALE_CHANGED event (but if you can change the hint, you can\npush your own event, if you want).\n\nThe format of this hint is a comma-separated list of language and locale,\ncombined with an underscore, as is a common format: \"en_GB\". Locale is\noptional: \"en\". So you might have a list like this: \"en_GB,jp,es_PT\"\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "Override for SDL_GetPreferredLocales().\n\nIf set, this will be favored over anything the OS might report for the\nuser's preferred locales. Changing this hint at runtime will not generate a\nEVENT_LOCALE_CHANGED event (but if you can change the hint, you can\npush your own event, if you want).\n\nThe format of this hint is a comma-separated list of language and locale,\ncombined with an underscore, as is a common format: \"en_GB\". Locale is\noptional: \"en\". So you might have a list like this: \"en_GB,jp,es_PT\"\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_PREFERRED_LOCALES",
           "kind": "def",
           "value": "\"SDL_PREFERRED_LOCALES\"",
           "sourceName": "SDL_HINT_PREFERRED_LOCALES"
         },
         "SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE": {
-          "doc": "A variable that decides whether to send SDL_EVENT_QUIT when closing the\nlast window.\n\nThe variable can be set to the following values:\n\n- \"0\": SDL will not send an SDL_EVENT_QUIT event when the last window is\n  requesting to close. Note that in this case, there are still other\n  legitimate reasons one might get an SDL_EVENT_QUIT event: choosing \"Quit\"\n  from the macOS menu bar, sending a SIGINT (ctrl-c) on Unix, etc.\n- \"1\": SDL will send a quit event when the last window is requesting to\n  close. (default)\n\nIf there is at least one active system tray icon, SDL_EVENT_QUIT will\ninstead be sent when both the last window will be closed and the last tray\nicon will be destroyed.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable that decides whether to send EVENT_QUIT when closing the\nlast window.\n\nThe variable can be set to the following values:\n\n- \"0\": SDL will not send an EVENT_QUIT event when the last window is\n  requesting to close. Note that in this case, there are still other\n  legitimate reasons one might get an EVENT_QUIT event: choosing \"Quit\"\n  from the macOS menu bar, sending a SIGINT (ctrl-c) on Unix, etc.\n- \"1\": SDL will send a quit event when the last window is requesting to\n  close. (default)\n\nIf there is at least one active system tray icon, EVENT_QUIT will\ninstead be sent when both the last window will be closed and the last tray\nicon will be destroyed.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE",
           "kind": "def",
           "value": "\"SDL_QUIT_ON_LAST_WINDOW_CLOSE\"",
@@ -2095,7 +2095,7 @@
           "sourceName": "SDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS"
         },
         "SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP": {
-          "doc": "A variable controlling whether the windows message loop is processed by\nSDL.\n\nThe variable can be set to the following values:\n\n- \"0\": The window message loop is not run.\n- \"1\": The window message loop is processed in SDL_PumpEvents(). (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable controlling whether the windows message loop is processed by\nSDL.\n\nThe variable can be set to the following values:\n\n- \"0\": The window message loop is not run.\n- \"1\": The window message loop is processed in PumpEvents(). (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP",
           "kind": "def",
           "value": "\"SDL_WINDOWS_ENABLE_MESSAGELOOP\"",
@@ -4983,7 +4983,7 @@
     },
     "SDL3pp_video.h": {
       "name": "SDL3pp_video.h",
-      "doc": "@defgroup CategoryVideo Category Video\n\nSDL's video subsystem is largely interested in abstracting window\nmanagement from the underlying operating system. You can create windows,\nmanage them in various ways, set them fullscreen, and get events when\ninteresting things happen with them, such as the mouse or keyboard\ninteracting with a window.\n\nThe video subsystem is also interested in abstracting away some\nplatform-specific differences in OpenGL: context creation, swapping\nbuffers, etc. This may be crucial to your app, but also you are not\nrequired to use OpenGL at all. In fact, SDL can provide rendering to those\nwindows as well, either with an easy-to-use\n[2D API](https://wiki.libsdl.org/SDL3/CategoryRender)\nor with a more-powerful\n[GPU API](https://wiki.libsdl.org/SDL3/CategoryGPU)\n. Of course, it can simply get out of your way and give you the window\nhandles you need to use Vulkan, Direct3D, Metal, or whatever else you like\ndirectly, too.\n\nThe video subsystem covers a lot of functionality, out of necessity, so it\nis worth perusing the list of functions just to see what's available, but\nmost apps can get by with simply creating a window and listening for\nevents, so start with Window.Window() and SDL_PollEvent().",
+      "doc": "@defgroup CategoryVideo Category Video\n\nSDL's video subsystem is largely interested in abstracting window\nmanagement from the underlying operating system. You can create windows,\nmanage them in various ways, set them fullscreen, and get events when\ninteresting things happen with them, such as the mouse or keyboard\ninteracting with a window.\n\nThe video subsystem is also interested in abstracting away some\nplatform-specific differences in OpenGL: context creation, swapping\nbuffers, etc. This may be crucial to your app, but also you are not\nrequired to use OpenGL at all. In fact, SDL can provide rendering to those\nwindows as well, either with an easy-to-use\n[2D API](https://wiki.libsdl.org/SDL3/CategoryRender)\nor with a more-powerful\n[GPU API](https://wiki.libsdl.org/SDL3/CategoryGPU)\n. Of course, it can simply get out of your way and give you the window\nhandles you need to use Vulkan, Direct3D, Metal, or whatever else you like\ndirectly, too.\n\nThe video subsystem covers a lot of functionality, out of necessity, so it\nis worth perusing the list of functions just to see what's available, but\nmost apps can get by with simply creating a window and listening for\nevents, so start with Window.Window() and PollEvent().",
       "entries": {
         "DisplayID": {
           "name": "DisplayID",
@@ -6015,7 +6015,7 @@
                 "doc": ""
               },
               {
-                "doc": "Create a window with the specified dimensions and flags.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\n`flags` may be any of the following OR'd together:\n\n- `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution\n- `WINDOW_OPENGL`: window usable with an OpenGL context\n- `WINDOW_OCCLUDED`: window partially or completely obscured by another\n  window\n- `WINDOW_HIDDEN`: window is not visible\n- `WINDOW_BORDERLESS`: no window decoration\n- `WINDOW_RESIZABLE`: window can be resized\n- `WINDOW_MINIMIZED`: window is minimized\n- `WINDOW_MAXIMIZED`: window is maximized\n- `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus\n- `WINDOW_INPUT_FOCUS`: window has input focus\n- `WINDOW_MOUSE_FOCUS`: window has mouse focus\n- `WINDOW_EXTERNAL`: window not created by SDL\n- `WINDOW_MODAL`: window is modal\n- `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back\n  buffer if possible\n- `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to\n  MOUSE_GRABBED)\n- `WINDOW_ALWAYS_ON_TOP`: window should always be above others\n- `WINDOW_UTILITY`: window should be treated as a utility window, not\n  showing in the task bar and window list\n- `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not\n  get mouse or keyboard focus, requires a parent window\n- `WINDOW_POPUP_MENU`: window should be treated as a popup menu,\n  requires a parent window\n- `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input\n- `WINDOW_VULKAN`: window usable with a Vulkan instance\n- `WINDOW_METAL`: window usable with a Metal instance\n- `WINDOW_TRANSPARENT`: window with transparent buffer\n- `WINDOW_NOT_FOCUSABLE`: window should not be focusable\n\nThe Window is implicitly shown if WINDOW_HIDDEN is not set.\n\nOn Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist\nproperty to YES, otherwise you will not receive a High-DPI OpenGL canvas.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use Window.GetSize() to query\nthe client area's size in window coordinates, and\nWindow.GetSizeInPixels() or SDL_GetRenderOutputSize() to query the\ndrawable size in pixels. Note that the drawable size can vary after the\nwindow is created and should be queried again if you get an\nSDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event.\n\nIf the window is created with any of the WINDOW_OPENGL or\nWINDOW_VULKAN flags, then the corresponding LoadLibrary function\n(GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the\ncorresponding UnloadLibrary function is called by Window.Destroy().\n\nIf WINDOW_VULKAN is specified and there isn't a working Vulkan driver,\nWindow.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.\n\nIf WINDOW_METAL is specified on an OS that does not support Metal,\nWindow.Window() will fail.\n\nIf you intend to use this window with an SDL_Renderer, you should use\nSDL_CreateWindowAndRenderer() instead of this function, to avoid window\nflicker.\n\nOn non-Apple devices, SDL requires you to either not link to the Vulkan\nloader or link to a dynamic library version. This limitation may be removed\nin a future version of SDL.\n\n@param title the title of the window, in UTF-8 encoding.\n@param w the width of the window.\n@param h the height of the window.\n@param flags 0, or one or more WindowFlags OR'd together.\n@post the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateWindowAndRenderer\n@sa Window.Window\n@sa Window.Window\n@sa Window.Destroy",
+                "doc": "Create a window with the specified dimensions and flags.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\n`flags` may be any of the following OR'd together:\n\n- `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution\n- `WINDOW_OPENGL`: window usable with an OpenGL context\n- `WINDOW_OCCLUDED`: window partially or completely obscured by another\n  window\n- `WINDOW_HIDDEN`: window is not visible\n- `WINDOW_BORDERLESS`: no window decoration\n- `WINDOW_RESIZABLE`: window can be resized\n- `WINDOW_MINIMIZED`: window is minimized\n- `WINDOW_MAXIMIZED`: window is maximized\n- `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus\n- `WINDOW_INPUT_FOCUS`: window has input focus\n- `WINDOW_MOUSE_FOCUS`: window has mouse focus\n- `WINDOW_EXTERNAL`: window not created by SDL\n- `WINDOW_MODAL`: window is modal\n- `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back\n  buffer if possible\n- `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to\n  MOUSE_GRABBED)\n- `WINDOW_ALWAYS_ON_TOP`: window should always be above others\n- `WINDOW_UTILITY`: window should be treated as a utility window, not\n  showing in the task bar and window list\n- `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not\n  get mouse or keyboard focus, requires a parent window\n- `WINDOW_POPUP_MENU`: window should be treated as a popup menu,\n  requires a parent window\n- `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input\n- `WINDOW_VULKAN`: window usable with a Vulkan instance\n- `WINDOW_METAL`: window usable with a Metal instance\n- `WINDOW_TRANSPARENT`: window with transparent buffer\n- `WINDOW_NOT_FOCUSABLE`: window should not be focusable\n\nThe Window is implicitly shown if WINDOW_HIDDEN is not set.\n\nOn Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist\nproperty to YES, otherwise you will not receive a High-DPI OpenGL canvas.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use Window.GetSize() to query\nthe client area's size in window coordinates, and\nWindow.GetSizeInPixels() or SDL_GetRenderOutputSize() to query the\ndrawable size in pixels. Note that the drawable size can vary after the\nwindow is created and should be queried again if you get an\nEVENT_WINDOW_PIXEL_SIZE_CHANGED event.\n\nIf the window is created with any of the WINDOW_OPENGL or\nWINDOW_VULKAN flags, then the corresponding LoadLibrary function\n(GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the\ncorresponding UnloadLibrary function is called by Window.Destroy().\n\nIf WINDOW_VULKAN is specified and there isn't a working Vulkan driver,\nWindow.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.\n\nIf WINDOW_METAL is specified on an OS that does not support Metal,\nWindow.Window() will fail.\n\nIf you intend to use this window with an SDL_Renderer, you should use\nSDL_CreateWindowAndRenderer() instead of this function, to avoid window\nflicker.\n\nOn non-Apple devices, SDL requires you to either not link to the Vulkan\nloader or link to a dynamic library version. This limitation may be removed\nin a future version of SDL.\n\n@param title the title of the window, in UTF-8 encoding.\n@param w the width of the window.\n@param h the height of the window.\n@param flags 0, or one or more WindowFlags OR'd together.\n@post the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateWindowAndRenderer\n@sa Window.Window\n@sa Window.Window\n@sa Window.Destroy",
                 "name": "Window",
                 "kind": "function",
                 "type": "",
@@ -6164,7 +6164,7 @@
               "immutable": true
             },
             "SetFullscreenMode": {
-              "doc": "Set the display mode to use when a window is visible and fullscreen.\n\nThis only affects the display mode used when the window is fullscreen. To\nchange the window size when the window is not fullscreen, use\nWindow.SetSize().\n\nIf the window is currently in the fullscreen state, this request is\nasynchronous on some windowing systems and the new mode dimensions may not\nbe applied immediately upon the return of this function. If an immediate\nchange is required, call Window.Sync() to block until the changes have\ntaken effect.\n\nWhen the new mode takes effect, an SDL_EVENT_WINDOW_RESIZED and/or an\nSDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode\ndimensions.\n\n@param mode a pointer to the display mode to use, which can be nullptr for\n            borderless fullscreen desktop mode, or one of the fullscreen\n            modes returned by Display.GetFullscreenModes() to set an\n            exclusive fullscreen mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetFullscreenMode\n@sa Window.SetFullscreen\n@sa Window.Sync",
+              "doc": "Set the display mode to use when a window is visible and fullscreen.\n\nThis only affects the display mode used when the window is fullscreen. To\nchange the window size when the window is not fullscreen, use\nWindow.SetSize().\n\nIf the window is currently in the fullscreen state, this request is\nasynchronous on some windowing systems and the new mode dimensions may not\nbe applied immediately upon the return of this function. If an immediate\nchange is required, call Window.Sync() to block until the changes have\ntaken effect.\n\nWhen the new mode takes effect, an EVENT_WINDOW_RESIZED and/or an\nEVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode\ndimensions.\n\n@param mode a pointer to the display mode to use, which can be nullptr for\n            borderless fullscreen desktop mode, or one of the fullscreen\n            modes returned by Display.GetFullscreenModes() to set an\n            exclusive fullscreen mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetFullscreenMode\n@sa Window.SetFullscreen\n@sa Window.Sync",
               "name": "SetFullscreenMode",
               "kind": "function",
               "type": "void",
@@ -6213,7 +6213,7 @@
               "immutable": true
             },
             "GetID": {
-              "doc": "Get the numeric ID of a window.\n\nThe numeric ID is what SDL_WindowEvent references, and is necessary to map\nthese events to specific Window objects.\n\n@returns the ID of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.FromID",
+              "doc": "Get the numeric ID of a window.\n\nThe numeric ID is what WindowEvent references, and is necessary to map\nthese events to specific Window objects.\n\n@returns the ID of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.FromID",
               "name": "GetID",
               "kind": "function",
               "type": "WindowID",
@@ -6238,7 +6238,7 @@
               "proto": true
             },
             "GetProperties": {
-              "doc": "Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Window.SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the\n  SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn iOS:\n\n- `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when GL_SwapWindow is called.\n- `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated\n  with the window (e.g. the X in /dev/dri/cardX)\n- `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n\nOn OpenVR:\n\n- `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the\n  associated overlay window.\n\nOn Vivante:\n\n- `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn Windows:\n\n- `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window\n- `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window\n- `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with\n  the window\n- `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with\n  the window\n- `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated\n  with the window\n- `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Window.SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the\n  SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn iOS:\n\n- `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when GL_SwapWindow is called.\n- `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated\n  with the window (e.g. the X in /dev/dri/cardX)\n- `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n\nOn OpenVR:\n\n- `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the\n  associated overlay window.\n\nOn Vivante:\n\n- `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn Windows:\n\n- `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window\n- `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window\n- `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with\n  the window\n- `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with\n  the window\n- `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated\n  with the window\n- `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetProperties",
               "kind": "function",
               "type": "PropertiesRef",
@@ -6320,7 +6320,7 @@
               "doc": ""
             },
             "SetPosition": {
-              "doc": "Request that the window's position be set.\n\nIf the window is in an exclusive fullscreen or maximized state, this\nrequest has no effect.\n\nThis can be used to reposition fullscreen-desktop windows onto a different\ndisplay, however, as exclusive fullscreen windows are locked to a specific\ndisplay, they can only be repositioned programmatically via\nWindow.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\ncoordinates may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window position changes, an SDL_EVENT_WINDOW_MOVED event will be\nemitted with the window's new coordinates. Note that the new coordinates\nmay not match the exact coordinates requested, as some windowing systems\ncan restrict the position of the window in certain scenarios (e.g.\nconstraining the position so the window is always within desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param window the window to reposition.\n@param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetPosition\n@sa Window.Sync",
+              "doc": "Request that the window's position be set.\n\nIf the window is in an exclusive fullscreen or maximized state, this\nrequest has no effect.\n\nThis can be used to reposition fullscreen-desktop windows onto a different\ndisplay, however, as exclusive fullscreen windows are locked to a specific\ndisplay, they can only be repositioned programmatically via\nWindow.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\ncoordinates may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window position changes, an EVENT_WINDOW_MOVED event will be\nemitted with the window's new coordinates. Note that the new coordinates\nmay not match the exact coordinates requested, as some windowing systems\ncan restrict the position of the window in certain scenarios (e.g.\nconstraining the position so the window is always within desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param window the window to reposition.\n@param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetPosition\n@sa Window.Sync",
               "name": "SetPosition",
               "kind": "function",
               "type": "void",
@@ -6368,7 +6368,7 @@
               }
             ],
             "SetSize": {
-              "doc": "Request that the size of a window's client area be set.\n\nIf the window is in a fullscreen or maximized state, this request has no\neffect.\n\nTo change the exclusive fullscreen mode of a window, use\nWindow.SetFullscreenMode().\n\nOn some windowing systems, this request is asynchronous and the new window\nsize may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an SDL_EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact size requested, as some windowing systems can restrict\nthe window size in certain scenarios (e.g. constraining the size of the\ncontent area to remain within the usable desktop bounds). Additionally, as\nthis is just a request, it can be denied by the windowing system.\n\n@param window the window to change.\n@param w the width of the window, must be > 0.\n@param h the height of the window, must be > 0.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetSize\n@sa Window.SetFullscreenMode\n@sa Window.Sync",
+              "doc": "Request that the size of a window's client area be set.\n\nIf the window is in a fullscreen or maximized state, this request has no\neffect.\n\nTo change the exclusive fullscreen mode of a window, use\nWindow.SetFullscreenMode().\n\nOn some windowing systems, this request is asynchronous and the new window\nsize may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact size requested, as some windowing systems can restrict\nthe window size in certain scenarios (e.g. constraining the size of the\ncontent area to remain within the usable desktop bounds). Additionally, as\nthis is just a request, it can be denied by the windowing system.\n\n@param window the window to change.\n@param w the width of the window, must be > 0.\n@param h the height of the window, must be > 0.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetSize\n@sa Window.SetFullscreenMode\n@sa Window.Sync",
               "name": "SetSize",
               "kind": "function",
               "type": "void",
@@ -6428,7 +6428,7 @@
               "immutable": true
             },
             "SetAspectRatio": {
-              "doc": "Request that the aspect ratio of a window's client area be set.\n\nThe aspect ratio is the ratio of width divided by height, e.g. 2560x1600\nwould be 1.6. Larger aspect ratios are wider and smaller aspect ratios are\nnarrower.\n\nIf, at the time of this request, the window in a fixed-size state, such as\nmaximized or fullscreen, the request will be deferred until the window\nexits this state and becomes resizable again.\n\nOn some windowing systems, this request is asynchronous and the new window\naspect ratio may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an SDL_EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact aspect ratio requested, as some windowing systems can\nrestrict the window size in certain scenarios (e.g. constraining the size\nof the content area to remain within the usable desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param min_aspect the minimum aspect ratio of the window, or 0.0f for no\n                  limit.\n@param max_aspect the maximum aspect ratio of the window, or 0.0f for no\n                  limit.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetAspectRatio\n@sa Window.Sync",
+              "doc": "Request that the aspect ratio of a window's client area be set.\n\nThe aspect ratio is the ratio of width divided by height, e.g. 2560x1600\nwould be 1.6. Larger aspect ratios are wider and smaller aspect ratios are\nnarrower.\n\nIf, at the time of this request, the window in a fixed-size state, such as\nmaximized or fullscreen, the request will be deferred until the window\nexits this state and becomes resizable again.\n\nOn some windowing systems, this request is asynchronous and the new window\naspect ratio may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact aspect ratio requested, as some windowing systems can\nrestrict the window size in certain scenarios (e.g. constraining the size\nof the content area to remain within the usable desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param min_aspect the minimum aspect ratio of the window, or 0.0f for no\n                  limit.\n@param max_aspect the maximum aspect ratio of the window, or 0.0f for no\n                  limit.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetAspectRatio\n@sa Window.Sync",
               "name": "SetAspectRatio",
               "kind": "function",
               "type": "void",
@@ -6675,7 +6675,7 @@
               }
             },
             "Raise": {
-              "doc": "Request that a window be raised above other windows and gain the input\nfocus.\n\nThe result of this request is subject to desktop window manager policy,\nparticularly if raising the requested window would result in stealing focus\nfrom another application. If the window is successfully raised and gains\ninput focus, an SDL_EVENT_WINDOW_FOCUS_GAINED event will be emitted, and\nthe window will have the WINDOW_INPUT_FOCUS flag set.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Request that a window be raised above other windows and gain the input\nfocus.\n\nThe result of this request is subject to desktop window manager policy,\nparticularly if raising the requested window would result in stealing focus\nfrom another application. If the window is successfully raised and gains\ninput focus, an EVENT_WINDOW_FOCUS_GAINED event will be emitted, and\nthe window will have the WINDOW_INPUT_FOCUS flag set.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "Raise",
               "kind": "function",
               "type": "void",
@@ -6686,7 +6686,7 @@
               }
             },
             "Maximize": {
-              "doc": "Request that the window be made as large as possible.\n\nNon-resizable windows can't be maximized. The window must have the\nWINDOW_RESIZABLE flag set, or this will have no effect.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_MAXIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\nWhen maximizing a window, whether the constraints set via\nWindow.SetMaximumSize() are honored depends on the policy of the window\nmanager. Win32 and macOS enforce the constraints when maximizing, while X11\nand Wayland window managers may vary.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Minimize\n@sa Window.Restore\n@sa Window.Sync",
+              "doc": "Request that the window be made as large as possible.\n\nNon-resizable windows can't be maximized. The window must have the\nWINDOW_RESIZABLE flag set, or this will have no effect.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_MAXIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\nWhen maximizing a window, whether the constraints set via\nWindow.SetMaximumSize() are honored depends on the policy of the window\nmanager. Win32 and macOS enforce the constraints when maximizing, while X11\nand Wayland window managers may vary.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Minimize\n@sa Window.Restore\n@sa Window.Sync",
               "name": "Maximize",
               "kind": "function",
               "type": "void",
@@ -6697,7 +6697,7 @@
               }
             },
             "Minimize": {
-              "doc": "Request that the window be minimized to an iconic representation.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_MINIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Maximize\n@sa Window.Restore\n@sa Window.Sync",
+              "doc": "Request that the window be minimized to an iconic representation.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_MINIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Maximize\n@sa Window.Restore\n@sa Window.Sync",
               "name": "Minimize",
               "kind": "function",
               "type": "void",
@@ -6708,7 +6708,7 @@
               }
             },
             "Restore": {
-              "doc": "Request that the size and position of a minimized or maximized window be\nrestored.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_RESTORED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Maximize\n@sa Window.Minimize\n@sa Window.Sync",
+              "doc": "Request that the size and position of a minimized or maximized window be\nrestored.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_RESTORED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Maximize\n@sa Window.Minimize\n@sa Window.Sync",
               "name": "Restore",
               "kind": "function",
               "type": "void",
@@ -6719,7 +6719,7 @@
               }
             },
             "SetFullscreen": {
-              "doc": "Request that the window's fullscreen state be changed.\n\nBy default a window in fullscreen state uses borderless fullscreen desktop\nmode, but a specific exclusive display mode can be set using\nWindow.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\nfullscreen state may not have have been applied immediately upon the return\nof this function. If an immediate change is required, call Window.Sync()\nto block until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_ENTER_FULLSCREEN or\nSDL_EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this\nis just a request, it can be denied by the windowing system.\n\n@param fullscreen true for fullscreen mode, false for windowed mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetFullscreenMode\n@sa Window.SetFullscreenMode\n@sa Window.Sync\n@sa WINDOW_FULLSCREEN",
+              "doc": "Request that the window's fullscreen state be changed.\n\nBy default a window in fullscreen state uses borderless fullscreen desktop\nmode, but a specific exclusive display mode can be set using\nWindow.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\nfullscreen state may not have have been applied immediately upon the return\nof this function. If an immediate change is required, call Window.Sync()\nto block until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or\nEVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this\nis just a request, it can be denied by the windowing system.\n\n@param fullscreen true for fullscreen mode, false for windowed mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetFullscreenMode\n@sa Window.SetFullscreenMode\n@sa Window.Sync\n@sa WINDOW_FULLSCREEN",
               "name": "SetFullscreen",
               "kind": "function",
               "type": "void",
@@ -7060,7 +7060,7 @@
               }
             },
             "FromID": {
-              "doc": "Get a window from a stored ID.\n\nThe numeric ID is what SDL_WindowEvent references, and is necessary to map\nthese events to specific Window objects.\n\n@param id the ID of the window.\n@returns the window associated with `id` or nullptr if it doesn't exist; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetID",
+              "doc": "Get a window from a stored ID.\n\nThe numeric ID is what WindowEvent references, and is necessary to map\nthese events to specific Window objects.\n\n@param id the ID of the window.\n@returns the window associated with `id` or nullptr if it doesn't exist; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetID",
               "name": "FromID",
               "kind": "function",
               "type": "WindowRef",
@@ -8189,7 +8189,7 @@
           "sourceName": "SDL_GetWindowDisplayScale"
         },
         "SetWindowFullscreenMode": {
-          "doc": "Set the display mode to use when a window is visible and fullscreen.\n\nThis only affects the display mode used when the window is fullscreen. To\nchange the window size when the window is not fullscreen, use\nWindow.SetSize().\n\nIf the window is currently in the fullscreen state, this request is\nasynchronous on some windowing systems and the new mode dimensions may not\nbe applied immediately upon the return of this function. If an immediate\nchange is required, call Window.Sync() to block until the changes have\ntaken effect.\n\nWhen the new mode takes effect, an SDL_EVENT_WINDOW_RESIZED and/or an\nSDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode\ndimensions.\n\n@param window the window to affect.\n@param mode a pointer to the display mode to use, which can be nullptr for\n            borderless fullscreen desktop mode, or one of the fullscreen\n            modes returned by Display.GetFullscreenModes() to set an\n            exclusive fullscreen mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetFullscreenMode\n@sa Window.SetFullscreen\n@sa Window.Sync",
+          "doc": "Set the display mode to use when a window is visible and fullscreen.\n\nThis only affects the display mode used when the window is fullscreen. To\nchange the window size when the window is not fullscreen, use\nWindow.SetSize().\n\nIf the window is currently in the fullscreen state, this request is\nasynchronous on some windowing systems and the new mode dimensions may not\nbe applied immediately upon the return of this function. If an immediate\nchange is required, call Window.Sync() to block until the changes have\ntaken effect.\n\nWhen the new mode takes effect, an EVENT_WINDOW_RESIZED and/or an\nEVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode\ndimensions.\n\n@param window the window to affect.\n@param mode a pointer to the display mode to use, which can be nullptr for\n            borderless fullscreen desktop mode, or one of the fullscreen\n            modes returned by Display.GetFullscreenModes() to set an\n            exclusive fullscreen mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetFullscreenMode\n@sa Window.SetFullscreen\n@sa Window.Sync",
           "name": "SetWindowFullscreenMode",
           "kind": "function",
           "type": "void",
@@ -8262,7 +8262,7 @@
           "sourceName": "SDL_GetWindows"
         },
         "CreateWindow": {
-          "doc": "Create a window with the specified dimensions and flags.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\n`flags` may be any of the following OR'd together:\n\n- `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution\n- `WINDOW_OPENGL`: window usable with an OpenGL context\n- `WINDOW_OCCLUDED`: window partially or completely obscured by another\n  window\n- `WINDOW_HIDDEN`: window is not visible\n- `WINDOW_BORDERLESS`: no window decoration\n- `WINDOW_RESIZABLE`: window can be resized\n- `WINDOW_MINIMIZED`: window is minimized\n- `WINDOW_MAXIMIZED`: window is maximized\n- `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus\n- `WINDOW_INPUT_FOCUS`: window has input focus\n- `WINDOW_MOUSE_FOCUS`: window has mouse focus\n- `WINDOW_EXTERNAL`: window not created by SDL\n- `WINDOW_MODAL`: window is modal\n- `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back\n  buffer if possible\n- `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to\n  MOUSE_GRABBED)\n- `WINDOW_ALWAYS_ON_TOP`: window should always be above others\n- `WINDOW_UTILITY`: window should be treated as a utility window, not\n  showing in the task bar and window list\n- `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not\n  get mouse or keyboard focus, requires a parent window\n- `WINDOW_POPUP_MENU`: window should be treated as a popup menu,\n  requires a parent window\n- `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input\n- `WINDOW_VULKAN`: window usable with a Vulkan instance\n- `WINDOW_METAL`: window usable with a Metal instance\n- `WINDOW_TRANSPARENT`: window with transparent buffer\n- `WINDOW_NOT_FOCUSABLE`: window should not be focusable\n\nThe Window is implicitly shown if WINDOW_HIDDEN is not set.\n\nOn Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist\nproperty to YES, otherwise you will not receive a High-DPI OpenGL canvas.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use Window.GetSize() to query\nthe client area's size in window coordinates, and\nWindow.GetSizeInPixels() or SDL_GetRenderOutputSize() to query the\ndrawable size in pixels. Note that the drawable size can vary after the\nwindow is created and should be queried again if you get an\nSDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event.\n\nIf the window is created with any of the WINDOW_OPENGL or\nWINDOW_VULKAN flags, then the corresponding LoadLibrary function\n(GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the\ncorresponding UnloadLibrary function is called by Window.Destroy().\n\nIf WINDOW_VULKAN is specified and there isn't a working Vulkan driver,\nWindow.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.\n\nIf WINDOW_METAL is specified on an OS that does not support Metal,\nWindow.Window() will fail.\n\nIf you intend to use this window with an SDL_Renderer, you should use\nSDL_CreateWindowAndRenderer() instead of this function, to avoid window\nflicker.\n\nOn non-Apple devices, SDL requires you to either not link to the Vulkan\nloader or link to a dynamic library version. This limitation may be removed\nin a future version of SDL.\n\n@param title the title of the window, in UTF-8 encoding.\n@param w the width of the window.\n@param h the height of the window.\n@param flags 0, or one or more WindowFlags OR'd together.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateWindowAndRenderer\n@sa Window.Window\n@sa Window.Window\n@sa Window.Destroy",
+          "doc": "Create a window with the specified dimensions and flags.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\n`flags` may be any of the following OR'd together:\n\n- `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution\n- `WINDOW_OPENGL`: window usable with an OpenGL context\n- `WINDOW_OCCLUDED`: window partially or completely obscured by another\n  window\n- `WINDOW_HIDDEN`: window is not visible\n- `WINDOW_BORDERLESS`: no window decoration\n- `WINDOW_RESIZABLE`: window can be resized\n- `WINDOW_MINIMIZED`: window is minimized\n- `WINDOW_MAXIMIZED`: window is maximized\n- `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus\n- `WINDOW_INPUT_FOCUS`: window has input focus\n- `WINDOW_MOUSE_FOCUS`: window has mouse focus\n- `WINDOW_EXTERNAL`: window not created by SDL\n- `WINDOW_MODAL`: window is modal\n- `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back\n  buffer if possible\n- `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to\n  MOUSE_GRABBED)\n- `WINDOW_ALWAYS_ON_TOP`: window should always be above others\n- `WINDOW_UTILITY`: window should be treated as a utility window, not\n  showing in the task bar and window list\n- `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not\n  get mouse or keyboard focus, requires a parent window\n- `WINDOW_POPUP_MENU`: window should be treated as a popup menu,\n  requires a parent window\n- `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input\n- `WINDOW_VULKAN`: window usable with a Vulkan instance\n- `WINDOW_METAL`: window usable with a Metal instance\n- `WINDOW_TRANSPARENT`: window with transparent buffer\n- `WINDOW_NOT_FOCUSABLE`: window should not be focusable\n\nThe Window is implicitly shown if WINDOW_HIDDEN is not set.\n\nOn Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist\nproperty to YES, otherwise you will not receive a High-DPI OpenGL canvas.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use Window.GetSize() to query\nthe client area's size in window coordinates, and\nWindow.GetSizeInPixels() or SDL_GetRenderOutputSize() to query the\ndrawable size in pixels. Note that the drawable size can vary after the\nwindow is created and should be queried again if you get an\nEVENT_WINDOW_PIXEL_SIZE_CHANGED event.\n\nIf the window is created with any of the WINDOW_OPENGL or\nWINDOW_VULKAN flags, then the corresponding LoadLibrary function\n(GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the\ncorresponding UnloadLibrary function is called by Window.Destroy().\n\nIf WINDOW_VULKAN is specified and there isn't a working Vulkan driver,\nWindow.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.\n\nIf WINDOW_METAL is specified on an OS that does not support Metal,\nWindow.Window() will fail.\n\nIf you intend to use this window with an SDL_Renderer, you should use\nSDL_CreateWindowAndRenderer() instead of this function, to avoid window\nflicker.\n\nOn non-Apple devices, SDL requires you to either not link to the Vulkan\nloader or link to a dynamic library version. This limitation may be removed\nin a future version of SDL.\n\n@param title the title of the window, in UTF-8 encoding.\n@param w the width of the window.\n@param h the height of the window.\n@param flags 0, or one or more WindowFlags OR'd together.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateWindowAndRenderer\n@sa Window.Window\n@sa Window.Window\n@sa Window.Destroy",
           "name": "CreateWindow",
           "kind": "function",
           "type": "Window",
@@ -8967,7 +8967,7 @@
           "doc": ""
         },
         "GetWindowID": {
-          "doc": "Get the numeric ID of a window.\n\nThe numeric ID is what SDL_WindowEvent references, and is necessary to map\nthese events to specific Window objects.\n\n@param window the window to query.\n@returns the ID of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.FromID",
+          "doc": "Get the numeric ID of a window.\n\nThe numeric ID is what WindowEvent references, and is necessary to map\nthese events to specific Window objects.\n\n@param window the window to query.\n@returns the ID of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.FromID",
           "name": "GetWindowID",
           "kind": "function",
           "type": "WindowID",
@@ -8983,7 +8983,7 @@
           }
         },
         "GetWindowFromID": {
-          "doc": "Get a window from a stored ID.\n\nThe numeric ID is what SDL_WindowEvent references, and is necessary to map\nthese events to specific Window objects.\n\n@param id the ID of the window.\n@returns the window associated with `id` or nullptr if it doesn't exist; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetID",
+          "doc": "Get a window from a stored ID.\n\nThe numeric ID is what WindowEvent references, and is necessary to map\nthese events to specific Window objects.\n\n@param id the ID of the window.\n@returns the window associated with `id` or nullptr if it doesn't exist; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetID",
           "name": "GetWindowFromID",
           "kind": "function",
           "type": "WindowRef",
@@ -9044,7 +9044,7 @@
           "immutable": true
         },
         "GetWindowProperties": {
-          "doc": "Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Window.SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the\n  SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn iOS:\n\n- `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when GL_SwapWindow is called.\n- `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated\n  with the window (e.g. the X in /dev/dri/cardX)\n- `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n\nOn OpenVR:\n\n- `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the\n  associated overlay window.\n\nOn Vivante:\n\n- `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn Windows:\n\n- `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window\n- `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window\n- `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with\n  the window\n- `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with\n  the window\n- `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated\n  with the window\n- `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@param window the window to query.\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Window.SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the\n  SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn iOS:\n\n- `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when GL_SwapWindow is called.\n- `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated\n  with the window (e.g. the X in /dev/dri/cardX)\n- `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n\nOn OpenVR:\n\n- `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the\n  associated overlay window.\n\nOn Vivante:\n\n- `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn Windows:\n\n- `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window\n- `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window\n- `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with\n  the window\n- `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with\n  the window\n- `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated\n  with the window\n- `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@param window the window to query.\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetWindowProperties",
           "kind": "function",
           "type": "PropertiesRef",
@@ -9126,7 +9126,7 @@
           }
         },
         "SetWindowPosition": {
-          "doc": "Request that the window's position be set.\n\nIf the window is in an exclusive fullscreen or maximized state, this\nrequest has no effect.\n\nThis can be used to reposition fullscreen-desktop windows onto a different\ndisplay, however, as exclusive fullscreen windows are locked to a specific\ndisplay, they can only be repositioned programmatically via\nWindow.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\ncoordinates may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window position changes, an SDL_EVENT_WINDOW_MOVED event will be\nemitted with the window's new coordinates. Note that the new coordinates\nmay not match the exact coordinates requested, as some windowing systems\ncan restrict the position of the window in certain scenarios (e.g.\nconstraining the position so the window is always within desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param window the window to reposition.\n@param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetPosition\n@sa Window.Sync",
+          "doc": "Request that the window's position be set.\n\nIf the window is in an exclusive fullscreen or maximized state, this\nrequest has no effect.\n\nThis can be used to reposition fullscreen-desktop windows onto a different\ndisplay, however, as exclusive fullscreen windows are locked to a specific\ndisplay, they can only be repositioned programmatically via\nWindow.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\ncoordinates may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window position changes, an EVENT_WINDOW_MOVED event will be\nemitted with the window's new coordinates. Note that the new coordinates\nmay not match the exact coordinates requested, as some windowing systems\ncan restrict the position of the window in certain scenarios (e.g.\nconstraining the position so the window is always within desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param window the window to reposition.\n@param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetPosition\n@sa Window.Sync",
           "name": "SetWindowPosition",
           "kind": "function",
           "type": "void",
@@ -9170,7 +9170,7 @@
           }
         },
         "SetWindowSize": {
-          "doc": "Request that the size of a window's client area be set.\n\nIf the window is in a fullscreen or maximized state, this request has no\neffect.\n\nTo change the exclusive fullscreen mode of a window, use\nWindow.SetFullscreenMode().\n\nOn some windowing systems, this request is asynchronous and the new window\nsize may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an SDL_EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact size requested, as some windowing systems can restrict\nthe window size in certain scenarios (e.g. constraining the size of the\ncontent area to remain within the usable desktop bounds). Additionally, as\nthis is just a request, it can be denied by the windowing system.\n\n@param window the window to change.\n@param w the width of the window, must be > 0.\n@param h the height of the window, must be > 0.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetSize\n@sa Window.SetFullscreenMode\n@sa Window.Sync",
+          "doc": "Request that the size of a window's client area be set.\n\nIf the window is in a fullscreen or maximized state, this request has no\neffect.\n\nTo change the exclusive fullscreen mode of a window, use\nWindow.SetFullscreenMode().\n\nOn some windowing systems, this request is asynchronous and the new window\nsize may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact size requested, as some windowing systems can restrict\nthe window size in certain scenarios (e.g. constraining the size of the\ncontent area to remain within the usable desktop bounds). Additionally, as\nthis is just a request, it can be denied by the windowing system.\n\n@param window the window to change.\n@param w the width of the window, must be > 0.\n@param h the height of the window, must be > 0.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetSize\n@sa Window.SetFullscreenMode\n@sa Window.Sync",
           "name": "SetWindowSize",
           "kind": "function",
           "type": "void",
@@ -9230,7 +9230,7 @@
           }
         },
         "SetWindowAspectRatio": {
-          "doc": "Request that the aspect ratio of a window's client area be set.\n\nThe aspect ratio is the ratio of width divided by height, e.g. 2560x1600\nwould be 1.6. Larger aspect ratios are wider and smaller aspect ratios are\nnarrower.\n\nIf, at the time of this request, the window in a fixed-size state, such as\nmaximized or fullscreen, the request will be deferred until the window\nexits this state and becomes resizable again.\n\nOn some windowing systems, this request is asynchronous and the new window\naspect ratio may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an SDL_EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact aspect ratio requested, as some windowing systems can\nrestrict the window size in certain scenarios (e.g. constraining the size\nof the content area to remain within the usable desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param window the window to change.\n@param min_aspect the minimum aspect ratio of the window, or 0.0f for no\n                  limit.\n@param max_aspect the maximum aspect ratio of the window, or 0.0f for no\n                  limit.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetAspectRatio\n@sa Window.Sync",
+          "doc": "Request that the aspect ratio of a window's client area be set.\n\nThe aspect ratio is the ratio of width divided by height, e.g. 2560x1600\nwould be 1.6. Larger aspect ratios are wider and smaller aspect ratios are\nnarrower.\n\nIf, at the time of this request, the window in a fixed-size state, such as\nmaximized or fullscreen, the request will be deferred until the window\nexits this state and becomes resizable again.\n\nOn some windowing systems, this request is asynchronous and the new window\naspect ratio may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact aspect ratio requested, as some windowing systems can\nrestrict the window size in certain scenarios (e.g. constraining the size\nof the content area to remain within the usable desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param window the window to change.\n@param min_aspect the minimum aspect ratio of the window, or 0.0f for no\n                  limit.\n@param max_aspect the maximum aspect ratio of the window, or 0.0f for no\n                  limit.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetAspectRatio\n@sa Window.Sync",
           "name": "SetWindowAspectRatio",
           "kind": "function",
           "type": "void",
@@ -9514,7 +9514,7 @@
           }
         },
         "RaiseWindow": {
-          "doc": "Request that a window be raised above other windows and gain the input\nfocus.\n\nThe result of this request is subject to desktop window manager policy,\nparticularly if raising the requested window would result in stealing focus\nfrom another application. If the window is successfully raised and gains\ninput focus, an SDL_EVENT_WINDOW_FOCUS_GAINED event will be emitted, and\nthe window will have the WINDOW_INPUT_FOCUS flag set.\n\n@param window the window to raise.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Request that a window be raised above other windows and gain the input\nfocus.\n\nThe result of this request is subject to desktop window manager policy,\nparticularly if raising the requested window would result in stealing focus\nfrom another application. If the window is successfully raised and gains\ninput focus, an EVENT_WINDOW_FOCUS_GAINED event will be emitted, and\nthe window will have the WINDOW_INPUT_FOCUS flag set.\n\n@param window the window to raise.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "RaiseWindow",
           "kind": "function",
           "type": "void",
@@ -9530,7 +9530,7 @@
           }
         },
         "MaximizeWindow": {
-          "doc": "Request that the window be made as large as possible.\n\nNon-resizable windows can't be maximized. The window must have the\nWINDOW_RESIZABLE flag set, or this will have no effect.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_MAXIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\nWhen maximizing a window, whether the constraints set via\nWindow.SetMaximumSize() are honored depends on the policy of the window\nmanager. Win32 and macOS enforce the constraints when maximizing, while X11\nand Wayland window managers may vary.\n\n@param window the window to maximize.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Minimize\n@sa Window.Restore\n@sa Window.Sync",
+          "doc": "Request that the window be made as large as possible.\n\nNon-resizable windows can't be maximized. The window must have the\nWINDOW_RESIZABLE flag set, or this will have no effect.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_MAXIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\nWhen maximizing a window, whether the constraints set via\nWindow.SetMaximumSize() are honored depends on the policy of the window\nmanager. Win32 and macOS enforce the constraints when maximizing, while X11\nand Wayland window managers may vary.\n\n@param window the window to maximize.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Minimize\n@sa Window.Restore\n@sa Window.Sync",
           "name": "MaximizeWindow",
           "kind": "function",
           "type": "void",
@@ -9546,7 +9546,7 @@
           }
         },
         "MinimizeWindow": {
-          "doc": "Request that the window be minimized to an iconic representation.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_MINIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@param window the window to minimize.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Maximize\n@sa Window.Restore\n@sa Window.Sync",
+          "doc": "Request that the window be minimized to an iconic representation.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_MINIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@param window the window to minimize.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Maximize\n@sa Window.Restore\n@sa Window.Sync",
           "name": "MinimizeWindow",
           "kind": "function",
           "type": "void",
@@ -9562,7 +9562,7 @@
           }
         },
         "RestoreWindow": {
-          "doc": "Request that the size and position of a minimized or maximized window be\nrestored.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_RESTORED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@param window the window to restore.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Maximize\n@sa Window.Minimize\n@sa Window.Sync",
+          "doc": "Request that the size and position of a minimized or maximized window be\nrestored.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_RESTORED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@param window the window to restore.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Maximize\n@sa Window.Minimize\n@sa Window.Sync",
           "name": "RestoreWindow",
           "kind": "function",
           "type": "void",
@@ -9578,7 +9578,7 @@
           }
         },
         "SetWindowFullscreen": {
-          "doc": "Request that the window's fullscreen state be changed.\n\nBy default a window in fullscreen state uses borderless fullscreen desktop\nmode, but a specific exclusive display mode can be set using\nWindow.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\nfullscreen state may not have have been applied immediately upon the return\nof this function. If an immediate change is required, call Window.Sync()\nto block until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_ENTER_FULLSCREEN or\nSDL_EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this\nis just a request, it can be denied by the windowing system.\n\n@param window the window to change.\n@param fullscreen true for fullscreen mode, false for windowed mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetFullscreenMode\n@sa Window.SetFullscreenMode\n@sa Window.Sync\n@sa WINDOW_FULLSCREEN",
+          "doc": "Request that the window's fullscreen state be changed.\n\nBy default a window in fullscreen state uses borderless fullscreen desktop\nmode, but a specific exclusive display mode can be set using\nWindow.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\nfullscreen state may not have have been applied immediately upon the return\nof this function. If an immediate change is required, call Window.Sync()\nto block until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or\nEVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this\nis just a request, it can be denied by the windowing system.\n\n@param window the window to change.\n@param fullscreen true for fullscreen mode, false for windowed mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetFullscreenMode\n@sa Window.SetFullscreenMode\n@sa Window.Sync\n@sa WINDOW_FULLSCREEN",
           "name": "SetWindowFullscreen",
           "kind": "function",
           "type": "void",
@@ -19495,6 +19495,1758 @@
         "SDL3pp_spanRef.h",
         "SDL3pp_strings.h",
         "SDL3pp_version.h"
+      ]
+    },
+    "SDL3pp_events.h": {
+      "name": "SDL3pp_events.h",
+      "doc": "@defgroup CategoryEvents Category Events\n\nEvent queue management.\n\nIt's extremely common--often required--that an app deal with SDL's event\nqueue. Almost all useful information about interactions with the real world\nflow through here: the user interacting with the computer and app, hardware\ncoming and going, the system changing in some way, etc.\n\nAn app generally takes a moment, perhaps at the start of a new frame, to\nexamine any events that have occured since the last time and process or\nignore them. This is generally done by calling PollEvent() in a loop\nuntil it returns false (or, if using the main callbacks, events are\nprovided one at a time in calls to SDL_AppEvent() before the next call to\nSDL_AppIterate(); in this scenario, the app does not call PollEvent()\nat all).\n\nThere is other forms of control, too: PeepEvents() has more\nfunctionality at the cost of more complexity, and WaitEvent() can block\nthe process until something interesting happens, which might be beneficial\nfor certain types of programs on low-power hardware. One may also call\nAddEventWatch() to set a callback when new events arrive.\n\nThe app is free to generate their own events, too: PushEvent allows the\napp to put events onto the queue for later retrieval; RegisterEvents\ncan guarantee that these events have a type that isn't in use by other\nparts of the system.",
+      "entries": {
+        "EventType": {
+          "doc": "The types of events that can be delivered.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "EventType",
+          "kind": "alias",
+          "sourceName": "SDL_EventType",
+          "type": "SDL_EventType"
+        },
+        "EVENT_FIRST": {
+          "kind": "var",
+          "name": "EVENT_FIRST",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Unused (do not remove)",
+          "sourceName": "SDL_EVENT_FIRST"
+        },
+        "EVENT_QUIT": {
+          "kind": "var",
+          "name": "EVENT_QUIT",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "User-requested quit.",
+          "sourceName": "SDL_EVENT_QUIT"
+        },
+        "EVENT_TERMINATING": {
+          "kind": "var",
+          "name": "EVENT_TERMINATING",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The application is being terminated by the OS.  This event must be handled in a callback set with AddEventWatch(). Called on iOS in applicationWillTerminate() Called on Android in onDestroy()",
+          "sourceName": "SDL_EVENT_TERMINATING"
+        },
+        "EVENT_LOW_MEMORY": {
+          "kind": "var",
+          "name": "EVENT_LOW_MEMORY",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The application is low on memory, free memory if possible.  This event must be handled in a callback set with AddEventWatch(). Called on iOS in applicationDidReceiveMemoryWarning() Called on Android in onTrimMemory()",
+          "sourceName": "SDL_EVENT_LOW_MEMORY"
+        },
+        "EVENT_WILL_ENTER_BACKGROUND": {
+          "kind": "var",
+          "name": "EVENT_WILL_ENTER_BACKGROUND",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The application is about to enter the background.  This event must be handled in a callback set with AddEventWatch(). Called on iOS in applicationWillResignActive() Called on Android in onPause()",
+          "sourceName": "SDL_EVENT_WILL_ENTER_BACKGROUND"
+        },
+        "EVENT_DID_ENTER_BACKGROUND": {
+          "kind": "var",
+          "name": "EVENT_DID_ENTER_BACKGROUND",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The application did enter the background and may not get CPU for some time.  This event must be handled in a callback set with AddEventWatch(). Called on iOS in applicationDidEnterBackground() Called on Android in onPause()",
+          "sourceName": "SDL_EVENT_DID_ENTER_BACKGROUND"
+        },
+        "EVENT_WILL_ENTER_FOREGROUND": {
+          "kind": "var",
+          "name": "EVENT_WILL_ENTER_FOREGROUND",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The application is about to enter the foreground.  This event must be handled in a callback set with AddEventWatch(). Called on iOS in applicationWillEnterForeground() Called on Android in onResume()",
+          "sourceName": "SDL_EVENT_WILL_ENTER_FOREGROUND"
+        },
+        "EVENT_DID_ENTER_FOREGROUND": {
+          "kind": "var",
+          "name": "EVENT_DID_ENTER_FOREGROUND",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The application is now interactive.  This event must be handled in a callback set with AddEventWatch(). Called on iOS in applicationDidBecomeActive() Called on Android in onResume()",
+          "sourceName": "SDL_EVENT_DID_ENTER_FOREGROUND"
+        },
+        "EVENT_LOCALE_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_LOCALE_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The user's locale preferences have changed.",
+          "sourceName": "SDL_EVENT_LOCALE_CHANGED"
+        },
+        "EVENT_SYSTEM_THEME_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_SYSTEM_THEME_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The system theme changed.",
+          "sourceName": "SDL_EVENT_SYSTEM_THEME_CHANGED"
+        },
+        "EVENT_DISPLAY_ORIENTATION": {
+          "kind": "var",
+          "name": "EVENT_DISPLAY_ORIENTATION",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Display orientation has changed to data1.",
+          "sourceName": "SDL_EVENT_DISPLAY_ORIENTATION"
+        },
+        "EVENT_DISPLAY_ADDED": {
+          "kind": "var",
+          "name": "EVENT_DISPLAY_ADDED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Display has been added to the system.",
+          "sourceName": "SDL_EVENT_DISPLAY_ADDED"
+        },
+        "EVENT_DISPLAY_REMOVED": {
+          "kind": "var",
+          "name": "EVENT_DISPLAY_REMOVED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Display has been removed from the system.",
+          "sourceName": "SDL_EVENT_DISPLAY_REMOVED"
+        },
+        "EVENT_DISPLAY_MOVED": {
+          "kind": "var",
+          "name": "EVENT_DISPLAY_MOVED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Display has changed position.",
+          "sourceName": "SDL_EVENT_DISPLAY_MOVED"
+        },
+        "EVENT_DISPLAY_DESKTOP_MODE_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_DISPLAY_DESKTOP_MODE_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Display has changed desktop mode.",
+          "sourceName": "SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED"
+        },
+        "EVENT_DISPLAY_CURRENT_MODE_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_DISPLAY_CURRENT_MODE_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Display has changed current mode.",
+          "sourceName": "SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED"
+        },
+        "EVENT_DISPLAY_CONTENT_SCALE_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_DISPLAY_CONTENT_SCALE_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Display has changed content scale.",
+          "sourceName": "SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED"
+        },
+        "EVENT_DISPLAY_FIRST": {
+          "kind": "var",
+          "name": "EVENT_DISPLAY_FIRST",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "DISPLAY_FIRST",
+          "sourceName": "SDL_EVENT_DISPLAY_FIRST"
+        },
+        "EVENT_DISPLAY_LAST": {
+          "kind": "var",
+          "name": "EVENT_DISPLAY_LAST",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "DISPLAY_LAST",
+          "sourceName": "SDL_EVENT_DISPLAY_LAST"
+        },
+        "EVENT_WINDOW_SHOWN": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_SHOWN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has been shown.",
+          "sourceName": "SDL_EVENT_WINDOW_SHOWN"
+        },
+        "EVENT_WINDOW_HIDDEN": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_HIDDEN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has been hidden.",
+          "sourceName": "SDL_EVENT_WINDOW_HIDDEN"
+        },
+        "EVENT_WINDOW_EXPOSED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_EXPOSED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event.",
+          "sourceName": "SDL_EVENT_WINDOW_EXPOSED"
+        },
+        "EVENT_WINDOW_MOVED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_MOVED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has been moved to data1, data2.",
+          "sourceName": "SDL_EVENT_WINDOW_MOVED"
+        },
+        "EVENT_WINDOW_RESIZED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_RESIZED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has been resized to data1xdata2.",
+          "sourceName": "SDL_EVENT_WINDOW_RESIZED"
+        },
+        "EVENT_WINDOW_PIXEL_SIZE_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_PIXEL_SIZE_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The pixel size of the window has changed to data1xdata2.",
+          "sourceName": "SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED"
+        },
+        "EVENT_WINDOW_METAL_VIEW_RESIZED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_METAL_VIEW_RESIZED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The pixel size of a Metal view associated with the window has changed.",
+          "sourceName": "SDL_EVENT_WINDOW_METAL_VIEW_RESIZED"
+        },
+        "EVENT_WINDOW_MINIMIZED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_MINIMIZED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has been minimized.",
+          "sourceName": "SDL_EVENT_WINDOW_MINIMIZED"
+        },
+        "EVENT_WINDOW_MAXIMIZED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_MAXIMIZED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has been maximized.",
+          "sourceName": "SDL_EVENT_WINDOW_MAXIMIZED"
+        },
+        "EVENT_WINDOW_RESTORED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_RESTORED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has been restored to normal size and position.",
+          "sourceName": "SDL_EVENT_WINDOW_RESTORED"
+        },
+        "EVENT_WINDOW_MOUSE_ENTER": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_MOUSE_ENTER",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has gained mouse focus.",
+          "sourceName": "SDL_EVENT_WINDOW_MOUSE_ENTER"
+        },
+        "EVENT_WINDOW_MOUSE_LEAVE": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_MOUSE_LEAVE",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has lost mouse focus.",
+          "sourceName": "SDL_EVENT_WINDOW_MOUSE_LEAVE"
+        },
+        "EVENT_WINDOW_FOCUS_GAINED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_FOCUS_GAINED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has gained keyboard focus.",
+          "sourceName": "SDL_EVENT_WINDOW_FOCUS_GAINED"
+        },
+        "EVENT_WINDOW_FOCUS_LOST": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_FOCUS_LOST",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has lost keyboard focus.",
+          "sourceName": "SDL_EVENT_WINDOW_FOCUS_LOST"
+        },
+        "EVENT_WINDOW_CLOSE_REQUESTED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_CLOSE_REQUESTED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The window manager requests that the window be closed.",
+          "sourceName": "SDL_EVENT_WINDOW_CLOSE_REQUESTED"
+        },
+        "EVENT_WINDOW_HIT_TEST": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_HIT_TEST",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window had a hit test that wasn't HITTEST_NORMAL.",
+          "sourceName": "SDL_EVENT_WINDOW_HIT_TEST"
+        },
+        "EVENT_WINDOW_ICCPROF_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_ICCPROF_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The ICC profile of the window's display has changed.",
+          "sourceName": "SDL_EVENT_WINDOW_ICCPROF_CHANGED"
+        },
+        "EVENT_WINDOW_DISPLAY_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_DISPLAY_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window has been moved to display data1.",
+          "sourceName": "SDL_EVENT_WINDOW_DISPLAY_CHANGED"
+        },
+        "EVENT_WINDOW_DISPLAY_SCALE_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_DISPLAY_SCALE_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window display scale has been changed.",
+          "sourceName": "SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED"
+        },
+        "EVENT_WINDOW_SAFE_AREA_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_SAFE_AREA_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The window safe area has been changed.",
+          "sourceName": "SDL_EVENT_WINDOW_SAFE_AREA_CHANGED"
+        },
+        "EVENT_WINDOW_OCCLUDED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_OCCLUDED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The window has been occluded.",
+          "sourceName": "SDL_EVENT_WINDOW_OCCLUDED"
+        },
+        "EVENT_WINDOW_ENTER_FULLSCREEN": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_ENTER_FULLSCREEN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The window has entered fullscreen mode.",
+          "sourceName": "SDL_EVENT_WINDOW_ENTER_FULLSCREEN"
+        },
+        "EVENT_WINDOW_LEAVE_FULLSCREEN": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_LEAVE_FULLSCREEN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The window has left fullscreen mode.",
+          "sourceName": "SDL_EVENT_WINDOW_LEAVE_FULLSCREEN"
+        },
+        "EVENT_WINDOW_DESTROYED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_DESTROYED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The window with the associated ID is being or has been destroyed.  If this message is being handled in an event watcher, the window handle is still valid and can still be used to retrieve any properties associated with the window. Otherwise, the handle has already been destroyed and all resources associated with it are invalid",
+          "sourceName": "SDL_EVENT_WINDOW_DESTROYED"
+        },
+        "EVENT_WINDOW_HDR_STATE_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_HDR_STATE_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Window HDR properties have changed.",
+          "sourceName": "SDL_EVENT_WINDOW_HDR_STATE_CHANGED"
+        },
+        "EVENT_WINDOW_FIRST": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_FIRST",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "WINDOW_FIRST",
+          "sourceName": "SDL_EVENT_WINDOW_FIRST"
+        },
+        "EVENT_WINDOW_LAST": {
+          "kind": "var",
+          "name": "EVENT_WINDOW_LAST",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "WINDOW_LAST",
+          "sourceName": "SDL_EVENT_WINDOW_LAST"
+        },
+        "EVENT_KEY_DOWN": {
+          "kind": "var",
+          "name": "EVENT_KEY_DOWN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Key pressed.",
+          "sourceName": "SDL_EVENT_KEY_DOWN"
+        },
+        "EVENT_KEY_UP": {
+          "kind": "var",
+          "name": "EVENT_KEY_UP",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Key released.",
+          "sourceName": "SDL_EVENT_KEY_UP"
+        },
+        "EVENT_TEXT_EDITING": {
+          "kind": "var",
+          "name": "EVENT_TEXT_EDITING",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Keyboard text editing (composition)",
+          "sourceName": "SDL_EVENT_TEXT_EDITING"
+        },
+        "EVENT_TEXT_INPUT": {
+          "kind": "var",
+          "name": "EVENT_TEXT_INPUT",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Keyboard text input.",
+          "sourceName": "SDL_EVENT_TEXT_INPUT"
+        },
+        "EVENT_KEYMAP_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_KEYMAP_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Keymap changed due to a system event such as an input language or keyboard layout change.",
+          "sourceName": "SDL_EVENT_KEYMAP_CHANGED"
+        },
+        "EVENT_KEYBOARD_ADDED": {
+          "kind": "var",
+          "name": "EVENT_KEYBOARD_ADDED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A new keyboard has been inserted into the system.",
+          "sourceName": "SDL_EVENT_KEYBOARD_ADDED"
+        },
+        "EVENT_KEYBOARD_REMOVED": {
+          "kind": "var",
+          "name": "EVENT_KEYBOARD_REMOVED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A keyboard has been removed.",
+          "sourceName": "SDL_EVENT_KEYBOARD_REMOVED"
+        },
+        "EVENT_TEXT_EDITING_CANDIDATES": {
+          "kind": "var",
+          "name": "EVENT_TEXT_EDITING_CANDIDATES",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Keyboard text editing candidates.",
+          "sourceName": "SDL_EVENT_TEXT_EDITING_CANDIDATES"
+        },
+        "EVENT_MOUSE_MOTION": {
+          "kind": "var",
+          "name": "EVENT_MOUSE_MOTION",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Mouse moved.",
+          "sourceName": "SDL_EVENT_MOUSE_MOTION"
+        },
+        "EVENT_MOUSE_BUTTON_DOWN": {
+          "kind": "var",
+          "name": "EVENT_MOUSE_BUTTON_DOWN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Mouse button pressed.",
+          "sourceName": "SDL_EVENT_MOUSE_BUTTON_DOWN"
+        },
+        "EVENT_MOUSE_BUTTON_UP": {
+          "kind": "var",
+          "name": "EVENT_MOUSE_BUTTON_UP",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Mouse button released.",
+          "sourceName": "SDL_EVENT_MOUSE_BUTTON_UP"
+        },
+        "EVENT_MOUSE_WHEEL": {
+          "kind": "var",
+          "name": "EVENT_MOUSE_WHEEL",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Mouse wheel motion.",
+          "sourceName": "SDL_EVENT_MOUSE_WHEEL"
+        },
+        "EVENT_MOUSE_ADDED": {
+          "kind": "var",
+          "name": "EVENT_MOUSE_ADDED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A new mouse has been inserted into the system.",
+          "sourceName": "SDL_EVENT_MOUSE_ADDED"
+        },
+        "EVENT_MOUSE_REMOVED": {
+          "kind": "var",
+          "name": "EVENT_MOUSE_REMOVED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A mouse has been removed.",
+          "sourceName": "SDL_EVENT_MOUSE_REMOVED"
+        },
+        "EVENT_JOYSTICK_AXIS_MOTION": {
+          "kind": "var",
+          "name": "EVENT_JOYSTICK_AXIS_MOTION",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Joystick axis motion.",
+          "sourceName": "SDL_EVENT_JOYSTICK_AXIS_MOTION"
+        },
+        "EVENT_JOYSTICK_BALL_MOTION": {
+          "kind": "var",
+          "name": "EVENT_JOYSTICK_BALL_MOTION",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Joystick trackball motion.",
+          "sourceName": "SDL_EVENT_JOYSTICK_BALL_MOTION"
+        },
+        "EVENT_JOYSTICK_HAT_MOTION": {
+          "kind": "var",
+          "name": "EVENT_JOYSTICK_HAT_MOTION",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Joystick hat position change.",
+          "sourceName": "SDL_EVENT_JOYSTICK_HAT_MOTION"
+        },
+        "EVENT_JOYSTICK_BUTTON_DOWN": {
+          "kind": "var",
+          "name": "EVENT_JOYSTICK_BUTTON_DOWN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Joystick button pressed.",
+          "sourceName": "SDL_EVENT_JOYSTICK_BUTTON_DOWN"
+        },
+        "EVENT_JOYSTICK_BUTTON_UP": {
+          "kind": "var",
+          "name": "EVENT_JOYSTICK_BUTTON_UP",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Joystick button released.",
+          "sourceName": "SDL_EVENT_JOYSTICK_BUTTON_UP"
+        },
+        "EVENT_JOYSTICK_ADDED": {
+          "kind": "var",
+          "name": "EVENT_JOYSTICK_ADDED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A new joystick has been inserted into the system.",
+          "sourceName": "SDL_EVENT_JOYSTICK_ADDED"
+        },
+        "EVENT_JOYSTICK_REMOVED": {
+          "kind": "var",
+          "name": "EVENT_JOYSTICK_REMOVED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "An opened joystick has been removed.",
+          "sourceName": "SDL_EVENT_JOYSTICK_REMOVED"
+        },
+        "EVENT_JOYSTICK_BATTERY_UPDATED": {
+          "kind": "var",
+          "name": "EVENT_JOYSTICK_BATTERY_UPDATED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Joystick battery level change.",
+          "sourceName": "SDL_EVENT_JOYSTICK_BATTERY_UPDATED"
+        },
+        "EVENT_JOYSTICK_UPDATE_COMPLETE": {
+          "kind": "var",
+          "name": "EVENT_JOYSTICK_UPDATE_COMPLETE",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Joystick update is complete.",
+          "sourceName": "SDL_EVENT_JOYSTICK_UPDATE_COMPLETE"
+        },
+        "EVENT_GAMEPAD_AXIS_MOTION": {
+          "kind": "var",
+          "name": "EVENT_GAMEPAD_AXIS_MOTION",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Gamepad axis motion.",
+          "sourceName": "SDL_EVENT_GAMEPAD_AXIS_MOTION"
+        },
+        "EVENT_GAMEPAD_BUTTON_DOWN": {
+          "kind": "var",
+          "name": "EVENT_GAMEPAD_BUTTON_DOWN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Gamepad button pressed.",
+          "sourceName": "SDL_EVENT_GAMEPAD_BUTTON_DOWN"
+        },
+        "EVENT_GAMEPAD_BUTTON_UP": {
+          "kind": "var",
+          "name": "EVENT_GAMEPAD_BUTTON_UP",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Gamepad button released.",
+          "sourceName": "SDL_EVENT_GAMEPAD_BUTTON_UP"
+        },
+        "EVENT_GAMEPAD_ADDED": {
+          "kind": "var",
+          "name": "EVENT_GAMEPAD_ADDED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A new gamepad has been inserted into the system.",
+          "sourceName": "SDL_EVENT_GAMEPAD_ADDED"
+        },
+        "EVENT_GAMEPAD_REMOVED": {
+          "kind": "var",
+          "name": "EVENT_GAMEPAD_REMOVED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A gamepad has been removed.",
+          "sourceName": "SDL_EVENT_GAMEPAD_REMOVED"
+        },
+        "EVENT_GAMEPAD_REMAPPED": {
+          "kind": "var",
+          "name": "EVENT_GAMEPAD_REMAPPED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The gamepad mapping was updated.",
+          "sourceName": "SDL_EVENT_GAMEPAD_REMAPPED"
+        },
+        "EVENT_GAMEPAD_TOUCHPAD_DOWN": {
+          "kind": "var",
+          "name": "EVENT_GAMEPAD_TOUCHPAD_DOWN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Gamepad touchpad was touched.",
+          "sourceName": "SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN"
+        },
+        "EVENT_GAMEPAD_TOUCHPAD_MOTION": {
+          "kind": "var",
+          "name": "EVENT_GAMEPAD_TOUCHPAD_MOTION",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Gamepad touchpad finger was moved.",
+          "sourceName": "SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION"
+        },
+        "EVENT_GAMEPAD_TOUCHPAD_UP": {
+          "kind": "var",
+          "name": "EVENT_GAMEPAD_TOUCHPAD_UP",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Gamepad touchpad finger was lifted.",
+          "sourceName": "SDL_EVENT_GAMEPAD_TOUCHPAD_UP"
+        },
+        "EVENT_GAMEPAD_SENSOR_UPDATE": {
+          "kind": "var",
+          "name": "EVENT_GAMEPAD_SENSOR_UPDATE",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Gamepad sensor was updated.",
+          "sourceName": "SDL_EVENT_GAMEPAD_SENSOR_UPDATE"
+        },
+        "EVENT_GAMEPAD_UPDATE_COMPLETE": {
+          "kind": "var",
+          "name": "EVENT_GAMEPAD_UPDATE_COMPLETE",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Gamepad update is complete.",
+          "sourceName": "SDL_EVENT_GAMEPAD_UPDATE_COMPLETE"
+        },
+        "EVENT_GAMEPAD_STEAM_HANDLE_UPDATED": {
+          "kind": "var",
+          "name": "EVENT_GAMEPAD_STEAM_HANDLE_UPDATED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Gamepad Steam handle has changed.",
+          "sourceName": "SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED"
+        },
+        "EVENT_FINGER_DOWN": {
+          "kind": "var",
+          "name": "EVENT_FINGER_DOWN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "FINGER_DOWN",
+          "sourceName": "SDL_EVENT_FINGER_DOWN"
+        },
+        "EVENT_FINGER_UP": {
+          "kind": "var",
+          "name": "EVENT_FINGER_UP",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "FINGER_UP",
+          "sourceName": "SDL_EVENT_FINGER_UP"
+        },
+        "EVENT_FINGER_MOTION": {
+          "kind": "var",
+          "name": "EVENT_FINGER_MOTION",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "FINGER_MOTION",
+          "sourceName": "SDL_EVENT_FINGER_MOTION"
+        },
+        "EVENT_FINGER_CANCELED": {
+          "kind": "var",
+          "name": "EVENT_FINGER_CANCELED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "FINGER_CANCELED",
+          "sourceName": "SDL_EVENT_FINGER_CANCELED"
+        },
+        "EVENT_CLIPBOARD_UPDATE": {
+          "kind": "var",
+          "name": "EVENT_CLIPBOARD_UPDATE",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The clipboard or primary selection changed.",
+          "sourceName": "SDL_EVENT_CLIPBOARD_UPDATE"
+        },
+        "EVENT_DROP_FILE": {
+          "kind": "var",
+          "name": "EVENT_DROP_FILE",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The system requests a file open.",
+          "sourceName": "SDL_EVENT_DROP_FILE"
+        },
+        "EVENT_DROP_TEXT": {
+          "kind": "var",
+          "name": "EVENT_DROP_TEXT",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "text/plain drag-and-drop event",
+          "sourceName": "SDL_EVENT_DROP_TEXT"
+        },
+        "EVENT_DROP_BEGIN": {
+          "kind": "var",
+          "name": "EVENT_DROP_BEGIN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A new set of drops is beginning (NULL filename)",
+          "sourceName": "SDL_EVENT_DROP_BEGIN"
+        },
+        "EVENT_DROP_COMPLETE": {
+          "kind": "var",
+          "name": "EVENT_DROP_COMPLETE",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Current set of drops is now complete (NULL filename)",
+          "sourceName": "SDL_EVENT_DROP_COMPLETE"
+        },
+        "EVENT_DROP_POSITION": {
+          "kind": "var",
+          "name": "EVENT_DROP_POSITION",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Position while moving over the window.",
+          "sourceName": "SDL_EVENT_DROP_POSITION"
+        },
+        "EVENT_AUDIO_DEVICE_ADDED": {
+          "kind": "var",
+          "name": "EVENT_AUDIO_DEVICE_ADDED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A new audio device is available.",
+          "sourceName": "SDL_EVENT_AUDIO_DEVICE_ADDED"
+        },
+        "EVENT_AUDIO_DEVICE_REMOVED": {
+          "kind": "var",
+          "name": "EVENT_AUDIO_DEVICE_REMOVED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "An audio device has been removed.",
+          "sourceName": "SDL_EVENT_AUDIO_DEVICE_REMOVED"
+        },
+        "EVENT_AUDIO_DEVICE_FORMAT_CHANGED": {
+          "kind": "var",
+          "name": "EVENT_AUDIO_DEVICE_FORMAT_CHANGED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "An audio device's format has been changed by the system.",
+          "sourceName": "SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED"
+        },
+        "EVENT_SENSOR_UPDATE": {
+          "kind": "var",
+          "name": "EVENT_SENSOR_UPDATE",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A sensor was updated.",
+          "sourceName": "SDL_EVENT_SENSOR_UPDATE"
+        },
+        "EVENT_PEN_PROXIMITY_IN": {
+          "kind": "var",
+          "name": "EVENT_PEN_PROXIMITY_IN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Pressure-sensitive pen has become available.",
+          "sourceName": "SDL_EVENT_PEN_PROXIMITY_IN"
+        },
+        "EVENT_PEN_PROXIMITY_OUT": {
+          "kind": "var",
+          "name": "EVENT_PEN_PROXIMITY_OUT",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Pressure-sensitive pen has become unavailable.",
+          "sourceName": "SDL_EVENT_PEN_PROXIMITY_OUT"
+        },
+        "EVENT_PEN_DOWN": {
+          "kind": "var",
+          "name": "EVENT_PEN_DOWN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Pressure-sensitive pen touched drawing surface.",
+          "sourceName": "SDL_EVENT_PEN_DOWN"
+        },
+        "EVENT_PEN_UP": {
+          "kind": "var",
+          "name": "EVENT_PEN_UP",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Pressure-sensitive pen stopped touching drawing surface.",
+          "sourceName": "SDL_EVENT_PEN_UP"
+        },
+        "EVENT_PEN_BUTTON_DOWN": {
+          "kind": "var",
+          "name": "EVENT_PEN_BUTTON_DOWN",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Pressure-sensitive pen button pressed.",
+          "sourceName": "SDL_EVENT_PEN_BUTTON_DOWN"
+        },
+        "EVENT_PEN_BUTTON_UP": {
+          "kind": "var",
+          "name": "EVENT_PEN_BUTTON_UP",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Pressure-sensitive pen button released.",
+          "sourceName": "SDL_EVENT_PEN_BUTTON_UP"
+        },
+        "EVENT_PEN_MOTION": {
+          "kind": "var",
+          "name": "EVENT_PEN_MOTION",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Pressure-sensitive pen is moving on the tablet.",
+          "sourceName": "SDL_EVENT_PEN_MOTION"
+        },
+        "EVENT_PEN_AXIS": {
+          "kind": "var",
+          "name": "EVENT_PEN_AXIS",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Pressure-sensitive pen angle/pressure/etc changed.",
+          "sourceName": "SDL_EVENT_PEN_AXIS"
+        },
+        "EVENT_CAMERA_DEVICE_ADDED": {
+          "kind": "var",
+          "name": "EVENT_CAMERA_DEVICE_ADDED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A new camera device is available.",
+          "sourceName": "SDL_EVENT_CAMERA_DEVICE_ADDED"
+        },
+        "EVENT_CAMERA_DEVICE_REMOVED": {
+          "kind": "var",
+          "name": "EVENT_CAMERA_DEVICE_REMOVED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A camera device has been removed.",
+          "sourceName": "SDL_EVENT_CAMERA_DEVICE_REMOVED"
+        },
+        "EVENT_CAMERA_DEVICE_APPROVED": {
+          "kind": "var",
+          "name": "EVENT_CAMERA_DEVICE_APPROVED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A camera device has been approved for use by the user.",
+          "sourceName": "SDL_EVENT_CAMERA_DEVICE_APPROVED"
+        },
+        "EVENT_CAMERA_DEVICE_DENIED": {
+          "kind": "var",
+          "name": "EVENT_CAMERA_DEVICE_DENIED",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "A camera device has been denied for use by the user.",
+          "sourceName": "SDL_EVENT_CAMERA_DEVICE_DENIED"
+        },
+        "EVENT_RENDER_TARGETS_RESET": {
+          "kind": "var",
+          "name": "EVENT_RENDER_TARGETS_RESET",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The render targets have been reset and their contents need to be updated.",
+          "sourceName": "SDL_EVENT_RENDER_TARGETS_RESET"
+        },
+        "EVENT_RENDER_DEVICE_RESET": {
+          "kind": "var",
+          "name": "EVENT_RENDER_DEVICE_RESET",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The device has been reset and all textures need to be recreated.",
+          "sourceName": "SDL_EVENT_RENDER_DEVICE_RESET"
+        },
+        "EVENT_RENDER_DEVICE_LOST": {
+          "kind": "var",
+          "name": "EVENT_RENDER_DEVICE_LOST",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "The device has been lost and can't be recovered.",
+          "sourceName": "SDL_EVENT_RENDER_DEVICE_LOST"
+        },
+        "EVENT_PRIVATE0": {
+          "kind": "var",
+          "name": "EVENT_PRIVATE0",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "PRIVATE0",
+          "sourceName": "SDL_EVENT_PRIVATE0"
+        },
+        "EVENT_PRIVATE1": {
+          "kind": "var",
+          "name": "EVENT_PRIVATE1",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "PRIVATE1",
+          "sourceName": "SDL_EVENT_PRIVATE1"
+        },
+        "EVENT_PRIVATE2": {
+          "kind": "var",
+          "name": "EVENT_PRIVATE2",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "PRIVATE2",
+          "sourceName": "SDL_EVENT_PRIVATE2"
+        },
+        "EVENT_PRIVATE3": {
+          "kind": "var",
+          "name": "EVENT_PRIVATE3",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "PRIVATE3",
+          "sourceName": "SDL_EVENT_PRIVATE3"
+        },
+        "EVENT_POLL_SENTINEL": {
+          "kind": "var",
+          "name": "EVENT_POLL_SENTINEL",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Signals the end of an event poll cycle.",
+          "sourceName": "SDL_EVENT_POLL_SENTINEL"
+        },
+        "EVENT_USER": {
+          "kind": "var",
+          "name": "EVENT_USER",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "Events EVENT_USER through EVENT_LAST are for your use, and should be allocated with RegisterEvents()",
+          "sourceName": "SDL_EVENT_USER"
+        },
+        "EVENT_LAST": {
+          "kind": "var",
+          "name": "EVENT_LAST",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "This last event is only for bounding internal arrays.",
+          "sourceName": "SDL_EVENT_LAST"
+        },
+        "EVENT_ENUM_PADDING": {
+          "kind": "var",
+          "name": "EVENT_ENUM_PADDING",
+          "constexpr": true,
+          "type": "EventType",
+          "doc": "ENUM_PADDING",
+          "sourceName": "SDL_EVENT_ENUM_PADDING"
+        },
+        "CommonEvent": {
+          "doc": "Fields shared by every event\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "CommonEvent",
+          "kind": "alias",
+          "sourceName": "SDL_CommonEvent",
+          "type": "SDL_CommonEvent"
+        },
+        "DisplayEvent": {
+          "doc": "Display state change event data (event.display.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "DisplayEvent",
+          "kind": "alias",
+          "sourceName": "SDL_DisplayEvent",
+          "type": "SDL_DisplayEvent"
+        },
+        "WindowEvent": {
+          "doc": "Window state change event data (event.window.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "WindowEvent",
+          "kind": "alias",
+          "sourceName": "SDL_WindowEvent",
+          "type": "SDL_WindowEvent"
+        },
+        "KeyboardDeviceEvent": {
+          "doc": "Keyboard device event structure (event.kdevice.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "KeyboardDeviceEvent",
+          "kind": "alias",
+          "sourceName": "SDL_KeyboardDeviceEvent",
+          "type": "SDL_KeyboardDeviceEvent"
+        },
+        "KeyboardEvent": {
+          "doc": "Keyboard button event structure (event.key.*)\n\nThe `key` is the base SDL_Keycode generated by pressing the `scancode`\nusing the current keyboard layout, applying any options specified in\nSDL_HINT_KEYCODE_OPTIONS. You can get the SDL_Keycode corresponding to the\nevent scancode and modifiers directly from the keyboard layout, bypassing\nSDL_HINT_KEYCODE_OPTIONS, by calling SDL_GetKeyFromScancode().\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_GetKeyFromScancode\n@sa SDL_HINT_KEYCODE_OPTIONS",
+          "name": "KeyboardEvent",
+          "kind": "alias",
+          "sourceName": "SDL_KeyboardEvent",
+          "type": "SDL_KeyboardEvent"
+        },
+        "TextEditingEvent": {
+          "doc": "Keyboard text editing event structure (event.edit.*)\n\nThe start cursor is the position, in UTF-8 characters, where new typing\nwill be inserted into the editing text. The length is the number of UTF-8\ncharacters that will be replaced by new typing.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "TextEditingEvent",
+          "kind": "alias",
+          "sourceName": "SDL_TextEditingEvent",
+          "type": "SDL_TextEditingEvent"
+        },
+        "TextEditingCandidatesEvent": {
+          "doc": "Keyboard IME candidates event structure (event.edit_candidates.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "TextEditingCandidatesEvent",
+          "kind": "alias",
+          "sourceName": "SDL_TextEditingCandidatesEvent",
+          "type": "SDL_TextEditingCandidatesEvent"
+        },
+        "TextInputEvent": {
+          "doc": "Keyboard text input event structure (event.text.*)\n\nThis event will never be delivered unless text input is enabled by calling\nSDL_StartTextInput(). Text input is disabled by default!\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_StartTextInput\n@sa SDL_StopTextInput",
+          "name": "TextInputEvent",
+          "kind": "alias",
+          "sourceName": "SDL_TextInputEvent",
+          "type": "SDL_TextInputEvent"
+        },
+        "MouseDeviceEvent": {
+          "doc": "Mouse device event structure (event.mdevice.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MouseDeviceEvent",
+          "kind": "alias",
+          "sourceName": "SDL_MouseDeviceEvent",
+          "type": "SDL_MouseDeviceEvent"
+        },
+        "MouseMotionEvent": {
+          "doc": "Mouse motion event structure (event.motion.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MouseMotionEvent",
+          "kind": "alias",
+          "sourceName": "SDL_MouseMotionEvent",
+          "type": "SDL_MouseMotionEvent"
+        },
+        "MouseButtonEvent": {
+          "doc": "Mouse button event structure (event.button.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MouseButtonEvent",
+          "kind": "alias",
+          "sourceName": "SDL_MouseButtonEvent",
+          "type": "SDL_MouseButtonEvent"
+        },
+        "MouseWheelEvent": {
+          "doc": "Mouse wheel event structure (event.wheel.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MouseWheelEvent",
+          "kind": "alias",
+          "sourceName": "SDL_MouseWheelEvent",
+          "type": "SDL_MouseWheelEvent"
+        },
+        "JoyAxisEvent": {
+          "doc": "Joystick axis motion event structure (event.jaxis.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "JoyAxisEvent",
+          "kind": "alias",
+          "sourceName": "SDL_JoyAxisEvent",
+          "type": "SDL_JoyAxisEvent"
+        },
+        "JoyBallEvent": {
+          "doc": "Joystick trackball motion event structure (event.jball.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "JoyBallEvent",
+          "kind": "alias",
+          "sourceName": "SDL_JoyBallEvent",
+          "type": "SDL_JoyBallEvent"
+        },
+        "JoyHatEvent": {
+          "doc": "Joystick hat position change event structure (event.jhat.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "JoyHatEvent",
+          "kind": "alias",
+          "sourceName": "SDL_JoyHatEvent",
+          "type": "SDL_JoyHatEvent"
+        },
+        "JoyButtonEvent": {
+          "doc": "Joystick button event structure (event.jbutton.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "JoyButtonEvent",
+          "kind": "alias",
+          "sourceName": "SDL_JoyButtonEvent",
+          "type": "SDL_JoyButtonEvent"
+        },
+        "JoyDeviceEvent": {
+          "doc": "Joystick device event structure (event.jdevice.*)\n\nSDL will send JOYSTICK_ADDED events for devices that are already plugged in\nduring Init.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa GamepadDeviceEvent",
+          "name": "JoyDeviceEvent",
+          "kind": "alias",
+          "sourceName": "SDL_JoyDeviceEvent",
+          "type": "SDL_JoyDeviceEvent"
+        },
+        "JoyBatteryEvent": {
+          "doc": "Joystick battery level change event structure (event.jbattery.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "JoyBatteryEvent",
+          "kind": "alias",
+          "sourceName": "SDL_JoyBatteryEvent",
+          "type": "SDL_JoyBatteryEvent"
+        },
+        "GamepadAxisEvent": {
+          "doc": "Gamepad axis motion event structure (event.gaxis.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "GamepadAxisEvent",
+          "kind": "alias",
+          "sourceName": "SDL_GamepadAxisEvent",
+          "type": "SDL_GamepadAxisEvent"
+        },
+        "GamepadButtonEvent": {
+          "doc": "Gamepad button event structure (event.gbutton.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "GamepadButtonEvent",
+          "kind": "alias",
+          "sourceName": "SDL_GamepadButtonEvent",
+          "type": "SDL_GamepadButtonEvent"
+        },
+        "GamepadDeviceEvent": {
+          "doc": "Gamepad device event structure (event.gdevice.*)\n\nJoysticks that are supported gamepads receive both an JoyDeviceEvent\nand an GamepadDeviceEvent.\n\nSDL will send GAMEPAD_ADDED events for joysticks that are already plugged\nin during Init() and are recognized as gamepads. It will also send\nevents for joysticks that get gamepad mappings at runtime.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa JoyDeviceEvent",
+          "name": "GamepadDeviceEvent",
+          "kind": "alias",
+          "sourceName": "SDL_GamepadDeviceEvent",
+          "type": "SDL_GamepadDeviceEvent"
+        },
+        "GamepadTouchpadEvent": {
+          "doc": "Gamepad touchpad event structure (event.gtouchpad.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "GamepadTouchpadEvent",
+          "kind": "alias",
+          "sourceName": "SDL_GamepadTouchpadEvent",
+          "type": "SDL_GamepadTouchpadEvent"
+        },
+        "GamepadSensorEvent": {
+          "doc": "Gamepad sensor event structure (event.gsensor.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "GamepadSensorEvent",
+          "kind": "alias",
+          "sourceName": "SDL_GamepadSensorEvent",
+          "type": "SDL_GamepadSensorEvent"
+        },
+        "AudioDeviceEvent": {
+          "doc": "Audio device event structure (event.adevice.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "AudioDeviceEvent",
+          "kind": "alias",
+          "sourceName": "SDL_AudioDeviceEvent",
+          "type": "SDL_AudioDeviceEvent"
+        },
+        "CameraDeviceEvent": {
+          "doc": "Camera device event structure (event.cdevice.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "CameraDeviceEvent",
+          "kind": "alias",
+          "sourceName": "SDL_CameraDeviceEvent",
+          "type": "SDL_CameraDeviceEvent"
+        },
+        "RenderEvent": {
+          "doc": "Renderer event structure (event.render.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "RenderEvent",
+          "kind": "alias",
+          "sourceName": "SDL_RenderEvent",
+          "type": "SDL_RenderEvent"
+        },
+        "TouchFingerEvent": {
+          "doc": "Touch finger event structure (event.tfinger.*)\n\nCoordinates in this event are normalized. `x` and `y` are normalized to a\nrange between 0.0f and 1.0f, relative to the window, so (0,0) is the top\nleft and (1,1) is the bottom right. Delta coordinates `dx` and `dy` are\nnormalized in the ranges of -1.0f (traversed all the way from the bottom or\nright to all the way up or left) to 1.0f (traversed all the way from the\ntop or left to all the way down or right).\n\nNote that while the coordinates are _normalized_, they are not _clamped_,\nwhich means in some circumstances you can get a value outside of this\nrange. For example, a renderer using logical presentation might give a\nnegative value when the touch is in the letterboxing. Some platforms might\nreport a touch outside of the window, which will also be outside of the\nrange.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "TouchFingerEvent",
+          "kind": "alias",
+          "sourceName": "SDL_TouchFingerEvent",
+          "type": "SDL_TouchFingerEvent"
+        },
+        "PenProximityEvent": {
+          "doc": "Pressure-sensitive pen proximity event structure (event.pmotion.*)\n\nWhen a pen becomes visible to the system (it is close enough to a tablet,\netc), SDL will send an EVENT_PEN_PROXIMITY_IN event with the new pen's\nID. This ID is valid until the pen leaves proximity again (has been removed\nfrom the tablet's area, the tablet has been unplugged, etc). If the same\npen reenters proximity again, it will be given a new ID.\n\nNote that \"proximity\" means \"close enough for the tablet to know the tool\nis there.\" The pen touching and lifting off from the tablet while not\nleaving the area are handled by EVENT_PEN_DOWN and EVENT_PEN_UP.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PenProximityEvent",
+          "kind": "alias",
+          "sourceName": "SDL_PenProximityEvent",
+          "type": "SDL_PenProximityEvent"
+        },
+        "PenMotionEvent": {
+          "doc": "Pressure-sensitive pen motion event structure (event.pmotion.*)\n\nDepending on the hardware, you may get motion events when the pen is not\ntouching a tablet, for tracking a pen even when it isn't drawing. You\nshould listen for EVENT_PEN_DOWN and EVENT_PEN_UP events, or check\n`pen_state & SDL_PEN_INPUT_DOWN` to decide if a pen is \"drawing\" when\ndealing with pen motion.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PenMotionEvent",
+          "kind": "alias",
+          "sourceName": "SDL_PenMotionEvent",
+          "type": "SDL_PenMotionEvent"
+        },
+        "PenTouchEvent": {
+          "doc": "Pressure-sensitive pen touched event structure (event.ptouch.*)\n\nThese events come when a pen touches a surface (a tablet, etc), or lifts\noff from one.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PenTouchEvent",
+          "kind": "alias",
+          "sourceName": "SDL_PenTouchEvent",
+          "type": "SDL_PenTouchEvent"
+        },
+        "PenButtonEvent": {
+          "doc": "Pressure-sensitive pen button event structure (event.pbutton.*)\n\nThis is for buttons on the pen itself that the user might click. The pen\nitself pressing down to draw triggers a EVENT_PEN_DOWN event instead.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PenButtonEvent",
+          "kind": "alias",
+          "sourceName": "SDL_PenButtonEvent",
+          "type": "SDL_PenButtonEvent"
+        },
+        "PenAxisEvent": {
+          "doc": "Pressure-sensitive pen pressure / angle event structure (event.paxis.*)\n\nYou might get some of these events even if the pen isn't touching the\ntablet.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PenAxisEvent",
+          "kind": "alias",
+          "sourceName": "SDL_PenAxisEvent",
+          "type": "SDL_PenAxisEvent"
+        },
+        "DropEvent": {
+          "doc": "An event used to drop text or request a file open by the system\n(event.drop.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "DropEvent",
+          "kind": "alias",
+          "sourceName": "SDL_DropEvent",
+          "type": "SDL_DropEvent"
+        },
+        "ClipboardEvent": {
+          "doc": "An event triggered when the clipboard contents have changed\n(event.clipboard.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "ClipboardEvent",
+          "kind": "alias",
+          "sourceName": "SDL_ClipboardEvent",
+          "type": "SDL_ClipboardEvent"
+        },
+        "SensorEvent": {
+          "doc": "Sensor event structure (event.sensor.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "SensorEvent",
+          "kind": "alias",
+          "sourceName": "SDL_SensorEvent",
+          "type": "SDL_SensorEvent"
+        },
+        "QuitEvent": {
+          "doc": "The \"quit requested\" event\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "QuitEvent",
+          "kind": "alias",
+          "sourceName": "SDL_QuitEvent",
+          "type": "SDL_QuitEvent"
+        },
+        "UserEvent": {
+          "doc": "A user-defined event type (event.user.*)\n\nThis event is unique; it is never created by SDL, but only by the\napplication. The event can be pushed onto the event queue using\nPushEvent(). The contents of the structure members are completely up to\nthe programmer; the only requirement is that '''type''' is a value obtained\nfrom RegisterEvents().\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "UserEvent",
+          "kind": "alias",
+          "sourceName": "SDL_UserEvent",
+          "type": "SDL_UserEvent"
+        },
+        "Event": {
+          "doc": "The structure for all events in SDL.\n\nThe Event structure is the core of all event handling in SDL. Event\nis a union of all event structures used in SDL.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "Event",
+          "kind": "alias",
+          "sourceName": "SDL_Event",
+          "type": "SDL_Event"
+        },
+        "PumpEvents": {
+          "doc": "Pump the event loop, gathering events from the input devices.\n\nThis function updates the event queue and internal input device state.\n\nPumpEvents() gathers all the pending input information from devices and\nplaces it in the event queue. Without calls to PumpEvents() no events\nwould ever be placed on the queue. Often the need for calls to\nPumpEvents() is hidden from the user since PollEvent() and\nWaitEvent() implicitly call PumpEvents(). However, if you are not\npolling or waiting for events (e.g. you are filtering them), then you must\ncall PumpEvents() to force an event queue update.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PollEvent\n@sa WaitEvent",
+          "name": "PumpEvents",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_PumpEvents"
+        },
+        "EventAction": {
+          "doc": "The type of action to request from PeepEvents().\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "EventAction",
+          "kind": "alias",
+          "sourceName": "SDL_EventAction",
+          "type": "SDL_EventAction"
+        },
+        "ADDEVENT": {
+          "kind": "var",
+          "name": "ADDEVENT",
+          "constexpr": true,
+          "type": "EventAction",
+          "doc": "Add events to the back of the queue.",
+          "sourceName": "SDL_ADDEVENT"
+        },
+        "PEEKEVENT": {
+          "kind": "var",
+          "name": "PEEKEVENT",
+          "constexpr": true,
+          "type": "EventAction",
+          "doc": "Check but don't remove events from the queue front.",
+          "sourceName": "SDL_PEEKEVENT"
+        },
+        "GETEVENT": {
+          "kind": "var",
+          "name": "GETEVENT",
+          "constexpr": true,
+          "type": "EventAction",
+          "doc": "Retrieve/remove events from the front of the queue.",
+          "sourceName": "SDL_GETEVENT"
+        },
+        "PeepEvents": {
+          "doc": "Check the event queue for messages and optionally return them.\n\n`action` may be any of the following:\n\n- `ADDEVENT`: up to `numevents` events will be added to the back of the\n  event queue.\n- `PEEKEVENT`: `numevents` events at the front of the event queue,\n  within the specified minimum and maximum type, will be returned to the\n  caller and will _not_ be removed from the queue. If you pass nullptr for\n  `events`, then `numevents` is ignored and the total number of matching\n  events will be returned.\n- `GETEVENT`: up to `numevents` events at the front of the event queue,\n  within the specified minimum and maximum type, will be returned to the\n  caller and will be removed from the queue.\n\nYou may have to call PumpEvents() before calling this function.\nOtherwise, the events may not be ready to be filtered when you call\nPeepEvents().\n\n@param events destination buffer for the retrieved events, may be nullptr to\n              leave the events in the queue and return the number of events\n              that would have been stored.\n@param numevents if action is ADDEVENT, the number of events to add\n                 back to the event queue; if action is PEEKEVENT or\n                 GETEVENT, the maximum number of events to retrieve.\n@param action action to take; see [Remarks](#remarks) for details.\n@param minType minimum value of the event type to be considered;\n               EVENT_FIRST is a safe choice.\n@param maxType maximum value of the event type to be considered;\n               EVENT_LAST is a safe choice.\n@returns the number of events actually stored or -1 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PollEvent\n@sa PumpEvents\n@sa PushEvent",
+          "name": "PeepEvents",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "events",
+              "type": "Event *"
+            },
+            {
+              "name": "numevents",
+              "type": "int"
+            },
+            {
+              "name": "action",
+              "type": "EventAction"
+            },
+            {
+              "name": "minType",
+              "type": "Uint32"
+            },
+            {
+              "name": "maxType",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_PeepEvents"
+        },
+        "HasEvent": {
+          "doc": "Check for the existence of a certain event type in the event queue.\n\nIf you need to check for a range of event types, use HasEvents()\ninstead.\n\n@param type the type of event to be queried; see EventType for details.\n@returns true if events matching `type` are present, or false if events\n         matching `type` are not present.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasEvents",
+          "name": "HasEvent",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "type",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_HasEvent"
+        },
+        "HasEvents": {
+          "doc": "Check for the existence of certain event types in the event queue.\n\nIf you need to check for a single event type, use HasEvent() instead.\n\n@param minType the low end of event type to be queried, inclusive; see\n               EventType for details.\n@param maxType the high end of event type to be queried, inclusive; see\n               EventType for details.\n@returns true if events with type >= `minType` and <= `maxType` are\n         present, or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasEvents",
+          "name": "HasEvents",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "minType",
+              "type": "Uint32"
+            },
+            {
+              "name": "maxType",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_HasEvents"
+        },
+        "FlushEvent": {
+          "doc": "Clear events of a specific type from the event queue.\n\nThis will unconditionally remove any events from the queue that match\n`type`. If you need to remove a range of event types, use FlushEvents()\ninstead.\n\nIt's also normal to just ignore events you don't care about in your event\nloop without calling this function.\n\nThis function only affects currently queued events. If you want to make\nsure that all pending OS events are flushed, you can call PumpEvents()\non the main thread immediately before the flush call.\n\nIf you have user events with custom data that needs to be freed, you should\nuse PeepEvents() to remove and clean up those events before calling\nthis function.\n\n@param type the type of event to be cleared; see EventType for details.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FlushEvents",
+          "name": "FlushEvent",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "type",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_FlushEvent"
+        },
+        "FlushEvents": {
+          "doc": "Clear events of a range of types from the event queue.\n\nThis will unconditionally remove any events from the queue that are in the\nrange of `minType` to `maxType`, inclusive. If you need to remove a single\nevent type, use FlushEvent() instead.\n\nIt's also normal to just ignore events you don't care about in your event\nloop without calling this function.\n\nThis function only affects currently queued events. If you want to make\nsure that all pending OS events are flushed, you can call PumpEvents()\non the main thread immediately before the flush call.\n\n@param minType the low end of event type to be cleared, inclusive; see\n               EventType for details.\n@param maxType the high end of event type to be cleared, inclusive; see\n               EventType for details.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FlushEvent",
+          "name": "FlushEvents",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "minType",
+              "type": "Uint32"
+            },
+            {
+              "name": "maxType",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_FlushEvents"
+        },
+        "PollEvent": [
+          {
+            "doc": "Poll for currently pending events.\n\nIf `event` is not nullptr, the next event is removed from the queue and stored\nin the Event structure pointed to by `event`. The 1 returned refers to\nthis event, immediately stored in the SDL Event structure -- not an event\nto follow.\n\nIf `event` is nullptr, it simply returns 1 if there is an event in the queue,\nbut will not remove it from the queue.\n\nAs this function may implicitly call PumpEvents(), you can only call\nthis function in the thread that set the video mode.\n\nPollEvent() is the favored way of receiving system events since it can\nbe done from the main loop and does not suspend the main loop while waiting\non an event to be posted.\n\nThe common practice is to fully process the event queue once every frame,\nusually as a first step before updating the game's state:\n\n```c\nwhile (game_is_still_running) {\n    Event event;\n    while (PollEvent(&event)) {  // poll until all events are handled!\n        // decide what to do with this event.\n    }\n\n    // update game state, draw the current frame\n}\n```\n\n@param event the Event structure to be filled with the next event from\n             the queue, or nullptr.\n@returns true if this got an event or false if there are none available.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PushEvent\n@sa WaitEvent\n@sa WaitEventTimeout",
+            "name": "PollEvent",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "event",
+                "type": "Event *"
+              }
+            ],
+            "sourceName": "SDL_PollEvent"
+          },
+          {
+            "kind": "function",
+            "type": "std::optional<Event>",
+            "parameters": [],
+            "name": "PollEvent",
+            "doc": "Poll for currently pending events.\n\nIf `event` is not nullptr, the next event is removed from the queue and stored\nin the Event structure pointed to by `event`. The 1 returned refers to\nthis event, immediately stored in the SDL Event structure -- not an event\nto follow.\n\nIf `event` is nullptr, it simply returns 1 if there is an event in the queue,\nbut will not remove it from the queue.\n\nAs this function may implicitly call PumpEvents(), you can only call\nthis function in the thread that set the video mode.\n\nPollEvent() is the favored way of receiving system events since it can\nbe done from the main loop and does not suspend the main loop while waiting\non an event to be posted.\n\nThe common practice is to fully process the event queue once every frame,\nusually as a first step before updating the game's state:\n\n```c\nwhile (game_is_still_running) {\n    Event event;\n    while (PollEvent(&event)) {  // poll until all events are handled!\n        // decide what to do with this event.\n    }\n\n    // update game state, draw the current frame\n}\n```\n\n@param event the Event structure to be filled with the next event from\n             the queue, or nullptr.\n@returns true if this got an event or false if there are none available.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PushEvent\n@sa WaitEvent\n@sa WaitEventTimeout"
+          }
+        ],
+        "WaitEvent": [
+          {
+            "doc": "Wait indefinitely for the next available event.\n\nIf `event` is not nullptr, the next event is removed from the queue and stored\nin the Event structure pointed to by `event`.\n\nAs this function may implicitly call PumpEvents(), you can only call\nthis function in the thread that initialized the video subsystem.\n\n@param event the Event structure to be filled in with the next event\n             from the queue, or nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PollEvent\n@sa PushEvent\n@sa WaitEventTimeout",
+            "name": "WaitEvent",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "event",
+                "type": "Event *"
+              }
+            ],
+            "sourceName": "SDL_WaitEvent",
+            "hints": {
+              "mayFail": true
+            }
+          },
+          {
+            "kind": "function",
+            "type": "Event",
+            "parameters": [],
+            "name": "WaitEvent",
+            "doc": "Wait indefinitely for the next available event.\n\nIf `event` is not nullptr, the next event is removed from the queue and stored\nin the Event structure pointed to by `event`.\n\nAs this function may implicitly call PumpEvents(), you can only call\nthis function in the thread that initialized the video subsystem.\n\n@param event the Event structure to be filled in with the next event\n             from the queue, or nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PollEvent\n@sa PushEvent\n@sa WaitEventTimeout"
+          }
+        ],
+        "WaitEventTimeout": [
+          {
+            "doc": "Wait until the specified timeout (in milliseconds) for the next available\nevent.\n\nIf `event` is not nullptr, the next event is removed from the queue and stored\nin the Event structure pointed to by `event`.\n\nAs this function may implicitly call PumpEvents(), you can only call\nthis function in the thread that initialized the video subsystem.\n\nThe timeout is not guaranteed, the actual wait time could be longer due to\nsystem scheduling.\n\n@param event the Event structure to be filled in with the next event\n             from the queue, or nullptr.\n@param timeoutMS the maximum number of milliseconds to wait for the next\n                 available event.\n@returns true if this got an event or false if the timeout elapsed without\n         any events available.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PollEvent\n@sa PushEvent\n@sa WaitEvent",
+            "name": "WaitEventTimeout",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "event",
+                "type": "Event *"
+              },
+              {
+                "name": "timeoutMS",
+                "type": "Sint32"
+              }
+            ],
+            "sourceName": "SDL_WaitEventTimeout"
+          },
+          {
+            "kind": "function",
+            "type": "std::optional<Event>",
+            "parameters": [
+              {
+                "type": "Sint32",
+                "name": "timeoutMS"
+              }
+            ],
+            "name": "WaitEventTimeout",
+            "doc": "Wait until the specified timeout (in milliseconds) for the next available\nevent.\n\nIf `event` is not nullptr, the next event is removed from the queue and stored\nin the Event structure pointed to by `event`.\n\nAs this function may implicitly call PumpEvents(), you can only call\nthis function in the thread that initialized the video subsystem.\n\nThe timeout is not guaranteed, the actual wait time could be longer due to\nsystem scheduling.\n\n@param event the Event structure to be filled in with the next event\n             from the queue, or nullptr.\n@param timeoutMS the maximum number of milliseconds to wait for the next\n                 available event.\n@returns true if this got an event or false if the timeout elapsed without\n         any events available.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PollEvent\n@sa PushEvent\n@sa WaitEvent"
+          },
+          {
+            "kind": "function",
+            "name": "WaitEventTimeout",
+            "type": "bool",
+            "parameters": [
+              {
+                "type": "Event *",
+                "name": "event"
+              },
+              {
+                "type": "std::chrono::milliseconds",
+                "name": "timeoutDuration"
+              }
+            ],
+            "doc": "Wait until the specified timeout (in milliseconds) for the next available\nevent.\n\nIf `event` is not nullptr, the next event is removed from the queue and stored\nin the Event structure pointed to by `event`.\n\nAs this function may implicitly call PumpEvents(), you can only call\nthis function in the thread that initialized the video subsystem.\n\nThe timeout is not guaranteed, the actual wait time could be longer due to\nsystem scheduling.\n\n@param event the Event structure to be filled in with the next event\n             from the queue, or nullptr.\n@param timeoutMS the maximum number of milliseconds to wait for the next\n                 available event.\n@returns true if this got an event or false if the timeout elapsed without\n         any events available.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PollEvent\n@sa PushEvent\n@sa WaitEvent"
+          },
+          {
+            "kind": "function",
+            "name": "WaitEventTimeout",
+            "type": "std::optional<Event>",
+            "parameters": [
+              {
+                "type": "std::chrono::milliseconds",
+                "name": "timeoutDuration"
+              }
+            ],
+            "doc": "Wait until the specified timeout (in milliseconds) for the next available\nevent.\n\nIf `event` is not nullptr, the next event is removed from the queue and stored\nin the Event structure pointed to by `event`.\n\nAs this function may implicitly call PumpEvents(), you can only call\nthis function in the thread that initialized the video subsystem.\n\nThe timeout is not guaranteed, the actual wait time could be longer due to\nsystem scheduling.\n\n@param event the Event structure to be filled in with the next event\n             from the queue, or nullptr.\n@param timeoutMS the maximum number of milliseconds to wait for the next\n                 available event.\n@returns true if this got an event or false if the timeout elapsed without\n         any events available.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PollEvent\n@sa PushEvent\n@sa WaitEvent"
+          }
+        ],
+        "PushEvent": [
+          {
+            "doc": "Add an event to the event queue.\n\nThe event queue can actually be used as a two way communication channel.\nNot only can events be read from the queue, but the user can also push\ntheir own events onto it. `event` is a pointer to the event structure you\nwish to push onto the queue. The event is copied into the queue, and the\ncaller may dispose of the memory pointed to after PushEvent() returns.\n\nNote: Pushing device input events onto the queue doesn't modify the state\nof the device within SDL.\n\nNote: Events pushed onto the queue with PushEvent() get passed through\nthe event filter but events added with PeepEvents() do not.\n\nFor pushing application-specific events, please use RegisterEvents() to\nget an event type that does not conflict with other code that also wants\nits own custom event types.\n\n@param event the Event to be added to the queue.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PeepEvents\n@sa PollEvent\n@sa RegisterEvents",
+            "name": "PushEvent",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "event",
+                "type": "Event *"
+              }
+            ],
+            "sourceName": "SDL_PushEvent",
+            "hints": {
+              "mayFail": true
+            }
+          },
+          {
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "const Event &",
+                "name": "event"
+              }
+            ],
+            "name": "PushEvent",
+            "doc": "Add an event to the event queue.\n\nThe event queue can actually be used as a two way communication channel.\nNot only can events be read from the queue, but the user can also push\ntheir own events onto it. `event` is a pointer to the event structure you\nwish to push onto the queue. The event is copied into the queue, and the\ncaller may dispose of the memory pointed to after PushEvent() returns.\n\nNote: Pushing device input events onto the queue doesn't modify the state\nof the device within SDL.\n\nNote: Events pushed onto the queue with PushEvent() get passed through\nthe event filter but events added with PeepEvents() do not.\n\nFor pushing application-specific events, please use RegisterEvents() to\nget an event type that does not conflict with other code that also wants\nits own custom event types.\n\n@param event the Event to be added to the queue.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PeepEvents\n@sa PollEvent\n@sa RegisterEvents"
+          }
+        ],
+        "EventFilter": {
+          "doc": "A function pointer used for callbacks that watch the event queue.\n\n@param userdata what was passed as `userdata` to SetEventFilter() or\n                AddEventWatch, etc.\n@param event the event that triggered the callback.\n@returns true to permit event to be added to the queue, and false to\n         disallow it. When used with AddEventWatch, the return value is\n         ignored.\n\n@threadsafety SDL may call this callback at any time from any thread; the\n              application is responsible for locking resources the callback\n              touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetEventFilter\n@sa AddEventWatch",
+          "name": "EventFilter",
+          "kind": "alias",
+          "type": "SDL_EventFilter",
+          "sourceName": "SDL_EventFilter"
+        },
+        "EventFilterCB": {
+          "kind": "alias",
+          "type": "std::function<bool(const Event &)>",
+          "name": "EventFilterCB",
+          "doc": ""
+        },
+        "EventWatchHandle": {
+          "doc": "Handle returned by AddEventWatch()",
+          "kind": "struct",
+          "type": "CallbackHandle",
+          "entries": {
+            "CallbackHandle::CallbackHandle": {
+              "kind": "alias",
+              "name": "CallbackHandle::CallbackHandle",
+              "doc": ""
+            }
+          },
+          "name": "EventWatchHandle"
+        },
+        "SetEventFilter": [
+          {
+            "doc": "Set up a filter to process all events before they are added to the internal\nevent queue.\n\nIf you just want to see events without modifying them or preventing them\nfrom being queued, you should use AddEventWatch() instead.\n\nIf the filter function returns true when called, then the event will be\nadded to the internal queue. If it returns false, then the event will be\ndropped from the queue, but the internal state will still be updated. This\nallows selective filtering of dynamically arriving events.\n\n**WARNING**: Be very careful of what you do in the event filter function,\nas it may run in a different thread!\n\nOn platforms that support it, if the quit event is generated by an\ninterrupt signal (e.g. pressing Ctrl-C), it will be delivered to the\napplication at the next event poll.\n\nNote: Disabled events never make it to the event filter function; see\nSetEventEnabled().\n\nNote: Events pushed onto the queue with PushEvent() get passed through\nthe event filter, but events pushed onto the queue with PeepEvents() do\nnot.\n\n@param filter an EventFilter function to call when an event happens.\n@param userdata a pointer that is passed to `filter`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AddEventWatch\n@sa SetEventEnabled\n@sa GetEventFilter\n@sa PeepEvents\n@sa PushEvent",
+            "name": "SetEventFilter",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "filter",
+                "type": "EventFilter"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_SetEventFilter"
+          },
+          {
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "EventFilterCB",
+                "name": "filter",
+                "default": "{}"
+              }
+            ],
+            "name": "SetEventFilter",
+            "doc": "Set up a filter to process all events before they are added to the internal\nevent queue.\n\nIf you just want to see events without modifying them or preventing them\nfrom being queued, you should use AddEventWatch() instead.\n\nIf the filter function returns true when called, then the event will be\nadded to the internal queue. If it returns false, then the event will be\ndropped from the queue, but the internal state will still be updated. This\nallows selective filtering of dynamically arriving events.\n\n**WARNING**: Be very careful of what you do in the event filter function,\nas it may run in a different thread!\n\nOn platforms that support it, if the quit event is generated by an\ninterrupt signal (e.g. pressing Ctrl-C), it will be delivered to the\napplication at the next event poll.\n\nNote: Disabled events never make it to the event filter function; see\nSetEventEnabled().\n\nNote: Events pushed onto the queue with PushEvent() get passed through\nthe event filter, but events pushed onto the queue with PeepEvents() do\nnot.\n\n@param filter an EventFilter function to call when an event happens.\n@param userdata a pointer that is passed to `filter`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AddEventWatch\n@sa SetEventEnabled\n@sa GetEventFilter\n@sa PeepEvents\n@sa PushEvent"
+          }
+        ],
+        "GetEventFilter": [
+          {
+            "doc": "Query the current event filter.\n\nThis function can be used to \"chain\" filters, by saving the existing filter\nbefore replacing it with a function that will call that saved filter.\n\n@param filter the current callback function will be stored here.\n@param userdata the pointer that is passed to the current event filter will\n                be stored here.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetEventFilter",
+            "name": "GetEventFilter",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "filter",
+                "type": "EventFilter *"
+              },
+              {
+                "name": "userdata",
+                "type": "void **"
+              }
+            ],
+            "sourceName": "SDL_GetEventFilter",
+            "hints": {
+              "mayFail": true
+            }
+          },
+          {
+            "kind": "function",
+            "type": "EventFilterCB",
+            "parameters": [],
+            "name": "GetEventFilter",
+            "doc": "Query the current event filter.\n\nThis function can be used to \"chain\" filters, by saving the existing filter\nbefore replacing it with a function that will call that saved filter.\n\n@param filter the current callback function will be stored here.\n@param userdata the pointer that is passed to the current event filter will\n                be stored here.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetEventFilter"
+          }
+        ],
+        "EventWatchAuxCallback": {
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "type": "void *",
+              "name": "userdata"
+            },
+            {
+              "type": "Event *",
+              "name": "event"
+            }
+          ],
+          "name": "EventWatchAuxCallback",
+          "doc": ""
+        },
+        "AddEventWatch": [
+          {
+            "doc": "Add a callback to be triggered when an event is added to the event queue.\n\n`filter` will be called when an event happens, and its return value is\nignored.\n\n**WARNING**: Be very careful of what you do in the event filter function,\nas it may run in a different thread!\n\nIf the quit event is generated by a signal (e.g. SIGINT), it will bypass\nthe internal queue and be delivered to the watch callback immediately, and\narrive at the next event poll.\n\nNote: the callback is called for events posted by the user through\nPushEvent(), but not for disabled events, nor for events by a filter\ncallback set with SetEventFilter(), nor for events posted by the user\nthrough PeepEvents().\n\n@param filter an EventFilter function to call when an event happens.\n@param userdata a pointer that is passed to `filter`.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RemoveEventWatch\n@sa SetEventFilter",
+            "name": "AddEventWatch",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "filter",
+                "type": "EventFilter"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_AddEventWatch",
+            "hints": {
+              "mayFail": true
+            }
+          },
+          {
+            "kind": "function",
+            "type": "EventWatchHandle",
+            "parameters": [
+              {
+                "type": "EventFilterCB",
+                "name": "filter"
+              }
+            ],
+            "name": "AddEventWatch",
+            "doc": "Add a callback to be triggered when an event is added to the event queue.\n\n`filter` will be called when an event happens, and its return value is\nignored.\n\n**WARNING**: Be very careful of what you do in the event filter function,\nas it may run in a different thread!\n\nIf the quit event is generated by a signal (e.g. SIGINT), it will bypass\nthe internal queue and be delivered to the watch callback immediately, and\narrive at the next event poll.\n\nNote: the callback is called for events posted by the user through\nPushEvent(), but not for disabled events, nor for events by a filter\ncallback set with SetEventFilter(), nor for events posted by the user\nthrough PeepEvents().\n\n@param filter an EventFilter function to call when an event happens.\n@param userdata a pointer that is passed to `filter`.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RemoveEventWatch\n@sa SetEventFilter"
+          }
+        ],
+        "RemoveEventWatch": [
+          {
+            "doc": "Remove an event watch callback added with AddEventWatch().\n\nThis function takes the same input as AddEventWatch() to identify and\ndelete the corresponding callback.\n\n@param filter the function originally passed to AddEventWatch().\n@param userdata the pointer originally passed to AddEventWatch().\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AddEventWatch",
+            "name": "RemoveEventWatch",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "filter",
+                "type": "EventFilter"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_RemoveEventWatch"
+          },
+          {
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "EventWatchHandle",
+                "name": "handle"
+              }
+            ],
+            "name": "RemoveEventWatch",
+            "doc": "Remove an event watch callback added with AddEventWatch().\n\nThis function takes the same input as AddEventWatch() to identify and\ndelete the corresponding callback.\n\n@param filter the function originally passed to AddEventWatch().\n@param userdata the pointer originally passed to AddEventWatch().\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AddEventWatch"
+          }
+        ],
+        "FilterEvents": [
+          {
+            "doc": "Run a specific filter function on the current event queue, removing any\nevents for which the filter returns false.\n\nSee SetEventFilter() for more information. Unlike SetEventFilter(),\nthis function does not change the filter permanently, it only uses the\nsupplied filter until this function returns.\n\n@param filter the EventFilter function to call when an event happens.\n@param userdata a pointer that is passed to `filter`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEventFilter\n@sa SetEventFilter",
+            "name": "FilterEvents",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "filter",
+                "type": "EventFilter"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_FilterEvents"
+          },
+          {
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "EventFilterCB",
+                "name": "filter"
+              }
+            ],
+            "name": "FilterEvents",
+            "doc": "Run a specific filter function on the current event queue, removing any\nevents for which the filter returns false.\n\nSee SetEventFilter() for more information. Unlike SetEventFilter(),\nthis function does not change the filter permanently, it only uses the\nsupplied filter until this function returns.\n\n@param filter the EventFilter function to call when an event happens.\n@param userdata a pointer that is passed to `filter`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEventFilter\n@sa SetEventFilter"
+          }
+        ],
+        "SetEventEnabled": {
+          "doc": "Set the state of processing events by type.\n\n@param type the type of event; see EventType for details.\n@param enabled whether to process the event or not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa EventEnabled",
+          "name": "SetEventEnabled",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "type",
+              "type": "Uint32"
+            },
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "sourceName": "SDL_SetEventEnabled"
+        },
+        "EventEnabled": {
+          "doc": "Query the state of processing events by type.\n\n@param type the type of event; see EventType for details.\n@returns true if the event is being processed, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetEventEnabled",
+          "name": "EventEnabled",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "type",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_EventEnabled"
+        },
+        "RegisterEvents": {
+          "doc": "Allocate a set of user-defined events, and return the beginning event\nnumber for that set of events.\n\n@param numevents the number of events to be allocated.\n@returns the beginning event number, or 0 if numevents is invalid or if\n         there are not enough user-defined events left.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PushEvent",
+          "name": "RegisterEvents",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [
+            {
+              "name": "numevents",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_RegisterEvents"
+        },
+        "GetWindowFromEvent": {
+          "doc": "Get window associated with an event.\n\n@param event an event containing a `windowID`.\n@returns the associated window on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PollEvent\n@sa WaitEvent\n@sa WaitEventTimeout",
+          "name": "GetWindowFromEvent",
+          "kind": "function",
+          "type": "WindowRef",
+          "parameters": [
+            {
+              "name": "event",
+              "type": "const Event &"
+            }
+          ],
+          "sourceName": "SDL_GetWindowFromEvent",
+          "hints": {
+            "mayFail": true
+          }
+        }
+      },
+      "includes": [
+        "SDL3/SDL_events.h"
+      ],
+      "localIncludes": [
+        "SDL3pp_stdinc.h",
+        "SDL3pp_video.h"
       ]
     },
     "SDL3pp_filesystem.h": {

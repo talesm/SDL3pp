@@ -106,7 +106,7 @@ namespace SDL {
  * This is necessary for the right mouse button to work on some Android
  * devices, or to be able to trap the back button for use in your code
  * reliably. If this hint is true, the back button will show up as an
- * SDL_EVENT_KEY_DOWN / SDL_EVENT_KEY_UP pair with a keycode of
+ * EVENT_KEY_DOWN / EVENT_KEY_UP pair with a keycode of
  * SDL_SCANCODE_AC_BACK.
  *
  * The variable can be set to the following values:
@@ -1120,9 +1120,9 @@ namespace SDL {
  *
  * - "none" or "0": The application can't render any IME elements, and native
  *   UI should be used. (default)
- * - "composition": The application handles SDL_EVENT_TEXT_EDITING events and
+ * - "composition": The application handles EVENT_TEXT_EDITING events and
  *   can render the composition text.
- * - "candidates": The application handles SDL_EVENT_TEXT_EDITING_CANDIDATES
+ * - "candidates": The application handles EVENT_TEXT_EDITING_CANDIDATES
  *   and can render the candidate list.
  *
  * This hint should be set before SDL is initialized.
@@ -2414,7 +2414,7 @@ namespace SDL {
 #define SDL_HINT_MAC_OPTION_AS_ALT "SDL_MAC_OPTION_AS_ALT"
 
 /**
- * A variable controlling whether SDL_EVENT_MOUSE_WHEEL event values will have
+ * A variable controlling whether EVENT_MOUSE_WHEEL event values will have
  * momentum on macOS.
  *
  * The variable can be set to the following values:
@@ -2690,7 +2690,7 @@ namespace SDL {
  * The variable can be set to the following values:
  *
  * - "0": SDL will install a SIGINT and SIGTERM handler, and when it catches a
- *   signal, convert it into an SDL_EVENT_QUIT event. (default)
+ *   signal, convert it into an EVENT_QUIT event. (default)
  * - "1": SDL will not install a signal handler at all.
  *
  * This hint should be set before SDL is initialized.
@@ -2791,9 +2791,9 @@ namespace SDL {
  * A variable controlling the use of a sentinel event when polling the event
  * queue.
  *
- * When polling for events, SDL_PumpEvents is used to gather new events from
+ * When polling for events, PumpEvents is used to gather new events from
  * devices. If a device keeps producing new events between calls to
- * SDL_PumpEvents, a poll loop will become stuck until the new events stop.
+ * PumpEvents, a poll loop will become stuck until the new events stop.
  * This is most noticeable when moving a high frequency mouse.
  *
  * The variable can be set to the following values:
@@ -2812,7 +2812,7 @@ namespace SDL {
  *
  * If set, this will be favored over anything the OS might report for the
  * user's preferred locales. Changing this hint at runtime will not generate a
- * SDL_EVENT_LOCALE_CHANGED event (but if you can change the hint, you can
+ * EVENT_LOCALE_CHANGED event (but if you can change the hint, you can
  * push your own event, if you want).
  *
  * The format of this hint is a comma-separated list of language and locale,
@@ -2826,19 +2826,19 @@ namespace SDL {
 #define SDL_HINT_PREFERRED_LOCALES "SDL_PREFERRED_LOCALES"
 
 /**
- * A variable that decides whether to send SDL_EVENT_QUIT when closing the
+ * A variable that decides whether to send EVENT_QUIT when closing the
  * last window.
  *
  * The variable can be set to the following values:
  *
- * - "0": SDL will not send an SDL_EVENT_QUIT event when the last window is
+ * - "0": SDL will not send an EVENT_QUIT event when the last window is
  *   requesting to close. Note that in this case, there are still other
- *   legitimate reasons one might get an SDL_EVENT_QUIT event: choosing "Quit"
+ *   legitimate reasons one might get an EVENT_QUIT event: choosing "Quit"
  *   from the macOS menu bar, sending a SIGINT (ctrl-c) on Unix, etc.
  * - "1": SDL will send a quit event when the last window is requesting to
  *   close. (default)
  *
- * If there is at least one active system tray icon, SDL_EVENT_QUIT will
+ * If there is at least one active system tray icon, EVENT_QUIT will
  * instead be sent when both the last window will be closed and the last tray
  * icon will be destroyed.
  *
@@ -4082,7 +4082,7 @@ namespace SDL {
  * The variable can be set to the following values:
  *
  * - "0": The window message loop is not run.
- * - "1": The window message loop is processed in SDL_PumpEvents(). (default)
+ * - "1": The window message loop is processed in PumpEvents(). (default)
  *
  * This hint can be set anytime.
  *
