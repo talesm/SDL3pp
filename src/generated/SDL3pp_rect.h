@@ -1024,9 +1024,9 @@ struct FRect : FRectRaw
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void RectToFRect(const RectRaw& rect, FRectRaw* frect)
+constexpr Rect RectToFRect(const RectRaw& rect)
 {
-  SDL_RectToFRect(rect, frect);
+  return SDL_RectToFRect(rect);
 }
 
 /**
@@ -1050,9 +1050,9 @@ inline void RectToFRect(const RectRaw& rect, FRectRaw* frect)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool PointInRect(const PointRaw& p, const RectRaw& r)
+constexpr bool PointInRect(const PointRaw& self, const RectRaw& r)
 {
-  return SDL_PointInRect(p, r);
+  return SDL_PointInRect(self, r);
 }
 
 /**
@@ -1094,9 +1094,9 @@ constexpr bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(r); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool RectsEqual(const RectRaw& a, const RectRaw& b)
+constexpr bool RectsEqual(const RectRaw& self, const RectRaw& other)
 {
-  return SDL_RectsEqual(a, b);
+  return SDL_RectsEqual(self, other);
 }
 
 /**
@@ -1228,9 +1228,9 @@ inline bool GetRectAndLineIntersection(const RectRaw& rect,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
+constexpr bool PointInRectFloat(const FPointRaw& self, const FRectRaw& r)
 {
-  return SDL_PointInRectFloat(p, r);
+  return SDL_PointInRectFloat(self, r);
 }
 
 /**
@@ -1251,7 +1251,10 @@ inline bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool RectEmptyFloat(const FRectRaw& r) { return SDL_RectEmptyFloat(r); }
+constexpr bool RectEmptyFloat(const FRectRaw& r)
+{
+  return SDL_RectEmptyFloat(r);
+}
 
 /**
  * Determine whether two floating point rectangles are equal, within some
@@ -1278,11 +1281,11 @@ inline bool RectEmptyFloat(const FRectRaw& r) { return SDL_RectEmptyFloat(r); }
  *
  * @sa FRect.Equal
  */
-inline bool RectsEqualEpsilon(const FRectRaw& a,
-                              const FRectRaw& b,
-                              float epsilon)
+constexpr bool RectsEqualEpsilon(const FRectRaw& self,
+                                 const FRectRaw& other,
+                                 const float epsilon)
 {
-  return SDL_RectsEqualEpsilon(a, b, epsilon);
+  return SDL_RectsEqualEpsilon(self, other, epsilon);
 }
 
 /**
@@ -1310,9 +1313,9 @@ inline bool RectsEqualEpsilon(const FRectRaw& a,
  *
  * @sa FRect.EqualEpsilon
  */
-inline bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
+constexpr bool RectsEqualFloat(const FRectRaw& self, const FRectRaw& other)
 {
-  return SDL_RectsEqualFloat(a, b);
+  return SDL_RectsEqualFloat(self, other);
 }
 
 /**

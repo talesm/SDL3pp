@@ -1785,9 +1785,9 @@ inline Sint64 TellIO(IOStreamParam context) { return SDL_TellIO(context); }
  * @sa IOStream.Write
  * @sa IOStream.GetStatus
  */
-inline size_t ReadIO(IOStreamParam context, void* ptr, size_t size)
+inline size_t ReadIO(IOStreamParam context, TargetBytes buf)
 {
-  return SDL_ReadIO(context, ptr, size);
+  return SDL_ReadIO(context, buf);
 }
 
 /**
@@ -1820,9 +1820,9 @@ inline size_t ReadIO(IOStreamParam context, void* ptr, size_t size)
  * @sa IOStream.Flush
  * @sa IOStream.GetStatus
  */
-inline size_t WriteIO(IOStreamParam context, const void* ptr, size_t size)
+inline size_t WriteIO(IOStreamParam context, SourceBytes buf)
 {
-  return SDL_WriteIO(context, ptr, size);
+  return SDL_WriteIO(context, buf);
 }
 
 /**
@@ -1919,9 +1919,9 @@ inline void FlushIO(IOStreamParam context) { CheckError(SDL_FlushIO(context)); }
  * @sa LoadFile
  * @sa IOStream.SaveFile
  */
-inline void* LoadFile_IO(IOStreamParam src, size_t* datasize, bool closeio)
+inline StringResult LoadFile_IO(IOStreamParam src)
 {
-  return SDL_LoadFile_IO(src, datasize, closeio);
+  return SDL_LoadFile_IO(src);
 }
 
 /**
@@ -1971,12 +1971,9 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @sa SaveFile
  * @sa IOStream.LoadFile
  */
-inline void SaveFile_IO(IOStreamParam src,
-                        const void* data,
-                        size_t datasize,
-                        bool closeio)
+inline void SaveFile_IO(IOStreamParam src, SourceBytes data)
 {
-  CheckError(SDL_SaveFile_IO(src, data, datasize, closeio));
+  CheckError(SDL_SaveFile_IO(src, data));
 }
 
 /**

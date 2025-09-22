@@ -7095,14 +7095,16 @@ const transform = {
           },
           entries: {
             "SDL_GetDisplays": {
-              "kind": "function",
-              "name": "GetAll",
-              "type": "OwnArray<DisplayID>",
-              "parameters": []
+              kind: "function",
+              name: "GetAll",
+              type: "OwnArray<DisplayID>",
+              parameters: [],
+              static: true,
             },
             "SDL_GetPrimaryDisplay": {
-              "kind": "function",
-              "name": "GetPrimary"
+              kind: "function",
+              name: "GetPrimary",
+              static: true,
             },
             "SDL_GetDisplayProperties": "immutable",
             "SDL_GetDisplayName": "immutable",

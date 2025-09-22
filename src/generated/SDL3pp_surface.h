@@ -2628,7 +2628,7 @@ inline Surface ConvertSurface(SurfaceConstParam surface, PixelFormat format)
  * @sa Surface.Convert
  * @sa Surface.Destroy
  */
-inline Surface ConvertSurfaceAndColorspace(SurfaceParam surface,
+inline Surface ConvertSurfaceAndColorspace(SurfaceConstParam surface,
                                            PixelFormat format,
                                            PaletteParam palette,
                                            Colorspace colorspace,

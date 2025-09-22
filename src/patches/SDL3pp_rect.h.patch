@@ -1736,93 +1736,121 @@
 >     x -= offset.x;
 >     y -= offset.y;
 >     return *this;
-1029c2117
-<   SDL_RectToFRect(rect, frect);
+1027c2115
+< constexpr Rect RectToFRect(const RectRaw& rect)
 ---
->   SDL_RectToFRect(&rect, frect);
-1055c2143
-<   return SDL_PointInRect(p, r);
+> constexpr FRect RectToFRect(const RectRaw& rect)
+1029c2117,2119
+<   return SDL_RectToFRect(rect);
+---
+>   FRect frect;
+>   SDL_RectToFRect(&rect, &frect);
+>   return frect;
+1053c2143
+< constexpr bool PointInRect(const PointRaw& self, const RectRaw& r)
+---
+> constexpr bool PointInRect(const PointRaw& p, const RectRaw& r)
+1055c2145
+<   return SDL_PointInRect(self, r);
 ---
 >   return SDL_PointInRect(&p, &r);
-1076c2164
+1076c2166
 < constexpr bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(r); }
 ---
 > constexpr bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(&r); }
-1099c2187
-<   return SDL_RectsEqual(a, b);
+1097c2187
+< constexpr bool RectsEqual(const RectRaw& self, const RectRaw& other)
+---
+> constexpr bool RectsEqual(const RectRaw& a, const RectRaw& b)
+1099c2189
+<   return SDL_RectsEqual(self, other);
 ---
 >   return SDL_RectsEqual(&a, &b);
-1119c2207
+1119c2209
 <   return SDL_HasRectIntersection(self, other);
 ---
 >   return SDL_HasRectIntersection(&self, &other);
-1137,1138c2225
+1137,1138c2227
 < constexpr std::optional<Rect> GetRectIntersection(const RectRaw& self,
 <                                                   const RectRaw& other)
 ---
 > constexpr Rect GetRectIntersection(const RectRaw& self, const RectRaw& other)
-1140c2227,2230
+1140c2229,2232
 <   return SDL_GetRectIntersection(self, other);
 ---
 >   if (Rect result; SDL_GetRectIntersection(&self, &other, &result)) {
 >     return result;
 >   }
 >   return {};
-1156c2246,2248
+1156c2248,2250
 <   return CheckError(SDL_GetRectUnion(self, other));
 ---
 >   Rect r;
 >   CheckError(SDL_GetRectUnion(&self, &other, &r));
 >   return r;
-1180c2272
+1180c2274
 <   return SDL_GetRectEnclosingPoints(points, clip, result);
 ---
 >   return SDL_GetRectEnclosingPoints(points.data(), points.size(), clip, result);
-1207c2299
+1207c2301
 <   return SDL_GetRectAndLineIntersection(rect, X1, Y1, X2, Y2);
 ---
 >   return SDL_GetRectAndLineIntersection(&rect, X1, Y1, X2, Y2);
-1233c2325
-<   return SDL_PointInRectFloat(p, r);
+1231c2325
+< constexpr bool PointInRectFloat(const FPointRaw& self, const FRectRaw& r)
+---
+> constexpr bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
+1233c2327
+<   return SDL_PointInRectFloat(self, r);
 ---
 >   return SDL_PointInRectFloat(&p, &r);
-1254c2346
-< inline bool RectEmptyFloat(const FRectRaw& r) { return SDL_RectEmptyFloat(r); }
+1256c2350
+<   return SDL_RectEmptyFloat(r);
 ---
-> inline bool RectEmptyFloat(const FRectRaw& r) { return SDL_RectEmptyFloat(&r); }
-1285c2377
-<   return SDL_RectsEqualEpsilon(a, b, epsilon);
+>   return SDL_RectEmptyFloat(&r);
+1284,1285c2378,2379
+< constexpr bool RectsEqualEpsilon(const FRectRaw& self,
+<                                  const FRectRaw& other,
+---
+> constexpr bool RectsEqualEpsilon(const FRectRaw& a,
+>                                  const FRectRaw& b,
+1288c2382
+<   return SDL_RectsEqualEpsilon(self, other, epsilon);
 ---
 >   return SDL_RectsEqualEpsilon(&a, &b, epsilon);
-1315c2407
-<   return SDL_RectsEqualFloat(a, b);
+1316c2410
+< constexpr bool RectsEqualFloat(const FRectRaw& self, const FRectRaw& other)
+---
+> constexpr bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
+1318c2412
+<   return SDL_RectsEqualFloat(self, other);
 ---
 >   return SDL_RectsEqualFloat(&a, &b);
-1334c2426
+1337c2431
 <   return SDL_HasRectIntersectionFloat(self, other);
 ---
 >   return SDL_HasRectIntersectionFloat(&self, &other);
-1355c2447,2448
+1358c2452,2453
 <   return SDL_GetRectIntersectionFloat(self, other);
 ---
 >   if (FRect r; SDL_GetRectIntersectionFloat(&self, &other, &r)) return r;
 >   return {};
-1371c2464,2466
+1374c2469,2471
 <   return CheckError(SDL_GetRectUnionFloat(self, other));
 ---
 >   FRect r;
 >   CheckError(SDL_GetRectUnionFloat(&self, &other, &r));
 >   return r;
-1396c2491,2492
+1399c2496,2497
 <   return SDL_GetRectEnclosingPointsFloat(points, clip, result);
 ---
 >   return SDL_GetRectEnclosingPointsFloat(
 >     points.data(), points.size(), clip, result);
-1424c2520
+1427c2525
 <   return SDL_GetRectAndLineIntersectionFloat(rect, X1, Y1, X2, Y2);
 ---
 >   return SDL_GetRectAndLineIntersectionFloat(&rect, X1, Y1, X2, Y2);
-1427a2524,2615
+1430a2529,2620
 > 
 > constexpr Point::operator FPoint() const { return {float(x), float(y)}; }
 > 

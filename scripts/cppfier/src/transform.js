@@ -1464,7 +1464,7 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
     if (transformEntry) continue;
     /** @type {ApiEntryTransform} */
     let targetEntry;
-    if (typeof subEntry === 'string' || (sourceEntry.kind !== 'def' && subEntry.name)) {
+    if (typeof subEntry === 'string') {
       targetEntry = {};
       if (subEntry === 'immutable') targetEntry.immutable = true;
     } else {

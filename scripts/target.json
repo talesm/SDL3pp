@@ -5303,7 +5303,8 @@
               "kind": "function",
               "type": "OwnArray<DisplayID>",
               "parameters": [],
-              "sourceName": "SDL_GetDisplays"
+              "sourceName": "SDL_GetDisplays",
+              "static": true
             },
             "GetPrimary": {
               "doc": "Return the primary display.\n\n@returns the instance ID of the primary display on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetAll",
@@ -5314,7 +5315,8 @@
               "sourceName": "SDL_GetPrimaryDisplay",
               "hints": {
                 "mayFail": true
-              }
+              },
+              "static": true
             },
             "GetProperties": {
               "doc": "Get the properties associated with a display.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR\n  headroom above the SDR white point. This is for informational and\n  diagnostic purposes only, as not all platforms provide this information\n  at the display level.\n\nOn KMS/DRM:\n\n- `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the \"panel\n  orientation\" property for the display in degrees of clockwise rotation.\n  Note that this is provided only as a hint, and the application is\n  responsible for any coordinate transformations needed to conform to the\n  requested display orientation.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -7959,13 +7961,8 @@
           "doc": "Get a list of currently connected displays.\n\n@param count a pointer filled in with the number of displays returned, may\n             be nullptr.\n@returns a 0 terminated array of display instance IDs or nullptr on failure;\n         call GetError() for more information. This should be freed\n         with free() when it is no longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetDisplays",
           "kind": "function",
-          "type": "Display *",
-          "parameters": [
-            {
-              "name": "count",
-              "type": "int *"
-            }
-          ],
+          "type": "OwnArray<DisplayID>",
+          "parameters": [],
           "sourceName": "SDL_GetDisplays"
         },
         "GetPrimaryDisplay": {
@@ -8073,7 +8070,7 @@
           "parameters": [
             {
               "name": "displayID",
-              "type": "Display"
+              "type": "DisplayID"
             }
           ],
           "sourceName": "SDL_GetNaturalDisplayOrientation"
@@ -8086,7 +8083,7 @@
           "parameters": [
             {
               "name": "displayID",
-              "type": "Display"
+              "type": "DisplayID"
             }
           ],
           "sourceName": "SDL_GetCurrentDisplayOrientation"
@@ -8108,15 +8105,11 @@
           "doc": "Get a list of fullscreen display modes available on a display.\n\nThe display modes are sorted in this priority:\n\n- w -> largest to smallest\n- h -> largest to smallest\n- bits per pixel -> more colors to fewer colors\n- packed pixel layout -> largest to smallest\n- refresh rate -> highest to lowest\n- pixel density -> lowest to highest\n\n@param displayID the instance ID of the display to query.\n@param count a pointer filled in with the number of display modes returned,\n             may be nullptr.\n@returns a nullptr terminated array of display mode pointers or nullptr on\n         failure; call GetError() for more information. This is a\n         single allocation that should be freed with free() when it is\n         no longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetAll",
           "name": "GetFullscreenDisplayModes",
           "kind": "function",
-          "type": "SDL_DisplayMode **",
+          "type": "OwnArray<DisplayMode *>",
           "parameters": [
             {
               "name": "displayID",
-              "type": "Display"
-            },
-            {
-              "name": "count",
-              "type": "int *"
+              "type": "DisplayID"
             }
           ],
           "sourceName": "SDL_GetFullscreenDisplayModes"
@@ -8157,7 +8150,7 @@
           "parameters": [
             {
               "name": "displayID",
-              "type": "Display"
+              "type": "DisplayID"
             }
           ],
           "sourceName": "SDL_GetDesktopDisplayMode"
@@ -8170,7 +8163,7 @@
           "parameters": [
             {
               "name": "displayID",
-              "type": "Display"
+              "type": "DisplayID"
             }
           ],
           "sourceName": "SDL_GetCurrentDisplayMode"
@@ -9046,7 +9039,7 @@
           "parameters": [
             {
               "name": "id",
-              "type": "WindowParam"
+              "type": "WindowID"
             }
           ],
           "sourceName": "SDL_GetWindowFromID"
@@ -9745,11 +9738,7 @@
             },
             {
               "name": "rects",
-              "type": "const RectRaw &"
-            },
-            {
-              "name": "numrects",
-              "type": "int"
+              "type": "SpanRef<const RectRaw>"
             }
           ],
           "sourceName": "SDL_UpdateWindowSurfaceRects",
@@ -13980,7 +13969,7 @@
           "parameters": [
             {
               "name": "format",
-              "type": "PixelFormat"
+              "type": "PixelFormatRaw"
             },
             {
               "name": "bpp",
@@ -16018,18 +16007,15 @@
           "doc": "Convert an Rect to FRect\n\n@param rect a pointer to an Rect.\n@param frect a pointer filled in with the floating point representation of\n             `rect`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "RectToFRect",
           "kind": "function",
-          "type": "void",
+          "type": "Rect",
           "parameters": [
             {
               "name": "rect",
               "type": "const RectRaw &"
-            },
-            {
-              "name": "frect",
-              "type": "FRectRaw *"
             }
           ],
-          "sourceName": "SDL_RectToFRect"
+          "sourceName": "SDL_RectToFRect",
+          "constexpr": true
         },
         "PointInRect": {
           "doc": "Determine whether a point resides inside a rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not nullptr,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)\nas \"inside\" and (0,1) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param p the point to test.\n@param r the rectangle to test.\n@returns true if `p` is contained by `r`, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -16038,7 +16024,7 @@
           "type": "bool",
           "parameters": [
             {
-              "name": "p",
+              "name": "self",
               "type": "const PointRaw &"
             },
             {
@@ -16046,7 +16032,8 @@
               "type": "const RectRaw &"
             }
           ],
-          "sourceName": "SDL_PointInRect"
+          "sourceName": "SDL_PointInRect",
+          "constexpr": true
         },
         "RectEmpty": {
           "doc": "Determine whether a rectangle has no area.\n\nA rectangle is considered \"empty\" for this function if `r` is nullptr, or if\n`r`'s width and/or height are <= 0.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param r the rectangle to test.\n@returns true if the rectangle is \"empty\", false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -16069,15 +16056,16 @@
           "type": "bool",
           "parameters": [
             {
-              "name": "a",
+              "name": "self",
               "type": "const RectRaw &"
             },
             {
-              "name": "b",
+              "name": "other",
               "type": "const RectRaw &"
             }
           ],
-          "sourceName": "SDL_RectsEqual"
+          "sourceName": "SDL_RectsEqual",
+          "constexpr": true
         },
         "HasRectIntersection": {
           "doc": "Determine whether two rectangles intersect.\n\nIf either pointer is nullptr the function will return false.\n\n@param A an Rect structure representing the first rectangle.\n@param B an Rect structure representing the second rectangle.\n@returns true if there is an intersection, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Rect.GetIntersection",
@@ -16194,7 +16182,7 @@
           "type": "bool",
           "parameters": [
             {
-              "name": "p",
+              "name": "self",
               "type": "const FPointRaw &"
             },
             {
@@ -16202,7 +16190,8 @@
               "type": "const FRectRaw &"
             }
           ],
-          "sourceName": "SDL_PointInRectFloat"
+          "sourceName": "SDL_PointInRectFloat",
+          "constexpr": true
         },
         "RectEmptyFloat": {
           "doc": "Determine whether a floating point rectangle can contain any point.\n\nA rectangle is considered \"empty\" for this function if `r` is nullptr, or if\n`r`'s width and/or height are < 0.0f.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param r the rectangle to test.\n@returns true if the rectangle is \"empty\", false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -16215,7 +16204,8 @@
               "type": "const FRectRaw &"
             }
           ],
-          "sourceName": "SDL_RectEmptyFloat"
+          "sourceName": "SDL_RectEmptyFloat",
+          "constexpr": true
         },
         "RectsEqualEpsilon": {
           "doc": "Determine whether two floating point rectangles are equal, within some\ngiven epsilon.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height are within `epsilon` of each other. If you don't know\nwhat value to use for `epsilon`, you should call the FRect.Equal\nfunction instead.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param a the first rectangle to test.\n@param b the second rectangle to test.\n@param epsilon the epsilon value for comparison.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FRect.Equal",
@@ -16224,19 +16214,20 @@
           "type": "bool",
           "parameters": [
             {
-              "name": "a",
+              "name": "self",
               "type": "const FRectRaw &"
             },
             {
-              "name": "b",
+              "name": "other",
               "type": "const FRectRaw &"
             },
             {
               "name": "epsilon",
-              "type": "float"
+              "type": "const float"
             }
           ],
-          "sourceName": "SDL_RectsEqualEpsilon"
+          "sourceName": "SDL_RectsEqualEpsilon",
+          "constexpr": true
         },
         "RectsEqualFloat": {
           "doc": "Determine whether two floating point rectangles are equal, within a default\nepsilon.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height are within SDL_FLT_EPSILON of each other. This is often\na reasonable way to compare two floating point rectangles and deal with the\nslight precision variations in floating point calculations that tend to pop\nup.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param a the first rectangle to test.\n@param b the second rectangle to test.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FRect.EqualEpsilon",
@@ -16245,15 +16236,16 @@
           "type": "bool",
           "parameters": [
             {
-              "name": "a",
+              "name": "self",
               "type": "const FRectRaw &"
             },
             {
-              "name": "b",
+              "name": "other",
               "type": "const FRectRaw &"
             }
           ],
-          "sourceName": "SDL_RectsEqualFloat"
+          "sourceName": "SDL_RectsEqualFloat",
+          "constexpr": true
         },
         "HasRectIntersectionFloat": {
           "doc": "Determine whether two rectangles intersect with float precision.\n\nIf either pointer is nullptr the function will return false.\n\n@param A an FRect structure representing the first rectangle.\n@param B an FRect structure representing the second rectangle.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Rect.GetIntersection",
@@ -18741,7 +18733,7 @@
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             },
             {
               "name": "format",
@@ -20967,12 +20959,8 @@
               "type": "IOStreamParam"
             },
             {
-              "name": "ptr",
-              "type": "void *"
-            },
-            {
-              "name": "size",
-              "type": "size_t"
+              "name": "buf",
+              "type": "TargetBytes"
             }
           ],
           "sourceName": "SDL_ReadIO"
@@ -20988,12 +20976,8 @@
               "type": "IOStreamParam"
             },
             {
-              "name": "ptr",
-              "type": "const void *"
-            },
-            {
-              "name": "size",
-              "type": "size_t"
+              "name": "buf",
+              "type": "SourceBytes"
             }
           ],
           "sourceName": "SDL_WriteIO"
@@ -21057,19 +21041,11 @@
           "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param src the IOStream to read all available data from.\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFile\n@sa IOStream.SaveFile",
           "name": "LoadFile_IO",
           "kind": "function",
-          "type": "void *",
+          "type": "StringResult",
           "parameters": [
             {
               "name": "src",
               "type": "IOStreamParam"
-            },
-            {
-              "name": "datasize",
-              "type": "size_t *"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
             }
           ],
           "sourceName": "SDL_LoadFile_IO"
@@ -21117,15 +21093,7 @@
             },
             {
               "name": "data",
-              "type": "const void *"
-            },
-            {
-              "name": "datasize",
-              "type": "size_t"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
+              "type": "SourceBytes"
             }
           ],
           "sourceName": "SDL_SaveFile_IO",

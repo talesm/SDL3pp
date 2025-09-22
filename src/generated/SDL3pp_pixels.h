@@ -2398,7 +2398,7 @@ inline const char* GetPixelFormatName(PixelFormatRaw format)
  *
  * @sa PixelFormat.ForMasks
  */
-inline void GetMasksForPixelFormat(PixelFormat format,
+inline void GetMasksForPixelFormat(PixelFormatRaw format,
                                    int* bpp,
                                    Uint32* Rmask,
                                    Uint32* Gmask,

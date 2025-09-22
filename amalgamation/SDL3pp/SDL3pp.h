@@ -10571,7 +10571,7 @@ inline const char* GetPixelFormatName(PixelFormatRaw format)
  *
  * @sa PixelFormat.ForMasks
  */
-inline void GetMasksForPixelFormat(PixelFormat format,
+inline void GetMasksForPixelFormat(PixelFormatRaw format,
                                    int* bpp,
                                    Uint32* Rmask,
                                    Uint32* Gmask,
@@ -20727,9 +20727,9 @@ inline Sint64 TellIO(IOStreamParam context) { return SDL_TellIO(context); }
  * @sa IOStream.Write
  * @sa IOStream.GetStatus
  */
-inline size_t ReadIO(IOStreamParam context, void* ptr, size_t size)
+inline size_t ReadIO(IOStreamParam context, TargetBytes buf)
 {
-  return SDL_ReadIO(context, ptr, size);
+  return SDL_ReadIO(context, buf.data, buf.size_bytes);
 }
 
 /**
@@ -20762,9 +20762,9 @@ inline size_t ReadIO(IOStreamParam context, void* ptr, size_t size)
  * @sa IOStream.Flush
  * @sa IOStream.GetStatus
  */
-inline size_t WriteIO(IOStreamParam context, const void* ptr, size_t size)
+inline size_t WriteIO(IOStreamParam context, SourceBytes buf)
 {
-  return SDL_WriteIO(context, ptr, size);
+  return SDL_WriteIO(context, buf.data, buf.size_bytes);
 }
 
 /**
@@ -20870,9 +20870,11 @@ inline void FlushIO(IOStreamParam context) { CheckError(SDL_FlushIO(context)); }
  * @sa LoadFile
  * @sa IOStream.SaveFile
  */
-inline void* LoadFile_IO(IOStreamParam src, size_t* datasize, bool closeio)
+inline StringResult LoadFile_IO(IOStreamParam src)
 {
-  return SDL_LoadFile_IO(src, datasize, closeio);
+  size_t datasize = 0;
+  auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, false));
+  return StringResult{CheckError(data), datasize};
 }
 
 /**
@@ -20944,12 +20946,9 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @sa SaveFile
  * @sa IOStream.LoadFile
  */
-inline void SaveFile_IO(IOStreamParam src,
-                        const void* data,
-                        size_t datasize,
-                        bool closeio)
+inline void SaveFile_IO(IOStreamParam src, SourceBytes data)
 {
-  CheckError(SDL_SaveFile_IO(src, data, datasize, closeio));
+  CheckError(SDL_SaveFile_IO(src, data.data, data.size_bytes, false));
 }
 
 /**
@@ -23725,9 +23724,11 @@ struct FRect : FRectRaw
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void RectToFRect(const RectRaw& rect, FRectRaw* frect)
+constexpr FRect RectToFRect(const RectRaw& rect)
 {
-  SDL_RectToFRect(&rect, frect);
+  FRect frect;
+  SDL_RectToFRect(&rect, &frect);
+  return frect;
 }
 
 /**
@@ -23751,7 +23752,7 @@ inline void RectToFRect(const RectRaw& rect, FRectRaw* frect)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool PointInRect(const PointRaw& p, const RectRaw& r)
+constexpr bool PointInRect(const PointRaw& p, const RectRaw& r)
 {
   return SDL_PointInRect(&p, &r);
 }
@@ -23795,7 +23796,7 @@ constexpr bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(&r); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool RectsEqual(const RectRaw& a, const RectRaw& b)
+constexpr bool RectsEqual(const RectRaw& a, const RectRaw& b)
 {
   return SDL_RectsEqual(&a, &b);
 }
@@ -23933,7 +23934,7 @@ inline bool GetRectAndLineIntersection(const RectRaw& rect,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
+constexpr bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
 {
   return SDL_PointInRectFloat(&p, &r);
 }
@@ -23956,7 +23957,10 @@ inline bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool RectEmptyFloat(const FRectRaw& r) { return SDL_RectEmptyFloat(&r); }
+constexpr bool RectEmptyFloat(const FRectRaw& r)
+{
+  return SDL_RectEmptyFloat(&r);
+}
 
 /**
  * Determine whether two floating point rectangles are equal, within some
@@ -23983,9 +23987,9 @@ inline bool RectEmptyFloat(const FRectRaw& r) { return SDL_RectEmptyFloat(&r); }
  *
  * @sa FRect.Equal
  */
-inline bool RectsEqualEpsilon(const FRectRaw& a,
-                              const FRectRaw& b,
-                              float epsilon)
+constexpr bool RectsEqualEpsilon(const FRectRaw& a,
+                                 const FRectRaw& b,
+                                 const float epsilon)
 {
   return SDL_RectsEqualEpsilon(&a, &b, epsilon);
 }
@@ -24015,7 +24019,7 @@ inline bool RectsEqualEpsilon(const FRectRaw& a,
  *
  * @sa FRect.EqualEpsilon
  */
-inline bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
+constexpr bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
 {
   return SDL_RectsEqualFloat(&a, &b);
 }
@@ -27038,7 +27042,7 @@ inline Surface ConvertSurface(SurfaceConstParam surface, PixelFormat format)
  * @sa Surface.Convert
  * @sa Surface.Destroy
  */
-inline Surface ConvertSurfaceAndColorspace(SurfaceParam surface,
+inline Surface ConvertSurfaceAndColorspace(SurfaceConstParam surface,
                                            PixelFormat format,
                                            PaletteParam palette,
                                            Colorspace colorspace,

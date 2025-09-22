@@ -203,7 +203,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  OwnArray<DisplayID> GetAll() { return SDL_GetDisplays(m_displayID); }
+  static OwnArray<DisplayID> GetAll() { return SDL_GetDisplays(); }
 
   /**
    * Return the primary display.
@@ -217,10 +217,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  Display GetPrimary()
-  {
-    return CheckError(SDL_GetPrimaryDisplay(m_displayID));
-  }
+  static Display GetPrimary() { return CheckError(SDL_GetPrimaryDisplay()); }
 
   /**
    * Get the properties associated with a display.
@@ -3456,7 +3453,7 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Display* GetDisplays(int* count) { return SDL_GetDisplays(count); }
+inline OwnArray<DisplayID> GetDisplays() { return SDL_GetDisplays(); }
 
 /**
  * Return the primary display.
@@ -3596,7 +3593,7 @@ inline Rect GetDisplayUsableBounds(DisplayID displayID)
  *
  * @sa Display.GetAll
  */
-inline DisplayOrientation GetNaturalDisplayOrientation(Display displayID)
+inline DisplayOrientation GetNaturalDisplayOrientation(DisplayID displayID)
 {
   return SDL_GetNaturalDisplayOrientation(displayID);
 }
@@ -3614,7 +3611,7 @@ inline DisplayOrientation GetNaturalDisplayOrientation(Display displayID)
  *
  * @sa Display.GetAll
  */
-inline DisplayOrientation GetCurrentDisplayOrientation(Display displayID)
+inline DisplayOrientation GetCurrentDisplayOrientation(DisplayID displayID)
 {
   return SDL_GetCurrentDisplayOrientation(displayID);
 }
@@ -3675,10 +3672,9 @@ inline float GetDisplayContentScale(DisplayID displayID)
  *
  * @sa Display.GetAll
  */
-inline SDL_DisplayMode** GetFullscreenDisplayModes(Display displayID,
-                                                   int* count)
+inline OwnArray<DisplayMode*> GetFullscreenDisplayModes(DisplayID displayID)
 {
-  return SDL_GetFullscreenDisplayModes(displayID, count);
+  return SDL_GetFullscreenDisplayModes(displayID);
 }
 
 /**
@@ -3738,7 +3734,7 @@ inline DisplayMode GetClosestFullscreenDisplayMode(
  * @sa Display.GetCurrentMode
  * @sa Display.GetAll
  */
-inline const DisplayMode* GetDesktopDisplayMode(Display displayID)
+inline const DisplayMode* GetDesktopDisplayMode(DisplayID displayID)
 {
   return SDL_GetDesktopDisplayMode(displayID);
 }
@@ -3762,7 +3758,7 @@ inline const DisplayMode* GetDesktopDisplayMode(Display displayID)
  * @sa Display.GetDesktopMode
  * @sa Display.GetAll
  */
-inline const DisplayMode* GetCurrentDisplayMode(Display displayID)
+inline const DisplayMode* GetCurrentDisplayMode(DisplayID displayID)
 {
   return SDL_GetCurrentDisplayMode(displayID);
 }
@@ -4510,7 +4506,7 @@ inline WindowID GetWindowID(WindowParam window)
  *
  * @sa Window.GetID
  */
-inline WindowRef GetWindowFromID(WindowParam id)
+inline WindowRef GetWindowFromID(WindowID id)
 {
   return SDL_GetWindowFromID(id);
 }
@@ -5564,10 +5560,9 @@ inline void UpdateWindowSurface(WindowParam window)
  * @sa Window.UpdateSurface
  */
 inline void UpdateWindowSurfaceRects(WindowParam window,
-                                     const RectRaw& rects,
-                                     int numrects)
+                                     SpanRef<const RectRaw> rects)
 {
-  CheckError(SDL_UpdateWindowSurfaceRects(window, rects, numrects));
+  CheckError(SDL_UpdateWindowSurfaceRects(window, rects));
 }
 
 /**

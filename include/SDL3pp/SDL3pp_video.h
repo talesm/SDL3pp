@@ -203,11 +203,11 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static OwnArray<DisplayID> GetAll()
+  static OwnArray<Display> GetAll()
   {
     int count = 0;
-    auto data = reinterpret_cast<DisplayID*>(SDL_GetDisplays(&count));
-    return OwnArray<DisplayID>{data, size_t(count)};
+    auto data = reinterpret_cast<Display*>(SDL_GetDisplays(&count));
+    return OwnArray<Display>{data, size_t(count)};
   }
 
   /**
@@ -3618,7 +3618,12 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Display* GetDisplays(int* count) { return SDL_GetDisplays(count); }
+inline OwnArray<DisplayID> GetDisplays()
+{
+  int count = 0;
+  auto data = reinterpret_cast<DisplayID*>(SDL_GetDisplays(&count));
+  return OwnArray<DisplayID>{data, size_t(count)};
+}
 
 /**
  * Return the primary display.
@@ -3714,7 +3719,9 @@ inline const char* GetDisplayName(DisplayID displayID)
  */
 inline Rect GetDisplayBounds(DisplayID displayID)
 {
-  return CheckError(SDL_GetDisplayBounds(displayID));
+  Rect bounds;
+  SDL_GetDisplayBounds(displayID, &bounds);
+  return bounds;
 }
 
 /**
@@ -3742,7 +3749,9 @@ inline Rect GetDisplayBounds(DisplayID displayID)
  */
 inline Rect GetDisplayUsableBounds(DisplayID displayID)
 {
-  return CheckError(SDL_GetDisplayUsableBounds(displayID));
+  Rect bounds;
+  SDL_GetDisplayUsableBounds(displayID, &bounds);
+  return bounds;
 }
 
 /**
@@ -3758,7 +3767,7 @@ inline Rect GetDisplayUsableBounds(DisplayID displayID)
  *
  * @sa Display.GetAll
  */
-inline DisplayOrientation GetNaturalDisplayOrientation(Display displayID)
+inline DisplayOrientation GetNaturalDisplayOrientation(DisplayID displayID)
 {
   return SDL_GetNaturalDisplayOrientation(displayID);
 }
@@ -3776,7 +3785,7 @@ inline DisplayOrientation GetNaturalDisplayOrientation(Display displayID)
  *
  * @sa Display.GetAll
  */
-inline DisplayOrientation GetCurrentDisplayOrientation(Display displayID)
+inline DisplayOrientation GetCurrentDisplayOrientation(DisplayID displayID)
 {
   return SDL_GetCurrentDisplayOrientation(displayID);
 }
@@ -3837,10 +3846,11 @@ inline float GetDisplayContentScale(DisplayID displayID)
  *
  * @sa Display.GetAll
  */
-inline SDL_DisplayMode** GetFullscreenDisplayModes(Display displayID,
-                                                   int* count)
+inline OwnArray<DisplayMode*> GetFullscreenDisplayModes(DisplayID displayID)
 {
-  return SDL_GetFullscreenDisplayModes(displayID, count);
+  int count = 0;
+  auto data = CheckError(SDL_GetFullscreenDisplayModes(displayID, &count));
+  return OwnArray<DisplayMode*>{data, size_t(count)};
 }
 
 /**
@@ -3905,7 +3915,7 @@ inline DisplayMode GetClosestFullscreenDisplayMode(
  * @sa Display.GetCurrentMode
  * @sa Display.GetAll
  */
-inline const DisplayMode* GetDesktopDisplayMode(Display displayID)
+inline const DisplayMode* GetDesktopDisplayMode(DisplayID displayID)
 {
   return SDL_GetDesktopDisplayMode(displayID);
 }
@@ -3929,7 +3939,7 @@ inline const DisplayMode* GetDesktopDisplayMode(Display displayID)
  * @sa Display.GetDesktopMode
  * @sa Display.GetAll
  */
-inline const DisplayMode* GetCurrentDisplayMode(Display displayID)
+inline const DisplayMode* GetCurrentDisplayMode(DisplayID displayID)
 {
   return SDL_GetCurrentDisplayMode(displayID);
 }
@@ -3950,7 +3960,7 @@ inline const DisplayMode* GetCurrentDisplayMode(Display displayID)
  */
 inline Display GetDisplayForPoint(const PointRaw& point)
 {
-  return SDL_GetDisplayForPoint(point);
+  return SDL_GetDisplayForPoint(&point);
 }
 
 /**
@@ -3970,7 +3980,7 @@ inline Display GetDisplayForPoint(const PointRaw& point)
  */
 inline Display GetDisplayForRect(const RectRaw& rect)
 {
-  return SDL_GetDisplayForRect(rect);
+  return SDL_GetDisplayForRect(&rect);
 }
 
 /**
@@ -4113,7 +4123,7 @@ inline const DisplayMode* GetWindowFullscreenMode(WindowParam window)
  */
 inline OwnPtr<void> GetWindowICCProfile(WindowParam window, size_t* size)
 {
-  return CheckError(SDL_GetWindowICCProfile(window, size));
+  return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(window, size))};
 }
 
 /**
@@ -4676,7 +4686,7 @@ inline WindowID GetWindowID(WindowParam window)
  *
  * @sa Window.GetID
  */
-inline WindowRef GetWindowFromID(WindowParam id)
+inline WindowRef GetWindowFromID(WindowID id)
 {
   return {SDL_GetWindowFromID(id)};
 }
@@ -5730,10 +5740,9 @@ inline void UpdateWindowSurface(WindowParam window)
  * @sa Window.UpdateSurface
  */
 inline void UpdateWindowSurfaceRects(WindowParam window,
-                                     const RectRaw& rects,
-                                     int numrects)
+                                     SpanRef<const RectRaw> rects)
 {
-  CheckError(SDL_UpdateWindowSurfaceRects(window, rects, numrects));
+  CheckError(SDL_UpdateWindowSurfaceRects(window, rects.data(), rects.size()));
 }
 
 /**
