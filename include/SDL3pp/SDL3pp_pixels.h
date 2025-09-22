@@ -1604,7 +1604,7 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  */
 class Colorspace
 {
-  SDL_Colorspace m_cspace;
+  ColorspaceRaw m_cspace;
 
 public:
   /**
@@ -1612,7 +1612,7 @@ public:
    *
    * @param cspace the value to be wrapped
    */
-  constexpr Colorspace(SDL_Colorspace cspace = {})
+  constexpr Colorspace(ColorspaceRaw cspace = {})
     : m_cspace(cspace)
   {
   }
@@ -1670,12 +1670,11 @@ public:
   /**
    * Compares with the underlying type
    */
-  constexpr bool operator==(SDL_Colorspace colorspace) const
+  constexpr bool operator==(ColorspaceRaw cspace) const
   {
-    return operator==(Colorspace(colorspace));
+    return operator==(Colorspace(cspace));
   }
 
-  /// True if a valid colorspace
   /**
    * Unwraps to the underlying Colorspace.
    *
@@ -2323,7 +2322,7 @@ struct Color : ColorRaw
 struct FColor : FColorRaw
 {
   /**
-   * Wraps SDL_FColor.
+   * Wraps FColor.
    *
    * @param color the value to be wrapped
    */
@@ -2568,18 +2567,6 @@ public:
   {
     CheckError(SDL_SetPaletteColors(
       m_resource, colors.data(), firstcolor, colors.size()));
-  }
-};
-
-/**
- * Safe reference for Palette.
- */
-struct PaletteRef : Palette
-{
-
-  PaletteRef(PaletteParam resource)
-    : Palette(Palette::Borrow(resource))
-  {
   }
 };
 
