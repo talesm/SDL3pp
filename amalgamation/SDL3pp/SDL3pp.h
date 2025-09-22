@@ -10426,7 +10426,6 @@ struct FColor : FColorRaw
  */
 class Palette
 {
-
   PaletteRaw m_resource = nullptr;
 
 public:
@@ -10930,7 +10929,6 @@ struct PropertiesRef;
  */
 struct PropertiesParam
 {
-
   PropertiesID value;
 
   constexpr PropertiesParam(PropertiesID value)
@@ -11042,7 +11040,6 @@ public:
  */
 struct PropertiesRef : Properties
 {
-
   PropertiesRef(PropertiesParam resource)
     : Properties(resource.value)
   {
@@ -11776,7 +11773,6 @@ struct EnvironmentRef;
  */
 struct EnvironmentParam
 {
-
   EnvironmentRaw value;
 
   constexpr EnvironmentParam(EnvironmentRaw value)
@@ -11805,7 +11801,6 @@ struct IConvRef;
  */
 struct IConvParam
 {
-
   IConvRaw value;
 
   constexpr IConvParam(IConvRaw value)
@@ -12600,7 +12595,6 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  */
 class Environment
 {
-
   EnvironmentRaw m_resource = nullptr;
 
 public:
@@ -12796,7 +12790,6 @@ public:
  */
 struct EnvironmentRef : Environment
 {
-
   EnvironmentRef(EnvironmentParam resource)
     : Environment(resource.value)
   {
@@ -17500,7 +17493,6 @@ public:
  */
 struct IConvRef : IConv
 {
-
   IConvRef(IConvParam resource)
     : IConv(resource.value)
   {
@@ -18596,7 +18588,6 @@ struct IOStreamRef;
  */
 struct IOStreamParam
 {
-
   IOStreamRaw value;
 
   constexpr IOStreamParam(IOStreamRaw value)
@@ -18685,7 +18676,6 @@ using IOStreamInterface = SDL_IOStreamInterface;
  */
 class IOStream
 {
-
   IOStreamRaw m_resource = nullptr;
 
 public:
@@ -24270,7 +24260,6 @@ using SurfaceRaw = SDL_Surface*;
  */
 struct SurfaceParam
 {
-
   SurfaceRaw value;
 
   constexpr SurfaceParam(SurfaceRaw value)
@@ -24291,7 +24280,6 @@ struct SurfaceParam
  */
 struct SurfaceConstParam
 {
-
   const SurfaceRaw value;
 
   constexpr SurfaceConstParam(const SurfaceRaw value)
@@ -24406,7 +24394,6 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
  */
 class Surface
 {
-
   SurfaceRaw m_resource = nullptr;
 
 public:

@@ -33,7 +33,6 @@ struct IOStreamRef;
  */
 struct IOStreamParam
 {
-
   IOStreamRaw value;
 
   constexpr IOStreamParam(IOStreamRaw value)
@@ -122,7 +121,6 @@ using IOStreamInterface = SDL_IOStreamInterface;
  */
 class IOStream
 {
-
   IOStreamRaw m_resource = nullptr;
 
 public:

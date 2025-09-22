@@ -128,7 +128,6 @@ inline const char* GetError() { return SDL_GetError(); }
 
 struct Error : std::exception
 {
-
   std::string m_message;
 
   /**

@@ -2,55 +2,55 @@
 <  * @defgroup CategoryVideo Category Video
 ---
 >  * @defgroup CategoryVideo Display and Window Management
-255c255
+252c252
 <     return CheckError(SDL_GetDisplayProperties(m_displayID));
 ---
 >     return {CheckError(SDL_GetDisplayProperties(m_displayID))};
-1132c1132
+1128c1128
 <     return CheckError(SDL_GetWindowParent(m_resource));
 ---
 >     return {CheckError(SDL_GetWindowParent(m_resource))};
-1256c1256
+1252c1252
 <     return CheckError(SDL_GetWindowProperties(m_resource));
 ---
 >     return {CheckError(SDL_GetWindowProperties(m_resource))};
-2006c2006
+2002c2002
 <   Surface GetSurface() { return SDL_GetWindowSurface(m_resource); }
 ---
 >   SurfaceRef GetSurface() { return {SDL_GetWindowSurface(m_resource)}; }
-2491c2491
+2487c2487
 <   static WindowRef FromID(WindowID id) { return SDL_GetWindowFromID(id); }
 ---
 >   static WindowRef FromID(WindowID id) { return {SDL_GetWindowFromID(id)}; }
-2505c2505
+2501c2501
 <   static WindowRef GetGrabbed() { return SDL_GetGrabbedWindow(); }
 ---
 >   static WindowRef GetGrabbed() { return {SDL_GetGrabbedWindow()}; }
-3450c3450
+3443c3443
 <   return CheckError(SDL_GetDisplayProperties(displayID));
 ---
 >   return {CheckError(SDL_GetDisplayProperties(displayID))};
-4460c4460
+4453c4453
 <   return SDL_GetWindowFromID(id);
 ---
 >   return {SDL_GetWindowFromID(id)};
-4478c4478
+4471c4471
 <   return CheckError(SDL_GetWindowParent(window));
 ---
 >   return {CheckError(SDL_GetWindowParent(window))};
-4603c4603
+4596c4596
 <   return CheckError(SDL_GetWindowProperties(window));
 ---
 >   return {CheckError(SDL_GetWindowProperties(window))};
-5406c5406
+5399c5399
 < inline Surface GetWindowSurface(WindowParam window)
 ---
 > inline SurfaceRef GetWindowSurface(WindowParam window)
-5408c5408
+5401c5401
 <   return SDL_GetWindowSurface(window);
 ---
 >   return {SDL_GetWindowSurface(window)};
-5643c5643
+5636c5636
 < inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 ---
 > inline WindowRef GetGrabbedWindow() { return {SDL_GetGrabbedWindow()}; }

@@ -45,7 +45,6 @@ using SurfaceRaw = SDL_Surface*;
  */
 struct SurfaceParam
 {
-
   SurfaceRaw value;
 
   constexpr SurfaceParam(SurfaceRaw value)
@@ -66,7 +65,6 @@ struct SurfaceParam
  */
 struct SurfaceConstParam
 {
-
   const SurfaceRaw value;
 
   constexpr SurfaceConstParam(const SurfaceRaw value)
@@ -181,7 +179,6 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
  */
 class Surface
 {
-
   SurfaceRaw m_resource = nullptr;
 
 public:

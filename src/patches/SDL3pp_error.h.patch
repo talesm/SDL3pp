@@ -86,19 +86,17 @@
 >  *
 >  */
 > class Error : public std::exception
-131d165
-< 
-133a168
+132a168
 > public:
-143c178
+142c178
 <    * Default ctor.
 ---
 >    * Constructs from string
-153c188
+152c188
 <   const char* what() const { return GetError(); }
 ---
 >   constexpr const char* what() const noexcept { return m_message.c_str(); }
-155,158c190,193
+154,157c190,193
 <   constexpr const std::string& str() const
 <   {
 <     static_assert(false, "Not implemented");
@@ -108,7 +106,7 @@
 >    * Returns the explanatory string.
 >    */
 >   constexpr const std::string& str() const noexcept { return m_message; }
-160a196,203
+159a196,203
 > /**
 >  * Check and throw if returned value from SDL is an error.
 >  *
@@ -117,11 +115,11 @@
 >  *
 >  * @param result the result returned
 >  */
-163c206
+162c206
 <   static_assert(false, "Not implemented");
 ---
 >   if (!result) throw Error();
-165a209,216
+164a209,216
 > /**
 >  * Check and throw if returned value from SDL is an error.
 >  *
@@ -130,12 +128,12 @@
 >  *
 >  * @param result the result returned
 >  */
-169c220,221
+168c220,221
 <   static_assert(false, "Not implemented");
 ---
 >   if (!result) throw Error();
 >   return result;
-171a224,233
+170a224,233
 > /**
 >  * Check and throw if returned value from SDL is an error.
 >  *
@@ -146,22 +144,22 @@
 >  * @param invalidValue the value that if equal to result indicates this is
 >  *                     invalid.
 >  */
-175c237,238
+174c237,238
 <   static_assert(false, "Not implemented");
 ---
 >   if (result == invalidValue) throw Error();
 >   return result;
-191a255,256
+190a255,256
 > #ifdef SDL3PP_DOC
 > 
-195c260
+194c260
 <  * This simply calls SetErrorUnformatted() with a standardized error string, for
 ---
 >  * This simply calls SetError() with a standardized error string, for
-207c272
+206c272
 <  * This simply calls SetErrorUnformatted() with a standardized error string, for
 ---
 >  * This simply calls SetError() with a standardized error string, for
-227a293,294
+226a293,294
 > 
 > #endif // SDL3PP_DOC

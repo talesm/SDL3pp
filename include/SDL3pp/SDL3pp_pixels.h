@@ -2457,7 +2457,6 @@ struct FColor : FColorRaw
  */
 class Palette
 {
-
   PaletteRaw m_resource = nullptr;
 
 public:

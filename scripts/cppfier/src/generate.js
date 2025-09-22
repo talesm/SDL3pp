@@ -110,7 +110,7 @@ function generateDocString(docStr, prefix) {
   if (!docStr) return '';
   prefix = prefix ?? '';
   docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
-  return `${prefix}/**\n${docStr}\n${prefix} */`;
+  return `\n${prefix}/**\n${docStr}\n${prefix} */`;
 }
 
 /**
@@ -299,7 +299,7 @@ function generateStruct(entry, prefix) {
   const subEntries = entry.entries ?? {};
   combineHints(entry);
   const subEntriesStr = generateEntries(subEntries, prefix + "  ");
-  return `${signature}${parent}\n${prefix}{\n${subEntriesStr}\n${prefix}};`;
+  return `${signature}${parent}\n${prefix}{${subEntriesStr}\n${prefix}};`;
 }
 
 /**

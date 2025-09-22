@@ -4511,7 +4511,6 @@ using HintCB = std::function<void(const char*, const char*, const char*)>;
  */
 struct HintCallbackHandle : CallbackHandle
 {
-
   using CallbackHandle::CallbackHandle;
 };
 

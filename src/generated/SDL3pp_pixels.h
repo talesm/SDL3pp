@@ -86,7 +86,6 @@ using PaletteRaw = SDL_Palette*;
  */
 struct PaletteParam
 {
-
   PaletteRaw value;
 
   constexpr PaletteParam(PaletteRaw value)
@@ -107,7 +106,6 @@ struct PaletteParam
  */
 struct PaletteConstParam
 {
-
   const PaletteRaw value;
 
   constexpr PaletteConstParam(const PaletteRaw value)
@@ -356,7 +354,6 @@ constexpr Uint32 DEFINE_PIXELFOURCC(Uint8 A, Uint8 B, Uint8 C, Uint8 D)
  */
 class PixelFormat
 {
-
   PixelFormatRaw m_format;
 
 public:
@@ -1483,7 +1480,6 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  */
 class Colorspace
 {
-
   ColorspaceRaw m_cspace;
 
 public:
@@ -2258,7 +2254,6 @@ struct FColor : FColorRaw
  */
 class Palette
 {
-
   PaletteRaw m_resource = nullptr;
 
 public:

@@ -49,7 +49,6 @@ struct PropertiesRef;
  */
 struct PropertiesParam
 {
-
   PropertiesID value;
 
   constexpr PropertiesParam(PropertiesID value)
@@ -74,7 +73,6 @@ struct PropertiesParam
  */
 class Properties
 {
-
   PropertiesID m_resource = 0;
 
 public:
@@ -158,7 +156,6 @@ public:
  */
 struct PropertiesRef : Properties
 {
-
   PropertiesRef(PropertiesParam resource)
     : Properties(resource.value)
   {

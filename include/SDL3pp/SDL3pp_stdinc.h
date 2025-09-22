@@ -51,7 +51,6 @@ struct EnvironmentRef;
  */
 struct EnvironmentParam
 {
-
   EnvironmentRaw value;
 
   constexpr EnvironmentParam(EnvironmentRaw value)
@@ -80,7 +79,6 @@ struct IConvRef;
  */
 struct IConvParam
 {
-
   IConvRaw value;
 
   constexpr IConvParam(IConvRaw value)
@@ -875,7 +873,6 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  */
 class Environment
 {
-
   EnvironmentRaw m_resource = nullptr;
 
 public:
@@ -1071,7 +1068,6 @@ public:
  */
 struct EnvironmentRef : Environment
 {
-
   EnvironmentRef(EnvironmentParam resource)
     : Environment(resource.value)
   {
@@ -5775,7 +5771,6 @@ public:
  */
 struct IConvRef : IConv
 {
-
   IConvRef(IConvParam resource)
     : IConv(resource.value)
   {

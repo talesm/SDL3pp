@@ -52,7 +52,6 @@ struct WindowRef;
  */
 struct WindowParam
 {
-
   WindowRaw value;
 
   constexpr WindowParam(WindowRaw value)
@@ -81,7 +80,6 @@ struct GLContextScoped;
  */
 struct GLContextParam
 {
-
   GLContextRaw value;
 
   constexpr GLContextParam(GLContextRaw value)
@@ -152,7 +150,6 @@ using DisplayMode = SDL_DisplayMode;
  */
 class Display
 {
-
   DisplayID m_displayID;
 
 public:
@@ -602,7 +599,6 @@ using DisplayModeData = SDL_DisplayModeData;
  */
 class Window
 {
-
   WindowRaw m_resource = nullptr;
 
 public:
@@ -2607,7 +2603,6 @@ public:
  */
 struct WindowRef : Window
 {
-
   WindowRef(WindowParam resource)
     : Window(resource.value)
   {
@@ -2828,7 +2823,6 @@ constexpr FlashOperation FLASH_UNTIL_FOCUSED =
  */
 class GLContext
 {
-
   GLContextRaw m_resource = nullptr;
 
 public:
@@ -2936,7 +2930,6 @@ public:
  */
 struct GLContextScoped : GLContext
 {
-
   using GLContext::GLContext;
 
   constexpr GLContextScoped(const GLContext& other) = delete;

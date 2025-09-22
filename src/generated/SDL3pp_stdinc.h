@@ -51,7 +51,6 @@ struct EnvironmentRef;
  */
 struct EnvironmentParam
 {
-
   EnvironmentRaw value;
 
   constexpr EnvironmentParam(EnvironmentRaw value)
@@ -80,7 +79,6 @@ struct IConvRef;
  */
 struct IConvParam
 {
-
   IConvRaw value;
 
   constexpr IConvParam(IConvRaw value)
@@ -358,7 +356,6 @@ constexpr Nanoseconds FromNS(Sint64 duration)
  */
 struct Time
 {
-
   std::chrono::nanoseconds m_value;
 
   constexpr Time() {}
@@ -830,7 +827,6 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  */
 class Environment
 {
-
   EnvironmentRaw m_resource = nullptr;
 
 public:
@@ -1013,7 +1009,6 @@ public:
  */
 struct EnvironmentRef : Environment
 {
-
   EnvironmentRef(EnvironmentParam resource)
     : Environment(resource.value)
   {
@@ -4037,7 +4032,6 @@ inline Uint32 rand_bits() { return SDL_rand_bits(); }
 
 struct Random
 {
-
   Uint64 m_state;
 
   constexpr Random() {}
@@ -5521,7 +5515,6 @@ inline float tan(float x) { return SDL_tanf(x); }
  */
 class IConv
 {
-
   IConvRaw m_resource = nullptr;
 
 public:
@@ -5651,7 +5644,6 @@ public:
  */
 struct IConvRef : IConv
 {
-
   IConvRef(IConvParam resource)
     : IConv(resource.value)
   {
