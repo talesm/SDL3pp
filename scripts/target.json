@@ -5543,8 +5543,233 @@
           "doc": "The flags on a window.\n\nThese cover a lot of true/false, or on/off, window state. Some of it is\nimmutable after being set through Window.Window(), some of it can be\nchanged on existing windows by the app, and some of it might be altered by\nthe user or system outside of the app's control.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa Window.GetFlags",
           "name": "WindowFlags",
           "kind": "alias",
-          "type": "SDL_WindowFlags",
+          "type": "Uint64",
           "sourceName": "SDL_WindowFlags"
+        },
+        "WINDOW_FULLSCREEN": {
+          "doc": "window is in fullscreen mode",
+          "name": "WINDOW_FULLSCREEN",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000000001)",
+          "sourceName": "SDL_WINDOW_FULLSCREEN",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_OPENGL": {
+          "doc": "window usable with OpenGL context",
+          "name": "WINDOW_OPENGL",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000000002)",
+          "sourceName": "SDL_WINDOW_OPENGL",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_OCCLUDED": {
+          "doc": "window is occluded",
+          "name": "WINDOW_OCCLUDED",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000000004)",
+          "sourceName": "SDL_WINDOW_OCCLUDED",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_HIDDEN": {
+          "doc": "window is neither mapped onto the desktop nor shown in the taskbar/dock/window list; Window.Show() is required for it to become visible",
+          "name": "WINDOW_HIDDEN",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000000008)",
+          "sourceName": "SDL_WINDOW_HIDDEN",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_BORDERLESS": {
+          "doc": "no window decoration",
+          "name": "WINDOW_BORDERLESS",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000000010)",
+          "sourceName": "SDL_WINDOW_BORDERLESS",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_RESIZABLE": {
+          "doc": "window can be resized",
+          "name": "WINDOW_RESIZABLE",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000000020)",
+          "sourceName": "SDL_WINDOW_RESIZABLE",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MINIMIZED": {
+          "doc": "window is minimized",
+          "name": "WINDOW_MINIMIZED",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000000040)",
+          "sourceName": "SDL_WINDOW_MINIMIZED",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MAXIMIZED": {
+          "doc": "window is maximized",
+          "name": "WINDOW_MAXIMIZED",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000000080)",
+          "sourceName": "SDL_WINDOW_MAXIMIZED",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MOUSE_GRABBED": {
+          "doc": "window has grabbed mouse input",
+          "name": "WINDOW_MOUSE_GRABBED",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000000100)",
+          "sourceName": "SDL_WINDOW_MOUSE_GRABBED",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_INPUT_FOCUS": {
+          "doc": "window has input focus",
+          "name": "WINDOW_INPUT_FOCUS",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000000200)",
+          "sourceName": "SDL_WINDOW_INPUT_FOCUS",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MOUSE_FOCUS": {
+          "doc": "window has mouse focus",
+          "name": "WINDOW_MOUSE_FOCUS",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000000400)",
+          "sourceName": "SDL_WINDOW_MOUSE_FOCUS",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_EXTERNAL": {
+          "doc": "window not created by SDL",
+          "name": "WINDOW_EXTERNAL",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000000800)",
+          "sourceName": "SDL_WINDOW_EXTERNAL",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MODAL": {
+          "doc": "window is modal",
+          "name": "WINDOW_MODAL",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000001000)",
+          "sourceName": "SDL_WINDOW_MODAL",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_HIGH_PIXEL_DENSITY": {
+          "doc": "window uses high pixel density back buffer if possible",
+          "name": "WINDOW_HIGH_PIXEL_DENSITY",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000002000)",
+          "sourceName": "SDL_WINDOW_HIGH_PIXEL_DENSITY",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MOUSE_CAPTURE": {
+          "doc": "window has mouse captured (unrelated to MOUSE_GRABBED)",
+          "name": "WINDOW_MOUSE_CAPTURE",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000004000)",
+          "sourceName": "SDL_WINDOW_MOUSE_CAPTURE",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MOUSE_RELATIVE_MODE": {
+          "doc": "window has relative mode enabled",
+          "name": "WINDOW_MOUSE_RELATIVE_MODE",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000008000)",
+          "sourceName": "SDL_WINDOW_MOUSE_RELATIVE_MODE",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_ALWAYS_ON_TOP": {
+          "doc": "window should always be above others",
+          "name": "WINDOW_ALWAYS_ON_TOP",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000010000)",
+          "sourceName": "SDL_WINDOW_ALWAYS_ON_TOP",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_UTILITY": {
+          "doc": "window should be treated as a utility window, not showing in the task bar and window list",
+          "name": "WINDOW_UTILITY",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000020000)",
+          "sourceName": "SDL_WINDOW_UTILITY",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_TOOLTIP": {
+          "doc": "window should be treated as a tooltip and does not get mouse or keyboard focus, requires a parent window",
+          "name": "WINDOW_TOOLTIP",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000040000)",
+          "sourceName": "SDL_WINDOW_TOOLTIP",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_POPUP_MENU": {
+          "doc": "window should be treated as a popup menu, requires a parent window",
+          "name": "WINDOW_POPUP_MENU",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000080000)",
+          "sourceName": "SDL_WINDOW_POPUP_MENU",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_KEYBOARD_GRABBED": {
+          "doc": "window has grabbed keyboard input",
+          "name": "WINDOW_KEYBOARD_GRABBED",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000000100000)",
+          "sourceName": "SDL_WINDOW_KEYBOARD_GRABBED",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_VULKAN": {
+          "doc": "window usable for Vulkan surface",
+          "name": "WINDOW_VULKAN",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000010000000)",
+          "sourceName": "SDL_WINDOW_VULKAN",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_METAL": {
+          "doc": "window usable for Metal view",
+          "name": "WINDOW_METAL",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000020000000)",
+          "sourceName": "SDL_WINDOW_METAL",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_TRANSPARENT": {
+          "doc": "window with transparent buffer",
+          "name": "WINDOW_TRANSPARENT",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000040000000)",
+          "sourceName": "SDL_WINDOW_TRANSPARENT",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_NOT_FOCUSABLE": {
+          "doc": "window should not be focusable",
+          "name": "WINDOW_NOT_FOCUSABLE",
+          "kind": "var",
+          "value": "SDL_UINT64_C(0x0000000080000000)",
+          "sourceName": "SDL_WINDOW_NOT_FOCUSABLE",
+          "constexpr": true,
+          "type": "WindowFlags"
         },
         "FlashOperation": {
           "doc": "Window flash operation.\n\n@since This enum is available since SDL 3.2.0.",
@@ -6544,7 +6769,7 @@
               "sourceName": "SDL_GetWindowSurface"
             },
             "SetSurfaceVSync": {
-              "doc": "Toggle VSync for the window surface.\n\nWhen a window surface is created, vsync defaults to\nSDL_WINDOW_SURFACE_VSYNC_DISABLED.\n\nThe `vsync` parameter can be 1 to synchronize present with every vertical\nrefresh, 2 to synchronize present with every second vertical refresh, etc.,\nSDL_WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync),\nor SDL_WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is\nsupported by every driver, so you should check the return value to see\nwhether the requested setting is supported.\n\n@param vsync the vertical refresh sync interval.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetSurfaceVSync",
+              "doc": "Toggle VSync for the window surface.\n\nWhen a window surface is created, vsync defaults to\nWINDOW_SURFACE_VSYNC_DISABLED.\n\nThe `vsync` parameter can be 1 to synchronize present with every vertical\nrefresh, 2 to synchronize present with every second vertical refresh, etc.,\nWINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync),\nor WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is\nsupported by every driver, so you should check the return value to see\nwhether the requested setting is supported.\n\n@param vsync the vertical refresh sync interval.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetSurfaceVSync",
               "name": "SetSurfaceVSync",
               "kind": "function",
               "type": "void",
@@ -6958,231 +7183,6 @@
               "doc": ""
             }
           }
-        },
-        "WINDOW_FULLSCREEN": {
-          "doc": "window is in fullscreen mode",
-          "name": "WINDOW_FULLSCREEN",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000000001)",
-          "sourceName": "SDL_WINDOW_FULLSCREEN",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_OPENGL": {
-          "doc": "window usable with OpenGL context",
-          "name": "WINDOW_OPENGL",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000000002)",
-          "sourceName": "SDL_WINDOW_OPENGL",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_OCCLUDED": {
-          "doc": "window is occluded",
-          "name": "WINDOW_OCCLUDED",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000000004)",
-          "sourceName": "SDL_WINDOW_OCCLUDED",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_HIDDEN": {
-          "doc": "window is neither mapped onto the desktop nor shown in the taskbar/dock/window list; Window.Show() is required for it to become visible",
-          "name": "WINDOW_HIDDEN",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000000008)",
-          "sourceName": "SDL_WINDOW_HIDDEN",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_BORDERLESS": {
-          "doc": "no window decoration",
-          "name": "WINDOW_BORDERLESS",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000000010)",
-          "sourceName": "SDL_WINDOW_BORDERLESS",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_RESIZABLE": {
-          "doc": "window can be resized",
-          "name": "WINDOW_RESIZABLE",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000000020)",
-          "sourceName": "SDL_WINDOW_RESIZABLE",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_MINIMIZED": {
-          "doc": "window is minimized",
-          "name": "WINDOW_MINIMIZED",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000000040)",
-          "sourceName": "SDL_WINDOW_MINIMIZED",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_MAXIMIZED": {
-          "doc": "window is maximized",
-          "name": "WINDOW_MAXIMIZED",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000000080)",
-          "sourceName": "SDL_WINDOW_MAXIMIZED",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_MOUSE_GRABBED": {
-          "doc": "window has grabbed mouse input",
-          "name": "WINDOW_MOUSE_GRABBED",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000000100)",
-          "sourceName": "SDL_WINDOW_MOUSE_GRABBED",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_INPUT_FOCUS": {
-          "doc": "window has input focus",
-          "name": "WINDOW_INPUT_FOCUS",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000000200)",
-          "sourceName": "SDL_WINDOW_INPUT_FOCUS",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_MOUSE_FOCUS": {
-          "doc": "window has mouse focus",
-          "name": "WINDOW_MOUSE_FOCUS",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000000400)",
-          "sourceName": "SDL_WINDOW_MOUSE_FOCUS",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_EXTERNAL": {
-          "doc": "window not created by SDL",
-          "name": "WINDOW_EXTERNAL",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000000800)",
-          "sourceName": "SDL_WINDOW_EXTERNAL",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_MODAL": {
-          "doc": "window is modal",
-          "name": "WINDOW_MODAL",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000001000)",
-          "sourceName": "SDL_WINDOW_MODAL",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_HIGH_PIXEL_DENSITY": {
-          "doc": "window uses high pixel density back buffer if possible",
-          "name": "WINDOW_HIGH_PIXEL_DENSITY",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000002000)",
-          "sourceName": "SDL_WINDOW_HIGH_PIXEL_DENSITY",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_MOUSE_CAPTURE": {
-          "doc": "window has mouse captured (unrelated to MOUSE_GRABBED)",
-          "name": "WINDOW_MOUSE_CAPTURE",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000004000)",
-          "sourceName": "SDL_WINDOW_MOUSE_CAPTURE",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_MOUSE_RELATIVE_MODE": {
-          "doc": "window has relative mode enabled",
-          "name": "WINDOW_MOUSE_RELATIVE_MODE",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000008000)",
-          "sourceName": "SDL_WINDOW_MOUSE_RELATIVE_MODE",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_ALWAYS_ON_TOP": {
-          "doc": "window should always be above others",
-          "name": "WINDOW_ALWAYS_ON_TOP",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000010000)",
-          "sourceName": "SDL_WINDOW_ALWAYS_ON_TOP",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_UTILITY": {
-          "doc": "window should be treated as a utility window, not showing in the task bar and window list",
-          "name": "WINDOW_UTILITY",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000020000)",
-          "sourceName": "SDL_WINDOW_UTILITY",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_TOOLTIP": {
-          "doc": "window should be treated as a tooltip and does not get mouse or keyboard focus, requires a parent window",
-          "name": "WINDOW_TOOLTIP",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000040000)",
-          "sourceName": "SDL_WINDOW_TOOLTIP",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_POPUP_MENU": {
-          "doc": "window should be treated as a popup menu, requires a parent window",
-          "name": "WINDOW_POPUP_MENU",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000080000)",
-          "sourceName": "SDL_WINDOW_POPUP_MENU",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_KEYBOARD_GRABBED": {
-          "doc": "window has grabbed keyboard input",
-          "name": "WINDOW_KEYBOARD_GRABBED",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000000100000)",
-          "sourceName": "SDL_WINDOW_KEYBOARD_GRABBED",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_VULKAN": {
-          "doc": "window usable for Vulkan surface",
-          "name": "WINDOW_VULKAN",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000010000000)",
-          "sourceName": "SDL_WINDOW_VULKAN",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_METAL": {
-          "doc": "window usable for Metal view",
-          "name": "WINDOW_METAL",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000020000000)",
-          "sourceName": "SDL_WINDOW_METAL",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_TRANSPARENT": {
-          "doc": "window with transparent buffer",
-          "name": "WINDOW_TRANSPARENT",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000040000000)",
-          "sourceName": "SDL_WINDOW_TRANSPARENT",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "WINDOW_NOT_FOCUSABLE": {
-          "doc": "window should not be focusable",
-          "name": "WINDOW_NOT_FOCUSABLE",
-          "kind": "var",
-          "value": "SDL_UINT64_C(0x0000000080000000)",
-          "sourceName": "SDL_WINDOW_NOT_FOCUSABLE",
-          "constexpr": true,
-          "type": "WindowFlags"
         },
         "SDL_WINDOWPOS_UNDEFINED_MASK": {
           "doc": "A magic value used with SDL_WINDOWPOS_UNDEFINED.\n\nGenerally this macro isn't used directly, but rather through\nSDL_WINDOWPOS_UNDEFINED or SDL_WINDOWPOS_UNDEFINED_DISPLAY.\n\n@since This macro is available since SDL 3.2.0.",
@@ -9688,7 +9688,7 @@
           "sourceName": "SDL_GetWindowSurface"
         },
         "SetWindowSurfaceVSync": {
-          "doc": "Toggle VSync for the window surface.\n\nWhen a window surface is created, vsync defaults to\nSDL_WINDOW_SURFACE_VSYNC_DISABLED.\n\nThe `vsync` parameter can be 1 to synchronize present with every vertical\nrefresh, 2 to synchronize present with every second vertical refresh, etc.,\nSDL_WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync),\nor SDL_WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is\nsupported by every driver, so you should check the return value to see\nwhether the requested setting is supported.\n\n@param window the window.\n@param vsync the vertical refresh sync interval.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetSurfaceVSync",
+          "doc": "Toggle VSync for the window surface.\n\nWhen a window surface is created, vsync defaults to\nWINDOW_SURFACE_VSYNC_DISABLED.\n\nThe `vsync` parameter can be 1 to synchronize present with every vertical\nrefresh, 2 to synchronize present with every second vertical refresh, etc.,\nWINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync),\nor WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is\nsupported by every driver, so you should check the return value to see\nwhether the requested setting is supported.\n\n@param window the window.\n@param vsync the vertical refresh sync interval.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetSurfaceVSync",
           "name": "SetWindowSurfaceVSync",
           "kind": "function",
           "type": "void",
@@ -9707,19 +9707,23 @@
             "mayFail": true
           }
         },
-        "SDL_WINDOW_SURFACE_VSYNC_DISABLED": {
+        "WINDOW_SURFACE_VSYNC_DISABLED": {
           "doc": "",
-          "name": "SDL_WINDOW_SURFACE_VSYNC_DISABLED",
-          "kind": "def",
+          "name": "WINDOW_SURFACE_VSYNC_DISABLED",
+          "kind": "var",
           "value": "0",
-          "sourceName": "SDL_WINDOW_SURFACE_VSYNC_DISABLED"
+          "sourceName": "SDL_WINDOW_SURFACE_VSYNC_DISABLED",
+          "type": "int",
+          "constexpr": true
         },
-        "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE": {
+        "WINDOW_SURFACE_VSYNC_ADAPTIVE": {
           "doc": "",
-          "name": "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE",
-          "kind": "def",
+          "name": "WINDOW_SURFACE_VSYNC_ADAPTIVE",
+          "kind": "var",
           "value": "(-1)",
-          "sourceName": "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE"
+          "sourceName": "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE",
+          "type": "int",
+          "constexpr": true
         },
         "GetWindowSurfaceVSync": {
           "doc": "Get VSync for the window surface.\n\n@param window the window to query.\n@param vsync an int filled with the current vertical refresh sync interval.\n             See Window.SetSurfaceVSync() for the meaning of the value.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.SetSurfaceVSync",

@@ -7093,7 +7093,10 @@ const transform = {
             "SDL_GetDisplayForRect": "function"
           }
         },
-        "SDL_WindowFlags": { before: "SDL_Window" },
+        "SDL_WindowFlags": {
+          before: "SDL_Window",
+          enum: "SDL_WINDOW_"
+        },
         "SDL_FlashOperation": { before: "SDL_Window" },
         "SDL_HitTestResult": { before: "SDL_Window" },
         "SDL_HitTest": { before: "SDL_Window" },
@@ -7353,130 +7356,16 @@ const transform = {
           "type": "OwnArray<WindowRaw>",
           "parameters": []
         },
-        "SDL_WINDOW_FULLSCREEN": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
+
+        "SDL_WINDOW_SURFACE_VSYNC_DISABLED": {
+          kind: 'var',
+          type: 'int',
+          constexpr: true,
         },
-        "SDL_WINDOW_OPENGL": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_OCCLUDED": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_HIDDEN": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_BORDERLESS": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_RESIZABLE": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_MINIMIZED": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_MAXIMIZED": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_MOUSE_GRABBED": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_INPUT_FOCUS": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_MOUSE_FOCUS": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_EXTERNAL": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_MODAL": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_HIGH_PIXEL_DENSITY": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_MOUSE_CAPTURE": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_MOUSE_RELATIVE_MODE": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_ALWAYS_ON_TOP": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_UTILITY": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_TOOLTIP": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_POPUP_MENU": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_KEYBOARD_GRABBED": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_VULKAN": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_METAL": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_TRANSPARENT": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
-        },
-        "SDL_WINDOW_NOT_FOCUSABLE": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "WindowFlags"
+        "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE": {
+          kind: 'var',
+          type: 'int',
+          constexpr: true,
         },
 
         "SDL_GLProfile": {

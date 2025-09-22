@@ -600,7 +600,96 @@ using DisplayModeData = SDL_DisplayModeData;
  *
  * @sa Window.GetFlags
  */
-using WindowFlags = SDL_WindowFlags;
+using WindowFlags = Uint64;
+
+constexpr WindowFlags WINDOW_FULLSCREEN =
+  SDL_WINDOW_FULLSCREEN; ///< window is in fullscreen mode
+
+constexpr WindowFlags WINDOW_OPENGL =
+  SDL_WINDOW_OPENGL; ///< window usable with OpenGL context
+
+constexpr WindowFlags WINDOW_OCCLUDED =
+  SDL_WINDOW_OCCLUDED; ///< window is occluded
+
+/**
+ * window is neither mapped onto the desktop nor shown in the
+ * taskbar/dock/window list; Window.Show() is required for it to become visible
+ */
+constexpr WindowFlags WINDOW_HIDDEN = SDL_WINDOW_HIDDEN;
+
+constexpr WindowFlags WINDOW_BORDERLESS =
+  SDL_WINDOW_BORDERLESS; ///< no window decoration
+
+constexpr WindowFlags WINDOW_RESIZABLE =
+  SDL_WINDOW_RESIZABLE; ///< window can be resized
+
+constexpr WindowFlags WINDOW_MINIMIZED =
+  SDL_WINDOW_MINIMIZED; ///< window is minimized
+
+constexpr WindowFlags WINDOW_MAXIMIZED =
+  SDL_WINDOW_MAXIMIZED; ///< window is maximized
+
+constexpr WindowFlags WINDOW_MOUSE_GRABBED =
+  SDL_WINDOW_MOUSE_GRABBED; ///< window has grabbed mouse input
+
+constexpr WindowFlags WINDOW_INPUT_FOCUS =
+  SDL_WINDOW_INPUT_FOCUS; ///< window has input focus
+
+constexpr WindowFlags WINDOW_MOUSE_FOCUS =
+  SDL_WINDOW_MOUSE_FOCUS; ///< window has mouse focus
+
+constexpr WindowFlags WINDOW_EXTERNAL =
+  SDL_WINDOW_EXTERNAL; ///< window not created by SDL
+
+constexpr WindowFlags WINDOW_MODAL = SDL_WINDOW_MODAL; ///< window is modal
+
+/**
+ * window uses high pixel density back buffer if possible
+ */
+constexpr WindowFlags WINDOW_HIGH_PIXEL_DENSITY = SDL_WINDOW_HIGH_PIXEL_DENSITY;
+
+/**
+ * window has mouse captured (unrelated to MOUSE_GRABBED)
+ */
+constexpr WindowFlags WINDOW_MOUSE_CAPTURE = SDL_WINDOW_MOUSE_CAPTURE;
+
+constexpr WindowFlags WINDOW_MOUSE_RELATIVE_MODE =
+  SDL_WINDOW_MOUSE_RELATIVE_MODE; ///< window has relative mode enabled
+
+constexpr WindowFlags WINDOW_ALWAYS_ON_TOP =
+  SDL_WINDOW_ALWAYS_ON_TOP; ///< window should always be above others
+
+/**
+ * window should be treated as a utility window, not showing in the task bar and
+ * window list
+ */
+constexpr WindowFlags WINDOW_UTILITY = SDL_WINDOW_UTILITY;
+
+/**
+ * window should be treated as a tooltip and does not get mouse or keyboard
+ * focus, requires a parent window
+ */
+constexpr WindowFlags WINDOW_TOOLTIP = SDL_WINDOW_TOOLTIP;
+
+/**
+ * window should be treated as a popup menu, requires a parent window
+ */
+constexpr WindowFlags WINDOW_POPUP_MENU = SDL_WINDOW_POPUP_MENU;
+
+constexpr WindowFlags WINDOW_KEYBOARD_GRABBED =
+  SDL_WINDOW_KEYBOARD_GRABBED; ///< window has grabbed keyboard input
+
+constexpr WindowFlags WINDOW_VULKAN =
+  SDL_WINDOW_VULKAN; ///< window usable for Vulkan surface
+
+constexpr WindowFlags WINDOW_METAL =
+  SDL_WINDOW_METAL; ///< window usable for Metal view
+
+constexpr WindowFlags WINDOW_TRANSPARENT =
+  SDL_WINDOW_TRANSPARENT; ///< window with transparent buffer
+
+constexpr WindowFlags WINDOW_NOT_FOCUSABLE =
+  SDL_WINDOW_NOT_FOCUSABLE; ///< window should not be focusable
 
 /**
  * Window flash operation.
@@ -2099,12 +2188,12 @@ public:
    * Toggle VSync for the window surface.
    *
    * When a window surface is created, vsync defaults to
-   * SDL_WINDOW_SURFACE_VSYNC_DISABLED.
+   * WINDOW_SURFACE_VSYNC_DISABLED.
    *
    * The `vsync` parameter can be 1 to synchronize present with every vertical
    * refresh, 2 to synchronize present with every second vertical refresh, etc.,
-   * SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync),
-   * or SDL_WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is
+   * WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync),
+   * or WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is
    * supported by every driver, so you should check the return value to see
    * whether the requested setting is supported.
    *
@@ -2704,95 +2793,6 @@ struct WindowRef : Window
 
   ~WindowRef() { release(); }
 };
-
-constexpr WindowFlags WINDOW_FULLSCREEN =
-  SDL_WINDOW_FULLSCREEN; ///< window is in fullscreen mode
-
-constexpr WindowFlags WINDOW_OPENGL =
-  SDL_WINDOW_OPENGL; ///< window usable with OpenGL context
-
-constexpr WindowFlags WINDOW_OCCLUDED =
-  SDL_WINDOW_OCCLUDED; ///< window is occluded
-
-/**
- * window is neither mapped onto the desktop nor shown in the
- * taskbar/dock/window list; Window.Show() is required for it to become visible
- */
-constexpr WindowFlags WINDOW_HIDDEN = SDL_WINDOW_HIDDEN;
-
-constexpr WindowFlags WINDOW_BORDERLESS =
-  SDL_WINDOW_BORDERLESS; ///< no window decoration
-
-constexpr WindowFlags WINDOW_RESIZABLE =
-  SDL_WINDOW_RESIZABLE; ///< window can be resized
-
-constexpr WindowFlags WINDOW_MINIMIZED =
-  SDL_WINDOW_MINIMIZED; ///< window is minimized
-
-constexpr WindowFlags WINDOW_MAXIMIZED =
-  SDL_WINDOW_MAXIMIZED; ///< window is maximized
-
-constexpr WindowFlags WINDOW_MOUSE_GRABBED =
-  SDL_WINDOW_MOUSE_GRABBED; ///< window has grabbed mouse input
-
-constexpr WindowFlags WINDOW_INPUT_FOCUS =
-  SDL_WINDOW_INPUT_FOCUS; ///< window has input focus
-
-constexpr WindowFlags WINDOW_MOUSE_FOCUS =
-  SDL_WINDOW_MOUSE_FOCUS; ///< window has mouse focus
-
-constexpr WindowFlags WINDOW_EXTERNAL =
-  SDL_WINDOW_EXTERNAL; ///< window not created by SDL
-
-constexpr WindowFlags WINDOW_MODAL = SDL_WINDOW_MODAL; ///< window is modal
-
-/**
- * window uses high pixel density back buffer if possible
- */
-constexpr WindowFlags WINDOW_HIGH_PIXEL_DENSITY = SDL_WINDOW_HIGH_PIXEL_DENSITY;
-
-/**
- * window has mouse captured (unrelated to MOUSE_GRABBED)
- */
-constexpr WindowFlags WINDOW_MOUSE_CAPTURE = SDL_WINDOW_MOUSE_CAPTURE;
-
-constexpr WindowFlags WINDOW_MOUSE_RELATIVE_MODE =
-  SDL_WINDOW_MOUSE_RELATIVE_MODE; ///< window has relative mode enabled
-
-constexpr WindowFlags WINDOW_ALWAYS_ON_TOP =
-  SDL_WINDOW_ALWAYS_ON_TOP; ///< window should always be above others
-
-/**
- * window should be treated as a utility window, not showing in the task bar and
- * window list
- */
-constexpr WindowFlags WINDOW_UTILITY = SDL_WINDOW_UTILITY;
-
-/**
- * window should be treated as a tooltip and does not get mouse or keyboard
- * focus, requires a parent window
- */
-constexpr WindowFlags WINDOW_TOOLTIP = SDL_WINDOW_TOOLTIP;
-
-/**
- * window should be treated as a popup menu, requires a parent window
- */
-constexpr WindowFlags WINDOW_POPUP_MENU = SDL_WINDOW_POPUP_MENU;
-
-constexpr WindowFlags WINDOW_KEYBOARD_GRABBED =
-  SDL_WINDOW_KEYBOARD_GRABBED; ///< window has grabbed keyboard input
-
-constexpr WindowFlags WINDOW_VULKAN =
-  SDL_WINDOW_VULKAN; ///< window usable for Vulkan surface
-
-constexpr WindowFlags WINDOW_METAL =
-  SDL_WINDOW_METAL; ///< window usable for Metal view
-
-constexpr WindowFlags WINDOW_TRANSPARENT =
-  SDL_WINDOW_TRANSPARENT; ///< window with transparent buffer
-
-constexpr WindowFlags WINDOW_NOT_FOCUSABLE =
-  SDL_WINDOW_NOT_FOCUSABLE; ///< window should not be focusable
 
 /**
  * A magic value used with SDL_WINDOWPOS_UNDEFINED.
@@ -5469,12 +5469,12 @@ inline Surface GetWindowSurface(WindowParam window)
  * Toggle VSync for the window surface.
  *
  * When a window surface is created, vsync defaults to
- * SDL_WINDOW_SURFACE_VSYNC_DISABLED.
+ * WINDOW_SURFACE_VSYNC_DISABLED.
  *
  * The `vsync` parameter can be 1 to synchronize present with every vertical
  * refresh, 2 to synchronize present with every second vertical refresh, etc.,
- * SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync),
- * or SDL_WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is
+ * WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync),
+ * or WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is
  * supported by every driver, so you should check the return value to see
  * whether the requested setting is supported.
  *
@@ -5493,9 +5493,9 @@ inline void SetWindowSurfaceVSync(WindowParam window, int vsync)
   CheckError(SDL_SetWindowSurfaceVSync(window, vsync));
 }
 
-#define SDL_WINDOW_SURFACE_VSYNC_DISABLED 0
+constexpr int WINDOW_SURFACE_VSYNC_DISABLED = SDL_WINDOW_SURFACE_VSYNC_DISABLED;
 
-#define SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE (-1)
+constexpr int WINDOW_SURFACE_VSYNC_ADAPTIVE = SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE;
 
 /**
  * Get VSync for the window surface.

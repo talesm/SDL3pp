@@ -1114,7 +1114,9 @@ function expandTypes(sourceEntries, file, context) {
         .filter(e => !Array.isArray(e)
           && e.kind === "def"
           && !e.parameters
-          && e.name.startsWith(prefix))
+          && e.name.startsWith(prefix)
+          && !transformMap[e.name]?.type
+        )
         .map(e => /** @type {ApiEntry}*/(e).name);
       const newPrefix = definition.newPrefix;
       if (newPrefix) {
