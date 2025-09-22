@@ -1401,10 +1401,10 @@ const transform = {
       }
     },
     "SDL_filesystem.h": {
-      includeAfter: {
-        "__begin": {
+      localIncludes: ["SDL3pp_stdinc.h"],
+      transform: {
+        "Path": {
           kind: "struct",
-          name: "Path",
           type: "StringResult",
           entries: {
             "StringResult::StringResult": "alias",
@@ -1459,10 +1459,15 @@ const transform = {
             },
           }
         },
-        "SDL_EnumerateDirectory": [{
-          name: "EnumerateDirectory",
+        "EnumerateDirectoryCB": {
+          kind: "alias",
+          type: "std::function<EnumerationResult(const char *dirname, const char *fname)>",
+          after: "SDL_EnumerateDirectoryCallback",
+        },
+        "EnumerateDirectory": {
           kind: "function",
           type: "void",
+          after: "SDL_EnumerateDirectory",
           parameters: [
             {
               name: "path",
@@ -1473,7 +1478,8 @@ const transform = {
               type: "EnumerateDirectoryCB"
             }
           ],
-        }, {
+        },
+        "EnumerateDirectory#2": {
           name: "EnumerateDirectory",
           kind: "function",
           type: "std::vector<Path>",
@@ -1481,22 +1487,15 @@ const transform = {
             name: "path",
             type: "StringParam"
           }],
-        }]
-      },
-      wrappers: {
+        },
         "SDL_PathInfo": {
-          genMembers: false,
-          nullable: true,
-        }
-      },
-      enumerations: {
+          wrapper: {
+            genMembers: false,
+            nullable: true,
+          }
+        },
         "SDL_GlobFlags": {
-          prefix: "SDL_GLOB_"
-        }
-      },
-      transform: {
-        "EnumerateDirectoryCB": {
-          type: "std::function<EnumerationResult(const char *dirname, const char *fname)>"
+          enum: "SDL_GLOB_"
         },
         "SDL_GetPrefPath": {
           type: "Path"

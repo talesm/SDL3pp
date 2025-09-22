@@ -250,7 +250,7 @@
 >    * Perform a fast fill of a rectangle with a specific color.
 >    *
 >    * If there is a clip rectangle set on the destination (set via
->    * SurfaceRef.SetClipRect()), then this function will fill based on the
+>    * Surface.SetClipRect()), then this function will fill based on the
 >    * intersection of the clip rectangle and `rect`.
 >    *
 >    * @param color the color to fill with.
