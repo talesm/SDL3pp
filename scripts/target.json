@@ -21249,6 +21249,172 @@
         "SDL3pp_video.h"
       ]
     },
+    "SDL3pp_timer.h": {
+      "name": "SDL3pp_timer.h",
+      "doc": "@defgroup CategoryTimer Category Timer\n\nSDL provides time management functionality. It is useful for dealing with\n(usually) small durations of time.\n\nThis is not to be confused with _calendar time_ management, which is\nprovided by [CategoryTime](CategoryTime).\n\nThis category covers measuring time elapsed (SDL_GetTicks(),\nGetPerformanceCounter()), putting a thread to sleep for a certain\namount of time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing\na callback function after a certain amount of time has elasped\n(SDL_AddTimer(), etc).\n\nThere are also useful macros to convert between time units, like\nTime.FromPosix() and such.",
+      "entries": {
+        "Time::FromPosix": {
+          "doc": "Convert seconds to nanoseconds.\n\nThis only converts whole numbers, not fractional seconds.\n\n@param S the number of seconds to convert.\n@returns S, expressed in nanoseconds.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "Time::FromPosix",
+          "kind": "function",
+          "parameters": [
+            {
+              "type": "Sint64",
+              "name": "time"
+            }
+          ],
+          "value": "(((Uint64)(S)) * SDL_NS_PER_SECOND)",
+          "sourceName": "SDL_SECONDS_TO_NS",
+          "type": "Time",
+          "constexpr": true,
+          "hints": {
+            "static": true
+          }
+        },
+        "Time::ToPosix": {
+          "doc": "Convert nanoseconds to seconds.\n\nThis performs a division, so the results can be dramatically different if\n`NS` is an integer or floating point value.\n\n@param NS the number of nanoseconds to convert.\n@returns NS, expressed in seconds.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "Time::ToPosix",
+          "kind": "function",
+          "parameters": [],
+          "value": "((NS) / SDL_NS_PER_SECOND)",
+          "sourceName": "SDL_NS_TO_SECONDS",
+          "type": "Sint64",
+          "constexpr": true,
+          "immutable": true
+        },
+        "GetTicks": {
+          "doc": "Get the number of nanoseconds since SDL library initialization.\n\n@returns an unsigned 64-bit value representing the number of nanoseconds\n         since the SDL library initialized.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetTicks",
+          "kind": "function",
+          "type": "std::chrono::nanoseconds",
+          "parameters": [],
+          "sourceName": "SDL_GetTicksNS"
+        },
+        "GetPerformanceCounter": {
+          "doc": "Get the current value of the high resolution counter.\n\nThis function is typically used for profiling.\n\nThe counter values are only meaningful relative to each other. Differences\nbetween values can be converted to times by using\nGetPerformanceFrequency().\n\n@returns the current counter value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPerformanceFrequency",
+          "name": "GetPerformanceCounter",
+          "kind": "function",
+          "type": "Uint64",
+          "parameters": [],
+          "sourceName": "SDL_GetPerformanceCounter"
+        },
+        "GetPerformanceFrequency": {
+          "doc": "Get the count per second of the high resolution counter.\n\n@returns a platform-specific count per second.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPerformanceCounter",
+          "name": "GetPerformanceFrequency",
+          "kind": "function",
+          "type": "Uint64",
+          "parameters": [],
+          "sourceName": "SDL_GetPerformanceFrequency"
+        },
+        "Delay": {
+          "doc": "Wait a specified number of milliseconds before returning.\n\nThis function waits a specified number of milliseconds before returning. It\nwaits at least the specified time, but possibly longer due to OS\nscheduling.\n\n@param ms the number of milliseconds to delay.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DelayNS\n@sa DelayPrecise",
+          "name": "Delay",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "duration",
+              "type": "std::chrono::nanoseconds"
+            }
+          ],
+          "sourceName": "SDL_Delay"
+        },
+        "DelayPrecise": {
+          "doc": "Wait a specified number of nanoseconds before returning.\n\nThis function waits a specified number of nanoseconds before returning. It\nwill attempt to wait as close to the requested time as possible, busy\nwaiting if necessary, but could return later due to OS scheduling.\n\n@param ns the number of nanoseconds to delay.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Delay\n@sa SDL_DelayNS",
+          "name": "DelayPrecise",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "duration",
+              "type": "std::chrono::nanoseconds"
+            }
+          ],
+          "sourceName": "SDL_DelayPrecise"
+        },
+        "TimerID": {
+          "doc": "Definition of the timer ID type.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "TimerID",
+          "kind": "alias",
+          "type": "SDL_TimerID",
+          "sourceName": "SDL_TimerID"
+        },
+        "TimerCallback": {
+          "doc": "Function prototype for the nanosecond timer callback function.\n\nThe callback function is passed the current timer interval and returns the\nnext timer interval, in nanoseconds. If the returned value is the same as\nthe one passed in, the periodic alarm continues, otherwise a new alarm is\nscheduled. If the callback returns 0, the periodic alarm is canceled and\nwill be removed.\n\n@param userdata an arbitrary pointer provided by the app through\n                SDL_AddTimer, for its own use.\n@param timerID the current timer being processed.\n@param interval the current callback time interval.\n@returns the new callback time interval, or 0 to disable further runs of\n         the callback.\n\n@threadsafety SDL may call this callback at any time from a background\n              thread; the application is responsible for locking resources\n              the callback touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AddTimer",
+          "name": "TimerCallback",
+          "kind": "alias",
+          "type": "SDL_NSTimerCallback",
+          "sourceName": "SDL_NSTimerCallback"
+        },
+        "TimerCB": {
+          "kind": "alias",
+          "name": "TimerCB",
+          "type": "std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>",
+          "doc": "Function prototype for the nanosecond timer callback function.\n\nThe callback function is passed the current timer interval and returns the\nnext timer interval, in nanoseconds. If the returned value is the same as\nthe one passed in, the periodic alarm continues, otherwise a new alarm is\nscheduled. If the callback returns 0, the periodic alarm is canceled and\nwill be removed.\n\n@param userdata an arbitrary pointer provided by the app through\n                SDL_AddTimer, for its own use.\n@param timerID the current timer being processed.\n@param interval the current callback time interval.\n@returns the new callback time interval, or 0 to disable further runs of\n         the callback.\n\n@threadsafety SDL may call this callback at any time from a background\n              thread; the application is responsible for locking resources\n              the callback touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AddTimer\n@sa TimerCallback"
+        },
+        "AddTimer": [
+          {
+            "doc": "Call a callback function at a future time.\n\nThe callback function is passed the current timer interval and the user\nsupplied parameter from the AddTimer() call and should return the\nnext timer interval. If the value returned from the callback is 0, the\ntimer is canceled and will be removed.\n\nThe callback is run on a separate thread, and for short timeouts can\npotentially be called before this function returns.\n\nTimers take into account the amount of time it took to execute the\ncallback. For example, if the callback took 250 ns to execute and returned\n1000 (ns), the timer would only wait another 750 ns before its next\niteration.\n\nTiming may be inexact due to OS scheduling. Be sure to note the current\ntime with GetTicks() or GetPerformanceCounter() in case your\ncallback needs to adjust for variances.\n\n@param interval the timer delay, in nanoseconds, passed to `callback`.\n@param callback the SDL_TimerCallback function to call when the specified\n                `interval` elapses.\n@param userdata a pointer that is passed to `callback`.\n@returns a timer ID or 0 on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_AddTimer\n@sa RemoveTimer",
+            "name": "AddTimer",
+            "kind": "function",
+            "type": "TimerID",
+            "parameters": [
+              {
+                "name": "interval",
+                "type": "std::chrono::nanoseconds"
+              },
+              {
+                "name": "callback",
+                "type": "TimerCallback"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_AddTimerNS"
+          },
+          {
+            "kind": "function",
+            "type": "TimerID",
+            "parameters": [
+              {
+                "type": "std::chrono::nanoseconds",
+                "name": "interval"
+              },
+              {
+                "type": "TimerCB",
+                "name": "callback"
+              }
+            ],
+            "name": "AddTimer",
+            "doc": "Call a callback function at a future time.\n\nThe callback function is passed the current timer interval and the user\nsupplied parameter from the AddTimer() call and should return the\nnext timer interval. If the value returned from the callback is 0, the\ntimer is canceled and will be removed.\n\nThe callback is run on a separate thread, and for short timeouts can\npotentially be called before this function returns.\n\nTimers take into account the amount of time it took to execute the\ncallback. For example, if the callback took 250 ns to execute and returned\n1000 (ns), the timer would only wait another 750 ns before its next\niteration.\n\nTiming may be inexact due to OS scheduling. Be sure to note the current\ntime with GetTicks() or GetPerformanceCounter() in case your\ncallback needs to adjust for variances.\n\n@param interval the timer delay, in nanoseconds, passed to `callback`.\n@param callback the SDL_TimerCallback function to call when the specified\n                `interval` elapses.\n@param userdata a pointer that is passed to `callback`.\n@returns a timer ID or 0 on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_AddTimer\n@sa RemoveTimer"
+          }
+        ],
+        "RemoveTimer": {
+          "doc": "Remove a timer created with SDL_AddTimer().\n\n@param id the ID of the timer to remove.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_AddTimer",
+          "name": "RemoveTimer",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "TimerID"
+            }
+          ],
+          "sourceName": "SDL_RemoveTimer",
+          "hints": {
+            "mayFail": true
+          }
+        }
+      },
+      "includes": [
+        "SDL3/SDL_timer.h"
+      ],
+      "localIncludes": [
+        "SDL3pp_stdinc.h"
+      ]
+    },
     "SDL3pp_filesystem.h": {
       "name": "SDL3pp_filesystem.h",
       "doc": "@defgroup CategoryFilesystem Category Filesystem\n\nSDL offers an API for examining and manipulating the system's filesystem.\nThis covers most things one would need to do with directories, except for\nactual file I/O (which is covered by [CategoryIOStream](CategoryIOStream)\nand [CategoryAsyncIO](CategoryAsyncIO) instead).\n\nThere are functions to answer necessary path questions:\n\n- Where is my app's data? GetBasePath().\n- Where can I safely write files? GetPrefPath().\n- Where are paths like Downloads, Desktop, Music? GetUserFolder().\n- What is this thing at this location? GetPathInfo().\n- What items live in this folder? EnumerateDirectory().\n- What items live in this folder by wildcard? GlobDirectory().\n- What is my current working directory? GetCurrentDirectory().\n\nSDL also offers functions to manipulate the directory tree: renaming,\nremoving, copying files.",
@@ -24527,7 +24693,7 @@
           "name": "FromNS"
         },
         "Time": {
-          "doc": "SDL times are signed, 64-bit integers representing nanoseconds since the\nUnix epoch (Jan 1, 1970).\n\nThey can be converted between POSIX time_t values with SDL_NS_TO_SECONDS()\nand SDL_SECONDS_TO_NS(), and between Windows FILETIME values with\nSDL_TimeToWindows() and SDL_TimeFromWindows().\n\n@since This macro is available since SDL 3.2.0.\n\n@sa MAX_SINT64\n@sa MIN_SINT64",
+          "doc": "SDL times are signed, 64-bit integers representing nanoseconds since the\nUnix epoch (Jan 1, 1970).\n\nThey can be converted between POSIX time_t values with Time.ToPosix()\nand Time.FromPosix(), and between Windows FILETIME values with\nSDL_TimeToWindows() and SDL_TimeFromWindows().\n\n@since This macro is available since SDL 3.2.0.\n\n@sa MAX_SINT64\n@sa MIN_SINT64",
           "name": "Time",
           "kind": "struct",
           "type": "",
@@ -24623,12 +24789,33 @@
               "doc": ""
             },
             "FromPosix": {
+              "doc": "",
               "name": "FromPosix",
-              "doc": ""
+              "kind": "function",
+              "parameters": [
+                {
+                  "type": "Sint64",
+                  "name": "time"
+                }
+              ],
+              "value": "(((Uint64)(S)) * SDL_NS_PER_SECOND)",
+              "sourceName": "SDL_SECONDS_TO_NS",
+              "type": "Time",
+              "constexpr": true,
+              "static": true,
+              "proto": true
             },
             "ToPosix": {
+              "doc": "",
               "name": "ToPosix",
-              "doc": ""
+              "kind": "function",
+              "parameters": [],
+              "value": "((NS) / SDL_NS_PER_SECOND)",
+              "sourceName": "SDL_NS_TO_SECONDS",
+              "type": "Sint64",
+              "constexpr": true,
+              "immutable": true,
+              "proto": true
             },
             "FromWindows": {
               "name": "FromWindows",
@@ -27188,7 +27375,7 @@
           "sourceName": "SDL_vasprintf"
         },
         "srand": {
-          "doc": "Seeds the pseudo-random number generator.\n\nReusing the seed number will cause rand() to repeat the same stream of\n'random' numbers.\n\n@param seed the value to use as a random number seed, or 0 to use\n            SDL_GetPerformanceCounter().\n\n@threadsafety This should be called on the same thread that calls\n              rand()\n\n@since This function is available since SDL 3.2.0.\n\n@sa rand\n@sa rand_bits\n@sa randf",
+          "doc": "Seeds the pseudo-random number generator.\n\nReusing the seed number will cause rand() to repeat the same stream of\n'random' numbers.\n\n@param seed the value to use as a random number seed, or 0 to use\n            GetPerformanceCounter().\n\n@threadsafety This should be called on the same thread that calls\n              rand()\n\n@since This function is available since SDL 3.2.0.\n\n@sa rand\n@sa rand_bits\n@sa randf",
           "name": "srand",
           "kind": "function",
           "type": "void",

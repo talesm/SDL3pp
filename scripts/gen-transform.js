@@ -6834,6 +6834,7 @@ const transform = {
       }
     },
     "SDL_timer.h": {
+      localIncludes: ["SDL3pp_stdinc.h"],
       ignoreEntries: [
         "SDL_GetTicks",
         "SDL_TimerCallback",
@@ -6849,23 +6850,6 @@ const transform = {
         "SDL_US_TO_NS",
         "SDL_NS_TO_US"
       ],
-      includeAfter: {
-        "SDL_AddTimerNS": {
-          "kind": "function",
-          "name": "AddTimer",
-          "type": "TimerID",
-          "parameters": [
-            {
-              "type": "std::chrono::nanoseconds",
-              "name": "interval"
-            },
-            {
-              "type": "TimerCB",
-              "name": "callback"
-            }
-          ]
-        }
-      },
       transform: {
         "SDL_SECONDS_TO_NS": {
           "name": "Time::FromPosix",
@@ -6932,7 +6916,21 @@ const transform = {
               name: "userdata"
             }
           ]
-        }
+        },
+        "AddTimer": {
+          kind: "function",
+          type: "TimerID",
+          parameters: [
+            {
+              type: "std::chrono::nanoseconds",
+              name: "interval"
+            },
+            {
+              type: "TimerCB",
+              name: "callback"
+            }
+          ]
+        },
       }
     },
     "SDL_tray.h": {

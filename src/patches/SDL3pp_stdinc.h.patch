@@ -125,14 +125,6 @@
 < }
 ---
 > constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
-348,350c375,377
-<  * They can be converted between POSIX time_t values with SDL_NS_TO_SECONDS()
-<  * and SDL_SECONDS_TO_NS(), and between Windows FILETIME values with
-<  * SDL_TimeToWindows() and SDL_TimeFromWindows().
----
->  * They can be converted between POSIX time_t values with Time.ToPosix()
->  * and Time.FromPosix(), and between Windows FILETIME values with
->  * Time.ToWindows() and Time.FromWindows().
 352c379
 <  * @since This macro is available since SDL 3.2.0.
 ---
@@ -191,14 +183,6 @@
 ---
 >   /// Converts to nanoseconds Sint64
 >   constexpr Sint64 ToNS() const { return m_value.count(); }
-386c423
-< #error "FromPosix (undefined)"
----
->   static constexpr Time FromPosix(Sint64 time);
-388c425
-< #error "ToPosix (undefined)"
----
->   constexpr Sint64 ToPosix() const;
 390c427
 < #error "FromWindows (undefined)"
 ---

@@ -374,7 +374,7 @@ constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
  *
  * They can be converted between POSIX time_t values with Time.ToPosix()
  * and Time.FromPosix(), and between Windows FILETIME values with
- * Time.ToWindows() and Time.FromWindows().
+ * SDL_TimeToWindows() and SDL_TimeFromWindows().
  *
  * @since This type is available since SDL 3.2.0.
  *
@@ -4050,7 +4050,7 @@ inline int vasprintf(char** strp,
  * 'random' numbers.
  *
  * @param seed the value to use as a random number seed, or 0 to use
- *             SDL_GetPerformanceCounter().
+ *             GetPerformanceCounter().
  *
  * @threadsafety This should be called on the same thread that calls
  *               rand()

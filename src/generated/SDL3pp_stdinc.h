@@ -345,8 +345,8 @@ constexpr Nanoseconds FromNS(Sint64 duration)
  * SDL times are signed, 64-bit integers representing nanoseconds since the
  * Unix epoch (Jan 1, 1970).
  *
- * They can be converted between POSIX time_t values with SDL_NS_TO_SECONDS()
- * and SDL_SECONDS_TO_NS(), and between Windows FILETIME values with
+ * They can be converted between POSIX time_t values with Time.ToPosix()
+ * and Time.FromPosix(), and between Windows FILETIME values with
  * SDL_TimeToWindows() and SDL_TimeFromWindows().
  *
  * @since This macro is available since SDL 3.2.0.
@@ -383,9 +383,9 @@ struct Time
 
   constexpr Sint64 ToNS() const { static_assert(false, "Not implemented"); }
 
-#error "FromPosix (undefined)"
+  static constexpr Time FromPosix(Sint64 time);
 
-#error "ToPosix (undefined)"
+  constexpr Sint64 ToPosix() const;
 
 #error "FromWindows (undefined)"
 
@@ -3937,7 +3937,7 @@ inline int vasprintf(char** strp,
  * 'random' numbers.
  *
  * @param seed the value to use as a random number seed, or 0 to use
- *             SDL_GetPerformanceCounter().
+ *             GetPerformanceCounter().
  *
  * @threadsafety This should be called on the same thread that calls
  *               rand()
