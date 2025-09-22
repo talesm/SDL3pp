@@ -70,7 +70,7 @@ struct WindowParam
 // Forward decl
 struct GLContext;
 
-using GLContextRaw = SDL_GLContext*;
+using GLContextRaw = SDL_GLContext;
 
 // Forward decl
 struct GLContextScoped;
@@ -203,7 +203,12 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  OwnArray<DisplayID> GetAll() { return SDL_GetDisplays(m_displayID); }
+  static OwnArray<DisplayID> GetAll()
+  {
+    int count = 0;
+    auto data = reinterpret_cast<DisplayID*>(SDL_GetDisplays(&count));
+    return OwnArray<DisplayID>{data, size_t(count)};
+  }
 
   /**
    * Return the primary display.
@@ -217,10 +222,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  Display GetPrimary()
-  {
-    return CheckError(SDL_GetPrimaryDisplay(m_displayID));
-  }
+  static Display GetPrimary() { return CheckError(SDL_GetPrimaryDisplay()); }
 
   /**
    * Get the properties associated with a display.
@@ -272,7 +274,6 @@ public:
    * The primary display is often located at (0,0), but may be placed at a
    * different location depending on monitor layout.
    *
-   * @param displayID the instance ID of the display to query.
    * @param rect the Rect structure filled in with the display bounds.
    * @throws Error on failure.
    *
@@ -285,7 +286,9 @@ public:
    */
   Rect GetBounds() const
   {
-    return CheckError(SDL_GetDisplayBounds(m_displayID));
+    Rect bounds;
+    SDL_GetDisplayBounds(m_displayID, &bounds);
+    return bounds;
   }
 
   /**
@@ -300,7 +303,6 @@ public:
    * so these are good guidelines for the maximum space available to a
    * non-fullscreen window.
    *
-   * @param displayID the instance ID of the display to query.
    * @param rect the Rect structure filled in with the display bounds.
    * @throws Error on failure.
    *
@@ -313,7 +315,9 @@ public:
    */
   Rect GetUsableBounds() const
   {
-    return CheckError(SDL_GetDisplayUsableBounds(m_displayID));
+    Rect bounds;
+    CheckError(SDL_GetDisplayUsableBounds(m_displayID, &bounds));
+    return bounds;
   }
 
   /**
@@ -391,7 +395,6 @@ public:
    * - refresh rate -> highest to lowest
    * - pixel density -> lowest to highest
    *
-   * @param displayID the instance ID of the display to query.
    * @param count a pointer filled in with the number of display modes returned,
    *              may be nullptr.
    * @returns a nullptr terminated array of display mode pointers or nullptr on
@@ -407,7 +410,9 @@ public:
    */
   OwnArray<DisplayMode*> GetFullscreenModes() const
   {
-    return SDL_GetFullscreenDisplayModes(m_displayID);
+    int count = 0;
+    auto data = CheckError(SDL_GetFullscreenDisplayModes(m_displayID, &count));
+    return OwnArray<DisplayMode*>{data, size_t(count)};
   }
 
   /**
@@ -512,7 +517,7 @@ public:
    */
   static Display GetForPoint(const PointRaw& point)
   {
-    return SDL_GetDisplayForPoint(point);
+    return SDL_GetDisplayForPoint(&point);
   }
 
   /**
@@ -532,7 +537,7 @@ public:
    */
   static Display GetForRect(const RectRaw& rect)
   {
-    return SDL_GetDisplayForRect(rect);
+    return SDL_GetDisplayForRect(&rect);
   }
 };
 
@@ -771,18 +776,28 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
 using HitTest = SDL_HitTest;
 
 /**
+ * Callback used for hit-testing.
+ *
+ * @param win the WindowRef where hit-testing was set on.
+ * @param area a Point const reference which should be hit-tested.
+ * @returns an SDL::HitTestResult value.
+ *
+ * @cat listener-callback
+ *
  * @sa HitTest
+ * @sa Window.SetHitTest
  */
-using HitTestCB = HitTest;
+using HitTestCB =
+  std::function<HitTestResult(WindowRef window, const Point& area)>;
 
 /**
  * The struct used as an opaque handle to a window.
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Window.Window
- *
  * @cat resource
+ *
+ * @sa Window.Window
  */
 class Window
 {
@@ -880,8 +895,7 @@ public:
    * in a future version of SDL.
    *
    * @param title the title of the window, in UTF-8 encoding.
-   * @param w the width of the window.
-   * @param h the height of the window.
+   * @param size the width and height of the window.
    * @param flags 0, or one or more WindowFlags OR'd together.
    * @post the window that was created or nullptr on failure; call
    *          GetError() for more information.
@@ -896,7 +910,7 @@ public:
    * @sa Window.Destroy
    */
   Window(StringParam title, const PointRaw& size, WindowFlags flags = 0)
-    : m_resource(SDL_CreateWindow(title, size, flags))
+    : m_resource(SDL_CreateWindow(title, size.x, size.y, flags))
   {
   }
 
@@ -954,12 +968,9 @@ public:
    * hidden will be restored when the parent is shown.
    *
    * @param parent the parent of the window, must not be nullptr.
-   * @param offset_x the x position of the popup window relative to the origin
-   *                 of the parent.
-   * @param offset_y the y position of the popup window relative to the origin
-   *                 of the parent window.
-   * @param w the width of the window.
-   * @param h the height of the window.
+   * @param offset the x, y position of the popup window relative to the origin
+   *               of the parent.
+   * @param size the width and height of the window.
    * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
    *              additional WindowFlags OR'd together.
    * @post the window that was created or nullptr on failure; call
@@ -978,7 +989,12 @@ public:
          const PointRaw& offset,
          const PointRaw& size,
          WindowFlags flags = 0)
-    : m_resource(SDL_CreatePopupWindow(parent, offset, size, flags))
+    : m_resource(SDL_CreatePopupWindow(parent,
+                                       offset.x,
+                                       offset.y,
+                                       size.x,
+                                       size.y,
+                                       flags))
   {
   }
 
@@ -1263,7 +1279,7 @@ public:
    */
   OwnPtr<void> GetICCProfile(size_t* size) const
   {
-    return CheckError(SDL_GetWindowICCProfile(m_resource, size));
+    return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(m_resource, size))};
   }
 
   /**
@@ -1516,9 +1532,37 @@ public:
     CheckError(SDL_SetWindowIcon(m_resource, icon));
   }
 
-  void SetRect(Rect rect) { static_assert(false, "Not implemented"); }
+  /**
+   * @brief Request the window's position and size to be set.
+   *
+   * @param rect the rect containing the new coordinates
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa WindowRef.SetPosition()
+   * @sa WindowRef.SetSize()
+   */
+  void SetRect(Rect rect)
+  {
+    SetPosition(rect.GetTopLeft());
+    SetSize(rect.GetSize());
+  }
 
-  Rect GetRect() const { static_assert(false, "Not implemented"); }
+  /**
+   * Get the position and client size of a window.
+   *
+   * This is the current position of the window as last reported by the
+   * windowing system.
+   *
+   * The window pixel size may differ from its window coordinate size if the
+   * window is on a high pixel density display. Use Window.GetSizeInPixels()
+   * or RendererRef.GetOutputSize() to get the real client area size in pixels.
+   *
+   * @return Rect with the position and size
+   * @throws Error on failure.
+   */
+  Rect GetRect() const { return Rect{GetPosition(), GetSize()}; }
 
   /**
    * Request that the window's position be set.
@@ -1545,9 +1589,7 @@ public:
    * system.
    *
    * @param window the window to reposition.
-   * @param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or
-   *          `SDL_WINDOWPOS_UNDEFINED`.
-   * @param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or
+   * @param p the coordinates of the window, or `SDL_WINDOWPOS_CENTERED` or
    *          `SDL_WINDOWPOS_UNDEFINED`.
    * @throws Error on failure.
    *
@@ -1560,10 +1602,31 @@ public:
    */
   void SetPosition(const PointRaw& p)
   {
-    CheckError(SDL_SetWindowPosition(m_resource, p));
+    CheckError(SDL_SetWindowPosition(m_resource, p.x, p.y));
   }
 
-  Point GetPosition() const { static_assert(false, "Not implemented"); }
+  /**
+   * Get the position of a window.
+   *
+   * This is the current position of the window as last reported by the
+   * windowing system.
+   *
+   * @returns the position on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SetPosition()
+   * @sa SetPosition(int *, int *)
+   */
+  Point GetPosition() const
+  {
+    Point p;
+    GetPosition(&p.x, &p.y);
+    return p;
+  }
 
   /**
    * Get the position of a window.
@@ -1627,10 +1690,34 @@ public:
    */
   void SetSize(const PointRaw& p)
   {
-    CheckError(SDL_SetWindowSize(m_resource, p));
+    CheckError(SDL_SetWindowSize(m_resource, p.x, p.y));
   }
 
-  Point GetSize() const { static_assert(false, "Not implemented"); }
+  /**
+   * Get the size of a window's client area.
+   *
+   * The window pixel size may differ from its window coordinate size if the
+   * window is on a high pixel density display. Use GetSizeInPixels()
+   * or Renderer.GetOutputSize() to get the real client area size in pixels.
+   *
+   * @returns a point with width and height on success or std::nullopt on
+   * failure; call GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetOutputSize()
+   * @sa GetSizeInPixels()
+   * @sa SetSize()
+   * @sa GetSize(int *, int *)
+   */
+  Point GetSize() const
+  {
+    Point p;
+    GetSize(&p.x, &p.y);
+    return p;
+  }
 
   /**
    * Get the size of a window's client area.
@@ -1677,7 +1764,9 @@ public:
    */
   Rect GetSafeArea() const
   {
-    return CheckError(SDL_GetWindowSafeArea(m_resource));
+    Rect rect;
+    CheckError(SDL_GetWindowSafeArea(m_resource, &rect));
+    return rect;
   }
 
   /**
@@ -1780,7 +1869,25 @@ public:
     CheckError(SDL_GetWindowBordersSize(m_resource, top, left, bottom, right));
   }
 
-  Point GetSizeInPixels() const { static_assert(false, "Not implemented"); }
+  /**
+   * Get the size of a window's client area, in pixels.
+   *
+   * @returns the size on success or std::nullopt on failure; call GetError()
+   * for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetSize()
+   * @sa GetSizeInPixels(int*, int*)
+   */
+  Point GetSizeInPixels() const
+  {
+    Point p;
+    GetSizeInPixels(&p.x, &p.y);
+    return p;
+  }
 
   /**
    * Get the size of a window's client area, in pixels.
@@ -1820,7 +1927,7 @@ public:
    */
   void SetMinimumSize(const PointRaw& p)
   {
-    CheckError(SDL_SetWindowMinimumSize(m_resource, p));
+    CheckError(SDL_SetWindowMinimumSize(m_resource, p.x, p.y));
   }
 
   /**
@@ -1861,7 +1968,7 @@ public:
    */
   void SetMaximumSize(const PointRaw& p)
   {
-    CheckError(SDL_SetWindowMaximumSize(m_resource, p));
+    CheckError(SDL_SetWindowMaximumSize(m_resource, p.x, p.y));
   }
 
   /**
@@ -2186,7 +2293,10 @@ public:
    * @sa Window.UpdateSurface
    * @sa Window.UpdateSurfaceRects
    */
-  SurfaceRef GetSurface() { return {SDL_GetWindowSurface(m_resource)}; }
+  Surface GetSurface()
+  {
+    return Surface::Borrow(SDL_GetWindowSurface(m_resource));
+  }
 
   /**
    * Toggle VSync for the window surface.
@@ -2231,7 +2341,9 @@ public:
    */
   int GetSurfaceVSync() const
   {
-    return CheckError(SDL_GetWindowSurfaceVSync(m_resource));
+    int vsync;
+    CheckError(SDL_GetWindowSurfaceVSync(m_resource, &vsync));
+    return vsync;
   }
 
   /**
@@ -2280,7 +2392,8 @@ public:
    */
   void UpdateSurfaceRects(SpanRef<const RectRaw> rects)
   {
-    CheckError(SDL_UpdateWindowSurfaceRects(m_resource, rects));
+    CheckError(
+      SDL_UpdateWindowSurfaceRects(m_resource, rects.data(), rects.size()));
   }
 
   /**
@@ -2402,7 +2515,7 @@ public:
    */
   void SetMouseRect(const RectRaw& rect)
   {
-    CheckError(SDL_SetWindowMouseRect(m_resource, rect));
+    CheckError(SDL_SetWindowMouseRect(m_resource, &rect));
   }
 
   /**
@@ -2558,12 +2671,59 @@ public:
    */
   void ShowSystemMenu(const PointRaw& p)
   {
-    CheckError(SDL_ShowWindowSystemMenu(m_resource, p));
+    CheckError(SDL_ShowWindowSystemMenu(m_resource, p.x, p.y));
   }
 
+  /**
+   * Provide a callback that decides if a window region has special properties.
+   *
+   * Normally windows are dragged and resized by decorations provided by the
+   * system window manager (a title bar, borders, etc), but for some apps, it
+   * makes sense to drag them from somewhere else inside the window itself; for
+   * example, one might have a borderless window that wants to be draggable from
+   * any part, or simulate its own title bar, etc.
+   *
+   * This function lets the app provide a callback that designates pieces of a
+   * given window as special. This callback is run during event processing if we
+   * need to tell the OS to treat a region of the window specially; the use of
+   * this callback is known as "hit testing."
+   *
+   * Mouse input may not be delivered to your application if it is within a
+   * special area; the OS will often apply that input to moving the window or
+   * resizing the window and not deliver it to the application.
+   *
+   * Specifying nullptr for a callback disables hit-testing. Hit-testing is
+   * disabled by default.
+   *
+   * Platforms that don't support this functionality will return false
+   * unconditionally, even if you're attempting to disable hit-testing.
+   *
+   * Your callback may fire at any time, and its firing does not indicate any
+   * specific behavior (for example, on Windows, this certainly might fire when
+   * the OS is deciding whether to drag your window, but it fires for lots of
+   * other reasons, too, some unrelated to anything you probably care about _and
+   * when the mouse isn't actually at the location it is testing_). Since this
+   * can fire at any time, you should try to keep your callback efficient,
+   * devoid of allocations, etc.
+   *
+   * @param callback the function to call when doing a hit-test.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat listener-callback
+   */
   void SetHitTest(HitTestCB callback)
   {
-    static_assert(false, "Not implemented");
+    using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
+    void* cbHandle = Wrapper::Wrap(m_resource, std::move(callback));
+    SetHitTest(
+      [](SDL_Window* win, const SDL_Point* area, void* data) {
+        return Wrapper::Call(data, WindowRef{win}, Point(*area));
+      },
+      cbHandle);
   }
 
   /**
@@ -2733,7 +2893,7 @@ public:
    * @sa GLContext.Destroy
    * @sa GLContext.MakeCurrent
    */
-  GLContext GL_CreateContext() { return SDL_GL_CreateContext(m_resource); }
+  GLContext GL_CreateContext();
 
   /**
    * Set up an OpenGL context for rendering into an OpenGL window.
@@ -2749,10 +2909,7 @@ public:
    *
    * @sa GLContext.GLContext
    */
-  void GL_MakeCurrent(GLContext context)
-  {
-    CheckError(SDL_GL_MakeCurrent(m_resource, context));
-  }
+  void GL_MakeCurrent(GLContext context);
 
   /**
    * Get the EGL surface associated with the window.
@@ -2971,7 +3128,7 @@ public:
    */
   void MakeCurrent(WindowParam window)
   {
-    CheckError(SDL_GL_MakeCurrent(m_resource, window));
+    CheckError(SDL_GL_MakeCurrent(window, m_resource));
   }
 
   /**
