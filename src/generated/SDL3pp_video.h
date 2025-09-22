@@ -1253,9 +1253,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  OwnPtr<void> GetICCProfile(size_t* size) const
+  OwnPtr<void> GetICCProfile() const
   {
-    return CheckError(SDL_GetWindowICCProfile(m_resource, size));
+    return CheckError(SDL_GetWindowICCProfile(m_resource));
   }
 
   /**
@@ -1302,10 +1302,7 @@ public:
    *
    * @sa Window.Window
    */
-  WindowRef GetParent() const
-  {
-    return CheckError(SDL_GetWindowParent(m_resource));
-  }
+  WindowRef GetParent() const;
 
   /**
    * Get the properties associated with a window.
@@ -1344,7 +1341,7 @@ public:
    *   framebuffer object. It must be bound when rendering to the screen using
    *   OpenGL.
    * - `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
-   *   renderbuffer object. It must be bound when Window.GL_Swap is called.
+   *   renderbuffer object. It must be bound when GL_SwapWindow is called.
    * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL
    *   view's resolve framebuffer, when MSAA is used.
    *
@@ -2663,7 +2660,7 @@ public:
    *
    * @sa Window.GetID
    */
-  static WindowRef FromID(WindowID id) { return SDL_GetWindowFromID(id); }
+  static WindowRef FromID(WindowID id);
 
   /**
    * Get the window that currently has an input grab enabled.
@@ -2677,7 +2674,7 @@ public:
    * @sa Window.SetMouseGrab
    * @sa Window.SetKeyboardGrab
    */
-  static WindowRef GetGrabbed() { return SDL_GetGrabbedWindow(); }
+  static WindowRef GetGrabbed();
 
   /**
    * Destroy a window.
@@ -2703,78 +2700,6 @@ public:
     SDL_DestroyWindow(m_resource);
     m_resource = nullptr;
   }
-
-  /**
-   * Create an OpenGL context for an OpenGL window, and make it current.
-   *
-   * Windows users new to OpenGL should note that, for historical reasons, GL
-   * functions added after OpenGL version 1.1 are not available by default.
-   * Those functions must be loaded at run-time, either with an OpenGL
-   * extension-handling library or with GL_GetProcAddress() and its related
-   * functions.
-   *
-   * GLContext is opaque to the application.
-   *
-   * @returns the OpenGL context associated with `window` or nullptr on failure;
-   *          call GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GLContext.Destroy
-   * @sa GLContext.MakeCurrent
-   */
-  GLContext GL_CreateContext() { return SDL_GL_CreateContext(m_resource); }
-
-  /**
-   * Set up an OpenGL context for rendering into an OpenGL window.
-   *
-   * The context must have been created with a compatible window.
-   *
-   * @param context the OpenGL context to associate with the window.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GLContext.GLContext
-   */
-  void GL_MakeCurrent(GLContext context)
-  {
-    CheckError(SDL_GL_MakeCurrent(m_resource, context));
-  }
-
-  /**
-   * Get the EGL surface associated with the window.
-   *
-   * @returns the EGLSurface pointer associated with the window, or nullptr on
-   *          failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  EGLSurface EGL_GetSurface() { return SDL_EGL_GetWindowSurface(m_resource); }
-
-  /**
-   * Update a window with OpenGL rendering.
-   *
-   * This is used with double-buffered OpenGL contexts, which are the default.
-   *
-   * On macOS, make sure you bind 0 to the draw framebuffer before swapping the
-   * window, otherwise nothing will happen. If you aren't using
-   * glBindFramebuffer(), this is the default and you won't have to do anything
-   * extra.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void GL_Swap() { CheckError(SDL_GL_SwapWindow(m_resource)); }
 };
 
 /**
@@ -3940,9 +3865,9 @@ inline const DisplayMode* GetWindowFullscreenMode(WindowParam window)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline OwnPtr<void> GetWindowICCProfile(WindowParam window, size_t* size)
+inline OwnPtr<void> GetWindowICCProfile(WindowParam window)
 {
-  return CheckError(SDL_GetWindowICCProfile(window, size));
+  return CheckError(SDL_GetWindowICCProfile(window));
 }
 
 /**
@@ -3975,7 +3900,7 @@ inline PixelFormat GetWindowPixelFormat(WindowParam window)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline OwnArray<WindowRaw> GetWindows() { return SDL_GetWindows(); }
+inline OwnArray<WindowRef> GetWindows() { return SDL_GetWindows(); }
 
 /**
  * Create a window with the specified dimensions and flags.
@@ -4511,6 +4436,8 @@ inline WindowRef GetWindowFromID(WindowID id)
   return SDL_GetWindowFromID(id);
 }
 
+inline WindowRef Window::FromID(WindowID id) { return SDL_GetWindowFromID(id); }
+
 /**
  * Get parent of a window.
  *
@@ -4527,6 +4454,11 @@ inline WindowRef GetWindowFromID(WindowID id)
 inline WindowRef GetWindowParent(WindowParam window)
 {
   return CheckError(SDL_GetWindowParent(window));
+}
+
+inline WindowRef Window::GetParent() const
+{
+  return CheckError(SDL_GetWindowParent(m_resource));
 }
 
 /**
@@ -4566,7 +4498,7 @@ inline WindowRef GetWindowParent(WindowParam window)
  *   framebuffer object. It must be bound when rendering to the screen using
  *   OpenGL.
  * - `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
- *   renderbuffer object. It must be bound when Window.GL_Swap is called.
+ *   renderbuffer object. It must be bound when GL_SwapWindow is called.
  * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL
  *   view's resolve framebuffer, when MSAA is used.
  *
@@ -5692,6 +5624,8 @@ inline bool GetWindowMouseGrab(WindowParam window)
  */
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 
+inline WindowRef Window::GetGrabbed() { return SDL_GetGrabbedWindow(); }
+
 /**
  * Confines the cursor to the specified area of a window.
  *
@@ -6291,9 +6225,9 @@ inline GLContext GL_CreateContext(WindowParam window)
  *
  * @sa GLContext.GLContext
  */
-inline void GL_MakeCurrent(WindowParam window, GLContext context)
+inline void GL_MakeCurrent(WindowParam window, WindowParam window)
 {
-  CheckError(SDL_GL_MakeCurrent(window, context));
+  CheckError(SDL_GL_MakeCurrent(window, window));
 }
 
 /**

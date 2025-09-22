@@ -69,7 +69,7 @@
 // #include "SDL3pp_touch.h"
 // #include "SDL3pp_tray.h"
 #include "SDL3pp_version.h"
-// #include "SDL3pp_video.h"
+#include "SDL3pp_video.h"
 
 // Here we have additional "satellite" libraries
 // #include "SDL3pp_image.h"

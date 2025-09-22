@@ -6193,12 +6193,7 @@
               "name": "GetICCProfile",
               "kind": "function",
               "type": "OwnPtr<void>",
-              "parameters": [
-                {
-                  "name": "size",
-                  "type": "size_t *"
-                }
-              ],
+              "parameters": [],
               "sourceName": "SDL_GetWindowICCProfile",
               "hints": {
                 "mayFail": true
@@ -6239,10 +6234,11 @@
               "hints": {
                 "mayFail": true
               },
-              "immutable": true
+              "immutable": true,
+              "proto": true
             },
             "GetProperties": {
-              "doc": "Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Window.SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the\n  SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn iOS:\n\n- `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when Window.GL_Swap is called.\n- `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated\n  with the window (e.g. the X in /dev/dri/cardX)\n- `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n\nOn OpenVR:\n\n- `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the\n  associated overlay window.\n\nOn Vivante:\n\n- `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn Windows:\n\n- `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window\n- `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window\n- `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with\n  the window\n- `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with\n  the window\n- `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated\n  with the window\n- `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Window.SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the\n  SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn iOS:\n\n- `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when GL_SwapWindow is called.\n- `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated\n  with the window (e.g. the X in /dev/dri/cardX)\n- `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n\nOn OpenVR:\n\n- `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the\n  associated overlay window.\n\nOn Vivante:\n\n- `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn Windows:\n\n- `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window\n- `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window\n- `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with\n  the window\n- `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with\n  the window\n- `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated\n  with the window\n- `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetProperties",
               "kind": "function",
               "type": "PropertiesRef",
@@ -7075,7 +7071,8 @@
                 }
               ],
               "sourceName": "SDL_GetWindowFromID",
-              "static": true
+              "static": true,
+              "proto": true
             },
             "GetGrabbed": {
               "doc": "Get the window that currently has an input grab enabled.\n\n@returns the window if input is grabbed or nullptr otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.SetMouseGrab\n@sa Window.SetKeyboardGrab",
@@ -7084,7 +7081,8 @@
               "type": "WindowRef",
               "parameters": [],
               "sourceName": "SDL_GetGrabbedWindow",
-              "static": true
+              "static": true,
+              "proto": true
             },
             "Destroy": {
               "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nWindow is no longer valid after this call.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window\n@sa Window.Window\n@sa Window.Window",
@@ -7095,49 +7093,6 @@
               "sourceName": "SDL_DestroyWindow",
               "hints": {
                 "body": "SDL_DestroyWindow(m_resource);\nm_resource = nullptr;"
-              }
-            },
-            "GL_CreateContext": {
-              "doc": "Create an OpenGL context for an OpenGL window, and make it current.\n\nWindows users new to OpenGL should note that, for historical reasons, GL\nfunctions added after OpenGL version 1.1 are not available by default.\nThose functions must be loaded at run-time, either with an OpenGL\nextension-handling library or with GL_GetProcAddress() and its related\nfunctions.\n\nGLContext is opaque to the application.\n\n@returns the OpenGL context associated with `window` or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.Destroy\n@sa GLContext.MakeCurrent",
-              "name": "GL_CreateContext",
-              "kind": "function",
-              "type": "GLContext",
-              "parameters": [],
-              "sourceName": "SDL_GL_CreateContext"
-            },
-            "GL_MakeCurrent": {
-              "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param context the OpenGL context to associate with the window.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.GLContext",
-              "name": "GL_MakeCurrent",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "context",
-                  "type": "GLContext"
-                }
-              ],
-              "sourceName": "SDL_GL_MakeCurrent",
-              "hints": {
-                "mayFail": true
-              }
-            },
-            "EGL_GetSurface": {
-              "doc": "Get the EGL surface associated with the window.\n\n@returns the EGLSurface pointer associated with the window, or nullptr on\n         failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "EGL_GetSurface",
-              "kind": "function",
-              "type": "EGLSurface",
-              "parameters": [],
-              "sourceName": "SDL_EGL_GetWindowSurface"
-            },
-            "GL_Swap": {
-              "doc": "Update a window with OpenGL rendering.\n\nThis is used with double-buffered OpenGL contexts, which are the default.\n\nOn macOS, make sure you bind 0 to the draw framebuffer before swapping the\nwindow, otherwise nothing will happen. If you aren't using\nglBindFramebuffer(), this is the default and you won't have to do anything\nextra.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "GL_Swap",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_GL_SwapWindow",
-              "hints": {
-                "mayFail": true
               }
             }
           },
@@ -8275,10 +8230,6 @@
             {
               "name": "window",
               "type": "WindowParam"
-            },
-            {
-              "name": "size",
-              "type": "size_t *"
             }
           ],
           "sourceName": "SDL_GetWindowICCProfile",
@@ -8306,7 +8257,7 @@
           "doc": "Get a list of valid windows.\n\n@param count a pointer filled in with the number of windows returned, may\n             be nullptr.\n@returns a nullptr terminated array of Window pointers or nullptr on failure;\n         call GetError() for more information. This is a single\n         allocation that should be freed with free() when it is no\n         longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetWindows",
           "kind": "function",
-          "type": "OwnArray<WindowRaw>",
+          "type": "OwnArray<WindowRef>",
           "parameters": [],
           "sourceName": "SDL_GetWindows"
         },
@@ -9044,6 +8995,24 @@
           ],
           "sourceName": "SDL_GetWindowFromID"
         },
+        "Window::FromID": {
+          "name": "Window::FromID",
+          "kind": "function",
+          "type": "WindowRef",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "WindowID"
+            }
+          ],
+          "sourceName": "SDL_GetWindowFromID",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "static": true
+          }
+        },
         "GetWindowParent": {
           "doc": "Get parent of a window.\n\n@param window the window to query.\n@returns the parent of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window",
           "name": "GetWindowParent",
@@ -9060,8 +9029,22 @@
             "mayFail": true
           }
         },
+        "Window::GetParent": {
+          "name": "Window::GetParent",
+          "kind": "function",
+          "type": "WindowRef",
+          "parameters": [],
+          "sourceName": "SDL_GetWindowParent",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "mayFail": true
+          },
+          "immutable": true
+        },
         "GetWindowProperties": {
-          "doc": "Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Window.SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the\n  SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn iOS:\n\n- `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when Window.GL_Swap is called.\n- `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated\n  with the window (e.g. the X in /dev/dri/cardX)\n- `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n\nOn OpenVR:\n\n- `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the\n  associated overlay window.\n\nOn Vivante:\n\n- `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn Windows:\n\n- `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window\n- `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window\n- `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with\n  the window\n- `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with\n  the window\n- `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated\n  with the window\n- `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@param window the window to query.\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Window.SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the\n  SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn iOS:\n\n- `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when GL_SwapWindow is called.\n- `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated\n  with the window (e.g. the X in /dev/dri/cardX)\n- `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n\nOn OpenVR:\n\n- `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the\n  associated overlay window.\n\nOn Vivante:\n\n- `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn Windows:\n\n- `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window\n- `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window\n- `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with\n  the window\n- `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with\n  the window\n- `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated\n  with the window\n- `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@param window the window to query.\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetWindowProperties",
           "kind": "function",
           "type": "PropertiesRef",
@@ -9836,6 +9819,19 @@
           "parameters": [],
           "sourceName": "SDL_GetGrabbedWindow"
         },
+        "Window::GetGrabbed": {
+          "name": "Window::GetGrabbed",
+          "kind": "function",
+          "type": "WindowRef",
+          "parameters": [],
+          "sourceName": "SDL_GetGrabbedWindow",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "static": true
+          }
+        },
         "SetWindowMouseRect": {
           "doc": "Confines the cursor to the specified area of a window.\n\nNote that this does NOT grab the cursor, it only defines the area a cursor\nis restricted to when the window has mouse focus.\n\n@param window the window that will be associated with the barrier.\n@param rect a rectangle area in window-relative coordinates. If nullptr the\n            barrier for the specified window will be destroyed.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetMouseRect\n@sa Window.GetMouseGrab\n@sa Window.SetMouseGrab",
           "name": "SetWindowMouseRect",
@@ -10227,8 +10223,8 @@
               "type": "WindowParam"
             },
             {
-              "name": "context",
-              "type": "GLContext"
+              "name": "window",
+              "type": "WindowParam"
             }
           ],
           "sourceName": "SDL_GL_MakeCurrent",

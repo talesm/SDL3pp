@@ -7177,7 +7177,10 @@ const transform = {
           doc: "@sa HitTest"
         },
         "SDL_Window": {
-          resource: { free: "SDL_DestroyWindow" },
+          resource: {
+            free: "SDL_DestroyWindow",
+            enableAutoMethods: false,
+          },
           entries: {
             "SDL_CreateWindow": {
               kind: "function",
@@ -7240,9 +7243,10 @@ const transform = {
             },
             "SDL_GetWindowFullscreenMode": "immutable",
             "SDL_GetWindowICCProfile": {
-              "kind": "function",
-              "immutable": true,
-              "type": "OwnPtr<void>"
+              kind: "function",
+              immutable: true,
+              type: "OwnPtr<void>",
+              parameters: [{}]
             },
             "SDL_GetWindowPixelFormat": "immutable",
             "SDL_GetWindowID": "immutable",
@@ -7422,9 +7426,9 @@ const transform = {
           }
         },
         "SDL_GetWindows": {
-          "kind": "function",
-          "type": "OwnArray<WindowRaw>",
-          "parameters": []
+          kind: "function",
+          type: "OwnArray<WindowRef>",
+          parameters: []
         },
 
         "SDL_WINDOW_SURFACE_VSYNC_DISABLED": {

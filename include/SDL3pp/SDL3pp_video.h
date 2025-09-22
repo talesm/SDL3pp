@@ -724,6 +724,7 @@ constexpr FlashOperation FLASH_UNTIL_FOCUSED =
  * @since This enum is available since SDL 3.2.0.
  *
  * @sa HitTest
+ * @sa HitTestCB
  */
 using HitTestResult = SDL_HitTestResult;
 
@@ -788,7 +789,7 @@ using HitTest = SDL_HitTest;
  * @sa Window.SetHitTest
  */
 using HitTestCB =
-  std::function<HitTestResult(WindowRef window, const Point& area)>;
+  std::function<HitTestResult(WindowRaw window, const Point& area)>;
 
 /**
  * The struct used as an opaque handle to a window.
@@ -1269,7 +1270,6 @@ public:
   /**
    * Get the raw ICC profile data for the screen the window is currently on.
    *
-   * @param size the size of the ICC profile.
    * @returns the raw ICC profile data on success.
    * @throws Error on failure.
    *
@@ -1277,9 +1277,10 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  OwnPtr<void> GetICCProfile(size_t* size) const
+  OwnPtr<void> GetICCProfile() const
   {
-    return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(m_resource, size))};
+    size_t size;
+    return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(m_resource, &size))};
   }
 
   /**
@@ -1326,11 +1327,7 @@ public:
    *
    * @sa Window.Window
    */
-  WindowRef GetParent() const
-  {
-    return {CheckError(SDL_GetWindowParent(m_resource))};
-  }
-
+  WindowRef GetParent() const;
   /**
    * Get the properties associated with a window.
    *
@@ -1368,7 +1365,7 @@ public:
    *   framebuffer object. It must be bound when rendering to the screen using
    *   OpenGL.
    * - `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
-   *   renderbuffer object. It must be bound when Window.GL_Swap is called.
+   *   renderbuffer object. It must be bound when GL_SwapWindow is called.
    * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL
    *   view's resolve framebuffer, when MSAA is used.
    *
@@ -1754,8 +1751,6 @@ public:
    * or interactible content.
    *
    * @param window the window to query.
-   * @param rect a pointer filled in with the client area that is safe for
-   *             interactive content.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2721,7 +2716,7 @@ public:
     void* cbHandle = Wrapper::Wrap(m_resource, std::move(callback));
     SetHitTest(
       [](SDL_Window* win, const SDL_Point* area, void* data) {
-        return Wrapper::Call(data, WindowRef{win}, Point(*area));
+        return Wrapper::Call(data, win, Point(*area));
       },
       cbHandle);
   }
@@ -2831,7 +2826,7 @@ public:
    *
    * @sa Window.GetID
    */
-  static WindowRef FromID(WindowID id) { return {SDL_GetWindowFromID(id)}; }
+  static WindowRef FromID(WindowID id);
 
   /**
    * Get the window that currently has an input grab enabled.
@@ -2845,7 +2840,7 @@ public:
    * @sa Window.SetMouseGrab
    * @sa Window.SetKeyboardGrab
    */
-  static WindowRef GetGrabbed() { return {SDL_GetGrabbedWindow()}; }
+  static WindowRef GetGrabbed();
 
   /**
    * Destroy a window.
@@ -2871,75 +2866,6 @@ public:
     SDL_DestroyWindow(m_resource);
     m_resource = nullptr;
   }
-
-  /**
-   * Create an OpenGL context for an OpenGL window, and make it current.
-   *
-   * Windows users new to OpenGL should note that, for historical reasons, GL
-   * functions added after OpenGL version 1.1 are not available by default.
-   * Those functions must be loaded at run-time, either with an OpenGL
-   * extension-handling library or with GL_GetProcAddress() and its related
-   * functions.
-   *
-   * GLContext is opaque to the application.
-   *
-   * @returns the OpenGL context associated with `window` or nullptr on failure;
-   *          call GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GLContext.Destroy
-   * @sa GLContext.MakeCurrent
-   */
-  GLContext GL_CreateContext();
-
-  /**
-   * Set up an OpenGL context for rendering into an OpenGL window.
-   *
-   * The context must have been created with a compatible window.
-   *
-   * @param context the OpenGL context to associate with the window.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GLContext.GLContext
-   */
-  void GL_MakeCurrent(GLContext context);
-
-  /**
-   * Get the EGL surface associated with the window.
-   *
-   * @returns the EGLSurface pointer associated with the window, or nullptr on
-   *          failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  EGLSurface EGL_GetSurface() { return SDL_EGL_GetWindowSurface(m_resource); }
-
-  /**
-   * Update a window with OpenGL rendering.
-   *
-   * This is used with double-buffered OpenGL contexts, which are the default.
-   *
-   * On macOS, make sure you bind 0 to the draw framebuffer before swapping the
-   * window, otherwise nothing will happen. If you aren't using
-   * glBindFramebuffer(), this is the default and you won't have to do anything
-   * extra.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void GL_Swap() { CheckError(SDL_GL_SwapWindow(m_resource)); }
 };
 
 /**
@@ -2954,6 +2880,8 @@ struct WindowRef : Window
 
   ~WindowRef() { release(); }
 };
+
+#ifdef SDL3PP_DOC
 
 /**
  * A magic value used with SDL_WINDOWPOS_UNDEFINED.
@@ -3036,6 +2964,8 @@ struct WindowRef : Window
  */
 #define SDL_WINDOWPOS_ISCENTERED(X)                                            \
   (((X) & 0xFFFF0000) == SDL_WINDOWPOS_CENTERED_MASK)
+
+#endif // SDL3PP_DOC
 
 /**
  * An opaque handle to an OpenGL context.
@@ -4113,7 +4043,6 @@ inline const DisplayMode* GetWindowFullscreenMode(WindowParam window)
  * Get the raw ICC profile data for the screen the window is currently on.
  *
  * @param window the window to query.
- * @param size the size of the ICC profile.
  * @returns the raw ICC profile data on success.
  * @throws Error on failure.
  *
@@ -4121,9 +4050,10 @@ inline const DisplayMode* GetWindowFullscreenMode(WindowParam window)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline OwnPtr<void> GetWindowICCProfile(WindowParam window, size_t* size)
+inline OwnPtr<void> GetWindowICCProfile(WindowParam window)
 {
-  return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(window, size))};
+  size_t size;
+  return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(window, &size))};
 }
 
 /**
@@ -4145,18 +4075,19 @@ inline PixelFormat GetWindowPixelFormat(WindowParam window)
 /**
  * Get a list of valid windows.
  *
- * @param count a pointer filled in with the number of windows returned, may
- *              be nullptr.
  * @returns a nullptr terminated array of Window pointers or nullptr on failure;
- *          call GetError() for more information. This is a single
- *          allocation that should be freed with free() when it is no
- *          longer needed.
+ *          call GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline OwnArray<WindowRaw> GetWindows() { return SDL_GetWindows(); }
+inline OwnArray<WindowRef> GetWindows()
+{
+  int count = 0;
+  auto data = CheckError(SDL_GetWindows(&count));
+  return OwnArray<WindowRef>{reinterpret_cast<WindowRef*>(data), size_t(count)};
+}
 
 /**
  * Create a window with the specified dimensions and flags.
@@ -4691,6 +4622,11 @@ inline WindowRef GetWindowFromID(WindowID id)
   return {SDL_GetWindowFromID(id)};
 }
 
+inline WindowRef Window::FromID(WindowID id)
+{
+  return {SDL_GetWindowFromID(id)};
+}
+
 /**
  * Get parent of a window.
  *
@@ -4707,6 +4643,11 @@ inline WindowRef GetWindowFromID(WindowID id)
 inline WindowRef GetWindowParent(WindowParam window)
 {
   return {CheckError(SDL_GetWindowParent(window))};
+}
+
+inline WindowRef Window::GetParent() const
+{
+  return GetWindowParent(m_resource);
 }
 
 /**
@@ -4746,7 +4687,7 @@ inline WindowRef GetWindowParent(WindowParam window)
  *   framebuffer object. It must be bound when rendering to the screen using
  *   OpenGL.
  * - `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
- *   renderbuffer object. It must be bound when Window.GL_Swap is called.
+ *   renderbuffer object. It must be bound when GL_SwapWindow is called.
  * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL
  *   view's resolve framebuffer, when MSAA is used.
  *
@@ -4946,9 +4887,7 @@ inline void SetWindowIcon(WindowParam window, SurfaceParam icon)
  * system.
  *
  * @param window the window to reposition.
- * @param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or
- *          `SDL_WINDOWPOS_UNDEFINED`.
- * @param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or
+ * @param p the coordinates of the window, or `SDL_WINDOWPOS_CENTERED` or
  *          `SDL_WINDOWPOS_UNDEFINED`.
  * @throws Error on failure.
  *
@@ -4961,7 +4900,7 @@ inline void SetWindowIcon(WindowParam window, SurfaceParam icon)
  */
 inline void SetWindowPosition(WindowParam window, const PointRaw& p)
 {
-  CheckError(SDL_SetWindowPosition(window, p));
+  CheckError(SDL_SetWindowPosition(window, p.x, p.y));
 }
 
 /**
@@ -5013,8 +4952,7 @@ inline void GetWindowPosition(WindowParam window, int* x, int* y)
  * this is just a request, it can be denied by the windowing system.
  *
  * @param window the window to change.
- * @param w the width of the window, must be > 0.
- * @param h the height of the window, must be > 0.
+ * @param p the width and height of the window, must be > 0.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5027,7 +4965,7 @@ inline void GetWindowPosition(WindowParam window, int* x, int* y)
  */
 inline void SetWindowSize(WindowParam window, const PointRaw& p)
 {
-  CheckError(SDL_SetWindowSize(window, p));
+  CheckError(SDL_SetWindowSize(window, p.x, p.y));
 }
 
 /**
@@ -5066,8 +5004,6 @@ inline void GetWindowSize(WindowParam window, int* w, int* h)
  * or interactible content.
  *
  * @param window the window to query.
- * @param rect a pointer filled in with the client area that is safe for
- *             interactive content.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5076,7 +5012,9 @@ inline void GetWindowSize(WindowParam window, int* w, int* h)
  */
 inline Rect GetWindowSafeArea(WindowParam window)
 {
-  return CheckError(SDL_GetWindowSafeArea(window));
+  Rect rect;
+  CheckError(SDL_GetWindowSafeArea(window, &rect));
+  return rect;
 }
 
 /**
@@ -5216,8 +5154,7 @@ inline void GetWindowSizeInPixels(WindowParam window, int* w, int* h)
  * Set the minimum size of a window's client area.
  *
  * @param window the window to change.
- * @param min_w the minimum width of the window, or 0 for no limit.
- * @param min_h the minimum height of the window, or 0 for no limit.
+ * @param p the minimum width and height of the window, or 0 for no limit.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5229,7 +5166,7 @@ inline void GetWindowSizeInPixels(WindowParam window, int* w, int* h)
  */
 inline void SetWindowMinimumSize(WindowParam window, const PointRaw& p)
 {
-  CheckError(SDL_SetWindowMinimumSize(window, p));
+  CheckError(SDL_SetWindowMinimumSize(window, p.x, p.y));
 }
 
 /**
@@ -5258,8 +5195,7 @@ inline void GetWindowMinimumSize(WindowParam window, int* w, int* h)
  * Set the maximum size of a window's client area.
  *
  * @param window the window to change.
- * @param max_w the maximum width of the window, or 0 for no limit.
- * @param max_h the maximum height of the window, or 0 for no limit.
+ * @param p the maximum width and height of the window, or 0 for no limit.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5271,7 +5207,7 @@ inline void GetWindowMinimumSize(WindowParam window, int* w, int* h)
  */
 inline void SetWindowMaximumSize(WindowParam window, const PointRaw& p)
 {
-  CheckError(SDL_SetWindowMaximumSize(window, p));
+  CheckError(SDL_SetWindowMaximumSize(window, p.x, p.y));
 }
 
 /**
@@ -5634,9 +5570,9 @@ inline bool WindowHasSurface(WindowParam window)
  * @sa Window.UpdateSurface
  * @sa Window.UpdateSurfaceRects
  */
-inline SurfaceRef GetWindowSurface(WindowParam window)
+inline Surface GetWindowSurface(WindowParam window)
 {
-  return {SDL_GetWindowSurface(window)};
+  return Surface::Borrow(SDL_GetWindowSurface(window));
 }
 
 /**
@@ -5675,8 +5611,6 @@ constexpr int WINDOW_SURFACE_VSYNC_ADAPTIVE = SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE;
  * Get VSync for the window surface.
  *
  * @param window the window to query.
- * @param vsync an int filled with the current vertical refresh sync interval.
- *              See Window.SetSurfaceVSync() for the meaning of the value.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5687,7 +5621,9 @@ constexpr int WINDOW_SURFACE_VSYNC_ADAPTIVE = SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE;
  */
 inline int GetWindowSurfaceVSync(WindowParam window)
 {
-  return CheckError(SDL_GetWindowSurfaceVSync(window));
+  int vsync;
+  CheckError(SDL_GetWindowSurfaceVSync(window, &vsync));
+  return vsync;
 }
 
 /**
@@ -5872,6 +5808,8 @@ inline bool GetWindowMouseGrab(WindowParam window)
  */
 inline WindowRef GetGrabbedWindow() { return {SDL_GetGrabbedWindow()}; }
 
+inline WindowRef Window::GetGrabbed() { return GetGrabbedWindow(); }
+
 /**
  * Confines the cursor to the specified area of a window.
  *
@@ -5893,7 +5831,7 @@ inline WindowRef GetGrabbedWindow() { return {SDL_GetGrabbedWindow()}; }
  */
 inline void SetWindowMouseRect(WindowParam window, const RectRaw& rect)
 {
-  CheckError(SDL_SetWindowMouseRect(window, rect));
+  CheckError(SDL_SetWindowMouseRect(window, &rect));
 }
 
 /**
@@ -6046,9 +5984,7 @@ inline void SetWindowFocusable(WindowParam window, bool focusable)
  * nothing.
  *
  * @param window the window for which the menu will be displayed.
- * @param x the x coordinate of the menu, relative to the origin (top-left) of
- *          the client area.
- * @param y the y coordinate of the menu, relative to the origin (top-left) of
+ * @param p the coordinates of the menu, relative to the origin (top-left) of
  *          the client area.
  * @throws Error on failure.
  *
@@ -6058,7 +5994,7 @@ inline void SetWindowFocusable(WindowParam window, bool focusable)
  */
 inline void ShowWindowSystemMenu(WindowParam window, const PointRaw& p)
 {
-  CheckError(SDL_ShowWindowSystemMenu(window, p));
+  CheckError(SDL_ShowWindowSystemMenu(window, p.x, p.y));
 }
 
 /**
@@ -6107,6 +6043,59 @@ inline void SetWindowHitTest(WindowParam window,
                              void* callback_data)
 {
   CheckError(SDL_SetWindowHitTest(window, callback, callback_data));
+}
+
+/**
+ * Provide a callback that decides if a window region has special properties.
+ *
+ * Normally windows are dragged and resized by decorations provided by the
+ * system window manager (a title bar, borders, etc), but for some apps, it
+ * makes sense to drag them from somewhere else inside the window itself; for
+ * example, one might have a borderless window that wants to be draggable from
+ * any part, or simulate its own title bar, etc.
+ *
+ * This function lets the app provide a callback that designates pieces of a
+ * given window as special. This callback is run during event processing if we
+ * need to tell the OS to treat a region of the window specially; the use of
+ * this callback is known as "hit testing."
+ *
+ * Mouse input may not be delivered to your application if it is within a
+ * special area; the OS will often apply that input to moving the window or
+ * resizing the window and not deliver it to the application.
+ *
+ * Specifying nullptr for a callback disables hit-testing. Hit-testing is
+ * disabled by default.
+ *
+ * Platforms that don't support this functionality will return false
+ * unconditionally, even if you're attempting to disable hit-testing.
+ *
+ * Your callback may fire at any time, and its firing does not indicate any
+ * specific behavior (for example, on Windows, this certainly might fire when
+ * the OS is deciding whether to drag your window, but it fires for lots of
+ * other reasons, too, some unrelated to anything you probably care about _and
+ * when the mouse isn't actually at the location it is testing_). Since this
+ * can fire at any time, you should try to keep your callback efficient,
+ * devoid of allocations, etc.
+ *
+ * @param window the window to set hit-testing on.
+ * @param callback the function to call when doing a hit-test.
+ * @param callback_data an app-defined void pointer passed to **callback**.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+void SetWindowHitTest(WindowParam window, HitTestCB callback)
+{
+  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
+  void* cbHandle = Wrapper::Wrap(window, std::move(callback));
+  SetWindowHitTest(
+    window,
+    [](SDL_Window* win, const SDL_Point* area, void* data) {
+      return Wrapper::Call(data, win, Point(*area));
+    },
+    cbHandle);
 }
 
 /**
@@ -6473,7 +6462,7 @@ inline GLContext GL_CreateContext(WindowParam window)
  */
 inline void GL_MakeCurrent(WindowParam window, GLContext context)
 {
-  CheckError(SDL_GL_MakeCurrent(window, context));
+  CheckError(SDL_GL_MakeCurrent(window, context.get()));
 }
 
 /**
