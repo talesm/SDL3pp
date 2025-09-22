@@ -224,7 +224,7 @@ function generateBody(entry, prefix) {
   const internalCallStr = `${sourceName}(${paramStr})`;
   const callStr = hint?.mayFail ? `CheckError(${internalCallStr})` : internalCallStr;
   if (!entry.type) {
-    const superStr = hint?.super ?? "T";
+    const superStr = hint?.super ?? hint?.self ?? "T";
     return `\n${prefix}  : ${superStr}(${callStr})\n${prefix}{}`;
   }
   if (hint?.wrapSelf && entry.type) {

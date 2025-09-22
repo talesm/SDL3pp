@@ -395,7 +395,7 @@ public:
                         PackedLayout layout,
                         int bits,
                         int bytes)
-    : T(SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes))
+    : m_format(SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes))
   {
   }
 
@@ -1529,7 +1529,8 @@ public:
                        TransferCharacteristics transfer,
                        MatrixCoefficients matrix,
                        ChromaLocation chroma)
-    : T(SDL_DEFINE_COLORSPACE(type, range, primaries, transfer, matrix, chroma))
+    : m_cspace(
+        SDL_DEFINE_COLORSPACE(type, range, primaries, transfer, matrix, chroma))
   {
   }
 
