@@ -26,6 +26,59 @@ const transform = {
   returnTypeMap: {
     "TTF_TextEngine *": "TextEngine"
   },
+  signatureRules: [{
+    pattern: [
+      { type: "Uint8", name: "r" },
+      { type: "Uint8", name: "g" },
+      { type: "Uint8", name: "b" },
+      { type: "Uint8", name: "a" }
+    ],
+    replaceParams: [{ type: "ColorRaw", name: "c" }]
+  }, {
+    pattern: [
+      { type: "float", name: "r" },
+      { type: "float", name: "g" },
+      { type: "float", name: "b" },
+      { type: "float", name: "a" }
+    ],
+    replaceParams: [{ type: "const FColorRaw &", name: "c" }]
+  }, {
+    pattern: [{ type: "int", name: "x" }, { type: "int", name: "y" }],
+    replaceParams: [{ type: "const PointRaw &", name: "p" }]
+  }, {
+    pattern: [{ type: "int", name: "x1" }, { type: "int", name: "y1" }],
+    replaceParams: [{ type: "const PointRaw &", name: "p1" }]
+  }, {
+    pattern: [{ type: "int", name: "x2" }, { type: "int", name: "y2" }],
+    replaceParams: [{ type: "const PointRaw &", name: "p2" }]
+  }, {
+    pattern: [{ type: "int", name: "w" }, { type: "int", name: "h" }],
+    replaceParams: [{ type: "const PointRaw &", name: "size" }]
+  }, {
+    pattern: [{ type: "int", name: "width" }, { type: "int", name: "height" }],
+    replaceParams: [{ type: "const PointRaw &", name: "size" }]
+  }, {
+    pattern: [{ type: "int", name: "offset_x" }, { type: "int", name: "offset_y" }],
+    replaceParams: [{ type: "const PointRaw &", name: "offset" }]
+  }, {
+    pattern: [{ type: "float", name: "x" }, { type: "float", name: "y" }],
+    replaceParams: [{ type: "const FPointRaw &", name: "p" }]
+  }, {
+    pattern: [{ type: "float", name: "x1" }, { type: "float", name: "y1" }],
+    replaceParams: [{ type: "const FPointRaw &", name: "p1" }]
+  }, {
+    pattern: [{ type: "float", name: "x2" }, { type: "float", name: "y2" }],
+    replaceParams: [{ type: "const FPointRaw &", name: "p2" }]
+  }, {
+    pattern: [{ type: "float", name: "w" }, { type: "float", name: "h" }],
+    replaceParams: [{ type: "const FPointRaw &", name: "size" }]
+  }, {
+    pattern: [{ type: "float", name: "width" }, { type: "float", name: "height" }],
+    replaceParams: [{ type: "const FPointRaw &", name: "size" }]
+  }, {
+    pattern: [{ type: "float", name: "offset_x" }, { type: "float", name: "offset_y" }],
+    replaceParams: [{ type: "const FPointRaw &", name: "offset" }]
+  }],
   files: {
     "SDL_assert.h": {
       localIncludes: ['SDL3pp_callbackWrapper.h', 'SDL3pp_strings.h'],
@@ -5407,20 +5460,50 @@ const transform = {
         "SDL_atanf": { name: "atan" },
         "SDL_atan2f": { name: "atan2" },
         "SDL_ceilf": { name: "ceil" },
-        "SDL_copysignf": { name: "copysign" },
+        "SDL_copysignf": {
+          name: "copysign",
+          parameters: [{
+            name: "x",
+            type: "float"
+          },
+          {
+            name: "y",
+            type: "float"
+          }]
+        },
         "SDL_cosf": { name: "cos" },
         "SDL_expf": { name: "exp" },
         "SDL_fabs": { name: "abs" },
         "SDL_fabsf": { name: "abs" },
         "SDL_floorf": { name: "floor" },
         "SDL_truncf": { name: "trunc" },
-        "SDL_fmodf": { name: "fmod" },
+        "SDL_fmodf": {
+          name: "fmod",
+          parameters: [{
+            name: "x",
+            type: "float"
+          },
+          {
+            name: "y",
+            type: "float"
+          }]
+        },
         "SDL_isinff": { name: "isinf" },
         "SDL_isnanf": { name: "isnan" },
         "SDL_logf": { name: "log" },
         "SDL_log10f": { name: "log10" },
         "SDL_modff": { name: "modf" },
-        "SDL_powf": { name: "pow" },
+        "SDL_powf": {
+          name: "pow",
+          parameters: [{
+            name: "x",
+            type: "float"
+          },
+          {
+            name: "y",
+            type: "float"
+          }]
+        },
         "SDL_roundf": { name: "round" },
         "SDL_lroundf": { name: "lround" },
         "SDL_scalbnf": { name: "scalbn" },
@@ -6127,25 +6210,12 @@ const transform = {
                 }
               ]
             },
-            "MapColor": {
-              kind: "function",
-              type: "Uint32",
-              immutable: true,
-              parameters: [
-                {
-                  type: "ColorRaw",
-                  name: "color"
-                }
-              ]
-            },
             "SDL_MapSurfaceRGB": {
               kind: "function",
-              name: "MapColor",
               immutable: true
             },
             "SDL_MapSurfaceRGBA": {
               kind: "function",
-              name: "MapColor",
               immutable: true
             },
             "ReadPixel": {
@@ -7068,11 +7138,9 @@ const transform = {
             },
             "SDL_GetClosestFullscreenDisplayMode": {
               "kind": "function",
-              "name": "GetClosestFullscreenMode",
               "immutable": true,
               "type": "DisplayMode",
               "parameters": [
-                {},
                 {},
                 {},
                 {},

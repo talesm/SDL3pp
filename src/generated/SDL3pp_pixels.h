@@ -2549,7 +2549,7 @@ inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
  * @sa PixelFormat.GetDetails
  * @sa GetRGB
  * @sa MapRGBA
- * @sa Surface.MapColor
+ * @sa Surface.MapRGB
  */
 inline Uint32 MapRGB(const PixelFormatDetails* format,
                      PaletteConstParam palette,
@@ -2595,16 +2595,13 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
  * @sa PixelFormat.GetDetails
  * @sa GetRGBA
  * @sa MapRGB
- * @sa Surface.MapColor
+ * @sa Surface.MapRGBA
  */
 inline Uint32 MapRGBA(const PixelFormatDetails* format,
                       PaletteConstParam palette,
-                      Uint8 r,
-                      Uint8 g,
-                      Uint8 b,
-                      Uint8 a)
+                      ColorRaw c)
 {
-  return SDL_MapRGBA(format, palette, r, g, b, a);
+  return SDL_MapRGBA(format, palette, c);
 }
 
 /**

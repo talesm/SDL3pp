@@ -992,9 +992,9 @@ public:
    *
    * @sa Surface.Destroy
    */
-  Surface Scale(int width, int height, ScaleMode scaleMode) const
+  Surface Scale(const PointRaw& size, ScaleMode scaleMode) const
   {
-    return SDL_ScaleSurface(m_resource, width, height, scaleMode);
+    return SDL_ScaleSurface(m_resource, size, scaleMode);
   }
 
   /**
@@ -1493,11 +1493,6 @@ public:
                                     dstrect));
   }
 
-  Uint32 MapColor(ColorRaw color) const
-  {
-    static_assert(false, "Not implemented");
-  }
-
   /**
    * Map an RGB triple to an opaque pixel value for a surface.
    *
@@ -1525,9 +1520,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.MapColor
+   * @sa Surface.MapRGBA
    */
-  Uint32 MapColor(Uint8 r, Uint8 g, Uint8 b) const
+  Uint32 MapRGB(Uint8 r, Uint8 g, Uint8 b) const
   {
     return SDL_MapSurfaceRGB(m_resource, r, g, b);
   }
@@ -1560,12 +1555,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.MapColor
+   * @sa Surface.MapRGB
    */
-  Uint32 MapColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
-  {
-    return SDL_MapSurfaceRGBA(m_resource, r, g, b, a);
-  }
+  Uint32 MapRGBA(ColorRaw c) const { return SDL_MapSurfaceRGBA(m_resource, c); }
 
   Color ReadPixel(const PointRaw& p) const
   {
@@ -1741,9 +1733,9 @@ public:
  * @sa Surface.Surface
  * @sa Surface.Destroy
  */
-inline Surface CreateSurface(int width, int height, PixelFormat format)
+inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
 {
-  return Surface(SDL_CreateSurface(width, height, format));
+  return Surface(SDL_CreateSurface(size, format));
 }
 
 /**
@@ -1774,13 +1766,12 @@ inline Surface CreateSurface(int width, int height, PixelFormat format)
  * @sa Surface.Surface
  * @sa Surface.Destroy
  */
-inline Surface CreateSurfaceFrom(int width,
-                                 int height,
+inline Surface CreateSurfaceFrom(const PointRaw& size,
                                  PixelFormat format,
                                  void* pixels,
                                  int pitch)
 {
-  return Surface(SDL_CreateSurfaceFrom(width, height, format, pixels, pitch));
+  return Surface(SDL_CreateSurfaceFrom(size, format, pixels, pitch));
 }
 
 /**
@@ -2573,11 +2564,10 @@ inline Surface DuplicateSurface(SurfaceConstParam surface)
  * @sa Surface.Destroy
  */
 inline Surface ScaleSurface(SurfaceConstParam surface,
-                            int width,
-                            int height,
+                            const PointRaw& size,
                             ScaleMode scaleMode)
 {
-  return SDL_ScaleSurface(surface, width, height, scaleMode);
+  return SDL_ScaleSurface(surface, size, scaleMode);
 }
 
 /**
@@ -2669,8 +2659,7 @@ inline Surface ConvertSurfaceAndColorspace(SurfaceParam surface,
  *
  * @sa ConvertPixelsAndColorspace
  */
-inline void ConvertPixels(int width,
-                          int height,
+inline void ConvertPixels(const PointRaw& size,
                           PixelFormat src_format,
                           const void* src,
                           int src_pitch,
@@ -2679,7 +2668,7 @@ inline void ConvertPixels(int width,
                           int dst_pitch)
 {
   CheckError(SDL_ConvertPixels(
-    width, height, src_format, src, src_pitch, dst_format, dst, dst_pitch));
+    size, src_format, src, src_pitch, dst_format, dst, dst_pitch));
 }
 
 /**
@@ -2712,8 +2701,7 @@ inline void ConvertPixels(int width,
  *
  * @sa ConvertPixels
  */
-inline void ConvertPixelsAndColorspace(int width,
-                                       int height,
+inline void ConvertPixelsAndColorspace(const PointRaw& size,
                                        PixelFormat src_format,
                                        Colorspace src_colorspace,
                                        PropertiesParam src_properties,
@@ -2725,8 +2713,7 @@ inline void ConvertPixelsAndColorspace(int width,
                                        void* dst,
                                        int dst_pitch)
 {
-  CheckError(SDL_ConvertPixelsAndColorspace(width,
-                                            height,
+  CheckError(SDL_ConvertPixelsAndColorspace(size,
                                             src_format,
                                             src_colorspace,
                                             src_properties,
@@ -2762,8 +2749,7 @@ inline void ConvertPixelsAndColorspace(int width,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void PremultiplyAlpha(int width,
-                             int height,
+inline void PremultiplyAlpha(const PointRaw& size,
                              PixelFormat src_format,
                              const void* src,
                              int src_pitch,
@@ -2772,15 +2758,8 @@ inline void PremultiplyAlpha(int width,
                              int dst_pitch,
                              bool linear)
 {
-  CheckError(SDL_PremultiplyAlpha(width,
-                                  height,
-                                  src_format,
-                                  src,
-                                  src_pitch,
-                                  dst_format,
-                                  dst,
-                                  dst_pitch,
-                                  linear));
+  CheckError(SDL_PremultiplyAlpha(
+    size, src_format, src, src_pitch, dst_format, dst, dst_pitch, linear));
 }
 
 /**
@@ -3298,9 +3277,12 @@ inline void BlitSurface9Grid(SurfaceParam src,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.MapColor
+ * @sa Surface.MapRGBA
  */
-inline Uint32 MapSurfaceRGB(SurfaceParam surface, Uint8 r, Uint8 g, Uint8 b)
+inline Uint32 MapSurfaceRGB(SurfaceConstParam surface,
+                            Uint8 r,
+                            Uint8 g,
+                            Uint8 b)
 {
   return SDL_MapSurfaceRGB(surface, r, g, b);
 }
@@ -3334,15 +3316,11 @@ inline Uint32 MapSurfaceRGB(SurfaceParam surface, Uint8 r, Uint8 g, Uint8 b)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.MapColor
+ * @sa Surface.MapRGB
  */
-inline Uint32 MapSurfaceRGBA(SurfaceParam surface,
-                             Uint8 r,
-                             Uint8 g,
-                             Uint8 b,
-                             Uint8 a)
+inline Uint32 MapSurfaceRGBA(SurfaceConstParam surface, ColorRaw c)
 {
-  return SDL_MapSurfaceRGBA(surface, r, g, b, a);
+  return SDL_MapSurfaceRGBA(surface, c);
 }
 
 /**

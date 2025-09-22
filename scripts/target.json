@@ -5404,12 +5404,8 @@
               "type": "DisplayMode",
               "parameters": [
                 {
-                  "name": "w",
-                  "type": "int"
-                },
-                {
-                  "name": "h",
-                  "type": "int"
+                  "type": "const PointRaw &",
+                  "name": "size"
                 },
                 {
                   "name": "refresh_rate",
@@ -6027,8 +6023,8 @@
                     "type": "StringParam"
                   },
                   {
-                    "name": "size",
-                    "type": "const PointRaw &"
+                    "type": "const PointRaw &",
+                    "name": "size"
                   },
                   {
                     "name": "flags",
@@ -6049,12 +6045,12 @@
                     "type": "WindowParam"
                   },
                   {
-                    "name": "offset",
-                    "type": "const PointRaw &"
+                    "type": "const PointRaw &",
+                    "name": "offset"
                   },
                   {
-                    "name": "size",
-                    "type": "const PointRaw &"
+                    "type": "const PointRaw &",
+                    "name": "size"
                   },
                   {
                     "name": "flags",
@@ -8129,19 +8125,15 @@
           "doc": "Get the closest match to the requested display mode.\n\nThe available display modes are scanned and `closest` is filled in with the\nclosest mode matching the requested mode and returned. The mode format and\nrefresh rate default to the desktop mode if they are set to 0. The modes\nare scanned with size being first priority, format being second priority,\nand finally checking the refresh rate. If all the available modes are too\nsmall, then false is returned.\n\n@param displayID the instance ID of the display to query.\n@param w the width in pixels of the desired display mode.\n@param h the height in pixels of the desired display mode.\n@param refresh_rate the refresh rate of the desired display mode, or 0.0f\n                    for the desktop refresh rate.\n@param include_high_density_modes boolean to include high density modes in\n                                  the search.\n@param closest a pointer filled in with the closest display mode equal to\n               or larger than the desired mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetAll\n@sa Display.GetFullscreenModes",
           "name": "GetClosestFullscreenDisplayMode",
           "kind": "function",
-          "type": "void",
+          "type": "DisplayMode",
           "parameters": [
             {
               "name": "displayID",
-              "type": "Display"
+              "type": "DisplayID"
             },
             {
-              "name": "w",
-              "type": "int"
-            },
-            {
-              "name": "h",
-              "type": "int"
+              "type": "const PointRaw &",
+              "name": "size"
             },
             {
               "name": "refresh_rate",
@@ -8150,10 +8142,6 @@
             {
               "name": "include_high_density_modes",
               "type": "bool"
-            },
-            {
-              "name": "closest",
-              "type": "DisplayMode *"
             }
           ],
           "sourceName": "SDL_GetClosestFullscreenDisplayMode",
@@ -8340,12 +8328,8 @@
               "type": "StringParam"
             },
             {
-              "name": "w",
-              "type": "int"
-            },
-            {
-              "name": "h",
-              "type": "int"
+              "type": "const PointRaw &",
+              "name": "size"
             },
             {
               "name": "flags",
@@ -8368,20 +8352,12 @@
               "type": "WindowParam"
             },
             {
-              "name": "offset_x",
-              "type": "int"
+              "type": "const PointRaw &",
+              "name": "offset"
             },
             {
-              "name": "offset_y",
-              "type": "int"
-            },
-            {
-              "name": "w",
-              "type": "int"
-            },
-            {
-              "name": "h",
-              "type": "int"
+              "type": "const PointRaw &",
+              "name": "size"
             },
             {
               "name": "flags",
@@ -9184,8 +9160,8 @@
               "type": "WindowParam"
             },
             {
-              "name": "p",
-              "type": "const PointRaw &"
+              "type": "const PointRaw &",
+              "name": "p"
             }
           ],
           "sourceName": "SDL_SetWindowPosition",
@@ -9228,8 +9204,8 @@
               "type": "WindowParam"
             },
             {
-              "name": "p",
-              "type": "const PointRaw &"
+              "type": "const PointRaw &",
+              "name": "p"
             }
           ],
           "sourceName": "SDL_SetWindowSize",
@@ -10008,8 +9984,8 @@
               "type": "WindowParam"
             },
             {
-              "name": "p",
-              "type": "const PointRaw &"
+              "type": "const PointRaw &",
+              "name": "p"
             }
           ],
           "sourceName": "SDL_ShowWindowSystemMenu",
@@ -14130,7 +14106,7 @@
           "sourceName": "SDL_DestroyPalette"
         },
         "MapRGB": {
-          "doc": "Map an RGB triple to an opaque pixel value for a given pixel format.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the specified pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.GetDetails\n@sa GetRGB\n@sa MapRGBA\n@sa Surface.MapColor",
+          "doc": "Map an RGB triple to an opaque pixel value for a given pixel format.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the specified pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.GetDetails\n@sa GetRGB\n@sa MapRGBA\n@sa Surface.MapRGB",
           "name": "MapRGB",
           "kind": "function",
           "type": "Uint32",
@@ -14159,7 +14135,7 @@
           "sourceName": "SDL_MapRGB"
         },
         "MapRGBA": {
-          "doc": "Map an RGBA quadruple to a pixel value for a given pixel format.\n\nThis function maps the RGBA color value to the specified pixel format and\nreturns the pixel value best approximating the given RGBA color value for\nthe given pixel format.\n\nIf the specified pixel format has no alpha component the alpha value will\nbe ignored (as it will be in formats with a palette).\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@param a the alpha component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.GetDetails\n@sa GetRGBA\n@sa MapRGB\n@sa Surface.MapColor",
+          "doc": "Map an RGBA quadruple to a pixel value for a given pixel format.\n\nThis function maps the RGBA color value to the specified pixel format and\nreturns the pixel value best approximating the given RGBA color value for\nthe given pixel format.\n\nIf the specified pixel format has no alpha component the alpha value will\nbe ignored (as it will be in formats with a palette).\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@param a the alpha component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.GetDetails\n@sa GetRGBA\n@sa MapRGB\n@sa Surface.MapRGBA",
           "name": "MapRGBA",
           "kind": "function",
           "type": "Uint32",
@@ -14173,20 +14149,8 @@
               "type": "PaletteConstParam"
             },
             {
-              "name": "r",
-              "type": "Uint8"
-            },
-            {
-              "name": "g",
-              "type": "Uint8"
-            },
-            {
-              "name": "b",
-              "type": "Uint8"
-            },
-            {
-              "name": "a",
-              "type": "Uint8"
+              "type": "ColorRaw",
+              "name": "c"
             }
           ],
           "sourceName": "SDL_MapRGBA"
@@ -16786,8 +16750,8 @@
                 "type": "",
                 "parameters": [
                   {
-                    "name": "size",
-                    "type": "const PointRaw &"
+                    "type": "const PointRaw &",
+                    "name": "size"
                   },
                   {
                     "name": "format",
@@ -16803,8 +16767,8 @@
                 "type": "",
                 "parameters": [
                   {
-                    "name": "size",
-                    "type": "const PointRaw &"
+                    "type": "const PointRaw &",
+                    "name": "size"
                   },
                   {
                     "name": "format",
@@ -17385,12 +17349,8 @@
               "type": "Surface",
               "parameters": [
                 {
-                  "name": "width",
-                  "type": "int"
-                },
-                {
-                  "name": "height",
-                  "type": "int"
+                  "type": "const PointRaw &",
+                  "name": "size"
                 },
                 {
                   "name": "scaleMode",
@@ -17465,8 +17425,8 @@
               "type": "void",
               "parameters": [
                 {
-                  "name": "color",
-                  "type": "const FColorRaw &"
+                  "type": "const FColorRaw &",
+                  "name": "color"
                 }
               ],
               "sourceName": "SDL_ClearSurface",
@@ -17824,69 +17784,42 @@
                 "mayFail": true
               }
             },
-            "MapColor": [
-              {
-                "kind": "function",
-                "type": "Uint32",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "ColorRaw",
-                    "name": "color"
-                  }
-                ],
-                "name": "MapColor",
-                "doc": ""
-              },
-              {
-                "doc": "Map an RGB triple to an opaque pixel value for a surface.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the surface has a palette, the index of the closest matching color in\nthe palette will be returned.\n\nIf the surface pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.MapColor",
-                "name": "MapColor",
-                "kind": "function",
-                "type": "Uint32",
-                "parameters": [
-                  {
-                    "name": "r",
-                    "type": "Uint8"
-                  },
-                  {
-                    "name": "g",
-                    "type": "Uint8"
-                  },
-                  {
-                    "name": "b",
-                    "type": "Uint8"
-                  }
-                ],
-                "sourceName": "SDL_MapSurfaceRGB",
-                "immutable": true
-              },
-              {
-                "doc": "Map an RGBA quadruple to a pixel value for a surface.\n\nThis function maps the RGBA color value to the specified pixel format and\nreturns the pixel value best approximating the given RGBA color value for\nthe given pixel format.\n\nIf the surface pixel format has no alpha component the alpha value will be\nignored (as it will be in formats with a palette).\n\nIf the surface has a palette, the index of the closest matching color in\nthe palette will be returned.\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@param a the alpha component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.MapColor",
-                "name": "MapColor",
-                "kind": "function",
-                "type": "Uint32",
-                "parameters": [
-                  {
-                    "name": "r",
-                    "type": "Uint8"
-                  },
-                  {
-                    "name": "g",
-                    "type": "Uint8"
-                  },
-                  {
-                    "name": "b",
-                    "type": "Uint8"
-                  },
-                  {
-                    "name": "a",
-                    "type": "Uint8"
-                  }
-                ],
-                "sourceName": "SDL_MapSurfaceRGBA",
-                "immutable": true
-              }
-            ],
+            "MapRGB": {
+              "doc": "Map an RGB triple to an opaque pixel value for a surface.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the surface has a palette, the index of the closest matching color in\nthe palette will be returned.\n\nIf the surface pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.MapRGBA",
+              "name": "MapRGB",
+              "kind": "function",
+              "type": "Uint32",
+              "parameters": [
+                {
+                  "name": "r",
+                  "type": "Uint8"
+                },
+                {
+                  "name": "g",
+                  "type": "Uint8"
+                },
+                {
+                  "name": "b",
+                  "type": "Uint8"
+                }
+              ],
+              "sourceName": "SDL_MapSurfaceRGB",
+              "immutable": true
+            },
+            "MapRGBA": {
+              "doc": "Map an RGBA quadruple to a pixel value for a surface.\n\nThis function maps the RGBA color value to the specified pixel format and\nreturns the pixel value best approximating the given RGBA color value for\nthe given pixel format.\n\nIf the surface pixel format has no alpha component the alpha value will be\nignored (as it will be in formats with a palette).\n\nIf the surface has a palette, the index of the closest matching color in\nthe palette will be returned.\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@param a the alpha component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.MapRGB",
+              "name": "MapRGBA",
+              "kind": "function",
+              "type": "Uint32",
+              "parameters": [
+                {
+                  "type": "ColorRaw",
+                  "name": "c"
+                }
+              ],
+              "sourceName": "SDL_MapSurfaceRGBA",
+              "immutable": true
+            },
             "ReadPixel": [
               {
                 "kind": "function",
@@ -17908,8 +17841,8 @@
                 "type": "void",
                 "parameters": [
                   {
-                    "name": "p",
-                    "type": "const PointRaw &"
+                    "type": "const PointRaw &",
+                    "name": "p"
                   },
                   {
                     "name": "r",
@@ -17956,8 +17889,8 @@
                 "type": "void",
                 "parameters": [
                   {
-                    "name": "p",
-                    "type": "const PointRaw &"
+                    "type": "const PointRaw &",
+                    "name": "p"
                   },
                   {
                     "name": "r",
@@ -17990,12 +17923,12 @@
               "type": "void",
               "parameters": [
                 {
-                  "name": "p",
-                  "type": "const PointRaw &"
+                  "type": "const PointRaw &",
+                  "name": "p"
                 },
                 {
-                  "name": "c",
-                  "type": "ColorRaw"
+                  "type": "ColorRaw",
+                  "name": "c"
                 }
               ],
               "sourceName": "SDL_WriteSurfacePixel",
@@ -18010,12 +17943,12 @@
               "type": "void",
               "parameters": [
                 {
-                  "name": "p",
-                  "type": "const PointRaw &"
+                  "type": "const PointRaw &",
+                  "name": "p"
                 },
                 {
-                  "name": "c",
-                  "type": "const FColorRaw &"
+                  "type": "const FColorRaw &",
+                  "name": "c"
                 }
               ],
               "sourceName": "SDL_WriteSurfacePixelFloat",
@@ -18096,12 +18029,8 @@
           "type": "Surface",
           "parameters": [
             {
-              "name": "width",
-              "type": "int"
-            },
-            {
-              "name": "height",
-              "type": "int"
+              "type": "const PointRaw &",
+              "name": "size"
             },
             {
               "name": "format",
@@ -18120,12 +18049,8 @@
           "type": "Surface",
           "parameters": [
             {
-              "name": "width",
-              "type": "int"
-            },
-            {
-              "name": "height",
-              "type": "int"
+              "type": "const PointRaw &",
+              "name": "size"
             },
             {
               "name": "format",
@@ -18781,12 +18706,8 @@
               "type": "SurfaceConstParam"
             },
             {
-              "name": "width",
-              "type": "int"
-            },
-            {
-              "name": "height",
-              "type": "int"
+              "type": "const PointRaw &",
+              "name": "size"
             },
             {
               "name": "scaleMode",
@@ -18848,12 +18769,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "width",
-              "type": "int"
-            },
-            {
-              "name": "height",
-              "type": "int"
+              "type": "const PointRaw &",
+              "name": "size"
             },
             {
               "name": "src_format",
@@ -18892,12 +18809,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "width",
-              "type": "int"
-            },
-            {
-              "name": "height",
-              "type": "int"
+              "type": "const PointRaw &",
+              "name": "size"
             },
             {
               "name": "src_format",
@@ -18952,12 +18865,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "width",
-              "type": "int"
-            },
-            {
-              "name": "height",
-              "type": "int"
+              "type": "const PointRaw &",
+              "name": "size"
             },
             {
               "name": "src_format",
@@ -19024,8 +18933,8 @@
               "type": "SurfaceParam"
             },
             {
-              "name": "color",
-              "type": "const FColorRaw &"
+              "type": "const FColorRaw &",
+              "name": "color"
             }
           ],
           "sourceName": "SDL_ClearSurface",
@@ -19422,14 +19331,14 @@
           }
         ],
         "MapSurfaceRGB": {
-          "doc": "Map an RGB triple to an opaque pixel value for a surface.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the surface has a palette, the index of the closest matching color in\nthe palette will be returned.\n\nIf the surface pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param surface the surface to use for the pixel format and palette.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.MapColor",
+          "doc": "Map an RGB triple to an opaque pixel value for a surface.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the surface has a palette, the index of the closest matching color in\nthe palette will be returned.\n\nIf the surface pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param surface the surface to use for the pixel format and palette.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.MapRGBA",
           "name": "MapSurfaceRGB",
           "kind": "function",
           "type": "Uint32",
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             },
             {
               "name": "r",
@@ -19447,30 +19356,18 @@
           "sourceName": "SDL_MapSurfaceRGB"
         },
         "MapSurfaceRGBA": {
-          "doc": "Map an RGBA quadruple to a pixel value for a surface.\n\nThis function maps the RGBA color value to the specified pixel format and\nreturns the pixel value best approximating the given RGBA color value for\nthe given pixel format.\n\nIf the surface pixel format has no alpha component the alpha value will be\nignored (as it will be in formats with a palette).\n\nIf the surface has a palette, the index of the closest matching color in\nthe palette will be returned.\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param surface the surface to use for the pixel format and palette.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@param a the alpha component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.MapColor",
+          "doc": "Map an RGBA quadruple to a pixel value for a surface.\n\nThis function maps the RGBA color value to the specified pixel format and\nreturns the pixel value best approximating the given RGBA color value for\nthe given pixel format.\n\nIf the surface pixel format has no alpha component the alpha value will be\nignored (as it will be in formats with a palette).\n\nIf the surface has a palette, the index of the closest matching color in\nthe palette will be returned.\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param surface the surface to use for the pixel format and palette.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@param a the alpha component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.MapRGB",
           "name": "MapSurfaceRGBA",
           "kind": "function",
           "type": "Uint32",
           "parameters": [
             {
               "name": "surface",
-              "type": "SurfaceParam"
+              "type": "SurfaceConstParam"
             },
             {
-              "name": "r",
-              "type": "Uint8"
-            },
-            {
-              "name": "g",
-              "type": "Uint8"
-            },
-            {
-              "name": "b",
-              "type": "Uint8"
-            },
-            {
-              "name": "a",
-              "type": "Uint8"
+              "type": "ColorRaw",
+              "name": "c"
             }
           ],
           "sourceName": "SDL_MapSurfaceRGBA"
@@ -19486,8 +19383,8 @@
               "type": "SurfaceConstParam"
             },
             {
-              "name": "p",
-              "type": "const PointRaw &"
+              "type": "const PointRaw &",
+              "name": "p"
             },
             {
               "name": "r",
@@ -19522,8 +19419,8 @@
               "type": "SurfaceConstParam"
             },
             {
-              "name": "p",
-              "type": "const PointRaw &"
+              "type": "const PointRaw &",
+              "name": "p"
             },
             {
               "name": "r",
@@ -19558,12 +19455,12 @@
               "type": "SurfaceParam"
             },
             {
-              "name": "p",
-              "type": "const PointRaw &"
+              "type": "const PointRaw &",
+              "name": "p"
             },
             {
-              "name": "c",
-              "type": "ColorRaw"
+              "type": "ColorRaw",
+              "name": "c"
             }
           ],
           "sourceName": "SDL_WriteSurfacePixel",
@@ -19582,12 +19479,12 @@
               "type": "SurfaceParam"
             },
             {
-              "name": "p",
-              "type": "const PointRaw &"
+              "type": "const PointRaw &",
+              "name": "p"
             },
             {
-              "name": "c",
-              "type": "const FColorRaw &"
+              "type": "const FColorRaw &",
+              "name": "c"
             }
           ],
           "sourceName": "SDL_WriteSurfacePixelFloat",
@@ -25340,8 +25237,8 @@
             "type": "float",
             "parameters": [
               {
-                "name": "x",
-                "type": "float"
+                "type": "float",
+                "name": "x"
               },
               {
                 "name": "y",
@@ -25488,8 +25385,8 @@
             "type": "float",
             "parameters": [
               {
-                "name": "x",
-                "type": "float"
+                "type": "float",
+                "name": "x"
               },
               {
                 "name": "y",
@@ -25672,8 +25569,8 @@
             "type": "float",
             "parameters": [
               {
-                "name": "x",
-                "type": "float"
+                "type": "float",
+                "name": "x"
               },
               {
                 "name": "y",

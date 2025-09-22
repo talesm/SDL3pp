@@ -936,12 +936,16 @@
 ---
 >   CheckError(
 >     SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
-2687a2893,2919
+2604c2809
+<   return SDL_MapRGBA(format, palette, c);
+---
+>   return SDL_MapRGBA(format, palette, c.r, c.g, c.b, c.a);
+2684a2890,2916
 > 
 > inline Uint32 Color::Map(const PixelFormatDetails& format,
 >                          PaletteConstParam palette = nullptr) const
 > {
->   return MapRGBA(&format, palette, r, g, b, a);
+>   return MapRGBA(&format, palette, {r, g, b, a});
 > }
 > 
 > inline Color Color::Get(Uint32 pixel,

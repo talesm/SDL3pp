@@ -10723,7 +10723,7 @@ inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
  * @sa PixelFormat.GetDetails
  * @sa GetRGB
  * @sa MapRGBA
- * @sa Surface.MapColor
+ * @sa Surface.MapRGB
  */
 inline Uint32 MapRGB(const PixelFormatDetails* format,
                      PaletteConstParam palette,
@@ -10769,16 +10769,13 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
  * @sa PixelFormat.GetDetails
  * @sa GetRGBA
  * @sa MapRGB
- * @sa Surface.MapColor
+ * @sa Surface.MapRGBA
  */
 inline Uint32 MapRGBA(const PixelFormatDetails* format,
                       PaletteConstParam palette,
-                      Uint8 r,
-                      Uint8 g,
-                      Uint8 b,
-                      Uint8 a)
+                      ColorRaw c)
 {
-  return SDL_MapRGBA(format, palette, r, g, b, a);
+  return SDL_MapRGBA(format, palette, c.r, c.g, c.b, c.a);
 }
 
 /**
@@ -10863,7 +10860,7 @@ inline void GetRGBA(Uint32 pixel,
 inline Uint32 Color::Map(const PixelFormatDetails& format,
                          PaletteConstParam palette = nullptr) const
 {
-  return MapRGBA(&format, palette, r, g, b, a);
+  return MapRGBA(&format, palette, {r, g, b, a});
 }
 
 inline Color Color::Get(Uint32 pixel,
@@ -25238,8 +25235,7 @@ public:
    * Creates a new surface identical to the existing surface, scaled to the
    * desired size.
    *
-   * @param width the width of the new surface.
-   * @param height the height of the new surface.
+   * @param size the width and height of the new surface.
    * @param scaleMode the ScaleMode to be used.
    * @returns a copy of the surface or nullptr on failure; call GetError() for
    *          more information.
@@ -25250,9 +25246,9 @@ public:
    *
    * @sa Surface.Destroy
    */
-  Surface Scale(int width, int height, ScaleMode scaleMode) const
+  Surface Scale(const PointRaw& size, ScaleMode scaleMode) const
   {
-    return Surface{SDL_ScaleSurface(m_resource, width, height, scaleMode)};
+    return Surface{SDL_ScaleSurface(m_resource, size.x, size.y, scaleMode)};
   }
 
   /**
@@ -25346,10 +25342,7 @@ public:
    * If the surface is YUV, the color is assumed to be in the sRGB colorspace,
    * otherwise the color is assumed to be in the colorspace of the surface.
    *
-   * @param r the red component of the pixel, normally in the range 0-1.
-   * @param g the green component of the pixel, normally in the range 0-1.
-   * @param b the blue component of the pixel, normally in the range 0-1.
-   * @param a the alpha component of the pixel, normally in the range 0-1.
+   * @param c the color components of the pixel, normally in the range 0-1.
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
@@ -25871,32 +25864,6 @@ public:
   }
 
   /**
-   * Map an RGBA quadruple to a pixel value for a surface.
-   *
-   * This function maps the RGBA color value to the specified pixel format and
-   * returns the pixel value best approximating the given RGBA color value for
-   * the given pixel format.
-   *
-   * If the surface pixel format has no alpha component the alpha value will be
-   * ignored (as it will be in formats with a palette).
-   *
-   * If the surface has a palette, the index of the closest matching color in
-   * the palette will be returned.
-   *
-   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
-   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
-   * format the return value can be assigned to a Uint16, and similarly a Uint8
-   * for an 8-bpp format).
-   *
-   * @param color the color components
-   * @return a pixel value.
-   */
-  Uint32 MapColor(ColorRaw color) const
-  {
-    return MapColor(color.r, color.g, color.b, color.a);
-  }
-
-  /**
    * Map an RGB triple to an opaque pixel value for a surface.
    *
    * This function maps the RGB color value to the specified pixel format and
@@ -25923,9 +25890,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.MapColor
+   * @sa Surface.MapRGBA
    */
-  Uint32 MapColor(Uint8 r, Uint8 g, Uint8 b) const
+  Uint32 MapRGB(Uint8 r, Uint8 g, Uint8 b) const
   {
     return SDL_MapSurfaceRGB(m_resource, r, g, b);
   }
@@ -25948,21 +25915,18 @@ public:
    * format the return value can be assigned to a Uint16, and similarly a Uint8
    * for an 8-bpp format).
    *
-   * @param r the red component of the pixel in the range 0-255.
-   * @param g the green component of the pixel in the range 0-255.
-   * @param b the blue component of the pixel in the range 0-255.
-   * @param a the alpha component of the pixel in the range 0-255.
+   * @param c the color components of the pixel in the range 0-255.
    * @returns a pixel value.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.MapColor
+   * @sa Surface.MapRGB
    */
-  Uint32 MapColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
+  Uint32 MapRGBA(ColorRaw c) const
   {
-    return SDL_MapSurfaceRGBA(m_resource, r, g, b, a);
+    return SDL_MapSurfaceRGBA(m_resource, c.r, c.g, c.b, c.a);
   }
 
   /**
@@ -26164,8 +26128,7 @@ public:
  *
  * The pixels of the new surface are initialized to zero.
  *
- * @param width the width of the surface.
- * @param height the height of the surface.
+ * @param size the width and height of the surface.
  * @param format the PixelFormat for the new surface's pixel format.
  * @returns the new Surface structure that is created or nullptr on failure;
  *          call GetError() for more information.
@@ -26177,9 +26140,9 @@ public:
  * @sa Surface.Surface
  * @sa Surface.Destroy
  */
-inline Surface CreateSurface(int width, int height, PixelFormat format)
+inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
 {
-  return Surface(SDL_CreateSurface(width, height, format));
+  return Surface(SDL_CreateSurface(size.x, size.y, format));
 }
 
 /**
@@ -26195,8 +26158,7 @@ inline Surface CreateSurface(int width, int height, PixelFormat format)
  * You may pass nullptr for pixels and 0 for pitch to create a surface that you
  * will fill in with valid values later.
  *
- * @param width the width of the surface.
- * @param height the height of the surface.
+ * @param size the width and height of the surface.
  * @param format the PixelFormat for the new surface's pixel format.
  * @param pixels a pointer to existing pixel data.
  * @param pitch the number of bytes between each row, including padding.
@@ -26210,13 +26172,12 @@ inline Surface CreateSurface(int width, int height, PixelFormat format)
  * @sa Surface.Surface
  * @sa Surface.Destroy
  */
-inline Surface CreateSurfaceFrom(int width,
-                                 int height,
+inline Surface CreateSurfaceFrom(const PointRaw& size,
                                  PixelFormat format,
                                  void* pixels,
                                  int pitch)
 {
-  return Surface(SDL_CreateSurfaceFrom(width, height, format, pixels, pitch));
+  return Surface(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch));
 }
 
 /**
@@ -27001,8 +26962,7 @@ inline Surface DuplicateSurface(SurfaceConstParam surface)
  * The returned surface should be freed with Surface.Destroy().
  *
  * @param surface the surface to duplicate and scale.
- * @param width the width of the new surface.
- * @param height the height of the new surface.
+ * @param size the width and height of the surface.
  * @param scaleMode the ScaleMode to be used.
  * @returns a copy of the surface or nullptr on failure; call GetError() for
  *          more information.
@@ -27014,11 +26974,10 @@ inline Surface DuplicateSurface(SurfaceConstParam surface)
  * @sa Surface.Destroy
  */
 inline Surface ScaleSurface(SurfaceConstParam surface,
-                            int width,
-                            int height,
+                            const PointRaw& size,
                             ScaleMode scaleMode)
 {
-  return Surface(SDL_ScaleSurface(surface, width, height, scaleMode));
+  return Surface(SDL_ScaleSurface(surface, size.x, size.y, scaleMode));
 }
 
 /**
@@ -27092,8 +27051,7 @@ inline Surface ConvertSurfaceAndColorspace(SurfaceParam surface,
 /**
  * Copy a block of pixels of one format to another format.
  *
- * @param width the width of the block to copy, in pixels.
- * @param height the height of the block to copy, in pixels.
+ * @param size the width and height of the surface.
  * @param src_format an PixelFormat value of the `src` pixels format.
  * @param src a pointer to the source pixels.
  * @param src_pitch the pitch of the source pixels, in bytes.
@@ -27110,8 +27068,7 @@ inline Surface ConvertSurfaceAndColorspace(SurfaceParam surface,
  *
  * @sa ConvertPixelsAndColorspace
  */
-inline void ConvertPixels(int width,
-                          int height,
+inline void ConvertPixels(const PointRaw& size,
                           PixelFormat src_format,
                           const void* src,
                           int src_pitch,
@@ -27120,15 +27077,14 @@ inline void ConvertPixels(int width,
                           int dst_pitch)
 {
   CheckError(SDL_ConvertPixels(
-    width, height, src_format, src, src_pitch, dst_format, dst, dst_pitch));
+    size.x, size.y, src_format, src, src_pitch, dst_format, dst, dst_pitch));
 }
 
 /**
  * Copy a block of pixels of one format and colorspace to another format and
  * colorspace.
  *
- * @param width the width of the block to copy, in pixels.
- * @param height the height of the block to copy, in pixels.
+ * @param size the width and height  of the block to copy, in pixels.
  * @param src_format an PixelFormat value of the `src` pixels format.
  * @param src_colorspace an Colorspace value describing the colorspace of
  *                       the `src` pixels.
@@ -27153,8 +27109,7 @@ inline void ConvertPixels(int width,
  *
  * @sa ConvertPixels
  */
-inline void ConvertPixelsAndColorspace(int width,
-                                       int height,
+inline void ConvertPixelsAndColorspace(const PointRaw& size,
                                        PixelFormat src_format,
                                        Colorspace src_colorspace,
                                        PropertiesParam src_properties,
@@ -27166,8 +27121,8 @@ inline void ConvertPixelsAndColorspace(int width,
                                        void* dst,
                                        int dst_pitch)
 {
-  CheckError(SDL_ConvertPixelsAndColorspace(width,
-                                            height,
+  CheckError(SDL_ConvertPixelsAndColorspace(size.x,
+                                            size.y,
                                             src_format,
                                             src_colorspace,
                                             src_properties,
@@ -27185,8 +27140,7 @@ inline void ConvertPixelsAndColorspace(int width,
  *
  * This is safe to use with src == dst, but not for other overlapping areas.
  *
- * @param width the width of the block to convert, in pixels.
- * @param height the height of the block to convert, in pixels.
+ * @param size the width and height of the surface.
  * @param src_format an PixelFormat value of the `src` pixels format.
  * @param src a pointer to the source pixels.
  * @param src_pitch the pitch of the source pixels, in bytes.
@@ -27203,8 +27157,7 @@ inline void ConvertPixelsAndColorspace(int width,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void PremultiplyAlpha(int width,
-                             int height,
+inline void PremultiplyAlpha(const PointRaw& size,
                              PixelFormat src_format,
                              const void* src,
                              int src_pitch,
@@ -27213,8 +27166,8 @@ inline void PremultiplyAlpha(int width,
                              int dst_pitch,
                              bool linear)
 {
-  CheckError(SDL_PremultiplyAlpha(width,
-                                  height,
+  CheckError(SDL_PremultiplyAlpha(size.x,
+                                  size.y,
                                   src_format,
                                   src,
                                   src_pitch,
@@ -27252,10 +27205,7 @@ inline void PremultiplySurfaceAlpha(SurfaceParam surface, bool linear)
  * otherwise the color is assumed to be in the colorspace of the suface.
  *
  * @param surface the Surface to clear.
- * @param r the red component of the pixel, normally in the range 0-1.
- * @param g the green component of the pixel, normally in the range 0-1.
- * @param b the blue component of the pixel, normally in the range 0-1.
- * @param a the alpha component of the pixel, normally in the range 0-1.
+ * @param c the color components of the pixel, normally in the range 0-1.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -27815,9 +27765,12 @@ inline void BlitSurface9Grid(SurfaceParam src,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.MapColor
+ * @sa Surface.MapRGBA
  */
-inline Uint32 MapSurfaceRGB(SurfaceParam surface, Uint8 r, Uint8 g, Uint8 b)
+inline Uint32 MapSurfaceRGB(SurfaceConstParam surface,
+                            Uint8 r,
+                            Uint8 g,
+                            Uint8 b)
 {
   return SDL_MapSurfaceRGB(surface, r, g, b);
 }
@@ -27851,15 +27804,11 @@ inline Uint32 MapSurfaceRGB(SurfaceParam surface, Uint8 r, Uint8 g, Uint8 b)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.MapColor
+ * @sa Surface.MapRGB
  */
-inline Uint32 MapSurfaceRGBA(SurfaceParam surface,
-                             Uint8 r,
-                             Uint8 g,
-                             Uint8 b,
-                             Uint8 a)
+inline Uint32 MapSurfaceRGBA(SurfaceConstParam surface, ColorRaw c)
 {
-  return SDL_MapSurfaceRGBA(surface, r, g, b, a);
+  return SDL_MapSurfaceRGBA(surface, c.r, c.g, c.b, c.a);
 }
 
 /**
@@ -27941,12 +27890,8 @@ inline void ReadSurfacePixelFloat(SurfaceConstParam surface,
  * components from pixel formats with less than 8 bits per RGB component.
  *
  * @param surface the surface to write.
- * @param x the horizontal coordinate, 0 <= x < width.
- * @param y the vertical coordinate, 0 <= y < height.
- * @param r the red channel value, 0-255.
- * @param g the green channel value, 0-255.
- * @param b the blue channel value, 0-255.
- * @param a the alpha channel value, 0-255.
+ * @param p the coordinates, 0 <= x < width, 0 <= y < height.
+ * @param c the color channels value, 0-255.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -27967,12 +27912,8 @@ inline void WriteSurfacePixel(SurfaceParam surface,
  * tests, but is not intended for use in a game engine.
  *
  * @param surface the surface to write.
- * @param x the horizontal coordinate, 0 <= x < width.
- * @param y the vertical coordinate, 0 <= y < height.
- * @param r the red channel value, normally in the range 0-1.
- * @param g the green channel value, normally in the range 0-1.
- * @param b the blue channel value, normally in the range 0-1.
- * @param a the alpha channel value, normally in the range 0-1.
+ * @param p the coordinates, 0 <= x < width, 0 <= y < height.
+ * @param c the color channels values, normally in the range 0-1.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.

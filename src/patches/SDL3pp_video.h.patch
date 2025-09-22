@@ -6,51 +6,104 @@
 <     return CheckError(SDL_GetDisplayProperties(m_displayID));
 ---
 >     return {CheckError(SDL_GetDisplayProperties(m_displayID))};
-1311c1311
+423,424c423
+<    * @param w the width in pixels of the desired display mode.
+<    * @param h the height in pixels of the desired display mode.
+---
+>    * @param size the width and height in pixels of the desired display mode.
+444,445c443,450
+<     return CheckError(SDL_GetClosestFullscreenDisplayMode(
+<       m_displayID, size, refresh_rate, include_high_density_modes));
+---
+>     DisplayMode mode;
+>     CheckError(SDL_GetClosestFullscreenDisplayMode(m_displayID,
+>                                                    size.x,
+>                                                    size.y,
+>                                                    refresh_rate,
+>                                                    include_high_density_modes,
+>                                                    &mode));
+>     return mode;
+1310c1315
 <     return CheckError(SDL_GetWindowParent(m_resource));
 ---
 >     return {CheckError(SDL_GetWindowParent(m_resource))};
-1435c1435
+1434c1439
 <     return CheckError(SDL_GetWindowProperties(m_resource));
 ---
 >     return {CheckError(SDL_GetWindowProperties(m_resource))};
-2185c2185
+2184c2189
 <   Surface GetSurface() { return SDL_GetWindowSurface(m_resource); }
 ---
 >   SurfaceRef GetSurface() { return {SDL_GetWindowSurface(m_resource)}; }
-2670c2670
+2669c2674
 <   static WindowRef FromID(WindowID id) { return SDL_GetWindowFromID(id); }
 ---
 >   static WindowRef FromID(WindowID id) { return {SDL_GetWindowFromID(id)}; }
-2684c2684
+2683c2688
 <   static WindowRef GetGrabbed() { return SDL_GetGrabbedWindow(); }
 ---
 >   static WindowRef GetGrabbed() { return {SDL_GetGrabbedWindow()}; }
-3507c3507
+3506c3511
 <   return CheckError(SDL_GetDisplayProperties(displayID));
 ---
 >   return {CheckError(SDL_GetDisplayProperties(displayID))};
-4517c4517
+3695,3696c3700
+<  * @param w the width in pixels of the desired display mode.
+<  * @param h the height in pixels of the desired display mode.
+---
+>  * @param size the width and height in pixels of the desired display mode.
+3718,3719c3722,3729
+<   return CheckError(SDL_GetClosestFullscreenDisplayMode(
+<     displayID, size, refresh_rate, include_high_density_modes));
+---
+>   DisplayMode mode;
+>   CheckError(SDL_GetClosestFullscreenDisplayMode(displayID,
+>                                                  size.x,
+>                                                  size.y,
+>                                                  refresh_rate,
+>                                                  include_high_density_modes,
+>                                                  &mode));
+>   return mode;
+4057,4058c4067
+<  * @param w the width of the window.
+<  * @param h the height of the window.
+---
+>  * @param size the width and height of the window.
+4076c4085
+<   return Window(SDL_CreateWindow(title, size, flags));
+---
+>   return Window(SDL_CreateWindow(title, size.x, size.y, flags));
+4137,4138c4146
+<  * @param w the width of the window.
+<  * @param h the height of the window.
+---
+>  * @param size the width and height of the window.
+4158c4166,4167
+<   return Window(SDL_CreatePopupWindow(parent, offset, size, flags));
+---
+>   return Window(
+>     SDL_CreatePopupWindow(parent, offset.x, offset.y, size.x, size.y, flags));
+4515c4524
 <   return SDL_GetWindowFromID(id);
 ---
 >   return {SDL_GetWindowFromID(id)};
-4535c4535
+4533c4542
 <   return CheckError(SDL_GetWindowParent(window));
 ---
 >   return {CheckError(SDL_GetWindowParent(window))};
-4660c4660
+4658c4667
 <   return CheckError(SDL_GetWindowProperties(window));
 ---
 >   return {CheckError(SDL_GetWindowProperties(window))};
-5463c5463
+5461c5470
 < inline Surface GetWindowSurface(WindowParam window)
 ---
 > inline SurfaceRef GetWindowSurface(WindowParam window)
-5465c5465
+5463c5472
 <   return SDL_GetWindowSurface(window);
 ---
 >   return {SDL_GetWindowSurface(window)};
-5700c5700
+5698c5707
 < inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 ---
 > inline WindowRef GetGrabbedWindow() { return {SDL_GetGrabbedWindow()}; }

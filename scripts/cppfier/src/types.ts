@@ -95,7 +95,8 @@ export interface ApiTransform {
   docRules?: ReplacementRule[];
   paramTypeMap?: StringMap;
   returnTypeMap?: StringMap;
-  minVersions?: Dict<VersionTag>
+  minVersions?: Dict<VersionTag>;
+  signatureRules?: SignatureTransform[];
 }
 
 export interface ApiFileTransform {
@@ -336,6 +337,11 @@ export interface EnumerationDefinition {
 export type QuickTransform = "immutable" | "ctor" | ApiEntryKind;
 
 export type ApiSubEntryTransformLegacyMap = Dict<ApiEntryTransform | ApiEntryBase[] | QuickTransform>;
+
+export interface SignatureTransform {
+  pattern: ApiParameter[];
+  replaceParams: ApiParameter[];
+}
 
 export interface ReplacementRule {
   pattern: RegExp;

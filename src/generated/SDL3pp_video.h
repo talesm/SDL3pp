@@ -437,13 +437,12 @@ public:
    * @sa Display.GetAll
    * @sa Display.GetFullscreenModes
    */
-  DisplayMode GetClosestFullscreenMode(int w,
-                                       int h,
+  DisplayMode GetClosestFullscreenMode(const PointRaw& size,
                                        float refresh_rate,
                                        bool include_high_density_modes) const
   {
     return CheckError(SDL_GetClosestFullscreenDisplayMode(
-      m_displayID, w, h, refresh_rate, include_high_density_modes));
+      m_displayID, size, refresh_rate, include_high_density_modes));
   }
 
   /**
@@ -3710,15 +3709,14 @@ inline SDL_DisplayMode** GetFullscreenDisplayModes(Display displayID,
  * @sa Display.GetAll
  * @sa Display.GetFullscreenModes
  */
-inline void GetClosestFullscreenDisplayMode(Display displayID,
-                                            int w,
-                                            int h,
-                                            float refresh_rate,
-                                            bool include_high_density_modes,
-                                            DisplayMode* closest)
+inline DisplayMode GetClosestFullscreenDisplayMode(
+  DisplayID displayID,
+  const PointRaw& size,
+  float refresh_rate,
+  bool include_high_density_modes)
 {
-  CheckError(SDL_GetClosestFullscreenDisplayMode(
-    displayID, w, h, refresh_rate, include_high_density_modes, closest));
+  return CheckError(SDL_GetClosestFullscreenDisplayMode(
+    displayID, size, refresh_rate, include_high_density_modes));
 }
 
 /**
@@ -4071,9 +4069,11 @@ inline OwnArray<WindowRaw> GetWindows() { return SDL_GetWindows(); }
  * @sa Window.Window
  * @sa Window.Destroy
  */
-inline Window CreateWindow(StringParam title, int w, int h, WindowFlags flags)
+inline Window CreateWindow(StringParam title,
+                           const PointRaw& size,
+                           WindowFlags flags)
 {
-  return Window(SDL_CreateWindow(title, w, h, flags));
+  return Window(SDL_CreateWindow(title, size, flags));
 }
 
 /**
@@ -4151,13 +4151,11 @@ inline Window CreateWindow(StringParam title, int w, int h, WindowFlags flags)
  * @sa Window.GetParent
  */
 inline Window CreatePopupWindow(WindowParam parent,
-                                int offset_x,
-                                int offset_y,
-                                int w,
-                                int h,
+                                const PointRaw& offset,
+                                const PointRaw& size,
                                 WindowFlags flags)
 {
-  return Window(SDL_CreatePopupWindow(parent, offset_x, offset_y, w, h, flags));
+  return Window(SDL_CreatePopupWindow(parent, offset, size, flags));
 }
 
 /**

@@ -149,6 +149,8 @@ class ApiContext {
 
     this.definitionPrefix = transform.definitionPrefix ?? "";
 
+    this.signatureRules = transform.signatureRules ?? [];
+
     /** @type {Dict<ApiType>} */
     this.types = {};
 
@@ -1176,12 +1178,18 @@ function transformEntries(sourceEntries, file, context) {
         delete link.link;
         if (link.kind || targetEntry.kind !== 'def') {
           combineObject(linkedEntry, link);
+          if (linkedEntry.parameters) {
+            linkedEntry.parameters = linkedEntry.parameters.filter(p => typeof p === 'string' || (p.type && p.name));
+          }
           insertEntryAndCheck(targetEntries, linkedEntry, context, file);
         }
         link = nextLink;
       }
       delete targetDelta.link;
       combineObject(targetEntry, targetDelta);
+      if (targetEntry.parameters) {
+        targetEntry.parameters = targetEntry.parameters.filter(p => typeof p === 'string' || (p.type && p.name));
+      }
     }
     if (sourceName) context.addName(sourceName, targetEntry.name?.replaceAll('::', '.'));
     insertEntryAndCheck(targetEntries, targetEntry, context, file);
@@ -1867,6 +1875,7 @@ function transformEntry(sourceEntry, context) {
     case 'function':
       targetEntry.parameters = transformParameters(sourceEntry.parameters, context);
       targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
+      checkSignatureRules(targetEntry, context);
       const m = /@returns (?:(.*) on success|(an? valid [^,]+), or (?:\w+) on failure)/.exec(targetEntry.doc ?? "");
       if (context.enableException && m) {
         targetEntry.hints = { mayFail: true };
@@ -1895,6 +1904,7 @@ function transformEntry(sourceEntry, context) {
  * 
  * @param {ApiParameters} parameters
  * @param {ApiContext} context 
+ * @returns {ApiParameters}
  */
 function transformParameters(parameters, context) {
   return parameters.map(parameter => {
@@ -1903,6 +1913,35 @@ function transformParameters(parameters, context) {
     type = transformType(type, context.paramTypeMap);
     return { name, type, default: defaultValue };
   });
+}
+
+/**
+ * 
+ * @param {ApiEntry}    targetEntry 
+ * @param {ApiContext}  context 
+ */
+function checkSignatureRules(targetEntry, context) {
+  const parameters = /** @type {ApiParameter[]}*/(targetEntry.parameters);
+  if (parameters.some(p => typeof p === "string")) return;
+  for (const signatureRule of context.signatureRules) {
+    if (parameters.length < signatureRule.pattern.length) continue;
+    for (let i = 0; i <= parameters.length - signatureRule.pattern.length; i++) {
+      let matchParams = true;
+      for (let j = 0; j < signatureRule.pattern.length; j++) {
+        const param = parameters[i + j];
+        const pattern = signatureRule.pattern[j];
+        if (param.name !== pattern.name || param.type !== pattern.type) {
+          matchParams = false;
+          break;
+        }
+      }
+      if (matchParams) {
+        const replaceParams = signatureRule.replaceParams.map(p => ({ ...p }));
+        parameters.splice(i, signatureRule.pattern.length, ...replaceParams);
+        break;
+      }
+    }
+  }
 }
 
 /**

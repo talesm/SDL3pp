@@ -420,8 +420,7 @@ public:
    * and finally checking the refresh rate. If all the available modes are too
    * small, then false is returned.
    *
-   * @param w the width in pixels of the desired display mode.
-   * @param h the height in pixels of the desired display mode.
+   * @param size the width and height in pixels of the desired display mode.
    * @param refresh_rate the refresh rate of the desired display mode, or 0.0f
    *                     for the desktop refresh rate.
    * @param include_high_density_modes boolean to include high density modes in
@@ -437,13 +436,18 @@ public:
    * @sa Display.GetAll
    * @sa Display.GetFullscreenModes
    */
-  DisplayMode GetClosestFullscreenMode(int w,
-                                       int h,
+  DisplayMode GetClosestFullscreenMode(const PointRaw& size,
                                        float refresh_rate,
                                        bool include_high_density_modes) const
   {
-    return CheckError(SDL_GetClosestFullscreenDisplayMode(
-      m_displayID, w, h, refresh_rate, include_high_density_modes));
+    DisplayMode mode;
+    CheckError(SDL_GetClosestFullscreenDisplayMode(m_displayID,
+                                                   size.x,
+                                                   size.y,
+                                                   refresh_rate,
+                                                   include_high_density_modes,
+                                                   &mode));
+    return mode;
   }
 
   /**
@@ -3693,8 +3697,7 @@ inline SDL_DisplayMode** GetFullscreenDisplayModes(Display displayID,
  * small, then false is returned.
  *
  * @param displayID the instance ID of the display to query.
- * @param w the width in pixels of the desired display mode.
- * @param h the height in pixels of the desired display mode.
+ * @param size the width and height in pixels of the desired display mode.
  * @param refresh_rate the refresh rate of the desired display mode, or 0.0f
  *                     for the desktop refresh rate.
  * @param include_high_density_modes boolean to include high density modes in
@@ -3710,15 +3713,20 @@ inline SDL_DisplayMode** GetFullscreenDisplayModes(Display displayID,
  * @sa Display.GetAll
  * @sa Display.GetFullscreenModes
  */
-inline void GetClosestFullscreenDisplayMode(Display displayID,
-                                            int w,
-                                            int h,
-                                            float refresh_rate,
-                                            bool include_high_density_modes,
-                                            DisplayMode* closest)
+inline DisplayMode GetClosestFullscreenDisplayMode(
+  DisplayID displayID,
+  const PointRaw& size,
+  float refresh_rate,
+  bool include_high_density_modes)
 {
-  CheckError(SDL_GetClosestFullscreenDisplayMode(
-    displayID, w, h, refresh_rate, include_high_density_modes, closest));
+  DisplayMode mode;
+  CheckError(SDL_GetClosestFullscreenDisplayMode(displayID,
+                                                 size.x,
+                                                 size.y,
+                                                 refresh_rate,
+                                                 include_high_density_modes,
+                                                 &mode));
+  return mode;
 }
 
 /**
@@ -4056,8 +4064,7 @@ inline OwnArray<WindowRaw> GetWindows() { return SDL_GetWindows(); }
  * in a future version of SDL.
  *
  * @param title the title of the window, in UTF-8 encoding.
- * @param w the width of the window.
- * @param h the height of the window.
+ * @param size the width and height of the window.
  * @param flags 0, or one or more WindowFlags OR'd together.
  * @returns the window that was created or nullptr on failure; call
  *          GetError() for more information.
@@ -4071,9 +4078,11 @@ inline OwnArray<WindowRaw> GetWindows() { return SDL_GetWindows(); }
  * @sa Window.Window
  * @sa Window.Destroy
  */
-inline Window CreateWindow(StringParam title, int w, int h, WindowFlags flags)
+inline Window CreateWindow(StringParam title,
+                           const PointRaw& size,
+                           WindowFlags flags)
 {
-  return Window(SDL_CreateWindow(title, w, h, flags));
+  return Window(SDL_CreateWindow(title, size.x, size.y, flags));
 }
 
 /**
@@ -4134,8 +4143,7 @@ inline Window CreateWindow(StringParam title, int w, int h, WindowFlags flags)
  *                 of the parent.
  * @param offset_y the y position of the popup window relative to the origin
  *                 of the parent window.
- * @param w the width of the window.
- * @param h the height of the window.
+ * @param size the width and height of the window.
  * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
  *              additional WindowFlags OR'd together.
  * @returns the window that was created or nullptr on failure; call
@@ -4151,13 +4159,12 @@ inline Window CreateWindow(StringParam title, int w, int h, WindowFlags flags)
  * @sa Window.GetParent
  */
 inline Window CreatePopupWindow(WindowParam parent,
-                                int offset_x,
-                                int offset_y,
-                                int w,
-                                int h,
+                                const PointRaw& offset,
+                                const PointRaw& size,
                                 WindowFlags flags)
 {
-  return Window(SDL_CreatePopupWindow(parent, offset_x, offset_y, w, h, flags));
+  return Window(
+    SDL_CreatePopupWindow(parent, offset.x, offset.y, size.x, size.y, flags));
 }
 
 /**
