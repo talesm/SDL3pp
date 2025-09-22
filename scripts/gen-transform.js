@@ -7009,180 +7009,6 @@ const transform = {
         "SDL3pp_rect.h",
         "SDL3pp_surface.h",
       ],
-      includeAfter: {
-        "__begin": [
-          {
-            "name": "WindowParam",
-            "kind": "forward",
-          },
-          {
-            "name": "Window",
-            "kind": "forward",
-          },
-          {
-            "name": "Renderer",
-            "kind": "forward",
-          },
-          {
-            "name": "DisplayOrientation",
-          },
-          {
-            "name": "ORIENTATION_UNKNOWN",
-          },
-          {
-            "name": "ORIENTATION_LANDSCAPE",
-          },
-          {
-            "name": "ORIENTATION_LANDSCAPE_FLIPPED",
-          },
-          {
-            "name": "ORIENTATION_PORTRAIT",
-          },
-          {
-            "name": "ORIENTATION_PORTRAIT_FLIPPED",
-          },
-          {
-            "name": "DisplayModeData",
-          },
-          {
-            "name": "DisplayMode",
-          },
-          {
-            "name": "DisplayOrientation",
-          },
-          {
-            "name": "WindowFlags",
-          },
-          {
-            "name": "WINDOW_FULLSCREEN",
-          },
-          {
-            "name": "WINDOW_OPENGL",
-          },
-          {
-            "name": "WINDOW_OCCLUDED",
-          },
-          {
-            "name": "WINDOW_HIDDEN",
-          },
-          {
-            "name": "WINDOW_BORDERLESS",
-          },
-          {
-            "name": "WINDOW_RESIZABLE",
-          },
-          {
-            "name": "WINDOW_MINIMIZED",
-          },
-          {
-            "name": "WINDOW_MAXIMIZED",
-          },
-          {
-            "name": "WINDOW_MOUSE_GRABBED",
-          },
-          {
-            "name": "WINDOW_INPUT_FOCUS",
-          },
-          {
-            "name": "WINDOW_MOUSE_FOCUS",
-          },
-          {
-            "name": "WINDOW_EXTERNAL",
-          },
-          {
-            "name": "WINDOW_MODAL",
-          },
-          {
-            "name": "WINDOW_HIGH_PIXEL_DENSITY",
-          },
-          {
-            "name": "WINDOW_MOUSE_CAPTURE",
-          },
-          {
-            "name": "WINDOW_MOUSE_RELATIVE_MODE",
-          },
-          {
-            "name": "WINDOW_ALWAYS_ON_TOP",
-          },
-          {
-            "name": "WINDOW_UTILITY",
-          },
-          {
-            "name": "WINDOW_TOOLTIP",
-          },
-          {
-            "name": "WINDOW_POPUP_MENU",
-          },
-          {
-            "name": "WINDOW_KEYBOARD_GRABBED",
-          },
-          {
-            "name": "WINDOW_VULKAN",
-          },
-          {
-            "name": "WINDOW_METAL",
-          },
-          {
-            "name": "WINDOW_TRANSPARENT",
-          },
-          {
-            "name": "WINDOW_NOT_FOCUSABLE",
-          },
-          {
-            "name": "FlashOperation",
-          },
-          {
-            "name": "FLASH_CANCEL",
-          },
-          {
-            "name": "FLASH_BRIEFLY",
-          },
-          {
-            "name": "FLASH_UNTIL_FOCUSED",
-          },
-          {
-            "name": "HitTestResult",
-          },
-          {
-            "name": "HITTEST_NORMAL",
-          },
-          {
-            "name": "HITTEST_DRAGGABLE",
-          },
-          {
-            "name": "HITTEST_RESIZE_TOPLEFT",
-          },
-          {
-            "name": "HITTEST_RESIZE_TOP",
-          },
-          {
-            "name": "HITTEST_RESIZE_TOPRIGHT",
-          },
-          {
-            "name": "HITTEST_RESIZE_RIGHT",
-          },
-          {
-            "name": "HITTEST_RESIZE_BOTTOMRIGHT",
-          },
-          {
-            "name": "HITTEST_RESIZE_BOTTOM",
-          },
-          {
-            "name": "HITTEST_RESIZE_BOTTOMLEFT",
-          },
-          {
-            "name": "HITTEST_RESIZE_LEFT",
-          },
-          {
-            "name": "HitTest",
-          },
-          {
-            "kind": "alias",
-            "name": "HitTestCB",
-            "doc": "@sa HitTest"
-          }
-        ]
-      },
       namespacesMap: {
         "SDL_PROP_GLOBAL_": "prop::Global",
         "SDL_PROP_DISPLAY_": "prop::Display",
@@ -7266,6 +7092,16 @@ const transform = {
             "SDL_GetDisplayForPoint": "function",
             "SDL_GetDisplayForRect": "function"
           }
+        },
+        "SDL_WindowFlags": { before: "SDL_Window" },
+        "SDL_FlashOperation": { before: "SDL_Window" },
+        "SDL_HitTestResult": { before: "SDL_Window" },
+        "SDL_HitTest": { before: "SDL_Window" },
+        "HitTestCB": {
+          before: "SDL_Window",
+          kind: "alias",
+          type: "HitTest",
+          doc: "@sa HitTest"
         },
         "SDL_Window": {
           resource: { free: "SDL_DestroyWindow" },

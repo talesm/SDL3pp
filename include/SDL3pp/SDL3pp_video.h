@@ -589,6 +589,100 @@ constexpr SystemTheme SYSTEM_THEME_DARK =
 using DisplayModeData = SDL_DisplayModeData;
 
 /**
+ * The flags on a window.
+ *
+ * These cover a lot of true/false, or on/off, window state. Some of it is
+ * immutable after being set through Window.Window(), some of it can be
+ * changed on existing windows by the app, and some of it might be altered by
+ * the user or system outside of the app's control.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa Window.GetFlags
+ */
+using WindowFlags = SDL_WindowFlags;
+
+/**
+ * Window flash operation.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using FlashOperation = SDL_FlashOperation;
+
+constexpr FlashOperation FLASH_CANCEL =
+  SDL_FLASH_CANCEL; ///< Cancel any window flash state.
+
+constexpr FlashOperation FLASH_BRIEFLY =
+  SDL_FLASH_BRIEFLY; ///< Flash the window briefly to get attention.
+
+constexpr FlashOperation FLASH_UNTIL_FOCUSED =
+  SDL_FLASH_UNTIL_FOCUSED; ///< Flash the window until it gets focus.
+
+/**
+ * Possible return values from the HitTest callback.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa HitTest
+ */
+using HitTestResult = SDL_HitTestResult;
+
+constexpr HitTestResult HITTEST_NORMAL =
+  SDL_HITTEST_NORMAL; ///< Region is normal.  No special properties.
+
+constexpr HitTestResult HITTEST_DRAGGABLE =
+  SDL_HITTEST_DRAGGABLE; ///< Region can drag entire window.
+
+constexpr HitTestResult HITTEST_RESIZE_TOPLEFT =
+  SDL_HITTEST_RESIZE_TOPLEFT; ///< Region is the resizable top-left corner
+                              ///< border.
+
+constexpr HitTestResult HITTEST_RESIZE_TOP =
+  SDL_HITTEST_RESIZE_TOP; ///< Region is the resizable top border.
+
+constexpr HitTestResult HITTEST_RESIZE_TOPRIGHT =
+  SDL_HITTEST_RESIZE_TOPRIGHT; ///< Region is the resizable top-right corner
+                               ///< border.
+
+constexpr HitTestResult HITTEST_RESIZE_RIGHT =
+  SDL_HITTEST_RESIZE_RIGHT; ///< Region is the resizable right border.
+
+/**
+ * Region is the resizable bottom-right corner border.
+ */
+constexpr HitTestResult HITTEST_RESIZE_BOTTOMRIGHT =
+  SDL_HITTEST_RESIZE_BOTTOMRIGHT;
+
+constexpr HitTestResult HITTEST_RESIZE_BOTTOM =
+  SDL_HITTEST_RESIZE_BOTTOM; ///< Region is the resizable bottom border.
+
+constexpr HitTestResult HITTEST_RESIZE_BOTTOMLEFT =
+  SDL_HITTEST_RESIZE_BOTTOMLEFT; ///< Region is the resizable bottom-left corner
+                                 ///< border.
+
+constexpr HitTestResult HITTEST_RESIZE_LEFT =
+  SDL_HITTEST_RESIZE_LEFT; ///< Region is the resizable left border.
+
+/**
+ * Callback used for hit-testing.
+ *
+ * @param win the Window where hit-testing was set on.
+ * @param area an Point which should be hit-tested.
+ * @param data what was passed as `callback_data` to Window.SetHitTest().
+ * @returns an HitTestResult value.
+ *
+ * @sa Window.SetHitTest
+ */
+using HitTest = SDL_HitTest;
+
+/**
+ * @sa HitTest
+ */
+using HitTestCB = HitTest;
+
+/**
  * The struct used as an opaque handle to a window.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -2611,20 +2705,6 @@ struct WindowRef : Window
   ~WindowRef() { release(); }
 };
 
-/**
- * The flags on a window.
- *
- * These cover a lot of true/false, or on/off, window state. Some of it is
- * immutable after being set through Window.Window(), some of it can be
- * changed on existing windows by the app, and some of it might be altered by
- * the user or system outside of the app's control.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa Window.GetFlags
- */
-using WindowFlags = SDL_WindowFlags;
-
 constexpr WindowFlags WINDOW_FULLSCREEN =
   SDL_WINDOW_FULLSCREEN; ///< window is in fullscreen mode
 
@@ -2795,22 +2875,6 @@ constexpr WindowFlags WINDOW_NOT_FOCUSABLE =
  */
 #define SDL_WINDOWPOS_ISCENTERED(X)                                            \
   (((X) & 0xFFFF0000) == SDL_WINDOWPOS_CENTERED_MASK)
-
-/**
- * Window flash operation.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using FlashOperation = SDL_FlashOperation;
-
-constexpr FlashOperation FLASH_CANCEL =
-  SDL_FLASH_CANCEL; ///< Cancel any window flash state.
-
-constexpr FlashOperation FLASH_BRIEFLY =
-  SDL_FLASH_BRIEFLY; ///< Flash the window briefly to get attention.
-
-constexpr FlashOperation FLASH_UNTIL_FOCUSED =
-  SDL_FLASH_UNTIL_FOCUSED; ///< Flash the window until it gets focus.
 
 /**
  * An opaque handle to an OpenGL context.
@@ -5823,65 +5887,6 @@ inline void ShowWindowSystemMenu(WindowParam window, const PointRaw& p)
 {
   CheckError(SDL_ShowWindowSystemMenu(window, p));
 }
-
-/**
- * Possible return values from the HitTest callback.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @sa HitTest
- */
-using HitTestResult = SDL_HitTestResult;
-
-constexpr HitTestResult HITTEST_NORMAL =
-  SDL_HITTEST_NORMAL; ///< Region is normal.  No special properties.
-
-constexpr HitTestResult HITTEST_DRAGGABLE =
-  SDL_HITTEST_DRAGGABLE; ///< Region can drag entire window.
-
-constexpr HitTestResult HITTEST_RESIZE_TOPLEFT =
-  SDL_HITTEST_RESIZE_TOPLEFT; ///< Region is the resizable top-left corner
-                              ///< border.
-
-constexpr HitTestResult HITTEST_RESIZE_TOP =
-  SDL_HITTEST_RESIZE_TOP; ///< Region is the resizable top border.
-
-constexpr HitTestResult HITTEST_RESIZE_TOPRIGHT =
-  SDL_HITTEST_RESIZE_TOPRIGHT; ///< Region is the resizable top-right corner
-                               ///< border.
-
-constexpr HitTestResult HITTEST_RESIZE_RIGHT =
-  SDL_HITTEST_RESIZE_RIGHT; ///< Region is the resizable right border.
-
-/**
- * Region is the resizable bottom-right corner border.
- */
-constexpr HitTestResult HITTEST_RESIZE_BOTTOMRIGHT =
-  SDL_HITTEST_RESIZE_BOTTOMRIGHT;
-
-constexpr HitTestResult HITTEST_RESIZE_BOTTOM =
-  SDL_HITTEST_RESIZE_BOTTOM; ///< Region is the resizable bottom border.
-
-constexpr HitTestResult HITTEST_RESIZE_BOTTOMLEFT =
-  SDL_HITTEST_RESIZE_BOTTOMLEFT; ///< Region is the resizable bottom-left corner
-                                 ///< border.
-
-constexpr HitTestResult HITTEST_RESIZE_LEFT =
-  SDL_HITTEST_RESIZE_LEFT; ///< Region is the resizable left border.
-
-/**
- * Callback used for hit-testing.
- *
- * @param win the Window where hit-testing was set on.
- * @param area an Point which should be hit-tested.
- * @param data what was passed as `callback_data` to Window.SetHitTest().
- * @returns an HitTestResult value.
- *
- * @sa Window.SetHitTest
- */
-using HitTest = SDL_HitTest;
 
 /**
  * Provide a callback that decides if a window region has special properties.

@@ -5539,6 +5539,144 @@
           "type": "SDL_DisplayModeData",
           "sourceName": "SDL_DisplayModeData"
         },
+        "WindowFlags": {
+          "doc": "The flags on a window.\n\nThese cover a lot of true/false, or on/off, window state. Some of it is\nimmutable after being set through Window.Window(), some of it can be\nchanged on existing windows by the app, and some of it might be altered by\nthe user or system outside of the app's control.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa Window.GetFlags",
+          "name": "WindowFlags",
+          "kind": "alias",
+          "type": "SDL_WindowFlags",
+          "sourceName": "SDL_WindowFlags"
+        },
+        "FlashOperation": {
+          "doc": "Window flash operation.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "FlashOperation",
+          "kind": "alias",
+          "sourceName": "SDL_FlashOperation",
+          "type": "SDL_FlashOperation"
+        },
+        "FLASH_CANCEL": {
+          "kind": "var",
+          "name": "FLASH_CANCEL",
+          "constexpr": true,
+          "type": "FlashOperation",
+          "doc": "Cancel any window flash state.",
+          "sourceName": "SDL_FLASH_CANCEL"
+        },
+        "FLASH_BRIEFLY": {
+          "kind": "var",
+          "name": "FLASH_BRIEFLY",
+          "constexpr": true,
+          "type": "FlashOperation",
+          "doc": "Flash the window briefly to get attention.",
+          "sourceName": "SDL_FLASH_BRIEFLY"
+        },
+        "FLASH_UNTIL_FOCUSED": {
+          "kind": "var",
+          "name": "FLASH_UNTIL_FOCUSED",
+          "constexpr": true,
+          "type": "FlashOperation",
+          "doc": "Flash the window until it gets focus.",
+          "sourceName": "SDL_FLASH_UNTIL_FOCUSED"
+        },
+        "HitTestResult": {
+          "doc": "Possible return values from the HitTest callback.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa HitTest",
+          "name": "HitTestResult",
+          "kind": "alias",
+          "sourceName": "SDL_HitTestResult",
+          "type": "SDL_HitTestResult"
+        },
+        "HITTEST_NORMAL": {
+          "kind": "var",
+          "name": "HITTEST_NORMAL",
+          "constexpr": true,
+          "type": "HitTestResult",
+          "doc": "Region is normal.  No special properties.",
+          "sourceName": "SDL_HITTEST_NORMAL"
+        },
+        "HITTEST_DRAGGABLE": {
+          "kind": "var",
+          "name": "HITTEST_DRAGGABLE",
+          "constexpr": true,
+          "type": "HitTestResult",
+          "doc": "Region can drag entire window.",
+          "sourceName": "SDL_HITTEST_DRAGGABLE"
+        },
+        "HITTEST_RESIZE_TOPLEFT": {
+          "kind": "var",
+          "name": "HITTEST_RESIZE_TOPLEFT",
+          "constexpr": true,
+          "type": "HitTestResult",
+          "doc": "Region is the resizable top-left corner border.",
+          "sourceName": "SDL_HITTEST_RESIZE_TOPLEFT"
+        },
+        "HITTEST_RESIZE_TOP": {
+          "kind": "var",
+          "name": "HITTEST_RESIZE_TOP",
+          "constexpr": true,
+          "type": "HitTestResult",
+          "doc": "Region is the resizable top border.",
+          "sourceName": "SDL_HITTEST_RESIZE_TOP"
+        },
+        "HITTEST_RESIZE_TOPRIGHT": {
+          "kind": "var",
+          "name": "HITTEST_RESIZE_TOPRIGHT",
+          "constexpr": true,
+          "type": "HitTestResult",
+          "doc": "Region is the resizable top-right corner border.",
+          "sourceName": "SDL_HITTEST_RESIZE_TOPRIGHT"
+        },
+        "HITTEST_RESIZE_RIGHT": {
+          "kind": "var",
+          "name": "HITTEST_RESIZE_RIGHT",
+          "constexpr": true,
+          "type": "HitTestResult",
+          "doc": "Region is the resizable right border.",
+          "sourceName": "SDL_HITTEST_RESIZE_RIGHT"
+        },
+        "HITTEST_RESIZE_BOTTOMRIGHT": {
+          "kind": "var",
+          "name": "HITTEST_RESIZE_BOTTOMRIGHT",
+          "constexpr": true,
+          "type": "HitTestResult",
+          "doc": "Region is the resizable bottom-right corner border.",
+          "sourceName": "SDL_HITTEST_RESIZE_BOTTOMRIGHT"
+        },
+        "HITTEST_RESIZE_BOTTOM": {
+          "kind": "var",
+          "name": "HITTEST_RESIZE_BOTTOM",
+          "constexpr": true,
+          "type": "HitTestResult",
+          "doc": "Region is the resizable bottom border.",
+          "sourceName": "SDL_HITTEST_RESIZE_BOTTOM"
+        },
+        "HITTEST_RESIZE_BOTTOMLEFT": {
+          "kind": "var",
+          "name": "HITTEST_RESIZE_BOTTOMLEFT",
+          "constexpr": true,
+          "type": "HitTestResult",
+          "doc": "Region is the resizable bottom-left corner border.",
+          "sourceName": "SDL_HITTEST_RESIZE_BOTTOMLEFT"
+        },
+        "HITTEST_RESIZE_LEFT": {
+          "kind": "var",
+          "name": "HITTEST_RESIZE_LEFT",
+          "constexpr": true,
+          "type": "HitTestResult",
+          "doc": "Region is the resizable left border.",
+          "sourceName": "SDL_HITTEST_RESIZE_LEFT"
+        },
+        "HitTest": {
+          "doc": "Callback used for hit-testing.\n\n@param win the Window where hit-testing was set on.\n@param area an Point which should be hit-tested.\n@param data what was passed as `callback_data` to Window.SetHitTest().\n@returns an HitTestResult value.\n\n@sa Window.SetHitTest",
+          "name": "HitTest",
+          "kind": "alias",
+          "type": "SDL_HitTest",
+          "sourceName": "SDL_HitTest"
+        },
+        "HitTestCB": {
+          "kind": "alias",
+          "type": "HitTest",
+          "doc": "@sa HitTest",
+          "name": "HitTestCB"
+        },
         "Window": {
           "doc": "The struct used as an opaque handle to a window.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Window.Window\n\n@cat resource",
           "name": "Window",
@@ -6821,13 +6959,6 @@
             }
           }
         },
-        "WindowFlags": {
-          "doc": "The flags on a window.\n\nThese cover a lot of true/false, or on/off, window state. Some of it is\nimmutable after being set through Window.Window(), some of it can be\nchanged on existing windows by the app, and some of it might be altered by\nthe user or system outside of the app's control.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa Window.GetFlags",
-          "name": "WindowFlags",
-          "kind": "alias",
-          "type": "SDL_WindowFlags",
-          "sourceName": "SDL_WindowFlags"
-        },
         "WINDOW_FULLSCREEN": {
           "doc": "window is in fullscreen mode",
           "name": "WINDOW_FULLSCREEN",
@@ -7120,37 +7251,6 @@
           ],
           "value": "            (((X)&0xFFFF0000) == SDL_WINDOWPOS_CENTERED_MASK)",
           "sourceName": "SDL_WINDOWPOS_ISCENTERED"
-        },
-        "FlashOperation": {
-          "doc": "Window flash operation.\n\n@since This enum is available since SDL 3.2.0.",
-          "name": "FlashOperation",
-          "kind": "alias",
-          "sourceName": "SDL_FlashOperation",
-          "type": "SDL_FlashOperation"
-        },
-        "FLASH_CANCEL": {
-          "kind": "var",
-          "name": "FLASH_CANCEL",
-          "constexpr": true,
-          "type": "FlashOperation",
-          "doc": "Cancel any window flash state.",
-          "sourceName": "SDL_FLASH_CANCEL"
-        },
-        "FLASH_BRIEFLY": {
-          "kind": "var",
-          "name": "FLASH_BRIEFLY",
-          "constexpr": true,
-          "type": "FlashOperation",
-          "doc": "Flash the window briefly to get attention.",
-          "sourceName": "SDL_FLASH_BRIEFLY"
-        },
-        "FLASH_UNTIL_FOCUSED": {
-          "kind": "var",
-          "name": "FLASH_UNTIL_FOCUSED",
-          "constexpr": true,
-          "type": "FlashOperation",
-          "doc": "Flash the window until it gets focus.",
-          "sourceName": "SDL_FLASH_UNTIL_FOCUSED"
         },
         "GLContext": {
           "doc": "An opaque handle to an OpenGL context.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa GLContext.GLContext\n\n@cat resource",
@@ -9912,100 +10012,6 @@
           "hints": {
             "mayFail": true
           }
-        },
-        "HitTestResult": {
-          "doc": "Possible return values from the HitTest callback.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa HitTest",
-          "name": "HitTestResult",
-          "kind": "alias",
-          "sourceName": "SDL_HitTestResult",
-          "type": "SDL_HitTestResult"
-        },
-        "HITTEST_NORMAL": {
-          "kind": "var",
-          "name": "HITTEST_NORMAL",
-          "constexpr": true,
-          "type": "HitTestResult",
-          "doc": "Region is normal.  No special properties.",
-          "sourceName": "SDL_HITTEST_NORMAL"
-        },
-        "HITTEST_DRAGGABLE": {
-          "kind": "var",
-          "name": "HITTEST_DRAGGABLE",
-          "constexpr": true,
-          "type": "HitTestResult",
-          "doc": "Region can drag entire window.",
-          "sourceName": "SDL_HITTEST_DRAGGABLE"
-        },
-        "HITTEST_RESIZE_TOPLEFT": {
-          "kind": "var",
-          "name": "HITTEST_RESIZE_TOPLEFT",
-          "constexpr": true,
-          "type": "HitTestResult",
-          "doc": "Region is the resizable top-left corner border.",
-          "sourceName": "SDL_HITTEST_RESIZE_TOPLEFT"
-        },
-        "HITTEST_RESIZE_TOP": {
-          "kind": "var",
-          "name": "HITTEST_RESIZE_TOP",
-          "constexpr": true,
-          "type": "HitTestResult",
-          "doc": "Region is the resizable top border.",
-          "sourceName": "SDL_HITTEST_RESIZE_TOP"
-        },
-        "HITTEST_RESIZE_TOPRIGHT": {
-          "kind": "var",
-          "name": "HITTEST_RESIZE_TOPRIGHT",
-          "constexpr": true,
-          "type": "HitTestResult",
-          "doc": "Region is the resizable top-right corner border.",
-          "sourceName": "SDL_HITTEST_RESIZE_TOPRIGHT"
-        },
-        "HITTEST_RESIZE_RIGHT": {
-          "kind": "var",
-          "name": "HITTEST_RESIZE_RIGHT",
-          "constexpr": true,
-          "type": "HitTestResult",
-          "doc": "Region is the resizable right border.",
-          "sourceName": "SDL_HITTEST_RESIZE_RIGHT"
-        },
-        "HITTEST_RESIZE_BOTTOMRIGHT": {
-          "kind": "var",
-          "name": "HITTEST_RESIZE_BOTTOMRIGHT",
-          "constexpr": true,
-          "type": "HitTestResult",
-          "doc": "Region is the resizable bottom-right corner border.",
-          "sourceName": "SDL_HITTEST_RESIZE_BOTTOMRIGHT"
-        },
-        "HITTEST_RESIZE_BOTTOM": {
-          "kind": "var",
-          "name": "HITTEST_RESIZE_BOTTOM",
-          "constexpr": true,
-          "type": "HitTestResult",
-          "doc": "Region is the resizable bottom border.",
-          "sourceName": "SDL_HITTEST_RESIZE_BOTTOM"
-        },
-        "HITTEST_RESIZE_BOTTOMLEFT": {
-          "kind": "var",
-          "name": "HITTEST_RESIZE_BOTTOMLEFT",
-          "constexpr": true,
-          "type": "HitTestResult",
-          "doc": "Region is the resizable bottom-left corner border.",
-          "sourceName": "SDL_HITTEST_RESIZE_BOTTOMLEFT"
-        },
-        "HITTEST_RESIZE_LEFT": {
-          "kind": "var",
-          "name": "HITTEST_RESIZE_LEFT",
-          "constexpr": true,
-          "type": "HitTestResult",
-          "doc": "Region is the resizable left border.",
-          "sourceName": "SDL_HITTEST_RESIZE_LEFT"
-        },
-        "HitTest": {
-          "doc": "Callback used for hit-testing.\n\n@param win the Window where hit-testing was set on.\n@param area an Point which should be hit-tested.\n@param data what was passed as `callback_data` to Window.SetHitTest().\n@returns an HitTestResult value.\n\n@sa Window.SetHitTest",
-          "name": "HitTest",
-          "kind": "alias",
-          "type": "SDL_HitTest",
-          "sourceName": "SDL_HitTest"
         },
         "SetWindowHitTest": {
           "doc": "Provide a callback that decides if a window region has special properties.\n\nNormally windows are dragged and resized by decorations provided by the\nsystem window manager (a title bar, borders, etc), but for some apps, it\nmakes sense to drag them from somewhere else inside the window itself; for\nexample, one might have a borderless window that wants to be draggable from\nany part, or simulate its own title bar, etc.\n\nThis function lets the app provide a callback that designates pieces of a\ngiven window as special. This callback is run during event processing if we\nneed to tell the OS to treat a region of the window specially; the use of\nthis callback is known as \"hit testing.\"\n\nMouse input may not be delivered to your application if it is within a\nspecial area; the OS will often apply that input to moving the window or\nresizing the window and not deliver it to the application.\n\nSpecifying nullptr for a callback disables hit-testing. Hit-testing is\ndisabled by default.\n\nPlatforms that don't support this functionality will return false\nunconditionally, even if you're attempting to disable hit-testing.\n\nYour callback may fire at any time, and its firing does not indicate any\nspecific behavior (for example, on Windows, this certainly might fire when\nthe OS is deciding whether to drag your window, but it fires for lots of\nother reasons, too, some unrelated to anything you probably care about _and\nwhen the mouse isn't actually at the location it is testing_). Since this\ncan fire at any time, you should try to keep your callback efficient,\ndevoid of allocations, etc.\n\n@param window the window to set hit-testing on.\n@param callback the function to call when doing a hit-test.\n@param callback_data an app-defined void pointer passed to **callback**.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",

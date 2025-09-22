@@ -6,51 +6,51 @@
 <     return CheckError(SDL_GetDisplayProperties(m_displayID));
 ---
 >     return {CheckError(SDL_GetDisplayProperties(m_displayID))};
-1128c1128
+1222c1222
 <     return CheckError(SDL_GetWindowParent(m_resource));
 ---
 >     return {CheckError(SDL_GetWindowParent(m_resource))};
-1252c1252
+1346c1346
 <     return CheckError(SDL_GetWindowProperties(m_resource));
 ---
 >     return {CheckError(SDL_GetWindowProperties(m_resource))};
-2002c2002
+2096c2096
 <   Surface GetSurface() { return SDL_GetWindowSurface(m_resource); }
 ---
 >   SurfaceRef GetSurface() { return {SDL_GetWindowSurface(m_resource)}; }
-2487c2487
+2581c2581
 <   static WindowRef FromID(WindowID id) { return SDL_GetWindowFromID(id); }
 ---
 >   static WindowRef FromID(WindowID id) { return {SDL_GetWindowFromID(id)}; }
-2501c2501
+2595c2595
 <   static WindowRef GetGrabbed() { return SDL_GetGrabbedWindow(); }
 ---
 >   static WindowRef GetGrabbed() { return {SDL_GetGrabbedWindow()}; }
-3443c3443
+3507c3507
 <   return CheckError(SDL_GetDisplayProperties(displayID));
 ---
 >   return {CheckError(SDL_GetDisplayProperties(displayID))};
-4453c4453
+4517c4517
 <   return SDL_GetWindowFromID(id);
 ---
 >   return {SDL_GetWindowFromID(id)};
-4471c4471
+4535c4535
 <   return CheckError(SDL_GetWindowParent(window));
 ---
 >   return {CheckError(SDL_GetWindowParent(window))};
-4596c4596
+4660c4660
 <   return CheckError(SDL_GetWindowProperties(window));
 ---
 >   return {CheckError(SDL_GetWindowProperties(window))};
-5399c5399
+5463c5463
 < inline Surface GetWindowSurface(WindowParam window)
 ---
 > inline SurfaceRef GetWindowSurface(WindowParam window)
-5401c5401
+5465c5465
 <   return SDL_GetWindowSurface(window);
 ---
 >   return {SDL_GetWindowSurface(window)};
-5636c5636
+5700c5700
 < inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 ---
 > inline WindowRef GetGrabbedWindow() { return {SDL_GetGrabbedWindow()}; }
