@@ -783,6 +783,13 @@ class Window
 public:
   constexpr Window() = default;
 
+  /**
+   * Constructs from WindowParam.
+   *
+   * @param resource a WindowRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit Window(const WindowRaw resource)
     : m_resource(resource)
   {
@@ -1108,14 +1115,23 @@ public:
 
   ~Window() { SDL_DestroyWindow(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   Window& operator=(Window other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying WindowRaw.
+   */
   constexpr WindowRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying WindowRaw and clear this.
+   */
   constexpr WindowRaw release()
   {
     auto r = m_resource;
@@ -1123,6 +1139,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to WindowParam
+   */
   constexpr operator WindowParam() const { return {m_resource}; }
 
   /**
@@ -2707,6 +2726,13 @@ public:
  */
 struct WindowRef : Window
 {
+  /**
+   * Constructs from WindowParam.
+   *
+   * @param resource a WindowRaw or Window.
+   *
+   * This does not takes ownership!
+   */
   WindowRef(WindowParam resource)
     : Window(resource.value)
   {
@@ -2813,6 +2839,11 @@ class GLContext
 public:
   constexpr GLContext() = default;
 
+  /**
+   * Constructs from GLContextParam.
+   *
+   * @param resource a GLContextRaw to be wrapped.
+   */
   constexpr GLContext(const GLContextRaw resource)
     : m_resource(resource)
   {
@@ -2854,14 +2885,23 @@ public:
 
   ~GLContext() {}
 
+  /**
+   * Assignment operator.
+   */
   GLContext& operator=(GLContext other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying GLContextRaw.
+   */
   constexpr GLContextRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying GLContextRaw and clear this.
+   */
   constexpr GLContextRaw release()
   {
     auto r = m_resource;
@@ -2869,6 +2909,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to GLContextParam
+   */
   constexpr operator GLContextParam() const { return {m_resource}; }
 
   /**

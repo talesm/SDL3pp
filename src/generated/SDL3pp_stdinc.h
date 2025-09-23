@@ -832,6 +832,13 @@ class Environment
 public:
   constexpr Environment() = default;
 
+  /**
+   * Constructs from EnvironmentParam.
+   *
+   * @param resource a EnvironmentRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit Environment(const EnvironmentRaw resource)
     : m_resource(resource)
   {
@@ -875,14 +882,23 @@ public:
 
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   Environment& operator=(Environment other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying EnvironmentRaw.
+   */
   constexpr EnvironmentRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying EnvironmentRaw and clear this.
+   */
   constexpr EnvironmentRaw release()
   {
     auto r = m_resource;
@@ -890,6 +906,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to EnvironmentParam
+   */
   constexpr operator EnvironmentParam() const { return {m_resource}; }
 
   /**
@@ -1009,6 +1028,13 @@ public:
  */
 struct EnvironmentRef : Environment
 {
+  /**
+   * Constructs from EnvironmentParam.
+   *
+   * @param resource a EnvironmentRaw or Environment.
+   *
+   * This does not takes ownership!
+   */
   EnvironmentRef(EnvironmentParam resource)
     : Environment(resource.value)
   {
@@ -5520,6 +5546,13 @@ class IConv
 public:
   constexpr IConv() = default;
 
+  /**
+   * Constructs from IConvParam.
+   *
+   * @param resource a IConvRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit IConv(const IConvRaw resource)
     : m_resource(resource)
   {
@@ -5558,14 +5591,23 @@ public:
 
   ~IConv() { SDL_iconv_close(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   IConv& operator=(IConv other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying IConvRaw.
+   */
   constexpr IConvRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying IConvRaw and clear this.
+   */
   constexpr IConvRaw release()
   {
     auto r = m_resource;
@@ -5573,6 +5615,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to IConvParam
+   */
   constexpr operator IConvParam() const { return {m_resource}; }
 
   /**
@@ -5644,6 +5689,13 @@ public:
  */
 struct IConvRef : IConv
 {
+  /**
+   * Constructs from IConvParam.
+   *
+   * @param resource a IConvRaw or IConv.
+   *
+   * This does not takes ownership!
+   */
   IConvRef(IConvParam resource)
     : IConv(resource.value)
   {

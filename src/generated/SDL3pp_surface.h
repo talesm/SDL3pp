@@ -184,6 +184,13 @@ class Surface
 public:
   constexpr Surface() = default;
 
+  /**
+   * Constructs from SurfaceParam.
+   *
+   * @param resource a SurfaceRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit Surface(const SurfaceRaw resource)
     : m_resource(resource)
   {
@@ -253,7 +260,11 @@ public:
   }
 
   /**
-   * Safely borrows the resource
+   * Safely borrows the from SurfaceParam.
+   *
+   * @param resource a SurfaceRaw or Surface.
+   *
+   * This does not takes ownership!
    */
   static constexpr Surface Borrow(SurfaceParam resource)
   {
@@ -311,14 +322,23 @@ public:
 
   ~Surface() { SDL_DestroySurface(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   Surface& operator=(Surface other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying SurfaceRaw.
+   */
   constexpr SurfaceRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying SurfaceRaw and clear this.
+   */
   constexpr SurfaceRaw release()
   {
     auto r = m_resource;
@@ -326,6 +346,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to SurfaceParam
+   */
   constexpr operator SurfaceParam() const { return {m_resource}; }
 
   /**

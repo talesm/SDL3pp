@@ -10431,6 +10431,13 @@ class Palette
 public:
   constexpr Palette() = default;
 
+  /**
+   * Constructs from PaletteParam.
+   *
+   * @param resource a PaletteRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit Palette(const PaletteRaw resource)
     : m_resource(resource)
   {
@@ -10466,7 +10473,11 @@ public:
   }
 
   /**
-   * Safely borrows the resource
+   * Safely borrows the from PaletteParam.
+   *
+   * @param resource a PaletteRaw or Palette.
+   *
+   * This does not takes ownership!
    */
   static constexpr Palette Borrow(PaletteParam resource)
   {
@@ -10476,14 +10487,23 @@ public:
 
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   Palette& operator=(Palette other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying PaletteRaw.
+   */
   constexpr PaletteRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying PaletteRaw and clear this.
+   */
   constexpr PaletteRaw release()
   {
     auto r = m_resource;
@@ -10491,6 +10511,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to PaletteParam
+   */
   constexpr operator PaletteParam() const { return {m_resource}; }
 
   constexpr int GetSize() const { return m_resource->ncolors; }
@@ -10957,6 +10980,13 @@ class Properties
 public:
   constexpr Properties() = default;
 
+  /**
+   * Constructs from PropertiesParam.
+   *
+   * @param resource a PropertiesID to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit Properties(const PropertiesID resource)
     : m_resource(resource)
   {
@@ -10994,14 +11024,23 @@ public:
 
   ~Properties() { SDL_DestroyProperties(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   Properties& operator=(Properties other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying PropertiesID.
+   */
   constexpr PropertiesID get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying PropertiesID and clear this.
+   */
   constexpr PropertiesID release()
   {
     auto r = m_resource;
@@ -11009,6 +11048,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to PropertiesParam
+   */
   constexpr operator PropertiesParam() const { return {m_resource}; }
 
   /**
@@ -11037,6 +11079,13 @@ public:
  */
 struct PropertiesRef : Properties
 {
+  /**
+   * Constructs from PropertiesParam.
+   *
+   * @param resource a PropertiesID or Properties.
+   *
+   * This does not takes ownership!
+   */
   PropertiesRef(PropertiesParam resource)
     : Properties(resource.value)
   {
@@ -12597,6 +12646,13 @@ class Environment
 public:
   constexpr Environment() = default;
 
+  /**
+   * Constructs from EnvironmentParam.
+   *
+   * @param resource a EnvironmentRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit Environment(const EnvironmentRaw resource)
     : m_resource(resource)
   {
@@ -12640,14 +12696,23 @@ public:
 
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   Environment& operator=(Environment other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying EnvironmentRaw.
+   */
   constexpr EnvironmentRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying EnvironmentRaw and clear this.
+   */
   constexpr EnvironmentRaw release()
   {
     auto r = m_resource;
@@ -12655,6 +12720,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to EnvironmentParam
+   */
   constexpr operator EnvironmentParam() const { return {m_resource}; }
 
   /**
@@ -12787,6 +12855,13 @@ public:
  */
 struct EnvironmentRef : Environment
 {
+  /**
+   * Constructs from EnvironmentParam.
+   *
+   * @param resource a EnvironmentRaw or Environment.
+   *
+   * This does not takes ownership!
+   */
   EnvironmentRef(EnvironmentParam resource)
     : Environment(resource.value)
   {
@@ -17367,6 +17442,13 @@ class IConv
 public:
   constexpr IConv() = default;
 
+  /**
+   * Constructs from IConvParam.
+   *
+   * @param resource a IConvRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit IConv(const IConvRaw resource)
     : m_resource(resource)
   {
@@ -17405,14 +17487,23 @@ public:
 
   ~IConv() { SDL_iconv_close(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   IConv& operator=(IConv other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying IConvRaw.
+   */
   constexpr IConvRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying IConvRaw and clear this.
+   */
   constexpr IConvRaw release()
   {
     auto r = m_resource;
@@ -17420,6 +17511,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to IConvParam
+   */
   constexpr operator IConvParam() const { return {m_resource}; }
 
   /**
@@ -17490,6 +17584,13 @@ public:
  */
 struct IConvRef : IConv
 {
+  /**
+   * Constructs from IConvParam.
+   *
+   * @param resource a IConvRaw or IConv.
+   *
+   * This does not takes ownership!
+   */
   IConvRef(IConvParam resource)
     : IConv(resource.value)
   {
@@ -19379,6 +19480,13 @@ class IOStream
 public:
   constexpr IOStream() = default;
 
+  /**
+   * Constructs from IOStreamParam.
+   *
+   * @param resource a IOStreamRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit IOStream(const IOStreamRaw resource)
     : m_resource(resource)
   {
@@ -19636,14 +19744,23 @@ public:
 
   ~IOStream() { SDL_CloseIO(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   IOStream& operator=(IOStream other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying IOStreamRaw.
+   */
   constexpr IOStreamRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying IOStreamRaw and clear this.
+   */
   constexpr IOStreamRaw release()
   {
     auto r = m_resource;
@@ -19651,6 +19768,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to IOStreamParam
+   */
   constexpr operator IOStreamParam() const { return {m_resource}; }
 
   /**
@@ -20995,6 +21115,13 @@ public:
  */
 struct IOStreamRef : IOStream
 {
+  /**
+   * Constructs from IOStreamParam.
+   *
+   * @param resource a IOStreamRaw or IOStream.
+   *
+   * This does not takes ownership!
+   */
   IOStreamRef(IOStreamParam resource)
     : IOStream(resource.value)
   {
@@ -25424,6 +25551,13 @@ class Surface
 public:
   constexpr Surface() = default;
 
+  /**
+   * Constructs from SurfaceParam.
+   *
+   * @param resource a SurfaceRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit Surface(const SurfaceRaw resource)
     : m_resource(resource)
   {
@@ -25491,7 +25625,11 @@ public:
   }
 
   /**
-   * Safely borrows the resource
+   * Safely borrows the from SurfaceParam.
+   *
+   * @param resource a SurfaceRaw or Surface.
+   *
+   * This does not takes ownership!
    */
   static constexpr Surface Borrow(SurfaceParam resource)
   {
@@ -25549,14 +25687,23 @@ public:
 
   ~Surface() { SDL_DestroySurface(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   Surface& operator=(Surface other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying SurfaceRaw.
+   */
   constexpr SurfaceRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying SurfaceRaw and clear this.
+   */
   constexpr SurfaceRaw release()
   {
     auto r = m_resource;
@@ -25564,6 +25711,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to SurfaceParam
+   */
   constexpr operator SurfaceParam() const { return {m_resource}; }
 
   /**
@@ -29756,6 +29906,13 @@ class Window
 public:
   constexpr Window() = default;
 
+  /**
+   * Constructs from WindowParam.
+   *
+   * @param resource a WindowRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit Window(const WindowRaw resource)
     : m_resource(resource)
   {
@@ -30082,14 +30239,23 @@ public:
 
   ~Window() { SDL_DestroyWindow(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   Window& operator=(Window other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying WindowRaw.
+   */
   constexpr WindowRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying WindowRaw and clear this.
+   */
   constexpr WindowRaw release()
   {
     auto r = m_resource;
@@ -30097,6 +30263,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to WindowParam
+   */
   constexpr operator WindowParam() const { return {m_resource}; }
 
   /**
@@ -31822,6 +31991,13 @@ public:
  */
 struct WindowRef : Window
 {
+  /**
+   * Constructs from WindowParam.
+   *
+   * @param resource a WindowRaw or Window.
+   *
+   * This does not takes ownership!
+   */
   WindowRef(WindowParam resource)
     : Window(resource.value)
   {
@@ -31932,6 +32108,11 @@ class GLContext
 public:
   constexpr GLContext() = default;
 
+  /**
+   * Constructs from GLContextParam.
+   *
+   * @param resource a GLContextRaw to be wrapped.
+   */
   constexpr GLContext(const GLContextRaw resource)
     : m_resource(resource)
   {
@@ -31973,14 +32154,23 @@ public:
 
   ~GLContext() {}
 
+  /**
+   * Assignment operator.
+   */
   GLContext& operator=(GLContext other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying GLContextRaw.
+   */
   constexpr GLContextRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying GLContextRaw and clear this.
+   */
   constexpr GLContextRaw release()
   {
     auto r = m_resource;
@@ -31988,6 +32178,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to GLContextParam
+   */
   constexpr operator GLContextParam() const { return {m_resource}; }
 
   /**

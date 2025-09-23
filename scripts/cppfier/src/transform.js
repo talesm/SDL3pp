@@ -800,6 +800,8 @@ function expandTypes(sourceEntries, file, context) {
     }
     context.addReturnType(constPointerType, constRawName);
 
+    const ownershipDisclaimer = hasScoped ? "" : "\n\nThis assumes the ownership, call release() if you need to take back.";
+
     /** @type {ApiEntryTransformMap} */
     const ctors = {
       [targetName]: [{
@@ -815,6 +817,7 @@ function expandTypes(sourceEntries, file, context) {
         explicit: !hasScoped,
         parameters: [{ name: "resource", type: constRawName }],
         hints: { init: ["m_resource(resource)"] },
+        doc: `Constructs from ${paramType}.\n\n@param resource a ${rawName} to be wrapped.${ownershipDisclaimer}`,
       }, {
         kind: "function",
         type: "",
@@ -845,7 +848,7 @@ function expandTypes(sourceEntries, file, context) {
           type: targetName,
           parameters: [{ name: "resource", type: paramType }],
           hints: { body: `++resource.value->${resourceEntry.shared};\nreturn ${targetName}(resource.value);` },
-          doc: "Safely borrows the resource"
+          doc: `Safely borrows the from ${paramType}.\n\n@param resource a ${rawName} or ${targetName}.\n\nThis does not takes ownership!`
         };
       }
     } else if (hasScoped) {
@@ -1006,6 +1009,7 @@ function expandTypes(sourceEntries, file, context) {
         type: `${targetName} &`,
         parameters: [{ name: 'other', type: targetName }],
         hints: { body: "std::swap(m_resource, other.m_resource);\nreturn *this;" },
+        doc: "Assignment operator.",
       },
       "get": {
         kind: "function",
@@ -1014,6 +1018,7 @@ function expandTypes(sourceEntries, file, context) {
         constexpr: true,
         parameters: [],
         hints: { body: "return m_resource;" },
+        doc: `Retrieves underlying ${rawName}.`,
       },
       "release": {
         kind: "function",
@@ -1021,6 +1026,7 @@ function expandTypes(sourceEntries, file, context) {
         constexpr: true,
         parameters: [],
         hints: { body: `auto r = m_resource;\nm_resource = ${nullValue};\nreturn r;` },
+        doc: `Retrieves underlying ${rawName} and clear this.`,
       },
       [`operator ${paramType}`]: {
         kind: "function",
@@ -1029,6 +1035,7 @@ function expandTypes(sourceEntries, file, context) {
         constexpr: true,
         parameters: [],
         hints: { body: "return {m_resource};" },
+        doc: `Converts to ${paramType}`,
       },
       ...subEntries,
     };
@@ -1054,7 +1061,8 @@ function expandTypes(sourceEntries, file, context) {
             type: paramType,
             name: "resource"
           }],
-          hints: { init: [`${targetName}(resource.value)`] }
+          hints: { init: [`${targetName}(resource.value)`] },
+          doc: `Constructs from ${paramType}.\n\n@param resource a ${rawName} or ${targetName}.\n\nThis does not takes ownership!`
         },
         [`~${refName}`]: {
           kind: 'function',

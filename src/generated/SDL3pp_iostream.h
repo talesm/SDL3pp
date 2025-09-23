@@ -126,6 +126,13 @@ class IOStream
 public:
   constexpr IOStream() = default;
 
+  /**
+   * Constructs from IOStreamParam.
+   *
+   * @param resource a IOStreamRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit IOStream(const IOStreamRaw resource)
     : m_resource(resource)
   {
@@ -382,14 +389,23 @@ public:
 
   ~IOStream() { SDL_CloseIO(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   IOStream& operator=(IOStream other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying IOStreamRaw.
+   */
   constexpr IOStreamRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying IOStreamRaw and clear this.
+   */
   constexpr IOStreamRaw release()
   {
     auto r = m_resource;
@@ -397,6 +413,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to IOStreamParam
+   */
   constexpr operator IOStreamParam() const { return {m_resource}; }
 
   /**
@@ -1352,6 +1371,13 @@ public:
  */
 struct IOStreamRef : IOStream
 {
+  /**
+   * Constructs from IOStreamParam.
+   *
+   * @param resource a IOStreamRaw or IOStream.
+   *
+   * This does not takes ownership!
+   */
   IOStreamRef(IOStreamParam resource)
     : IOStream(resource.value)
   {

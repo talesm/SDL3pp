@@ -2574,8 +2574,8 @@
                     "m_resource(resource)"
                   ]
                 },
-                "name": "Properties",
-                "doc": ""
+                "doc": "Constructs from PropertiesParam.\n\n@param resource a PropertiesID to be wrapped.\n\nThis assumes the ownership, call release() if you need to take back.",
+                "name": "Properties"
               },
               {
                 "kind": "function",
@@ -2678,8 +2678,8 @@
               "hints": {
                 "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
               },
-              "name": "operator=",
-              "doc": ""
+              "doc": "Assignment operator.",
+              "name": "operator="
             },
             "get": {
               "kind": "function",
@@ -2690,8 +2690,8 @@
               "hints": {
                 "body": "return m_resource;"
               },
-              "name": "get",
-              "doc": ""
+              "doc": "Retrieves underlying PropertiesID.",
+              "name": "get"
             },
             "release": {
               "kind": "function",
@@ -2701,8 +2701,8 @@
               "hints": {
                 "body": "auto r = m_resource;\nm_resource = 0;\nreturn r;"
               },
-              "name": "release",
-              "doc": ""
+              "doc": "Retrieves underlying PropertiesID and clear this.",
+              "name": "release"
             },
             "operator PropertiesParam": {
               "kind": "function",
@@ -2713,8 +2713,8 @@
               "hints": {
                 "body": "return {m_resource};"
               },
-              "name": "operator PropertiesParam",
-              "doc": ""
+              "doc": "Converts to PropertiesParam",
+              "name": "operator PropertiesParam"
             },
             "Destroy": {
               "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create",
@@ -2754,8 +2754,8 @@
                   "Properties(resource.value)"
                 ]
               },
-              "name": "PropertiesRef",
-              "doc": ""
+              "doc": "Constructs from PropertiesParam.\n\n@param resource a PropertiesID or Properties.\n\nThis does not takes ownership!",
+              "name": "PropertiesRef"
             },
             "~PropertiesRef": {
               "kind": "function",
@@ -5948,8 +5948,8 @@
                     "m_resource(resource)"
                   ]
                 },
-                "name": "Window",
-                "doc": ""
+                "doc": "Constructs from WindowParam.\n\n@param resource a WindowRaw to be wrapped.\n\nThis assumes the ownership, call release() if you need to take back.",
+                "name": "Window"
               },
               {
                 "kind": "function",
@@ -6101,8 +6101,8 @@
               "hints": {
                 "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
               },
-              "name": "operator=",
-              "doc": ""
+              "doc": "Assignment operator.",
+              "name": "operator="
             },
             "get": {
               "kind": "function",
@@ -6113,8 +6113,8 @@
               "hints": {
                 "body": "return m_resource;"
               },
-              "name": "get",
-              "doc": ""
+              "doc": "Retrieves underlying WindowRaw.",
+              "name": "get"
             },
             "release": {
               "kind": "function",
@@ -6124,8 +6124,8 @@
               "hints": {
                 "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
               },
-              "name": "release",
-              "doc": ""
+              "doc": "Retrieves underlying WindowRaw and clear this.",
+              "name": "release"
             },
             "operator WindowParam": {
               "kind": "function",
@@ -6136,8 +6136,8 @@
               "hints": {
                 "body": "return {m_resource};"
               },
-              "name": "operator WindowParam",
-              "doc": ""
+              "doc": "Converts to WindowParam",
+              "name": "operator WindowParam"
             },
             "GetDisplay": {
               "doc": "Get the display associated with a window.\n\n@returns the instance ID of the display containing the center of the window\n         on success or 0 on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetBounds\n@sa Display.GetAll",
@@ -7125,8 +7125,8 @@
                   "Window(resource.value)"
                 ]
               },
-              "name": "WindowRef",
-              "doc": ""
+              "doc": "Constructs from WindowParam.\n\n@param resource a WindowRaw or Window.\n\nThis does not takes ownership!",
+              "name": "WindowRef"
             },
             "~WindowRef": {
               "kind": "function",
@@ -7253,8 +7253,8 @@
                     "m_resource(resource)"
                   ]
                 },
-                "name": "GLContext",
-                "doc": ""
+                "doc": "Constructs from GLContextParam.\n\n@param resource a GLContextRaw to be wrapped.",
+                "name": "GLContext"
               },
               {
                 "kind": "function",
@@ -7326,8 +7326,8 @@
               "hints": {
                 "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
               },
-              "name": "operator=",
-              "doc": ""
+              "doc": "Assignment operator.",
+              "name": "operator="
             },
             "get": {
               "kind": "function",
@@ -7338,8 +7338,8 @@
               "hints": {
                 "body": "return m_resource;"
               },
-              "name": "get",
-              "doc": ""
+              "doc": "Retrieves underlying GLContextRaw.",
+              "name": "get"
             },
             "release": {
               "kind": "function",
@@ -7349,8 +7349,8 @@
               "hints": {
                 "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
               },
-              "name": "release",
-              "doc": ""
+              "doc": "Retrieves underlying GLContextRaw and clear this.",
+              "name": "release"
             },
             "operator GLContextParam": {
               "kind": "function",
@@ -7361,8 +7361,8 @@
               "hints": {
                 "body": "return {m_resource};"
               },
-              "name": "operator GLContextParam",
-              "doc": ""
+              "doc": "Converts to GLContextParam",
+              "name": "operator GLContextParam"
             },
             "MakeCurrent": {
               "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param window the window to associate with the context.\n@param context the OpenGL context to associate with the window.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.GLContext",
@@ -13753,8 +13753,8 @@
                     "m_resource(resource)"
                   ]
                 },
-                "name": "Palette",
-                "doc": ""
+                "doc": "Constructs from PaletteParam.\n\n@param resource a PaletteRaw to be wrapped.\n\nThis assumes the ownership, call release() if you need to take back.",
+                "name": "Palette"
               },
               {
                 "kind": "function",
@@ -13824,7 +13824,7 @@
               "hints": {
                 "body": "++resource.value->refcount;\nreturn Palette(resource.value);"
               },
-              "doc": "Safely borrows the resource",
+              "doc": "Safely borrows the from PaletteParam.\n\n@param resource a PaletteRaw or Palette.\n\nThis does not takes ownership!",
               "name": "Borrow"
             },
             "~Palette": {
@@ -13849,8 +13849,8 @@
               "hints": {
                 "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
               },
-              "name": "operator=",
-              "doc": ""
+              "doc": "Assignment operator.",
+              "name": "operator="
             },
             "get": {
               "kind": "function",
@@ -13861,8 +13861,8 @@
               "hints": {
                 "body": "return m_resource;"
               },
-              "name": "get",
-              "doc": ""
+              "doc": "Retrieves underlying PaletteRaw.",
+              "name": "get"
             },
             "release": {
               "kind": "function",
@@ -13872,8 +13872,8 @@
               "hints": {
                 "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
               },
-              "name": "release",
-              "doc": ""
+              "doc": "Retrieves underlying PaletteRaw and clear this.",
+              "name": "release"
             },
             "operator PaletteParam": {
               "kind": "function",
@@ -13884,8 +13884,8 @@
               "hints": {
                 "body": "return {m_resource};"
               },
-              "name": "operator PaletteParam",
-              "doc": ""
+              "doc": "Converts to PaletteParam",
+              "name": "operator PaletteParam"
             },
             "GetSize": {
               "kind": "function",
@@ -16698,8 +16698,8 @@
                     "m_resource(resource)"
                   ]
                 },
-                "name": "Surface",
-                "doc": ""
+                "doc": "Constructs from SurfaceParam.\n\n@param resource a SurfaceRaw to be wrapped.\n\nThis assumes the ownership, call release() if you need to take back.",
+                "name": "Surface"
               },
               {
                 "kind": "function",
@@ -16795,7 +16795,7 @@
               "hints": {
                 "body": "++resource.value->refcount;\nreturn Surface(resource.value);"
               },
-              "doc": "Safely borrows the resource",
+              "doc": "Safely borrows the from SurfaceParam.\n\n@param resource a SurfaceRaw or Surface.\n\nThis does not takes ownership!",
               "name": "Borrow"
             },
             "LoadBMP": [
@@ -16861,8 +16861,8 @@
               "hints": {
                 "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
               },
-              "name": "operator=",
-              "doc": ""
+              "doc": "Assignment operator.",
+              "name": "operator="
             },
             "get": {
               "kind": "function",
@@ -16873,8 +16873,8 @@
               "hints": {
                 "body": "return m_resource;"
               },
-              "name": "get",
-              "doc": ""
+              "doc": "Retrieves underlying SurfaceRaw.",
+              "name": "get"
             },
             "release": {
               "kind": "function",
@@ -16884,8 +16884,8 @@
               "hints": {
                 "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
               },
-              "name": "release",
-              "doc": ""
+              "doc": "Retrieves underlying SurfaceRaw and clear this.",
+              "name": "release"
             },
             "operator SurfaceParam": {
               "kind": "function",
@@ -16896,8 +16896,8 @@
               "hints": {
                 "body": "return {m_resource};"
               },
-              "name": "operator SurfaceParam",
-              "doc": ""
+              "doc": "Converts to SurfaceParam",
+              "name": "operator SurfaceParam"
             },
             "GetProperties": {
               "doc": "Get the properties associated with a surface.\n\nThe following properties are understood by SDL:\n\n- `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 203 for HDR10 surfaces and 1.0 for floating point surfaces.\n- `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the maximum dynamic range used by the content, in\n  terms of the SDR white point. This defaults to 0.0, which disables tone\n  mapping.\n- `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator\n  used when compressing from a surface with high dynamic range to another\n  with lower dynamic range. Currently this supports \"chrome\", which uses\n  the same tone mapping that Chrome uses for HDR content, the form \"*=N\",\n  where N is a floating point scale factor applied in linear space, and\n  \"none\", which disables tone mapping. This defaults to \"chrome\".\n- `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the\n  left edge of the image, if this surface is being used as a cursor.\n- `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the\n  top edge of the image, if this surface is being used as a cursor.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -22231,8 +22231,8 @@
                     "m_resource(resource)"
                   ]
                 },
-                "name": "IOStream",
-                "doc": ""
+                "doc": "Constructs from IOStreamParam.\n\n@param resource a IOStreamRaw to be wrapped.\n\nThis assumes the ownership, call release() if you need to take back.",
+                "name": "IOStream"
               },
               {
                 "kind": "function",
@@ -22412,8 +22412,8 @@
               "hints": {
                 "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
               },
-              "name": "operator=",
-              "doc": ""
+              "doc": "Assignment operator.",
+              "name": "operator="
             },
             "get": {
               "kind": "function",
@@ -22424,8 +22424,8 @@
               "hints": {
                 "body": "return m_resource;"
               },
-              "name": "get",
-              "doc": ""
+              "doc": "Retrieves underlying IOStreamRaw.",
+              "name": "get"
             },
             "release": {
               "kind": "function",
@@ -22435,8 +22435,8 @@
               "hints": {
                 "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
               },
-              "name": "release",
-              "doc": ""
+              "doc": "Retrieves underlying IOStreamRaw and clear this.",
+              "name": "release"
             },
             "operator IOStreamParam": {
               "kind": "function",
@@ -22447,8 +22447,8 @@
               "hints": {
                 "body": "return {m_resource};"
               },
-              "name": "operator IOStreamParam",
-              "doc": ""
+              "doc": "Converts to IOStreamParam",
+              "name": "operator IOStreamParam"
             },
             "Close": {
               "doc": "Close and free an allocated IOStream structure.\n\nIOStream.Close() closes and cleans up the IOStream stream. It releases any\nresources used by the stream and frees the IOStream itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the IOStream is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call IOStream.Flush() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Open",
@@ -23176,8 +23176,8 @@
                   "IOStream(resource.value)"
                 ]
               },
-              "name": "IOStreamRef",
-              "doc": ""
+              "doc": "Constructs from IOStreamParam.\n\n@param resource a IOStreamRaw or IOStream.\n\nThis does not takes ownership!",
+              "name": "IOStreamRef"
             },
             "~IOStreamRef": {
               "kind": "function",
@@ -25170,8 +25170,8 @@
                     "m_resource(resource)"
                   ]
                 },
-                "name": "Environment",
-                "doc": ""
+                "doc": "Constructs from EnvironmentParam.\n\n@param resource a EnvironmentRaw to be wrapped.\n\nThis assumes the ownership, call release() if you need to take back.",
+                "name": "Environment"
               },
               {
                 "kind": "function",
@@ -25275,8 +25275,8 @@
               "hints": {
                 "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
               },
-              "name": "operator=",
-              "doc": ""
+              "doc": "Assignment operator.",
+              "name": "operator="
             },
             "get": {
               "kind": "function",
@@ -25287,8 +25287,8 @@
               "hints": {
                 "body": "return m_resource;"
               },
-              "name": "get",
-              "doc": ""
+              "doc": "Retrieves underlying EnvironmentRaw.",
+              "name": "get"
             },
             "release": {
               "kind": "function",
@@ -25298,8 +25298,8 @@
               "hints": {
                 "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
               },
-              "name": "release",
-              "doc": ""
+              "doc": "Retrieves underlying EnvironmentRaw and clear this.",
+              "name": "release"
             },
             "operator EnvironmentParam": {
               "kind": "function",
@@ -25310,8 +25310,8 @@
               "hints": {
                 "body": "return {m_resource};"
               },
-              "name": "operator EnvironmentParam",
-              "doc": ""
+              "doc": "Converts to EnvironmentParam",
+              "name": "operator EnvironmentParam"
             },
             "GetVariable": {
               "doc": "Get the value of a variable in the environment.\n\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or nullptr if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariables\n@sa Environment.SetVariable\n@sa Environment.UnsetVariable",
@@ -25419,8 +25419,8 @@
                   "Environment(resource.value)"
                 ]
               },
-              "name": "EnvironmentRef",
-              "doc": ""
+              "doc": "Constructs from EnvironmentParam.\n\n@param resource a EnvironmentRaw or Environment.\n\nThis does not takes ownership!",
+              "name": "EnvironmentRef"
             },
             "~EnvironmentRef": {
               "kind": "function",
@@ -28301,8 +28301,8 @@
                     "m_resource(resource)"
                   ]
                 },
-                "name": "IConv",
-                "doc": ""
+                "doc": "Constructs from IConvParam.\n\n@param resource a IConvRaw to be wrapped.\n\nThis assumes the ownership, call release() if you need to take back.",
+                "name": "IConv"
               },
               {
                 "kind": "function",
@@ -28414,8 +28414,8 @@
               "hints": {
                 "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
               },
-              "name": "operator=",
-              "doc": ""
+              "doc": "Assignment operator.",
+              "name": "operator="
             },
             "get": {
               "kind": "function",
@@ -28426,8 +28426,8 @@
               "hints": {
                 "body": "return m_resource;"
               },
-              "name": "get",
-              "doc": ""
+              "doc": "Retrieves underlying IConvRaw.",
+              "name": "get"
             },
             "release": {
               "kind": "function",
@@ -28437,8 +28437,8 @@
               "hints": {
                 "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
               },
-              "name": "release",
-              "doc": ""
+              "doc": "Retrieves underlying IConvRaw and clear this.",
+              "name": "release"
             },
             "operator IConvParam": {
               "kind": "function",
@@ -28449,8 +28449,8 @@
               "hints": {
                 "body": "return {m_resource};"
               },
-              "name": "operator IConvParam",
-              "doc": ""
+              "doc": "Converts to IConvParam",
+              "name": "operator IConvParam"
             },
             "iconv": {
               "doc": "This function converts text between encodings, reading from and writing to\na buffer.\n\nIt returns the number of successful conversions on success. On error,\nSDL_ICONV_E2BIG is returned when the output buffer is too small, or\nSDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,\nor SDL_ICONV_EINVAL is returned when an incomplete input sequence is\nencountered.\n\nOn exit:\n\n- inbuf will point to the beginning of the next multibyte sequence. On\n  error, this is the location of the problematic input sequence. On\n  success, this is the end of the input sequence.\n- inbytesleft will be set to the number of bytes left to convert, which\n  will be 0 on success.\n- outbuf will point to the location where to store the next output byte.\n- outbytesleft will be set to the number of bytes left in the output\n  buffer.\n\n          IConv.open().\n@param inbuf Address of variable that points to the first character of the\n             input sequence.\n@param inbytesleft The number of bytes in the input buffer.\n@param outbuf Address of variable that points to the output buffer.\n@param outbytesleft The number of bytes in the output buffer.\n@returns the number of conversions on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConv.open\n@sa IConv.close\n@sa iconv_string",
@@ -28525,8 +28525,8 @@
                   "IConv(resource.value)"
                 ]
               },
-              "name": "IConvRef",
-              "doc": ""
+              "doc": "Constructs from IConvParam.\n\n@param resource a IConvRaw or IConv.\n\nThis does not takes ownership!",
+              "name": "IConvRef"
             },
             "~IConvRef": {
               "kind": "function",

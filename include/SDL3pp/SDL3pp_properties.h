@@ -81,6 +81,13 @@ class Properties
 public:
   constexpr Properties() = default;
 
+  /**
+   * Constructs from PropertiesParam.
+   *
+   * @param resource a PropertiesID to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit Properties(const PropertiesID resource)
     : m_resource(resource)
   {
@@ -118,14 +125,23 @@ public:
 
   ~Properties() { SDL_DestroyProperties(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   Properties& operator=(Properties other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying PropertiesID.
+   */
   constexpr PropertiesID get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying PropertiesID and clear this.
+   */
   constexpr PropertiesID release()
   {
     auto r = m_resource;
@@ -133,6 +149,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to PropertiesParam
+   */
   constexpr operator PropertiesParam() const { return {m_resource}; }
 
   /**
@@ -161,6 +180,13 @@ public:
  */
 struct PropertiesRef : Properties
 {
+  /**
+   * Constructs from PropertiesParam.
+   *
+   * @param resource a PropertiesID or Properties.
+   *
+   * This does not takes ownership!
+   */
   PropertiesRef(PropertiesParam resource)
     : Properties(resource.value)
   {

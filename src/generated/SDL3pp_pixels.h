@@ -2260,6 +2260,13 @@ class Palette
 public:
   constexpr Palette() = default;
 
+  /**
+   * Constructs from PaletteParam.
+   *
+   * @param resource a PaletteRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
   constexpr explicit Palette(const PaletteRaw resource)
     : m_resource(resource)
   {
@@ -2295,7 +2302,11 @@ public:
   }
 
   /**
-   * Safely borrows the resource
+   * Safely borrows the from PaletteParam.
+   *
+   * @param resource a PaletteRaw or Palette.
+   *
+   * This does not takes ownership!
    */
   static constexpr Palette Borrow(PaletteParam resource)
   {
@@ -2305,14 +2316,23 @@ public:
 
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
+  /**
+   * Assignment operator.
+   */
   Palette& operator=(Palette other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /**
+   * Retrieves underlying PaletteRaw.
+   */
   constexpr PaletteRaw get() const { return m_resource; }
 
+  /**
+   * Retrieves underlying PaletteRaw and clear this.
+   */
   constexpr PaletteRaw release()
   {
     auto r = m_resource;
@@ -2320,6 +2340,9 @@ public:
     return r;
   }
 
+  /**
+   * Converts to PaletteParam
+   */
   constexpr operator PaletteParam() const { return {m_resource}; }
 
   constexpr int GetSize() const { static_assert(false, "Not implemented"); }
