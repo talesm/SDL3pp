@@ -337,7 +337,7 @@ constexpr Nanoseconds FromNS(Sint64 duration)
  *
  * They can be converted between POSIX time_t values with Time.ToPosix()
  * and Time.FromPosix(), and between Windows FILETIME values with
- * SDL_TimeToWindows() and SDL_TimeFromWindows().
+ * Time.ToWindows() and Time.FromWindows().
  *
  * @since This macro is available since SDL 3.2.0.
  *
@@ -364,7 +364,15 @@ struct Time
     static_assert(false, "Not implemented");
   }
 
-#error "Current (undefined)"
+  /**
+   * Gets the current value of the system realtime clock in nanoseconds since
+   * Jan 1, 1970 in Universal Coordinated Time (UTC).
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Time Current();
 
   static constexpr Time FromNS(Sint64 time)
   {
@@ -402,9 +410,35 @@ struct Time
    */
   constexpr Sint64 ToPosix() const;
 
-#error "FromWindows (undefined)"
+  /**
+   * Converts a Windows FILETIME (100-nanosecond intervals since January 1,
+   * 1601) to an SDL time.
+   *
+   * This function takes the two 32-bit values of the FILETIME structure as
+   * parameters.
+   *
+   * @param dwLowDateTime the low portion of the Windows FILETIME value.
+   * @param dwHighDateTime the high portion of the Windows FILETIME value.
+   * @returns the converted SDL time.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static Time FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
 
-#error "ToWindows (undefined)"
+  /**
+   * Converts an SDL time into a Windows FILETIME (100-nanosecond intervals
+   * since January 1, 1601).
+   *
+   * This function fills in the two 32-bit values of the FILETIME structure.
+   *
+   * @param dwLowDateTime a pointer filled in with the low portion of the
+   *                      Windows FILETIME value.
+   * @param dwHighDateTime a pointer filled in with the high portion of the
+   *                       Windows FILETIME value.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const;
 
   /// Converts a time to seconds (float) since epoch.
   constexpr float ToSeconds() const { static_assert(false, "Not implemented"); }

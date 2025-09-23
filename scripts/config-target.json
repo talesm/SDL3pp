@@ -17,6 +17,7 @@
     "SDL_render.h",
     "SDL_stdinc.h",
     "SDL_surface.h",
+    "SDL_time.h",
     "SDL_timer.h",
     "SDL_version.h",
     "SDL_video.h"

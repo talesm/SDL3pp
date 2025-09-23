@@ -6662,8 +6662,10 @@ const transform = {
       }
     },
     "SDL_time.h": {
-      wrappers: {
+      localIncludes: ["SDL3pp_stdinc.h"],
+      transform: {
         "SDL_DateTime": {
+          wrapper: true,
           // "ordered": true,
           "entries": {
             "SDL_TimeToDateTime": {
@@ -6688,9 +6690,7 @@ const transform = {
               "parameters": []
             }
           }
-        }
-      },
-      transform: {
+        },
         "SDL_GetCurrentTime": {
           name: "Time::Current",
           type: "Time"
