@@ -31,18 +31,21 @@ struct IOStreamRef;
 /// Safely wrap IOStream for non owning parameters
 struct IOStreamParam
 {
-  IOStreamRaw value;
+  IOStreamRaw value; ///< parameter's IOStreamRaw
 
+  /// Constructs from IOStreamRaw
   constexpr IOStreamParam(IOStreamRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr IOStreamParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying IOStreamRaw
   constexpr operator IOStreamRaw() const { return value; }
 };
 
@@ -122,6 +125,7 @@ class IOStream
   IOStreamRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr IOStream() = default;
 
   /**
@@ -136,8 +140,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr IOStream(const IOStream& other) = delete;
 
+  /// Move constructor
   constexpr IOStream(IOStream&& other)
     : IOStream(other.release())
   {
@@ -386,6 +392,7 @@ public:
     return IOStream(CheckError(SDL_OpenIO(&iface, userdata)));
   }
 
+  /// Destructor
   ~IOStream() { SDL_CloseIO(m_resource); }
 
   /// Assignment operator.
@@ -1769,6 +1776,7 @@ struct IOStreamRef : IOStream
   {
   }
 
+  /// Destructor
   ~IOStreamRef() { release(); }
 };
 

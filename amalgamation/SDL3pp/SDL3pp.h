@@ -8025,41 +8025,48 @@ using PaletteRaw = SDL_Palette*;
 /// Safely wrap Palette for non owning parameters
 struct PaletteParam
 {
-  PaletteRaw value;
+  PaletteRaw value; ///< parameter's PaletteRaw
 
+  /// Constructs from PaletteRaw
   constexpr PaletteParam(PaletteRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr PaletteParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying PaletteRaw
   constexpr operator PaletteRaw() const { return value; }
 };
 
 /// Safely wrap Palette for non owning const parameters
 struct PaletteConstParam
 {
-  const PaletteRaw value;
+  const PaletteRaw value; ///< parameter's const PaletteRaw
 
+  /// Constructs from const PaletteRaw
   constexpr PaletteConstParam(const PaletteRaw value)
     : value(value)
   {
   }
 
+  /// Constructs from PaletteParam
   constexpr PaletteConstParam(PaletteParam value)
     : value(value.value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr PaletteConstParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying const PaletteRaw
   constexpr operator const PaletteRaw() const { return value; }
 };
 
@@ -10353,6 +10360,7 @@ class Palette
   PaletteRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr Palette() = default;
 
   /**
@@ -10367,8 +10375,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr Palette(const Palette& other) { ++m_resource->refcount; }
 
+  /// Move constructor
   constexpr Palette(Palette&& other)
     : Palette(other.release())
   {
@@ -10409,6 +10419,7 @@ public:
     return Palette(resource.value);
   }
 
+  /// Destructor
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
   /// Assignment operator.
@@ -10863,18 +10874,21 @@ struct PropertiesRef;
 /// Safely wrap Properties for non owning parameters
 struct PropertiesParam
 {
-  PropertiesID value;
+  PropertiesID value; ///< parameter's PropertiesID
 
+  /// Constructs from PropertiesID
   constexpr PropertiesParam(PropertiesID value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr PropertiesParam(std::nullptr_t _ = nullptr)
     : value(0)
   {
   }
 
+  /// Converts to underlying PropertiesID
   constexpr operator PropertiesID() const { return value; }
 };
 
@@ -10892,6 +10906,7 @@ class Properties
   PropertiesID m_resource = 0;
 
 public:
+  /// Default ctor
   constexpr Properties() = default;
 
   /**
@@ -10906,8 +10921,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr Properties(const Properties& other) = delete;
 
+  /// Move constructor
   constexpr Properties(Properties&& other)
     : Properties(other.release())
   {
@@ -10936,6 +10953,7 @@ public:
     return Properties(CheckError(SDL_CreateProperties()));
   }
 
+  /// Destructor
   ~Properties() { SDL_DestroyProperties(m_resource); }
 
   /// Assignment operator.
@@ -10995,6 +11013,7 @@ struct PropertiesRef : Properties
   {
   }
 
+  /// Destructor
   ~PropertiesRef() { release(); }
 };
 
@@ -11721,18 +11740,21 @@ struct EnvironmentRef;
 /// Safely wrap Environment for non owning parameters
 struct EnvironmentParam
 {
-  EnvironmentRaw value;
+  EnvironmentRaw value; ///< parameter's EnvironmentRaw
 
+  /// Constructs from EnvironmentRaw
   constexpr EnvironmentParam(EnvironmentRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr EnvironmentParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying EnvironmentRaw
   constexpr operator EnvironmentRaw() const { return value; }
 };
 
@@ -11747,13 +11769,15 @@ struct IConvRef;
 /// Safely wrap IConv for non owning parameters
 struct IConvParam
 {
-  IConvRaw value;
+  IConvRaw value; ///< parameter's IConvRaw
 
+  /// Constructs from IConvRaw
   constexpr IConvParam(IConvRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr IConvParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
@@ -12076,8 +12100,33 @@ public:
   /// Converts to nanoseconds Sint64
   constexpr Sint64 ToNS() const { return m_value.count(); }
 
+  /**
+   * Convert seconds to nanoseconds.
+   *
+   * This only converts whole numbers, not fractional seconds.
+   *
+   * @param S the number of seconds to convert.
+   * @returns S, expressed in nanoseconds.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
   static constexpr Time FromPosix(Sint64 time);
 
+  /**
+   * Convert nanoseconds to seconds.
+   *
+   * This performs a division, so the results can be dramatically different if
+   * `NS` is an integer or floating point value.
+   *
+   * @param NS the number of nanoseconds to convert.
+   * @returns NS, expressed in seconds.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
   constexpr Sint64 ToPosix() const;
 
   static Time FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
@@ -12528,6 +12577,7 @@ class Environment
   EnvironmentRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr Environment() = default;
 
   /**
@@ -12542,8 +12592,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr Environment(const Environment& other) = delete;
 
+  /// Move constructor
   constexpr Environment(Environment&& other)
     : Environment(other.release())
   {
@@ -12578,6 +12630,7 @@ public:
   {
   }
 
+  /// Destructor
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
 
   /// Assignment operator.
@@ -12741,6 +12794,7 @@ struct EnvironmentRef : Environment
   {
   }
 
+  /// Destructor
   ~EnvironmentRef() { release(); }
 };
 
@@ -17314,6 +17368,7 @@ class IConv
   IConvRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr IConv() = default;
 
   /**
@@ -17328,8 +17383,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr IConv(const IConv& other) = delete;
 
+  /// Move constructor
   constexpr IConv(IConv&& other)
     : IConv(other.release())
   {
@@ -17359,6 +17416,7 @@ public:
   {
   }
 
+  /// Destructor
   ~IConv() { SDL_iconv_close(m_resource); }
 
   /// Assignment operator.
@@ -17460,6 +17518,7 @@ struct IConvRef : IConv
   {
   }
 
+  /// Destructor
   ~IConvRef() { release(); }
 };
 
@@ -19223,18 +19282,21 @@ struct IOStreamRef;
 /// Safely wrap IOStream for non owning parameters
 struct IOStreamParam
 {
-  IOStreamRaw value;
+  IOStreamRaw value; ///< parameter's IOStreamRaw
 
+  /// Constructs from IOStreamRaw
   constexpr IOStreamParam(IOStreamRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr IOStreamParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying IOStreamRaw
   constexpr operator IOStreamRaw() const { return value; }
 };
 
@@ -19314,6 +19376,7 @@ class IOStream
   IOStreamRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr IOStream() = default;
 
   /**
@@ -19328,8 +19391,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr IOStream(const IOStream& other) = delete;
 
+  /// Move constructor
   constexpr IOStream(IOStream&& other)
     : IOStream(other.release())
   {
@@ -19578,6 +19643,7 @@ public:
     return IOStream(CheckError(SDL_OpenIO(&iface, userdata)));
   }
 
+  /// Destructor
   ~IOStream() { SDL_CloseIO(m_resource); }
 
   /// Assignment operator.
@@ -20961,6 +21027,7 @@ struct IOStreamRef : IOStream
   {
   }
 
+  /// Destructor
   ~IOStreamRef() { release(); }
 };
 
@@ -25222,41 +25289,47 @@ using SurfaceRaw = SDL_Surface*;
 /// Safely wrap Surface for non owning parameters
 struct SurfaceParam
 {
-  SurfaceRaw value;
+  SurfaceRaw value; ///< parameter's SurfaceRaw
 
+  /// Constructs from SurfaceRaw
   constexpr SurfaceParam(SurfaceRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr SurfaceParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying SurfaceRaw
   constexpr operator SurfaceRaw() const { return value; }
 };
 
 /// Safely wrap Surface for non owning const parameters
 struct SurfaceConstParam
 {
-  const SurfaceRaw value;
+  const SurfaceRaw value; ///< parameter's const SurfaceRaw
 
   constexpr SurfaceConstParam(const SurfaceRaw value)
     : value(value)
   {
   }
 
+  /// Constructs from SurfaceParam
   constexpr SurfaceConstParam(SurfaceParam value)
     : value(value.value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr SurfaceConstParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying const SurfaceRaw
   constexpr operator const SurfaceRaw() const { return value; }
 };
 
@@ -25355,6 +25428,7 @@ class Surface
   SurfaceRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr Surface() = default;
 
   /**
@@ -25369,8 +25443,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr Surface(const Surface& other) { ++m_resource->refcount; }
 
+  /// Move constructor
   constexpr Surface(Surface&& other)
     : Surface(other.release())
   {
@@ -25491,6 +25567,7 @@ public:
     return Surface(SDL_LoadBMP(file));
   }
 
+  /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }
 
   /// Assignment operator.
@@ -28947,18 +29024,21 @@ struct WindowRef;
 /// Safely wrap Window for non owning parameters
 struct WindowParam
 {
-  WindowRaw value;
+  WindowRaw value; ///< parameter's WindowRaw
 
+  /// Constructs from WindowRaw
   constexpr WindowParam(WindowRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr WindowParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying WindowRaw
   constexpr operator WindowRaw() const { return value; }
 };
 
@@ -28973,18 +29053,21 @@ struct GLContextScoped;
 /// Safely wrap GLContext for non owning parameters
 struct GLContextParam
 {
-  GLContextRaw value;
+  GLContextRaw value; ///< parameter's GLContextRaw
 
+  /// Constructs from GLContextRaw
   constexpr GLContextParam(GLContextRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr GLContextParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying GLContextRaw
   constexpr operator GLContextRaw() const { return value; }
 };
 
@@ -29686,6 +29769,7 @@ class Window
   WindowRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr Window() = default;
 
   /**
@@ -29700,8 +29784,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr Window(const Window& other) = delete;
 
+  /// Move constructor
   constexpr Window(Window&& other)
     : Window(other.release())
   {
@@ -30019,6 +30105,7 @@ public:
   {
   }
 
+  /// Destructor
   ~Window() { SDL_DestroyWindow(m_resource); }
 
   /// Assignment operator.
@@ -31775,6 +31862,7 @@ struct WindowRef : Window
   {
   }
 
+  /// Destructor
   ~WindowRef() { release(); }
 };
 
@@ -31878,6 +31966,7 @@ class GLContext
   GLContextRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr GLContext() = default;
 
   /**
@@ -31890,8 +31979,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr GLContext(const GLContext& other) = default;
 
+  /// Move constructor
   constexpr GLContext(GLContext&& other)
     : GLContext(other.release())
   {
@@ -31924,6 +32015,7 @@ public:
   {
   }
 
+  /// Destructor
   ~GLContext() {}
 
   /// Assignment operator.
@@ -31993,11 +32085,13 @@ struct GLContextScoped : GLContext
 
   constexpr GLContextScoped(const GLContext& other) = delete;
 
+  /// Move constructor
   constexpr GLContextScoped(GLContext&& other)
     : GLContext(other.release())
   {
   }
 
+  /// Destructor
   ~GLContextScoped() { Destroy(); }
 };
 

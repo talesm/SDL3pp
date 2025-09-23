@@ -99,7 +99,7 @@ function insertEntry(entries, entry, defaultName = "") {
   if (entries[key]) {
     const currEntry = entries[key];
     if (Array.isArray(currEntry)) {
-      if (!entry.doc && currEntry[0].doc) entry.doc = currEntry[0].doc;
+      if (typeof entry.doc !== 'string' && currEntry[0].doc) entry.doc = currEntry[0].doc;
       currEntry.push(entry);
     } else if (currEntry.kind !== 'function') {
       if (entry.doc || !currEntry.doc) {
@@ -110,7 +110,7 @@ function insertEntry(entries, entry, defaultName = "") {
         }
       }
     } else if (entry.kind === 'function') {
-      if (!entry.doc && currEntry.doc) entry.doc = currEntry.doc;
+      if (typeof entry.doc !== 'string' && currEntry.doc) entry.doc = currEntry.doc;
       entries[key] = [currEntry, entry];
     }
   } else {
@@ -124,7 +124,6 @@ function insertEntry(entries, entry, defaultName = "") {
  * @param {ApiEntry} entry 
  */
 function fixEntry(entry) {
-  if (typeof entry.doc != "string") entry.doc = "";
   if (entry.entries) {
     for (const subEntry of Object.values(entry.entries)) {
       if (Array.isArray(subEntry)) {

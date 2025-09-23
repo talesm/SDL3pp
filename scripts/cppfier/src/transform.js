@@ -63,7 +63,7 @@ function transformApi(config) {
 
     files.push({
       name: targetName,
-      doc: fileConfig.doc || transformFileDoc(sourceFile.doc, context) || "",
+      doc: fileConfig.doc ?? transformFileDoc(sourceFile.doc, context) ?? "",
       entries: transformEntries(sourceFile.entries, fileConfig, context),
       includes,
       localIncludes: fileConfig.localIncludes,
@@ -710,11 +710,13 @@ function expandTypes(sourceEntries, file, context) {
         'value': {
           kind: 'var',
           name: 'value',
+          doc: `parameter's ${rawName}`,
           type: rawName
         },
         [paramType]: [{
           kind: 'function',
           name: paramType,
+          doc: `Constructs from ${rawName}`,
           constexpr: true,
           type: '',
           parameters: [{ type: rawName, name: 'value' }],
@@ -722,6 +724,7 @@ function expandTypes(sourceEntries, file, context) {
         }, {
           kind: 'function',
           name: paramType,
+          doc: `Constructs null/invalid`,
           constexpr: true,
           type: '',
           parameters: [{ type: "std::nullptr_t", name: "_", default: "nullptr" }],
@@ -730,6 +733,7 @@ function expandTypes(sourceEntries, file, context) {
         [`operator ${rawName}`]: {
           kind: 'function',
           name: `operator ${rawName}`,
+          doc: `Converts to underlying ${rawName}`,
           constexpr: true,
           immutable: true,
           type: '',
@@ -747,11 +751,13 @@ function expandTypes(sourceEntries, file, context) {
           'value': {
             kind: 'var',
             name: 'value',
+            doc: `parameter's ${constRawName}`,
             type: constRawName
           },
           [constParamType]: [{
             kind: 'function',
             name: constParamType,
+            doc: `Constructs from ${constRawName}`,
             constexpr: true,
             type: '',
             parameters: [{ type: constRawName, name: 'value' }],
@@ -759,6 +765,7 @@ function expandTypes(sourceEntries, file, context) {
           }, {
             kind: 'function',
             name: constParamType,
+            doc: `Constructs from ${paramType}`,
             constexpr: true,
             type: '',
             parameters: [{ type: paramType, name: 'value' }],
@@ -766,6 +773,7 @@ function expandTypes(sourceEntries, file, context) {
           }, {
             kind: 'function',
             name: constParamType,
+            doc: `Constructs null/invalid`,
             constexpr: true,
             type: '',
             parameters: [{ type: "std::nullptr_t", name: "_", default: "nullptr" }],
@@ -774,6 +782,7 @@ function expandTypes(sourceEntries, file, context) {
           [`operator ${constRawName}`]: {
             kind: 'function',
             name: `operator ${constRawName}`,
+            doc: `Converts to underlying ${constRawName}`,
             constexpr: true,
             immutable: true,
             type: '',
@@ -810,6 +819,7 @@ function expandTypes(sourceEntries, file, context) {
         constexpr: true,
         parameters: [],
         hints: { default: true, changeAccess: "public" },
+        doc: "Default ctor"
       }, {
         kind: "function",
         type: "",
@@ -824,6 +834,7 @@ function expandTypes(sourceEntries, file, context) {
         constexpr: true,
         parameters: [{ name: "other", type: `const ${targetName} &` }],
         hints: { delete: true },
+        doc: "Copy constructor"
       }, {
         kind: "function",
         type: "",
@@ -832,6 +843,7 @@ function expandTypes(sourceEntries, file, context) {
         hints: {
           init: [`${targetName}(other.release())`]
         },
+        doc: "Move constructor"
       }]
     };
     if (hasShared) {
@@ -858,12 +870,14 @@ function expandTypes(sourceEntries, file, context) {
       // @ts-ignore
       insertEntry(ctors, [{
         kind: "function",
+        doc: "",
         type: "",
         constexpr: true,
         parameters: [{ name: "other", type: `const ${refName} &` }],
         hints: { delete: true },
       }, {
         kind: "function",
+        doc: "",
         type: "",
         constexpr: true,
         parameters: [{ name: "other", type: `${refName} &&` }],
@@ -1000,6 +1014,7 @@ function expandTypes(sourceEntries, file, context) {
       ...ctors,
       [`~${targetName}`]: {
         kind: "function",
+        doc: "Destructor",
         type: "",
         parameters: [],
         hints: { body: (freeFunction && !hasScoped) ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);` : '' }
@@ -1066,6 +1081,7 @@ function expandTypes(sourceEntries, file, context) {
         },
         [`~${refName}`]: {
           kind: 'function',
+          doc: "Destructor",
           type: "",
           parameters: [],
           hints: { body: "release();" }
@@ -1087,6 +1103,7 @@ function expandTypes(sourceEntries, file, context) {
           hints: { delete: true },
         }, {
           kind: "function",
+          doc: "Move constructor",
           type: "",
           constexpr: true,
           parameters: [{ name: "other", type: `${targetName} &&` }],
@@ -1096,6 +1113,7 @@ function expandTypes(sourceEntries, file, context) {
         }],
         [`~${scopedName}`]: {
           kind: 'function',
+          doc: "Destructor",
           type: "",
           parameters: [],
           hints: { body: `${freeFunction?.name ?? "Destroy"}();` }
@@ -1196,7 +1214,7 @@ function expandTypes(sourceEntries, file, context) {
         after: targetName,
       };
       combineObject(valueTarget, valueTransform || {});
-      if (!valueTarget.doc) {
+      if (typeof valueTarget.doc !== "string") {
         // @ts-ignore
         const sourceDoc = valueSource?.doc ?? sourceEntry.entries?.[value]?.doc;
         valueTarget.doc = sourceDoc || (value.startsWith(prefix) ? value.slice(prefix.length) : valueTarget.name);
@@ -1778,7 +1796,6 @@ function transformHierarchy(targetEntries, context) {
     function insertCopyEntry(entry) {
       insertEntry(obj.entries, {
         ...entry,
-        doc: (isSameFile && entry.doc) || "",
         proto: true,
       });
       entry.name = makeMemberName(key, obj.template);

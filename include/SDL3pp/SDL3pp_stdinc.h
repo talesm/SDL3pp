@@ -49,18 +49,21 @@ struct EnvironmentRef;
 /// Safely wrap Environment for non owning parameters
 struct EnvironmentParam
 {
-  EnvironmentRaw value;
+  EnvironmentRaw value; ///< parameter's EnvironmentRaw
 
+  /// Constructs from EnvironmentRaw
   constexpr EnvironmentParam(EnvironmentRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr EnvironmentParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying EnvironmentRaw
   constexpr operator EnvironmentRaw() const { return value; }
 };
 
@@ -75,13 +78,15 @@ struct IConvRef;
 /// Safely wrap IConv for non owning parameters
 struct IConvParam
 {
-  IConvRaw value;
+  IConvRaw value; ///< parameter's IConvRaw
 
+  /// Constructs from IConvRaw
   constexpr IConvParam(IConvRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr IConvParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
@@ -404,8 +409,33 @@ public:
   /// Converts to nanoseconds Sint64
   constexpr Sint64 ToNS() const { return m_value.count(); }
 
+  /**
+   * Convert seconds to nanoseconds.
+   *
+   * This only converts whole numbers, not fractional seconds.
+   *
+   * @param S the number of seconds to convert.
+   * @returns S, expressed in nanoseconds.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
   static constexpr Time FromPosix(Sint64 time);
 
+  /**
+   * Convert nanoseconds to seconds.
+   *
+   * This performs a division, so the results can be dramatically different if
+   * `NS` is an integer or floating point value.
+   *
+   * @param NS the number of nanoseconds to convert.
+   * @returns NS, expressed in seconds.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
   constexpr Sint64 ToPosix() const;
 
   static Time FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
@@ -856,6 +886,7 @@ class Environment
   EnvironmentRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr Environment() = default;
 
   /**
@@ -870,8 +901,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr Environment(const Environment& other) = delete;
 
+  /// Move constructor
   constexpr Environment(Environment&& other)
     : Environment(other.release())
   {
@@ -906,6 +939,7 @@ public:
   {
   }
 
+  /// Destructor
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
 
   /// Assignment operator.
@@ -1069,6 +1103,7 @@ struct EnvironmentRef : Environment
   {
   }
 
+  /// Destructor
   ~EnvironmentRef() { release(); }
 };
 
@@ -5642,6 +5677,7 @@ class IConv
   IConvRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr IConv() = default;
 
   /**
@@ -5656,8 +5692,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr IConv(const IConv& other) = delete;
 
+  /// Move constructor
   constexpr IConv(IConv&& other)
     : IConv(other.release())
   {
@@ -5687,6 +5725,7 @@ public:
   {
   }
 
+  /// Destructor
   ~IConv() { SDL_iconv_close(m_resource); }
 
   /// Assignment operator.
@@ -5788,6 +5827,7 @@ struct IConvRef : IConv
   {
   }
 
+  /// Destructor
   ~IConvRef() { release(); }
 };
 

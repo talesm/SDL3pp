@@ -50,18 +50,21 @@ struct WindowRef;
 /// Safely wrap Window for non owning parameters
 struct WindowParam
 {
-  WindowRaw value;
+  WindowRaw value; ///< parameter's WindowRaw
 
+  /// Constructs from WindowRaw
   constexpr WindowParam(WindowRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr WindowParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying WindowRaw
   constexpr operator WindowRaw() const { return value; }
 };
 
@@ -76,18 +79,21 @@ struct GLContextScoped;
 /// Safely wrap GLContext for non owning parameters
 struct GLContextParam
 {
-  GLContextRaw value;
+  GLContextRaw value; ///< parameter's GLContextRaw
 
+  /// Constructs from GLContextRaw
   constexpr GLContextParam(GLContextRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr GLContextParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying GLContextRaw
   constexpr operator GLContextRaw() const { return value; }
 };
 
@@ -763,6 +769,7 @@ class Window
   WindowRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr Window() = default;
 
   /**
@@ -777,8 +784,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr Window(const Window& other) = delete;
 
+  /// Move constructor
   constexpr Window(Window&& other)
     : Window(other.release())
   {
@@ -1095,6 +1104,7 @@ public:
   {
   }
 
+  /// Destructor
   ~Window() { SDL_DestroyWindow(m_resource); }
 
   /// Assignment operator.
@@ -2710,6 +2720,7 @@ struct WindowRef : Window
   {
   }
 
+  /// Destructor
   ~WindowRef() { release(); }
 };
 
@@ -2809,6 +2820,7 @@ class GLContext
   GLContextRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr GLContext() = default;
 
   /**
@@ -2821,8 +2833,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr GLContext(const GLContext& other) = default;
 
+  /// Move constructor
   constexpr GLContext(GLContext&& other)
     : GLContext(other.release())
   {
@@ -2855,6 +2869,7 @@ public:
   {
   }
 
+  /// Destructor
   ~GLContext() {}
 
   /// Assignment operator.
@@ -2924,11 +2939,13 @@ struct GLContextScoped : GLContext
 
   constexpr GLContextScoped(const GLContext& other) = delete;
 
+  /// Move constructor
   constexpr GLContextScoped(GLContext&& other)
     : GLContext(other.release())
   {
   }
 
+  /// Destructor
   ~GLContextScoped() { Destroy(); }
 };
 

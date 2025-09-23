@@ -489,8 +489,7 @@
               "type": "auto",
               "constexpr": true
             }
-          },
-          "doc": ""
+          }
         },
         "GetAppMetadataProperty": {
           "doc": "Get metadata about your app.\n\nThis returns metadata previously set using SetAppMetadata() or\nSetAppMetadataProperty(). See SetAppMetadataProperty() for the list\nof available properties and their meanings.\n\n@param name the name of the metadata property to get.\n@returns the current value of the metadata property, or the default if it\n         is not set, nullptr for properties with no default.\n\n@threadsafety It is safe to call this function from any thread, although\n              the string returned is not protected and could potentially be\n              freed if you call SetAppMetadataProperty() to set that\n              property from another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAppMetadata\n@sa SetAppMetadataProperty",
@@ -2349,8 +2348,7 @@
           "entries": {
             "CallbackHandle::CallbackHandle": {
               "kind": "alias",
-              "name": "CallbackHandle::CallbackHandle",
-              "doc": ""
+              "name": "CallbackHandle::CallbackHandle"
             }
           }
         },
@@ -2451,19 +2449,16 @@
       "entries": {
         "Properties-forward": {
           "name": "Properties",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "PropertiesID": {
           "name": "PropertiesID",
           "kind": "alias",
-          "type": "SDL_PropertiesID",
-          "doc": ""
+          "type": "SDL_PropertiesID"
         },
         "PropertiesRef-forward": {
           "name": "PropertiesRef",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "PropertiesParam": {
           "name": "PropertiesParam",
@@ -2473,13 +2468,14 @@
             "value": {
               "kind": "var",
               "name": "value",
-              "type": "PropertiesID",
-              "doc": ""
+              "doc": "parameter's PropertiesID",
+              "type": "PropertiesID"
             },
             "PropertiesParam": [
               {
                 "kind": "function",
                 "name": "PropertiesParam",
+                "doc": "Constructs from PropertiesID",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -2492,12 +2488,12 @@
                   "init": [
                     "value(value)"
                   ]
-                },
-                "doc": ""
+                }
               },
               {
                 "kind": "function",
                 "name": "PropertiesParam",
+                "doc": "Constructs null/invalid",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -2511,21 +2507,20 @@
                   "init": [
                     "value(0)"
                   ]
-                },
-                "doc": ""
+                }
               }
             ],
             "operator PropertiesID": {
               "kind": "function",
               "name": "operator PropertiesID",
+              "doc": "Converts to underlying PropertiesID",
               "constexpr": true,
               "immutable": true,
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "return value;"
-              },
-              "doc": ""
+              }
             }
           }
         },
@@ -2542,8 +2537,7 @@
               "hints": {
                 "body": "0"
               },
-              "name": "m_resource",
-              "doc": ""
+              "name": "m_resource"
             },
             "Properties": [
               {
@@ -2555,8 +2549,8 @@
                   "default": true,
                   "changeAccess": "public"
                 },
-                "name": "Properties",
-                "doc": ""
+                "doc": "Default ctor",
+                "name": "Properties"
               },
               {
                 "kind": "function",
@@ -2590,8 +2584,8 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "Properties",
-                "doc": ""
+                "doc": "Copy constructor",
+                "name": "Properties"
               },
               {
                 "kind": "function",
@@ -2608,11 +2602,12 @@
                     "Properties(other.release())"
                   ]
                 },
-                "name": "Properties",
-                "doc": ""
+                "doc": "Move constructor",
+                "name": "Properties"
               },
               {
                 "kind": "function",
+                "doc": "",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
@@ -2624,11 +2619,11 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "Properties",
-                "doc": ""
+                "name": "Properties"
               },
               {
                 "kind": "function",
+                "doc": "",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
@@ -2640,8 +2635,7 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "Properties",
-                "doc": ""
+                "name": "Properties"
               }
             ],
             "Create": {
@@ -2658,13 +2652,13 @@
             },
             "~Properties": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "SDL_DestroyProperties(m_resource);"
               },
-              "name": "~Properties",
-              "doc": ""
+              "name": "~Properties"
             },
             "operator=": {
               "kind": "function",
@@ -2759,13 +2753,13 @@
             },
             "~PropertiesRef": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "release();"
               },
-              "name": "~PropertiesRef",
-              "doc": ""
+              "name": "~PropertiesRef"
             }
           }
         },
@@ -3310,8 +3304,7 @@
               "name": "props"
             }
           ],
-          "name": "CountProperties",
-          "doc": ""
+          "name": "CountProperties"
         },
         "DestroyProperties": {
           "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n@param props the properties to destroy.\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create",
@@ -3372,8 +3365,7 @@
               "name": "args"
             }
           ],
-          "name": "SetError",
-          "doc": ""
+          "name": "SetError"
         },
         "OutOfMemory": {
           "doc": "Set an error indicating that memory allocation failed.\n\nThis function does not do any memory allocation.\n\n@returns false.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -3398,8 +3390,7 @@
             "m_message": {
               "kind": "var",
               "type": "std::string",
-              "name": "m_message",
-              "doc": ""
+              "name": "m_message"
             },
             "Error": [
               {
@@ -3449,12 +3440,10 @@
               "immutable": true,
               "constexpr": true,
               "parameters": [],
-              "name": "str",
-              "doc": ""
+              "name": "str"
             }
           },
-          "name": "Error",
-          "doc": ""
+          "name": "Error"
         },
         "CheckError": [
           {
@@ -3467,8 +3456,7 @@
                 "type": "bool",
                 "name": "result"
               }
-            ],
-            "doc": ""
+            ]
           },
           {
             "name": "CheckError",
@@ -3486,8 +3474,7 @@
                 "type": "T",
                 "name": "result"
               }
-            ],
-            "doc": ""
+            ]
           },
           {
             "name": "CheckError",
@@ -3509,8 +3496,7 @@
                 "type": "T",
                 "name": "invalidValue"
               }
-            ],
-            "doc": ""
+            ]
           }
         ],
         "ClearError": {
@@ -3556,8 +3542,7 @@
         "LogCategoryRaw": {
           "name": "LogCategoryRaw",
           "kind": "alias",
-          "type": "SDL_LogCategory",
-          "doc": ""
+          "type": "SDL_LogCategory"
         },
         "LogPriority": {
           "doc": "The predefined log priorities\n\n@since This enum is available since SDL 3.2.0.",
@@ -3648,8 +3633,7 @@
             "m_category": {
               "kind": "var",
               "name": "m_category",
-              "type": "LogCategoryRaw",
-              "doc": ""
+              "type": "LogCategoryRaw"
             },
             "LogCategory": [
               {
@@ -3786,8 +3770,7 @@
                   "name": "message"
                 }
               ],
-              "name": "LogUnformatted",
-              "doc": ""
+              "name": "LogUnformatted"
             },
             "LogMessage": {
               "doc": "Log a message with the specified category and priority.\n\n@param category the category of the message.\n@param priority the priority of the message.\n@param fmt a printf() style message format string.\n@param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Log\n@sa LogCategory.LogCritical\n@sa LogCategory.LogDebug\n@sa LogCategory.LogError\n@sa LogCategory.LogInfo\n@sa LogUnformatted\n@sa LogCategory.LogTrace\n@sa LogCategory.LogVerbose\n@sa LogCategory.LogWarn",
@@ -4568,8 +4551,7 @@
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "name": "ResetLogOutputFunction",
-          "doc": ""
+          "name": "ResetLogOutputFunction"
         }
       },
       "includes": [
@@ -4989,24 +4971,20 @@
         "DisplayID": {
           "name": "DisplayID",
           "kind": "alias",
-          "type": "SDL_DisplayID",
-          "doc": ""
+          "type": "SDL_DisplayID"
         },
         "Window-forward": {
           "name": "Window",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "WindowRaw": {
           "name": "WindowRaw",
           "kind": "alias",
-          "type": "SDL_Window *",
-          "doc": ""
+          "type": "SDL_Window *"
         },
         "WindowRef-forward": {
           "name": "WindowRef",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "WindowParam": {
           "name": "WindowParam",
@@ -5016,13 +4994,14 @@
             "value": {
               "kind": "var",
               "name": "value",
-              "type": "WindowRaw",
-              "doc": ""
+              "doc": "parameter's WindowRaw",
+              "type": "WindowRaw"
             },
             "WindowParam": [
               {
                 "kind": "function",
                 "name": "WindowParam",
+                "doc": "Constructs from WindowRaw",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -5035,12 +5014,12 @@
                   "init": [
                     "value(value)"
                   ]
-                },
-                "doc": ""
+                }
               },
               {
                 "kind": "function",
                 "name": "WindowParam",
+                "doc": "Constructs null/invalid",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -5054,39 +5033,35 @@
                   "init": [
                     "value(nullptr)"
                   ]
-                },
-                "doc": ""
+                }
               }
             ],
             "operator WindowRaw": {
               "kind": "function",
               "name": "operator WindowRaw",
+              "doc": "Converts to underlying WindowRaw",
               "constexpr": true,
               "immutable": true,
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "return value;"
-              },
-              "doc": ""
+              }
             }
           }
         },
         "GLContext-forward": {
           "name": "GLContext",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "GLContextRaw": {
           "name": "GLContextRaw",
           "kind": "alias",
-          "type": "SDL_GLContext *",
-          "doc": ""
+          "type": "SDL_GLContext *"
         },
         "GLContextScoped-forward": {
           "name": "GLContextScoped",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "GLContextParam": {
           "name": "GLContextParam",
@@ -5096,13 +5071,14 @@
             "value": {
               "kind": "var",
               "name": "value",
-              "type": "GLContextRaw",
-              "doc": ""
+              "doc": "parameter's GLContextRaw",
+              "type": "GLContextRaw"
             },
             "GLContextParam": [
               {
                 "kind": "function",
                 "name": "GLContextParam",
+                "doc": "Constructs from GLContextRaw",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -5115,12 +5091,12 @@
                   "init": [
                     "value(value)"
                   ]
-                },
-                "doc": ""
+                }
               },
               {
                 "kind": "function",
                 "name": "GLContextParam",
+                "doc": "Constructs null/invalid",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -5134,21 +5110,20 @@
                   "init": [
                     "value(nullptr)"
                   ]
-                },
-                "doc": ""
+                }
               }
             ],
             "operator GLContextRaw": {
               "kind": "function",
               "name": "operator GLContextRaw",
+              "doc": "Converts to underlying GLContextRaw",
               "constexpr": true,
               "immutable": true,
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "return value;"
-              },
-              "doc": ""
+              }
             }
           }
         },
@@ -5216,8 +5191,7 @@
             "m_displayID": {
               "kind": "var",
               "name": "m_displayID",
-              "type": "DisplayID",
-              "doc": ""
+              "type": "DisplayID"
             },
             "Display": {
               "kind": "function",
@@ -5499,8 +5473,7 @@
               "type": "auto",
               "constexpr": true
             }
-          },
-          "doc": ""
+          }
         },
         "SystemTheme": {
           "doc": "System theme.\n\n@since This enum is available since SDL 3.2.0.",
@@ -5916,8 +5889,7 @@
               "hints": {
                 "body": "nullptr"
               },
-              "name": "m_resource",
-              "doc": ""
+              "name": "m_resource"
             },
             "Window": [
               {
@@ -5929,8 +5901,8 @@
                   "default": true,
                   "changeAccess": "public"
                 },
-                "name": "Window",
-                "doc": ""
+                "doc": "Default ctor",
+                "name": "Window"
               },
               {
                 "kind": "function",
@@ -5964,8 +5936,8 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "Window",
-                "doc": ""
+                "doc": "Copy constructor",
+                "name": "Window"
               },
               {
                 "kind": "function",
@@ -5982,11 +5954,12 @@
                     "Window(other.release())"
                   ]
                 },
-                "name": "Window",
-                "doc": ""
+                "doc": "Move constructor",
+                "name": "Window"
               },
               {
                 "kind": "function",
+                "doc": "",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
@@ -5998,11 +5971,11 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "Window",
-                "doc": ""
+                "name": "Window"
               },
               {
                 "kind": "function",
+                "doc": "",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
@@ -6014,8 +5987,7 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "Window",
-                "doc": ""
+                "name": "Window"
               },
               {
                 "doc": "Create a window with the specified dimensions and flags.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\n`flags` may be any of the following OR'd together:\n\n- `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution\n- `WINDOW_OPENGL`: window usable with an OpenGL context\n- `WINDOW_OCCLUDED`: window partially or completely obscured by another\n  window\n- `WINDOW_HIDDEN`: window is not visible\n- `WINDOW_BORDERLESS`: no window decoration\n- `WINDOW_RESIZABLE`: window can be resized\n- `WINDOW_MINIMIZED`: window is minimized\n- `WINDOW_MAXIMIZED`: window is maximized\n- `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus\n- `WINDOW_INPUT_FOCUS`: window has input focus\n- `WINDOW_MOUSE_FOCUS`: window has mouse focus\n- `WINDOW_EXTERNAL`: window not created by SDL\n- `WINDOW_MODAL`: window is modal\n- `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back\n  buffer if possible\n- `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to\n  MOUSE_GRABBED)\n- `WINDOW_ALWAYS_ON_TOP`: window should always be above others\n- `WINDOW_UTILITY`: window should be treated as a utility window, not\n  showing in the task bar and window list\n- `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not\n  get mouse or keyboard focus, requires a parent window\n- `WINDOW_POPUP_MENU`: window should be treated as a popup menu,\n  requires a parent window\n- `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input\n- `WINDOW_VULKAN`: window usable with a Vulkan instance\n- `WINDOW_METAL`: window usable with a Metal instance\n- `WINDOW_TRANSPARENT`: window with transparent buffer\n- `WINDOW_NOT_FOCUSABLE`: window should not be focusable\n\nThe Window is implicitly shown if WINDOW_HIDDEN is not set.\n\nOn Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist\nproperty to YES, otherwise you will not receive a High-DPI OpenGL canvas.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use Window.GetSize() to query\nthe client area's size in window coordinates, and\nWindow.GetSizeInPixels() or SDL_GetRenderOutputSize() to query the\ndrawable size in pixels. Note that the drawable size can vary after the\nwindow is created and should be queried again if you get an\nEVENT_WINDOW_PIXEL_SIZE_CHANGED event.\n\nIf the window is created with any of the WINDOW_OPENGL or\nWINDOW_VULKAN flags, then the corresponding LoadLibrary function\n(GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the\ncorresponding UnloadLibrary function is called by Window.Destroy().\n\nIf WINDOW_VULKAN is specified and there isn't a working Vulkan driver,\nWindow.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.\n\nIf WINDOW_METAL is specified on an OS that does not support Metal,\nWindow.Window() will fail.\n\nIf you intend to use this window with an SDL_Renderer, you should use\nSDL_CreateWindowAndRenderer() instead of this function, to avoid window\nflicker.\n\nOn non-Apple devices, SDL requires you to either not link to the Vulkan\nloader or link to a dynamic library version. This limitation may be removed\nin a future version of SDL.\n\n@param title the title of the window, in UTF-8 encoding.\n@param w the width of the window.\n@param h the height of the window.\n@param flags 0, or one or more WindowFlags OR'd together.\n@post the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateWindowAndRenderer\n@sa Window.Window\n@sa Window.Window\n@sa Window.Destroy",
@@ -6081,13 +6053,13 @@
             ],
             "~Window": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "SDL_DestroyWindow(m_resource);"
               },
-              "name": "~Window",
-              "doc": ""
+              "name": "~Window"
             },
             "operator=": {
               "kind": "function",
@@ -6311,16 +6283,14 @@
                   "name": "rect"
                 }
               ],
-              "name": "SetRect",
-              "doc": ""
+              "name": "SetRect"
             },
             "GetRect": {
               "kind": "function",
               "type": "Rect",
               "immutable": true,
               "parameters": [],
-              "name": "GetRect",
-              "doc": ""
+              "name": "GetRect"
             },
             "SetPosition": {
               "doc": "Request that the window's position be set.\n\nIf the window is in an exclusive fullscreen or maximized state, this\nrequest has no effect.\n\nThis can be used to reposition fullscreen-desktop windows onto a different\ndisplay, however, as exclusive fullscreen windows are locked to a specific\ndisplay, they can only be repositioned programmatically via\nWindow.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\ncoordinates may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call Window.Sync() to\nblock until the changes have taken effect.\n\nWhen the window position changes, an EVENT_WINDOW_MOVED event will be\nemitted with the window's new coordinates. Note that the new coordinates\nmay not match the exact coordinates requested, as some windowing systems\ncan restrict the position of the window in certain scenarios (e.g.\nconstraining the position so the window is always within desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param window the window to reposition.\n@param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.GetPosition\n@sa Window.Sync",
@@ -6345,8 +6315,7 @@
                 "type": "Point",
                 "immutable": true,
                 "parameters": [],
-                "name": "GetPosition",
-                "doc": ""
+                "name": "GetPosition"
               },
               {
                 "doc": "Get the position of a window.\n\nThis is the current position of the window as last reported by the\nwindowing system.\n\nIf you do not need the value for one of the positions a nullptr may be passed\nin the `x` or `y` parameter.\n\n@param x a pointer filled in with the x position of the window, may be\n         nullptr.\n@param y a pointer filled in with the y position of the window, may be\n         nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.SetPosition",
@@ -6393,8 +6362,7 @@
                 "type": "Point",
                 "immutable": true,
                 "parameters": [],
-                "name": "GetSize",
-                "doc": ""
+                "name": "GetSize"
               },
               {
                 "doc": "Get the size of a window's client area.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use Window.GetSizeInPixels()\nor SDL_GetRenderOutputSize() to get the real client area size in pixels.\n\n@param w a pointer filled in with the width of the window, may be nullptr.\n@param h a pointer filled in with the height of the window, may be nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderOutputSize\n@sa Window.GetSizeInPixels\n@sa Window.SetSize",
@@ -6506,8 +6474,7 @@
                 "type": "Point",
                 "immutable": true,
                 "parameters": [],
-                "name": "GetSizeInPixels",
-                "doc": ""
+                "name": "GetSizeInPixels"
               },
               {
                 "doc": "Get the size of a window's client area, in pixels.\n\n@param w a pointer to variable for storing the width in pixels, may be\n         nullptr.\n@param h a pointer to variable for storing the height in pixels, may be\n         nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window\n@sa Window.GetSize",
@@ -7006,8 +6973,7 @@
                     "type": "HitTestCB"
                   }
                 ],
-                "name": "SetHitTest",
-                "doc": ""
+                "name": "SetHitTest"
               },
               {
                 "doc": "Provide a callback that decides if a window region has special properties.\n\nNormally windows are dragged and resized by decorations provided by the\nsystem window manager (a title bar, borders, etc), but for some apps, it\nmakes sense to drag them from somewhere else inside the window itself; for\nexample, one might have a borderless window that wants to be draggable from\nany part, or simulate its own title bar, etc.\n\nThis function lets the app provide a callback that designates pieces of a\ngiven window as special. This callback is run during event processing if we\nneed to tell the OS to treat a region of the window specially; the use of\nthis callback is known as \"hit testing.\"\n\nMouse input may not be delivered to your application if it is within a\nspecial area; the OS will often apply that input to moving the window or\nresizing the window and not deliver it to the application.\n\nSpecifying nullptr for a callback disables hit-testing. Hit-testing is\ndisabled by default.\n\nPlatforms that don't support this functionality will return false\nunconditionally, even if you're attempting to disable hit-testing.\n\nYour callback may fire at any time, and its firing does not indicate any\nspecific behavior (for example, on Windows, this certainly might fire when\nthe OS is deciding whether to drag your window, but it fires for lots of\nother reasons, too, some unrelated to anything you probably care about _and\nwhen the mouse isn't actually at the location it is testing_). Since this\ncan fire at any time, you should try to keep your callback efficient,\ndevoid of allocations, etc.\n\n@param callback the function to call when doing a hit-test.\n@param callback_data an app-defined void pointer passed to **callback**.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -7130,13 +7096,13 @@
             },
             "~WindowRef": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "release();"
               },
-              "name": "~WindowRef",
-              "doc": ""
+              "name": "~WindowRef"
             }
           }
         },
@@ -7221,8 +7187,7 @@
               "hints": {
                 "body": "nullptr"
               },
-              "name": "m_resource",
-              "doc": ""
+              "name": "m_resource"
             },
             "GLContext": [
               {
@@ -7234,8 +7199,8 @@
                   "default": true,
                   "changeAccess": "public"
                 },
-                "name": "GLContext",
-                "doc": ""
+                "doc": "Default ctor",
+                "name": "GLContext"
               },
               {
                 "kind": "function",
@@ -7269,8 +7234,8 @@
                 "hints": {
                   "default": true
                 },
-                "name": "GLContext",
-                "doc": ""
+                "doc": "Copy constructor",
+                "name": "GLContext"
               },
               {
                 "kind": "function",
@@ -7287,8 +7252,8 @@
                     "GLContext(other.release())"
                   ]
                 },
-                "name": "GLContext",
-                "doc": ""
+                "doc": "Move constructor",
+                "name": "GLContext"
               },
               {
                 "doc": "Create an OpenGL context for an OpenGL window, and make it current.\n\nWindows users new to OpenGL should note that, for historical reasons, GL\nfunctions added after OpenGL version 1.1 are not available by default.\nThose functions must be loaded at run-time, either with an OpenGL\nextension-handling library or with GL_GetProcAddress() and its related\nfunctions.\n\nGLContext is opaque to the application.\n\n@param window the window to associate with the context.\n@post the OpenGL context associated with `window` or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.Destroy\n@sa GLContext.MakeCurrent",
@@ -7306,13 +7271,13 @@
             ],
             "~GLContext": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": ""
               },
-              "name": "~GLContext",
-              "doc": ""
+              "name": "~GLContext"
             },
             "operator=": {
               "kind": "function",
@@ -7408,8 +7373,7 @@
           "entries": {
             "GLContext::GLContext": {
               "kind": "alias",
-              "name": "GLContext::GLContext",
-              "doc": ""
+              "name": "GLContext::GLContext"
             },
             "GLContextScoped": [
               {
@@ -7425,11 +7389,11 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "GLContextScoped",
-                "doc": ""
+                "name": "GLContextScoped"
               },
               {
                 "kind": "function",
+                "doc": "Move constructor",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
@@ -7443,19 +7407,18 @@
                     "GLContext(other.release())"
                   ]
                 },
-                "name": "GLContextScoped",
-                "doc": ""
+                "name": "GLContextScoped"
               }
             ],
             "~GLContextScoped": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "Destroy();"
               },
-              "name": "~GLContextScoped",
-              "doc": ""
+              "name": "~GLContextScoped"
             }
           }
         },
@@ -7972,8 +7935,7 @@
               "type": "auto",
               "constexpr": true
             }
-          },
-          "doc": ""
+          }
         },
         "GetDisplayName": {
           "doc": "Get the name of a display in UTF-8 encoding.\n\n@param displayID the instance ID of the display to query.\n@returns the name of a display or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetAll",
@@ -8966,8 +8928,7 @@
               "type": "auto",
               "constexpr": true
             }
-          },
-          "doc": ""
+          }
         },
         "GetWindowID": {
           "doc": "Get the numeric ID of a window.\n\nThe numeric ID is what WindowEvent references, and is necessary to map\nthese events to specific Window objects.\n\n@param window the window to query.\n@returns the ID of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.FromID",
@@ -10389,37 +10350,31 @@
         "PixelFormatRaw": {
           "name": "PixelFormatRaw",
           "kind": "alias",
-          "type": "SDL_PixelFormat",
-          "doc": ""
+          "type": "SDL_PixelFormat"
         },
         "ColorspaceRaw": {
           "name": "ColorspaceRaw",
           "kind": "alias",
-          "type": "SDL_Colorspace",
-          "doc": ""
+          "type": "SDL_Colorspace"
         },
         "ColorRaw": {
           "name": "ColorRaw",
           "kind": "alias",
-          "type": "SDL_Color",
-          "doc": ""
+          "type": "SDL_Color"
         },
         "FColorRaw": {
           "name": "FColorRaw",
           "kind": "alias",
-          "type": "SDL_FColor",
-          "doc": ""
+          "type": "SDL_FColor"
         },
         "Palette-forward": {
           "name": "Palette",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "PaletteRaw": {
           "name": "PaletteRaw",
           "kind": "alias",
-          "type": "SDL_Palette *",
-          "doc": ""
+          "type": "SDL_Palette *"
         },
         "PaletteParam": {
           "name": "PaletteParam",
@@ -10429,13 +10384,14 @@
             "value": {
               "kind": "var",
               "name": "value",
-              "type": "PaletteRaw",
-              "doc": ""
+              "doc": "parameter's PaletteRaw",
+              "type": "PaletteRaw"
             },
             "PaletteParam": [
               {
                 "kind": "function",
                 "name": "PaletteParam",
+                "doc": "Constructs from PaletteRaw",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -10448,12 +10404,12 @@
                   "init": [
                     "value(value)"
                   ]
-                },
-                "doc": ""
+                }
               },
               {
                 "kind": "function",
                 "name": "PaletteParam",
+                "doc": "Constructs null/invalid",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -10467,21 +10423,20 @@
                   "init": [
                     "value(nullptr)"
                   ]
-                },
-                "doc": ""
+                }
               }
             ],
             "operator PaletteRaw": {
               "kind": "function",
               "name": "operator PaletteRaw",
+              "doc": "Converts to underlying PaletteRaw",
               "constexpr": true,
               "immutable": true,
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "return value;"
-              },
-              "doc": ""
+              }
             }
           }
         },
@@ -10493,13 +10448,14 @@
             "value": {
               "kind": "var",
               "name": "value",
-              "type": "const PaletteRaw",
-              "doc": ""
+              "doc": "parameter's const PaletteRaw",
+              "type": "const PaletteRaw"
             },
             "PaletteConstParam": [
               {
                 "kind": "function",
                 "name": "PaletteConstParam",
+                "doc": "Constructs from const PaletteRaw",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -10512,12 +10468,12 @@
                   "init": [
                     "value(value)"
                   ]
-                },
-                "doc": ""
+                }
               },
               {
                 "kind": "function",
                 "name": "PaletteConstParam",
+                "doc": "Constructs from PaletteParam",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -10530,12 +10486,12 @@
                   "init": [
                     "value(value.value)"
                   ]
-                },
-                "doc": ""
+                }
               },
               {
                 "kind": "function",
                 "name": "PaletteConstParam",
+                "doc": "Constructs null/invalid",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -10549,28 +10505,26 @@
                   "init": [
                     "value(nullptr)"
                   ]
-                },
-                "doc": ""
+                }
               }
             ],
             "operator const PaletteRaw": {
               "kind": "function",
               "name": "operator const PaletteRaw",
+              "doc": "Converts to underlying const PaletteRaw",
               "constexpr": true,
               "immutable": true,
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "return value;"
-              },
-              "doc": ""
+              }
             }
           }
         },
         "Color-forward": {
           "kind": "forward",
-          "name": "Color",
-          "doc": ""
+          "name": "Color"
         },
         "PixelFormatDetails": {
           "doc": "Details about the format of a pixel.\n\n@since This struct is available since SDL 3.2.0.",
@@ -11014,8 +10968,7 @@
             "m_format": {
               "kind": "var",
               "name": "m_format",
-              "type": "PixelFormatRaw",
-              "doc": ""
+              "type": "PixelFormatRaw"
             },
             "PixelFormat": [
               {
@@ -11372,8 +11325,7 @@
                   "name": "palette"
                 }
               ],
-              "name": "Map",
-              "doc": ""
+              "name": "Map"
             },
             "Get": {
               "kind": "function",
@@ -11390,8 +11342,7 @@
                   "name": "palette"
                 }
               ],
-              "name": "Get",
-              "doc": ""
+              "name": "Get"
             }
           },
           "hints": {
@@ -12731,8 +12682,7 @@
             "m_cspace": {
               "kind": "var",
               "name": "m_cspace",
-              "type": "ColorspaceRaw",
-              "doc": ""
+              "type": "ColorspaceRaw"
             },
             "Colorspace": [
               {
@@ -13721,8 +13671,7 @@
               "hints": {
                 "body": "nullptr"
               },
-              "name": "m_resource",
-              "doc": ""
+              "name": "m_resource"
             },
             "Palette": [
               {
@@ -13734,8 +13683,8 @@
                   "default": true,
                   "changeAccess": "public"
                 },
-                "name": "Palette",
-                "doc": ""
+                "doc": "Default ctor",
+                "name": "Palette"
               },
               {
                 "kind": "function",
@@ -13772,8 +13721,8 @@
                   ],
                   "body": "++m_resource->refcount;"
                 },
-                "name": "Palette",
-                "doc": ""
+                "doc": "Copy constructor",
+                "name": "Palette"
               },
               {
                 "kind": "function",
@@ -13790,8 +13739,8 @@
                     "Palette(other.release())"
                   ]
                 },
-                "name": "Palette",
-                "doc": ""
+                "doc": "Move constructor",
+                "name": "Palette"
               },
               {
                 "doc": "Create a palette structure with the specified number of color entries.\n\nThe palette entries are initialized to white.\n\n@param ncolors represents the number of color entries in the color palette.\n@post a new Palette structure on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Destroy\n@sa Palette.SetColors\n@sa Surface.SetPalette",
@@ -13829,13 +13778,13 @@
             },
             "~Palette": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "SDL_DestroyPalette(m_resource);"
               },
-              "name": "~Palette",
-              "doc": ""
+              "name": "~Palette"
             },
             "operator=": {
               "kind": "function",
@@ -13893,8 +13842,7 @@
               "immutable": true,
               "constexpr": true,
               "parameters": [],
-              "name": "GetSize",
-              "doc": ""
+              "name": "GetSize"
             },
             "operator[]": {
               "kind": "function",
@@ -13907,8 +13855,7 @@
                   "name": "index"
                 }
               ],
-              "name": "operator[]",
-              "doc": ""
+              "name": "operator[]"
             },
             "Destroy": {
               "doc": "Free a palette created with Palette.Palette().\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette",
@@ -14487,41 +14434,34 @@
         "PointRaw": {
           "name": "PointRaw",
           "kind": "alias",
-          "type": "SDL_Point",
-          "doc": ""
+          "type": "SDL_Point"
         },
         "FPointRaw": {
           "name": "FPointRaw",
           "kind": "alias",
-          "type": "SDL_FPoint",
-          "doc": ""
+          "type": "SDL_FPoint"
         },
         "RectRaw": {
           "name": "RectRaw",
           "kind": "alias",
-          "type": "SDL_Rect",
-          "doc": ""
+          "type": "SDL_Rect"
         },
         "FRectRaw": {
           "name": "FRectRaw",
           "kind": "alias",
-          "type": "SDL_FRect",
-          "doc": ""
+          "type": "SDL_FRect"
         },
         "FPoint-forward": {
           "kind": "forward",
-          "name": "FPoint",
-          "doc": ""
+          "name": "FPoint"
         },
         "Rect-forward": {
           "kind": "forward",
-          "name": "Rect",
-          "doc": ""
+          "name": "Rect"
         },
         "FRect-forward": {
           "kind": "forward",
-          "name": "FRect",
-          "doc": ""
+          "name": "FRect"
         },
         "Point": {
           "doc": "The structure that defines a point (using integers).\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Rect.GetEnclosingPoints\n@sa Point.InRect",
@@ -15163,8 +15103,7 @@
                     "name": "h",
                     "type": "int"
                   }
-                ],
-                "doc": ""
+                ]
               },
               {
                 "kind": "function",
@@ -15181,8 +15120,7 @@
                     "name": "size",
                     "type": "const Point &"
                   }
-                ],
-                "doc": ""
+                ]
               }
             ],
             "FromCorners": [
@@ -15209,8 +15147,7 @@
                     "name": "y2",
                     "type": "int"
                   }
-                ],
-                "doc": ""
+                ]
               },
               {
                 "kind": "function",
@@ -15227,59 +15164,48 @@
                     "name": "p2",
                     "type": "const PointRaw &"
                   }
-                ],
-                "doc": ""
+                ]
               }
             ],
             "GetX2": {
               "kind": "function",
-              "name": "GetX2",
-              "doc": ""
+              "name": "GetX2"
             },
             "SetX2": {
               "kind": "function",
-              "name": "SetX2",
-              "doc": ""
+              "name": "SetX2"
             },
             "GetY2": {
               "kind": "function",
-              "name": "GetY2",
-              "doc": ""
+              "name": "GetY2"
             },
             "SetY2": {
               "kind": "function",
-              "name": "SetY2",
-              "doc": ""
+              "name": "SetY2"
             },
             "GetTopLeft": {
               "kind": "function",
-              "name": "GetTopLeft",
-              "doc": ""
+              "name": "GetTopLeft"
             },
             "GetTopRight": {
               "kind": "function",
-              "name": "GetTopRight",
-              "doc": ""
+              "name": "GetTopRight"
             },
             "GetBottomLeft": {
               "kind": "function",
-              "name": "GetBottomLeft",
-              "doc": ""
+              "name": "GetBottomLeft"
             },
             "GetBottomRight": {
               "kind": "function",
-              "name": "GetBottomRight",
-              "doc": ""
+              "name": "GetBottomRight"
             },
             "GetSize": {
               "kind": "function",
-              "name": "GetSize",
-              "doc": ""
+              "name": "GetSize"
             },
             "GetCentroid": {
               "kind": "function",
-              "name": "GetCentroid",
-              "doc": ""
+              "name": "GetCentroid"
             },
             "GetLineIntersection": [
               {
@@ -15295,8 +15221,7 @@
                     "name": "p2"
                   }
                 ],
-                "name": "GetLineIntersection",
-                "doc": ""
+                "name": "GetLineIntersection"
               },
               {
                 "doc": "Calculate the intersection of a rectangle and line segment.\n\nThis function is used to clip a line segment to a rectangle. A line segment\ncontained entirely within the rectangle or that does not intersect will\nremain unchanged. A line segment that crosses the rectangle at either or\nboth ends will be clipped to the boundary of the rectangle and the new\ncoordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.\n\n@param X1 a pointer to the starting X-coordinate of the line.\n@param Y1 a pointer to the starting Y-coordinate of the line.\n@param X2 a pointer to the ending X-coordinate of the line.\n@param Y2 a pointer to the ending Y-coordinate of the line.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
@@ -15382,8 +15307,7 @@
                     "type": "const PointRaw &"
                   }
                 ],
-                "name": "Contains",
-                "doc": ""
+                "name": "Contains"
               },
               {
                 "kind": "function",
@@ -15396,8 +15320,7 @@
                     "type": "const RectRaw &"
                   }
                 ],
-                "name": "Contains",
-                "doc": ""
+                "name": "Contains"
               }
             ],
             "HasIntersection": {
@@ -15731,8 +15654,7 @@
                     "name": "h",
                     "type": "float"
                   }
-                ],
-                "doc": ""
+                ]
               },
               {
                 "kind": "function",
@@ -15749,8 +15671,7 @@
                     "name": "size",
                     "type": "const FPointRaw &"
                   }
-                ],
-                "doc": ""
+                ]
               }
             ],
             "FromCorners": [
@@ -15777,8 +15698,7 @@
                     "name": "y2",
                     "type": "float"
                   }
-                ],
-                "doc": ""
+                ]
               },
               {
                 "kind": "function",
@@ -15795,59 +15715,48 @@
                     "name": "p2",
                     "type": "const FPointRaw &"
                   }
-                ],
-                "doc": ""
+                ]
               }
             ],
             "GetX2": {
               "kind": "function",
-              "name": "GetX2",
-              "doc": ""
+              "name": "GetX2"
             },
             "SetX2": {
               "kind": "function",
-              "name": "SetX2",
-              "doc": ""
+              "name": "SetX2"
             },
             "GetY2": {
               "kind": "function",
-              "name": "GetY2",
-              "doc": ""
+              "name": "GetY2"
             },
             "SetY2": {
               "kind": "function",
-              "name": "SetY2",
-              "doc": ""
+              "name": "SetY2"
             },
             "GetTopLeft": {
               "kind": "function",
-              "name": "GetTopLeft",
-              "doc": ""
+              "name": "GetTopLeft"
             },
             "GetTopRight": {
               "kind": "function",
-              "name": "GetTopRight",
-              "doc": ""
+              "name": "GetTopRight"
             },
             "GetBottomLeft": {
               "kind": "function",
-              "name": "GetBottomLeft",
-              "doc": ""
+              "name": "GetBottomLeft"
             },
             "GetBottomRight": {
               "kind": "function",
-              "name": "GetBottomRight",
-              "doc": ""
+              "name": "GetBottomRight"
             },
             "GetSize": {
               "kind": "function",
-              "name": "GetSize",
-              "doc": ""
+              "name": "GetSize"
             },
             "GetCentroid": {
               "kind": "function",
-              "name": "GetCentroid",
-              "doc": ""
+              "name": "GetCentroid"
             },
             "GetLineIntersection": {
               "doc": "Calculate the intersection of a rectangle and line segment with float\nprecision.\n\nThis function is used to clip a line segment to a rectangle. A line segment\ncontained entirely within the rectangle or that does not intersect will\nremain unchanged. A line segment that crosses the rectangle at either or\nboth ends will be clipped to the boundary of the rectangle and the new\ncoordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.\n\n@param X1 a pointer to the starting X-coordinate of the line.\n@param Y1 a pointer to the starting Y-coordinate of the line.\n@param X2 a pointer to the ending X-coordinate of the line.\n@param Y2 a pointer to the ending Y-coordinate of the line.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
@@ -15931,8 +15840,7 @@
                 ],
                 "constexpr": true,
                 "immutable": true,
-                "name": "Contains",
-                "doc": ""
+                "name": "Contains"
               },
               {
                 "kind": "function",
@@ -15945,8 +15853,7 @@
                 ],
                 "constexpr": true,
                 "immutable": true,
-                "name": "Contains",
-                "doc": ""
+                "name": "Contains"
               }
             ],
             "HasIntersection": {
@@ -16373,14 +16280,12 @@
       "entries": {
         "Surface-forward": {
           "name": "Surface",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "SurfaceRaw": {
           "name": "SurfaceRaw",
           "kind": "alias",
-          "type": "SDL_Surface *",
-          "doc": ""
+          "type": "SDL_Surface *"
         },
         "SurfaceParam": {
           "name": "SurfaceParam",
@@ -16390,13 +16295,14 @@
             "value": {
               "kind": "var",
               "name": "value",
-              "type": "SurfaceRaw",
-              "doc": ""
+              "doc": "parameter's SurfaceRaw",
+              "type": "SurfaceRaw"
             },
             "SurfaceParam": [
               {
                 "kind": "function",
                 "name": "SurfaceParam",
+                "doc": "Constructs from SurfaceRaw",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -16409,12 +16315,12 @@
                   "init": [
                     "value(value)"
                   ]
-                },
-                "doc": ""
+                }
               },
               {
                 "kind": "function",
                 "name": "SurfaceParam",
+                "doc": "Constructs null/invalid",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -16428,21 +16334,20 @@
                   "init": [
                     "value(nullptr)"
                   ]
-                },
-                "doc": ""
+                }
               }
             ],
             "operator SurfaceRaw": {
               "kind": "function",
               "name": "operator SurfaceRaw",
+              "doc": "Converts to underlying SurfaceRaw",
               "constexpr": true,
               "immutable": true,
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "return value;"
-              },
-              "doc": ""
+              }
             }
           }
         },
@@ -16454,13 +16359,14 @@
             "value": {
               "kind": "var",
               "name": "value",
-              "type": "const SurfaceRaw",
-              "doc": ""
+              "doc": "parameter's const SurfaceRaw",
+              "type": "const SurfaceRaw"
             },
             "SurfaceConstParam": [
               {
                 "kind": "function",
                 "name": "SurfaceConstParam",
+                "doc": "Constructs from const SurfaceRaw",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -16473,12 +16379,12 @@
                   "init": [
                     "value(value)"
                   ]
-                },
-                "doc": ""
+                }
               },
               {
                 "kind": "function",
                 "name": "SurfaceConstParam",
+                "doc": "Constructs from SurfaceParam",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -16491,12 +16397,12 @@
                   "init": [
                     "value(value.value)"
                   ]
-                },
-                "doc": ""
+                }
               },
               {
                 "kind": "function",
                 "name": "SurfaceConstParam",
+                "doc": "Constructs null/invalid",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -16510,21 +16416,20 @@
                   "init": [
                     "value(nullptr)"
                   ]
-                },
-                "doc": ""
+                }
               }
             ],
             "operator const SurfaceRaw": {
               "kind": "function",
               "name": "operator const SurfaceRaw",
+              "doc": "Converts to underlying const SurfaceRaw",
               "constexpr": true,
               "immutable": true,
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "return value;"
-              },
-              "doc": ""
+              }
             }
           }
         },
@@ -16666,8 +16571,7 @@
               "hints": {
                 "body": "nullptr"
               },
-              "name": "m_resource",
-              "doc": ""
+              "name": "m_resource"
             },
             "Surface": [
               {
@@ -16679,8 +16583,8 @@
                   "default": true,
                   "changeAccess": "public"
                 },
-                "name": "Surface",
-                "doc": ""
+                "doc": "Default ctor",
+                "name": "Surface"
               },
               {
                 "kind": "function",
@@ -16717,8 +16621,8 @@
                   ],
                   "body": "++m_resource->refcount;"
                 },
-                "name": "Surface",
-                "doc": ""
+                "doc": "Copy constructor",
+                "name": "Surface"
               },
               {
                 "kind": "function",
@@ -16735,8 +16639,8 @@
                     "Surface(other.release())"
                   ]
                 },
-                "name": "Surface",
-                "doc": ""
+                "doc": "Move constructor",
+                "name": "Surface"
               },
               {
                 "doc": "Allocate a new surface with a specific pixel format.\n\nThe pixels of the new surface are initialized to zero.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the PixelFormat for the new surface's pixel format.\n@post the new Surface structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Surface\n@sa Surface.Destroy",
@@ -16841,13 +16745,13 @@
             ],
             "~Surface": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "SDL_DestroySurface(m_resource);"
               },
-              "name": "~Surface",
-              "doc": ""
+              "name": "~Surface"
             },
             "operator=": {
               "kind": "function",
@@ -17130,8 +17034,7 @@
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "name": "ClearColorKey",
-              "doc": ""
+              "name": "ClearColorKey"
             },
             "HasColorKey": {
               "doc": "Returns whether the surface has a color key.\n\nIt is safe to pass a nullptr `surface` here; it will return false.\n\n@returns true if the surface has a color key, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetColorKey\n@sa Surface.GetColorKey",
@@ -17240,16 +17143,14 @@
                   "name": "color"
                 }
               ],
-              "name": "SetMod",
-              "doc": ""
+              "name": "SetMod"
             },
             "GetMod": {
               "kind": "function",
               "immutable": true,
               "type": "Color",
               "parameters": [],
-              "name": "GetMod",
-              "doc": ""
+              "name": "GetMod"
             },
             "SetBlendMode": {
               "doc": "Set the blend mode used for blit operations.\n\nTo copy a surface to another surface (or texture) without blending with the\nexisting data, the blendmode of the SOURCE surface should be set to\n`BLENDMODE_NONE`.\n\n@param blendMode the BlendMode to use for blit blending.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetBlendMode",
@@ -17297,8 +17198,7 @@
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "name": "ResetClipRect",
-              "doc": ""
+              "name": "ResetClipRect"
             },
             "GetClipRect": {
               "doc": "Get the clipping rectangle for a surface.\n\nWhen `surface` is the destination of a blit, only the area within the clip\nrectangle is drawn into.\n\n               clipped.\n@param rect an Rect structure filled in with the clipping rectangle for\n            the surface.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.SetClipRect",
@@ -17438,8 +17338,7 @@
                   "name": "color"
                 }
               ],
-              "name": "Fill",
-              "doc": ""
+              "name": "Fill"
             },
             "FillRect": {
               "doc": "Perform a fast fill of a rectangle with a specific color.\n\n`color` should be a pixel of the format used by the surface, and can be\ngenerated by MapRGB() or MapRGBA(). If the color value contains an\nalpha component then the destination is simply filled with that alpha\ninformation, no blending takes place.\n\nIf there is a clip rectangle set on the destination (set via\nSurface.SetClipRect()), then this function will fill based on the\nintersection of the clip rectangle and `rect`.\n\n@param rect the Rect structure representing the rectangle to fill, or\n            nullptr to fill the entire surface.\n@param color the color to fill with.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.FillRects",
@@ -17522,8 +17421,7 @@
                   "name": "dstpos"
                 }
               ],
-              "name": "BlitAt",
-              "doc": ""
+              "name": "BlitAt"
             },
             "BlitUnchecked": {
               "doc": "Perform low-level surface blitting only.\n\nThis is a semi-private blit function and it performs low-level surface\nblitting, assuming the input rectangles have already been clipped.\n\n@param srcrect the Rect structure representing the rectangle to be\n               copied, may not be nullptr.\n@param dst the Surface structure that is the blit target.\n@param dstrect the Rect structure representing the target rectangle in\n               the destination surface, may not be nullptr.\n@throws Error on failure.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Blit",
@@ -17728,8 +17626,7 @@
                   "type": "OptionalRef<const RectRaw>",
                   "name": "dstrect"
                 }
-              ],
-              "doc": ""
+              ]
             },
             "Blit9GridWithScale": {
               "doc": "Perform a scaled blit using the 9-grid algorithm to a destination surface,\nwhich may be of a different format.\n\nThe pixels in the source surface are split into a 3x3 grid, using the\ndifferent corner sizes for each corner, and the sides and center making up\nthe remaining pixels. The corners are then scaled using `scale` and fit\ninto the corners of the destination rectangle. The sides and center are\nthen stretched into place to cover the remaining destination rectangle.\n\n@param srcrect the Rect structure representing the rectangle to be used\n               for the 9-grid, or nullptr to use the entire surface.\n@param left_width the width, in pixels, of the left corners in `srcrect`.\n@param right_width the width, in pixels, of the right corners in `srcrect`.\n@param top_height the height, in pixels, of the top corners in `srcrect`.\n@param bottom_height the height, in pixels, of the bottom corners in\n                     `srcrect`.\n@param scale the scale used to transform the corner of `srcrect` into the\n             corner of `dstrect`, or 0.0f for an unscaled blit.\n@param scaleMode scale algorithm to be used.\n@param dst the Surface structure that is the blit target.\n@param dstrect the Rect structure representing the target rectangle in\n               the destination surface, or nullptr to fill the entire surface.\n@throws Error on failure.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Blit",
@@ -17826,8 +17723,7 @@
                     "type": "const PointRaw &",
                     "name": "p"
                   }
-                ],
-                "doc": ""
+                ]
               },
               {
                 "doc": "Retrieves a single pixel from a surface.\n\nThis function prioritizes correctness over speed: it is suitable for unit\ntests, but is not intended for use in a game engine.\n\nLike GetRGBA, this uses the entire 0..255 range when converting color\ncomponents from pixel formats with less than 8 bits per RGB component.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param r a pointer filled in with the red channel, 0-255, or nullptr to ignore\n         this channel.\n@param g a pointer filled in with the green channel, 0-255, or nullptr to\n         ignore this channel.\n@param b a pointer filled in with the blue channel, 0-255, or nullptr to\n         ignore this channel.\n@param a a pointer filled in with the alpha channel, 0-255, or nullptr to\n         ignore this channel.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
@@ -17874,8 +17770,7 @@
                     "name": "p"
                   }
                 ],
-                "name": "ReadPixelFloat",
-                "doc": ""
+                "name": "ReadPixelFloat"
               },
               {
                 "doc": "Retrieves a single pixel from a surface.\n\nThis function prioritizes correctness over speed: it is suitable for unit\ntests, but is not intended for use in a game engine.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param r a pointer filled in with the red channel, normally in the range\n         0-1, or nullptr to ignore this channel.\n@param g a pointer filled in with the green channel, normally in the range\n         0-1, or nullptr to ignore this channel.\n@param b a pointer filled in with the blue channel, normally in the range\n         0-1, or nullptr to ignore this channel.\n@param a a pointer filled in with the alpha channel, normally in the range\n         0-1, or nullptr to ignore this channel.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
@@ -17956,48 +17851,42 @@
               "immutable": true,
               "type": "int",
               "parameters": [],
-              "name": "GetWidth",
-              "doc": ""
+              "name": "GetWidth"
             },
             "GetHeight": {
               "kind": "function",
               "immutable": true,
               "type": "int",
               "parameters": [],
-              "name": "GetHeight",
-              "doc": ""
+              "name": "GetHeight"
             },
             "GetSize": {
               "kind": "function",
               "immutable": true,
               "type": "Point",
               "parameters": [],
-              "name": "GetSize",
-              "doc": ""
+              "name": "GetSize"
             },
             "GetPitch": {
               "kind": "function",
               "type": "int",
               "immutable": true,
               "parameters": [],
-              "name": "GetPitch",
-              "doc": ""
+              "name": "GetPitch"
             },
             "GetFormat": {
               "kind": "function",
               "immutable": true,
               "type": "PixelFormat",
               "parameters": [],
-              "name": "GetFormat",
-              "doc": ""
+              "name": "GetFormat"
             },
             "GetPixels": {
               "kind": "function",
               "immutable": true,
               "type": "void *",
               "parameters": [],
-              "name": "GetPixels",
-              "doc": ""
+              "name": "GetPixels"
             },
             "Destroy": {
               "doc": "Free a surface.\n\nIt is safe to pass nullptr to this function.\n\n\n@threadsafety No other thread should be using the surface when it is freed.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Surface\n@sa Surface.Surface",
@@ -18155,8 +18044,7 @@
               "type": "auto",
               "constexpr": true
             }
-          },
-          "doc": ""
+          }
         },
         "SetSurfaceColorspace": {
           "doc": "Set the colorspace used by a surface.\n\nSetting the colorspace doesn't change the pixels, only how they are\ninterpreted in color operations.\n\n@param surface the Surface structure to update.\n@param colorspace an Colorspace value describing the surface\n                  colorspace.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.GetColorspace",
@@ -19034,8 +18922,7 @@
               "name": "dstpos"
             }
           ],
-          "name": "BlitSurfaceAt",
-          "doc": ""
+          "name": "BlitSurfaceAt"
         },
         "BlitSurfaceUnchecked": {
           "doc": "Perform low-level surface blitting only.\n\nThis is a semi-private blit function and it performs low-level surface\nblitting, assuming the input rectangles have already been clipped.\n\n@param src the Surface structure to be copied from.\n@param srcrect the Rect structure representing the rectangle to be\n               copied, may not be nullptr.\n@param dst the Surface structure that is the blit target.\n@param dstrect the Rect structure representing the target rectangle in\n               the destination surface, may not be nullptr.\n@throws Error on failure.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Blit",
@@ -20999,8 +20886,7 @@
         "EventFilterCB": {
           "kind": "alias",
           "type": "std::function<bool(const Event &)>",
-          "name": "EventFilterCB",
-          "doc": ""
+          "name": "EventFilterCB"
         },
         "EventWatchHandle": {
           "doc": "Handle returned by AddEventWatch()",
@@ -21009,8 +20895,7 @@
           "entries": {
             "CallbackHandle::CallbackHandle": {
               "kind": "alias",
-              "name": "CallbackHandle::CallbackHandle",
-              "doc": ""
+              "name": "CallbackHandle::CallbackHandle"
             }
           },
           "name": "EventWatchHandle"
@@ -21089,8 +20974,7 @@
               "name": "event"
             }
           ],
-          "name": "EventWatchAuxCallback",
-          "doc": ""
+          "name": "EventWatchAuxCallback"
         },
         "AddEventWatch": [
           {
@@ -21429,8 +21313,7 @@
         "PathInfoRaw": {
           "name": "PathInfoRaw",
           "kind": "alias",
-          "type": "SDL_PathInfo",
-          "doc": ""
+          "type": "SDL_PathInfo"
         },
         "Path": {
           "kind": "struct",
@@ -21438,8 +21321,7 @@
           "entries": {
             "StringResult::StringResult": {
               "kind": "alias",
-              "name": "StringResult::StringResult",
-              "doc": ""
+              "name": "StringResult::StringResult"
             },
             "operator+=": [
               {
@@ -21451,8 +21333,7 @@
                     "name": "other"
                   }
                 ],
-                "name": "operator+=",
-                "doc": ""
+                "name": "operator+="
               },
               {
                 "kind": "function",
@@ -21463,8 +21344,7 @@
                     "name": "ch"
                   }
                 ],
-                "name": "operator+=",
-                "doc": ""
+                "name": "operator+="
               }
             ],
             "operator+": [
@@ -21478,8 +21358,7 @@
                     "name": "other"
                   }
                 ],
-                "name": "operator+",
-                "doc": ""
+                "name": "operator+"
               },
               {
                 "kind": "function",
@@ -21491,8 +21370,7 @@
                     "name": "ch"
                   }
                 ],
-                "name": "operator+",
-                "doc": ""
+                "name": "operator+"
               }
             ],
             "operator/=": {
@@ -21504,8 +21382,7 @@
                   "name": "other"
                 }
               ],
-              "name": "operator/=",
-              "doc": ""
+              "name": "operator/="
             },
             "operator/": {
               "kind": "function",
@@ -21517,12 +21394,10 @@
                   "name": "other"
                 }
               ],
-              "name": "operator/",
-              "doc": ""
+              "name": "operator/"
             }
           },
-          "name": "Path",
-          "doc": ""
+          "name": "Path"
         },
         "GetBasePath": {
           "doc": "Get the directory where the application was run from.\n\nSDL caches the result of this call internally, but the first call to this\nfunction is not necessarily fast, so plan accordingly.\n\n**macOS and iOS Specific Functionality**: If the application is in a \".app\"\nbundle, this function returns the Resource directory (e.g.\nMyApp.app/Contents/Resources/). This behaviour can be overridden by adding\na property to the Info.plist file. Adding a string key with the name\nSDL_FILESYSTEM_BASE_DIR_TYPE with a supported value will change the\nbehaviour.\n\nSupported values for the SDL_FILESYSTEM_BASE_DIR_TYPE property (Given an\napplication in /Applications/SDLApp/MyApp.app):\n\n- `resource`: bundle resource directory (the default). For example:\n  `/Applications/SDLApp/MyApp.app/Contents/Resources`\n- `bundle`: the Bundle directory. For example:\n  `/Applications/SDLApp/MyApp.app/`\n- `parent`: the containing directory of the bundle. For example:\n  `/Applications/SDLApp/`\n\n**Nintendo 3DS Specific Functionality**: This function returns \"romfs\"\ndirectory of the application as it is uncommon to store resources outside\nthe executable. As such it is not a writable directory.\n\nThe returned path is guaranteed to end with a path separator ('\\\\' on\nWindows, '/' on most other platforms).\n\n@returns an absolute path in UTF-8 encoding to the application data\n         directory. nullptr will be returned on error or when the platform\n         doesn't implement this functionality, call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPrefPath",
@@ -22015,19 +21890,16 @@
       "entries": {
         "IOStream-forward": {
           "name": "IOStream",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "IOStreamRaw": {
           "name": "IOStreamRaw",
           "kind": "alias",
-          "type": "SDL_IOStream *",
-          "doc": ""
+          "type": "SDL_IOStream *"
         },
         "IOStreamRef-forward": {
           "name": "IOStreamRef",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "IOStreamParam": {
           "name": "IOStreamParam",
@@ -22037,13 +21909,14 @@
             "value": {
               "kind": "var",
               "name": "value",
-              "type": "IOStreamRaw",
-              "doc": ""
+              "doc": "parameter's IOStreamRaw",
+              "type": "IOStreamRaw"
             },
             "IOStreamParam": [
               {
                 "kind": "function",
                 "name": "IOStreamParam",
+                "doc": "Constructs from IOStreamRaw",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -22056,12 +21929,12 @@
                   "init": [
                     "value(value)"
                   ]
-                },
-                "doc": ""
+                }
               },
               {
                 "kind": "function",
                 "name": "IOStreamParam",
+                "doc": "Constructs null/invalid",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -22075,21 +21948,20 @@
                   "init": [
                     "value(nullptr)"
                   ]
-                },
-                "doc": ""
+                }
               }
             ],
             "operator IOStreamRaw": {
               "kind": "function",
               "name": "operator IOStreamRaw",
+              "doc": "Converts to underlying IOStreamRaw",
               "constexpr": true,
               "immutable": true,
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "return value;"
-              },
-              "doc": ""
+              }
             }
           }
         },
@@ -22199,8 +22071,7 @@
               "hints": {
                 "body": "nullptr"
               },
-              "name": "m_resource",
-              "doc": ""
+              "name": "m_resource"
             },
             "IOStream": [
               {
@@ -22212,8 +22083,8 @@
                   "default": true,
                   "changeAccess": "public"
                 },
-                "name": "IOStream",
-                "doc": ""
+                "doc": "Default ctor",
+                "name": "IOStream"
               },
               {
                 "kind": "function",
@@ -22247,8 +22118,8 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "IOStream",
-                "doc": ""
+                "doc": "Copy constructor",
+                "name": "IOStream"
               },
               {
                 "kind": "function",
@@ -22265,11 +22136,12 @@
                     "IOStream(other.release())"
                   ]
                 },
-                "name": "IOStream",
-                "doc": ""
+                "doc": "Move constructor",
+                "name": "IOStream"
               },
               {
                 "kind": "function",
+                "doc": "",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
@@ -22281,11 +22153,11 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "IOStream",
-                "doc": ""
+                "name": "IOStream"
               },
               {
                 "kind": "function",
+                "doc": "",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
@@ -22297,8 +22169,7 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "IOStream",
-                "doc": ""
+                "name": "IOStream"
               }
             ],
             "FromFile": {
@@ -22392,13 +22263,13 @@
             },
             "~IOStream": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "SDL_CloseIO(m_resource);"
               },
-              "name": "~IOStream",
-              "doc": ""
+              "name": "~IOStream"
             },
             "operator=": {
               "kind": "function",
@@ -22532,8 +22403,7 @@
                     "default": "-1"
                   }
                 ],
-                "name": "Read",
-                "doc": ""
+                "name": "Read"
               },
               {
                 "doc": "Read from a data source.\n\nThis function reads up `size` bytes from the data source to the area\npointed at by `ptr`. This function may read less bytes than requested.\n\nThis function will return zero when the data stream is completely read, and\nIOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and\nthe stream is not at EOF, IOStream.GetStatus() will return a different error\nvalue and GetError() will offer a human-readable message.\n\n@param ptr a pointer to a buffer to read data into.\n@param size the number of bytes to read from the data source.\n@returns the number of bytes read, or 0 on end of file or other failure;\n         call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.Write\n@sa IOStream.GetStatus",
@@ -22654,8 +22524,7 @@
               ],
               "type": "OwnArray<T>",
               "parameters": [],
-              "name": "LoadFileAs",
-              "doc": ""
+              "name": "LoadFileAs"
             },
             "SaveFile": {
               "doc": "Save all the data into an SDL data stream.\n\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveFile\n@sa IOStream.LoadFile",
@@ -22831,99 +22700,85 @@
               "kind": "function",
               "type": "std::optional<Uint8>",
               "parameters": [],
-              "name": "TryReadU8",
-              "doc": ""
+              "name": "TryReadU8"
             },
             "TryReadS8": {
               "kind": "function",
               "type": "std::optional<Sint8>",
               "parameters": [],
-              "name": "TryReadS8",
-              "doc": ""
+              "name": "TryReadS8"
             },
             "TryReadU16LE": {
               "kind": "function",
               "type": "std::optional<Uint16>",
               "parameters": [],
-              "name": "TryReadU16LE",
-              "doc": ""
+              "name": "TryReadU16LE"
             },
             "TryReadS16LE": {
               "kind": "function",
               "type": "std::optional<Sint16>",
               "parameters": [],
-              "name": "TryReadS16LE",
-              "doc": ""
+              "name": "TryReadS16LE"
             },
             "TryReadU16BE": {
               "kind": "function",
               "type": "std::optional<Uint16>",
               "parameters": [],
-              "name": "TryReadU16BE",
-              "doc": ""
+              "name": "TryReadU16BE"
             },
             "TryReadS16BE": {
               "kind": "function",
               "type": "std::optional<Sint16>",
               "parameters": [],
-              "name": "TryReadS16BE",
-              "doc": ""
+              "name": "TryReadS16BE"
             },
             "TryReadU32LE": {
               "kind": "function",
               "type": "std::optional<Uint32>",
               "parameters": [],
-              "name": "TryReadU32LE",
-              "doc": ""
+              "name": "TryReadU32LE"
             },
             "TryReadS32LE": {
               "kind": "function",
               "type": "std::optional<Sint32>",
               "parameters": [],
-              "name": "TryReadS32LE",
-              "doc": ""
+              "name": "TryReadS32LE"
             },
             "TryReadU32BE": {
               "kind": "function",
               "type": "std::optional<Uint32>",
               "parameters": [],
-              "name": "TryReadU32BE",
-              "doc": ""
+              "name": "TryReadU32BE"
             },
             "TryReadS32BE": {
               "kind": "function",
               "type": "std::optional<Sint32>",
               "parameters": [],
-              "name": "TryReadS32BE",
-              "doc": ""
+              "name": "TryReadS32BE"
             },
             "TryReadU64LE": {
               "kind": "function",
               "type": "std::optional<Uint64>",
               "parameters": [],
-              "name": "TryReadU64LE",
-              "doc": ""
+              "name": "TryReadU64LE"
             },
             "TryReadS64LE": {
               "kind": "function",
               "type": "std::optional<Sint64>",
               "parameters": [],
-              "name": "TryReadS64LE",
-              "doc": ""
+              "name": "TryReadS64LE"
             },
             "TryReadU64BE": {
               "kind": "function",
               "type": "std::optional<Uint64>",
               "parameters": [],
-              "name": "TryReadU64BE",
-              "doc": ""
+              "name": "TryReadU64BE"
             },
             "TryReadS64BE": {
               "kind": "function",
               "type": "std::optional<Sint64>",
               "parameters": [],
-              "name": "TryReadS64BE",
-              "doc": ""
+              "name": "TryReadS64BE"
             },
             "WriteU8": {
               "doc": "Use this function to write a byte to an IOStream.\n\n@param value the byte value to write.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
@@ -23181,13 +23036,13 @@
             },
             "~IOStreamRef": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "release();"
               },
-              "name": "~IOStreamRef",
-              "doc": ""
+              "name": "~IOStreamRef"
             }
           }
         },
@@ -23287,8 +23142,7 @@
               "type": "auto",
               "constexpr": true
             }
-          },
-          "doc": ""
+          }
         },
         "IOFromMem": {
           "doc": "Use this function to prepare a read-write memory buffer for use with\nIOStream.\n\nThis function sets up an IOStream struct based on a memory area of a\ncertain size, for both read and write access.\n\nThis memory buffer is not copied by the IOStream; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to make sure the IOStream never writes to the memory\nbuffer, you should use IOStream.FromConstMem() with a read-only buffer of\nmemory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a buffer to feed an IOStream stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStream structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.FromConstMem\n@sa IOStream.Close\n@sa IOStream.Flush\n@sa IOStream.Read\n@sa IOStream.Seek\n@sa IOStream.Tell\n@sa IOStream.Write",
@@ -23587,8 +23441,7 @@
               "name": "file"
             }
           ],
-          "name": "LoadFileAs",
-          "doc": ""
+          "name": "LoadFileAs"
         },
         "SaveFile_IO": {
           "doc": "Save all the data into an SDL data stream.\n\n@param src the IOStream to write all data to.\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveFile\n@sa IOStream.LoadFile",
@@ -24184,19 +24037,16 @@
       "entries": {
         "Environment-forward": {
           "name": "Environment",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "EnvironmentRaw": {
           "name": "EnvironmentRaw",
           "kind": "alias",
-          "type": "SDL_Environment *",
-          "doc": ""
+          "type": "SDL_Environment *"
         },
         "EnvironmentRef-forward": {
           "name": "EnvironmentRef",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "EnvironmentParam": {
           "name": "EnvironmentParam",
@@ -24206,13 +24056,14 @@
             "value": {
               "kind": "var",
               "name": "value",
-              "type": "EnvironmentRaw",
-              "doc": ""
+              "doc": "parameter's EnvironmentRaw",
+              "type": "EnvironmentRaw"
             },
             "EnvironmentParam": [
               {
                 "kind": "function",
                 "name": "EnvironmentParam",
+                "doc": "Constructs from EnvironmentRaw",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -24225,12 +24076,12 @@
                   "init": [
                     "value(value)"
                   ]
-                },
-                "doc": ""
+                }
               },
               {
                 "kind": "function",
                 "name": "EnvironmentParam",
+                "doc": "Constructs null/invalid",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -24244,39 +24095,35 @@
                   "init": [
                     "value(nullptr)"
                   ]
-                },
-                "doc": ""
+                }
               }
             ],
             "operator EnvironmentRaw": {
               "kind": "function",
               "name": "operator EnvironmentRaw",
+              "doc": "Converts to underlying EnvironmentRaw",
               "constexpr": true,
               "immutable": true,
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "return value;"
-              },
-              "doc": ""
+              }
             }
           }
         },
         "IConv-forward": {
           "name": "IConv",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "IConvRaw": {
           "name": "IConvRaw",
           "kind": "alias",
-          "type": "SDL_iconv_t *",
-          "doc": ""
+          "type": "SDL_iconv_t *"
         },
         "IConvRef-forward": {
           "name": "IConvRef",
-          "kind": "forward",
-          "doc": ""
+          "kind": "forward"
         },
         "IConvParam": {
           "name": "IConvParam",
@@ -24286,13 +24133,14 @@
             "value": {
               "kind": "var",
               "name": "value",
-              "type": "IConvRaw",
-              "doc": ""
+              "doc": "parameter's IConvRaw",
+              "type": "IConvRaw"
             },
             "IConvParam": [
               {
                 "kind": "function",
                 "name": "IConvParam",
+                "doc": "Constructs from IConvRaw",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -24305,12 +24153,12 @@
                   "init": [
                     "value(value)"
                   ]
-                },
-                "doc": ""
+                }
               },
               {
                 "kind": "function",
                 "name": "IConvParam",
+                "doc": "Constructs null/invalid",
                 "constexpr": true,
                 "type": "",
                 "parameters": [
@@ -24324,21 +24172,20 @@
                   "init": [
                     "value(nullptr)"
                   ]
-                },
-                "doc": ""
+                }
               }
             ],
             "operator IConvRaw": {
               "kind": "function",
               "name": "operator IConvRaw",
+              "doc": "Converts to underlying IConvRaw",
               "constexpr": true,
               "immutable": true,
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "return value;"
-              },
-              "doc": ""
+              }
             }
           }
         },
@@ -24712,8 +24559,7 @@
             "m_value": {
               "kind": "var",
               "type": "std::chrono::nanoseconds",
-              "name": "m_value",
-              "doc": ""
+              "name": "m_value"
             },
             "Time": [
               {
@@ -24721,8 +24567,7 @@
                 "constexpr": true,
                 "type": "",
                 "parameters": [],
-                "name": "Time",
-                "doc": ""
+                "name": "Time"
               },
               {
                 "kind": "function",
@@ -24734,8 +24579,7 @@
                     "name": "time"
                   }
                 ],
-                "name": "Time",
-                "doc": ""
+                "name": "Time"
               },
               {
                 "kind": "function",
@@ -24748,8 +24592,7 @@
                     "name": "time"
                   }
                 ],
-                "name": "Time",
-                "doc": ""
+                "name": "Time"
               }
             ],
             "operator bool": {
@@ -24759,8 +24602,7 @@
               "immutable": true,
               "constexpr": true,
               "parameters": [],
-              "name": "operator bool",
-              "doc": ""
+              "name": "operator bool"
             },
             "operator std::chrono::nanoseconds": {
               "kind": "function",
@@ -24768,12 +24610,10 @@
               "immutable": true,
               "constexpr": true,
               "parameters": [],
-              "name": "operator std::chrono::nanoseconds",
-              "doc": ""
+              "name": "operator std::chrono::nanoseconds"
             },
             "Current": {
-              "name": "Current",
-              "doc": ""
+              "name": "Current"
             },
             "FromNS": {
               "kind": "function",
@@ -24786,8 +24626,7 @@
                   "name": "time"
                 }
               ],
-              "name": "FromNS",
-              "doc": ""
+              "name": "FromNS"
             },
             "ToNS": {
               "kind": "function",
@@ -24795,11 +24634,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "name": "ToNS",
-              "doc": ""
+              "name": "ToNS"
             },
             "FromPosix": {
-              "doc": "",
+              "doc": "Convert seconds to nanoseconds.\n\nThis only converts whole numbers, not fractional seconds.\n\n@param S the number of seconds to convert.\n@returns S, expressed in nanoseconds.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "FromPosix",
               "kind": "function",
               "parameters": [
@@ -24816,7 +24654,7 @@
               "proto": true
             },
             "ToPosix": {
-              "doc": "",
+              "doc": "Convert nanoseconds to seconds.\n\nThis performs a division, so the results can be dramatically different if\n`NS` is an integer or floating point value.\n\n@param NS the number of nanoseconds to convert.\n@returns NS, expressed in seconds.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "ToPosix",
               "kind": "function",
               "parameters": [],
@@ -24828,12 +24666,10 @@
               "proto": true
             },
             "FromWindows": {
-              "name": "FromWindows",
-              "doc": ""
+              "name": "FromWindows"
             },
             "ToWindows": {
-              "name": "ToWindows",
-              "doc": ""
+              "name": "ToWindows"
             },
             "ToSeconds": {
               "kind": "function",
@@ -24868,8 +24704,7 @@
                   "name": "interval"
                 }
               ],
-              "name": "operator+=",
-              "doc": ""
+              "name": "operator+="
             },
             "operator-=": {
               "kind": "function",
@@ -24881,8 +24716,7 @@
                   "name": "interval"
                 }
               ],
-              "name": "operator-=",
-              "doc": ""
+              "name": "operator-="
             }
           }
         },
@@ -25138,8 +24972,7 @@
               "hints": {
                 "body": "nullptr"
               },
-              "name": "m_resource",
-              "doc": ""
+              "name": "m_resource"
             },
             "Environment": [
               {
@@ -25151,8 +24984,8 @@
                   "default": true,
                   "changeAccess": "public"
                 },
-                "name": "Environment",
-                "doc": ""
+                "doc": "Default ctor",
+                "name": "Environment"
               },
               {
                 "kind": "function",
@@ -25186,8 +25019,8 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "Environment",
-                "doc": ""
+                "doc": "Copy constructor",
+                "name": "Environment"
               },
               {
                 "kind": "function",
@@ -25204,11 +25037,12 @@
                     "Environment(other.release())"
                   ]
                 },
-                "name": "Environment",
-                "doc": ""
+                "doc": "Move constructor",
+                "name": "Environment"
               },
               {
                 "kind": "function",
+                "doc": "",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
@@ -25220,11 +25054,11 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "Environment",
-                "doc": ""
+                "name": "Environment"
               },
               {
                 "kind": "function",
+                "doc": "",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
@@ -25236,8 +25070,7 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "Environment",
-                "doc": ""
+                "name": "Environment"
               },
               {
                 "doc": "Create a set of environment variables\n\n@param populated true to initialize it from the C runtime environment,\n                 false to create an empty environment.\n@post a pointer to the new environment or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety If `populated` is false, it is safe to call this function\n              from any thread, otherwise it is safe if no other threads are\n              calling setenv() or unsetenv()\n\n@since This function is available since SDL 3.2.0.\n\n@sa Environment.GetVariable\n@sa Environment.GetVariables\n@sa Environment.SetVariable\n@sa Environment.UnsetVariable\n@sa Environment.Destroy",
@@ -25255,13 +25088,13 @@
             ],
             "~Environment": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "SDL_DestroyEnvironment(m_resource);"
               },
-              "name": "~Environment",
-              "doc": ""
+              "name": "~Environment"
             },
             "operator=": {
               "kind": "function",
@@ -25338,8 +25171,7 @@
               "kind": "function",
               "type": "Uint64",
               "parameters": [],
-              "name": "GetVariableCount",
-              "doc": ""
+              "name": "GetVariableCount"
             },
             "SetVariable": {
               "doc": "Set the value of a variable in the environment.\n\n@param name the name of the variable to set.\n@param value the value of the variable to set.\n@param overwrite true to overwrite the variable if it exists, false to\n                 return success without setting the variable if it already\n                 exists.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariable\n@sa Environment.GetVariables\n@sa Environment.UnsetVariable",
@@ -25424,13 +25256,13 @@
             },
             "~EnvironmentRef": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "release();"
               },
-              "name": "~EnvironmentRef",
-              "doc": ""
+              "name": "~EnvironmentRef"
             }
           }
         },
@@ -27432,8 +27264,7 @@
             "m_state": {
               "kind": "var",
               "type": "Uint64",
-              "name": "m_state",
-              "doc": ""
+              "name": "m_state"
             },
             "Random": [
               {
@@ -27441,8 +27272,7 @@
                 "constexpr": true,
                 "type": "",
                 "parameters": [],
-                "name": "Random",
-                "doc": ""
+                "name": "Random"
               },
               {
                 "kind": "function",
@@ -27455,8 +27285,7 @@
                     "name": "state"
                   }
                 ],
-                "name": "Random",
-                "doc": ""
+                "name": "Random"
               }
             ],
             "operator Uint64": {
@@ -27464,8 +27293,7 @@
               "constexpr": true,
               "type": "",
               "parameters": [],
-              "name": "operator Uint64",
-              "doc": ""
+              "name": "operator Uint64"
             },
             "rand": {
               "doc": "Generate a pseudo-random number less than n for positive n\n\nThe method used is faster and of better quality than `rand() % n`. Odds are\nroughly 99.9% even for n = 1 million. Evenness is better for smaller n, and\nmuch worse as n gets bigger.\n\nExample: to simulate a d6 use `Random.rand(state, 6) + 1` The +1 converts\n0..5 to 1..6\n\nIf you want to generate a pseudo-random number in the full range of Sint32,\nyou should use: (Sint32)Random.rand_bits(state)\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@param state a pointer to the current random number state, this may not be\n             nullptr.\n@param n the number of possible outcomes. n must be positive.\n@returns a random value in the range of [0 .. n-1].\n\n@threadsafety This function is thread-safe, as long as the state pointer\n              isn't shared between threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa rand\n@sa Random.rand_bits\n@sa Random.randf",
@@ -27500,8 +27328,7 @@
               "static": false
             }
           },
-          "name": "Random",
-          "doc": ""
+          "name": "Random"
         },
         "rand_r": {
           "doc": "Generate a pseudo-random number less than n for positive n\n\nThe method used is faster and of better quality than `rand() % n`. Odds are\nroughly 99.9% even for n = 1 million. Evenness is better for smaller n, and\nmuch worse as n gets bigger.\n\nExample: to simulate a d6 use `Random.rand(state, 6) + 1` The +1 converts\n0..5 to 1..6\n\nIf you want to generate a pseudo-random number in the full range of Sint32,\nyou should use: (Sint32)Random.rand_bits(state)\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@param state a pointer to the current random number state, this may not be\n             nullptr.\n@param n the number of possible outcomes. n must be positive.\n@returns a random value in the range of [0 .. n-1].\n\n@threadsafety This function is thread-safe, as long as the state pointer\n              isn't shared between threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa rand\n@sa Random.rand_bits\n@sa Random.randf",
@@ -28269,8 +28096,7 @@
               "hints": {
                 "body": "nullptr"
               },
-              "name": "m_resource",
-              "doc": ""
+              "name": "m_resource"
             },
             "IConv": [
               {
@@ -28282,8 +28108,8 @@
                   "default": true,
                   "changeAccess": "public"
                 },
-                "name": "IConv",
-                "doc": ""
+                "doc": "Default ctor",
+                "name": "IConv"
               },
               {
                 "kind": "function",
@@ -28317,8 +28143,8 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "IConv",
-                "doc": ""
+                "doc": "Copy constructor",
+                "name": "IConv"
               },
               {
                 "kind": "function",
@@ -28335,11 +28161,12 @@
                     "IConv(other.release())"
                   ]
                 },
-                "name": "IConv",
-                "doc": ""
+                "doc": "Move constructor",
+                "name": "IConv"
               },
               {
                 "kind": "function",
+                "doc": "",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
@@ -28351,11 +28178,11 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "IConv",
-                "doc": ""
+                "name": "IConv"
               },
               {
                 "kind": "function",
+                "doc": "",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
@@ -28367,8 +28194,7 @@
                 "hints": {
                   "delete": true
                 },
-                "name": "IConv",
-                "doc": ""
+                "name": "IConv"
               }
             ],
             "open": {
@@ -28394,13 +28220,13 @@
             },
             "~IConv": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "SDL_iconv_close(m_resource);"
               },
-              "name": "~IConv",
-              "doc": ""
+              "name": "~IConv"
             },
             "operator=": {
               "kind": "function",
@@ -28530,13 +28356,13 @@
             },
             "~IConvRef": {
               "kind": "function",
+              "doc": "Destructor",
               "type": "",
               "parameters": [],
               "hints": {
                 "body": "release();"
               },
-              "name": "~IConvRef",
-              "doc": ""
+              "name": "~IConvRef"
             }
           }
         },

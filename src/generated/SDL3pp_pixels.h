@@ -84,41 +84,48 @@ using PaletteRaw = SDL_Palette*;
 /// Safely wrap Palette for non owning parameters
 struct PaletteParam
 {
-  PaletteRaw value;
+  PaletteRaw value; ///< parameter's PaletteRaw
 
+  /// Constructs from PaletteRaw
   constexpr PaletteParam(PaletteRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr PaletteParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying PaletteRaw
   constexpr operator PaletteRaw() const { return value; }
 };
 
 /// Safely wrap Palette for non owning const parameters
 struct PaletteConstParam
 {
-  const PaletteRaw value;
+  const PaletteRaw value; ///< parameter's const PaletteRaw
 
+  /// Constructs from const PaletteRaw
   constexpr PaletteConstParam(const PaletteRaw value)
     : value(value)
   {
   }
 
+  /// Constructs from PaletteParam
   constexpr PaletteConstParam(PaletteParam value)
     : value(value.value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr PaletteConstParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying const PaletteRaw
   constexpr operator const PaletteRaw() const { return value; }
 };
 
@@ -2210,6 +2217,7 @@ class Palette
   PaletteRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr Palette() = default;
 
   /**
@@ -2224,8 +2232,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr Palette(const Palette& other) { ++m_resource->refcount; }
 
+  /// Move constructor
   constexpr Palette(Palette&& other)
     : Palette(other.release())
   {
@@ -2266,6 +2276,7 @@ public:
     return Palette(resource.value);
   }
 
+  /// Destructor
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
   /// Assignment operator.

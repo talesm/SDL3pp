@@ -43,41 +43,47 @@ using SurfaceRaw = SDL_Surface*;
 /// Safely wrap Surface for non owning parameters
 struct SurfaceParam
 {
-  SurfaceRaw value;
+  SurfaceRaw value; ///< parameter's SurfaceRaw
 
+  /// Constructs from SurfaceRaw
   constexpr SurfaceParam(SurfaceRaw value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr SurfaceParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying SurfaceRaw
   constexpr operator SurfaceRaw() const { return value; }
 };
 
 /// Safely wrap Surface for non owning const parameters
 struct SurfaceConstParam
 {
-  const SurfaceRaw value;
+  const SurfaceRaw value; ///< parameter's const SurfaceRaw
 
   constexpr SurfaceConstParam(const SurfaceRaw value)
     : value(value)
   {
   }
 
+  /// Constructs from SurfaceParam
   constexpr SurfaceConstParam(SurfaceParam value)
     : value(value.value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr SurfaceConstParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
 
+  /// Converts to underlying const SurfaceRaw
   constexpr operator const SurfaceRaw() const { return value; }
 };
 
@@ -176,6 +182,7 @@ class Surface
   SurfaceRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
   constexpr Surface() = default;
 
   /**
@@ -190,8 +197,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr Surface(const Surface& other) { ++m_resource->refcount; }
 
+  /// Move constructor
   constexpr Surface(Surface&& other)
     : Surface(other.release())
   {
@@ -312,6 +321,7 @@ public:
     return Surface(SDL_LoadBMP(file));
   }
 
+  /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }
 
   /// Assignment operator.

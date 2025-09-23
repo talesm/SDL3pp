@@ -48,18 +48,21 @@ struct PropertiesRef;
 /// Safely wrap Properties for non owning parameters
 struct PropertiesParam
 {
-  PropertiesID value;
+  PropertiesID value; ///< parameter's PropertiesID
 
+  /// Constructs from PropertiesID
   constexpr PropertiesParam(PropertiesID value)
     : value(value)
   {
   }
 
+  /// Constructs null/invalid
   constexpr PropertiesParam(std::nullptr_t _ = nullptr)
     : value(0)
   {
   }
 
+  /// Converts to underlying PropertiesID
   constexpr operator PropertiesID() const { return value; }
 };
 
@@ -77,6 +80,7 @@ class Properties
   PropertiesID m_resource = 0;
 
 public:
+  /// Default ctor
   constexpr Properties() = default;
 
   /**
@@ -91,8 +95,10 @@ public:
   {
   }
 
+  /// Copy constructor
   constexpr Properties(const Properties& other) = delete;
 
+  /// Move constructor
   constexpr Properties(Properties&& other)
     : Properties(other.release())
   {
@@ -121,6 +127,7 @@ public:
     return Properties(CheckError(SDL_CreateProperties()));
   }
 
+  /// Destructor
   ~Properties() { SDL_DestroyProperties(m_resource); }
 
   /// Assignment operator.
@@ -180,6 +187,7 @@ struct PropertiesRef : Properties
   {
   }
 
+  /// Destructor
   ~PropertiesRef() { release(); }
 };
 
