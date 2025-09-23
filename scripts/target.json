@@ -2503,7 +2503,8 @@
                 "parameters": [
                   {
                     "type": "std::nullptr_t",
-                    "name": "_"
+                    "name": "_",
+                    "default": "nullptr"
                   }
                 ],
                 "hints": {
@@ -5045,7 +5046,8 @@
                 "parameters": [
                   {
                     "type": "std::nullptr_t",
-                    "name": "_"
+                    "name": "_",
+                    "default": "nullptr"
                   }
                 ],
                 "hints": {
@@ -5124,7 +5126,8 @@
                 "parameters": [
                   {
                     "type": "std::nullptr_t",
-                    "name": "_"
+                    "name": "_",
+                    "default": "nullptr"
                   }
                 ],
                 "hints": {
@@ -10456,7 +10459,8 @@
                 "parameters": [
                   {
                     "type": "std::nullptr_t",
-                    "name": "_"
+                    "name": "_",
+                    "default": "nullptr"
                   }
                 ],
                 "hints": {
@@ -10537,7 +10541,8 @@
                 "parameters": [
                   {
                     "type": "std::nullptr_t",
-                    "name": "_"
+                    "name": "_",
+                    "default": "nullptr"
                   }
                 ],
                 "hints": {
@@ -16415,7 +16420,8 @@
                 "parameters": [
                   {
                     "type": "std::nullptr_t",
-                    "name": "_"
+                    "name": "_",
+                    "default": "nullptr"
                   }
                 ],
                 "hints": {
@@ -16496,7 +16502,8 @@
                 "parameters": [
                   {
                     "type": "std::nullptr_t",
-                    "name": "_"
+                    "name": "_",
+                    "default": "nullptr"
                   }
                 ],
                 "hints": {
@@ -22060,7 +22067,8 @@
                 "parameters": [
                   {
                     "type": "std::nullptr_t",
-                    "name": "_"
+                    "name": "_",
+                    "default": "nullptr"
                   }
                 ],
                 "hints": {
@@ -24228,7 +24236,8 @@
                 "parameters": [
                   {
                     "type": "std::nullptr_t",
-                    "name": "_"
+                    "name": "_",
+                    "default": "nullptr"
                   }
                 ],
                 "hints": {
@@ -24307,7 +24316,8 @@
                 "parameters": [
                   {
                     "type": "std::nullptr_t",
-                    "name": "_"
+                    "name": "_",
+                    "default": "nullptr"
                   }
                 ],
                 "hints": {

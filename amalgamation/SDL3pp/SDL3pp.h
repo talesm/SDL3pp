@@ -8062,7 +8062,7 @@ struct PaletteParam
   {
   }
 
-  constexpr PaletteParam(std::nullptr_t _)
+  constexpr PaletteParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
@@ -8087,7 +8087,7 @@ struct PaletteConstParam
   {
   }
 
-  constexpr PaletteConstParam(std::nullptr_t _)
+  constexpr PaletteConstParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
@@ -10933,7 +10933,7 @@ struct PropertiesParam
   {
   }
 
-  constexpr PropertiesParam(std::nullptr_t _)
+  constexpr PropertiesParam(std::nullptr_t _ = nullptr)
     : value(0)
   {
   }
@@ -11777,7 +11777,7 @@ struct EnvironmentParam
   {
   }
 
-  constexpr EnvironmentParam(std::nullptr_t _)
+  constexpr EnvironmentParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
@@ -11805,7 +11805,7 @@ struct IConvParam
   {
   }
 
-  constexpr IConvParam(std::nullptr_t _)
+  constexpr IConvParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
@@ -19293,7 +19293,7 @@ struct IOStreamParam
   {
   }
 
-  constexpr IOStreamParam(std::nullptr_t _)
+  constexpr IOStreamParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
@@ -25292,7 +25292,7 @@ struct SurfaceParam
   {
   }
 
-  constexpr SurfaceParam(std::nullptr_t _)
+  constexpr SurfaceParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
@@ -25317,7 +25317,7 @@ struct SurfaceConstParam
   {
   }
 
-  constexpr SurfaceConstParam(std::nullptr_t _)
+  constexpr SurfaceConstParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
@@ -29008,7 +29008,7 @@ struct WindowParam
   {
   }
 
-  constexpr WindowParam(std::nullptr_t _)
+  constexpr WindowParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
@@ -29036,7 +29036,7 @@ struct GLContextParam
   {
   }
 
-  constexpr GLContextParam(std::nullptr_t _)
+  constexpr GLContextParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }

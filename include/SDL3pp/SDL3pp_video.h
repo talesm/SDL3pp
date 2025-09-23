@@ -59,7 +59,7 @@ struct WindowParam
   {
   }
 
-  constexpr WindowParam(std::nullptr_t _)
+  constexpr WindowParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
@@ -87,7 +87,7 @@ struct GLContextParam
   {
   }
 
-  constexpr GLContextParam(std::nullptr_t _)
+  constexpr GLContextParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }

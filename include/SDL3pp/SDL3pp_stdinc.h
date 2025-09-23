@@ -58,7 +58,7 @@ struct EnvironmentParam
   {
   }
 
-  constexpr EnvironmentParam(std::nullptr_t _)
+  constexpr EnvironmentParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
@@ -86,7 +86,7 @@ struct IConvParam
   {
   }
 
-  constexpr IConvParam(std::nullptr_t _)
+  constexpr IConvParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }

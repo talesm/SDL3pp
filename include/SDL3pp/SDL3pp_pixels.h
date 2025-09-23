@@ -93,7 +93,7 @@ struct PaletteParam
   {
   }
 
-  constexpr PaletteParam(std::nullptr_t _)
+  constexpr PaletteParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
@@ -118,7 +118,7 @@ struct PaletteConstParam
   {
   }
 
-  constexpr PaletteConstParam(std::nullptr_t _)
+  constexpr PaletteConstParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }

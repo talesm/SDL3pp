@@ -56,7 +56,7 @@ struct PropertiesParam
   {
   }
 
-  constexpr PropertiesParam(std::nullptr_t _)
+  constexpr PropertiesParam(std::nullptr_t _ = nullptr)
     : value(0)
   {
   }

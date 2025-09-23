@@ -52,7 +52,7 @@ struct SurfaceParam
   {
   }
 
-  constexpr SurfaceParam(std::nullptr_t _)
+  constexpr SurfaceParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }
@@ -77,7 +77,7 @@ struct SurfaceConstParam
   {
   }
 
-  constexpr SurfaceConstParam(std::nullptr_t _)
+  constexpr SurfaceConstParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }

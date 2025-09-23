@@ -40,7 +40,7 @@ struct IOStreamParam
   {
   }
 
-  constexpr IOStreamParam(std::nullptr_t _)
+  constexpr IOStreamParam(std::nullptr_t _ = nullptr)
     : value(nullptr)
   {
   }

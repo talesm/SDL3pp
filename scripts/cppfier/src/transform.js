@@ -724,7 +724,7 @@ function expandTypes(sourceEntries, file, context) {
           name: paramType,
           constexpr: true,
           type: '',
-          parameters: [{ type: "std::nullptr_t", name: "_" }],
+          parameters: [{ type: "std::nullptr_t", name: "_", default: "nullptr" }],
           hints: { init: [`value(${nullValue})`] }
         }],
         [`operator ${rawName}`]: {
@@ -768,7 +768,7 @@ function expandTypes(sourceEntries, file, context) {
             name: constParamType,
             constexpr: true,
             type: '',
-            parameters: [{ type: "std::nullptr_t", name: "_" }],
+            parameters: [{ type: "std::nullptr_t", name: "_", default: "nullptr" }],
             hints: { init: [`value(${nullValue})`] }
           }],
           [`operator ${constRawName}`]: {
