@@ -2813,7 +2813,7 @@ class GLContext
 public:
   constexpr GLContext() = default;
 
-  constexpr explicit GLContext(const GLContextRaw resource)
+  constexpr GLContext(const GLContextRaw resource)
     : m_resource(resource)
   {
   }
@@ -6225,9 +6225,9 @@ inline GLContext GL_CreateContext(WindowParam window)
  *
  * @sa GLContext.GLContext
  */
-inline void GL_MakeCurrent(WindowParam window, WindowParam window)
+inline void GL_MakeCurrent(WindowParam window, GLContext context)
 {
-  CheckError(SDL_GL_MakeCurrent(window, window));
+  CheckError(SDL_GL_MakeCurrent(window, context));
 }
 
 /**
@@ -6240,7 +6240,7 @@ inline void GL_MakeCurrent(WindowParam window, WindowParam window)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline WindowRaw GL_GetCurrentWindow()
+inline WindowRef GL_GetCurrentWindow()
 {
   return CheckError(SDL_GL_GetCurrentWindow());
 }
@@ -6257,10 +6257,7 @@ inline WindowRaw GL_GetCurrentWindow()
  *
  * @sa GLContext.MakeCurrent
  */
-inline GLContextRaw GL_GetCurrentContext()
-{
-  return SDL_GL_GetCurrentContext();
-}
+inline GLContext GL_GetCurrentContext() { return SDL_GL_GetCurrentContext(); }
 
 /**
  * Get the currently active EGL display.

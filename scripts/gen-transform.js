@@ -7491,11 +7491,8 @@ const transform = {
             },
           }
         },
-        "SDL_GL_GetCurrentWindow": {
-          type: "WindowRaw"
-        },
-        "SDL_GL_GetCurrentContext": {
-          type: "GLContextRaw"
+        "SDL_GL_MakeCurrent": {
+          parameters: [{}, {}],
         },
       }
     },

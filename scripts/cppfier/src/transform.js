@@ -783,8 +783,13 @@ function expandTypes(sourceEntries, file, context) {
         },
       });
     }
-    context.addParamType(pointerType, paramType);
-    context.addParamType(constPointerType, resourceEntry.enableConstParam ? constParamType : paramType);
+    if (hasScoped) {
+      context.addParamType(pointerType, targetName);
+      context.addParamType(constPointerType, `const ${targetName} &`);
+    } else {
+      context.addParamType(pointerType, paramType);
+      context.addParamType(constPointerType, resourceEntry.enableConstParam ? constParamType : paramType);
+    }
 
     if (hasRef) {
       context.addReturnType(pointerType, refName);
@@ -807,7 +812,7 @@ function expandTypes(sourceEntries, file, context) {
         kind: "function",
         type: "",
         constexpr: true,
-        explicit: true,
+        explicit: !hasScoped,
         parameters: [{ name: "resource", type: constRawName }],
         hints: { init: ["m_resource(resource)"] },
       }, {
@@ -1542,7 +1547,7 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
         case 'object':
           const selfParam = { name: sourceParam0.name };
           if (sourceParam0.type?.includes(resultType)) {
-            selfParam.type = targetEntry.immutable ? constParamType : paramType;
+            if (!sourceParam0.type.startsWith("const ") && targetEntry.immutable) selfParam.type = constParamType;
           }
           targetParameters.unshift(selfParam);
           parametersChanged = true;

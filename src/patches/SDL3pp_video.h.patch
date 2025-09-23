@@ -626,11 +626,11 @@
 > }
 > 
 > /**
-6228c6463
-< inline void GL_MakeCurrent(WindowParam window, WindowParam window)
----
-> inline void GL_MakeCurrent(WindowParam window, GLContext context)
 6230c6465
-<   CheckError(SDL_GL_MakeCurrent(window, window));
+<   CheckError(SDL_GL_MakeCurrent(window, context));
 ---
 >   CheckError(SDL_GL_MakeCurrent(window, context.get()));
+6245c6480
+<   return CheckError(SDL_GL_GetCurrentWindow());
+---
+>   return {CheckError(SDL_GL_GetCurrentWindow())};
