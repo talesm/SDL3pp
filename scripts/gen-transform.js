@@ -4683,8 +4683,13 @@ const transform = {
                 }
               ]
             },
-            "SDL_LockTexture": "function",
-            "SDL_LockTextureToSurface": "function",
+            "SDL_LockTexture": {
+              parameters: [{}, { type: "OptionalRef<const SDL_Rect>" }, {}, {}]
+            },
+            "SDL_LockTextureToSurface": {
+              parameters: [{}, { type: "OptionalRef<const SDL_Rect>", default: "std::nullopt" }],
+              type: "Surface",
+            },
             "SDL_UnlockTexture": "function",
             "GetWidth": {
               "kind": "function",
@@ -4733,7 +4738,7 @@ const transform = {
               default: "0"
             },
             {
-              type: "Renderer *",
+              type: "RendererRaw *",
               name: "renderer",
               default: "nullptr"
             }

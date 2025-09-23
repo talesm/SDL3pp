@@ -2879,7 +2879,7 @@ public:
    * @sa Texture.LockToSurface
    * @sa Texture.Unlock
    */
-  void Lock(const RectRaw& rect, void** pixels, int* pitch)
+  void Lock(OptionalRef<const SDL_Rect> rect, void** pixels, int* pitch)
   {
     CheckError(SDL_LockTexture(m_resource, rect, pixels, pitch));
   }
@@ -2916,9 +2916,9 @@ public:
    * @sa Texture.Lock
    * @sa Texture.Unlock
    */
-  void LockToSurface(const RectRaw& rect, SDL_Surface** surface)
+  Surface LockToSurface(OptionalRef<const SDL_Rect> rect = std::nullopt)
   {
-    CheckError(SDL_LockTextureToSurface(m_resource, rect, surface));
+    return CheckError(SDL_LockTextureToSurface(m_resource, rect));
   }
 
   /**
@@ -3039,7 +3039,7 @@ inline const char* GetRenderDriver(int index)
 inline Window CreateWindowAndRenderer(StringParam title,
                                       const PointRaw& size,
                                       WindowFlags window_flags = 0,
-                                      Renderer* renderer = nullptr)
+                                      RendererRaw* renderer = nullptr)
 {
   return CheckError(
     SDL_CreateWindowAndRenderer(title, size, window_flags, renderer));
@@ -4322,7 +4322,7 @@ inline void UpdateNVTexture(TextureParam texture,
  * @sa Texture.Unlock
  */
 inline void LockTexture(TextureParam texture,
-                        const RectRaw& rect,
+                        OptionalRef<const SDL_Rect> rect,
                         void** pixels,
                         int* pitch)
 {
@@ -4362,11 +4362,11 @@ inline void LockTexture(TextureParam texture,
  * @sa Texture.Lock
  * @sa Texture.Unlock
  */
-inline void LockTextureToSurface(TextureParam texture,
-                                 const RectRaw& rect,
-                                 SDL_Surface** surface)
+inline Surface LockTextureToSurface(
+  TextureParam texture,
+  OptionalRef<const SDL_Rect> rect = std::nullopt)
 {
-  CheckError(SDL_LockTextureToSurface(texture, rect, surface));
+  return CheckError(SDL_LockTextureToSurface(texture, rect));
 }
 
 /**
@@ -4434,7 +4434,10 @@ inline void SetRenderTarget(RendererParam renderer, TextureParam texture)
  *
  * @sa Renderer.SetTarget
  */
-inline Texture GetRenderTarget(RendererParam renderer);
+inline Texture GetRenderTarget(RendererParam renderer)
+{
+  return SDL_GetRenderTarget(renderer);
+}
 
 inline Texture Renderer::GetTarget() const
 {
@@ -5283,7 +5286,10 @@ inline void RenderFillRects(RendererParam renderer,
 inline void RenderTexture(RendererParam renderer,
                           TextureParam texture,
                           OptionalRef<const FRectRaw> srcrect,
-                          OptionalRef<const FRectRaw> dstrect);
+                          OptionalRef<const FRectRaw> dstrect)
+{
+  CheckError(SDL_RenderTexture(renderer, texture, srcrect, dstrect));
+}
 
 inline void Renderer::RenderTexture(TextureParam texture,
                                     OptionalRef<const FRectRaw> srcrect,
@@ -5323,7 +5329,11 @@ inline void RenderTextureRotated(RendererParam renderer,
                                  OptionalRef<const FRectRaw> dstrect,
                                  double angle,
                                  OptionalRef<const FPointRaw> center,
-                                 FlipMode flip);
+                                 FlipMode flip)
+{
+  CheckError(SDL_RenderTextureRotated(
+    renderer, texture, srcrect, dstrect, angle, center, flip));
+}
 
 inline void Renderer::RenderTextureRotated(TextureParam texture,
                                            OptionalRef<const FRectRaw> srcrect,
@@ -5366,7 +5376,11 @@ inline void RenderTextureAffine(RendererParam renderer,
                                 OptionalRef<const FRectRaw> srcrect,
                                 OptionalRef<const FPointRaw> origin,
                                 OptionalRef<const FPointRaw> right,
-                                OptionalRef<const FPointRaw> down);
+                                OptionalRef<const FPointRaw> down)
+{
+  CheckError(
+    SDL_RenderTextureAffine(renderer, texture, srcrect, origin, right, down));
+}
 
 inline void Renderer::RenderTextureAffine(TextureParam texture,
                                           OptionalRef<const FRectRaw> srcrect,
@@ -5406,7 +5420,11 @@ inline void RenderTextureTiled(RendererParam renderer,
                                TextureParam texture,
                                OptionalRef<const FRectRaw> srcrect,
                                float scale,
-                               OptionalRef<const FRectRaw> dstrect);
+                               OptionalRef<const FRectRaw> dstrect)
+{
+  CheckError(
+    SDL_RenderTextureTiled(renderer, texture, srcrect, scale, dstrect));
+}
 
 inline void Renderer::RenderTextureTiled(TextureParam texture,
                                          OptionalRef<const FRectRaw> srcrect,
@@ -5456,7 +5474,18 @@ inline void RenderTexture9Grid(RendererParam renderer,
                                float top_height,
                                float bottom_height,
                                float scale,
-                               OptionalRef<const FRectRaw> dstrect);
+                               OptionalRef<const FRectRaw> dstrect)
+{
+  CheckError(SDL_RenderTexture9Grid(renderer,
+                                    texture,
+                                    srcrect,
+                                    left_width,
+                                    right_width,
+                                    top_height,
+                                    bottom_height,
+                                    scale,
+                                    dstrect));
+}
 
 inline void Renderer::RenderTexture9Grid(TextureParam texture,
                                          OptionalRef<const FRectRaw> srcrect,
@@ -5502,7 +5531,10 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
 inline void RenderGeometry(RendererParam renderer,
                            TextureParam texture,
                            std::span<const Vertex> vertices,
-                           std::span<const int> indices);
+                           std::span<const int> indices)
+{
+  CheckError(SDL_RenderGeometry(renderer, texture, vertices, indices));
+}
 
 inline void Renderer::RenderGeometry(TextureParam texture,
                                      std::span<const Vertex> vertices,
@@ -5548,7 +5580,21 @@ inline void RenderGeometryRaw(RendererParam renderer,
                               int num_vertices,
                               const void* indices,
                               int num_indices,
-                              int size_indices);
+                              int size_indices)
+{
+  CheckError(SDL_RenderGeometryRaw(renderer,
+                                   texture,
+                                   xy,
+                                   xy_stride,
+                                   color,
+                                   color_stride,
+                                   uv,
+                                   uv_stride,
+                                   num_vertices,
+                                   indices,
+                                   num_indices,
+                                   size_indices));
+}
 
 inline void Renderer::RenderGeometryRaw(TextureParam texture,
                                         const float* xy,

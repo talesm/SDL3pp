@@ -2915,9 +2915,11 @@ public:
    * @sa Texture.Lock
    * @sa Texture.Unlock
    */
-  void LockToSurface(OptionalRef<const SDL_Rect> rect, SDL_Surface** surface)
+  Surface LockToSurface(OptionalRef<const SDL_Rect> rect = std::nullopt)
   {
-    CheckError(SDL_LockTextureToSurface(m_resource, rect, surface));
+    SurfaceRaw surface = nullptr;
+    CheckError(SDL_LockTextureToSurface(m_resource, rect, &surface));
+    return Surface::Borrow(surface);
   }
 
   /**
@@ -3058,10 +3060,12 @@ inline const char* GetRenderDriver(int index)
 inline Window CreateWindowAndRenderer(StringParam title,
                                       const PointRaw& size,
                                       WindowFlags window_flags = 0,
-                                      Renderer* renderer = nullptr)
+                                      RendererRaw* renderer = nullptr)
 {
-  return CheckError(
-    SDL_CreateWindowAndRenderer(title, size, window_flags, renderer));
+  SDL_Window* window = nullptr;
+  CheckError(SDL_CreateWindowAndRenderer(
+    title, size.x, size.y, window_flags, &window, renderer));
+  return Window{window};
 }
 
 /**
@@ -3289,7 +3293,7 @@ inline Renderer CreateSoftwareRenderer(SurfaceParam surface)
  */
 inline RendererRef Window::GetRenderer() const
 {
-  return CheckError(SDL_GetRenderer(m_resource));
+  return {CheckError(SDL_GetRenderer(m_resource))};
 }
 
 /**
@@ -3305,7 +3309,7 @@ inline RendererRef Window::GetRenderer() const
  */
 inline WindowRef GetRenderWindow(RendererParam renderer)
 {
-  return CheckError(SDL_GetRenderWindow(renderer));
+  return {CheckError(SDL_GetRenderWindow(renderer))};
 }
 
 /**
@@ -3413,7 +3417,7 @@ inline const char* GetRendererName(RendererParam renderer)
  */
 inline PropertiesRef GetRendererProperties(RendererParam renderer)
 {
-  return CheckError(SDL_GetRendererProperties(renderer));
+  return {CheckError(SDL_GetRendererProperties(renderer))};
 }
 
 /**
@@ -3494,7 +3498,7 @@ inline Texture CreateTexture(RendererParam renderer,
                              TextureAccess access,
                              const PointRaw& size)
 {
-  return Texture(SDL_CreateTexture(renderer, format, access, size));
+  return Texture(SDL_CreateTexture(renderer, format, access, size.x, size.y));
 }
 
 /**
@@ -3867,7 +3871,7 @@ constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
  */
 inline PropertiesRef GetTextureProperties(TextureParam texture)
 {
-  return CheckError(SDL_GetTextureProperties(texture));
+  return {CheckError(SDL_GetTextureProperties(texture))};
 }
 
 /**
@@ -3883,7 +3887,7 @@ inline PropertiesRef GetTextureProperties(TextureParam texture)
  */
 inline RendererRef GetRendererFromTexture(TextureParam texture)
 {
-  return SDL_GetRendererFromTexture(texture);
+  return {SDL_GetRendererFromTexture(texture)};
 }
 
 /**
@@ -4145,7 +4149,7 @@ inline void SetTextureBlendMode(TextureParam texture, BlendMode blendMode)
  * Get the blend mode used for texture copy operations.
  *
  * @param texture the texture to query.
- * @param blendMode a pointer filled in with the current BlendMode.
+ * @return the current BlendMode.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -4156,7 +4160,9 @@ inline void SetTextureBlendMode(TextureParam texture, BlendMode blendMode)
  */
 inline BlendMode GetTextureBlendMode(TextureParam texture)
 {
-  return CheckError(SDL_GetTextureBlendMode(texture));
+  BlendMode blendMode;
+  CheckError(SDL_GetTextureBlendMode(texture, &blendMode));
+  return blendMode;
 }
 
 /**
@@ -4185,7 +4191,7 @@ inline void SetTextureScaleMode(TextureParam texture, ScaleMode scaleMode)
  * Get the scale mode used for texture scale operations.
  *
  * @param texture the texture to query.
- * @param scaleMode a pointer filled in with the current scale mode.
+ * @return the current scale mode.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -4196,7 +4202,9 @@ inline void SetTextureScaleMode(TextureParam texture, ScaleMode scaleMode)
  */
 inline ScaleMode GetTextureScaleMode(TextureParam texture)
 {
-  return CheckError(SDL_GetTextureScaleMode(texture));
+  ScaleMode scaleMode;
+  CheckError(SDL_GetTextureScaleMode(texture, &scaleMode));
+  return scaleMode;
 }
 
 /**
@@ -4345,7 +4353,7 @@ inline void UpdateNVTexture(TextureParam texture,
  * @sa Texture.Unlock
  */
 inline void LockTexture(TextureParam texture,
-                        const RectRaw& rect,
+                        OptionalRef<const SDL_Rect> rect,
                         void** pixels,
                         int* pitch)
 {
@@ -4385,11 +4393,13 @@ inline void LockTexture(TextureParam texture,
  * @sa Texture.Lock
  * @sa Texture.Unlock
  */
-inline void LockTextureToSurface(TextureParam texture,
-                                 const RectRaw& rect,
-                                 SDL_Surface** surface)
+inline Surface LockTextureToSurface(
+  TextureParam texture,
+  OptionalRef<const SDL_Rect> rect = std::nullopt)
 {
-  CheckError(SDL_LockTextureToSurface(texture, rect, surface));
+  SurfaceRaw surface = nullptr;
+  CheckError(SDL_LockTextureToSurface(texture, rect, &surface));
+  return Surface::Borrow(surface);
 }
 
 /**
@@ -4457,11 +4467,16 @@ inline void SetRenderTarget(RendererParam renderer, TextureParam texture)
  *
  * @sa Renderer.SetTarget
  */
-inline Texture GetRenderTarget(RendererParam renderer);
+inline Texture GetRenderTarget(RendererParam renderer)
+{
+  TextureRaw texture = SDL_GetRenderTarget(renderer);
+  if (texture) return Texture::Borrow(texture);
+  return {};
+}
 
 inline Texture Renderer::GetTarget() const
 {
-  return SDL_GetRenderTarget(m_resource);
+  return GetRenderTarget(m_resource);
 }
 
 /**
@@ -4520,7 +4535,7 @@ inline void SetRenderLogicalPresentation(RendererParam renderer,
                                          const PointRaw& size,
                                          RendererLogicalPresentation mode)
 {
-  CheckError(SDL_SetRenderLogicalPresentation(renderer, size, mode));
+  CheckError(SDL_SetRenderLogicalPresentation(renderer, size.x, size.y, mode));
 }
 
 /**
@@ -4576,7 +4591,9 @@ inline void GetRenderLogicalPresentation(RendererParam renderer,
  */
 inline FRect GetRenderLogicalPresentationRect(RendererParam renderer)
 {
-  return CheckError(SDL_GetRenderLogicalPresentationRect(renderer));
+  FRect rect;
+  CheckError(SDL_GetRenderLogicalPresentationRect(renderer, &rect));
+  return rect;
 }
 
 /**
@@ -4606,7 +4623,10 @@ inline FRect GetRenderLogicalPresentationRect(RendererParam renderer)
 inline FPoint RenderCoordinatesFromWindow(RendererParam renderer,
                                           const FPointRaw& window_coord)
 {
-  return CheckError(SDL_RenderCoordinatesFromWindow(renderer, window_coord));
+  FPoint p;
+  CheckError(SDL_RenderCoordinatesFromWindow(
+    renderer, window_coord.x, window_coord.y, &p.x, &p.y));
+  return p;
 }
 
 /**
@@ -4639,7 +4659,10 @@ inline FPoint RenderCoordinatesFromWindow(RendererParam renderer,
 inline FPoint RenderCoordinatesToWindow(RendererParam renderer,
                                         const FPointRaw& coord)
 {
-  return CheckError(SDL_RenderCoordinatesToWindow(renderer, coord));
+  FPoint p;
+  CheckError(
+    SDL_RenderCoordinatesToWindow(renderer, coord.x, coord.y, &p.x, &p.y));
+  return p;
 }
 
 /**
@@ -4730,7 +4753,9 @@ inline void SetRenderViewport(RendererParam renderer,
  */
 inline Rect GetRenderViewport(RendererParam renderer)
 {
-  return CheckError(SDL_GetRenderViewport(renderer));
+  Rect rect;
+  CheckError(SDL_GetRenderViewport(renderer, &rect));
+  return rect;
 }
 
 /**
@@ -4779,7 +4804,9 @@ inline bool RenderViewportSet(RendererParam renderer)
  */
 inline Rect GetRenderSafeArea(RendererParam renderer)
 {
-  return CheckError(SDL_GetRenderSafeArea(renderer));
+  Rect rect;
+  CheckError(SDL_GetRenderSafeArea(renderer, &rect));
+  return rect;
 }
 
 /**
@@ -4826,7 +4853,9 @@ inline void SetRenderClipRect(RendererParam renderer,
  */
 inline Rect GetRenderClipRect(RendererParam renderer)
 {
-  return CheckError(SDL_GetRenderClipRect(renderer));
+  Rect rect;
+  CheckError(SDL_GetRenderClipRect(renderer, &rect));
+  return rect;
 }
 
 /**
@@ -4878,7 +4907,7 @@ inline bool RenderClipEnabled(RendererParam renderer)
  */
 inline void SetRenderScale(RendererParam renderer, const FPointRaw& scale)
 {
-  CheckError(SDL_SetRenderScale(renderer, scale));
+  CheckError(SDL_SetRenderScale(renderer, scale.x, scale.y));
 }
 
 /**
@@ -4927,7 +4956,7 @@ inline void GetRenderScale(RendererParam renderer, float* scaleX, float* scaleY)
  */
 inline void SetRenderDrawColor(RendererParam renderer, ColorRaw c)
 {
-  CheckError(SDL_SetRenderDrawColor(renderer, c));
+  CheckError(SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a));
 }
 
 /**
@@ -4954,7 +4983,7 @@ inline void SetRenderDrawColor(RendererParam renderer, ColorRaw c)
  */
 inline void SetRenderDrawColorFloat(RendererParam renderer, const FColorRaw& c)
 {
-  CheckError(SDL_SetRenderDrawColorFloat(renderer, c));
+  CheckError(SDL_SetRenderDrawColorFloat(renderer, c.r, c.g, c.b, c.a));
 }
 
 /**
@@ -5058,7 +5087,9 @@ inline void SetRenderColorScale(RendererParam renderer, float scale)
  */
 inline float GetRenderColorScale(RendererParam renderer)
 {
-  return CheckError(SDL_GetRenderColorScale(renderer));
+  float scale;
+  CheckError(SDL_GetRenderColorScale(renderer, &scale));
+  return scale;
 }
 
 /**
@@ -5096,7 +5127,9 @@ inline void SetRenderDrawBlendMode(RendererParam renderer, BlendMode blendMode)
  */
 inline BlendMode GetRenderDrawBlendMode(RendererParam renderer)
 {
-  return CheckError(SDL_GetRenderDrawBlendMode(renderer));
+  BlendMode blendMode;
+  CheckError(SDL_GetRenderDrawBlendMode(renderer, &blendMode));
+  return blendMode;
 }
 
 /**
@@ -5137,7 +5170,7 @@ inline void RenderClear(RendererParam renderer)
  */
 inline void RenderPoint(RendererParam renderer, const FPointRaw& p)
 {
-  CheckError(SDL_RenderPoint(renderer, p));
+  CheckError(SDL_RenderPoint(renderer, p.x, p.y));
 }
 
 /**
@@ -5157,7 +5190,7 @@ inline void RenderPoint(RendererParam renderer, const FPointRaw& p)
 inline void RenderPoints(RendererParam renderer,
                          SpanRef<const FPointRaw> points)
 {
-  CheckError(SDL_RenderPoints(renderer, points));
+  CheckError(SDL_RenderPoints(renderer, points.data(), points.size()));
 }
 
 /**
@@ -5180,7 +5213,7 @@ inline void RenderLine(RendererParam renderer,
                        const FPointRaw& p1,
                        const FPointRaw& p2)
 {
-  CheckError(SDL_RenderLine(renderer, p1, p2));
+  CheckError(SDL_RenderLine(renderer, p1.x, p1.y, p2.x, p2.y));
 }
 
 /**
@@ -5200,7 +5233,7 @@ inline void RenderLine(RendererParam renderer,
  */
 inline void RenderLines(RendererParam renderer, SpanRef<const FPointRaw> points)
 {
-  CheckError(SDL_RenderLines(renderer, points));
+  CheckError(SDL_RenderLines(renderer, points.data(), points.size()));
 }
 
 /**
@@ -5239,7 +5272,7 @@ inline void RenderRect(RendererParam renderer, OptionalRef<const FRectRaw> rect)
  */
 inline void RenderRects(RendererParam renderer, SpanRef<const FRectRaw> rects)
 {
-  CheckError(SDL_RenderRects(renderer, rects));
+  CheckError(SDL_RenderRects(renderer, rects.data(), rects.size()));
 }
 
 /**
@@ -5281,7 +5314,7 @@ inline void RenderFillRect(RendererParam renderer,
 inline void RenderFillRects(RendererParam renderer,
                             SpanRef<const FRectRaw> rects)
 {
-  CheckError(SDL_RenderFillRects(renderer, rects));
+  CheckError(SDL_RenderFillRects(renderer, rects.data(), rects.size()));
 }
 
 /**
@@ -5306,7 +5339,10 @@ inline void RenderFillRects(RendererParam renderer,
 inline void RenderTexture(RendererParam renderer,
                           TextureParam texture,
                           OptionalRef<const FRectRaw> srcrect,
-                          OptionalRef<const FRectRaw> dstrect);
+                          OptionalRef<const FRectRaw> dstrect)
+{
+  CheckError(SDL_RenderTexture(renderer, texture, srcrect, dstrect));
+}
 
 inline void Renderer::RenderTexture(TextureParam texture,
                                     OptionalRef<const FRectRaw> srcrect,
@@ -5346,7 +5382,11 @@ inline void RenderTextureRotated(RendererParam renderer,
                                  OptionalRef<const FRectRaw> dstrect,
                                  double angle,
                                  OptionalRef<const FPointRaw> center,
-                                 FlipMode flip);
+                                 FlipMode flip)
+{
+  CheckError(SDL_RenderTextureRotated(
+    renderer, texture, srcrect, dstrect, angle, center, flip));
+}
 
 inline void Renderer::RenderTextureRotated(TextureParam texture,
                                            OptionalRef<const FRectRaw> srcrect,
@@ -5389,7 +5429,11 @@ inline void RenderTextureAffine(RendererParam renderer,
                                 OptionalRef<const FRectRaw> srcrect,
                                 OptionalRef<const FPointRaw> origin,
                                 OptionalRef<const FPointRaw> right,
-                                OptionalRef<const FPointRaw> down);
+                                OptionalRef<const FPointRaw> down)
+{
+  CheckError(
+    SDL_RenderTextureAffine(renderer, texture, srcrect, origin, right, down));
+}
 
 inline void Renderer::RenderTextureAffine(TextureParam texture,
                                           OptionalRef<const FRectRaw> srcrect,
@@ -5429,7 +5473,11 @@ inline void RenderTextureTiled(RendererParam renderer,
                                TextureParam texture,
                                OptionalRef<const FRectRaw> srcrect,
                                float scale,
-                               OptionalRef<const FRectRaw> dstrect);
+                               OptionalRef<const FRectRaw> dstrect)
+{
+  CheckError(
+    SDL_RenderTextureTiled(renderer, texture, srcrect, scale, dstrect));
+}
 
 inline void Renderer::RenderTextureTiled(TextureParam texture,
                                          OptionalRef<const FRectRaw> srcrect,
@@ -5479,7 +5527,18 @@ inline void RenderTexture9Grid(RendererParam renderer,
                                float top_height,
                                float bottom_height,
                                float scale,
-                               OptionalRef<const FRectRaw> dstrect);
+                               OptionalRef<const FRectRaw> dstrect)
+{
+  CheckError(SDL_RenderTexture9Grid(renderer,
+                                    texture,
+                                    srcrect,
+                                    left_width,
+                                    right_width,
+                                    top_height,
+                                    bottom_height,
+                                    scale,
+                                    dstrect));
+}
 
 inline void Renderer::RenderTexture9Grid(TextureParam texture,
                                          OptionalRef<const FRectRaw> srcrect,
@@ -5525,13 +5584,21 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
 inline void RenderGeometry(RendererParam renderer,
                            TextureParam texture,
                            std::span<const Vertex> vertices,
-                           std::span<const int> indices);
+                           std::span<const int> indices)
+{
+  CheckError(SDL_RenderGeometry(renderer,
+                                texture,
+                                vertices.data(),
+                                vertices.size(),
+                                indices.data(),
+                                indices.size()));
+}
 
 inline void Renderer::RenderGeometry(TextureParam texture,
                                      std::span<const Vertex> vertices,
                                      std::span<const int> indices)
 {
-  CheckError(SDL_RenderGeometry(m_resource, texture, vertices, indices));
+  SDL::RenderGeometry(m_resource, texture, vertices, indices);
 }
 
 /**
@@ -5571,7 +5638,21 @@ inline void RenderGeometryRaw(RendererParam renderer,
                               int num_vertices,
                               const void* indices,
                               int num_indices,
-                              int size_indices);
+                              int size_indices)
+{
+  CheckError(SDL_RenderGeometryRaw(renderer,
+                                   texture,
+                                   xy,
+                                   xy_stride,
+                                   color,
+                                   color_stride,
+                                   uv,
+                                   uv_stride,
+                                   num_vertices,
+                                   indices,
+                                   num_indices,
+                                   size_indices));
+}
 
 inline void Renderer::RenderGeometryRaw(TextureParam texture,
                                         const float* xy,
@@ -5627,7 +5708,7 @@ inline void Renderer::RenderGeometryRaw(TextureParam texture,
 inline Surface RenderReadPixels(RendererParam renderer,
                                 OptionalRef<const RectRaw> rect = {})
 {
-  return CheckError(SDL_RenderReadPixels(renderer, rect));
+  return Surface{CheckError(SDL_RenderReadPixels(renderer, rect))};
 }
 
 /**
@@ -5883,7 +5964,9 @@ inline void SetRenderVSync(RendererParam renderer, int vsync)
  */
 inline int GetRenderVSync(RendererParam renderer)
 {
-  return CheckError(SDL_GetRenderVSync(renderer));
+  int vsync;
+  CheckError(SDL_GetRenderVSync(renderer, &vsync));
+  return vsync;
 }
 
 /**
@@ -5937,7 +6020,7 @@ inline int GetRenderVSync(RendererParam renderer)
  */
 inline void RenderDebugText(RendererParam renderer, FPoint p, StringParam str)
 {
-  CheckError(SDL_RenderDebugText(renderer, p, str));
+  CheckError(SDL_RenderDebugText(renderer, p.x, p.y, str));
 }
 
 /**
@@ -5965,13 +6048,14 @@ inline void RenderDebugText(RendererParam renderer, FPoint p, StringParam str)
  * @sa Renderer.RenderDebugText
  * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
  */
+template<class... ARGS>
 inline void RenderDebugTextFormat(RendererParam renderer,
-                                  float x,
-                                  float y,
-                                  SDL_PRINTF_FORMAT_STRING const char* fmt,
-                                  ...)
+                                  FPoint p,
+                                  std::string_view fmt,
+                                  ARGS... args)
 {
-  CheckError(SDL_RenderDebugTextFormat(renderer, x, y, fmt, ...));
+  RenderDebugText(
+    renderer, p, std::vformat(fmt, std::make_format_args(args...)));
 }
 
 /// @}

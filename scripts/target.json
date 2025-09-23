@@ -12693,7 +12693,7 @@
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "const RectRaw &"
+                  "type": "OptionalRef<const SDL_Rect>"
                 },
                 {
                   "name": "pixels",
@@ -12713,15 +12713,12 @@
               "doc": "Lock a portion of the texture for **write-only** pixel access, and expose\nit as a SDL surface.\n\nBesides providing an Surface instead of raw pixel data, this function\noperates like Texture.Lock.\n\nAs an optimization, the pixels made available for editing don't necessarily\ncontain the old texture data. This is a write-only operation, and if you\nneed to keep a copy of the texture data you should do that at the\napplication level.\n\nYou must use Texture.Unlock() to unlock the pixels and apply any\nchanges.\n\nThe returned surface is freed internally after calling Texture.Unlock()\nor Texture.Destroy(). The caller should not free it.\n\n               `TEXTUREACCESS_STREAMING`.\n@param rect a pointer to the rectangle to lock for access. If the rect is\n            nullptr, the entire texture will be locked.\n@param surface a pointer to an SDL surface of size **rect**. Don't assume\n               any specific pixel content.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Lock\n@sa Texture.Unlock",
               "name": "LockToSurface",
               "kind": "function",
-              "type": "void",
+              "type": "Surface",
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "const RectRaw &"
-                },
-                {
-                  "name": "surface",
-                  "type": "SDL_Surface **"
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "default": "std::nullopt"
                 }
               ],
               "sourceName": "SDL_LockTextureToSurface",
@@ -12844,7 +12841,7 @@
             },
             {
               "name": "renderer",
-              "type": "Renderer *",
+              "type": "RendererRaw *",
               "default": "nullptr"
             }
           ],
@@ -14278,7 +14275,7 @@
             },
             {
               "name": "rect",
-              "type": "const RectRaw &"
+              "type": "OptionalRef<const SDL_Rect>"
             },
             {
               "name": "pixels",
@@ -14298,7 +14295,7 @@
           "doc": "Lock a portion of the texture for **write-only** pixel access, and expose\nit as a SDL surface.\n\nBesides providing an Surface instead of raw pixel data, this function\noperates like Texture.Lock.\n\nAs an optimization, the pixels made available for editing don't necessarily\ncontain the old texture data. This is a write-only operation, and if you\nneed to keep a copy of the texture data you should do that at the\napplication level.\n\nYou must use Texture.Unlock() to unlock the pixels and apply any\nchanges.\n\nThe returned surface is freed internally after calling Texture.Unlock()\nor Texture.Destroy(). The caller should not free it.\n\n@param texture the texture to lock for access, which must be created with\n               `TEXTUREACCESS_STREAMING`.\n@param rect a pointer to the rectangle to lock for access. If the rect is\n            nullptr, the entire texture will be locked.\n@param surface a pointer to an SDL surface of size **rect**. Don't assume\n               any specific pixel content.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Lock\n@sa Texture.Unlock",
           "name": "LockTextureToSurface",
           "kind": "function",
-          "type": "void",
+          "type": "Surface",
           "parameters": [
             {
               "name": "texture",
@@ -14306,11 +14303,8 @@
             },
             {
               "name": "rect",
-              "type": "const RectRaw &"
-            },
-            {
-              "name": "surface",
-              "type": "SDL_Surface **"
+              "type": "OptionalRef<const SDL_Rect>",
+              "default": "std::nullopt"
             }
           ],
           "sourceName": "SDL_LockTextureToSurface",
@@ -14362,8 +14356,7 @@
               "type": "RendererParam"
             }
           ],
-          "sourceName": "SDL_GetRenderTarget",
-          "proto": true
+          "sourceName": "SDL_GetRenderTarget"
         },
         "Renderer::GetTarget": {
           "name": "Renderer::GetTarget",
@@ -15046,8 +15039,7 @@
           "sourceName": "SDL_RenderTexture",
           "hints": {
             "mayFail": true
-          },
-          "proto": true
+          }
         },
         "Renderer::RenderTexture": {
           "name": "Renderer::RenderTexture",
@@ -15113,8 +15105,7 @@
           "sourceName": "SDL_RenderTextureRotated",
           "hints": {
             "mayFail": true
-          },
-          "proto": true
+          }
         },
         "Renderer::RenderTextureRotated": {
           "name": "Renderer::RenderTextureRotated",
@@ -15188,8 +15179,7 @@
           "sourceName": "SDL_RenderTextureAffine",
           "hints": {
             "mayFail": true
-          },
-          "proto": true
+          }
         },
         "Renderer::RenderTextureAffine": {
           "name": "Renderer::RenderTextureAffine",
@@ -15255,8 +15245,7 @@
           "sourceName": "SDL_RenderTextureTiled",
           "hints": {
             "mayFail": true
-          },
-          "proto": true
+          }
         },
         "Renderer::RenderTextureTiled": {
           "name": "Renderer::RenderTextureTiled",
@@ -15334,8 +15323,7 @@
           "sourceName": "SDL_RenderTexture9Grid",
           "hints": {
             "mayFail": true
-          },
-          "proto": true
+          }
         },
         "Renderer::RenderTexture9Grid": {
           "name": "Renderer::RenderTexture9Grid",
@@ -15409,8 +15397,7 @@
           "sourceName": "SDL_RenderGeometry",
           "hints": {
             "mayFail": true
-          },
-          "proto": true
+          }
         },
         "Renderer::RenderGeometry": {
           "name": "Renderer::RenderGeometry",
@@ -15496,8 +15483,7 @@
           "sourceName": "SDL_RenderGeometryRaw",
           "hints": {
             "mayFail": true
-          },
-          "proto": true
+          }
         },
         "Renderer::RenderGeometryRaw": {
           "name": "Renderer::RenderGeometryRaw",

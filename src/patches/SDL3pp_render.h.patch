@@ -1013,36 +1013,34 @@
 >     ScaleMode scaleMode;
 >     CheckError(SDL_GetTextureScaleMode(get(), &scaleMode));
 >     return scaleMode;
-2882c2881
-<   void Lock(const RectRaw& rect, void** pixels, int* pitch)
+2921c2920,2922
+<     return CheckError(SDL_LockTextureToSurface(m_resource, rect));
 ---
->   void Lock(OptionalRef<const SDL_Rect> rect, void** pixels, int* pitch)
-2919c2918
-<   void LockToSurface(const RectRaw& rect, SDL_Surface** surface)
----
->   void LockToSurface(OptionalRef<const SDL_Rect> rect, SDL_Surface** surface)
-2944c2943,2946
+>     SurfaceRaw surface = nullptr;
+>     CheckError(SDL_LockTextureToSurface(m_resource, rect, &surface));
+>     return Surface::Borrow(surface);
+2944c2945,2948
 <   int GetWidth() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get the width in pixels.
 >    */
 >   int GetWidth() const { return m_resource->w; }
-2946c2948,2951
+2946c2950,2953
 <   int GetHeight() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get the height in pixels.
 >    */
 >   int GetHeight() const { return m_resource->h; }
-2948c2953,2956
+2948c2955,2958
 <   Point GetSize() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get the size in pixels.
 >    */
 >   Point GetSize() const { return Point(GetWidth(), GetHeight()); }
-2968c2976,2984
+2968c2978,2986
 <   FPoint GetSizeFloat() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -1054,22 +1052,223 @@
 >     GetSize(&p.x, &p.y);
 >     return p;
 >   }
-2970c2986,2989
+2970c2988,2991
 <   PixelFormat GetFormat() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get the pixel format.
 >    */
 >   PixelFormat GetFormat() const { return m_resource->format; }
-4077c4096,4098
+3044,3045c3065,3068
+<   return CheckError(
+<     SDL_CreateWindowAndRenderer(title, size, window_flags, renderer));
+---
+>   SDL_Window* window = nullptr;
+>   CheckError(SDL_CreateWindowAndRenderer(
+>     title, size.x, size.y, window_flags, &window, renderer));
+>   return Window{window};
+3273c3296
+<   return CheckError(SDL_GetRenderer(m_resource));
+---
+>   return {CheckError(SDL_GetRenderer(m_resource))};
+3289c3312
+<   return CheckError(SDL_GetRenderWindow(renderer));
+---
+>   return {CheckError(SDL_GetRenderWindow(renderer))};
+3397c3420
+<   return CheckError(SDL_GetRendererProperties(renderer));
+---
+>   return {CheckError(SDL_GetRendererProperties(renderer))};
+3478c3501
+<   return Texture(SDL_CreateTexture(renderer, format, access, size));
+---
+>   return Texture(SDL_CreateTexture(renderer, format, access, size.x, size.y));
+3851c3874
+<   return CheckError(SDL_GetTextureProperties(texture));
+---
+>   return {CheckError(SDL_GetTextureProperties(texture))};
+3867c3890
+<   return SDL_GetRendererFromTexture(texture);
+---
+>   return {SDL_GetRendererFromTexture(texture)};
+4077c4100,4102
 <   return CheckError(SDL_GetTextureAlphaMod(texture));
 ---
 >   Uint8 alpha;
 >   CheckError(SDL_GetTextureAlphaMod(texture, &alpha));
 >   return alpha;
-4097c4118,4120
+4097c4122,4124
 <   return CheckError(SDL_GetTextureAlphaModFloat(texture));
 ---
 >   float alpha;
 >   CheckError(SDL_GetTextureAlphaModFloat(texture, &alpha));
 >   return alpha;
+4125c4152
+<  * @param blendMode a pointer filled in with the current BlendMode.
+---
+>  * @return the current BlendMode.
+4136c4163,4165
+<   return CheckError(SDL_GetTextureBlendMode(texture));
+---
+>   BlendMode blendMode;
+>   CheckError(SDL_GetTextureBlendMode(texture, &blendMode));
+>   return blendMode;
+4165c4194
+<  * @param scaleMode a pointer filled in with the current scale mode.
+---
+>  * @return the current scale mode.
+4176c4205,4207
+<   return CheckError(SDL_GetTextureScaleMode(texture));
+---
+>   ScaleMode scaleMode;
+>   CheckError(SDL_GetTextureScaleMode(texture, &scaleMode));
+>   return scaleMode;
+4369c4400,4402
+<   return CheckError(SDL_LockTextureToSurface(texture, rect));
+---
+>   SurfaceRaw surface = nullptr;
+>   CheckError(SDL_LockTextureToSurface(texture, rect, &surface));
+>   return Surface::Borrow(surface);
+4439c4472,4474
+<   return SDL_GetRenderTarget(renderer);
+---
+>   TextureRaw texture = SDL_GetRenderTarget(renderer);
+>   if (texture) return Texture::Borrow(texture);
+>   return {};
+4444c4479
+<   return SDL_GetRenderTarget(m_resource);
+---
+>   return GetRenderTarget(m_resource);
+4503c4538
+<   CheckError(SDL_SetRenderLogicalPresentation(renderer, size, mode));
+---
+>   CheckError(SDL_SetRenderLogicalPresentation(renderer, size.x, size.y, mode));
+4559c4594,4596
+<   return CheckError(SDL_GetRenderLogicalPresentationRect(renderer));
+---
+>   FRect rect;
+>   CheckError(SDL_GetRenderLogicalPresentationRect(renderer, &rect));
+>   return rect;
+4589c4626,4629
+<   return CheckError(SDL_RenderCoordinatesFromWindow(renderer, window_coord));
+---
+>   FPoint p;
+>   CheckError(SDL_RenderCoordinatesFromWindow(
+>     renderer, window_coord.x, window_coord.y, &p.x, &p.y));
+>   return p;
+4622c4662,4665
+<   return CheckError(SDL_RenderCoordinatesToWindow(renderer, coord));
+---
+>   FPoint p;
+>   CheckError(
+>     SDL_RenderCoordinatesToWindow(renderer, coord.x, coord.y, &p.x, &p.y));
+>   return p;
+4713c4756,4758
+<   return CheckError(SDL_GetRenderViewport(renderer));
+---
+>   Rect rect;
+>   CheckError(SDL_GetRenderViewport(renderer, &rect));
+>   return rect;
+4762c4807,4809
+<   return CheckError(SDL_GetRenderSafeArea(renderer));
+---
+>   Rect rect;
+>   CheckError(SDL_GetRenderSafeArea(renderer, &rect));
+>   return rect;
+4809c4856,4858
+<   return CheckError(SDL_GetRenderClipRect(renderer));
+---
+>   Rect rect;
+>   CheckError(SDL_GetRenderClipRect(renderer, &rect));
+>   return rect;
+4861c4910
+<   CheckError(SDL_SetRenderScale(renderer, scale));
+---
+>   CheckError(SDL_SetRenderScale(renderer, scale.x, scale.y));
+4910c4959
+<   CheckError(SDL_SetRenderDrawColor(renderer, c));
+---
+>   CheckError(SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a));
+4937c4986
+<   CheckError(SDL_SetRenderDrawColorFloat(renderer, c));
+---
+>   CheckError(SDL_SetRenderDrawColorFloat(renderer, c.r, c.g, c.b, c.a));
+5041c5090,5092
+<   return CheckError(SDL_GetRenderColorScale(renderer));
+---
+>   float scale;
+>   CheckError(SDL_GetRenderColorScale(renderer, &scale));
+>   return scale;
+5079c5130,5132
+<   return CheckError(SDL_GetRenderDrawBlendMode(renderer));
+---
+>   BlendMode blendMode;
+>   CheckError(SDL_GetRenderDrawBlendMode(renderer, &blendMode));
+>   return blendMode;
+5120c5173
+<   CheckError(SDL_RenderPoint(renderer, p));
+---
+>   CheckError(SDL_RenderPoint(renderer, p.x, p.y));
+5140c5193
+<   CheckError(SDL_RenderPoints(renderer, points));
+---
+>   CheckError(SDL_RenderPoints(renderer, points.data(), points.size()));
+5163c5216
+<   CheckError(SDL_RenderLine(renderer, p1, p2));
+---
+>   CheckError(SDL_RenderLine(renderer, p1.x, p1.y, p2.x, p2.y));
+5183c5236
+<   CheckError(SDL_RenderLines(renderer, points));
+---
+>   CheckError(SDL_RenderLines(renderer, points.data(), points.size()));
+5222c5275
+<   CheckError(SDL_RenderRects(renderer, rects));
+---
+>   CheckError(SDL_RenderRects(renderer, rects.data(), rects.size()));
+5264c5317
+<   CheckError(SDL_RenderFillRects(renderer, rects));
+---
+>   CheckError(SDL_RenderFillRects(renderer, rects.data(), rects.size()));
+5536c5589,5594
+<   CheckError(SDL_RenderGeometry(renderer, texture, vertices, indices));
+---
+>   CheckError(SDL_RenderGeometry(renderer,
+>                                 texture,
+>                                 vertices.data(),
+>                                 vertices.size(),
+>                                 indices.data(),
+>                                 indices.size()));
+5543c5601
+<   CheckError(SDL_RenderGeometry(m_resource, texture, vertices, indices));
+---
+>   SDL::RenderGeometry(m_resource, texture, vertices, indices);
+5653c5711
+<   return CheckError(SDL_RenderReadPixels(renderer, rect));
+---
+>   return Surface{CheckError(SDL_RenderReadPixels(renderer, rect))};
+5909c5967,5969
+<   return CheckError(SDL_GetRenderVSync(renderer));
+---
+>   int vsync;
+>   CheckError(SDL_GetRenderVSync(renderer, &vsync));
+>   return vsync;
+5963c6023
+<   CheckError(SDL_RenderDebugText(renderer, p, str));
+---
+>   CheckError(SDL_RenderDebugText(renderer, p.x, p.y, str));
+5990a6051
+> template<class... ARGS>
+5992,5995c6053,6055
+<                                   float x,
+<                                   float y,
+<                                   SDL_PRINTF_FORMAT_STRING const char* fmt,
+<                                   ...)
+---
+>                                   FPoint p,
+>                                   std::string_view fmt,
+>                                   ARGS... args)
+5997c6057,6058
+<   CheckError(SDL_RenderDebugTextFormat(renderer, x, y, fmt, ...));
+---
+>   RenderDebugText(
+>     renderer, p, std::vformat(fmt, std::make_format_args(args...)));
