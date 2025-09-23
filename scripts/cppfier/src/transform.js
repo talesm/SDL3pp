@@ -1052,6 +1052,7 @@ function expandTypes(sourceEntries, file, context) {
         hints: { body: "return {m_resource};" },
         doc: `Converts to ${paramType}`,
       },
+      [freeFunction.name]: "plc",
       ...subEntries,
     };
     addHints(targetEntry, {

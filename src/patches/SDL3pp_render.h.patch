@@ -74,16 +74,16 @@
 <     : m_resource(SDL_CreateSoftwareRenderer(surface))
 ---
 >     : m_resource(CheckError(SDL_CreateSoftwareRenderer(surface)))
-358c392,395
+377c411,414
 <   WindowRef GetWindow() { return CheckError(SDL_GetRenderWindow(m_resource)); }
 ---
 >   WindowRef GetWindow()
 >   {
 >     return {CheckError(SDL_GetRenderWindow(m_resource))};
 >   }
-371d407
+390d426
 <    * @sa Renderer.Renderer
-375c411,425
+394c430,444
 <   Point GetOutputSize() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -101,7 +101,7 @@
 >     GetOutputSize(&p.x, &p.y);
 >     return p;
 >   }
-400a451,466
+419a470,485
 >   /**
 >    * Get the current output size in pixels of a rendering context.
 >    *
@@ -118,17 +118,17 @@
 >    *
 >    * @sa Renderer.GetOutputSize()
 >    */
-403c469,471
+422c488,490
 <     static_assert(false, "Not implemented");
 ---
 >     Point p;
 >     GetCurrentOutputSize(&p.x, &p.y);
 >     return p;
-515c583
+534c602
 <     return CheckError(SDL_GetRendererProperties(m_resource));
 ---
 >     return {CheckError(SDL_GetRendererProperties(m_resource))};
-518c586,600
+537c605,619
 <   void ResetTarget() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -146,17 +146,17 @@
 >    * @sa GetTarget()
 >    */
 >   void ResetTarget() { SetTarget(nullptr); }
-603,604c685
+622,623c704
 <    * @param w the width of the logical resolution.
 <    * @param h the height of the logical resolution.
 ---
 >    * @param size the width and height of the logical resolution.
-619c700,701
+638c719,720
 <     CheckError(SDL_SetRenderLogicalPresentation(m_resource, size, mode));
 ---
 >     CheckError(
 >       SDL_SetRenderLogicalPresentation(m_resource, size.x, size.y, mode));
-621a704,719
+640a723,738
 >   /**
 >    * Get device independent resolution and presentation mode for rendering.
 >    *
@@ -173,18 +173,18 @@
 >    *
 >    * @sa Renderer.SetLogicalPresentation
 >    */
-624c722,723
+643c741,742
 <     static_assert(false, "Not implemented");
 ---
 >     if (!size) return GetLogicalPresentation(nullptr, nullptr, mode);
 >     return GetLogicalPresentation(&size->x, &size->y, mode);
-677c776,778
+696c795,797
 <     return CheckError(SDL_GetRenderLogicalPresentationRect(m_resource));
 ---
 >     FRect rect;
 >     CheckError(SDL_GetRenderLogicalPresentationRect(m_resource, &rect));
 >     return rect;
-690,693c791,792
+709,712c810,811
 <    * @param window_x the x coordinate in window coordinates.
 <    * @param window_y the y coordinate in window coordinates.
 <    * @param x a pointer filled with the x coordinate in render coordinates.
@@ -192,7 +192,7 @@
 ---
 >    * @param window_coord the x, y coordinate in window coordinates.
 >    * @returns a FPoint containing ther render coordinates on success.
-705,706c804,807
+724,725c823,826
 <     return CheckError(
 <       SDL_RenderCoordinatesFromWindow(m_resource, window_coord));
 ---
@@ -200,7 +200,7 @@
 >     CheckError(SDL_RenderCoordinatesFromWindow(
 >       m_resource, window_coord.x, window_coord.y, &p.x, &p.y));
 >     return p;
-715,717c816,818
+734,736c835,837
 <    * - The logical presentation settings (Renderer.SetLogicalPresentation)
 <    * - The scale (Renderer.SetScale)
 <    * - The viewport (Renderer.SetViewport)
@@ -208,7 +208,7 @@
 >    * - The logical presentation settings (RendererRef.SetLogicalPresentation)
 >    * - The scale (RendererRef.SetScale)
 >    * - The viewport (RendererRef.SetViewport)
-719,724c820,821
+738,743c839,840
 <    * @param x the x coordinate in render coordinates.
 <    * @param y the y coordinate in render coordinates.
 <    * @param window_x a pointer filled with the x coordinate in window
@@ -218,14 +218,14 @@
 ---
 >    * @param coord the x, y coordinate in render coordinates.
 >    * @returns a FPoint filled with window coordinates on success.
-737c834,837
+756c853,856
 <     return CheckError(SDL_RenderCoordinatesToWindow(m_resource, coord));
 ---
 >     FPoint p;
 >     CheckError(
 >       SDL_RenderCoordinatesToWindow(m_resource, coord.x, coord.y, &p.x, &p.y));
 >     return p;
-777c877,892
+796c896,911
 <   void ResetViewport() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -244,28 +244,28 @@
 >    * @sa ViewportSet()
 >    */
 >   void ResetViewport() { SetViewport(std::nullopt); }
-813c928
+832c947
 <    * @param rect an Rect structure filled in with the current drawing area.
 ---
 >    * @returns an Rect with the current drawing area.
-825c940,942
+844c959,961
 <     return CheckError(SDL_GetRenderViewport(m_resource));
 ---
 >     Rect rect;
 >     CheckError(SDL_GetRenderViewport(m_resource, &rect));
 >     return rect;
-859,860c976
+878,879c995
 <    * @param rect a pointer filled in with the area that is safe for interactive
 <    *             content.
 ---
 >    * @returns the rect filled the area that is safe for interactive content.
-869c985,987
+888c1004,1006
 <     return CheckError(SDL_GetRenderSafeArea(m_resource));
 ---
 >     Rect rect;
 >     CheckError(SDL_GetRenderSafeArea(m_resource, &rect));
 >     return rect;
-872c990,1005
+891c1009,1024
 <   void ResetClipRect() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -284,30 +284,30 @@
 >    * @sa ClipEnabled()
 >    */
 >   void ResetClipRect() { SetClipRect({}); }
-888a1022
+907a1041
 >    * @sa Renderer.ResetClipRect()
-902,903c1036,1037
+921,922c1055,1056
 <    * @param rect an Rect structure filled in with the current clipping area
 <    *             or an empty rectangle if clipping is disabled.
 ---
 >    * @returns a Rect structure filled in with the current clipping area or an
 >    *          empty rectangle if clipping is disabled.
-915c1049,1051
+934c1068,1070
 <     return CheckError(SDL_GetRenderClipRect(m_resource));
 ---
 >     Rect rect;
 >     CheckError(SDL_GetRenderClipRect(get(), &rect));
 >     return rect;
-950,951c1086
+969,970c1105
 <    * @param scaleX the horizontal scaling factor.
 <    * @param scaleY the vertical scaling factor.
 ---
 >    * @param scale the x, y scaling factors.
-962c1097
+981c1116
 <     CheckError(SDL_SetRenderScale(m_resource, scale));
 ---
 >     CheckError(SDL_SetRenderScale(m_resource, scale.x, scale.y));
-965c1100,1120
+984c1119,1139
 <   FPoint GetScale() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -331,7 +331,7 @@
 >     GetScale(&p.x, &p.y);
 >     return p;
 >   }
-994,999c1149
+1013,1018c1168
 <    * @param r the red value used to draw on the rendering target.
 <    * @param g the green value used to draw on the rendering target.
 <    * @param b the blue value used to draw on the rendering target.
@@ -340,11 +340,11 @@
 <    *          specify how the alpha channel is used.
 ---
 >    * @param c the color value used to draw on the rendering target.
-1011c1161
+1030c1180
 <     CheckError(SDL_SetRenderDrawColor(m_resource, c));
 ---
 >     CheckError(SDL_SetRenderDrawColor(m_resource, c.r, c.g, c.b, c.a));
-1020,1025c1170
+1039,1044c1189
 <    * @param r the red value used to draw on the rendering target.
 <    * @param g the green value used to draw on the rendering target.
 <    * @param b the blue value used to draw on the rendering target.
@@ -353,11 +353,11 @@
 <    *          used.
 ---
 >    * @param c the RGBA values used to draw on the rendering target.
-1037c1182
+1056c1201
 <     CheckError(SDL_SetRenderDrawColorFloat(m_resource, c));
 ---
 >     CheckError(SDL_SetRenderDrawColorFloat(m_resource, c.r, c.g, c.b, c.a));
-1040c1185,1204
+1059c1204,1223
 <   Color GetDrawColor() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -380,7 +380,7 @@
 >     GetDrawColor(&c.r, &c.g, &c.b, &c.a);
 >     return c;
 >   }
-1067c1231,1249
+1086c1250,1268
 <   FColor GetDrawColorFloat() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -402,44 +402,44 @@
 >     GetDrawColorFloat(&c.r, &c.g, &c.b, &c.a);
 >     return c;
 >   }
-1122c1304
+1141c1323
 <    * @param scale a pointer filled in with the current color scale value.
 ---
 >    * @returns a float representing the current color scale on success.
-1133c1315,1317
+1152c1334,1336
 <     return CheckError(SDL_GetRenderColorScale(m_resource));
 ---
 >     float scale;
 >     CheckError(SDL_GetRenderColorScale(m_resource, &scale));
 >     return scale;
-1158c1342
+1177c1361
 <    * @param blendMode a pointer filled in with the current BlendMode.
 ---
 >    * @returns the current BlendMode on success.
-1169c1353,1355
+1188c1372,1374
 <     return CheckError(SDL_GetRenderDrawBlendMode(m_resource));
 ---
 >     BlendMode blendMode;
 >     CheckError(SDL_GetRenderDrawBlendMode(m_resource, &blendMode));
 >     return blendMode;
-1193,1194c1379
+1212,1213c1398
 <    * @param x the x coordinate of the point.
 <    * @param y the y coordinate of the point.
 ---
 >    * @param p the x, y coordinates of the point.
-1205c1390
+1224c1409
 <     CheckError(SDL_RenderPoint(m_resource, p));
 ---
 >     CheckError(SDL_RenderPoint(m_resource, p.x, p.y));
-1211d1395
+1230d1414
 <    * @param renderer the renderer which should draw multiple points.
-1213d1396
+1232d1415
 <    * @param count the number of points to draw.
-1224c1407
+1243c1426
 <     CheckError(SDL_RenderPoints(m_resource, points));
 ---
 >     CheckError(SDL_RenderPoints(m_resource, points.data(), points.size()));
-1230,1234c1413,1414
+1249,1253c1432,1433
 <    * @param renderer the renderer which should draw a line.
 <    * @param x1 the x coordinate of the start point.
 <    * @param y1 the y coordinate of the start point.
@@ -448,80 +448,80 @@
 ---
 >    * @param p1 the x,y coordinate of the start point.
 >    * @param p2 the x,y coordinate of the end point.
-1245c1425
+1264c1444
 <     CheckError(SDL_RenderLine(m_resource, p1, p2));
 ---
 >     CheckError(SDL_RenderLine(m_resource, p1.x, p1.y, p2.x, p2.y));
-1252d1431
+1271d1450
 <    * @param renderer the renderer which should draw multiple lines.
-1254d1432
+1273d1451
 <    * @param count the number of points, drawing count-1 lines.
-1265c1443
+1284c1462
 <     CheckError(SDL_RenderLines(m_resource, points));
 ---
 >     CheckError(SDL_RenderLines(m_resource, points.data(), points.size()));
-1271,1273c1449,1450
+1290,1292c1468,1469
 <    * @param renderer the renderer which should draw a rectangle.
 <    * @param rect a pointer to the destination rectangle, or nullptr to outline
 <    * the entire rendering target.
 ---
 >    * @param rect a pointer to the destination rectangle, or std::nullopt to
 >    *             outline the entire rendering target.
-1291d1467
+1310d1486
 <    * @param renderer the renderer which should draw multiple rectangles.
-1293d1468
+1312d1487
 <    * @param count the number of rectangles.
-1304c1479
+1323c1498
 <     CheckError(SDL_RenderRects(m_resource, rects));
 ---
 >     CheckError(SDL_RenderRects(m_resource, rects.data(), rects.size()));
-1311,1313c1486,1487
+1330,1332c1505,1506
 <    * @param renderer the renderer which should fill a rectangle.
 <    * @param rect a pointer to the destination rectangle, or nullptr for the
 <    * entire rendering target.
 ---
 >    * @param rect a pointer to the destination rectangle, or std::nullopt for the
 >    *             entire rendering target.
-1331d1504
+1350d1523
 <    * @param renderer the renderer which should fill multiple rectangles.
-1333d1505
+1352d1524
 <    * @param count the number of rectangles.
-1344c1516
+1363c1535
 <     CheckError(SDL_RenderFillRects(m_resource, rects));
 ---
 >     CheckError(SDL_RenderFillRects(m_resource, rects.data(), rects.size()));
-1351d1522
+1370d1541
 <    * @param renderer the renderer which should copy parts of a texture.
-1374d1544
+1393d1563
 <    * @param renderer the renderer which should copy parts of a texture.
-1406d1575
+1425d1594
 <    * @param renderer the renderer which should copy parts of a texture.
-1440d1608
+1459d1627
 <    * @param renderer the renderer which should copy parts of a texture.
-1472d1639
+1491d1658
 <    * @param renderer the renderer which should copy parts of a texture.
-1507d1673
+1526d1692
 <    * @param renderer the rendering context.
-1510d1675
+1529d1694
 <    * @param num_vertices number of vertices.
-1513,1514c1678
+1532,1533c1697
 <    * sequential order.
 <    * @param num_indices number of indices.
 ---
 >    *                sequential order.
-1579d1742
+1598d1761
 <    * @param renderer the rendering context.
-1592c1755
+1611c1774
 <     return CheckError(SDL_RenderReadPixels(m_resource, rect));
 ---
 >     return Surface(CheckError(SDL_RenderReadPixels(m_resource, rect)));
-1703,1705c1866
+1722,1724c1885
 <    * @param renderer the renderer to toggle.
 <    * @param vsync an int filled with the current vertical refresh sync interval.
 <    *              See Renderer.SetVSync() for the meaning of the value.
 ---
 >    * @returns the current vertical refresh sync interval on success.
-1714c1875,1880
+1733c1894,1899
 <   int GetVSync() const { return CheckError(SDL_GetRenderVSync(m_resource)); }
 ---
 >   int GetVSync() const
@@ -530,13 +530,13 @@
 >     CheckError(SDL_GetRenderVSync(m_resource, &vsync));
 >     return vsync;
 >   }
-1741,1742c1907,1908
+1760,1761c1926,1927
 <    * @param x the x coordinate where the top-left corner of the text will draw.
 <    * @param y the y coordinate where the top-left corner of the text will draw.
 ---
 >    * @param p the x, y coordinates where the top-left corner of the text will
 >    *          draw.
-1755,1761c1921
+1774,1780c1940
 <     CheckError(SDL_RenderDebugText(m_resource, p, str));
 <   }
 < 
@@ -546,10 +546,10 @@
 <     static_assert(false, "Not implemented");
 ---
 >     CheckError(SDL_RenderDebugText(m_resource, p.x, p.y, str));
-1764,1765d1923
+1783,1784d1942
 <   auto RenderDebugTextFormat() { static_assert(false, "Not implemented"); }
 < 
-1769,1771c1927,1930
+1788,1790c1946,1949
 <    * This function will render a printf()-style format string to a renderer.
 <    * Note that this is a convenience function for debugging, with severe
 <    * limitations, and is not intended to be used for production apps and games.
@@ -558,44 +558,25 @@
 >    * renderer. Note that this is a convenience function for debugging, with
 >    * severe limitations, and is not intended to be used for production apps and
 >    * games.
-1776,1777c1935,1936
+1795,1796c1954,1955
 <    * @param x the x coordinate where the top-left corner of the text will draw.
 <    * @param y the y coordinate where the top-left corner of the text will draw.
 ---
 >    * @param p the x, y coordinates where the top-left corner of the text will
 >    *          draw.
-1779,1780c1938,1939
+1798,1799c1957,1958
 <    * @param ... additional parameters matching % tokens in the `fmt` string, if
 <    *            any.
 ---
 >    * @param args additional parameters matching {} tokens in the `fmt` string,
 >    *             if any.
-1790,2063c1949,1950
+1809,2063c1968,1969
 <   void RenderDebugTextFormat(float x,
 <                              float y,
 <                              SDL_PRINTF_FORMAT_STRING const char* fmt,
 <                              ...)
 <   {
 <     CheckError(SDL_RenderDebugTextFormat(m_resource, x, y, fmt, ...));
-<   }
-< 
-<   /**
-<    * Destroy the rendering context for a window and free all associated
-<    * textures.
-<    *
-<    * This should be called before destroying the associated window.
-<    *
-<    *
-<    * @threadsafety This function should only be called on the main thread.
-<    *
-<    * @since This function is available since SDL 3.2.0.
-<    *
-<    * @sa Renderer.Renderer
-<    */
-<   void Destroy()
-<   {
-<     SDL_DestroyRenderer(m_resource);
-<     m_resource = nullptr;
 <   }
 < 
 <   /**
@@ -848,12 +829,12 @@
 ---
 >   template<class... ARGS>
 >   void RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
-2065,2066c1952
+2065,2066c1971
 <     CheckError(SDL_AddVulkanRenderSemaphores(
 <       m_resource, wait_stage_mask, wait_semaphore, signal_semaphore));
 ---
 >     RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));
-2138,2141c2024,2025
+2138,2141c2043,2044
 <    * @param w the width of the texture in pixels.
 <    * @param h the height of the texture in pixels.
 <    * @post the created texture or nullptr on failure; call GetError() for
@@ -861,28 +842,28 @@
 ---
 >    * @param size the width and height of the texture in pixels.
 >    * @throws Error on failure.
-2157c2041,2042
+2157c2060,2061
 <     : m_resource(SDL_CreateTexture(renderer, format, access, size))
 ---
 >     : m_resource(
 >         CheckError(SDL_CreateTexture(renderer, format, access, size.x, size.y)))
-2176,2177c2061
+2176,2177c2080
 <    * @post the created texture or nullptr on failure; call GetError() for
 <    *          more information.
 ---
 >    * @throws Error on failure.
-2184d2067
+2184d2086
 <    * @sa Texture.Texture
-2188c2071
+2188c2090
 <     : m_resource(SDL_CreateTextureFromSurface(renderer, surface))
 ---
 >     : m_resource(CheckError(SDL_CreateTextureFromSurface(renderer, surface)))
-2288,2289c2171
+2288,2289c2190
 <    * @post the created texture or nullptr on failure; call GetError() for
 <    *          more information.
 ---
 >    * @throws Error on failure.
-2303c2185
+2303c2204
 <     : m_resource(SDL_CreateTextureWithProperties(renderer, props))
 ---
 >     : m_resource(CheckError(SDL_CreateTextureWithProperties(renderer, props)))

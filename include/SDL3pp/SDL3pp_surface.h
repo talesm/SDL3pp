@@ -346,6 +346,25 @@ public:
   constexpr operator SurfaceParam() const { return {m_resource}; }
 
   /**
+   * Free a surface.
+   *
+   * It is safe to pass nullptr to this function.
+   *
+   *
+   * @threadsafety No other thread should be using the surface when it is freed.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Surface
+   * @sa Surface.Surface
+   */
+  void Destroy()
+  {
+    SDL_DestroySurface(m_resource);
+    m_resource = nullptr;
+  }
+
+  /**
    * Get the properties associated with a surface.
    *
    * The following properties are understood by SDL:
@@ -1909,25 +1928,6 @@ public:
    * Get the pixels.
    */
   constexpr void* GetPixels() const { return m_resource->pixels; }
-
-  /**
-   * Free a surface.
-   *
-   * It is safe to pass nullptr to this function.
-   *
-   *
-   * @threadsafety No other thread should be using the surface when it is freed.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.Surface
-   * @sa Surface.Surface
-   */
-  void Destroy()
-  {
-    SDL_DestroySurface(m_resource);
-    m_resource = nullptr;
-  }
 };
 
 /**

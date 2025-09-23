@@ -913,11 +913,11 @@
 <    * @param newA the new a value.
 ---
 >    * @param newA New alpha component value.
-2303c2505
+2320c2522
 <   constexpr int GetSize() const { static_assert(false, "Not implemented"); }
 ---
 >   constexpr int GetSize() const { return m_resource->ncolors; }
-2307c2509
+2324c2526
 <     static_assert(false, "Not implemented");
 ---
 >     return m_resource->colors[index];

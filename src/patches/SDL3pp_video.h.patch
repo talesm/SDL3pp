@@ -123,20 +123,20 @@
 >                                        size.x,
 >                                        size.y,
 >                                        flags))
-1254d1280
+1279d1305
 <    * @param size the size of the ICC profile.
-1264c1290,1291
+1289c1315,1316
 <     return CheckError(SDL_GetWindowICCProfile(m_resource));
 ---
 >     size_t size;
 >     return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(m_resource, &size))};
-1312d1338
+1337d1363
 < 
-1434c1460
+1459c1485
 <     return CheckError(SDL_GetWindowProperties(m_resource));
 ---
 >     return {CheckError(SDL_GetWindowProperties(m_resource))};
-1514c1540,1555
+1539c1565,1580
 <   void SetRect(Rect rect) { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -155,7 +155,7 @@
 >     SetPosition(rect.GetTopLeft());
 >     SetSize(rect.GetSize());
 >   }
-1516c1557,1570
+1541c1582,1595
 <   Rect GetRect() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -172,17 +172,17 @@
 >    * @throws Error on failure.
 >    */
 >   Rect GetRect() const { return Rect{GetPosition(), GetSize()}; }
-1543,1545c1597
+1568,1570c1622
 <    * @param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or
 <    *          `SDL_WINDOWPOS_UNDEFINED`.
 <    * @param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or
 ---
 >    * @param p the coordinates of the window, or `SDL_WINDOWPOS_CENTERED` or
-1558c1610
+1583c1635
 <     CheckError(SDL_SetWindowPosition(m_resource, p));
 ---
 >     CheckError(SDL_SetWindowPosition(m_resource, p.x, p.y));
-1561c1613,1634
+1586c1638,1659
 <   Point GetPosition() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -207,11 +207,11 @@
 >     GetPosition(&p.x, &p.y);
 >     return p;
 >   }
-1625c1698
+1650c1723
 <     CheckError(SDL_SetWindowSize(m_resource, p));
 ---
 >     CheckError(SDL_SetWindowSize(m_resource, p.x, p.y));
-1628c1701,1725
+1653c1726,1750
 <   Point GetSize() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -239,16 +239,16 @@
 >     GetSize(&p.x, &p.y);
 >     return p;
 >   }
-1665,1666d1761
+1690,1691d1786
 <    * @param rect a pointer filled in with the client area that is safe for
 <    *             interactive content.
-1675c1770,1772
+1700c1795,1797
 <     return CheckError(SDL_GetWindowSafeArea(m_resource));
 ---
 >     Rect rect;
 >     CheckError(SDL_GetWindowSafeArea(m_resource, &rect));
 >     return rect;
-1778c1875,1893
+1803c1900,1918
 <   Point GetSizeInPixels() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -270,41 +270,41 @@
 >     GetSizeInPixels(&p.x, &p.y);
 >     return p;
 >   }
-1818c1933
+1843c1958
 <     CheckError(SDL_SetWindowMinimumSize(m_resource, p));
 ---
 >     CheckError(SDL_SetWindowMinimumSize(m_resource, p.x, p.y));
-1859c1974
+1884c1999
 <     CheckError(SDL_SetWindowMaximumSize(m_resource, p));
 ---
 >     CheckError(SDL_SetWindowMaximumSize(m_resource, p.x, p.y));
-2184c2299,2302
+2209c2324,2327
 <   Surface GetSurface() { return SDL_GetWindowSurface(m_resource); }
 ---
 >   Surface GetSurface()
 >   {
 >     return Surface::Borrow(SDL_GetWindowSurface(m_resource));
 >   }
-2229c2347,2349
+2254c2372,2374
 <     return CheckError(SDL_GetWindowSurfaceVSync(m_resource));
 ---
 >     int vsync;
 >     CheckError(SDL_GetWindowSurfaceVSync(m_resource, &vsync));
 >     return vsync;
-2278c2398,2399
+2303c2423,2424
 <     CheckError(SDL_UpdateWindowSurfaceRects(m_resource, rects));
 ---
 >     CheckError(
 >       SDL_UpdateWindowSurfaceRects(m_resource, rects.data(), rects.size()));
-2400c2521
+2425c2546
 <     CheckError(SDL_SetWindowMouseRect(m_resource, rect));
 ---
 >     CheckError(SDL_SetWindowMouseRect(m_resource, &rect));
-2556c2677
+2581c2702
 <     CheckError(SDL_ShowWindowSystemMenu(m_resource, p));
 ---
 >     CheckError(SDL_ShowWindowSystemMenu(m_resource, p.x, p.y));
-2558a2680,2720
+2583a2705,2745
 >   /**
 >    * Provide a callback that decides if a window region has special properties.
 >    *
@@ -346,7 +346,7 @@
 >    *
 >    * @cat listener-callback
 >    */
-2561c2723,2729
+2586c2748,2754
 <     static_assert(false, "Not implemented");
 ---
 >     using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
@@ -362,7 +362,7 @@
 2823a2994,2995
 > #endif // SDL3PP_DOC
 > 
-2928c3100
+2946c3118
 <     CheckError(SDL_GL_MakeCurrent(m_resource, window));
 ---
 >     CheckError(SDL_GL_MakeCurrent(window, m_resource));

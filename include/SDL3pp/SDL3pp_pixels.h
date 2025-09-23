@@ -2502,13 +2502,6 @@ public:
   /// Converts to PaletteParam
   constexpr operator PaletteParam() const { return {m_resource}; }
 
-  constexpr int GetSize() const { return m_resource->ncolors; }
-
-  constexpr Color operator[](int index) const
-  {
-    return m_resource->colors[index];
-  }
-
   /**
    * Free a palette created with Palette.Palette().
    *
@@ -2524,6 +2517,13 @@ public:
   {
     SDL_DestroyPalette(m_resource);
     m_resource = nullptr;
+  }
+
+  constexpr int GetSize() const { return m_resource->ncolors; }
+
+  constexpr Color operator[](int index) const
+  {
+    return m_resource->colors[index];
   }
 
   /**

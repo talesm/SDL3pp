@@ -380,6 +380,25 @@ public:
   constexpr operator RendererParam() const { return {m_resource}; }
 
   /**
+   * Destroy the rendering context for a window and free all associated
+   * textures.
+   *
+   * This should be called before destroying the associated window.
+   *
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.Renderer
+   */
+  void Destroy()
+  {
+    SDL_DestroyRenderer(m_resource);
+    m_resource = nullptr;
+  }
+
+  /**
    * Get the window associated with a renderer.
    *
    * @returns the window on success.
@@ -2224,6 +2243,26 @@ public:
   constexpr operator TextureParam() const { return {m_resource}; }
 
   /**
+   * Destroy the specified texture.
+   *
+   * Passing nullptr or an otherwise invalid texture will set the SDL error
+   * message to "Invalid texture".
+   *
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Texture
+   * @sa Texture.Texture
+   */
+  void Destroy()
+  {
+    SDL_DestroyTexture(m_resource);
+    m_resource = nullptr;
+  }
+
+  /**
    * Get the properties associated with a texture.
    *
    * The following read-only properties are provided by SDL:
@@ -2834,26 +2873,6 @@ public:
   FPoint GetSizeFloat() const { static_assert(false, "Not implemented"); }
 
   PixelFormat GetFormat() const { static_assert(false, "Not implemented"); }
-
-  /**
-   * Destroy the specified texture.
-   *
-   * Passing nullptr or an otherwise invalid texture will set the SDL error
-   * message to "Invalid texture".
-   *
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
-   */
-  void Destroy()
-  {
-    SDL_DestroyTexture(m_resource);
-    m_resource = nullptr;
-  }
 };
 
 /**

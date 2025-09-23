@@ -10443,13 +10443,6 @@ public:
   /// Converts to PaletteParam
   constexpr operator PaletteParam() const { return {m_resource}; }
 
-  constexpr int GetSize() const { return m_resource->ncolors; }
-
-  constexpr Color operator[](int index) const
-  {
-    return m_resource->colors[index];
-  }
-
   /**
    * Free a palette created with Palette.Palette().
    *
@@ -10465,6 +10458,13 @@ public:
   {
     SDL_DestroyPalette(m_resource);
     m_resource = nullptr;
+  }
+
+  constexpr int GetSize() const { return m_resource->ncolors; }
+
+  constexpr Color operator[](int index) const
+  {
+    return m_resource->colors[index];
   }
 
   /**
@@ -12655,6 +12655,23 @@ public:
   constexpr operator EnvironmentParam() const { return {m_resource}; }
 
   /**
+   * Destroy a set of environment variables.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the environment is no longer in use.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Environment.Environment
+   */
+  void Destroy()
+  {
+    SDL_DestroyEnvironment(m_resource);
+    m_resource = nullptr;
+  }
+
+  /**
    * Get the value of a variable in the environment.
    *
    * @param name the name of the variable to get.
@@ -12759,23 +12776,6 @@ public:
   void UnsetVariable(StringParam name)
   {
     CheckError(SDL_UnsetEnvironmentVariable(m_resource, name));
-  }
-
-  /**
-   * Destroy a set of environment variables.
-   *
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the environment is no longer in use.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Environment.Environment
-   */
-  void Destroy()
-  {
-    SDL_DestroyEnvironment(m_resource);
-    m_resource = nullptr;
   }
 };
 
@@ -17441,6 +17441,25 @@ public:
   constexpr operator IConvParam() const { return {m_resource}; }
 
   /**
+   * This function frees a context used for character set conversion.
+   *
+   * @param cd The character set conversion handle.
+   * @returns 0 on success, or -1 on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConv.iconv
+   * @sa IConv.open
+   * @sa iconv_string
+   */
+  int close()
+  {
+    auto r = SDL_iconv_close(m_resource);
+    m_resource = nullptr;
+    return r;
+  }
+
+  /**
    * This function converts text between encodings, reading from and writing to
    * a buffer.
    *
@@ -17482,24 +17501,6 @@ public:
   {
     return CheckError(
       SDL_iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft));
-  }
-
-  /**
-   * This function frees a context used for character set conversion.
-   *
-   * @param cd The character set conversion handle.
-   * @returns 0 on success, or -1 on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConv.iconv
-   * @sa IConv.open
-   * @sa iconv_string
-   */
-  void close()
-  {
-    CheckError(SDL_iconv_close(m_resource));
-    m_resource = nullptr;
   }
 };
 
@@ -25592,6 +25593,25 @@ public:
   constexpr operator SurfaceParam() const { return {m_resource}; }
 
   /**
+   * Free a surface.
+   *
+   * It is safe to pass nullptr to this function.
+   *
+   *
+   * @threadsafety No other thread should be using the surface when it is freed.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Surface
+   * @sa Surface.Surface
+   */
+  void Destroy()
+  {
+    SDL_DestroySurface(m_resource);
+    m_resource = nullptr;
+  }
+
+  /**
    * Get the properties associated with a surface.
    *
    * The following properties are understood by SDL:
@@ -27155,25 +27175,6 @@ public:
    * Get the pixels.
    */
   constexpr void* GetPixels() const { return m_resource->pixels; }
-
-  /**
-   * Free a surface.
-   *
-   * It is safe to pass nullptr to this function.
-   *
-   *
-   * @threadsafety No other thread should be using the surface when it is freed.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.Surface
-   * @sa Surface.Surface
-   */
-  void Destroy()
-  {
-    SDL_DestroySurface(m_resource);
-    m_resource = nullptr;
-  }
 };
 
 /**
@@ -30133,6 +30134,31 @@ public:
   constexpr operator WindowParam() const { return {m_resource}; }
 
   /**
+   * Destroy a window.
+   *
+   * Any child windows owned by the window will be recursively destroyed as
+   * well.
+   *
+   * Note that on some platforms, the visible window may not actually be removed
+   * from the screen until the SDL event loop is pumped again, even though the
+   * Window is no longer valid after this call.
+   *
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.Window
+   * @sa Window.Window
+   * @sa Window.Window
+   */
+  void Destroy()
+  {
+    SDL_DestroyWindow(m_resource);
+    m_resource = nullptr;
+  }
+
+  /**
    * Get the display associated with a window.
    *
    * @returns the instance ID of the display containing the center of the window
@@ -31825,31 +31851,6 @@ public:
   static WindowRef GetGrabbed();
 
   /**
-   * Destroy a window.
-   *
-   * Any child windows owned by the window will be recursively destroyed as
-   * well.
-   *
-   * Note that on some platforms, the visible window may not actually be removed
-   * from the screen until the SDL event loop is pumped again, even though the
-   * Window is no longer valid after this call.
-   *
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Window.Window
-   * @sa Window.Window
-   * @sa Window.Window
-   */
-  void Destroy()
-  {
-    SDL_DestroyWindow(m_resource);
-    m_resource = nullptr;
-  }
-
-  /**
    * Get the renderer associated with a window.
    *
    * @returns the rendering context on success.
@@ -32055,6 +32056,24 @@ public:
   constexpr operator GLContextParam() const { return {m_resource}; }
 
   /**
+   * Delete an OpenGL context.
+   *
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GLContext.GLContext
+   */
+  void Destroy()
+  {
+    CheckError(SDL_GL_DestroyContext(m_resource));
+    m_resource = nullptr;
+  }
+
+  /**
    * Set up an OpenGL context for rendering into an OpenGL window.
    *
    * The context must have been created with a compatible window.
@@ -32072,24 +32091,6 @@ public:
   void MakeCurrent(WindowParam window)
   {
     CheckError(SDL_GL_MakeCurrent(window, m_resource));
-  }
-
-  /**
-   * Delete an OpenGL context.
-   *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GLContext.GLContext
-   */
-  void Destroy()
-  {
-    CheckError(SDL_GL_DestroyContext(m_resource));
-    m_resource = nullptr;
   }
 };
 

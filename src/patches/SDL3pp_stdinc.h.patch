@@ -245,7 +245,7 @@
 836,837d882
 <  *
 <  * @cat resource
-947,949c992,995
+964,966c1009,1012
 <    *          the form "variable=value" or nullptr on failure; call GetError()
 <    *          for more information. This is a single allocation that should be
 <    *          freed with free() when it is no longer needed.
@@ -254,11 +254,11 @@
 >    *          auto-deleted, use FreeWrapper.release() if you want to manage
 >    *          manually.
 >    * @throws Error on failure
-963c1009
+980c1026
 <     return SDL_GetEnvironmentVariables(m_resource);
 ---
 >     return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(m_resource))};
-966c1012,1024
+983c1029,1041
 <   Uint64 GetVariableCount() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -551,51 +551,47 @@
 >     : m_resource(SDL_iconv_open(tocode, fromcode))
 5598d5725
 <     return IConv(SDL_iconv_open(tocode, fromcode));
-5646d5772
+5665d5791
 <    *           IConv.open().
-5682c5808
-<   static void close(SDL_iconv_t cd)
----
->   void close()
-5780c5906
+5781c5907
 < inline size_t iconv(IConv cd,
 ---
 > inline size_t iconv(IConvRaw cd,
-5788a5915,5916
+5789a5916,5917
 > #ifdef SDL3PP_DOC
 > 
-5790c5918
+5791c5919
 < #define SDL_ICONV_ERROR (size_t) - 1
 ---
 > #define SDL_ICONV_ERROR (size_t)-1
-5793c5921
+5794c5922
 < #define SDL_ICONV_E2BIG (size_t) - 2
 ---
 > #define SDL_ICONV_E2BIG (size_t)-2
-5796c5924
+5797c5925
 < #define SDL_ICONV_EILSEQ (size_t) - 3
 ---
 > #define SDL_ICONV_EILSEQ (size_t)-3
-5799c5927,5929
+5800c5928,5930
 < #define SDL_ICONV_EINVAL (size_t) - 4
 ---
 > #define SDL_ICONV_EINVAL (size_t)-4
 > 
 > #endif // SDL3PP_DOC
-5810,5812d5939
+5811,5813d5940
 <  * The returned string is owned by the caller, and should be passed to
 <  * free when no longer needed.
 <  *
-5831c5958
+5832c5959
 <   return SDL_iconv_string(tocode, fromcode, inbuf, inbytesleft);
 ---
 >   return OwnPtr<char>{SDL_iconv_string(tocode, fromcode, inbuf, inbytesleft)};
-5833a5961,5962
+5834a5962,5963
 > #ifdef SDL3PP_DOC
 > 
-5894a6024,6025
+5895a6025,6026
 > #endif // SDL3PP_DOC
 > 
-5956a6088,6089
+5957a6089,6090
 > 
 > inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }

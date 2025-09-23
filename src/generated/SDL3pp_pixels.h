@@ -2300,13 +2300,6 @@ public:
   /// Converts to PaletteParam
   constexpr operator PaletteParam() const { return {m_resource}; }
 
-  constexpr int GetSize() const { static_assert(false, "Not implemented"); }
-
-  constexpr Color operator[](int index) const
-  {
-    static_assert(false, "Not implemented");
-  }
-
   /**
    * Free a palette created with Palette.Palette().
    *
@@ -2322,6 +2315,13 @@ public:
   {
     SDL_DestroyPalette(m_resource);
     m_resource = nullptr;
+  }
+
+  constexpr int GetSize() const { static_assert(false, "Not implemented"); }
+
+  constexpr Color operator[](int index) const
+  {
+    static_assert(false, "Not implemented");
   }
 
   /**

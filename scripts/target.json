@@ -6115,6 +6115,17 @@
               "doc": "Converts to WindowParam",
               "name": "operator WindowParam"
             },
+            "Destroy": {
+              "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nWindow is no longer valid after this call.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window\n@sa Window.Window\n@sa Window.Window",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyWindow",
+              "hints": {
+                "body": "SDL_DestroyWindow(m_resource);\nm_resource = nullptr;"
+              }
+            },
             "GetDisplay": {
               "doc": "Get the display associated with a window.\n\n@returns the instance ID of the display containing the center of the window\n         on success or 0 on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetBounds\n@sa Display.GetAll",
               "name": "GetDisplay",
@@ -7057,17 +7068,6 @@
               "static": true,
               "proto": true
             },
-            "Destroy": {
-              "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nWindow is no longer valid after this call.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window\n@sa Window.Window\n@sa Window.Window",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyWindow",
-              "hints": {
-                "body": "SDL_DestroyWindow(m_resource);\nm_resource = nullptr;"
-              }
-            },
             "GetRenderer": {
               "doc": "Get the renderer associated with a window.\n\n@returns the rendering context on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetRenderer",
@@ -7346,6 +7346,18 @@
               "doc": "Converts to GLContextParam",
               "name": "operator GLContextParam"
             },
+            "Destroy": {
+              "doc": "Delete an OpenGL context.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.GLContext",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_GL_DestroyContext",
+              "hints": {
+                "mayFail": true,
+                "body": "CheckError(SDL_GL_DestroyContext(m_resource));\nm_resource = nullptr;"
+              }
+            },
             "MakeCurrent": {
               "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param window the window to associate with the context.\n@param context the OpenGL context to associate with the window.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.GLContext",
               "name": "MakeCurrent",
@@ -7362,18 +7374,6 @@
                 "mayFail": true
               },
               "static": false
-            },
-            "Destroy": {
-              "doc": "Delete an OpenGL context.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.GLContext",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_GL_DestroyContext",
-              "hints": {
-                "mayFail": true,
-                "body": "CheckError(SDL_GL_DestroyContext(m_resource));\nm_resource = nullptr;"
-              }
             }
           },
           "hints": {
@@ -10835,6 +10835,17 @@
               "doc": "Converts to RendererParam",
               "name": "operator RendererParam"
             },
+            "Destroy": {
+              "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyRenderer",
+              "hints": {
+                "body": "SDL_DestroyRenderer(m_resource);\nm_resource = nullptr;"
+              }
+            },
             "GetWindow": {
               "doc": "Get the window associated with a renderer.\n\n@returns the window on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetWindow",
@@ -11945,17 +11956,6 @@
                 }
               }
             ],
-            "Destroy": {
-              "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyRenderer",
-              "hints": {
-                "body": "SDL_DestroyRenderer(m_resource);\nm_resource = nullptr;"
-              }
-            },
             "CreateTexture": {
               "doc": "Create a texture for a rendering context.\n\nThe contents of a texture when first created are not defined.\n\n@param format one of the enumerated values in PixelFormat.\n@param access one of the enumerated values in TextureAccess.\n@param w the width of the texture in pixels.\n@param h the height of the texture in pixels.\n@returns the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Texture\n@sa Texture.Texture\n@sa Texture.Destroy\n@sa Texture.GetSize\n@sa Texture.Update",
               "name": "CreateTexture",
@@ -12310,6 +12310,17 @@
               },
               "doc": "Converts to TextureParam",
               "name": "operator TextureParam"
+            },
+            "Destroy": {
+              "doc": "Destroy the specified texture.\n\nPassing nullptr or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Texture\n@sa Texture.Texture",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyTexture",
+              "hints": {
+                "body": "SDL_DestroyTexture(m_resource);\nm_resource = nullptr;"
+              }
             },
             "GetProperties": {
               "doc": "Get the properties associated with a texture.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Texture.COLORSPACE_NUMBER`: an Colorspace value describing\n  the texture colorspace.\n- `prop::Texture.FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat.\n- `prop::Texture.ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess.\n- `prop::Texture.WIDTH_NUMBER`: the width of the texture in pixels.\n- `prop::Texture.HEIGHT_NUMBER`: the height of the texture in pixels.\n- `prop::Texture.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point\n  textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for other textures.\n- `prop::Texture.HDR_HEADROOM_FLOAT`: for HDR10 and floating point\n  textures, this defines the maximum dynamic range used by the content, in\n  terms of the SDR white point. If this is defined, any values outside the\n  range supported by the display will be scaled into the available HDR\n  headroom, otherwise they are clipped. This defaults to 1.0 for SDR\n  textures, 4.0 for HDR10 textures, and no default for floating point\n  textures.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated\n  with the texture\n- `prop::Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture\n- `prop::Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated\n  with the texture\n- `prop::Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated\n  with the U plane of a YUV texture\n- `prop::Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated\n  with the V plane of a YUV texture\n\nWith the vulkan renderer:\n\n- `prop::Texture.VULKAN_TEXTURE_NUMBER`: the VkImage associated with the\n  texture\n\nWith the opengl renderer:\n\n- `prop::Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated\n  with the texture\n- `prop::Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture\n- `prop::Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated\n  with the U plane of a YUV texture\n- `prop::Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated\n  with the V plane of a YUV texture\n- `prop::Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the\n  texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_RECTANGLE_ARB`, etc)\n- `prop::Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of\n  the texture (0.0 - 1.0)\n- `prop::Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of\n  the texture (0.0 - 1.0)\n\nWith the opengles2 renderer:\n\n- `prop::Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture\n- `prop::Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture\n- `prop::Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture\n- `prop::Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture\n- `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the\n  texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -12814,17 +12825,6 @@
               "type": "PixelFormat",
               "parameters": [],
               "name": "GetFormat"
-            },
-            "Destroy": {
-              "doc": "Destroy the specified texture.\n\nPassing nullptr or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Texture\n@sa Texture.Texture",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyTexture",
-              "hints": {
-                "body": "SDL_DestroyTexture(m_resource);\nm_resource = nullptr;"
-              }
             }
           },
           "hints": {
@@ -19349,6 +19349,17 @@
               "doc": "Converts to PaletteParam",
               "name": "operator PaletteParam"
             },
+            "Destroy": {
+              "doc": "Free a palette created with Palette.Palette().\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyPalette",
+              "hints": {
+                "body": "SDL_DestroyPalette(m_resource);\nm_resource = nullptr;"
+              }
+            },
             "GetSize": {
               "kind": "function",
               "type": "int",
@@ -19369,17 +19380,6 @@
                 }
               ],
               "name": "operator[]"
-            },
-            "Destroy": {
-              "doc": "Free a palette created with Palette.Palette().\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.Palette",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyPalette",
-              "hints": {
-                "body": "SDL_DestroyPalette(m_resource);\nm_resource = nullptr;"
-              }
             },
             "SetColors": {
               "doc": "Set a range of colors in a palette.\n\n@param colors an array of Color structures to copy into the palette.\n@param firstcolor the index of the first palette entry to modify.\n@param ncolors the number of entries to modify.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -22316,6 +22316,17 @@
               "doc": "Converts to SurfaceParam",
               "name": "operator SurfaceParam"
             },
+            "Destroy": {
+              "doc": "Free a surface.\n\nIt is safe to pass nullptr to this function.\n\n\n@threadsafety No other thread should be using the surface when it is freed.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Surface\n@sa Surface.Surface",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroySurface",
+              "hints": {
+                "body": "SDL_DestroySurface(m_resource);\nm_resource = nullptr;"
+              }
+            },
             "GetProperties": {
               "doc": "Get the properties associated with a surface.\n\nThe following properties are understood by SDL:\n\n- `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 203 for HDR10 surfaces and 1.0 for floating point surfaces.\n- `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the maximum dynamic range used by the content, in\n  terms of the SDR white point. This defaults to 0.0, which disables tone\n  mapping.\n- `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator\n  used when compressing from a surface with high dynamic range to another\n  with lower dynamic range. Currently this supports \"chrome\", which uses\n  the same tone mapping that Chrome uses for HDR content, the form \"*=N\",\n  where N is a floating point scale factor applied in linear space, and\n  \"none\", which disables tone mapping. This defaults to \"chrome\".\n- `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the\n  left edge of the image, if this surface is being used as a cursor.\n- `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the\n  top edge of the image, if this surface is being used as a cursor.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetProperties",
@@ -23400,17 +23411,6 @@
               "type": "void *",
               "parameters": [],
               "name": "GetPixels"
-            },
-            "Destroy": {
-              "doc": "Free a surface.\n\nIt is safe to pass nullptr to this function.\n\n\n@threadsafety No other thread should be using the surface when it is freed.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Surface\n@sa Surface.Surface",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroySurface",
-              "hints": {
-                "body": "SDL_DestroySurface(m_resource);\nm_resource = nullptr;"
-              }
             }
           },
           "hints": {
@@ -30659,6 +30659,17 @@
               "doc": "Converts to EnvironmentParam",
               "name": "operator EnvironmentParam"
             },
+            "Destroy": {
+              "doc": "Destroy a set of environment variables.\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Environment.Environment",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyEnvironment",
+              "hints": {
+                "body": "SDL_DestroyEnvironment(m_resource);\nm_resource = nullptr;"
+              }
+            },
             "GetVariable": {
               "doc": "Get the value of a variable in the environment.\n\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or nullptr if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa Environment.GetVariables\n@sa Environment.SetVariable\n@sa Environment.UnsetVariable",
               "name": "GetVariable",
@@ -30724,17 +30735,6 @@
               "sourceName": "SDL_UnsetEnvironmentVariable",
               "hints": {
                 "mayFail": true
-              }
-            },
-            "Destroy": {
-              "doc": "Destroy a set of environment variables.\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Environment.Environment",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyEnvironment",
-              "hints": {
-                "body": "SDL_DestroyEnvironment(m_resource);\nm_resource = nullptr;"
               }
             }
           },
@@ -33791,6 +33791,19 @@
               "doc": "Converts to IConvParam",
               "name": "operator IConvParam"
             },
+            "close": {
+              "doc": "This function frees a context used for character set conversion.\n\n@param cd The character set conversion handle.\n@returns 0 on success, or -1 on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConv.iconv\n@sa IConv.open\n@sa iconv_string",
+              "name": "close",
+              "kind": "function",
+              "type": "int",
+              "parameters": [],
+              "sourceName": "SDL_iconv_close",
+              "hints": {
+                "mayFail": true,
+                "body": "auto r = SDL_iconv_close(m_resource);\nm_resource = nullptr;\nreturn r;"
+              },
+              "static": false
+            },
             "iconv": {
               "doc": "This function converts text between encodings, reading from and writing to\na buffer.\n\nIt returns the number of successful conversions on success. On error,\nSDL_ICONV_E2BIG is returned when the output buffer is too small, or\nSDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,\nor SDL_ICONV_EINVAL is returned when an incomplete input sequence is\nencountered.\n\nOn exit:\n\n- inbuf will point to the beginning of the next multibyte sequence. On\n  error, this is the location of the problematic input sequence. On\n  success, this is the end of the input sequence.\n- inbytesleft will be set to the number of bytes left to convert, which\n  will be 0 on success.\n- outbuf will point to the location where to store the next output byte.\n- outbytesleft will be set to the number of bytes left in the output\n  buffer.\n\n          IConv.open().\n@param inbuf Address of variable that points to the first character of the\n             input sequence.\n@param inbytesleft The number of bytes in the input buffer.\n@param outbuf Address of variable that points to the output buffer.\n@param outbytesleft The number of bytes in the output buffer.\n@returns the number of conversions on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConv.open\n@sa IConv.close\n@sa iconv_string",
               "name": "iconv",
@@ -33818,24 +33831,6 @@
               "hints": {
                 "mayFail": true
               }
-            },
-            "close": {
-              "doc": "This function frees a context used for character set conversion.\n\n@param cd The character set conversion handle.\n@returns 0 on success, or -1 on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConv.iconv\n@sa IConv.open\n@sa iconv_string",
-              "name": "close",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "cd",
-                  "type": "SDL_iconv_t"
-                }
-              ],
-              "sourceName": "SDL_iconv_close",
-              "hints": {
-                "mayFail": true,
-                "body": "CheckError(SDL_iconv_close(m_resource));\nm_resource = nullptr;"
-              },
-              "static": true
             }
           },
           "hints": {

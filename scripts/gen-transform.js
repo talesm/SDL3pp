@@ -4853,8 +4853,8 @@ const transform = {
             "SDL_iconv": "function",
             "SDL_iconv_close": {
               name: "close",
-              type: "void",
-              hints: { mayFail: true },
+              static: false,
+              parameters: [],
             },
           }
         },

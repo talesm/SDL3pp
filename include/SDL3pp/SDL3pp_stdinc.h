@@ -964,6 +964,23 @@ public:
   constexpr operator EnvironmentParam() const { return {m_resource}; }
 
   /**
+   * Destroy a set of environment variables.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the environment is no longer in use.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Environment.Environment
+   */
+  void Destroy()
+  {
+    SDL_DestroyEnvironment(m_resource);
+    m_resource = nullptr;
+  }
+
+  /**
    * Get the value of a variable in the environment.
    *
    * @param name the name of the variable to get.
@@ -1068,23 +1085,6 @@ public:
   void UnsetVariable(StringParam name)
   {
     CheckError(SDL_UnsetEnvironmentVariable(m_resource, name));
-  }
-
-  /**
-   * Destroy a set of environment variables.
-   *
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the environment is no longer in use.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Environment.Environment
-   */
-  void Destroy()
-  {
-    SDL_DestroyEnvironment(m_resource);
-    m_resource = nullptr;
   }
 };
 
@@ -5750,6 +5750,25 @@ public:
   constexpr operator IConvParam() const { return {m_resource}; }
 
   /**
+   * This function frees a context used for character set conversion.
+   *
+   * @param cd The character set conversion handle.
+   * @returns 0 on success, or -1 on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConv.iconv
+   * @sa IConv.open
+   * @sa iconv_string
+   */
+  int close()
+  {
+    auto r = SDL_iconv_close(m_resource);
+    m_resource = nullptr;
+    return r;
+  }
+
+  /**
    * This function converts text between encodings, reading from and writing to
    * a buffer.
    *
@@ -5791,24 +5810,6 @@ public:
   {
     return CheckError(
       SDL_iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft));
-  }
-
-  /**
-   * This function frees a context used for character set conversion.
-   *
-   * @param cd The character set conversion handle.
-   * @returns 0 on success, or -1 on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConv.iconv
-   * @sa IConv.open
-   * @sa iconv_string
-   */
-  void close()
-  {
-    CheckError(SDL_iconv_close(m_resource));
-    m_resource = nullptr;
   }
 };
 

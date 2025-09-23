@@ -1159,6 +1159,31 @@ public:
   constexpr operator WindowParam() const { return {m_resource}; }
 
   /**
+   * Destroy a window.
+   *
+   * Any child windows owned by the window will be recursively destroyed as
+   * well.
+   *
+   * Note that on some platforms, the visible window may not actually be removed
+   * from the screen until the SDL event loop is pumped again, even though the
+   * Window is no longer valid after this call.
+   *
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.Window
+   * @sa Window.Window
+   * @sa Window.Window
+   */
+  void Destroy()
+  {
+    SDL_DestroyWindow(m_resource);
+    m_resource = nullptr;
+  }
+
+  /**
    * Get the display associated with a window.
    *
    * @returns the instance ID of the display containing the center of the window
@@ -2851,31 +2876,6 @@ public:
   static WindowRef GetGrabbed();
 
   /**
-   * Destroy a window.
-   *
-   * Any child windows owned by the window will be recursively destroyed as
-   * well.
-   *
-   * Note that on some platforms, the visible window may not actually be removed
-   * from the screen until the SDL event loop is pumped again, even though the
-   * Window is no longer valid after this call.
-   *
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Window.Window
-   * @sa Window.Window
-   * @sa Window.Window
-   */
-  void Destroy()
-  {
-    SDL_DestroyWindow(m_resource);
-    m_resource = nullptr;
-  }
-
-  /**
    * Get the renderer associated with a window.
    *
    * @returns the rendering context on success.
@@ -3081,6 +3081,24 @@ public:
   constexpr operator GLContextParam() const { return {m_resource}; }
 
   /**
+   * Delete an OpenGL context.
+   *
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GLContext.GLContext
+   */
+  void Destroy()
+  {
+    CheckError(SDL_GL_DestroyContext(m_resource));
+    m_resource = nullptr;
+  }
+
+  /**
    * Set up an OpenGL context for rendering into an OpenGL window.
    *
    * The context must have been created with a compatible window.
@@ -3098,24 +3116,6 @@ public:
   void MakeCurrent(WindowParam window)
   {
     CheckError(SDL_GL_MakeCurrent(window, m_resource));
-  }
-
-  /**
-   * Delete an OpenGL context.
-   *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GLContext.GLContext
-   */
-  void Destroy()
-  {
-    CheckError(SDL_GL_DestroyContext(m_resource));
-    m_resource = nullptr;
   }
 };
 
