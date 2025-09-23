@@ -2468,13 +2468,11 @@ public:
 
   void SetMod(Color c) { static_assert(false, "Not implemented"); }
 
-  void SetMod(FColor c) { static_assert(false, "Not implemented"); }
+  void SetModFloat(FColor c) { static_assert(false, "Not implemented"); }
 
-  FColor GetMod() const { static_assert(false, "Not implemented"); }
+  Color GetMod() const { static_assert(false, "Not implemented"); }
 
-  void GetMod(Color* c) const { static_assert(false, "Not implemented"); }
-
-  void GetMod(FColor* c) const { static_assert(false, "Not implemented"); }
+  FColor GetModFloat() const { static_assert(false, "Not implemented"); }
 
   /**
    * Set an additional color value multiplied into render copy operations.
@@ -2646,9 +2644,9 @@ public:
    * @sa Texture.GetColorMod
    * @sa Texture.SetAlphaMod
    */
-  void GetAlphaMod(Uint8* alpha) const
+  Uint8 GetAlphaMod() const
   {
-    CheckError(SDL_GetTextureAlphaMod(m_resource, alpha));
+    return CheckError(SDL_GetTextureAlphaMod(m_resource));
   }
 
   /**
@@ -2665,9 +2663,9 @@ public:
    * @sa Texture.GetColorModFloat
    * @sa Texture.SetAlphaModFloat
    */
-  void GetAlphaModFloat(float* alpha) const
+  float GetAlphaModFloat() const
   {
-    CheckError(SDL_GetTextureAlphaModFloat(m_resource, alpha));
+    return CheckError(SDL_GetTextureAlphaModFloat(m_resource));
   }
 
   /**
@@ -2693,7 +2691,6 @@ public:
   /**
    * Get the blend mode used for texture copy operations.
    *
-   * @param texture the texture to query.
    * @param blendMode a pointer filled in with the current BlendMode.
    * @throws Error on failure.
    *
@@ -2732,7 +2729,6 @@ public:
   /**
    * Get the scale mode used for texture scale operations.
    *
-   * @param texture the texture to query.
    * @param scaleMode a pointer filled in with the current scale mode.
    * @throws Error on failure.
    *
@@ -4076,9 +4072,9 @@ inline void SetTextureAlphaModFloat(TextureParam texture, float alpha)
  * @sa Texture.GetColorMod
  * @sa Texture.SetAlphaMod
  */
-inline void GetTextureAlphaMod(TextureParam texture, Uint8* alpha)
+inline Uint8 GetTextureAlphaMod(TextureParam texture)
 {
-  CheckError(SDL_GetTextureAlphaMod(texture, alpha));
+  return CheckError(SDL_GetTextureAlphaMod(texture));
 }
 
 /**
@@ -4096,9 +4092,9 @@ inline void GetTextureAlphaMod(TextureParam texture, Uint8* alpha)
  * @sa Texture.GetColorModFloat
  * @sa Texture.SetAlphaModFloat
  */
-inline void GetTextureAlphaModFloat(TextureParam texture, float* alpha)
+inline float GetTextureAlphaModFloat(TextureParam texture)
 {
-  CheckError(SDL_GetTextureAlphaModFloat(texture, alpha));
+  return CheckError(SDL_GetTextureAlphaModFloat(texture));
 }
 
 /**

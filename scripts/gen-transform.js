@@ -4551,79 +4551,67 @@ const transform = {
               "name": "GetRenderer",
               "immutable": true
             },
-            "SetMod": [
-              {
-                kind: "function",
-                type: "void",
-                parameters: [
-                  {
-                    "type": "Color",
-                    "name": "c"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "void",
-                parameters: [
-                  {
-                    "type": "FColor",
-                    "name": "c"
-                  }
-                ]
-              }
-            ],
-            "GetMod": [
-              {
-                kind: "function",
-                type: "FColor",
-                immutable: true,
-                parameters: []
-              },
-              {
-                kind: "function",
-                type: "void",
-                immutable: true,
-                parameters: [
-                  {
-                    type: "Color *",
-                    name: "c"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "void",
-                immutable: true,
-                parameters: [
-                  {
-                    type: "FColor *",
-                    name: "c"
-                  }
-                ]
-              }
-            ],
+            "SetMod": {
+              kind: "function",
+              type: "void",
+              parameters: [
+                {
+                  "type": "Color",
+                  "name": "c"
+                }
+              ]
+            },
+            "SetModFloat": {
+              kind: "function",
+              type: "void",
+              parameters: [
+                {
+                  "type": "FColor",
+                  "name": "c"
+                }
+              ]
+            },
+            "GetMod": {
+              kind: "function",
+              type: "Color",
+              immutable: true,
+              parameters: []
+            },
+            "GetModFloat": {
+              kind: "function",
+              type: "FColor",
+              immutable: true,
+              parameters: []
+            },
             "SDL_SetTextureColorMod": "function",
             "SDL_SetTextureColorModFloat": "function",
             "SDL_GetTextureColorMod": "immutable",
             "SDL_GetTextureColorModFloat": "immutable",
             "SDL_SetTextureAlphaMod": "function",
             "SDL_SetTextureAlphaModFloat": "function",
-            "SDL_GetTextureAlphaMod": "immutable",
-            "SDL_GetTextureAlphaModFloat": "immutable",
+            "SDL_GetTextureAlphaMod": {
+              immutable: true,
+              type: "Uint8",
+              parameters: [{}],
+            },
+            "SDL_GetTextureAlphaModFloat": {
+              immutable: true,
+              type: "float",
+              parameters: [{}],
+            },
             "SDL_SetTextureBlendMode": "function",
             "SDL_GetTextureBlendMode": {
               "kind": "function",
               "immutable": true,
               "type": "BlendMode",
-              "parameters": []
+              "parameters": [{}]
             },
             "SDL_SetTextureScaleMode": "function",
             "SDL_GetTextureScaleMode": {
               "kind": "function",
               "immutable": true,
               "type": "ScaleMode",
-              "parameters": []
+              "parameters": [{}]
             },
             "SDL_UpdateTexture": {
               "name": "Update",

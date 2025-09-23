@@ -12343,63 +12343,42 @@
               "sourceName": "SDL_GetRendererFromTexture",
               "immutable": true
             },
-            "SetMod": [
-              {
-                "kind": "function",
-                "type": "void",
-                "parameters": [
-                  {
-                    "type": "Color",
-                    "name": "c"
-                  }
-                ],
-                "name": "SetMod"
-              },
-              {
-                "kind": "function",
-                "type": "void",
-                "parameters": [
-                  {
-                    "type": "FColor",
-                    "name": "c"
-                  }
-                ],
-                "name": "SetMod"
-              }
-            ],
-            "GetMod": [
-              {
-                "kind": "function",
-                "type": "FColor",
-                "immutable": true,
-                "parameters": [],
-                "name": "GetMod"
-              },
-              {
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "Color *",
-                    "name": "c"
-                  }
-                ],
-                "name": "GetMod"
-              },
-              {
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "FColor *",
-                    "name": "c"
-                  }
-                ],
-                "name": "GetMod"
-              }
-            ],
+            "SetMod": {
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "type": "Color",
+                  "name": "c"
+                }
+              ],
+              "name": "SetMod"
+            },
+            "SetModFloat": {
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "type": "FColor",
+                  "name": "c"
+                }
+              ],
+              "name": "SetModFloat"
+            },
+            "GetMod": {
+              "kind": "function",
+              "type": "Color",
+              "immutable": true,
+              "parameters": [],
+              "name": "GetMod"
+            },
+            "GetModFloat": {
+              "kind": "function",
+              "type": "FColor",
+              "immutable": true,
+              "parameters": [],
+              "name": "GetModFloat"
+            },
             "SetColorMod": {
               "doc": "Set an additional color value multiplied into render copy operations.\n\nWhen this texture is rendered, during the copy operation each source color\nchannel is modulated by the appropriate color value according to the\nfollowing formula:\n\n`srcC = srcC * (color / 255)`\n\nColor modulation is not always supported by the renderer; it will return\nfalse if color modulation is not supported.\n\n@param r the red color value multiplied into copy operations.\n@param g the green color value multiplied into copy operations.\n@param b the blue color value multiplied into copy operations.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.GetColorMod\n@sa Texture.SetAlphaMod\n@sa Texture.SetColorModFloat",
               "name": "SetColorMod",
@@ -12534,13 +12513,8 @@
               "doc": "Get the additional alpha value multiplied into render copy operations.\n\n@param alpha a pointer filled in with the current alpha value.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.GetAlphaModFloat\n@sa Texture.GetColorMod\n@sa Texture.SetAlphaMod",
               "name": "GetAlphaMod",
               "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "alpha",
-                  "type": "Uint8 *"
-                }
-              ],
+              "type": "Uint8",
+              "parameters": [],
               "sourceName": "SDL_GetTextureAlphaMod",
               "hints": {
                 "mayFail": true
@@ -12551,13 +12525,8 @@
               "doc": "Get the additional alpha value multiplied into render copy operations.\n\n@param alpha a pointer filled in with the current alpha value.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.GetAlphaMod\n@sa Texture.GetColorModFloat\n@sa Texture.SetAlphaModFloat",
               "name": "GetAlphaModFloat",
               "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "alpha",
-                  "type": "float *"
-                }
-              ],
+              "type": "float",
+              "parameters": [],
               "sourceName": "SDL_GetTextureAlphaModFloat",
               "hints": {
                 "mayFail": true
@@ -12581,7 +12550,7 @@
               }
             },
             "GetBlendMode": {
-              "doc": "Get the blend mode used for texture copy operations.\n\n@param texture the texture to query.\n@param blendMode a pointer filled in with the current BlendMode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.SetBlendMode",
+              "doc": "Get the blend mode used for texture copy operations.\n\n@param blendMode a pointer filled in with the current BlendMode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.SetBlendMode",
               "name": "GetBlendMode",
               "kind": "function",
               "type": "BlendMode",
@@ -12609,7 +12578,7 @@
               }
             },
             "GetScaleMode": {
-              "doc": "Get the scale mode used for texture scale operations.\n\n@param texture the texture to query.\n@param scaleMode a pointer filled in with the current scale mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.SetScaleMode",
+              "doc": "Get the scale mode used for texture scale operations.\n\n@param scaleMode a pointer filled in with the current scale mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.SetScaleMode",
               "name": "GetScaleMode",
               "kind": "function",
               "type": "ScaleMode",
@@ -14089,15 +14058,11 @@
           "doc": "Get the additional alpha value multiplied into render copy operations.\n\n@param texture the texture to query.\n@param alpha a pointer filled in with the current alpha value.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.GetAlphaModFloat\n@sa Texture.GetColorMod\n@sa Texture.SetAlphaMod",
           "name": "GetTextureAlphaMod",
           "kind": "function",
-          "type": "void",
+          "type": "Uint8",
           "parameters": [
             {
               "name": "texture",
               "type": "TextureParam"
-            },
-            {
-              "name": "alpha",
-              "type": "Uint8 *"
             }
           ],
           "sourceName": "SDL_GetTextureAlphaMod",
@@ -14109,15 +14074,11 @@
           "doc": "Get the additional alpha value multiplied into render copy operations.\n\n@param texture the texture to query.\n@param alpha a pointer filled in with the current alpha value.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.GetAlphaMod\n@sa Texture.GetColorModFloat\n@sa Texture.SetAlphaModFloat",
           "name": "GetTextureAlphaModFloat",
           "kind": "function",
-          "type": "void",
+          "type": "float",
           "parameters": [
             {
               "name": "texture",
               "type": "TextureParam"
-            },
-            {
-              "name": "alpha",
-              "type": "float *"
             }
           ],
           "sourceName": "SDL_GetTextureAlphaModFloat",

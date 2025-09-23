@@ -296,7 +296,7 @@
 <     return CheckError(SDL_GetRenderClipRect(m_resource));
 ---
 >     Rect rect;
->     CheckError(SDL_GetRenderClipRect(get(), &rect));
+>     CheckError(SDL_GetRenderClipRect(m_resource, &rect));
 >     return rect;
 969,970c1105
 <    * @param scaleX the horizontal scaling factor.
@@ -536,17 +536,17 @@
 ---
 >    * @param p the x, y coordinates where the top-left corner of the text will
 >    *          draw.
-1774,1780c1940
+1774c1940
 <     CheckError(SDL_RenderDebugText(m_resource, p, str));
-<   }
-< 
+---
+>     CheckError(SDL_RenderDebugText(m_resource, p.x, p.y, str));
+1777,1784d1942
 <   template<class... ARGS>
 <   void RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
 <   {
 <     static_assert(false, "Not implemented");
----
->     CheckError(SDL_RenderDebugText(m_resource, p.x, p.y, str));
-1783,1784d1942
+<   }
+< 
 <   auto RenderDebugTextFormat() { static_assert(false, "Not implemented"); }
 < 
 1788,1790c1946,1949
@@ -867,3 +867,209 @@
 <     : m_resource(SDL_CreateTextureWithProperties(renderer, props))
 ---
 >     : m_resource(CheckError(SDL_CreateTextureWithProperties(renderer, props)))
+2451c2352
+<     return CheckError(SDL_GetTextureProperties(m_resource));
+---
+>     return {CheckError(SDL_GetTextureProperties(m_resource))};
+2466c2367
+<     return SDL_GetRendererFromTexture(m_resource);
+---
+>     return {SDL_GetRendererFromTexture(m_resource)};
+2469c2370,2396
+<   void SetMod(Color c) { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Set an additional color and alpha values multiplied into render copy
+>    * operations.
+>    *
+>    * When this texture is rendered, during the copy operation each source color
+>    * and alpha channels are modulated by the appropriate color value according
+>    * to the following formula:
+>    *
+>    *      srcC = srcC * (color / 255)
+>    *      srcA = srcA * (alpha / 255)
+>    *
+>    * Color and alpha modulation is not always supported by the renderer; it will
+>    * return false if either modulation is not supported.
+>    *
+>    * @param c the color and alpha channel values multiplied into copy
+>    *          operations.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   void SetMod(Color c)
+>   {
+>     SetColorMod(c.r, c.g, c.b);
+>     SetAlphaMod(c.a);
+>   }
+2471c2398,2424
+<   void SetModFloat(FColor c) { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Set an additional color and alpha values multiplied into render copy
+>    * operations.
+>    *
+>    * When this texture is rendered, during the copy operation each source color
+>    * and alpha channels are modulated by the appropriate color value according
+>    * to the following formula:
+>    *
+>    *      srcC = srcC * (color / 255)
+>    *      srcA = srcA * (alpha / 255)
+>    *
+>    * Color and alpha modulation is not always supported by the renderer; it will
+>    * return false if either modulation is not supported.
+>    *
+>    * @param c the color and alpha channel values multiplied into copy
+>    *          operations.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+>   void SetModFloat(FColor c)
+>   {
+>     SetColorMod(c.r, c.g, c.b);
+>     SetAlphaMod(c.a);
+>   }
+2473c2426,2445
+<   Color GetMod() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Get the additional color value multiplied into render copy operations.
+>    *
+>    * @returns the color channels (0-1) on success.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa GetAlphaMod()
+>    * @sa SetColorMod()
+>    */
+>   Color GetMod() const
+>   {
+>     Color c;
+>     GetColorMod(&c.r, &c.g, &c.b);
+>     c.a = GetAlphaMod();
+>     return c;
+>   }
+2475c2447,2466
+<   FColor GetModFloat() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Get the additional color value multiplied into render copy operations.
+>    *
+>    * @returns the color channels (0-1) on success.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa GetAlphaMod()
+>    * @sa SetColorMod()
+>    */
+>   FColor GetModFloat() const
+>   {
+>     FColor c;
+>     GetColorModFloat(&c.r, &c.g, &c.b);
+>     c.a = GetAlphaModFloat();
+>     return c;
+>   }
+2649c2640,2642
+<     return CheckError(SDL_GetTextureAlphaMod(m_resource));
+---
+>     Uint8 alpha;
+>     CheckError(SDL_GetTextureAlphaMod(m_resource, &alpha));
+>     return alpha;
+2668c2661,2663
+<     return CheckError(SDL_GetTextureAlphaModFloat(m_resource));
+---
+>     float alpha;
+>     CheckError(SDL_GetTextureAlphaModFloat(m_resource, &alpha));
+>     return alpha;
+2694c2689
+<    * @param blendMode a pointer filled in with the current BlendMode.
+---
+>    * @returns the current SDL_BlendMode on success.
+2705c2700,2702
+<     return CheckError(SDL_GetTextureBlendMode(m_resource));
+---
+>     BlendMode blendMode;
+>     CheckError(SDL_GetTextureBlendMode(m_resource, &blendMode));
+>     return blendMode;
+2732c2729
+<    * @param scaleMode a pointer filled in with the current scale mode.
+---
+>    * @returns the current scale mode on success.
+2743c2740,2742
+<     return CheckError(SDL_GetTextureScaleMode(m_resource));
+---
+>     ScaleMode scaleMode;
+>     CheckError(SDL_GetTextureScaleMode(get(), &scaleMode));
+>     return scaleMode;
+2882c2881
+<   void Lock(const RectRaw& rect, void** pixels, int* pitch)
+---
+>   void Lock(OptionalRef<const SDL_Rect> rect, void** pixels, int* pitch)
+2919c2918
+<   void LockToSurface(const RectRaw& rect, SDL_Surface** surface)
+---
+>   void LockToSurface(OptionalRef<const SDL_Rect> rect, SDL_Surface** surface)
+2944c2943,2946
+<   int GetWidth() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Get the width in pixels.
+>    */
+>   int GetWidth() const { return m_resource->w; }
+2946c2948,2951
+<   int GetHeight() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Get the height in pixels.
+>    */
+>   int GetHeight() const { return m_resource->h; }
+2948c2953,2956
+<   Point GetSize() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Get the size in pixels.
+>    */
+>   Point GetSize() const { return Point(GetWidth(), GetHeight()); }
+2968c2976,2984
+<   FPoint GetSizeFloat() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Get the size in pixels.
+>    */
+>   FPoint GetSizeFloat() const
+>   {
+>     FPoint p;
+>     GetSize(&p.x, &p.y);
+>     return p;
+>   }
+2970c2986,2989
+<   PixelFormat GetFormat() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Get the pixel format.
+>    */
+>   PixelFormat GetFormat() const { return m_resource->format; }
+4077c4096,4098
+<   return CheckError(SDL_GetTextureAlphaMod(texture));
+---
+>   Uint8 alpha;
+>   CheckError(SDL_GetTextureAlphaMod(texture, &alpha));
+>   return alpha;
+4097c4118,4120
+<   return CheckError(SDL_GetTextureAlphaModFloat(texture));
+---
+>   float alpha;
+>   CheckError(SDL_GetTextureAlphaModFloat(texture, &alpha));
+>   return alpha;
