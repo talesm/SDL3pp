@@ -3930,7 +3930,7 @@ const transform = {
       },
     },
     "SDL_render.h": {
-      localIncludes: ["SDL3pp_blendmode.h", "SDL3pp_pixels.h", "SDL3pp_video.h"],
+      localIncludes: ["SDL3pp_blendmode.h", "SDL3pp_events.h", "SDL3pp_pixels.h", "SDL3pp_video.h"],
       ignoreEntries: [
         "SDL_RenderDebugTextFormat"
       ],
@@ -3940,10 +3940,10 @@ const transform = {
       },
       transform: {
         "SDL_Renderer": {
+          resource: true,
           entries: {
             "Renderer": {
               kind: "function",
-              name: "ctor",
               parameters: [
                 {
                   "type": "WindowParam",
@@ -3987,14 +3987,7 @@ const transform = {
               "type": "void",
               "parameters": []
             },
-            "SDL_SetRenderTarget": {
-              name: "SetTarget",
-              proto: true,
-              parameters: [
-                {},
-                { type: "TextureParam" }
-              ]
-            },
+            "SDL_SetRenderTarget": { name: "SetTarget" },
             "SDL_GetRenderTarget": {
               immutable: true,
               proto: true,
@@ -4002,8 +3995,8 @@ const transform = {
             },
             "SDL_SetRenderLogicalPresentation": {
               name: "SetLogicalPresentation",
-              static: false,
               parameters: [
+                {},
                 {
                   type: "const PointRaw &",
                   name: "size"
@@ -4036,13 +4029,14 @@ const transform = {
               "immutable": true,
               "name": "GetLogicalPresentationRect",
               "type": "FRect",
-              "parameters": []
+              "parameters": [{}]
             },
             "SDL_RenderCoordinatesFromWindow": {
               "kind": "function",
               "type": "FPoint",
               "immutable": true,
               "parameters": [
+                {},
                 {
                   "type": "const FPointRaw &",
                   "name": "window_coord"
@@ -4054,6 +4048,7 @@ const transform = {
               "type": "FPoint",
               "immutable": true,
               "parameters": [
+                {},
                 {
                   "type": "const FPointRaw &",
                   "name": "coord"
@@ -4068,8 +4063,8 @@ const transform = {
             },
             "SDL_SetRenderViewport": {
               "name": "SetViewport",
-              "static": false,
               "parameters": [
+                {},
                 {
                   "type": "OptionalRef<const RectRaw>",
                   "name": "rect"
@@ -4080,7 +4075,7 @@ const transform = {
               "name": "GetViewport",
               "immutable": true,
               "type": "Rect",
-              "parameters": []
+              "parameters": [{}]
             },
             "SDL_RenderViewportSet": {
               "immutable": true,
@@ -4090,7 +4085,7 @@ const transform = {
               "name": "GetSafeArea",
               "immutable": true,
               "type": "Rect",
-              "parameters": []
+              "parameters": [{}]
             },
             "ResetClipRect": {
               "kind": "function",
@@ -4099,8 +4094,8 @@ const transform = {
             },
             "SDL_SetRenderClipRect": {
               "name": "SetClipRect",
-              "static": false,
               "parameters": [
+                {},
                 {
                   "type": "OptionalRef<const RectRaw>",
                   "name": "rect"
@@ -4111,7 +4106,7 @@ const transform = {
               "name": "GetClipRect",
               "immutable": true,
               "type": "Rect",
-              "parameters": []
+              "parameters": [{}]
             },
             "SDL_RenderClipEnabled": {
               "immutable": true,
@@ -4119,8 +4114,8 @@ const transform = {
             },
             "SDL_SetRenderScale": {
               name: "SetScale",
-              static: false,
               parameters: [
+                {},
                 {
                   type: "const FPointRaw &",
                   name: "scale"
@@ -4139,8 +4134,8 @@ const transform = {
             },
             "SDL_SetRenderDrawColor": {
               "name": "SetDrawColor",
-              "static": false,
               "parameters": [
+                {},
                 {
                   "type": "ColorRaw",
                   "name": "c"
@@ -4148,52 +4143,34 @@ const transform = {
               ]
             },
             "SDL_SetRenderDrawColorFloat": {
-              "name": "SetDrawColor",
-              "static": false,
+              "name": "SetDrawColorFloat",
               "parameters": [
+                {},
                 {
                   "type": "const FColorRaw &",
                   "name": "c"
                 }
               ]
             },
-            "GetDrawColor": [
-              {
-                "kind": "function",
-                "immutable": true,
-                "type": "FColor",
-                "parameters": []
-              },
-              {
-                "kind": "function",
-                "immutable": true,
-                "type": "void",
-                "parameters": [
-                  {
-                    "type": "ColorRaw *",
-                    "name": "c"
-                  }
-                ]
-              },
-              {
-                "kind": "function",
-                "immutable": true,
-                "type": "void",
-                "parameters": [
-                  {
-                    "type": "FColorRaw *",
-                    "name": "c"
-                  }
-                ]
-              }
-            ],
+            "GetDrawColor": {
+              kind: "function",
+              immutable: true,
+              type: "Color",
+              parameters: []
+            },
+            "GetDrawColorFloat": {
+              kind: "function",
+              immutable: true,
+              type: "FColor",
+              parameters: []
+            },
             "SDL_GetRenderDrawColor": {
               "immutable": true,
               "name": "GetDrawColor"
             },
             "SDL_GetRenderDrawColorFloat": {
               "immutable": true,
-              "name": "GetDrawColor"
+              "name": "GetDrawColorFloat"
             },
             "SDL_SetRenderColorScale": {
               "name": "SetColorScale"
@@ -4202,7 +4179,7 @@ const transform = {
               "name": "GetColorScale",
               "immutable": true,
               "type": "float",
-              "parameters": []
+              "parameters": [{}]
             },
             "SDL_SetRenderDrawBlendMode": {
               "name": "SetDrawBlendMode"
@@ -4211,12 +4188,12 @@ const transform = {
               "name": "GetDrawBlendMode",
               "immutable": true,
               "type": "BlendMode",
-              "parameters": []
+              "parameters": [{}]
             },
             "SDL_RenderClear": "function",
             "SDL_RenderPoint": {
-              "static": false,
               "parameters": [
+                {},
                 {
                   "type": "const FPointRaw &",
                   "name": "p"
@@ -4733,12 +4710,19 @@ const transform = {
               "type": "int",
               "parameters": []
             },
-            "GetTextureSize": {
+            "GetSize": {
               "kind": "function",
               "immutable": true,
               "type": "Point",
               "parameters": []
             },
+            "GetSizeFloat": {
+              "kind": "function",
+              "immutable": true,
+              "type": "FPoint",
+              "parameters": []
+            },
+            "SDL_GetTextureSize": "immutable",
             "GetFormat": {
               "kind": "function",
               "immutable": true,
@@ -6973,7 +6957,7 @@ const transform = {
         "SDL_PROP_WINDOW_": "prop::Window"
       },
       transform: {
-        "Renderer": { kind: "forward" },
+        "RendererRef": { kind: "forward" },
         "SDL_DisplayOrientation": { before: "SDL_DisplayID" },
         "SDL_DisplayMode": { before: "SDL_DisplayID" },
         "SDL_DisplayID": {

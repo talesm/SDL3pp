@@ -1,0 +1,855 @@
+13c13
+<  * @defgroup CategoryRender Category Render
+---
+>  * @defgroup CategoryRender 2D Accelerated Rendering
+96a97,98
+> #ifdef SDL3PP_DOC
+> 
+103a106,107
+> #endif // SDL3PP_DOC
+> 
+202,203c206,240
+<   /// Default ctor
+<   Renderer(WindowParam window) {}
+---
+>   /**
+>    * Create a 2D rendering context for a window.
+>    *
+>    * If you want a specific renderer, you can specify its name here. A list of
+>    * available renderers can be obtained by calling GetRenderDriver()
+>    * multiple times, with indices from 0 to GetNumRenderDrivers()-1. If you
+>    * don't need a specific renderer, specify nullptr and SDL will attempt to
+>    * choose the best option for you, based on what is available on the user's
+>    * system.
+>    *
+>    * If `name` is a comma-separated list, SDL will try each name, in the order
+>    * listed, until one succeeds or all of them fail.
+>    *
+>    * By default the rendering size matches the window size in pixels, but you
+>    * can call Renderer.SetLogicalPresentation() to change the content size and
+>    * scaling options.
+>    *
+>    * @param window the window where rendering is displayed.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa Renderer.Renderer
+>    * @sa Renderer.Renderer
+>    * @sa Renderer.Destroy
+>    * @sa GetNumRenderDrivers
+>    * @sa GetRenderDriver
+>    * @sa Renderer.GetName
+>    */
+>   Renderer(WindowParam window)
+>     : m_resource(CheckError(SDL_CreateRenderer(window, nullptr)))
+>   {
+>   }
+225,226c262
+<    * @post a valid rendering context or nullptr if there was an error; call
+<    *          GetError() for more information.
+---
+>    * @throws Error on failure.
+240c276
+<     : m_resource(SDL_CreateRenderer(window, name))
+---
+>     : m_resource(CheckError(SDL_CreateRenderer(window, name)))
+282,283c318
+<    * @post a valid rendering context or nullptr if there was an error; call
+<    *          GetError() for more information.
+---
+>    * @throws Error on failure.
+296c331
+<     : m_resource(SDL_CreateRendererWithProperties(props))
+---
+>     : m_resource(CheckError(SDL_CreateRendererWithProperties(props)))
+310,311c345
+<    * @post a valid rendering context or nullptr if there was an error; call
+<    *          GetError() for more information.
+---
+>    * @throws Error on failure.
+320c354
+<     : m_resource(SDL_CreateSoftwareRenderer(surface))
+---
+>     : m_resource(CheckError(SDL_CreateSoftwareRenderer(surface)))
+358c392,395
+<   WindowRef GetWindow() { return CheckError(SDL_GetRenderWindow(m_resource)); }
+---
+>   WindowRef GetWindow()
+>   {
+>     return {CheckError(SDL_GetRenderWindow(m_resource))};
+>   }
+371d407
+<    * @sa Renderer.Renderer
+375c411,425
+<   Point GetOutputSize() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Get the output size in pixels of a rendering context.
+>    *
+>    * This returns the true output size in pixels, ignoring any render targets or
+>    * logical size and presentation.
+>    *
+>    * @returns Point on success.
+>    * @throws Error on failure.
+>    */
+>   Point GetOutputSize() const
+>   {
+>     Point p;
+>     GetOutputSize(&p.x, &p.y);
+>     return p;
+>   }
+400a451,466
+>   /**
+>    * Get the current output size in pixels of a rendering context.
+>    *
+>    * If a rendering target is active, this will return the size of the rendering
+>    * target in pixels, otherwise if a logical size is set, it will return the
+>    * logical size, otherwise it will return the value of GetOutputSize().
+>    *
+>    * @returns the size on success.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa Renderer.GetOutputSize()
+>    */
+403c469,471
+<     static_assert(false, "Not implemented");
+---
+>     Point p;
+>     GetCurrentOutputSize(&p.x, &p.y);
+>     return p;
+515c583
+<     return CheckError(SDL_GetRendererProperties(m_resource));
+---
+>     return {CheckError(SDL_GetRendererProperties(m_resource))};
+518c586,600
+<   void ResetTarget() { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Set target texture back to window
+>    *
+>    * This is equivalent to SetTarget(nullptr)
+>    *
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa SetTarget(nullptr)
+>    * @sa GetTarget()
+>    */
+>   void ResetTarget() { SetTarget(nullptr); }
+603,604c685
+<    * @param w the width of the logical resolution.
+<    * @param h the height of the logical resolution.
+---
+>    * @param size the width and height of the logical resolution.
+619c700,701
+<     CheckError(SDL_SetRenderLogicalPresentation(m_resource, size, mode));
+---
+>     CheckError(
+>       SDL_SetRenderLogicalPresentation(m_resource, size.x, size.y, mode));
+621a704,719
+>   /**
+>    * Get device independent resolution and presentation mode for rendering.
+>    *
+>    * This function gets the width and height of the logical rendering output, or
+>    * the output size in pixels if a logical resolution is not enabled.
+>    *
+>    * @param size a Point to be filled with the width and height.
+>    * @param mode the presentation mode used.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa Renderer.SetLogicalPresentation
+>    */
+624c722,723
+<     static_assert(false, "Not implemented");
+---
+>     if (!size) return GetLogicalPresentation(nullptr, nullptr, mode);
+>     return GetLogicalPresentation(&size->x, &size->y, mode);
+677c776,778
+<     return CheckError(SDL_GetRenderLogicalPresentationRect(m_resource));
+---
+>     FRect rect;
+>     CheckError(SDL_GetRenderLogicalPresentationRect(m_resource, &rect));
+>     return rect;
+690,693c791,792
+<    * @param window_x the x coordinate in window coordinates.
+<    * @param window_y the y coordinate in window coordinates.
+<    * @param x a pointer filled with the x coordinate in render coordinates.
+<    * @param y a pointer filled with the y coordinate in render coordinates.
+---
+>    * @param window_coord the x, y coordinate in window coordinates.
+>    * @returns a FPoint containing ther render coordinates on success.
+705,706c804,807
+<     return CheckError(
+<       SDL_RenderCoordinatesFromWindow(m_resource, window_coord));
+---
+>     FPoint p;
+>     CheckError(SDL_RenderCoordinatesFromWindow(
+>       m_resource, window_coord.x, window_coord.y, &p.x, &p.y));
+>     return p;
+715,717c816,818
+<    * - The logical presentation settings (Renderer.SetLogicalPresentation)
+<    * - The scale (Renderer.SetScale)
+<    * - The viewport (Renderer.SetViewport)
+---
+>    * - The logical presentation settings (RendererRef.SetLogicalPresentation)
+>    * - The scale (RendererRef.SetScale)
+>    * - The viewport (RendererRef.SetViewport)
+719,724c820,821
+<    * @param x the x coordinate in render coordinates.
+<    * @param y the y coordinate in render coordinates.
+<    * @param window_x a pointer filled with the x coordinate in window
+<    *                 coordinates.
+<    * @param window_y a pointer filled with the y coordinate in window
+<    *                 coordinates.
+---
+>    * @param coord the x, y coordinate in render coordinates.
+>    * @returns a FPoint filled with window coordinates on success.
+737c834,837
+<     return CheckError(SDL_RenderCoordinatesToWindow(m_resource, coord));
+---
+>     FPoint p;
+>     CheckError(
+>       SDL_RenderCoordinatesToWindow(m_resource, coord.x, coord.y, &p.x, &p.y));
+>     return p;
+777c877,892
+<   void ResetViewport() { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Reset the drawing area for rendering to the entire target
+>    *
+>    * This is equivalent to `SetViewport(std::nullopt)`
+>    *
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa GetViewport()
+>    * @sa SetViewport()
+>    * @sa ViewportSet()
+>    */
+>   void ResetViewport() { SetViewport(std::nullopt); }
+813c928
+<    * @param rect an Rect structure filled in with the current drawing area.
+---
+>    * @returns an Rect with the current drawing area.
+825c940,942
+<     return CheckError(SDL_GetRenderViewport(m_resource));
+---
+>     Rect rect;
+>     CheckError(SDL_GetRenderViewport(m_resource, &rect));
+>     return rect;
+859,860c976
+<    * @param rect a pointer filled in with the area that is safe for interactive
+<    *             content.
+---
+>    * @returns the rect filled the area that is safe for interactive content.
+869c985,987
+<     return CheckError(SDL_GetRenderSafeArea(m_resource));
+---
+>     Rect rect;
+>     CheckError(SDL_GetRenderSafeArea(m_resource, &rect));
+>     return rect;
+872c990,1005
+<   void ResetClipRect() { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Reset the clip rectangle for rendering to the entire render target
+>    *
+>    * This is equivalent to `SetClipRect(std::nullopt)`
+>    *
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa GetClipRect()
+>    * @sa SetClipRect()
+>    * @sa ClipEnabled()
+>    */
+>   void ResetClipRect() { SetClipRect({}); }
+888a1022
+>    * @sa Renderer.ResetClipRect()
+902,903c1036,1037
+<    * @param rect an Rect structure filled in with the current clipping area
+<    *             or an empty rectangle if clipping is disabled.
+---
+>    * @returns a Rect structure filled in with the current clipping area or an
+>    *          empty rectangle if clipping is disabled.
+915c1049,1051
+<     return CheckError(SDL_GetRenderClipRect(m_resource));
+---
+>     Rect rect;
+>     CheckError(SDL_GetRenderClipRect(get(), &rect));
+>     return rect;
+950,951c1086
+<    * @param scaleX the horizontal scaling factor.
+<    * @param scaleY the vertical scaling factor.
+---
+>    * @param scale the x, y scaling factors.
+962c1097
+<     CheckError(SDL_SetRenderScale(m_resource, scale));
+---
+>     CheckError(SDL_SetRenderScale(m_resource, scale.x, scale.y));
+965c1100,1120
+<   FPoint GetScale() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Get the drawing scale for the current target.
+>    *
+>    * Each render target has its own scale. This function gets the scale for the
+>    * current render target.
+>    *
+>    * @returns the scaling factors on success.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa Renderer.SetScale
+>    */
+>   FPoint GetScale() const
+>   {
+>     FPoint p;
+>     GetScale(&p.x, &p.y);
+>     return p;
+>   }
+994,999c1149
+<    * @param r the red value used to draw on the rendering target.
+<    * @param g the green value used to draw on the rendering target.
+<    * @param b the blue value used to draw on the rendering target.
+<    * @param a the alpha value used to draw on the rendering target; usually
+<    *          `ALPHA_OPAQUE` (255). Use Renderer.SetDrawBlendMode to
+<    *          specify how the alpha channel is used.
+---
+>    * @param c the color value used to draw on the rendering target.
+1011c1161
+<     CheckError(SDL_SetRenderDrawColor(m_resource, c));
+---
+>     CheckError(SDL_SetRenderDrawColor(m_resource, c.r, c.g, c.b, c.a));
+1020,1025c1170
+<    * @param r the red value used to draw on the rendering target.
+<    * @param g the green value used to draw on the rendering target.
+<    * @param b the blue value used to draw on the rendering target.
+<    * @param a the alpha value used to draw on the rendering target. Use
+<    *          Renderer.SetDrawBlendMode to specify how the alpha channel is
+<    *          used.
+---
+>    * @param c the RGBA values used to draw on the rendering target.
+1037c1182
+<     CheckError(SDL_SetRenderDrawColorFloat(m_resource, c));
+---
+>     CheckError(SDL_SetRenderDrawColorFloat(m_resource, c.r, c.g, c.b, c.a));
+1040c1185,1204
+<   Color GetDrawColor() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Get the color used for drawing operations (Rect, Line and Clear).
+>    *
+>    * @param c a pointer filled in with the color channel values used to draw on
+>    *          the rendering target. @b must @b not be nullptr.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa GetDrawColor(SDL_FColor*)
+>    * @sa SetDrawColor()
+>    */
+>   Color GetDrawColor() const
+>   {
+>     Color c;
+>     GetDrawColor(&c.r, &c.g, &c.b, &c.a);
+>     return c;
+>   }
+1067c1231,1249
+<   FColor GetDrawColorFloat() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Get the color used for drawing operations (Rect, Line and Clear).
+>    *
+>    * @returns the color on success.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety This function should only be called on the main thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa GetDrawColor(SDL_FColor*)
+>    * @sa SetDrawColor()
+>    */
+>   FColor GetDrawColorFloat() const
+>   {
+>     FColor c;
+>     GetDrawColorFloat(&c.r, &c.g, &c.b, &c.a);
+>     return c;
+>   }
+1122c1304
+<    * @param scale a pointer filled in with the current color scale value.
+---
+>    * @returns a float representing the current color scale on success.
+1133c1315,1317
+<     return CheckError(SDL_GetRenderColorScale(m_resource));
+---
+>     float scale;
+>     CheckError(SDL_GetRenderColorScale(m_resource, &scale));
+>     return scale;
+1158c1342
+<    * @param blendMode a pointer filled in with the current BlendMode.
+---
+>    * @returns the current BlendMode on success.
+1169c1353,1355
+<     return CheckError(SDL_GetRenderDrawBlendMode(m_resource));
+---
+>     BlendMode blendMode;
+>     CheckError(SDL_GetRenderDrawBlendMode(m_resource, &blendMode));
+>     return blendMode;
+1193,1194c1379
+<    * @param x the x coordinate of the point.
+<    * @param y the y coordinate of the point.
+---
+>    * @param p the x, y coordinates of the point.
+1205c1390
+<     CheckError(SDL_RenderPoint(m_resource, p));
+---
+>     CheckError(SDL_RenderPoint(m_resource, p.x, p.y));
+1211d1395
+<    * @param renderer the renderer which should draw multiple points.
+1213d1396
+<    * @param count the number of points to draw.
+1224c1407
+<     CheckError(SDL_RenderPoints(m_resource, points));
+---
+>     CheckError(SDL_RenderPoints(m_resource, points.data(), points.size()));
+1230,1234c1413,1414
+<    * @param renderer the renderer which should draw a line.
+<    * @param x1 the x coordinate of the start point.
+<    * @param y1 the y coordinate of the start point.
+<    * @param x2 the x coordinate of the end point.
+<    * @param y2 the y coordinate of the end point.
+---
+>    * @param p1 the x,y coordinate of the start point.
+>    * @param p2 the x,y coordinate of the end point.
+1245c1425
+<     CheckError(SDL_RenderLine(m_resource, p1, p2));
+---
+>     CheckError(SDL_RenderLine(m_resource, p1.x, p1.y, p2.x, p2.y));
+1252d1431
+<    * @param renderer the renderer which should draw multiple lines.
+1254d1432
+<    * @param count the number of points, drawing count-1 lines.
+1265c1443
+<     CheckError(SDL_RenderLines(m_resource, points));
+---
+>     CheckError(SDL_RenderLines(m_resource, points.data(), points.size()));
+1271,1273c1449,1450
+<    * @param renderer the renderer which should draw a rectangle.
+<    * @param rect a pointer to the destination rectangle, or nullptr to outline
+<    * the entire rendering target.
+---
+>    * @param rect a pointer to the destination rectangle, or std::nullopt to
+>    *             outline the entire rendering target.
+1291d1467
+<    * @param renderer the renderer which should draw multiple rectangles.
+1293d1468
+<    * @param count the number of rectangles.
+1304c1479
+<     CheckError(SDL_RenderRects(m_resource, rects));
+---
+>     CheckError(SDL_RenderRects(m_resource, rects.data(), rects.size()));
+1311,1313c1486,1487
+<    * @param renderer the renderer which should fill a rectangle.
+<    * @param rect a pointer to the destination rectangle, or nullptr for the
+<    * entire rendering target.
+---
+>    * @param rect a pointer to the destination rectangle, or std::nullopt for the
+>    *             entire rendering target.
+1331d1504
+<    * @param renderer the renderer which should fill multiple rectangles.
+1333d1505
+<    * @param count the number of rectangles.
+1344c1516
+<     CheckError(SDL_RenderFillRects(m_resource, rects));
+---
+>     CheckError(SDL_RenderFillRects(m_resource, rects.data(), rects.size()));
+1351d1522
+<    * @param renderer the renderer which should copy parts of a texture.
+1374d1544
+<    * @param renderer the renderer which should copy parts of a texture.
+1406d1575
+<    * @param renderer the renderer which should copy parts of a texture.
+1440d1608
+<    * @param renderer the renderer which should copy parts of a texture.
+1472d1639
+<    * @param renderer the renderer which should copy parts of a texture.
+1507d1673
+<    * @param renderer the rendering context.
+1510d1675
+<    * @param num_vertices number of vertices.
+1513,1514c1678
+<    * sequential order.
+<    * @param num_indices number of indices.
+---
+>    *                sequential order.
+1579d1742
+<    * @param renderer the rendering context.
+1592c1755
+<     return CheckError(SDL_RenderReadPixels(m_resource, rect));
+---
+>     return Surface(CheckError(SDL_RenderReadPixels(m_resource, rect)));
+1703,1705c1866
+<    * @param renderer the renderer to toggle.
+<    * @param vsync an int filled with the current vertical refresh sync interval.
+<    *              See Renderer.SetVSync() for the meaning of the value.
+---
+>    * @returns the current vertical refresh sync interval on success.
+1714c1875,1880
+<   int GetVSync() const { return CheckError(SDL_GetRenderVSync(m_resource)); }
+---
+>   int GetVSync() const
+>   {
+>     int vsync;
+>     CheckError(SDL_GetRenderVSync(m_resource, &vsync));
+>     return vsync;
+>   }
+1741,1742c1907,1908
+<    * @param x the x coordinate where the top-left corner of the text will draw.
+<    * @param y the y coordinate where the top-left corner of the text will draw.
+---
+>    * @param p the x, y coordinates where the top-left corner of the text will
+>    *          draw.
+1755c1921
+<     CheckError(SDL_RenderDebugText(m_resource, p, str));
+---
+>     CheckError(SDL_RenderDebugText(m_resource, p.x, p.y, str));
+1758,1765d1923
+<   template<class... ARGS>
+<   void RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
+<   {
+<     static_assert(false, "Not implemented");
+<   }
+< 
+<   auto RenderDebugTextFormat() { static_assert(false, "Not implemented"); }
+< 
+1769,1771c1927,1930
+<    * This function will render a printf()-style format string to a renderer.
+<    * Note that this is a convenience function for debugging, with severe
+<    * limitations, and is not intended to be used for production apps and games.
+---
+>    * This function will render a std::format()-style format string to a
+>    * renderer. Note that this is a convenience function for debugging, with
+>    * severe limitations, and is not intended to be used for production apps and
+>    * games.
+1776,1777c1935,1936
+<    * @param x the x coordinate where the top-left corner of the text will draw.
+<    * @param y the y coordinate where the top-left corner of the text will draw.
+---
+>    * @param p the x, y coordinates where the top-left corner of the text will
+>    *          draw.
+1779,1780c1938,1939
+<    * @param ... additional parameters matching % tokens in the `fmt` string, if
+<    *            any.
+---
+>    * @param args additional parameters matching {} tokens in the `fmt` string,
+>    *             if any.
+1790,2063c1949,1950
+<   void RenderDebugTextFormat(float x,
+<                              float y,
+<                              SDL_PRINTF_FORMAT_STRING const char* fmt,
+<                              ...)
+<   {
+<     CheckError(SDL_RenderDebugTextFormat(m_resource, x, y, fmt, ...));
+<   }
+< 
+<   /**
+<    * Destroy the rendering context for a window and free all associated
+<    * textures.
+<    *
+<    * This should be called before destroying the associated window.
+<    *
+<    *
+<    * @threadsafety This function should only be called on the main thread.
+<    *
+<    * @since This function is available since SDL 3.2.0.
+<    *
+<    * @sa Renderer.Renderer
+<    */
+<   void Destroy()
+<   {
+<     SDL_DestroyRenderer(m_resource);
+<     m_resource = nullptr;
+<   }
+< 
+<   /**
+<    * Create a texture for a rendering context.
+<    *
+<    * The contents of a texture when first created are not defined.
+<    *
+<    * @param format one of the enumerated values in PixelFormat.
+<    * @param access one of the enumerated values in TextureAccess.
+<    * @param w the width of the texture in pixels.
+<    * @param h the height of the texture in pixels.
+<    * @returns the created texture or nullptr on failure; call GetError() for
+<    *          more information.
+<    *
+<    * @threadsafety This function should only be called on the main thread.
+<    *
+<    * @since This function is available since SDL 3.2.0.
+<    *
+<    * @sa Texture.Texture
+<    * @sa Texture.Texture
+<    * @sa Texture.Destroy
+<    * @sa Texture.GetSize
+<    * @sa Texture.Update
+<    */
+<   Texture CreateTexture(PixelFormat format,
+<                         TextureAccess access,
+<                         const PointRaw& size)
+<   {
+<     return SDL_CreateTexture(m_resource, format, access, size);
+<   }
+< 
+<   /**
+<    * Create a texture from an existing surface.
+<    *
+<    * The surface is not modified or freed by this function.
+<    *
+<    * The TextureAccess hint for the created texture is
+<    * `TEXTUREACCESS_STATIC`.
+<    *
+<    * The pixel format of the created texture may be different from the pixel
+<    * format of the surface, and can be queried using the
+<    * prop::Texture.FORMAT_NUMBER property.
+<    *
+<    * @param surface the Surface structure containing pixel data used to fill
+<    *                the texture.
+<    * @returns the created texture or nullptr on failure; call GetError() for
+<    *          more information.
+<    *
+<    * @threadsafety This function should only be called on the main thread.
+<    *
+<    * @since This function is available since SDL 3.2.0.
+<    *
+<    * @sa Texture.Texture
+<    * @sa Texture.Texture
+<    * @sa Texture.Destroy
+<    */
+<   Texture CreateTextureFromSurface(SurfaceParam surface)
+<   {
+<     return SDL_CreateTextureFromSurface(m_resource, surface);
+<   }
+< 
+<   /**
+<    * Create a texture for a rendering context with the specified properties.
+<    *
+<    * These are the supported properties:
+<    *
+<    * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
+<    *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
+<    *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
+<    *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
+<    *   YUV textures.
+<    * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+<    *   PixelFormat, defaults to the best RGBA format for the renderer
+<    * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+<    *   TextureAccess, defaults to TEXTUREACCESS_STATIC
+<    * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
+<    *   pixels, required
+<    * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
+<    *   pixels, required
+<    * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
+<    *   point textures, this defines the value of 100% diffuse white, with higher
+<    *   values being displayed in the High Dynamic Range headroom. This defaults
+<    *   to 100 for HDR10 textures and 1.0 for floating point textures.
+<    * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
+<    *   point textures, this defines the maximum dynamic range used by the
+<    *   content, in terms of the SDR white point. This would be equivalent to
+<    *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
+<    *   If this is defined, any values outside the range supported by the display
+<    *   will be scaled into the available HDR headroom, otherwise they are
+<    *   clipped.
+<    *
+<    * With the direct3d11 renderer:
+<    *
+<    * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+<    *   associated with the texture, if you want to wrap an existing texture.
+<    * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+<    *   associated with the U plane of a YUV texture, if you want to wrap an
+<    *   existing texture.
+<    * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+<    *   associated with the V plane of a YUV texture, if you want to wrap an
+<    *   existing texture.
+<    *
+<    * With the direct3d12 renderer:
+<    *
+<    * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
+<    *   associated with the texture, if you want to wrap an existing texture.
+<    * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+<    *   associated with the U plane of a YUV texture, if you want to wrap an
+<    *   existing texture.
+<    * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+<    *   associated with the V plane of a YUV texture, if you want to wrap an
+<    *   existing texture.
+<    *
+<    * With the metal renderer:
+<    *
+<    * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+<    *   associated with the texture, if you want to create a texture from an
+<    *   existing pixel buffer.
+<    *
+<    * With the opengl renderer:
+<    *
+<    * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
+<    *   associated with the texture, if you want to wrap an existing texture.
+<    * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+<    *   associated with the UV plane of an NV12 texture, if you want to wrap an
+<    *   existing texture.
+<    * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+<    *   associated with the U plane of a YUV texture, if you want to wrap an
+<    *   existing texture.
+<    * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+<    *   associated with the V plane of a YUV texture, if you want to wrap an
+<    *   existing texture.
+<    *
+<    * With the opengles2 renderer:
+<    *
+<    * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+<    *   associated with the texture, if you want to wrap an existing texture.
+<    * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+<    *   associated with the texture, if you want to wrap an existing texture.
+<    * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+<    *   associated with the UV plane of an NV12 texture, if you want to wrap an
+<    *   existing texture.
+<    * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+<    *   associated with the U plane of a YUV texture, if you want to wrap an
+<    *   existing texture.
+<    * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+<    *   associated with the V plane of a YUV texture, if you want to wrap an
+<    *   existing texture.
+<    *
+<    * With the vulkan renderer:
+<    *
+<    * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
+<    *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
+<    *   you want to wrap an existing texture.
+<    *
+<    * @param props the properties to use.
+<    * @returns the created texture or nullptr on failure; call GetError() for
+<    *          more information.
+<    *
+<    * @threadsafety This function should only be called on the main thread.
+<    *
+<    * @since This function is available since SDL 3.2.0.
+<    *
+<    * @sa Properties.Create
+<    * @sa Texture.Texture
+<    * @sa Texture.Texture
+<    * @sa Texture.Destroy
+<    * @sa Texture.GetSize
+<    * @sa Texture.Update
+<    */
+<   Texture CreateTextureWithProperties(PropertiesParam props)
+<   {
+<     return SDL_CreateTextureWithProperties(m_resource, props);
+<   }
+< 
+<   /**
+<    * Get the CAMetalLayer associated with the given Metal renderer.
+<    *
+<    * This function returns `void *`, so SDL doesn't have to include Metal's
+<    * headers, but it can be safely cast to a `CAMetalLayer *`.
+<    *
+<    * @returns a `CAMetalLayer *` on success.
+<    * @throws Error on failure.
+<    *
+<    * @threadsafety This function should only be called on the main thread.
+<    *
+<    * @since This function is available since SDL 3.2.0.
+<    *
+<    * @sa Renderer.GetRenderMetalCommandEncoder
+<    */
+<   void* GetRenderMetalLayer()
+<   {
+<     return CheckError(SDL_GetRenderMetalLayer(m_resource));
+<   }
+< 
+<   /**
+<    * Get the Metal command encoder for the current frame.
+<    *
+<    * This function returns `void *`, so SDL doesn't have to include Metal's
+<    * headers, but it can be safely cast to an `id<MTLRenderCommandEncoder>`.
+<    *
+<    * This will return nullptr if Metal refuses to give SDL a drawable to render
+<    * to, which might happen if the window is hidden/minimized/offscreen. This
+<    * doesn't apply to command encoders for render targets, just the window's
+<    * backbuffer. Check your return values!
+<    *
+<    * @returns an `id<MTLRenderCommandEncoder>` on success.
+<    * @throws Error on failure.
+<    *
+<    * @threadsafety This function should only be called on the main thread.
+<    *
+<    * @since This function is available since SDL 3.2.0.
+<    *
+<    * @sa Renderer.GetRenderMetalLayer
+<    */
+<   void* GetRenderMetalCommandEncoder()
+<   {
+<     return CheckError(SDL_GetRenderMetalCommandEncoder(m_resource));
+<   }
+< 
+<   /**
+<    * Add a set of synchronization semaphores for the current frame.
+<    *
+<    * The Vulkan renderer will wait for `wait_semaphore` before submitting
+<    * rendering commands and signal `signal_semaphore` after rendering commands
+<    * are complete for this frame.
+<    *
+<    * This should be called each frame that you want semaphore synchronization.
+<    * The Vulkan renderer may have multiple frames in flight on the GPU, so you
+<    * should have multiple semaphores that are used for synchronization. Querying
+<    * prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the
+<    * maximum number of semaphores you'll need.
+<    *
+<    * @param wait_stage_mask the VkPipelineStageFlags for the wait.
+<    * @param wait_semaphore a VkSempahore to wait on before rendering the current
+<    *                       frame, or 0 if not needed.
+<    * @param signal_semaphore a VkSempahore that SDL will signal when rendering
+<    *                         for the current frame is complete, or 0 if not
+<    *                         needed.
+<    * @throws Error on failure.
+<    *
+<    * @threadsafety It is **NOT** safe to call this function from two threads at
+<    *               once.
+<    *
+<    * @since This function is available since SDL 3.2.0.
+<    */
+<   void AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
+<                                  Sint64 wait_semaphore,
+<                                  Sint64 signal_semaphore)
+---
+>   template<class... ARGS>
+>   void RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
+2065,2066c1952
+<     CheckError(SDL_AddVulkanRenderSemaphores(
+<       m_resource, wait_stage_mask, wait_semaphore, signal_semaphore));
+---
+>     RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));

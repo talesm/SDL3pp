@@ -98,7 +98,7 @@ struct GLContextParam
 };
 
 // Forward decl
-struct Renderer;
+struct RendererRef;
 
 /**
  * Display orientation values; the way a display is rotated.
@@ -2717,7 +2717,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Renderer* GetRenderer() const;
+  RendererRef GetRenderer() const;
 };
 
 /// Semi-safe reference for Window.
