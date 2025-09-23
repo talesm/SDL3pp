@@ -125,7 +125,7 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
 /**
  * Compose a custom blend mode for renderers.
  *
- * The functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept
+ * The functions Renderer.SetDrawBlendMode and Texture.SetBlendMode accept
  * the BlendMode returned by this function if the renderer supports it.
  *
  * A blend mode controls how the pixels from a drawing operation (source) get
@@ -160,7 +160,7 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
  *
  * Support for these blend modes varies for each renderer. To check if a
  * specific BlendMode is supported, create a renderer and pass it to
- * either SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will
+ * either Renderer.SetDrawBlendMode or Texture.SetBlendMode. They will
  * return with an error if the blend mode is not supported.
  *
  * This list describes the support of custom blend modes for each renderer.
@@ -204,10 +204,10 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_SetRenderDrawBlendMode
- * @sa SDL_GetRenderDrawBlendMode
- * @sa SDL_SetTextureBlendMode
- * @sa SDL_GetTextureBlendMode
+ * @sa Renderer.SetDrawBlendMode
+ * @sa Renderer.GetDrawBlendMode
+ * @sa Texture.SetBlendMode
+ * @sa Texture.GetBlendMode
  */
 inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
                                         BlendFactor dstColorFactor,

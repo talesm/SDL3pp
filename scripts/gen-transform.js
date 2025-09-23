@@ -3930,15 +3930,18 @@ const transform = {
       },
     },
     "SDL_render.h": {
+      localIncludes: ["SDL3pp_blendmode.h", "SDL3pp_pixels.h", "SDL3pp_video.h"],
       ignoreEntries: [
-        "SDL_LockTextureToSurface",
-        "SDL_RenderDebugTextFormat",
-        "SDL_GetTextureSize"
+        "SDL_RenderDebugTextFormat"
       ],
-      resources: {
+      namespacesMap: {
+        "SDL_PROP_RENDERER_": "prop::Renderer",
+        "SDL_PROP_TEXTURE_": "prop::Texture"
+      },
+      transform: {
         "SDL_Renderer": {
           entries: {
-            "Create": {
+            "Renderer": {
               kind: "function",
               name: "ctor",
               parameters: [
@@ -4559,107 +4562,13 @@ const transform = {
           }
         },
         "SDL_Texture": {
-          ctors: ["Load", "LoadBMP"],
-          lock: {
-            name: "TextureLock",
-            kind: "struct",
-            type: "LockBase<SurfaceRaw>",
-            entries: {
-              "SDL_LockTexture": {
-                "name": "ctor",
-                "parameters": [
-                  {},
-                  {
-                    "name": "rect",
-                    "type": "OptionalRef<const RectRaw>"
-                  }
-                ]
-              },
-              "texture": {
-                kind: "var",
-                type: "TextureParam"
-              },
-            },
-            hints: { private: true },
+          resource: {
+            shared: "refcount",
           },
-          lockFunction: "SDL_LockTexture",
-          unlockFunction: "SDL_UnlockTexture",
           entries: {
-            "Load": [{
-              kind: "function",
-              proto: true,
-              parameters: [
-                {
-                  type: "RendererParam",
-                  name: "renderer"
-                },
-                {
-                  type: "StringParam",
-                  name: "file"
-                }
-              ]
-            }, {
-              kind: "function",
-              proto: true,
-              parameters: [
-                {
-                  type: "RendererParam",
-                  name: "renderer"
-                },
-                {
-                  type: "IOStreamParam",
-                  name: "src"
-                }
-              ]
-            }],
-            "SDL_CreateTexture": {
-              name: "ctor",
-              parameters: [
-                {
-                  name: "renderer",
-                  type: "RendererParam"
-                },
-                {
-                  name: "format",
-                  type: "PixelFormat"
-                },
-                {
-                  name: "access",
-                  type: "TextureAccess"
-                },
-                {
-                  name: "size",
-                  type: "const PointRaw &"
-                }
-              ]
-            },
+            "SDL_CreateTexture": "ctor",
             "SDL_CreateTextureFromSurface": "ctor",
             "SDL_CreateTextureWithProperties": "ctor",
-            "LoadBMP": [{
-              kind: "function",
-              parameters: [
-                {
-                  type: "RendererParam",
-                  name: "renderer"
-                },
-                {
-                  type: "StringParam",
-                  name: "file"
-                }
-              ]
-            }, {
-              kind: "function",
-              parameters: [
-                {
-                  type: "RendererParam",
-                  name: "renderer"
-                },
-                {
-                  type: "IOStreamParam",
-                  name: "src"
-                }
-              ]
-            }],
             "SDL_GetTextureProperties": "immutable",
             "SDL_GetRendererFromTexture": {
               "name": "GetRenderer",
@@ -4723,12 +4632,6 @@ const transform = {
             "SDL_GetTextureColorModFloat": "immutable",
             "SDL_SetTextureAlphaMod": "function",
             "SDL_SetTextureAlphaModFloat": "function",
-            "GetAlphaMod": {
-              "kind": "function",
-              "immutable": true,
-              "type": "float",
-              "parameters": []
-            },
             "SDL_GetTextureAlphaMod": "immutable",
             "SDL_GetTextureAlphaModFloat": "immutable",
             "SDL_SetTextureBlendMode": "function",
@@ -4815,17 +4718,9 @@ const transform = {
                 }
               ]
             },
-            "SDL_LockTexture": {
-              "type": "TextureLock",
-              "static": false,
-              "reference": 1,
-              "parameters": [
-                {
-                  "name": "rect",
-                  "type": "OptionalRef<const RectRaw>"
-                }
-              ]
-            },
+            "SDL_LockTexture": "function",
+            "SDL_LockTextureToSurface": "function",
+            "SDL_UnlockTexture": "function",
             "GetWidth": {
               "kind": "function",
               "immutable": true,
@@ -4838,7 +4733,7 @@ const transform = {
               "type": "int",
               "parameters": []
             },
-            "GetSize": {
+            "GetTextureSize": {
               "kind": "function",
               "immutable": true,
               "type": "Point",
@@ -4851,15 +4746,9 @@ const transform = {
               "parameters": []
             },
           }
-        }
-      },
-      namespacesMap: {
-        "SDL_PROP_RENDERER_": "prop::Renderer",
-        "SDL_PROP_TEXTURE_": "prop::Texture"
-      },
-      transform: {
+        },
         "SDL_CreateWindowAndRenderer": {
-          type: "std::pair<Window, Renderer>",
+          type: "Window",
           parameters: [
             {},
             {
@@ -4870,6 +4759,11 @@ const transform = {
               type: "WindowFlags",
               name: "window_flags",
               default: "0"
+            },
+            {
+              type: "Renderer *",
+              name: "renderer",
+              default: "nullptr"
             }
           ]
         },
@@ -7079,6 +6973,7 @@ const transform = {
         "SDL_PROP_WINDOW_": "prop::Window"
       },
       transform: {
+        "Renderer": { kind: "forward" },
         "SDL_DisplayOrientation": { before: "SDL_DisplayID" },
         "SDL_DisplayMode": { before: "SDL_DisplayID" },
         "SDL_DisplayID": {

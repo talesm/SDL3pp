@@ -14,6 +14,7 @@
     "SDL_pixels.h",
     "SDL_properties.h",
     "SDL_rect.h",
+    "SDL_render.h",
     "SDL_stdinc.h",
     "SDL_surface.h",
     "SDL_timer.h",

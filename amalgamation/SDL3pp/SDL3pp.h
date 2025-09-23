@@ -204,7 +204,7 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
 /**
  * Compose a custom blend mode for renderers.
  *
- * The functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept
+ * The functions Renderer.SetDrawBlendMode and Texture.SetBlendMode accept
  * the BlendMode returned by this function if the renderer supports it.
  *
  * A blend mode controls how the pixels from a drawing operation (source) get
@@ -239,7 +239,7 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
  *
  * Support for these blend modes varies for each renderer. To check if a
  * specific BlendMode is supported, create a renderer and pass it to
- * either SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will
+ * either Renderer.SetDrawBlendMode or Texture.SetBlendMode. They will
  * return with an error if the blend mode is not supported.
  *
  * This list describes the support of custom blend modes for each renderer.
@@ -283,10 +283,10 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_SetRenderDrawBlendMode
- * @sa SDL_GetRenderDrawBlendMode
- * @sa SDL_SetTextureBlendMode
- * @sa SDL_GetTextureBlendMode
+ * @sa Renderer.SetDrawBlendMode
+ * @sa Renderer.GetDrawBlendMode
+ * @sa Texture.SetBlendMode
+ * @sa Texture.GetBlendMode
  */
 inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
                                         BlendFactor dstColorFactor,
@@ -29071,6 +29071,9 @@ struct GLContextParam
   constexpr operator GLContextRaw() const { return value; }
 };
 
+// Forward decl
+struct Renderer;
+
 /**
  * Display orientation values; the way a display is rotated.
  *
@@ -29845,7 +29848,7 @@ public:
    * The window pixel size may differ from its window coordinate size if the
    * window is on a high pixel density display. Use Window.GetSize() to query
    * the client area's size in window coordinates, and
-   * Window.GetSizeInPixels() or SDL_GetRenderOutputSize() to query the
+   * Window.GetSizeInPixels() or Renderer.GetOutputSize() to query the
    * drawable size in pixels. Note that the drawable size can vary after the
    * window is created and should be queried again if you get an
    * EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
@@ -29861,8 +29864,8 @@ public:
    * If WINDOW_METAL is specified on an OS that does not support Metal,
    * Window.Window() will fail.
    *
-   * If you intend to use this window with an SDL_Renderer, you should use
-   * SDL_CreateWindowAndRenderer() instead of this function, to avoid window
+   * If you intend to use this window with an Renderer, you should use
+   * CreateWindowAndRenderer() instead of this function, to avoid window
    * flicker.
    *
    * On non-Apple devices, SDL requires you to either not link to the Vulkan
@@ -29879,7 +29882,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CreateWindowAndRenderer
+   * @sa CreateWindowAndRenderer
    * @sa Window.Window
    * @sa Window.Window
    * @sa Window.Destroy
@@ -30078,7 +30081,7 @@ public:
    * Windows with the "tooltip" and "menu" properties are popup windows and have
    * the behaviors and guidelines outlined in Window.Window().
    *
-   * If this window is being created to be used with an SDL_Renderer, you should
+   * If this window is being created to be used with an Renderer, you should
    * not add a graphics API specific property
    * (`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that
    * internally when it chooses a renderer. However, SDL might need to recreate
@@ -30700,7 +30703,7 @@ public:
    *
    * The window pixel size may differ from its window coordinate size if the
    * window is on a high pixel density display. Use Window.GetSizeInPixels()
-   * or SDL_GetRenderOutputSize() to get the real client area size in pixels.
+   * or Renderer.GetOutputSize() to get the real client area size in pixels.
    *
    * @param w a pointer filled in with the width of the window, may be nullptr.
    * @param h a pointer filled in with the height of the window, may be nullptr.
@@ -30710,7 +30713,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderOutputSize
+   * @sa Renderer.GetOutputSize
    * @sa Window.GetSizeInPixels
    * @sa Window.SetSize
    */
@@ -31845,6 +31848,18 @@ public:
     SDL_DestroyWindow(m_resource);
     m_resource = nullptr;
   }
+
+  /**
+   * Get the renderer associated with a window.
+   *
+   * @returns the rendering context on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Renderer* GetRenderer() const;
 };
 
 /// Semi-safe reference for Window.
@@ -33127,7 +33142,7 @@ inline OwnArray<WindowRef> GetWindows()
  * The window pixel size may differ from its window coordinate size if the
  * window is on a high pixel density display. Use Window.GetSize() to query
  * the client area's size in window coordinates, and
- * Window.GetSizeInPixels() or SDL_GetRenderOutputSize() to query the
+ * Window.GetSizeInPixels() or Renderer.GetOutputSize() to query the
  * drawable size in pixels. Note that the drawable size can vary after the
  * window is created and should be queried again if you get an
  * EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
@@ -33143,8 +33158,8 @@ inline OwnArray<WindowRef> GetWindows()
  * If WINDOW_METAL is specified on an OS that does not support Metal,
  * Window.Window() will fail.
  *
- * If you intend to use this window with an SDL_Renderer, you should use
- * SDL_CreateWindowAndRenderer() instead of this function, to avoid window
+ * If you intend to use this window with an Renderer, you should use
+ * CreateWindowAndRenderer() instead of this function, to avoid window
  * flicker.
  *
  * On non-Apple devices, SDL requires you to either not link to the Vulkan
@@ -33161,7 +33176,7 @@ inline OwnArray<WindowRef> GetWindows()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_CreateWindowAndRenderer
+ * @sa CreateWindowAndRenderer
  * @sa Window.Window
  * @sa Window.Window
  * @sa Window.Destroy
@@ -33360,7 +33375,7 @@ inline Window CreatePopupWindow(WindowParam parent,
  * Windows with the "tooltip" and "menu" properties are popup windows and have
  * the behaviors and guidelines outlined in Window.Window().
  *
- * If this window is being created to be used with an SDL_Renderer, you should
+ * If this window is being created to be used with an Renderer, you should
  * not add a graphics API specific property
  * (`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that
  * internally when it chooses a renderer. However, SDL might need to recreate
@@ -33963,7 +33978,7 @@ inline void SetWindowSize(WindowParam window, const PointRaw& p)
  *
  * The window pixel size may differ from its window coordinate size if the
  * window is on a high pixel density display. Use Window.GetSizeInPixels()
- * or SDL_GetRenderOutputSize() to get the real client area size in pixels.
+ * or Renderer.GetOutputSize() to get the real client area size in pixels.
  *
  * @param window the window to query the width and height from.
  * @param w a pointer filled in with the width of the window, may be nullptr.
@@ -33974,7 +33989,7 @@ inline void SetWindowSize(WindowParam window, const PointRaw& p)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetRenderOutputSize
+ * @sa Renderer.GetOutputSize
  * @sa Window.GetSizeInPixels
  * @sa Window.SetSize
  */
