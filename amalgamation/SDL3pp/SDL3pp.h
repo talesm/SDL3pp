@@ -114,26 +114,18 @@ constexpr BlendMode BLENDMODE_NONE =
  */
 constexpr BlendMode BLENDMODE_BLEND = SDL_BLENDMODE_BLEND;
 
-/**
- * pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))
- */
+/// pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))
 constexpr BlendMode BLENDMODE_BLEND_PREMULTIPLIED =
   SDL_BLENDMODE_BLEND_PREMULTIPLIED;
 
-/**
- * additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA
- */
+/// additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA
 constexpr BlendMode BLENDMODE_ADD = SDL_BLENDMODE_ADD;
 
-/**
- * pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA
- */
+/// pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA
 constexpr BlendMode BLENDMODE_ADD_PREMULTIPLIED =
   SDL_BLENDMODE_ADD_PREMULTIPLIED;
 
-/**
- * color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA
- */
+/// color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA
 constexpr BlendMode BLENDMODE_MOD = SDL_BLENDMODE_MOD;
 
 /**
@@ -156,25 +148,17 @@ using BlendOperation = SDL_BlendOperation;
 constexpr BlendOperation BLENDOPERATION_ADD =
   SDL_BLENDOPERATION_ADD; ///< dst + src: supported by all renderers
 
-/**
- * src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
+/// src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
 constexpr BlendOperation BLENDOPERATION_SUBTRACT = SDL_BLENDOPERATION_SUBTRACT;
 
-/**
- * dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
+/// dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
 constexpr BlendOperation BLENDOPERATION_REV_SUBTRACT =
   SDL_BLENDOPERATION_REV_SUBTRACT;
 
-/**
- * min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
+/// min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
 constexpr BlendOperation BLENDOPERATION_MINIMUM = SDL_BLENDOPERATION_MINIMUM;
 
-/**
- * max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
+/// max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
 constexpr BlendOperation BLENDOPERATION_MAXIMUM = SDL_BLENDOPERATION_MAXIMUM;
 
 /**
@@ -2181,25 +2165,19 @@ class Error : public std::exception
   std::string m_message;
 
 public:
-  /**
-   * Default ctor.
-   */
+  /// Default ctor.
   Error()
     : m_message(SDL_GetError())
   {
   }
 
-  /**
-   * Constructs from string
-   */
+  /// Default ctor.
   Error(std::string message)
     : m_message(std::move(message))
   {
   }
 
-  /**
-   * Returns the explanatory string.
-   */
+  /// Returns the explanatory string.
   constexpr const char* what() const noexcept { return m_message.c_str(); }
 
   /**
@@ -6812,9 +6790,7 @@ using HintCallback = SDL_HintCallback;
  */
 using HintCB = std::function<void(const char*, const char*, const char*)>;
 
-/**
- * Handle returned by AddHintCallback()
- */
+/// Handle returned by AddHintCallback()
 struct HintCallbackHandle : CallbackHandle
 {
   using CallbackHandle::CallbackHandle;
@@ -7050,14 +7026,10 @@ public:
   {
   }
 
-  /**
-   * Default comparison operator
-   */
+  /// Default comparison operator
   constexpr auto operator<=>(const LogCategory& other) const = default;
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr auto operator<=>(LogCategoryRaw category) const
   {
     return operator<=>(LogCategory(category));
@@ -8050,9 +8022,7 @@ struct Palette;
 
 using PaletteRaw = SDL_Palette*;
 
-/**
- * Safely wrap Palette for non owning parameters
- */
+/// Safely wrap Palette for non owning parameters
 struct PaletteParam
 {
   PaletteRaw value;
@@ -8070,9 +8040,7 @@ struct PaletteParam
   constexpr operator PaletteRaw() const { return value; }
 };
 
-/**
- * Safely wrap Palette for non owning const parameters
- */
+/// Safely wrap Palette for non owning const parameters
 struct PaletteConstParam
 {
   const PaletteRaw value;
@@ -8416,14 +8384,10 @@ public:
   {
   }
 
-  /**
-   * Default comparison operator
-   */
+  /// Default comparison operator
   constexpr bool operator==(const PixelFormat& other) const = default;
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(PixelFormatRaw format) const
   {
     return operator==(PixelFormat(format));
@@ -9292,9 +9256,7 @@ constexpr ColorRange COLOR_RANGE_UNKNOWN =
  */
 constexpr ColorRange COLOR_RANGE_LIMITED = SDL_COLOR_RANGE_LIMITED;
 
-/**
- * Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
- */
+/// Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
 constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
 
 /// @}
@@ -9331,9 +9293,7 @@ constexpr ColorPrimaries COLOR_PRIMARIES_BT470BG =
 constexpr ColorPrimaries COLOR_PRIMARIES_BT601 =
   SDL_COLOR_PRIMARIES_BT601; ///< ITU-R BT.601-7 525, SMPTE 170M.
 
-/**
- * SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601.
- */
+/// SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601.
 constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE240 =
   SDL_COLOR_PRIMARIES_SMPTE240;
 
@@ -9384,9 +9344,7 @@ constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT709 =
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNSPECIFIED =
   SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED; ///< TRANSFER_CHARACTERISTICS_UNSPECIFIED
 
-/**
- * ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM.
- */
+/// ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM.
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA22 =
   SDL_TRANSFER_CHARACTERISTICS_GAMMA22;
 
@@ -9426,9 +9384,7 @@ constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_12BIT =
   SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT; ///< ITU-R BT2020 for 12-bit
                                              ///< system.
 
-/**
- * SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems.
- */
+/// SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems.
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_PQ =
   SDL_TRANSFER_CHARACTERISTICS_PQ;
 
@@ -9631,14 +9587,10 @@ public:
   {
   }
 
-  /**
-   * Default comparison operator
-   */
+  /// Default comparison operator
   constexpr bool operator==(const Colorspace& other) const = default;
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(ColorspaceRaw cspace) const
   {
     return operator==(Colorspace(cspace));
@@ -9812,9 +9764,7 @@ public:
 
 constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.
- */
+/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.
 constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
 
 constexpr Colorspace COLORSPACE_SRGB_LINEAR =
@@ -9823,49 +9773,31 @@ constexpr Colorspace COLORSPACE_SRGB_LINEAR =
 constexpr Colorspace COLORSPACE_HDR10 =
   SDL_COLORSPACE_HDR10; ///< [object Object]
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.
 constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
 constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
 constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
 constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
 constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020.
 constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020.
 constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
 
-/**
- * The default colorspace for RGB surfaces if no colorspace is specified.
- */
+/// The default colorspace for RGB surfaces if no colorspace is specified.
 constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
 
-/**
- * The default colorspace for YUV surfaces if no colorspace is specified.
- */
+/// The default colorspace for YUV surfaces if no colorspace is specified.
 constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
 
 /// @}
@@ -10118,9 +10050,7 @@ struct Color : ColorRaw
   {
   }
 
-  /**
-   * Default comparison operator
-   */
+  /// Default comparison operator
   constexpr auto operator<=>(const Color& other) const
   {
     auto c = r <=> other.r;
@@ -10132,9 +10062,7 @@ struct Color : ColorRaw
     return a <=> other.a;
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr auto operator<=>(ColorRaw color) const
   {
     return operator<=>(Color(color));
@@ -10313,9 +10241,7 @@ struct FColor : FColorRaw
   {
   }
 
-  /**
-   * Default comparison operator
-   */
+  /// Default comparison operator
   constexpr auto operator<=>(const FColor& other) const
   {
     auto c = r <=> other.r;
@@ -10327,9 +10253,7 @@ struct FColor : FColorRaw
     return a <=> other.a;
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr auto operator<=>(const FColorRaw& color) const
   {
     return operator<=>(FColor(color));
@@ -10487,23 +10411,17 @@ public:
 
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   Palette& operator=(Palette other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying PaletteRaw.
-   */
+  /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying PaletteRaw and clear this.
-   */
+  /// Retrieves underlying PaletteRaw and clear this.
   constexpr PaletteRaw release()
   {
     auto r = m_resource;
@@ -10511,9 +10429,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to PaletteParam
-   */
+  /// Converts to PaletteParam
   constexpr operator PaletteParam() const { return {m_resource}; }
 
   constexpr int GetSize() const { return m_resource->ncolors; }
@@ -10944,9 +10860,7 @@ using PropertiesID = SDL_PropertiesID;
 // Forward decl
 struct PropertiesRef;
 
-/**
- * Safely wrap Properties for non owning parameters
- */
+/// Safely wrap Properties for non owning parameters
 struct PropertiesParam
 {
   PropertiesID value;
@@ -11024,23 +10938,17 @@ public:
 
   ~Properties() { SDL_DestroyProperties(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   Properties& operator=(Properties other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying PropertiesID.
-   */
+  /// Retrieves underlying PropertiesID.
   constexpr PropertiesID get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying PropertiesID and clear this.
-   */
+  /// Retrieves underlying PropertiesID and clear this.
   constexpr PropertiesID release()
   {
     auto r = m_resource;
@@ -11048,9 +10956,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to PropertiesParam
-   */
+  /// Converts to PropertiesParam
   constexpr operator PropertiesParam() const { return {m_resource}; }
 
   /**
@@ -11074,9 +10980,7 @@ public:
   }
 };
 
-/**
- * Semi-safe reference for Properties.
- */
+/// Semi-safe reference for Properties.
 struct PropertiesRef : Properties
 {
   /**
@@ -11814,9 +11718,7 @@ using EnvironmentRaw = SDL_Environment*;
 // Forward decl
 struct EnvironmentRef;
 
-/**
- * Safely wrap Environment for non owning parameters
- */
+/// Safely wrap Environment for non owning parameters
 struct EnvironmentParam
 {
   EnvironmentRaw value;
@@ -11842,9 +11744,7 @@ using IConvRaw = SDL_iconv_t;
 // Forward decl
 struct IConvRef;
 
-/**
- * Safely wrap IConv for non owning parameters
- */
+/// Safely wrap IConv for non owning parameters
 struct IConvParam
 {
   IConvRaw value;
@@ -12103,37 +12003,25 @@ constexpr Uint64 MAX_UINT64 = SDL_MAX_UINT64;
 
 constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
 
-/**
- * Duration in seconds (float).
- */
+/// Duration in seconds (float).
 using Seconds = std::chrono::duration<float>;
 
-/**
- * Duration in Nanoseconds (Uint64).
- */
+/// Duration in Nanoseconds (Uint64).
 using Nanoseconds = std::chrono::nanoseconds;
 
-/**
- * Converts a time duration to seconds (float).
- */
+/// Converts a time duration to seconds (float).
 constexpr float ToSeconds(Seconds duration) { return duration.count(); }
 
-/**
- * Converts a float to seconds representation.
- */
+/// Converts a float to seconds representation.
 constexpr Seconds FromSeconds(float duration) { return Seconds(duration); }
 
-/**
- * Converts a time duration to nanoseconds (Sint64);
- */
+/// Converts a time duration to nanoseconds (Sint64);
 constexpr Sint64 ToNS(std::chrono::nanoseconds duration)
 {
   return duration.count();
 }
 
-/**
- * Converts a Sint64 to nanoseconds representation.
- */
+/// Converts a Sint64 to nanoseconds representation.
 constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
 
 /**
@@ -12196,14 +12084,10 @@ public:
 
   void ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const;
 
-  /**
-   * Converts a time to seconds (float) since epoch.
-   */
+  /// Converts a time to seconds (float) since epoch.
   constexpr float ToSeconds() const { return Seconds(m_value).count(); }
 
-  /**
-   * Converts a time to seconds (float) since epoch.
-   */
+  /// Converts a time to seconds (float) since epoch.
   static constexpr Time FromSeconds(float interval)
   {
     return std::chrono::duration_cast<std::chrono::nanoseconds>(
@@ -12696,23 +12580,17 @@ public:
 
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   Environment& operator=(Environment other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying EnvironmentRaw.
-   */
+  /// Retrieves underlying EnvironmentRaw.
   constexpr EnvironmentRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying EnvironmentRaw and clear this.
-   */
+  /// Retrieves underlying EnvironmentRaw and clear this.
   constexpr EnvironmentRaw release()
   {
     auto r = m_resource;
@@ -12720,9 +12598,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to EnvironmentParam
-   */
+  /// Converts to EnvironmentParam
   constexpr operator EnvironmentParam() const { return {m_resource}; }
 
   /**
@@ -12850,9 +12726,7 @@ public:
   }
 };
 
-/**
- * Semi-safe reference for Environment.
- */
+/// Semi-safe reference for Environment.
 struct EnvironmentRef : Environment
 {
   /**
@@ -17487,23 +17361,17 @@ public:
 
   ~IConv() { SDL_iconv_close(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   IConv& operator=(IConv other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying IConvRaw.
-   */
+  /// Retrieves underlying IConvRaw.
   constexpr IConvRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying IConvRaw and clear this.
-   */
+  /// Retrieves underlying IConvRaw and clear this.
   constexpr IConvRaw release()
   {
     auto r = m_resource;
@@ -17511,9 +17379,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to IConvParam
-   */
+  /// Converts to IConvParam
   constexpr operator IConvParam() const { return {m_resource}; }
 
   /**
@@ -17579,9 +17445,7 @@ public:
   }
 };
 
-/**
- * Semi-safe reference for IConv.
- */
+/// Semi-safe reference for IConv.
 struct IConvRef : IConv
 {
   /**
@@ -17682,24 +17546,16 @@ inline size_t iconv(IConvRaw cd,
 
 #ifdef SDL3PP_DOC
 
-/**
- * Generic error. Check GetError()?
- */
+/// Generic error. Check GetError()?
 #define SDL_ICONV_ERROR (size_t)-1
 
-/**
- * Output buffer was too small.
- */
+/// Output buffer was too small.
 #define SDL_ICONV_E2BIG (size_t)-2
 
-/**
- * Invalid input sequence was encountered.
- */
+/// Invalid input sequence was encountered.
 #define SDL_ICONV_EILSEQ (size_t)-3
 
-/**
- * Incomplete input sequence was encountered.
- */
+/// Incomplete input sequence was encountered.
 #define SDL_ICONV_EINVAL (size_t)-4
 
 #endif // SDL3PP_DOC
@@ -18097,9 +17953,7 @@ constexpr Folder FOLDER_DESKTOP = SDL_FOLDER_DESKTOP;
  */
 constexpr Folder FOLDER_DOCUMENTS = SDL_FOLDER_DOCUMENTS;
 
-/**
- * Standard folder for user files downloaded from the internet.
- */
+/// Standard folder for user files downloaded from the internet.
 constexpr Folder FOLDER_DOWNLOADS = SDL_FOLDER_DOWNLOADS;
 
 /**
@@ -18107,14 +17961,10 @@ constexpr Folder FOLDER_DOWNLOADS = SDL_FOLDER_DOWNLOADS;
  */
 constexpr Folder FOLDER_MUSIC = SDL_FOLDER_MUSIC;
 
-/**
- * Image files that can be displayed using a standard viewer (png, jpg...).
- */
+/// Image files that can be displayed using a standard viewer (png, jpg...).
 constexpr Folder FOLDER_PICTURES = SDL_FOLDER_PICTURES;
 
-/**
- * Files that are meant to be shared with other users on the same computer.
- */
+/// Files that are meant to be shared with other users on the same computer.
 constexpr Folder FOLDER_PUBLICSHARE = SDL_FOLDER_PUBLICSHARE;
 
 constexpr Folder FOLDER_SAVEDGAMES =
@@ -18135,9 +17985,7 @@ constexpr Folder FOLDER_TEMPLATES = SDL_FOLDER_TEMPLATES;
  */
 constexpr Folder FOLDER_VIDEOS = SDL_FOLDER_VIDEOS;
 
-/**
- * Total number of types in this enum, not a folder type by itself.
- */
+/// Total number of types in this enum, not a folder type by itself.
 constexpr Folder FOLDER_COUNT = SDL_FOLDER_COUNT;
 
 /**
@@ -18271,14 +18119,10 @@ using EnumerationResult = SDL_EnumerationResult;
 constexpr EnumerationResult ENUM_CONTINUE =
   SDL_ENUM_CONTINUE; ///< Value that requests that enumeration continue.
 
-/**
- * Value that requests that enumeration stop, successfully.
- */
+/// Value that requests that enumeration stop, successfully.
 constexpr EnumerationResult ENUM_SUCCESS = SDL_ENUM_SUCCESS;
 
-/**
- * Value that requests that enumeration stop, as a failure.
- */
+/// Value that requests that enumeration stop, as a failure.
 constexpr EnumerationResult ENUM_FAILURE = SDL_ENUM_FAILURE;
 
 /**
@@ -18671,19 +18515,13 @@ constexpr InitFlags INIT_CAMERA =
  */
 using AppResult = SDL_AppResult;
 
-/**
- * Value that requests that the app continue from the main callbacks.
- */
+/// Value that requests that the app continue from the main callbacks.
 constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
 
-/**
- * Value that requests termination with success from the main callbacks.
- */
+/// Value that requests termination with success from the main callbacks.
 constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
 
-/**
- * Value that requests termination with error from the main callbacks.
- */
+/// Value that requests termination with error from the main callbacks.
 constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
 
 /// @}
@@ -19382,9 +19220,7 @@ using IOStreamRaw = SDL_IOStream*;
 // Forward decl
 struct IOStreamRef;
 
-/**
- * Safely wrap IOStream for non owning parameters
- */
+/// Safely wrap IOStream for non owning parameters
 struct IOStreamParam
 {
   IOStreamRaw value;
@@ -19744,23 +19580,17 @@ public:
 
   ~IOStream() { SDL_CloseIO(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   IOStream& operator=(IOStream other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying IOStreamRaw.
-   */
+  /// Retrieves underlying IOStreamRaw.
   constexpr IOStreamRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying IOStreamRaw and clear this.
-   */
+  /// Retrieves underlying IOStreamRaw and clear this.
   constexpr IOStreamRaw release()
   {
     auto r = m_resource;
@@ -19768,9 +19598,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to IOStreamParam
-   */
+  /// Converts to IOStreamParam
   constexpr operator IOStreamParam() const { return {m_resource}; }
 
   /**
@@ -20008,6 +19836,10 @@ public:
   }
 
   /**
+   * Prints formatted string.
+   *
+   * @param fmt a std::format like format string
+   * @param args... the arguments to be formatted
    * @cat formatted-string
    */
   size_t print(std::string_view fmt, auto... args)
@@ -20016,6 +19848,10 @@ public:
   }
 
   /**
+   * Prints formatted string.
+   *
+   * @param fmt a std::format like format string
+   * @param args... the arguments to be formatted
    * @cat formatted-string
    */
   size_t println(std::string_view fmt, auto... args)
@@ -21110,9 +20946,7 @@ public:
   }
 };
 
-/**
- * Semi-safe reference for IOStream.
- */
+/// Semi-safe reference for IOStream.
 struct IOStreamRef : IOStream
 {
   /**
@@ -22521,17 +22355,13 @@ struct Point : PointRaw
   {
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const PointRaw& other) const
   {
     return x == other.x && y == other.y;
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const Point& other) const
   {
     return *this == (const PointRaw&)(other);
@@ -22956,17 +22786,13 @@ struct FPoint : FPointRaw
   {
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const FPointRaw& other) const
   {
     return x == other.x && y == other.y;
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const FPoint& other) const
   {
     return *this == (const FPointRaw&)(other);
@@ -23315,22 +23141,16 @@ struct Rect : RectRaw
   {
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const RectRaw& other) const { return Equal(other); }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const Rect& other) const
   {
     return *this == (const RectRaw&)(other);
   }
 
-  /**
-   * @sa Empty()
-   */
+  /// @sa Empty()
   constexpr explicit operator bool() const { return !Empty(); }
 
   /**
@@ -23647,9 +23467,7 @@ struct Rect : RectRaw
     return r;
   }
 
-  /**
-   * @sa operator ToFRect()
-   */
+  ///@sa operator ToFRect()
   constexpr operator FRect() const;
 
   /**
@@ -23945,25 +23763,19 @@ struct FRect : FRectRaw
   {
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const FRectRaw& other) const
   {
     return Equal(other);
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const FRect& other) const
   {
     return *this == (const FRectRaw&)(other);
   }
 
-  /**
-   * @sa Empty()
-   */
+  /// @sa Empty()
   constexpr operator bool() const { return !Empty(); }
 
   /**
@@ -25407,9 +25219,7 @@ struct Surface;
 
 using SurfaceRaw = SDL_Surface*;
 
-/**
- * Safely wrap Surface for non owning parameters
- */
+/// Safely wrap Surface for non owning parameters
 struct SurfaceParam
 {
   SurfaceRaw value;
@@ -25427,9 +25237,7 @@ struct SurfaceParam
   constexpr operator SurfaceRaw() const { return value; }
 };
 
-/**
- * Safely wrap Surface for non owning const parameters
- */
+/// Safely wrap Surface for non owning const parameters
 struct SurfaceConstParam
 {
   const SurfaceRaw value;
@@ -25470,9 +25278,7 @@ constexpr SurfaceFlags SURFACE_LOCK_NEEDED =
 constexpr SurfaceFlags SURFACE_LOCKED =
   SDL_SURFACE_LOCKED; ///< Surface is currently locked
 
-/**
- * Surface uses pixel memory allocated with aligned_alloc()
- */
+/// Surface uses pixel memory allocated with aligned_alloc()
 constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
 
 /**
@@ -25687,23 +25493,17 @@ public:
 
   ~Surface() { SDL_DestroySurface(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   Surface& operator=(Surface other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying SurfaceRaw.
-   */
+  /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying SurfaceRaw and clear this.
-   */
+  /// Retrieves underlying SurfaceRaw and clear this.
   constexpr SurfaceRaw release()
   {
     auto r = m_resource;
@@ -25711,9 +25511,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to SurfaceParam
-   */
+  /// Converts to SurfaceParam
   constexpr operator SurfaceParam() const { return {m_resource}; }
 
   /**
@@ -29146,9 +28944,7 @@ using WindowRaw = SDL_Window*;
 // Forward decl
 struct WindowRef;
 
-/**
- * Safely wrap Window for non owning parameters
- */
+/// Safely wrap Window for non owning parameters
 struct WindowParam
 {
   WindowRaw value;
@@ -29174,9 +28970,7 @@ using GLContextRaw = SDL_GLContext;
 // Forward decl
 struct GLContextScoped;
 
-/**
- * Safely wrap GLContext for non owning parameters
- */
+/// Safely wrap GLContext for non owning parameters
 struct GLContextParam
 {
   GLContextRaw value;
@@ -29262,14 +29056,10 @@ public:
   {
   }
 
-  /**
-   * Default comparison operator
-   */
+  /// Default comparison operator
   constexpr bool operator==(const Display& other) const = default;
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(DisplayID displayID) const
   {
     return operator==(Display(displayID));
@@ -29751,14 +29541,10 @@ constexpr WindowFlags WINDOW_EXTERNAL =
 
 constexpr WindowFlags WINDOW_MODAL = SDL_WINDOW_MODAL; ///< window is modal
 
-/**
- * window uses high pixel density back buffer if possible
- */
+/// window uses high pixel density back buffer if possible
 constexpr WindowFlags WINDOW_HIGH_PIXEL_DENSITY = SDL_WINDOW_HIGH_PIXEL_DENSITY;
 
-/**
- * window has mouse captured (unrelated to MOUSE_GRABBED)
- */
+/// window has mouse captured (unrelated to MOUSE_GRABBED)
 constexpr WindowFlags WINDOW_MOUSE_CAPTURE = SDL_WINDOW_MOUSE_CAPTURE;
 
 constexpr WindowFlags WINDOW_MOUSE_RELATIVE_MODE =
@@ -29779,9 +29565,7 @@ constexpr WindowFlags WINDOW_UTILITY = SDL_WINDOW_UTILITY;
  */
 constexpr WindowFlags WINDOW_TOOLTIP = SDL_WINDOW_TOOLTIP;
 
-/**
- * window should be treated as a popup menu, requires a parent window
- */
+/// window should be treated as a popup menu, requires a parent window
 constexpr WindowFlags WINDOW_POPUP_MENU = SDL_WINDOW_POPUP_MENU;
 
 constexpr WindowFlags WINDOW_KEYBOARD_GRABBED =
@@ -29847,9 +29631,7 @@ constexpr HitTestResult HITTEST_RESIZE_TOPRIGHT =
 constexpr HitTestResult HITTEST_RESIZE_RIGHT =
   SDL_HITTEST_RESIZE_RIGHT; ///< Region is the resizable right border.
 
-/**
- * Region is the resizable bottom-right corner border.
- */
+/// Region is the resizable bottom-right corner border.
 constexpr HitTestResult HITTEST_RESIZE_BOTTOMRIGHT =
   SDL_HITTEST_RESIZE_BOTTOMRIGHT;
 
@@ -30239,23 +30021,17 @@ public:
 
   ~Window() { SDL_DestroyWindow(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   Window& operator=(Window other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying WindowRaw.
-   */
+  /// Retrieves underlying WindowRaw.
   constexpr WindowRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying WindowRaw and clear this.
-   */
+  /// Retrieves underlying WindowRaw and clear this.
   constexpr WindowRaw release()
   {
     auto r = m_resource;
@@ -30263,9 +30039,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to WindowParam
-   */
+  /// Converts to WindowParam
   constexpr operator WindowParam() const { return {m_resource}; }
 
   /**
@@ -31986,9 +31760,7 @@ public:
   }
 };
 
-/**
- * Semi-safe reference for Window.
- */
+/// Semi-safe reference for Window.
 struct WindowRef : Window
 {
   /**
@@ -32154,23 +31926,17 @@ public:
 
   ~GLContext() {}
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   GLContext& operator=(GLContext other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying GLContextRaw.
-   */
+  /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying GLContextRaw and clear this.
-   */
+  /// Retrieves underlying GLContextRaw and clear this.
   constexpr GLContextRaw release()
   {
     auto r = m_resource;
@@ -32178,9 +31944,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to GLContextParam
-   */
+  /// Converts to GLContextParam
   constexpr operator GLContextParam() const { return {m_resource}; }
 
   /**
@@ -32222,9 +31986,7 @@ public:
   }
 };
 
-/**
- * RAII owning version GLContext.
- */
+/// RAII owning version GLContext.
 struct GLContextScoped : GLContext
 {
   using GLContext::GLContext;
@@ -32431,9 +32193,7 @@ constexpr GLAttr GL_BLUE_SIZE = SDL_GL_BLUE_SIZE;
  */
 constexpr GLAttr GL_ALPHA_SIZE = SDL_GL_ALPHA_SIZE;
 
-/**
- * the minimum number of bits for frame buffer size; defaults to 0.
- */
+/// the minimum number of bits for frame buffer size; defaults to 0.
 constexpr GLAttr GL_BUFFER_SIZE = SDL_GL_BUFFER_SIZE;
 
 /**
@@ -32442,14 +32202,10 @@ constexpr GLAttr GL_BUFFER_SIZE = SDL_GL_BUFFER_SIZE;
  */
 constexpr GLAttr GL_DOUBLEBUFFER = SDL_GL_DOUBLEBUFFER;
 
-/**
- * the minimum number of bits in the depth buffer; defaults to 16.
- */
+/// the minimum number of bits in the depth buffer; defaults to 16.
 constexpr GLAttr GL_DEPTH_SIZE = SDL_GL_DEPTH_SIZE;
 
-/**
- * the minimum number of bits in the stencil buffer; defaults to 0.
- */
+/// the minimum number of bits in the stencil buffer; defaults to 0.
 constexpr GLAttr GL_STENCIL_SIZE = SDL_GL_STENCIL_SIZE;
 
 /**
@@ -32479,9 +32235,7 @@ constexpr GLAttr GL_ACCUM_ALPHA_SIZE = SDL_GL_ACCUM_ALPHA_SIZE;
 constexpr GLAttr GL_STEREO =
   SDL_GL_STEREO; ///< whether the output is stereo 3D; defaults to off.
 
-/**
- * the number of buffers used for multisample anti-aliasing; defaults to 0.
- */
+/// the number of buffers used for multisample anti-aliasing; defaults to 0.
 constexpr GLAttr GL_MULTISAMPLEBUFFERS = SDL_GL_MULTISAMPLEBUFFERS;
 
 /**
@@ -35954,15 +35708,11 @@ constexpr EventType EVENT_WINDOW_MOVED =
 constexpr EventType EVENT_WINDOW_RESIZED =
   SDL_EVENT_WINDOW_RESIZED; ///< Window has been resized to data1xdata2.
 
-/**
- * The pixel size of the window has changed to data1xdata2.
- */
+/// The pixel size of the window has changed to data1xdata2.
 constexpr EventType EVENT_WINDOW_PIXEL_SIZE_CHANGED =
   SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED;
 
-/**
- * The pixel size of a Metal view associated with the window has changed.
- */
+/// The pixel size of a Metal view associated with the window has changed.
 constexpr EventType EVENT_WINDOW_METAL_VIEW_RESIZED =
   SDL_EVENT_WINDOW_METAL_VIEW_RESIZED;
 
@@ -35972,9 +35722,7 @@ constexpr EventType EVENT_WINDOW_MINIMIZED =
 constexpr EventType EVENT_WINDOW_MAXIMIZED =
   SDL_EVENT_WINDOW_MAXIMIZED; ///< Window has been maximized.
 
-/**
- * Window has been restored to normal size and position.
- */
+/// Window has been restored to normal size and position.
 constexpr EventType EVENT_WINDOW_RESTORED = SDL_EVENT_WINDOW_RESTORED;
 
 constexpr EventType EVENT_WINDOW_MOUSE_ENTER =
@@ -35989,9 +35737,7 @@ constexpr EventType EVENT_WINDOW_FOCUS_GAINED =
 constexpr EventType EVENT_WINDOW_FOCUS_LOST =
   SDL_EVENT_WINDOW_FOCUS_LOST; ///< Window has lost keyboard focus.
 
-/**
- * The window manager requests that the window be closed.
- */
+/// The window manager requests that the window be closed.
 constexpr EventType EVENT_WINDOW_CLOSE_REQUESTED =
   SDL_EVENT_WINDOW_CLOSE_REQUESTED;
 
@@ -35999,9 +35745,7 @@ constexpr EventType EVENT_WINDOW_HIT_TEST =
   SDL_EVENT_WINDOW_HIT_TEST; ///< Window had a hit test that wasn't
                              ///< HITTEST_NORMAL.
 
-/**
- * The ICC profile of the window's display has changed.
- */
+/// The ICC profile of the window's display has changed.
 constexpr EventType EVENT_WINDOW_ICCPROF_CHANGED =
   SDL_EVENT_WINDOW_ICCPROF_CHANGED;
 
@@ -36173,9 +35917,7 @@ constexpr EventType EVENT_DROP_TEXT =
 constexpr EventType EVENT_DROP_BEGIN =
   SDL_EVENT_DROP_BEGIN; ///< A new set of drops is beginning (NULL filename)
 
-/**
- * Current set of drops is now complete (NULL filename)
- */
+/// Current set of drops is now complete (NULL filename)
 constexpr EventType EVENT_DROP_COMPLETE = SDL_EVENT_DROP_COMPLETE;
 
 constexpr EventType EVENT_DROP_POSITION =
@@ -36187,9 +35929,7 @@ constexpr EventType EVENT_AUDIO_DEVICE_ADDED =
 constexpr EventType EVENT_AUDIO_DEVICE_REMOVED =
   SDL_EVENT_AUDIO_DEVICE_REMOVED; ///< An audio device has been removed.
 
-/**
- * An audio device's format has been changed by the system.
- */
+/// An audio device's format has been changed by the system.
 constexpr EventType EVENT_AUDIO_DEVICE_FORMAT_CHANGED =
   SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED;
 
@@ -36206,9 +35946,7 @@ constexpr EventType EVENT_PEN_PROXIMITY_OUT =
 constexpr EventType EVENT_PEN_DOWN =
   SDL_EVENT_PEN_DOWN; ///< Pressure-sensitive pen touched drawing surface.
 
-/**
- * Pressure-sensitive pen stopped touching drawing surface.
- */
+/// Pressure-sensitive pen stopped touching drawing surface.
 constexpr EventType EVENT_PEN_UP = SDL_EVENT_PEN_UP;
 
 constexpr EventType EVENT_PEN_BUTTON_DOWN =
@@ -36229,25 +35967,17 @@ constexpr EventType EVENT_CAMERA_DEVICE_ADDED =
 constexpr EventType EVENT_CAMERA_DEVICE_REMOVED =
   SDL_EVENT_CAMERA_DEVICE_REMOVED; ///< A camera device has been removed.
 
-/**
- * A camera device has been approved for use by the user.
- */
+/// A camera device has been approved for use by the user.
 constexpr EventType EVENT_CAMERA_DEVICE_APPROVED =
   SDL_EVENT_CAMERA_DEVICE_APPROVED;
 
-/**
- * A camera device has been denied for use by the user.
- */
+/// A camera device has been denied for use by the user.
 constexpr EventType EVENT_CAMERA_DEVICE_DENIED = SDL_EVENT_CAMERA_DEVICE_DENIED;
 
-/**
- * The render targets have been reset and their contents need to be updated.
- */
+/// The render targets have been reset and their contents need to be updated.
 constexpr EventType EVENT_RENDER_TARGETS_RESET = SDL_EVENT_RENDER_TARGETS_RESET;
 
-/**
- * The device has been reset and all textures need to be recreated.
- */
+/// The device has been reset and all textures need to be recreated.
 constexpr EventType EVENT_RENDER_DEVICE_RESET = SDL_EVENT_RENDER_DEVICE_RESET;
 
 constexpr EventType EVENT_RENDER_DEVICE_LOST =
@@ -36271,9 +36001,7 @@ constexpr EventType EVENT_POLL_SENTINEL =
  */
 constexpr EventType EVENT_USER = SDL_EVENT_USER;
 
-/**
- * This last event is only for bounding internal arrays.
- */
+/// This last event is only for bounding internal arrays.
 constexpr EventType EVENT_LAST = SDL_EVENT_LAST;
 
 constexpr EventType EVENT_ENUM_PADDING =
@@ -36668,14 +36396,10 @@ using EventAction = SDL_EventAction;
 constexpr EventAction ADDEVENT =
   SDL_ADDEVENT; ///< Add events to the back of the queue.
 
-/**
- * Check but don't remove events from the queue front.
- */
+/// Check but don't remove events from the queue front.
 constexpr EventAction PEEKEVENT = SDL_PEEKEVENT;
 
-/**
- * Retrieve/remove events from the front of the queue.
- */
+/// Retrieve/remove events from the front of the queue.
 constexpr EventAction GETEVENT = SDL_GETEVENT;
 
 /// @}

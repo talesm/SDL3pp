@@ -12,11 +12,11 @@
 4327a4330,4331
 > #endif // SDL3PP_DOC
 > 
-4551c4555
+4549c4553
 <  * @param userdata a pointer to pass to the callback function.
 ---
 >  * @returns a handle to be used on RemoveHintCallback()
-4562c4566,4572
+4560c4564,4570
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<HintCB>;
@@ -26,13 +26,13 @@
 >     throw Error{};
 >   }
 >   return HintCallbackHandle{cb};
-4590,4592c4600
+4588,4590c4598
 <  * @param callback an HintCallback function that will be called when the
 <  *                 hint value changes.
 <  * @param userdata a pointer being passed to the callback function.
 ---
 >  * @param handle the handle for the HintCallback function to be removed
-4602c4610
+4600c4608
 <   static_assert(false, "Not implemented");
 ---
 >   CallbackWrapper<HintCB>::release(handle);

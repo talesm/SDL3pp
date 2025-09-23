@@ -46,9 +46,7 @@ using EnvironmentRaw = SDL_Environment*;
 // Forward decl
 struct EnvironmentRef;
 
-/**
- * Safely wrap Environment for non owning parameters
- */
+/// Safely wrap Environment for non owning parameters
 struct EnvironmentParam
 {
   EnvironmentRaw value;
@@ -74,9 +72,7 @@ using IConvRaw = SDL_iconv_t;
 // Forward decl
 struct IConvRef;
 
-/**
- * Safely wrap IConv for non owning parameters
- */
+/// Safely wrap IConv for non owning parameters
 struct IConvParam
 {
   IConvRaw value;
@@ -335,37 +331,25 @@ constexpr Uint64 MAX_UINT64 = SDL_MAX_UINT64;
 
 constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
 
-/**
- * Duration in seconds (float).
- */
+/// Duration in seconds (float).
 using Seconds = std::chrono::duration<float>;
 
-/**
- * Duration in Nanoseconds (Uint64).
- */
+/// Duration in Nanoseconds (Uint64).
 using Nanoseconds = std::chrono::nanoseconds;
 
-/**
- * Converts a time duration to seconds (float).
- */
+/// Converts a time duration to seconds (float).
 constexpr float ToSeconds(Seconds duration) { return duration.count(); }
 
-/**
- * Converts a float to seconds representation.
- */
+/// Converts a float to seconds representation.
 constexpr Seconds FromSeconds(float duration) { return Seconds(duration); }
 
-/**
- * Converts a time duration to nanoseconds (Sint64);
- */
+/// Converts a time duration to nanoseconds (Sint64);
 constexpr Sint64 ToNS(std::chrono::nanoseconds duration)
 {
   return duration.count();
 }
 
-/**
- * Converts a Sint64 to nanoseconds representation.
- */
+/// Converts a Sint64 to nanoseconds representation.
 constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
 
 /**
@@ -428,14 +412,10 @@ public:
 
   void ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const;
 
-  /**
-   * Converts a time to seconds (float) since epoch.
-   */
+  /// Converts a time to seconds (float) since epoch.
   constexpr float ToSeconds() const { return Seconds(m_value).count(); }
 
-  /**
-   * Converts a time to seconds (float) since epoch.
-   */
+  /// Converts a time to seconds (float) since epoch.
   static constexpr Time FromSeconds(float interval)
   {
     return std::chrono::duration_cast<std::chrono::nanoseconds>(
@@ -928,23 +908,17 @@ public:
 
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   Environment& operator=(Environment other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying EnvironmentRaw.
-   */
+  /// Retrieves underlying EnvironmentRaw.
   constexpr EnvironmentRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying EnvironmentRaw and clear this.
-   */
+  /// Retrieves underlying EnvironmentRaw and clear this.
   constexpr EnvironmentRaw release()
   {
     auto r = m_resource;
@@ -952,9 +926,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to EnvironmentParam
-   */
+  /// Converts to EnvironmentParam
   constexpr operator EnvironmentParam() const { return {m_resource}; }
 
   /**
@@ -1082,9 +1054,7 @@ public:
   }
 };
 
-/**
- * Semi-safe reference for Environment.
- */
+/// Semi-safe reference for Environment.
 struct EnvironmentRef : Environment
 {
   /**
@@ -5719,23 +5689,17 @@ public:
 
   ~IConv() { SDL_iconv_close(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   IConv& operator=(IConv other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying IConvRaw.
-   */
+  /// Retrieves underlying IConvRaw.
   constexpr IConvRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying IConvRaw and clear this.
-   */
+  /// Retrieves underlying IConvRaw and clear this.
   constexpr IConvRaw release()
   {
     auto r = m_resource;
@@ -5743,9 +5707,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to IConvParam
-   */
+  /// Converts to IConvParam
   constexpr operator IConvParam() const { return {m_resource}; }
 
   /**
@@ -5811,9 +5773,7 @@ public:
   }
 };
 
-/**
- * Semi-safe reference for IConv.
- */
+/// Semi-safe reference for IConv.
 struct IConvRef : IConv
 {
   /**
@@ -5914,24 +5874,16 @@ inline size_t iconv(IConvRaw cd,
 
 #ifdef SDL3PP_DOC
 
-/**
- * Generic error. Check GetError()?
- */
+/// Generic error. Check GetError()?
 #define SDL_ICONV_ERROR (size_t)-1
 
-/**
- * Output buffer was too small.
- */
+/// Output buffer was too small.
 #define SDL_ICONV_E2BIG (size_t)-2
 
-/**
- * Invalid input sequence was encountered.
- */
+/// Invalid input sequence was encountered.
 #define SDL_ICONV_EILSEQ (size_t)-3
 
-/**
- * Incomplete input sequence was encountered.
- */
+/// Incomplete input sequence was encountered.
 #define SDL_ICONV_EINVAL (size_t)-4
 
 #endif // SDL3PP_DOC

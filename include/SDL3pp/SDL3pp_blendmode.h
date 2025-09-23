@@ -43,26 +43,18 @@ constexpr BlendMode BLENDMODE_NONE =
  */
 constexpr BlendMode BLENDMODE_BLEND = SDL_BLENDMODE_BLEND;
 
-/**
- * pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))
- */
+/// pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))
 constexpr BlendMode BLENDMODE_BLEND_PREMULTIPLIED =
   SDL_BLENDMODE_BLEND_PREMULTIPLIED;
 
-/**
- * additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA
- */
+/// additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA
 constexpr BlendMode BLENDMODE_ADD = SDL_BLENDMODE_ADD;
 
-/**
- * pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA
- */
+/// pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA
 constexpr BlendMode BLENDMODE_ADD_PREMULTIPLIED =
   SDL_BLENDMODE_ADD_PREMULTIPLIED;
 
-/**
- * color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA
- */
+/// color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA
 constexpr BlendMode BLENDMODE_MOD = SDL_BLENDMODE_MOD;
 
 /**
@@ -85,25 +77,17 @@ using BlendOperation = SDL_BlendOperation;
 constexpr BlendOperation BLENDOPERATION_ADD =
   SDL_BLENDOPERATION_ADD; ///< dst + src: supported by all renderers
 
-/**
- * src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
+/// src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
 constexpr BlendOperation BLENDOPERATION_SUBTRACT = SDL_BLENDOPERATION_SUBTRACT;
 
-/**
- * dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
+/// dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
 constexpr BlendOperation BLENDOPERATION_REV_SUBTRACT =
   SDL_BLENDOPERATION_REV_SUBTRACT;
 
-/**
- * min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
+/// min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
 constexpr BlendOperation BLENDOPERATION_MINIMUM = SDL_BLENDOPERATION_MINIMUM;
 
-/**
- * max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
+/// max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
 constexpr BlendOperation BLENDOPERATION_MAXIMUM = SDL_BLENDOPERATION_MAXIMUM;
 
 /**

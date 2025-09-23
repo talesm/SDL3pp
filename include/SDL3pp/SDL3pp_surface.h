@@ -40,9 +40,7 @@ struct Surface;
 
 using SurfaceRaw = SDL_Surface*;
 
-/**
- * Safely wrap Surface for non owning parameters
- */
+/// Safely wrap Surface for non owning parameters
 struct SurfaceParam
 {
   SurfaceRaw value;
@@ -60,9 +58,7 @@ struct SurfaceParam
   constexpr operator SurfaceRaw() const { return value; }
 };
 
-/**
- * Safely wrap Surface for non owning const parameters
- */
+/// Safely wrap Surface for non owning const parameters
 struct SurfaceConstParam
 {
   const SurfaceRaw value;
@@ -103,9 +99,7 @@ constexpr SurfaceFlags SURFACE_LOCK_NEEDED =
 constexpr SurfaceFlags SURFACE_LOCKED =
   SDL_SURFACE_LOCKED; ///< Surface is currently locked
 
-/**
- * Surface uses pixel memory allocated with aligned_alloc()
- */
+/// Surface uses pixel memory allocated with aligned_alloc()
 constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
 
 /**
@@ -320,23 +314,17 @@ public:
 
   ~Surface() { SDL_DestroySurface(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   Surface& operator=(Surface other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying SurfaceRaw.
-   */
+  /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying SurfaceRaw and clear this.
-   */
+  /// Retrieves underlying SurfaceRaw and clear this.
   constexpr SurfaceRaw release()
   {
     auto r = m_resource;
@@ -344,9 +332,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to SurfaceParam
-   */
+  /// Converts to SurfaceParam
   constexpr operator SurfaceParam() const { return {m_resource}; }
 
   /**

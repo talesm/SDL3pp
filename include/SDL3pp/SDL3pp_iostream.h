@@ -28,9 +28,7 @@ using IOStreamRaw = SDL_IOStream*;
 // Forward decl
 struct IOStreamRef;
 
-/**
- * Safely wrap IOStream for non owning parameters
- */
+/// Safely wrap IOStream for non owning parameters
 struct IOStreamParam
 {
   IOStreamRaw value;
@@ -390,23 +388,17 @@ public:
 
   ~IOStream() { SDL_CloseIO(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   IOStream& operator=(IOStream other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying IOStreamRaw.
-   */
+  /// Retrieves underlying IOStreamRaw.
   constexpr IOStreamRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying IOStreamRaw and clear this.
-   */
+  /// Retrieves underlying IOStreamRaw and clear this.
   constexpr IOStreamRaw release()
   {
     auto r = m_resource;
@@ -414,9 +406,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to IOStreamParam
-   */
+  /// Converts to IOStreamParam
   constexpr operator IOStreamParam() const { return {m_resource}; }
 
   /**
@@ -654,6 +644,10 @@ public:
   }
 
   /**
+   * Prints formatted string.
+   *
+   * @param fmt a std::format like format string
+   * @param args... the arguments to be formatted
    * @cat formatted-string
    */
   size_t print(std::string_view fmt, auto... args)
@@ -662,6 +656,10 @@ public:
   }
 
   /**
+   * Prints formatted string.
+   *
+   * @param fmt a std::format like format string
+   * @param args... the arguments to be formatted
    * @cat formatted-string
    */
   size_t println(std::string_view fmt, auto... args)
@@ -1756,9 +1754,7 @@ public:
   }
 };
 
-/**
- * Semi-safe reference for IOStream.
- */
+/// Semi-safe reference for IOStream.
 struct IOStreamRef : IOStream
 {
   /**

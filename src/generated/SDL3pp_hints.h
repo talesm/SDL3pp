@@ -4506,9 +4506,7 @@ using HintCallback = SDL_HintCallback;
  */
 using HintCB = std::function<void(const char*, const char*, const char*)>;
 
-/**
- * Handle returned by AddHintCallback()
- */
+/// Handle returned by AddHintCallback()
 struct HintCallbackHandle : CallbackHandle
 {
   using CallbackHandle::CallbackHandle;

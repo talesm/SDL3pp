@@ -47,9 +47,7 @@ using WindowRaw = SDL_Window*;
 // Forward decl
 struct WindowRef;
 
-/**
- * Safely wrap Window for non owning parameters
- */
+/// Safely wrap Window for non owning parameters
 struct WindowParam
 {
   WindowRaw value;
@@ -75,9 +73,7 @@ using GLContextRaw = SDL_GLContext*;
 // Forward decl
 struct GLContextScoped;
 
-/**
- * Safely wrap GLContext for non owning parameters
- */
+/// Safely wrap GLContext for non owning parameters
 struct GLContextParam
 {
   GLContextRaw value;
@@ -163,14 +159,10 @@ public:
   {
   }
 
-  /**
-   * Default comparison operator
-   */
+  /// Default comparison operator
   constexpr bool operator==(const Display& other) const = default;
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(DisplayID displayID) const
   {
     return operator==(Display(displayID));
@@ -639,14 +631,10 @@ constexpr WindowFlags WINDOW_EXTERNAL =
 
 constexpr WindowFlags WINDOW_MODAL = SDL_WINDOW_MODAL; ///< window is modal
 
-/**
- * window uses high pixel density back buffer if possible
- */
+/// window uses high pixel density back buffer if possible
 constexpr WindowFlags WINDOW_HIGH_PIXEL_DENSITY = SDL_WINDOW_HIGH_PIXEL_DENSITY;
 
-/**
- * window has mouse captured (unrelated to MOUSE_GRABBED)
- */
+/// window has mouse captured (unrelated to MOUSE_GRABBED)
 constexpr WindowFlags WINDOW_MOUSE_CAPTURE = SDL_WINDOW_MOUSE_CAPTURE;
 
 constexpr WindowFlags WINDOW_MOUSE_RELATIVE_MODE =
@@ -667,9 +655,7 @@ constexpr WindowFlags WINDOW_UTILITY = SDL_WINDOW_UTILITY;
  */
 constexpr WindowFlags WINDOW_TOOLTIP = SDL_WINDOW_TOOLTIP;
 
-/**
- * window should be treated as a popup menu, requires a parent window
- */
+/// window should be treated as a popup menu, requires a parent window
 constexpr WindowFlags WINDOW_POPUP_MENU = SDL_WINDOW_POPUP_MENU;
 
 constexpr WindowFlags WINDOW_KEYBOARD_GRABBED =
@@ -734,9 +720,7 @@ constexpr HitTestResult HITTEST_RESIZE_TOPRIGHT =
 constexpr HitTestResult HITTEST_RESIZE_RIGHT =
   SDL_HITTEST_RESIZE_RIGHT; ///< Region is the resizable right border.
 
-/**
- * Region is the resizable bottom-right corner border.
- */
+/// Region is the resizable bottom-right corner border.
 constexpr HitTestResult HITTEST_RESIZE_BOTTOMRIGHT =
   SDL_HITTEST_RESIZE_BOTTOMRIGHT;
 
@@ -762,9 +746,7 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
  */
 using HitTest = SDL_HitTest;
 
-/**
- * @sa HitTest
- */
+///@sa HitTest
 using HitTestCB = HitTest;
 
 /**
@@ -1115,23 +1097,17 @@ public:
 
   ~Window() { SDL_DestroyWindow(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   Window& operator=(Window other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying WindowRaw.
-   */
+  /// Retrieves underlying WindowRaw.
   constexpr WindowRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying WindowRaw and clear this.
-   */
+  /// Retrieves underlying WindowRaw and clear this.
   constexpr WindowRaw release()
   {
     auto r = m_resource;
@@ -1139,9 +1115,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to WindowParam
-   */
+  /// Converts to WindowParam
   constexpr operator WindowParam() const { return {m_resource}; }
 
   /**
@@ -2721,9 +2695,7 @@ public:
   }
 };
 
-/**
- * Semi-safe reference for Window.
- */
+/// Semi-safe reference for Window.
 struct WindowRef : Window
 {
   /**
@@ -2885,23 +2857,17 @@ public:
 
   ~GLContext() {}
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   GLContext& operator=(GLContext other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying GLContextRaw.
-   */
+  /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying GLContextRaw and clear this.
-   */
+  /// Retrieves underlying GLContextRaw and clear this.
   constexpr GLContextRaw release()
   {
     auto r = m_resource;
@@ -2909,9 +2875,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to GLContextParam
-   */
+  /// Converts to GLContextParam
   constexpr operator GLContextParam() const { return {m_resource}; }
 
   /**
@@ -2953,9 +2917,7 @@ public:
   }
 };
 
-/**
- * RAII owning version GLContext.
- */
+/// RAII owning version GLContext.
 struct GLContextScoped : GLContext
 {
   using GLContext::GLContext;
@@ -3162,9 +3124,7 @@ constexpr GLAttr GL_BLUE_SIZE = SDL_GL_BLUE_SIZE;
  */
 constexpr GLAttr GL_ALPHA_SIZE = SDL_GL_ALPHA_SIZE;
 
-/**
- * the minimum number of bits for frame buffer size; defaults to 0.
- */
+/// the minimum number of bits for frame buffer size; defaults to 0.
 constexpr GLAttr GL_BUFFER_SIZE = SDL_GL_BUFFER_SIZE;
 
 /**
@@ -3173,14 +3133,10 @@ constexpr GLAttr GL_BUFFER_SIZE = SDL_GL_BUFFER_SIZE;
  */
 constexpr GLAttr GL_DOUBLEBUFFER = SDL_GL_DOUBLEBUFFER;
 
-/**
- * the minimum number of bits in the depth buffer; defaults to 16.
- */
+/// the minimum number of bits in the depth buffer; defaults to 16.
 constexpr GLAttr GL_DEPTH_SIZE = SDL_GL_DEPTH_SIZE;
 
-/**
- * the minimum number of bits in the stencil buffer; defaults to 0.
- */
+/// the minimum number of bits in the stencil buffer; defaults to 0.
 constexpr GLAttr GL_STENCIL_SIZE = SDL_GL_STENCIL_SIZE;
 
 /**
@@ -3210,9 +3166,7 @@ constexpr GLAttr GL_ACCUM_ALPHA_SIZE = SDL_GL_ACCUM_ALPHA_SIZE;
 constexpr GLAttr GL_STEREO =
   SDL_GL_STEREO; ///< whether the output is stereo 3D; defaults to off.
 
-/**
- * the number of buffers used for multisample anti-aliasing; defaults to 0.
- */
+/// the number of buffers used for multisample anti-aliasing; defaults to 0.
 constexpr GLAttr GL_MULTISAMPLEBUFFERS = SDL_GL_MULTISAMPLEBUFFERS;
 
 /**

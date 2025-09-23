@@ -45,9 +45,7 @@ using PropertiesID = SDL_PropertiesID;
 // Forward decl
 struct PropertiesRef;
 
-/**
- * Safely wrap Properties for non owning parameters
- */
+/// Safely wrap Properties for non owning parameters
 struct PropertiesParam
 {
   PropertiesID value;
@@ -125,23 +123,17 @@ public:
 
   ~Properties() { SDL_DestroyProperties(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   Properties& operator=(Properties other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying PropertiesID.
-   */
+  /// Retrieves underlying PropertiesID.
   constexpr PropertiesID get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying PropertiesID and clear this.
-   */
+  /// Retrieves underlying PropertiesID and clear this.
   constexpr PropertiesID release()
   {
     auto r = m_resource;
@@ -149,9 +141,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to PropertiesParam
-   */
+  /// Converts to PropertiesParam
   constexpr operator PropertiesParam() const { return {m_resource}; }
 
   /**
@@ -175,9 +165,7 @@ public:
   }
 };
 
-/**
- * Semi-safe reference for Properties.
- */
+/// Semi-safe reference for Properties.
 struct PropertiesRef : Properties
 {
   /**

@@ -88,15 +88,11 @@
 > class Error : public std::exception
 132a168
 > public:
-142c178
-<    * Default ctor.
----
->    * Constructs from string
-152c188
+146c182
 <   const char* what() const { return GetError(); }
 ---
 >   constexpr const char* what() const noexcept { return m_message.c_str(); }
-154,157c190,193
+148,151c184,187
 <   constexpr const std::string& str() const
 <   {
 <     static_assert(false, "Not implemented");
@@ -106,7 +102,7 @@
 >    * Returns the explanatory string.
 >    */
 >   constexpr const std::string& str() const noexcept { return m_message; }
-159a196,203
+153a190,197
 > /**
 >  * Check and throw if returned value from SDL is an error.
 >  *
@@ -115,11 +111,11 @@
 >  *
 >  * @param result the result returned
 >  */
-162c206
+156c200
 <   static_assert(false, "Not implemented");
 ---
 >   if (!result) throw Error();
-164a209,216
+158a203,210
 > /**
 >  * Check and throw if returned value from SDL is an error.
 >  *
@@ -128,12 +124,12 @@
 >  *
 >  * @param result the result returned
 >  */
-168c220,221
+162c214,215
 <   static_assert(false, "Not implemented");
 ---
 >   if (!result) throw Error();
 >   return result;
-170a224,233
+164a218,227
 > /**
 >  * Check and throw if returned value from SDL is an error.
 >  *
@@ -144,22 +140,22 @@
 >  * @param invalidValue the value that if equal to result indicates this is
 >  *                     invalid.
 >  */
-174c237,238
+168c231,232
 <   static_assert(false, "Not implemented");
 ---
 >   if (result == invalidValue) throw Error();
 >   return result;
-190a255,256
+184a249,250
 > #ifdef SDL3PP_DOC
 > 
-194c260
+188c254
 <  * This simply calls SetErrorUnformatted() with a standardized error string, for
 ---
 >  * This simply calls SetError() with a standardized error string, for
-206c272
+200c266
 <  * This simply calls SetErrorUnformatted() with a standardized error string, for
 ---
 >  * This simply calls SetError() with a standardized error string, for
-226a293,294
+220a287,288
 > 
 > #endif // SDL3PP_DOC

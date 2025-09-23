@@ -73,17 +73,13 @@ struct Point : PointRaw
    */
   constexpr explicit Point(const FPointRaw& p) {}
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const PointRaw& other) const
   {
     return x == other.x && y == other.y;
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const Point& other) const
   {
     return *this == (const PointRaw&)(other);
@@ -191,17 +187,13 @@ struct FPoint : FPointRaw
   {
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const FPointRaw& other) const
   {
     return x == other.x && y == other.y;
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const FPoint& other) const
   {
     return *this == (const FPointRaw&)(other);
@@ -323,25 +315,19 @@ struct Rect : RectRaw
    */
   Rect(const PointRaw& corner, const PointRaw& size) {}
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const RectRaw& other) const
   {
     return x == other.x && y == other.y && w == other.w && h == other.h;
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const Rect& other) const
   {
     return *this == (const RectRaw&)(other);
   }
 
-  /**
-   * @sa Empty()
-   */
+  ///@sa Empty()
   constexpr explicit operator bool() const
   {
     static_assert(false, "Not implemented");
@@ -526,9 +512,7 @@ struct Rect : RectRaw
    */
   constexpr operator SDL_FRect() const : RectRaw(SDL_RectToFRect()) {}
 
-  /**
-   * @sa operator ToFRect()
-   */
+  ///@sa operator ToFRect()
 #error "operator FRect (undefined)"
 
   /**
@@ -685,25 +669,19 @@ struct FRect : FRectRaw
    */
   constexpr FRect(const FPointRaw& corner, const FPointRaw& size) {}
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const FRectRaw& other) const
   {
     return x == other.x && y == other.y && w == other.w && h == other.h;
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const FRect& other) const
   {
     return *this == (const FRectRaw&)(other);
   }
 
-  /**
-   * @sa Empty()
-   */
+  ///@sa Empty()
   constexpr explicit operator bool() const
   {
     static_assert(false, "Not implemented");

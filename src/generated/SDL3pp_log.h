@@ -120,14 +120,10 @@ public:
    */
   constexpr explicit LogCategory(int category) {}
 
-  /**
-   * Default comparison operator
-   */
+  /// Default comparison operator
   constexpr auto operator<=>(const LogCategory& other) const = default;
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr auto operator<=>(LogCategoryRaw category) const
   {
     return operator<=>(LogCategory(category));

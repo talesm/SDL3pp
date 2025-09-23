@@ -81,17 +81,13 @@ struct Point : PointRaw
   {
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const PointRaw& other) const
   {
     return x == other.x && y == other.y;
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const Point& other) const
   {
     return *this == (const PointRaw&)(other);
@@ -516,17 +512,13 @@ struct FPoint : FPointRaw
   {
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const FPointRaw& other) const
   {
     return x == other.x && y == other.y;
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const FPoint& other) const
   {
     return *this == (const FPointRaw&)(other);
@@ -875,22 +867,16 @@ struct Rect : RectRaw
   {
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const RectRaw& other) const { return Equal(other); }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const Rect& other) const
   {
     return *this == (const RectRaw&)(other);
   }
 
-  /**
-   * @sa Empty()
-   */
+  /// @sa Empty()
   constexpr explicit operator bool() const { return !Empty(); }
 
   /**
@@ -1207,9 +1193,7 @@ struct Rect : RectRaw
     return r;
   }
 
-  /**
-   * @sa operator ToFRect()
-   */
+  ///@sa operator ToFRect()
   constexpr operator FRect() const;
 
   /**
@@ -1505,25 +1489,19 @@ struct FRect : FRectRaw
   {
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const FRectRaw& other) const
   {
     return Equal(other);
   }
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(const FRect& other) const
   {
     return *this == (const FRectRaw&)(other);
   }
 
-  /**
-   * @sa Empty()
-   */
+  /// @sa Empty()
   constexpr operator bool() const { return !Empty(); }
 
   /**

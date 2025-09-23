@@ -81,9 +81,7 @@ struct Palette;
 
 using PaletteRaw = SDL_Palette*;
 
-/**
- * Safely wrap Palette for non owning parameters
- */
+/// Safely wrap Palette for non owning parameters
 struct PaletteParam
 {
   PaletteRaw value;
@@ -101,9 +99,7 @@ struct PaletteParam
   constexpr operator PaletteRaw() const { return value; }
 };
 
-/**
- * Safely wrap Palette for non owning const parameters
- */
+/// Safely wrap Palette for non owning const parameters
 struct PaletteConstParam
 {
   const PaletteRaw value;
@@ -399,14 +395,10 @@ public:
   {
   }
 
-  /**
-   * Default comparison operator
-   */
+  /// Default comparison operator
   constexpr bool operator==(const PixelFormat& other) const = default;
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(PixelFormatRaw format) const
   {
     return operator==(PixelFormat(format));
@@ -1237,9 +1229,7 @@ constexpr ColorRange COLOR_RANGE_UNKNOWN =
  */
 constexpr ColorRange COLOR_RANGE_LIMITED = SDL_COLOR_RANGE_LIMITED;
 
-/**
- * Full range, e.g.  0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
- */
+/// Full range, e.g.  0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
 constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
 
 /**
@@ -1269,9 +1259,7 @@ constexpr ColorPrimaries COLOR_PRIMARIES_BT470BG =
 constexpr ColorPrimaries COLOR_PRIMARIES_BT601 =
   SDL_COLOR_PRIMARIES_BT601; ///< ITU-R BT.601-7 525, SMPTE 170M.
 
-/**
- * SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601.
- */
+/// SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601.
 constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE240 =
   SDL_COLOR_PRIMARIES_SMPTE240;
 
@@ -1315,9 +1303,7 @@ constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT709 =
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNSPECIFIED =
   SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED; ///< TRANSFER_CHARACTERISTICS_UNSPECIFIED
 
-/**
- * ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM.
- */
+/// ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM.
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA22 =
   SDL_TRANSFER_CHARACTERISTICS_GAMMA22;
 
@@ -1357,9 +1343,7 @@ constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_12BIT =
   SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT; ///< ITU-R BT2020 for 12-bit
                                              ///< system.
 
-/**
- * SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems.
- */
+/// SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems.
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_PQ =
   SDL_TRANSFER_CHARACTERISTICS_PQ;
 
@@ -1534,14 +1518,10 @@ public:
   {
   }
 
-  /**
-   * Default comparison operator
-   */
+  /// Default comparison operator
   constexpr bool operator==(const Colorspace& other) const = default;
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr bool operator==(ColorspaceRaw cspace) const
   {
     return operator==(Colorspace(cspace));
@@ -1731,9 +1711,7 @@ public:
 
 constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.
- */
+/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.
 constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
 
 constexpr Colorspace COLORSPACE_SRGB_LINEAR =
@@ -1742,49 +1720,31 @@ constexpr Colorspace COLORSPACE_SRGB_LINEAR =
 constexpr Colorspace COLORSPACE_HDR10 =
   SDL_COLORSPACE_HDR10; ///< [object Object]
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.
 constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
 constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
 constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
 constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
 constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020.
 constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
 
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020.
- */
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020.
 constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
 
-/**
- * The default colorspace for RGB surfaces if no colorspace is specified.
- */
+/// The default colorspace for RGB surfaces if no colorspace is specified.
 constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
 
-/**
- * The default colorspace for YUV surfaces if no colorspace is specified.
- */
+/// The default colorspace for YUV surfaces if no colorspace is specified.
 constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
 
 /**
@@ -2033,14 +1993,10 @@ struct Color : ColorRaw
   {
   }
 
-  /**
-   * Default comparison operator
-   */
+  /// Default comparison operator
   constexpr auto operator<=>(const Color& other) const = default;
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr auto operator<=>(ColorRaw color) const
   {
     return operator<=>(Color(color));
@@ -2154,14 +2110,10 @@ struct FColor : FColorRaw
   {
   }
 
-  /**
-   * Default comparison operator
-   */
+  /// Default comparison operator
   constexpr auto operator<=>(const FColor& other) const = default;
 
-  /**
-   * Compares with the underlying type
-   */
+  /// Compares with the underlying type
   constexpr auto operator<=>(const FColorRaw& color) const
   {
     return operator<=>(FColor(color));
@@ -2316,23 +2268,17 @@ public:
 
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
-  /**
-   * Assignment operator.
-   */
+  /// Assignment operator.
   Palette& operator=(Palette other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
-  /**
-   * Retrieves underlying PaletteRaw.
-   */
+  /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const { return m_resource; }
 
-  /**
-   * Retrieves underlying PaletteRaw and clear this.
-   */
+  /// Retrieves underlying PaletteRaw and clear this.
   constexpr PaletteRaw release()
   {
     auto r = m_resource;
@@ -2340,9 +2286,7 @@ public:
     return r;
   }
 
-  /**
-   * Converts to PaletteParam
-   */
+  /// Converts to PaletteParam
   constexpr operator PaletteParam() const { return {m_resource}; }
 
   constexpr int GetSize() const { static_assert(false, "Not implemented"); }

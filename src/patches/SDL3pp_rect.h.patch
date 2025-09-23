@@ -16,43 +16,43 @@
 >     : SDL_Point{int(p.x), int(p.y)}
 >   {
 >   }
-100c108
+96c104
 <    * Get the x.
 ---
 >    * Get x coordinate
-102c110
+98c106
 <    * @returns current x value.
 ---
 >    * @returns x coordinate
-107c115
+103c111
 <    * Set the x.
 ---
 >    * Set the x coordinate.
-109c117
+105c113
 <    * @param newX the new x value.
 ---
 >    * @param newX the new x coordinate.
-119c127
+115c123
 <    * Get the y.
 ---
 >    * Get y coordinate
-121c129
+117c125
 <    * @returns current y value.
 ---
 >    * @returns y coordinate
-126c134
+122c130
 <    * Set the y.
 ---
 >    * Set the y coordinate.
-128c136
+124c132
 <    * @param newY the new y value.
 ---
 >    * @param newY the new y coordinate.
-151c159
+147c155
 <    * @returns true if `p` is contained by `r`, false otherwise.
 ---
 >    * @returns true if this is contained by `r`, false otherwise.
-159c167,312
+155c163,308
 <     return SDL_PointInRect(this, r);
 ---
 >     return SDL_PointInRect(this, &r);
@@ -201,7 +201,7 @@
 >   constexpr Point operator*(const Point& other) const
 >   {
 >     return Point(x * other.x, y * other.y);
-160a314,483
+156a310,479
 > 
 >   /**
 >    * Memberwise add another point
@@ -372,42 +372,42 @@
 >    * @return FPoint
 >    */
 >   constexpr operator FPoint() const;
-167a491,492
+163a487,488
 >  * @cat wrap-extending-struct
 >  *
-218c543
+210c535
 <    * Get the x.
 ---
 >    * Get the x coordinate.
-225c550
+217c542
 <    * Set the x.
 ---
 >    * Set the x coordinate.
-227c552
+219c544
 <    * @param newX the new x value.
 ---
 >    * @param newX the new x coordinate.
-237c562
+229c554
 <    * Get the y.
 ---
 >    * Get the y coordinate.
-239c564
+231c556
 <    * @returns current y value.
 ---
 >    * @returns current y coordinate.
-244c569
+236c561
 <    * Set the y.
 ---
 >    * Set the y coordinate.
-246c571
+238c563
 <    * @param newY the new y value.
 ---
 >    * @param newY the new y coordinate.
-269c594
+261c586
 <    * @returns true if `p` is contained by `r`, false otherwise.
 ---
 >    * @returns true if this is contained by `r`, false otherwise.
-275c600,645
+267c592,637
 <   constexpr bool InRect(const FRectRaw& r) const
 ---
 >   constexpr bool InRect(const FRectRaw& r) const;
@@ -456,11 +456,11 @@
 >    *
 >    */
 >   constexpr FPoint operator/(float value) const
-277c647
+269c639
 <     return SDL_PointInRectFloat(this, r);
 ---
 >     return FPoint(x / value, y / value);
-278a649,824
+270a641,816
 > 
 >   /**
 >    * Get point's memberwise division by another point
@@ -637,10 +637,10 @@
 >    *
 >    */
 >   constexpr FPoint& Wrap(const FRect& rect);
-285a832,833
+277a824,825
 >  * @cat wrap-extending-struct
 >  *
-309,312c857,860
+301,304c849,852
 <    * @param x the value for x.
 <    * @param y the value for y.
 <    * @param w the value for w.
@@ -650,105 +650,107 @@
 >    * @param y the top y.
 >    * @param w the width.
 >    * @param h the height.
-320c868
+312c860
 <    * Wraps Rect.
 ---
 >    * Construct from offset and size
-322c870,871
+314c862,863
 <    * @param r the value to be wrapped
 ---
 >    * @param corner the top-left corner
 >    * @param size the size
-324c873,876
+316,319c865,866
 <   Rect(const PointRaw& corner, const PointRaw& size) {}
+< 
+<   /// Compares with the underlying type
+<   constexpr bool operator==(const RectRaw& other) const
 ---
 >   constexpr Rect(const PointRaw& corner, const PointRaw& size)
 >     : Rect{corner.x, corner.y, size.x, size.y}
->   {
->   }
-329,332c881
-<   constexpr bool operator==(const RectRaw& other) const
-<   {
+321d867
 <     return x == other.x && y == other.y && w == other.w && h == other.h;
-<   }
----
+324a871,873
 >   constexpr bool operator==(const RectRaw& other) const { return Equal(other); }
-345,348c894
+> 
+>   /// Compares with the underlying type
+330,334c879,880
+<   ///@sa Empty()
 <   constexpr explicit operator bool() const
 <   {
 <     static_assert(false, "Not implemented");
 <   }
 ---
+>   /// @sa Empty()
 >   constexpr explicit operator bool() const { return !Empty(); }
-351c897
+337c883
 <    * Get the x.
 ---
 >    * Get left x coordinate.
-353c899
+339c885
 <    * @returns current x value.
 ---
 >    * @returns coordinate of the left x
-358c904
+344c890
 <    * Set the x.
 ---
 >    * Set the left x coordinate.
-360c906
+346c892
 <    * @param newX the new x value.
 ---
 >    * @param newX the new left x.
-370c916
+356c902
 <    * Get the y.
 ---
 >    * Get top y coordinate.
-372c918
+358c904
 <    * @returns current y value.
 ---
 >    * @returns coordinate of the top y.
-377c923
+363c909
 <    * Set the y.
 ---
 >    * Set the top y coordinate.
-379c925
+365c911
 <    * @param newY the new y value.
 ---
 >    * @param newY the new top y.
-389c935
+375c921
 <    * Get the w.
 ---
 >    * Get width of the rect
-391c937
+377c923
 <    * @returns current w value.
 ---
 >    * @returns Width of the rect
-396c942
+382c928
 <    * Set the w.
 ---
 >    * Set the width of the rect.
-398c944
+384c930
 <    * @param newW the new w value.
 ---
 >    * @param newW the new width.
-408c954
+394c940
 <    * Get the h.
 ---
 >    * Get height of the rect
-410c956
+396c942
 <    * @returns current h value.
 ---
 >    * @returns Height of the rect
-415c961
+401c947
 <    * Set the h.
 ---
 >    * Set the height of the rect.
-417c963
+403c949
 <    * @param newH the new h value.
 ---
 >    * @param newH the new height.
-432c978
+418c964
 <    * @param points an array of Point structures representing points to be
 ---
 >    * @param points a span of SDL_Point structures representing points to be
-434,439c980,984
+420,425c966,970
 <    * @param count the number of structures in the `points` array.
 <    * @param clip an Rect used for clipping or nullptr to enclose all points.
 <    * @param result an Rect structure filled in with the minimal enclosing
@@ -761,7 +763,7 @@
 >    * @returns a SDL_Rect structure filled in with the minimal enclosing
 >    *          rectangle or an empty rect if all the points were outside of the
 >    *          clipping rectangle.
-446c991,996
+432c977,982
 <     return SDL_GetRectEnclosingPoints(points, clip);
 ---
 >     Rect result;
@@ -770,7 +772,7 @@
 >       return result;
 >     }
 >     return {};
-448a999,1007
+434a985,993
 >   /**
 >    * Construct the rect from given center coordinates, width and height
 >    *
@@ -780,11 +782,11 @@
 >    * @param[in] h Height of the rectangle
 >    *
 >    */
-451c1010
+437c996
 <     static_assert(false, "Not implemented");
 ---
 >     return Rect(cx - w / 2, cy - h / 2, w, h);
-454c1013,1020
+440c999,1006
 <   static constexpr Rect FromCenter(const Point& center, const Point& size)
 ---
 >   /**
@@ -795,11 +797,11 @@
 >    *
 >    */
 >   static constexpr Rect FromCenter(Point center, Point size)
-456c1022
+442c1008
 <     static_assert(false, "Not implemented");
 ---
 >     return Rect(center - size / 2, size);
-458a1025,1033
+444a1011,1019
 >   /**
 >    * Construct the rect from given corners coordinates
 >    *
@@ -809,11 +811,11 @@
 >    * @param[in] y2 Y coordinate of the bottom right rectangle corner
 >    *
 >    */
-461c1036
+447c1022
 <     static_assert(false, "Not implemented");
 ---
 >     return Rect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
-464c1039,1046
+450c1025,1032
 <   static constexpr Rect FromCorners(const PointRaw& p1, const PointRaw& p2)
 ---
 >   /**
@@ -824,11 +826,11 @@
 >    *
 >    */
 >   static constexpr Rect FromCorners(Point p1, Point p2)
-466c1048
+452c1034
 <     static_assert(false, "Not implemented");
 ---
 >     return Rect(p1, p2 - p1 + Point(1, 1));
-469c1051,1057
+455c1037,1043
 <   auto GetX2() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -838,7 +840,7 @@
 >    *
 >    */
 >   constexpr int GetX2() const { return x + w - 1; }
-471c1059,1073
+457c1045,1059
 <   auto SetX2() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -856,7 +858,7 @@
 >     w = x2 - x + 1;
 >     return *this;
 >   }
-473c1075,1081
+459c1061,1067
 <   auto GetY2() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -866,7 +868,7 @@
 >    *
 >    */
 >   constexpr int GetY2() const { return y + h - 1; }
-475c1083,1097
+461c1069,1083
 <   auto SetY2() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -884,7 +886,7 @@
 >     h = y2 - y + 1;
 >     return *this;
 >   }
-477c1099,1105
+463c1085,1091
 <   auto GetTopLeft() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -894,7 +896,7 @@
 >    *
 >    */
 >   constexpr Point GetTopLeft() const { return Point(x, y); }
-479c1107,1113
+465c1093,1099
 <   auto GetTopRight() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -904,7 +906,7 @@
 >    *
 >    */
 >   constexpr Point GetTopRight() const { return Point(GetX2(), y); }
-481c1115,1121
+467c1101,1107
 <   auto GetBottomLeft() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -914,7 +916,7 @@
 >    *
 >    */
 >   constexpr Point GetBottomLeft() const { return Point(x, GetY2()); }
-483c1123,1129
+469c1109,1115
 <   auto GetBottomRight() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -924,7 +926,7 @@
 >    *
 >    */
 >   constexpr Point GetBottomRight() const { return Point(GetX2(), GetY2()); }
-485c1131,1137
+471c1117,1123
 <   auto GetSize() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -934,7 +936,7 @@
 >    *
 >    */
 >   constexpr Point GetSize() const { return Point(w, h); }
-487c1139,1145
+473c1125,1131
 <   auto GetCentroid() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -944,7 +946,7 @@
 >    *
 >    */
 >   constexpr Point GetCentroid() const { return Point(x + w / 2, y + h / 2); }
-489c1147,1163
+475c1133,1149
 <   bool GetLineIntersection(PointRaw* p1, PointRaw* p2)
 ---
 >   /**
@@ -964,23 +966,23 @@
 >    *
 >    */
 >   bool GetLineIntersection(PointRaw* p1, PointRaw* p2) const
-491c1165,1168
+477c1151,1154
 <     static_assert(false, "Not implemented");
 ---
 >     return GetLineIntersection(p1 ? &p1->x : nullptr,
 >                                p1 ? &p1->y : nullptr,
 >                                p2 ? &p2->x : nullptr,
 >                                p2 ? &p2->y : nullptr);
-517c1194
+503c1180
 <    * Convert an Rect to FRect
 ---
 >    * Convert an SDL_Rect to SDL_FRect
-519,520c1196
+505,506c1182
 <    * @param rect a pointer to an Rect.
 <    * @param frect a pointer filled in with the floating point representation of
 ---
 >    * @return A FRect filled in with the floating point representation of
-527c1203,1208
+513c1189,1194
 <   constexpr operator SDL_FRect() const : RectRaw(SDL_RectToFRect()) {}
 ---
 >   constexpr operator SDL_FRect() const
@@ -989,19 +991,19 @@
 >     SDL_RectToFRect(this, &r);
 >     return r;
 >   }
-532c1213
+516c1197
 < #error "operator FRect (undefined)"
 ---
 >   constexpr operator FRect() const;
-564c1245
+548c1229
 <    * @param b the second rectangle to test.
 ---
 >    * @param other the second rectangle to test.
-573c1254
+557c1238
 <     return SDL_RectsEqual(this, other);
 ---
 >     return SDL_RectsEqual(this, &other);
-575a1257,1264
+559a1241,1248
 >   /**
 >    * Check whether the rect contains given point
 >    *
@@ -1010,11 +1012,11 @@
 >    * @returns True if the point is contained in the rect
 >    *
 >    */
-578c1267
+562c1251
 <     static_assert(false, "Not implemented");
 ---
 >     return SDL_PointInRect(&p, this);
-580a1270,1277
+564a1254,1261
 >   /**
 >    * Check whether the rect contains given point
 >    *
@@ -1023,21 +1025,21 @@
 >    * @returns True if the point is contained in the rect
 >    *
 >    */
-583c1280
+567c1264
 <     static_assert(false, "Not implemented");
 ---
 >     return GetUnion(other) == *this;
-589,591c1286
+573,575c1270
 <    * If either pointer is nullptr the function will return false.
 <    *
 <    * @param B an Rect structure representing the second rectangle.
 ---
 >    * @param other an SDL_Rect structure representing the second rectangle.
-602c1297
+586c1281
 <     return SDL_HasRectIntersection(this, other);
 ---
 >     return SDL_HasRectIntersection(this, &other);
-610,613c1305,1307
+594,597c1289,1291
 <    * @param B an Rect structure representing the second rectangle.
 <    * @param result an Rect structure filled in with the intersection of
 <    *               rectangles `A` and `B`.
@@ -1046,25 +1048,25 @@
 >    * @param other an SDL_Rect structure representing the second rectangle.
 >    * @returns an SDL_Rect structure filled in with the intersection of
 >    *               if there is intersection, std::nullopt otherwise.
-619c1313
+603c1297
 <   constexpr std::optional<Rect> GetIntersection(const RectRaw& other) const
 ---
 >   constexpr Rect GetIntersection(const RectRaw& other) const
-621c1315,1318
+605c1299,1302
 <     return SDL_GetRectIntersection(this, other);
 ---
 >     if (Rect result; SDL_GetRectIntersection(this, &other, &result)) {
 >       return result;
 >     }
 >     return {};
-627,629c1324,1325
+611,613c1308,1309
 <    * @param B an Rect structure representing the second rectangle.
 <    * @param result an Rect structure filled in with the union of rectangles
 <    *               `A` and `B`.
 ---
 >    * @param other an SDL_Rect structure representing the second rectangle.
 >    * @returns Rect representing union of two rectangles
-636c1332,1453
+620c1316,1437
 <     return CheckError(SDL_GetRectUnion(this, other));
 ---
 >     Rect result;
@@ -1189,10 +1191,10 @@
 >     x -= offset.x;
 >     y -= offset.y;
 >     return *this;
-645a1463,1464
+629a1447,1448
 >  * @cat wrap-extending-struct
 >  *
-671,674c1490,1493
+655,658c1474,1477
 <    * @param x the value for x.
 <    * @param y the value for y.
 <    * @param w the value for w.
@@ -1202,99 +1204,101 @@
 >    * @param y the top y.
 >    * @param w the width.
 >    * @param h the height.
-682,684c1501
+666,668c1485
 <    * Wraps FRect.
 <    *
 <    * @param r the value to be wrapped
 ---
 >    * Constructs from top-left corner plus size
-686c1503,1506
+670c1487,1490
 <   constexpr FRect(const FPointRaw& corner, const FPointRaw& size) {}
 ---
 >   constexpr FRect(FPoint corner, FPoint size)
 >     : FRect{corner.x, corner.y, size.x, size.y}
 >   {
 >   }
-693c1513
+675c1495
 <     return x == other.x && y == other.y && w == other.w && h == other.h;
 ---
 >     return Equal(other);
-707,710c1527
+684,688c1504,1505
+<   ///@sa Empty()
 <   constexpr explicit operator bool() const
 <   {
 <     static_assert(false, "Not implemented");
 <   }
 ---
+>   /// @sa Empty()
 >   constexpr operator bool() const { return !Empty(); }
-713c1530
+691c1508
 <    * Get the x.
 ---
 >    * Get left x coordinate.
-715c1532
+693c1510
 <    * @returns current x value.
 ---
 >    * @returns coordinate of the left x
-720c1537
+698c1515
 <    * Set the x.
 ---
 >    * Set the left x coordinate.
-722c1539
+700c1517
 <    * @param newX the new x value.
 ---
 >    * @param newX the new left x.
-732c1549
+710c1527
 <    * Get the y.
 ---
 >    * Get top y coordinate.
-734c1551
+712c1529
 <    * @returns current y value.
 ---
 >    * @returns coordinate of the top y.
-739c1556
+717c1534
 <    * Set the y.
 ---
 >    * Set the top y coordinate.
-741c1558
+719c1536
 <    * @param newY the new y value.
 ---
 >    * @param newY the new top y.
-751c1568
+729c1546
 <    * Get the w.
 ---
 >    * Get width of the rect
-753c1570
+731c1548
 <    * @returns current w value.
 ---
 >    * @returns Width of the rect
-758c1575
+736c1553
 <    * Set the w.
 ---
 >    * Set the width of the rect.
-760c1577
+738c1555
 <    * @param newW the new w value.
 ---
 >    * @param newW the new width.
-770c1587
+748c1565
 <    * Get the h.
 ---
 >    * Get height of the rect
-772c1589
+750c1567
 <    * @returns current h value.
 ---
 >    * @returns Height of the rect
-777c1594
+755c1572
 <    * Set the h.
 ---
 >    * Set the height of the rect.
-779c1596
+757c1574
 <    * @param newH the new h value.
 ---
 >    * @param newH the new height.
-795c1612
+773c1590
 <    * @param points an array of FPoint structures representing points to be
 ---
 >    * @param points a span of SDL_Point structures representing points to be
-797,802c1614,1618
+775,780c1592,1596
 <    * @param count the number of structures in the `points` array.
 <    * @param clip an FRect used for clipping or nullptr to enclose all points.
 <    * @param result an FRect structure filled in with the minimal enclosing
@@ -1307,7 +1311,7 @@
 >    * @returns a FRect structure filled in with the minimal enclosing
 >    *          rectangle or an empty FRect if all the points were outside of
 >    *          the clipping rectangle.
-810c1626,1630
+788c1604,1608
 <     return SDL_GetRectEnclosingPointsFloat(points, clip);
 ---
 >     if (FRect result; SDL_GetRectEnclosingPointsFloat(
@@ -1315,7 +1319,7 @@
 >       return result;
 >     }
 >     return {};
-812a1633,1641
+790a1611,1619
 >   /**
 >    * Construct the rect from given center coordinates, width and height
 >    *
@@ -1325,11 +1329,11 @@
 >    * @param[in] h Height of the rectangle
 >    *
 >    */
-815c1644
+793c1622
 <     static_assert(false, "Not implemented");
 ---
 >     return FRect(cx - w / 2, cy - h / 2, w, h);
-818,819c1647,1654
+796,797c1625,1632
 <   static constexpr FRect FromCenter(const FPointRaw& center,
 <                                     const FPointRaw& size)
 ---
@@ -1341,11 +1345,11 @@
 >    *
 >    */
 >   static constexpr FRect FromCenter(FPoint center, FPoint size)
-821c1656
+799c1634
 <     static_assert(false, "Not implemented");
 ---
 >     return FRect(center - size / 2, size);
-823a1659,1667
+801a1637,1645
 >   /**
 >    * Construct the rect from given corners coordinates
 >    *
@@ -1355,11 +1359,11 @@
 >    * @param[in] y2 Y coordinate of the bottom right rectangle corner
 >    *
 >    */
-826c1670
+804c1648
 <     static_assert(false, "Not implemented");
 ---
 >     return FRect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
-829c1673,1680
+807c1651,1658
 <   static constexpr FRect FromCorners(const FPointRaw& p1, const FPointRaw& p2)
 ---
 >   /**
@@ -1370,11 +1374,11 @@
 >    *
 >    */
 >   static constexpr FRect FromCorners(FPoint p1, FPoint p2)
-831c1682
+809c1660
 <     static_assert(false, "Not implemented");
 ---
 >     return FRect(p1, p2 - p1 + FPoint(1, 1));
-834c1685,1691
+812c1663,1669
 <   auto GetX2() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -1384,7 +1388,7 @@
 >    *
 >    */
 >   constexpr float GetX2() const { return x + w - 1; }
-836c1693,1707
+814c1671,1685
 <   auto SetX2() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -1402,7 +1406,7 @@
 >     w = x2 - x + 1;
 >     return *this;
 >   }
-838c1709,1715
+816c1687,1693
 <   auto GetY2() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -1412,7 +1416,7 @@
 >    *
 >    */
 >   constexpr float GetY2() const { return y + h - 1; }
-840c1717,1731
+818c1695,1709
 <   auto SetY2() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -1430,7 +1434,7 @@
 >     h = y2 - y + 1;
 >     return *this;
 >   }
-842c1733,1739
+820c1711,1717
 <   auto GetTopLeft() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -1440,7 +1444,7 @@
 >    *
 >    */
 >   constexpr FPoint GetTopLeft() const { return FPoint(x, y); }
-844c1741,1747
+822c1719,1725
 <   auto GetTopRight() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -1450,7 +1454,7 @@
 >    *
 >    */
 >   constexpr FPoint GetTopRight() const { return FPoint(GetX2(), y); }
-846c1749,1755
+824c1727,1733
 <   auto GetBottomLeft() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -1460,7 +1464,7 @@
 >    *
 >    */
 >   constexpr FPoint GetBottomLeft() const { return FPoint(x, GetY2()); }
-848c1757,1763
+826c1735,1741
 <   auto GetBottomRight() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -1470,7 +1474,7 @@
 >    *
 >    */
 >   constexpr FPoint GetBottomRight() const { return FPoint(GetX2(), GetY2()); }
-850c1765,1771
+828c1743,1749
 <   auto GetSize() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -1480,7 +1484,7 @@
 >    *
 >    */
 >   constexpr FPoint GetSize() const { return FPoint(w, h); }
-852c1773,1779
+830c1751,1757
 <   auto GetCentroid() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -1490,11 +1494,11 @@
 >    *
 >    */
 >   constexpr FPoint GetCentroid() const { return FPoint(x + w / 2, y + h / 2); }
-878c1805
+856c1783
 <    * Determine whether a floating point rectangle can contain any point.
 ---
 >    * Calculate the intersection of a rectangle and line segment
-880,881c1807,1832
+858,859c1785,1810
 <    * A rectangle is considered "empty" for this function if `r` is nullptr, or
 <    * if `r`'s width and/or height are < 0.0f.
 ---
@@ -1524,28 +1528,28 @@
 >    *
 >    * A rectangle is considered "empty" for this function if `r` is NULL, or if
 >    * `r`'s width and/or height are <= 0.
-910c1861
+888c1839
 <    * @param b the second rectangle to test.
 ---
 >    * @param other the second rectangle to test.
-922c1873
+900c1851
 <     return SDL_RectsEqualEpsilon(this, other, epsilon);
 ---
 >     return SDL_RectsEqualEpsilon(this, &other, epsilon);
-926,927c1877
+904,905c1855
 <    * Determine whether two floating point rectangles are equal, within a default
 <    * epsilon.
 ---
 >    * Determine whether two rectangles are equal.
-940c1890
+918c1868
 <    * @param b the second rectangle to test.
 ---
 >    * @param other the second rectangle to test.
-951c1901
+929c1879
 <     return SDL_RectsEqualFloat(this, other);
 ---
 >     return SDL_RectsEqualFloat(this, &other);
-953a1904,1911
+931a1882,1889
 >   /**
 >    * Check whether the rect contains given point
 >    *
@@ -1554,11 +1558,11 @@
 >    * @returns True if the point is contained in the rect
 >    *
 >    */
-956c1914
+934c1892
 <     static_assert(false, "Not implemented");
 ---
 >     return SDL_PointInRectFloat(&p, this);
-958a1917,1924
+936a1895,1902
 >   /**
 >    * Check whether the rect contains given point
 >    *
@@ -1567,28 +1571,28 @@
 >    * @returns True if the point is contained in the rect
 >    *
 >    */
-961c1927
+939c1905
 <     static_assert(false, "Not implemented");
 ---
 >     return GetUnion(other) == *this;
-965,967c1931
+943,945c1909
 <    * Determine whether two rectangles intersect with float precision.
 <    *
 <    * If either pointer is nullptr the function will return false.
 ---
 >    * Determine whether two rectangles intersect.
-969c1933
+947c1911
 <    * @param B an FRect structure representing the second rectangle.
 ---
 >    * @param other an SDL_Rect structure representing the second rectangle.
-971a1936,1937
+949a1914,1915
 >    * @threadsafety It is safe to call this function from any thread.
 >    *
-978c1944
+956c1922
 <     return SDL_HasRectIntersectionFloat(this, other);
 ---
 >     return SDL_HasRectIntersectionFloat(this, &other);
-986,989c1952,1954
+964,967c1930,1932
 <    * @param B an FRect structure representing the second rectangle.
 <    * @param result an FRect structure filled in with the intersection of
 <    *               rectangles `A` and `B`.
@@ -1597,21 +1601,21 @@
 >    * @param other an SDL_Rect structure representing the second rectangle.
 >    * @returns an SDL_Rect structure filled in with the intersection of
 >    *          if there is intersection, an empty FRect otherwise.
-997c1962,1965
+975c1940,1943
 <     return SDL_GetRectIntersectionFloat(this, other);
 ---
 >     if (FRect result; SDL_GetRectIntersectionFloat(this, &other, &result)) {
 >       return result;
 >     }
 >     return {};
-1003,1005c1971,1972
+981,983c1949,1950
 <    * @param B an FRect structure representing the second rectangle.
 <    * @param result an FRect structure filled in with the union of rectangles
 <    *               `A` and `B`.
 ---
 >    * @param other an SDL_Rect structure representing the second rectangle.
 >    * @returns Rect representing union of two rectangles
-1012c1979,2100
+990c1957,2078
 <     return CheckError(SDL_GetRectUnionFloat(this, other));
 ---
 >     FRect result;
@@ -1736,121 +1740,121 @@
 >     x -= offset.x;
 >     y -= offset.y;
 >     return *this;
-1027c2115
+1005c2093
 < constexpr Rect RectToFRect(const RectRaw& rect)
 ---
 > constexpr FRect RectToFRect(const RectRaw& rect)
-1029c2117,2119
+1007c2095,2097
 <   return SDL_RectToFRect(rect);
 ---
 >   FRect frect;
 >   SDL_RectToFRect(&rect, &frect);
 >   return frect;
-1053c2143
+1031c2121
 < constexpr bool PointInRect(const PointRaw& self, const RectRaw& r)
 ---
 > constexpr bool PointInRect(const PointRaw& p, const RectRaw& r)
-1055c2145
+1033c2123
 <   return SDL_PointInRect(self, r);
 ---
 >   return SDL_PointInRect(&p, &r);
-1076c2166
+1054c2144
 < constexpr bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(r); }
 ---
 > constexpr bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(&r); }
-1097c2187
+1075c2165
 < constexpr bool RectsEqual(const RectRaw& self, const RectRaw& other)
 ---
 > constexpr bool RectsEqual(const RectRaw& a, const RectRaw& b)
-1099c2189
+1077c2167
 <   return SDL_RectsEqual(self, other);
 ---
 >   return SDL_RectsEqual(&a, &b);
-1119c2209
+1097c2187
 <   return SDL_HasRectIntersection(self, other);
 ---
 >   return SDL_HasRectIntersection(&self, &other);
-1137,1138c2227
+1115,1116c2205
 < constexpr std::optional<Rect> GetRectIntersection(const RectRaw& self,
 <                                                   const RectRaw& other)
 ---
 > constexpr Rect GetRectIntersection(const RectRaw& self, const RectRaw& other)
-1140c2229,2232
+1118c2207,2210
 <   return SDL_GetRectIntersection(self, other);
 ---
 >   if (Rect result; SDL_GetRectIntersection(&self, &other, &result)) {
 >     return result;
 >   }
 >   return {};
-1156c2248,2250
+1134c2226,2228
 <   return CheckError(SDL_GetRectUnion(self, other));
 ---
 >   Rect r;
 >   CheckError(SDL_GetRectUnion(&self, &other, &r));
 >   return r;
-1180c2274
+1158c2252
 <   return SDL_GetRectEnclosingPoints(points, clip, result);
 ---
 >   return SDL_GetRectEnclosingPoints(points.data(), points.size(), clip, result);
-1207c2301
+1185c2279
 <   return SDL_GetRectAndLineIntersection(rect, X1, Y1, X2, Y2);
 ---
 >   return SDL_GetRectAndLineIntersection(&rect, X1, Y1, X2, Y2);
-1231c2325
+1209c2303
 < constexpr bool PointInRectFloat(const FPointRaw& self, const FRectRaw& r)
 ---
 > constexpr bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
-1233c2327
+1211c2305
 <   return SDL_PointInRectFloat(self, r);
 ---
 >   return SDL_PointInRectFloat(&p, &r);
-1256c2350
+1234c2328
 <   return SDL_RectEmptyFloat(r);
 ---
 >   return SDL_RectEmptyFloat(&r);
-1284,1285c2378,2379
+1262,1263c2356,2357
 < constexpr bool RectsEqualEpsilon(const FRectRaw& self,
 <                                  const FRectRaw& other,
 ---
 > constexpr bool RectsEqualEpsilon(const FRectRaw& a,
 >                                  const FRectRaw& b,
-1288c2382
+1266c2360
 <   return SDL_RectsEqualEpsilon(self, other, epsilon);
 ---
 >   return SDL_RectsEqualEpsilon(&a, &b, epsilon);
-1316c2410
+1294c2388
 < constexpr bool RectsEqualFloat(const FRectRaw& self, const FRectRaw& other)
 ---
 > constexpr bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
-1318c2412
+1296c2390
 <   return SDL_RectsEqualFloat(self, other);
 ---
 >   return SDL_RectsEqualFloat(&a, &b);
-1337c2431
+1315c2409
 <   return SDL_HasRectIntersectionFloat(self, other);
 ---
 >   return SDL_HasRectIntersectionFloat(&self, &other);
-1358c2452,2453
+1336c2430,2431
 <   return SDL_GetRectIntersectionFloat(self, other);
 ---
 >   if (FRect r; SDL_GetRectIntersectionFloat(&self, &other, &r)) return r;
 >   return {};
-1374c2469,2471
+1352c2447,2449
 <   return CheckError(SDL_GetRectUnionFloat(self, other));
 ---
 >   FRect r;
 >   CheckError(SDL_GetRectUnionFloat(&self, &other, &r));
 >   return r;
-1399c2496,2497
+1377c2474,2475
 <   return SDL_GetRectEnclosingPointsFloat(points, clip, result);
 ---
 >   return SDL_GetRectEnclosingPointsFloat(
 >     points.data(), points.size(), clip, result);
-1427c2525
+1405c2503
 <   return SDL_GetRectAndLineIntersectionFloat(rect, X1, Y1, X2, Y2);
 ---
 >   return SDL_GetRectAndLineIntersectionFloat(&rect, X1, Y1, X2, Y2);
-1430a2529,2620
+1408a2507,2598
 > 
 > constexpr Point::operator FPoint() const { return {float(x), float(y)}; }
 > 

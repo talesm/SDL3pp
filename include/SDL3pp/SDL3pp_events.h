@@ -153,15 +153,11 @@ constexpr EventType EVENT_WINDOW_MOVED =
 constexpr EventType EVENT_WINDOW_RESIZED =
   SDL_EVENT_WINDOW_RESIZED; ///< Window has been resized to data1xdata2.
 
-/**
- * The pixel size of the window has changed to data1xdata2.
- */
+/// The pixel size of the window has changed to data1xdata2.
 constexpr EventType EVENT_WINDOW_PIXEL_SIZE_CHANGED =
   SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED;
 
-/**
- * The pixel size of a Metal view associated with the window has changed.
- */
+/// The pixel size of a Metal view associated with the window has changed.
 constexpr EventType EVENT_WINDOW_METAL_VIEW_RESIZED =
   SDL_EVENT_WINDOW_METAL_VIEW_RESIZED;
 
@@ -171,9 +167,7 @@ constexpr EventType EVENT_WINDOW_MINIMIZED =
 constexpr EventType EVENT_WINDOW_MAXIMIZED =
   SDL_EVENT_WINDOW_MAXIMIZED; ///< Window has been maximized.
 
-/**
- * Window has been restored to normal size and position.
- */
+/// Window has been restored to normal size and position.
 constexpr EventType EVENT_WINDOW_RESTORED = SDL_EVENT_WINDOW_RESTORED;
 
 constexpr EventType EVENT_WINDOW_MOUSE_ENTER =
@@ -188,9 +182,7 @@ constexpr EventType EVENT_WINDOW_FOCUS_GAINED =
 constexpr EventType EVENT_WINDOW_FOCUS_LOST =
   SDL_EVENT_WINDOW_FOCUS_LOST; ///< Window has lost keyboard focus.
 
-/**
- * The window manager requests that the window be closed.
- */
+/// The window manager requests that the window be closed.
 constexpr EventType EVENT_WINDOW_CLOSE_REQUESTED =
   SDL_EVENT_WINDOW_CLOSE_REQUESTED;
 
@@ -198,9 +190,7 @@ constexpr EventType EVENT_WINDOW_HIT_TEST =
   SDL_EVENT_WINDOW_HIT_TEST; ///< Window had a hit test that wasn't
                              ///< HITTEST_NORMAL.
 
-/**
- * The ICC profile of the window's display has changed.
- */
+/// The ICC profile of the window's display has changed.
 constexpr EventType EVENT_WINDOW_ICCPROF_CHANGED =
   SDL_EVENT_WINDOW_ICCPROF_CHANGED;
 
@@ -372,9 +362,7 @@ constexpr EventType EVENT_DROP_TEXT =
 constexpr EventType EVENT_DROP_BEGIN =
   SDL_EVENT_DROP_BEGIN; ///< A new set of drops is beginning (NULL filename)
 
-/**
- * Current set of drops is now complete (NULL filename)
- */
+/// Current set of drops is now complete (NULL filename)
 constexpr EventType EVENT_DROP_COMPLETE = SDL_EVENT_DROP_COMPLETE;
 
 constexpr EventType EVENT_DROP_POSITION =
@@ -386,9 +374,7 @@ constexpr EventType EVENT_AUDIO_DEVICE_ADDED =
 constexpr EventType EVENT_AUDIO_DEVICE_REMOVED =
   SDL_EVENT_AUDIO_DEVICE_REMOVED; ///< An audio device has been removed.
 
-/**
- * An audio device's format has been changed by the system.
- */
+/// An audio device's format has been changed by the system.
 constexpr EventType EVENT_AUDIO_DEVICE_FORMAT_CHANGED =
   SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED;
 
@@ -405,9 +391,7 @@ constexpr EventType EVENT_PEN_PROXIMITY_OUT =
 constexpr EventType EVENT_PEN_DOWN =
   SDL_EVENT_PEN_DOWN; ///< Pressure-sensitive pen touched drawing surface.
 
-/**
- * Pressure-sensitive pen stopped touching drawing surface.
- */
+/// Pressure-sensitive pen stopped touching drawing surface.
 constexpr EventType EVENT_PEN_UP = SDL_EVENT_PEN_UP;
 
 constexpr EventType EVENT_PEN_BUTTON_DOWN =
@@ -428,25 +412,17 @@ constexpr EventType EVENT_CAMERA_DEVICE_ADDED =
 constexpr EventType EVENT_CAMERA_DEVICE_REMOVED =
   SDL_EVENT_CAMERA_DEVICE_REMOVED; ///< A camera device has been removed.
 
-/**
- * A camera device has been approved for use by the user.
- */
+/// A camera device has been approved for use by the user.
 constexpr EventType EVENT_CAMERA_DEVICE_APPROVED =
   SDL_EVENT_CAMERA_DEVICE_APPROVED;
 
-/**
- * A camera device has been denied for use by the user.
- */
+/// A camera device has been denied for use by the user.
 constexpr EventType EVENT_CAMERA_DEVICE_DENIED = SDL_EVENT_CAMERA_DEVICE_DENIED;
 
-/**
- * The render targets have been reset and their contents need to be updated.
- */
+/// The render targets have been reset and their contents need to be updated.
 constexpr EventType EVENT_RENDER_TARGETS_RESET = SDL_EVENT_RENDER_TARGETS_RESET;
 
-/**
- * The device has been reset and all textures need to be recreated.
- */
+/// The device has been reset and all textures need to be recreated.
 constexpr EventType EVENT_RENDER_DEVICE_RESET = SDL_EVENT_RENDER_DEVICE_RESET;
 
 constexpr EventType EVENT_RENDER_DEVICE_LOST =
@@ -470,9 +446,7 @@ constexpr EventType EVENT_POLL_SENTINEL =
  */
 constexpr EventType EVENT_USER = SDL_EVENT_USER;
 
-/**
- * This last event is only for bounding internal arrays.
- */
+/// This last event is only for bounding internal arrays.
 constexpr EventType EVENT_LAST = SDL_EVENT_LAST;
 
 constexpr EventType EVENT_ENUM_PADDING =
@@ -867,14 +841,10 @@ using EventAction = SDL_EventAction;
 constexpr EventAction ADDEVENT =
   SDL_ADDEVENT; ///< Add events to the back of the queue.
 
-/**
- * Check but don't remove events from the queue front.
- */
+/// Check but don't remove events from the queue front.
 constexpr EventAction PEEKEVENT = SDL_PEEKEVENT;
 
-/**
- * Retrieve/remove events from the front of the queue.
- */
+/// Retrieve/remove events from the front of the queue.
 constexpr EventAction GETEVENT = SDL_GETEVENT;
 
 /// @}

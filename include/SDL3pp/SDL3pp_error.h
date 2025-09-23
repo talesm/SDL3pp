@@ -166,25 +166,19 @@ class Error : public std::exception
   std::string m_message;
 
 public:
-  /**
-   * Default ctor.
-   */
+  /// Default ctor.
   Error()
     : m_message(SDL_GetError())
   {
   }
 
-  /**
-   * Constructs from string
-   */
+  /// Default ctor.
   Error(std::string message)
     : m_message(std::move(message))
   {
   }
 
-  /**
-   * Returns the explanatory string.
-   */
+  /// Returns the explanatory string.
   constexpr const char* what() const noexcept { return m_message.c_str(); }
 
   /**

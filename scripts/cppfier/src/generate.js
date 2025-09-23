@@ -109,7 +109,11 @@ function findPlaceholderIndex(content) {
 function generateDocString(docStr, prefix) {
   if (!docStr) return '';
   prefix = prefix ?? '';
-  docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
+  const docLines = docStr.split('\n');
+  if (docLines.length === 1 && docStr.length < 75) {
+    return `\n${prefix}///${docStr}`;
+  }
+  docStr = docLines.map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
   return `\n${prefix}/**\n${docStr}\n${prefix} */`;
 }
 

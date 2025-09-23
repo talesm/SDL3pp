@@ -116,19 +116,13 @@ constexpr InitFlags INIT_CAMERA =
  */
 using AppResult = SDL_AppResult;
 
-/**
- * Value that requests that the app continue from the main callbacks.
- */
+/// Value that requests that the app continue from the main callbacks.
 constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
 
-/**
- * Value that requests termination with success from the main callbacks.
- */
+/// Value that requests termination with success from the main callbacks.
 constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
 
-/**
- * Value that requests termination with error from the main callbacks.
- */
+/// Value that requests termination with error from the main callbacks.
 constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
 
 /// @}

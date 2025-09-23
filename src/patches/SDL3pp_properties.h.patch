@@ -11,43 +11,43 @@
 >  * can be created with the Properties.Create function and destroyed with the
 >  * Properties.Destroy function, but the Properties destructor probably will do
 >  * what you want to, automatically.
-72a74,75
+70a72,73
 >  *
 >  * @sa Properties.Create
-109,110c112,113
+107,108c110,111
 <    * @returns an ID for a new group of properties, or 0 on failure; call
 <    *          GetError() for more information.
 ---
 >    * @returns a valid ID for a new group of properties on success;
 >    * @throws Error on failure.
-118c121,124
+116c119,122
 <   static Properties Create() { return Properties(SDL_CreateProperties()); }
 ---
 >   static Properties Create()
 >   {
 >     return Properties(CheckError(SDL_CreateProperties()));
 >   }
-157d162
+147d152
 <    *
-227c232
+215c220
 <   return CheckError(SDL_GetGlobalProperties());
 ---
 >   return {CheckError(SDL_GetGlobalProperties())};
-235,236c240,241
+223,224c228,229
 <  * @returns an ID for a new group of properties, or 0 on failure; call
 <  *          GetError() for more information.
 ---
 >  * @returns a valid ID for a new group of properties on success;
 >  * @throws Error on failure.
-246c251
+234c239
 <   return Properties(SDL_CreateProperties());
 ---
 >   return Properties(CheckError(SDL_CreateProperties()));
-348d352
+336d340
 <  * @param userdata an app-defined pointer passed to the callback.
-418d421
+406d409
 <  * @param userdata a pointer that is passed to the cleanup function.
-434c437,442
+422c425,430
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<CleanupPropertyCB>;
@@ -56,11 +56,11 @@
 >                                     value,
 >                                     &Wrapper::CallOnce,
 >                                     Wrapper::Wrap(std::move(cleanup)));
-779d786
+767d774
 <  * @param userdata an app-defined pointer passed to the callback.
-824d830
+812d818
 <  * @param userdata a pointer that is passed to `callback`.
-834c840,846
+822c828,834
 <   static_assert(false, "Not implemented");
 ---
 >   return EnumerateProperties(
@@ -70,13 +70,13 @@
 >       f(props, name);
 >     },
 >     &callback);
-836a849,853
+824a837,841
 > /**
 >  * Returns the number of properties this has
 >  *
 >  * This uses Enumerate() internally, so might not be so fast
 >  */
-839c856,858
+827c844,846
 <   static_assert(false, "Not implemented");
 ---
 >   Uint64 count = 0;
