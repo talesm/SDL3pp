@@ -536,17 +536,17 @@
 ---
 >    * @param p the x, y coordinates where the top-left corner of the text will
 >    *          draw.
-1755c1921
+1755,1761c1921
 <     CheckError(SDL_RenderDebugText(m_resource, p, str));
----
->     CheckError(SDL_RenderDebugText(m_resource, p.x, p.y, str));
-1758,1765d1923
+<   }
+< 
 <   template<class... ARGS>
 <   void RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
 <   {
 <     static_assert(false, "Not implemented");
-<   }
-< 
+---
+>     CheckError(SDL_RenderDebugText(m_resource, p.x, p.y, str));
+1764,1765d1923
 <   auto RenderDebugTextFormat() { static_assert(false, "Not implemented"); }
 < 
 1769,1771c1927,1930
@@ -853,3 +853,36 @@
 <       m_resource, wait_stage_mask, wait_semaphore, signal_semaphore));
 ---
 >     RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));
+2138,2141c2024,2025
+<    * @param w the width of the texture in pixels.
+<    * @param h the height of the texture in pixels.
+<    * @post the created texture or nullptr on failure; call GetError() for
+<    *          more information.
+---
+>    * @param size the width and height of the texture in pixels.
+>    * @throws Error on failure.
+2157c2041,2042
+<     : m_resource(SDL_CreateTexture(renderer, format, access, size))
+---
+>     : m_resource(
+>         CheckError(SDL_CreateTexture(renderer, format, access, size.x, size.y)))
+2176,2177c2061
+<    * @post the created texture or nullptr on failure; call GetError() for
+<    *          more information.
+---
+>    * @throws Error on failure.
+2184d2067
+<    * @sa Texture.Texture
+2188c2071
+<     : m_resource(SDL_CreateTextureFromSurface(renderer, surface))
+---
+>     : m_resource(CheckError(SDL_CreateTextureFromSurface(renderer, surface)))
+2288,2289c2171
+<    * @post the created texture or nullptr on failure; call GetError() for
+<    *          more information.
+---
+>    * @throws Error on failure.
+2303c2185
+<     : m_resource(SDL_CreateTextureWithProperties(renderer, props))
+---
+>     : m_resource(CheckError(SDL_CreateTextureWithProperties(renderer, props)))

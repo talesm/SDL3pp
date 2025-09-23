@@ -2021,10 +2021,8 @@ public:
    * @param renderer the rendering context.
    * @param format one of the enumerated values in PixelFormat.
    * @param access one of the enumerated values in TextureAccess.
-   * @param w the width of the texture in pixels.
-   * @param h the height of the texture in pixels.
-   * @post the created texture or nullptr on failure; call GetError() for
-   *          more information.
+   * @param size the width and height of the texture in pixels.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2040,7 +2038,8 @@ public:
           PixelFormat format,
           TextureAccess access,
           const PointRaw& size)
-    : m_resource(SDL_CreateTexture(renderer, format, access, size))
+    : m_resource(
+        CheckError(SDL_CreateTexture(renderer, format, access, size.x, size.y)))
   {
   }
 
@@ -2059,19 +2058,17 @@ public:
    * @param renderer the rendering context.
    * @param surface the Surface structure containing pixel data used to fill
    *                the texture.
-   * @post the created texture or nullptr on failure; call GetError() for
-   *          more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Texture.Texture
-   * @sa Texture.Texture
    * @sa Texture.Destroy
    */
   Texture(RendererParam renderer, SurfaceParam surface)
-    : m_resource(SDL_CreateTextureFromSurface(renderer, surface))
+    : m_resource(CheckError(SDL_CreateTextureFromSurface(renderer, surface)))
   {
   }
 
@@ -2171,8 +2168,7 @@ public:
    *
    * @param renderer the rendering context.
    * @param props the properties to use.
-   * @post the created texture or nullptr on failure; call GetError() for
-   *          more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2186,7 +2182,7 @@ public:
    * @sa Texture.Update
    */
   Texture(RendererParam renderer, PropertiesParam props)
-    : m_resource(SDL_CreateTextureWithProperties(renderer, props))
+    : m_resource(CheckError(SDL_CreateTextureWithProperties(renderer, props)))
   {
   }
 
