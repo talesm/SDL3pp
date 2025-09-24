@@ -26191,8 +26191,7 @@ public:
    *
    * @param size the width and height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
-   * @post the new Surface structure that is created or nullptr on failure;
-   *          call GetError() for more information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -26202,7 +26201,7 @@ public:
    * @sa Surface.Destroy
    */
   Surface(const PointRaw& size, PixelFormat format)
-    : m_resource(SDL_CreateSurface(size.x, size.y, format))
+    : m_resource(CheckError(SDL_CreateSurface(size.x, size.y, format)))
   {
   }
 
@@ -26223,8 +26222,7 @@ public:
    * @param format the PixelFormat for the new surface's pixel format.
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
-   * @post the new Surface structure that is created or nullptr on failure;
-   *          call GetError() for more information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -26234,7 +26232,8 @@ public:
    * @sa Surface.Destroy
    */
   Surface(const PointRaw& size, PixelFormat format, void* pixels, int pitch)
-    : m_resource(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch))
+    : m_resource(CheckError(
+        SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
   {
   }
 
