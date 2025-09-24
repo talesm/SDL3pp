@@ -7384,40 +7384,26 @@ const transform = {
 
     // SDL satellite Libraries:
     "SDL_image.h": {
-      includeAfter: {
-        "__begin": {
-          "name": "SDL3PP_ENABLE_IMAGE"
-        }
-      },
-      resources: {
+      localIncludes: [
+        "SDL3pp_error.h",
+        "SDL3pp_render.h",
+        "SDL3pp_surface.h",
+        "SDL3pp_version.h",
+        "SDL3pp_video.h",
+      ],
+      transform: {
+        "IMG": {
+          kind: "ns",
+          before: "IMG_Version",
+          entries: {
+            "IMG_Version": { name: "Version" },
+          },
+        },
         "IMG_Animation": {
-          returnType: "unique",
-          free: "IMG_FreeAnimation",
-          ctors: ["IMG_LoadAnimation_IO", "IMG_LoadAnimationTyped_IO"],
+          resource: { free: "IMG_FreeAnimation" },
           entries: {
             "IMG_LoadAnimation": "ctor",
-            "IMG_LoadAnimation_IO": {
-              name: "Load",
-              parameters: [
-                {
-                  "name": "src",
-                  "type": "IOStreamParam"
-                }
-              ]
-            },
-            "IMG_LoadAnimationTyped_IO": {
-              name: "LoadTyped",
-              parameters: [
-                {
-                  "name": "src",
-                  "type": "IOStreamParam"
-                },
-                {
-                  "name": "type",
-                  "type": "StringParam"
-                }
-              ]
-            },
+            "IMG_LoadAnimation_IO": { name: "ctor" },
             "GetWidth": {
               kind: "function",
               immutable: true,
@@ -7465,74 +7451,55 @@ const transform = {
               ]
             }
           }
-        }
-      },
-      transform: {
-        "IMG_Version": {
-          "name": "IMG_Version"
+        },
+        "IMG_LoadAnimation": { type: "Animation" },
+        "IMG_LoadAnimation_IO": {
+          type: "Animation",
+          name: "LoadAnimation"
+        },
+        "IMG_LoadAnimationTyped_IO": {
+          type: "Animation",
+          name: "LoadAnimationTyped"
         },
         "IMG_LoadTyped_IO": {
-          "type": "Surface",
-          "name": "LoadSurface",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "type",
-              "type": "StringParam"
-            }
-          ]
+          type: "Surface",
+          name: "LoadSurfaceTyped",
         },
         "IMG_Load": {
-          "type": "Surface",
-          "name": "LoadSurface"
+          type: "",
+          name: "Surface::Surface",
+          link: {
+            type: "Surface",
+            name: "LoadSurface",
+          }
         },
         "IMG_Load_IO": {
-          "type": "Surface",
-          "name": "LoadSurface",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            }
-          ]
+          type: "",
+          name: "Surface::Surface",
+          link: {
+            type: "Surface",
+            name: "LoadSurface",
+          }
         },
         "IMG_LoadTexture": {
-          "type": "Texture"
+          type: "",
+          name: "Texture::Texture",
+          link: {
+            name: "LoadTexture",
+            type: "Texture"
+          }
         },
         "IMG_LoadTexture_IO": {
-          "type": "Texture",
-          "name": "LoadTexture",
-          "parameters": [
-            {
-              "name": "renderer",
-              "type": "RendererParam"
-            },
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            }
-          ]
+          type: "",
+          name: "Texture::Texture",
+          link: {
+            name: "LoadTexture",
+            type: "Texture"
+          }
         },
         "IMG_LoadTextureTyped_IO": {
-          "type": "Texture",
-          "name": "LoadTexture",
-          "parameters": [
-            {
-              "name": "renderer",
-              "type": "RendererParam"
-            },
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "type",
-              "type": "StringParam"
-            }
-          ]
+          type: "Texture",
+          name: "LoadTextureTyped",
         },
         "IMG_LoadAVIF_IO": {
           "type": "Surface",
@@ -7624,50 +7591,12 @@ const transform = {
         },
         "IMG_SaveAVIF_IO": {
           "name": "SaveAVIF",
-          "parameters": [
-            {
-              "name": "surface",
-              "type": "SurfaceParam"
-            },
-            {
-              "name": "dst",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "quality",
-              "type": "int"
-            }
-          ]
         },
         "IMG_SavePNG_IO": {
           "name": "SavePNG",
-          "parameters": [
-            {
-              "name": "surface",
-              "type": "SurfaceParam"
-            },
-            {
-              "name": "dst",
-              "type": "IOStreamParam"
-            }
-          ]
         },
         "IMG_SaveJPG_IO": {
           "name": "SaveJPG",
-          "parameters": [
-            {
-              "name": "surface",
-              "type": "SurfaceParam"
-            },
-            {
-              "name": "dst",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "quality",
-              "type": "int"
-            }
-          ]
         },
         "IMG_LoadGIFAnimation_IO": {
           "name": "LoadGIFAnimation"
