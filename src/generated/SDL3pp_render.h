@@ -4441,7 +4441,7 @@ inline Texture GetRenderTarget(RendererParam renderer)
 
 inline Texture Renderer::GetTarget() const
 {
-  return SDL_GetRenderTarget(m_resource);
+  return GetRenderTarget(m_resource);
 }
 
 /**

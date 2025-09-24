@@ -10968,6 +10968,9 @@
               "parameters": [],
               "sourceName": "SDL_GetRenderTarget",
               "immutable": true,
+              "hints": {
+                "delegate": "GetRenderTarget"
+              },
               "proto": true
             },
             "SetLogicalPresentation": {
@@ -14356,7 +14359,8 @@
               "type": "RendererParam"
             }
           ],
-          "sourceName": "SDL_GetRenderTarget"
+          "sourceName": "SDL_GetRenderTarget",
+          "hints": {}
         },
         "Renderer::GetTarget": {
           "name": "Renderer::GetTarget",
@@ -14368,7 +14372,8 @@
           "hints": {
             "self": "m_resource",
             "super": "m_resource",
-            "private": true
+            "private": true,
+            "delegate": "GetRenderTarget"
           }
         },
         "SetRenderLogicalPresentation": {

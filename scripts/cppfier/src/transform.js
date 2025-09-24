@@ -1550,6 +1550,7 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
     delete targetEntry.static;
     delete targetEntry.immutable;
     delete targetEntry.proto;
+    delete targetEntry.hints?.delegate;
     transformEntries[sourceName] = targetEntry;
   }
 

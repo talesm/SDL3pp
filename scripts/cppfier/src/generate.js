@@ -214,8 +214,9 @@ function generateBody(entry, prefix) {
       return `\n${prefix}  : ${hint.init.join(`\n${prefix}  , `)}\n${prefix}{}`;
     }
   }
-  const sourceName = entry.sourceName === entry.name ? ("::" + entry.sourceName) : entry.sourceName;
-  if (!sourceName) {
+  const maybeDelegatedTo = hint?.delegate ?? entry.sourceName;
+  const delegatedTo = maybeDelegatedTo === entry.name ? ("::" + maybeDelegatedTo) : maybeDelegatedTo;
+  if (!delegatedTo) {
     if (/operator(==|<=>)/.test(entry.name)) return " = default;";
     if (entry.proto) return ";";
     if (entry.type === "" && !entry.name.startsWith("operator")) return "{}";
@@ -225,7 +226,7 @@ function generateBody(entry, prefix) {
   const selfStr = entry.type && !entry.static && !entry.hints?.static && hint?.self;
   const selfStrPrefix = (selfStr || "") + ((entry.parameters?.length && selfStr) ? ", " : "");
   const paramStr = selfStrPrefix + generateCallParameters(entry.parameters);
-  const internalCallStr = `${sourceName}(${paramStr})`;
+  const internalCallStr = `${delegatedTo}(${paramStr})`;
   const callStr = hint?.mayFail ? `CheckError(${internalCallStr})` : internalCallStr;
   if (!entry.type) {
     const superStr = hint?.super ?? hint?.self ?? "T";

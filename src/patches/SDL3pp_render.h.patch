@@ -1135,10 +1135,6 @@
 >   TextureRaw texture = SDL_GetRenderTarget(renderer);
 >   if (texture) return Texture::Borrow(texture);
 >   return {};
-4444c4479
-<   return SDL_GetRenderTarget(m_resource);
----
->   return GetRenderTarget(m_resource);
 4503c4538
 <   CheckError(SDL_SetRenderLogicalPresentation(renderer, size, mode));
 ---

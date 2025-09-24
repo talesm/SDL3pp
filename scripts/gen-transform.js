@@ -3989,9 +3989,10 @@ const transform = {
             },
             "SDL_SetRenderTarget": { name: "SetTarget" },
             "SDL_GetRenderTarget": {
+              name: "GetTarget",
               immutable: true,
               proto: true,
-              name: "GetTarget"
+              hints: { delegate: "GetRenderTarget" },
             },
             "SDL_SetRenderLogicalPresentation": {
               name: "SetLogicalPresentation",
