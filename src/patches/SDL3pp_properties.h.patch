@@ -11,36 +11,58 @@
 >  * can be created with the Properties.Create function and destroyed with the
 >  * Properties.Destroy function, but the Properties destructor probably will do
 >  * what you want to, automatically.
-73a75,76
+74a76,77
 >  *
 >  * @sa Properties.Create
-113,114c116,117
+87a91,108
+> /**
+>  * A callback used to enumerate all the properties in a group of properties.
+>  *
+>  * This callback is called from Properties.Enumerate(), and is called once
+>  * per property in the set.
+>  *
+>  *
+>  * @sa Properties.Create
+>  * @param props the Properties that is being enumerated.
+>  * @param name the next property name in the enumeration.
+>  *
+>  * @threadsafety Properties.Enumerate holds a lock on `props` during this
+>  *               callback.
+>  *
+>  * @since This datatype is available since SDL 3.2.0.
+>  *
+>  * @sa Properties.Enumerate
+>  */
+96a118,119
+>  *
+>  * @sa Properties.Create
+136,137c159,160
 <    * @returns an ID for a new group of properties, or 0 on failure; call
 <    *          GetError() for more information.
 ---
 >    * @returns a valid ID for a new group of properties on success;
 >    * @throws Error on failure.
-154d156
+177d199
 <    *
-219c221
+548c570
 <   return CheckError(SDL_GetGlobalProperties());
 ---
 >   return {CheckError(SDL_GetGlobalProperties())};
-227,228c229,230
+556,557c578,579
 <  * @returns an ID for a new group of properties, or 0 on failure; call
 <  *          GetError() for more information.
 ---
 >  * @returns a valid ID for a new group of properties on success;
 >  * @throws Error on failure.
-238c240
+567c589
 <   return Properties(SDL_CreateProperties());
 ---
 >   return Properties(CheckError(SDL_CreateProperties()));
-342d343
+675d696
 <  * @param userdata an app-defined pointer passed to the callback.
-412d412
+745d765
 <  * @param userdata a pointer that is passed to the cleanup function.
-428c428,433
+761c781,786
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<CleanupPropertyCB>;
@@ -49,11 +71,62 @@
 >                                     value,
 >                                     &Wrapper::CallOnce,
 >                                     Wrapper::Wrap(std::move(cleanup)));
-773d777
-<  * @param userdata an app-defined pointer passed to the callback.
-818d821
+794c819
+<   SDL::SetPointerProperty(m_resource, name, value);
+---
+>   SDL::SetPointerProperty(m_resource, std::move(name), value);
+824c849
+<   SDL::SetStringProperty(m_resource, name, value);
+---
+>   SDL::SetStringProperty(m_resource, std::move(name), std::move(value));
+850c875
+<   SDL::SetNumberProperty(m_resource, name, value);
+---
+>   SDL::SetNumberProperty(m_resource, std::move(name), value);
+876c901
+<   SDL::SetFloatProperty(m_resource, name, value);
+---
+>   SDL::SetFloatProperty(m_resource, std::move(name), value);
+902c927
+<   SDL::SetBooleanProperty(m_resource, name, value);
+---
+>   SDL::SetBooleanProperty(m_resource, std::move(name), value);
+925c950
+<   return SDL::HasProperty(m_resource, name);
+---
+>   return SDL::HasProperty(m_resource, std::move(name));
+949c974
+<   return SDL::GetPropertyType(m_resource, name);
+---
+>   return SDL::GetPropertyType(m_resource, std::move(name));
+993c1018
+<   return SDL::GetPointerProperty(m_resource, name, default_value);
+---
+>   return SDL::GetPointerProperty(m_resource, std::move(name), default_value);
+1029c1054,1055
+<   return SDL::GetStringProperty(m_resource, name, default_value);
+---
+>   return SDL::GetStringProperty(
+>     m_resource, std::move(name), std::move(default_value));
+1062c1088
+<   return SDL::GetNumberProperty(m_resource, name, default_value);
+---
+>   return SDL::GetNumberProperty(m_resource, std::move(name), default_value);
+1095c1121
+<   return SDL::GetFloatProperty(m_resource, name, default_value);
+---
+>   return SDL::GetFloatProperty(m_resource, std::move(name), default_value);
+1128c1154
+<   return SDL::GetBooleanProperty(m_resource, name, default_value);
+---
+>   return SDL::GetBooleanProperty(m_resource, std::move(name), default_value);
+1149c1175
+<   SDL::ClearProperty(m_resource, name);
+---
+>   SDL::ClearProperty(m_resource, std::move(name));
+1182d1207
 <  * @param userdata a pointer that is passed to `callback`.
-828c831,837
+1192c1217,1223
 <   static_assert(false, "Not implemented");
 ---
 >   return EnumerateProperties(
@@ -63,15 +136,20 @@
 >       f(props, name);
 >     },
 >     &callback);
-830a840,844
+1194a1226,1230
 > /**
 >  * Returns the number of properties this has
 >  *
 >  * This uses Enumerate() internally, so might not be so fast
 >  */
-833c847,849
+1203c1239,1246
 <   static_assert(false, "Not implemented");
 ---
 >   Uint64 count = 0;
 >   EnumerateProperties(props, [&](auto, const char*) { count++; });
 >   return count;
+> }
+> 
+> inline Uint64 Properties::GetCount() const
+> {
+>   return CountProperties(m_resource);
