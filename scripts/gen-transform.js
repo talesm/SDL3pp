@@ -4730,7 +4730,7 @@ const transform = {
           }
         },
         "SDL_CreateWindowAndRenderer": {
-          type: "Window",
+          type: "std::pair<Window, Renderer>",
           parameters: [
             {},
             {
@@ -4741,11 +4741,6 @@ const transform = {
               type: "WindowFlags",
               name: "window_flags",
               default: "0"
-            },
-            {
-              type: "RendererRaw *",
-              name: "renderer",
-              default: "nullptr"
             }
           ]
         },

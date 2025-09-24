@@ -14893,7 +14893,7 @@
           "doc": "Create a window and default renderer.\n\n@param title the title of the window, in UTF-8 encoding.\n@param width the width of the window.\n@param height the height of the window.\n@param window_flags the flags used to create the window (see\n                    Window.Window()).\n@param window a pointer filled with the window, or nullptr on error.\n@param renderer a pointer filled with the renderer, or nullptr on error.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer\n@sa Window.Window",
           "name": "CreateWindowAndRenderer",
           "kind": "function",
-          "type": "Window",
+          "type": "std::pair<Window, Renderer>",
           "parameters": [
             {
               "name": "title",
@@ -14907,11 +14907,6 @@
               "name": "window_flags",
               "type": "WindowFlags",
               "default": "0"
-            },
-            {
-              "name": "renderer",
-              "type": "RendererRaw *",
-              "default": "nullptr"
             }
           ],
           "sourceName": "SDL_CreateWindowAndRenderer",

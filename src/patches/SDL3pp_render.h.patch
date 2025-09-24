@@ -675,182 +675,187 @@
 >    * Get the pixel format.
 >    */
 >   PixelFormat GetFormat() const { return m_resource->format; }
-2939,2940c3159,3162
-<   return CheckError(
-<     SDL_CreateWindowAndRenderer(title, size, window_flags, renderer));
+2923,2924c3143
+<  * @param window a pointer filled with the window, or nullptr on error.
+<  * @param renderer a pointer filled with the renderer, or nullptr on error.
+---
+>  * @returns a pair with window and renderer.
+2939c3158,3162
+<   return CheckError(SDL_CreateWindowAndRenderer(title, size, window_flags));
 ---
 >   SDL_Window* window = nullptr;
+>   SDL_Renderer* renderer = nullptr;
 >   CheckError(SDL_CreateWindowAndRenderer(
->     title, size.x, size.y, window_flags, &window, renderer));
->   return Window{window};
-2979c3201
+>     title, size.x, size.y, window_flags, &window, &renderer));
+>   return {Window{window}, Renderer(renderer)};
+2978c3201
 <   return Renderer(window, name);
 ---
 >   return Renderer(window, std::move(name));
-3168c3390
+3167c3390
 <   return CheckError(SDL_GetRenderer(m_resource));
 ---
 >   return {CheckError(SDL_GetRenderer(m_resource))};
-3184c3406
+3183c3406
 <   return CheckError(SDL_GetRenderWindow(renderer));
 ---
 >   return {CheckError(SDL_GetRenderWindow(renderer))};
-3302c3524
+3301c3524
 <   return CheckError(SDL_GetRendererProperties(renderer));
 ---
 >   return {CheckError(SDL_GetRendererProperties(renderer))};
-3405c3627
+3404c3627
 <   return Texture(SDL_CreateTexture(renderer, format, access, size));
 ---
 >   return Texture(renderer, format, access, size);
-3788c4010
+3787c4010
 <   return CheckError(SDL_GetTextureProperties(texture));
 ---
 >   return {CheckError(SDL_GetTextureProperties(texture))};
-3809c4031
+3808c4031
 <   return SDL_GetRendererFromTexture(texture);
 ---
 >   return {SDL_GetRendererFromTexture(texture)};
-4059c4281,4283
+4058c4281,4283
 <   return CheckError(SDL_GetTextureAlphaMod(texture));
 ---
 >   Uint8 alpha;
 >   CheckError(SDL_GetTextureAlphaMod(texture, &alpha));
 >   return alpha;
-4084c4308,4310
+4083c4308,4310
 <   return CheckError(SDL_GetTextureAlphaModFloat(texture));
 ---
 >   float alpha;
 >   CheckError(SDL_GetTextureAlphaModFloat(texture, &alpha));
 >   return alpha;
-4122c4348
+4121c4348
 <  * @param blendMode a pointer filled in with the current BlendMode.
 ---
 >  * @return the current BlendMode.
-4133c4359,4361
+4132c4359,4361
 <   return CheckError(SDL_GetTextureBlendMode(texture));
 ---
 >   BlendMode blendMode;
 >   CheckError(SDL_GetTextureBlendMode(texture, &blendMode));
 >   return blendMode;
-4172c4400
+4171c4400
 <  * @param scaleMode a pointer filled in with the current scale mode.
 ---
 >  * @return the current scale mode.
-4183c4411,4413
+4182c4411,4413
 <   return CheckError(SDL_GetTextureScaleMode(texture));
 ---
 >   ScaleMode scaleMode;
 >   CheckError(SDL_GetTextureScaleMode(texture, &scaleMode));
 >   return scaleMode;
-4416c4646,4648
+4415c4646,4648
 <   return CheckError(SDL_LockTextureToSurface(texture, rect));
 ---
 >   SurfaceRaw surface = nullptr;
 >   CheckError(SDL_LockTextureToSurface(texture, rect, &surface));
 >   return Surface::Borrow(surface);
-4419,4420c4651
+4418,4419c4651
 < inline Surface Texture::LockToSurface(
 <   OptionalRef<const SDL_Rect> rect = std::nullopt)
 ---
 > inline Surface Texture::LockToSurface(OptionalRef<const SDL_Rect> rect)
-4499c4730,4732
+4498c4730,4732
 <   return SDL_GetRenderTarget(renderer);
 ---
 >   TextureRaw texture = SDL_GetRenderTarget(renderer);
 >   if (texture) return Texture::Borrow(texture);
 >   return {};
-4563c4796
+4562c4796
 <   CheckError(SDL_SetRenderLogicalPresentation(renderer, size, mode));
 ---
 >   CheckError(SDL_SetRenderLogicalPresentation(renderer, size.x, size.y, mode));
-4633c4866,4868
+4632c4866,4868
 <   return CheckError(SDL_GetRenderLogicalPresentationRect(renderer));
 ---
 >   FRect rect;
 >   CheckError(SDL_GetRenderLogicalPresentationRect(renderer, &rect));
 >   return rect;
-4668c4903,4906
+4667c4903,4906
 <   return CheckError(SDL_RenderCoordinatesFromWindow(renderer, window_coord));
 ---
 >   FPoint p;
 >   CheckError(SDL_RenderCoordinatesFromWindow(
 >     renderer, window_coord.x, window_coord.y, &p.x, &p.y));
 >   return p;
-4707c4945,4948
+4706c4945,4948
 <   return CheckError(SDL_RenderCoordinatesToWindow(renderer, coord));
 ---
 >   FPoint p;
 >   CheckError(
 >     SDL_RenderCoordinatesToWindow(renderer, coord.x, coord.y, &p.x, &p.y));
 >   return p;
-4813c5054,5056
+4812c5054,5056
 <   return CheckError(SDL_GetRenderViewport(renderer));
 ---
 >   Rect rect;
 >   CheckError(SDL_GetRenderViewport(renderer, &rect));
 >   return rect;
-4872c5115,5117
+4871c5115,5117
 <   return CheckError(SDL_GetRenderSafeArea(renderer));
 ---
 >   Rect rect;
 >   CheckError(SDL_GetRenderSafeArea(renderer, &rect));
 >   return rect;
-4929c5174,5176
+4928c5174,5176
 <   return CheckError(SDL_GetRenderClipRect(renderer));
 ---
 >   Rect rect;
 >   CheckError(SDL_GetRenderClipRect(renderer, &rect));
 >   return rect;
-4991c5238
+4990c5238
 <   CheckError(SDL_SetRenderScale(renderer, scale));
 ---
 >   CheckError(SDL_SetRenderScale(renderer, scale.x, scale.y));
-5050c5297
+5049c5297
 <   CheckError(SDL_SetRenderDrawColor(renderer, c));
 ---
 >   CheckError(SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a));
-5082c5329
+5081c5329
 <   CheckError(SDL_SetRenderDrawColorFloat(renderer, c));
 ---
 >   CheckError(SDL_SetRenderDrawColorFloat(renderer, c.r, c.g, c.b, c.a));
-5209c5456,5458
+5208c5456,5458
 <   return CheckError(SDL_GetRenderColorScale(renderer));
 ---
 >   float scale;
 >   CheckError(SDL_GetRenderColorScale(renderer, &scale));
 >   return scale;
-5257c5506,5508
+5256c5506,5508
 <   return CheckError(SDL_GetRenderDrawBlendMode(renderer));
 ---
 >   BlendMode blendMode;
 >   CheckError(SDL_GetRenderDrawBlendMode(renderer, &blendMode));
 >   return blendMode;
-5305c5556
+5304c5556
 <   CheckError(SDL_RenderPoint(renderer, p));
 ---
 >   CheckError(SDL_RenderPoint(renderer, p.x, p.y));
-5330c5581
+5329c5581
 <   CheckError(SDL_RenderPoints(renderer, points));
 ---
 >   CheckError(SDL_RenderPoints(renderer, points.data(), points.size()));
-5358c5609
+5357c5609
 <   CheckError(SDL_RenderLine(renderer, p1, p2));
 ---
 >   CheckError(SDL_RenderLine(renderer, p1.x, p1.y, p2.x, p2.y));
-5383c5634
+5382c5634
 <   CheckError(SDL_RenderLines(renderer, points));
 ---
 >   CheckError(SDL_RenderLines(renderer, points.data(), points.size()));
-5432c5683
+5431c5683
 <   CheckError(SDL_RenderRects(renderer, rects));
 ---
 >   CheckError(SDL_RenderRects(renderer, rects.data(), rects.size()));
-5484c5735
+5483c5735
 <   CheckError(SDL_RenderFillRects(renderer, rects));
 ---
 >   CheckError(SDL_RenderFillRects(renderer, rects.data(), rects.size()));
-5759c6010,6015
+5758c6010,6015
 <   CheckError(SDL_RenderGeometry(renderer, texture, vertices, indices));
 ---
 >   CheckError(SDL_RenderGeometry(renderer,
@@ -859,31 +864,31 @@
 >                                 vertices.size(),
 >                                 indices.data(),
 >                                 indices.size()));
-5876c6132
+5875c6132
 <   return CheckError(SDL_RenderReadPixels(renderer, rect));
 ---
 >   return Surface{CheckError(SDL_RenderReadPixels(renderer, rect))};
-5879c6135
+5878c6135
 < inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect = {}) const
 ---
 > inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
-6176c6432,6434
+6175c6432,6434
 <   return CheckError(SDL_GetRenderVSync(renderer));
 ---
 >   int vsync;
 >   CheckError(SDL_GetRenderVSync(renderer, &vsync));
 >   return vsync;
-6235c6493
+6234c6493
 <   CheckError(SDL_RenderDebugText(renderer, p, str));
 ---
 >   CheckError(SDL_RenderDebugText(renderer, p.x, p.y, str));
-6240c6498
+6239c6498
 <   SDL::RenderDebugText(m_resource, p, str);
 ---
 >   SDL::RenderDebugText(m_resource, p, std::move(str));
-6267a6526
+6266a6526
 > template<class... ARGS>
-6269,6272c6528,6530
+6268,6271c6528,6530
 <                                   float x,
 <                                   float y,
 <                                   SDL_PRINTF_FORMAT_STRING const char* fmt,
@@ -892,7 +897,7 @@
 >                                   FPoint p,
 >                                   std::string_view fmt,
 >                                   ARGS... args)
-6274c6532,6533
+6273c6532,6533
 <   CheckError(SDL_RenderDebugTextFormat(renderer, x, y, fmt, ...));
 ---
 >   RenderDebugText(

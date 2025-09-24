@@ -3140,8 +3140,7 @@ inline const char* GetRenderDriver(int index)
  * @param height the height of the window.
  * @param window_flags the flags used to create the window (see
  *                     Window.Window()).
- * @param window a pointer filled with the window, or nullptr on error.
- * @param renderer a pointer filled with the renderer, or nullptr on error.
+ * @returns a pair with window and renderer.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -3151,15 +3150,16 @@ inline const char* GetRenderDriver(int index)
  * @sa Renderer.Renderer
  * @sa Window.Window
  */
-inline Window CreateWindowAndRenderer(StringParam title,
-                                      const PointRaw& size,
-                                      WindowFlags window_flags = 0,
-                                      RendererRaw* renderer = nullptr)
+inline std::pair<Window, Renderer> CreateWindowAndRenderer(
+  StringParam title,
+  const PointRaw& size,
+  WindowFlags window_flags = 0)
 {
   SDL_Window* window = nullptr;
+  SDL_Renderer* renderer = nullptr;
   CheckError(SDL_CreateWindowAndRenderer(
-    title, size.x, size.y, window_flags, &window, renderer));
-  return Window{window};
+    title, size.x, size.y, window_flags, &window, &renderer));
+  return {Window{window}, Renderer(renderer)};
 }
 
 /**

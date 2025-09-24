@@ -2931,13 +2931,12 @@ inline const char* GetRenderDriver(int index)
  * @sa Renderer.Renderer
  * @sa Window.Window
  */
-inline Window CreateWindowAndRenderer(StringParam title,
-                                      const PointRaw& size,
-                                      WindowFlags window_flags = 0,
-                                      RendererRaw* renderer = nullptr)
+inline std::pair<Window, Renderer> CreateWindowAndRenderer(
+  StringParam title,
+  const PointRaw& size,
+  WindowFlags window_flags = 0)
 {
-  return CheckError(
-    SDL_CreateWindowAndRenderer(title, size, window_flags, renderer));
+  return CheckError(SDL_CreateWindowAndRenderer(title, size, window_flags));
 }
 
 /**
