@@ -98,6 +98,9 @@ export interface ApiTransform {
   returnTypeMap?: StringMap;
   minVersions?: Dict<VersionTag>;
   signatureRules?: SignatureTransform[];
+
+  /// The default namespace
+  namespace: string;
 }
 
 export interface ApiFileTransform {

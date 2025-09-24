@@ -963,11 +963,7 @@ public:
    *
    * @sa Environment.Environment
    */
-  void Destroy()
-  {
-    SDL_DestroyEnvironment(m_resource);
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   /**
    * Get the value of a variable in the environment.
@@ -986,10 +982,7 @@ public:
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
    */
-  const char* GetVariable(StringParam name)
-  {
-    return SDL_GetEnvironmentVariable(m_resource, name);
-  }
+  const char* GetVariable(StringParam name);
 
   /**
    * Get all variables in the environment.
@@ -1009,10 +1002,7 @@ public:
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
    */
-  OwnArray<char*> GetVariables()
-  {
-    return SDL_GetEnvironmentVariables(m_resource);
-  }
+  OwnArray<char*> GetVariables();
 
   Uint64 GetVariableCount() { static_assert(false, "Not implemented"); }
 
@@ -1036,10 +1026,7 @@ public:
    * @sa Environment.GetVariables
    * @sa Environment.UnsetVariable
    */
-  void SetVariable(StringParam name, StringParam value, bool overwrite)
-  {
-    CheckError(SDL_SetEnvironmentVariable(m_resource, name, value, overwrite));
-  }
+  void SetVariable(StringParam name, StringParam value, bool overwrite);
 
   /**
    * Clear a variable from the environment.
@@ -1058,10 +1045,7 @@ public:
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
    */
-  void UnsetVariable(StringParam name)
-  {
-    CheckError(SDL_UnsetEnvironmentVariable(m_resource, name));
-  }
+  void UnsetVariable(StringParam name);
 };
 
 /// Semi-safe reference for Environment.
@@ -1128,7 +1112,7 @@ inline EnvironmentRaw GetEnvironment() { return SDL_GetEnvironment(); }
  */
 inline Environment CreateEnvironment(bool populated)
 {
-  return Environment(SDL_CreateEnvironment(populated));
+  return Environment(populated);
 }
 
 /**
@@ -1155,6 +1139,11 @@ inline const char* GetEnvironmentVariable(EnvironmentParam env,
   return SDL_GetEnvironmentVariable(env, name);
 }
 
+inline const char* Environment::GetVariable(StringParam name)
+{
+  return SDL::GetEnvironmentVariable(m_resource, name);
+}
+
 /**
  * Get all variables in the environment.
  *
@@ -1177,6 +1166,11 @@ inline const char* GetEnvironmentVariable(EnvironmentParam env,
 inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
 {
   return SDL_GetEnvironmentVariables(env);
+}
+
+inline OwnArray<char*> Environment::GetVariables()
+{
+  return SDL::GetEnvironmentVariables(m_resource);
 }
 
 /**
@@ -1208,6 +1202,13 @@ inline void SetEnvironmentVariable(EnvironmentParam env,
   CheckError(SDL_SetEnvironmentVariable(env, name, value, overwrite));
 }
 
+inline void Environment::SetVariable(StringParam name,
+                                     StringParam value,
+                                     bool overwrite)
+{
+  SDL::SetEnvironmentVariable(m_resource, name, value, overwrite);
+}
+
 /**
  * Clear a variable from the environment.
  *
@@ -1231,6 +1232,11 @@ inline void UnsetEnvironmentVariable(EnvironmentParam env, StringParam name)
   CheckError(SDL_UnsetEnvironmentVariable(env, name));
 }
 
+inline void Environment::UnsetVariable(StringParam name)
+{
+  SDL::UnsetEnvironmentVariable(m_resource, name);
+}
+
 /**
  * Destroy a set of environment variables.
  *
@@ -1246,6 +1252,12 @@ inline void UnsetEnvironmentVariable(EnvironmentParam env, StringParam name)
 inline void DestroyEnvironment(EnvironmentRaw env)
 {
   SDL_DestroyEnvironment(env);
+}
+
+inline void Environment::Destroy()
+{
+  SDL_DestroyEnvironment(m_resource);
+  m_resource = nullptr;
 }
 
 /**
@@ -4139,7 +4151,7 @@ struct Random
    * @sa Random.rand_bits
    * @sa Random.randf
    */
-  Sint32 rand(Sint32 n) { return SDL_rand_r(n); }
+  Sint32 rand(Sint32 n);
 
   /**
    * Generate a uniform pseudo-random floating point number less than 1.0
@@ -4166,7 +4178,7 @@ struct Random
    * @sa Random.rand
    * @sa randf
    */
-  float randf() { return SDL_randf_r(); }
+  float randf();
 
   /**
    * Generate 32 pseudo-random bits.
@@ -4191,7 +4203,7 @@ struct Random
    * @sa Random.rand
    * @sa Random.randf
    */
-  Uint32 rand_bits() { return SDL_rand_bits_r(); }
+  Uint32 rand_bits();
 };
 
 /**
@@ -4229,6 +4241,8 @@ struct Random
  */
 inline Sint32 rand_r(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
 
+inline Sint32 Random::rand(Sint32 n) { return SDL::rand_r(n); }
+
 /**
  * Generate a uniform pseudo-random floating point number less than 1.0
  *
@@ -4256,6 +4270,8 @@ inline Sint32 rand_r(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
  */
 inline float randf_r(Uint64* state) { return SDL_randf_r(state); }
 
+inline float Random::randf() { return SDL::randf_r(); }
+
 /**
  * Generate 32 pseudo-random bits.
  *
@@ -4280,6 +4296,8 @@ inline float randf_r(Uint64* state) { return SDL_randf_r(state); }
  * @sa Random.randf
  */
 inline Uint32 rand_bits_r(Uint64* state) { return SDL_rand_bits_r(state); }
+
+inline Uint32 Random::rand_bits() { return SDL::rand_bits_r(); }
 
 /**
  * The value of Pi, as a double-precision floating point literal.
@@ -5627,10 +5645,7 @@ public:
    * @sa IConv.close
    * @sa iconv_string
    */
-  static IConv open(StringParam tocode, StringParam fromcode)
-  {
-    return IConv(SDL_iconv_open(tocode, fromcode));
-  }
+  static IConv open(StringParam tocode, StringParam fromcode);
 
   /// Destructor
   ~IConv() { SDL_iconv_close(m_resource); }
@@ -5668,12 +5683,7 @@ public:
    * @sa IConv.open
    * @sa iconv_string
    */
-  int close()
-  {
-    auto r = SDL_iconv_close(m_resource);
-    m_resource = nullptr;
-    return r;
-  }
+  int close();
 
   /**
    * This function converts text between encodings, reading from and writing to
@@ -5714,11 +5724,7 @@ public:
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
                char** outbuf,
-               size_t* outbytesleft)
-  {
-    return CheckError(
-      SDL_iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft));
-  }
+               size_t* outbytesleft);
 };
 
 /// Semi-safe reference for IConv.
@@ -5760,6 +5766,11 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
   return IConv(SDL_iconv_open(tocode, fromcode));
 }
 
+inline IConv IConv::open(StringParam tocode, StringParam fromcode)
+{
+  return SDL::iconv_open(tocode, fromcode);
+}
+
 /**
  * This function frees a context used for character set conversion.
  *
@@ -5774,6 +5785,13 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
  * @sa iconv_string
  */
 inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
+
+inline int IConv::close()
+{
+  auto r = SDL_iconv_close(m_resource);
+  m_resource = nullptr;
+  return r;
+}
 
 /**
  * This function converts text between encodings, reading from and writing to
@@ -5819,6 +5837,14 @@ inline size_t iconv(IConv cd,
                     size_t* outbytesleft)
 {
   return CheckError(SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft));
+}
+
+inline size_t IConv::iconv(const char** inbuf,
+                           size_t* inbytesleft,
+                           char** outbuf,
+                           size_t* outbytesleft)
+{
+  return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
 }
 
 /// Generic error. Check GetError()?

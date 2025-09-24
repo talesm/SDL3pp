@@ -438,7 +438,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr Uint8 GetFlags() const { return SDL_PIXELFLAG(m_format); }
+  constexpr Uint8 GetFlags() const;
 
   /**
    * A macro to retrieve the type of an PixelFormat.
@@ -452,7 +452,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr PixelType GetType() const { return SDL_PIXELTYPE(m_format); }
+  constexpr PixelType GetType() const;
 
   /**
    * A macro to retrieve the order of an PixelFormat.
@@ -467,7 +467,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr int GetOrder() const { return SDL_PIXELORDER(m_format); }
+  constexpr int GetOrder() const;
 
   /**
    * A macro to retrieve the layout of an PixelFormat.
@@ -482,7 +482,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr PackedLayout GetLayout() const { return SDL_PIXELLAYOUT(m_format); }
+  constexpr PackedLayout GetLayout() const;
 
   /**
    * A macro to determine an PixelFormat's bits per pixel.
@@ -502,7 +502,7 @@ public:
    *
    * @sa PixelFormat.GetBytesPerPixel
    */
-  constexpr int GetBitsPerPixel() const { return SDL_BITSPERPIXEL(m_format); }
+  constexpr int GetBitsPerPixel() const;
 
   /**
    * A macro to determine an PixelFormat's bytes per pixel.
@@ -522,7 +522,7 @@ public:
    *
    * @sa PixelFormat.GetBitsPerPixel
    */
-  constexpr int GetBytesPerPixel() const { return SDL_BYTESPERPIXEL(m_format); }
+  constexpr int GetBytesPerPixel() const;
 
   /**
    * A macro to determine if an PixelFormat is an indexed format.
@@ -537,10 +537,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool IsIndexed() const
-  {
-    return SDL_ISPIXELFORMAT_INDEXED(m_format);
-  }
+  constexpr bool IsIndexed() const;
 
   /**
    * A macro to determine if an PixelFormat is a packed format.
@@ -555,7 +552,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool IsPacked() const { return SDL_ISPIXELFORMAT_PACKED(m_format); }
+  constexpr bool IsPacked() const;
 
   /**
    * A macro to determine if an PixelFormat is an array format.
@@ -570,7 +567,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool IsArray() const { return SDL_ISPIXELFORMAT_ARRAY(m_format); }
+  constexpr bool IsArray() const;
 
   /**
    * A macro to determine if an PixelFormat is a 10-bit format.
@@ -585,7 +582,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool Is10Bit() const { return SDL_ISPIXELFORMAT_10BIT(m_format); }
+  constexpr bool Is10Bit() const;
 
   /**
    * A macro to determine if an PixelFormat is a floating point format.
@@ -600,7 +597,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool IsFloat() const { return SDL_ISPIXELFORMAT_FLOAT(m_format); }
+  constexpr bool IsFloat() const;
 
   /**
    * A macro to determine if an PixelFormat has an alpha channel.
@@ -615,7 +612,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool IsAlpha() const { return SDL_ISPIXELFORMAT_ALPHA(m_format); }
+  constexpr bool IsAlpha() const;
 
   /**
    * A macro to determine if an PixelFormat is a "FourCC" format.
@@ -632,7 +629,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool IsFourCC() const { return SDL_ISPIXELFORMAT_FOURCC(m_format); }
+  constexpr bool IsFourCC() const;
 
   /**
    * Get the human readable name of a pixel format.
@@ -644,7 +641,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  const char* GetName() const { return SDL_GetPixelFormatName(m_format); }
+  const char* GetName() const;
 
   /**
    * Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
@@ -666,11 +663,7 @@ public:
                 Uint32* Rmask,
                 Uint32* Gmask,
                 Uint32* Bmask,
-                Uint32* Amask) const
-  {
-    CheckError(
-      SDL_GetMasksForPixelFormat(m_format, bpp, Rmask, Gmask, Bmask, Amask));
-  }
+                Uint32* Amask) const;
 
   /**
    * Convert a bpp value and RGBA masks to an enumerated pixel format.
@@ -696,10 +689,7 @@ public:
                               Uint32 Rmask,
                               Uint32 Gmask,
                               Uint32 Bmask,
-                              Uint32 Amask)
-  {
-    return SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask);
-  }
+                              Uint32 Amask);
 
   /**
    * Create an PixelFormatDetails structure corresponding to a pixel format.
@@ -715,10 +705,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  const PixelFormatDetails* GetDetails() const
-  {
-    return SDL_GetPixelFormatDetails(m_format);
-  }
+  const PixelFormatDetails* GetDetails() const;
 
   Uint32 Map(Color color, PaletteConstParam palette) const;
 
@@ -956,7 +943,7 @@ constexpr PixelFormat DEFINE_PIXELFORMAT(PixelType type,
                                          int bits,
                                          int bytes)
 {
-  return SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes);
+  return PixelFormat(type, order, layout, bits, bytes);
 }
 
 /**
@@ -977,6 +964,11 @@ constexpr Uint8 PIXELFLAG(PixelFormatRaw format)
   return SDL_PIXELFLAG(format);
 }
 
+constexpr Uint8 PixelFormat::GetFlags() const
+{
+  return SDL::PIXELFLAG(m_format);
+}
+
 /**
  * A macro to retrieve the type of an PixelFormat.
  *
@@ -992,6 +984,11 @@ constexpr Uint8 PIXELFLAG(PixelFormatRaw format)
 constexpr PixelType PIXELTYPE(PixelFormatRaw format)
 {
   return SDL_PIXELTYPE(format);
+}
+
+constexpr PixelType PixelFormat::GetType() const
+{
+  return SDL::PIXELTYPE(m_format);
 }
 
 /**
@@ -1012,6 +1009,11 @@ constexpr int PIXELORDER(PixelFormatRaw format)
   return SDL_PIXELORDER(format);
 }
 
+constexpr int PixelFormat::GetOrder() const
+{
+  return SDL::PIXELORDER(m_format);
+}
+
 /**
  * A macro to retrieve the layout of an PixelFormat.
  *
@@ -1028,6 +1030,11 @@ constexpr int PIXELORDER(PixelFormatRaw format)
 constexpr PackedLayout PIXELLAYOUT(PixelFormatRaw format)
 {
   return SDL_PIXELLAYOUT(format);
+}
+
+constexpr PackedLayout PixelFormat::GetLayout() const
+{
+  return SDL::PIXELLAYOUT(m_format);
 }
 
 /**
@@ -1053,6 +1060,11 @@ constexpr int BITSPERPIXEL(PixelFormatRaw format)
   return SDL_BITSPERPIXEL(format);
 }
 
+constexpr int PixelFormat::GetBitsPerPixel() const
+{
+  return SDL::BITSPERPIXEL(m_format);
+}
+
 /**
  * A macro to determine an PixelFormat's bytes per pixel.
  *
@@ -1076,6 +1088,11 @@ constexpr int BYTESPERPIXEL(PixelFormatRaw format)
   return SDL_BYTESPERPIXEL(format);
 }
 
+constexpr int PixelFormat::GetBytesPerPixel() const
+{
+  return SDL::BYTESPERPIXEL(m_format);
+}
+
 /**
  * A macro to determine if an PixelFormat is an indexed format.
  *
@@ -1092,6 +1109,11 @@ constexpr int BYTESPERPIXEL(PixelFormatRaw format)
 constexpr bool ISPIXELFORMAT_INDEXED(PixelFormatRaw format)
 {
   return SDL_ISPIXELFORMAT_INDEXED(format);
+}
+
+constexpr bool PixelFormat::IsIndexed() const
+{
+  return SDL::ISPIXELFORMAT_INDEXED(m_format);
 }
 
 /**
@@ -1112,6 +1134,11 @@ constexpr bool ISPIXELFORMAT_PACKED(PixelFormatRaw format)
   return SDL_ISPIXELFORMAT_PACKED(format);
 }
 
+constexpr bool PixelFormat::IsPacked() const
+{
+  return SDL::ISPIXELFORMAT_PACKED(m_format);
+}
+
 /**
  * A macro to determine if an PixelFormat is an array format.
  *
@@ -1128,6 +1155,11 @@ constexpr bool ISPIXELFORMAT_PACKED(PixelFormatRaw format)
 constexpr bool ISPIXELFORMAT_ARRAY(PixelFormatRaw format)
 {
   return SDL_ISPIXELFORMAT_ARRAY(format);
+}
+
+constexpr bool PixelFormat::IsArray() const
+{
+  return SDL::ISPIXELFORMAT_ARRAY(m_format);
 }
 
 /**
@@ -1148,6 +1180,11 @@ constexpr bool ISPIXELFORMAT_10BIT(PixelFormatRaw format)
   return SDL_ISPIXELFORMAT_10BIT(format);
 }
 
+constexpr bool PixelFormat::Is10Bit() const
+{
+  return SDL::ISPIXELFORMAT_10BIT(m_format);
+}
+
 /**
  * A macro to determine if an PixelFormat is a floating point format.
  *
@@ -1164,6 +1201,11 @@ constexpr bool ISPIXELFORMAT_10BIT(PixelFormatRaw format)
 constexpr bool ISPIXELFORMAT_FLOAT(PixelFormatRaw format)
 {
   return SDL_ISPIXELFORMAT_FLOAT(format);
+}
+
+constexpr bool PixelFormat::IsFloat() const
+{
+  return SDL::ISPIXELFORMAT_FLOAT(m_format);
 }
 
 /**
@@ -1184,6 +1226,11 @@ constexpr bool ISPIXELFORMAT_ALPHA(PixelFormatRaw format)
   return SDL_ISPIXELFORMAT_ALPHA(format);
 }
 
+constexpr bool PixelFormat::IsAlpha() const
+{
+  return SDL::ISPIXELFORMAT_ALPHA(m_format);
+}
+
 /**
  * A macro to determine if an PixelFormat is a "FourCC" format.
  *
@@ -1202,6 +1249,11 @@ constexpr bool ISPIXELFORMAT_ALPHA(PixelFormatRaw format)
 constexpr bool ISPIXELFORMAT_FOURCC(PixelFormatRaw format)
 {
   return SDL_ISPIXELFORMAT_FOURCC(format);
+}
+
+constexpr bool PixelFormat::IsFourCC() const
+{
+  return SDL::ISPIXELFORMAT_FOURCC(m_format);
 }
 
 /**
@@ -1558,7 +1610,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr ColorType GetType() const { return SDL_COLORSPACETYPE(m_cspace); }
+  constexpr ColorType GetType() const;
 
   /**
    * A macro to retrieve the range of an Colorspace.
@@ -1570,10 +1622,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr ColorRange GetRange() const
-  {
-    return SDL_COLORSPACERANGE(m_cspace);
-  }
+  constexpr ColorRange GetRange() const;
 
   /**
    * A macro to retrieve the chroma sample location of an Colorspace.
@@ -1585,10 +1634,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr ChromaLocation GetChroma() const
-  {
-    return SDL_COLORSPACECHROMA(m_cspace);
-  }
+  constexpr ChromaLocation GetChroma() const;
 
   /**
    * A macro to retrieve the primaries of an Colorspace.
@@ -1600,10 +1646,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr ColorPrimaries GetPrimaries() const
-  {
-    return SDL_COLORSPACEPRIMARIES(m_cspace);
-  }
+  constexpr ColorPrimaries GetPrimaries() const;
 
   /**
    * A macro to retrieve the transfer characteristics of an Colorspace.
@@ -1615,10 +1658,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr TransferCharacteristics GetTransfer() const
-  {
-    return SDL_COLORSPACETRANSFER(m_cspace);
-  }
+  constexpr TransferCharacteristics GetTransfer() const;
 
   /**
    * A macro to retrieve the matrix coefficients of an Colorspace.
@@ -1630,10 +1670,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr MatrixCoefficients GetMatrix() const
-  {
-    return SDL_COLORSPACEMATRIX(m_cspace);
-  }
+  constexpr MatrixCoefficients GetMatrix() const;
 
   /**
    * A macro to determine if an Colorspace uses BT601 (or BT470BG) matrix
@@ -1649,10 +1686,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool IsMatrixBT601() const
-  {
-    return SDL_ISCOLORSPACE_MATRIX_BT601(m_cspace);
-  }
+  constexpr bool IsMatrixBT601() const;
 
   /**
    * A macro to determine if an Colorspace uses BT709 matrix coefficients.
@@ -1664,10 +1698,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool IsMatrixBT709() const
-  {
-    return SDL_ISCOLORSPACE_MATRIX_BT709(m_cspace);
-  }
+  constexpr bool IsMatrixBT709() const;
 
   /**
    * A macro to determine if an Colorspace uses BT2020_NCL matrix
@@ -1680,10 +1711,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool IsMatrixBT2020_NCL() const
-  {
-    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(m_cspace);
-  }
+  constexpr bool IsMatrixBT2020_NCL() const;
 
   /**
    * A macro to determine if an Colorspace has a limited range.
@@ -1695,10 +1723,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool IsLimitedRange() const
-  {
-    return SDL_ISCOLORSPACE_LIMITED_RANGE(m_cspace);
-  }
+  constexpr bool IsLimitedRange() const;
 
   /**
    * A macro to determine if an Colorspace has a full range.
@@ -1710,10 +1735,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool IsFullRange() const
-  {
-    return SDL_ISCOLORSPACE_FULL_RANGE(m_cspace);
-  }
+  constexpr bool IsFullRange() const;
 };
 
 constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
@@ -1791,8 +1813,7 @@ constexpr Colorspace DEFINE_COLORSPACE(ColorType type,
                                        MatrixCoefficients matrix,
                                        ChromaLocation chroma)
 {
-  return SDL_DEFINE_COLORSPACE(
-    type, range, primaries, transfer, matrix, chroma);
+  return Colorspace(type, range, primaries, transfer, matrix, chroma);
 }
 
 /**
@@ -1810,6 +1831,11 @@ constexpr ColorType COLORSPACETYPE(ColorspaceRaw cspace)
   return SDL_COLORSPACETYPE(cspace);
 }
 
+constexpr ColorType Colorspace::GetType() const
+{
+  return SDL::COLORSPACETYPE(m_cspace);
+}
+
 /**
  * A macro to retrieve the range of an Colorspace.
  *
@@ -1823,6 +1849,11 @@ constexpr ColorType COLORSPACETYPE(ColorspaceRaw cspace)
 constexpr ColorRange COLORSPACERANGE(ColorspaceRaw cspace)
 {
   return SDL_COLORSPACERANGE(cspace);
+}
+
+constexpr ColorRange Colorspace::GetRange() const
+{
+  return SDL::COLORSPACERANGE(m_cspace);
 }
 
 /**
@@ -1840,6 +1871,11 @@ constexpr ChromaLocation COLORSPACECHROMA(ColorspaceRaw cspace)
   return SDL_COLORSPACECHROMA(cspace);
 }
 
+constexpr ChromaLocation Colorspace::GetChroma() const
+{
+  return SDL::COLORSPACECHROMA(m_cspace);
+}
+
 /**
  * A macro to retrieve the primaries of an Colorspace.
  *
@@ -1853,6 +1889,11 @@ constexpr ChromaLocation COLORSPACECHROMA(ColorspaceRaw cspace)
 constexpr ColorPrimaries COLORSPACEPRIMARIES(ColorspaceRaw cspace)
 {
   return SDL_COLORSPACEPRIMARIES(cspace);
+}
+
+constexpr ColorPrimaries Colorspace::GetPrimaries() const
+{
+  return SDL::COLORSPACEPRIMARIES(m_cspace);
 }
 
 /**
@@ -1870,6 +1911,11 @@ constexpr TransferCharacteristics COLORSPACETRANSFER(ColorspaceRaw cspace)
   return SDL_COLORSPACETRANSFER(cspace);
 }
 
+constexpr TransferCharacteristics Colorspace::GetTransfer() const
+{
+  return SDL::COLORSPACETRANSFER(m_cspace);
+}
+
 /**
  * A macro to retrieve the matrix coefficients of an Colorspace.
  *
@@ -1883,6 +1929,11 @@ constexpr TransferCharacteristics COLORSPACETRANSFER(ColorspaceRaw cspace)
 constexpr MatrixCoefficients COLORSPACEMATRIX(ColorspaceRaw cspace)
 {
   return SDL_COLORSPACEMATRIX(cspace);
+}
+
+constexpr MatrixCoefficients Colorspace::GetMatrix() const
+{
+  return SDL::COLORSPACEMATRIX(m_cspace);
 }
 
 /**
@@ -1904,6 +1955,11 @@ constexpr bool ISCOLORSPACE_MATRIX_BT601(ColorspaceRaw cspace)
   return SDL_ISCOLORSPACE_MATRIX_BT601(cspace);
 }
 
+constexpr bool Colorspace::IsMatrixBT601() const
+{
+  return SDL::ISCOLORSPACE_MATRIX_BT601(m_cspace);
+}
+
 /**
  * A macro to determine if an Colorspace uses BT709 matrix coefficients.
  *
@@ -1917,6 +1973,11 @@ constexpr bool ISCOLORSPACE_MATRIX_BT601(ColorspaceRaw cspace)
 constexpr bool ISCOLORSPACE_MATRIX_BT709(ColorspaceRaw cspace)
 {
   return SDL_ISCOLORSPACE_MATRIX_BT709(cspace);
+}
+
+constexpr bool Colorspace::IsMatrixBT709() const
+{
+  return SDL::ISCOLORSPACE_MATRIX_BT709(m_cspace);
 }
 
 /**
@@ -1935,6 +1996,11 @@ constexpr bool ISCOLORSPACE_MATRIX_BT2020_NCL(ColorspaceRaw cspace)
   return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace);
 }
 
+constexpr bool Colorspace::IsMatrixBT2020_NCL() const
+{
+  return SDL::ISCOLORSPACE_MATRIX_BT2020_NCL(m_cspace);
+}
+
 /**
  * A macro to determine if an Colorspace has a limited range.
  *
@@ -1950,6 +2016,11 @@ constexpr bool ISCOLORSPACE_LIMITED_RANGE(ColorspaceRaw cspace)
   return SDL_ISCOLORSPACE_LIMITED_RANGE(cspace);
 }
 
+constexpr bool Colorspace::IsLimitedRange() const
+{
+  return SDL::ISCOLORSPACE_LIMITED_RANGE(m_cspace);
+}
+
 /**
  * A macro to determine if an Colorspace has a full range.
  *
@@ -1963,6 +2034,11 @@ constexpr bool ISCOLORSPACE_LIMITED_RANGE(ColorspaceRaw cspace)
 constexpr bool ISCOLORSPACE_FULL_RANGE(ColorspaceRaw cspace)
 {
   return SDL_ISCOLORSPACE_FULL_RANGE(cspace);
+}
+
+constexpr bool Colorspace::IsFullRange() const
+{
+  return SDL::ISCOLORSPACE_FULL_RANGE(m_cspace);
 }
 
 /**
@@ -2311,11 +2387,7 @@ public:
    *
    * @sa Palette.Palette
    */
-  void Destroy()
-  {
-    SDL_DestroyPalette(m_resource);
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   constexpr int GetSize() const { static_assert(false, "Not implemented"); }
 
@@ -2337,10 +2409,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0)
-  {
-    CheckError(SDL_SetPaletteColors(m_resource, colors, firstcolor));
-  }
+  void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
 };
 
 /**
@@ -2357,6 +2426,11 @@ public:
 inline const char* GetPixelFormatName(PixelFormatRaw format)
 {
   return SDL_GetPixelFormatName(format);
+}
+
+inline const char* PixelFormat::GetName() const
+{
+  return SDL::GetPixelFormatName(m_format);
 }
 
 /**
@@ -2385,6 +2459,15 @@ inline void GetMasksForPixelFormat(PixelFormatRaw format,
 {
   CheckError(
     SDL_GetMasksForPixelFormat(format, bpp, Rmask, Gmask, Bmask, Amask));
+}
+
+inline void PixelFormat::GetMasks(int* bpp,
+                                  Uint32* Rmask,
+                                  Uint32* Gmask,
+                                  Uint32* Bmask,
+                                  Uint32* Amask) const
+{
+  SDL::GetMasksForPixelFormat(m_format, bpp, Rmask, Gmask, Bmask, Amask);
 }
 
 /**
@@ -2416,6 +2499,15 @@ inline PixelFormat GetPixelFormatForMasks(int bpp,
   return SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask);
 }
 
+inline PixelFormat PixelFormat::ForMasks(int bpp,
+                                         Uint32 Rmask,
+                                         Uint32 Gmask,
+                                         Uint32 Bmask,
+                                         Uint32 Amask)
+{
+  return SDL::GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask);
+}
+
 /**
  * Create an PixelFormatDetails structure corresponding to a pixel format.
  *
@@ -2436,6 +2528,11 @@ inline const PixelFormatDetails* GetPixelFormatDetails(PixelFormatRaw format)
   return SDL_GetPixelFormatDetails(format);
 }
 
+inline const PixelFormatDetails* PixelFormat::GetDetails() const
+{
+  return SDL::GetPixelFormatDetails(m_format);
+}
+
 /**
  * Create a palette structure with the specified number of color entries.
  *
@@ -2453,10 +2550,7 @@ inline const PixelFormatDetails* GetPixelFormatDetails(PixelFormatRaw format)
  * @sa Palette.SetColors
  * @sa Surface.SetPalette
  */
-inline Palette CreatePalette(int ncolors)
-{
-  return Palette(CheckError(SDL_CreatePalette(ncolors)));
-}
+inline Palette CreatePalette(int ncolors) { return Palette(ncolors); }
 
 /**
  * Set a range of colors in a palette.
@@ -2479,6 +2573,12 @@ inline void SetPaletteColors(PaletteParam palette,
   CheckError(SDL_SetPaletteColors(palette, colors, firstcolor));
 }
 
+inline void Palette::SetColors(SpanRef<const ColorRaw> colors,
+                               int firstcolor = 0)
+{
+  SDL::SetPaletteColors(m_resource, colors, firstcolor);
+}
+
 /**
  * Free a palette created with Palette.Palette().
  *
@@ -2492,6 +2592,12 @@ inline void SetPaletteColors(PaletteParam palette,
  * @sa Palette.Palette
  */
 inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
+
+inline void Palette::Destroy()
+{
+  SDL_DestroyPalette(m_resource);
+  m_resource = nullptr;
+}
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.

@@ -1008,11 +1008,7 @@ public:
    *
    * @sa Environment.Environment
    */
-  void Destroy()
-  {
-    SDL_DestroyEnvironment(m_resource);
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   /**
    * Get the value of a variable in the environment.
@@ -1031,10 +1027,7 @@ public:
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
    */
-  const char* GetVariable(StringParam name)
-  {
-    return SDL_GetEnvironmentVariable(m_resource, name);
-  }
+  const char* GetVariable(StringParam name);
 
   /**
    * Get all variables in the environment.
@@ -1055,10 +1048,7 @@ public:
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
    */
-  OwnArray<char*> GetVariables()
-  {
-    return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(m_resource))};
-  }
+  OwnArray<char*> GetVariables();
 
   /**
    * Get the Variables count.
@@ -1094,10 +1084,7 @@ public:
    * @sa Environment.GetVariables
    * @sa Environment.UnsetVariable
    */
-  void SetVariable(StringParam name, StringParam value, bool overwrite)
-  {
-    CheckError(SDL_SetEnvironmentVariable(m_resource, name, value, overwrite));
-  }
+  void SetVariable(StringParam name, StringParam value, bool overwrite);
 
   /**
    * Clear a variable from the environment.
@@ -1116,10 +1103,7 @@ public:
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
    */
-  void UnsetVariable(StringParam name)
-  {
-    CheckError(SDL_UnsetEnvironmentVariable(m_resource, name));
-  }
+  void UnsetVariable(StringParam name);
 };
 
 /// Semi-safe reference for Environment.
@@ -1186,7 +1170,7 @@ inline EnvironmentRaw GetEnvironment() { return SDL_GetEnvironment(); }
  */
 inline Environment CreateEnvironment(bool populated)
 {
-  return Environment(SDL_CreateEnvironment(populated));
+  return Environment(populated);
 }
 
 /**
@@ -1213,6 +1197,11 @@ inline const char* GetEnvironmentVariable(EnvironmentParam env,
   return SDL_GetEnvironmentVariable(env, name);
 }
 
+inline const char* Environment::GetVariable(StringParam name)
+{
+  return SDL::GetEnvironmentVariable(m_resource, std::move(name));
+}
+
 /**
  * Get all variables in the environment.
  *
@@ -1235,6 +1224,11 @@ inline const char* GetEnvironmentVariable(EnvironmentParam env,
 inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
 {
   return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
+}
+
+inline OwnArray<char*> Environment::GetVariables()
+{
+  return SDL::GetEnvironmentVariables(m_resource);
 }
 
 /**
@@ -1263,7 +1257,15 @@ inline void SetEnvironmentVariable(EnvironmentParam env,
                                    StringParam value,
                                    bool overwrite)
 {
-  return CheckError(SDL_SetEnvironmentVariable(env, name, value, overwrite));
+  CheckError(SDL_SetEnvironmentVariable(env, name, value, overwrite));
+}
+
+inline void Environment::SetVariable(StringParam name,
+                                     StringParam value,
+                                     bool overwrite)
+{
+  SDL::SetEnvironmentVariable(
+    m_resource, std::move(name), std::move(value), overwrite);
 }
 
 /**
@@ -1286,7 +1288,12 @@ inline void SetEnvironmentVariable(EnvironmentParam env,
  */
 inline void UnsetEnvironmentVariable(EnvironmentParam env, StringParam name)
 {
-  return CheckError(SDL_UnsetEnvironmentVariable(env, name));
+  CheckError(SDL_UnsetEnvironmentVariable(env, name));
+}
+
+inline void Environment::UnsetVariable(StringParam name)
+{
+  SDL::UnsetEnvironmentVariable(m_resource, std::move(name));
 }
 
 /**
@@ -1304,6 +1311,12 @@ inline void UnsetEnvironmentVariable(EnvironmentParam env, StringParam name)
 inline void DestroyEnvironment(EnvironmentRaw env)
 {
   SDL_DestroyEnvironment(env);
+}
+
+inline void Environment::Destroy()
+{
+  SDL_DestroyEnvironment(m_resource);
+  m_resource = nullptr;
 }
 
 /**
@@ -5795,12 +5808,7 @@ public:
    * @sa IConv.open
    * @sa iconv_string
    */
-  int close()
-  {
-    auto r = SDL_iconv_close(m_resource);
-    m_resource = nullptr;
-    return r;
-  }
+  int close();
 
   /**
    * This function converts text between encodings, reading from and writing to
@@ -5840,11 +5848,7 @@ public:
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
                char** outbuf,
-               size_t* outbytesleft)
-  {
-    return CheckError(
-      SDL_iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft));
-  }
+               size_t* outbytesleft);
 };
 
 /// Semi-safe reference for IConv.
@@ -5901,6 +5905,13 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
  */
 inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
 
+inline int IConv::close()
+{
+  auto r = SDL_iconv_close(m_resource);
+  m_resource = nullptr;
+  return r;
+}
+
 /**
  * This function converts text between encodings, reading from and writing to
  * a buffer.
@@ -5945,6 +5956,14 @@ inline size_t iconv(IConvRaw cd,
                     size_t* outbytesleft)
 {
   return CheckError(SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft));
+}
+
+inline size_t IConv::iconv(const char** inbuf,
+                           size_t* inbytesleft,
+                           char** outbuf,
+                           size_t* outbytesleft)
+{
+  return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
 }
 
 #ifdef SDL3PP_DOC

@@ -21,16 +21,7 @@
 <    * @param ticks the resulting Time.
 ---
 >    * @returns time on success.
-287c289,294
-<   operator Time() const : DateTimeRaw(CheckError(SDL_DateTimeToTime())) {}
----
->   operator Time() const
->   {
->     SDL_Time t;
->     CheckError(SDL_DateTimeToTime(this, &t));
->     return Time::FromNS(t);
->   }
-351c358,363
+351c353,358
 < inline Time Time::Current() { return CheckError(SDL_GetCurrentTime()); }
 ---
 > inline Time Time::Current()
@@ -39,51 +30,51 @@
 >   CheckError(SDL_GetCurrentTime(&t));
 >   return Time::FromNS(t);
 > }
-368c380
-<   return CheckError(SDL_TimeToDateTime(ticks, localTime));
----
->   return DateTime(ticks, localTime);
-385c397,399
+385c392,394
 <   return CheckError(SDL_DateTimeToTime(dt));
 ---
 >   SDL_Time t;
 >   CheckError(SDL_DateTimeToTime(&dt, &t));
 >   return Time::FromNS(t);
-403c417
+388c397
+< inline DateTime::operator Time() const : DateTimeRaw(SDL::DateTimeToTime()) {}
+---
+> inline DateTime::operator Time() const { return SDL::DateTimeToTime(*this); }
+405c414
 <   SDL_TimeToWindows(dwLowDateTime, dwHighDateTime);
 ---
 >   SDL_TimeToWindows(ToNS(), dwLowDateTime, dwHighDateTime);
-421c435
+423c432
 <   return SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime);
 ---
 >   return Time::FromNS(SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime));
-429,430c443,444
+431,432c440,441
 <  * @returns the number of days in the requested month or -1 on failure; call
 <  *          GetError() for more information.
 ---
 >  * @returns the number of days in the requested month.
 >  * @throws Error on failure.
-436c450
+438c447
 <   return SDL_GetDaysInMonth(year, month);
 ---
 >   return CheckError(SDL_GetDaysInMonth(year, month), -1);
-445,446c459,460
+447,448c456,457
 <  * @returns the day of year [0-365] if the date is valid or -1 on failure;
 <  *          call GetError() for more information.
 ---
 >  * @returns the day of year [0-365] if the date is valid.
 >  * @throws Error on failure.
-452c466
+454c463
 <   return SDL_GetDayOfYear(year, month, day);
 ---
 >   return CheckError(SDL_GetDayOfYear(year, month, day), -1);
-461,462c475,476
+463,464c472,473
 <  * @returns a value between 0 and 6 (0 being Sunday) if the date is valid or
 <  *          -1 on failure; call GetError() for more information.
 ---
 >  * @returns a value between 0 and 6 (0 being Sunday) if the date is valid.
 >  * @throws Error on failure.
-468c482
+470c479
 <   return SDL_GetDayOfWeek(year, month, day);
 ---
 >   return CheckError(SDL_GetDayOfWeek(year, month, day), -1);

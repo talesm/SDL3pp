@@ -204,7 +204,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static OwnArray<DisplayID> GetAll() { return SDL_GetDisplays(); }
+  static OwnArray<DisplayID> GetAll();
 
   /**
    * Return the primary display.
@@ -218,7 +218,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  static Display GetPrimary() { return CheckError(SDL_GetPrimaryDisplay()); }
+  static Display GetPrimary();
 
   /**
    * Get the properties associated with a display.
@@ -245,10 +245,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesRef GetProperties() const
-  {
-    return CheckError(SDL_GetDisplayProperties(m_displayID));
-  }
+  PropertiesRef GetProperties() const;
 
   /**
    * Get the name of a display in UTF-8 encoding.
@@ -262,7 +259,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  const char* GetName() const { return SDL_GetDisplayName(m_displayID); }
+  const char* GetName() const;
 
   /**
    * Get the desktop area represented by a display.
@@ -281,10 +278,7 @@ public:
    * @sa Display.GetUsableBounds
    * @sa Display.GetAll
    */
-  Rect GetBounds() const
-  {
-    return CheckError(SDL_GetDisplayBounds(m_displayID));
-  }
+  Rect GetBounds() const;
 
   /**
    * Get the usable desktop area represented by a display, in screen
@@ -309,10 +303,7 @@ public:
    * @sa Display.GetBounds
    * @sa Display.GetAll
    */
-  Rect GetUsableBounds() const
-  {
-    return CheckError(SDL_GetDisplayUsableBounds(m_displayID));
-  }
+  Rect GetUsableBounds() const;
 
   /**
    * Get the orientation of a display when it is unrotated.
@@ -326,10 +317,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  DisplayOrientation GetNaturalOrientation() const
-  {
-    return SDL_GetNaturalDisplayOrientation(m_displayID);
-  }
+  DisplayOrientation GetNaturalOrientation() const;
 
   /**
    * Get the orientation of a display.
@@ -343,10 +331,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  DisplayOrientation GetCurrentOrientation() const
-  {
-    return SDL_GetCurrentDisplayOrientation(m_displayID);
-  }
+  DisplayOrientation GetCurrentOrientation() const;
 
   /**
    * Get the content scale of a display.
@@ -372,10 +357,7 @@ public:
    * @sa Window.GetDisplayScale
    * @sa Display.GetAll
    */
-  float GetContentScale() const
-  {
-    return SDL_GetDisplayContentScale(m_displayID);
-  }
+  float GetContentScale() const;
 
   /**
    * Get a list of fullscreen display modes available on a display.
@@ -403,10 +385,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  OwnArray<DisplayMode*> GetFullscreenModes() const
-  {
-    return SDL_GetFullscreenDisplayModes(m_displayID);
-  }
+  OwnArray<DisplayMode*> GetFullscreenModes() const;
 
   /**
    * Get the closest match to the requested display mode.
@@ -437,11 +416,7 @@ public:
    */
   DisplayMode GetClosestFullscreenMode(const PointRaw& size,
                                        float refresh_rate,
-                                       bool include_high_density_modes) const
-  {
-    return CheckError(SDL_GetClosestFullscreenDisplayMode(
-      m_displayID, size, refresh_rate, include_high_density_modes));
-  }
+                                       bool include_high_density_modes) const;
 
   /**
    * Get information about the desktop's display mode.
@@ -461,10 +436,7 @@ public:
    * @sa Display.GetCurrentMode
    * @sa Display.GetAll
    */
-  const DisplayMode* GetDesktopMode() const
-  {
-    return SDL_GetDesktopDisplayMode(m_displayID);
-  }
+  const DisplayMode* GetDesktopMode() const;
 
   /**
    * Get information about the current display mode.
@@ -484,10 +456,7 @@ public:
    * @sa Display.GetDesktopMode
    * @sa Display.GetAll
    */
-  const DisplayMode* GetCurrentMode() const
-  {
-    return SDL_GetCurrentDisplayMode(m_displayID);
-  }
+  const DisplayMode* GetCurrentMode() const;
 
   /**
    * Get the display containing a point.
@@ -503,10 +472,7 @@ public:
    * @sa Display.GetBounds
    * @sa Display.GetAll
    */
-  static Display GetForPoint(const PointRaw& point)
-  {
-    return SDL_GetDisplayForPoint(point);
-  }
+  static Display GetForPoint(const PointRaw& point);
 
   /**
    * Get the display primarily containing a rect.
@@ -523,10 +489,7 @@ public:
    * @sa Display.GetBounds
    * @sa Display.GetAll
    */
-  static Display GetForRect(const RectRaw& rect)
-  {
-    return SDL_GetDisplayForRect(rect);
-  }
+  static Display GetForRect(const RectRaw& rect);
 };
 
 /**
@@ -1150,11 +1113,7 @@ public:
    * @sa Window.Window
    * @sa Window.Window
    */
-  void Destroy()
-  {
-    SDL_DestroyWindow(m_resource);
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   /**
    * Get the display associated with a window.
@@ -1170,7 +1129,7 @@ public:
    * @sa Display.GetBounds
    * @sa Display.GetAll
    */
-  Display GetDisplay() const { return SDL_GetDisplayForWindow(m_resource); }
+  Display GetDisplay() const;
 
   /**
    * Get the pixel density of a window.
@@ -1188,10 +1147,7 @@ public:
    *
    * @sa Window.GetDisplayScale
    */
-  float GetPixelDensity() const
-  {
-    return SDL_GetWindowPixelDensity(m_resource);
-  }
+  float GetPixelDensity() const;
 
   /**
    * Get the content display scale relative to a window's pixel size.
@@ -1214,10 +1170,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  float GetDisplayScale() const
-  {
-    return SDL_GetWindowDisplayScale(m_resource);
-  }
+  float GetDisplayScale() const;
 
   /**
    * Set the display mode to use when a window is visible and fullscreen.
@@ -1250,10 +1203,7 @@ public:
    * @sa Window.SetFullscreen
    * @sa Window.Sync
    */
-  void SetFullscreenMode(OptionalRef<const DisplayMode> mode)
-  {
-    CheckError(SDL_SetWindowFullscreenMode(m_resource, mode));
-  }
+  void SetFullscreenMode(OptionalRef<const DisplayMode> mode);
 
   /**
    * Query the display mode to use when a window is visible at fullscreen.
@@ -1268,10 +1218,7 @@ public:
    * @sa Window.SetFullscreenMode
    * @sa Window.SetFullscreen
    */
-  const DisplayMode* GetFullscreenMode() const
-  {
-    return SDL_GetWindowFullscreenMode(m_resource);
-  }
+  const DisplayMode* GetFullscreenMode() const;
 
   /**
    * Get the raw ICC profile data for the screen the window is currently on.
@@ -1284,10 +1231,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  OwnPtr<void> GetICCProfile() const
-  {
-    return CheckError(SDL_GetWindowICCProfile(m_resource));
-  }
+  OwnPtr<void> GetICCProfile() const;
 
   /**
    * Get the pixel format associated with the window.
@@ -1299,10 +1243,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PixelFormat GetPixelFormat() const
-  {
-    return CheckError(SDL_GetWindowPixelFormat(m_resource));
-  }
+  PixelFormat GetPixelFormat() const;
 
   /**
    * Get the numeric ID of a window.
@@ -1319,7 +1260,7 @@ public:
    *
    * @sa Window.FromID
    */
-  WindowID GetID() const { return CheckError(SDL_GetWindowID(m_resource)); }
+  WindowID GetID() const;
 
   /**
    * Get parent of a window.
@@ -1454,10 +1395,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesRef GetProperties() const
-  {
-    return CheckError(SDL_GetWindowProperties(m_resource));
-  }
+  PropertiesRef GetProperties() const;
 
   /**
    * Get the window flags.
@@ -1476,7 +1414,7 @@ public:
    * @sa Window.SetMouseGrab
    * @sa Window.Show
    */
-  WindowFlags GetFlags() const { return SDL_GetWindowFlags(m_resource); }
+  WindowFlags GetFlags() const;
 
   /**
    * Set the title of a window.
@@ -1492,10 +1430,7 @@ public:
    *
    * @sa Window.GetTitle
    */
-  void SetTitle(StringParam title)
-  {
-    CheckError(SDL_SetWindowTitle(m_resource, title));
-  }
+  void SetTitle(StringParam title);
 
   /**
    * Get the title of a window.
@@ -1509,7 +1444,7 @@ public:
    *
    * @sa Window.SetTitle
    */
-  const char* GetTitle() const { return SDL_GetWindowTitle(m_resource); }
+  const char* GetTitle() const;
 
   /**
    * Set the icon for a window.
@@ -1531,10 +1466,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetIcon(SurfaceParam icon)
-  {
-    CheckError(SDL_SetWindowIcon(m_resource, icon));
-  }
+  void SetIcon(SurfaceParam icon);
 
   void SetRect(Rect rect) { static_assert(false, "Not implemented"); }
 
@@ -1578,10 +1510,7 @@ public:
    * @sa Window.GetPosition
    * @sa Window.Sync
    */
-  void SetPosition(const PointRaw& p)
-  {
-    CheckError(SDL_SetWindowPosition(m_resource, p));
-  }
+  void SetPosition(const PointRaw& p);
 
   Point GetPosition() const { static_assert(false, "Not implemented"); }
 
@@ -1606,10 +1535,7 @@ public:
    *
    * @sa Window.SetPosition
    */
-  void GetPosition(int* x, int* y) const
-  {
-    CheckError(SDL_GetWindowPosition(m_resource, x, y));
-  }
+  void GetPosition(int* x, int* y) const;
 
   /**
    * Request that the size of a window's client area be set.
@@ -1645,10 +1571,7 @@ public:
    * @sa Window.SetFullscreenMode
    * @sa Window.Sync
    */
-  void SetSize(const PointRaw& p)
-  {
-    CheckError(SDL_SetWindowSize(m_resource, p));
-  }
+  void SetSize(const PointRaw& p);
 
   Point GetSize() const { static_assert(false, "Not implemented"); }
 
@@ -1671,10 +1594,7 @@ public:
    * @sa Window.GetSizeInPixels
    * @sa Window.SetSize
    */
-  void GetSize(int* w, int* h) const
-  {
-    CheckError(SDL_GetWindowSize(m_resource, w, h));
-  }
+  void GetSize(int* w, int* h) const;
 
   /**
    * Get the safe area for this window.
@@ -1695,10 +1615,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Rect GetSafeArea() const
-  {
-    return CheckError(SDL_GetWindowSafeArea(m_resource));
-  }
+  Rect GetSafeArea() const;
 
   /**
    * Request that the aspect ratio of a window's client area be set.
@@ -1737,10 +1654,7 @@ public:
    * @sa Window.GetAspectRatio
    * @sa Window.Sync
    */
-  void SetAspectRatio(float min_aspect, float max_aspect)
-  {
-    CheckError(SDL_SetWindowAspectRatio(m_resource, min_aspect, max_aspect));
-  }
+  void SetAspectRatio(float min_aspect, float max_aspect);
 
   /**
    * Get the size of a window's client area.
@@ -1757,10 +1671,7 @@ public:
    *
    * @sa Window.SetAspectRatio
    */
-  void GetAspectRatio(float* min_aspect, float* max_aspect) const
-  {
-    CheckError(SDL_GetWindowAspectRatio(m_resource, min_aspect, max_aspect));
-  }
+  void GetAspectRatio(float* min_aspect, float* max_aspect) const;
 
   /**
    * Get the size of a window's borders (decorations) around the client area.
@@ -1795,10 +1706,7 @@ public:
    *
    * @sa Window.GetSize
    */
-  void GetBordersSize(int* top, int* left, int* bottom, int* right) const
-  {
-    CheckError(SDL_GetWindowBordersSize(m_resource, top, left, bottom, right));
-  }
+  void GetBordersSize(int* top, int* left, int* bottom, int* right) const;
 
   Point GetSizeInPixels() const { static_assert(false, "Not implemented"); }
 
@@ -1818,10 +1726,7 @@ public:
    * @sa Window.Window
    * @sa Window.GetSize
    */
-  void GetSizeInPixels(int* w, int* h) const
-  {
-    CheckError(SDL_GetWindowSizeInPixels(m_resource, w, h));
-  }
+  void GetSizeInPixels(int* w, int* h) const;
 
   /**
    * Set the minimum size of a window's client area.
@@ -1838,10 +1743,7 @@ public:
    * @sa Window.GetMinimumSize
    * @sa Window.SetMaximumSize
    */
-  void SetMinimumSize(const PointRaw& p)
-  {
-    CheckError(SDL_SetWindowMinimumSize(m_resource, p));
-  }
+  void SetMinimumSize(const PointRaw& p);
 
   /**
    * Get the minimum size of a window's client area.
@@ -1859,10 +1761,7 @@ public:
    * @sa Window.GetMaximumSize
    * @sa Window.SetMinimumSize
    */
-  void GetMinimumSize(int* w, int* h) const
-  {
-    CheckError(SDL_GetWindowMinimumSize(m_resource, w, h));
-  }
+  void GetMinimumSize(int* w, int* h) const;
 
   /**
    * Set the maximum size of a window's client area.
@@ -1879,10 +1778,7 @@ public:
    * @sa Window.GetMaximumSize
    * @sa Window.SetMinimumSize
    */
-  void SetMaximumSize(const PointRaw& p)
-  {
-    CheckError(SDL_SetWindowMaximumSize(m_resource, p));
-  }
+  void SetMaximumSize(const PointRaw& p);
 
   /**
    * Get the maximum size of a window's client area.
@@ -1900,10 +1796,7 @@ public:
    * @sa Window.GetMinimumSize
    * @sa Window.SetMaximumSize
    */
-  void GetMaximumSize(int* w, int* h) const
-  {
-    CheckError(SDL_GetWindowMaximumSize(m_resource, w, h));
-  }
+  void GetMaximumSize(int* w, int* h) const;
 
   /**
    * Set the border state of a window.
@@ -1923,10 +1816,7 @@ public:
    *
    * @sa Window.GetFlags
    */
-  void SetBordered(bool bordered)
-  {
-    CheckError(SDL_SetWindowBordered(m_resource, bordered));
-  }
+  void SetBordered(bool bordered);
 
   /**
    * Set the user-resizable state of a window.
@@ -1946,10 +1836,7 @@ public:
    *
    * @sa Window.GetFlags
    */
-  void SetResizable(bool resizable)
-  {
-    CheckError(SDL_SetWindowResizable(m_resource, resizable));
-  }
+  void SetResizable(bool resizable);
 
   /**
    * Set the window to always be above the others.
@@ -1966,10 +1853,7 @@ public:
    *
    * @sa Window.GetFlags
    */
-  void SetAlwaysOnTop(bool on_top)
-  {
-    CheckError(SDL_SetWindowAlwaysOnTop(m_resource, on_top));
-  }
+  void SetAlwaysOnTop(bool on_top);
 
   /**
    * Show a window.
@@ -1983,7 +1867,7 @@ public:
    * @sa Window.Hide
    * @sa Window.Raise
    */
-  void Show() { CheckError(SDL_ShowWindow(m_resource)); }
+  void Show();
 
   /**
    * Hide a window.
@@ -1997,7 +1881,7 @@ public:
    * @sa Window.Show
    * @sa WINDOW_HIDDEN
    */
-  void Hide() { CheckError(SDL_HideWindow(m_resource)); }
+  void Hide();
 
   /**
    * Request that a window be raised above other windows and gain the input
@@ -2015,7 +1899,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Raise() { CheckError(SDL_RaiseWindow(m_resource)); }
+  void Raise();
 
   /**
    * Request that the window be made as large as possible.
@@ -2047,7 +1931,7 @@ public:
    * @sa Window.Restore
    * @sa Window.Sync
    */
-  void Maximize() { CheckError(SDL_MaximizeWindow(m_resource)); }
+  void Maximize();
 
   /**
    * Request that the window be minimized to an iconic representation.
@@ -2074,7 +1958,7 @@ public:
    * @sa Window.Restore
    * @sa Window.Sync
    */
-  void Minimize() { CheckError(SDL_MinimizeWindow(m_resource)); }
+  void Minimize();
 
   /**
    * Request that the size and position of a minimized or maximized window be
@@ -2102,7 +1986,7 @@ public:
    * @sa Window.Minimize
    * @sa Window.Sync
    */
-  void Restore() { CheckError(SDL_RestoreWindow(m_resource)); }
+  void Restore();
 
   /**
    * Request that the window's fullscreen state be changed.
@@ -2132,10 +2016,7 @@ public:
    * @sa Window.Sync
    * @sa WINDOW_FULLSCREEN
    */
-  void SetFullscreen(bool fullscreen)
-  {
-    CheckError(SDL_SetWindowFullscreen(m_resource, fullscreen));
-  }
+  void SetFullscreen(bool fullscreen);
 
   /**
    * Block until any pending window state is finalized.
@@ -2164,7 +2045,7 @@ public:
    * @sa Window.Restore
    * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
    */
-  void Sync() { CheckError(SDL_SyncWindow(m_resource)); }
+  void Sync();
 
   /**
    * Return whether the window has a surface associated with it.
@@ -2178,7 +2059,7 @@ public:
    *
    * @sa Window.GetSurface
    */
-  bool HasSurface() const { return SDL_WindowHasSurface(m_resource); }
+  bool HasSurface() const;
 
   /**
    * Get the SDL surface associated with the window.
@@ -2206,7 +2087,7 @@ public:
    * @sa Window.UpdateSurface
    * @sa Window.UpdateSurfaceRects
    */
-  Surface GetSurface() { return SDL_GetWindowSurface(m_resource); }
+  Surface GetSurface();
 
   /**
    * Toggle VSync for the window surface.
@@ -2230,10 +2111,7 @@ public:
    *
    * @sa Window.GetSurfaceVSync
    */
-  void SetSurfaceVSync(int vsync)
-  {
-    CheckError(SDL_SetWindowSurfaceVSync(m_resource, vsync));
-  }
+  void SetSurfaceVSync(int vsync);
 
   /**
    * Get VSync for the window surface.
@@ -2249,10 +2127,7 @@ public:
    *
    * @sa Window.SetSurfaceVSync
    */
-  int GetSurfaceVSync() const
-  {
-    return CheckError(SDL_GetWindowSurfaceVSync(m_resource));
-  }
+  int GetSurfaceVSync() const;
 
   /**
    * Copy the window surface to the screen.
@@ -2271,7 +2146,7 @@ public:
    * @sa Window.GetSurface
    * @sa Window.UpdateSurfaceRects
    */
-  void UpdateSurface() { CheckError(SDL_UpdateWindowSurface(m_resource)); }
+  void UpdateSurface();
 
   /**
    * Copy areas of the window surface to the screen.
@@ -2298,10 +2173,7 @@ public:
    * @sa Window.GetSurface
    * @sa Window.UpdateSurface
    */
-  void UpdateSurfaceRects(SpanRef<const RectRaw> rects)
-  {
-    CheckError(SDL_UpdateWindowSurfaceRects(m_resource, rects));
-  }
+  void UpdateSurfaceRects(SpanRef<const RectRaw> rects);
 
   /**
    * Destroy the surface associated with the window.
@@ -2315,7 +2187,7 @@ public:
    * @sa Window.GetSurface
    * @sa Window.HasSurface
    */
-  void DestroySurface() { CheckError(SDL_DestroyWindowSurface(m_resource)); }
+  void DestroySurface();
 
   /**
    * Set a window's keyboard grab mode.
@@ -2346,10 +2218,7 @@ public:
    * @sa Window.GetKeyboardGrab
    * @sa Window.SetMouseGrab
    */
-  void SetKeyboardGrab(bool grabbed)
-  {
-    CheckError(SDL_SetWindowKeyboardGrab(m_resource, grabbed));
-  }
+  void SetKeyboardGrab(bool grabbed);
 
   /**
    * Set a window's mouse grab mode.
@@ -2368,10 +2237,7 @@ public:
    * @sa Window.SetMouseGrab
    * @sa Window.SetKeyboardGrab
    */
-  void SetMouseGrab(bool grabbed)
-  {
-    CheckError(SDL_SetWindowMouseGrab(m_resource, grabbed));
-  }
+  void SetMouseGrab(bool grabbed);
 
   /**
    * Get a window's keyboard grab mode.
@@ -2384,7 +2250,7 @@ public:
    *
    * @sa Window.SetKeyboardGrab
    */
-  bool GetKeyboardGrab() const { return SDL_GetWindowKeyboardGrab(m_resource); }
+  bool GetKeyboardGrab() const;
 
   /**
    * Get a window's mouse grab mode.
@@ -2400,7 +2266,7 @@ public:
    * @sa Window.SetMouseGrab
    * @sa Window.SetKeyboardGrab
    */
-  bool GetMouseGrab() const { return SDL_GetWindowMouseGrab(m_resource); }
+  bool GetMouseGrab() const;
 
   /**
    * Confines the cursor to the specified area of a window.
@@ -2420,10 +2286,7 @@ public:
    * @sa Window.GetMouseGrab
    * @sa Window.SetMouseGrab
    */
-  void SetMouseRect(const RectRaw& rect)
-  {
-    CheckError(SDL_SetWindowMouseRect(m_resource, rect));
-  }
+  void SetMouseRect(const RectRaw& rect);
 
   /**
    * Get the mouse confinement rectangle of a window.
@@ -2439,10 +2302,7 @@ public:
    * @sa Window.GetMouseGrab
    * @sa Window.SetMouseGrab
    */
-  const RectRaw* GetMouseRect() const
-  {
-    return SDL_GetWindowMouseRect(m_resource);
-  }
+  const RectRaw* GetMouseRect() const;
 
   /**
    * Set the opacity for a window.
@@ -2461,10 +2321,7 @@ public:
    *
    * @sa Window.GetOpacity
    */
-  void SetOpacity(float opacity)
-  {
-    CheckError(SDL_SetWindowOpacity(m_resource, opacity));
-  }
+  void SetOpacity(float opacity);
 
   /**
    * Get the opacity of a window.
@@ -2481,7 +2338,7 @@ public:
    *
    * @sa Window.SetOpacity
    */
-  float GetOpacity() const { return SDL_GetWindowOpacity(m_resource); }
+  float GetOpacity() const;
 
   /**
    * Set the window as a child of a parent window.
@@ -2513,10 +2370,7 @@ public:
    *
    * @sa Window.SetModal
    */
-  void SetParent(WindowParam parent)
-  {
-    CheckError(SDL_SetWindowParent(m_resource, parent));
-  }
+  void SetParent(WindowParam parent);
 
   /**
    * Toggle the state of the window as modal.
@@ -2534,10 +2388,7 @@ public:
    * @sa Window.SetParent
    * @sa WINDOW_MODAL
    */
-  void SetModal(bool modal)
-  {
-    CheckError(SDL_SetWindowModal(m_resource, modal));
-  }
+  void SetModal(bool modal);
 
   /**
    * Set whether the window may have input focus.
@@ -2549,10 +2400,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetFocusable(bool focusable)
-  {
-    CheckError(SDL_SetWindowFocusable(m_resource, focusable));
-  }
+  void SetFocusable(bool focusable);
 
   /**
    * Display the system-level window menu.
@@ -2576,10 +2424,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void ShowSystemMenu(const PointRaw& p)
-  {
-    CheckError(SDL_ShowWindowSystemMenu(m_resource, p));
-  }
+  void ShowSystemMenu(const PointRaw& p);
 
   void SetHitTest(HitTestCB callback)
   {
@@ -2626,10 +2471,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetHitTest(HitTest callback, void* callback_data)
-  {
-    CheckError(SDL_SetWindowHitTest(m_resource, callback, callback_data));
-  }
+  void SetHitTest(HitTest callback, void* callback_data);
 
   /**
    * Set the shape of a transparent window.
@@ -2655,10 +2497,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetShape(SurfaceParam shape)
-  {
-    CheckError(SDL_SetWindowShape(m_resource, shape));
-  }
+  void SetShape(SurfaceParam shape);
 
   /**
    * Request a window to demand attention from the user.
@@ -2670,10 +2509,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Flash(FlashOperation operation)
-  {
-    CheckError(SDL_FlashWindow(m_resource, operation));
-  }
+  void Flash(FlashOperation operation);
 
   /**
    * Get a window from a stored ID.
@@ -2920,11 +2756,7 @@ public:
    *
    * @sa GLContext.GLContext
    */
-  void Destroy()
-  {
-    CheckError(SDL_GL_DestroyContext(m_resource));
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   /**
    * Set up an OpenGL context for rendering into an OpenGL window.
@@ -2941,10 +2773,7 @@ public:
    *
    * @sa GLContext.GLContext
    */
-  void MakeCurrent(WindowParam window)
-  {
-    CheckError(SDL_GL_MakeCurrent(m_resource, window));
-  }
+  void MakeCurrent(WindowParam window);
 };
 
 /// RAII owning version GLContext.
@@ -3409,6 +3238,8 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
  */
 inline OwnArray<DisplayID> GetDisplays() { return SDL_GetDisplays(); }
 
+inline OwnArray<DisplayID> Display::GetAll() { return SDL::GetDisplays(); }
+
 /**
  * Return the primary display.
  *
@@ -3425,6 +3256,8 @@ inline Display GetPrimaryDisplay()
 {
   return CheckError(SDL_GetPrimaryDisplay());
 }
+
+inline Display Display::GetPrimary() { return SDL::GetPrimaryDisplay(); }
 
 /**
  * Get the properties associated with a display.
@@ -3457,6 +3290,11 @@ inline PropertiesRef GetDisplayProperties(DisplayID displayID)
   return CheckError(SDL_GetDisplayProperties(displayID));
 }
 
+inline PropertiesRef Display::GetProperties() const
+{
+  return SDL::GetDisplayProperties(m_displayID);
+}
+
 namespace prop::Display {
 
 constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN;
@@ -3484,6 +3322,11 @@ inline const char* GetDisplayName(DisplayID displayID)
   return SDL_GetDisplayName(displayID);
 }
 
+inline const char* Display::GetName() const
+{
+  return SDL::GetDisplayName(m_displayID);
+}
+
 /**
  * Get the desktop area represented by a display.
  *
@@ -3504,6 +3347,11 @@ inline const char* GetDisplayName(DisplayID displayID)
 inline Rect GetDisplayBounds(DisplayID displayID)
 {
   return CheckError(SDL_GetDisplayBounds(displayID));
+}
+
+inline Rect Display::GetBounds() const
+{
+  return SDL::GetDisplayBounds(m_displayID);
 }
 
 /**
@@ -3534,6 +3382,11 @@ inline Rect GetDisplayUsableBounds(DisplayID displayID)
   return CheckError(SDL_GetDisplayUsableBounds(displayID));
 }
 
+inline Rect Display::GetUsableBounds() const
+{
+  return SDL::GetDisplayUsableBounds(m_displayID);
+}
+
 /**
  * Get the orientation of a display when it is unrotated.
  *
@@ -3552,6 +3405,11 @@ inline DisplayOrientation GetNaturalDisplayOrientation(DisplayID displayID)
   return SDL_GetNaturalDisplayOrientation(displayID);
 }
 
+inline DisplayOrientation Display::GetNaturalOrientation() const
+{
+  return SDL::GetNaturalDisplayOrientation(m_displayID);
+}
+
 /**
  * Get the orientation of a display.
  *
@@ -3568,6 +3426,11 @@ inline DisplayOrientation GetNaturalDisplayOrientation(DisplayID displayID)
 inline DisplayOrientation GetCurrentDisplayOrientation(DisplayID displayID)
 {
   return SDL_GetCurrentDisplayOrientation(displayID);
+}
+
+inline DisplayOrientation Display::GetCurrentOrientation() const
+{
+  return SDL::GetCurrentDisplayOrientation(m_displayID);
 }
 
 /**
@@ -3600,6 +3463,11 @@ inline float GetDisplayContentScale(DisplayID displayID)
   return SDL_GetDisplayContentScale(displayID);
 }
 
+inline float Display::GetContentScale() const
+{
+  return SDL::GetDisplayContentScale(m_displayID);
+}
+
 /**
  * Get a list of fullscreen display modes available on a display.
  *
@@ -3629,6 +3497,11 @@ inline float GetDisplayContentScale(DisplayID displayID)
 inline OwnArray<DisplayMode*> GetFullscreenDisplayModes(DisplayID displayID)
 {
   return SDL_GetFullscreenDisplayModes(displayID);
+}
+
+inline OwnArray<DisplayMode*> Display::GetFullscreenModes() const
+{
+  return SDL::GetFullscreenDisplayModes(m_displayID);
 }
 
 /**
@@ -3669,6 +3542,15 @@ inline DisplayMode GetClosestFullscreenDisplayMode(
     displayID, size, refresh_rate, include_high_density_modes));
 }
 
+inline DisplayMode Display::GetClosestFullscreenMode(
+  const PointRaw& size,
+  float refresh_rate,
+  bool include_high_density_modes) const
+{
+  return SDL::GetClosestFullscreenDisplayMode(
+    m_displayID, size, refresh_rate, include_high_density_modes);
+}
+
 /**
  * Get information about the desktop's display mode.
  *
@@ -3691,6 +3573,11 @@ inline DisplayMode GetClosestFullscreenDisplayMode(
 inline const DisplayMode* GetDesktopDisplayMode(DisplayID displayID)
 {
   return SDL_GetDesktopDisplayMode(displayID);
+}
+
+inline const DisplayMode* Display::GetDesktopMode() const
+{
+  return SDL::GetDesktopDisplayMode(m_displayID);
 }
 
 /**
@@ -3717,6 +3604,11 @@ inline const DisplayMode* GetCurrentDisplayMode(DisplayID displayID)
   return SDL_GetCurrentDisplayMode(displayID);
 }
 
+inline const DisplayMode* Display::GetCurrentMode() const
+{
+  return SDL::GetCurrentDisplayMode(m_displayID);
+}
+
 /**
  * Get the display containing a point.
  *
@@ -3734,6 +3626,11 @@ inline const DisplayMode* GetCurrentDisplayMode(DisplayID displayID)
 inline Display GetDisplayForPoint(const PointRaw& point)
 {
   return SDL_GetDisplayForPoint(point);
+}
+
+inline Display Display::GetForPoint(const PointRaw& point)
+{
+  return SDL::GetDisplayForPoint(point);
 }
 
 /**
@@ -3756,6 +3653,11 @@ inline Display GetDisplayForRect(const RectRaw& rect)
   return SDL_GetDisplayForRect(rect);
 }
 
+inline Display Display::GetForRect(const RectRaw& rect)
+{
+  return SDL::GetDisplayForRect(rect);
+}
+
 /**
  * Get the display associated with a window.
  *
@@ -3774,6 +3676,11 @@ inline Display GetDisplayForRect(const RectRaw& rect)
 inline Display GetDisplayForWindow(WindowParam window)
 {
   return SDL_GetDisplayForWindow(window);
+}
+
+inline Display Window::GetDisplay() const
+{
+  return SDL::GetDisplayForWindow(m_resource);
 }
 
 /**
@@ -3796,6 +3703,11 @@ inline Display GetDisplayForWindow(WindowParam window)
 inline float GetWindowPixelDensity(WindowParam window)
 {
   return SDL_GetWindowPixelDensity(window);
+}
+
+inline float Window::GetPixelDensity() const
+{
+  return SDL::GetWindowPixelDensity(m_resource);
 }
 
 /**
@@ -3823,6 +3735,11 @@ inline float GetWindowPixelDensity(WindowParam window)
 inline float GetWindowDisplayScale(WindowParam window)
 {
   return SDL_GetWindowDisplayScale(window);
+}
+
+inline float Window::GetDisplayScale() const
+{
+  return SDL::GetWindowDisplayScale(m_resource);
 }
 
 /**
@@ -3863,6 +3780,11 @@ inline void SetWindowFullscreenMode(WindowParam window,
   CheckError(SDL_SetWindowFullscreenMode(window, mode));
 }
 
+inline void Window::SetFullscreenMode(OptionalRef<const DisplayMode> mode)
+{
+  SDL::SetWindowFullscreenMode(m_resource, mode);
+}
+
 /**
  * Query the display mode to use when a window is visible at fullscreen.
  *
@@ -3882,6 +3804,11 @@ inline const DisplayMode* GetWindowFullscreenMode(WindowParam window)
   return SDL_GetWindowFullscreenMode(window);
 }
 
+inline const DisplayMode* Window::GetFullscreenMode() const
+{
+  return SDL::GetWindowFullscreenMode(m_resource);
+}
+
 /**
  * Get the raw ICC profile data for the screen the window is currently on.
  *
@@ -3899,6 +3826,11 @@ inline OwnPtr<void> GetWindowICCProfile(WindowParam window)
   return CheckError(SDL_GetWindowICCProfile(window));
 }
 
+inline OwnPtr<void> Window::GetICCProfile() const
+{
+  return SDL::GetWindowICCProfile(m_resource);
+}
+
 /**
  * Get the pixel format associated with the window.
  *
@@ -3913,6 +3845,11 @@ inline OwnPtr<void> GetWindowICCProfile(WindowParam window)
 inline PixelFormat GetWindowPixelFormat(WindowParam window)
 {
   return CheckError(SDL_GetWindowPixelFormat(window));
+}
+
+inline PixelFormat Window::GetPixelFormat() const
+{
+  return SDL::GetWindowPixelFormat(m_resource);
 }
 
 /**
@@ -4023,7 +3960,7 @@ inline Window CreateWindow(StringParam title,
                            const PointRaw& size,
                            WindowFlags flags)
 {
-  return Window(SDL_CreateWindow(title, size, flags));
+  return Window(title, size, flags);
 }
 
 /**
@@ -4105,7 +4042,7 @@ inline Window CreatePopupWindow(WindowParam parent,
                                 const PointRaw& size,
                                 WindowFlags flags)
 {
-  return Window(SDL_CreatePopupWindow(parent, offset, size, flags));
+  return Window(parent, offset, size, flags);
 }
 
 /**
@@ -4237,7 +4174,7 @@ inline Window CreatePopupWindow(WindowParam parent,
  */
 inline Window CreateWindowWithProperties(PropertiesParam props)
 {
-  return Window(SDL_CreateWindowWithProperties(props));
+  return Window(props);
 }
 
 namespace prop::Window {
@@ -4444,6 +4381,8 @@ inline WindowID GetWindowID(WindowParam window)
   return CheckError(SDL_GetWindowID(window));
 }
 
+inline WindowID Window::GetID() const { return SDL::GetWindowID(m_resource); }
+
 /**
  * Get a window from a stored ID.
  *
@@ -4465,7 +4404,10 @@ inline WindowRef GetWindowFromID(WindowID id)
   return SDL_GetWindowFromID(id);
 }
 
-inline WindowRef Window::FromID(WindowID id) { return SDL_GetWindowFromID(id); }
+inline WindowRef Window::FromID(WindowID id)
+{
+  return SDL::GetWindowFromID(id);
+}
 
 /**
  * Get parent of a window.
@@ -4487,7 +4429,7 @@ inline WindowRef GetWindowParent(WindowParam window)
 
 inline WindowRef Window::GetParent() const
 {
-  return CheckError(SDL_GetWindowParent(m_resource));
+  return SDL::GetWindowParent(m_resource);
 }
 
 /**
@@ -4615,6 +4557,11 @@ inline PropertiesRef GetWindowProperties(WindowParam window)
   return CheckError(SDL_GetWindowProperties(window));
 }
 
+inline PropertiesRef Window::GetProperties() const
+{
+  return SDL::GetWindowProperties(m_resource);
+}
+
 /**
  * Get the window flags.
  *
@@ -4638,6 +4585,11 @@ inline WindowFlags GetWindowFlags(WindowParam window)
   return SDL_GetWindowFlags(window);
 }
 
+inline WindowFlags Window::GetFlags() const
+{
+  return SDL::GetWindowFlags(m_resource);
+}
+
 /**
  * Set the title of a window.
  *
@@ -4658,6 +4610,11 @@ inline void SetWindowTitle(WindowParam window, StringParam title)
   CheckError(SDL_SetWindowTitle(window, title));
 }
 
+inline void Window::SetTitle(StringParam title)
+{
+  SDL::SetWindowTitle(m_resource, title);
+}
+
 /**
  * Get the title of a window.
  *
@@ -4674,6 +4631,11 @@ inline void SetWindowTitle(WindowParam window, StringParam title)
 inline const char* GetWindowTitle(WindowParam window)
 {
   return SDL_GetWindowTitle(window);
+}
+
+inline const char* Window::GetTitle() const
+{
+  return SDL::GetWindowTitle(m_resource);
 }
 
 /**
@@ -4700,6 +4662,11 @@ inline const char* GetWindowTitle(WindowParam window)
 inline void SetWindowIcon(WindowParam window, SurfaceParam icon)
 {
   CheckError(SDL_SetWindowIcon(window, icon));
+}
+
+inline void Window::SetIcon(SurfaceParam icon)
+{
+  SDL::SetWindowIcon(m_resource, icon);
 }
 
 /**
@@ -4745,6 +4712,11 @@ inline void SetWindowPosition(WindowParam window, const PointRaw& p)
   CheckError(SDL_SetWindowPosition(window, p));
 }
 
+inline void Window::SetPosition(const PointRaw& p)
+{
+  SDL::SetWindowPosition(m_resource, p);
+}
+
 /**
  * Get the position of a window.
  *
@@ -4770,6 +4742,11 @@ inline void SetWindowPosition(WindowParam window, const PointRaw& p)
 inline void GetWindowPosition(WindowParam window, int* x, int* y)
 {
   CheckError(SDL_GetWindowPosition(window, x, y));
+}
+
+inline void Window::GetPosition(int* x, int* y) const
+{
+  SDL::GetWindowPosition(m_resource, x, y);
 }
 
 /**
@@ -4811,6 +4788,11 @@ inline void SetWindowSize(WindowParam window, const PointRaw& p)
   CheckError(SDL_SetWindowSize(window, p));
 }
 
+inline void Window::SetSize(const PointRaw& p)
+{
+  SDL::SetWindowSize(m_resource, p);
+}
+
 /**
  * Get the size of a window's client area.
  *
@@ -4836,6 +4818,11 @@ inline void GetWindowSize(WindowParam window, int* w, int* h)
   CheckError(SDL_GetWindowSize(window, w, h));
 }
 
+inline void Window::GetSize(int* w, int* h) const
+{
+  SDL::GetWindowSize(m_resource, w, h);
+}
+
 /**
  * Get the safe area for this window.
  *
@@ -4858,6 +4845,11 @@ inline void GetWindowSize(WindowParam window, int* w, int* h)
 inline Rect GetWindowSafeArea(WindowParam window)
 {
   return CheckError(SDL_GetWindowSafeArea(window));
+}
+
+inline Rect Window::GetSafeArea() const
+{
+  return SDL::GetWindowSafeArea(m_resource);
 }
 
 /**
@@ -4905,6 +4897,11 @@ inline void SetWindowAspectRatio(WindowParam window,
   CheckError(SDL_SetWindowAspectRatio(window, min_aspect, max_aspect));
 }
 
+inline void Window::SetAspectRatio(float min_aspect, float max_aspect)
+{
+  SDL::SetWindowAspectRatio(m_resource, min_aspect, max_aspect);
+}
+
 /**
  * Get the size of a window's client area.
  *
@@ -4926,6 +4923,11 @@ inline void GetWindowAspectRatio(WindowParam window,
                                  float* max_aspect)
 {
   CheckError(SDL_GetWindowAspectRatio(window, min_aspect, max_aspect));
+}
+
+inline void Window::GetAspectRatio(float* min_aspect, float* max_aspect) const
+{
+  SDL::GetWindowAspectRatio(m_resource, min_aspect, max_aspect);
 }
 
 /**
@@ -4971,6 +4973,14 @@ inline void GetWindowBordersSize(WindowParam window,
   CheckError(SDL_GetWindowBordersSize(window, top, left, bottom, right));
 }
 
+inline void Window::GetBordersSize(int* top,
+                                   int* left,
+                                   int* bottom,
+                                   int* right) const
+{
+  SDL::GetWindowBordersSize(m_resource, top, left, bottom, right);
+}
+
 /**
  * Get the size of a window's client area, in pixels.
  *
@@ -4993,6 +5003,11 @@ inline void GetWindowSizeInPixels(WindowParam window, int* w, int* h)
   CheckError(SDL_GetWindowSizeInPixels(window, w, h));
 }
 
+inline void Window::GetSizeInPixels(int* w, int* h) const
+{
+  SDL::GetWindowSizeInPixels(m_resource, w, h);
+}
+
 /**
  * Set the minimum size of a window's client area.
  *
@@ -5011,6 +5026,11 @@ inline void GetWindowSizeInPixels(WindowParam window, int* w, int* h)
 inline void SetWindowMinimumSize(WindowParam window, const PointRaw& p)
 {
   CheckError(SDL_SetWindowMinimumSize(window, p));
+}
+
+inline void Window::SetMinimumSize(const PointRaw& p)
+{
+  SDL::SetWindowMinimumSize(m_resource, p);
 }
 
 /**
@@ -5035,6 +5055,11 @@ inline void GetWindowMinimumSize(WindowParam window, int* w, int* h)
   CheckError(SDL_GetWindowMinimumSize(window, w, h));
 }
 
+inline void Window::GetMinimumSize(int* w, int* h) const
+{
+  SDL::GetWindowMinimumSize(m_resource, w, h);
+}
+
 /**
  * Set the maximum size of a window's client area.
  *
@@ -5053,6 +5078,11 @@ inline void GetWindowMinimumSize(WindowParam window, int* w, int* h)
 inline void SetWindowMaximumSize(WindowParam window, const PointRaw& p)
 {
   CheckError(SDL_SetWindowMaximumSize(window, p));
+}
+
+inline void Window::SetMaximumSize(const PointRaw& p)
+{
+  SDL::SetWindowMaximumSize(m_resource, p);
 }
 
 /**
@@ -5075,6 +5105,11 @@ inline void SetWindowMaximumSize(WindowParam window, const PointRaw& p)
 inline void GetWindowMaximumSize(WindowParam window, int* w, int* h)
 {
   CheckError(SDL_GetWindowMaximumSize(window, w, h));
+}
+
+inline void Window::GetMaximumSize(int* w, int* h) const
+{
+  SDL::GetWindowMaximumSize(m_resource, w, h);
 }
 
 /**
@@ -5101,6 +5136,11 @@ inline void SetWindowBordered(WindowParam window, bool bordered)
   CheckError(SDL_SetWindowBordered(window, bordered));
 }
 
+inline void Window::SetBordered(bool bordered)
+{
+  SDL::SetWindowBordered(m_resource, bordered);
+}
+
 /**
  * Set the user-resizable state of a window.
  *
@@ -5125,6 +5165,11 @@ inline void SetWindowResizable(WindowParam window, bool resizable)
   CheckError(SDL_SetWindowResizable(window, resizable));
 }
 
+inline void Window::SetResizable(bool resizable)
+{
+  SDL::SetWindowResizable(m_resource, resizable);
+}
+
 /**
  * Set the window to always be above the others.
  *
@@ -5146,6 +5191,11 @@ inline void SetWindowAlwaysOnTop(WindowParam window, bool on_top)
   CheckError(SDL_SetWindowAlwaysOnTop(window, on_top));
 }
 
+inline void Window::SetAlwaysOnTop(bool on_top)
+{
+  SDL::SetWindowAlwaysOnTop(m_resource, on_top);
+}
+
 /**
  * Show a window.
  *
@@ -5164,6 +5214,8 @@ inline void ShowWindow(WindowParam window)
   CheckError(SDL_ShowWindow(window));
 }
 
+inline void Window::Show() { SDL::ShowWindow(m_resource); }
+
 /**
  * Hide a window.
  *
@@ -5181,6 +5233,8 @@ inline void HideWindow(WindowParam window)
 {
   CheckError(SDL_HideWindow(window));
 }
+
+inline void Window::Hide() { SDL::HideWindow(m_resource); }
 
 /**
  * Request that a window be raised above other windows and gain the input
@@ -5203,6 +5257,8 @@ inline void RaiseWindow(WindowParam window)
 {
   CheckError(SDL_RaiseWindow(window));
 }
+
+inline void Window::Raise() { SDL::RaiseWindow(m_resource); }
 
 /**
  * Request that the window be made as large as possible.
@@ -5240,6 +5296,8 @@ inline void MaximizeWindow(WindowParam window)
   CheckError(SDL_MaximizeWindow(window));
 }
 
+inline void Window::Maximize() { SDL::MaximizeWindow(m_resource); }
+
 /**
  * Request that the window be minimized to an iconic representation.
  *
@@ -5270,6 +5328,8 @@ inline void MinimizeWindow(WindowParam window)
 {
   CheckError(SDL_MinimizeWindow(window));
 }
+
+inline void Window::Minimize() { SDL::MinimizeWindow(m_resource); }
 
 /**
  * Request that the size and position of a minimized or maximized window be
@@ -5302,6 +5362,8 @@ inline void RestoreWindow(WindowParam window)
 {
   CheckError(SDL_RestoreWindow(window));
 }
+
+inline void Window::Restore() { SDL::RestoreWindow(m_resource); }
 
 /**
  * Request that the window's fullscreen state be changed.
@@ -5337,6 +5399,11 @@ inline void SetWindowFullscreen(WindowParam window, bool fullscreen)
   CheckError(SDL_SetWindowFullscreen(window, fullscreen));
 }
 
+inline void Window::SetFullscreen(bool fullscreen)
+{
+  SDL::SetWindowFullscreen(m_resource, fullscreen);
+}
+
 /**
  * Block until any pending window state is finalized.
  *
@@ -5370,6 +5437,8 @@ inline void SyncWindow(WindowParam window)
   CheckError(SDL_SyncWindow(window));
 }
 
+inline void Window::Sync() { SDL::SyncWindow(m_resource); }
+
 /**
  * Return whether the window has a surface associated with it.
  *
@@ -5386,6 +5455,11 @@ inline void SyncWindow(WindowParam window)
 inline bool WindowHasSurface(WindowParam window)
 {
   return SDL_WindowHasSurface(window);
+}
+
+inline bool Window::HasSurface() const
+{
+  return SDL::WindowHasSurface(m_resource);
 }
 
 /**
@@ -5420,6 +5494,11 @@ inline Surface GetWindowSurface(WindowParam window)
   return SDL_GetWindowSurface(window);
 }
 
+inline Surface Window::GetSurface()
+{
+  return SDL::GetWindowSurface(m_resource);
+}
+
 /**
  * Toggle VSync for the window surface.
  *
@@ -5448,6 +5527,11 @@ inline void SetWindowSurfaceVSync(WindowParam window, int vsync)
   CheckError(SDL_SetWindowSurfaceVSync(window, vsync));
 }
 
+inline void Window::SetSurfaceVSync(int vsync)
+{
+  SDL::SetWindowSurfaceVSync(m_resource, vsync);
+}
+
 constexpr int WINDOW_SURFACE_VSYNC_DISABLED = SDL_WINDOW_SURFACE_VSYNC_DISABLED;
 
 constexpr int WINDOW_SURFACE_VSYNC_ADAPTIVE = SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE;
@@ -5469,6 +5553,11 @@ constexpr int WINDOW_SURFACE_VSYNC_ADAPTIVE = SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE;
 inline int GetWindowSurfaceVSync(WindowParam window)
 {
   return CheckError(SDL_GetWindowSurfaceVSync(window));
+}
+
+inline int Window::GetSurfaceVSync() const
+{
+  return SDL::GetWindowSurfaceVSync(m_resource);
 }
 
 /**
@@ -5493,6 +5582,8 @@ inline void UpdateWindowSurface(WindowParam window)
 {
   CheckError(SDL_UpdateWindowSurface(window));
 }
+
+inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
 
 /**
  * Copy areas of the window surface to the screen.
@@ -5526,6 +5617,11 @@ inline void UpdateWindowSurfaceRects(WindowParam window,
   CheckError(SDL_UpdateWindowSurfaceRects(window, rects));
 }
 
+inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
+{
+  SDL::UpdateWindowSurfaceRects(m_resource, rects);
+}
+
 /**
  * Destroy the surface associated with the window.
  *
@@ -5543,6 +5639,8 @@ inline void DestroyWindowSurface(WindowParam window)
 {
   CheckError(SDL_DestroyWindowSurface(window));
 }
+
+inline void Window::DestroySurface() { SDL::DestroyWindowSurface(m_resource); }
 
 /**
  * Set a window's keyboard grab mode.
@@ -5579,6 +5677,11 @@ inline void SetWindowKeyboardGrab(WindowParam window, bool grabbed)
   CheckError(SDL_SetWindowKeyboardGrab(window, grabbed));
 }
 
+inline void Window::SetKeyboardGrab(bool grabbed)
+{
+  SDL::SetWindowKeyboardGrab(m_resource, grabbed);
+}
+
 /**
  * Set a window's mouse grab mode.
  *
@@ -5602,6 +5705,11 @@ inline void SetWindowMouseGrab(WindowParam window, bool grabbed)
   CheckError(SDL_SetWindowMouseGrab(window, grabbed));
 }
 
+inline void Window::SetMouseGrab(bool grabbed)
+{
+  SDL::SetWindowMouseGrab(m_resource, grabbed);
+}
+
 /**
  * Get a window's keyboard grab mode.
  *
@@ -5617,6 +5725,11 @@ inline void SetWindowMouseGrab(WindowParam window, bool grabbed)
 inline bool GetWindowKeyboardGrab(WindowParam window)
 {
   return SDL_GetWindowKeyboardGrab(window);
+}
+
+inline bool Window::GetKeyboardGrab() const
+{
+  return SDL::GetWindowKeyboardGrab(m_resource);
 }
 
 /**
@@ -5639,6 +5752,11 @@ inline bool GetWindowMouseGrab(WindowParam window)
   return SDL_GetWindowMouseGrab(window);
 }
 
+inline bool Window::GetMouseGrab() const
+{
+  return SDL::GetWindowMouseGrab(m_resource);
+}
+
 /**
  * Get the window that currently has an input grab enabled.
  *
@@ -5653,7 +5771,7 @@ inline bool GetWindowMouseGrab(WindowParam window)
  */
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 
-inline WindowRef Window::GetGrabbed() { return SDL_GetGrabbedWindow(); }
+inline WindowRef Window::GetGrabbed() { return SDL::GetGrabbedWindow(); }
 
 /**
  * Confines the cursor to the specified area of a window.
@@ -5679,6 +5797,11 @@ inline void SetWindowMouseRect(WindowParam window, const RectRaw& rect)
   CheckError(SDL_SetWindowMouseRect(window, rect));
 }
 
+inline void Window::SetMouseRect(const RectRaw& rect)
+{
+  SDL::SetWindowMouseRect(m_resource, rect);
+}
+
 /**
  * Get the mouse confinement rectangle of a window.
  *
@@ -5697,6 +5820,11 @@ inline void SetWindowMouseRect(WindowParam window, const RectRaw& rect)
 inline const RectRaw* GetWindowMouseRect(WindowParam window)
 {
   return SDL_GetWindowMouseRect(window);
+}
+
+inline const RectRaw* Window::GetMouseRect() const
+{
+  return SDL::GetWindowMouseRect(m_resource);
 }
 
 /**
@@ -5722,6 +5850,11 @@ inline void SetWindowOpacity(WindowParam window, float opacity)
   CheckError(SDL_SetWindowOpacity(window, opacity));
 }
 
+inline void Window::SetOpacity(float opacity)
+{
+  SDL::SetWindowOpacity(m_resource, opacity);
+}
+
 /**
  * Get the opacity of a window.
  *
@@ -5741,6 +5874,11 @@ inline void SetWindowOpacity(WindowParam window, float opacity)
 inline float GetWindowOpacity(WindowParam window)
 {
   return SDL_GetWindowOpacity(window);
+}
+
+inline float Window::GetOpacity() const
+{
+  return SDL::GetWindowOpacity(m_resource);
 }
 
 /**
@@ -5779,6 +5917,11 @@ inline void SetWindowParent(WindowParam window, WindowParam parent)
   CheckError(SDL_SetWindowParent(window, parent));
 }
 
+inline void Window::SetParent(WindowParam parent)
+{
+  SDL::SetWindowParent(m_resource, parent);
+}
+
 /**
  * Toggle the state of the window as modal.
  *
@@ -5801,6 +5944,11 @@ inline void SetWindowModal(WindowParam window, bool modal)
   CheckError(SDL_SetWindowModal(window, modal));
 }
 
+inline void Window::SetModal(bool modal)
+{
+  SDL::SetWindowModal(m_resource, modal);
+}
+
 /**
  * Set whether the window may have input focus.
  *
@@ -5815,6 +5963,11 @@ inline void SetWindowModal(WindowParam window, bool modal)
 inline void SetWindowFocusable(WindowParam window, bool focusable)
 {
   CheckError(SDL_SetWindowFocusable(window, focusable));
+}
+
+inline void Window::SetFocusable(bool focusable)
+{
+  SDL::SetWindowFocusable(m_resource, focusable);
 }
 
 /**
@@ -5842,6 +5995,11 @@ inline void SetWindowFocusable(WindowParam window, bool focusable)
 inline void ShowWindowSystemMenu(WindowParam window, const PointRaw& p)
 {
   CheckError(SDL_ShowWindowSystemMenu(window, p));
+}
+
+inline void Window::ShowSystemMenu(const PointRaw& p)
+{
+  SDL::ShowWindowSystemMenu(m_resource, p);
 }
 
 /**
@@ -5892,6 +6050,11 @@ inline void SetWindowHitTest(WindowParam window,
   CheckError(SDL_SetWindowHitTest(window, callback, callback_data));
 }
 
+inline void Window::SetHitTest(HitTest callback, void* callback_data)
+{
+  SDL::SetWindowHitTest(m_resource, callback, callback_data);
+}
+
 /**
  * Set the shape of a transparent window.
  *
@@ -5922,6 +6085,11 @@ inline void SetWindowShape(WindowParam window, SurfaceParam shape)
   CheckError(SDL_SetWindowShape(window, shape));
 }
 
+inline void Window::SetShape(SurfaceParam shape)
+{
+  SDL::SetWindowShape(m_resource, shape);
+}
+
 /**
  * Request a window to demand attention from the user.
  *
@@ -5936,6 +6104,11 @@ inline void SetWindowShape(WindowParam window, SurfaceParam shape)
 inline void FlashWindow(WindowParam window, FlashOperation operation)
 {
   CheckError(SDL_FlashWindow(window, operation));
+}
+
+inline void Window::Flash(FlashOperation operation)
+{
+  SDL::FlashWindow(m_resource, operation);
 }
 
 /**
@@ -5959,6 +6132,12 @@ inline void FlashWindow(WindowParam window, FlashOperation operation)
  * @sa Window.Window
  */
 inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
+
+inline void Window::Destroy()
+{
+  SDL_DestroyWindow(m_resource);
+  m_resource = nullptr;
+}
 
 /**
  * Check whether the screensaver is currently enabled.
@@ -6236,7 +6415,7 @@ inline void GL_GetAttribute(GLAttr attr, int* value)
  */
 inline GLContext GL_CreateContext(WindowParam window)
 {
-  return GLContext(SDL_GL_CreateContext(window));
+  return GLContext(window);
 }
 
 /**
@@ -6257,6 +6436,11 @@ inline GLContext GL_CreateContext(WindowParam window)
 inline void GL_MakeCurrent(WindowParam window, GLContext context)
 {
   CheckError(SDL_GL_MakeCurrent(window, context));
+}
+
+inline void GLContext::MakeCurrent(WindowParam window)
+{
+  SDL::GL_MakeCurrent(m_resource, window);
 }
 
 /**
@@ -6456,6 +6640,12 @@ inline void GL_SwapWindow(WindowParam window)
 inline void GL_DestroyContext(GLContextRaw context)
 {
   CheckError(SDL_GL_DestroyContext(context));
+}
+
+inline void GLContext::Destroy()
+{
+  CheckError(SDL_GL_DestroyContext(m_resource));
+  m_resource = nullptr;
 }
 
 /// @}

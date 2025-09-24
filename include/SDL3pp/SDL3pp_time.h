@@ -286,12 +286,7 @@ struct DateTime : DateTimeRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  operator Time() const
-  {
-    SDL_Time t;
-    CheckError(SDL_DateTimeToTime(this, &t));
-    return Time::FromNS(t);
-  }
+  operator Time() const;
 };
 
 /**
@@ -398,6 +393,8 @@ inline Time DateTimeToTime(const DateTimeRaw& dt)
   CheckError(SDL_DateTimeToTime(&dt, &t));
   return Time::FromNS(t);
 }
+
+inline DateTime::operator Time() const { return SDL::DateTimeToTime(*this); }
 
 /**
  * Converts an SDL time into a Windows FILETIME (100-nanosecond intervals

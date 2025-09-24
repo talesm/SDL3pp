@@ -1334,8 +1334,8 @@ struct SourceBytes
  */
 struct TargetBytes
 {
-  void* data;        ///< The address to have data copied to it
-  size_t size_bytes; ///< The size in bytes
+  void* data = nullptr;  ///< The address to have data copied to it
+  size_t size_bytes = 0; ///< The size in bytes
 
   /// Default ctor
   constexpr TargetBytes() = default;
@@ -1345,6 +1345,14 @@ struct TargetBytes
     : TargetBytes()
   {
   }
+
+  constexpr TargetBytes(const TargetBytes& other) = default;
+
+  constexpr TargetBytes(TargetBytes&& other) = default;
+
+  constexpr TargetBytes& operator=(const TargetBytes& other) = default;
+
+  constexpr TargetBytes& operator=(TargetBytes&& other) = default;
 
   /// Just to have better error message
   template<class T, size_t N>
@@ -7062,10 +7070,7 @@ public:
    * @sa ResetLogPriorities
    * @sa SetLogPriorities
    */
-  void SetLogPriority(LogPriority priority) const
-  {
-    SDL_SetLogPriority(m_category, priority);
-  }
+  void SetLogPriority(LogPriority priority) const;
 
   /**
    * Get the priority of a particular log category.
@@ -7079,7 +7084,7 @@ public:
    *
    * @sa LogCategory.SetLogPriority
    */
-  LogPriority GetLogPriority() const { return SDL_GetLogPriority(m_category); }
+  LogPriority GetLogPriority() const;
 
   /**
    * Log an unformatted message with the specified priority.
@@ -7134,10 +7139,7 @@ public:
   template<class... ARGS>
   void LogMessage(LogPriority priority,
                   std::string_view fmt,
-                  ARGS... args) const
-  {
-    LogUnformatted(priority, std::vformat(fmt, std::make_format_args(args))...);
-  }
+                  ARGS... args) const;
 
   /**
    * Log a message with LOG_PRIORITY_TRACE.
@@ -7164,10 +7166,7 @@ public:
    * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void LogTrace(std::string_view fmt, ARGS&&... args) const
-  {
-    LogMessage(SDL_LOG_PRIORITY_TRACE, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogTrace(std::string_view fmt, ARGS&&... args) const;
 
   /**
    * Log a message with LOG_PRIORITY_VERBOSE.
@@ -7193,10 +7192,7 @@ public:
    * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void LogVerbose(std::string_view fmt, ARGS&&... args) const
-  {
-    LogMessage(SDL_LOG_PRIORITY_VERBOSE, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogVerbose(std::string_view fmt, ARGS&&... args) const;
 
   /**
    * Log a message with LOG_PRIORITY_DEBUG.
@@ -7223,10 +7219,7 @@ public:
    * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void LogDebug(std::string_view fmt, ARGS&&... args) const
-  {
-    LogMessage(SDL_LOG_PRIORITY_DEBUG, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogDebug(std::string_view fmt, ARGS&&... args) const;
 
   /**
    * Log a message with LOG_PRIORITY_INFO.
@@ -7253,10 +7246,7 @@ public:
    * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void LogInfo(std::string_view fmt, ARGS&&... args) const
-  {
-    LogMessage(SDL_LOG_PRIORITY_INFO, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogInfo(std::string_view fmt, ARGS&&... args) const;
 
   /**
    * Log a message with LOG_PRIORITY_WARN.
@@ -7283,10 +7273,7 @@ public:
    * @sa LogCategory.LogVerbose
    */
   template<class... ARGS>
-  void LogWarn(std::string_view fmt, ARGS&&... args) const
-  {
-    LogMessage(SDL_LOG_PRIORITY_WARN, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogWarn(std::string_view fmt, ARGS&&... args) const;
 
   /**
    * Log a message with LOG_PRIORITY_ERROR.
@@ -7313,10 +7300,7 @@ public:
    * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void LogError(std::string_view fmt, ARGS&&... args) const
-  {
-    LogMessage(SDL_LOG_PRIORITY_ERROR, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogError(std::string_view fmt, ARGS&&... args) const;
 
   /**
    * Log a message with LOG_PRIORITY_CRITICAL.
@@ -7344,10 +7328,7 @@ public:
    * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void LogCritical(std::string_view fmt, ARGS&&... args) const
-  {
-    LogMessage(SDL_LOG_PRIORITY_CRITICAL, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogCritical(std::string_view fmt, ARGS&&... args) const;
 };
 
 constexpr LogCategory LOG_CATEGORY_APPLICATION =
@@ -7436,6 +7417,11 @@ inline void SetLogPriority(int category, LogPriority priority)
   SDL_SetLogPriority(category, priority);
 }
 
+inline void LogCategory::SetLogPriority(LogPriority priority) const
+{
+  SDL::SetLogPriority(m_category, priority);
+}
+
 /**
  * Get the priority of a particular log category.
  *
@@ -7451,6 +7437,11 @@ inline void SetLogPriority(int category, LogPriority priority)
 inline LogPriority GetLogPriority(int category)
 {
   return SDL_GetLogPriority(category);
+}
+
+inline LogPriority LogCategory::GetLogPriority() const
+{
+  return SDL::GetLogPriority(m_category);
 }
 
 /**
@@ -7483,12 +7474,66 @@ inline void ResetLogPriorities() { SDL_ResetLogPriorities(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LogCategory.SetLogPriorities
+ * @sa SetLogPriorities
  * @sa LogCategory.SetLogPriority
  */
 inline void SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
 {
   CheckError(SDL_SetLogPriorityPrefix(priority, prefix));
+}
+
+/**
+ * Log an unformatted message with LOG_CATEGORY_APPLICATION and
+ * LOG_PRIORITY_INFO.
+ *
+ * @param category the category of the message.
+ * @param priority the priority of the message.
+ * @param message string to output.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogInfo
+ * @sa LogCategory.LogMessage
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ * @sa LogCategory.LogWarn
+ */
+inline void LogUnformatted(LogCategory category,
+                           LogPriority priority,
+                           StringParam message)
+{
+  SDL_LogMessage(category, priority, "%s", static_cast<const char*>(message));
+}
+
+/**
+ * Log an unformatted message with LOG_CATEGORY_APPLICATION and
+ * LOG_PRIORITY_INFO.
+ *
+ * @param message string to output.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogInfo
+ * @sa LogCategory.LogMessage
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ * @sa LogCategory.LogWarn
+ */
+inline void LogUnformatted(StringParam message)
+{
+  SDL_Log("%s", static_cast<const char*>(message));
 }
 
 /**
@@ -7525,6 +7570,47 @@ inline void Log(std::string_view fmt, ARGS&&... args)
 }
 
 /**
+ * Log a message with the specified category and priority.
+ *
+ * @param category the category of the message.
+ * @param priority the priority of the message.
+ * @param fmt a printf() style message format string.
+ * @param ... additional parameters matching % tokens in the **fmt** string,
+ *            if any.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogInfo
+ * @sa LogUnformatted
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ * @sa LogCategory.LogWarn
+ */
+template<class... ARGS>
+inline void LogMessage(LogCategory category,
+                       LogPriority priority,
+                       std::string_view fmt,
+                       ARGS... args)
+{
+  LogUnformatted(
+    category, priority, std::vformat(fmt, std::make_format_args(args...)));
+}
+
+template<class... ARGS>
+inline void LogCategory::LogMessage(LogPriority priority,
+                                    std::string_view fmt,
+                                    ARGS... args) const
+{
+  SDL::LogMessage(m_category, priority, fmt, args...);
+}
+
+/**
  * Log a message with LOG_PRIORITY_TRACE.
  *
  * @param category the category of the message.
@@ -7550,7 +7636,13 @@ inline void Log(std::string_view fmt, ARGS&&... args)
 template<class... ARGS>
 inline void LogTrace(LogCategory category, std::string_view fmt, ARGS&&... args)
 {
-  category.LogTrace(fmt, std::forward<ARGS>(args)...);
+  LogMessage(category, LOG_PRIORITY_TRACE, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogTrace(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogTrace(m_category, fmt, args...);
 }
 
 /**
@@ -7579,7 +7671,13 @@ inline void LogVerbose(LogCategory category,
                        std::string_view fmt,
                        ARGS&&... args)
 {
-  category.LogVerbose(fmt, std::forward<ARGS>(args)...);
+  LogMessage(category, LOG_PRIORITY_VERBOSE, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogVerbose(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogVerbose(m_category, fmt, args...);
 }
 
 /**
@@ -7607,7 +7705,13 @@ inline void LogVerbose(LogCategory category,
 template<class... ARGS>
 inline void LogDebug(LogCategory category, std::string_view fmt, ARGS&&... args)
 {
-  category.LogDebug(fmt, std::forward<ARGS>(args)...);
+  LogMessage(category, LOG_PRIORITY_DEBUG, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogDebug(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogDebug(m_category, fmt, args...);
 }
 
 /**
@@ -7635,7 +7739,13 @@ inline void LogDebug(LogCategory category, std::string_view fmt, ARGS&&... args)
 template<class... ARGS>
 inline void LogInfo(LogCategory category, std::string_view fmt, ARGS&&... args)
 {
-  category.LogInfo(fmt, std::forward<ARGS>(args)...);
+  LogMessage(category, LOG_PRIORITY_INFO, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogInfo(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogInfo(m_category, fmt, args...);
 }
 
 /**
@@ -7663,7 +7773,13 @@ inline void LogInfo(LogCategory category, std::string_view fmt, ARGS&&... args)
 template<class... ARGS>
 inline void LogWarn(LogCategory category, std::string_view fmt, ARGS&&... args)
 {
-  category.LogWarn(fmt, std::forward<ARGS>(args)...);
+  LogMessage(category, SDL_LOG_PRIORITY_WARN, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogWarn(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogWarn(m_category, fmt, args...);
 }
 
 /**
@@ -7691,7 +7807,13 @@ inline void LogWarn(LogCategory category, std::string_view fmt, ARGS&&... args)
 template<class... ARGS>
 inline void LogError(LogCategory category, std::string_view fmt, ARGS&&... args)
 {
-  category.LogError(fmt, std::forward<ARGS>(args)...);
+  LogMessage(category, SDL_LOG_PRIORITY_ERROR, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogError(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogError(m_category, fmt, args...);
 }
 
 /**
@@ -7721,64 +7843,13 @@ inline void LogCritical(LogCategory category,
                         std::string_view fmt,
                         ARGS&&... args)
 {
-  category.LogCritical(fmt, std::forward<ARGS>(args)...);
+  LogMessage(category, SDL_LOG_PRIORITY_CRITICAL, fmt, args...);
 }
 
-/**
- * Log a message with the specified category and priority.
- *
- * @param category the category of the message.
- * @param priority the priority of the message.
- * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
- *            if any.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Log
- * @sa LogCategory.LogCritical
- * @sa LogCategory.LogDebug
- * @sa LogCategory.LogError
- * @sa LogCategory.LogInfo
- * @sa LogUnformatted
- * @sa LogCategory.LogTrace
- * @sa LogCategory.LogVerbose
- * @sa LogCategory.LogWarn
- */
 template<class... ARGS>
-inline void LogMessage(LogCategory category,
-                       LogPriority priority,
-                       std::string_view fmt,
-                       ARGS... args)
+inline void LogCategory::LogCritical(std::string_view fmt, ARGS&&... args) const
 {
-  category.LogMessage(priority, fmt, std::forward<ARGS>(args)...);
-}
-
-/**
- * Log an unformatted message with LOG_CATEGORY_APPLICATION and
- * LOG_PRIORITY_INFO.
- *
- * @param message string to output.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Log
- * @sa LogCategory.LogCritical
- * @sa LogCategory.LogDebug
- * @sa LogCategory.LogError
- * @sa LogCategory.LogInfo
- * @sa LogCategory.LogMessage
- * @sa LogCategory.LogTrace
- * @sa LogCategory.LogVerbose
- * @sa LogCategory.LogWarn
- */
-inline void LogUnformatted(StringParam message)
-{
-  SDL_Log("%s", static_cast<const char*>(message));
+  SDL::LogCritical(m_category, fmt, args...);
 }
 
 /**
@@ -7826,8 +7897,8 @@ using LogOutputCB = std::function<void(LogCategory, LogPriority, const char*)>;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SetLogOutputFunction()
- * @sa GetLogOutputFunction()
+ * @sa SetLogOutputFunction
+ * @sa GetLogOutputFunction
  */
 inline LogOutputFunction GetDefaultLogOutputFunction()
 {
@@ -7845,8 +7916,8 @@ inline LogOutputFunction GetDefaultLogOutputFunction()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetDefaultLogOutputFunction()
- * @sa SetLogOutputFunction()
+ * @sa GetDefaultLogOutputFunction
+ * @sa SetLogOutputFunction
  */
 inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
 {
@@ -8363,8 +8434,8 @@ public:
    *
    * For example, defining PIXELFORMAT_RGBA8888 looks like this:
    *
-   * ```c
-   * PixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
+   * ```cpp
+   * PixelFormat format(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
    * PACKEDLAYOUT_8888, 32, 4)
    * ```
    *
@@ -8427,7 +8498,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr Uint8 GetFlags() const { return SDL_PIXELFLAG(m_format); }
+  constexpr Uint8 GetFlags() const;
 
   /**
    * Retrieve the type.
@@ -8438,10 +8509,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr PixelType GetType() const
-  {
-    return PixelType(SDL_PIXELTYPE(m_format));
-  }
+  constexpr PixelType GetType() const;
 
   /**
    * Retrieve the order.
@@ -8455,7 +8523,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr int GetOrder() const { return SDL_PIXELORDER(m_format); }
+  constexpr int GetOrder() const;
 
   /**
    * Retrieve the layout.
@@ -8469,10 +8537,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr PackedLayout GetLayout() const
-  {
-    return PackedLayout(SDL_PIXELLAYOUT(m_format));
-  }
+  constexpr PackedLayout GetLayout() const;
 
   /**
    * Determine this's bits per pixel.
@@ -8488,7 +8553,7 @@ public:
    *
    * @sa GetBytesPerPixel
    */
-  constexpr int GetBitsPerPixel() const { return SDL_BITSPERPIXEL(m_format); }
+  constexpr int GetBitsPerPixel() const;
 
   /**
    * Determine this's bytes per pixel.
@@ -8507,7 +8572,7 @@ public:
    *
    * @sa GetBitsPerPixel
    */
-  constexpr int GetBytesPerPixel() const { return SDL_BYTESPERPIXEL(m_format); }
+  constexpr int GetBytesPerPixel() const;
 
   /**
    * Determine if this is an indexed format.
@@ -8518,10 +8583,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsIndexed() const
-  {
-    return SDL_ISPIXELFORMAT_INDEXED(m_format);
-  }
+  constexpr bool IsIndexed() const;
 
   /**
    * Determine if this is a packed format.
@@ -8532,7 +8594,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsPacked() const { return SDL_ISPIXELFORMAT_PACKED(m_format); }
+  constexpr bool IsPacked() const;
 
   /**
    * Determine if this is an array format.
@@ -8543,7 +8605,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsArray() const { return SDL_ISPIXELFORMAT_ARRAY(m_format); }
+  constexpr bool IsArray() const;
 
   /**
    * Determine if this is a 10-bit format.
@@ -8554,7 +8616,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool Is10Bit() const { return SDL_ISPIXELFORMAT_10BIT(m_format); }
+  constexpr bool Is10Bit() const;
 
   /**
    * Determine if this is a floating point format.
@@ -8565,7 +8627,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsFloat() const { return SDL_ISPIXELFORMAT_FLOAT(m_format); }
+  constexpr bool IsFloat() const;
 
   /**
    * Determine if this has an alpha channel.
@@ -8576,7 +8638,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsAlpha() const { return SDL_ISPIXELFORMAT_ALPHA(m_format); }
+  constexpr bool IsAlpha() const;
 
   /**
    * Determine if this is a "FourCC" format.
@@ -8589,7 +8651,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsFourCC() const { return SDL_ISPIXELFORMAT_FOURCC(m_format); }
+  constexpr bool IsFourCC() const;
 
   /**
    * Get the human readable name of a pixel format.
@@ -8601,7 +8663,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  const char* GetName() const { return SDL_GetPixelFormatName(m_format); }
+  const char* GetName() const;
 
   /**
    * Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
@@ -8623,11 +8685,7 @@ public:
                 Uint32* Rmask,
                 Uint32* Gmask,
                 Uint32* Bmask,
-                Uint32* Amask) const
-  {
-    CheckError(
-      SDL_GetMasksForPixelFormat(m_format, bpp, Rmask, Gmask, Bmask, Amask));
-  }
+                Uint32* Amask) const;
 
   /**
    * Convert a bpp value and RGBA masks to an enumerated pixel format.
@@ -8653,10 +8711,7 @@ public:
                               Uint32 Rmask,
                               Uint32 Gmask,
                               Uint32 Bmask,
-                              Uint32 Amask)
-  {
-    return SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask);
-  }
+                              Uint32 Amask);
 
   /**
    * Create an PixelFormatDetails structure corresponding to a pixel format.
@@ -8672,10 +8727,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  const PixelFormatDetails* GetDetails() const
-  {
-    return SDL_GetPixelFormatDetails(m_format);
-  }
+  const PixelFormatDetails* GetDetails() const;
 
   /**
    * Map an RGBA quadruple to a pixel value for a given pixel format.
@@ -8971,8 +9023,7 @@ constexpr PixelFormat DEFINE_PIXELFORMAT(PixelType type,
                                          int bits,
                                          int bytes)
 {
-  return PixelFormatRaw(
-    SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes));
+  return PixelFormat(type, order, layout, bits, bytes);
 }
 
 /**
@@ -8993,6 +9044,11 @@ constexpr Uint8 PIXELFLAG(PixelFormatRaw format)
   return SDL_PIXELFLAG(format);
 }
 
+constexpr Uint8 PixelFormat::GetFlags() const
+{
+  return SDL::PIXELFLAG(m_format);
+}
+
 /**
  * A macro to retrieve the type of an PixelFormat.
  *
@@ -9008,6 +9064,11 @@ constexpr Uint8 PIXELFLAG(PixelFormatRaw format)
 constexpr PixelType PIXELTYPE(PixelFormatRaw format)
 {
   return PixelType(SDL_PIXELTYPE(format));
+}
+
+constexpr PixelType PixelFormat::GetType() const
+{
+  return SDL::PIXELTYPE(m_format);
 }
 
 /**
@@ -9028,6 +9089,11 @@ constexpr int PIXELORDER(PixelFormatRaw format)
   return SDL_PIXELORDER(format);
 }
 
+constexpr int PixelFormat::GetOrder() const
+{
+  return SDL::PIXELORDER(m_format);
+}
+
 /**
  * A macro to retrieve the layout of an PixelFormat.
  *
@@ -9044,6 +9110,11 @@ constexpr int PIXELORDER(PixelFormatRaw format)
 constexpr PackedLayout PIXELLAYOUT(PixelFormatRaw format)
 {
   return PackedLayout(SDL_PIXELLAYOUT(format));
+}
+
+constexpr PackedLayout PixelFormat::GetLayout() const
+{
+  return SDL::PIXELLAYOUT(m_format);
 }
 
 /**
@@ -9069,6 +9140,11 @@ constexpr int BITSPERPIXEL(PixelFormatRaw format)
   return SDL_BITSPERPIXEL(format);
 }
 
+constexpr int PixelFormat::GetBitsPerPixel() const
+{
+  return SDL::BITSPERPIXEL(m_format);
+}
+
 /**
  * A macro to determine an PixelFormat's bytes per pixel.
  *
@@ -9092,6 +9168,11 @@ constexpr int BYTESPERPIXEL(PixelFormatRaw format)
   return SDL_BYTESPERPIXEL(format);
 }
 
+constexpr int PixelFormat::GetBytesPerPixel() const
+{
+  return SDL::BYTESPERPIXEL(m_format);
+}
+
 /**
  * A macro to determine if an PixelFormat is an indexed format.
  *
@@ -9108,6 +9189,11 @@ constexpr int BYTESPERPIXEL(PixelFormatRaw format)
 constexpr bool ISPIXELFORMAT_INDEXED(PixelFormatRaw format)
 {
   return SDL_ISPIXELFORMAT_INDEXED(format);
+}
+
+constexpr bool PixelFormat::IsIndexed() const
+{
+  return SDL::ISPIXELFORMAT_INDEXED(m_format);
 }
 
 /**
@@ -9128,6 +9214,11 @@ constexpr bool ISPIXELFORMAT_PACKED(PixelFormatRaw format)
   return SDL_ISPIXELFORMAT_PACKED(format);
 }
 
+constexpr bool PixelFormat::IsPacked() const
+{
+  return SDL::ISPIXELFORMAT_PACKED(m_format);
+}
+
 /**
  * A macro to determine if an PixelFormat is an array format.
  *
@@ -9144,6 +9235,11 @@ constexpr bool ISPIXELFORMAT_PACKED(PixelFormatRaw format)
 constexpr bool ISPIXELFORMAT_ARRAY(PixelFormatRaw format)
 {
   return SDL_ISPIXELFORMAT_ARRAY(format);
+}
+
+constexpr bool PixelFormat::IsArray() const
+{
+  return SDL::ISPIXELFORMAT_ARRAY(m_format);
 }
 
 /**
@@ -9164,6 +9260,11 @@ constexpr bool ISPIXELFORMAT_10BIT(PixelFormatRaw format)
   return SDL_ISPIXELFORMAT_10BIT(format);
 }
 
+constexpr bool PixelFormat::Is10Bit() const
+{
+  return SDL::ISPIXELFORMAT_10BIT(m_format);
+}
+
 /**
  * A macro to determine if an PixelFormat is a floating point format.
  *
@@ -9182,6 +9283,16 @@ constexpr bool ISPIXELFORMAT_FLOAT(PixelFormatRaw format)
   return SDL_ISPIXELFORMAT_FLOAT(format);
 }
 
+constexpr bool PixelFormat::IsFloat() const
+{
+  return SDL::ISPIXELFORMAT_FLOAT(m_format);
+}
+
+/**
+ * @name ColorTypes
+ * @{
+ */
+
 /**
  * A macro to determine if an PixelFormat has an alpha channel.
  *
@@ -9198,6 +9309,11 @@ constexpr bool ISPIXELFORMAT_FLOAT(PixelFormatRaw format)
 constexpr bool ISPIXELFORMAT_ALPHA(PixelFormatRaw format)
 {
   return SDL_ISPIXELFORMAT_ALPHA(format);
+}
+
+constexpr bool PixelFormat::IsAlpha() const
+{
+  return SDL::ISPIXELFORMAT_ALPHA(m_format);
 }
 
 /**
@@ -9220,10 +9336,10 @@ constexpr bool ISPIXELFORMAT_FOURCC(PixelFormatRaw format)
   return SDL_ISPIXELFORMAT_FOURCC(format);
 }
 
-/**
- * @name ColorTypes
- * @{
- */
+constexpr bool PixelFormat::IsFourCC() const
+{
+  return SDL::ISPIXELFORMAT_FOURCC(m_format);
+}
 
 /**
  * Colorspace color type.
@@ -9585,12 +9701,12 @@ public:
                        TransferCharacteristics transfer,
                        MatrixCoefficients matrix,
                        ChromaLocation chroma)
-    : m_cspace(SDL_Colorspace(SDL_DEFINE_COLORSPACE(type,
-                                                    range,
-                                                    primaries,
-                                                    transfer,
-                                                    matrix,
-                                                    chroma)))
+    : m_cspace(ColorspaceRaw(SDL_DEFINE_COLORSPACE(type,
+                                                   range,
+                                                   primaries,
+                                                   transfer,
+                                                   matrix,
+                                                   chroma)))
   {
   }
 
@@ -9626,7 +9742,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr ColorType GetType() const { return SDL_COLORSPACETYPE(m_cspace); }
+  constexpr ColorType GetType() const;
 
   /**
    * Retrieve the range of a Colorspace.
@@ -9637,10 +9753,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr ColorRange GetRange() const
-  {
-    return SDL_COLORSPACERANGE(m_cspace);
-  }
+  constexpr ColorRange GetRange() const;
 
   /**
    * Retrieve the chroma sample location of an Colorspace.
@@ -9651,10 +9764,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr ChromaLocation GetChroma() const
-  {
-    return SDL_COLORSPACECHROMA(m_cspace);
-  }
+  constexpr ChromaLocation GetChroma() const;
 
   /**
    * Retrieve the primaries of an Colorspace.
@@ -9665,10 +9775,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr ColorPrimaries GetPrimaries() const
-  {
-    return SDL_COLORSPACEPRIMARIES(m_cspace);
-  }
+  constexpr ColorPrimaries GetPrimaries() const;
 
   /**
    * Retrieve the transfer characteristics of an Colorspace.
@@ -9679,10 +9786,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr TransferCharacteristics GetTransfer() const
-  {
-    return SDL_COLORSPACETRANSFER(m_cspace);
-  }
+  constexpr TransferCharacteristics GetTransfer() const;
 
   /**
    * Retrieve the matrix coefficients of an Colorspace.
@@ -9693,10 +9797,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr MatrixCoefficients GetMatrix() const
-  {
-    return SDL_COLORSPACEMATRIX(m_cspace);
-  }
+  constexpr MatrixCoefficients GetMatrix() const;
 
   /**
    * Determine if a Colorspace uses BT601 (or BT470BG) matrix coefficients.
@@ -9707,10 +9808,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsMatrixBT601() const
-  {
-    return SDL_ISCOLORSPACE_MATRIX_BT601(m_cspace);
-  }
+  constexpr bool IsMatrixBT601() const;
 
   /**
    * Determine if an Colorspace uses BT709 matrix coefficients.
@@ -9721,10 +9819,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsMatrixBT709() const
-  {
-    return SDL_ISCOLORSPACE_MATRIX_BT709(m_cspace);
-  }
+  constexpr bool IsMatrixBT709() const;
 
   /**
    * Determine if an Colorspace uses BT2020_NCL matrix coefficients.
@@ -9735,10 +9830,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsMatrixBT2020_NCL() const
-  {
-    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(m_cspace);
-  }
+  constexpr bool IsMatrixBT2020_NCL() const;
 
   /**
    * A function to determine if an Colorspace has a limited range.
@@ -9749,10 +9841,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsLimitedRange() const
-  {
-    return SDL_ISCOLORSPACE_LIMITED_RANGE(m_cspace);
-  }
+  constexpr bool IsLimitedRange() const;
 
   /**
    * A function to determine if an Colorspace has a full range.
@@ -9763,10 +9852,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsFullRange() const
-  {
-    return SDL_ISCOLORSPACE_FULL_RANGE(m_cspace);
-  }
+  constexpr bool IsFullRange() const;
 };
 
 constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
@@ -9864,6 +9950,11 @@ constexpr ColorType COLORSPACETYPE(ColorspaceRaw cspace)
   return SDL_COLORSPACETYPE(cspace);
 }
 
+constexpr ColorType Colorspace::GetType() const
+{
+  return SDL::COLORSPACETYPE(m_cspace);
+}
+
 /**
  * A macro to retrieve the range of an Colorspace.
  *
@@ -9877,6 +9968,11 @@ constexpr ColorType COLORSPACETYPE(ColorspaceRaw cspace)
 constexpr ColorRange COLORSPACERANGE(ColorspaceRaw cspace)
 {
   return SDL_COLORSPACERANGE(cspace);
+}
+
+constexpr ColorRange Colorspace::GetRange() const
+{
+  return SDL::COLORSPACERANGE(m_cspace);
 }
 
 /**
@@ -9894,6 +9990,11 @@ constexpr ChromaLocation COLORSPACECHROMA(ColorspaceRaw cspace)
   return SDL_COLORSPACECHROMA(cspace);
 }
 
+constexpr ChromaLocation Colorspace::GetChroma() const
+{
+  return SDL::COLORSPACECHROMA(m_cspace);
+}
+
 /**
  * A macro to retrieve the primaries of an Colorspace.
  *
@@ -9907,6 +10008,11 @@ constexpr ChromaLocation COLORSPACECHROMA(ColorspaceRaw cspace)
 constexpr ColorPrimaries COLORSPACEPRIMARIES(ColorspaceRaw cspace)
 {
   return SDL_COLORSPACEPRIMARIES(cspace);
+}
+
+constexpr ColorPrimaries Colorspace::GetPrimaries() const
+{
+  return SDL::COLORSPACEPRIMARIES(m_cspace);
 }
 
 /**
@@ -9924,6 +10030,11 @@ constexpr TransferCharacteristics COLORSPACETRANSFER(ColorspaceRaw cspace)
   return SDL_COLORSPACETRANSFER(cspace);
 }
 
+constexpr TransferCharacteristics Colorspace::GetTransfer() const
+{
+  return SDL::COLORSPACETRANSFER(m_cspace);
+}
+
 /**
  * A macro to retrieve the matrix coefficients of an Colorspace.
  *
@@ -9937,6 +10048,11 @@ constexpr TransferCharacteristics COLORSPACETRANSFER(ColorspaceRaw cspace)
 constexpr MatrixCoefficients COLORSPACEMATRIX(ColorspaceRaw cspace)
 {
   return SDL_COLORSPACEMATRIX(cspace);
+}
+
+constexpr MatrixCoefficients Colorspace::GetMatrix() const
+{
+  return SDL::COLORSPACEMATRIX(m_cspace);
 }
 
 /**
@@ -9958,6 +10074,11 @@ constexpr bool ISCOLORSPACE_MATRIX_BT601(ColorspaceRaw cspace)
   return SDL_ISCOLORSPACE_MATRIX_BT601(cspace);
 }
 
+constexpr bool Colorspace::IsMatrixBT601() const
+{
+  return SDL::ISCOLORSPACE_MATRIX_BT601(m_cspace);
+}
+
 /**
  * A macro to determine if an Colorspace uses BT709 matrix coefficients.
  *
@@ -9971,6 +10092,11 @@ constexpr bool ISCOLORSPACE_MATRIX_BT601(ColorspaceRaw cspace)
 constexpr bool ISCOLORSPACE_MATRIX_BT709(ColorspaceRaw cspace)
 {
   return SDL_ISCOLORSPACE_MATRIX_BT709(cspace);
+}
+
+constexpr bool Colorspace::IsMatrixBT709() const
+{
+  return SDL::ISCOLORSPACE_MATRIX_BT709(m_cspace);
 }
 
 /**
@@ -9989,6 +10115,11 @@ constexpr bool ISCOLORSPACE_MATRIX_BT2020_NCL(ColorspaceRaw cspace)
   return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace);
 }
 
+constexpr bool Colorspace::IsMatrixBT2020_NCL() const
+{
+  return SDL::ISCOLORSPACE_MATRIX_BT2020_NCL(m_cspace);
+}
+
 /**
  * A macro to determine if an Colorspace has a limited range.
  *
@@ -10004,6 +10135,11 @@ constexpr bool ISCOLORSPACE_LIMITED_RANGE(ColorspaceRaw cspace)
   return SDL_ISCOLORSPACE_LIMITED_RANGE(cspace);
 }
 
+constexpr bool Colorspace::IsLimitedRange() const
+{
+  return SDL::ISCOLORSPACE_LIMITED_RANGE(m_cspace);
+}
+
 /**
  * A macro to determine if an Colorspace has a full range.
  *
@@ -10017,6 +10153,11 @@ constexpr bool ISCOLORSPACE_LIMITED_RANGE(ColorspaceRaw cspace)
 constexpr bool ISCOLORSPACE_FULL_RANGE(ColorspaceRaw cspace)
 {
   return SDL_ISCOLORSPACE_FULL_RANGE(cspace);
+}
+
+constexpr bool Colorspace::IsFullRange() const
+{
+  return SDL::ISCOLORSPACE_FULL_RANGE(m_cspace);
 }
 
 /**
@@ -10454,11 +10595,7 @@ public:
    *
    * @sa Palette.Palette
    */
-  void Destroy()
-  {
-    SDL_DestroyPalette(m_resource);
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   constexpr int GetSize() const { return m_resource->ncolors; }
 
@@ -10481,11 +10618,7 @@ public:
    *
    * @sa Palette.Palette
    */
-  void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0)
-  {
-    CheckError(SDL_SetPaletteColors(
-      m_resource, colors.data(), firstcolor, colors.size()));
-  }
+  void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
 };
 
 /**
@@ -10502,6 +10635,11 @@ public:
 inline const char* GetPixelFormatName(PixelFormatRaw format)
 {
   return SDL_GetPixelFormatName(format);
+}
+
+inline const char* PixelFormat::GetName() const
+{
+  return SDL::GetPixelFormatName(m_format);
 }
 
 /**
@@ -10530,6 +10668,15 @@ inline void GetMasksForPixelFormat(PixelFormatRaw format,
 {
   CheckError(
     SDL_GetMasksForPixelFormat(format, bpp, Rmask, Gmask, Bmask, Amask));
+}
+
+inline void PixelFormat::GetMasks(int* bpp,
+                                  Uint32* Rmask,
+                                  Uint32* Gmask,
+                                  Uint32* Bmask,
+                                  Uint32* Amask) const
+{
+  SDL::GetMasksForPixelFormat(m_format, bpp, Rmask, Gmask, Bmask, Amask);
 }
 
 /**
@@ -10561,6 +10708,15 @@ inline PixelFormat GetPixelFormatForMasks(int bpp,
   return SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask);
 }
 
+inline PixelFormat PixelFormat::ForMasks(int bpp,
+                                         Uint32 Rmask,
+                                         Uint32 Gmask,
+                                         Uint32 Bmask,
+                                         Uint32 Amask)
+{
+  return SDL::GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask);
+}
+
 /**
  * Create an PixelFormatDetails structure corresponding to a pixel format.
  *
@@ -10581,6 +10737,11 @@ inline const PixelFormatDetails* GetPixelFormatDetails(PixelFormatRaw format)
   return SDL_GetPixelFormatDetails(format);
 }
 
+inline const PixelFormatDetails* PixelFormat::GetDetails() const
+{
+  return SDL::GetPixelFormatDetails(m_format);
+}
+
 /**
  * Create a palette structure with the specified number of color entries.
  *
@@ -10598,10 +10759,7 @@ inline const PixelFormatDetails* GetPixelFormatDetails(PixelFormatRaw format)
  * @sa Palette.SetColors
  * @sa Surface.SetPalette
  */
-inline Palette CreatePalette(int ncolors)
-{
-  return Palette(CheckError(SDL_CreatePalette(ncolors)));
-}
+inline Palette CreatePalette(int ncolors) { return Palette(ncolors); }
 
 /**
  * Set a range of colors in a palette.
@@ -10609,7 +10767,6 @@ inline Palette CreatePalette(int ncolors)
  * @param palette the Palette structure to modify.
  * @param colors an array of Color structures to copy into the palette.
  * @param firstcolor the index of the first palette entry to modify.
- * @param ncolors the number of entries to modify.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread, as long as
@@ -10625,6 +10782,11 @@ inline void SetPaletteColors(PaletteParam palette,
     SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
 }
 
+inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
+{
+  SDL::SetPaletteColors(m_resource, colors, firstcolor);
+}
+
 /**
  * Free a palette created with Palette.Palette().
  *
@@ -10638,6 +10800,12 @@ inline void SetPaletteColors(PaletteParam palette,
  * @sa Palette.Palette
  */
 inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
+
+inline void Palette::Destroy()
+{
+  SDL_DestroyPalette(m_resource);
+  m_resource = nullptr;
+}
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.
@@ -10948,10 +11116,7 @@ public:
    *
    * @sa Properties.Destroy
    */
-  static Properties Create()
-  {
-    return Properties(CheckError(SDL_CreateProperties()));
-  }
+  static Properties Create();
 
   /// Destructor
   ~Properties() { SDL_DestroyProperties(m_resource); }
@@ -10991,11 +11156,7 @@ public:
    *
    * @sa Properties.Create
    */
-  void Destroy()
-  {
-    SDL_DestroyProperties(m_resource);
-    m_resource = 0;
-  }
+  void Destroy();
 };
 
 /// Semi-safe reference for Properties.
@@ -11072,6 +11233,8 @@ inline Properties CreateProperties()
 {
   return Properties(CheckError(SDL_CreateProperties()));
 }
+
+inline Properties Properties::Create() { return SDL::CreateProperties(); }
 
 /**
  * Copy a group of properties.
@@ -11699,6 +11862,12 @@ inline Uint64 CountProperties(PropertiesParam props)
 inline void DestroyProperties(PropertiesID props)
 {
   SDL_DestroyProperties(props);
+}
+
+inline void Properties::Destroy()
+{
+  SDL_DestroyProperties(m_resource);
+  m_resource = 0;
 }
 
 /// @}
@@ -12699,11 +12868,7 @@ public:
    *
    * @sa Environment.Environment
    */
-  void Destroy()
-  {
-    SDL_DestroyEnvironment(m_resource);
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   /**
    * Get the value of a variable in the environment.
@@ -12722,10 +12887,7 @@ public:
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
    */
-  const char* GetVariable(StringParam name)
-  {
-    return SDL_GetEnvironmentVariable(m_resource, name);
-  }
+  const char* GetVariable(StringParam name);
 
   /**
    * Get all variables in the environment.
@@ -12746,10 +12908,7 @@ public:
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
    */
-  OwnArray<char*> GetVariables()
-  {
-    return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(m_resource))};
-  }
+  OwnArray<char*> GetVariables();
 
   /**
    * Get the Variables count.
@@ -12785,10 +12944,7 @@ public:
    * @sa Environment.GetVariables
    * @sa Environment.UnsetVariable
    */
-  void SetVariable(StringParam name, StringParam value, bool overwrite)
-  {
-    CheckError(SDL_SetEnvironmentVariable(m_resource, name, value, overwrite));
-  }
+  void SetVariable(StringParam name, StringParam value, bool overwrite);
 
   /**
    * Clear a variable from the environment.
@@ -12807,10 +12963,7 @@ public:
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
    */
-  void UnsetVariable(StringParam name)
-  {
-    CheckError(SDL_UnsetEnvironmentVariable(m_resource, name));
-  }
+  void UnsetVariable(StringParam name);
 };
 
 /// Semi-safe reference for Environment.
@@ -12877,7 +13030,7 @@ inline EnvironmentRaw GetEnvironment() { return SDL_GetEnvironment(); }
  */
 inline Environment CreateEnvironment(bool populated)
 {
-  return Environment(SDL_CreateEnvironment(populated));
+  return Environment(populated);
 }
 
 /**
@@ -12904,6 +13057,11 @@ inline const char* GetEnvironmentVariable(EnvironmentParam env,
   return SDL_GetEnvironmentVariable(env, name);
 }
 
+inline const char* Environment::GetVariable(StringParam name)
+{
+  return SDL::GetEnvironmentVariable(m_resource, std::move(name));
+}
+
 /**
  * Get all variables in the environment.
  *
@@ -12926,6 +13084,11 @@ inline const char* GetEnvironmentVariable(EnvironmentParam env,
 inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
 {
   return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
+}
+
+inline OwnArray<char*> Environment::GetVariables()
+{
+  return SDL::GetEnvironmentVariables(m_resource);
 }
 
 /**
@@ -12954,7 +13117,15 @@ inline void SetEnvironmentVariable(EnvironmentParam env,
                                    StringParam value,
                                    bool overwrite)
 {
-  return CheckError(SDL_SetEnvironmentVariable(env, name, value, overwrite));
+  CheckError(SDL_SetEnvironmentVariable(env, name, value, overwrite));
+}
+
+inline void Environment::SetVariable(StringParam name,
+                                     StringParam value,
+                                     bool overwrite)
+{
+  SDL::SetEnvironmentVariable(
+    m_resource, std::move(name), std::move(value), overwrite);
 }
 
 /**
@@ -12977,7 +13148,12 @@ inline void SetEnvironmentVariable(EnvironmentParam env,
  */
 inline void UnsetEnvironmentVariable(EnvironmentParam env, StringParam name)
 {
-  return CheckError(SDL_UnsetEnvironmentVariable(env, name));
+  CheckError(SDL_UnsetEnvironmentVariable(env, name));
+}
+
+inline void Environment::UnsetVariable(StringParam name)
+{
+  SDL::UnsetEnvironmentVariable(m_resource, std::move(name));
 }
 
 /**
@@ -12995,6 +13171,12 @@ inline void UnsetEnvironmentVariable(EnvironmentParam env, StringParam name)
 inline void DestroyEnvironment(EnvironmentRaw env)
 {
   SDL_DestroyEnvironment(env);
+}
+
+inline void Environment::Destroy()
+{
+  SDL_DestroyEnvironment(m_resource);
+  m_resource = nullptr;
 }
 
 /**
@@ -17486,12 +17668,7 @@ public:
    * @sa IConv.open
    * @sa iconv_string
    */
-  int close()
-  {
-    auto r = SDL_iconv_close(m_resource);
-    m_resource = nullptr;
-    return r;
-  }
+  int close();
 
   /**
    * This function converts text between encodings, reading from and writing to
@@ -17531,11 +17708,7 @@ public:
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
                char** outbuf,
-               size_t* outbytesleft)
-  {
-    return CheckError(
-      SDL_iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft));
-  }
+               size_t* outbytesleft);
 };
 
 /// Semi-safe reference for IConv.
@@ -17592,6 +17765,13 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
  */
 inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
 
+inline int IConv::close()
+{
+  auto r = SDL_iconv_close(m_resource);
+  m_resource = nullptr;
+  return r;
+}
+
 /**
  * This function converts text between encodings, reading from and writing to
  * a buffer.
@@ -17636,6 +17816,14 @@ inline size_t iconv(IConvRaw cd,
                     size_t* outbytesleft)
 {
   return CheckError(SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft));
+}
+
+inline size_t IConv::iconv(const char** inbuf,
+                           size_t* inbytesleft,
+                           char** outbuf,
+                           size_t* outbytesleft)
+{
+  return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
 }
 
 #ifdef SDL3PP_DOC
@@ -19521,10 +19709,7 @@ public:
    * @sa IOStream.Tell
    * @sa IOStream.Write
    */
-  static IOStream FromFile(StringParam file, StringParam mode)
-  {
-    return IOStream(SDL_IOFromFile(file, mode));
-  }
+  static IOStream FromFile(StringParam file, StringParam mode);
 
   /**
    * Use this function to prepare a read-write memory buffer for use with
@@ -19564,10 +19749,7 @@ public:
    * @sa IOStream.Tell
    * @sa IOStream.Write
    */
-  static IOStream FromMem(TargetBytes mem)
-  {
-    return IOStream{CheckError(SDL_IOFromMem(mem.data, mem.size_bytes))};
-  }
+  static IOStream FromMem(TargetBytes mem);
 
   /**
    * Use this function to prepare a read-only memory buffer for use with
@@ -19607,10 +19789,7 @@ public:
    * @sa IOStream.Seek
    * @sa IOStream.Tell
    */
-  static IOStream FromConstMem(SourceBytes mem)
-  {
-    return IOStream{CheckError(SDL_IOFromConstMem(mem.data, mem.size_bytes))};
-  }
+  static IOStream FromConstMem(SourceBytes mem);
 
   /**
    * Use this function to create an IOStream that is backed by dynamically
@@ -19640,10 +19819,7 @@ public:
    * @sa IOStream.Tell
    * @sa IOStream.Write
    */
-  static IOStream FromDynamicMem()
-  {
-    return IOStream{CheckError(SDL_IOFromDynamicMem())};
-  }
+  static IOStream FromDynamicMem();
 
   /**
    * Create a custom IOStream.
@@ -19673,10 +19849,7 @@ public:
    * @sa IOStream.FromFile
    * @sa IOStream.FromMem
    */
-  static IOStream Open(const IOStreamInterface& iface, void* userdata)
-  {
-    return IOStream(CheckError(SDL_OpenIO(&iface, userdata)));
-  }
+  static IOStream Open(const IOStreamInterface* iface, void* userdata);
 
   /// Destructor
   ~IOStream() { SDL_CloseIO(m_resource); }
@@ -19731,11 +19904,7 @@ public:
    *
    * @sa IOStream.Open
    */
-  void Close()
-  {
-    CheckError(SDL_CloseIO(m_resource));
-    m_resource = nullptr;
-  }
+  void Close();
 
   /**
    * Get the properties associated with an IOStream.
@@ -19747,10 +19916,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesRef GetProperties() const
-  {
-    return {CheckError(SDL_GetIOProperties(m_resource))};
-  }
+  PropertiesRef GetProperties() const;
 
   /**
    * Query the stream status of an IOStream.
@@ -19769,7 +19935,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  IOStatus GetStatus() const { return SDL_GetIOStatus(m_resource); }
+  IOStatus GetStatus() const;
 
   /**
    * Use this function to get the size of the data stream in an IOStream.
@@ -19781,12 +19947,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sint64 GetSize() const
-  {
-    auto size = SDL_GetIOSize(get());
-    if (size < 0) throw Error{};
-    return size;
-  }
+  Sint64 GetSize() const;
 
   /**
    * Seek within an IOStream data stream.
@@ -19814,10 +19975,7 @@ public:
    *
    * @sa IOStream.Tell
    */
-  Sint64 Seek(Sint64 offset, IOWhence whence)
-  {
-    return SDL_SeekIO(m_resource, offset, whence);
-  }
+  Sint64 Seek(Sint64 offset, IOWhence whence);
 
   /**
    * Determine the current read/write offset in an IOStream data stream.
@@ -19835,7 +19993,7 @@ public:
    *
    * @sa IOStream.Seek
    */
-  Sint64 Tell() const { return SDL_TellIO(m_resource); }
+  Sint64 Tell() const;
 
   /**
    * Read from a data source.
@@ -19887,7 +20045,8 @@ public:
    * the stream is not at EOF, IOStream.GetStatus() will return a different
    * error value and GetError() will offer a human-readable message.
    *
-   * @param buf the buffer to read data into.
+   * @param ptr a pointer to a buffer to read data into.
+   * @param size the number of bytes to read from the data source.
    * @returns the number of bytes read, or 0 on end of file or other failure;
    *          call GetError() for more information.
    *
@@ -19898,10 +20057,7 @@ public:
    * @sa IOStream.Write
    * @sa IOStream.GetStatus
    */
-  size_t Read(TargetBytes buf)
-  {
-    return SDL_ReadIO(m_resource, buf.data, buf.size_bytes);
-  }
+  size_t Read(TargetBytes buf);
 
   /**
    * Write to an IOStream data stream.
@@ -19931,10 +20087,7 @@ public:
    * @sa IOStream.Flush
    * @sa IOStream.GetStatus
    */
-  size_t Write(SourceBytes buf)
-  {
-    return SDL_WriteIO(m_resource, buf.data, buf.size_bytes);
-  }
+  size_t Write(SourceBytes buf);
 
   /**
    * Prints formatted string.
@@ -20013,10 +20166,7 @@ public:
    * @sa IOStream.printf
    * @sa IOStream.Write
    */
-  size_t vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt, va_list ap)
-  {
-    return SDL_IOvprintf(m_resource, fmt, ap);
-  }
+  size_t vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt, va_list ap);
 
   /**
    * Flush any buffered data in the stream.
@@ -20034,7 +20184,7 @@ public:
    * @sa IOStream.Open
    * @sa IOStream.Write
    */
-  void Flush() { CheckError(SDL_FlushIO(m_resource)); }
+  void Flush();
 
   /**
    * Load all the data from an SDL data stream.
@@ -20053,12 +20203,7 @@ public:
    * @sa LoadFile
    * @sa IOStream.SaveFile
    */
-  StringResult LoadFile()
-  {
-    size_t datasize = 0;
-    auto data = static_cast<char*>(SDL_LoadFile_IO(get(), &datasize, false));
-    return StringResult{CheckError(data), datasize};
-  }
+  StringResult LoadFile();
 
   /**
    * Load all the data from an SDL data stream.
@@ -20099,10 +20244,7 @@ public:
    * @sa SaveFile
    * @sa IOStream.LoadFile
    */
-  void SaveFile(SourceBytes data)
-  {
-    CheckError(SDL_SaveFile_IO(m_resource, data.data, data.size_bytes, false));
-  }
+  void SaveFile(SourceBytes data);
 
   /**
    * Use this function to read a byte from an IOStream.
@@ -20119,12 +20261,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Uint8 ReadU8()
-  {
-    Uint8 value;
-    CheckError(SDL_ReadU8(get(), &value));
-    return value;
-  }
+  Uint8 ReadU8();
 
   /**
    * Use this function to read a signed byte from an IOStream.
@@ -20141,12 +20278,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sint8 ReadS8()
-  {
-    Sint8 value;
-    CheckError(SDL_ReadS8(get(), &value));
-    return value;
-  }
+  Sint8 ReadS8();
 
   /**
    * Use this function to read 16 bits of little-endian data from an
@@ -20167,12 +20299,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Uint16 ReadU16LE()
-  {
-    Uint16 value;
-    CheckError(SDL_ReadU16LE(get(), &value));
-    return value;
-  }
+  Uint16 ReadU16LE();
 
   /**
    * Use this function to read 16 bits of little-endian data from an
@@ -20193,12 +20320,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sint16 ReadS16LE()
-  {
-    Sint16 value;
-    CheckError(SDL_ReadS16LE(get(), &value));
-    return value;
-  }
+  Sint16 ReadS16LE();
 
   /**
    * Use this function to read 16 bits of big-endian data from an IOStream
@@ -20219,12 +20341,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Uint16 ReadU16BE()
-  {
-    Uint16 value;
-    CheckError(SDL_ReadU16BE(get(), &value));
-    return value;
-  }
+  Uint16 ReadU16BE();
 
   /**
    * Use this function to read 16 bits of big-endian data from an IOStream
@@ -20245,12 +20362,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sint16 ReadS16BE()
-  {
-    Sint16 value;
-    CheckError(SDL_ReadS16BE(get(), &value));
-    return value;
-  }
+  Sint16 ReadS16BE();
 
   /**
    * Use this function to read 32 bits of little-endian data from an
@@ -20271,12 +20383,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Uint32 ReadU32LE()
-  {
-    Uint32 value;
-    CheckError(SDL_ReadU32LE(get(), &value));
-    return value;
-  }
+  Uint32 ReadU32LE();
 
   /**
    * Use this function to read 32 bits of little-endian data from an
@@ -20297,12 +20404,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sint32 ReadS32LE()
-  {
-    Sint32 value;
-    CheckError(SDL_ReadS32LE(get(), &value));
-    return value;
-  }
+  Sint32 ReadS32LE();
 
   /**
    * Use this function to read 32 bits of big-endian data from an IOStream
@@ -20323,12 +20425,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Uint32 ReadU32BE()
-  {
-    Uint32 value;
-    CheckError(SDL_ReadU32BE(get(), &value));
-    return value;
-  }
+  Uint32 ReadU32BE();
 
   /**
    * Use this function to read 32 bits of big-endian data from an IOStream
@@ -20349,12 +20446,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sint32 ReadS32BE()
-  {
-    Sint32 value;
-    CheckError(SDL_ReadS32BE(get(), &value));
-    return value;
-  }
+  Sint32 ReadS32BE();
 
   /**
    * Use this function to read 64 bits of little-endian data from an
@@ -20375,12 +20467,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Uint64 ReadU64LE()
-  {
-    Uint64 value;
-    CheckError(SDL_ReadU64LE(get(), &value));
-    return value;
-  }
+  Uint64 ReadU64LE();
 
   /**
    * Use this function to read 64 bits of little-endian data from an
@@ -20401,12 +20488,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sint64 ReadS64LE()
-  {
-    Sint64 value;
-    CheckError(SDL_ReadS64LE(get(), &value));
-    return value;
-  }
+  Sint64 ReadS64LE();
 
   /**
    * Use this function to read 64 bits of big-endian data from an IOStream
@@ -20427,12 +20509,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Uint64 ReadU64BE()
-  {
-    Uint64 value;
-    CheckError(SDL_ReadU64BE(get(), &value));
-    return value;
-  }
+  Uint64 ReadU64BE();
 
   /**
    * Use this function to read 64 bits of big-endian data from an IOStream
@@ -20453,12 +20530,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sint64 ReadS64BE()
-  {
-    Sint64 value;
-    CheckError(SDL_ReadS64BE(get(), &value));
-    return value;
-  }
+  Sint64 ReadS64BE();
 
   /**
    * Use this function to read a byte from an IOStreamRef.
@@ -20798,7 +20870,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteU8(Uint8 value) { CheckError(SDL_WriteU8(m_resource, value)); }
+  void WriteU8(Uint8 value);
 
   /**
    * Use this function to write a signed byte to an IOStream.
@@ -20810,7 +20882,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteS8(Sint8 value) { CheckError(SDL_WriteS8(m_resource, value)); }
+  void WriteS8(Sint8 value);
 
   /**
    * Use this function to write 16 bits in native format to an IOStream as
@@ -20827,10 +20899,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteU16LE(Uint16 value)
-  {
-    CheckError(SDL_WriteU16LE(m_resource, value));
-  }
+  void WriteU16LE(Uint16 value);
 
   /**
    * Use this function to write 16 bits in native format to an IOStream as
@@ -20847,10 +20916,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteS16LE(Sint16 value)
-  {
-    CheckError(SDL_WriteS16LE(m_resource, value));
-  }
+  void WriteS16LE(Sint16 value);
 
   /**
    * Use this function to write 16 bits in native format to an IOStream as
@@ -20866,10 +20932,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteU16BE(Uint16 value)
-  {
-    CheckError(SDL_WriteU16BE(m_resource, value));
-  }
+  void WriteU16BE(Uint16 value);
 
   /**
    * Use this function to write 16 bits in native format to an IOStream as
@@ -20885,10 +20948,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteS16BE(Sint16 value)
-  {
-    CheckError(SDL_WriteS16BE(m_resource, value));
-  }
+  void WriteS16BE(Sint16 value);
 
   /**
    * Use this function to write 32 bits in native format to an IOStream as
@@ -20905,10 +20965,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteU32LE(Uint32 value)
-  {
-    CheckError(SDL_WriteU32LE(m_resource, value));
-  }
+  void WriteU32LE(Uint32 value);
 
   /**
    * Use this function to write 32 bits in native format to an IOStream as
@@ -20925,10 +20982,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteS32LE(Sint32 value)
-  {
-    CheckError(SDL_WriteS32LE(m_resource, value));
-  }
+  void WriteS32LE(Sint32 value);
 
   /**
    * Use this function to write 32 bits in native format to an IOStream as
@@ -20944,10 +20998,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteU32BE(Uint32 value)
-  {
-    CheckError(SDL_WriteU32BE(m_resource, value));
-  }
+  void WriteU32BE(Uint32 value);
 
   /**
    * Use this function to write 32 bits in native format to an IOStream as
@@ -20963,10 +21014,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteS32BE(Sint32 value)
-  {
-    CheckError(SDL_WriteS32BE(m_resource, value));
-  }
+  void WriteS32BE(Sint32 value);
 
   /**
    * Use this function to write 64 bits in native format to an IOStream as
@@ -20983,10 +21031,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteU64LE(Uint64 value)
-  {
-    CheckError(SDL_WriteU64LE(m_resource, value));
-  }
+  void WriteU64LE(Uint64 value);
 
   /**
    * Use this function to write 64 bits in native format to an IOStream as
@@ -21003,10 +21048,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteS64LE(Sint64 value)
-  {
-    CheckError(SDL_WriteS64LE(m_resource, value));
-  }
+  void WriteS64LE(Sint64 value);
 
   /**
    * Use this function to write 64 bits in native format to an IOStream as
@@ -21022,10 +21064,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteU64BE(Uint64 value)
-  {
-    CheckError(SDL_WriteU64BE(m_resource, value));
-  }
+  void WriteU64BE(Uint64 value);
 
   /**
    * Use this function to write 64 bits in native format to an IOStream as
@@ -21041,10 +21080,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WriteS64BE(Sint64 value)
-  {
-    CheckError(SDL_WriteS64BE(m_resource, value));
-  }
+  void WriteS64BE(Sint64 value);
 };
 
 /// Semi-safe reference for IOStream.
@@ -21153,6 +21189,11 @@ inline IOStream IOFromFile(StringParam file, StringParam mode)
   return IOStream(SDL_IOFromFile(file, mode));
 }
 
+inline IOStream IOStream::FromFile(StringParam file, StringParam mode)
+{
+  return SDL::IOFromFile(std::move(file), std::move(mode));
+}
+
 namespace prop::IOStream {
 
 constexpr auto WINDOWS_HANDLE_POINTER =
@@ -21222,6 +21263,11 @@ inline IOStream IOFromMem(void* mem, size_t size)
   return IOStream(SDL_IOFromMem(mem, size));
 }
 
+inline IOStream IOStream::FromMem(TargetBytes mem)
+{
+  return SDL::IOFromMem(mem.data, mem.size_bytes);
+}
+
 /**
  * Use this function to prepare a read-only memory buffer for use with
  * IOStream.
@@ -21266,6 +21312,11 @@ inline IOStream IOFromConstMem(const void* mem, size_t size)
   return IOStream(SDL_IOFromConstMem(mem, size));
 }
 
+inline IOStream IOStream::FromConstMem(SourceBytes mem)
+{
+  return SDL::IOFromConstMem(mem.data, mem.size_bytes);
+}
+
 /**
  * Use this function to create an IOStream that is backed by dynamically
  * allocated memory.
@@ -21295,6 +21346,8 @@ inline IOStream IOFromConstMem(const void* mem, size_t size)
  * @sa IOStream.Write
  */
 inline IOStream IOFromDynamicMem() { return IOStream(SDL_IOFromDynamicMem()); }
+
+inline IOStream IOStream::FromDynamicMem() { return SDL::IOFromDynamicMem(); }
 
 /**
  * Create a custom IOStream.
@@ -21326,6 +21379,11 @@ inline IOStream IOFromDynamicMem() { return IOStream(SDL_IOFromDynamicMem()); }
 inline IOStream OpenIO(const IOStreamInterface* iface, void* userdata)
 {
   return IOStream(CheckError(SDL_OpenIO(iface, userdata)));
+}
+
+inline IOStream IOStream::Open(const IOStreamInterface* iface, void* userdata)
+{
+  return SDL::OpenIO(iface, userdata);
 }
 
 /**
@@ -21360,6 +21418,12 @@ inline IOStream OpenIO(const IOStreamInterface* iface, void* userdata)
  */
 inline void CloseIO(IOStreamRaw context) { CheckError(SDL_CloseIO(context)); }
 
+inline void IOStream::Close()
+{
+  CheckError(SDL_CloseIO(m_resource));
+  m_resource = nullptr;
+}
+
 /**
  * Get the properties associated with an IOStream.
  *
@@ -21374,6 +21438,11 @@ inline void CloseIO(IOStreamRaw context) { CheckError(SDL_CloseIO(context)); }
 inline PropertiesRef GetIOProperties(IOStreamParam context)
 {
   return {CheckError(SDL_GetIOProperties(context))};
+}
+
+inline PropertiesRef IOStream::GetProperties() const
+{
+  return SDL::GetIOProperties(m_resource);
 }
 
 /**
@@ -21399,6 +21468,11 @@ inline IOStatus GetIOStatus(IOStreamParam context)
   return SDL_GetIOStatus(context);
 }
 
+inline IOStatus IOStream::GetStatus() const
+{
+  return SDL::GetIOStatus(m_resource);
+}
+
 /**
  * Use this function to get the size of the data stream in an IOStream.
  *
@@ -21414,6 +21488,8 @@ inline Sint64 GetIOSize(IOStreamParam context)
 {
   return CheckError(SDL_GetIOSize(context));
 }
+
+inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(m_resource); }
 
 /**
  * Seek within an IOStream data stream.
@@ -21447,6 +21523,11 @@ inline Sint64 SeekIO(IOStreamParam context, Sint64 offset, IOWhence whence)
   return SDL_SeekIO(context, offset, whence);
 }
 
+inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
+{
+  return SDL::SeekIO(m_resource, offset, whence);
+}
+
 /**
  * Determine the current read/write offset in an IOStream data stream.
  *
@@ -21466,6 +21547,8 @@ inline Sint64 SeekIO(IOStreamParam context, Sint64 offset, IOWhence whence)
  * @sa IOStream.Seek
  */
 inline Sint64 TellIO(IOStreamParam context) { return SDL_TellIO(context); }
+
+inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
 
 /**
  * Read from a data source.
@@ -21494,6 +21577,11 @@ inline Sint64 TellIO(IOStreamParam context) { return SDL_TellIO(context); }
 inline size_t ReadIO(IOStreamParam context, TargetBytes buf)
 {
   return SDL_ReadIO(context, buf.data, buf.size_bytes);
+}
+
+inline size_t IOStream::Read(TargetBytes buf)
+{
+  return SDL::ReadIO(m_resource, std::move(buf));
 }
 
 /**
@@ -21529,6 +21617,11 @@ inline size_t ReadIO(IOStreamParam context, TargetBytes buf)
 inline size_t WriteIO(IOStreamParam context, SourceBytes buf)
 {
   return SDL_WriteIO(context, buf.data, buf.size_bytes);
+}
+
+inline size_t IOStream::Write(SourceBytes buf)
+{
+  return SDL::WriteIO(m_resource, buf);
 }
 
 /**
@@ -21591,6 +21684,12 @@ inline size_t IOvprintf(IOStreamParam context,
   return SDL_IOvprintf(context, fmt, ap);
 }
 
+inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
+                                va_list ap)
+{
+  return SDL::IOvprintf(m_resource, fmt, ap);
+}
+
 /**
  * Flush any buffered data in the stream.
  *
@@ -21609,6 +21708,8 @@ inline size_t IOvprintf(IOStreamParam context,
  * @sa IOStream.Write
  */
 inline void FlushIO(IOStreamParam context) { CheckError(SDL_FlushIO(context)); }
+
+inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
 
 /**
  * Load all the data from an SDL data stream.
@@ -21639,6 +21740,11 @@ inline StringResult LoadFile_IO(IOStreamParam src)
   size_t datasize = 0;
   auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, false));
   return StringResult{CheckError(data), datasize};
+}
+
+inline StringResult IOStream::LoadFile()
+{
+  return SDL::LoadFile_IO(m_resource);
 }
 
 /**
@@ -21713,6 +21819,11 @@ inline OwnArray<T> LoadFileAs(StringParam file)
 inline void SaveFile_IO(IOStreamParam src, SourceBytes data)
 {
   CheckError(SDL_SaveFile_IO(src, data.data, data.size_bytes, false));
+}
+
+inline void IOStream::SaveFile(SourceBytes data)
+{
+  SDL::SaveFile_IO(m_resource, data);
 }
 
 /**
@@ -21808,6 +21919,8 @@ inline Uint16 ReadU16LE(IOStreamParam src)
   return value;
 }
 
+inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(m_resource); }
+
 /**
  * Use this function to read 16 bits of little-endian data from an
  * IOStream and return in native format.
@@ -21834,6 +21947,8 @@ inline Sint16 ReadS16LE(IOStreamParam src)
   CheckError(SDL_ReadS16LE(src, &value));
   return value;
 }
+
+inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(m_resource); }
 
 /**
  * Use this function to read 16 bits of big-endian data from an IOStream
@@ -21862,6 +21977,8 @@ inline Uint16 ReadU16BE(IOStreamParam src)
   return value;
 }
 
+inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(m_resource); }
+
 /**
  * Use this function to read 16 bits of big-endian data from an IOStream
  * and return in native format.
@@ -21888,6 +22005,8 @@ inline Sint16 ReadS16BE(IOStreamParam src)
   CheckError(SDL_ReadS16BE(src, &value));
   return value;
 }
+
+inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(m_resource); }
 
 /**
  * Use this function to read 32 bits of little-endian data from an
@@ -21916,6 +22035,8 @@ inline Uint32 ReadU32LE(IOStreamParam src)
   return value;
 }
 
+inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(m_resource); }
+
 /**
  * Use this function to read 32 bits of little-endian data from an
  * IOStream and return in native format.
@@ -21942,6 +22063,8 @@ inline Sint32 ReadS32LE(IOStreamParam src)
   CheckError(SDL_ReadS32LE(src, &value));
   return value;
 }
+
+inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(m_resource); }
 
 /**
  * Use this function to read 32 bits of big-endian data from an IOStream
@@ -21970,6 +22093,8 @@ inline Uint32 ReadU32BE(IOStreamParam src)
   return value;
 }
 
+inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(m_resource); }
+
 /**
  * Use this function to read 32 bits of big-endian data from an IOStream
  * and return in native format.
@@ -21996,6 +22121,8 @@ inline Sint32 ReadS32BE(IOStreamParam src)
   CheckError(SDL_ReadS32BE(src, &value));
   return value;
 }
+
+inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(m_resource); }
 
 /**
  * Use this function to read 64 bits of little-endian data from an
@@ -22024,6 +22151,8 @@ inline Uint64 ReadU64LE(IOStreamParam src)
   return value;
 }
 
+inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(m_resource); }
+
 /**
  * Use this function to read 64 bits of little-endian data from an
  * IOStream and return in native format.
@@ -22050,6 +22179,8 @@ inline Sint64 ReadS64LE(IOStreamParam src)
   CheckError(SDL_ReadS64LE(src, &value));
   return value;
 }
+
+inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(m_resource); }
 
 /**
  * Use this function to read 64 bits of big-endian data from an IOStream
@@ -22078,6 +22209,8 @@ inline Uint64 ReadU64BE(IOStreamParam src)
   return value;
 }
 
+inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(m_resource); }
+
 /**
  * Use this function to read 64 bits of big-endian data from an IOStream
  * and return in native format.
@@ -22105,6 +22238,8 @@ inline Sint64 ReadS64BE(IOStreamParam src)
   return value;
 }
 
+inline Sint64 IOStream::ReadS64BE() { return SDL::ReadS64BE(m_resource); }
+
 /**
  * Use this function to write a byte to an IOStream.
  *
@@ -22121,6 +22256,8 @@ inline void WriteU8(IOStreamParam dst, Uint8 value)
   CheckError(SDL_WriteU8(dst, value));
 }
 
+inline void IOStream::WriteU8(Uint8 value) { SDL::WriteU8(m_resource, value); }
+
 /**
  * Use this function to write a signed byte to an IOStream.
  *
@@ -22136,6 +22273,8 @@ inline void WriteS8(IOStreamParam dst, Sint8 value)
 {
   CheckError(SDL_WriteS8(dst, value));
 }
+
+inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(m_resource, value); }
 
 /**
  * Use this function to write 16 bits in native format to an IOStream as
@@ -22156,6 +22295,11 @@ inline void WriteS8(IOStreamParam dst, Sint8 value)
 inline void WriteU16LE(IOStreamParam dst, Uint16 value)
 {
   CheckError(SDL_WriteU16LE(dst, value));
+}
+
+inline void IOStream::WriteU16LE(Uint16 value)
+{
+  SDL::WriteU16LE(m_resource, value);
 }
 
 /**
@@ -22179,6 +22323,11 @@ inline void WriteS16LE(IOStreamParam dst, Sint16 value)
   CheckError(SDL_WriteS16LE(dst, value));
 }
 
+inline void IOStream::WriteS16LE(Sint16 value)
+{
+  SDL::WriteS16LE(m_resource, value);
+}
+
 /**
  * Use this function to write 16 bits in native format to an IOStream as
  * big-endian data.
@@ -22199,6 +22348,11 @@ inline void WriteU16BE(IOStreamParam dst, Uint16 value)
   CheckError(SDL_WriteU16BE(dst, value));
 }
 
+inline void IOStream::WriteU16BE(Uint16 value)
+{
+  SDL::WriteU16BE(m_resource, value);
+}
+
 /**
  * Use this function to write 16 bits in native format to an IOStream as
  * big-endian data.
@@ -22217,6 +22371,11 @@ inline void WriteU16BE(IOStreamParam dst, Uint16 value)
 inline void WriteS16BE(IOStreamParam dst, Sint16 value)
 {
   CheckError(SDL_WriteS16BE(dst, value));
+}
+
+inline void IOStream::WriteS16BE(Sint16 value)
+{
+  SDL::WriteS16BE(m_resource, value);
 }
 
 /**
@@ -22240,6 +22399,11 @@ inline void WriteU32LE(IOStreamParam dst, Uint32 value)
   CheckError(SDL_WriteU32LE(dst, value));
 }
 
+inline void IOStream::WriteU32LE(Uint32 value)
+{
+  SDL::WriteU32LE(m_resource, value);
+}
+
 /**
  * Use this function to write 32 bits in native format to an IOStream as
  * little-endian data.
@@ -22259,6 +22423,11 @@ inline void WriteU32LE(IOStreamParam dst, Uint32 value)
 inline void WriteS32LE(IOStreamParam dst, Sint32 value)
 {
   CheckError(SDL_WriteS32LE(dst, value));
+}
+
+inline void IOStream::WriteS32LE(Sint32 value)
+{
+  SDL::WriteS32LE(m_resource, value);
 }
 
 /**
@@ -22281,6 +22450,11 @@ inline void WriteU32BE(IOStreamParam dst, Uint32 value)
   CheckError(SDL_WriteU32BE(dst, value));
 }
 
+inline void IOStream::WriteU32BE(Uint32 value)
+{
+  SDL::WriteU32BE(m_resource, value);
+}
+
 /**
  * Use this function to write 32 bits in native format to an IOStream as
  * big-endian data.
@@ -22299,6 +22473,11 @@ inline void WriteU32BE(IOStreamParam dst, Uint32 value)
 inline void WriteS32BE(IOStreamParam dst, Sint32 value)
 {
   CheckError(SDL_WriteS32BE(dst, value));
+}
+
+inline void IOStream::WriteS32BE(Sint32 value)
+{
+  SDL::WriteS32BE(m_resource, value);
 }
 
 /**
@@ -22322,6 +22501,11 @@ inline void WriteU64LE(IOStreamParam dst, Uint64 value)
   CheckError(SDL_WriteU64LE(dst, value));
 }
 
+inline void IOStream::WriteU64LE(Uint64 value)
+{
+  SDL::WriteU64LE(m_resource, value);
+}
+
 /**
  * Use this function to write 64 bits in native format to an IOStream as
  * little-endian data.
@@ -22341,6 +22525,11 @@ inline void WriteU64LE(IOStreamParam dst, Uint64 value)
 inline void WriteS64LE(IOStreamParam dst, Sint64 value)
 {
   CheckError(SDL_WriteS64LE(dst, value));
+}
+
+inline void IOStream::WriteS64LE(Sint64 value)
+{
+  SDL::WriteS64LE(m_resource, value);
 }
 
 /**
@@ -22363,6 +22552,11 @@ inline void WriteU64BE(IOStreamParam dst, Uint64 value)
   CheckError(SDL_WriteU64BE(dst, value));
 }
 
+inline void IOStream::WriteU64BE(Uint64 value)
+{
+  SDL::WriteU64BE(m_resource, value);
+}
+
 /**
  * Use this function to write 64 bits in native format to an IOStream as
  * big-endian data.
@@ -22381,6 +22575,11 @@ inline void WriteU64BE(IOStreamParam dst, Uint64 value)
 inline void WriteS64BE(IOStreamParam dst, Sint64 value)
 {
   CheckError(SDL_WriteS64BE(dst, value));
+}
+
+inline void IOStream::WriteS64BE(Sint64 value)
+{
+  SDL::WriteS64BE(m_resource, value);
 }
 
 /// @}
@@ -22534,10 +22733,7 @@ struct Point : PointRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool InRect(const RectRaw& r) const
-  {
-    return SDL_PointInRect(this, &r);
-  }
+  constexpr bool InRect(const RectRaw& r) const;
 
   /**
    * Get point's memberwise negation
@@ -23347,16 +23543,9 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static Rect GetEnclosingPoints(SpanRef<const PointRaw> points,
-                                 OptionalRef<const RectRaw> clip = std::nullopt)
-  {
-    Rect result;
-    if (SDL_GetRectEnclosingPoints(
-          points.data(), points.size(), clip, &result)) {
-      return result;
-    }
-    return {};
-  }
+  static Rect GetEnclosingPoints(
+    SpanRef<const PointRaw> points,
+    OptionalRef<const RectRaw> clip = std::nullopt);
 
   /**
    * Construct the rect from given center coordinates, width and height
@@ -23547,10 +23736,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const
-  {
-    return SDL_GetRectAndLineIntersection(this, X1, Y1, X2, Y2);
-  }
+  bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
 
   /**
    * Convert an SDL_Rect to SDL_FRect
@@ -23562,12 +23748,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr operator SDL_FRect() const
-  {
-    FRectRaw r;
-    SDL_RectToFRect(this, &r);
-    return r;
-  }
+  constexpr operator SDL_FRect() const;
 
   ///@sa operator ToFRect()
   constexpr operator FRect() const;
@@ -23589,7 +23770,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool Empty() const { return SDL_RectEmpty(this); }
+  constexpr bool Empty() const;
 
   /**
    * Determine whether two rectangles are equal.
@@ -23609,10 +23790,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool Equal(const RectRaw& other) const
-  {
-    return SDL_RectsEqual(this, &other);
-  }
+  constexpr bool Equal(const RectRaw& other) const;
 
   /**
    * Check whether the rect contains given point
@@ -23652,10 +23830,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.GetIntersection
    */
-  constexpr bool HasIntersection(const RectRaw& other) const
-  {
-    return SDL_HasRectIntersection(this, &other);
-  }
+  constexpr bool HasIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the intersection of two rectangles.
@@ -23670,13 +23845,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.HasIntersection
    */
-  constexpr Rect GetIntersection(const RectRaw& other) const
-  {
-    if (Rect result; SDL_GetRectIntersection(this, &other, &result)) {
-      return result;
-    }
-    return {};
-  }
+  constexpr std::optional<Rect> GetIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles.
@@ -23687,12 +23856,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr Rect GetUnion(const RectRaw& other) const
-  {
-    Rect result;
-    CheckError(SDL_GetRectUnion(this, &other, &result));
-    return result;
-  }
+  constexpr Rect GetUnion(const RectRaw& other) const;
 
   /**
    * Get a rect extended by specified amount of pixels
@@ -23975,14 +24139,7 @@ struct FRect : FRectRaw
    */
   static constexpr FRect GetEnclosingPoints(
     SpanRef<const FPointRaw> points,
-    OptionalRef<const FRectRaw> clip = std::nullopt)
-  {
-    if (FRect result; SDL_GetRectEnclosingPointsFloat(
-          points.data(), points.size(), clip, &result)) {
-      return result;
-    }
-    return {};
-  }
+    OptionalRef<const FRectRaw> clip = std::nullopt);
 
   /**
    * Construct the rect from given center coordinates, width and height
@@ -24150,10 +24307,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const
-  {
-    return SDL_GetRectAndLineIntersectionFloat(this, X1, Y1, X2, Y2);
-  }
+  bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
 
   /**
    * Calculate the intersection of a rectangle and line segment
@@ -24196,7 +24350,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool Empty() const { return SDL_RectEmptyFloat(this); }
+  constexpr bool Empty() const;
 
   /**
    * Determine whether two floating point rectangles are equal, within some
@@ -24222,10 +24376,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.Equal
    */
-  constexpr bool EqualEpsilon(const FRectRaw& other, const float epsilon) const
-  {
-    return SDL_RectsEqualEpsilon(this, &other, epsilon);
-  }
+  constexpr bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
 
   /**
    * Determine whether two rectangles are equal.
@@ -24250,10 +24401,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.EqualEpsilon
    */
-  constexpr bool Equal(const FRectRaw& other) const
-  {
-    return SDL_RectsEqualFloat(this, &other);
-  }
+  constexpr bool Equal(const FRectRaw& other) const;
 
   /**
    * Check whether the rect contains given point
@@ -24293,10 +24441,7 @@ struct FRect : FRectRaw
    *
    * @sa Rect.GetIntersection
    */
-  constexpr bool HasIntersection(const FRectRaw& other) const
-  {
-    return SDL_HasRectIntersectionFloat(this, &other);
-  }
+  constexpr bool HasIntersection(const FRectRaw& other) const;
 
   /**
    * Calculate the intersection of two rectangles with float precision.
@@ -24311,13 +24456,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.HasIntersection
    */
-  constexpr FRect GetIntersection(const FRectRaw& other) const
-  {
-    if (FRect result; SDL_GetRectIntersectionFloat(this, &other, &result)) {
-      return result;
-    }
-    return {};
-  }
+  constexpr FRect GetIntersection(const FRectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles with float precision.
@@ -24328,12 +24467,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr FRect GetUnion(const FRectRaw& other) const
-  {
-    FRect result;
-    CheckError(SDL_GetRectUnionFloat(this, &other, &result));
-    return result;
-  }
+  constexpr FRect GetUnion(const FRectRaw& other) const;
 
   /**
    * Get a rect extended by specified amount of pixels
@@ -24473,6 +24607,8 @@ constexpr FRect RectToFRect(const RectRaw& rect)
   return frect;
 }
 
+constexpr Rect::operator SDL_FRect() const { return RectToFRect(*this); }
+
 /**
  * Determine whether a point resides inside a rectangle.
  *
@@ -24499,6 +24635,11 @@ constexpr bool PointInRect(const PointRaw& p, const RectRaw& r)
   return SDL_PointInRect(&p, &r);
 }
 
+constexpr bool Point::InRect(const RectRaw& r) const
+{
+  return SDL::PointInRect(*this, r);
+}
+
 /**
  * Determine whether a rectangle has no area.
  *
@@ -24518,6 +24659,8 @@ constexpr bool PointInRect(const PointRaw& p, const RectRaw& r)
  * @since This function is available since SDL 3.2.0.
  */
 constexpr bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(&r); }
+
+constexpr bool Rect::Empty() const { return SDL::RectEmpty(*this); }
 
 /**
  * Determine whether two rectangles are equal.
@@ -24543,6 +24686,11 @@ constexpr bool RectsEqual(const RectRaw& a, const RectRaw& b)
   return SDL_RectsEqual(&a, &b);
 }
 
+constexpr bool Rect::Equal(const RectRaw& other) const
+{
+  return SDL::RectsEqual(*this, other);
+}
+
 /**
  * Determine whether two rectangles intersect.
  *
@@ -24558,9 +24706,14 @@ constexpr bool RectsEqual(const RectRaw& a, const RectRaw& b)
  *
  * @sa Rect.GetIntersection
  */
-constexpr bool HasRectIntersection(const RectRaw& self, const RectRaw& other)
+constexpr bool HasRectIntersection(const RectRaw& A, const RectRaw& B)
 {
-  return SDL_HasRectIntersection(&self, &other);
+  return SDL_HasRectIntersection(&A, &B);
+}
+
+constexpr bool Rect::HasIntersection(const RectRaw& other) const
+{
+  return SDL::HasRectIntersection(*this, other);
 }
 
 /**
@@ -24578,12 +24731,16 @@ constexpr bool HasRectIntersection(const RectRaw& self, const RectRaw& other)
  *
  * @sa Rect.HasIntersection
  */
-constexpr Rect GetRectIntersection(const RectRaw& self, const RectRaw& other)
+constexpr std::optional<Rect> GetRectIntersection(const RectRaw& A,
+                                                  const RectRaw& B)
 {
-  if (Rect result; SDL_GetRectIntersection(&self, &other, &result)) {
-    return result;
-  }
+  if (Rect result; SDL_GetRectIntersection(&A, &B, &result)) return result;
   return {};
+}
+
+constexpr std::optional<Rect> Rect::GetIntersection(const RectRaw& other) const
+{
+  return SDL::GetRectIntersection(*this, other);
 }
 
 /**
@@ -24597,11 +24754,16 @@ constexpr Rect GetRectIntersection(const RectRaw& self, const RectRaw& other)
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr Rect GetRectUnion(const RectRaw& self, const RectRaw& other)
+constexpr Rect GetRectUnion(const RectRaw& A, const RectRaw& B)
 {
   Rect r;
-  CheckError(SDL_GetRectUnion(&self, &other, &r));
+  CheckError(SDL_GetRectUnion(&A, &B, &r));
   return r;
+}
+
+constexpr Rect Rect::GetUnion(const RectRaw& other) const
+{
+  return SDL::GetRectUnion(*this, other);
 }
 
 /**
@@ -24614,18 +24776,25 @@ constexpr Rect GetRectUnion(const RectRaw& self, const RectRaw& other)
  *               enclosed.
  * @param count the number of structures in the `points` array.
  * @param clip an Rect used for clipping or nullptr to enclose all points.
- * @param result an Rect structure filled in with the minimal enclosing
- *               rectangle.
- * @returns true if any points were enclosed or false if all the points were
- *          outside of the clipping rectangle.
+ * @returns Result if any points were enclosed or empty rect if all the points
+ * were outside of the clipping rectangle.
  *
  * @since This function is available since SDL 3.2.0.
  */
-static inline bool GetRectEnclosingPoints(SpanRef<const PointRaw> points,
-                                          OptionalRef<const RectRaw> clip,
-                                          RectRaw* result)
+inline Rect GetRectEnclosingPoints(SpanRef<const PointRaw> points,
+                                   OptionalRef<const RectRaw> clip)
 {
-  return SDL_GetRectEnclosingPoints(points.data(), points.size(), clip, result);
+  if (Rect result;
+      SDL_GetRectEnclosingPoints(points.data(), points.size(), clip, &result)) {
+    return result;
+  }
+  return {};
+}
+
+inline Rect Rect::GetEnclosingPoints(SpanRef<const PointRaw> points,
+                                     OptionalRef<const RectRaw> clip)
+{
+  return SDL::GetRectEnclosingPoints(points, clip);
 }
 
 /**
@@ -24655,6 +24824,11 @@ inline bool GetRectAndLineIntersection(const RectRaw& rect,
   return SDL_GetRectAndLineIntersection(&rect, X1, Y1, X2, Y2);
 }
 
+inline bool Rect::GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const
+{
+  return SDL::GetRectAndLineIntersection(*this, X1, Y1, X2, Y2);
+}
+
 /**
  * Determine whether a point resides inside a floating point rectangle.
  *
@@ -24681,11 +24855,16 @@ constexpr bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
   return SDL_PointInRectFloat(&p, &r);
 }
 
+constexpr bool FPoint::InRect(const FRectRaw& r) const
+{
+  return SDL::PointInRectFloat(*this, r);
+}
+
 /**
  * Determine whether a floating point rectangle can contain any point.
  *
- * A rectangle is considered "empty" for this function if `r` is nullptr, or if
- * `r`'s width and/or height are < 0.0f.
+ * A rectangle is considered "empty" for this function if `r` is nullptr, or
+ * if `r`'s width and/or height are < 0.0f.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -24704,13 +24883,15 @@ constexpr bool RectEmptyFloat(const FRectRaw& r)
   return SDL_RectEmptyFloat(&r);
 }
 
+constexpr bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
+
 /**
  * Determine whether two floating point rectangles are equal, within some
  * given epsilon.
  *
- * Rectangles are considered equal if both are not nullptr and each of their x,
- * y, width and height are within `epsilon` of each other. If you don't know
- * what value to use for `epsilon`, you should call the FRect.Equal
+ * Rectangles are considered equal if both are not nullptr and each of their
+ * x, y, width and height are within `epsilon` of each other. If you don't
+ * know what value to use for `epsilon`, you should call the FRect.Equal
  * function instead.
  *
  * Note that this is a forced-inline function in a header, and not a public
@@ -24736,15 +24917,21 @@ constexpr bool RectsEqualEpsilon(const FRectRaw& a,
   return SDL_RectsEqualEpsilon(&a, &b, epsilon);
 }
 
+constexpr bool FRect::EqualEpsilon(const FRectRaw& other,
+                                   const float epsilon) const
+{
+  return SDL::RectsEqualEpsilon(*this, other, epsilon);
+}
+
 /**
  * Determine whether two floating point rectangles are equal, within a default
  * epsilon.
  *
- * Rectangles are considered equal if both are not nullptr and each of their x,
- * y, width and height are within SDL_FLT_EPSILON of each other. This is often
- * a reasonable way to compare two floating point rectangles and deal with the
- * slight precision variations in floating point calculations that tend to pop
- * up.
+ * Rectangles are considered equal if both are not nullptr and each of their
+ * x, y, width and height are within SDL_FLT_EPSILON of each other. This is
+ * often a reasonable way to compare two floating point rectangles and deal
+ * with the slight precision variations in floating point calculations that
+ * tend to pop up.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -24766,6 +24953,11 @@ constexpr bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
   return SDL_RectsEqualFloat(&a, &b);
 }
 
+constexpr bool FRect::Equal(const FRectRaw& other) const
+{
+  return SDL::RectsEqualFloat(*this, other);
+}
+
 /**
  * Determine whether two rectangles intersect with float precision.
  *
@@ -24779,10 +24971,14 @@ constexpr bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
  *
  * @sa Rect.GetIntersection
  */
-constexpr bool HasRectIntersectionFloat(const FRectRaw& self,
-                                        const FRectRaw& other)
+constexpr bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
 {
-  return SDL_HasRectIntersectionFloat(&self, &other);
+  return SDL_HasRectIntersectionFloat(&A, &B);
+}
+
+constexpr bool FRect::HasIntersection(const FRectRaw& other) const
+{
+  return SDL::HasRectIntersectionFloat(*this, other);
 }
 
 /**
@@ -24794,17 +24990,22 @@ constexpr bool HasRectIntersectionFloat(const FRectRaw& self,
  * @param B an FRect structure representing the second rectangle.
  * @param result an FRect structure filled in with the intersection of
  *               rectangles `A` and `B`.
- * @returns true if there is an intersection, false otherwise.
+ * @returns an FRect structure filled in with the intersection of rectangles `A`
+ *          and `B`if there is an intersection, an empty FRect otherwise.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa FRect.HasIntersection
  */
-constexpr FRect GetRectIntersectionFloat(const FRectRaw& self,
-                                         const FRectRaw& other)
+constexpr FRect GetRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
 {
-  if (FRect r; SDL_GetRectIntersectionFloat(&self, &other, &r)) return r;
+  if (FRect r; SDL_GetRectIntersectionFloat(&A, &B, &r)) return r;
   return {};
+}
+
+constexpr FRect FRect::GetIntersection(const FRectRaw& other) const
+{
+  return SDL::GetRectIntersectionFloat(*this, other);
 }
 
 /**
@@ -24812,17 +25013,22 @@ constexpr FRect GetRectIntersectionFloat(const FRectRaw& self,
  *
  * @param A an FRect structure representing the first rectangle.
  * @param B an FRect structure representing the second rectangle.
- * @param result an FRect structure filled in with the union of rectangles
- *               `A` and `B`.
+ * @returns result an FRect structure filled in with the union of rectangles
+ *          A` and `B`.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr FRect GetRectUnionFloat(const FRectRaw& self, const FRectRaw& other)
+constexpr FRect GetRectUnionFloat(const FRectRaw& A, const FRectRaw& B)
 {
   FRect r;
-  CheckError(SDL_GetRectUnionFloat(&self, &other, &r));
+  CheckError(SDL_GetRectUnionFloat(&A, &B, &r));
   return r;
+}
+
+constexpr FRect FRect::GetUnion(const FRectRaw& other) const
+{
+  return SDL::GetRectUnionFloat(*this, other);
 }
 
 /**
@@ -24843,12 +25049,20 @@ constexpr FRect GetRectUnionFloat(const FRectRaw& self, const FRectRaw& other)
  *
  * @since This function is available since SDL 3.2.0.
  */
-static inline bool GetRectEnclosingPointsFloat(SpanRef<const FPointRaw> points,
-                                               OptionalRef<const FRectRaw> clip,
-                                               FRectRaw* result)
+inline FRect GetRectEnclosingPointsFloat(SpanRef<const FPointRaw> points,
+                                         OptionalRef<const FRectRaw> clip)
 {
-  return SDL_GetRectEnclosingPointsFloat(
-    points.data(), points.size(), clip, result);
+  if (FRect result; SDL_GetRectEnclosingPointsFloat(
+        points.data(), points.size(), clip, &result)) {
+    return result;
+  }
+  return {};
+}
+
+constexpr FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
+                                          OptionalRef<const FRectRaw> clip)
+{
+  return SDL::GetRectEnclosingPointsFloat(points, clip);
 }
 
 /**
@@ -24877,6 +25091,14 @@ inline bool GetRectAndLineIntersectionFloat(const FRectRaw& rect,
                                             float* Y2)
 {
   return SDL_GetRectAndLineIntersectionFloat(&rect, X1, Y1, X2, Y2);
+}
+
+inline bool FRect::GetLineIntersection(float* X1,
+                                       float* Y1,
+                                       float* X2,
+                                       float* Y2) const
+{
+  return SDL::GetRectAndLineIntersectionFloat(*this, X1, Y1, X2, Y2);
 }
 
 /// @}
@@ -25253,12 +25475,7 @@ struct DateTime : DateTimeRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  operator Time() const
-  {
-    SDL_Time t;
-    CheckError(SDL_DateTimeToTime(this, &t));
-    return Time::FromNS(t);
-  }
+  operator Time() const;
 };
 
 /**
@@ -25365,6 +25582,8 @@ inline Time DateTimeToTime(const DateTimeRaw& dt)
   CheckError(SDL_DateTimeToTime(&dt, &t));
   return Time::FromNS(t);
 }
+
+inline DateTime::operator Time() const { return SDL::DateTimeToTime(*this); }
 
 /**
  * Converts an SDL time into a Windows FILETIME (100-nanosecond intervals
@@ -26052,10 +26271,7 @@ public:
    * @sa Surface.LoadBMP
    * @sa Surface.SaveBMP
    */
-  static Surface LoadBMP(IOStreamParam src, bool closeio = false)
-  {
-    return Surface(SDL_LoadBMP_IO(src, closeio));
-  }
+  static Surface LoadBMP(IOStreamParam src, bool closeio = false);
 
   /**
    * Load a BMP image from a file.
@@ -26075,10 +26291,7 @@ public:
    * @sa Surface.LoadBMP
    * @sa Surface.SaveBMP
    */
-  static Surface LoadBMP(StringParam file)
-  {
-    return Surface(SDL_LoadBMP(file));
-  }
+  static Surface LoadBMP(StringParam file);
 
   /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }
@@ -26117,11 +26330,7 @@ public:
    * @sa Surface.Surface
    * @sa Surface.Surface
    */
-  void Destroy()
-  {
-    SDL_DestroySurface(m_resource);
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   /**
    * Get the properties associated with a surface.
@@ -26154,10 +26363,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesRef GetProperties() const
-  {
-    return {CheckError(SDL_GetSurfaceProperties(m_resource))};
-  }
+  PropertiesRef GetProperties() const;
 
   /**
    * Set the colorspace used by a surface.
@@ -26174,10 +26380,7 @@ public:
    *
    * @sa Surface.GetColorspace
    */
-  void SetColorspace(Colorspace colorspace)
-  {
-    CheckError(SDL_SetSurfaceColorspace(m_resource, colorspace));
-  }
+  void SetColorspace(Colorspace colorspace);
 
   /**
    * Get the colorspace used by a surface.
@@ -26195,10 +26398,7 @@ public:
    *
    * @sa Surface.SetColorspace
    */
-  Colorspace GetColorspace() const
-  {
-    return SDL_GetSurfaceColorspace(m_resource);
-  }
+  Colorspace GetColorspace() const;
 
   /**
    * Create a palette and associate it with a surface.
@@ -26226,10 +26426,7 @@ public:
    *
    * @sa Palette.SetColors
    */
-  Palette CreatePalette()
-  {
-    return Palette::Borrow(CheckError(SDL_CreateSurfacePalette(m_resource)));
-  }
+  Palette CreatePalette();
 
   /**
    * Set the palette used by a surface.
@@ -26246,10 +26443,7 @@ public:
    * @sa Palette.Palette
    * @sa Surface.GetPalette
    */
-  void SetPalette(PaletteParam palette)
-  {
-    CheckError(SDL_SetSurfacePalette(m_resource, palette));
-  }
+  void SetPalette(PaletteParam palette);
 
   /**
    * Get the palette used by a surface.
@@ -26263,12 +26457,7 @@ public:
    *
    * @sa Surface.SetPalette
    */
-  Palette GetPalette() const
-  {
-    auto p = SDL_GetSurfacePalette(m_resource);
-    if (!p) return {};
-    return Palette::Borrow(p);
-  }
+  Palette GetPalette() const;
 
   /**
    * Add an alternate version of a surface.
@@ -26292,10 +26481,7 @@ public:
    * @sa Surface.GetImages
    * @sa Surface.HasAlternateImages
    */
-  void AddAlternateImage(SurfaceParam image)
-  {
-    CheckError(SDL_AddSurfaceAlternateImage(m_resource, image));
-  }
+  void AddAlternateImage(SurfaceParam image);
 
   /**
    * Return whether a surface has alternate versions available.
@@ -26310,10 +26496,7 @@ public:
    * @sa Surface.RemoveAlternateImages
    * @sa Surface.GetImages
    */
-  bool HasAlternateImages() const
-  {
-    return SDL_SurfaceHasAlternateImages(m_resource);
-  }
+  bool HasAlternateImages() const;
 
   /**
    * Get an array including all versions of a surface.
@@ -26332,12 +26515,7 @@ public:
    * @sa Surface.RemoveAlternateImages
    * @sa Surface.HasAlternateImages
    */
-  OwnArray<SurfaceRaw> GetImages() const
-  {
-    int count = 0;
-    auto data = SDL_GetSurfaceImages(m_resource, &count);
-    return OwnArray<SurfaceRaw>(CheckError(data), count);
-  }
+  OwnArray<SurfaceRaw> GetImages() const;
 
   /**
    * Remove all alternate versions of a surface.
@@ -26354,14 +26532,14 @@ public:
    * @sa Surface.GetImages
    * @sa Surface.HasAlternateImages
    */
-  void RemoveAlternateImages() { SDL_RemoveSurfaceAlternateImages(m_resource); }
+  void RemoveAlternateImages();
 
   /**
    * Evaluates to true if the surface needs to be locked before access.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool MustLock() const { return SDL_MUSTLOCK(m_resource); }
+  constexpr bool MustLock() const;
 
   /**
    * Set up a surface for directly accessing the pixels.
@@ -26386,7 +26564,7 @@ public:
    * @sa Surface.MustLock
    * @sa Surface.Unlock
    */
-  void Lock() { CheckError(SDL_LockSurface(m_resource)); }
+  void Lock();
 
   /**
    * Release a surface after directly accessing the pixels.
@@ -26400,7 +26578,7 @@ public:
    *
    * @sa Surface.Lock
    */
-  void Unlock() { SDL_UnlockSurface(m_resource); }
+  void Unlock();
 
   /**
    * Save a surface to a seekable SDL data stream in BMP format.
@@ -26423,10 +26601,7 @@ public:
    * @sa Surface.LoadBMP
    * @sa Surface.SaveBMP
    */
-  void SaveBMP(IOStreamParam dst, bool closeio = false) const
-  {
-    CheckError(SDL_SaveBMP_IO(m_resource, dst, closeio));
-  }
+  void SaveBMP(IOStreamParam dst, bool closeio = false) const;
 
   /**
    * Save a surface to a file.
@@ -26447,10 +26622,7 @@ public:
    * @sa Surface.LoadBMP
    * @sa Surface.SaveBMP
    */
-  void SaveBMP(StringParam file) const
-  {
-    CheckError(SDL_SaveBMP(m_resource, file));
-  }
+  void SaveBMP(StringParam file) const;
 
   /**
    * Set the RLE acceleration hint for a surface.
@@ -26469,10 +26641,7 @@ public:
    * @sa Surface.Lock
    * @sa Surface.Unlock
    */
-  void SetRLE(bool enabled)
-  {
-    CheckError(SDL_SetSurfaceRLE(m_resource, enabled));
-  }
+  void SetRLE(bool enabled);
 
   /**
    * Returns whether the surface is RLE enabled.
@@ -26487,7 +26656,7 @@ public:
    *
    * @sa Surface.SetRLE
    */
-  bool HasRLE() const { return SDL_SurfaceHasRLE(m_resource); }
+  bool HasRLE() const;
 
   /**
    * Set the color key (transparent pixel) in a surface.
@@ -26510,11 +26679,7 @@ public:
    * @sa Surface.SetRLE
    * @sa Surface.HasColorKey
    */
-  void SetColorKey(std::optional<Uint32> key)
-  {
-    CheckError(
-      SDL_SetSurfaceColorKey(m_resource, key.has_value(), key.value_or(0)));
-  }
+  void SetColorKey(std::optional<Uint32> key);
 
   /**
    * Unset the color key (transparent pixel) in a surface.
@@ -26539,7 +26704,7 @@ public:
    * @sa Surface.SetColorKey
    * @sa Surface.GetColorKey
    */
-  bool HasColorKey() const { return SDL_SurfaceHasColorKey(m_resource); }
+  bool HasColorKey() const;
 
   /**
    * Get the color key (transparent pixel) for a surface.
@@ -26559,11 +26724,7 @@ public:
    * @sa Surface.SetColorKey
    * @sa Surface.HasColorKey
    */
-  std::optional<Uint32> GetColorKey() const
-  {
-    if (Uint32 key; SDL_GetSurfaceColorKey(m_resource, &key)) return key;
-    return std::nullopt;
-  }
+  std::optional<Uint32> GetColorKey() const;
 
   /**
    * Set an additional color value multiplied into blit operations.
@@ -26586,10 +26747,7 @@ public:
    * @sa Surface.GetColorMod
    * @sa Surface.SetAlphaMod
    */
-  void SetColorMod(Uint8 r, Uint8 g, Uint8 b)
-  {
-    CheckError(SDL_SetSurfaceColorMod(m_resource, r, g, b));
-  }
+  void SetColorMod(Uint8 r, Uint8 g, Uint8 b);
 
   /**
    * Get the additional color value multiplied into blit operations.
@@ -26606,10 +26764,7 @@ public:
    * @sa Surface.GetAlphaMod
    * @sa Surface.SetColorMod
    */
-  void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
-  {
-    CheckError(SDL_GetSurfaceColorMod(m_resource, r, g, b));
-  }
+  void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const;
 
   /**
    * Set an additional alpha value used in blit operations.
@@ -26629,10 +26784,7 @@ public:
    * @sa Surface.GetAlphaMod
    * @sa Surface.SetColorMod
    */
-  void SetAlphaMod(Uint8 alpha)
-  {
-    CheckError(SDL_SetSurfaceAlphaMod(m_resource, alpha));
-  }
+  void SetAlphaMod(Uint8 alpha);
 
   /**
    * Get the additional alpha value used in blit operations.
@@ -26646,12 +26798,7 @@ public:
    * @sa Surface.GetColorMod
    * @sa Surface.SetAlphaMod
    */
-  Uint8 GetAlphaMod() const
-  {
-    Uint8 alpha;
-    CheckError(SDL_GetSurfaceAlphaMod(m_resource, &alpha));
-    return alpha;
-  }
+  Uint8 GetAlphaMod() const;
 
   /**
    * Set an additional color and alpha value multiplied into blit
@@ -26704,10 +26851,7 @@ public:
    *
    * @sa Surface.GetBlendMode
    */
-  void SetBlendMode(BlendMode blendMode)
-  {
-    CheckError(SDL_SetSurfaceBlendMode(m_resource, blendMode));
-  }
+  void SetBlendMode(BlendMode blendMode);
 
   /**
    * Get the blend mode used for blit operations.
@@ -26721,12 +26865,7 @@ public:
    *
    * @sa Surface.SetBlendMode
    */
-  BlendMode GetBlendMode() const
-  {
-    BlendMode blendmode;
-    CheckError(SDL_GetSurfaceBlendMode(m_resource, &blendmode));
-    return blendmode;
-  }
+  BlendMode GetBlendMode() const;
 
   /**
    * Set the clipping rectangle for a surface.
@@ -26749,10 +26888,7 @@ public:
    * @sa Surface.ResetClipRect()
    * @sa Surface.GetClipRect
    */
-  bool SetClipRect(OptionalRef<const RectRaw> rect)
-  {
-    return SDL_SetSurfaceClipRect(m_resource, rect);
-  }
+  bool SetClipRect(OptionalRef<const RectRaw> rect);
 
   /**
    * Disable the clipping rectangle for a surface.
@@ -26777,12 +26913,7 @@ public:
    *
    * @sa Surface.SetClipRect
    */
-  Rect GetClipRect() const
-  {
-    Rect r;
-    CheckError(SDL_GetSurfaceClipRect(m_resource, &r));
-    return r;
-  }
+  Rect GetClipRect() const;
 
   /**
    * Flip a surface vertically or horizontally.
@@ -26794,7 +26925,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Flip(FlipMode flip) { CheckError(SDL_FlipSurface(m_resource, flip)); }
+  void Flip(FlipMode flip);
 
   /**
    * Creates a new surface identical to the existing surface.
@@ -26811,10 +26942,7 @@ public:
    *
    * @sa Surface.Destroy
    */
-  Surface Duplicate() const
-  {
-    return Surface{SDL_DuplicateSurface(m_resource)};
-  }
+  Surface Duplicate() const;
 
   /**
    * Creates a new surface identical to the existing surface, scaled to the
@@ -26831,10 +26959,7 @@ public:
    *
    * @sa Surface.Destroy
    */
-  Surface Scale(const PointRaw& size, ScaleMode scaleMode) const
-  {
-    return Surface{SDL_ScaleSurface(m_resource, size.x, size.y, scaleMode)};
-  }
+  Surface Scale(const PointRaw& size, ScaleMode scaleMode) const;
 
   /**
    * Copy an existing surface to a new surface of the specified format.
@@ -26861,10 +26986,7 @@ public:
    * @sa Surface.Convert
    * @sa Surface.Destroy
    */
-  Surface Convert(PixelFormat format) const
-  {
-    return Surface(SDL_ConvertSurface(m_resource, format));
-  }
+  Surface Convert(PixelFormat format) const;
 
   /**
    * Copy an existing surface to a new surface of the specified format and
@@ -26895,11 +27017,7 @@ public:
   Surface Convert(PixelFormat format,
                   PaletteParam palette,
                   Colorspace colorspace,
-                  PropertiesParam props) const
-  {
-    return Surface(SDL_ConvertSurfaceAndColorspace(
-      m_resource, format, palette, colorspace, props));
-  }
+                  PropertiesParam props) const;
 
   /**
    * Premultiply the alpha in a surface.
@@ -26914,10 +27032,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void PremultiplyAlpha(bool linear)
-  {
-    CheckError(SDL_PremultiplySurfaceAlpha(m_resource, linear));
-  }
+  void PremultiplyAlpha(bool linear);
 
   /**
    * Clear a surface with a specific color, with floating point precision.
@@ -26934,11 +27049,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Clear(const FColorRaw& color)
-  {
-    CheckError(
-      SDL_ClearSurface(m_resource, color.r, color.g, color.b, color.a));
-  }
+  void Clear(const FColorRaw& color);
 
   /**
    * Perform a fast fill of a rectangle with a specific color.
@@ -26975,10 +27086,7 @@ public:
    *
    * @sa Surface.FillRects
    */
-  void FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
-  {
-    CheckError(SDL_FillSurfaceRect(m_resource, rect, color));
-  }
+  void FillRect(OptionalRef<const RectRaw> rect, Uint32 color);
 
   /**
    * Perform a fast fill of a set of rectangles with a specific color.
@@ -27002,11 +27110,7 @@ public:
    *
    * @sa Surface.FillRect
    */
-  void FillRects(SpanRef<const RectRaw> rects, Uint32 color)
-  {
-    CheckError(
-      SDL_FillSurfaceRects(m_resource, rects.data(), rects.size(), color));
-  }
+  void FillRects(SpanRef<const RectRaw> rects, Uint32 color);
 
   /**
    * Performs a fast blit from the source surface to the destination surface
@@ -27079,10 +27183,7 @@ public:
    */
   void Blit(SurfaceParam src,
             OptionalRef<const RectRaw> srcrect,
-            OptionalRef<const RectRaw> dstrect)
-  {
-    CheckError(SDL_BlitSurface(src, srcrect, m_resource, dstrect));
-  }
+            OptionalRef<const RectRaw> dstrect);
 
   /**
    * Performs a fast blit from the source surface to the destination surface
@@ -27183,10 +27284,7 @@ public:
    */
   void BlitUnchecked(SurfaceParam src,
                      const RectRaw& srcrect,
-                     const RectRaw& dstrect)
-  {
-    CheckError(SDL_BlitSurfaceUnchecked(src, &srcrect, m_resource, &dstrect));
-  }
+                     const RectRaw& dstrect);
 
   /**
    * Perform a scaled blit to a destination surface, which may be of a different
@@ -27211,11 +27309,7 @@ public:
   void BlitScaled(SurfaceParam src,
                   OptionalRef<const RectRaw> srcrect,
                   OptionalRef<const RectRaw> dstrect,
-                  ScaleMode scaleMode)
-  {
-    CheckError(
-      SDL_BlitSurfaceScaled(src, srcrect, m_resource, dstrect, scaleMode));
-  }
+                  ScaleMode scaleMode);
 
   /**
    * Perform low-level surface scaled blitting only.
@@ -27241,11 +27335,7 @@ public:
   void BlitUncheckedScaled(SurfaceParam src,
                            const RectRaw& srcrect,
                            const RectRaw& dstrect,
-                           ScaleMode scaleMode)
-  {
-    CheckError(
-      SDL_BlitSurfaceScaled(src, &srcrect, m_resource, &dstrect, scaleMode));
-  }
+                           ScaleMode scaleMode);
 
 #if SDL_VERSION_ATLEAST(3, 2, 4)
 
@@ -27271,11 +27361,7 @@ public:
   void Stretch(SurfaceParam src,
                OptionalRef<RectRaw> srcrect,
                OptionalRef<RectRaw> dstrect,
-               ScaleMode scaleMode)
-  {
-    CheckError(
-      SDL_StretchSurface(src, srcrect, m_resource, dstrect, scaleMode));
-  }
+               ScaleMode scaleMode);
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 4)
 
@@ -27303,10 +27389,7 @@ public:
    */
   void BlitTiled(SurfaceParam src,
                  OptionalRef<const RectRaw> srcrect,
-                 OptionalRef<const RectRaw> dstrect)
-  {
-    CheckError(SDL_BlitSurfaceTiled(src, srcrect, m_resource, dstrect));
-  }
+                 OptionalRef<const RectRaw> dstrect);
 
   /**
    * Perform a scaled and tiled blit to a destination surface, which may be of a
@@ -27338,11 +27421,7 @@ public:
                           OptionalRef<const RectRaw> srcrect,
                           float scale,
                           SDL_ScaleMode scaleMode,
-                          OptionalRef<const RectRaw> dstrect)
-  {
-    CheckError(SDL_BlitSurfaceTiledWithScale(
-      src, srcrect, scale, scaleMode, m_resource, dstrect));
-  }
+                          OptionalRef<const RectRaw> dstrect);
 
   /**
    * Perform a scaled blit using the 9-grid algorithm to a destination surface,
@@ -27434,19 +27513,7 @@ public:
                           int bottom_height,
                           float scale,
                           SDL_ScaleMode scaleMode,
-                          OptionalRef<const RectRaw> dstrect)
-  {
-    CheckError(SDL_BlitSurface9Grid(src,
-                                    srcrect,
-                                    left_width,
-                                    right_width,
-                                    top_height,
-                                    bottom_height,
-                                    scale,
-                                    scaleMode,
-                                    m_resource,
-                                    dstrect));
-  }
+                          OptionalRef<const RectRaw> dstrect);
 
   /**
    * Map an RGB triple to an opaque pixel value for a surface.
@@ -27477,10 +27544,7 @@ public:
    *
    * @sa Surface.MapRGBA
    */
-  Uint32 MapRGB(Uint8 r, Uint8 g, Uint8 b) const
-  {
-    return SDL_MapSurfaceRGB(m_resource, r, g, b);
-  }
+  Uint32 MapRGB(Uint8 r, Uint8 g, Uint8 b) const;
 
   /**
    * Map an RGBA quadruple to a pixel value for a surface.
@@ -27509,10 +27573,7 @@ public:
    *
    * @sa Surface.MapRGB
    */
-  Uint32 MapRGBA(ColorRaw c) const
-  {
-    return SDL_MapSurfaceRGBA(m_resource, c.r, c.g, c.b, c.a);
-  }
+  Uint32 MapRGBA(ColorRaw c) const;
 
   /**
    * This function prioritizes correctness over speed: it is suitable for
@@ -27562,10 +27623,7 @@ public:
                  Uint8* r,
                  Uint8* g,
                  Uint8* b,
-                 Uint8* a) const
-  {
-    CheckError(SDL_ReadSurfacePixel(m_resource, p.x, p.y, r, g, b, a));
-  }
+                 Uint8* a) const;
 
   /**
    * Retrieves a single pixel from a surface.
@@ -27611,10 +27669,7 @@ public:
                       float* r,
                       float* g,
                       float* b,
-                      float* a) const
-  {
-    CheckError(SDL_ReadSurfacePixelFloat(m_resource, p.x, p.y, r, g, b, a));
-  }
+                      float* a) const;
 
   /**
    * Writes a single pixel to a surface.
@@ -27633,10 +27688,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WritePixel(const PointRaw& p, ColorRaw c)
-  {
-    CheckError(SDL_WriteSurfacePixel(m_resource, p.x, p.y, c.r, c.g, c.b, c.a));
-  }
+  void WritePixel(const PointRaw& p, ColorRaw c);
 
   /**
    * Writes a single pixel to a surface.
@@ -27652,11 +27704,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WritePixelFloat(const PointRaw& p, const FColorRaw& c)
-  {
-    CheckError(
-      SDL_WriteSurfacePixelFloat(m_resource, p.x, p.y, c.r, c.g, c.b, c.a));
-  }
+  void WritePixelFloat(const PointRaw& p, const FColorRaw& c);
 
   /**
    * Get the width in pixels.
@@ -27708,7 +27756,7 @@ public:
  */
 inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
 {
-  return Surface(SDL_CreateSurface(size.x, size.y, format));
+  return Surface(size, format);
 }
 
 /**
@@ -27743,7 +27791,7 @@ inline Surface CreateSurfaceFrom(const PointRaw& size,
                                  void* pixels,
                                  int pitch)
 {
-  return Surface(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch));
+  return Surface(size, format, pixels, pitch);
 }
 
 /**
@@ -27761,6 +27809,12 @@ inline Surface CreateSurfaceFrom(const PointRaw& size,
  * @sa Surface.Surface
  */
 inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
+
+inline void Surface::Destroy()
+{
+  SDL_DestroySurface(m_resource);
+  m_resource = nullptr;
+}
 
 /**
  * Get the properties associated with a surface.
@@ -27797,6 +27851,11 @@ inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
 inline PropertiesRef GetSurfaceProperties(SurfaceConstParam surface)
 {
   return {CheckError(SDL_GetSurfaceProperties(surface))};
+}
+
+inline PropertiesRef Surface::GetProperties() const
+{
+  return SDL::GetSurfaceProperties(m_resource);
 }
 
 namespace prop::Surface {
@@ -27840,6 +27899,11 @@ inline void SetSurfaceColorspace(SurfaceParam surface, Colorspace colorspace)
   CheckError(SDL_SetSurfaceColorspace(surface, colorspace));
 }
 
+inline void Surface::SetColorspace(Colorspace colorspace)
+{
+  SDL::SetSurfaceColorspace(m_resource, colorspace);
+}
+
 /**
  * Get the colorspace used by a surface.
  *
@@ -27860,6 +27924,11 @@ inline void SetSurfaceColorspace(SurfaceParam surface, Colorspace colorspace)
 inline Colorspace GetSurfaceColorspace(SurfaceConstParam surface)
 {
   return SDL_GetSurfaceColorspace(surface);
+}
+
+inline Colorspace Surface::GetColorspace() const
+{
+  return SDL::GetSurfaceColorspace(m_resource);
 }
 
 /**
@@ -27894,6 +27963,11 @@ inline Palette CreateSurfacePalette(SurfaceParam surface)
   return Palette::Borrow(CheckError(SDL_CreateSurfacePalette(surface)));
 }
 
+inline Palette Surface::CreatePalette()
+{
+  return SDL::CreateSurfacePalette(m_resource);
+}
+
 /**
  * Set the palette used by a surface.
  *
@@ -27915,6 +27989,11 @@ inline void SetSurfacePalette(SurfaceParam surface, PaletteParam palette)
   CheckError(SDL_SetSurfacePalette(surface, palette));
 }
 
+inline void Surface::SetPalette(PaletteParam palette)
+{
+  SDL::SetSurfacePalette(m_resource, palette);
+}
+
 /**
  * Get the palette used by a surface.
  *
@@ -27931,6 +28010,11 @@ inline void SetSurfacePalette(SurfaceParam surface, PaletteParam palette)
 inline Palette GetSurfacePalette(SurfaceConstParam surface)
 {
   return Palette::Borrow(SDL_GetSurfacePalette(surface));
+}
+
+inline Palette Surface::GetPalette() const
+{
+  return SDL::GetSurfacePalette(m_resource);
 }
 
 /**
@@ -27962,6 +28046,11 @@ inline void AddSurfaceAlternateImage(SurfaceParam surface, SurfaceParam image)
   CheckError(SDL_AddSurfaceAlternateImage(surface, image));
 }
 
+inline void Surface::AddAlternateImage(SurfaceParam image)
+{
+  SDL::AddSurfaceAlternateImage(m_resource, image);
+}
+
 /**
  * Return whether a surface has alternate versions available.
  *
@@ -27979,6 +28068,11 @@ inline void AddSurfaceAlternateImage(SurfaceParam surface, SurfaceParam image)
 inline bool SurfaceHasAlternateImages(SurfaceConstParam surface)
 {
   return SDL_SurfaceHasAlternateImages(surface);
+}
+
+inline bool Surface::HasAlternateImages() const
+{
+  return SDL::SurfaceHasAlternateImages(m_resource);
 }
 
 /**
@@ -28013,6 +28107,11 @@ inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstParam surface)
   return OwnArray<SurfaceRaw>(CheckError(data), count);
 }
 
+inline OwnArray<SurfaceRaw> Surface::GetImages() const
+{
+  return SDL::GetSurfaceImages(m_resource);
+}
+
 /**
  * Remove all alternate versions of a surface.
  *
@@ -28032,6 +28131,11 @@ inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstParam surface)
 inline void RemoveSurfaceAlternateImages(SurfaceParam surface)
 {
   SDL_RemoveSurfaceAlternateImages(surface);
+}
+
+inline void Surface::RemoveAlternateImages()
+{
+  SDL::RemoveSurfaceAlternateImages(m_resource);
 }
 
 /**
@@ -28063,6 +28167,8 @@ inline void LockSurface(SurfaceParam surface)
   CheckError(SDL_LockSurface(surface));
 }
 
+inline void Surface::Lock() { SDL::LockSurface(m_resource); }
+
 /**
  * Release a surface after directly accessing the pixels.
  *
@@ -28077,6 +28183,8 @@ inline void LockSurface(SurfaceParam surface)
  * @sa Surface.Lock
  */
 inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
+
+inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
 
 /**
  * Load a BMP image from a seekable SDL data stream.
@@ -28122,6 +28230,16 @@ inline Surface LoadBMP(IOStreamParam src, bool closeio = false)
  * @sa Surface.SaveBMP
  */
 inline Surface LoadBMP(StringParam file) { return Surface(SDL_LoadBMP(file)); }
+
+inline Surface Surface::LoadBMP(IOStreamParam src, bool closeio)
+{
+  return SDL::LoadBMP(src, closeio);
+}
+
+inline Surface Surface::LoadBMP(StringParam file)
+{
+  return SDL::LoadBMP(std::move(file));
+}
 
 /**
  * Save a surface to a seekable SDL data stream in BMP format.
@@ -28177,6 +28295,16 @@ inline void SaveBMP(SurfaceConstParam surface, StringParam file)
   CheckError(SDL_SaveBMP(surface, file));
 }
 
+inline void Surface::SaveBMP(IOStreamParam dst, bool closeio) const
+{
+  SDL::SaveBMP(m_resource, dst, closeio);
+}
+
+inline void Surface::SaveBMP(StringParam file) const
+{
+  SDL::SaveBMP(m_resource, std::move(file));
+}
+
 /**
  * Set the RLE acceleration hint for a surface.
  *
@@ -28200,6 +28328,11 @@ inline void SetSurfaceRLE(SurfaceParam surface, bool enabled)
   CheckError(SDL_SetSurfaceRLE(surface, enabled));
 }
 
+inline void Surface::SetRLE(bool enabled)
+{
+  SDL::SetSurfaceRLE(m_resource, enabled);
+}
+
 /**
  * Returns whether the surface is RLE enabled.
  *
@@ -28218,6 +28351,8 @@ inline bool SurfaceHasRLE(SurfaceConstParam surface)
 {
   return SDL_SurfaceHasRLE(surface);
 }
+
+inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(m_resource); }
 
 /**
  * Set the color key (transparent pixel) in a surface.
@@ -28247,6 +28382,11 @@ inline void SetSurfaceColorKey(SurfaceParam surface, std::optional<Uint32> key)
   CheckError(SDL_SetSurfaceColorKey(surface, key.has_value(), key.value_or(0)));
 }
 
+inline void Surface::SetColorKey(std::optional<Uint32> key)
+{
+  SDL::SetSurfaceColorKey(m_resource, key);
+}
+
 /**
  * Returns whether the surface has a color key.
  *
@@ -28265,6 +28405,11 @@ inline void SetSurfaceColorKey(SurfaceParam surface, std::optional<Uint32> key)
 inline bool SurfaceHasColorKey(SurfaceConstParam surface)
 {
   return SDL_SurfaceHasColorKey(surface);
+}
+
+inline bool Surface::HasColorKey() const
+{
+  return SDL::SurfaceHasColorKey(m_resource);
 }
 
 /**
@@ -28290,6 +28435,11 @@ inline std::optional<Uint32> GetSurfaceColorKey(SurfaceConstParam surface)
 {
   if (Uint32 key; SDL_GetSurfaceColorKey(surface, &key)) return key;
   return std::nullopt;
+}
+
+inline std::optional<Uint32> Surface::GetColorKey() const
+{
+  return SDL::GetSurfaceColorKey(m_resource);
 }
 
 /**
@@ -28319,6 +28469,11 @@ inline void SetSurfaceColorMod(SurfaceParam surface, Uint8 r, Uint8 g, Uint8 b)
   CheckError(SDL_SetSurfaceColorMod(surface, r, g, b));
 }
 
+inline void Surface::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
+{
+  SDL::SetSurfaceColorMod(m_resource, r, g, b);
+}
+
 /**
  * Get the additional color value multiplied into blit operations.
  *
@@ -28341,6 +28496,11 @@ inline void GetSurfaceColorMod(SurfaceConstParam surface,
                                Uint8* b)
 {
   CheckError(SDL_GetSurfaceColorMod(surface, r, g, b));
+}
+
+inline void Surface::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
+{
+  SDL::GetSurfaceColorMod(m_resource, r, g, b);
 }
 
 /**
@@ -28367,6 +28527,11 @@ inline void SetSurfaceAlphaMod(SurfaceParam surface, Uint8 alpha)
   CheckError(SDL_SetSurfaceAlphaMod(surface, alpha));
 }
 
+inline void Surface::SetAlphaMod(Uint8 alpha)
+{
+  SDL::SetSurfaceAlphaMod(m_resource, alpha);
+}
+
 /**
  * Get the additional alpha value used in blit operations.
  *
@@ -28386,6 +28551,11 @@ inline Uint8 GetSurfaceAlphaMod(SurfaceConstParam surface)
   Uint8 alpha;
   CheckError(SDL_GetSurfaceAlphaMod(surface, &alpha));
   return alpha;
+}
+
+inline Uint8 Surface::GetAlphaMod() const
+{
+  return SDL::GetSurfaceAlphaMod(m_resource);
 }
 
 /**
@@ -28410,6 +28580,11 @@ inline void SetSurfaceBlendMode(SurfaceParam surface, BlendMode blendMode)
   CheckError(SDL_SetSurfaceBlendMode(surface, blendMode));
 }
 
+inline void Surface::SetBlendMode(BlendMode blendMode)
+{
+  SDL::SetSurfaceBlendMode(m_resource, blendMode);
+}
+
 /**
  * Get the blend mode used for blit operations.
  *
@@ -28428,6 +28603,11 @@ inline BlendMode GetSurfaceBlendMode(SurfaceConstParam surface)
   BlendMode blendmode;
   CheckError(SDL_GetSurfaceBlendMode(surface, &blendmode));
   return blendmode;
+}
+
+inline BlendMode Surface::GetBlendMode() const
+{
+  return SDL::GetSurfaceBlendMode(m_resource);
 }
 
 /**
@@ -28457,6 +28637,11 @@ inline bool SetSurfaceClipRect(SurfaceParam surface,
   return SDL_SetSurfaceClipRect(surface, rect);
 }
 
+inline bool Surface::SetClipRect(OptionalRef<const RectRaw> rect)
+{
+  return SDL::SetSurfaceClipRect(m_resource, rect);
+}
+
 /**
  * Get the clipping rectangle for a surface.
  *
@@ -28482,6 +28667,11 @@ inline Rect GetSurfaceClipRect(SurfaceConstParam surface)
   return r;
 }
 
+inline Rect Surface::GetClipRect() const
+{
+  return SDL::GetSurfaceClipRect(m_resource);
+}
+
 /**
  * Flip a surface vertically or horizontally.
  *
@@ -28497,6 +28687,8 @@ inline void FlipSurface(SurfaceParam surface, FlipMode flip)
 {
   CheckError(SDL_FlipSurface(surface, flip));
 }
+
+inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
 
 /**
  * Creates a new surface identical to the existing surface.
@@ -28519,6 +28711,11 @@ inline void FlipSurface(SurfaceParam surface, FlipMode flip)
 inline Surface DuplicateSurface(SurfaceConstParam surface)
 {
   return Surface(SDL_DuplicateSurface(surface));
+}
+
+inline Surface Surface::Duplicate() const
+{
+  return SDL::DuplicateSurface(m_resource);
 }
 
 /**
@@ -28544,6 +28741,11 @@ inline Surface ScaleSurface(SurfaceConstParam surface,
                             ScaleMode scaleMode)
 {
   return Surface(SDL_ScaleSurface(surface, size.x, size.y, scaleMode));
+}
+
+inline Surface Surface::Scale(const PointRaw& size, ScaleMode scaleMode) const
+{
+  return SDL::ScaleSurface(m_resource, size, scaleMode);
 }
 
 /**
@@ -28575,6 +28777,11 @@ inline Surface ScaleSurface(SurfaceConstParam surface,
 inline Surface ConvertSurface(SurfaceConstParam surface, PixelFormat format)
 {
   return Surface(SDL_ConvertSurface(surface, format));
+}
+
+inline Surface Surface::Convert(PixelFormat format) const
+{
+  return SDL::ConvertSurface(m_resource, format);
 }
 
 /**
@@ -28612,6 +28819,15 @@ inline Surface ConvertSurfaceAndColorspace(SurfaceConstParam surface,
 {
   return Surface{SDL_ConvertSurfaceAndColorspace(
     surface, format, palette, colorspace, props)};
+}
+
+inline Surface Surface::Convert(PixelFormat format,
+                                PaletteParam palette,
+                                Colorspace colorspace,
+                                PropertiesParam props) const
+{
+  return SDL::ConvertSurfaceAndColorspace(
+    m_resource, format, palette, colorspace, props);
 }
 
 /**
@@ -28762,6 +28978,11 @@ inline void PremultiplySurfaceAlpha(SurfaceParam surface, bool linear)
   CheckError(SDL_PremultiplySurfaceAlpha(surface, linear));
 }
 
+inline void Surface::PremultiplyAlpha(bool linear)
+{
+  SDL::PremultiplySurfaceAlpha(m_resource, linear);
+}
+
 /**
  * Clear a surface with a specific color, with floating point precision.
  *
@@ -28781,6 +29002,11 @@ inline void PremultiplySurfaceAlpha(SurfaceParam surface, bool linear)
 inline void ClearSurface(SurfaceParam surface, const FColorRaw& color)
 {
   CheckError(SDL_ClearSurface(surface, color.r, color.g, color.b, color.a));
+}
+
+inline void Surface::Clear(const FColorRaw& color)
+{
+  SDL::ClearSurface(m_resource, color);
 }
 
 /**
@@ -28814,6 +29040,11 @@ inline void FillSurfaceRect(SurfaceParam dst,
   CheckError(SDL_FillSurfaceRect(dst, rect, color));
 }
 
+inline void Surface::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
+{
+  SDL::FillSurfaceRect(m_resource, rect, color);
+}
+
 /**
  * Perform a fast fill of a set of rectangles with a specific color.
  *
@@ -28843,6 +29074,11 @@ inline void FillSurfaceRects(SurfaceParam dst,
                              Uint32 color)
 {
   CheckError(SDL_FillSurfaceRects(dst, rects.data(), rects.size(), color));
+}
+
+inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
+{
+  SDL::FillSurfaceRects(m_resource, rects, color);
 }
 
 /**
@@ -28921,6 +29157,13 @@ inline void BlitSurface(SurfaceParam src,
                         OptionalRef<const RectRaw> dstrect)
 {
   CheckError(SDL_BlitSurface(src, srcrect, dst, dstrect));
+}
+
+inline void Surface::Blit(SurfaceParam src,
+                          OptionalRef<const RectRaw> srcrect,
+                          OptionalRef<const RectRaw> dstrect)
+{
+  SDL::BlitSurface(src, srcrect, m_resource, dstrect);
 }
 
 /**
@@ -29027,6 +29270,13 @@ inline void BlitSurfaceUnchecked(SurfaceParam src,
   CheckError(SDL_BlitSurfaceUnchecked(src, &srcrect, dst, &dstrect));
 }
 
+inline void Surface::BlitUnchecked(SurfaceParam src,
+                                   const RectRaw& srcrect,
+                                   const RectRaw& dstrect)
+{
+  SDL::BlitSurfaceUnchecked(src, srcrect, m_resource, dstrect);
+}
+
 /**
  * Perform a scaled blit to a destination surface, which may be of a different
  * format.
@@ -29055,6 +29305,14 @@ inline void BlitSurfaceScaled(SurfaceParam src,
                               ScaleMode scaleMode)
 {
   CheckError(SDL_BlitSurfaceScaled(src, srcrect, dst, dstrect, scaleMode));
+}
+
+inline void Surface::BlitScaled(SurfaceParam src,
+                                OptionalRef<const RectRaw> srcrect,
+                                OptionalRef<const RectRaw> dstrect,
+                                ScaleMode scaleMode)
+{
+  SDL::BlitSurfaceScaled(src, srcrect, m_resource, dstrect, scaleMode);
 }
 
 /**
@@ -29089,6 +29347,14 @@ inline void BlitSurfaceUncheckedScaled(SurfaceParam src,
     SDL_BlitSurfaceUncheckedScaled(src, &srcrect, dst, &dstrect, scaleMode));
 }
 
+inline void Surface::BlitUncheckedScaled(SurfaceParam src,
+                                         const RectRaw& srcrect,
+                                         const RectRaw& dstrect,
+                                         ScaleMode scaleMode)
+{
+  SDL::BlitSurfaceUncheckedScaled(src, srcrect, m_resource, dstrect, scaleMode);
+}
+
 #if SDL_VERSION_ATLEAST(3, 2, 4)
 
 /**
@@ -29118,6 +29384,14 @@ inline void StretchSurface(SurfaceParam src,
                            ScaleMode scaleMode)
 {
   CheckError(SDL_StretchSurface(src, srcrect, dst, dstrect, scaleMode));
+}
+
+inline void Surface::Stretch(SurfaceParam src,
+                             OptionalRef<RectRaw> srcrect,
+                             OptionalRef<RectRaw> dstrect,
+                             ScaleMode scaleMode)
+{
+  SDL::StretchSurface(src, srcrect, m_resource, dstrect, scaleMode);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 4)
@@ -29151,6 +29425,13 @@ inline void BlitSurfaceTiled(SurfaceParam src,
                              OptionalRef<const RectRaw> dstrect)
 {
   CheckError(SDL_BlitSurfaceTiled(src, srcrect, dst, dstrect));
+}
+
+inline void Surface::BlitTiled(SurfaceParam src,
+                               OptionalRef<const RectRaw> srcrect,
+                               OptionalRef<const RectRaw> dstrect)
+{
+  SDL::BlitSurfaceTiled(src, srcrect, m_resource, dstrect);
 }
 
 /**
@@ -29189,6 +29470,16 @@ inline void BlitSurfaceTiledWithScale(SurfaceParam src,
 {
   CheckError(SDL_BlitSurfaceTiledWithScale(
     src, srcrect, scale, scaleMode, dst, dstrect));
+}
+
+inline void Surface::BlitTiledWithScale(SurfaceParam src,
+                                        OptionalRef<const RectRaw> srcrect,
+                                        float scale,
+                                        SDL_ScaleMode scaleMode,
+                                        OptionalRef<const RectRaw> dstrect)
+{
+  SDL::BlitSurfaceTiledWithScale(
+    src, srcrect, scale, scaleMode, m_resource, dstrect);
 }
 
 /**
@@ -29303,6 +29594,28 @@ inline void BlitSurface9Grid(SurfaceParam src,
                    dstrect);
 }
 
+inline void Surface::Blit9GridWithScale(SurfaceParam src,
+                                        OptionalRef<const RectRaw> srcrect,
+                                        int left_width,
+                                        int right_width,
+                                        int top_height,
+                                        int bottom_height,
+                                        float scale,
+                                        SDL_ScaleMode scaleMode,
+                                        OptionalRef<const RectRaw> dstrect)
+{
+  SDL::BlitSurface9Grid(src,
+                        srcrect,
+                        left_width,
+                        right_width,
+                        top_height,
+                        bottom_height,
+                        scale,
+                        scaleMode,
+                        m_resource,
+                        dstrect);
+}
+
 /**
  * Map an RGB triple to an opaque pixel value for a surface.
  *
@@ -29341,6 +29654,11 @@ inline Uint32 MapSurfaceRGB(SurfaceConstParam surface,
   return SDL_MapSurfaceRGB(surface, r, g, b);
 }
 
+inline Uint32 Surface::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
+{
+  return SDL::MapSurfaceRGB(m_resource, r, g, b);
+}
+
 /**
  * Map an RGBA quadruple to a pixel value for a surface.
  *
@@ -29375,6 +29693,11 @@ inline Uint32 MapSurfaceRGB(SurfaceConstParam surface,
 inline Uint32 MapSurfaceRGBA(SurfaceConstParam surface, ColorRaw c)
 {
   return SDL_MapSurfaceRGBA(surface, c.r, c.g, c.b, c.a);
+}
+
+inline Uint32 Surface::MapRGBA(ColorRaw c) const
+{
+  return SDL::MapSurfaceRGBA(m_resource, c);
 }
 
 /**
@@ -29413,6 +29736,15 @@ inline void ReadSurfacePixel(SurfaceConstParam surface,
   CheckError(SDL_ReadSurfacePixel(surface, p.x, p.y, r, g, b, a));
 }
 
+inline void Surface::ReadPixel(const PointRaw& p,
+                               Uint8* r,
+                               Uint8* g,
+                               Uint8* b,
+                               Uint8* a) const
+{
+  SDL::ReadSurfacePixel(m_resource, p, r, g, b, a);
+}
+
 /**
  * Retrieves a single pixel from a surface.
  *
@@ -29446,6 +29778,15 @@ inline void ReadSurfacePixelFloat(SurfaceConstParam surface,
   CheckError(SDL_ReadSurfacePixelFloat(surface, p.x, p.y, r, g, b, a));
 }
 
+inline void Surface::ReadPixelFloat(const PointRaw& p,
+                                    float* r,
+                                    float* g,
+                                    float* b,
+                                    float* a) const
+{
+  SDL::ReadSurfacePixelFloat(m_resource, p, r, g, b, a);
+}
+
 /**
  * Writes a single pixel to a surface.
  *
@@ -29471,6 +29812,11 @@ inline void WriteSurfacePixel(SurfaceParam surface,
   CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
 }
 
+inline void Surface::WritePixel(const PointRaw& p, ColorRaw c)
+{
+  SDL::WriteSurfacePixel(m_resource, p, c);
+}
+
 /**
  * Writes a single pixel to a surface.
  *
@@ -29491,6 +29837,11 @@ inline void WriteSurfacePixelFloat(SurfaceParam surface,
                                    const FColorRaw& c)
 {
   CheckError(SDL_WriteSurfacePixelFloat(surface, p.x, p.y, c.r, c.g, c.b, c.a));
+}
+
+inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
+{
+  SDL::WriteSurfacePixelFloat(m_resource, p, c);
 }
 
 /// @}
@@ -29691,12 +30042,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static OwnArray<Display> GetAll()
-  {
-    int count = 0;
-    auto data = reinterpret_cast<Display*>(SDL_GetDisplays(&count));
-    return OwnArray<Display>{data, size_t(count)};
-  }
+  static OwnArray<DisplayID> GetAll();
 
   /**
    * Return the primary display.
@@ -29710,7 +30056,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  static Display GetPrimary() { return CheckError(SDL_GetPrimaryDisplay()); }
+  static Display GetPrimary();
 
   /**
    * Get the properties associated with a display.
@@ -29737,10 +30083,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesRef GetProperties() const
-  {
-    return {CheckError(SDL_GetDisplayProperties(m_displayID))};
-  }
+  PropertiesRef GetProperties() const;
 
   /**
    * Get the name of a display in UTF-8 encoding.
@@ -29754,7 +30097,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  const char* GetName() const { return SDL_GetDisplayName(m_displayID); }
+  const char* GetName() const;
 
   /**
    * Get the desktop area represented by a display.
@@ -29772,12 +30115,7 @@ public:
    * @sa Display.GetUsableBounds
    * @sa Display.GetAll
    */
-  Rect GetBounds() const
-  {
-    Rect bounds;
-    SDL_GetDisplayBounds(m_displayID, &bounds);
-    return bounds;
-  }
+  Rect GetBounds() const;
 
   /**
    * Get the usable desktop area represented by a display, in screen
@@ -29791,6 +30129,7 @@ public:
    * so these are good guidelines for the maximum space available to a
    * non-fullscreen window.
    *
+   * @param displayID the instance ID of the display to query.
    * @param rect the Rect structure filled in with the display bounds.
    * @throws Error on failure.
    *
@@ -29801,12 +30140,7 @@ public:
    * @sa Display.GetBounds
    * @sa Display.GetAll
    */
-  Rect GetUsableBounds() const
-  {
-    Rect bounds;
-    CheckError(SDL_GetDisplayUsableBounds(m_displayID, &bounds));
-    return bounds;
-  }
+  Rect GetUsableBounds() const;
 
   /**
    * Get the orientation of a display when it is unrotated.
@@ -29820,10 +30154,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  DisplayOrientation GetNaturalOrientation() const
-  {
-    return SDL_GetNaturalDisplayOrientation(m_displayID);
-  }
+  DisplayOrientation GetNaturalOrientation() const;
 
   /**
    * Get the orientation of a display.
@@ -29837,10 +30168,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  DisplayOrientation GetCurrentOrientation() const
-  {
-    return SDL_GetCurrentDisplayOrientation(m_displayID);
-  }
+  DisplayOrientation GetCurrentOrientation() const;
 
   /**
    * Get the content scale of a display.
@@ -29866,10 +30194,7 @@ public:
    * @sa Window.GetDisplayScale
    * @sa Display.GetAll
    */
-  float GetContentScale() const
-  {
-    return SDL_GetDisplayContentScale(m_displayID);
-  }
+  float GetContentScale() const;
 
   /**
    * Get a list of fullscreen display modes available on a display.
@@ -29896,12 +30221,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  OwnArray<DisplayMode*> GetFullscreenModes() const
-  {
-    int count = 0;
-    auto data = CheckError(SDL_GetFullscreenDisplayModes(m_displayID, &count));
-    return OwnArray<DisplayMode*>{data, size_t(count)};
-  }
+  OwnArray<DisplayMode*> GetFullscreenModes() const;
 
   /**
    * Get the closest match to the requested display mode.
@@ -29931,17 +30251,7 @@ public:
    */
   DisplayMode GetClosestFullscreenMode(const PointRaw& size,
                                        float refresh_rate,
-                                       bool include_high_density_modes) const
-  {
-    DisplayMode mode;
-    CheckError(SDL_GetClosestFullscreenDisplayMode(m_displayID,
-                                                   size.x,
-                                                   size.y,
-                                                   refresh_rate,
-                                                   include_high_density_modes,
-                                                   &mode));
-    return mode;
-  }
+                                       bool include_high_density_modes) const;
 
   /**
    * Get information about the desktop's display mode.
@@ -29961,10 +30271,7 @@ public:
    * @sa Display.GetCurrentMode
    * @sa Display.GetAll
    */
-  const DisplayMode* GetDesktopMode() const
-  {
-    return SDL_GetDesktopDisplayMode(m_displayID);
-  }
+  const DisplayMode* GetDesktopMode() const;
 
   /**
    * Get information about the current display mode.
@@ -29984,10 +30291,7 @@ public:
    * @sa Display.GetDesktopMode
    * @sa Display.GetAll
    */
-  const DisplayMode* GetCurrentMode() const
-  {
-    return SDL_GetCurrentDisplayMode(m_displayID);
-  }
+  const DisplayMode* GetCurrentMode() const;
 
   /**
    * Get the display containing a point.
@@ -30003,10 +30307,7 @@ public:
    * @sa Display.GetBounds
    * @sa Display.GetAll
    */
-  static Display GetForPoint(const PointRaw& point)
-  {
-    return SDL_GetDisplayForPoint(&point);
-  }
+  static Display GetForPoint(const PointRaw& point);
 
   /**
    * Get the display primarily containing a rect.
@@ -30023,10 +30324,7 @@ public:
    * @sa Display.GetBounds
    * @sa Display.GetAll
    */
-  static Display GetForRect(const RectRaw& rect)
-  {
-    return SDL_GetDisplayForRect(&rect);
-  }
+  static Display GetForRect(const RectRaw& rect);
 };
 
 /**
@@ -30664,11 +30962,7 @@ public:
    * @sa Window.Window
    * @sa Window.Window
    */
-  void Destroy()
-  {
-    SDL_DestroyWindow(m_resource);
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   /**
    * Get the display associated with a window.
@@ -30684,7 +30978,7 @@ public:
    * @sa Display.GetBounds
    * @sa Display.GetAll
    */
-  Display GetDisplay() const { return SDL_GetDisplayForWindow(m_resource); }
+  Display GetDisplay() const;
 
   /**
    * Get the pixel density of a window.
@@ -30702,10 +30996,7 @@ public:
    *
    * @sa Window.GetDisplayScale
    */
-  float GetPixelDensity() const
-  {
-    return SDL_GetWindowPixelDensity(m_resource);
-  }
+  float GetPixelDensity() const;
 
   /**
    * Get the content display scale relative to a window's pixel size.
@@ -30728,10 +31019,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  float GetDisplayScale() const
-  {
-    return SDL_GetWindowDisplayScale(m_resource);
-  }
+  float GetDisplayScale() const;
 
   /**
    * Set the display mode to use when a window is visible and fullscreen.
@@ -30764,10 +31052,7 @@ public:
    * @sa Window.SetFullscreen
    * @sa Window.Sync
    */
-  void SetFullscreenMode(OptionalRef<const DisplayMode> mode)
-  {
-    CheckError(SDL_SetWindowFullscreenMode(m_resource, mode));
-  }
+  void SetFullscreenMode(OptionalRef<const DisplayMode> mode);
 
   /**
    * Query the display mode to use when a window is visible at fullscreen.
@@ -30782,10 +31067,7 @@ public:
    * @sa Window.SetFullscreenMode
    * @sa Window.SetFullscreen
    */
-  const DisplayMode* GetFullscreenMode() const
-  {
-    return SDL_GetWindowFullscreenMode(m_resource);
-  }
+  const DisplayMode* GetFullscreenMode() const;
 
   /**
    * Get the raw ICC profile data for the screen the window is currently on.
@@ -30797,11 +31079,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  OwnPtr<void> GetICCProfile() const
-  {
-    size_t size;
-    return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(m_resource, &size))};
-  }
+  OwnPtr<void> GetICCProfile() const;
 
   /**
    * Get the pixel format associated with the window.
@@ -30813,10 +31091,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PixelFormat GetPixelFormat() const
-  {
-    return CheckError(SDL_GetWindowPixelFormat(m_resource));
-  }
+  PixelFormat GetPixelFormat() const;
 
   /**
    * Get the numeric ID of a window.
@@ -30833,7 +31108,7 @@ public:
    *
    * @sa Window.FromID
    */
-  WindowID GetID() const { return CheckError(SDL_GetWindowID(m_resource)); }
+  WindowID GetID() const;
 
   /**
    * Get parent of a window.
@@ -30848,6 +31123,7 @@ public:
    * @sa Window.Window
    */
   WindowRef GetParent() const;
+
   /**
    * Get the properties associated with a window.
    *
@@ -30967,10 +31243,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesRef GetProperties() const
-  {
-    return {CheckError(SDL_GetWindowProperties(m_resource))};
-  }
+  PropertiesRef GetProperties() const;
 
   /**
    * Get the window flags.
@@ -30989,7 +31262,7 @@ public:
    * @sa Window.SetMouseGrab
    * @sa Window.Show
    */
-  WindowFlags GetFlags() const { return SDL_GetWindowFlags(m_resource); }
+  WindowFlags GetFlags() const;
 
   /**
    * Set the title of a window.
@@ -31005,10 +31278,7 @@ public:
    *
    * @sa Window.GetTitle
    */
-  void SetTitle(StringParam title)
-  {
-    CheckError(SDL_SetWindowTitle(m_resource, title));
-  }
+  void SetTitle(StringParam title);
 
   /**
    * Get the title of a window.
@@ -31022,7 +31292,7 @@ public:
    *
    * @sa Window.SetTitle
    */
-  const char* GetTitle() const { return SDL_GetWindowTitle(m_resource); }
+  const char* GetTitle() const;
 
   /**
    * Set the icon for a window.
@@ -31044,10 +31314,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetIcon(SurfaceParam icon)
-  {
-    CheckError(SDL_SetWindowIcon(m_resource, icon));
-  }
+  void SetIcon(SurfaceParam icon);
 
   /**
    * @brief Request the window's position and size to be set.
@@ -31117,10 +31384,7 @@ public:
    * @sa Window.GetPosition
    * @sa Window.Sync
    */
-  void SetPosition(const PointRaw& p)
-  {
-    CheckError(SDL_SetWindowPosition(m_resource, p.x, p.y));
-  }
+  void SetPosition(const PointRaw& p);
 
   /**
    * Get the position of a window.
@@ -31166,10 +31430,7 @@ public:
    *
    * @sa Window.SetPosition
    */
-  void GetPosition(int* x, int* y) const
-  {
-    CheckError(SDL_GetWindowPosition(m_resource, x, y));
-  }
+  void GetPosition(int* x, int* y) const;
 
   /**
    * Request that the size of a window's client area be set.
@@ -31205,10 +31466,7 @@ public:
    * @sa Window.SetFullscreenMode
    * @sa Window.Sync
    */
-  void SetSize(const PointRaw& p)
-  {
-    CheckError(SDL_SetWindowSize(m_resource, p.x, p.y));
-  }
+  void SetSize(const PointRaw& p);
 
   /**
    * Get the size of a window's client area.
@@ -31255,10 +31513,7 @@ public:
    * @sa Window.GetSizeInPixels
    * @sa Window.SetSize
    */
-  void GetSize(int* w, int* h) const
-  {
-    CheckError(SDL_GetWindowSize(m_resource, w, h));
-  }
+  void GetSize(int* w, int* h) const;
 
   /**
    * Get the safe area for this window.
@@ -31277,12 +31532,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Rect GetSafeArea() const
-  {
-    Rect rect;
-    CheckError(SDL_GetWindowSafeArea(m_resource, &rect));
-    return rect;
-  }
+  Rect GetSafeArea() const;
 
   /**
    * Request that the aspect ratio of a window's client area be set.
@@ -31321,10 +31571,7 @@ public:
    * @sa Window.GetAspectRatio
    * @sa Window.Sync
    */
-  void SetAspectRatio(float min_aspect, float max_aspect)
-  {
-    CheckError(SDL_SetWindowAspectRatio(m_resource, min_aspect, max_aspect));
-  }
+  void SetAspectRatio(float min_aspect, float max_aspect);
 
   /**
    * Get the size of a window's client area.
@@ -31341,10 +31588,7 @@ public:
    *
    * @sa Window.SetAspectRatio
    */
-  void GetAspectRatio(float* min_aspect, float* max_aspect) const
-  {
-    CheckError(SDL_GetWindowAspectRatio(m_resource, min_aspect, max_aspect));
-  }
+  void GetAspectRatio(float* min_aspect, float* max_aspect) const;
 
   /**
    * Get the size of a window's borders (decorations) around the client area.
@@ -31379,10 +31623,7 @@ public:
    *
    * @sa Window.GetSize
    */
-  void GetBordersSize(int* top, int* left, int* bottom, int* right) const
-  {
-    CheckError(SDL_GetWindowBordersSize(m_resource, top, left, bottom, right));
-  }
+  void GetBordersSize(int* top, int* left, int* bottom, int* right) const;
 
   /**
    * Get the size of a window's client area, in pixels.
@@ -31420,10 +31661,7 @@ public:
    * @sa Window.Window
    * @sa Window.GetSize
    */
-  void GetSizeInPixels(int* w, int* h) const
-  {
-    CheckError(SDL_GetWindowSizeInPixels(m_resource, w, h));
-  }
+  void GetSizeInPixels(int* w, int* h) const;
 
   /**
    * Set the minimum size of a window's client area.
@@ -31440,10 +31678,7 @@ public:
    * @sa Window.GetMinimumSize
    * @sa Window.SetMaximumSize
    */
-  void SetMinimumSize(const PointRaw& p)
-  {
-    CheckError(SDL_SetWindowMinimumSize(m_resource, p.x, p.y));
-  }
+  void SetMinimumSize(const PointRaw& p);
 
   /**
    * Get the minimum size of a window's client area.
@@ -31461,10 +31696,7 @@ public:
    * @sa Window.GetMaximumSize
    * @sa Window.SetMinimumSize
    */
-  void GetMinimumSize(int* w, int* h) const
-  {
-    CheckError(SDL_GetWindowMinimumSize(m_resource, w, h));
-  }
+  void GetMinimumSize(int* w, int* h) const;
 
   /**
    * Set the maximum size of a window's client area.
@@ -31481,10 +31713,7 @@ public:
    * @sa Window.GetMaximumSize
    * @sa Window.SetMinimumSize
    */
-  void SetMaximumSize(const PointRaw& p)
-  {
-    CheckError(SDL_SetWindowMaximumSize(m_resource, p.x, p.y));
-  }
+  void SetMaximumSize(const PointRaw& p);
 
   /**
    * Get the maximum size of a window's client area.
@@ -31502,10 +31731,7 @@ public:
    * @sa Window.GetMinimumSize
    * @sa Window.SetMaximumSize
    */
-  void GetMaximumSize(int* w, int* h) const
-  {
-    CheckError(SDL_GetWindowMaximumSize(m_resource, w, h));
-  }
+  void GetMaximumSize(int* w, int* h) const;
 
   /**
    * Set the border state of a window.
@@ -31525,10 +31751,7 @@ public:
    *
    * @sa Window.GetFlags
    */
-  void SetBordered(bool bordered)
-  {
-    CheckError(SDL_SetWindowBordered(m_resource, bordered));
-  }
+  void SetBordered(bool bordered);
 
   /**
    * Set the user-resizable state of a window.
@@ -31548,10 +31771,7 @@ public:
    *
    * @sa Window.GetFlags
    */
-  void SetResizable(bool resizable)
-  {
-    CheckError(SDL_SetWindowResizable(m_resource, resizable));
-  }
+  void SetResizable(bool resizable);
 
   /**
    * Set the window to always be above the others.
@@ -31568,10 +31788,7 @@ public:
    *
    * @sa Window.GetFlags
    */
-  void SetAlwaysOnTop(bool on_top)
-  {
-    CheckError(SDL_SetWindowAlwaysOnTop(m_resource, on_top));
-  }
+  void SetAlwaysOnTop(bool on_top);
 
   /**
    * Show a window.
@@ -31585,7 +31802,7 @@ public:
    * @sa Window.Hide
    * @sa Window.Raise
    */
-  void Show() { CheckError(SDL_ShowWindow(m_resource)); }
+  void Show();
 
   /**
    * Hide a window.
@@ -31599,7 +31816,7 @@ public:
    * @sa Window.Show
    * @sa WINDOW_HIDDEN
    */
-  void Hide() { CheckError(SDL_HideWindow(m_resource)); }
+  void Hide();
 
   /**
    * Request that a window be raised above other windows and gain the input
@@ -31617,7 +31834,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Raise() { CheckError(SDL_RaiseWindow(m_resource)); }
+  void Raise();
 
   /**
    * Request that the window be made as large as possible.
@@ -31649,7 +31866,7 @@ public:
    * @sa Window.Restore
    * @sa Window.Sync
    */
-  void Maximize() { CheckError(SDL_MaximizeWindow(m_resource)); }
+  void Maximize();
 
   /**
    * Request that the window be minimized to an iconic representation.
@@ -31676,7 +31893,7 @@ public:
    * @sa Window.Restore
    * @sa Window.Sync
    */
-  void Minimize() { CheckError(SDL_MinimizeWindow(m_resource)); }
+  void Minimize();
 
   /**
    * Request that the size and position of a minimized or maximized window be
@@ -31704,7 +31921,7 @@ public:
    * @sa Window.Minimize
    * @sa Window.Sync
    */
-  void Restore() { CheckError(SDL_RestoreWindow(m_resource)); }
+  void Restore();
 
   /**
    * Request that the window's fullscreen state be changed.
@@ -31734,10 +31951,7 @@ public:
    * @sa Window.Sync
    * @sa WINDOW_FULLSCREEN
    */
-  void SetFullscreen(bool fullscreen)
-  {
-    CheckError(SDL_SetWindowFullscreen(m_resource, fullscreen));
-  }
+  void SetFullscreen(bool fullscreen);
 
   /**
    * Block until any pending window state is finalized.
@@ -31766,7 +31980,7 @@ public:
    * @sa Window.Restore
    * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
    */
-  void Sync() { CheckError(SDL_SyncWindow(m_resource)); }
+  void Sync();
 
   /**
    * Return whether the window has a surface associated with it.
@@ -31780,7 +31994,7 @@ public:
    *
    * @sa Window.GetSurface
    */
-  bool HasSurface() const { return SDL_WindowHasSurface(m_resource); }
+  bool HasSurface() const;
 
   /**
    * Get the SDL surface associated with the window.
@@ -31808,10 +32022,7 @@ public:
    * @sa Window.UpdateSurface
    * @sa Window.UpdateSurfaceRects
    */
-  Surface GetSurface()
-  {
-    return Surface::Borrow(SDL_GetWindowSurface(m_resource));
-  }
+  Surface GetSurface();
 
   /**
    * Toggle VSync for the window surface.
@@ -31835,10 +32046,7 @@ public:
    *
    * @sa Window.GetSurfaceVSync
    */
-  void SetSurfaceVSync(int vsync)
-  {
-    CheckError(SDL_SetWindowSurfaceVSync(m_resource, vsync));
-  }
+  void SetSurfaceVSync(int vsync);
 
   /**
    * Get VSync for the window surface.
@@ -31854,12 +32062,7 @@ public:
    *
    * @sa Window.SetSurfaceVSync
    */
-  int GetSurfaceVSync() const
-  {
-    int vsync;
-    CheckError(SDL_GetWindowSurfaceVSync(m_resource, &vsync));
-    return vsync;
-  }
+  int GetSurfaceVSync() const;
 
   /**
    * Copy the window surface to the screen.
@@ -31878,7 +32081,7 @@ public:
    * @sa Window.GetSurface
    * @sa Window.UpdateSurfaceRects
    */
-  void UpdateSurface() { CheckError(SDL_UpdateWindowSurface(m_resource)); }
+  void UpdateSurface();
 
   /**
    * Copy areas of the window surface to the screen.
@@ -31905,11 +32108,7 @@ public:
    * @sa Window.GetSurface
    * @sa Window.UpdateSurface
    */
-  void UpdateSurfaceRects(SpanRef<const RectRaw> rects)
-  {
-    CheckError(
-      SDL_UpdateWindowSurfaceRects(m_resource, rects.data(), rects.size()));
-  }
+  void UpdateSurfaceRects(SpanRef<const RectRaw> rects);
 
   /**
    * Destroy the surface associated with the window.
@@ -31923,7 +32122,7 @@ public:
    * @sa Window.GetSurface
    * @sa Window.HasSurface
    */
-  void DestroySurface() { CheckError(SDL_DestroyWindowSurface(m_resource)); }
+  void DestroySurface();
 
   /**
    * Set a window's keyboard grab mode.
@@ -31954,10 +32153,7 @@ public:
    * @sa Window.GetKeyboardGrab
    * @sa Window.SetMouseGrab
    */
-  void SetKeyboardGrab(bool grabbed)
-  {
-    CheckError(SDL_SetWindowKeyboardGrab(m_resource, grabbed));
-  }
+  void SetKeyboardGrab(bool grabbed);
 
   /**
    * Set a window's mouse grab mode.
@@ -31976,10 +32172,7 @@ public:
    * @sa Window.SetMouseGrab
    * @sa Window.SetKeyboardGrab
    */
-  void SetMouseGrab(bool grabbed)
-  {
-    CheckError(SDL_SetWindowMouseGrab(m_resource, grabbed));
-  }
+  void SetMouseGrab(bool grabbed);
 
   /**
    * Get a window's keyboard grab mode.
@@ -31992,7 +32185,7 @@ public:
    *
    * @sa Window.SetKeyboardGrab
    */
-  bool GetKeyboardGrab() const { return SDL_GetWindowKeyboardGrab(m_resource); }
+  bool GetKeyboardGrab() const;
 
   /**
    * Get a window's mouse grab mode.
@@ -32008,7 +32201,7 @@ public:
    * @sa Window.SetMouseGrab
    * @sa Window.SetKeyboardGrab
    */
-  bool GetMouseGrab() const { return SDL_GetWindowMouseGrab(m_resource); }
+  bool GetMouseGrab() const;
 
   /**
    * Confines the cursor to the specified area of a window.
@@ -32028,10 +32221,7 @@ public:
    * @sa Window.GetMouseGrab
    * @sa Window.SetMouseGrab
    */
-  void SetMouseRect(const RectRaw& rect)
-  {
-    CheckError(SDL_SetWindowMouseRect(m_resource, &rect));
-  }
+  void SetMouseRect(const RectRaw& rect);
 
   /**
    * Get the mouse confinement rectangle of a window.
@@ -32047,10 +32237,7 @@ public:
    * @sa Window.GetMouseGrab
    * @sa Window.SetMouseGrab
    */
-  const RectRaw* GetMouseRect() const
-  {
-    return SDL_GetWindowMouseRect(m_resource);
-  }
+  const RectRaw* GetMouseRect() const;
 
   /**
    * Set the opacity for a window.
@@ -32069,10 +32256,7 @@ public:
    *
    * @sa Window.GetOpacity
    */
-  void SetOpacity(float opacity)
-  {
-    CheckError(SDL_SetWindowOpacity(m_resource, opacity));
-  }
+  void SetOpacity(float opacity);
 
   /**
    * Get the opacity of a window.
@@ -32089,7 +32273,7 @@ public:
    *
    * @sa Window.SetOpacity
    */
-  float GetOpacity() const { return SDL_GetWindowOpacity(m_resource); }
+  float GetOpacity() const;
 
   /**
    * Set the window as a child of a parent window.
@@ -32121,10 +32305,7 @@ public:
    *
    * @sa Window.SetModal
    */
-  void SetParent(WindowParam parent)
-  {
-    CheckError(SDL_SetWindowParent(m_resource, parent));
-  }
+  void SetParent(WindowParam parent);
 
   /**
    * Toggle the state of the window as modal.
@@ -32142,10 +32323,7 @@ public:
    * @sa Window.SetParent
    * @sa WINDOW_MODAL
    */
-  void SetModal(bool modal)
-  {
-    CheckError(SDL_SetWindowModal(m_resource, modal));
-  }
+  void SetModal(bool modal);
 
   /**
    * Set whether the window may have input focus.
@@ -32157,10 +32335,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetFocusable(bool focusable)
-  {
-    CheckError(SDL_SetWindowFocusable(m_resource, focusable));
-  }
+  void SetFocusable(bool focusable);
 
   /**
    * Display the system-level window menu.
@@ -32184,10 +32359,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void ShowSystemMenu(const PointRaw& p)
-  {
-    CheckError(SDL_ShowWindowSystemMenu(m_resource, p.x, p.y));
-  }
+  void ShowSystemMenu(const PointRaw& p);
 
   /**
    * Provide a callback that decides if a window region has special properties.
@@ -32281,10 +32453,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetHitTest(HitTest callback, void* callback_data)
-  {
-    CheckError(SDL_SetWindowHitTest(m_resource, callback, callback_data));
-  }
+  void SetHitTest(HitTest callback, void* callback_data);
 
   /**
    * Set the shape of a transparent window.
@@ -32310,10 +32479,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetShape(SurfaceParam shape)
-  {
-    CheckError(SDL_SetWindowShape(m_resource, shape));
-  }
+  void SetShape(SurfaceParam shape);
 
   /**
    * Request a window to demand attention from the user.
@@ -32325,10 +32491,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Flash(FlashOperation operation)
-  {
-    CheckError(SDL_FlashWindow(m_resource, operation));
-  }
+  void Flash(FlashOperation operation);
 
   /**
    * Get a window from a stored ID.
@@ -32579,11 +32742,7 @@ public:
    *
    * @sa GLContext.GLContext
    */
-  void Destroy()
-  {
-    CheckError(SDL_GL_DestroyContext(m_resource));
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   /**
    * Set up an OpenGL context for rendering into an OpenGL window.
@@ -32600,10 +32759,7 @@ public:
    *
    * @sa GLContext.GLContext
    */
-  void MakeCurrent(WindowParam window)
-  {
-    CheckError(SDL_GL_MakeCurrent(window, m_resource));
-  }
+  void MakeCurrent(WindowParam window);
 };
 
 /// RAII owning version GLContext.
@@ -33073,6 +33229,8 @@ inline OwnArray<DisplayID> GetDisplays()
   return OwnArray<DisplayID>{data, size_t(count)};
 }
 
+inline OwnArray<DisplayID> Display::GetAll() { return SDL::GetDisplays(); }
+
 /**
  * Return the primary display.
  *
@@ -33089,6 +33247,8 @@ inline Display GetPrimaryDisplay()
 {
   return CheckError(SDL_GetPrimaryDisplay());
 }
+
+inline Display Display::GetPrimary() { return SDL::GetPrimaryDisplay(); }
 
 /**
  * Get the properties associated with a display.
@@ -33121,6 +33281,11 @@ inline PropertiesRef GetDisplayProperties(DisplayID displayID)
   return {CheckError(SDL_GetDisplayProperties(displayID))};
 }
 
+inline PropertiesRef Display::GetProperties() const
+{
+  return SDL::GetDisplayProperties(m_displayID);
+}
+
 namespace prop::Display {
 
 constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN;
@@ -33148,6 +33313,11 @@ inline const char* GetDisplayName(DisplayID displayID)
   return SDL_GetDisplayName(displayID);
 }
 
+inline const char* Display::GetName() const
+{
+  return SDL::GetDisplayName(m_displayID);
+}
+
 /**
  * Get the desktop area represented by a display.
  *
@@ -33170,6 +33340,11 @@ inline Rect GetDisplayBounds(DisplayID displayID)
   Rect bounds;
   SDL_GetDisplayBounds(displayID, &bounds);
   return bounds;
+}
+
+inline Rect Display::GetBounds() const
+{
+  return SDL::GetDisplayBounds(m_displayID);
 }
 
 /**
@@ -33202,6 +33377,11 @@ inline Rect GetDisplayUsableBounds(DisplayID displayID)
   return bounds;
 }
 
+inline Rect Display::GetUsableBounds() const
+{
+  return SDL::GetDisplayUsableBounds(m_displayID);
+}
+
 /**
  * Get the orientation of a display when it is unrotated.
  *
@@ -33220,6 +33400,11 @@ inline DisplayOrientation GetNaturalDisplayOrientation(DisplayID displayID)
   return SDL_GetNaturalDisplayOrientation(displayID);
 }
 
+inline DisplayOrientation Display::GetNaturalOrientation() const
+{
+  return SDL::GetNaturalDisplayOrientation(m_displayID);
+}
+
 /**
  * Get the orientation of a display.
  *
@@ -33236,6 +33421,11 @@ inline DisplayOrientation GetNaturalDisplayOrientation(DisplayID displayID)
 inline DisplayOrientation GetCurrentDisplayOrientation(DisplayID displayID)
 {
   return SDL_GetCurrentDisplayOrientation(displayID);
+}
+
+inline DisplayOrientation Display::GetCurrentOrientation() const
+{
+  return SDL::GetCurrentDisplayOrientation(m_displayID);
 }
 
 /**
@@ -33266,6 +33456,11 @@ inline DisplayOrientation GetCurrentDisplayOrientation(DisplayID displayID)
 inline float GetDisplayContentScale(DisplayID displayID)
 {
   return SDL_GetDisplayContentScale(displayID);
+}
+
+inline float Display::GetContentScale() const
+{
+  return SDL::GetDisplayContentScale(m_displayID);
 }
 
 /**
@@ -33299,6 +33494,11 @@ inline OwnArray<DisplayMode*> GetFullscreenDisplayModes(DisplayID displayID)
   int count = 0;
   auto data = CheckError(SDL_GetFullscreenDisplayModes(displayID, &count));
   return OwnArray<DisplayMode*>{data, size_t(count)};
+}
+
+inline OwnArray<DisplayMode*> Display::GetFullscreenModes() const
+{
+  return SDL::GetFullscreenDisplayModes(m_displayID);
 }
 
 /**
@@ -33344,6 +33544,15 @@ inline DisplayMode GetClosestFullscreenDisplayMode(
   return mode;
 }
 
+inline DisplayMode Display::GetClosestFullscreenMode(
+  const PointRaw& size,
+  float refresh_rate,
+  bool include_high_density_modes) const
+{
+  return SDL::GetClosestFullscreenDisplayMode(
+    m_displayID, size, refresh_rate, include_high_density_modes);
+}
+
 /**
  * Get information about the desktop's display mode.
  *
@@ -33366,6 +33575,11 @@ inline DisplayMode GetClosestFullscreenDisplayMode(
 inline const DisplayMode* GetDesktopDisplayMode(DisplayID displayID)
 {
   return SDL_GetDesktopDisplayMode(displayID);
+}
+
+inline const DisplayMode* Display::GetDesktopMode() const
+{
+  return SDL::GetDesktopDisplayMode(m_displayID);
 }
 
 /**
@@ -33392,6 +33606,11 @@ inline const DisplayMode* GetCurrentDisplayMode(DisplayID displayID)
   return SDL_GetCurrentDisplayMode(displayID);
 }
 
+inline const DisplayMode* Display::GetCurrentMode() const
+{
+  return SDL::GetCurrentDisplayMode(m_displayID);
+}
+
 /**
  * Get the display containing a point.
  *
@@ -33409,6 +33628,11 @@ inline const DisplayMode* GetCurrentDisplayMode(DisplayID displayID)
 inline Display GetDisplayForPoint(const PointRaw& point)
 {
   return SDL_GetDisplayForPoint(&point);
+}
+
+inline Display Display::GetForPoint(const PointRaw& point)
+{
+  return SDL::GetDisplayForPoint(point);
 }
 
 /**
@@ -33431,6 +33655,11 @@ inline Display GetDisplayForRect(const RectRaw& rect)
   return SDL_GetDisplayForRect(&rect);
 }
 
+inline Display Display::GetForRect(const RectRaw& rect)
+{
+  return SDL::GetDisplayForRect(rect);
+}
+
 /**
  * Get the display associated with a window.
  *
@@ -33449,6 +33678,11 @@ inline Display GetDisplayForRect(const RectRaw& rect)
 inline Display GetDisplayForWindow(WindowParam window)
 {
   return SDL_GetDisplayForWindow(window);
+}
+
+inline Display Window::GetDisplay() const
+{
+  return SDL::GetDisplayForWindow(m_resource);
 }
 
 /**
@@ -33471,6 +33705,11 @@ inline Display GetDisplayForWindow(WindowParam window)
 inline float GetWindowPixelDensity(WindowParam window)
 {
   return SDL_GetWindowPixelDensity(window);
+}
+
+inline float Window::GetPixelDensity() const
+{
+  return SDL::GetWindowPixelDensity(m_resource);
 }
 
 /**
@@ -33498,6 +33737,11 @@ inline float GetWindowPixelDensity(WindowParam window)
 inline float GetWindowDisplayScale(WindowParam window)
 {
   return SDL_GetWindowDisplayScale(window);
+}
+
+inline float Window::GetDisplayScale() const
+{
+  return SDL::GetWindowDisplayScale(m_resource);
 }
 
 /**
@@ -33538,6 +33782,11 @@ inline void SetWindowFullscreenMode(WindowParam window,
   CheckError(SDL_SetWindowFullscreenMode(window, mode));
 }
 
+inline void Window::SetFullscreenMode(OptionalRef<const DisplayMode> mode)
+{
+  SDL::SetWindowFullscreenMode(m_resource, mode);
+}
+
 /**
  * Query the display mode to use when a window is visible at fullscreen.
  *
@@ -33557,6 +33806,11 @@ inline const DisplayMode* GetWindowFullscreenMode(WindowParam window)
   return SDL_GetWindowFullscreenMode(window);
 }
 
+inline const DisplayMode* Window::GetFullscreenMode() const
+{
+  return SDL::GetWindowFullscreenMode(m_resource);
+}
+
 /**
  * Get the raw ICC profile data for the screen the window is currently on.
  *
@@ -33574,6 +33828,11 @@ inline OwnPtr<void> GetWindowICCProfile(WindowParam window)
   return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(window, &size))};
 }
 
+inline OwnPtr<void> Window::GetICCProfile() const
+{
+  return SDL::GetWindowICCProfile(m_resource);
+}
+
 /**
  * Get the pixel format associated with the window.
  *
@@ -33588,6 +33847,11 @@ inline OwnPtr<void> GetWindowICCProfile(WindowParam window)
 inline PixelFormat GetWindowPixelFormat(WindowParam window)
 {
   return CheckError(SDL_GetWindowPixelFormat(window));
+}
+
+inline PixelFormat Window::GetPixelFormat() const
+{
+  return SDL::GetWindowPixelFormat(m_resource);
 }
 
 /**
@@ -33698,7 +33962,7 @@ inline Window CreateWindow(StringParam title,
                            const PointRaw& size,
                            WindowFlags flags)
 {
-  return Window(SDL_CreateWindow(title, size.x, size.y, flags));
+  return Window(std::move(title), size, flags);
 }
 
 /**
@@ -33755,10 +34019,8 @@ inline Window CreateWindow(StringParam title,
  * hidden will be restored when the parent is shown.
  *
  * @param parent the parent of the window, must not be nullptr.
- * @param offset_x the x position of the popup window relative to the origin
- *                 of the parent.
- * @param offset_y the y position of the popup window relative to the origin
- *                 of the parent window.
+ * @param offset the x, y position of the popup window relative to the origin
+ *               of the parent.
  * @param size the width and height of the window.
  * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
  *              additional WindowFlags OR'd together.
@@ -33779,8 +34041,7 @@ inline Window CreatePopupWindow(WindowParam parent,
                                 const PointRaw& size,
                                 WindowFlags flags)
 {
-  return Window(
-    SDL_CreatePopupWindow(parent, offset.x, offset.y, size.x, size.y, flags));
+  return Window(parent, offset, size, flags);
 }
 
 /**
@@ -33912,7 +34173,7 @@ inline Window CreatePopupWindow(WindowParam parent,
  */
 inline Window CreateWindowWithProperties(PropertiesParam props)
 {
-  return Window(SDL_CreateWindowWithProperties(props));
+  return Window(props);
 }
 
 namespace prop::Window {
@@ -34119,6 +34380,8 @@ inline WindowID GetWindowID(WindowParam window)
   return CheckError(SDL_GetWindowID(window));
 }
 
+inline WindowID Window::GetID() const { return SDL::GetWindowID(m_resource); }
+
 /**
  * Get a window from a stored ID.
  *
@@ -34142,7 +34405,7 @@ inline WindowRef GetWindowFromID(WindowID id)
 
 inline WindowRef Window::FromID(WindowID id)
 {
-  return {SDL_GetWindowFromID(id)};
+  return SDL::GetWindowFromID(id);
 }
 
 /**
@@ -34165,7 +34428,7 @@ inline WindowRef GetWindowParent(WindowParam window)
 
 inline WindowRef Window::GetParent() const
 {
-  return GetWindowParent(m_resource);
+  return SDL::GetWindowParent(m_resource);
 }
 
 /**
@@ -34293,6 +34556,11 @@ inline PropertiesRef GetWindowProperties(WindowParam window)
   return {CheckError(SDL_GetWindowProperties(window))};
 }
 
+inline PropertiesRef Window::GetProperties() const
+{
+  return SDL::GetWindowProperties(m_resource);
+}
+
 /**
  * Get the window flags.
  *
@@ -34316,6 +34584,11 @@ inline WindowFlags GetWindowFlags(WindowParam window)
   return SDL_GetWindowFlags(window);
 }
 
+inline WindowFlags Window::GetFlags() const
+{
+  return SDL::GetWindowFlags(m_resource);
+}
+
 /**
  * Set the title of a window.
  *
@@ -34336,6 +34609,11 @@ inline void SetWindowTitle(WindowParam window, StringParam title)
   CheckError(SDL_SetWindowTitle(window, title));
 }
 
+inline void Window::SetTitle(StringParam title)
+{
+  SDL::SetWindowTitle(m_resource, std::move(title));
+}
+
 /**
  * Get the title of a window.
  *
@@ -34352,6 +34630,11 @@ inline void SetWindowTitle(WindowParam window, StringParam title)
 inline const char* GetWindowTitle(WindowParam window)
 {
   return SDL_GetWindowTitle(window);
+}
+
+inline const char* Window::GetTitle() const
+{
+  return SDL::GetWindowTitle(m_resource);
 }
 
 /**
@@ -34378,6 +34661,11 @@ inline const char* GetWindowTitle(WindowParam window)
 inline void SetWindowIcon(WindowParam window, SurfaceParam icon)
 {
   CheckError(SDL_SetWindowIcon(window, icon));
+}
+
+inline void Window::SetIcon(SurfaceParam icon)
+{
+  SDL::SetWindowIcon(m_resource, icon);
 }
 
 /**
@@ -34421,6 +34709,11 @@ inline void SetWindowPosition(WindowParam window, const PointRaw& p)
   CheckError(SDL_SetWindowPosition(window, p.x, p.y));
 }
 
+inline void Window::SetPosition(const PointRaw& p)
+{
+  SDL::SetWindowPosition(m_resource, p);
+}
+
 /**
  * Get the position of a window.
  *
@@ -34446,6 +34739,11 @@ inline void SetWindowPosition(WindowParam window, const PointRaw& p)
 inline void GetWindowPosition(WindowParam window, int* x, int* y)
 {
   CheckError(SDL_GetWindowPosition(window, x, y));
+}
+
+inline void Window::GetPosition(int* x, int* y) const
+{
+  SDL::GetWindowPosition(m_resource, x, y);
 }
 
 /**
@@ -34486,6 +34784,11 @@ inline void SetWindowSize(WindowParam window, const PointRaw& p)
   CheckError(SDL_SetWindowSize(window, p.x, p.y));
 }
 
+inline void Window::SetSize(const PointRaw& p)
+{
+  SDL::SetWindowSize(m_resource, p);
+}
+
 /**
  * Get the size of a window's client area.
  *
@@ -34511,6 +34814,11 @@ inline void GetWindowSize(WindowParam window, int* w, int* h)
   CheckError(SDL_GetWindowSize(window, w, h));
 }
 
+inline void Window::GetSize(int* w, int* h) const
+{
+  SDL::GetWindowSize(m_resource, w, h);
+}
+
 /**
  * Get the safe area for this window.
  *
@@ -34533,6 +34841,11 @@ inline Rect GetWindowSafeArea(WindowParam window)
   Rect rect;
   CheckError(SDL_GetWindowSafeArea(window, &rect));
   return rect;
+}
+
+inline Rect Window::GetSafeArea() const
+{
+  return SDL::GetWindowSafeArea(m_resource);
 }
 
 /**
@@ -34580,6 +34893,11 @@ inline void SetWindowAspectRatio(WindowParam window,
   CheckError(SDL_SetWindowAspectRatio(window, min_aspect, max_aspect));
 }
 
+inline void Window::SetAspectRatio(float min_aspect, float max_aspect)
+{
+  SDL::SetWindowAspectRatio(m_resource, min_aspect, max_aspect);
+}
+
 /**
  * Get the size of a window's client area.
  *
@@ -34601,6 +34919,11 @@ inline void GetWindowAspectRatio(WindowParam window,
                                  float* max_aspect)
 {
   CheckError(SDL_GetWindowAspectRatio(window, min_aspect, max_aspect));
+}
+
+inline void Window::GetAspectRatio(float* min_aspect, float* max_aspect) const
+{
+  SDL::GetWindowAspectRatio(m_resource, min_aspect, max_aspect);
 }
 
 /**
@@ -34646,6 +34969,14 @@ inline void GetWindowBordersSize(WindowParam window,
   CheckError(SDL_GetWindowBordersSize(window, top, left, bottom, right));
 }
 
+inline void Window::GetBordersSize(int* top,
+                                   int* left,
+                                   int* bottom,
+                                   int* right) const
+{
+  SDL::GetWindowBordersSize(m_resource, top, left, bottom, right);
+}
+
 /**
  * Get the size of a window's client area, in pixels.
  *
@@ -34668,6 +34999,11 @@ inline void GetWindowSizeInPixels(WindowParam window, int* w, int* h)
   CheckError(SDL_GetWindowSizeInPixels(window, w, h));
 }
 
+inline void Window::GetSizeInPixels(int* w, int* h) const
+{
+  SDL::GetWindowSizeInPixels(m_resource, w, h);
+}
+
 /**
  * Set the minimum size of a window's client area.
  *
@@ -34685,6 +35021,11 @@ inline void GetWindowSizeInPixels(WindowParam window, int* w, int* h)
 inline void SetWindowMinimumSize(WindowParam window, const PointRaw& p)
 {
   CheckError(SDL_SetWindowMinimumSize(window, p.x, p.y));
+}
+
+inline void Window::SetMinimumSize(const PointRaw& p)
+{
+  SDL::SetWindowMinimumSize(m_resource, p);
 }
 
 /**
@@ -34709,6 +35050,11 @@ inline void GetWindowMinimumSize(WindowParam window, int* w, int* h)
   CheckError(SDL_GetWindowMinimumSize(window, w, h));
 }
 
+inline void Window::GetMinimumSize(int* w, int* h) const
+{
+  SDL::GetWindowMinimumSize(m_resource, w, h);
+}
+
 /**
  * Set the maximum size of a window's client area.
  *
@@ -34726,6 +35072,11 @@ inline void GetWindowMinimumSize(WindowParam window, int* w, int* h)
 inline void SetWindowMaximumSize(WindowParam window, const PointRaw& p)
 {
   CheckError(SDL_SetWindowMaximumSize(window, p.x, p.y));
+}
+
+inline void Window::SetMaximumSize(const PointRaw& p)
+{
+  SDL::SetWindowMaximumSize(m_resource, p);
 }
 
 /**
@@ -34748,6 +35099,11 @@ inline void SetWindowMaximumSize(WindowParam window, const PointRaw& p)
 inline void GetWindowMaximumSize(WindowParam window, int* w, int* h)
 {
   CheckError(SDL_GetWindowMaximumSize(window, w, h));
+}
+
+inline void Window::GetMaximumSize(int* w, int* h) const
+{
+  SDL::GetWindowMaximumSize(m_resource, w, h);
 }
 
 /**
@@ -34774,6 +35130,11 @@ inline void SetWindowBordered(WindowParam window, bool bordered)
   CheckError(SDL_SetWindowBordered(window, bordered));
 }
 
+inline void Window::SetBordered(bool bordered)
+{
+  SDL::SetWindowBordered(m_resource, bordered);
+}
+
 /**
  * Set the user-resizable state of a window.
  *
@@ -34798,6 +35159,11 @@ inline void SetWindowResizable(WindowParam window, bool resizable)
   CheckError(SDL_SetWindowResizable(window, resizable));
 }
 
+inline void Window::SetResizable(bool resizable)
+{
+  SDL::SetWindowResizable(m_resource, resizable);
+}
+
 /**
  * Set the window to always be above the others.
  *
@@ -34819,6 +35185,11 @@ inline void SetWindowAlwaysOnTop(WindowParam window, bool on_top)
   CheckError(SDL_SetWindowAlwaysOnTop(window, on_top));
 }
 
+inline void Window::SetAlwaysOnTop(bool on_top)
+{
+  SDL::SetWindowAlwaysOnTop(m_resource, on_top);
+}
+
 /**
  * Show a window.
  *
@@ -34837,6 +35208,8 @@ inline void ShowWindow(WindowParam window)
   CheckError(SDL_ShowWindow(window));
 }
 
+inline void Window::Show() { SDL::ShowWindow(m_resource); }
+
 /**
  * Hide a window.
  *
@@ -34854,6 +35227,8 @@ inline void HideWindow(WindowParam window)
 {
   CheckError(SDL_HideWindow(window));
 }
+
+inline void Window::Hide() { SDL::HideWindow(m_resource); }
 
 /**
  * Request that a window be raised above other windows and gain the input
@@ -34876,6 +35251,8 @@ inline void RaiseWindow(WindowParam window)
 {
   CheckError(SDL_RaiseWindow(window));
 }
+
+inline void Window::Raise() { SDL::RaiseWindow(m_resource); }
 
 /**
  * Request that the window be made as large as possible.
@@ -34913,6 +35290,8 @@ inline void MaximizeWindow(WindowParam window)
   CheckError(SDL_MaximizeWindow(window));
 }
 
+inline void Window::Maximize() { SDL::MaximizeWindow(m_resource); }
+
 /**
  * Request that the window be minimized to an iconic representation.
  *
@@ -34943,6 +35322,8 @@ inline void MinimizeWindow(WindowParam window)
 {
   CheckError(SDL_MinimizeWindow(window));
 }
+
+inline void Window::Minimize() { SDL::MinimizeWindow(m_resource); }
 
 /**
  * Request that the size and position of a minimized or maximized window be
@@ -34975,6 +35356,8 @@ inline void RestoreWindow(WindowParam window)
 {
   CheckError(SDL_RestoreWindow(window));
 }
+
+inline void Window::Restore() { SDL::RestoreWindow(m_resource); }
 
 /**
  * Request that the window's fullscreen state be changed.
@@ -35010,6 +35393,11 @@ inline void SetWindowFullscreen(WindowParam window, bool fullscreen)
   CheckError(SDL_SetWindowFullscreen(window, fullscreen));
 }
 
+inline void Window::SetFullscreen(bool fullscreen)
+{
+  SDL::SetWindowFullscreen(m_resource, fullscreen);
+}
+
 /**
  * Block until any pending window state is finalized.
  *
@@ -35043,6 +35431,8 @@ inline void SyncWindow(WindowParam window)
   CheckError(SDL_SyncWindow(window));
 }
 
+inline void Window::Sync() { SDL::SyncWindow(m_resource); }
+
 /**
  * Return whether the window has a surface associated with it.
  *
@@ -35059,6 +35449,11 @@ inline void SyncWindow(WindowParam window)
 inline bool WindowHasSurface(WindowParam window)
 {
   return SDL_WindowHasSurface(window);
+}
+
+inline bool Window::HasSurface() const
+{
+  return SDL::WindowHasSurface(m_resource);
 }
 
 /**
@@ -35093,6 +35488,11 @@ inline Surface GetWindowSurface(WindowParam window)
   return Surface::Borrow(SDL_GetWindowSurface(window));
 }
 
+inline Surface Window::GetSurface()
+{
+  return SDL::GetWindowSurface(m_resource);
+}
+
 /**
  * Toggle VSync for the window surface.
  *
@@ -35121,6 +35521,11 @@ inline void SetWindowSurfaceVSync(WindowParam window, int vsync)
   CheckError(SDL_SetWindowSurfaceVSync(window, vsync));
 }
 
+inline void Window::SetSurfaceVSync(int vsync)
+{
+  SDL::SetWindowSurfaceVSync(m_resource, vsync);
+}
+
 constexpr int WINDOW_SURFACE_VSYNC_DISABLED = SDL_WINDOW_SURFACE_VSYNC_DISABLED;
 
 constexpr int WINDOW_SURFACE_VSYNC_ADAPTIVE = SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE;
@@ -35142,6 +35547,11 @@ inline int GetWindowSurfaceVSync(WindowParam window)
   int vsync;
   CheckError(SDL_GetWindowSurfaceVSync(window, &vsync));
   return vsync;
+}
+
+inline int Window::GetSurfaceVSync() const
+{
+  return SDL::GetWindowSurfaceVSync(m_resource);
 }
 
 /**
@@ -35166,6 +35576,8 @@ inline void UpdateWindowSurface(WindowParam window)
 {
   CheckError(SDL_UpdateWindowSurface(window));
 }
+
+inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
 
 /**
  * Copy areas of the window surface to the screen.
@@ -35199,6 +35611,11 @@ inline void UpdateWindowSurfaceRects(WindowParam window,
   CheckError(SDL_UpdateWindowSurfaceRects(window, rects.data(), rects.size()));
 }
 
+inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
+{
+  SDL::UpdateWindowSurfaceRects(m_resource, rects);
+}
+
 /**
  * Destroy the surface associated with the window.
  *
@@ -35216,6 +35633,8 @@ inline void DestroyWindowSurface(WindowParam window)
 {
   CheckError(SDL_DestroyWindowSurface(window));
 }
+
+inline void Window::DestroySurface() { SDL::DestroyWindowSurface(m_resource); }
 
 /**
  * Set a window's keyboard grab mode.
@@ -35252,6 +35671,11 @@ inline void SetWindowKeyboardGrab(WindowParam window, bool grabbed)
   CheckError(SDL_SetWindowKeyboardGrab(window, grabbed));
 }
 
+inline void Window::SetKeyboardGrab(bool grabbed)
+{
+  SDL::SetWindowKeyboardGrab(m_resource, grabbed);
+}
+
 /**
  * Set a window's mouse grab mode.
  *
@@ -35275,6 +35699,11 @@ inline void SetWindowMouseGrab(WindowParam window, bool grabbed)
   CheckError(SDL_SetWindowMouseGrab(window, grabbed));
 }
 
+inline void Window::SetMouseGrab(bool grabbed)
+{
+  SDL::SetWindowMouseGrab(m_resource, grabbed);
+}
+
 /**
  * Get a window's keyboard grab mode.
  *
@@ -35290,6 +35719,11 @@ inline void SetWindowMouseGrab(WindowParam window, bool grabbed)
 inline bool GetWindowKeyboardGrab(WindowParam window)
 {
   return SDL_GetWindowKeyboardGrab(window);
+}
+
+inline bool Window::GetKeyboardGrab() const
+{
+  return SDL::GetWindowKeyboardGrab(m_resource);
 }
 
 /**
@@ -35312,6 +35746,11 @@ inline bool GetWindowMouseGrab(WindowParam window)
   return SDL_GetWindowMouseGrab(window);
 }
 
+inline bool Window::GetMouseGrab() const
+{
+  return SDL::GetWindowMouseGrab(m_resource);
+}
+
 /**
  * Get the window that currently has an input grab enabled.
  *
@@ -35326,7 +35765,7 @@ inline bool GetWindowMouseGrab(WindowParam window)
  */
 inline WindowRef GetGrabbedWindow() { return {SDL_GetGrabbedWindow()}; }
 
-inline WindowRef Window::GetGrabbed() { return GetGrabbedWindow(); }
+inline WindowRef Window::GetGrabbed() { return SDL::GetGrabbedWindow(); }
 
 /**
  * Confines the cursor to the specified area of a window.
@@ -35352,6 +35791,11 @@ inline void SetWindowMouseRect(WindowParam window, const RectRaw& rect)
   CheckError(SDL_SetWindowMouseRect(window, &rect));
 }
 
+inline void Window::SetMouseRect(const RectRaw& rect)
+{
+  SDL::SetWindowMouseRect(m_resource, rect);
+}
+
 /**
  * Get the mouse confinement rectangle of a window.
  *
@@ -35370,6 +35814,11 @@ inline void SetWindowMouseRect(WindowParam window, const RectRaw& rect)
 inline const RectRaw* GetWindowMouseRect(WindowParam window)
 {
   return SDL_GetWindowMouseRect(window);
+}
+
+inline const RectRaw* Window::GetMouseRect() const
+{
+  return SDL::GetWindowMouseRect(m_resource);
 }
 
 /**
@@ -35395,6 +35844,11 @@ inline void SetWindowOpacity(WindowParam window, float opacity)
   CheckError(SDL_SetWindowOpacity(window, opacity));
 }
 
+inline void Window::SetOpacity(float opacity)
+{
+  SDL::SetWindowOpacity(m_resource, opacity);
+}
+
 /**
  * Get the opacity of a window.
  *
@@ -35414,6 +35868,11 @@ inline void SetWindowOpacity(WindowParam window, float opacity)
 inline float GetWindowOpacity(WindowParam window)
 {
   return SDL_GetWindowOpacity(window);
+}
+
+inline float Window::GetOpacity() const
+{
+  return SDL::GetWindowOpacity(m_resource);
 }
 
 /**
@@ -35452,6 +35911,11 @@ inline void SetWindowParent(WindowParam window, WindowParam parent)
   CheckError(SDL_SetWindowParent(window, parent));
 }
 
+inline void Window::SetParent(WindowParam parent)
+{
+  SDL::SetWindowParent(m_resource, parent);
+}
+
 /**
  * Toggle the state of the window as modal.
  *
@@ -35474,6 +35938,11 @@ inline void SetWindowModal(WindowParam window, bool modal)
   CheckError(SDL_SetWindowModal(window, modal));
 }
 
+inline void Window::SetModal(bool modal)
+{
+  SDL::SetWindowModal(m_resource, modal);
+}
+
 /**
  * Set whether the window may have input focus.
  *
@@ -35488,6 +35957,11 @@ inline void SetWindowModal(WindowParam window, bool modal)
 inline void SetWindowFocusable(WindowParam window, bool focusable)
 {
   CheckError(SDL_SetWindowFocusable(window, focusable));
+}
+
+inline void Window::SetFocusable(bool focusable)
+{
+  SDL::SetWindowFocusable(m_resource, focusable);
 }
 
 /**
@@ -35513,6 +35987,11 @@ inline void SetWindowFocusable(WindowParam window, bool focusable)
 inline void ShowWindowSystemMenu(WindowParam window, const PointRaw& p)
 {
   CheckError(SDL_ShowWindowSystemMenu(window, p.x, p.y));
+}
+
+inline void Window::ShowSystemMenu(const PointRaw& p)
+{
+  SDL::ShowWindowSystemMenu(m_resource, p);
 }
 
 /**
@@ -35646,6 +36125,11 @@ inline void SetWindowShape(WindowParam window, SurfaceParam shape)
   CheckError(SDL_SetWindowShape(window, shape));
 }
 
+inline void Window::SetShape(SurfaceParam shape)
+{
+  SDL::SetWindowShape(m_resource, shape);
+}
+
 /**
  * Request a window to demand attention from the user.
  *
@@ -35660,6 +36144,11 @@ inline void SetWindowShape(WindowParam window, SurfaceParam shape)
 inline void FlashWindow(WindowParam window, FlashOperation operation)
 {
   CheckError(SDL_FlashWindow(window, operation));
+}
+
+inline void Window::Flash(FlashOperation operation)
+{
+  SDL::FlashWindow(m_resource, operation);
 }
 
 /**
@@ -35683,6 +36172,12 @@ inline void FlashWindow(WindowParam window, FlashOperation operation)
  * @sa Window.Window
  */
 inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
+
+inline void Window::Destroy()
+{
+  SDL_DestroyWindow(m_resource);
+  m_resource = nullptr;
+}
 
 /**
  * Check whether the screensaver is currently enabled.
@@ -35960,7 +36455,7 @@ inline void GL_GetAttribute(GLAttr attr, int* value)
  */
 inline GLContext GL_CreateContext(WindowParam window)
 {
-  return GLContext(SDL_GL_CreateContext(window));
+  return GLContext(window);
 }
 
 /**
@@ -35981,6 +36476,11 @@ inline GLContext GL_CreateContext(WindowParam window)
 inline void GL_MakeCurrent(WindowParam window, GLContext context)
 {
   CheckError(SDL_GL_MakeCurrent(window, context.get()));
+}
+
+inline void GLContext::MakeCurrent(WindowParam window)
+{
+  SDL::GL_MakeCurrent(window, m_resource);
 }
 
 /**
@@ -36180,6 +36680,12 @@ inline void GL_SwapWindow(WindowParam window)
 inline void GL_DestroyContext(GLContextRaw context)
 {
   CheckError(SDL_GL_DestroyContext(context));
+}
+
+inline void GLContext::Destroy()
+{
+  CheckError(SDL_GL_DestroyContext(m_resource));
+  m_resource = nullptr;
 }
 
 /// @}
@@ -38350,11 +38856,7 @@ public:
    *
    * @sa Renderer.Renderer
    */
-  void Destroy()
-  {
-    SDL_DestroyRenderer(m_resource);
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   /**
    * Get the window associated with a renderer.
@@ -38366,10 +38868,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  WindowRef GetWindow()
-  {
-    return {CheckError(SDL_GetRenderWindow(m_resource))};
-  }
+  WindowRef GetWindow();
 
   /**
    * Get the name of a renderer.
@@ -38383,7 +38882,7 @@ public:
    *
    * @sa Renderer.Renderer
    */
-  const char* GetName() const { return SDL_GetRendererName(m_resource); }
+  const char* GetName() const;
 
   /**
    * Get the output size in pixels of a rendering context.
@@ -38420,10 +38919,7 @@ public:
    *
    * @sa Renderer.GetCurrentOutputSize
    */
-  void GetOutputSize(int* w, int* h) const
-  {
-    CheckError(SDL_GetRenderOutputSize(m_resource, w, h));
-  }
+  void GetOutputSize(int* w, int* h) const;
 
   /**
    * Get the current output size in pixels of a rendering context.
@@ -38467,10 +38963,7 @@ public:
    *
    * @sa Renderer.GetOutputSize
    */
-  void GetCurrentOutputSize(int* w, int* h) const
-  {
-    CheckError(SDL_GetCurrentRenderOutputSize(m_resource, w, h));
-  }
+  void GetCurrentOutputSize(int* w, int* h) const;
 
   /**
    * Get the properties associated with a renderer.
@@ -38555,10 +39048,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesRef GetProperties() const
-  {
-    return {CheckError(SDL_GetRendererProperties(m_resource))};
-  }
+  PropertiesRef GetProperties() const;
 
   /**
    * Set target texture back to window
@@ -38599,10 +39089,7 @@ public:
    *
    * @sa Renderer.GetTarget
    */
-  void SetTarget(TextureParam texture)
-  {
-    CheckError(SDL_SetRenderTarget(m_resource, texture));
-  }
+  void SetTarget(TextureParam texture);
 
   /**
    * Get the current render target.
@@ -38672,11 +39159,7 @@ public:
    * @sa Renderer.GetLogicalPresentationRect
    */
   void SetLogicalPresentation(const PointRaw& size,
-                              RendererLogicalPresentation mode)
-  {
-    CheckError(
-      SDL_SetRenderLogicalPresentation(m_resource, size.x, size.y, mode));
-  }
+                              RendererLogicalPresentation mode);
 
   /**
    * Get device independent resolution and presentation mode for rendering.
@@ -38722,10 +39205,7 @@ public:
    */
   void GetLogicalPresentation(int* w,
                               int* h,
-                              RendererLogicalPresentation* mode) const
-  {
-    CheckError(SDL_GetRenderLogicalPresentation(m_resource, w, h, mode));
-  }
+                              RendererLogicalPresentation* mode) const;
 
   /**
    * Get the final presentation rectangle for rendering.
@@ -38748,12 +39228,7 @@ public:
    *
    * @sa Renderer.SetLogicalPresentation
    */
-  FRect GetLogicalPresentationRect() const
-  {
-    FRect rect;
-    CheckError(SDL_GetRenderLogicalPresentationRect(m_resource, &rect));
-    return rect;
-  }
+  FRect GetLogicalPresentationRect() const;
 
   /**
    * Get a point in render coordinates when given a point in window coordinates.
@@ -38776,13 +39251,7 @@ public:
    * @sa Renderer.SetLogicalPresentation
    * @sa Renderer.SetScale
    */
-  FPoint RenderCoordinatesFromWindow(const FPointRaw& window_coord) const
-  {
-    FPoint p;
-    CheckError(SDL_RenderCoordinatesFromWindow(
-      m_resource, window_coord.x, window_coord.y, &p.x, &p.y));
-    return p;
-  }
+  FPoint RenderCoordinatesFromWindow(const FPointRaw& window_coord) const;
 
   /**
    * Get a point in window coordinates when given a point in render coordinates.
@@ -38806,13 +39275,7 @@ public:
    * @sa Renderer.SetScale
    * @sa Renderer.SetViewport
    */
-  FPoint RenderCoordinatesToWindow(const FPointRaw& coord) const
-  {
-    FPoint p;
-    CheckError(
-      SDL_RenderCoordinatesToWindow(m_resource, coord.x, coord.y, &p.x, &p.y));
-    return p;
-  }
+  FPoint RenderCoordinatesToWindow(const FPointRaw& coord) const;
 
   /**
    * Convert the coordinates in an event to render coordinates.
@@ -38846,10 +39309,7 @@ public:
    *
    * @sa Renderer.RenderCoordinatesFromWindow
    */
-  void ConvertEventToRenderCoordinates(Event* event) const
-  {
-    CheckError(SDL_ConvertEventToRenderCoordinates(m_resource, event));
-  }
+  void ConvertEventToRenderCoordinates(Event* event) const;
 
   /**
    * Reset the drawing area for rendering to the entire target
@@ -38891,10 +39351,7 @@ public:
    * @sa Renderer.GetViewport
    * @sa Renderer.IsViewportSet
    */
-  void SetViewport(OptionalRef<const RectRaw> rect)
-  {
-    CheckError(SDL_SetRenderViewport(m_resource, rect));
-  }
+  void SetViewport(OptionalRef<const RectRaw> rect);
 
   /**
    * Get the drawing area for the current target.
@@ -38912,12 +39369,7 @@ public:
    * @sa Renderer.IsViewportSet
    * @sa Renderer.SetViewport
    */
-  Rect GetViewport() const
-  {
-    Rect rect;
-    CheckError(SDL_GetRenderViewport(m_resource, &rect));
-    return rect;
-  }
+  Rect GetViewport() const;
 
   /**
    * Return whether an explicit rectangle was set as the viewport.
@@ -38938,7 +39390,7 @@ public:
    * @sa Renderer.GetViewport
    * @sa Renderer.SetViewport
    */
-  bool IsViewportSet() const { return SDL_RenderViewportSet(m_resource); }
+  bool IsViewportSet() const;
 
   /**
    * Get the safe area for rendering within the current viewport.
@@ -38957,12 +39409,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Rect GetSafeArea() const
-  {
-    Rect rect;
-    CheckError(SDL_GetRenderSafeArea(m_resource, &rect));
-    return rect;
-  }
+  Rect GetSafeArea() const;
 
   /**
    * Reset the clip rectangle for rendering to the entire render target
@@ -38999,10 +39446,7 @@ public:
    * @sa Renderer.ResetClipRect()
    * @sa Renderer.IsClipEnabled
    */
-  void SetClipRect(OptionalRef<const RectRaw> rect)
-  {
-    CheckError(SDL_SetRenderClipRect(m_resource, rect));
-  }
+  void SetClipRect(OptionalRef<const RectRaw> rect);
 
   /**
    * Get the clip rectangle for the current target.
@@ -39021,12 +39465,7 @@ public:
    * @sa Renderer.IsClipEnabled
    * @sa Renderer.SetClipRect
    */
-  Rect GetClipRect() const
-  {
-    Rect rect;
-    CheckError(SDL_GetRenderClipRect(m_resource, &rect));
-    return rect;
-  }
+  Rect GetClipRect() const;
 
   /**
    * Get whether clipping is enabled on the given render target.
@@ -39044,7 +39483,7 @@ public:
    * @sa Renderer.GetClipRect
    * @sa Renderer.SetClipRect
    */
-  bool IsClipEnabled() const { return SDL_RenderClipEnabled(m_resource); }
+  bool IsClipEnabled() const;
 
   /**
    * Set the drawing scale for rendering on the current target.
@@ -39069,10 +39508,7 @@ public:
    *
    * @sa Renderer.GetScale
    */
-  void SetScale(const FPointRaw& scale)
-  {
-    CheckError(SDL_SetRenderScale(m_resource, scale.x, scale.y));
-  }
+  void SetScale(const FPointRaw& scale);
 
   /**
    * Get the drawing scale for the current target.
@@ -39112,10 +39548,7 @@ public:
    *
    * @sa Renderer.SetScale
    */
-  void GetScale(float* scaleX, float* scaleY) const
-  {
-    CheckError(SDL_GetRenderScale(m_resource, scaleX, scaleY));
-  }
+  void GetScale(float* scaleX, float* scaleY) const;
 
   /**
    * Set the color used for drawing operations.
@@ -39133,10 +39566,7 @@ public:
    * @sa Renderer.GetDrawColor
    * @sa Renderer.SetDrawColorFloat
    */
-  void SetDrawColor(ColorRaw c)
-  {
-    CheckError(SDL_SetRenderDrawColor(m_resource, c.r, c.g, c.b, c.a));
-  }
+  void SetDrawColor(ColorRaw c);
 
   /**
    * Set the color used for drawing operations (Rect, Line and Clear).
@@ -39154,10 +39584,7 @@ public:
    * @sa Renderer.GetDrawColorFloat
    * @sa Renderer.SetDrawColor
    */
-  void SetDrawColorFloat(const FColorRaw& c)
-  {
-    CheckError(SDL_SetRenderDrawColorFloat(m_resource, c.r, c.g, c.b, c.a));
-  }
+  void SetDrawColorFloat(const FColorRaw& c);
 
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
@@ -39200,10 +39627,7 @@ public:
    * @sa Renderer.GetDrawColorFloat
    * @sa Renderer.SetDrawColor
    */
-  void GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
-  {
-    CheckError(SDL_GetRenderDrawColor(m_resource, r, g, b, a));
-  }
+  void GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const;
 
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
@@ -39245,10 +39669,7 @@ public:
    * @sa Renderer.SetDrawColorFloat
    * @sa Renderer.GetDrawColor
    */
-  void GetDrawColorFloat(float* r, float* g, float* b, float* a) const
-  {
-    CheckError(SDL_GetRenderDrawColorFloat(m_resource, r, g, b, a));
-  }
+  void GetDrawColorFloat(float* r, float* g, float* b, float* a) const;
 
   /**
    * Set the color scale used for render operations.
@@ -39270,10 +39691,7 @@ public:
    *
    * @sa Renderer.GetColorScale
    */
-  void SetColorScale(float scale)
-  {
-    CheckError(SDL_SetRenderColorScale(m_resource, scale));
-  }
+  void SetColorScale(float scale);
 
   /**
    * Get the color scale used for render operations.
@@ -39287,12 +39705,7 @@ public:
    *
    * @sa Renderer.SetColorScale
    */
-  float GetColorScale() const
-  {
-    float scale;
-    CheckError(SDL_GetRenderColorScale(m_resource, &scale));
-    return scale;
-  }
+  float GetColorScale() const;
 
   /**
    * Set the blend mode used for drawing operations (Fill and Line).
@@ -39308,10 +39721,7 @@ public:
    *
    * @sa Renderer.GetDrawBlendMode
    */
-  void SetDrawBlendMode(BlendMode blendMode)
-  {
-    CheckError(SDL_SetRenderDrawBlendMode(m_resource, blendMode));
-  }
+  void SetDrawBlendMode(BlendMode blendMode);
 
   /**
    * Get the blend mode used for drawing operations.
@@ -39325,12 +39735,7 @@ public:
    *
    * @sa Renderer.SetDrawBlendMode
    */
-  BlendMode GetDrawBlendMode() const
-  {
-    BlendMode blendMode;
-    CheckError(SDL_GetRenderDrawBlendMode(m_resource, &blendMode));
-    return blendMode;
-  }
+  BlendMode GetDrawBlendMode() const;
 
   /**
    * Clear the current rendering target with the drawing color.
@@ -39348,7 +39753,7 @@ public:
    *
    * @sa Renderer.SetDrawColor
    */
-  void RenderClear() { CheckError(SDL_RenderClear(m_resource)); }
+  void RenderClear();
 
   /**
    * Draw a point on the current rendering target at subpixel precision.
@@ -39362,10 +39767,7 @@ public:
    *
    * @sa Renderer.RenderPoints
    */
-  void RenderPoint(const FPointRaw& p)
-  {
-    CheckError(SDL_RenderPoint(m_resource, p.x, p.y));
-  }
+  void RenderPoint(const FPointRaw& p);
 
   /**
    * Draw multiple points on the current rendering target at subpixel precision.
@@ -39379,10 +39781,7 @@ public:
    *
    * @sa Renderer.RenderPoint
    */
-  void RenderPoints(SpanRef<const FPointRaw> points)
-  {
-    CheckError(SDL_RenderPoints(m_resource, points.data(), points.size()));
-  }
+  void RenderPoints(SpanRef<const FPointRaw> points);
 
   /**
    * Draw a line on the current rendering target at subpixel precision.
@@ -39397,10 +39796,7 @@ public:
    *
    * @sa Renderer.RenderLines
    */
-  void RenderLine(const FPointRaw& p1, const FPointRaw& p2)
-  {
-    CheckError(SDL_RenderLine(m_resource, p1.x, p1.y, p2.x, p2.y));
-  }
+  void RenderLine(const FPointRaw& p1, const FPointRaw& p2);
 
   /**
    * Draw a series of connected lines on the current rendering target at
@@ -39415,10 +39811,7 @@ public:
    *
    * @sa Renderer.RenderLine
    */
-  void RenderLines(SpanRef<const FPointRaw> points)
-  {
-    CheckError(SDL_RenderLines(m_resource, points.data(), points.size()));
-  }
+  void RenderLines(SpanRef<const FPointRaw> points);
 
   /**
    * Draw a rectangle on the current rendering target at subpixel precision.
@@ -39433,10 +39826,7 @@ public:
    *
    * @sa Renderer.RenderRects
    */
-  void RenderRect(OptionalRef<const FRectRaw> rect)
-  {
-    CheckError(SDL_RenderRect(m_resource, rect));
-  }
+  void RenderRect(OptionalRef<const FRectRaw> rect);
 
   /**
    * Draw some number of rectangles on the current rendering target at subpixel
@@ -39451,10 +39841,7 @@ public:
    *
    * @sa Renderer.RenderRect
    */
-  void RenderRects(SpanRef<const FRectRaw> rects)
-  {
-    CheckError(SDL_RenderRects(m_resource, rects.data(), rects.size()));
-  }
+  void RenderRects(SpanRef<const FRectRaw> rects);
 
   /**
    * Fill a rectangle on the current rendering target with the drawing color at
@@ -39470,10 +39857,7 @@ public:
    *
    * @sa Renderer.RenderFillRects
    */
-  void RenderFillRect(OptionalRef<const FRectRaw> rect)
-  {
-    CheckError(SDL_RenderFillRect(m_resource, rect));
-  }
+  void RenderFillRect(OptionalRef<const FRectRaw> rect);
 
   /**
    * Fill some number of rectangles on the current rendering target with the
@@ -39488,10 +39872,7 @@ public:
    *
    * @sa Renderer.RenderFillRect
    */
-  void RenderFillRects(SpanRef<const FRectRaw> rects)
-  {
-    CheckError(SDL_RenderFillRects(m_resource, rects.data(), rects.size()));
-  }
+  void RenderFillRects(SpanRef<const FRectRaw> rects);
 
   /**
    * Copy a portion of the texture to the current rendering target at subpixel
@@ -39727,10 +40108,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Surface ReadPixels(OptionalRef<const RectRaw> rect = {}) const
-  {
-    return Surface(CheckError(SDL_RenderReadPixels(m_resource, rect)));
-  }
+  Surface ReadPixels(OptionalRef<const RectRaw> rect = {}) const;
 
   /**
    * Update the screen with any rendering performed since the previous call.
@@ -39778,7 +40156,7 @@ public:
    * @sa Renderer.SetDrawBlendMode
    * @sa Renderer.SetDrawColor
    */
-  void Present() { CheckError(SDL_RenderPresent(m_resource)); }
+  void Present();
 
   /**
    * Force the rendering context to flush any pending commands and state.
@@ -39809,7 +40187,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Flush() { CheckError(SDL_FlushRenderer(m_resource)); }
+  void Flush();
 
   /**
    * Toggle VSync of the given renderer.
@@ -39832,10 +40210,7 @@ public:
    *
    * @sa Renderer.GetVSync
    */
-  void SetVSync(int vsync)
-  {
-    CheckError(SDL_SetRenderVSync(m_resource, vsync));
-  }
+  void SetVSync(int vsync);
 
   /**
    * Get VSync of the given renderer.
@@ -39849,12 +40224,7 @@ public:
    *
    * @sa Renderer.SetVSync
    */
-  int GetVSync() const
-  {
-    int vsync;
-    CheckError(SDL_GetRenderVSync(m_resource, &vsync));
-    return vsync;
-  }
+  int GetVSync() const;
 
   /**
    * Draw debug text to an Renderer.
@@ -39893,10 +40263,7 @@ public:
    * @sa Renderer.RenderDebugTextFormat
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
-  void RenderDebugText(FPoint p, StringParam str)
-  {
-    CheckError(SDL_RenderDebugText(m_resource, p.x, p.y, str));
-  }
+  void RenderDebugText(FPoint p, StringParam str);
 
   /**
    * Draw debug text to an Renderer.
@@ -39928,6 +40295,239 @@ public:
   {
     RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));
   }
+
+  /**
+   * Create a texture for a rendering context.
+   *
+   * The contents of a texture when first created are not defined.
+   *
+   * @param format one of the enumerated values in PixelFormat.
+   * @param access one of the enumerated values in TextureAccess.
+   * @param w the width of the texture in pixels.
+   * @param h the height of the texture in pixels.
+   * @returns the created texture or nullptr on failure; call GetError() for
+   *          more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Texture
+   * @sa Texture.Texture
+   * @sa Texture.Destroy
+   * @sa Texture.GetSize
+   * @sa Texture.Update
+   */
+  Texture CreateTexture(PixelFormat format,
+                        TextureAccess access,
+                        const PointRaw& size);
+
+  /**
+   * Create a texture from an existing surface.
+   *
+   * The surface is not modified or freed by this function.
+   *
+   * The TextureAccess hint for the created texture is
+   * `TEXTUREACCESS_STATIC`.
+   *
+   * The pixel format of the created texture may be different from the pixel
+   * format of the surface, and can be queried using the
+   * prop::Texture.FORMAT_NUMBER property.
+   *
+   * @param surface the Surface structure containing pixel data used to fill
+   *                the texture.
+   * @returns the created texture or nullptr on failure; call GetError() for
+   *          more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Texture
+   * @sa Texture.Texture
+   * @sa Texture.Destroy
+   */
+  Texture CreateTextureFromSurface(SurfaceParam surface);
+
+  /**
+   * Create a texture for a rendering context with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
+   *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
+   *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
+   *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
+   *   YUV textures.
+   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+   *   PixelFormat, defaults to the best RGBA format for the renderer
+   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
+   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
+   *   pixels, required
+   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
+   *   pixels, required
+   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
+   *   point textures, this defines the value of 100% diffuse white, with higher
+   *   values being displayed in the High Dynamic Range headroom. This defaults
+   *   to 100 for HDR10 textures and 1.0 for floating point textures.
+   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
+   *   point textures, this defines the maximum dynamic range used by the
+   *   content, in terms of the SDR white point. This would be equivalent to
+   *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
+   *   If this is defined, any values outside the range supported by the display
+   *   will be scaled into the available HDR headroom, otherwise they are
+   *   clipped.
+   *
+   * With the direct3d11 renderer:
+   *
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the direct3d12 renderer:
+   *
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the metal renderer:
+   *
+   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   *   associated with the texture, if you want to create a texture from an
+   *   existing pixel buffer.
+   *
+   * With the opengl renderer:
+   *
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the opengles2 renderer:
+   *
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the vulkan renderer:
+   *
+   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
+   *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
+   *   you want to wrap an existing texture.
+   *
+   * @param props the properties to use.
+   * @returns the created texture or nullptr on failure; call GetError() for
+   *          more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Create
+   * @sa Texture.Texture
+   * @sa Texture.Texture
+   * @sa Texture.Destroy
+   * @sa Texture.GetSize
+   * @sa Texture.Update
+   */
+  Texture CreateTextureWithProperties(PropertiesParam props);
+
+  /**
+   * Get the CAMetalLayer associated with the given Metal renderer.
+   *
+   * This function returns `void *`, so SDL doesn't have to include Metal's
+   * headers, but it can be safely cast to a `CAMetalLayer *`.
+   *
+   * @returns a `CAMetalLayer *` on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetRenderMetalCommandEncoder
+   */
+  void* GetRenderMetalLayer();
+
+  /**
+   * Get the Metal command encoder for the current frame.
+   *
+   * This function returns `void *`, so SDL doesn't have to include Metal's
+   * headers, but it can be safely cast to an `id<MTLRenderCommandEncoder>`.
+   *
+   * This will return nullptr if Metal refuses to give SDL a drawable to render
+   * to, which might happen if the window is hidden/minimized/offscreen. This
+   * doesn't apply to command encoders for render targets, just the window's
+   * backbuffer. Check your return values!
+   *
+   * @returns an `id<MTLRenderCommandEncoder>` on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetRenderMetalLayer
+   */
+  void* GetRenderMetalCommandEncoder();
+
+  /**
+   * Add a set of synchronization semaphores for the current frame.
+   *
+   * The Vulkan renderer will wait for `wait_semaphore` before submitting
+   * rendering commands and signal `signal_semaphore` after rendering commands
+   * are complete for this frame.
+   *
+   * This should be called each frame that you want semaphore synchronization.
+   * The Vulkan renderer may have multiple frames in flight on the GPU, so you
+   * should have multiple semaphores that are used for synchronization. Querying
+   * prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the
+   * maximum number of semaphores you'll need.
+   *
+   * @param wait_stage_mask the VkPipelineStageFlags for the wait.
+   * @param wait_semaphore a VkSempahore to wait on before rendering the current
+   *                       frame, or 0 if not needed.
+   * @param signal_semaphore a VkSempahore that SDL will signal when rendering
+   *                         for the current frame is complete, or 0 if not
+   *                         needed.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is **NOT** safe to call this function from two threads at
+   *               once.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
+                                 Sint64 wait_semaphore,
+                                 Sint64 signal_semaphore);
 };
 
 /// Semi-safe reference for Renderer.
@@ -40214,11 +40814,7 @@ public:
    * @sa Texture.Texture
    * @sa Texture.Texture
    */
-  void Destroy()
-  {
-    SDL_DestroyTexture(m_resource);
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   /**
    * Get the properties associated with a texture.
@@ -40305,10 +40901,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesRef GetProperties() const
-  {
-    return {CheckError(SDL_GetTextureProperties(m_resource))};
-  }
+  PropertiesRef GetProperties() const;
 
   /**
    * Get the renderer that created an Texture.
@@ -40320,10 +40913,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  RendererRef GetRenderer() const
-  {
-    return {SDL_GetRendererFromTexture(m_resource)};
-  }
+  RendererRef GetRenderer() const;
 
   /**
    * Set an additional color and alpha values multiplied into render copy
@@ -40448,10 +41038,7 @@ public:
    * @sa Texture.SetAlphaMod
    * @sa Texture.SetColorModFloat
    */
-  void SetColorMod(Uint8 r, Uint8 g, Uint8 b)
-  {
-    CheckError(SDL_SetTextureColorMod(m_resource, r, g, b));
-  }
+  void SetColorMod(Uint8 r, Uint8 g, Uint8 b);
 
   /**
    * Set an additional color value multiplied into render copy operations.
@@ -40478,10 +41065,7 @@ public:
    * @sa Texture.SetAlphaModFloat
    * @sa Texture.SetColorMod
    */
-  void SetColorModFloat(float r, float g, float b)
-  {
-    CheckError(SDL_SetTextureColorModFloat(m_resource, r, g, b));
-  }
+  void SetColorModFloat(float r, float g, float b);
 
   /**
    * Get the additional color value multiplied into render copy operations.
@@ -40499,10 +41083,7 @@ public:
    * @sa Texture.GetColorModFloat
    * @sa Texture.SetColorMod
    */
-  void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
-  {
-    CheckError(SDL_GetTextureColorMod(m_resource, r, g, b));
-  }
+  void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const;
 
   /**
    * Get the additional color value multiplied into render copy operations.
@@ -40520,10 +41101,7 @@ public:
    * @sa Texture.GetColorMod
    * @sa Texture.SetColorModFloat
    */
-  void GetColorModFloat(float* r, float* g, float* b) const
-  {
-    CheckError(SDL_GetTextureColorModFloat(m_resource, r, g, b));
-  }
+  void GetColorModFloat(float* r, float* g, float* b) const;
 
   /**
    * Set an additional alpha value multiplied into render copy operations.
@@ -40547,10 +41125,7 @@ public:
    * @sa Texture.SetAlphaModFloat
    * @sa Texture.SetColorMod
    */
-  void SetAlphaMod(Uint8 alpha)
-  {
-    CheckError(SDL_SetTextureAlphaMod(m_resource, alpha));
-  }
+  void SetAlphaMod(Uint8 alpha);
 
   /**
    * Set an additional alpha value multiplied into render copy operations.
@@ -40574,10 +41149,7 @@ public:
    * @sa Texture.SetAlphaMod
    * @sa Texture.SetColorModFloat
    */
-  void SetAlphaModFloat(float alpha)
-  {
-    CheckError(SDL_SetTextureAlphaModFloat(m_resource, alpha));
-  }
+  void SetAlphaModFloat(float alpha);
 
   /**
    * Get the additional alpha value multiplied into render copy operations.
@@ -40593,12 +41165,7 @@ public:
    * @sa Texture.GetColorMod
    * @sa Texture.SetAlphaMod
    */
-  Uint8 GetAlphaMod() const
-  {
-    Uint8 alpha;
-    CheckError(SDL_GetTextureAlphaMod(m_resource, &alpha));
-    return alpha;
-  }
+  Uint8 GetAlphaMod() const;
 
   /**
    * Get the additional alpha value multiplied into render copy operations.
@@ -40614,12 +41181,7 @@ public:
    * @sa Texture.GetColorModFloat
    * @sa Texture.SetAlphaModFloat
    */
-  float GetAlphaModFloat() const
-  {
-    float alpha;
-    CheckError(SDL_GetTextureAlphaModFloat(m_resource, &alpha));
-    return alpha;
-  }
+  float GetAlphaModFloat() const;
 
   /**
    * Set the blend mode for a texture, used by Renderer.RenderTexture().
@@ -40636,10 +41198,7 @@ public:
    *
    * @sa Texture.GetBlendMode
    */
-  void SetBlendMode(BlendMode blendMode)
-  {
-    CheckError(SDL_SetTextureBlendMode(m_resource, blendMode));
-  }
+  void SetBlendMode(BlendMode blendMode);
 
   /**
    * Get the blend mode used for texture copy operations.
@@ -40653,12 +41212,7 @@ public:
    *
    * @sa Texture.SetBlendMode
    */
-  BlendMode GetBlendMode() const
-  {
-    BlendMode blendMode;
-    CheckError(SDL_GetTextureBlendMode(m_resource, &blendMode));
-    return blendMode;
-  }
+  BlendMode GetBlendMode() const;
 
   /**
    * Set the scale mode used for texture scale operations.
@@ -40676,10 +41230,7 @@ public:
    *
    * @sa Texture.GetScaleMode
    */
-  void SetScaleMode(ScaleMode scaleMode)
-  {
-    CheckError(SDL_SetTextureScaleMode(m_resource, scaleMode));
-  }
+  void SetScaleMode(ScaleMode scaleMode);
 
   /**
    * Get the scale mode used for texture scale operations.
@@ -40693,12 +41244,7 @@ public:
    *
    * @sa Texture.SetScaleMode
    */
-  ScaleMode GetScaleMode() const
-  {
-    ScaleMode scaleMode;
-    CheckError(SDL_GetTextureScaleMode(get(), &scaleMode));
-    return scaleMode;
-  }
+  ScaleMode GetScaleMode() const;
 
   /**
    * Update the given texture rectangle with new pixel data.
@@ -40730,10 +41276,7 @@ public:
    * @sa Texture.UpdateNV
    * @sa Texture.UpdateYUV
    */
-  void Update(OptionalRef<const RectRaw> rect, const void* pixels, int pitch)
-  {
-    CheckError(SDL_UpdateTexture(m_resource, rect, pixels, pitch));
-  }
+  void Update(OptionalRef<const RectRaw> rect, const void* pixels, int pitch);
 
   /**
    * Update a rectangle within a planar YV12 or IYUV texture with new pixel
@@ -40769,11 +41312,7 @@ public:
                  const Uint8* Uplane,
                  int Upitch,
                  const Uint8* Vplane,
-                 int Vpitch)
-  {
-    CheckError(SDL_UpdateYUVTexture(
-      m_resource, rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch));
-  }
+                 int Vpitch);
 
   /**
    * Update a rectangle within a planar NV12 or NV21 texture with new pixels.
@@ -40803,11 +41342,7 @@ public:
                 const Uint8* Yplane,
                 int Ypitch,
                 const Uint8* UVplane,
-                int UVpitch)
-  {
-    CheckError(
-      SDL_UpdateNVTexture(m_resource, rect, Yplane, Ypitch, UVplane, UVpitch));
-  }
+                int UVpitch);
 
   /**
    * Lock a portion of the texture for **write-only** pixel access.
@@ -40836,10 +41371,7 @@ public:
    * @sa Texture.LockToSurface
    * @sa Texture.Unlock
    */
-  void Lock(OptionalRef<const SDL_Rect> rect, void** pixels, int* pitch)
-  {
-    CheckError(SDL_LockTexture(m_resource, rect, pixels, pitch));
-  }
+  void Lock(OptionalRef<const SDL_Rect> rect, void** pixels, int* pitch);
 
   /**
    * Lock a portion of the texture for **write-only** pixel access, and expose
@@ -40873,12 +41405,7 @@ public:
    * @sa Texture.Lock
    * @sa Texture.Unlock
    */
-  Surface LockToSurface(OptionalRef<const SDL_Rect> rect = std::nullopt)
-  {
-    SurfaceRaw surface = nullptr;
-    CheckError(SDL_LockTextureToSurface(m_resource, rect, &surface));
-    return Surface::Borrow(surface);
-  }
+  Surface LockToSurface(OptionalRef<const SDL_Rect> rect = std::nullopt);
 
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
@@ -40898,7 +41425,7 @@ public:
    *
    * @sa Texture.Lock
    */
-  void Unlock() { SDL_UnlockTexture(m_resource); }
+  void Unlock();
 
   /**
    * Get the width in pixels.
@@ -40928,10 +41455,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void GetSize(float* w, float* h) const
-  {
-    CheckError(SDL_GetTextureSize(m_resource, w, h));
-  }
+  void GetSize(float* w, float* h) const;
 
   /**
    * Get the size in pixels.
@@ -41062,7 +41586,7 @@ inline Window CreateWindowAndRenderer(StringParam title,
  */
 inline Renderer CreateRenderer(WindowParam window, StringParam name)
 {
-  return Renderer(SDL_CreateRenderer(window, name));
+  return Renderer(window, std::move(name));
 }
 
 /**
@@ -41118,7 +41642,7 @@ inline Renderer CreateRenderer(WindowParam window, StringParam name)
  */
 inline Renderer CreateRendererWithProperties(PropertiesParam props)
 {
-  return Renderer(SDL_CreateRendererWithProperties(props));
+  return Renderer(props);
 }
 
 namespace prop::Renderer {
@@ -41236,7 +41760,7 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
  */
 inline Renderer CreateSoftwareRenderer(SurfaceParam surface)
 {
-  return Renderer(SDL_CreateSoftwareRenderer(surface));
+  return Renderer(surface);
 }
 
 /**
@@ -41270,6 +41794,11 @@ inline WindowRef GetRenderWindow(RendererParam renderer)
   return {CheckError(SDL_GetRenderWindow(renderer))};
 }
 
+inline WindowRef Renderer::GetWindow()
+{
+  return SDL::GetRenderWindow(m_resource);
+}
+
 /**
  * Get the name of a renderer.
  *
@@ -41287,6 +41816,11 @@ inline WindowRef GetRenderWindow(RendererParam renderer)
 inline const char* GetRendererName(RendererParam renderer)
 {
   return SDL_GetRendererName(renderer);
+}
+
+inline const char* Renderer::GetName() const
+{
+  return SDL::GetRendererName(m_resource);
 }
 
 /**
@@ -41378,6 +41912,11 @@ inline PropertiesRef GetRendererProperties(RendererParam renderer)
   return {CheckError(SDL_GetRendererProperties(renderer))};
 }
 
+inline PropertiesRef Renderer::GetProperties() const
+{
+  return SDL::GetRendererProperties(m_resource);
+}
+
 /**
  * Get the output size in pixels of a rendering context.
  *
@@ -41403,6 +41942,11 @@ inline void GetRenderOutputSize(RendererParam renderer, int* w, int* h)
   CheckError(SDL_GetRenderOutputSize(renderer, w, h));
 }
 
+inline void Renderer::GetOutputSize(int* w, int* h) const
+{
+  SDL::GetRenderOutputSize(m_resource, w, h);
+}
+
 /**
  * Get the current output size in pixels of a rendering context.
  *
@@ -41426,6 +41970,18 @@ inline void GetRenderOutputSize(RendererParam renderer, int* w, int* h)
 inline void GetCurrentRenderOutputSize(RendererParam renderer, int* w, int* h)
 {
   CheckError(SDL_GetCurrentRenderOutputSize(renderer, w, h));
+}
+
+inline void Renderer::GetCurrentOutputSize(int* w, int* h) const
+{
+  SDL::GetCurrentRenderOutputSize(m_resource, w, h);
+}
+
+inline Texture Renderer::CreateTexture(PixelFormat format,
+                                       TextureAccess access,
+                                       const PointRaw& size)
+{
+  return Texture(m_resource, format, access, size);
 }
 
 /**
@@ -41456,7 +42012,12 @@ inline Texture CreateTexture(RendererParam renderer,
                              TextureAccess access,
                              const PointRaw& size)
 {
-  return Texture(SDL_CreateTexture(renderer, format, access, size.x, size.y));
+  return Texture(renderer, format, access, size);
+}
+
+inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
+{
+  return Texture(m_resource, surface);
 }
 
 /**
@@ -41489,6 +42050,11 @@ inline Texture CreateTextureFromSurface(RendererParam renderer,
                                         SurfaceParam surface)
 {
   return Texture(SDL_CreateTextureFromSurface(renderer, surface));
+}
+
+inline Texture Renderer::CreateTextureWithProperties(PropertiesParam props)
+{
+  return Texture(m_resource, props);
 }
 
 /**
@@ -41832,6 +42398,11 @@ inline PropertiesRef GetTextureProperties(TextureParam texture)
   return {CheckError(SDL_GetTextureProperties(texture))};
 }
 
+inline PropertiesRef Texture::GetProperties() const
+{
+  return SDL::GetTextureProperties(m_resource);
+}
+
 /**
  * Get the renderer that created an Texture.
  *
@@ -41846,6 +42417,11 @@ inline PropertiesRef GetTextureProperties(TextureParam texture)
 inline RendererRef GetRendererFromTexture(TextureParam texture)
 {
   return {SDL_GetRendererFromTexture(texture)};
+}
+
+inline RendererRef Texture::GetRenderer() const
+{
+  return SDL::GetRendererFromTexture(m_resource);
 }
 
 /**
@@ -41865,6 +42441,11 @@ inline RendererRef GetRendererFromTexture(TextureParam texture)
 inline void GetTextureSize(TextureParam texture, float* w, float* h)
 {
   CheckError(SDL_GetTextureSize(texture, w, h));
+}
+
+inline void Texture::GetSize(float* w, float* h) const
+{
+  SDL::GetTextureSize(m_resource, w, h);
 }
 
 /**
@@ -41896,6 +42477,11 @@ inline void GetTextureSize(TextureParam texture, float* w, float* h)
 inline void SetTextureColorMod(TextureParam texture, Uint8 r, Uint8 g, Uint8 b)
 {
   CheckError(SDL_SetTextureColorMod(texture, r, g, b));
+}
+
+inline void Texture::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
+{
+  SDL::SetTextureColorMod(m_resource, r, g, b);
 }
 
 /**
@@ -41932,6 +42518,11 @@ inline void SetTextureColorModFloat(TextureParam texture,
   CheckError(SDL_SetTextureColorModFloat(texture, r, g, b));
 }
 
+inline void Texture::SetColorModFloat(float r, float g, float b)
+{
+  SDL::SetTextureColorModFloat(m_resource, r, g, b);
+}
+
 /**
  * Get the additional color value multiplied into render copy operations.
  *
@@ -41957,6 +42548,11 @@ inline void GetTextureColorMod(TextureParam texture,
   CheckError(SDL_GetTextureColorMod(texture, r, g, b));
 }
 
+inline void Texture::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
+{
+  SDL::GetTextureColorMod(m_resource, r, g, b);
+}
+
 /**
  * Get the additional color value multiplied into render copy operations.
  *
@@ -41980,6 +42576,11 @@ inline void GetTextureColorModFloat(TextureParam texture,
                                     float* b)
 {
   CheckError(SDL_GetTextureColorModFloat(texture, r, g, b));
+}
+
+inline void Texture::GetColorModFloat(float* r, float* g, float* b) const
+{
+  SDL::GetTextureColorModFloat(m_resource, r, g, b);
 }
 
 /**
@@ -42010,6 +42611,11 @@ inline void SetTextureAlphaMod(TextureParam texture, Uint8 alpha)
   CheckError(SDL_SetTextureAlphaMod(texture, alpha));
 }
 
+inline void Texture::SetAlphaMod(Uint8 alpha)
+{
+  SDL::SetTextureAlphaMod(m_resource, alpha);
+}
+
 /**
  * Set an additional alpha value multiplied into render copy operations.
  *
@@ -42038,6 +42644,11 @@ inline void SetTextureAlphaModFloat(TextureParam texture, float alpha)
   CheckError(SDL_SetTextureAlphaModFloat(texture, alpha));
 }
 
+inline void Texture::SetAlphaModFloat(float alpha)
+{
+  SDL::SetTextureAlphaModFloat(m_resource, alpha);
+}
+
 /**
  * Get the additional alpha value multiplied into render copy operations.
  *
@@ -42058,6 +42669,11 @@ inline Uint8 GetTextureAlphaMod(TextureParam texture)
   Uint8 alpha;
   CheckError(SDL_GetTextureAlphaMod(texture, &alpha));
   return alpha;
+}
+
+inline Uint8 Texture::GetAlphaMod() const
+{
+  return SDL::GetTextureAlphaMod(m_resource);
 }
 
 /**
@@ -42082,6 +42698,11 @@ inline float GetTextureAlphaModFloat(TextureParam texture)
   return alpha;
 }
 
+inline float Texture::GetAlphaModFloat() const
+{
+  return SDL::GetTextureAlphaModFloat(m_resource);
+}
+
 /**
  * Set the blend mode for a texture, used by Renderer.RenderTexture().
  *
@@ -42103,6 +42724,11 @@ inline void SetTextureBlendMode(TextureParam texture, BlendMode blendMode)
   CheckError(SDL_SetTextureBlendMode(texture, blendMode));
 }
 
+inline void Texture::SetBlendMode(BlendMode blendMode)
+{
+  SDL::SetTextureBlendMode(m_resource, blendMode);
+}
+
 /**
  * Get the blend mode used for texture copy operations.
  *
@@ -42121,6 +42747,11 @@ inline BlendMode GetTextureBlendMode(TextureParam texture)
   BlendMode blendMode;
   CheckError(SDL_GetTextureBlendMode(texture, &blendMode));
   return blendMode;
+}
+
+inline BlendMode Texture::GetBlendMode() const
+{
+  return SDL::GetTextureBlendMode(m_resource);
 }
 
 /**
@@ -42145,6 +42776,11 @@ inline void SetTextureScaleMode(TextureParam texture, ScaleMode scaleMode)
   CheckError(SDL_SetTextureScaleMode(texture, scaleMode));
 }
 
+inline void Texture::SetScaleMode(ScaleMode scaleMode)
+{
+  SDL::SetTextureScaleMode(m_resource, scaleMode);
+}
+
 /**
  * Get the scale mode used for texture scale operations.
  *
@@ -42163,6 +42799,11 @@ inline ScaleMode GetTextureScaleMode(TextureParam texture)
   ScaleMode scaleMode;
   CheckError(SDL_GetTextureScaleMode(texture, &scaleMode));
   return scaleMode;
+}
+
+inline ScaleMode Texture::GetScaleMode() const
+{
+  return SDL::GetTextureScaleMode(m_resource);
 }
 
 /**
@@ -42202,6 +42843,13 @@ inline void UpdateTexture(TextureParam texture,
                           int pitch)
 {
   CheckError(SDL_UpdateTexture(texture, rect, pixels, pitch));
+}
+
+inline void Texture::Update(OptionalRef<const RectRaw> rect,
+                            const void* pixels,
+                            int pitch)
+{
+  SDL::UpdateTexture(m_resource, rect, pixels, pitch);
 }
 
 /**
@@ -42246,6 +42894,18 @@ inline void UpdateYUVTexture(TextureParam texture,
     texture, rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch));
 }
 
+inline void Texture::UpdateYUV(OptionalRef<const RectRaw> rect,
+                               const Uint8* Yplane,
+                               int Ypitch,
+                               const Uint8* Uplane,
+                               int Upitch,
+                               const Uint8* Vplane,
+                               int Vpitch)
+{
+  SDL::UpdateYUVTexture(
+    m_resource, rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch);
+}
+
 /**
  * Update a rectangle within a planar NV12 or NV21 texture with new pixels.
  *
@@ -42282,6 +42942,15 @@ inline void UpdateNVTexture(TextureParam texture,
     SDL_UpdateNVTexture(texture, rect, Yplane, Ypitch, UVplane, UVpitch));
 }
 
+inline void Texture::UpdateNV(OptionalRef<const RectRaw> rect,
+                              const Uint8* Yplane,
+                              int Ypitch,
+                              const Uint8* UVplane,
+                              int UVpitch)
+{
+  SDL::UpdateNVTexture(m_resource, rect, Yplane, Ypitch, UVplane, UVpitch);
+}
+
 /**
  * Lock a portion of the texture for **write-only** pixel access.
  *
@@ -42316,6 +42985,13 @@ inline void LockTexture(TextureParam texture,
                         int* pitch)
 {
   CheckError(SDL_LockTexture(texture, rect, pixels, pitch));
+}
+
+inline void Texture::Lock(OptionalRef<const SDL_Rect> rect,
+                          void** pixels,
+                          int* pitch)
+{
+  SDL::LockTexture(m_resource, rect, pixels, pitch);
 }
 
 /**
@@ -42360,6 +43036,11 @@ inline Surface LockTextureToSurface(
   return Surface::Borrow(surface);
 }
 
+inline Surface Texture::LockToSurface(OptionalRef<const SDL_Rect> rect)
+{
+  return SDL::LockTextureToSurface(m_resource, rect);
+}
+
 /**
  * Unlock a texture, uploading the changes to video memory, if needed.
  *
@@ -42380,6 +43061,8 @@ inline Surface LockTextureToSurface(
  * @sa Texture.Lock
  */
 inline void UnlockTexture(TextureParam texture) { SDL_UnlockTexture(texture); }
+
+inline void Texture::Unlock() { SDL::UnlockTexture(m_resource); }
 
 /**
  * Set a texture as the current rendering target.
@@ -42410,6 +43093,11 @@ inline void SetRenderTarget(RendererParam renderer, TextureParam texture)
   CheckError(SDL_SetRenderTarget(renderer, texture));
 }
 
+inline void Renderer::SetTarget(TextureParam texture)
+{
+  SDL::SetRenderTarget(m_resource, texture);
+}
+
 /**
  * Get the current render target.
  *
@@ -42434,7 +43122,7 @@ inline Texture GetRenderTarget(RendererParam renderer)
 
 inline Texture Renderer::GetTarget() const
 {
-  return GetRenderTarget(m_resource);
+  return SDL::GetRenderTarget(m_resource);
 }
 
 /**
@@ -42496,6 +43184,12 @@ inline void SetRenderLogicalPresentation(RendererParam renderer,
   CheckError(SDL_SetRenderLogicalPresentation(renderer, size.x, size.y, mode));
 }
 
+inline void Renderer::SetLogicalPresentation(const PointRaw& size,
+                                             RendererLogicalPresentation mode)
+{
+  SDL::SetRenderLogicalPresentation(m_resource, size, mode);
+}
+
 /**
  * Get device independent resolution and presentation mode for rendering.
  *
@@ -42525,6 +43219,14 @@ inline void GetRenderLogicalPresentation(RendererParam renderer,
   CheckError(SDL_GetRenderLogicalPresentation(renderer, w, h, mode));
 }
 
+inline void Renderer::GetLogicalPresentation(
+  int* w,
+  int* h,
+  RendererLogicalPresentation* mode) const
+{
+  SDL::GetRenderLogicalPresentation(m_resource, w, h, mode);
+}
+
 /**
  * Get the final presentation rectangle for rendering.
  *
@@ -42552,6 +43254,11 @@ inline FRect GetRenderLogicalPresentationRect(RendererParam renderer)
   FRect rect;
   CheckError(SDL_GetRenderLogicalPresentationRect(renderer, &rect));
   return rect;
+}
+
+inline FRect Renderer::GetLogicalPresentationRect() const
+{
+  return SDL::GetRenderLogicalPresentationRect(m_resource);
 }
 
 /**
@@ -42585,6 +43292,12 @@ inline FPoint RenderCoordinatesFromWindow(RendererParam renderer,
   CheckError(SDL_RenderCoordinatesFromWindow(
     renderer, window_coord.x, window_coord.y, &p.x, &p.y));
   return p;
+}
+
+inline FPoint Renderer::RenderCoordinatesFromWindow(
+  const FPointRaw& window_coord) const
+{
+  return SDL::RenderCoordinatesFromWindow(m_resource, window_coord);
 }
 
 /**
@@ -42621,6 +43334,11 @@ inline FPoint RenderCoordinatesToWindow(RendererParam renderer,
   CheckError(
     SDL_RenderCoordinatesToWindow(renderer, coord.x, coord.y, &p.x, &p.y));
   return p;
+}
+
+inline FPoint Renderer::RenderCoordinatesToWindow(const FPointRaw& coord) const
+{
+  return SDL::RenderCoordinatesToWindow(m_resource, coord);
 }
 
 /**
@@ -42662,6 +43380,11 @@ inline void ConvertEventToRenderCoordinates(RendererParam renderer,
   CheckError(SDL_ConvertEventToRenderCoordinates(renderer, event));
 }
 
+inline void Renderer::ConvertEventToRenderCoordinates(Event* event) const
+{
+  SDL::ConvertEventToRenderCoordinates(m_resource, event);
+}
+
 /**
  * Set the drawing area for rendering on the current target.
  *
@@ -42692,6 +43415,11 @@ inline void SetRenderViewport(RendererParam renderer,
   CheckError(SDL_SetRenderViewport(renderer, rect));
 }
 
+inline void Renderer::SetViewport(OptionalRef<const RectRaw> rect)
+{
+  SDL::SetRenderViewport(m_resource, rect);
+}
+
 /**
  * Get the drawing area for the current target.
  *
@@ -42714,6 +43442,11 @@ inline Rect GetRenderViewport(RendererParam renderer)
   Rect rect;
   CheckError(SDL_GetRenderViewport(renderer, &rect));
   return rect;
+}
+
+inline Rect Renderer::GetViewport() const
+{
+  return SDL::GetRenderViewport(m_resource);
 }
 
 /**
@@ -42739,6 +43472,11 @@ inline Rect GetRenderViewport(RendererParam renderer)
 inline bool RenderViewportSet(RendererParam renderer)
 {
   return SDL_RenderViewportSet(renderer);
+}
+
+inline bool Renderer::IsViewportSet() const
+{
+  return SDL::RenderViewportSet(m_resource);
 }
 
 /**
@@ -42767,6 +43505,11 @@ inline Rect GetRenderSafeArea(RendererParam renderer)
   return rect;
 }
 
+inline Rect Renderer::GetSafeArea() const
+{
+  return SDL::GetRenderSafeArea(m_resource);
+}
+
 /**
  * Set the clip rectangle for rendering on the specified target.
  *
@@ -42789,6 +43532,11 @@ inline void SetRenderClipRect(RendererParam renderer,
                               OptionalRef<const RectRaw> rect)
 {
   CheckError(SDL_SetRenderClipRect(renderer, rect));
+}
+
+inline void Renderer::SetClipRect(OptionalRef<const RectRaw> rect)
+{
+  SDL::SetRenderClipRect(m_resource, rect);
 }
 
 /**
@@ -42816,6 +43564,11 @@ inline Rect GetRenderClipRect(RendererParam renderer)
   return rect;
 }
 
+inline Rect Renderer::GetClipRect() const
+{
+  return SDL::GetRenderClipRect(m_resource);
+}
+
 /**
  * Get whether clipping is enabled on the given render target.
  *
@@ -42836,6 +43589,11 @@ inline Rect GetRenderClipRect(RendererParam renderer)
 inline bool RenderClipEnabled(RendererParam renderer)
 {
   return SDL_RenderClipEnabled(renderer);
+}
+
+inline bool Renderer::IsClipEnabled() const
+{
+  return SDL::RenderClipEnabled(m_resource);
 }
 
 /**
@@ -42868,6 +43626,11 @@ inline void SetRenderScale(RendererParam renderer, const FPointRaw& scale)
   CheckError(SDL_SetRenderScale(renderer, scale.x, scale.y));
 }
 
+inline void Renderer::SetScale(const FPointRaw& scale)
+{
+  SDL::SetRenderScale(m_resource, scale);
+}
+
 /**
  * Get the drawing scale for the current target.
  *
@@ -42888,6 +43651,11 @@ inline void SetRenderScale(RendererParam renderer, const FPointRaw& scale)
 inline void GetRenderScale(RendererParam renderer, float* scaleX, float* scaleY)
 {
   CheckError(SDL_GetRenderScale(renderer, scaleX, scaleY));
+}
+
+inline void Renderer::GetScale(float* scaleX, float* scaleY) const
+{
+  SDL::GetRenderScale(m_resource, scaleX, scaleY);
 }
 
 /**
@@ -42917,6 +43685,11 @@ inline void SetRenderDrawColor(RendererParam renderer, ColorRaw c)
   CheckError(SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a));
 }
 
+inline void Renderer::SetDrawColor(ColorRaw c)
+{
+  SDL::SetRenderDrawColor(m_resource, c);
+}
+
 /**
  * Set the color used for drawing operations (Rect, Line and Clear).
  *
@@ -42942,6 +43715,11 @@ inline void SetRenderDrawColor(RendererParam renderer, ColorRaw c)
 inline void SetRenderDrawColorFloat(RendererParam renderer, const FColorRaw& c)
 {
   CheckError(SDL_SetRenderDrawColorFloat(renderer, c.r, c.g, c.b, c.a));
+}
+
+inline void Renderer::SetDrawColorFloat(const FColorRaw& c)
+{
+  SDL::SetRenderDrawColorFloat(m_resource, c);
 }
 
 /**
@@ -42974,6 +43752,11 @@ inline void GetRenderDrawColor(RendererParam renderer,
   CheckError(SDL_GetRenderDrawColor(renderer, r, g, b, a));
 }
 
+inline void Renderer::GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
+{
+  SDL::GetRenderDrawColor(m_resource, r, g, b, a);
+}
+
 /**
  * Get the color used for drawing operations (Rect, Line and Clear).
  *
@@ -43004,6 +43787,14 @@ inline void GetRenderDrawColorFloat(RendererParam renderer,
   CheckError(SDL_GetRenderDrawColorFloat(renderer, r, g, b, a));
 }
 
+inline void Renderer::GetDrawColorFloat(float* r,
+                                        float* g,
+                                        float* b,
+                                        float* a) const
+{
+  SDL::GetRenderDrawColorFloat(m_resource, r, g, b, a);
+}
+
 /**
  * Set the color scale used for render operations.
  *
@@ -43030,6 +43821,11 @@ inline void SetRenderColorScale(RendererParam renderer, float scale)
   CheckError(SDL_SetRenderColorScale(renderer, scale));
 }
 
+inline void Renderer::SetColorScale(float scale)
+{
+  SDL::SetRenderColorScale(m_resource, scale);
+}
+
 /**
  * Get the color scale used for render operations.
  *
@@ -43048,6 +43844,11 @@ inline float GetRenderColorScale(RendererParam renderer)
   float scale;
   CheckError(SDL_GetRenderColorScale(renderer, &scale));
   return scale;
+}
+
+inline float Renderer::GetColorScale() const
+{
+  return SDL::GetRenderColorScale(m_resource);
 }
 
 /**
@@ -43070,6 +43871,11 @@ inline void SetRenderDrawBlendMode(RendererParam renderer, BlendMode blendMode)
   CheckError(SDL_SetRenderDrawBlendMode(renderer, blendMode));
 }
 
+inline void Renderer::SetDrawBlendMode(BlendMode blendMode)
+{
+  SDL::SetRenderDrawBlendMode(m_resource, blendMode);
+}
+
 /**
  * Get the blend mode used for drawing operations.
  *
@@ -43088,6 +43894,11 @@ inline BlendMode GetRenderDrawBlendMode(RendererParam renderer)
   BlendMode blendMode;
   CheckError(SDL_GetRenderDrawBlendMode(renderer, &blendMode));
   return blendMode;
+}
+
+inline BlendMode Renderer::GetDrawBlendMode() const
+{
+  return SDL::GetRenderDrawBlendMode(m_resource);
 }
 
 /**
@@ -43112,6 +43923,8 @@ inline void RenderClear(RendererParam renderer)
   CheckError(SDL_RenderClear(renderer));
 }
 
+inline void Renderer::RenderClear() { SDL::RenderClear(m_resource); }
+
 /**
  * Draw a point on the current rendering target at subpixel precision.
  *
@@ -43129,6 +43942,11 @@ inline void RenderClear(RendererParam renderer)
 inline void RenderPoint(RendererParam renderer, const FPointRaw& p)
 {
   CheckError(SDL_RenderPoint(renderer, p.x, p.y));
+}
+
+inline void Renderer::RenderPoint(const FPointRaw& p)
+{
+  SDL::RenderPoint(m_resource, p);
 }
 
 /**
@@ -43149,6 +43967,11 @@ inline void RenderPoints(RendererParam renderer,
                          SpanRef<const FPointRaw> points)
 {
   CheckError(SDL_RenderPoints(renderer, points.data(), points.size()));
+}
+
+inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
+{
+  SDL::RenderPoints(m_resource, points);
 }
 
 /**
@@ -43174,6 +43997,11 @@ inline void RenderLine(RendererParam renderer,
   CheckError(SDL_RenderLine(renderer, p1.x, p1.y, p2.x, p2.y));
 }
 
+inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
+{
+  SDL::RenderLine(m_resource, p1, p2);
+}
+
 /**
  * Draw a series of connected lines on the current rendering target at
  * subpixel precision.
@@ -43192,6 +44020,11 @@ inline void RenderLine(RendererParam renderer,
 inline void RenderLines(RendererParam renderer, SpanRef<const FPointRaw> points)
 {
   CheckError(SDL_RenderLines(renderer, points.data(), points.size()));
+}
+
+inline void Renderer::RenderLines(SpanRef<const FPointRaw> points)
+{
+  SDL::RenderLines(m_resource, points);
 }
 
 /**
@@ -43213,6 +44046,11 @@ inline void RenderRect(RendererParam renderer, OptionalRef<const FRectRaw> rect)
   CheckError(SDL_RenderRect(renderer, rect));
 }
 
+inline void Renderer::RenderRect(OptionalRef<const FRectRaw> rect)
+{
+  SDL::RenderRect(m_resource, rect);
+}
+
 /**
  * Draw some number of rectangles on the current rendering target at subpixel
  * precision.
@@ -43231,6 +44069,11 @@ inline void RenderRect(RendererParam renderer, OptionalRef<const FRectRaw> rect)
 inline void RenderRects(RendererParam renderer, SpanRef<const FRectRaw> rects)
 {
   CheckError(SDL_RenderRects(renderer, rects.data(), rects.size()));
+}
+
+inline void Renderer::RenderRects(SpanRef<const FRectRaw> rects)
+{
+  SDL::RenderRects(m_resource, rects);
 }
 
 /**
@@ -43254,6 +44097,11 @@ inline void RenderFillRect(RendererParam renderer,
   CheckError(SDL_RenderFillRect(renderer, rect));
 }
 
+inline void Renderer::RenderFillRect(OptionalRef<const FRectRaw> rect)
+{
+  SDL::RenderFillRect(m_resource, rect);
+}
+
 /**
  * Fill some number of rectangles on the current rendering target with the
  * drawing color at subpixel precision.
@@ -43273,6 +44121,11 @@ inline void RenderFillRects(RendererParam renderer,
                             SpanRef<const FRectRaw> rects)
 {
   CheckError(SDL_RenderFillRects(renderer, rects.data(), rects.size()));
+}
+
+inline void Renderer::RenderFillRects(SpanRef<const FRectRaw> rects)
+{
+  SDL::RenderFillRects(m_resource, rects);
 }
 
 /**
@@ -43306,7 +44159,7 @@ inline void Renderer::RenderTexture(TextureParam texture,
                                     OptionalRef<const FRectRaw> srcrect,
                                     OptionalRef<const FRectRaw> dstrect)
 {
-  CheckError(SDL_RenderTexture(m_resource, texture, srcrect, dstrect));
+  SDL::RenderTexture(m_resource, texture, srcrect, dstrect);
 }
 
 /**
@@ -43353,8 +44206,8 @@ inline void Renderer::RenderTextureRotated(TextureParam texture,
                                            OptionalRef<const FPointRaw> center,
                                            FlipMode flip)
 {
-  CheckError(SDL_RenderTextureRotated(
-    m_resource, texture, srcrect, dstrect, angle, center, flip));
+  SDL::RenderTextureRotated(
+    m_resource, texture, srcrect, dstrect, angle, center, flip);
 }
 
 /**
@@ -43399,8 +44252,7 @@ inline void Renderer::RenderTextureAffine(TextureParam texture,
                                           OptionalRef<const FPointRaw> right,
                                           OptionalRef<const FPointRaw> down)
 {
-  CheckError(
-    SDL_RenderTextureAffine(m_resource, texture, srcrect, origin, right, down));
+  SDL::RenderTextureAffine(m_resource, texture, srcrect, origin, right, down);
 }
 
 /**
@@ -43442,8 +44294,7 @@ inline void Renderer::RenderTextureTiled(TextureParam texture,
                                          float scale,
                                          OptionalRef<const FRectRaw> dstrect)
 {
-  CheckError(
-    SDL_RenderTextureTiled(m_resource, texture, srcrect, scale, dstrect));
+  SDL::RenderTextureTiled(m_resource, texture, srcrect, scale, dstrect);
 }
 
 /**
@@ -43507,15 +44358,15 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
                                          float scale,
                                          OptionalRef<const FRectRaw> dstrect)
 {
-  CheckError(SDL_RenderTexture9Grid(m_resource,
-                                    texture,
-                                    srcrect,
-                                    left_width,
-                                    right_width,
-                                    top_height,
-                                    bottom_height,
-                                    scale,
-                                    dstrect));
+  SDL::RenderTexture9Grid(m_resource,
+                          texture,
+                          srcrect,
+                          left_width,
+                          right_width,
+                          top_height,
+                          bottom_height,
+                          scale,
+                          dstrect);
 }
 
 /**
@@ -43624,18 +44475,18 @@ inline void Renderer::RenderGeometryRaw(TextureParam texture,
                                         int num_indices,
                                         int size_indices)
 {
-  CheckError(SDL_RenderGeometryRaw(m_resource,
-                                   texture,
-                                   xy,
-                                   xy_stride,
-                                   color,
-                                   color_stride,
-                                   uv,
-                                   uv_stride,
-                                   num_vertices,
-                                   indices,
-                                   num_indices,
-                                   size_indices));
+  SDL::RenderGeometryRaw(m_resource,
+                         texture,
+                         xy,
+                         xy_stride,
+                         color,
+                         color_stride,
+                         uv,
+                         uv_stride,
+                         num_vertices,
+                         indices,
+                         num_indices,
+                         size_indices);
 }
 
 /**
@@ -43667,6 +44518,11 @@ inline Surface RenderReadPixels(RendererParam renderer,
                                 OptionalRef<const RectRaw> rect = {})
 {
   return Surface{CheckError(SDL_RenderReadPixels(renderer, rect))};
+}
+
+inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
+{
+  return SDL::RenderReadPixels(m_resource, rect);
 }
 
 /**
@@ -43721,6 +44577,8 @@ inline void RenderPresent(RendererParam renderer)
   CheckError(SDL_RenderPresent(renderer));
 }
 
+inline void Renderer::Present() { SDL::RenderPresent(m_resource); }
+
 /**
  * Destroy the specified texture.
  *
@@ -43737,6 +44595,12 @@ inline void RenderPresent(RendererParam renderer)
  * @sa Texture.Texture
  */
 inline void DestroyTexture(TextureRaw texture) { SDL_DestroyTexture(texture); }
+
+inline void Texture::Destroy()
+{
+  SDL_DestroyTexture(m_resource);
+  m_resource = nullptr;
+}
 
 /**
  * Destroy the rendering context for a window and free all associated
@@ -43755,6 +44619,12 @@ inline void DestroyTexture(TextureRaw texture) { SDL_DestroyTexture(texture); }
 inline void DestroyRenderer(RendererRaw renderer)
 {
   SDL_DestroyRenderer(renderer);
+}
+
+inline void Renderer::Destroy()
+{
+  SDL_DestroyRenderer(m_resource);
+  m_resource = nullptr;
 }
 
 /**
@@ -43792,6 +44662,8 @@ inline void FlushRenderer(RendererParam renderer)
   CheckError(SDL_FlushRenderer(renderer));
 }
 
+inline void Renderer::Flush() { SDL::FlushRenderer(m_resource); }
+
 /**
  * Get the CAMetalLayer associated with the given Metal renderer.
  *
@@ -43811,6 +44683,11 @@ inline void FlushRenderer(RendererParam renderer)
 inline void* GetRenderMetalLayer(RendererParam renderer)
 {
   return CheckError(SDL_GetRenderMetalLayer(renderer));
+}
+
+inline void* Renderer::GetRenderMetalLayer()
+{
+  return SDL::GetRenderMetalLayer(m_resource);
 }
 
 /**
@@ -43837,6 +44714,11 @@ inline void* GetRenderMetalLayer(RendererParam renderer)
 inline void* GetRenderMetalCommandEncoder(RendererParam renderer)
 {
   return CheckError(SDL_GetRenderMetalCommandEncoder(renderer));
+}
+
+inline void* Renderer::GetRenderMetalCommandEncoder()
+{
+  return SDL::GetRenderMetalCommandEncoder(m_resource);
 }
 
 /**
@@ -43875,6 +44757,14 @@ inline void AddVulkanRenderSemaphores(RendererParam renderer,
     renderer, wait_stage_mask, wait_semaphore, signal_semaphore));
 }
 
+inline void Renderer::AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
+                                                Sint64 wait_semaphore,
+                                                Sint64 signal_semaphore)
+{
+  SDL::AddVulkanRenderSemaphores(
+    m_resource, wait_stage_mask, wait_semaphore, signal_semaphore);
+}
+
 /**
  * Toggle VSync of the given renderer.
  *
@@ -43902,6 +44792,11 @@ inline void SetRenderVSync(RendererParam renderer, int vsync)
   CheckError(SDL_SetRenderVSync(renderer, vsync));
 }
 
+inline void Renderer::SetVSync(int vsync)
+{
+  SDL::SetRenderVSync(m_resource, vsync);
+}
+
 #define SDL_RENDERER_VSYNC_DISABLED 0
 
 #define SDL_RENDERER_VSYNC_ADAPTIVE (-1)
@@ -43925,6 +44820,11 @@ inline int GetRenderVSync(RendererParam renderer)
   int vsync;
   CheckError(SDL_GetRenderVSync(renderer, &vsync));
   return vsync;
+}
+
+inline int Renderer::GetVSync() const
+{
+  return SDL::GetRenderVSync(m_resource);
 }
 
 /**
@@ -43979,6 +44879,11 @@ inline int GetRenderVSync(RendererParam renderer)
 inline void RenderDebugText(RendererParam renderer, FPoint p, StringParam str)
 {
   CheckError(SDL_RenderDebugText(renderer, p.x, p.y, str));
+}
+
+inline void Renderer::RenderDebugText(FPoint p, StringParam str)
+{
+  SDL::RenderDebugText(m_resource, p, std::move(str));
 }
 
 /**

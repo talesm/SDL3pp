@@ -284,7 +284,7 @@ struct DateTime : DateTimeRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  operator Time() const : DateTimeRaw(CheckError(SDL_DateTimeToTime())) {}
+  operator Time() const;
 };
 
 /**
@@ -365,7 +365,7 @@ inline Time Time::Current() { return CheckError(SDL_GetCurrentTime()); }
  */
 inline DateTime TimeToDateTime(Time ticks, bool localTime = true)
 {
-  return CheckError(SDL_TimeToDateTime(ticks, localTime));
+  return DateTime(ticks, localTime);
 }
 
 /**
@@ -384,6 +384,8 @@ inline Time DateTimeToTime(const DateTimeRaw& dt)
 {
   return CheckError(SDL_DateTimeToTime(dt));
 }
+
+inline DateTime::operator Time() const : DateTimeRaw(SDL::DateTimeToTime()) {}
 
 /**
  * Converts an SDL time into a Windows FILETIME (100-nanosecond intervals

@@ -116,6 +116,8 @@ constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
  */
 constexpr bool MUSTLOCK(SurfaceConstParam S) { return SDL_MUSTLOCK(S); }
 
+constexpr bool Surface::MustLock() const { return SDL::MUSTLOCK(m_resource); }
+
 /**
  * The scaling mode.
  *
@@ -296,10 +298,7 @@ public:
    * @sa Surface.LoadBMP
    * @sa Surface.SaveBMP
    */
-  static Surface LoadBMP(IOStreamParam src, bool closeio = false)
-  {
-    return Surface(SDL_LoadBMP_IO(src, closeio));
-  }
+  static Surface LoadBMP(IOStreamParam src, bool closeio = false);
 
   /**
    * Load a BMP image from a file.
@@ -319,10 +318,7 @@ public:
    * @sa Surface.LoadBMP
    * @sa Surface.SaveBMP
    */
-  static Surface LoadBMP(StringParam file)
-  {
-    return Surface(SDL_LoadBMP(file));
-  }
+  static Surface LoadBMP(StringParam file);
 
   /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }
@@ -361,11 +357,7 @@ public:
    * @sa Surface.Surface
    * @sa Surface.Surface
    */
-  void Destroy()
-  {
-    SDL_DestroySurface(m_resource);
-    m_resource = nullptr;
-  }
+  void Destroy();
 
   /**
    * Get the properties associated with a surface.
@@ -398,10 +390,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesRef GetProperties() const
-  {
-    return CheckError(SDL_GetSurfaceProperties(m_resource));
-  }
+  PropertiesRef GetProperties() const;
 
   /**
    * Set the colorspace used by a surface.
@@ -419,10 +408,7 @@ public:
    *
    * @sa Surface.GetColorspace
    */
-  void SetColorspace(Colorspace colorspace)
-  {
-    CheckError(SDL_SetSurfaceColorspace(m_resource, colorspace));
-  }
+  void SetColorspace(Colorspace colorspace);
 
   /**
    * Get the colorspace used by a surface.
@@ -440,10 +426,7 @@ public:
    *
    * @sa Surface.SetColorspace
    */
-  Colorspace GetColorspace() const
-  {
-    return SDL_GetSurfaceColorspace(m_resource);
-  }
+  Colorspace GetColorspace() const;
 
   /**
    * Create a palette and associate it with a surface.
@@ -471,10 +454,7 @@ public:
    *
    * @sa Palette.SetColors
    */
-  Palette CreatePalette()
-  {
-    return CheckError(SDL_CreateSurfacePalette(m_resource));
-  }
+  Palette CreatePalette();
 
   /**
    * Set the palette used by a surface.
@@ -491,10 +471,7 @@ public:
    * @sa Palette.Palette
    * @sa Surface.GetPalette
    */
-  void SetPalette(PaletteParam palette)
-  {
-    CheckError(SDL_SetSurfacePalette(m_resource, palette));
-  }
+  void SetPalette(PaletteParam palette);
 
   /**
    * Get the palette used by a surface.
@@ -508,7 +485,7 @@ public:
    *
    * @sa Surface.SetPalette
    */
-  Palette GetPalette() const { return SDL_GetSurfacePalette(m_resource); }
+  Palette GetPalette() const;
 
   /**
    * Add an alternate version of a surface.
@@ -533,10 +510,7 @@ public:
    * @sa Surface.GetImages
    * @sa Surface.HasAlternateImages
    */
-  void AddAlternateImage(SurfaceParam image)
-  {
-    CheckError(SDL_AddSurfaceAlternateImage(m_resource, image));
-  }
+  void AddAlternateImage(SurfaceParam image);
 
   /**
    * Return whether a surface has alternate versions available.
@@ -551,10 +525,7 @@ public:
    * @sa Surface.RemoveAlternateImages
    * @sa Surface.GetImages
    */
-  bool HasAlternateImages() const
-  {
-    return SDL_SurfaceHasAlternateImages(m_resource);
-  }
+  bool HasAlternateImages() const;
 
   /**
    * Get an array including all versions of a surface.
@@ -581,10 +552,7 @@ public:
    * @sa Surface.RemoveAlternateImages
    * @sa Surface.HasAlternateImages
    */
-  OwnArray<SurfaceRaw> GetImages() const
-  {
-    return SDL_GetSurfaceImages(m_resource);
-  }
+  OwnArray<SurfaceRaw> GetImages() const;
 
   /**
    * Remove all alternate versions of a surface.
@@ -601,14 +569,14 @@ public:
    * @sa Surface.GetImages
    * @sa Surface.HasAlternateImages
    */
-  void RemoveAlternateImages() { SDL_RemoveSurfaceAlternateImages(m_resource); }
+  void RemoveAlternateImages();
 
   /**
    * Evaluates to true if the surface needs to be locked before access.
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool MustLock() const { return SDL_MUSTLOCK(m_resource); }
+  constexpr bool MustLock() const;
 
   /**
    * Set up a surface for directly accessing the pixels.
@@ -633,7 +601,7 @@ public:
    * @sa Surface.MustLock
    * @sa Surface.Unlock
    */
-  void Lock() { CheckError(SDL_LockSurface(m_resource)); }
+  void Lock();
 
   /**
    * Release a surface after directly accessing the pixels.
@@ -647,7 +615,7 @@ public:
    *
    * @sa Surface.Lock
    */
-  void Unlock() { SDL_UnlockSurface(m_resource); }
+  void Unlock();
 
   /**
    * Save a surface to a seekable SDL data stream in BMP format.
@@ -670,10 +638,7 @@ public:
    * @sa Surface.LoadBMP
    * @sa Surface.SaveBMP
    */
-  void SaveBMP(IOStreamParam dst, bool closeio = false) const
-  {
-    CheckError(SDL_SaveBMP_IO(m_resource, dst, closeio));
-  }
+  void SaveBMP(IOStreamParam dst, bool closeio = false) const;
 
   /**
    * Save a surface to a file.
@@ -694,10 +659,7 @@ public:
    * @sa Surface.LoadBMP
    * @sa Surface.SaveBMP
    */
-  void SaveBMP(StringParam file) const
-  {
-    CheckError(SDL_SaveBMP(m_resource, file));
-  }
+  void SaveBMP(StringParam file) const;
 
   /**
    * Set the RLE acceleration hint for a surface.
@@ -716,10 +678,7 @@ public:
    * @sa Surface.Lock
    * @sa Surface.Unlock
    */
-  void SetRLE(bool enabled)
-  {
-    CheckError(SDL_SetSurfaceRLE(m_resource, enabled));
-  }
+  void SetRLE(bool enabled);
 
   /**
    * Returns whether the surface is RLE enabled.
@@ -734,7 +693,7 @@ public:
    *
    * @sa Surface.SetRLE
    */
-  bool HasRLE() const { return SDL_SurfaceHasRLE(m_resource); }
+  bool HasRLE() const;
 
   /**
    * Set the color key (transparent pixel) in a surface.
@@ -758,10 +717,7 @@ public:
    * @sa Surface.SetRLE
    * @sa Surface.HasColorKey
    */
-  void SetColorKey(std::optional<Uint32> key)
-  {
-    CheckError(SDL_SetSurfaceColorKey(m_resource, key));
-  }
+  void SetColorKey(std::optional<Uint32> key);
 
   void ClearColorKey() { static_assert(false, "Not implemented"); }
 
@@ -779,7 +735,7 @@ public:
    * @sa Surface.SetColorKey
    * @sa Surface.GetColorKey
    */
-  bool HasColorKey() const { return SDL_SurfaceHasColorKey(m_resource); }
+  bool HasColorKey() const;
 
   /**
    * Get the color key (transparent pixel) for a surface.
@@ -799,10 +755,7 @@ public:
    * @sa Surface.SetColorKey
    * @sa Surface.HasColorKey
    */
-  std::optional<Uint32> GetColorKey() const
-  {
-    return CheckError(SDL_GetSurfaceColorKey(m_resource));
-  }
+  std::optional<Uint32> GetColorKey() const;
 
   /**
    * Set an additional color value multiplied into blit operations.
@@ -825,10 +778,7 @@ public:
    * @sa Surface.GetColorMod
    * @sa Surface.SetAlphaMod
    */
-  void SetColorMod(Uint8 r, Uint8 g, Uint8 b)
-  {
-    CheckError(SDL_SetSurfaceColorMod(m_resource, r, g, b));
-  }
+  void SetColorMod(Uint8 r, Uint8 g, Uint8 b);
 
   /**
    * Get the additional color value multiplied into blit operations.
@@ -845,10 +795,7 @@ public:
    * @sa Surface.GetAlphaMod
    * @sa Surface.SetColorMod
    */
-  void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
-  {
-    CheckError(SDL_GetSurfaceColorMod(m_resource, r, g, b));
-  }
+  void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const;
 
   /**
    * Set an additional alpha value used in blit operations.
@@ -868,10 +815,7 @@ public:
    * @sa Surface.GetAlphaMod
    * @sa Surface.SetColorMod
    */
-  void SetAlphaMod(Uint8 alpha)
-  {
-    CheckError(SDL_SetSurfaceAlphaMod(m_resource, alpha));
-  }
+  void SetAlphaMod(Uint8 alpha);
 
   /**
    * Get the additional alpha value used in blit operations.
@@ -886,10 +830,7 @@ public:
    * @sa Surface.GetColorMod
    * @sa Surface.SetAlphaMod
    */
-  Uint8 GetAlphaMod() const
-  {
-    return CheckError(SDL_GetSurfaceAlphaMod(m_resource));
-  }
+  Uint8 GetAlphaMod() const;
 
   void SetMod(Color color) { static_assert(false, "Not implemented"); }
 
@@ -911,10 +852,7 @@ public:
    *
    * @sa Surface.GetBlendMode
    */
-  void SetBlendMode(BlendMode blendMode)
-  {
-    CheckError(SDL_SetSurfaceBlendMode(m_resource, blendMode));
-  }
+  void SetBlendMode(BlendMode blendMode);
 
   /**
    * Get the blend mode used for blit operations.
@@ -928,10 +866,7 @@ public:
    *
    * @sa Surface.SetBlendMode
    */
-  BlendMode GetBlendMode() const
-  {
-    return CheckError(SDL_GetSurfaceBlendMode(m_resource));
-  }
+  BlendMode GetBlendMode() const;
 
   /**
    * Set the clipping rectangle for a surface.
@@ -953,10 +888,7 @@ public:
    *
    * @sa Surface.GetClipRect
    */
-  bool SetClipRect(OptionalRef<const RectRaw> rect)
-  {
-    return SDL_SetSurfaceClipRect(m_resource, rect);
-  }
+  bool SetClipRect(OptionalRef<const RectRaw> rect);
 
   void ResetClipRect() { static_assert(false, "Not implemented"); }
 
@@ -977,10 +909,7 @@ public:
    *
    * @sa Surface.SetClipRect
    */
-  Rect GetClipRect() const
-  {
-    return CheckError(SDL_GetSurfaceClipRect(m_resource));
-  }
+  Rect GetClipRect() const;
 
   /**
    * Flip a surface vertically or horizontally.
@@ -992,7 +921,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Flip(FlipMode flip) { CheckError(SDL_FlipSurface(m_resource, flip)); }
+  void Flip(FlipMode flip);
 
   /**
    * Creates a new surface identical to the existing surface.
@@ -1011,7 +940,7 @@ public:
    *
    * @sa Surface.Destroy
    */
-  Surface Duplicate() const { return SDL_DuplicateSurface(m_resource); }
+  Surface Duplicate() const;
 
   /**
    * Creates a new surface identical to the existing surface, scaled to the
@@ -1031,10 +960,7 @@ public:
    *
    * @sa Surface.Destroy
    */
-  Surface Scale(const PointRaw& size, ScaleMode scaleMode) const
-  {
-    return SDL_ScaleSurface(m_resource, size, scaleMode);
-  }
+  Surface Scale(const PointRaw& size, ScaleMode scaleMode) const;
 
   /**
    * Copy an existing surface to a new surface of the specified format.
@@ -1061,10 +987,7 @@ public:
    * @sa Surface.Convert
    * @sa Surface.Destroy
    */
-  Surface Convert(PixelFormat format) const
-  {
-    return SDL_ConvertSurface(m_resource, format);
-  }
+  Surface Convert(PixelFormat format) const;
 
   /**
    * Copy an existing surface to a new surface of the specified format and
@@ -1095,11 +1018,7 @@ public:
   Surface Convert(PixelFormat format,
                   PaletteParam palette,
                   Colorspace colorspace,
-                  PropertiesParam props) const
-  {
-    return SDL_ConvertSurfaceAndColorspace(
-      m_resource, format, palette, colorspace, props);
-  }
+                  PropertiesParam props) const;
 
   /**
    * Premultiply the alpha in a surface.
@@ -1114,10 +1033,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void PremultiplyAlpha(bool linear)
-  {
-    CheckError(SDL_PremultiplySurfaceAlpha(m_resource, linear));
-  }
+  void PremultiplyAlpha(bool linear);
 
   /**
    * Clear a surface with a specific color, with floating point precision.
@@ -1137,10 +1053,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Clear(const FColorRaw& color)
-  {
-    CheckError(SDL_ClearSurface(m_resource, color));
-  }
+  void Clear(const FColorRaw& color);
 
   void Fill(Uint32 color) { static_assert(false, "Not implemented"); }
 
@@ -1167,10 +1080,7 @@ public:
    *
    * @sa Surface.FillRects
    */
-  void FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
-  {
-    CheckError(SDL_FillSurfaceRect(m_resource, rect, color));
-  }
+  void FillRect(OptionalRef<const RectRaw> rect, Uint32 color);
 
   /**
    * Perform a fast fill of a set of rectangles with a specific color.
@@ -1195,10 +1105,7 @@ public:
    *
    * @sa Surface.FillRect
    */
-  void FillRects(SpanRef<const RectRaw> rects, Uint32 color)
-  {
-    CheckError(SDL_FillSurfaceRects(m_resource, rects, color));
-  }
+  void FillRects(SpanRef<const RectRaw> rects, Uint32 color);
 
   /**
    * Performs a fast blit from the source surface to the destination surface
@@ -1271,10 +1178,7 @@ public:
    */
   void Blit(SurfaceParam src,
             OptionalRef<const RectRaw> srcrect,
-            OptionalRef<const RectRaw> dstrect)
-  {
-    CheckError(SDL_BlitSurface(m_resource, src, srcrect, dstrect));
-  }
+            OptionalRef<const RectRaw> dstrect);
 
   void BlitAt(SurfaceParam src,
               OptionalRef<const RectRaw> srcrect,
@@ -1305,10 +1209,7 @@ public:
    */
   void BlitUnchecked(SurfaceParam src,
                      const RectRaw& srcrect,
-                     const RectRaw& dstrect)
-  {
-    CheckError(SDL_BlitSurfaceUnchecked(m_resource, src, srcrect, dstrect));
-  }
+                     const RectRaw& dstrect);
 
   /**
    * Perform a scaled blit to a destination surface, which may be of a different
@@ -1333,11 +1234,7 @@ public:
   void BlitScaled(SurfaceParam src,
                   OptionalRef<const RectRaw> srcrect,
                   OptionalRef<const RectRaw> dstrect,
-                  ScaleMode scaleMode)
-  {
-    CheckError(
-      SDL_BlitSurfaceScaled(m_resource, src, srcrect, dstrect, scaleMode));
-  }
+                  ScaleMode scaleMode);
 
   /**
    * Perform low-level surface scaled blitting only.
@@ -1363,11 +1260,7 @@ public:
   void BlitUncheckedScaled(SurfaceParam src,
                            const RectRaw& srcrect,
                            const RectRaw& dstrect,
-                           ScaleMode scaleMode)
-  {
-    CheckError(SDL_BlitSurfaceUncheckedScaled(
-      m_resource, src, srcrect, dstrect, scaleMode));
-  }
+                           ScaleMode scaleMode);
 
 #if SDL_VERSION_ATLEAST(3, 2, 4)
 
@@ -1393,11 +1286,7 @@ public:
   void Stretch(SurfaceParam src,
                OptionalRef<RectRaw> srcrect,
                OptionalRef<RectRaw> dstrect,
-               ScaleMode scaleMode)
-  {
-    CheckError(
-      SDL_StretchSurface(m_resource, src, srcrect, dstrect, scaleMode));
-  }
+               ScaleMode scaleMode);
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 4)
 
@@ -1425,10 +1314,7 @@ public:
    */
   void BlitTiled(SurfaceParam src,
                  OptionalRef<const RectRaw> srcrect,
-                 OptionalRef<const RectRaw> dstrect)
-  {
-    CheckError(SDL_BlitSurfaceTiled(m_resource, src, srcrect, dstrect));
-  }
+                 OptionalRef<const RectRaw> dstrect);
 
   /**
    * Perform a scaled and tiled blit to a destination surface, which may be of a
@@ -1460,11 +1346,7 @@ public:
                           OptionalRef<const RectRaw> srcrect,
                           float scale,
                           SDL_ScaleMode scaleMode,
-                          OptionalRef<const RectRaw> dstrect)
-  {
-    CheckError(SDL_BlitSurfaceTiledWithScale(
-      m_resource, src, srcrect, scale, scaleMode, dstrect));
-  }
+                          OptionalRef<const RectRaw> dstrect);
 
   void Blit9Grid(SurfaceParam src,
                  OptionalRef<const RectRaw> srcrect,
@@ -1518,19 +1400,7 @@ public:
                           int bottom_height,
                           float scale,
                           SDL_ScaleMode scaleMode,
-                          OptionalRef<const RectRaw> dstrect)
-  {
-    CheckError(SDL_BlitSurface9Grid(m_resource,
-                                    src,
-                                    srcrect,
-                                    left_width,
-                                    right_width,
-                                    top_height,
-                                    bottom_height,
-                                    scale,
-                                    scaleMode,
-                                    dstrect));
-  }
+                          OptionalRef<const RectRaw> dstrect);
 
   /**
    * Map an RGB triple to an opaque pixel value for a surface.
@@ -1561,10 +1431,7 @@ public:
    *
    * @sa Surface.MapRGBA
    */
-  Uint32 MapRGB(Uint8 r, Uint8 g, Uint8 b) const
-  {
-    return SDL_MapSurfaceRGB(m_resource, r, g, b);
-  }
+  Uint32 MapRGB(Uint8 r, Uint8 g, Uint8 b) const;
 
   /**
    * Map an RGBA quadruple to a pixel value for a surface.
@@ -1596,7 +1463,7 @@ public:
    *
    * @sa Surface.MapRGB
    */
-  Uint32 MapRGBA(ColorRaw c) const { return SDL_MapSurfaceRGBA(m_resource, c); }
+  Uint32 MapRGBA(ColorRaw c) const;
 
   Color ReadPixel(const PointRaw& p) const
   {
@@ -1632,10 +1499,7 @@ public:
                  Uint8* r,
                  Uint8* g,
                  Uint8* b,
-                 Uint8* a) const
-  {
-    CheckError(SDL_ReadSurfacePixel(m_resource, p, r, g, b, a));
-  }
+                 Uint8* a) const;
 
   FColor ReadPixelFloat(const PointRaw& p) const
   {
@@ -1668,10 +1532,7 @@ public:
                       float* r,
                       float* g,
                       float* b,
-                      float* a) const
-  {
-    CheckError(SDL_ReadSurfacePixelFloat(m_resource, p, r, g, b, a));
-  }
+                      float* a) const;
 
   /**
    * Writes a single pixel to a surface.
@@ -1694,10 +1555,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WritePixel(const PointRaw& p, ColorRaw c)
-  {
-    CheckError(SDL_WriteSurfacePixel(m_resource, p, c));
-  }
+  void WritePixel(const PointRaw& p, ColorRaw c);
 
   /**
    * Writes a single pixel to a surface.
@@ -1717,10 +1575,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void WritePixelFloat(const PointRaw& p, const FColorRaw& c)
-  {
-    CheckError(SDL_WriteSurfacePixelFloat(m_resource, p, c));
-  }
+  void WritePixelFloat(const PointRaw& p, const FColorRaw& c);
 
   int GetWidth() const { static_assert(false, "Not implemented"); }
 
@@ -1755,7 +1610,7 @@ public:
  */
 inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
 {
-  return Surface(SDL_CreateSurface(size, format));
+  return Surface(size, format);
 }
 
 /**
@@ -1791,7 +1646,7 @@ inline Surface CreateSurfaceFrom(const PointRaw& size,
                                  void* pixels,
                                  int pitch)
 {
-  return Surface(SDL_CreateSurfaceFrom(size, format, pixels, pitch));
+  return Surface(size, format, pixels, pitch);
 }
 
 /**
@@ -1809,6 +1664,12 @@ inline Surface CreateSurfaceFrom(const PointRaw& size,
  * @sa Surface.Surface
  */
 inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
+
+inline void Surface::Destroy()
+{
+  SDL_DestroySurface(m_resource);
+  m_resource = nullptr;
+}
 
 /**
  * Get the properties associated with a surface.
@@ -1845,6 +1706,11 @@ inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
 inline PropertiesRef GetSurfaceProperties(SurfaceConstParam surface)
 {
   return CheckError(SDL_GetSurfaceProperties(surface));
+}
+
+inline PropertiesRef Surface::GetProperties() const
+{
+  return SDL::GetSurfaceProperties(m_resource);
 }
 
 namespace prop::Surface {
@@ -1892,6 +1758,11 @@ inline void SetSurfaceColorspace(SurfaceParam surface, Colorspace colorspace)
   CheckError(SDL_SetSurfaceColorspace(surface, colorspace));
 }
 
+inline void Surface::SetColorspace(Colorspace colorspace)
+{
+  SDL::SetSurfaceColorspace(m_resource, colorspace);
+}
+
 /**
  * Get the colorspace used by a surface.
  *
@@ -1912,6 +1783,11 @@ inline void SetSurfaceColorspace(SurfaceParam surface, Colorspace colorspace)
 inline Colorspace GetSurfaceColorspace(SurfaceConstParam surface)
 {
   return SDL_GetSurfaceColorspace(surface);
+}
+
+inline Colorspace Surface::GetColorspace() const
+{
+  return SDL::GetSurfaceColorspace(m_resource);
 }
 
 /**
@@ -1946,6 +1822,11 @@ inline Palette CreateSurfacePalette(SurfaceParam surface)
   return CheckError(SDL_CreateSurfacePalette(surface));
 }
 
+inline Palette Surface::CreatePalette()
+{
+  return SDL::CreateSurfacePalette(m_resource);
+}
+
 /**
  * Set the palette used by a surface.
  *
@@ -1967,6 +1848,11 @@ inline void SetSurfacePalette(SurfaceParam surface, PaletteParam palette)
   CheckError(SDL_SetSurfacePalette(surface, palette));
 }
 
+inline void Surface::SetPalette(PaletteParam palette)
+{
+  SDL::SetSurfacePalette(m_resource, palette);
+}
+
 /**
  * Get the palette used by a surface.
  *
@@ -1983,6 +1869,11 @@ inline void SetSurfacePalette(SurfaceParam surface, PaletteParam palette)
 inline Palette GetSurfacePalette(SurfaceConstParam surface)
 {
   return SDL_GetSurfacePalette(surface);
+}
+
+inline Palette Surface::GetPalette() const
+{
+  return SDL::GetSurfacePalette(m_resource);
 }
 
 /**
@@ -2014,6 +1905,11 @@ inline void AddSurfaceAlternateImage(SurfaceParam surface, SurfaceParam image)
   CheckError(SDL_AddSurfaceAlternateImage(surface, image));
 }
 
+inline void Surface::AddAlternateImage(SurfaceParam image)
+{
+  SDL::AddSurfaceAlternateImage(m_resource, image);
+}
+
 /**
  * Return whether a surface has alternate versions available.
  *
@@ -2031,6 +1927,11 @@ inline void AddSurfaceAlternateImage(SurfaceParam surface, SurfaceParam image)
 inline bool SurfaceHasAlternateImages(SurfaceConstParam surface)
 {
   return SDL_SurfaceHasAlternateImages(surface);
+}
+
+inline bool Surface::HasAlternateImages() const
+{
+  return SDL::SurfaceHasAlternateImages(m_resource);
 }
 
 /**
@@ -2063,6 +1964,11 @@ inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstParam surface)
   return SDL_GetSurfaceImages(surface);
 }
 
+inline OwnArray<SurfaceRaw> Surface::GetImages() const
+{
+  return SDL::GetSurfaceImages(m_resource);
+}
+
 /**
  * Remove all alternate versions of a surface.
  *
@@ -2082,6 +1988,11 @@ inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstParam surface)
 inline void RemoveSurfaceAlternateImages(SurfaceParam surface)
 {
   SDL_RemoveSurfaceAlternateImages(surface);
+}
+
+inline void Surface::RemoveAlternateImages()
+{
+  SDL::RemoveSurfaceAlternateImages(m_resource);
 }
 
 /**
@@ -2113,6 +2024,8 @@ inline void LockSurface(SurfaceParam surface)
   CheckError(SDL_LockSurface(surface));
 }
 
+inline void Surface::Lock() { SDL::LockSurface(m_resource); }
+
 /**
  * Release a surface after directly accessing the pixels.
  *
@@ -2127,6 +2040,8 @@ inline void LockSurface(SurfaceParam surface)
  * @sa Surface.Lock
  */
 inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
+
+inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
 
 /**
  * Load a BMP image from a seekable SDL data stream.
@@ -2172,6 +2087,13 @@ inline Surface LoadBMP(IOStreamParam src, bool closeio = false)
  * @sa Surface.SaveBMP
  */
 inline Surface LoadBMP(StringParam file) { return Surface(SDL_LoadBMP(file)); }
+
+inline Surface Surface::LoadBMP(IOStreamParam src, bool closeio = false)
+{
+  return SDL::LoadBMP(src, closeio);
+}
+
+inline Surface Surface::LoadBMP(StringParam file) { return SDL::LoadBMP(file); }
 
 /**
  * Save a surface to a seekable SDL data stream in BMP format.
@@ -2227,6 +2149,16 @@ inline void SaveBMP(SurfaceConstParam surface, StringParam file)
   CheckError(SDL_SaveBMP(surface, file));
 }
 
+inline void Surface::SaveBMP(IOStreamParam dst, bool closeio = false) const
+{
+  SDL::SaveBMP(m_resource, dst, closeio);
+}
+
+inline void Surface::SaveBMP(StringParam file) const
+{
+  SDL::SaveBMP(m_resource, file);
+}
+
 /**
  * Set the RLE acceleration hint for a surface.
  *
@@ -2250,6 +2182,11 @@ inline void SetSurfaceRLE(SurfaceParam surface, bool enabled)
   CheckError(SDL_SetSurfaceRLE(surface, enabled));
 }
 
+inline void Surface::SetRLE(bool enabled)
+{
+  SDL::SetSurfaceRLE(m_resource, enabled);
+}
+
 /**
  * Returns whether the surface is RLE enabled.
  *
@@ -2268,6 +2205,8 @@ inline bool SurfaceHasRLE(SurfaceConstParam surface)
 {
   return SDL_SurfaceHasRLE(surface);
 }
+
+inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(m_resource); }
 
 /**
  * Set the color key (transparent pixel) in a surface.
@@ -2297,6 +2236,11 @@ inline void SetSurfaceColorKey(SurfaceParam surface, std::optional<Uint32> key)
   CheckError(SDL_SetSurfaceColorKey(surface, key));
 }
 
+inline void Surface::SetColorKey(std::optional<Uint32> key)
+{
+  SDL::SetSurfaceColorKey(m_resource, key);
+}
+
 /**
  * Returns whether the surface has a color key.
  *
@@ -2315,6 +2259,11 @@ inline void SetSurfaceColorKey(SurfaceParam surface, std::optional<Uint32> key)
 inline bool SurfaceHasColorKey(SurfaceConstParam surface)
 {
   return SDL_SurfaceHasColorKey(surface);
+}
+
+inline bool Surface::HasColorKey() const
+{
+  return SDL::SurfaceHasColorKey(m_resource);
 }
 
 /**
@@ -2339,6 +2288,11 @@ inline bool SurfaceHasColorKey(SurfaceConstParam surface)
 inline std::optional<Uint32> GetSurfaceColorKey(SurfaceConstParam surface)
 {
   return CheckError(SDL_GetSurfaceColorKey(surface));
+}
+
+inline std::optional<Uint32> Surface::GetColorKey() const
+{
+  return SDL::GetSurfaceColorKey(m_resource);
 }
 
 /**
@@ -2368,6 +2322,11 @@ inline void SetSurfaceColorMod(SurfaceParam surface, Uint8 r, Uint8 g, Uint8 b)
   CheckError(SDL_SetSurfaceColorMod(surface, r, g, b));
 }
 
+inline void Surface::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
+{
+  SDL::SetSurfaceColorMod(m_resource, r, g, b);
+}
+
 /**
  * Get the additional color value multiplied into blit operations.
  *
@@ -2390,6 +2349,11 @@ inline void GetSurfaceColorMod(SurfaceConstParam surface,
                                Uint8* b)
 {
   CheckError(SDL_GetSurfaceColorMod(surface, r, g, b));
+}
+
+inline void Surface::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
+{
+  SDL::GetSurfaceColorMod(m_resource, r, g, b);
 }
 
 /**
@@ -2416,6 +2380,11 @@ inline void SetSurfaceAlphaMod(SurfaceParam surface, Uint8 alpha)
   CheckError(SDL_SetSurfaceAlphaMod(surface, alpha));
 }
 
+inline void Surface::SetAlphaMod(Uint8 alpha)
+{
+  SDL::SetSurfaceAlphaMod(m_resource, alpha);
+}
+
 /**
  * Get the additional alpha value used in blit operations.
  *
@@ -2433,6 +2402,11 @@ inline void SetSurfaceAlphaMod(SurfaceParam surface, Uint8 alpha)
 inline Uint8 GetSurfaceAlphaMod(SurfaceConstParam surface)
 {
   return CheckError(SDL_GetSurfaceAlphaMod(surface));
+}
+
+inline Uint8 Surface::GetAlphaMod() const
+{
+  return SDL::GetSurfaceAlphaMod(m_resource);
 }
 
 /**
@@ -2457,6 +2431,11 @@ inline void SetSurfaceBlendMode(SurfaceParam surface, BlendMode blendMode)
   CheckError(SDL_SetSurfaceBlendMode(surface, blendMode));
 }
 
+inline void Surface::SetBlendMode(BlendMode blendMode)
+{
+  SDL::SetSurfaceBlendMode(m_resource, blendMode);
+}
+
 /**
  * Get the blend mode used for blit operations.
  *
@@ -2473,6 +2452,11 @@ inline void SetSurfaceBlendMode(SurfaceParam surface, BlendMode blendMode)
 inline BlendMode GetSurfaceBlendMode(SurfaceConstParam surface)
 {
   return CheckError(SDL_GetSurfaceBlendMode(surface));
+}
+
+inline BlendMode Surface::GetBlendMode() const
+{
+  return SDL::GetSurfaceBlendMode(m_resource);
 }
 
 /**
@@ -2502,6 +2486,11 @@ inline bool SetSurfaceClipRect(SurfaceParam surface,
   return SDL_SetSurfaceClipRect(surface, rect);
 }
 
+inline bool Surface::SetClipRect(OptionalRef<const RectRaw> rect)
+{
+  return SDL::SetSurfaceClipRect(m_resource, rect);
+}
+
 /**
  * Get the clipping rectangle for a surface.
  *
@@ -2525,6 +2514,11 @@ inline Rect GetSurfaceClipRect(SurfaceConstParam surface)
   return CheckError(SDL_GetSurfaceClipRect(surface));
 }
 
+inline Rect Surface::GetClipRect() const
+{
+  return SDL::GetSurfaceClipRect(m_resource);
+}
+
 /**
  * Flip a surface vertically or horizontally.
  *
@@ -2540,6 +2534,8 @@ inline void FlipSurface(SurfaceParam surface, FlipMode flip)
 {
   CheckError(SDL_FlipSurface(surface, flip));
 }
+
+inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
 
 /**
  * Creates a new surface identical to the existing surface.
@@ -2562,6 +2558,11 @@ inline void FlipSurface(SurfaceParam surface, FlipMode flip)
 inline Surface DuplicateSurface(SurfaceConstParam surface)
 {
   return SDL_DuplicateSurface(surface);
+}
+
+inline Surface Surface::Duplicate() const
+{
+  return SDL::DuplicateSurface(m_resource);
 }
 
 /**
@@ -2588,6 +2589,11 @@ inline Surface ScaleSurface(SurfaceConstParam surface,
                             ScaleMode scaleMode)
 {
   return SDL_ScaleSurface(surface, size, scaleMode);
+}
+
+inline Surface Surface::Scale(const PointRaw& size, ScaleMode scaleMode) const
+{
+  return SDL::ScaleSurface(m_resource, size, scaleMode);
 }
 
 /**
@@ -2619,6 +2625,20 @@ inline Surface ScaleSurface(SurfaceConstParam surface,
 inline Surface ConvertSurface(SurfaceConstParam surface, PixelFormat format)
 {
   return SDL_ConvertSurface(surface, format);
+}
+
+inline Surface Surface::Convert(PixelFormat format) const
+{
+  return SDL::ConvertSurface(m_resource, format);
+}
+
+inline Surface Surface::Convert(PixelFormat format,
+                                PaletteParam palette,
+                                Colorspace colorspace,
+                                PropertiesParam props) const
+{
+  return SDL::ConvertSurfaceAndColorspace(
+    m_resource, format, palette, colorspace, props);
 }
 
 /**
@@ -2801,6 +2821,11 @@ inline void PremultiplySurfaceAlpha(SurfaceParam surface, bool linear)
   CheckError(SDL_PremultiplySurfaceAlpha(surface, linear));
 }
 
+inline void Surface::PremultiplyAlpha(bool linear)
+{
+  SDL::PremultiplySurfaceAlpha(m_resource, linear);
+}
+
 /**
  * Clear a surface with a specific color, with floating point precision.
  *
@@ -2823,6 +2848,11 @@ inline void PremultiplySurfaceAlpha(SurfaceParam surface, bool linear)
 inline void ClearSurface(SurfaceParam surface, const FColorRaw& color)
 {
   CheckError(SDL_ClearSurface(surface, color));
+}
+
+inline void Surface::Clear(const FColorRaw& color)
+{
+  SDL::ClearSurface(m_resource, color);
 }
 
 /**
@@ -2856,6 +2886,11 @@ inline void FillSurfaceRect(SurfaceParam dst,
   CheckError(SDL_FillSurfaceRect(dst, rect, color));
 }
 
+inline void Surface::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
+{
+  SDL::FillSurfaceRect(m_resource, rect, color);
+}
+
 /**
  * Perform a fast fill of a set of rectangles with a specific color.
  *
@@ -2885,6 +2920,11 @@ inline void FillSurfaceRects(SurfaceParam dst,
                              Uint32 color)
 {
   CheckError(SDL_FillSurfaceRects(dst, rects, color));
+}
+
+inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
+{
+  SDL::FillSurfaceRects(m_resource, rects, color);
 }
 
 /**
@@ -2965,6 +3005,13 @@ inline void BlitSurface(SurfaceParam src,
   CheckError(SDL_BlitSurface(src, srcrect, dst, dstrect));
 }
 
+inline void Surface::Blit(SurfaceParam src,
+                          OptionalRef<const RectRaw> srcrect,
+                          OptionalRef<const RectRaw> dstrect)
+{
+  SDL::BlitSurface(m_resource, src, srcrect, dstrect);
+}
+
 inline void BlitSurfaceAt(SurfaceParam src,
                           OptionalRef<const RectRaw> srcrect,
                           SurfaceParam dst,
@@ -3002,6 +3049,13 @@ inline void BlitSurfaceUnchecked(SurfaceParam src,
   CheckError(SDL_BlitSurfaceUnchecked(src, srcrect, dst, dstrect));
 }
 
+inline void Surface::BlitUnchecked(SurfaceParam src,
+                                   const RectRaw& srcrect,
+                                   const RectRaw& dstrect)
+{
+  SDL::BlitSurfaceUnchecked(m_resource, src, srcrect, dstrect);
+}
+
 /**
  * Perform a scaled blit to a destination surface, which may be of a different
  * format.
@@ -3030,6 +3084,14 @@ inline void BlitSurfaceScaled(SurfaceParam src,
                               ScaleMode scaleMode)
 {
   CheckError(SDL_BlitSurfaceScaled(src, srcrect, dst, dstrect, scaleMode));
+}
+
+inline void Surface::BlitScaled(SurfaceParam src,
+                                OptionalRef<const RectRaw> srcrect,
+                                OptionalRef<const RectRaw> dstrect,
+                                ScaleMode scaleMode)
+{
+  SDL::BlitSurfaceScaled(m_resource, src, srcrect, dstrect, scaleMode);
 }
 
 /**
@@ -3062,6 +3124,14 @@ inline void BlitSurfaceUncheckedScaled(SurfaceParam src,
 {
   CheckError(
     SDL_BlitSurfaceUncheckedScaled(src, srcrect, dst, dstrect, scaleMode));
+}
+
+inline void Surface::BlitUncheckedScaled(SurfaceParam src,
+                                         const RectRaw& srcrect,
+                                         const RectRaw& dstrect,
+                                         ScaleMode scaleMode)
+{
+  SDL::BlitSurfaceUncheckedScaled(m_resource, src, srcrect, dstrect, scaleMode);
 }
 
 #if SDL_VERSION_ATLEAST(3, 2, 4)
@@ -3097,6 +3167,18 @@ inline void StretchSurface(SurfaceParam src,
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 4)
 
+#if SDL_VERSION_ATLEAST(3, 2, 4)
+
+inline void Surface::Stretch(SurfaceParam src,
+                             OptionalRef<RectRaw> srcrect,
+                             OptionalRef<RectRaw> dstrect,
+                             ScaleMode scaleMode)
+{
+  SDL::StretchSurface(m_resource, src, srcrect, dstrect, scaleMode);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 4)
+
 /**
  * Perform a tiled blit to a destination surface, which may be of a different
  * format.
@@ -3126,6 +3208,13 @@ inline void BlitSurfaceTiled(SurfaceParam src,
                              OptionalRef<const RectRaw> dstrect)
 {
   CheckError(SDL_BlitSurfaceTiled(src, srcrect, dst, dstrect));
+}
+
+inline void Surface::BlitTiled(SurfaceParam src,
+                               OptionalRef<const RectRaw> srcrect,
+                               OptionalRef<const RectRaw> dstrect)
+{
+  SDL::BlitSurfaceTiled(m_resource, src, srcrect, dstrect);
 }
 
 /**
@@ -3164,6 +3253,16 @@ inline void BlitSurfaceTiledWithScale(SurfaceParam src,
 {
   CheckError(SDL_BlitSurfaceTiledWithScale(
     src, srcrect, scale, scaleMode, dst, dstrect));
+}
+
+inline void Surface::BlitTiledWithScale(SurfaceParam src,
+                                        OptionalRef<const RectRaw> srcrect,
+                                        float scale,
+                                        SDL_ScaleMode scaleMode,
+                                        OptionalRef<const RectRaw> dstrect)
+{
+  SDL::BlitSurfaceTiledWithScale(
+    m_resource, src, srcrect, scale, scaleMode, dstrect);
 }
 
 /**
@@ -3269,6 +3368,28 @@ inline void BlitSurface9Grid(SurfaceParam src,
   static_assert(false, "Not implemented");
 }
 
+inline void Surface::Blit9GridWithScale(SurfaceParam src,
+                                        OptionalRef<const RectRaw> srcrect,
+                                        int left_width,
+                                        int right_width,
+                                        int top_height,
+                                        int bottom_height,
+                                        float scale,
+                                        SDL_ScaleMode scaleMode,
+                                        OptionalRef<const RectRaw> dstrect)
+{
+  SDL::BlitSurface9Grid(m_resource,
+                        src,
+                        srcrect,
+                        left_width,
+                        right_width,
+                        top_height,
+                        bottom_height,
+                        scale,
+                        scaleMode,
+                        dstrect);
+}
+
 /**
  * Map an RGB triple to an opaque pixel value for a surface.
  *
@@ -3307,6 +3428,11 @@ inline Uint32 MapSurfaceRGB(SurfaceConstParam surface,
   return SDL_MapSurfaceRGB(surface, r, g, b);
 }
 
+inline Uint32 Surface::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
+{
+  return SDL::MapSurfaceRGB(m_resource, r, g, b);
+}
+
 /**
  * Map an RGBA quadruple to a pixel value for a surface.
  *
@@ -3341,6 +3467,11 @@ inline Uint32 MapSurfaceRGB(SurfaceConstParam surface,
 inline Uint32 MapSurfaceRGBA(SurfaceConstParam surface, ColorRaw c)
 {
   return SDL_MapSurfaceRGBA(surface, c);
+}
+
+inline Uint32 Surface::MapRGBA(ColorRaw c) const
+{
+  return SDL::MapSurfaceRGBA(m_resource, c);
 }
 
 /**
@@ -3379,6 +3510,15 @@ inline void ReadSurfacePixel(SurfaceConstParam surface,
   CheckError(SDL_ReadSurfacePixel(surface, p, r, g, b, a));
 }
 
+inline void Surface::ReadPixel(const PointRaw& p,
+                               Uint8* r,
+                               Uint8* g,
+                               Uint8* b,
+                               Uint8* a) const
+{
+  SDL::ReadSurfacePixel(m_resource, p, r, g, b, a);
+}
+
 /**
  * Retrieves a single pixel from a surface.
  *
@@ -3412,6 +3552,15 @@ inline void ReadSurfacePixelFloat(SurfaceConstParam surface,
   CheckError(SDL_ReadSurfacePixelFloat(surface, p, r, g, b, a));
 }
 
+inline void Surface::ReadPixelFloat(const PointRaw& p,
+                                    float* r,
+                                    float* g,
+                                    float* b,
+                                    float* a) const
+{
+  SDL::ReadSurfacePixelFloat(m_resource, p, r, g, b, a);
+}
+
 /**
  * Writes a single pixel to a surface.
  *
@@ -3441,6 +3590,11 @@ inline void WriteSurfacePixel(SurfaceParam surface,
   CheckError(SDL_WriteSurfacePixel(surface, p, c));
 }
 
+inline void Surface::WritePixel(const PointRaw& p, ColorRaw c)
+{
+  SDL::WriteSurfacePixel(m_resource, p, c);
+}
+
 /**
  * Writes a single pixel to a surface.
  *
@@ -3465,6 +3619,11 @@ inline void WriteSurfacePixelFloat(SurfaceParam surface,
                                    const FColorRaw& c)
 {
   CheckError(SDL_WriteSurfacePixelFloat(surface, p, c));
+}
+
+inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
+{
+  SDL::WriteSurfacePixelFloat(m_resource, p, c);
 }
 
 /// @}

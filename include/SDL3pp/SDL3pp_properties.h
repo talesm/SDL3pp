@@ -122,10 +122,7 @@ public:
    *
    * @sa Properties.Destroy
    */
-  static Properties Create()
-  {
-    return Properties(CheckError(SDL_CreateProperties()));
-  }
+  static Properties Create();
 
   /// Destructor
   ~Properties() { SDL_DestroyProperties(m_resource); }
@@ -165,11 +162,7 @@ public:
    *
    * @sa Properties.Create
    */
-  void Destroy()
-  {
-    SDL_DestroyProperties(m_resource);
-    m_resource = 0;
-  }
+  void Destroy();
 };
 
 /// Semi-safe reference for Properties.
@@ -246,6 +239,8 @@ inline Properties CreateProperties()
 {
   return Properties(CheckError(SDL_CreateProperties()));
 }
+
+inline Properties Properties::Create() { return SDL::CreateProperties(); }
 
 /**
  * Copy a group of properties.
@@ -873,6 +868,12 @@ inline Uint64 CountProperties(PropertiesParam props)
 inline void DestroyProperties(PropertiesID props)
 {
   SDL_DestroyProperties(props);
+}
+
+inline void Properties::Destroy()
+{
+  SDL_DestroyProperties(m_resource);
+  m_resource = 0;
 }
 
 /// @}

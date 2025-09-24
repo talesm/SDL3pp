@@ -227,12 +227,12 @@ function generateBody(entry, prefix) {
   const selfStrPrefix = (selfStr || "") + ((entry.parameters?.length && selfStr) ? ", " : "");
   const paramStr = selfStrPrefix + generateCallParameters(entry.parameters);
   const internalCallStr = `${delegatedTo}(${paramStr})`;
-  const callStr = hint?.mayFail ? `CheckError(${internalCallStr})` : internalCallStr;
-  if (!entry.type) {
+  const callStr = (hint?.mayFail && !hint?.delegate) ? `CheckError(${internalCallStr})` : internalCallStr;
+  if (!entry.type && !entry.name.startsWith("operator")) {
     const superStr = hint?.super ?? hint?.self ?? "T";
     return `\n${prefix}  : ${superStr}(${callStr})\n${prefix}{}`;
   }
-  if (hint?.wrapSelf && entry.type) {
+  if (hint?.wrapSelf && entry.type && !hint?.delegate) {
     return `\n${prefix}{\n${prefix}  return ${entry.type}(${callStr});\n${prefix}}`;
   }
   const returnStr = entry.type === "void" ? "" : "return ";

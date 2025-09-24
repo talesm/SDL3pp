@@ -9,6 +9,7 @@ const transform = {
   prefixes: ["SDL_", "IMG_", "TTF_"],
   definitionPrefix: "SDL_",
   sourceIncludePrefix: 'SDL3/',
+  namespace: "SDL",
   renameRules: [{
     // @ts-ignore
     pattern: "^SDL_(.*)\\.h$",
@@ -1732,7 +1733,8 @@ const transform = {
               ]
             },
             "SDL_IOprintf": {
-              "name": "printf"
+              name: "printf",
+              proto: false,
             },
             "SDL_IOvprintf": {
               "name": "vprintf"
@@ -2149,6 +2151,7 @@ const transform = {
             },
             "SDL_LogMessage": {
               "immutable": true,
+              "after": "SDL_Log",
               "template": [
                 {
                   "type": "class...",

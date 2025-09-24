@@ -19,7 +19,7 @@ const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./u
  */
 function transformApi(config) {
   const source = config.sourceApi;
-  const transform = config.transform ?? { files: {} };
+  const transform = config.transform ?? { namespace: "SDL" };
   const sourceIncludePrefix = transform.sourceIncludePrefix ?? '';
 
   /** @type {ApiContext} */
@@ -95,6 +95,8 @@ class ApiContext {
    * @param {Api}           source 
    **/
   constructor(transform, source) {
+    this.namespace = transform.namespace;
+
     /** @type {Dict<ApiEntry>} */
     this.source = Object.fromEntries(Object.values(source.files)
       .flatMap(f => Object.entries(/** @type {Dict<ApiEntry>} */(f.entries) ?? {})));
@@ -1438,16 +1440,20 @@ function makeSortedEntryArray(sourceEntries, file, context) {
       if (!entries[nameChange.name]) {
         insertEntry(entries, { name: nameChange.name, kind: "plc" });
       }
-      if (typeof entry !== "string" && entry.proto && nameChange.type !== "") {
-        nameChange.name = `${type}::${nameChange.name}`;
-        delete nameChange.proto;
-      } else {
-        nameChange.name = `${type}.${nameChange.name}`;
-      }
       const currLink = file.transform[key];
+      const currLinkName = currLink?.name ?? transformName(key, context);
+      let isCtor = entry === "ctor" || (typeof entry !== "string" && !entry.name?.startsWith("operator") && entry.type === "");
+      if (isCtor || (typeof entry !== "string" && entry.proto === false)) {
+        nameChange.name = `${type}.${nameChange.name}`;
+      } else {
+        nameChange.name = `${type}::${nameChange.name}`;
+        addHints(nameChange, { delegate: `${context.namespace}::${currLinkName}` });
+      }
+      if (typeof entry !== "string") delete nameChange.proto;
       file.transform[key] = nameChange;
       if (currLink) {
-        if (!currLink.name) currLink.name = transformName(key, context);
+        currLink.name = currLinkName;
+        if (isCtor) addHints(currLink, { delegate: type });
         file.transform[key].link = currLink;
       }
     }

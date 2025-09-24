@@ -303,8 +303,8 @@ struct SourceBytes
  */
 struct TargetBytes
 {
-  void* data;        ///< The address to have data copied to it
-  size_t size_bytes; ///< The size in bytes
+  void* data = nullptr;  ///< The address to have data copied to it
+  size_t size_bytes = 0; ///< The size in bytes
 
   /// Default ctor
   constexpr TargetBytes() = default;
@@ -314,6 +314,14 @@ struct TargetBytes
     : TargetBytes()
   {
   }
+
+  constexpr TargetBytes(const TargetBytes& other) = default;
+
+  constexpr TargetBytes(TargetBytes&& other) = default;
+
+  constexpr TargetBytes& operator=(const TargetBytes& other) = default;
+
+  constexpr TargetBytes& operator=(TargetBytes&& other) = default;
 
   /// Just to have better error message
   template<class T, size_t N>
