@@ -992,7 +992,7 @@
 >     return r;
 >   }
 516c1197
-< #error "operator FRect (undefined)"
+<   constexpr operator FRect() const { static_assert(false, "Not implemented"); }
 ---
 >   constexpr operator FRect() const;
 548c1229

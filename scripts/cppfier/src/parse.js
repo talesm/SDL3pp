@@ -135,6 +135,7 @@ function fixEntry(entry) {
   } else if (entry.kind == "struct") {
     entry.entries = {};
   }
+  if (!entry.kind) entry.kind = 'plc';
 }
 
 /**

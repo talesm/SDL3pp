@@ -1534,7 +1534,7 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
     if (sourceEntry.kind !== 'function' && typeof subEntry !== 'string' && subEntry.kind !== 'function') continue;
 
     const transformEntry = transformEntries[sourceName];
-    if (transformEntry) continue;
+    if (transformEntry?.type || transformEntry?.parameters) continue;
     /** @type {ApiEntryTransform} */
     let targetEntry;
     if (typeof subEntry === 'string') {
@@ -1551,6 +1551,7 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
     delete targetEntry.immutable;
     delete targetEntry.proto;
     delete targetEntry.hints?.delegate;
+    if (transformEntry) combineObject(targetEntry, transformEntry);
     transformEntries[sourceName] = targetEntry;
   }
 

@@ -3558,6 +3558,7 @@ const transform = {
               type: ""
             },
             "operator FRect": {
+              kind: "function",
               doc: "@sa operator ToFRect()",
               name: "operator FRect",
               static: false,

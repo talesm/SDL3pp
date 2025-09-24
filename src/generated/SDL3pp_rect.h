@@ -513,7 +513,7 @@ struct Rect : RectRaw
   constexpr operator SDL_FRect() const : RectRaw(SDL_RectToFRect()) {}
 
   ///@sa operator ToFRect()
-#error "operator FRect (undefined)"
+  constexpr operator FRect() const { static_assert(false, "Not implemented"); }
 
   /**
    * Determine whether a rectangle has no area.
