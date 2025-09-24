@@ -27253,10 +27253,6 @@
               "type": "Time"
             },
             {
-              "name": "ticks",
-              "type": "Time"
-            },
-            {
               "name": "localTime",
               "type": "bool",
               "default": "true"
@@ -27271,7 +27267,7 @@
           "doc": "Converts a calendar time to an Time in nanoseconds since the epoch.\n\nThis function ignores the day_of_week member of the DateTime struct, so\nit may remain unset.\n\n@param dt the source DateTime.\n@param ticks the resulting Time.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
           "name": "DateTimeToTime",
           "kind": "function",
-          "type": "DateTime",
+          "type": "Time",
           "parameters": [
             {
               "name": "dt",

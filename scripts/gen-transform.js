@@ -6701,7 +6701,15 @@ const transform = {
         "SDL_TimeToWindows": {
           name: "Time::ToWindows",
           immutable: true
-        }
+        },
+        "SDL_TimeToDateTime": {
+          type: "DateTime",
+          parameters: [{}, { type: "bool", name: "localTime", default: "true" }],
+        },
+        "SDL_DateTimeToTime": {
+          type: "Time",
+          parameters: [{}],
+        },
       }
     },
     "SDL_timer.h": {

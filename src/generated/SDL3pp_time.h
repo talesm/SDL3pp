@@ -363,9 +363,9 @@ inline Time Time::Current() { return CheckError(SDL_GetCurrentTime()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline DateTime TimeToDateTime(Time ticks, Time ticks, bool localTime = true)
+inline DateTime TimeToDateTime(Time ticks, bool localTime = true)
 {
-  return CheckError(SDL_TimeToDateTime(ticks, ticks, localTime));
+  return CheckError(SDL_TimeToDateTime(ticks, localTime));
 }
 
 /**
@@ -380,7 +380,7 @@ inline DateTime TimeToDateTime(Time ticks, Time ticks, bool localTime = true)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline DateTime DateTimeToTime(const DateTimeRaw& dt)
+inline Time DateTimeToTime(const DateTimeRaw& dt)
 {
   return CheckError(SDL_DateTimeToTime(dt));
 }

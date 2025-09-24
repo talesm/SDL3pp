@@ -64,7 +64,7 @@
 #include "SDL3pp_surface.h"
 // #include "SDL3pp_system.h"
 // #include "SDL3pp_thread.h"
-// #include "SDL3pp_time.h"
+#include "SDL3pp_time.h"
 #include "SDL3pp_timer.h"
 // #include "SDL3pp_touch.h"
 // #include "SDL3pp_tray.h"
