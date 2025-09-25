@@ -5526,108 +5526,80 @@ const transform = {
       }
     },
     "SDL_storage.h": {
-      resources: {
-        "SDL_Storage": {
-          free: "SDL_CloseStorage",
-          entries: {
-            "SDL_OpenTitleStorage": "ctor",
-            "SDL_OpenUserStorage": "ctor",
-            "SDL_OpenFileStorage": "ctor",
-            "SDL_OpenStorage": "ctor",
-            "SDL_StorageReady": "immutable",
-            "SDL_GetStorageFileSize": {
-              immutable: true,
-              type: "std::optional<Uint64>",
-              parameters: [{}, {}]
-            },
-            "ReadFile": {
-              kind: "function",
-              type: "std::string",
-              immutable: true,
-              parameters: [
-                {
-                  name: "path",
-                  type: "StringParam"
-                }
-              ],
-            },
-            "SDL_ReadStorageFile": {
-              immutable: true,
-              parameters: [
-                {},
-                { name: "path", type: "StringParam" },
-                { name: "destination", type: "TargetBytes" }
-              ]
-            },
-            "ReadFileAs": {
-              kind: "function",
-              template: [{ type: "class", name: "T" }],
-              type: "std::vector<T>",
-              immutable: true,
-              parameters: [
-                {
-                  name: "path",
-                  type: "StringParam"
-                }
-              ],
-            },
-            "SDL_WriteStorageFile": {
-              type: "void",
-              parameters: [
-                {},
-                { name: "path", type: "StringParam" },
-                { name: "source", type: "SourceBytes" }
-              ]
-            },
-            "SDL_CreateStorageDirectory": "function",
-            "EnumerateDirectory": [{
-              kind: "function",
-              type: "std::vector<Path>",
-              parameters: [
-                {
-                  name: "path",
-                  type: "StringParam"
-                }
-              ]
-            }, {
-              kind: "function",
-              type: "void",
-              parameters: [
-                {
-                  name: "path",
-                  type: "StringParam"
-                },
-                {
-                  name: "callback",
-                  type: "EnumerateDirectoryCB"
-                }
-              ]
-            }],
-            "SDL_EnumerateStorageDirectory": "function",
-            "SDL_RemoveStoragePath": "function",
-            "SDL_RenameStoragePath": "function",
-            "SDL_CopyStorageFile": "function",
-            "SDL_GetStoragePathInfo": {
-              immutable: true,
-              type: "PathInfo",
-              parameters: [
-                {},
-                {}
-              ]
-            },
-            "SDL_GetStorageSpaceRemaining": "immutable",
-            "SDL_GlobStorageDirectory": {
-              type: "OwnArray<char *>",
-              parameters: [
-                {}, {}, {}, {}
-              ]
-            },
-            "SDL_CloseStorage": {
-              type: "void",
-              hints: { mayFail: true }
-            }
-          }
-        }
+      localIncludes: [
+        "SDL3pp_filesystem.h",
+        "SDL3pp_properties.h",
+        "SDL3pp_stdinc.h",
+      ],
+      transform: {
+        "SDL_GetStorageFileSize": {
+          type: "std::optional<Uint64>",
+          parameters: [{}, {}]
+        },
+        "SDL_ReadStorageFile": {
+          parameters: [
+            {},
+            { name: "path", type: "StringParam" },
+            { name: "destination", type: "TargetBytes" }
+          ]
+        },
+        "ReadFile": {
+          kind: "function",
+          type: "std::string",
+          parameters: [
+            { name: "storage", type: "StorageParam" },
+            { name: "path", type: "StringParam" }
+          ],
+        },
+        "ReadFileAs": {
+          kind: "function",
+          template: [{ type: "class", name: "T" }],
+          type: "std::vector<T>",
+          parameters: [
+            { name: "storage", type: "StorageParam" },
+            { name: "path", type: "StringParam" }
+          ],
+        },
+        "SDL_WriteStorageFile": {
+          type: "void",
+          parameters: [
+            {},
+            { name: "path", type: "StringParam" },
+            { name: "source", type: "SourceBytes" }
+          ]
+        },
+        "EnumerateStorageDirectory": {
+          after: "SDL_EnumerateStorageDirectory",
+          kind: "function",
+          type: "std::vector<Path>",
+          parameters: [
+            { name: "storage", type: "StorageParam" },
+            { name: "path", type: "StringParam" }
+          ]
+        },
+        "EnumerateStorageDirectory#2": {
+          kind: "function",
+          type: "void",
+          name: "EnumerateStorageDirectory",
+          parameters: [
+            { name: "storage", type: "StorageParam" },
+            { name: "path", type: "StringParam" },
+            { name: "callback", type: "EnumerateDirectoryCB" }
+          ]
+        },
+        "SDL_GetStoragePathInfo": {
+          type: "PathInfo",
+          parameters: [
+            {},
+            {}
+          ]
+        },
+        "SDL_GlobStorageDirectory": {
+          type: "OwnArray<char *>",
+          parameters: [
+            {}, {}, {}, {}
+          ]
+        },
       },
     },
     "SDL_surface.h": {

@@ -509,7 +509,7 @@ constexpr Time MIN_TIME = SDL_MIN_TIME;
  * @since This macro is available since SDL 3.2.0.
  *
  * @sa IOStreamInterface
- * @sa SDL_StorageInterface
+ * @sa StorageInterface
  * @sa SDL_VirtualJoystickDesc
  */
 #define SDL_INIT_INTERFACE(iface)                                              \

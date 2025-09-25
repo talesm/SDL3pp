@@ -355,6 +355,7 @@ function expandTypes(sourceEntries, file, context) {
     if (!isType(sourceEntry.kind)) continue;
     const targetDelta = getOrCreateDelta(sourceName);
     const targetName = targetDelta.name;
+    tryDetectOoLike(sourceEntry, targetDelta);
     if (sourceEntry.kind === "callback") expandCallback(sourceName, sourceEntry, targetName);
     if (targetDelta.resource) expandResource(sourceName, sourceEntry, targetName, targetDelta);
     if (targetDelta.wrapper) expandWrapper(sourceName, sourceEntry, targetName, targetDelta);
@@ -378,6 +379,49 @@ function expandTypes(sourceEntries, file, context) {
     context.addReturnType(`${sourceName} *`, `${targetName} *`);
     context.addReturnType(`const ${sourceName}`, `const ${targetName}`);
     context.addReturnType(`const ${sourceName} *`, `const ${targetName} *`);
+  }
+
+  /**
+   * 
+   * @param {ApiEntry}          sourceEntry 
+   * @param {ApiEntryTransform} targetDelta 
+   */
+  function tryDetectOoLike(sourceEntry, targetDelta) {
+    const sourceName = sourceEntry.name;
+    if (typeof targetDelta.resource !== "undefined" || typeof targetDelta.wrapper !== "undefined") return;
+    if (sourceName === 'SDL_Storage') console.log(targetDelta);
+
+    let fCount = 0;
+    let free = '';
+    const ctors = [];
+
+    for (const functionEntry of Object.values(sourceEntries)) {
+      if (sourceName === 'SDL_Storage') console.log(functionEntry);
+      if (Array.isArray(functionEntry) || functionEntry.kind !== "function") continue;
+
+      const param0 = functionEntry.parameters?.[0];
+      if (typeof param0 !== "object") continue;
+      if (param0.type.startsWith(sourceName) || param0.type.startsWith(`const ${sourceName}`)) {
+        fCount++;
+        if (functionEntry.name.match(/Close|Destroy|Free/)) free = functionEntry.name;
+      }
+
+      const resultType = functionEntry.type;
+      if (resultType.startsWith(sourceName)) {
+        if (functionEntry.name.match(/Create|Open|Define/)) ctors.push(functionEntry.name);
+      }
+    }
+
+    if (ctors.length) {
+      if (!targetDelta.entries) targetDelta.entries = {};
+      ctors.forEach(n => targetDelta.entries[n] = "ctor");
+    }
+
+    if (free) {
+      targetDelta.resource = { free };
+      // } else if (fCount > 5) {
+      //   targetDelta.wrapper = true;
+    }
   }
 
   function getOrCreateDelta(sourceName) {
@@ -657,7 +701,7 @@ function expandTypes(sourceEntries, file, context) {
     const blockedNames = new Set(Object.keys(entries));
     blockedNames.add(targetType);
     if (transform.entries) Object.keys(transform.entries).forEach(k => blockedNames.add(k));
-    const detectedMethods = detectMethods(sourceEntries, file.transform, sourceType, rawType, blockedNames);
+    const detectedMethods = detectMethods(sourceType, targetType, rawType, `const ${rawType}`, blockedNames);
     mirrorMethods(sourceEntries, file.transform, transform.entries ?? {}, paramType, constParamType, targetType);
     transform.entries = { ...entries, ...(transform.entries ?? {}), ...detectedMethods };
     if (type !== sourceType) {
@@ -994,7 +1038,7 @@ function expandTypes(sourceEntries, file, context) {
       const blockedNames = new Set(Object.keys(subEntries));
       blockedNames.add(targetName);
       Object.keys(ctors).forEach(k => blockedNames.add(k));
-      const detectedMethods = detectMethods(sourceEntries, file.transform, sourceName, rawName, blockedNames);
+      const detectedMethods = detectMethods(sourceName, targetName, paramType, constParamType, blockedNames);
       mirrorMethods(sourceEntries, file.transform, subEntries, paramType, constParamType, targetName);
       combineObject(subEntries, detectedMethods);
     } else {
@@ -1161,6 +1205,87 @@ function expandTypes(sourceEntries, file, context) {
         return type === scopedName || type === refName;
       }
     }
+  }
+
+
+  /**
+   * 
+   * @param {string}                  sourceType 
+   * @param {string}                  targetType 
+   * @param {string}                  paramType 
+   * @param {string}                  constParamType 
+   * @param {Set<string>}             blockedNames 
+   */
+  function detectMethods(sourceType, targetType, paramType, constParamType, blockedNames) {
+    /** @type {ApiSubEntryTransformLegacyMap} */
+    const foundEntries = {};
+    for (let [sourceName, transformEntry] of Object.entries(transformMap)) {
+      if (blockedNames.has(sourceName) || foundEntries[sourceName]) continue;
+      const sourceEntry = /** @type {ApiEntryTransform}*/(sourceEntries[sourceName]);
+      /** @type {ApiEntryTransform[]} */
+      if (transformEntry.kind !== 'function' && (transformEntry.kind || sourceEntry?.kind !== 'function')) continue;
+      if (!transformEntry.parameters?.length) continue;
+      const parameters = transformEntry.parameters;
+      if (!parameters) continue;
+      if (parameters.length === 0) {
+        blockedNames.add(sourceName);
+        continue;
+      }
+      const param0 = parameters[0];
+      if (typeof param0 === 'string') {
+        blockedNames.add(sourceName);
+        continue;
+      }
+      if (!param0.type) continue;
+      const m = paramMatchesVariants(param0, [paramType, `${paramType} *`], [constParamType, `${constParamType} &`]);
+      if (sourceName === "ReadFileAs") console.log(transformEntry, m, paramType);
+      if (!m) {
+        blockedNames.add(sourceName);
+        continue;
+      }
+      if (sourceEntry) {
+        foundEntries[sourceName] = {
+          ...transformEntry,
+          immutable: m === 'immutable'
+        };
+      } else {
+        const name = transformMemberName(transformEntry.name ?? sourceName, targetType, context);
+        if (blockedNames.has(name)) continue;
+        const key = `${targetType}::${transformMemberName(sourceName, targetType, context)}`;
+        transformMap[key] = {
+          ...transformEntry,
+          after: sourceName,
+          name: `${targetType}::${name}`,
+          static: false,
+          parameters: parameters.slice(1),
+          hints: { delegate: `${context.namespace}::${sourceName}` }
+        };
+      }
+    }
+    for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
+      if (blockedNames.has(sourceName) || foundEntries[sourceName]) continue;
+      if (Array.isArray(sourceEntry)) continue;
+      if (sourceEntry.kind !== "function") continue;
+      const parameters = sourceEntry.parameters;
+      if (!parameters?.length) continue;
+      const param0 = parameters[0];
+      if (typeof param0 === 'string') continue;
+      const m = paramMatchesVariants(param0, [sourceType, `${sourceType} *`], [`const ${sourceType}`, `const ${sourceType} *`]);
+      if (!m) continue;
+      const transformEntry = /** @type {ApiEntryTransform}*/(transformMap[sourceName]);
+      if (transformEntry?.name || transformEntry?.parameters) {
+        const e = {
+          ...transformEntry,
+          immutable: m === 'immutable' || undefined
+        };
+        delete e.name;
+        foundEntries[sourceName] = e;
+      } else {
+        foundEntries[sourceName] = m;
+      }
+      if (!transformEntry) transformMap[sourceName] = {};
+    }
+    return foundEntries;
   }
 
   /**
@@ -1607,89 +1732,19 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
   }
 }
 
-/**
- * 
- * @param {ApiEntries}            sourceEntries 
- * @param {ApiEntryTransformMap}  transformEntries 
- * @param {string}                sourceType 
- * @param {string}                paramType 
- * @param {Set<string>}           blockedNames 
- */
-function detectMethods(sourceEntries, transformEntries, sourceType, paramType, blockedNames) {
-  /** @type {ApiSubEntryTransformLegacyMap} */
-  const foundEntries = {};
-  for (let [sourceName, transformEntryArray] of Object.entries(transformEntries)) {
-    if (blockedNames.has(sourceName) || foundEntries[sourceName]) continue;
-    const sourceEntry = /** @type {ApiEntryTransform}*/(sourceEntries[sourceName]);
-    const resultArray = [];
-    if (!Array.isArray(transformEntryArray)) transformEntryArray = [transformEntryArray];
-    /** @type {ApiEntryTransform[]} */
-    for (const transformEntry of transformEntryArray) {
-      if (transformEntry.kind !== 'function' && (transformEntry.kind || sourceEntry?.kind !== 'function')) continue;
-      if (!transformEntry.parameters?.length) continue;
-      const parameters = transformEntry.parameters;
-      if (!parameters) continue;
-      if (parameters.length === 0) {
-        blockedNames.add(sourceName);
-        continue;
-      }
-      const param0 = parameters[0];
-      if (typeof param0 === 'string') {
-        blockedNames.add(sourceName);
-        continue;
-      }
-      if (!param0.type) continue;
-      const m = paramMatchesVariants(param0, [paramType, `const ${paramType} &`, `${paramType} *`, `const ${paramType} *`]);
-      if (!m) {
-        blockedNames.add(sourceName);
-        continue;
-      }
-      if (!sourceEntry) parameters.shift();
-      resultArray.push({
-        ...transformEntry,
-        immutable: m === 'immutable'
-      });
-    }
-    if (resultArray.length === 0) continue;
-    foundEntries[sourceName] = resultArray.length === 1 ? resultArray[0] : resultArray;
-  }
-  for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
-    if (blockedNames.has(sourceName) || foundEntries[sourceName]) continue;
-    if (Array.isArray(sourceEntry)) continue;
-    if (sourceEntry.kind !== "function") continue;
-    const parameters = sourceEntry.parameters;
-    if (!parameters?.length) continue;
-    const param0 = parameters[0];
-    if (typeof param0 === 'string') continue;
-    const m = paramMatchesVariants(param0, [sourceType, `${sourceType} *`, `const ${sourceType}`, `const ${sourceType} *`]);
-    if (!m) continue;
-    const transformEntry = /** @type {ApiEntryTransform}*/(transformEntries[sourceName]);
-    const targetName = transformEntry?.name;
-    const targetParameters = transformEntry?.parameters;
-    if (targetName || targetParameters) {
-      foundEntries[sourceName] = {
-        name: targetName,
-        parameters: targetParameters,
-        immutable: m === 'immutable' || undefined
-      };
-    } else {
-      foundEntries[sourceName] = m;
-    }
-    if (!transformEntry) {
-      transformEntries[sourceName] = {};
-    }
-  }
-  return foundEntries;
-}
 
 /**
  * 
  * @param {ApiParameter}  param0 
  * @param {string[]}      variants 
+ * @param {string[]}      constVariants 
  */
-function paramMatchesVariants(param0, variants) {
+function paramMatchesVariants(param0, variants, constVariants) {
   for (const variant of variants) {
-    if (param0.type === variant) return variant.startsWith('const ') ? 'immutable' : 'function';
+    if (param0.type === variant) return 'function';
+  }
+  for (const variant of constVariants) {
+    if (param0.type === variant) return 'immutable';
   }
   return false;
 }

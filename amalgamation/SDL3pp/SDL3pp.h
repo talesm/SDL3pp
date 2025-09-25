@@ -12805,7 +12805,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * @since This macro is available since SDL 3.2.0.
  *
  * @sa IOStreamInterface
- * @sa SDL_StorageInterface
+ * @sa StorageInterface
  * @sa SDL_VirtualJoystickDesc
  */
 #define SDL_INIT_INTERFACE(iface)                                              \
@@ -18722,7 +18722,7 @@ constexpr PathType PATHTYPE_OTHER = SDL_PATHTYPE_OTHER;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa GetPathInfo
- * @sa SDL_GetStoragePathInfo
+ * @sa Storage.GetPathInfo
  */
 struct PathInfo : PathInfoRaw
 {
@@ -18757,7 +18757,7 @@ struct PathInfo : PathInfoRaw
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa GlobDirectory
- * @sa SDL_GlobStorageDirectory
+ * @sa Storage.GlobDirectory
  */
 using GlobFlags = Uint32;
 
