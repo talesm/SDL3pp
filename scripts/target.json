@@ -35004,7 +35004,7 @@
                 "name": "ReadFile",
                 "static": false,
                 "hints": {
-                  "delegate": "SDL::ReadFile"
+                  "delegate": "SDL::ReadStorageFile"
                 },
                 "doc": "Synchronously read a file from a storage container into a client-provided\nbuffer.\n\nThe value of `length` must match the length of the file exactly; call\nStorage.GetFileSize() to get this value. This behavior may be relaxed in\na future release.\n\n@param storage a storage container to read from.\n@param path the relative path of the file to read.\n@param destination a client-provided buffer to read the file into.\n@param length the length of the destination buffer.\n@returns true if the file was read or false on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Storage.GetFileSize\n@sa Storage.Ready\n@sa Storage.WriteFile",
                 "proto": true
@@ -35078,14 +35078,18 @@
               },
               {
                 "kind": "function",
-                "type": "std::vector<Path>",
+                "type": "void",
+                "name": "EnumerateDirectory",
                 "parameters": [
                   {
                     "name": "path",
                     "type": "StringParam"
+                  },
+                  {
+                    "name": "callback",
+                    "type": "EnumerateDirectoryCB"
                   }
                 ],
-                "name": "EnumerateDirectory",
                 "static": false,
                 "hints": {
                   "delegate": "SDL::EnumerateStorageDirectory"
@@ -35230,7 +35234,7 @@
               "name": "ReadFileAs",
               "static": false,
               "hints": {
-                "delegate": "SDL::ReadFileAs"
+                "delegate": "SDL::ReadStorageFileAs"
               },
               "proto": true
             }
@@ -35452,27 +35456,45 @@
             "delegate": "SDL::GetStorageFileSize"
           }
         },
-        "ReadStorageFile": {
-          "doc": "Synchronously read a file from a storage container into a client-provided\nbuffer.\n\nThe value of `length` must match the length of the file exactly; call\nStorage.GetFileSize() to get this value. This behavior may be relaxed in\na future release.\n\n@param storage a storage container to read from.\n@param path the relative path of the file to read.\n@param destination a client-provided buffer to read the file into.\n@param length the length of the destination buffer.\n@returns true if the file was read or false on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Storage.GetFileSize\n@sa Storage.Ready\n@sa Storage.WriteFile",
-          "name": "ReadStorageFile",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "storage",
-              "type": "StorageParam"
-            },
-            {
-              "name": "path",
-              "type": "StringParam"
-            },
-            {
-              "name": "destination",
-              "type": "TargetBytes"
-            }
-          ],
-          "sourceName": "SDL_ReadStorageFile"
-        },
+        "ReadStorageFile": [
+          {
+            "doc": "Synchronously read a file from a storage container into a client-provided\nbuffer.\n\nThe value of `length` must match the length of the file exactly; call\nStorage.GetFileSize() to get this value. This behavior may be relaxed in\na future release.\n\n@param storage a storage container to read from.\n@param path the relative path of the file to read.\n@param destination a client-provided buffer to read the file into.\n@param length the length of the destination buffer.\n@returns true if the file was read or false on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Storage.GetFileSize\n@sa Storage.Ready\n@sa Storage.WriteFile",
+            "name": "ReadStorageFile",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "storage",
+                "type": "StorageParam"
+              },
+              {
+                "name": "path",
+                "type": "StringParam"
+              },
+              {
+                "name": "destination",
+                "type": "TargetBytes"
+              }
+            ],
+            "sourceName": "SDL_ReadStorageFile"
+          },
+          {
+            "kind": "function",
+            "type": "std::string",
+            "parameters": [
+              {
+                "name": "storage",
+                "type": "StorageParam"
+              },
+              {
+                "name": "path",
+                "type": "StringParam"
+              }
+            ],
+            "name": "ReadStorageFile",
+            "doc": "Synchronously read a file from a storage container into a client-provided\nbuffer.\n\nThe value of `length` must match the length of the file exactly; call\nStorage.GetFileSize() to get this value. This behavior may be relaxed in\na future release.\n\n@param storage a storage container to read from.\n@param path the relative path of the file to read.\n@param destination a client-provided buffer to read the file into.\n@param length the length of the destination buffer.\n@returns true if the file was read or false on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Storage.GetFileSize\n@sa Storage.Ready\n@sa Storage.WriteFile"
+          }
+        ],
         "Storage::ReadFile": [
           {
             "name": "Storage::ReadFile",
@@ -35510,26 +35532,11 @@
               "self": "m_resource",
               "super": "m_resource",
               "private": true,
-              "delegate": "SDL::ReadFile"
+              "delegate": "SDL::ReadStorageFile"
             }
           }
         ],
-        "ReadFile": {
-          "kind": "function",
-          "type": "std::string",
-          "parameters": [
-            {
-              "name": "storage",
-              "type": "StorageParam"
-            },
-            {
-              "name": "path",
-              "type": "StringParam"
-            }
-          ],
-          "name": "ReadFile"
-        },
-        "ReadFileAs": {
+        "ReadStorageFileAs": {
           "kind": "function",
           "template": [
             {
@@ -35548,7 +35555,7 @@
               "type": "StringParam"
             }
           ],
-          "name": "ReadFileAs"
+          "name": "ReadStorageFileAs"
         },
         "Storage::ReadFileAs": {
           "kind": "function",
@@ -35564,7 +35571,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "delegate": "SDL::ReadFileAs"
+            "delegate": "SDL::ReadStorageFileAs"
           }
         },
         "WriteStorageFile": {
@@ -35680,22 +35687,6 @@
           },
           {
             "kind": "function",
-            "type": "std::vector<Path>",
-            "parameters": [
-              {
-                "name": "storage",
-                "type": "StorageParam"
-              },
-              {
-                "name": "path",
-                "type": "StringParam"
-              }
-            ],
-            "name": "EnumerateStorageDirectory",
-            "doc": "Enumerate a directory in a storage container through a callback function.\n\nThis function provides every directory entry through an app-provided\ncallback, called once for each directory entry, until all results have been\nprovided or the callback returns either ENUM_SUCCESS or\nENUM_FAILURE.\n\nThis will return false if there was a system problem in general, or if a\ncallback returns ENUM_FAILURE. A successful return means a callback\nreturned ENUM_SUCCESS to halt enumeration, or all directory entries\nwere enumerated.\n\nIf `path` is nullptr, this is treated as a request to enumerate the root of\nthe storage container's tree. An empty string also works for this.\n\n@param storage a storage container.\n@param path the path of the directory to enumerate, or nullptr for the root.\n@param callback a function that is called for each entry in the directory.\n@param userdata a pointer that is passed to `callback`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Storage.Ready"
-          },
-          {
-            "kind": "function",
             "type": "void",
             "name": "EnumerateStorageDirectory",
             "parameters": [
@@ -35710,6 +35701,22 @@
               {
                 "name": "callback",
                 "type": "EnumerateDirectoryCB"
+              }
+            ],
+            "doc": "Enumerate a directory in a storage container through a callback function.\n\nThis function provides every directory entry through an app-provided\ncallback, called once for each directory entry, until all results have been\nprovided or the callback returns either ENUM_SUCCESS or\nENUM_FAILURE.\n\nThis will return false if there was a system problem in general, or if a\ncallback returns ENUM_FAILURE. A successful return means a callback\nreturned ENUM_SUCCESS to halt enumeration, or all directory entries\nwere enumerated.\n\nIf `path` is nullptr, this is treated as a request to enumerate the root of\nthe storage container's tree. An empty string also works for this.\n\n@param storage a storage container.\n@param path the path of the directory to enumerate, or nullptr for the root.\n@param callback a function that is called for each entry in the directory.\n@param userdata a pointer that is passed to `callback`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Storage.Ready"
+          },
+          {
+            "kind": "function",
+            "type": "std::vector<Path>",
+            "name": "EnumerateStorageDirectory",
+            "parameters": [
+              {
+                "name": "storage",
+                "type": "StorageParam"
+              },
+              {
+                "name": "path",
+                "type": "StringParam"
               }
             ],
             "doc": "Enumerate a directory in a storage container through a callback function.\n\nThis function provides every directory entry through an app-provided\ncallback, called once for each directory entry, until all results have been\nprovided or the callback returns either ENUM_SUCCESS or\nENUM_FAILURE.\n\nThis will return false if there was a system problem in general, or if a\ncallback returns ENUM_FAILURE. A successful return means a callback\nreturned ENUM_SUCCESS to halt enumeration, or all directory entries\nwere enumerated.\n\nIf `path` is nullptr, this is treated as a request to enumerate the root of\nthe storage container's tree. An empty string also works for this.\n\n@param storage a storage container.\n@param path the path of the directory to enumerate, or nullptr for the root.\n@param callback a function that is called for each entry in the directory.\n@param userdata a pointer that is passed to `callback`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Storage.Ready"
@@ -35745,14 +35752,18 @@
           },
           {
             "kind": "function",
-            "type": "std::vector<Path>",
+            "type": "void",
+            "name": "Storage::EnumerateDirectory",
             "parameters": [
               {
                 "name": "path",
                 "type": "StringParam"
+              },
+              {
+                "name": "callback",
+                "type": "EnumerateDirectoryCB"
               }
             ],
-            "name": "Storage::EnumerateDirectory",
             "hints": {
               "self": "m_resource",
               "super": "m_resource",

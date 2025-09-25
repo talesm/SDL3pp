@@ -426,7 +426,7 @@ public:
   }
 
   /// Destructor
-  ~Storage() { SDL_CloseStorage(m_resource); }
+  ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
 
   /// Assignment operator.
   Storage& operator=(Storage other)
@@ -460,9 +460,6 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Storage.Storage
-   * @sa Storage.Storage
-   * @sa Storage.Storage
-   * @sa Storage.Storage
    */
   bool Close();
 
@@ -484,8 +481,7 @@ public:
    * Query the size of a file within a storage container.
    *
    * @param path the relative path of the file to query.
-   * @param length a pointer to be filled with the file's length.
-   * @returns true if the file could be queried or false on failure; call
+   * @returns the file's length on success or 0 on failure; call
    *          GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
@@ -505,7 +501,6 @@ public:
    *
    * @param path the relative path of the file to read.
    * @param destination a client-provided buffer to read the file into.
-   * @param length the length of the destination buffer.
    * @returns true if the file was read or false on failure; call GetError()
    *          for more information.
    *
@@ -525,10 +520,7 @@ public:
    * Storage.GetFileSize() to get this value. This behavior may be relaxed in
    * a future release.
    *
-   * @param storage a storage container to read from.
    * @param path the relative path of the file to read.
-   * @param destination a client-provided buffer to read the file into.
-   * @param length the length of the destination buffer.
    * @returns true if the file was read or false on failure; call GetError()
    *          for more information.
    *
@@ -545,7 +537,6 @@ public:
    *
    * @param path the relative path of the file to write.
    * @param source a client-provided buffer to write from.
-   * @param length the length of the source buffer.
    * @returns true if the file was written or false on failure; call
    *          GetError() for more information.
    *
@@ -615,18 +606,17 @@ public:
    * If `path` is nullptr, this is treated as a request to enumerate the root of
    * the storage container's tree. An empty string also works for this.
    *
-   * @param storage a storage container.
    * @param path the path of the directory to enumerate, or nullptr for the
    * root.
    * @param callback a function that is called for each entry in the directory.
-   * @param userdata a pointer that is passed to `callback`.
+   * @returns all the directory contents.
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Storage.Ready
    */
-  std::vector<Path> EnumerateDirectory(StringParam path);
+  void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback);
 
   /**
    * Remove a file or an empty directory in a writable storage container.
@@ -670,9 +660,8 @@ public:
    * Get information about a filesystem path in a storage container.
    *
    * @param path the path to query.
-   * @param info a pointer filled in with information about the path, or nullptr
-   * to check for the existence of a file.
-   * @throws Error on failure.
+   * @returns the info on success or false if the file doesn't exist, or another
+   *          failure; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -717,8 +706,6 @@ public:
    * @param pattern the pattern that files in the directory must match. Can be
    *                nullptr.
    * @param flags `SDL_GLOB_*` bitflags that affect this search.
-   * @param count on return, will be set to the number of items in the returned
-   *              array. Can be nullptr.
    * @returns an array of strings on success.
    * @throws Error on failure.
    *
@@ -731,6 +718,24 @@ public:
                                 StringParam pattern,
                                 GlobFlags flags);
 
+  /**
+   * Synchronously read a file from a storage container into a client-provided
+   * buffer.
+   *
+   * The value of `length` must match the length of the file exactly; call
+   * Storage.GetFileSize() to get this value. This behavior may be relaxed
+   * in a future release.
+   *
+   * @param path the relative path of the file to read.
+   * @returns the content if the file was read or empty string on failure; call
+   *          GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Storage.GetFileSize
+   * @sa Storage.Ready
+   * @sa Storage.WriteFile
+   */
   template<class T>
   std::vector<T> ReadFileAs(StringParam path);
 };
@@ -917,8 +922,7 @@ inline bool Storage::Ready() { return SDL::StorageReady(m_resource); }
  *
  * @param storage a storage container to query.
  * @param path the relative path of the file to query.
- * @param length a pointer to be filled with the file's length.
- * @returns true if the file could be queried or false on failure; call
+ * @returns the file's length on success or std::nullopt on failure; call
  *          GetError() for more information.
  *
  * @since This function is available since SDL 3.2.0.
@@ -929,7 +933,10 @@ inline bool Storage::Ready() { return SDL::StorageReady(m_resource); }
 inline std::optional<Uint64> GetStorageFileSize(StorageParam storage,
                                                 StringParam path)
 {
-  return SDL_GetStorageFileSize(storage, path);
+  if (Uint64 length; SDL_GetStorageFileSize(storage, path, &length)) {
+    return length;
+  }
+  return {};
 }
 
 inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
@@ -941,14 +948,9 @@ inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
  * Synchronously read a file from a storage container into a client-provided
  * buffer.
  *
- * The value of `length` must match the length of the file exactly; call
- * Storage.GetFileSize() to get this value. This behavior may be relaxed in
- * a future release.
- *
  * @param storage a storage container to read from.
  * @param path the relative path of the file to read.
  * @param destination a client-provided buffer to read the file into.
- * @param length the length of the destination buffer.
  * @returns true if the file was read or false on failure; call GetError()
  *          for more information.
  *
@@ -962,33 +964,74 @@ inline bool ReadStorageFile(StorageParam storage,
                             StringParam path,
                             TargetBytes destination)
 {
-  return SDL_ReadStorageFile(storage, path, destination);
+  return SDL_ReadStorageFile(
+    storage, path, destination.data, destination.size_bytes);
+}
+
+/**
+ * Synchronously read a file from a storage container into a client-provided
+ * buffer.
+ *
+ * @param storage a storage container to read from.
+ * @param path the relative path of the file to read.
+ * @returns the content if the file was read.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Storage.GetFileSize
+ * @sa Storage.Ready
+ * @sa Storage.WriteFile
+ */
+inline std::string ReadStorageFile(StorageParam storage, StringParam path)
+{
+  auto sz = GetStorageFileSize(storage, path.c_str());
+  if (!sz || *sz == 0) return {};
+  std::string buffer(*sz, 0);
+  CheckError(ReadStorageFile(storage, std::move(path), buffer));
+  return buffer;
 }
 
 inline bool Storage::ReadFile(StringParam path, TargetBytes destination)
 {
-  return SDL::ReadStorageFile(m_resource, std::move(path), destination);
+  return SDL::ReadStorageFile(
+    m_resource, std::move(path), std::move(destination));
 }
 
 inline std::string Storage::ReadFile(StringParam path)
 {
-  return SDL::ReadFile(m_resource, std::move(path));
+  return SDL::ReadStorageFile(m_resource, std::move(path));
 }
 
-inline std::string ReadFile(StorageParam storage, StringParam path)
+/**
+ * Synchronously read a file from a storage container into a client-provided
+ * buffer.
+ *
+ * @param storage a storage container to read from.
+ * @param path the relative path of the file to read.
+ * @returns the content if the file was read.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Storage.GetFileSize
+ * @sa Storage.Ready
+ * @sa Storage.WriteFile
+ */
+template<class T>
+inline std::vector<T> ReadStorageFileAs(StorageParam storage, StringParam path)
 {
-  static_assert(false, "Not implemented");
+  auto sz = GetStorageFileSize(storage, path.c_str());
+  if (!sz || *sz == 0) return {};
+  std::vector<T> buffer(*sz / sizeof(T) + (*sz % sizeof(T) ? 1 : 0), 0);
+  CheckError(ReadFile(std::move(path), {buffer.data(), *sz}));
+  return buffer;
 }
 
 template<class T>
-inline std::vector<T> ReadFileAs(StorageParam storage, StringParam path)
-{
-  static_assert(false, "Not implemented");
-}
-
 inline std::vector<T> Storage::ReadFileAs(StringParam path)
 {
-  return SDL::ReadFileAs(m_resource, std::move(path));
+  return SDL::ReadStorageFileAs<T>(m_resource, std::move(path));
 }
 
 /**
@@ -997,9 +1040,7 @@ inline std::vector<T> Storage::ReadFileAs(StringParam path)
  * @param storage a storage container to write to.
  * @param path the relative path of the file to write.
  * @param source a client-provided buffer to write from.
- * @param length the length of the source buffer.
- * @returns true if the file was written or false on failure; call
- *          GetError() for more information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1011,12 +1052,13 @@ inline void WriteStorageFile(StorageParam storage,
                              StringParam path,
                              SourceBytes source)
 {
-  SDL_WriteStorageFile(storage, path, source);
+  CheckError(
+    SDL_WriteStorageFile(storage, path, source.data, source.size_bytes));
 }
 
 inline void Storage::WriteFile(StringParam path, SourceBytes source)
 {
-  SDL::WriteStorageFile(m_resource, std::move(path), source);
+  SDL::WriteStorageFile(m_resource, std::move(path), std::move(source));
 }
 
 /**
@@ -1093,17 +1135,24 @@ inline void EnumerateStorageDirectory(StorageParam storage,
  * @param storage a storage container.
  * @param path the path of the directory to enumerate, or nullptr for the root.
  * @param callback a function that is called for each entry in the directory.
- * @param userdata a pointer that is passed to `callback`.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Storage.Ready
  */
-inline std::vector<Path> EnumerateStorageDirectory(StorageParam storage,
-                                                   StringParam path)
+inline void EnumerateStorageDirectory(StorageParam storage,
+                                      StringParam path,
+                                      EnumerateDirectoryCB callback)
 {
-  static_assert(false, "Not implemented");
+  EnumerateStorageDirectory(
+    storage,
+    std::move(path),
+    [](void* userdata, const char* dirname, const char* fname) {
+      auto& cb = *static_cast<EnumerateDirectoryCB*>(userdata);
+      return cb(dirname, fname);
+    },
+    &callback);
 }
 
 /**
@@ -1124,19 +1173,22 @@ inline std::vector<Path> EnumerateStorageDirectory(StorageParam storage,
  *
  * @param storage a storage container.
  * @param path the path of the directory to enumerate, or nullptr for the root.
- * @param callback a function that is called for each entry in the directory.
- * @param userdata a pointer that is passed to `callback`.
+ * @returns all the directory contents.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Storage.Ready
  */
-inline void EnumerateStorageDirectory(StorageParam storage,
-                                      StringParam path,
-                                      EnumerateDirectoryCB callback)
+inline std::vector<Path> EnumerateStorageDirectory(StorageParam storage,
+                                                   StringParam path)
 {
-  static_assert(false, "Not implemented");
+  std::vector<Path> r;
+  EnumerateDirectory(std::move(path), [&](const char*, const char* fname) {
+    r.emplace_back(fname);
+    return ENUM_CONTINUE;
+  });
+  return r;
 }
 
 inline void Storage::EnumerateDirectory(StringParam path,
@@ -1147,9 +1199,10 @@ inline void Storage::EnumerateDirectory(StringParam path,
     m_resource, std::move(path), callback, userdata);
 }
 
-inline std::vector<Path> Storage::EnumerateDirectory(StringParam path)
+inline void Storage::EnumerateDirectory(StringParam path,
+                                        EnumerateDirectoryCB callback)
 {
-  return SDL::EnumerateStorageDirectory(m_resource, std::move(path));
+  SDL::EnumerateStorageDirectory(m_resource, std::move(path), callback);
 }
 
 /**
@@ -1226,9 +1279,8 @@ inline void Storage::CopyFile(StringParam oldpath, StringParam newpath)
  *
  * @param storage a storage container.
  * @param path the path to query.
- * @param info a pointer filled in with information about the path, or nullptr
- * to check for the existence of a file.
- * @throws Error on failure.
+ * @returns the info on success or false if the file doesn't exist, or another
+ *          failure; call GetError() for more information.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1236,7 +1288,10 @@ inline void Storage::CopyFile(StringParam oldpath, StringParam newpath)
  */
 inline PathInfo GetStoragePathInfo(StorageParam storage, StringParam path)
 {
-  return CheckError(SDL_GetStoragePathInfo(storage, path));
+  if (PathInfo info; SDL_GetStoragePathInfo(storage, path, &info)) {
+    return info;
+  }
+  return {};
 }
 
 inline PathInfo Storage::GetPathInfo(StringParam path)
@@ -1290,8 +1345,6 @@ inline Uint64 Storage::GetSpaceRemaining()
  * @param pattern the pattern that files in the directory must match. Can be
  *                nullptr.
  * @param flags `SDL_GLOB_*` bitflags that affect this search.
- * @param count on return, will be set to the number of items in the returned
- *              array. Can be nullptr.
  * @returns an array of strings on success.
  * @throws Error on failure.
  *
@@ -1305,7 +1358,10 @@ inline OwnArray<char*> GlobStorageDirectory(StorageParam storage,
                                             StringParam pattern,
                                             GlobFlags flags)
 {
-  return CheckError(SDL_GlobStorageDirectory(storage, path, pattern, flags));
+  int count;
+  auto data =
+    CheckError(SDL_GlobStorageDirectory(storage, path, pattern, flags, &count));
+  return OwnArray<char*>{data, size_t(count)};
 }
 
 inline OwnArray<char*> Storage::GlobDirectory(StringParam path,

@@ -632,7 +632,7 @@ public:
    *
    * @sa Storage.Ready
    */
-  std::vector<Path> EnumerateDirectory(StringParam path);
+  void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback);
 
   /**
    * Remove a file or an empty directory in a writable storage container.
@@ -971,6 +971,32 @@ inline bool ReadStorageFile(StorageParam storage,
   return SDL_ReadStorageFile(storage, path, destination);
 }
 
+/**
+ * Synchronously read a file from a storage container into a client-provided
+ * buffer.
+ *
+ * The value of `length` must match the length of the file exactly; call
+ * Storage.GetFileSize() to get this value. This behavior may be relaxed in
+ * a future release.
+ *
+ * @param storage a storage container to read from.
+ * @param path the relative path of the file to read.
+ * @param destination a client-provided buffer to read the file into.
+ * @param length the length of the destination buffer.
+ * @returns true if the file was read or false on failure; call GetError()
+ *          for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Storage.GetFileSize
+ * @sa Storage.Ready
+ * @sa Storage.WriteFile
+ */
+inline std::string ReadStorageFile(StorageParam storage, StringParam path)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline bool Storage::ReadFile(StringParam path, TargetBytes destination)
 {
   return SDL::ReadStorageFile(m_resource, std::move(path), destination);
@@ -978,23 +1004,18 @@ inline bool Storage::ReadFile(StringParam path, TargetBytes destination)
 
 inline std::string Storage::ReadFile(StringParam path)
 {
-  return SDL::ReadFile(m_resource, std::move(path));
-}
-
-inline std::string ReadFile(StorageParam storage, StringParam path)
-{
-  static_assert(false, "Not implemented");
+  return SDL::ReadStorageFile(m_resource, std::move(path));
 }
 
 template<class T>
-inline std::vector<T> ReadFileAs(StorageParam storage, StringParam path)
+inline std::vector<T> ReadStorageFileAs(StorageParam storage, StringParam path)
 {
   static_assert(false, "Not implemented");
 }
 
 inline std::vector<T> Storage::ReadFileAs(StringParam path)
 {
-  return SDL::ReadFileAs(m_resource, std::move(path));
+  return SDL::ReadStorageFileAs(m_resource, std::move(path));
 }
 
 /**
@@ -1106,8 +1127,9 @@ inline void EnumerateStorageDirectory(StorageParam storage,
  *
  * @sa Storage.Ready
  */
-inline std::vector<Path> EnumerateStorageDirectory(StorageParam storage,
-                                                   StringParam path)
+inline void EnumerateStorageDirectory(StorageParam storage,
+                                      StringParam path,
+                                      EnumerateDirectoryCB callback)
 {
   static_assert(false, "Not implemented");
 }
@@ -1138,9 +1160,8 @@ inline std::vector<Path> EnumerateStorageDirectory(StorageParam storage,
  *
  * @sa Storage.Ready
  */
-inline void EnumerateStorageDirectory(StorageParam storage,
-                                      StringParam path,
-                                      EnumerateDirectoryCB callback)
+inline std::vector<Path> EnumerateStorageDirectory(StorageParam storage,
+                                                   StringParam path)
 {
   static_assert(false, "Not implemented");
 }
@@ -1153,9 +1174,10 @@ inline void Storage::EnumerateDirectory(StringParam path,
     m_resource, std::move(path), callback, userdata);
 }
 
-inline std::vector<Path> Storage::EnumerateDirectory(StringParam path)
+inline void Storage::EnumerateDirectory(StringParam path,
+                                        EnumerateDirectoryCB callback)
 {
-  return SDL::EnumerateStorageDirectory(m_resource, std::move(path));
+  SDL::EnumerateStorageDirectory(m_resource, std::move(path), callback);
 }
 
 /**

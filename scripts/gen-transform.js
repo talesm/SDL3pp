@@ -5543,7 +5543,8 @@ const transform = {
             { name: "destination", type: "TargetBytes" }
           ]
         },
-        "ReadFile": {
+        "ReadStorageFile": {
+          after: "SDL_ReadStorageFile",
           kind: "function",
           type: "std::string",
           parameters: [
@@ -5551,7 +5552,8 @@ const transform = {
             { name: "path", type: "StringParam" }
           ],
         },
-        "ReadFileAs": {
+        "ReadStorageFileAs": {
+          after: "SDL_ReadStorageFile",
           kind: "function",
           template: [{ type: "class", name: "T" }],
           type: "std::vector<T>",
@@ -5571,20 +5573,22 @@ const transform = {
         "EnumerateStorageDirectory": {
           after: "SDL_EnumerateStorageDirectory",
           kind: "function",
-          type: "std::vector<Path>",
-          parameters: [
-            { name: "storage", type: "StorageParam" },
-            { name: "path", type: "StringParam" }
-          ]
-        },
-        "EnumerateStorageDirectory#2": {
-          kind: "function",
           type: "void",
           name: "EnumerateStorageDirectory",
           parameters: [
             { name: "storage", type: "StorageParam" },
             { name: "path", type: "StringParam" },
             { name: "callback", type: "EnumerateDirectoryCB" }
+          ]
+        },
+        "EnumerateStorageDirectory#2": {
+          after: "SDL_EnumerateStorageDirectory",
+          kind: "function",
+          type: "std::vector<Path>",
+          name: "EnumerateStorageDirectory",
+          parameters: [
+            { name: "storage", type: "StorageParam" },
+            { name: "path", type: "StringParam" }
           ]
         },
         "SDL_GetStoragePathInfo": {
