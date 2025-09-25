@@ -3,6 +3,7 @@
     "SDL_assert.h",
     "SDL_bits.h",
     "SDL_blendmode.h",
+    "SDL_clipboard.h",
     "SDL_error.h",
     "SDL_events.h",
     "SDL_filesystem.h",

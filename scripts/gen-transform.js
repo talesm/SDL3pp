@@ -788,40 +788,7 @@ const transform = {
       }
     },
     "SDL_clipboard.h": {
-      includeAfter: {
-        "SDL_SetClipboardData": {
-          name: "SetClipboardData",
-          kind: "function",
-          type: "void",
-          parameters: [
-            {
-              name: "callback",
-              type: "ClipboardDataCB"
-            },
-            {
-              name: "cleanup",
-              type: "ClipboardCleanupCB"
-            },
-            {
-              name: "mime_types",
-              type: "std::span<const char *>"
-            }
-          ]
-        },
-        "SDL_GetClipboardData": {
-          name: "GetClipboardDataAs",
-          kind: "function",
-          template: [{
-            type: "class",
-            name: "T"
-          }],
-          type: "OwnArray<T>",
-          parameters: [{
-            name: "mime_type",
-            type: "StringParam"
-          }]
-        },
-      },
+      localIncludes: ["SDL3pp_stdinc.h"],
       transform: {
         "SDL_GetClipboardText": { type: "StringResult" },
         "SDL_GetPrimarySelectionText": { type: "StringResult" },
@@ -848,8 +815,38 @@ const transform = {
             }
           ]
         },
+        "SetClipboardData": {
+          kind: "function",
+          type: "void",
+          parameters: [
+            {
+              name: "callback",
+              type: "ClipboardDataCB"
+            },
+            {
+              name: "cleanup",
+              type: "ClipboardCleanupCB"
+            },
+            {
+              name: "mime_types",
+              type: "std::span<const char *>"
+            }
+          ]
+        },
         "SDL_GetClipboardData": {
           type: "StringResult",
+          parameters: [{
+            name: "mime_type",
+            type: "StringParam"
+          }]
+        },
+        "GetClipboardDataAs": {
+          kind: "function",
+          template: [{
+            type: "class",
+            name: "T"
+          }],
+          type: "OwnArray<T>",
           parameters: [{
             name: "mime_type",
             type: "StringParam"

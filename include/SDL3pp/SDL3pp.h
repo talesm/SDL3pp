@@ -22,7 +22,7 @@
 #include "SDL3pp_bits.h"
 #include "SDL3pp_blendmode.h"
 // #include "SDL3pp_camera.h"
-// #include "SDL3pp_clipboard.h"
+#include "SDL3pp_clipboard.h"
 // #include "SDL3pp_cpuinfo.h"
 // #include "SDL3pp_dialog.h"
 // #include "SDL3pp_endian.h"
