@@ -349,7 +349,7 @@ namespace SDL {
  *
  * Note that while this talks about audio streams, this is an OS-level
  * concept, so it applies to a physical audio device in this case, and not an
- * SDL_AudioStream, nor an SDL logical audio device.
+ * AudioStream, nor an SDL logical audio device.
  *
  * This hint should be set before an audio device is opened.
  *
@@ -375,7 +375,7 @@ namespace SDL {
  *
  * Note that while this talks about audio streams, this is an OS-level
  * concept, so it applies to a physical audio device in this case, and not an
- * SDL_AudioStream, nor an SDL logical audio device.
+ * AudioStream, nor an SDL logical audio device.
  *
  * This hint should be set before an audio device is opened.
  *
@@ -3894,7 +3894,7 @@ namespace SDL {
  *   samples is zero.
  * - "ignore" - Ignore fact chunk entirely. (default)
  *
- * This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()
+ * This hint should be set before calling LoadWAV() or LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3906,7 +3906,7 @@ namespace SDL {
  * This sets an upper bound on the number of chunks in a WAVE file to avoid
  * wasting time on malformed or corrupt WAVE files. This defaults to "10000".
  *
- * This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()
+ * This hint should be set before calling LoadWAV() or LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3934,7 +3934,7 @@ namespace SDL {
  * - "ignore" - Ignore the RIFF chunk size and always search up to 4 GiB.
  * - "maximum" - Search for chunks until the end of file. (not recommended)
  *
- * This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()
+ * This hint should be set before calling LoadWAV() or LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3954,7 +3954,7 @@ namespace SDL {
  * - "dropframe" - Decode until the first incomplete sample frame.
  * - "dropblock" - Decode until the first incomplete block. (default)
  *
- * This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()
+ * This hint should be set before calling LoadWAV() or LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */

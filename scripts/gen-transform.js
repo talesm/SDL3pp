@@ -338,49 +338,17 @@ const transform = {
       }
     },
     "SDL_audio.h": {
-      includeBefore: {
-        "SDL_AudioDeviceID": [
-          { name: "AudioPostmixCallback" },
-          { name: "AudioPostmixCB" },
-        ],
-        "SDL_AudioStream": [
-          { name: "AudioStreamCallback" },
-          { name: "AudioStreamCB" },
-        ],
-      },
-      includeAfter: {
-        "__begin": {
-          name: "AudioSpec"
-        },
-        "SDL_MixAudio": {
-          kind: "function",
-          name: "MixAudio",
-          type: "void",
-          parameters: [
-            {
-              name: "dst",
-              type: "TargetBytes"
-            },
-            {
-              name: "src",
-              type: "SourceBytes"
-            },
-            {
-              name: "format",
-              type: "AudioFormat"
-            },
-            {
-              name: "volume",
-              type: "float"
-            }
-          ]
-        },
-      },
-      wrappers: {
+      localIncludes: ["SDL3pp_iostream.h", "SDL3pp_properties.h", "SDL3pp_stdinc.h"],
+      transform: {
+        "SDL_AudioSpec": { after: "__begin" },
         "SDL_AudioFormat": {
+          before: "SDL_DEFINE_AUDIO_FORMAT",
+          wrapper: true,
           entries: {
             "SDL_DEFINE_AUDIO_FORMAT": {
+              kind: "function",
               name: "ctor",
+              type: "",
               constexpr: true,
               parameters: [
                 { type: "bool", name: "sign" },
@@ -460,11 +428,17 @@ const transform = {
             },
           }
         },
-      },
-      resources: {
+        "SDL_AudioPostmixCallback": { before: "SDL_AudioDeviceID" },
+        "AudioPostmixCB": {
+          kind: "alias",
+          type: "std::function<void(const AudioSpec &spec, std::span<float> buffer)>"
+        },
         "SDL_AudioDeviceID": {
           name: "AudioDevice",
-          free: "SDL_CloseAudioDevice",
+          resource: {
+            free: "SDL_CloseAudioDevice",
+            rawName: "AudioDeviceID",
+          },
           entries: {
             "SDL_OpenAudioDevice": {
               name: "ctor",
@@ -530,10 +504,13 @@ const transform = {
             },
           }
         },
+        "SDL_AudioStreamCallback": { before: "SDL_AudioStream" },
+        "AudioStreamCB": {
+          kind: "alias",
+          type: "std::function<void(AudioStreamRef stream, int additional_amount, int total_amount)>"
+        },
         "SDL_AudioStream": {
-          lock: true,
-          lockFunction: "SDL_LockAudioStream",
-          unlockFunction: "SDL_UnlockAudioStream",
+          resource: true,
           entries: {
             "SDL_CreateAudioStream": {
               name: "ctor",
@@ -651,9 +628,8 @@ const transform = {
             "SDL_PauseAudioStreamDevice": "function",
             "SDL_ResumeAudioStreamDevice": "function",
             "SDL_AudioStreamDevicePaused": "immutable",
-            "SDL_LockAudioStream": {
-              type: "AudioStreamLock"
-            },
+            "SDL_LockAudioStream": "function",
+            "SDL_UnlockAudioStream": "function",
             "SetGetCallback": {
               kind: "function",
               type: "void",
@@ -686,14 +662,6 @@ const transform = {
             "SDL_UnbindAudioStream": "function",
             "SDL_GetAudioStreamDevice": "immutable",
           }
-        }
-      },
-      transform: {
-        "AudioPostmixCB": {
-          type: "std::function<void(const AudioSpec &spec, std::span<float> buffer)>"
-        },
-        "AudioStreamCB": {
-          type: "std::function<void(AudioStreamRef stream, int additional_amount, int total_amount)>"
         },
         "SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK": {
           kind: "var",
@@ -746,6 +714,28 @@ const transform = {
             {
               name: "dst",
               type: "Uint8 *"
+            },
+            {
+              name: "src",
+              type: "SourceBytes"
+            },
+            {
+              name: "format",
+              type: "AudioFormat"
+            },
+            {
+              name: "volume",
+              type: "float"
+            }
+          ]
+        },
+        "MixAudio": {
+          kind: "function",
+          type: "void",
+          parameters: [
+            {
+              name: "dst",
+              type: "TargetBytes"
             },
             {
               name: "src",

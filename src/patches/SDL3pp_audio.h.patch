@@ -1,0 +1,4 @@
+279c279
+<     : m_audioFormat(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size))
+---
+>     : AudioFormat(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size))
