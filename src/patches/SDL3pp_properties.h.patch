@@ -11,18 +11,13 @@
 >  * can be created with the Properties.Create function and destroyed with the
 >  * Properties.Destroy function, but the Properties destructor probably will do
 >  * what you want to, automatically.
-74a76,77
->  *
->  * @sa Properties.Create
-87a91,108
+111a113,128
 > /**
 >  * A callback used to enumerate all the properties in a group of properties.
 >  *
 >  * This callback is called from Properties.Enumerate(), and is called once
 >  * per property in the set.
 >  *
->  *
->  * @sa Properties.Create
 >  * @param props the Properties that is being enumerated.
 >  * @param name the next property name in the enumeration.
 >  *
@@ -33,36 +28,36 @@
 >  *
 >  * @sa Properties.Enumerate
 >  */
-96a118,119
+120a138,139
 >  *
 >  * @sa Properties.Create
-136,137c159,160
+160,161c179,180
 <    * @returns an ID for a new group of properties, or 0 on failure; call
 <    *          GetError() for more information.
 ---
 >    * @returns a valid ID for a new group of properties on success;
 >    * @throws Error on failure.
-177d199
+201d219
 <    *
-548c570
+548c566
 <   return CheckError(SDL_GetGlobalProperties());
 ---
 >   return {CheckError(SDL_GetGlobalProperties())};
-556,557c578,579
+556,557c574,575
 <  * @returns an ID for a new group of properties, or 0 on failure; call
 <  *          GetError() for more information.
 ---
 >  * @returns a valid ID for a new group of properties on success;
 >  * @throws Error on failure.
-567c589
+567c585
 <   return Properties(SDL_CreateProperties());
 ---
 >   return Properties(CheckError(SDL_CreateProperties()));
-675d696
+675d692
 <  * @param userdata an app-defined pointer passed to the callback.
-745d765
+745d761
 <  * @param userdata a pointer that is passed to the cleanup function.
-761c781,786
+761c777,782
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<CleanupPropertyCB>;
@@ -71,62 +66,62 @@
 >                                     value,
 >                                     &Wrapper::CallOnce,
 >                                     Wrapper::Wrap(std::move(cleanup)));
-794c819
+794c815
 <   SDL::SetPointerProperty(m_resource, name, value);
 ---
 >   SDL::SetPointerProperty(m_resource, std::move(name), value);
-824c849
+824c845
 <   SDL::SetStringProperty(m_resource, name, value);
 ---
 >   SDL::SetStringProperty(m_resource, std::move(name), std::move(value));
-850c875
+850c871
 <   SDL::SetNumberProperty(m_resource, name, value);
 ---
 >   SDL::SetNumberProperty(m_resource, std::move(name), value);
-876c901
+876c897
 <   SDL::SetFloatProperty(m_resource, name, value);
 ---
 >   SDL::SetFloatProperty(m_resource, std::move(name), value);
-902c927
+902c923
 <   SDL::SetBooleanProperty(m_resource, name, value);
 ---
 >   SDL::SetBooleanProperty(m_resource, std::move(name), value);
-925c950
+925c946
 <   return SDL::HasProperty(m_resource, name);
 ---
 >   return SDL::HasProperty(m_resource, std::move(name));
-949c974
+949c970
 <   return SDL::GetPropertyType(m_resource, name);
 ---
 >   return SDL::GetPropertyType(m_resource, std::move(name));
-993c1018
+993c1014
 <   return SDL::GetPointerProperty(m_resource, name, default_value);
 ---
 >   return SDL::GetPointerProperty(m_resource, std::move(name), default_value);
-1029c1054,1055
+1029c1050,1051
 <   return SDL::GetStringProperty(m_resource, name, default_value);
 ---
 >   return SDL::GetStringProperty(
 >     m_resource, std::move(name), std::move(default_value));
-1062c1088
+1062c1084
 <   return SDL::GetNumberProperty(m_resource, name, default_value);
 ---
 >   return SDL::GetNumberProperty(m_resource, std::move(name), default_value);
-1095c1121
+1095c1117
 <   return SDL::GetFloatProperty(m_resource, name, default_value);
 ---
 >   return SDL::GetFloatProperty(m_resource, std::move(name), default_value);
-1128c1154
+1128c1150
 <   return SDL::GetBooleanProperty(m_resource, name, default_value);
 ---
 >   return SDL::GetBooleanProperty(m_resource, std::move(name), default_value);
-1149c1175
+1149c1171
 <   SDL::ClearProperty(m_resource, name);
 ---
 >   SDL::ClearProperty(m_resource, std::move(name));
-1182d1207
+1182d1203
 <  * @param userdata a pointer that is passed to `callback`.
-1192c1217,1223
+1192c1213,1219
 <   static_assert(false, "Not implemented");
 ---
 >   return EnumerateProperties(
@@ -136,13 +131,13 @@
 >       f(props, name);
 >     },
 >     &callback);
-1194a1226,1230
+1194a1222,1226
 > /**
 >  * Returns the number of properties this has
 >  *
 >  * This uses Enumerate() internally, so might not be so fast
 >  */
-1203c1239,1246
+1203c1235,1242
 <   static_assert(false, "Not implemented");
 ---
 >   Uint64 count = 0;
