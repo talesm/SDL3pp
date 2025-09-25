@@ -2192,7 +2192,10 @@ inline Surface Surface::LoadBMP(IOStreamParam src, bool closeio = false)
   return SDL::LoadBMP(src, closeio);
 }
 
-inline Surface Surface::LoadBMP(StringParam file) { return SDL::LoadBMP(file); }
+inline Surface Surface::LoadBMP(StringParam file)
+{
+  return SDL::LoadBMP(std::move(file));
+}
 
 /**
  * Save a surface to a seekable SDL data stream in BMP format.
@@ -2255,7 +2258,7 @@ inline void Surface::SaveBMP(IOStreamParam dst, bool closeio = false) const
 
 inline void Surface::SaveBMP(StringParam file) const
 {
-  SDL::SaveBMP(m_resource, file);
+  SDL::SaveBMP(m_resource, std::move(file));
 }
 
 /**

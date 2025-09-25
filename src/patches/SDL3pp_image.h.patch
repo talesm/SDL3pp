@@ -358,45 +358,38 @@
 >    * @param index the index to get frame, within [0, GetCount() - 1]
 >    */
 >   int GetDelay(int index) const { return m_resource->delays[index]; }
-2392c2435,2438
-< inline Animation LoadAnimation(StringParam file) { return Animation(file); }
----
-> inline Animation LoadAnimation(StringParam file)
-> {
->   return Animation(std::move(file));
-> }
-2413c2459
+2416c2459
 < inline Animation LoadAnimation(IOStreamParam src, bool closeio)
 ---
 > inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
-2443d2488
+2446d2488
 <  * @sa Animation.Animation
-2450c2495
+2453c2495
 <   return IMG_LoadAnimationTyped_IO(src, closeio, type);
 ---
 >   return Animation(IMG_LoadAnimationTyped_IO(src, closeio, type));
-2463d2507
+2466d2507
 <  * @sa Animation.Animation
-2488d2531
+2491d2531
 <  * @sa Animation.Animation
-2492c2535
+2495c2535
 < inline AnimationRef LoadGIFAnimation(IOStreamParam src)
 ---
 > inline Animation LoadGIFAnimation(IOStreamParam src)
-2494c2537
+2497c2537
 <   return IMG_LoadGIFAnimation_IO(src);
 ---
 >   return Animation(IMG_LoadGIFAnimation_IO(src));
-2511d2553
+2514d2553
 <  * @sa Animation.Animation
-2515c2557
+2518c2557
 < inline AnimationRef LoadWEBPAnimation(IOStreamParam src)
 ---
 > inline Animation LoadWEBPAnimation(IOStreamParam src)
-2517c2559
+2520c2559
 <   return IMG_LoadWEBPAnimation_IO(src);
 ---
 >   return Animation{IMG_LoadWEBPAnimation_IO(src)};
-2522a2565,2566
+2525a2565,2566
 > 
 > #endif // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)

@@ -688,10 +688,6 @@
 >   CheckError(SDL_CreateWindowAndRenderer(
 >     title, size.x, size.y, window_flags, &window, &renderer));
 >   return {Window{window}, Renderer(renderer)};
-2978c3201
-<   return Renderer(window, name);
----
->   return Renderer(window, std::move(name));
 3167c3390
 <   return CheckError(SDL_GetRenderer(m_resource));
 ---
@@ -882,10 +878,6 @@
 <   CheckError(SDL_RenderDebugText(renderer, p, str));
 ---
 >   CheckError(SDL_RenderDebugText(renderer, p.x, p.y, str));
-6239c6498
-<   SDL::RenderDebugText(m_resource, p, str);
----
->   SDL::RenderDebugText(m_resource, p, std::move(str));
 6266a6526
 > template<class... ARGS>
 6268,6271c6528,6530

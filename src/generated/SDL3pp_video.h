@@ -3960,7 +3960,7 @@ inline Window CreateWindow(StringParam title,
                            const PointRaw& size,
                            WindowFlags flags)
 {
-  return Window(title, size, flags);
+  return Window(std::move(title), size, flags);
 }
 
 /**
@@ -4612,7 +4612,7 @@ inline void SetWindowTitle(WindowParam window, StringParam title)
 
 inline void Window::SetTitle(StringParam title)
 {
-  SDL::SetWindowTitle(m_resource, title);
+  SDL::SetWindowTitle(m_resource, std::move(title));
 }
 
 /**

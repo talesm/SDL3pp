@@ -791,7 +791,7 @@ inline void SetPointerProperty(PropertiesParam props,
 
 inline void Properties::SetPointerProperty(StringParam name, void* value)
 {
-  SDL::SetPointerProperty(m_resource, name, value);
+  SDL::SetPointerProperty(m_resource, std::move(name), value);
 }
 
 /**
@@ -821,7 +821,7 @@ inline void SetStringProperty(PropertiesParam props,
 
 inline void Properties::SetStringProperty(StringParam name, StringParam value)
 {
-  SDL::SetStringProperty(m_resource, name, value);
+  SDL::SetStringProperty(m_resource, std::move(name), std::move(value));
 }
 
 /**
@@ -847,7 +847,7 @@ inline void SetNumberProperty(PropertiesParam props,
 
 inline void Properties::SetNumberProperty(StringParam name, Sint64 value)
 {
-  SDL::SetNumberProperty(m_resource, name, value);
+  SDL::SetNumberProperty(m_resource, std::move(name), value);
 }
 
 /**
@@ -873,7 +873,7 @@ inline void SetFloatProperty(PropertiesParam props,
 
 inline void Properties::SetFloatProperty(StringParam name, float value)
 {
-  SDL::SetFloatProperty(m_resource, name, value);
+  SDL::SetFloatProperty(m_resource, std::move(name), value);
 }
 
 /**
@@ -899,7 +899,7 @@ inline void SetBooleanProperty(PropertiesParam props,
 
 inline void Properties::SetBooleanProperty(StringParam name, bool value)
 {
-  SDL::SetBooleanProperty(m_resource, name, value);
+  SDL::SetBooleanProperty(m_resource, std::move(name), value);
 }
 
 /**
@@ -922,7 +922,7 @@ inline bool HasProperty(PropertiesParam props, StringParam name)
 
 inline bool Properties::HasProperty(StringParam name) const
 {
-  return SDL::HasProperty(m_resource, name);
+  return SDL::HasProperty(m_resource, std::move(name));
 }
 
 /**
@@ -946,7 +946,7 @@ inline PropertyType GetPropertyType(PropertiesParam props, StringParam name)
 
 inline PropertyType Properties::GetPropertyType(StringParam name) const
 {
-  return SDL::GetPropertyType(m_resource, name);
+  return SDL::GetPropertyType(m_resource, std::move(name));
 }
 
 /**
@@ -990,7 +990,7 @@ inline void* GetPointerProperty(PropertiesParam props,
 inline void* Properties::GetPointerProperty(StringParam name,
                                             void* default_value) const
 {
-  return SDL::GetPointerProperty(m_resource, name, default_value);
+  return SDL::GetPointerProperty(m_resource, std::move(name), default_value);
 }
 
 /**
@@ -1026,7 +1026,8 @@ inline const char* Properties::GetStringProperty(
   StringParam name,
   StringParam default_value) const
 {
-  return SDL::GetStringProperty(m_resource, name, default_value);
+  return SDL::GetStringProperty(
+    m_resource, std::move(name), std::move(default_value));
 }
 
 /**
@@ -1059,7 +1060,7 @@ inline Sint64 GetNumberProperty(PropertiesParam props,
 inline Sint64 Properties::GetNumberProperty(StringParam name,
                                             Sint64 default_value) const
 {
-  return SDL::GetNumberProperty(m_resource, name, default_value);
+  return SDL::GetNumberProperty(m_resource, std::move(name), default_value);
 }
 
 /**
@@ -1092,7 +1093,7 @@ inline float GetFloatProperty(PropertiesParam props,
 inline float Properties::GetFloatProperty(StringParam name,
                                           float default_value) const
 {
-  return SDL::GetFloatProperty(m_resource, name, default_value);
+  return SDL::GetFloatProperty(m_resource, std::move(name), default_value);
 }
 
 /**
@@ -1125,7 +1126,7 @@ inline bool GetBooleanProperty(PropertiesParam props,
 inline bool Properties::GetBooleanProperty(StringParam name,
                                            bool default_value) const
 {
-  return SDL::GetBooleanProperty(m_resource, name, default_value);
+  return SDL::GetBooleanProperty(m_resource, std::move(name), default_value);
 }
 
 /**
@@ -1146,7 +1147,7 @@ inline void ClearProperty(PropertiesParam props, StringParam name)
 
 inline void Properties::ClearProperty(StringParam name) const
 {
-  SDL::ClearProperty(m_resource, name);
+  SDL::ClearProperty(m_resource, std::move(name));
 }
 
 /**

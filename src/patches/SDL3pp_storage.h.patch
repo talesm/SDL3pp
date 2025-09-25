@@ -1,0 +1,71 @@
+12c12
+<  * @defgroup CategoryStorage Category Storage
+---
+>  * @defgroup CategoryStorage Storage Abstraction
+107c107
+<  * ```c
+---
+>  * ```cpp
+113c113
+<  *     Storage *title = Storage.Storage(nullptr, 0);
+---
+>  *     Storage title(nullptr, 0);
+117c117
+<  *     while (!Storage.Ready(title)) {
+---
+>  *     while (!title.Ready()) {
+123c123
+<  *         Uint64 dstLen = 0;
+---
+>  *         Uint64 dstLen = title.GetSize(fileNames[i]);
+125,127c125,127
+<  *         if (Storage.GetFileSize(title, fileNames[i], &dstLen) && dstLen > 0)
+<  * { dst = malloc(dstLen); if (Storage.ReadFile(title, fileNames[i], dst,
+<  * dstLen)) {
+---
+>  *         if (dstLen > 0) {
+>  *           dst = malloc(dstLen);
+>  *           if (title.ReadFile(fileNames[i], dst, dstLen)) {
+137,138d136
+<  *
+<  *     Storage.Close(title);
+143c141
+<  *     Storage *user = Storage.Storage("libsdl", "Storage Example", 0);
+---
+>  *     Storage user("libsdl", "Storage Example", 0);
+147c145
+<  *     while (!Storage.Ready(user)) {
+---
+>  *     while (!user.Ready()) {
+151,152c149,150
+<  *     Uint64 saveLen = 0;
+<  *     if (Storage.GetFileSize(user, "save0.sav", &saveLen) && saveLen > 0) {
+---
+>  *     Uint64 saveLen = user.GetFileSize();
+>  *     if (saveLen > 0) {
+154c152
+<  *         if (Storage.ReadFile(user, "save0.sav", dst, saveLen)) {
+---
+>  *         if (user.ReadFile("save0.sav", dst, saveLen)) {
+163,164d160
+<  *
+<  *     Storage.Close(user);
+169c165
+<  *     Storage *user = Storage.Storage("libsdl", "Storage Example", 0);
+---
+>  *     Storage user("libsdl", "Storage Example", 0);
+173c169
+<  *     while (!Storage.Ready(user)) {
+---
+>  *     while (!user.Ready()) {
+179c175
+<  *     if (!Storage.WriteFile(user, "save0.sav", saveData, saveLen)) {
+---
+>  *     if (!user.WriteFile("save0.sav", saveData, saveLen)) {
+182,183d177
+<  *
+<  *     Storage.Close(user);
+286c280
+<  * functions like Storage.Storage or Storage.Storage, etc, or create
+---
+>  * functions like Storage.Storage, etc, or create

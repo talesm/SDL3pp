@@ -2389,7 +2389,10 @@ struct AnimationRef : Animation
  *
  * @sa Animation.Free
  */
-inline Animation LoadAnimation(StringParam file) { return Animation(file); }
+inline Animation LoadAnimation(StringParam file)
+{
+  return Animation(std::move(file));
+}
 
 /**
  * Load an animation from an IOStream.

@@ -570,10 +570,6 @@
 ---
 >     if (Sint64 value; SDL_ReadS64BE(get(), &value)) return value;
 >     return {};
-1406c1720
-<   return SDL::IOFromFile(file, mode);
----
->   return SDL::IOFromFile(std::move(file), std::move(mode));
 1480c1794
 <   return SDL::IOFromMem(mem);
 ---

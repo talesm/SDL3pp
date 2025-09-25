@@ -1,7 +1,7 @@
 const { system, writeLinesSync } = require("./utils.js");
 const { existsSync, mkdirSync } = require("fs");
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiFile, ApiParameter, ApiParameters } from "./types.js"
+ * @import { Api, ApiEntries, ApiEntry, ApiFile, ApiParameter, ApiParameters, Dict } from "./types.js"
  */
 
 /**
@@ -192,9 +192,19 @@ function generateDef(entry) {
 
 /**
  * @param {ApiParameters} parameters 
+ * @param {Dict<string>}  replacements 
  */
-function generateCallParameters(parameters) {
-  return parameters?.map(p => typeof p == "string" ? p : p.name)?.join(", ") ?? "";
+function generateCallParameters(parameters, replacements) {
+  return parameters
+    ?.map(p => typeof p == "string" ? p : unwrap(p))
+    ?.join(", ") ?? "";
+
+  /** @param {ApiParameter} p  */
+  function unwrap(p) {
+    const m = replacements[p.type];
+    if (!m) return p.name;
+    return m.replaceAll('$', p.name);
+  }
 }
 
 
@@ -223,9 +233,13 @@ function generateBody(entry, prefix) {
     return `\n${prefix}{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
   }
   if (entry.proto) return ";";
+  /** @type {Dict<string>} */
+  const paramReplacements = {};
+  if (hint?.delegate) paramReplacements.StringParam = "std::move($)";
+
   const selfStr = entry.type && !entry.static && !entry.hints?.static && hint?.self;
   const selfStrPrefix = (selfStr || "") + ((entry.parameters?.length && selfStr) ? ", " : "");
-  const paramStr = selfStrPrefix + generateCallParameters(entry.parameters);
+  const paramStr = selfStrPrefix + generateCallParameters(entry.parameters, paramReplacements);
   const internalCallStr = `${delegatedTo}(${paramStr})`;
   const callStr = (hint?.mayFail && !hint?.delegate) ? `CheckError(${internalCallStr})` : internalCallStr;
   if (!entry.type && !entry.name.startsWith("operator")) {

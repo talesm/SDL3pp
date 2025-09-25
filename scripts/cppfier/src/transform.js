@@ -1881,7 +1881,7 @@ function transformHierarchy(targetEntries, context) {
   function makeMemberName(key, template) {
     if (!template) return key;
     const lastSeparator = key.lastIndexOf('::');
-    const args = generateCallParameters(template);
+    const args = generateCallParameters(template, {});
     return `${key.slice(0, lastSeparator)}<${args}>${key.slice(lastSeparator)}`;
   }
 }

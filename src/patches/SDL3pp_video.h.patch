@@ -336,10 +336,6 @@
 <  * @param h the height of the window.
 ---
 >  * @param size the width and height of the window.
-3963c4127
-<   return Window(title, size, flags);
----
->   return Window(std::move(title), size, flags);
 4020,4025c4184,4186
 <  * @param offset_x the x position of the popup window relative to the origin
 <  *                 of the parent.
@@ -363,10 +359,6 @@
 <   return CheckError(SDL_GetWindowProperties(window));
 ---
 >   return {CheckError(SDL_GetWindowProperties(window))};
-4615c4776
-<   SDL::SetWindowTitle(m_resource, title);
----
->   SDL::SetWindowTitle(m_resource, std::move(title));
 4697,4699c4858
 <  * @param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or
 <  *          `SDL_WINDOWPOS_UNDEFINED`.

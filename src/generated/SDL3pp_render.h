@@ -2975,7 +2975,7 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
  */
 inline Renderer CreateRenderer(WindowParam window, StringParam name)
 {
-  return Renderer(window, name);
+  return Renderer(window, std::move(name));
 }
 
 /**
@@ -6236,7 +6236,7 @@ inline void RenderDebugText(RendererParam renderer, FPoint p, StringParam str)
 
 inline void Renderer::RenderDebugText(FPoint p, StringParam str)
 {
-  SDL::RenderDebugText(m_resource, p, str);
+  SDL::RenderDebugText(m_resource, p, std::move(str));
 }
 
 /**
