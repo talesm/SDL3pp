@@ -113,95 +113,16 @@ const transform = {
       }
     },
     "SDL_atomic.h": {
+      localIncludes: ["SDL3pp_stdinc.h"],
       ignoreEntries: [
         "SDL_SpinLock",
         "SDL_TryLockSpinlock",
         "SDL_LockSpinlock",
         "SDL_UnlockSpinlock",
       ],
-      includeAfter: {
-        "__begin": [
-          { name: "MemoryBarrierRelease" },
-          { name: "MemoryBarrierAcquire" },
-        ],
-        "SDL_AtomicU32": {
-          name: "AtomicPointer",
-          kind: "struct",
-          template: [{
-            type: "class",
-            name: "T"
-          }],
-          hints: {
-            self: "&m_value",
-          },
-          entries: {
-            "m_value": {
-              kind: "var",
-              type: "T *",
-            },
-            "AtomicPointer": [
-              {
-                kind: "function",
-                type: "",
-                constexpr: true,
-                parameters: [{
-                  type: "T *",
-                  name: "value"
-                }],
-                hints: {
-                  init: ["m_value(value)"]
-                }
-              },
-              {
-                kind: "function",
-                type: "",
-                proto: true,
-                parameters: [{
-                  type: "const AtomicPointer &",
-                  name: "value"
-                }],
-                hints: {
-                  delete: true
-                }
-              }
-            ],
-            "operator=": {
-              kind: "function",
-              type: "AtomicPointer &",
-              proto: true,
-              parameters: [{
-                type: "const AtomicPointer &",
-                name: "value"
-              }],
-              hints: {
-                delete: true
-              }
-            },
-            "SDL_CompareAndSwapAtomicPointer": {
-              static: false,
-              parameters: [
-                { type: "T *", name: "oldval" },
-                { type: "T *", name: "newval" },
-              ]
-            },
-            "SDL_SetAtomicPointer": {
-              type: "T *",
-              static: false,
-              parameters: [
-                { type: "T *", name: "v" },
-              ]
-            },
-            "SDL_GetAtomicPointer": {
-              type: "T *",
-              static: false,
-              parameters: []
-            }
-          }
-        },
-      },
       transform: {
-        "SDL_MemoryBarrierReleaseFunction": { name: "MemoryBarrierRelease" },
-        "SDL_MemoryBarrierAcquireFunction": { name: "MemoryBarrierAcquire" },
+        "SDL_MemoryBarrierReleaseFunction": { name: "MemoryBarrierRelease", after: "__begin" },
+        "SDL_MemoryBarrierAcquireFunction": { name: "MemoryBarrierAcquire", after: "__begin" },
         "SDL_AtomicInt": {
           hints: {
             self: "&m_value",
@@ -333,6 +254,79 @@ const transform = {
             "SDL_CompareAndSwapAtomicU32": "function",
             "SDL_SetAtomicU32": "function",
             "SDL_GetAtomicU32": "function",
+          }
+        },
+        "AtomicPointer": {
+          kind: "struct",
+          template: [{
+            type: "class",
+            name: "T"
+          }],
+          hints: {
+            self: "&m_value",
+          },
+          entries: {
+            "m_value": {
+              kind: "var",
+              type: "T *",
+            },
+            "AtomicPointer": [
+              {
+                kind: "function",
+                type: "",
+                constexpr: true,
+                parameters: [{
+                  type: "T *",
+                  name: "value"
+                }],
+                hints: {
+                  init: ["m_value(value)"]
+                }
+              },
+              {
+                kind: "function",
+                type: "",
+                proto: true,
+                parameters: [{
+                  type: "const AtomicPointer &",
+                  name: "value"
+                }],
+                hints: {
+                  delete: true
+                }
+              }
+            ],
+            "operator=": {
+              kind: "function",
+              type: "AtomicPointer &",
+              proto: true,
+              parameters: [{
+                type: "const AtomicPointer &",
+                name: "value"
+              }],
+              hints: {
+                delete: true
+              }
+            },
+            "SDL_CompareAndSwapAtomicPointer": {
+              static: false,
+              parameters: [
+                { type: "T *", name: "oldval" },
+                { type: "T *", name: "newval" },
+              ]
+            },
+            "SDL_SetAtomicPointer": {
+              type: "T *",
+              static: false,
+              parameters: [
+                { type: "T *", name: "v" },
+              ]
+            },
+            "SDL_GetAtomicPointer": {
+              type: "T *",
+              static: false,
+              parameters: []
+            }
           }
         },
       }
@@ -858,12 +852,13 @@ const transform = {
       }
     },
     "SDL_dialog.h": {
+      localIncludes: ["SDL3pp_stdinc.h"],
       namespacesMap: {
         "SDL_PROP_FILE_DIALOG_": "prop::FileDialog"
       },
-      includeAfter: {
-        "SDL_ShowOpenFileDialog": {
-          "name": "ShowOpenFileDialog",
+      transform: {
+        "ShowOpenFileDialog": {
+          "name": "SDL_ShowOpenFileDialog",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -889,8 +884,8 @@ const transform = {
             }
           ]
         },
-        "SDL_ShowSaveFileDialog": {
-          "name": "ShowSaveFileDialog",
+        "ShowSaveFileDialog": {
+          "after": "SDL_ShowSaveFileDialog",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -912,8 +907,8 @@ const transform = {
             }
           ]
         },
-        "SDL_ShowOpenFolderDialog": {
-          "name": "ShowOpenFolderDialog",
+        "ShowOpenFolderDialog": {
+          "after": "SDL_ShowOpenFolderDialog",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -935,8 +930,8 @@ const transform = {
             }
           ]
         },
-        "SDL_ShowFileDialogWithProperties": {
-          "name": "ShowFileDialogWithProperties",
+        "ShowFileDialogWithProperties": {
+          "after": "SDL_ShowFileDialogWithProperties",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -953,14 +948,10 @@ const transform = {
               "type": "PropertiesID"
             }
           ]
-        }
-      },
-      enumerations: {
+        },
         "SDL_FileDialogType": {
-          "prefix": "SDL_FILEDIALOG_"
-        }
-      },
-      transform: {
+          enum: "SDL_FILEDIALOG_"
+        },
         "SDL_ShowOpenFileDialog": {
           "parameters": [
             {
@@ -1139,7 +1130,7 @@ const transform = {
       }
     },
     "SDL_endian.h": {
-      definitionPrefix: "SDL_",
+      localIncludes: ["SDL3pp_stdinc.h"],
       ignoreEntries: [
         "HAS_BUILTIN_BSWAP16",
         "HAS_BUILTIN_BSWAP32",
@@ -1515,6 +1506,7 @@ const transform = {
       }
     },
     "SDL_guid.h": {
+      localIncludes: ['SDL3pp_strings.h'],
       transform: {
         "SDL_GUID": {
           "kind": "struct",
@@ -1915,6 +1907,7 @@ const transform = {
       }
     },
     "SDL_keyboard.h": {
+      localIncludes: ['SDL3pp_stdinc.h', "SDL3pp_keycode.h"],
       namespacesMap: {
         "SDL_PROP_TEXTINPUT_": "prop::TextInput"
       },
@@ -1981,19 +1974,20 @@ const transform = {
       }
     },
     "SDL_keycode.h": {
-      enumerations: {
-        "SDL_Keycode": {
-          prefix: "SDLK_",
-          newPrefix: "KEYCODE_"
-        },
-        "SDL_Keymod": {
-          prefix: "SDL_KMOD_",
-          includeAfter: "__begin"
-        }
-      },
+      localIncludes: ['SDL3pp_scancode.h', 'SDL3pp_stdinc.h'],
       wrappers: {
+        "SDL_Keymod": {
+          enum: {
+            prefix: "SDL_KMOD_",
+          },
+          includeAfter: "__begin"
+        },
         "SDL_Keycode": {
-          ordered: true,
+          enum: {
+            prefix: "SDLK_",
+            newPrefix: "KEYCODE_"
+          },
+          wrapper: { ordered: true },
           entries: {
             "SDLK_EXTENDED_MASK": {
               kind: "function",
@@ -2030,12 +2024,12 @@ const transform = {
       }
     },
     "SDL_loadso.h": {
-      resources: {
+      localIncludes: ['SDL3pp_stdinc.h'],
+      transform: {
         "SDL_SharedObject": {
-          free: "SDL_UnloadObject",
-          ctors: ["SDL_LoadObject"],
+          resource: { free: "SDL_UnloadObject" },
           entries: {
-            "SDL_LoadObject": { name: "Load" },
+            "SDL_LoadObject": "ctor",
             "SDL_LoadFunction": "function",
             "SDL_UnloadObject": { name: "Unload" },
           }
@@ -2043,6 +2037,7 @@ const transform = {
       },
     },
     "SDL_locale.h": {
+      localIncludes: ['SDL3pp_stdinc.h'],
       transform: {
         "SDL_GetPreferredLocales": {
           type: "OwnArray<Locale *>",
@@ -2490,27 +2485,28 @@ const transform = {
       transform: {}
     },
     "SDL_messagebox.h": {
-      enumerations: {
+      localIncludes: ['SDL3pp_stdinc.h'],
+      transform: {
         "SDL_MessageBoxFlags": {
-          values: [
-            "SDL_MESSAGEBOX_ERROR",
-            "SDL_MESSAGEBOX_WARNING",
-            "SDL_MESSAGEBOX_INFORMATION",
-            "SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT",
-            "SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT"
-          ]
+          enum: {
+            values: [
+              "SDL_MESSAGEBOX_ERROR",
+              "SDL_MESSAGEBOX_WARNING",
+              "SDL_MESSAGEBOX_INFORMATION",
+              "SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT",
+              "SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT"
+            ]
+          }
         },
         "SDL_MessageBoxButtonFlags": {
-          prefix: "SDL_MESSAGEBOX_BUTTON_"
+          enum: "SDL_MESSAGEBOX_BUTTON_"
         },
         "SDL_MessageBoxColorType": {
-          prefix: "SDL_MESSAGEBOX_COLOR_"
-        }
-      },
-      transform: {
+          enum: "SDL_MESSAGEBOX_COLOR_"
+        },
         "SDL_MessageBoxData": {
           name: "MessageBox",
-          type: "SDL_MessageBoxData",
+          wrapper: true,
           entries: {
             "MessageBox": [
               {
@@ -2566,37 +2562,41 @@ const transform = {
       }
     },
     "SDL_mouse.h": {
-      enumerations: {
+      localIncludes: ['SDL3pp_stdinc.h'],
+      transform: {
         "SDL_SystemCursor": {
-          prefix: "SDL_SYSTEM_CURSOR_",
-          includeAfter: "__begin",
+          enum: "SDL_SYSTEM_CURSOR_",
+          after: "__begin",
         },
         "MouseButton": {
           kind: "alias",
           type: "Uint8",
-          prefix: "SDL_BUTTON_",
-          includeAfter: "SDL_Cursor",
-          values: [
-            "SDL_BUTTON_LEFT",
-            "SDL_BUTTON_MIDDLE",
-            "SDL_BUTTON_RIGHT",
-            "SDL_BUTTON_X1",
-            "SDL_BUTTON_X2",
-          ],
+          enum: {
+            prefix: "SDL_BUTTON_",
+            values: [
+              "SDL_BUTTON_LEFT",
+              "SDL_BUTTON_MIDDLE",
+              "SDL_BUTTON_RIGHT",
+              "SDL_BUTTON_X1",
+              "SDL_BUTTON_X2",
+            ],
+          },
+          after: "SDL_Cursor",
         },
         "SDL_MouseButtonFlags": {
-          prefix: "SDL_BUTTON_",
-          values: [
-            "SDL_BUTTON_LMASK",
-            "SDL_BUTTON_MMASK",
-            "SDL_BUTTON_RMASK",
-            "SDL_BUTTON_X1MASK",
-            "SDL_BUTTON_X2MASK",
-          ],
+          enum: {
+            prefix: "SDL_BUTTON_",
+            values: [
+              "SDL_BUTTON_LMASK",
+              "SDL_BUTTON_MMASK",
+              "SDL_BUTTON_RMASK",
+              "SDL_BUTTON_X1MASK",
+              "SDL_BUTTON_X2MASK",
+            ],
+          }
         },
-      },
-      resources: {
         "SDL_Cursor": {
+          resource: true,
           entries: {
             "SDL_CreateCursor": {
               name: "ctor",
@@ -2616,9 +2616,7 @@ const transform = {
             },
             "SDL_CreateSystemCursor": "ctor",
           }
-        }
-      },
-      transform: {
+        },
         "SDL_BUTTON_MASK": {
           kind: "function",
           name: "ButtonMask",
@@ -2649,6 +2647,7 @@ const transform = {
       }
     },
     "SDL_mutex.h": {
+      localIncludes: ['SDL3pp_stdinc.h'],
       ignoreEntries: [
         "SDL_THREAD_ANNOTATION_ATTRIBUTE__",
         "SDL_CAPABILITY",
@@ -2672,8 +2671,9 @@ const transform = {
         "SDL_RETURN_CAPABILITY",
         "SDL_NO_THREAD_SAFETY_ANALYSIS",
       ],
-      resources: {
+      transform: {
         "SDL_Mutex": {
+          resource: true,
           entries: {
             "SDL_CreateMutex": "ctor",
             "SDL_LockMutex": {
@@ -2694,6 +2694,7 @@ const transform = {
           }
         },
         "SDL_RWLock": {
+          resource: true,
           entries: {
             "SDL_CreateRWLock": "ctor",
             "SDL_LockRWLockForReading": {
@@ -2724,6 +2725,7 @@ const transform = {
           }
         },
         "SDL_Semaphore": {
+          resource: true,
           entries: {
             "SDL_CreateSemaphore": "ctor",
             "SDL_WaitSemaphore": "function",
@@ -2742,6 +2744,7 @@ const transform = {
           }
         },
         "SDL_Condition": {
+          resource: true,
           entries: {
             "SDL_CreateCondition": "ctor",
             "SDL_SignalCondition": "function",
@@ -2759,18 +2762,16 @@ const transform = {
             },
           }
         },
-      },
-      enumerations: {
         "SDL_InitStatus": {
-          prefix: "INIT_STATUS_",
+          enum: "INIT_STATUS_",
         },
-      },
-      wrappers: {
         "SDL_InitState": {
-          invalidState: false,
-          genCtor: false,
-          genMembers: false,
-          comparable: false,
+          wrapper: {
+            invalidState: false,
+            genCtor: false,
+            genMembers: false,
+            comparable: false,
+          },
           entries: {
             "InitState": {
               kind: "function",
@@ -3211,15 +3212,14 @@ const transform = {
       }
     },
     "SDL_process.h": {
-      enumerations: {
+      localIncludes: ['SDL3pp_stdinc.h'],
+      transform: {
         "SDL_ProcessIO": {
-          prefix: "SDL_PROCESS_STDIO_",
-          includeAfter: "__begin",
+          enum: "SDL_PROCESS_STDIO_",
+          after: "__begin",
         },
-      },
-      resources: {
         "SDL_Process": {
-          free: "SDL_DestroyProcess",
+          resource: { free: "SDL_DestroyProcess" },
           entries: {
             "SDL_CreateProcess": "ctor",
             "SDL_CreateProcessWithProperties": "ctor",
@@ -4786,15 +4786,11 @@ const transform = {
       }
     },
     "SDL_scancode.h": {
-      includeAfter: {
-        "__begin": {
-          name: "Keycode",
-          kind: "forward"
-        }
-      },
-      wrappers: {
+      localIncludes: ['SDL3pp_stdinc.h'],
+      transform: {
+        "Keycode": { kind: "forward" },
         "SDL_Scancode": {
-          ordered: true
+          wrapper: { ordered: true }
         }
       }
     },
@@ -6540,9 +6536,10 @@ const transform = {
       }
     },
     "SDL_system.h": {
-      includeAfter: {
-        "SDL_SetWindowsMessageHook": {
-          name: "SetWindowsMessageHook",
+      localIncludes: ['SDL3pp_stdinc.h'],
+      transform: {
+        "SetWindowsMessageHook": {
+          after: "SDL_SetWindowsMessageHook",
           kind: "function",
           type: "void",
           parameters: [
@@ -6552,8 +6549,8 @@ const transform = {
             }
           ],
         },
-        "SDL_SetX11EventHook": {
-          name: "SetX11EventHook",
+        "SetX11EventHook": {
+          after: "SDL_SetX11EventHook",
           kind: "function",
           type: "void",
           parameters: [
@@ -6563,8 +6560,8 @@ const transform = {
             }
           ],
         },
-        "SDL_SetiOSAnimationCallback": {
-          name: "SetiOSAnimationCallback",
+        "SetiOSAnimationCallback": {
+          after: "SDL_SetiOSAnimationCallback",
           kind: "function",
           type: "void",
           parameters: [
@@ -6582,8 +6579,8 @@ const transform = {
             }
           ],
         },
-        "SDL_RequestAndroidPermission": {
-          name: "RequestAndroidPermission",
+        "RequestAndroidPermission": {
+          after: "SDL_RequestAndroidPermission",
           kind: "function",
           type: "bool",
           parameters: [
@@ -6597,8 +6594,6 @@ const transform = {
             }
           ],
         },
-      },
-      transform: {
         "SDL_ANDROID_EXTERNAL_STORAGE_READ": {
           kind: "var",
           type: "Uint32",
@@ -6615,35 +6610,29 @@ const transform = {
       }
     },
     "SDL_thread.h": {
-      includeAfter: {
-        "__begin": [
-          { name: "ThreadID" },
-          { name: "TLSID" },
-          { name: "ThreadFunction" },
-          {
-            name: "ThreadCB",
-            kind: "alias",
-            type: "std::function<int()>"
-          },
-          { name: "TLSDestructorCallback" },
-        ]
-      },
+      localIncludes: ['SDL3pp_stdinc.h'],
       namespacesMap: {
         "SDL_PROP_THREAD_": "prop::thread"
       },
-      enumerations: {
+      transform: {
+        "ThreadID": { after: "__begin" },
+        "ThreadFunction": { after: "__begin" },
+        "ThreadCB": {
+          after: "__begin",
+          kind: "alias",
+          type: "std::function<int()>"
+        },
+        "SDL_TLSDestructorCallback": { after: "__begin" },
         "SDL_ThreadPriority": {
-          prefix: "SDL_THREAD_PRIORITY_",
-          includeAfter: "__begin"
+          enum: "SDL_THREAD_PRIORITY_",
+          after: "__begin"
         },
         "SDL_ThreadState": {
-          prefix: "SDL_THREAD_",
-          includeAfter: "__begin"
-        }
-      },
-      resources: {
+          enum: "SDL_THREAD_",
+          after: "__begin"
+        },
         "SDL_Thread": {
-          free: "SDL_DetachThread",
+          resource: { free: "SDL_DetachThread" },
           entries: {
             "Create": {
               kind: "function",
@@ -6664,11 +6653,10 @@ const transform = {
             "SDL_WaitThread": "function",
             "SDL_GetThreadState": "immutable",
           }
-        }
-      },
-      transform: {
+        },
         "SDL_TLSID": {
-          type: "AtomicInt"
+          type: "AtomicInt",
+          after: "__begin",
         }
       }
     },
@@ -6824,25 +6812,16 @@ const transform = {
       }
     },
     "SDL_tray.h": {
-      enumerations: {
+      localIncludes: ['SDL3pp_stdinc.h'],
+      transform: {
         "SDL_TrayEntryFlags": {
-          prefix: "SDL_TRAYENTRY_",
-          includeAfter: "__begin",
-        }
-      },
-      includeAfter: {
-        "__begin": {
-          name: "TrayMenu",
-          kind: "forward"
+          enum: "SDL_TRAYENTRY_",
+          after: "__begin",
         },
-        "SDL_Tray": [{
-          name: "TrayCallback"
-        }, {
-          name: "TrayCB",
-        }],
-      },
-      resources: {
+        "TrayMenu": { kind: "forward", after: "__begin" },
+        "SDL_TrayCallback": { after: "__begin" },
         "SDL_Tray": {
+          resource: true,
           entries: {
             "SDL_CreateTray": "ctor",
             "SDL_SetTrayIcon": "function",
@@ -6857,8 +6836,10 @@ const transform = {
           }
         },
         "SDL_TrayEntry": {
-          free: "SDL_RemoveTrayEntry",
-          aliasDetached: true,
+          resource: {
+            free: "SDL_RemoveTrayEntry",
+            owning: false,
+          },
           entries: {
             "SDL_CreateTraySubmenu": {
               name: "CreateSubmenu",
@@ -6907,9 +6888,8 @@ const transform = {
             }
           }
         },
-      },
-      wrappers: {
         "SDL_TrayMenu": {
+          wrapper: true,
           entries: {
             "SDL_GetTrayEntries": {
               name: "GetEntries",
@@ -6952,9 +6932,10 @@ const transform = {
             },
           }
         },
-      },
-      transform: {
-        "TrayCB": { type: "std::function<void(TrayEntryRef)>" },
+        "TrayCB": {
+          kind: "alias",
+          type: "std::function<void(TrayEntryRef)>"
+        },
       }
     },
     "SDL_video.h": {
@@ -7613,18 +7594,13 @@ const transform = {
       }
     },
     "SDL_ttf.h": {
-      resources: {
+      localIncludes: ['SDL3pp_surface.h', 'SDL3pp_version.h', "SDL3pp_video.h"],
+      transform: {
         "TTF_Font": {
-          ctors: ["TTF_OpenFontIO"],
+          resource: true,
           entries: {
             "TTF_OpenFont": "ctor",
-            "TTF_OpenFontIO": {
-              name: "Open",
-              parameters: [{}, {
-                type: "float",
-                name: "ptsize"
-              }]
-            },
+            "TTF_OpenFontIO": "ctor",
             "TTF_OpenFontWithProperties": "ctor",
             "TTF_CopyFont": {
               immutable: true,
@@ -7934,14 +7910,8 @@ const transform = {
           }
         },
         "TTF_TextEngine": {
-          returnType: "unique",
-          extraParameters: ["TextEngineDeleter"],
+          resource: true,
           entries: {
-            "TTF_CreateSurfaceTextEngine": "ctor",
-            "TTF_CreateRendererTextEngine": "ctor",
-            "TTF_CreateRendererTextEngineWithProperties": "ctor",
-            "TTF_CreateGPUTextEngine": "ctor",
-            "TTF_CreateGPUTextEngineWithProperties": "ctor",
             "TTF_SetGPUTextEngineWinding": {
               "name": "SetGPUWinding"
             },
@@ -7949,27 +7919,97 @@ const transform = {
               "immutable": true,
               "name": "GetGPUWinding"
             },
-            "TTF_DestroySurfaceTextEngine": {
-              static: true,
-              parameters: [{
-                name: "engine",
-                type: "TTF_TextEngine *"
-              }],
+          },
+        },
+        "SurfaceTextEngine": {
+          kind: "struct",
+          type: "TextEngine",
+          entries: {
+            "TTF_CreateSurfaceTextEngine": "ctor",
+            "~SurfaceTextEngine": {
+              kind: "function",
+              type: "",
+              parameters: [],
+              hints: { body: "Destroy();" },
             },
-            "TTF_DestroyRendererTextEngine": {
-              static: true,
-              parameters: [{
-                name: "engine",
-                type: "TTF_TextEngine *"
-              }],
+          },
+        },
+        "TTF_CreateSurfaceTextEngine": {
+          type: "SurfaceTextEngine",
+          hints: { delegate: "SurfaceTextEngine" },
+        },
+        "TTF_DestroySurfaceTextEngine": {
+          name: "SurfaceTextEngine::Destroy",
+          static: false,
+          parameters: [],
+          hints: { body: "DestroySurfaceTextEngine(release());" },
+          link: {
+            name: "DestroySurfaceTextEngine",
+            parameters: [{ type: "TextEngineRaw" }],
+          }
+        },
+        "RendererTextEngine": {
+          kind: "struct",
+          type: "TextEngine",
+          entries: {
+            "TTF_CreateRendererTextEngine": "ctor",
+            "TTF_CreateRendererTextEngineWithProperties": "ctor",
+            "~RendererTextEngine": {
+              kind: "function",
+              type: "",
+              parameters: [],
+              hints: { body: "Destroy();" },
             },
-            "TTF_DestroyGPUTextEngine": {
-              static: true,
-              parameters: [{
-                name: "engine",
-                type: "TTF_TextEngine *"
-              }],
+          },
+        },
+        "TTF_CreateRendererTextEngine": {
+          type: "RendererTextEngine",
+          hints: { delegate: "RendererTextEngine" },
+        },
+        "TTF_CreateRendererTextEngineWithProperties": {
+          type: "RendererTextEngine",
+          hints: { delegate: "RendererTextEngine" },
+        },
+        "TTF_DestroyRendererTextEngine": {
+          name: "RendererTextEngine::Destroy",
+          static: false,
+          parameters: [],
+          hints: { body: "DestroyRendererTextEngine(release());" },
+          link: {
+            name: "DestroyRendererTextEngine",
+            parameters: [{ type: "TextEngineRaw" }],
+          }
+        },
+        "GPUTextEngine": {
+          kind: "struct",
+          type: "TextEngine",
+          entries: {
+            "TTF_CreateRendererTextEngine": "ctor",
+            "TTF_CreateRendererTextEngineWithProperties": "ctor",
+            "~GPUTextEngine": {
+              kind: "function",
+              type: "",
+              parameters: [],
+              hints: { body: "Destroy();" },
             },
+          },
+        },
+        "TTF_CreateGPUTextEngine": {
+          type: "GPUTextEngine",
+          hints: { delegate: "GPUTextEngine" },
+        },
+        "TTF_CreateGPUTextEngineWithProperties": {
+          type: "GPUTextEngine",
+          hints: { delegate: "GPUTextEngine" },
+        },
+        "TTF_DestroyGPUTextEngine": {
+          name: "RendererTextEngine::Destroy",
+          static: false,
+          parameters: [],
+          hints: { body: "DestroyGPUTextEngine(release());" },
+          link: {
+            name: "DestroyGPUTextEngine",
+            parameters: [{ type: "TextEngineRaw" }],
           }
         },
         "TTF_Text": {
@@ -8234,73 +8274,43 @@ const transform = {
             }
           }
         },
-      },
-      enumerations: {
         "TTF_FontStyleFlags": {
-          "prefix": "TTF_STYLE_",
-          "includeAfter": "__begin"
+          enum: "TTF_STYLE_",
+          after: "TTF_Init",
         },
         "TTF_HintingFlags": {
-          "prefix": "TTF_HINTING_",
-          "includeAfter": "__begin"
+          enum: "TTF_HINTING_",
+          after: "TTF_Init",
         },
         "TTF_HorizontalAlignment": {
-          "prefix": "TTF_HORIZONTAL_ALIGN_",
-          "includeAfter": "__begin"
+          enum: "TTF_HORIZONTAL_ALIGN_",
+          after: "TTF_Init",
         },
         "TTF_Direction": {
-          "prefix": "TTF_DIRECTION_",
-          "includeAfter": "__begin"
+          enum: "TTF_DIRECTION_",
+          after: "TTF_Init",
         },
         "TTF_ImageType": {
-          "prefix": "TTF_IMAGE_",
-          "includeAfter": "__begin"
+          enum: "TTF_IMAGE_",
+          after: "TTF_Init",
         },
         "TTF_SubStringFlags": {
-          "prefix": "TTF_SUBSTRING_",
-          "includeAfter": "__begin"
+          enum: "TTF_SUBSTRING_",
+          after: "TTF_Init",
         },
         "TTF_GPUTextEngineWinding": {
-          "prefix": "TTF_GPU_TEXTENGINE_WINDING_",
-          "includeAfter": "__begin"
-        }
-      },
-      namespacesMap: {
-        "TTF_PROP_FONT_": "prop::Font",
-        "TTF_PROP_RENDERER_TEXT_ENGINE_": "prop::RendererTextEngine",
-        "TTF_PROP_GPU_TEXT_ENGINE_": "prop::GpuTextEngine"
-      },
-      includeAfter: {
-        "__begin": [
-          {
-            "name": "SDL3PP_ENABLE_TTF",
-            "kind": "def"
-          },
-          {
-            "kind": "struct",
-            "name": "TtfInitFlag",
-            "type": "InitFlagsExtra"
-          },
-          {
-            kind: "alias",
-            name: "TextEngineDeleter",
-            type: "void (*)(TTF_TextEngine *)",
-          }
-        ],
-        "TTF_TextEngine": [
-          {
-            "name": "GPUAtlasDrawSequence",
-          },
-          {
-            "name": "SubString",
-          },
-          {
-            "name": "SubStringIterator",
-            "kind": "forward"
-          }
-        ],
-        "TTF_Text": {
-          "name": "SubStringIterator",
+          enum: "TTF_GPU_TEXTENGINE_WINDING_",
+          after: "TTF_Init",
+        },
+        "TTF_GPUAtlasDrawSequence": { after: "TTF_TextEngine" },
+        "TTF_SubString": { after: "TTF_TextEngine" },
+        "SubStringIterator#forward": {
+          name: "SubStringIterator",
+          kind: "forward",
+          after: "TTF_TextEngine"
+        },
+        "SubStringIterator": {
+          "after": "TTF_Text",
           "kind": "struct",
           "entries": {
             "m_text": {
@@ -8397,42 +8407,21 @@ const transform = {
             ]
           }
         },
-        "TTF_Init": {
-          "name": "GPUTextEngineWinding",
-        }
+        "TTF": {
+          kind: "ns",
+          before: "TTF_Version",
+          entries: {},
+        },
+        "TTF_Version": { name: "TTF.Version" },
+        "TTF_Init": { name: "TTF.Init" },
+        "TTF_Quit": { name: "TTF.Quit" },
+        "TTF_WasInit": { name: "TTF.WasInit" }
       },
-      transform: {
-        "TTF_Version": {
-          "name": "TTF_Version"
-        },
-        "TTF_Init": {
-          "name": "InitSubSystem",
-          "parameters": [
-            {
-              "type": "TtfInitFlag",
-              "name": "_"
-            }
-          ]
-        },
-        "TTF_Quit": {
-          "name": "QuitSubSystem",
-          "parameters": [
-            {
-              "type": "TtfInitFlag",
-              "name": "_"
-            }
-          ]
-        },
-        "TTF_WasInit": {
-          "name": "WasInit",
-          "parameters": [
-            {
-              "type": "TtfInitFlag",
-              "name": "_"
-            }
-          ]
-        }
-      }
+      namespacesMap: {
+        "TTF_PROP_FONT_": "prop::Font",
+        "TTF_PROP_RENDERER_TEXT_ENGINE_": "prop::RendererTextEngine",
+        "TTF_PROP_GPU_TEXT_ENGINE_": "prop::GpuTextEngine"
+      },
     }
   }
 };
