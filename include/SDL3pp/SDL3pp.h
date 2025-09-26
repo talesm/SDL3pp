@@ -18,7 +18,7 @@
 #include "SDL3pp_assert.h"
 // #include "SDL3pp_asyncio.h"
 // #include "SDL3pp_atomic.h"
-// #include "SDL3pp_audio.h"
+#include "SDL3pp_audio.h"
 #include "SDL3pp_bits.h"
 #include "SDL3pp_blendmode.h"
 // #include "SDL3pp_camera.h"

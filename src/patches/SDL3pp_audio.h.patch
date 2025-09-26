@@ -1,4 +1,856 @@
-279c279
+12c12
+<  * @defgroup CategoryAudio Category Audio
+---
+>  * @defgroup CategoryAudio Audio Playback, Recording, and Mixing
+187a188,189
+> #ifdef SDL3PP_DOC
+> 
+225a228,229
+> #endif // SDL3PP_DOC
+> 
+279c283,284
 <     : m_audioFormat(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size))
 ---
->     : AudioFormat(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size))
+>     : m_audioFormat(
+>         AudioFormatRaw(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size)))
+311d315
+<    * @param x an AudioFormat value.
+314c318
+<    * @threadsafety It is safe to call this macro from any thread.
+---
+>    * @threadsafety It is safe to call this function from any thread
+316c320
+<    * @since This macro is available since SDL 3.2.0.
+---
+>    * @since This function is available since SDL 3.2.0.
+325d328
+<    * @param x an AudioFormat value.
+328c331
+<    * @threadsafety It is safe to call this macro from any thread.
+---
+>    * @threadsafety It is safe to call this function from any thread.
+330c333
+<    * @since This macro is available since SDL 3.2.0.
+---
+>    * @since This function is available since SDL 3.2.0.
+339d341
+<    * @param x an AudioFormat value.
+342c344
+<    * @threadsafety It is safe to call this macro from any thread.
+---
+>    * @threadsafety It is safe to call this function from any thread.
+344c346
+<    * @since This macro is available since SDL 3.2.0.
+---
+>    * @since This function is available since SDL 3.2.0.
+353d354
+<    * @param x an AudioFormat value.
+356c357
+<    * @threadsafety It is safe to call this macro from any thread.
+---
+>    * @threadsafety It is safe to call this function from any thread.
+358c359
+<    * @since This macro is available since SDL 3.2.0.
+---
+>    * @since This function is available since SDL 3.2.0.
+367d367
+<    * @param x an AudioFormat value.
+370c370
+<    * @threadsafety It is safe to call this macro from any thread.
+---
+>    * @threadsafety It is safe to call this function from any thread.
+372c372
+<    * @since This macro is available since SDL 3.2.0.
+---
+>    * @since This function is available since SDL 3.2.0.
+381d380
+<    * @param x an AudioFormat value.
+384c383
+<    * @threadsafety It is safe to call this macro from any thread.
+---
+>    * @threadsafety It is safe to call this function from any thread.
+386c385
+<    * @since This macro is available since SDL 3.2.0.
+---
+>    * @since This function is available since SDL 3.2.0.
+395d393
+<    * @param x an AudioFormat value.
+398c396
+<    * @threadsafety It is safe to call this macro from any thread.
+---
+>    * @threadsafety It is safe to call this function from any thread.
+400c398
+<    * @since This macro is available since SDL 3.2.0.
+---
+>    * @since This function is available since SDL 3.2.0.
+409d406
+<    * @param x an AudioFormat value.
+412c409
+<    * @threadsafety It is safe to call this macro from any thread.
+---
+>    * @threadsafety It is safe to call this function from any thread.
+414c411
+<    * @since This macro is available since SDL 3.2.0.
+---
+>    * @since This function is available since SDL 3.2.0.
+445a443,449
+> // Unfortunate name clash with SDL_oldnames.h
+> #undef AUDIO_U8
+> #undef AUDIO_S8
+> #undef AUDIO_S16
+> #undef AUDIO_S32
+> #undef AUDIO_F32
+> 
+709a714,747
+> /**
+>  * A callback that fires when data is about to be fed to an audio device.
+>  *
+>  * This is useful for accessing the final mix, perhaps for writing a
+>  * visualizer or applying a final effect to the audio data before playback.
+>  *
+>  * This callback should run as quickly as possible and not block for any
+>  * significant time, as this callback delays submission of data to the audio
+>  * device, which can cause audio playback problems.
+>  *
+>  * The postmix callback _must_ be able to handle any audio data format
+>  * specified in `spec`, which can change between callbacks if the audio device
+>  * changed. However, this only covers frequency and channel count; data is
+>  * always provided here in AUDIO_F32 format.
+>  *
+>  * The postmix callback runs _after_ logical device gain and audiostream gain
+>  * have been applied, which is to say you can make the output data louder at
+>  * this point than the gain settings would suggest.
+>  *
+>  * @param spec the current format of audio that is to be submitted to the
+>  *             audio device.
+>  * @param buffer the buffer of audio samples to be submitted. The callback can
+>  *               inspect and/or modify this data.
+>  * @param buflen the size of `buffer` in bytes.
+>  *
+>  * @threadsafety This will run from a background thread owned by SDL. The
+>  *               application is responsible for locking resources the callback
+>  *               touches that need to be protected.
+>  *
+>  * @since This datatype is available since SDL 3.2.0.
+>  *
+>  * @sa AudioDevice.SetPostmixCallback
+>  * @sa AudioPostmixCallback
+>  */
+754a793,831
+> /**
+>  * A callback that fires when data passes through an AudioStream.
+>  *
+>  * Apps can (optionally) register a callback with an audio stream that is
+>  * called when data is added with AudioStream.PutData, or requested with
+>  * AudioStream.GetData.
+>  *
+>  * Two values are offered here: one is the amount of additional data needed to
+>  * satisfy the immediate request (which might be zero if the stream already
+>  * has enough data queued) and the other is the total amount being requested.
+>  * In a Get call triggering a Put callback, these values can be different. In
+>  * a Put call triggering a Get callback, these values are always the same.
+>  *
+>  * Byte counts might be slightly overestimated due to buffering or resampling,
+>  * and may change from call to call.
+>  *
+>  * This callback is not required to do anything. Generally this is useful for
+>  * adding/reading data on demand, and the app will often put/get data as
+>  * appropriate, but the system goes on with the data currently available to it
+>  * if this callback does nothing.
+>  *
+>  * @param stream the SDL audio stream associated with this callback.
+>  * @param additional_amount the amount of data, in bytes, that is needed right
+>  *                          now.
+>  * @param total_amount the total amount of data requested, in bytes, that is
+>  *                     requested or available.
+>  *
+>  * @threadsafety This callbacks may run from any thread, so if you need to
+>  *               protect shared data, you should use AudioStream.Lock to
+>  *               serialize access; this lock will be held before your callback
+>  *               is called, so your callback does not need to manage the lock
+>  *               explicitly.
+>  *
+>  * @since This datatype is available since SDL 3.2.0.
+>  *
+>  * @sa AudioStream.SetGetCallback
+>  * @sa AudioStream.SetPutCallback
+>  * @sa AudioStreamCB
+>  */
+913,914d989
+<    *              AudioDevice.AudioDevice().
+<    *
+923c998,1002
+<   constexpr auto operator<=>(AudioDeviceParam other) const = default;
+---
+>   /// Comparison
+>   constexpr auto operator<=>(AudioDeviceParam other) const
+>   {
+>     return get() <=> other;
+>   }
+928,929c1007,1008
+<    * @returns the name of the audio device, or nullptr on failure; call
+<    *          GetError() for more information.
+---
+>    * @returns the name of the audio device on success.
+>    * @throws Error on failure.
+962d1040
+<    * @param spec on return, will be filled with device details.
+964a1043
+>    * @returns the device format details on success.
+982,983d1060
+<    * @param count On output, set to number of channels in the map. Can be
+<    * nullptr.
+985,986c1062
+<    *          the current output spec's channels, or nullptr if default. This
+<    *          should be freed with free() when it is no longer needed.
+---
+>    *          the current output spec's channels, or nullptr if default
+1189d1264
+<    * @param num_streams number streams listed in the `streams` array.
+1220a1296,1344
+>   /**
+>    * Set a callback that fires when data is about to be fed to an audio device.
+>    *
+>    * This is useful for accessing the final mix, perhaps for writing a
+>    * visualizer or applying a final effect to the audio data before playback.
+>    *
+>    * The buffer is the final mix of all bound audio streams on an opened device;
+>    * this callback will fire regularly for any device that is both opened and
+>    * unpaused. If there is no new data to mix, either because no streams are
+>    * bound to the device or all the streams are empty, this callback will still
+>    * fire with the entire buffer set to silence.
+>    *
+>    * This callback is allowed to make changes to the data; the contents of the
+>    * buffer after this call is what is ultimately passed along to the hardware.
+>    *
+>    * The callback is always provided the data in float format (values from -1.0f
+>    * to 1.0f), but the number of channels or sample rate may be different than
+>    * the format the app requested when opening the device; SDL might have had to
+>    * manage a conversion behind the scenes, or the playback might have jumped to
+>    * new physical hardware when a system default changed, etc. These details may
+>    * change between calls. Accordingly, the size of the buffer might change
+>    * between calls as well.
+>    *
+>    * This callback can run at any time, and from any thread; if you need to
+>    * serialize access to your app's data, you should provide and use a mutex or
+>    * other synchronization device.
+>    *
+>    * All of this to say: there are specific needs this callback can fulfill, but
+>    * it is not the simplest interface. Apps should generally provide audio in
+>    * their preferred format through an AudioStream and let SDL handle the
+>    * difference.
+>    *
+>    * This function is extremely time-sensitive; the callback should do the least
+>    * amount of work possible and return as quickly as it can. The longer the
+>    * callback runs, the higher the risk of audio dropouts or other problems.
+>    *
+>    * This function will block until the audio device is in between iterations,
+>    * so any existing callback that might be running will finish before this
+>    * function sets the new callback and returns.
+>    *
+>    * Setting a nullptr callback function disables any previously-set callback.
+>    *
+>    * @param callback a callback function to be called. Can be nullptr.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    */
+1313d1436
+<    *              or AUDIO_DEVICE_DEFAULT_RECORDING.
+1331,1333c1454,1456
+<   AudioStreamRef OpenStream(const AudioSpec* spec,
+<                             AudioStreamCallback callback,
+<                             void* userdata);
+---
+>   AudioStream OpenStream(OptionalRef<const AudioSpec> spec,
+>                          AudioStreamCallback callback,
+>                          void* userdata);
+1373,1374d1495
+<    * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
+<    *              or AUDIO_DEVICE_DEFAULT_RECORDING.
+1377,1381c1498
+<    *                 playback, or receive new data for recording. Can be
+<    * nullptr, in which case the app will need to call AudioStream.PutData or
+<    * AudioStream.GetData as necessary.
+<    * @param userdata app-controlled pointer passed to callback. Can be nullptr.
+<    *                 Ignored if callback is nullptr.
+---
+>    *                 playback, or receive new data for recording.
+1424c1541
+< constexpr AudioDeviceRaw AUDIO_DEVICE_DEFAULT_PLAYBACK =
+---
+> constexpr AudioDeviceID AUDIO_DEVICE_DEFAULT_PLAYBACK =
+1436c1553
+< constexpr AudioDeviceRaw AUDIO_DEVICE_DEFAULT_RECORDING =
+---
+> constexpr AudioDeviceID AUDIO_DEVICE_DEFAULT_RECORDING =
+1608c1725,1777
+<   /// Default ctor
+---
+>   /**
+>    * Convenience function for straightforward audio init for the common case.
+>    *
+>    * If all your app intends to do is provide a single source of PCM audio, this
+>    * function allows you to do all your audio setup in a single call.
+>    *
+>    * This is also intended to be a clean means to migrate apps from SDL2.
+>    *
+>    * This function will open an audio device, create a stream and bind it.
+>    * Unlike other methods of setup, the audio device will be closed when this
+>    * stream is destroyed, so the app can treat the returned AudioStream as
+>    * the only object needed to manage audio playback.
+>    *
+>    * Also unlike other functions, the audio device begins paused. This is to map
+>    * more closely to SDL2-style behavior, since there is no extra step here to
+>    * bind a stream to begin audio flowing. The audio device should be resumed
+>    * with `AudioStream.ResumeDevice(stream);`
+>    *
+>    * This function works with both playback and recording devices.
+>    *
+>    * The `spec` parameter represents the app's side of the audio stream. That
+>    * is, for recording audio, this will be the output format, and for playing
+>    * audio, this will be the input format. If spec is nullptr, the system will
+>    * choose the format, and the app can use AudioStream.GetFormat() to obtain
+>    * this information later.
+>    *
+>    * If you don't care about opening a specific audio device, you can (and
+>    * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
+>    * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
+>    *
+>    * One can optionally provide a callback function; if nullptr, the app is
+>    * expected to queue audio data for playback (or unqueue audio data if
+>    * capturing). Otherwise, the callback will begin to fire once the device is
+>    * unpaused.
+>    *
+>    * Destroying the returned stream with AudioStream.Destroy will also close
+>    * the audio device associated with this stream.
+>    *
+>    * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
+>    *              or AUDIO_DEVICE_DEFAULT_RECORDING.
+>    * @param spec the audio stream's data format. Can be nullptr.
+>    * @param callback a callback where the app will provide new data for
+>    *                 playback, or receive new data for recording.
+>    * @post an audio stream on success.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa AudioStream.GetDevice
+>    * @sa AudioStream.ResumeDevice
+>    */
+1648d1816
+<    *
+1669c1837,1855
+<   AudioSpec GetInputFormat() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Query the current input format of an audio stream.
+>    *
+>    * @returns the input audio format.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety It is safe to call this function from any thread, as it holds
+>    *               a stream-specific mutex while running.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa AudioStream.SetFormat
+>    */
+>   AudioSpec GetInputFormat() const
+>   {
+>     AudioSpec spec;
+>     GetFormat(&spec, nullptr);
+>     return spec;
+>   }
+1671c1857,1875
+<   AudioSpec GetOutputFormat() const { static_assert(false, "Not implemented"); }
+---
+>   /**
+>    * Query the current output format of an audio stream.
+>    *
+>    * @returns the output audio format.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety It is safe to call this function from any thread, as it holds
+>    *               a stream-specific mutex while running.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa AudioStream.SetFormat
+>    */
+>   AudioSpec GetOutputFormat() const
+>   {
+>     AudioSpec spec;
+>     GetFormat(nullptr, &spec);
+>     return spec;
+>   }
+1689,1692c1893,1923
+<   void SetInputFormat(const AudioSpec& spec)
+<   {
+<     static_assert(false, "Not implemented");
+<   }
+---
+>   /**
+>    * Change the input format of an audio stream.
+>    *
+>    * Future calls to and AudioStreamRef.GetAvailable and
+>    * AudioStreamRef.GetData will reflect the new format, and future calls to
+>    * AudioStreamRef.PutData must provide data in the new input formats.
+>    *
+>    * Data that was previously queued in the stream will still be operated on in
+>    * the format that was current when it was added, which is to say you can put
+>    * the end of a sound file in one format to a stream, change formats for the
+>    * next sound file, and start putting that new data while the previous sound
+>    * file is still queued, and everything will still play back correctly.
+>    *
+>    * If a stream is bound to a device, then the format of the side of the stream
+>    * bound to a device cannot be changed (src_spec for recording devices,
+>    * dst_spec for playback devices). Attempts to make a change to this side will
+>    * be ignored, but this will not report an error. The other side's format can
+>    * be changed.
+>    *
+>    * @param spec the new format of the audio input.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety It is safe to call this function from any thread, as it holds
+>    *               a stream-specific mutex while running.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa AudioStream.GetFormat
+>    * @sa AudioStream.SetFrequencyRatio
+>    */
+>   void SetInputFormat(const AudioSpec& spec) { SetFormat(spec, std::nullopt); }
+1694,1697c1925,1955
+<   void SetOutputFormat(const AudioSpec& spec)
+<   {
+<     static_assert(false, "Not implemented");
+<   }
+---
+>   /**
+>    * Change the output format of an audio stream.
+>    *
+>    * Future calls to and AudioStreamRef.GetAvailable and
+>    * AudioStreamRef.GetData will reflect the new format, and future calls to
+>    * AudioStreamRef.PutData must provide data in the new input formats.
+>    *
+>    * Data that was previously queued in the stream will still be operated on in
+>    * the format that was current when it was added, which is to say you can put
+>    * the end of a sound file in one format to a stream, change formats for the
+>    * next sound file, and start putting that new data while the previous sound
+>    * file is still queued, and everything will still play back correctly.
+>    *
+>    * If a stream is bound to a device, then the format of the side of the stream
+>    * bound to a device cannot be changed (src_spec for recording devices,
+>    * dst_spec for playback devices). Attempts to make a change to this side will
+>    * be ignored, but this will not report an error. The other side's format can
+>    * be changed.
+>    *
+>    * @param spec the new format of the audio output.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety It is safe to call this function from any thread, as it holds
+>    *               a stream-specific mutex while running.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa AudioStream.GetFormat
+>    * @sa AudioStream.SetFrequencyRatio
+>    */
+>   void SetOutputFormat(const AudioSpec& spec) { SetFormat(std::nullopt, spec); }
+1828,1829d2085
+<    * @param count On output, set to number of channels in the map. Can be
+<    * nullptr.
+1831,1832c2087
+<    *          the current output spec's channels, or nullptr if default. This
+<    *          should be freed with free() when it is no longer needed.
+---
+>    *          the current output spec's channels, or nullptr if default.
+1852,1853d2106
+<    * @param count On output, set to number of channels in the map. Can be
+<    * nullptr.
+1855,1856c2108
+<    *          the current output spec's channels, or nullptr if default. This
+<    *          should be freed with free() when it is no longer needed.
+---
+>    *          the current output spec's channels, or nullptr if default.
+1911d2162
+<    * @param count The number of channels in the map.
+1967d2217
+<    * @param count The number of channels in the map.
+1993d2242
+<    * @param len the number of bytes to write to the stream.
+2022d2270
+<    * @param len the maximum number of bytes to fill.
+2239a2488,2527
+>   /**
+>    * Set a callback that runs when data is requested from an audio stream.
+>    *
+>    * This callback is called _before_ data is obtained from the stream, giving
+>    * the callback the chance to add more on-demand.
+>    *
+>    * The callback can (optionally) call AudioStreamRef.PutData() to add more
+>    * audio to the stream during this call; if needed, the request that triggered
+>    * this callback will obtain the new data immediately.
+>    *
+>    * The callback's `additional_amount` argument is roughly how many bytes of
+>    * _unconverted_ data (in the stream's input format) is needed by the caller,
+>    * although this may overestimate a little for safety. This takes into account
+>    * how much is already in the stream and only asks for any extra necessary to
+>    * resolve the request, which means the callback may be asked for zero bytes,
+>    * and a different amount on each call.
+>    *
+>    * The callback is not required to supply exact amounts; it is allowed to
+>    * supply too much or too little or none at all. The caller will get what's
+>    * available, up to the amount they requested, regardless of this callback's
+>    * outcome.
+>    *
+>    * Clearing or flushing an audio stream does not call this callback.
+>    *
+>    * This function obtains the stream's lock, which means any existing callback
+>    * (get or put) in progress will finish running before setting the new
+>    * callback.
+>    *
+>    * Setting a nullptr function turns off the callback.
+>    *
+>    * @param callback the new callback function to call when data is requested
+>    *                 from the stream.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa AudioStream.SetPutCallback
+>    */
+2285a2574,2616
+>   /**
+>    * Set a callback that runs when data is added to an audio stream.
+>    *
+>    * This callback is called _after_ the data is added to the stream, giving the
+>    * callback the chance to obtain it immediately.
+>    *
+>    * The callback can (optionally) call AudioStreamRef.GetData() to obtain
+>    * audio from the stream during this call.
+>    *
+>    * The callback's `additional_amount` argument is how many bytes of
+>    * _converted_ data (in the stream's output format) was provided by the
+>    * caller, although this may underestimate a little for safety. This value
+>    * might be less than what is currently available in the stream, if data was
+>    * already there, and might be less than the caller provided if the stream
+>    * needs to keep a buffer to aid in resampling. Which means the callback may
+>    * be provided with zero bytes, and a different amount on each call.
+>    *
+>    * The callback may call AudioStreamRef.GetAvailable to see the total amount
+>    * currently available to read from the stream, instead of the total provided
+>    * by the current call.
+>    *
+>    * The callback is not required to obtain all data. It is allowed to read less
+>    * or none at all. Anything not read now simply remains in the stream for
+>    * later access.
+>    *
+>    * Clearing or flushing an audio stream does not call this callback.
+>    *
+>    * This function obtains the stream's lock, which means any existing callback
+>    * (get or put) in progress will finish running before setting the new
+>    * callback.
+>    *
+>    * Setting a nullptr function turns off the callback.
+>    *
+>    * @param callback the new callback function to call when data is added to the
+>    *                 stream.
+>    * @throws Error on failure.
+>    *
+>    * @threadsafety It is safe to call this function from any thread.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa AudioStream.SetGetCallback
+>    */
+2473,2477c2804,2805
+<  * @param count a pointer filled in with the number of devices returned, may
+<  *              be nullptr.
+<  * @returns a 0 terminated array of device instance IDs or nullptr on error;
+<  * call GetError() for more information. This should be freed with free() when
+<  * it is no longer needed.
+---
+>  * @returns a 0 terminated array of device instance IDs on success.
+>  * @throws Error on failure.
+2488c2816,2819
+<   return SDL_GetAudioPlaybackDevices();
+---
+>   int count;
+>   auto data = CheckError(SDL_GetAudioPlaybackDevices(&count));
+>   return OwnArray<AudioDeviceRef>{reinterpret_cast<AudioDeviceRef*>(data),
+>                                   size_t(count)};
+2505,2509c2836,2837
+<  * @param count a pointer filled in with the number of devices returned, may
+<  *              be nullptr.
+<  * @returns a 0 terminated array of device instance IDs, or nullptr on failure;
+<  *          call GetError() for more information. This should be freed
+<  *          with free() when it is no longer needed.
+---
+>  * @returns a 0 terminated array of device instance IDs on success.
+>  * @throws Error on failure.
+2520c2848,2851
+<   return SDL_GetAudioRecordingDevices();
+---
+>   int count;
+>   auto data = CheckError(SDL_GetAudioRecordingDevices(&count));
+>   return OwnArray<AudioDeviceRef>{reinterpret_cast<AudioDeviceRef*>(data),
+>                                   size_t(count)};
+2527,2528c2858,2859
+<  * @returns the name of the audio device, or nullptr on failure; call
+<  *          GetError() for more information.
+---
+>  * @returns the name of the audio device on success.
+>  * @throws Error on failure.
+2539c2870
+<   return SDL_GetAudioDeviceName(devid);
+---
+>   return CheckError(SDL_GetAudioDeviceName(devid));
+2582c2913,2915
+<   return CheckError(SDL_GetAudioDeviceFormat(devid, sample_frames));
+---
+>   AudioSpec spec;
+>   CheckError(SDL_GetAudioDeviceFormat(devid, &spec, sample_frames));
+>   return spec;
+2585c2918
+< inline AudioSpec AudioDevice::GetFormat(int* sample_frames = nullptr) const
+---
+> inline AudioSpec AudioDevice::GetFormat(int* sample_frames) const
+2600d2932
+<  * @param count On output, set to number of channels in the map. Can be nullptr.
+2602,2603c2934
+<  *          the current output spec's channels, or nullptr if default. This
+<  *          should be freed with free() when it is no longer needed.
+---
+>  *          the current output spec's channels, or nullptr if default
+2613c2944,2946
+<   return SDL_GetAudioDeviceChannelMap(devid);
+---
+>   int count;
+>   auto data = SDL_GetAudioDeviceChannelMap(devid, &count);
+>   return OwnArray<int>{data, size_t(count)};
+2696c3029
+<                                    const AudioSpec* spec)
+---
+>                                    OptionalRef<const AudioSpec> spec)
+2982d3314
+<  * @param num_streams number streams listed in the `streams` array.
+2996c3328,3331
+<   CheckError(SDL_BindAudioStreams(devid, streams));
+---
+>   CheckError(SDL_BindAudioStreams(
+>     devid,
+>     reinterpret_cast<SDL_AudioStream* const*>(streams.data()),
+>     streams.size()));
+3043d3377
+<  * @param num_streams number streams listed in the `streams` array.
+3053c3387,3388
+<   SDL_UnbindAudioStreams(streams);
+---
+>   SDL_UnbindAudioStreams(
+>     reinterpret_cast<SDL_AudioStream* const*>(streams.data()), streams.size());
+3098c3433
+<   return SDL_GetAudioStreamDevice(stream);
+---
+>   return {SDL_GetAudioStreamDevice(stream)};
+3126,3127c3461,3462
+< inline AudioStream CreateAudioStream(const AudioSpec* src_spec,
+<                                      const AudioSpec* dst_spec)
+---
+> inline AudioStream CreateAudioStream(OptionalRef<const AudioSpec> src_spec,
+>                                      OptionalRef<const AudioSpec> dst_spec)
+3145c3480
+<   return CheckError(SDL_GetAudioStreamProperties(stream));
+---
+>   return {CheckError(SDL_GetAudioStreamProperties(stream))};
+3358d3692
+<  * @param count On output, set to number of channels in the map. Can be nullptr.
+3360,3361c3694
+<  *          the current output spec's channels, or nullptr if default. This
+<  *          should be freed with free() when it is no longer needed.
+---
+>  *          the current output spec's channels, or nullptr if default.
+3372c3705,3708
+<   return SDL_GetAudioStreamInputChannelMap(stream);
+---
+>   int count;
+>   auto data = SDL_GetAudioStreamInputChannelMap(stream, &count);
+>   if (!data) return {};
+>   return OwnArray<int>{data, size_t(count)};
+3390d3725
+<  * @param count On output, set to number of channels in the map. Can be nullptr.
+3392,3393c3727
+<  *          the current output spec's channels, or nullptr if default. This
+<  *          should be freed with free() when it is no longer needed.
+---
+>  *          the current output spec's channels, or nullptr if default.
+3404c3738,3741
+<   return SDL_GetAudioStreamOutputChannelMap(stream);
+---
+>   int count;
+>   auto data = SDL_GetAudioStreamOutputChannelMap(stream, &count);
+>   if (!data) return {};
+>   return OwnArray<int>{data, size_t(count)};
+3457d3793
+<  * @param count The number of channels in the map.
+3472c3808,3809
+<   CheckError(SDL_SetAudioStreamInputChannelMap(stream, chmap));
+---
+>   CheckError(
+>     SDL_SetAudioStreamInputChannelMap(stream, chmap.data(), chmap.size()));
+3523d3859
+<  * @param count The number of channels in the map.
+3538c3874,3875
+<   CheckError(SDL_SetAudioStreamOutputChannelMap(stream, chmap));
+---
+>   CheckError(
+>     SDL_SetAudioStreamOutputChannelMap(stream, chmap.data(), chmap.size()));
+3559d3895
+<  * @param len the number of bytes to write to the stream.
+3575c3911
+<   CheckError(SDL_PutAudioStreamData(stream, buf));
+---
+>   CheckError(SDL_PutAudioStreamData(stream, buf.data, buf.size_bytes));
+3580c3916
+<   SDL::PutAudioStreamData(m_resource, buf);
+---
+>   SDL::PutAudioStreamData(m_resource, std::move(buf));
+3597d3932
+<  * @param len the maximum number of bytes to fill.
+3613c3948
+<   return SDL_GetAudioStreamData(stream, buf);
+---
+>   return SDL_GetAudioStreamData(stream, buf.data, buf.size_bytes);
+3618c3953
+<   return SDL::GetAudioStreamData(m_resource, buf);
+---
+>   return SDL::GetAudioStreamData(m_resource, std::move(buf));
+4037,4039c4372,4374
+< inline AudioStreamRef AudioDevice::OpenStream(const AudioSpec* spec,
+<                                               AudioStreamCallback callback,
+<                                               void* userdata)
+---
+> inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
+>                                            AudioStreamCallback callback,
+>                                            void* userdata)
+4047c4382
+<   return SDL::OpenAudioDeviceStream(m_resource, spec, callback);
+---
+>   return AudioStream(m_resource, spec, callback);
+4109,4111c4444,4446
+<                                          const AudioSpec* spec,
+<                                          AudioStreamCallback callback,
+<                                          void* userdata)
+---
+>                                          OptionalRef<const AudioSpec> spec,
+>                                          AudioStreamCallback callback = nullptr,
+>                                          void* userdata = nullptr)
+4158,4163c4493
+<  *                 playback, or receive new data for recording. Can be nullptr,
+<  *                 in which case the app will need to call
+<  *                 AudioStream.PutData or AudioStream.GetData as
+<  *                 necessary.
+<  * @param userdata app-controlled pointer passed to callback. Can be nullptr.
+<  *                 Ignored if callback is nullptr.
+---
+>  *                 playback, or receive new data for recording.
+4183a4514
+>   : AudioStream(devid, spec)
+4185,4190c4516,4520
+< }
+< 
+< inline AudioDevice::AudioStream::AudioStream(OptionalRef<const AudioSpec> spec,
+<                                              AudioStreamCB callback)
+<   : T(SDL::AudioStream::AudioStream(spec, callback))
+< {
+---
+>   if (IsAudioDevicePlayback(devid)) {
+>     SetGetCallback(std::move(callback));
+>   } else {
+>     SetPutCallback(std::move(callback));
+>   }
+4313,4316d4642
+<  * @param audio_buf a pointer filled with the audio data, allocated by the
+<  *                  function.
+<  * @param audio_len a pointer filled with the length of the audio data buffer
+<  *                  in bytes.
+4319,4324c4645,4646
+<  *          This function returns false if the .WAV file cannot be opened,
+<  *          uses an unknown data format, or is corrupt; call GetError()
+<  *          for more information.
+<  *
+<  *          When the application is done with the data returned in
+<  *          `audio_buf`, it should call free() to dispose of it.
+---
+>  * This function throws if the .WAV file cannot be opened, uses an unknown data
+>  * format, or is corrupt; call GetError() for more information.
+4330d4651
+<  * @sa free
+4337c4658,4661
+<   return CheckError(SDL_LoadWAV_IO(src, spec, closeio));
+---
+>   Uint8* buf;
+>   Uint32 len;
+>   if (!SDL_LoadWAV_IO(src, closeio, spec, &buf, &len)) return {};
+>   return OwnArray<Uint8>{buf, size_t(len)};
+4352,4355d4675
+<  * @param audio_buf a pointer filled with the audio data, allocated by the
+<  *                  function.
+<  * @param audio_len a pointer filled with the length of the audio data buffer
+<  *                  in bytes.
+4358,4363c4678,4679
+<  *          This function returns false if the .WAV file cannot be opened,
+<  *          uses an unknown data format, or is corrupt; call GetError()
+<  *          for more information.
+<  *
+<  *          When the application is done with the data returned in
+<  *          `audio_buf`, it should call free() to dispose of it.
+---
+>  * This function throws if the .WAV file cannot be opened, uses an unknown data
+>  * format, or is corrupt,
+4369d4684
+<  * @sa free
+4374c4689,4692
+<   return CheckError(SDL_LoadWAV(path, spec));
+---
+>   Uint8* buf;
+>   Uint32 len;
+>   if (!SDL_LoadWAV(path, spec, &buf, &len)) return {};
+>   return OwnArray<Uint8>{buf, size_t(len)};
+4401d4718
+<  * @param len the length of the audio buffer in bytes.
+4415c4732,4733
+<   CheckError(SDL_MixAudio(dst, src, format, volume));
+---
+>   CheckError(SDL_MixAudio(
+>     dst, static_cast<const Uint8*>(src.data), format, src.size_bytes, volume));
+4442d4759
+<  * @param len the length of the audio buffer in bytes.
+4456c4773,4774
+<   static_assert(false, "Not implemented");
+---
+>   if (dst.size_bytes < src.size_bytes) src.size_bytes = dst.size_bytes;
+>   MixAudio(static_cast<Uint8*>(dst.data), src, format, volume);
+4474d4791
+<  * @param src_len the len of src_data.
+4479d4795
+<  * @param dst_len will be filled with the len of dst_data.
+4490c4806,4814
+<   return CheckError(SDL_ConvertAudioSamples(src_spec, src_data, dst_spec));
+---
+>   Uint8* buf;
+>   int len;
+>   CheckError(SDL_ConvertAudioSamples(&src_spec,
+>                                      static_cast<const Uint8*>(src_data.data),
+>                                      src_data.size_bytes,
+>                                      &dst_spec,
+>                                      &buf,
+>                                      &len));
+>   return OwnArray<Uint8>{buf, size_t(len)};
