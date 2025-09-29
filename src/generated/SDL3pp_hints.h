@@ -2806,7 +2806,7 @@ namespace SDL {
 #define SDL_HINT_POLL_SENTINEL "SDL_POLL_SENTINEL"
 
 /**
- * Override for SDL_GetPreferredLocales().
+ * Override for GetPreferredLocales().
  *
  * If set, this will be favored over anything the OS might report for the
  * user's preferred locales. Changing this hint at runtime will not generate a

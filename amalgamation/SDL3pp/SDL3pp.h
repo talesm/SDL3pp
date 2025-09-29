@@ -5096,7 +5096,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_POLL_SENTINEL "SDL_POLL_SENTINEL"
 
 /**
- * Override for SDL_GetPreferredLocales().
+ * Override for GetPreferredLocales().
  *
  * If set, this will be favored over anything the OS might report for the
  * user's preferred locales. Changing this hint at runtime will not generate a
@@ -20326,7 +20326,7 @@ using AppQuit_func = SDL_AppQuit_func;
  *
  * The file I/O (for example: IOStream.FromFile) and threading (Thread.Thread)
  * subsystems are initialized by default. Message boxes
- * (SDL_ShowSimpleMessageBox) also attempt to work without initializing the
+ * (ShowSimpleMessageBox) also attempt to work without initializing the
  * video subsystem, in hopes of being useful in showing an error dialog when
  * Init fails. You must specifically initialize other subsystems if you
  * use them in your application.
