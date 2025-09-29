@@ -65,49 +65,49 @@
 182,183d177
 <  *
 <  *     Storage.Close(user);
-286c280
+292c286
 <  * functions like Storage.Storage or Storage.Storage, etc, or create
 ---
 >  * functions like Storage.Storage, etc, or create
-435c429
+441c435
 <   ~Storage() { SDL_CloseStorage(m_resource); }
 ---
 >   ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
-472,474d465
+484,486d477
 <    * @sa Storage.Storage
 <    * @sa Storage.Storage
 <    * @sa Storage.Storage
-496,497c487
+508,509c499
 <    * @param length a pointer to be filled with the file's length.
 <    * @returns true if the file could be queried or false on failure; call
 ---
 >    * @returns the file's length on success or 0 on failure; call
-517d506
+529d518
 <    * @param length the length of the destination buffer.
-537d525
+549d537
 <    * @param storage a storage container to read from.
-539,540d526
+551,552d538
 <    * @param destination a client-provided buffer to read the file into.
 <    * @param length the length of the destination buffer.
-557d542
+569d554
 <    * @param length the length of the source buffer.
-627d611
+639d623
 <    * @param storage a storage container.
-631c615
+643c627
 <    * @param userdata a pointer that is passed to `callback`.
 ---
 >    * @returns all the directory contents.
-682,684c666,667
+694,696c678,679
 <    * @param info a pointer filled in with information about the path, or nullptr
 <    * to check for the existence of a file.
 <    * @throws Error on failure.
 ---
 >    * @returns the info on success or false if the file doesn't exist, or another
 >    *          failure; call GetError() for more information.
-729,730d711
+741,742d723
 <    * @param count on return, will be set to the number of items in the returned
 <    *              array. Can be nullptr.
-742a724,741
+754a736,753
 >   /**
 >    * Synchronously read a file from a storage container into a client-provided
 >    * buffer.
@@ -126,36 +126,36 @@
 >    * @sa Storage.Ready
 >    * @sa Storage.WriteFile
 >    */
-929,930c928
+941,942c940
 <  * @param length a pointer to be filled with the file's length.
 <  * @returns true if the file could be queried or false on failure; call
 ---
 >  * @returns the file's length on success or std::nullopt on failure; call
-941c939,942
+953c951,954
 <   return SDL_GetStorageFileSize(storage, path);
 ---
 >   if (Uint64 length; SDL_GetStorageFileSize(storage, path, &length)) {
 >     return length;
 >   }
 >   return {};
-953,956d953
+965,968d965
 <  * The value of `length` must match the length of the file exactly; call
 <  * Storage.GetFileSize() to get this value. This behavior may be relaxed in
 <  * a future release.
 <  *
-960d956
+972d968
 <  * @param length the length of the destination buffer.
-974c970,971
+986c982,983
 <   return SDL_ReadStorageFile(storage, path, destination);
 ---
 >   return SDL_ReadStorageFile(
 >     storage, path, destination.data, destination.size_bytes);
-981,984d977
+993,996d989
 <  * The value of `length` must match the length of the file exactly; call
 <  * Storage.GetFileSize() to get this value. This behavior may be relaxed in
 <  * a future release.
 <  *
-987,990c980,981
+999,1002c992,993
 <  * @param destination a client-provided buffer to read the file into.
 <  * @param length the length of the destination buffer.
 <  * @returns true if the file was read or false on failure; call GetError()
@@ -163,7 +163,7 @@
 ---
 >  * @returns the content if the file was read.
 >  * @throws Error on failure.
-1000c991,995
+1012c1003,1007
 <   static_assert(false, "Not implemented");
 ---
 >   auto sz = GetStorageFileSize(storage, path.c_str());
@@ -171,12 +171,12 @@
 >   std::string buffer(*sz, 0);
 >   CheckError(ReadStorageFile(storage, std::move(path), buffer));
 >   return buffer;
-1005c1000,1001
+1017c1012,1013
 <   return SDL::ReadStorageFile(m_resource, std::move(path), destination);
 ---
 >   return SDL::ReadStorageFile(
 >     m_resource, std::move(path), std::move(destination));
-1012a1009,1023
+1024a1021,1035
 > /**
 >  * Synchronously read a file from a storage container into a client-provided
 >  * buffer.
@@ -192,7 +192,7 @@
 >  * @sa Storage.Ready
 >  * @sa Storage.WriteFile
 >  */
-1016c1027,1031
+1028c1039,1043
 <   static_assert(false, "Not implemented");
 ---
 >   auto sz = GetStorageFileSize(storage, path.c_str());
@@ -200,30 +200,30 @@
 >   std::vector<T> buffer(*sz / sizeof(T) + (*sz % sizeof(T) ? 1 : 0), 0);
 >   CheckError(ReadFile(std::move(path), {buffer.data(), *sz}));
 >   return buffer;
-1018a1034
+1030a1046
 > template<class T>
-1021c1037
+1033c1049
 <   return SDL::ReadStorageFileAs(m_resource, std::move(path));
 ---
 >   return SDL::ReadStorageFileAs<T>(m_resource, std::move(path));
-1030,1032c1046
+1042,1044c1058
 <  * @param length the length of the source buffer.
 <  * @returns true if the file was written or false on failure; call
 <  *          GetError() for more information.
 ---
 >  * @throws Error on failure.
-1044c1058,1059
+1056c1070,1071
 <   SDL_WriteStorageFile(storage, path, source);
 ---
 >   CheckError(
 >     SDL_WriteStorageFile(storage, path, source.data, source.size_bytes));
-1049c1064
+1061c1076
 <   SDL::WriteStorageFile(m_resource, std::move(path), source);
 ---
 >   SDL::WriteStorageFile(m_resource, std::move(path), std::move(source));
-1126d1140
+1138d1152
 <  * @param userdata a pointer that is passed to `callback`.
-1137c1151,1158
+1149c1163,1170
 <   static_assert(false, "Not implemented");
 ---
 >   EnumerateStorageDirectory(
@@ -234,12 +234,12 @@
 >       return cb(dirname, fname);
 >     },
 >     &callback);
-1158,1159c1179
+1170,1171c1191
 <  * @param callback a function that is called for each entry in the directory.
 <  * @param userdata a pointer that is passed to `callback`.
 ---
 >  * @returns all the directory contents.
-1169c1189,1194
+1181c1201,1206
 <   static_assert(false, "Not implemented");
 ---
 >   std::vector<Path> r;
@@ -248,24 +248,24 @@
 >     return ENUM_CONTINUE;
 >   });
 >   return r;
-1260,1262c1285,1286
+1272,1274c1297,1298
 <  * @param info a pointer filled in with information about the path, or nullptr
 <  * to check for the existence of a file.
 <  * @throws Error on failure.
 ---
 >  * @returns the info on success or false if the file doesn't exist, or another
 >  *          failure; call GetError() for more information.
-1270c1294,1297
+1282c1306,1309
 <   return CheckError(SDL_GetStoragePathInfo(storage, path));
 ---
 >   if (PathInfo info; SDL_GetStoragePathInfo(storage, path, &info)) {
 >     return info;
 >   }
 >   return {};
-1324,1325d1350
+1336,1337d1362
 <  * @param count on return, will be set to the number of items in the returned
 <  *              array. Can be nullptr.
-1339c1364,1367
+1351c1376,1379
 <   return CheckError(SDL_GlobStorageDirectory(storage, path, pattern, flags));
 ---
 >   int count;

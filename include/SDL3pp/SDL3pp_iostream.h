@@ -45,6 +45,12 @@ struct IOStreamParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const IOStreamParam& other) const = default;
+
   /// Converts to underlying IOStreamRaw
   constexpr operator IOStreamRaw() const { return value; }
 };
@@ -397,6 +403,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const IOStream& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }

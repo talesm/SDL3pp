@@ -143,6 +143,12 @@ struct AudioDeviceParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const AudioDeviceParam& other) const = default;
+
   /// Converts to underlying AudioDeviceID
   constexpr operator AudioDeviceID() const { return value; }
 };
@@ -171,6 +177,12 @@ struct AudioStreamParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const AudioStreamParam& other) const = default;
 
   /// Converts to underlying AudioStreamRaw
   constexpr operator AudioStreamRaw() const { return value; }
@@ -896,6 +908,12 @@ public:
     m_resource = 0;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const AudioDevice& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -1633,6 +1651,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const AudioStream& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }

@@ -64,6 +64,12 @@ struct RendererParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const RendererParam& other) const = default;
+
   /// Converts to underlying RendererRaw
   constexpr operator RendererRaw() const { return value; }
 };
@@ -89,6 +95,12 @@ struct TextureParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const TextureParam& other) const = default;
 
   /// Converts to underlying TextureRaw
   constexpr operator TextureRaw() const { return value; }
@@ -341,6 +353,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Renderer& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -2301,6 +2319,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Texture& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }

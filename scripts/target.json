@@ -2510,6 +2510,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const PropertiesParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator PropertiesID": {
               "kind": "function",
               "name": "operator PropertiesID",
@@ -2766,6 +2796,40 @@
               },
               "doc": "Retrieves underlying PropertiesID and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const Properties &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",
@@ -6037,6 +6101,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const WindowParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator WindowRaw": {
               "kind": "function",
               "name": "operator WindowRaw",
@@ -6114,6 +6208,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const GLContextParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator GLContextRaw": {
               "kind": "function",
               "name": "operator GLContextRaw",
@@ -7153,6 +7277,40 @@
               },
               "doc": "Retrieves underlying WindowRaw and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const Window &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",
@@ -8548,6 +8706,40 @@
               },
               "doc": "Retrieves underlying GLContextRaw and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const GLContext &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",
@@ -12979,6 +13171,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const RendererParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator RendererRaw": {
               "kind": "function",
               "name": "operator RendererRaw",
@@ -13052,6 +13274,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const TextureParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator TextureRaw": {
               "kind": "function",
               "name": "operator TextureRaw",
@@ -13374,6 +13626,40 @@
               },
               "doc": "Retrieves underlying RendererRaw and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const Renderer &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",
@@ -15073,6 +15359,40 @@
               },
               "doc": "Retrieves underlying TextureRaw and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const Texture &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",
@@ -20174,6 +20494,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const PaletteParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator PaletteRaw": {
               "kind": "function",
               "name": "operator PaletteRaw",
@@ -20256,6 +20606,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const PaletteConstParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator const PaletteRaw": {
               "kind": "function",
               "name": "operator const PaletteRaw",
@@ -24046,6 +24426,40 @@
               "doc": "Retrieves underlying PaletteRaw and clear this.",
               "name": "release"
             },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const Palette &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
+            },
             "operator bool": {
               "kind": "function",
               "type": "",
@@ -27143,6 +27557,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const SurfaceParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator SurfaceRaw": {
               "kind": "function",
               "name": "operator SurfaceRaw",
@@ -27225,6 +27669,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const SurfaceConstParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator const SurfaceRaw": {
               "kind": "function",
               "name": "operator const SurfaceRaw",
@@ -27648,6 +28122,40 @@
               },
               "doc": "Retrieves underlying SurfaceRaw and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const Surface &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",
@@ -31840,6 +32348,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const AudioDeviceParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator AudioDeviceID": {
               "kind": "function",
               "name": "operator AudioDeviceID",
@@ -31917,6 +32455,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const AudioStreamParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator AudioStreamRaw": {
               "kind": "function",
               "name": "operator AudioStreamRaw",
@@ -32804,6 +33372,40 @@
               "doc": "Retrieves underlying AudioDeviceID and clear this.",
               "name": "release"
             },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const AudioDevice &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
+            },
             "operator bool": {
               "kind": "function",
               "type": "",
@@ -33429,6 +34031,40 @@
               },
               "doc": "Retrieves underlying AudioStreamRaw and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const AudioStream &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",
@@ -38963,6 +39599,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const StorageParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator StorageRaw": {
               "kind": "function",
               "name": "operator StorageRaw",
@@ -39225,6 +39891,40 @@
               },
               "doc": "Retrieves underlying StorageRaw and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const Storage &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",
@@ -40425,6 +41125,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const IOStreamParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator IOStreamRaw": {
               "kind": "function",
               "name": "operator IOStreamRaw",
@@ -40792,6 +41522,40 @@
               },
               "doc": "Retrieves underlying IOStreamRaw and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const IOStream &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",
@@ -43454,6 +44218,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const EnvironmentParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator EnvironmentRaw": {
               "kind": "function",
               "name": "operator EnvironmentRaw",
@@ -43531,6 +44325,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const IConvParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator IConvRaw": {
               "kind": "function",
               "name": "operator IConvRaw",
@@ -44530,6 +45354,40 @@
               },
               "doc": "Retrieves underlying EnvironmentRaw and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const Environment &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",
@@ -47831,6 +48689,40 @@
               "doc": "Retrieves underlying IConvRaw and clear this.",
               "name": "release"
             },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const IConv &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
+            },
             "operator bool": {
               "kind": "function",
               "type": "",
@@ -48304,6 +49196,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const AnimationParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator AnimationRaw": {
               "kind": "function",
               "name": "operator AnimationRaw",
@@ -49465,6 +50387,40 @@
               "doc": "Retrieves underlying AnimationRaw and clear this.",
               "name": "release"
             },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const Animation &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
+            },
             "operator bool": {
               "kind": "function",
               "type": "",
@@ -49788,6 +50744,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const FontParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator FontRaw": {
               "kind": "function",
               "name": "operator FontRaw",
@@ -49861,6 +50847,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const TextEngineParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator TextEngineRaw": {
               "kind": "function",
               "name": "operator TextEngineRaw",
@@ -49938,6 +50954,36 @@
                 }
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const TextParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
             "operator TextRaw": {
               "kind": "function",
               "name": "operator TextRaw",
@@ -50536,6 +51582,40 @@
               },
               "doc": "Retrieves underlying FontRaw and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const Font &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",
@@ -51991,6 +53071,40 @@
               },
               "doc": "Retrieves underlying TextEngineRaw and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const TextEngine &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",
@@ -55101,6 +56215,40 @@
               },
               "doc": "Retrieves underlying TextRaw and clear this.",
               "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const Text &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
             },
             "operator bool": {
               "kind": "function",

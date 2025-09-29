@@ -63,6 +63,12 @@ struct PropertiesParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const PropertiesParam& other) const = default;
+
   /// Converts to underlying PropertiesID
   constexpr operator PropertiesID() const { return value; }
 };
@@ -207,6 +213,12 @@ public:
     m_resource = 0;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Properties& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }

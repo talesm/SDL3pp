@@ -57,6 +57,12 @@ struct SurfaceParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const SurfaceParam& other) const = default;
+
   /// Converts to underlying SurfaceRaw
   constexpr operator SurfaceRaw() const { return value; }
 };
@@ -83,6 +89,12 @@ struct SurfaceConstParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const SurfaceConstParam& other) const = default;
 
   /// Converts to underlying const SurfaceRaw
   constexpr operator const SurfaceRaw() const { return value; }
@@ -439,6 +451,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Surface& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }

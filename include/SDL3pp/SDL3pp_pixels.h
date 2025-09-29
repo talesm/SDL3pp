@@ -98,6 +98,12 @@ struct PaletteParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const PaletteParam& other) const = default;
+
   /// Converts to underlying PaletteRaw
   constexpr operator PaletteRaw() const { return value; }
 };
@@ -124,6 +130,12 @@ struct PaletteConstParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const PaletteConstParam& other) const = default;
 
   /// Converts to underlying const PaletteRaw
   constexpr operator const PaletteRaw() const { return value; }
@@ -2568,6 +2580,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Palette& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }

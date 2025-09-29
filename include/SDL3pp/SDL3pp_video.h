@@ -64,6 +64,12 @@ struct WindowParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const WindowParam& other) const = default;
+
   /// Converts to underlying WindowRaw
   constexpr operator WindowRaw() const { return value; }
 };
@@ -92,6 +98,12 @@ struct GLContextParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const GLContextParam& other) const = default;
 
   /// Converts to underlying GLContextRaw
   constexpr operator GLContextRaw() const { return value; }
@@ -1101,6 +1113,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Window& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -2891,6 +2909,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const GLContext& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }

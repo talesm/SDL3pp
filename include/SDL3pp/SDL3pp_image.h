@@ -53,6 +53,12 @@ struct AnimationParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const AnimationParam& other) const = default;
+
   /// Converts to underlying AnimationRaw
   constexpr operator AnimationRaw() const { return value; }
 };
@@ -2348,6 +2354,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Animation& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }

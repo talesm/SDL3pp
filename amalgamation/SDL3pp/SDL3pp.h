@@ -8110,6 +8110,12 @@ struct PaletteParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const PaletteParam& other) const = default;
+
   /// Converts to underlying PaletteRaw
   constexpr operator PaletteRaw() const { return value; }
 };
@@ -8136,6 +8142,12 @@ struct PaletteConstParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const PaletteConstParam& other) const = default;
 
   /// Converts to underlying const PaletteRaw
   constexpr operator const PaletteRaw() const { return value; }
@@ -10581,6 +10593,12 @@ public:
     return r;
   }
 
+  /// Comparison
+  constexpr auto operator<=>(const Palette& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
 
@@ -11060,6 +11078,12 @@ struct PropertiesParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const PropertiesParam& other) const = default;
+
   /// Converts to underlying PropertiesID
   constexpr operator PropertiesID() const { return value; }
 };
@@ -11204,6 +11228,12 @@ public:
     m_resource = 0;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Properties& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -12322,6 +12352,12 @@ struct EnvironmentParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const EnvironmentParam& other) const = default;
+
   /// Converts to underlying EnvironmentRaw
   constexpr operator EnvironmentRaw() const { return value; }
 };
@@ -12350,6 +12386,12 @@ struct IConvParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const IConvParam& other) const = default;
 
   constexpr operator IConvRaw() const { return value; }
 };
@@ -13252,6 +13294,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Environment& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -18055,6 +18103,12 @@ public:
     return r;
   }
 
+  /// Comparison
+  constexpr auto operator<=>(const IConv& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
 
@@ -20349,6 +20403,12 @@ struct IOStreamParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const IOStreamParam& other) const = default;
+
   /// Converts to underlying IOStreamRaw
   constexpr operator IOStreamRaw() const { return value; }
 };
@@ -20701,6 +20761,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const IOStream& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -26961,6 +27027,12 @@ struct AudioDeviceParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const AudioDeviceParam& other) const = default;
+
   /// Converts to underlying AudioDeviceID
   constexpr operator AudioDeviceID() const { return value; }
 };
@@ -26989,6 +27061,12 @@ struct AudioStreamParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const AudioStreamParam& other) const = default;
 
   /// Converts to underlying AudioStreamRaw
   constexpr operator AudioStreamRaw() const { return value; }
@@ -27792,6 +27870,12 @@ public:
     return r;
   }
 
+  /// Comparison
+  constexpr auto operator<=>(const AudioDevice& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
 
@@ -27815,12 +27899,6 @@ public:
    * @sa AudioDevice.AudioDevice
    */
   void Close();
-
-  /// Comparison
-  constexpr auto operator<=>(AudioDeviceParam other) const
-  {
-    return get() <=> other;
-  }
 
   /**
    * Get the human-readable name of a specific audio device.
@@ -28620,6 +28698,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const AudioStream& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -31928,6 +32012,12 @@ struct StorageParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const StorageParam& other) const = default;
+
   /// Converts to underlying StorageRaw
   constexpr operator StorageRaw() const { return value; }
 };
@@ -32122,6 +32212,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Storage& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -33096,6 +33192,12 @@ struct SurfaceParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const SurfaceParam& other) const = default;
+
   /// Converts to underlying SurfaceRaw
   constexpr operator SurfaceRaw() const { return value; }
 };
@@ -33121,6 +33223,12 @@ struct SurfaceConstParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const SurfaceConstParam& other) const = default;
 
   /// Converts to underlying const SurfaceRaw
   constexpr operator const SurfaceRaw() const { return value; }
@@ -33464,6 +33572,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Surface& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -37056,6 +37170,12 @@ struct WindowParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const WindowParam& other) const = default;
+
   /// Converts to underlying WindowRaw
   constexpr operator WindowRaw() const { return value; }
 };
@@ -37084,6 +37204,12 @@ struct GLContextParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const GLContextParam& other) const = default;
 
   /// Converts to underlying GLContextRaw
   constexpr operator GLContextRaw() const { return value; }
@@ -38093,6 +38219,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Window& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -39883,6 +40015,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const GLContext& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -45688,6 +45826,12 @@ struct RendererParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const RendererParam& other) const = default;
+
   /// Converts to underlying RendererRaw
   constexpr operator RendererRaw() const { return value; }
 };
@@ -45713,6 +45857,12 @@ struct TextureParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const TextureParam& other) const = default;
 
   /// Converts to underlying TextureRaw
   constexpr operator TextureRaw() const { return value; }
@@ -45999,6 +46149,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Renderer& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -48035,6 +48191,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Texture& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -52212,6 +52374,12 @@ struct AnimationParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const AnimationParam& other) const = default;
+
   /// Converts to underlying AnimationRaw
   constexpr operator AnimationRaw() const { return value; }
 };
@@ -54508,6 +54676,12 @@ public:
     return r;
   }
 
+  /// Comparison
+  constexpr auto operator<=>(const Animation& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
 
@@ -54774,6 +54948,12 @@ struct FontParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const FontParam& other) const = default;
+
   /// Converts to underlying FontRaw
   constexpr operator FontRaw() const { return value; }
 };
@@ -54799,6 +54979,12 @@ struct TextEngineParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const TextEngineParam& other) const = default;
 
   /// Converts to underlying TextEngineRaw
   constexpr operator TextEngineRaw() const { return value; }
@@ -54828,6 +55014,12 @@ struct TextParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const TextParam& other) const = default;
 
   /// Converts to underlying TextRaw
   constexpr operator TextRaw() const { return value; }
@@ -55263,6 +55455,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Font& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -56713,6 +56911,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const TextEngine& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -59062,6 +59266,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const Text& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }

@@ -143,6 +143,12 @@ struct AudioDeviceParam
   {
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const AudioDeviceParam& other) const = default;
+
   /// Converts to underlying AudioDeviceID
   constexpr operator AudioDeviceID() const { return value; }
 };
@@ -171,6 +177,12 @@ struct AudioStreamParam
     : value(nullptr)
   {
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const AudioStreamParam& other) const = default;
 
   /// Converts to underlying AudioStreamRaw
   constexpr operator AudioStreamRaw() const { return value; }
@@ -974,6 +986,12 @@ public:
     return r;
   }
 
+  /// Comparison
+  constexpr auto operator<=>(const AudioDevice& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
 
@@ -997,12 +1015,6 @@ public:
    * @sa AudioDevice.AudioDevice
    */
   void Close();
-
-  /// Comparison
-  constexpr auto operator<=>(AudioDeviceParam other) const
-  {
-    return get() <=> other;
-  }
 
   /**
    * Get the human-readable name of a specific audio device.
@@ -1802,6 +1814,12 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Comparison
+  constexpr auto operator<=>(const AudioStream& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
