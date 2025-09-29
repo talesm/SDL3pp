@@ -1,0 +1,4 @@
+10c10
+<  * @defgroup CategorySharedObject Category SharedObject
+---
+>  * @defgroup CategorySharedObject Shared Object/DLL Management

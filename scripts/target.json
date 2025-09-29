@@ -66177,32 +66177,36 @@
       "name": "SDL3pp_guid.h",
       "doc": "@defgroup CategoryGUID Category GUID\n\nA GUID is a 128-bit value that represents something that is uniquely\nidentifiable by this value: \"globally unique.\"\n\nSDL provides functions to convert a GUID to/from a string.",
       "entries": {
+        "GUIDRaw": {
+          "name": "GUIDRaw",
+          "kind": "alias",
+          "type": "SDL_GUID"
+        },
         "GUID": {
           "doc": "An GUID is a 128-bit identifier for an input device that identifies\nthat device across runs of SDL programs on the same platform.\n\nIf the device is detached and then re-attached to a different port, or if\nthe base system is rebooted, the device should still report the same GUID.\n\nGUIDs are as precise as possible but are not guaranteed to distinguish\nphysically distinct but equivalent devices. For example, two game\ncontrollers from the same vendor with the same product ID and revision may\nhave the same GUID.\n\nGUIDs may be platform-dependent (i.e., the same device may report different\nGUIDs on different operating systems).\n\n@since This struct is available since SDL 3.2.0.",
           "name": "GUID",
           "kind": "struct",
           "sourceName": "SDL_GUID",
-          "type": "SDL_GUID",
           "entries": {
             "GUID": [
               {
                 "kind": "function",
-                "constexpr": true,
+                "name": "GUID",
                 "type": "",
-                "parameters": [],
-                "name": "GUID"
-              },
-              {
-                "kind": "function",
                 "constexpr": true,
-                "type": "",
                 "parameters": [
                   {
-                    "type": "SDL_GUID",
-                    "name": "guid"
+                    "type": "const GUIDRaw &",
+                    "name": "gUID",
+                    "default": "{}"
                   }
                 ],
-                "name": "GUID"
+                "doc": "Wraps GUID.\n\n@param gUID the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "GUIDRaw(gUID)"
+                  ]
+                }
               },
               {
                 "doc": "Convert a GUID string into a GUID structure.\n\nPerforms no error checking. If this function is given a string containing\nan invalid GUID, the function will silently succeed, but the GUID generated\nwill not be useful.\n\n@param pchGUID string containing an ASCII representation of a GUID.\n@post a GUID structure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GUID.ToString",
@@ -66218,6 +66222,19 @@
                 "sourceName": "SDL_StringToGUID"
               }
             ],
+            "operator bool": {
+              "kind": "function",
+              "name": "operator bool",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return *this != GUIDRaw{};"
+              }
+            },
             "ToString": {
               "doc": "Get an ASCII string representation for a given GUID.\n\n@param guid the GUID you wish to convert to string.\n@param pszGUID buffer in which to write the ASCII string.\n@param cbGUID the size of pszGUID, should be at least 33 bytes.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GUID.GUID",
               "name": "ToString",
@@ -66231,7 +66248,25 @@
               },
               "proto": true
             }
-          }
+          },
+          "hints": {
+            "self": "this",
+            "super": "GUIDRaw"
+          },
+          "type": "GUIDRaw"
+        },
+        "GUIDToString": {
+          "doc": "Get an ASCII string representation for a given GUID.\n\n@param guid the GUID you wish to convert to string.\n@param pszGUID buffer in which to write the ASCII string.\n@param cbGUID the size of pszGUID, should be at least 33 bytes.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GUID.GUID",
+          "name": "GUIDToString",
+          "kind": "function",
+          "type": "std::string",
+          "parameters": [
+            {
+              "name": "guid",
+              "type": "const GUIDRaw &"
+            }
+          ],
+          "sourceName": "SDL_GUIDToString"
         },
         "GUID::ToString": {
           "name": "GUID::ToString",
@@ -66241,7 +66276,25 @@
           "sourceName": "SDL_GUIDToString",
           "immutable": true,
           "hints": {
+            "self": "this",
+            "super": "GUIDRaw",
             "delegate": "SDL::GUIDToString"
+          }
+        },
+        "StringToGUID": {
+          "doc": "Convert a GUID string into a GUID structure.\n\nPerforms no error checking. If this function is given a string containing\nan invalid GUID, the function will silently succeed, but the GUID generated\nwill not be useful.\n\n@param pchGUID string containing an ASCII representation of a GUID.\n@returns a GUID structure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GUID.ToString",
+          "name": "StringToGUID",
+          "kind": "function",
+          "type": "GUID",
+          "parameters": [
+            {
+              "name": "pchGUID",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_StringToGUID",
+          "hints": {
+            "delegate": "GUID"
           }
         }
       },
@@ -66249,7 +66302,7 @@
         "SDL3/SDL_guid.h"
       ],
       "localIncludes": [
-        "SDL3pp_strings.h"
+        "SDL3pp_stdinc.h"
       ]
     },
     "SDL3pp_misc.h": {

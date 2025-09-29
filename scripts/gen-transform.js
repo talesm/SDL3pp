@@ -1532,31 +1532,11 @@ const transform = {
       }
     },
     "SDL_guid.h": {
-      localIncludes: ['SDL3pp_strings.h'],
+      localIncludes: ['SDL3pp_stdinc.h'],
       transform: {
         "SDL_GUID": {
-          "kind": "struct",
-          "type": "SDL_GUID",
-          "entries": {
-            "GUID": [
-              {
-                "kind": "function",
-                "constexpr": true,
-                "type": "",
-                "parameters": []
-              },
-              {
-                "kind": "function",
-                "constexpr": true,
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "SDL_GUID",
-                    "name": "guid"
-                  }
-                ]
-              }
-            ],
+          wrapper: { genMembers: false },
+          entries: {
             "SDL_StringToGUID": "ctor",
             "SDL_GUIDToString": {
               "type": "std::string",

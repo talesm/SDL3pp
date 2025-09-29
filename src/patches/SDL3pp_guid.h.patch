@@ -1,0 +1,22 @@
+10c10
+<  * @defgroup CategoryGUID Category GUID
+---
+>  * @defgroup CategoryGUID GUIDs
+73,79d72
+<    * Check if valid.
+<    *
+<    * @returns True if valid state, false otherwise.
+<    */
+<   constexpr explicit operator bool() const { return *this != GUIDRaw{}; }
+< 
+<   /**
+110c103,105
+<   return SDL_GUIDToString(guid);
+---
+>   std::string result(32, ' ');
+>   SDL_GUIDToString(guid, result.data(), 33);
+>   return result;
+113c108
+< inline std::string GUID::ToString() const { return SDL::GUIDToString(this); }
+---
+> inline std::string GUID::ToString() const { return SDL::GUIDToString(*this); }

@@ -627,6 +627,257 @@ private:
 /// @}
 
 /**
+ * @defgroup CategoryIntrinsics Compiler Intrinsics Detection
+ *
+ * SDL does some preprocessor gymnastics to determine if any CPU-specific
+ * compiler intrinsics are available, as this is not necessarily an easy thing
+ * to calculate, and sometimes depends on quirks of a system, versions of
+ * build tools, and other external forces.
+ *
+ * Apps including SDL's headers will be able to check consistent preprocessor
+ * definitions to decide if it's safe to use compiler intrinsics for a
+ * specific CPU architecture. This check only tells you that the compiler is
+ * capable of using those intrinsics; at runtime, you should still check if
+ * they are available on the current system with the
+ * [CPU info functions](https://wiki.libsdl.org/SDL3/CategoryCPUInfo)
+ * , such as HasSSE() or HasNEON(). Otherwise, the process might crash
+ * for using an unsupported CPU instruction.
+ *
+ * SDL only sets preprocessor defines for CPU intrinsics if they are
+ * supported, so apps should check with `#ifdef` and not `#if`.
+ *
+ * SDL will also include the appropriate instruction-set-specific support
+ * headers, so if SDL decides to define SDL_SSE2_INTRINSICS, it will also
+ * `#include <emmintrin.h>` as well.
+ *
+ * @{
+ */
+
+#ifdef SDL3PP_DOC
+
+/**
+ * Defined if (and only if) the compiler supports Loongarch LSX intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<lsxintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_LASX_INTRINSICS
+ */
+#define SDL_LSX_INTRINSICS 1
+
+/**
+ * Defined if (and only if) the compiler supports Loongarch LSX intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<lasxintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_LASX_INTRINSICS
+ */
+#define SDL_LASX_INTRINSICS 1
+
+/**
+ * Defined if (and only if) the compiler supports ARM NEON intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<armintr.h>`
+ * `<arm_neon.h>`, `<arm64intr.h>`, and `<arm64_neon.h>`, as appropriate.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_NEON_INTRINSICS 1
+
+/**
+ * Defined if (and only if) the compiler supports PowerPC Altivec intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<altivec.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_ALTIVEC_INTRINSICS 1
+
+/**
+ * Defined if (and only if) the compiler supports Intel MMX intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<mmintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SSE_INTRINSICS
+ */
+#define SDL_MMX_INTRINSICS 1
+
+/**
+ * Defined if (and only if) the compiler supports Intel SSE intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<xmmintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SSE2_INTRINSICS
+ * @sa SDL_SSE3_INTRINSICS
+ * @sa SDL_SSE4_1_INTRINSICS
+ * @sa SDL_SSE4_2_INTRINSICS
+ */
+#define SDL_SSE_INTRINSICS 1
+
+/**
+ * Defined if (and only if) the compiler supports Intel SSE2 intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<emmintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SSE_INTRINSICS
+ * @sa SDL_SSE3_INTRINSICS
+ * @sa SDL_SSE4_1_INTRINSICS
+ * @sa SDL_SSE4_2_INTRINSICS
+ */
+#define SDL_SSE2_INTRINSICS 1
+
+/**
+ * Defined if (and only if) the compiler supports Intel SSE3 intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<pmmintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SSE_INTRINSICS
+ * @sa SDL_SSE2_INTRINSICS
+ * @sa SDL_SSE4_1_INTRINSICS
+ * @sa SDL_SSE4_2_INTRINSICS
+ */
+#define SDL_SSE3_INTRINSICS 1
+
+/**
+ * Defined if (and only if) the compiler supports Intel SSE4.1 intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<smmintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SSE_INTRINSICS
+ * @sa SDL_SSE2_INTRINSICS
+ * @sa SDL_SSE3_INTRINSICS
+ * @sa SDL_SSE4_2_INTRINSICS
+ */
+#define SDL_SSE4_1_INTRINSICS 1
+
+/**
+ * Defined if (and only if) the compiler supports Intel SSE4.2 intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<nmmintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SSE_INTRINSICS
+ * @sa SDL_SSE2_INTRINSICS
+ * @sa SDL_SSE3_INTRINSICS
+ * @sa SDL_SSE4_1_INTRINSICS
+ */
+#define SDL_SSE4_2_INTRINSICS 1
+
+/**
+ * Defined if (and only if) the compiler supports Intel AVX intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<immintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_AVX2_INTRINSICS
+ * @sa SDL_AVX512F_INTRINSICS
+ */
+#define SDL_AVX_INTRINSICS 1
+
+/**
+ * Defined if (and only if) the compiler supports Intel AVX2 intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<immintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_AVX_INTRINSICS
+ * @sa SDL_AVX512F_INTRINSICS
+ */
+#define SDL_AVX2_INTRINSICS 1
+
+/**
+ * Defined if (and only if) the compiler supports Intel AVX-512F intrinsics.
+ *
+ * AVX-512F is also sometimes referred to as "AVX-512 Foundation."
+ *
+ * If this macro is defined, SDL will have already included `<immintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_AVX_INTRINSICS
+ * @sa SDL_AVX2_INTRINSICS
+ */
+#define SDL_AVX512F_INTRINSICS 1
+
+/**
+ * A macro to decide if the compiler supports `__attribute__((target))`.
+ *
+ * Even though this is defined in SDL's public headers, it is generally not
+ * used directly by apps. Apps should probably just use SDL_TARGETING
+ * directly, instead.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_TARGETING
+ */
+#define SDL_HAS_TARGET_ATTRIBS
+
+/**
+ * A macro to tag a function as targeting a specific CPU architecture.
+ *
+ * This is a hint to the compiler that a function should be built with support
+ * for a CPU instruction set that might be different than the rest of the
+ * program.
+ *
+ * The particulars of this are explained in the GCC documentation:
+ *
+ * https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-target-function-attribute
+ *
+ * An example of using this feature is to turn on SSE2 support for a specific
+ * function, even if the rest of the source code is not compiled to use SSE2
+ * code:
+ *
+ * ```c
+ * #ifdef SDL_SSE2_INTRINSICS
+ * static void SDL_TARGETING("sse2") DoSomethingWithSSE2(char *x) {
+ *    ...use SSE2 intrinsic functions, etc...
+ * }
+ * #endif
+ *
+ * // later...
+ * #ifdef SDL_SSE2_INTRINSICS
+ * if (HasSSE2()) {
+ *     DoSomethingWithSSE2(str);
+ * }
+ * #endif
+ * ```
+ *
+ * The application is, on a whole, built without SSE2 instructions, so it will
+ * run on Intel machines that don't support SSE2. But then at runtime, it
+ * checks if the system supports the instructions, and then calls into a
+ * function that uses SSE2 opcodes. The ifdefs make sure that this code isn't
+ * used on platforms that don't have SSE2 at all.
+ *
+ * On compilers without target support, this is defined to nothing.
+ *
+ * This symbol is used by SDL internally, but apps and other libraries are
+ * welcome to use it for their own interfaces as well.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_TARGETING(x) __attribute__((target(x)))
+
+#endif // SDL3PP_DOC
+
+/// @}
+
+/**
  * @brief Optional-like shim for references
  *
  * This allows us explicitly annotate optional parameters that would otherwise
@@ -20762,6 +21013,130 @@ inline Path GetCurrentDirectory() { return Path{SDL_GetCurrentDirectory()}; }
 /// @}
 
 /**
+ * @defgroup CategoryGUID GUIDs
+ *
+ * A GUID is a 128-bit value that represents something that is uniquely
+ * identifiable by this value: "globally unique."
+ *
+ * SDL provides functions to convert a GUID to/from a string.
+ *
+ * @{
+ */
+
+using GUIDRaw = SDL_GUID;
+
+/**
+ * An GUID is a 128-bit identifier for an input device that identifies
+ * that device across runs of SDL programs on the same platform.
+ *
+ * If the device is detached and then re-attached to a different port, or if
+ * the base system is rebooted, the device should still report the same GUID.
+ *
+ * GUIDs are as precise as possible but are not guaranteed to distinguish
+ * physically distinct but equivalent devices. For example, two game
+ * controllers from the same vendor with the same product ID and revision may
+ * have the same GUID.
+ *
+ * GUIDs may be platform-dependent (i.e., the same device may report different
+ * GUIDs on different operating systems).
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+struct GUID : GUIDRaw
+{
+  /**
+   * Wraps GUID.
+   *
+   * @param gUID the value to be wrapped
+   */
+  constexpr GUID(const GUIDRaw& gUID = {})
+    : GUIDRaw(gUID)
+  {
+  }
+
+  /**
+   * Convert a GUID string into a GUID structure.
+   *
+   * Performs no error checking. If this function is given a string containing
+   * an invalid GUID, the function will silently succeed, but the GUID generated
+   * will not be useful.
+   *
+   * @param pchGUID string containing an ASCII representation of a GUID.
+   * @post a GUID structure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GUID.ToString
+   */
+  GUID(StringParam pchGUID)
+    : GUIDRaw(SDL_StringToGUID(pchGUID))
+  {
+  }
+
+  /**
+   * Get an ASCII string representation for a given GUID.
+   *
+   * @param guid the GUID you wish to convert to string.
+   * @param pszGUID buffer in which to write the ASCII string.
+   * @param cbGUID the size of pszGUID, should be at least 33 bytes.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GUID.GUID
+   */
+  std::string ToString() const;
+};
+
+/**
+ * Get an ASCII string representation for a given GUID.
+ *
+ * @param guid the GUID you wish to convert to string.
+ * @param pszGUID buffer in which to write the ASCII string.
+ * @param cbGUID the size of pszGUID, should be at least 33 bytes.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GUID.GUID
+ */
+inline std::string GUIDToString(const GUIDRaw& guid)
+{
+  std::string result(32, ' ');
+  SDL_GUIDToString(guid, result.data(), 33);
+  return result;
+}
+
+inline std::string GUID::ToString() const { return SDL::GUIDToString(*this); }
+
+/**
+ * Convert a GUID string into a GUID structure.
+ *
+ * Performs no error checking. If this function is given a string containing
+ * an invalid GUID, the function will silently succeed, but the GUID generated
+ * will not be useful.
+ *
+ * @param pchGUID string containing an ASCII representation of a GUID.
+ * @returns a GUID structure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GUID.ToString
+ */
+inline GUID StringToGUID(StringParam pchGUID)
+{
+  return GUID(std::move(pchGUID));
+}
+
+/// @}
+
+/**
  * @defgroup CategoryInit Initialization and Shutdown
  *
  * All SDL programs need to initialize the library before starting to work
@@ -24666,6 +25041,395 @@ inline void WriteS64BE(IOStreamParam dst, Sint64 value)
 inline void IOStream::WriteS64BE(Sint64 value)
 {
   SDL::WriteS64BE(m_resource, value);
+}
+
+/// @}
+
+/**
+ * @defgroup CategorySharedObject Shared Object/DLL Management
+ *
+ * System-dependent library loading routines.
+ *
+ * Shared objects are code that is programmatically loadable at runtime.
+ * Windows calls these "DLLs", Linux calls them "shared libraries", etc.
+ *
+ * To use them, build such a library, then call SharedObject.SharedObject() on
+ * it. Once loaded, you can use SharedObject.LoadFunction() on that object to
+ * find the address of its exported symbols. When done with the object, call
+ * SharedObject.Unload() to dispose of it.
+ *
+ * Some things to keep in mind:
+ *
+ * - These functions only work on C function names. Other languages may have
+ *   name mangling and intrinsic language support that varies from compiler to
+ *   compiler.
+ * - Make sure you declare your function pointers with the same calling
+ *   convention as the actual library function. Your code will crash
+ *   mysteriously if you do not do this.
+ * - Avoid namespace collisions. If you load a symbol from the library, it is
+ *   not defined whether or not it goes into the global symbol namespace for
+ *   the application. If it does and it conflicts with symbols in your code or
+ *   other shared libraries, you will not get the results you expect. :)
+ * - Once a library is unloaded, all pointers into it obtained through
+ *   SharedObject.LoadFunction() become invalid, even if the library is later
+ * reloaded. Don't unload a library if you plan to use these pointers in the
+ * future. Notably: beware of giving one of these pointers to atexit(), since it
+ * may call that pointer after the library unloads.
+ *
+ * @{
+ */
+
+// Forward decl
+struct SharedObject;
+
+using SharedObjectRaw = SDL_SharedObject*;
+
+// Forward decl
+struct SharedObjectRef;
+
+/// Safely wrap SharedObject for non owning parameters
+struct SharedObjectParam
+{
+  SharedObjectRaw value; ///< parameter's SharedObjectRaw
+
+  /// Constructs from SharedObjectRaw
+  constexpr SharedObjectParam(SharedObjectRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr SharedObjectParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const SharedObjectParam& other) const = default;
+
+  /// Converts to underlying SharedObjectRaw
+  constexpr operator SharedObjectRaw() const { return value; }
+};
+
+/**
+ * An opaque datatype that represents a loaded shared object.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SharedObject.SharedObject
+ * @sa SharedObject.LoadFunction
+ * @sa SharedObject.Unload
+ *
+ * @cat resource
+ */
+class SharedObject
+{
+  SharedObjectRaw m_resource = nullptr;
+
+public:
+  /// Default ctor
+  constexpr SharedObject() = default;
+
+  /**
+   * Constructs from SharedObjectParam.
+   *
+   * @param resource a SharedObjectRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit SharedObject(const SharedObjectRaw resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr SharedObject(const SharedObject& other) = delete;
+
+  /// Move constructor
+  constexpr SharedObject(SharedObject&& other)
+    : SharedObject(other.release())
+  {
+  }
+
+  constexpr SharedObject(const SharedObjectRef& other) = delete;
+
+  constexpr SharedObject(SharedObjectRef&& other) = delete;
+
+  /**
+   * Dynamically load a shared object.
+   *
+   * @param sofile a system-dependent name of the object file.
+   * @post an opaque pointer to the object handle or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SharedObject.LoadFunction
+   * @sa SharedObject.Unload
+   */
+  SharedObject(StringParam sofile)
+    : m_resource(SDL_LoadObject(sofile))
+  {
+  }
+
+  /// Destructor
+  ~SharedObject() { SDL_UnloadObject(m_resource); }
+
+  /// Assignment operator.
+  SharedObject& operator=(SharedObject other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Retrieves underlying SharedObjectRaw.
+  constexpr SharedObjectRaw get() const { return m_resource; }
+
+  /// Retrieves underlying SharedObjectRaw and clear this.
+  constexpr SharedObjectRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const SharedObject& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Converts to SharedObjectParam
+  constexpr operator SharedObjectParam() const { return {m_resource}; }
+
+  /**
+   * Unload a shared object from memory.
+   *
+   * Note that any pointers from this object looked up through
+   * SharedObject.LoadFunction() will no longer be valid.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SharedObject.SharedObject
+   */
+  void Unload();
+
+  /**
+   * Look up the address of the named function in a shared object.
+   *
+   * This function pointer is no longer valid after calling
+   * SharedObject.Unload().
+   *
+   * This function can only look up C function names. Other languages may have
+   * name mangling and intrinsic language support that varies from compiler to
+   * compiler.
+   *
+   * Make sure you declare your function pointers with the same calling
+   * convention as the actual library function. Your code will crash
+   * mysteriously if you do not do this.
+   *
+   * If the requested function doesn't exist, nullptr is returned.
+   *
+   * @param name the name of the function to look up.
+   * @returns a pointer to the function or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SharedObject.SharedObject
+   */
+  FunctionPointer LoadFunction(StringParam name);
+};
+
+/// Semi-safe reference for SharedObject.
+struct SharedObjectRef : SharedObject
+{
+  /**
+   * Constructs from SharedObjectParam.
+   *
+   * @param resource a SharedObjectRaw or SharedObject.
+   *
+   * This does not takes ownership!
+   */
+  SharedObjectRef(SharedObjectParam resource)
+    : SharedObject(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  SharedObjectRef(const SharedObjectRef& other)
+    : SharedObject(other.get())
+  {
+  }
+
+  /// Destructor
+  ~SharedObjectRef() { release(); }
+};
+
+/**
+ * Dynamically load a shared object.
+ *
+ * @param sofile a system-dependent name of the object file.
+ * @returns an opaque pointer to the object handle or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SharedObject.LoadFunction
+ * @sa SharedObject.Unload
+ */
+inline SharedObject LoadObject(StringParam sofile)
+{
+  return SharedObject(std::move(sofile));
+}
+
+/**
+ * Look up the address of the named function in a shared object.
+ *
+ * This function pointer is no longer valid after calling SharedObject.Unload().
+ *
+ * This function can only look up C function names. Other languages may have
+ * name mangling and intrinsic language support that varies from compiler to
+ * compiler.
+ *
+ * Make sure you declare your function pointers with the same calling
+ * convention as the actual library function. Your code will crash
+ * mysteriously if you do not do this.
+ *
+ * If the requested function doesn't exist, nullptr is returned.
+ *
+ * @param handle a valid shared object handle returned by
+ * SharedObject.SharedObject().
+ * @param name the name of the function to look up.
+ * @returns a pointer to the function or nullptr on failure; call GetError()
+ *          for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SharedObject.SharedObject
+ */
+inline FunctionPointer LoadFunction(SharedObjectParam handle, StringParam name)
+{
+  return SDL_LoadFunction(handle, name);
+}
+
+inline FunctionPointer SharedObject::LoadFunction(StringParam name)
+{
+  return SDL::LoadFunction(m_resource, std::move(name));
+}
+
+/**
+ * Unload a shared object from memory.
+ *
+ * Note that any pointers from this object looked up through
+ * SharedObject.LoadFunction() will no longer be valid.
+ *
+ * @param handle a valid shared object handle returned by
+ * SharedObject.SharedObject().
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SharedObject.SharedObject
+ */
+inline void UnloadObject(SharedObjectRaw handle) { SDL_UnloadObject(handle); }
+
+inline void SharedObject::Unload()
+{
+  SDL_UnloadObject(m_resource);
+  m_resource = nullptr;
+}
+
+/// @}
+
+/**
+ * @defgroup CategoryLocale Locale Info
+ *
+ * SDL locale services.
+ *
+ * This provides a way to get a list of preferred locales (language plus
+ * country) for the user. There is exactly one function:
+ * GetPreferredLocales(), which handles all the heavy lifting, and offers
+ * documentation on all the strange ways humans might have configured their
+ * language settings.
+ *
+ * @{
+ */
+
+/**
+ * A struct to provide locale data.
+ *
+ * Locale data is split into a spoken language, like English, and an optional
+ * country, like Canada. The language will be in ISO-639 format (so English
+ * would be "en"), and the country, if not nullptr, will be an ISO-3166 country
+ * code (so Canada would be "CA").
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetPreferredLocales
+ */
+using Locale = SDL_Locale;
+
+/**
+ * Report the user's preferred locale.
+ *
+ * Returned language strings are in the format xx, where 'xx' is an ISO-639
+ * language specifier (such as "en" for English, "de" for German, etc).
+ * Country strings are in the format YY, where "YY" is an ISO-3166 country
+ * code (such as "US" for the United States, "CA" for Canada, etc). Country
+ * might be nullptr if there's no specific guidance on them (so you might get {
+ * "en", "US" } for American English, but { "en", nullptr } means "English
+ * language, generically"). Language strings are never nullptr, except to
+ * terminate the array.
+ *
+ * Please note that not all of these strings are 2 characters; some are three
+ * or more.
+ *
+ * The returned list of locales are in the order of the user's preference. For
+ * example, a German citizen that is fluent in US English and knows enough
+ * Japanese to navigate around Tokyo might have a list like: { "de", "en_US",
+ * "jp", nullptr }. Someone from England might prefer British English (where
+ * "color" is spelled "colour", etc), but will settle for anything like it: {
+ * "en_GB", "en", nullptr }.
+ *
+ * This function returns nullptr on error, including when the platform does not
+ * supply this information at all.
+ *
+ * This might be a "slow" call that has to query the operating system. It's
+ * best to ask for this once and save the results. However, this list can
+ * change, usually because the user has changed a system preference outside of
+ * your program; SDL will send an EVENT_LOCALE_CHANGED event in this case,
+ * if possible, and you can call this function again to get an updated copy of
+ * preferred locales.
+ *
+ * @returns a nullptr terminated array of locale pointers on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline OwnArray<Locale*> GetPreferredLocales()
+{
+  int count = 0;
+  auto data = SDL_GetPreferredLocales(&count);
+  return OwnArray<Locale*>{CheckError(data), size_t(count)};
 }
 
 /// @}

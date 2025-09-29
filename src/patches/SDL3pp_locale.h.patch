@@ -1,0 +1,19 @@
+10c10
+<  * @defgroup CategoryLocale Category Locale
+---
+>  * @defgroup CategoryLocale Locale Info
+69,73c69,70
+<  * @param count a pointer filled in with the number of locales returned, may
+<  *              be nullptr.
+<  * @returns a nullptr terminated array of locale pointers, or nullptr on
+<  * failure; call GetError() for more information. This is a single allocation
+<  * that should be freed with free() when it is no longer needed.
+---
+>  * @returns a nullptr terminated array of locale pointers on success.
+>  * @throws Error on failure.
+79c76,78
+<   return SDL_GetPreferredLocales();
+---
+>   int count = 0;
+>   auto data = SDL_GetPreferredLocales(&count);
+>   return OwnArray<Locale*>{CheckError(data), size_t(count)};
