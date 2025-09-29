@@ -73,6 +73,6 @@
 
 // Here we have additional "satellite" libraries
 #include "SDL3pp_image.h"
-// #include "SDL3pp_ttf.h"
+#include "SDL3pp_ttf.h"
 
 #endif /* SDL3PP_H_ */

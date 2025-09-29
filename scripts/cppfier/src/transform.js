@@ -1033,6 +1033,13 @@ function expandTypes(sourceEntries, file, context) {
       if (!file.transform[sourceName]) {
         file.transform[sourceName] = { parameters: [{ type: rawName }] };
       }
+    } else {
+      freeFunction = {
+        kind: "function",
+        name: "Destroy",
+        type: "void",
+        parameters: [],
+      };
     }
     if (resourceEntry.enableAutoMethods !== false) {
       const blockedNames = new Set(Object.keys(subEntries));

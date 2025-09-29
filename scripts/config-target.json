@@ -24,7 +24,8 @@
     "SDL_timer.h",
     "SDL_version.h",
     "SDL_video.h",
-    "SDL_image.h"
+    "SDL_image.h",
+    "SDL_ttf.h"
   ],
   "api": "scripts/target.json",
   "baseDir": "src/generated/",

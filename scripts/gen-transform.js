@@ -7611,13 +7611,45 @@ const transform = {
       }
     },
     "SDL_ttf.h": {
-      localIncludes: ['SDL3pp_surface.h', 'SDL3pp_version.h', "SDL3pp_video.h"],
+      localIncludes: [
+        "SDL3pp_render.h",
+        "SDL3pp_surface.h",
+        "SDL3pp_version.h",
+        "SDL3pp_video.h",
+      ],
       transform: {
+        "TTF_FontStyleFlags": {
+          enum: "TTF_STYLE_",
+          before: "TTF_Font",
+        },
+        "TTF_HintingFlags": {
+          enum: "TTF_HINTING_",
+          before: "TTF_Font",
+        },
+        "TTF_HorizontalAlignment": {
+          enum: "TTF_HORIZONTAL_ALIGN_",
+          before: "TTF_Font",
+        },
+        "TTF_Direction": {
+          enum: "TTF_DIRECTION_",
+          before: "TTF_Font",
+        },
+        "TTF_ImageType": {
+          enum: "TTF_IMAGE_",
+          before: "TTF_Font",
+        },
         "TTF_Font": {
           resource: true,
           entries: {
             "TTF_OpenFont": "ctor",
-            "TTF_OpenFontIO": "ctor",
+            "TTF_OpenFontIO": {
+              name: "ctor",
+              parameters: [
+                {},
+                { type: "float", name: "ptsize" },
+                { type: "bool", name: "closeio", default: "false" },
+              ],
+            },
             "TTF_OpenFontWithProperties": "ctor",
             "TTF_CopyFont": {
               immutable: true,
@@ -7927,18 +7959,17 @@ const transform = {
           }
         },
         "TTF_TextEngine": {
-          resource: true,
+          resource: { ref: false },
           entries: {
-            "TTF_SetGPUTextEngineWinding": {
-              "name": "SetGPUWinding"
-            },
-            "TTF_GetGPUTextEngineWinding": {
-              "immutable": true,
-              "name": "GetGPUWinding"
-            },
+            "Destroy": {
+              kind: "function",
+              type: "void",
+              parameters: [],
+            }
           },
         },
         "SurfaceTextEngine": {
+          after: "TTF_TextEngine",
           kind: "struct",
           type: "TextEngine",
           entries: {
@@ -7966,6 +7997,7 @@ const transform = {
           }
         },
         "RendererTextEngine": {
+          after: "TTF_TextEngine",
           kind: "struct",
           type: "TextEngine",
           entries: {
@@ -7998,16 +8030,24 @@ const transform = {
           }
         },
         "GPUTextEngine": {
+          after: "TTF_TextEngine",
           kind: "struct",
           type: "TextEngine",
           entries: {
-            "TTF_CreateRendererTextEngine": "ctor",
-            "TTF_CreateRendererTextEngineWithProperties": "ctor",
+            "TTF_CreateGPUTextEngine": "ctor",
+            "TTF_CreateGPUTextEngineWithProperties": "ctor",
             "~GPUTextEngine": {
               kind: "function",
               type: "",
               parameters: [],
               hints: { body: "Destroy();" },
+            },
+            "TTF_SetGPUTextEngineWinding": {
+              "name": "SetGPUWinding"
+            },
+            "TTF_GetGPUTextEngineWinding": {
+              "immutable": true,
+              "name": "GetGPUWinding"
             },
           },
         },
@@ -8020,7 +8060,7 @@ const transform = {
           hints: { delegate: "GPUTextEngine" },
         },
         "TTF_DestroyGPUTextEngine": {
-          name: "RendererTextEngine::Destroy",
+          name: "GPUTextEngine::Destroy",
           static: false,
           parameters: [],
           hints: { body: "DestroyGPUTextEngine(release());" },
@@ -8030,6 +8070,7 @@ const transform = {
           }
         },
         "TTF_Text": {
+          resource: true,
           entries: {
             "TTF_DrawSurfaceText": {
               "immutable": true,
@@ -8110,36 +8151,6 @@ const transform = {
                 }
               ]
             },
-            "GetColor": [
-              {
-                "kind": "function",
-                "type": "FColor",
-                "immutable": true,
-                "parameters": []
-              },
-              {
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "Color *",
-                    "name": "c"
-                  }
-                ]
-              },
-              {
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "FColor *",
-                    "name": "c"
-                  }
-                ]
-              }
-            ],
             "TTF_GetTextColor": "immutable",
             "TTF_GetTextColorFloat": "immutable",
             "TTF_SetTextPosition": {
@@ -8150,12 +8161,6 @@ const transform = {
                   "name": "p"
                 }
               ]
-            },
-            "GetPosition": {
-              "kind": "function",
-              "immutable": true,
-              "type": "Point",
-              "parameters": []
             },
             "TTF_GetTextPosition": "immutable",
             "TTF_SetTextWrapWidth": "function",
@@ -8201,12 +8206,6 @@ const transform = {
               ]
             },
             "TTF_DeleteTextString": "function",
-            "GetSize": {
-              "kind": "function",
-              "type": "Point",
-              "immutable": true,
-              "parameters": []
-            },
             "TTF_GetTextSize": "immutable",
             "TTF_GetTextSubString": "immutable",
             "begin": {
@@ -8291,33 +8290,37 @@ const transform = {
             }
           }
         },
-        "TTF_FontStyleFlags": {
-          enum: "TTF_STYLE_",
-          after: "TTF_Init",
+        "GetTextColor": {
+          after: "TTF_GetTextColor",
+          kind: "function",
+          type: "Color",
+          parameters: [{ type: "TextParam", name: "text" }],
         },
-        "TTF_HintingFlags": {
-          enum: "TTF_HINTING_",
-          after: "TTF_Init",
+        "GetTextColorFloat": {
+          after: "TTF_GetTextColorFloat",
+          kind: "function",
+          type: "FColor",
+          parameters: [{ type: "TextParam", name: "text" }],
         },
-        "TTF_HorizontalAlignment": {
-          enum: "TTF_HORIZONTAL_ALIGN_",
-          after: "TTF_Init",
+        "GetTextPosition": {
+          after: "TTF_GetTextPosition",
+          kind: "function",
+          type: "Point",
+          parameters: [{ type: "TextParam", name: "text" }]
         },
-        "TTF_Direction": {
-          enum: "TTF_DIRECTION_",
-          after: "TTF_Init",
-        },
-        "TTF_ImageType": {
-          enum: "TTF_IMAGE_",
-          after: "TTF_Init",
+        "GetTextSize": {
+          after: "TTF_GetTextSize",
+          kind: "function",
+          type: "Point",
+          parameters: [{ type: "TextParam", name: "text" }]
         },
         "TTF_SubStringFlags": {
           enum: "TTF_SUBSTRING_",
-          after: "TTF_Init",
+          before: "TTF_TextEngine",
         },
         "TTF_GPUTextEngineWinding": {
           enum: "TTF_GPU_TEXTENGINE_WINDING_",
-          after: "TTF_Init",
+          before: "TTF_TextEngine",
         },
         "TTF_GPUAtlasDrawSequence": { after: "TTF_TextEngine" },
         "TTF_SubString": { after: "TTF_TextEngine" },
@@ -8327,12 +8330,12 @@ const transform = {
           after: "TTF_TextEngine"
         },
         "SubStringIterator": {
-          "after": "TTF_Text",
-          "kind": "struct",
-          "entries": {
+          after: "TTF_Text",
+          kind: "struct",
+          entries: {
             "m_text": {
               "kind": "var",
-              "type": "TextParam"
+              "type": "TextRef"
             },
             "m_subString": {
               "kind": "var",
@@ -8346,15 +8349,16 @@ const transform = {
                 "parameters": [
                   {
                     "name": "text",
-                    "type": "TextParam"
+                    "type": "TextRef"
                   }
                 ]
               },
               {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": []
+                kind: "function",
+                type: "",
+                constexpr: true,
+                parameters: [],
+                hints: { changeAccess: "public" }
               }
             ],
             "operator bool": {
@@ -8422,7 +8426,8 @@ const transform = {
                 ]
               }
             ]
-          }
+          },
+          hints: { private: true },
         },
         "TTF": {
           kind: "ns",
