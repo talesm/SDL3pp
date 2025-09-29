@@ -29,6 +29,7 @@
     "SDL_thread.h",
     "SDL_time.h",
     "SDL_timer.h",
+    "SDL_tray.h",
     "SDL_version.h",
     "SDL_video.h",
     "SDL_image.h",

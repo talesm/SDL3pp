@@ -6848,14 +6848,18 @@ const transform = {
       }
     },
     "SDL_tray.h": {
-      localIncludes: ['SDL3pp_stdinc.h'],
+      localIncludes: ['SDL3pp_stdinc.h', "SDL3pp_surface.h"],
       transform: {
         "SDL_TrayEntryFlags": {
           enum: "SDL_TRAYENTRY_",
           after: "__begin",
         },
-        "TrayMenu": { kind: "forward", after: "__begin" },
-        "SDL_TrayCallback": { after: "__begin" },
+        "SDL_TrayCallback": { before: "SDL_Tray" },
+        "TrayCB": {
+          before: "SDL_Tray",
+          kind: "alias",
+          type: "std::function<void(TrayEntryRaw)>"
+        },
         "SDL_Tray": {
           resource: true,
           entries: {
@@ -6935,12 +6939,12 @@ const transform = {
             },
             "SDL_InsertTrayEntryAt": {
               name: "InsertEntry",
-              type: "DetachedTrayEntry",
+              type: "TrayEntry",
               proto: true,
             },
             "AppendEntry": {
               kind: "function",
-              type: "DetachedTrayEntry",
+              type: "TrayEntry",
               static: false,
               proto: true,
               parameters: [
@@ -6967,10 +6971,6 @@ const transform = {
               proto: true,
             },
           }
-        },
-        "TrayCB": {
-          kind: "alias",
-          type: "std::function<void(TrayEntryRef)>"
         },
       }
     },
