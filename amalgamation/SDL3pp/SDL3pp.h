@@ -19440,6 +19440,639 @@ inline OwnArray<char*> GetClipboardMimeTypes()
 /// @}
 
 /**
+ * @defgroup CategoryCPUInfo CPU Feature Detection
+ *
+ * CPU feature detection for SDL.
+ *
+ * These functions are largely concerned with reporting if the system has
+ * access to various SIMD instruction sets, but also has other important info
+ * to share, such as system RAM size and number of logical CPU cores.
+ *
+ * CPU instruction set checks, like HasSSE() and HasNEON(), are
+ * available on all platforms, even if they don't make sense (an ARM processor
+ * will never have SSE and an x86 processor will never have NEON, for example,
+ * but these functions still exist and will simply return false in these
+ * cases).
+ *
+ * @{
+ */
+
+/**
+ * A guess for the cacheline size used for padding.
+ *
+ * Most x86 processors have a 64 byte cache line. The 64-bit PowerPC
+ * processors have a 128 byte cache line. We use the larger value to be
+ * generally safe.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ */
+constexpr int CACHELINE_SIZE = SDL_CACHELINE_SIZE;
+
+/**
+ * Get the number of logical CPU cores available.
+ *
+ * @returns the total number of logical CPU cores. On CPUs that include
+ *          technologies such as hyperthreading, the number of logical cores
+ *          may be more than the number of physical cores.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int GetNumLogicalCPUCores() { return SDL_GetNumLogicalCPUCores(); }
+
+/**
+ * Determine the L1 cache line size of the CPU.
+ *
+ * This is useful for determining multi-threaded structure padding or SIMD
+ * prefetch sizes.
+ *
+ * @returns the L1 cache line size of the CPU, in bytes.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int GetCPUCacheLineSize() { return SDL_GetCPUCacheLineSize(); }
+
+/**
+ * Determine whether the CPU has AltiVec features.
+ *
+ * This always returns false on CPUs that aren't using PowerPC instruction
+ * sets.
+ *
+ * @returns true if the CPU has AltiVec features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool HasAltiVec() { return SDL_HasAltiVec(); }
+
+/**
+ * Determine whether the CPU has MMX features.
+ *
+ * This always returns false on CPUs that aren't using Intel instruction sets.
+ *
+ * @returns true if the CPU has MMX features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool HasMMX() { return SDL_HasMMX(); }
+
+/**
+ * Determine whether the CPU has SSE features.
+ *
+ * This always returns false on CPUs that aren't using Intel instruction sets.
+ *
+ * @returns true if the CPU has SSE features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasSSE2
+ * @sa HasSSE3
+ * @sa HasSSE41
+ * @sa HasSSE42
+ */
+inline bool HasSSE() { return SDL_HasSSE(); }
+
+/**
+ * Determine whether the CPU has SSE2 features.
+ *
+ * This always returns false on CPUs that aren't using Intel instruction sets.
+ *
+ * @returns true if the CPU has SSE2 features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasSSE
+ * @sa HasSSE3
+ * @sa HasSSE41
+ * @sa HasSSE42
+ */
+inline bool HasSSE2() { return SDL_HasSSE2(); }
+
+/**
+ * Determine whether the CPU has SSE3 features.
+ *
+ * This always returns false on CPUs that aren't using Intel instruction sets.
+ *
+ * @returns true if the CPU has SSE3 features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasSSE
+ * @sa HasSSE2
+ * @sa HasSSE41
+ * @sa HasSSE42
+ */
+inline bool HasSSE3() { return SDL_HasSSE3(); }
+
+/**
+ * Determine whether the CPU has SSE4.1 features.
+ *
+ * This always returns false on CPUs that aren't using Intel instruction sets.
+ *
+ * @returns true if the CPU has SSE4.1 features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasSSE
+ * @sa HasSSE2
+ * @sa HasSSE3
+ * @sa HasSSE42
+ */
+inline bool HasSSE41() { return SDL_HasSSE41(); }
+
+/**
+ * Determine whether the CPU has SSE4.2 features.
+ *
+ * This always returns false on CPUs that aren't using Intel instruction sets.
+ *
+ * @returns true if the CPU has SSE4.2 features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasSSE
+ * @sa HasSSE2
+ * @sa HasSSE3
+ * @sa HasSSE41
+ */
+inline bool HasSSE42() { return SDL_HasSSE42(); }
+
+/**
+ * Determine whether the CPU has AVX features.
+ *
+ * This always returns false on CPUs that aren't using Intel instruction sets.
+ *
+ * @returns true if the CPU has AVX features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasAVX2
+ * @sa HasAVX512F
+ */
+inline bool HasAVX() { return SDL_HasAVX(); }
+
+/**
+ * Determine whether the CPU has AVX2 features.
+ *
+ * This always returns false on CPUs that aren't using Intel instruction sets.
+ *
+ * @returns true if the CPU has AVX2 features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasAVX
+ * @sa HasAVX512F
+ */
+inline bool HasAVX2() { return SDL_HasAVX2(); }
+
+/**
+ * Determine whether the CPU has AVX-512F (foundation) features.
+ *
+ * This always returns false on CPUs that aren't using Intel instruction sets.
+ *
+ * @returns true if the CPU has AVX-512F features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasAVX
+ * @sa HasAVX2
+ */
+inline bool HasAVX512F() { return SDL_HasAVX512F(); }
+
+/**
+ * Determine whether the CPU has ARM SIMD (ARMv6) features.
+ *
+ * This is different from ARM NEON, which is a different instruction set.
+ *
+ * This always returns false on CPUs that aren't using ARM instruction sets.
+ *
+ * @returns true if the CPU has ARM SIMD features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasNEON
+ */
+inline bool HasARMSIMD() { return SDL_HasARMSIMD(); }
+
+/**
+ * Determine whether the CPU has NEON (ARM SIMD) features.
+ *
+ * This always returns false on CPUs that aren't using ARM instruction sets.
+ *
+ * @returns true if the CPU has ARM NEON features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool HasNEON() { return SDL_HasNEON(); }
+
+/**
+ * Determine whether the CPU has LSX (LOONGARCH SIMD) features.
+ *
+ * This always returns false on CPUs that aren't using LOONGARCH instruction
+ * sets.
+ *
+ * @returns true if the CPU has LOONGARCH LSX features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool HasLSX() { return SDL_HasLSX(); }
+
+/**
+ * Determine whether the CPU has LASX (LOONGARCH SIMD) features.
+ *
+ * This always returns false on CPUs that aren't using LOONGARCH instruction
+ * sets.
+ *
+ * @returns true if the CPU has LOONGARCH LASX features or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool HasLASX() { return SDL_HasLASX(); }
+
+/**
+ * Get the amount of RAM configured in the system.
+ *
+ * @returns the amount of RAM configured in the system in MiB.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int GetSystemRAM() { return SDL_GetSystemRAM(); }
+
+/**
+ * Report the alignment this system needs for SIMD allocations.
+ *
+ * This will return the minimum number of bytes to which a pointer must be
+ * aligned to be compatible with SIMD instructions on the current machine. For
+ * example, if the machine supports SSE only, it will return 16, but if it
+ * supports AVX-512F, it'll return 64 (etc). This only reports values for
+ * instruction sets SDL knows about, so if your SDL build doesn't have
+ * HasAVX512F(), then it might return 16 for the SSE support it sees and
+ * not 64 for the AVX-512 instructions that exist but SDL doesn't know about.
+ * Plan accordingly.
+ *
+ * @returns the alignment in bytes needed for available, known SIMD
+ *          instructions.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa aligned_alloc
+ * @sa aligned_free
+ */
+inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
+
+/// @}
+
+/**
+ * @defgroup CategoryEndian Byte Order and Byte Swapping
+ *
+ * Functions converting endian-specific values to different byte orders.
+ *
+ * These functions either unconditionally swap byte order (Swap16,
+ * Swap32, Swap64, SwapFloat), or they swap to/from the system's
+ * native byte order (Swap16LE, Swap16BE, Swap32LE, Swap32BE,
+ * Swap32LE, Swap32BE, SwapFloatLE, SwapFloatBE). In the
+ * latter case, the functionality is provided by macros that become no-ops if
+ * a swap isn't necessary: on an x86 (littleendian) processor, Swap32LE
+ * does nothing, but Swap32BE reverses the bytes of the data. On a PowerPC
+ * processor (bigendian), the macros behavior is reversed.
+ *
+ * The swap routines are inline functions, and attempt to use compiler
+ * intrinsics, inline assembly, and other magic to make byteswapping
+ * efficient.
+ *
+ * @{
+ */
+
+#ifdef SDL3PP_DOC
+
+/**
+ * A value to represent littleendian byteorder.
+ *
+ * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
+ * platform's byte ordering:
+ *
+ * ```cpp
+ * #if SDL_BYTEORDER == SDL_LIL_ENDIAN
+ * Log("This system is littleendian.");
+ * #endif
+ * ```
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_BYTEORDER
+ * @sa SDL_BIG_ENDIAN
+ */
+#define SDL_LIL_ENDIAN 1234
+
+/**
+ * A value to represent bigendian byteorder.
+ *
+ * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
+ * platform's byte ordering:
+ *
+ * ```cpp
+ * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+ * Log("This system is bigendian.");
+ * #endif
+ * ```
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_BYTEORDER
+ * @sa SDL_LIL_ENDIAN
+ */
+#define SDL_BIG_ENDIAN 4321
+
+/**
+ * A macro that reports the target system's byte order.
+ *
+ * This is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other
+ * values in the future, if something else becomes popular). This can be
+ * tested with the preprocessor, so decisions can be made at compile time.
+ *
+ * ```c
+ * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+ * Log("This system is bigendian.");
+ * #endif
+ * ```
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_LIL_ENDIAN
+ * @sa SDL_BIG_ENDIAN
+ */
+#define SDL_BYTEORDER SDL_LIL_ENDIAN___or_maybe___SDL_BIG_ENDIAN
+
+/**
+ * A macro that reports the target system's floating point word order.
+ *
+ * This is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other
+ * values in the future, if something else becomes popular). This can be
+ * tested with the preprocessor, so decisions can be made at compile time.
+ *
+ * ```c
+ * #if SDL_FLOATWORDORDER == SDL_BIG_ENDIAN
+ * Log("This system's floats are bigendian.");
+ * #endif
+ * ```
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_LIL_ENDIAN
+ * @sa SDL_BIG_ENDIAN
+ */
+#define SDL_FLOATWORDORDER SDL_LIL_ENDIAN___or_maybe___SDL_BIG_ENDIAN
+
+#endif // SDL3PP_DOC
+
+/**
+ * Byte-swap a floating point number.
+ *
+ * This will always byte-swap the value, whether it's currently in the native
+ * byteorder of the system or not. You should use SwapFloatLE or
+ * SwapFloatBE instead, in most cases.
+ *
+ * Note that this is a forced-inline function in a header, and not a public
+ * API function available in the SDL library (which is to say, the code is
+ * embedded in the calling program and the linker and dynamic loader will not
+ * be able to find this function inside SDL itself).
+ *
+ * @param x the value to byte-swap.
+ * @returns x, with its bytes in the opposite endian order.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr float SwapFloat(float x) { return SDL_SwapFloat(x); }
+
+/**
+ * Byte-swap an unsigned 16-bit number.
+ *
+ * This will always byte-swap the value, whether it's currently in the native
+ * byteorder of the system or not. You should use Swap16LE or Swap16BE instead,
+ * in most cases.
+ *
+ * Note that this is a forced-inline function in a header, and not a public
+ * API function available in the SDL library (which is to say, the code is
+ * embedded in the calling program and the linker and dynamic loader will not
+ * be able to find this function inside SDL itself).
+ *
+ * @param x the value to byte-swap.
+ * @returns `x`, with its bytes in the opposite endian order.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
+
+/**
+ * Byte-swap an unsigned 32-bit number.
+ *
+ * This will always byte-swap the value, whether it's currently in the native
+ * byteorder of the system or not. You should use Swap32LE or Swap32BE instead,
+ * in most cases.
+ *
+ * Note that this is a forced-inline function in a header, and not a public
+ * API function available in the SDL library (which is to say, the code is
+ * embedded in the calling program and the linker and dynamic loader will not
+ * be able to find this function inside SDL itself).
+ *
+ * @param x the value to byte-swap.
+ * @returns `x`, with its bytes in the opposite endian order.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
+
+/**
+ * Byte-swap an unsigned 64-bit number.
+ *
+ * This will always byte-swap the value, whether it's currently in the native
+ * byteorder of the system or not. You should use Swap64LE or Swap64BE instead,
+ * in most cases.
+ *
+ * Note that this is a forced-inline function in a header, and not a public
+ * API function available in the SDL library (which is to say, the code is
+ * embedded in the calling program and the linker and dynamic loader will not
+ * be able to find this function inside SDL itself).
+ *
+ * @param x the value to byte-swap.
+ * @returns `x`, with its bytes in the opposite endian order.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
+
+/**
+ * Swap a 16-bit value from littleendian to native byte order.
+ *
+ * If this is running on a littleendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in littleendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Uint16 Swap16LE(Uint16 x) { return SDL_Swap16LE(x); }
+
+/**
+ * Swap a 32-bit value from littleendian to native byte order.
+ *
+ * If this is running on a littleendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in littleendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Uint32 Swap32LE(Uint32 x) { return SDL_Swap32LE(x); }
+
+/**
+ * Swap a 64-bit value from littleendian to native byte order.
+ *
+ * If this is running on a littleendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in littleendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Uint64 Swap64LE(Uint64 x) { return SDL_Swap64LE(x); }
+
+/**
+ * Swap a floating point value from littleendian to native byte order.
+ *
+ * If this is running on a littleendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in littleendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr float SwapFloatLE(float x) { return SDL_SwapFloatLE(x); }
+
+/**
+ * Swap a 16-bit value from bigendian to native byte order.
+ *
+ * If this is running on a bigendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in bigendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
+
+/**
+ * Swap a 32-bit value from bigendian to native byte order.
+ *
+ * If this is running on a bigendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in bigendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
+
+/**
+ * Swap a 64-bit value from bigendian to native byte order.
+ *
+ * If this is running on a bigendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in bigendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
+
+/**
+ * Swap a floating point value from bigendian to native byte order.
+ *
+ * If this is running on a bigendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in bigendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
+
+/// @}
+
+/**
  * @defgroup CategoryFilesystem Filesystem Access
  *
  * SDL offers an API for examining and manipulating the system's filesystem.
@@ -50744,6 +51377,627 @@ inline void GLContext::Destroy()
   CheckError(SDL_GL_DestroyContext(m_resource));
   m_resource = nullptr;
 }
+
+/// @}
+
+/**
+ * @defgroup CategoryDialog File Dialogs
+ *
+ * SDL offers file dialogs, to let users select files with native GUI
+ * interfaces. There are "open" dialogs, "save" dialogs, and folder selection
+ * dialogs. The app can control some details, such as filtering to specific
+ * files, or whether multiple files can be selected by the user.
+ *
+ * Note that launching a file dialog is a non-blocking operation; control
+ * returns to the app immediately, and a callback is called later (possibly in
+ * another thread) when the user makes a choice.
+ *
+ * @{
+ */
+
+/**
+ * An entry for filters for file dialogs.
+ *
+ * `name` is a user-readable label for the filter (for example, "Office
+ * document").
+ *
+ * `pattern` is a semicolon-separated list of file extensions (for example,
+ * "doc;docx"). File extensions may only contain alphanumeric characters,
+ * hyphens, underscores and periods. Alternatively, the whole string can be a
+ * single asterisk ("*"), which serves as an "All files" filter.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa DialogFileCallback
+ * @sa ShowOpenFileDialog
+ * @sa ShowSaveFileDialog
+ * @sa ShowOpenFolderDialog
+ * @sa ShowFileDialogWithProperties
+ */
+using DialogFileFilter = SDL_DialogFileFilter;
+
+/**
+ * Callback used by file dialog functions.
+ *
+ * The specific usage is described in each function.
+ *
+ * If `filelist` is:
+ *
+ * - nullptr, an error occurred. Details can be obtained with GetError().
+ * - A pointer to nullptr, the user either didn't choose any file or canceled
+ * the dialog.
+ * - A pointer to non-`nullptr`, the user chose one or more files. The argument
+ *   is a null-terminated array of pointers to UTF-8 encoded strings, each
+ *   containing a path.
+ *
+ * The filelist argument should not be freed; it will automatically be freed
+ * when the callback returns.
+ *
+ * The filter argument is the index of the filter that was selected, or -1 if
+ * no filter was selected or if the platform or method doesn't support
+ * fetching the selected filter.
+ *
+ * In Android, the `filelist` are `content://` URIs. They should be opened
+ * using IOStream.FromFile() with appropriate modes. This applies both to open
+ * and save file dialog.
+ *
+ * @param userdata an app-provided pointer, for the callback's use.
+ * @param filelist the file(s) chosen by the user.
+ * @param filter index of the selected filter.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa DialogFileFilter
+ * @sa ShowOpenFileDialog
+ * @sa ShowSaveFileDialog
+ * @sa ShowOpenFolderDialog
+ * @sa ShowFileDialogWithProperties
+ */
+using DialogFileCallback = SDL_DialogFileCallback;
+
+/**
+ * Callback used by file dialog functions.
+ *
+ * The specific usage is described in each function.
+ *
+ * If `filelist` is:
+ *
+ * - nullptr, an error occurred. Details can be obtained with GetError().
+ * - A pointer to nullptr, the user either didn't choose any file or canceled
+ * the dialog.
+ * - A pointer to non-`nullptr`, the user chose one or more files. The argument
+ *   is a null-terminated array of pointers to UTF-8 encoded strings, each
+ *   containing a path.
+ *
+ * The filelist argument should not be freed; it will automatically be freed
+ * when the callback returns.
+ *
+ * The filter argument is the index of the filter that was selected, or -1 if
+ * no filter was selected or if the platform or method doesn't support
+ * fetching the selected filter.
+ *
+ * In Android, the `filelist` are `content://` URIs. They should be opened
+ * using IOStream.FromFile() with appropriate modes. This applies both to open
+ * and save file dialog.
+ *
+ * @param userdata an app-provided pointer, for the callback's use.
+ * @param filelist the file(s) chosen by the user.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa DialogFileFilter
+ * @sa ShowOpenFileDialog
+ * @sa ShowSaveFileDialog
+ * @sa ShowOpenFolderDialog
+ * @sa ShowFileDialogWithProperties
+ * @sa DialogFileCallback
+ */
+using DialogFileCB = std::function<void(const char* const*, int)>;
+
+/**
+ * Displays a dialog that lets the user select a file on their filesystem.
+ *
+ * This is an asynchronous function; it will return immediately, and the
+ * result will be passed to the callback.
+ *
+ * The callback will be invoked with a null-terminated list of files the user
+ * chose. The list will be empty if the user canceled the dialog, and it will
+ * be nullptr if an error occurred.
+ *
+ * Note that the callback may be called from a different thread than the one
+ * the function was invoked on.
+ *
+ * Depending on the platform, the user may be allowed to input paths that
+ * don't yet exist.
+ *
+ * On Linux, dialogs may require XDG Portals, which requires DBus, which
+ * requires an event-handling loop. Apps that do not use SDL to handle events
+ * should add a call to PumpEvents in their main loop.
+ *
+ * @param callback a function pointer to be invoked when the user selects a
+ *                 file and accepts, or cancels the dialog, or an error
+ *                 occurs.
+ * @param userdata an optional pointer to pass extra data to the callback when
+ *                 it will be invoked.
+ * @param window the window that the dialog should be modal for, may be nullptr.
+ *               Not all platforms support this option.
+ * @param filters a list of filters, may be nullptr. Not all platforms support
+ *                this option, and platforms that do support it may allow the
+ *                user to ignore the filters. If non-nullptr, it must remain
+ *                valid at least until the callback is invoked.
+ * @param default_location the default folder or file to start the dialog at,
+ *                         may be nullptr. Not all platforms support this
+ * option.
+ * @param allow_many if non-zero, the user will be allowed to select multiple
+ *                   entries. Not all platforms support this option.
+ *
+ * @threadsafety This function should be called only from the main thread. The
+ *               callback may be invoked from the same thread or from a
+ *               different one, depending on the OS's constraints.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa DialogFileCallback
+ * @sa DialogFileFilter
+ * @sa ShowSaveFileDialog
+ * @sa ShowOpenFolderDialog
+ * @sa ShowFileDialogWithProperties
+ */
+inline void ShowOpenFileDialog(DialogFileCallback callback,
+                               void* userdata,
+                               WindowParam window,
+                               std::span<const DialogFileFilter> filters = {},
+                               StringParam default_location = {},
+                               bool allow_many = false)
+{
+  SDL_ShowOpenFileDialog(callback,
+                         userdata,
+                         window,
+                         filters.data(),
+                         filters.size(),
+                         default_location,
+                         allow_many);
+}
+
+/**
+ * Displays a dialog that lets the user select a file on their filesystem.
+ *
+ * This is an asynchronous function; it will return immediately, and the
+ * result will be passed to the callback.
+ *
+ * The callback will be invoked with a null-terminated list of files the user
+ * chose. The list will be empty if the user canceled the dialog, and it will
+ * be nullptr if an error occurred.
+ *
+ * Note that the callback may be called from a different thread than the one
+ * the function was invoked on.
+ *
+ * Depending on the platform, the user may be allowed to input paths that
+ * don't yet exist.
+ *
+ * On Linux, dialogs may require XDG Portals, which requires DBus, which
+ * requires an event-handling loop. Apps that do not use SDL to handle events
+ * should add a call to PumpEvents in their main loop.
+ *
+ * @param callback a function pointer to be invoked when the user selects a
+ *                 file and accepts, or cancels the dialog, or an error
+ *                 occurs.
+ * @param window the window that the dialog should be modal for, may be nullptr.
+ *               Not all platforms support this option.
+ * @param filters a list of filters, may be nullptr. Not all platforms support
+ *                this option, and platforms that do support it may allow the
+ *                user to ignore the filters. If non-nullptr, it must remain
+ *                valid at least until the callback is invoked.
+ * @param default_location the default folder or file to start the dialog at,
+ *                         may be nullptr. Not all platforms support this
+ * option.
+ * @param allow_many if non-zero, the user will be allowed to select multiple
+ *                   entries. Not all platforms support this option.
+ *
+ * @threadsafety This function should be called only from the main thread. The
+ *               callback may be invoked from the same thread or from a
+ *               different one, depending on the OS's constraints.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa DialogFileCallback
+ * @sa DialogFileFilter
+ * @sa ShowSaveFileDialog
+ * @sa ShowOpenFolderDialog
+ * @sa ShowFileDialogWithProperties
+ */
+inline void ShowOpenFileDialog(DialogFileCB callback,
+                               WindowParam window,
+                               std::span<const DialogFileFilter> filters = {},
+                               StringParam default_location = {},
+                               bool allow_many = false)
+{
+  using Wrapper = CallbackWrapper<DialogFileCB>;
+  ShowOpenFileDialog(&Wrapper::CallOnce,
+                     Wrapper::Wrap(std::move(callback)),
+                     window,
+                     filters,
+                     std::move(default_location),
+                     allow_many);
+}
+
+/**
+ * Displays a dialog that lets the user choose a new or existing file on their
+ * filesystem.
+ *
+ * This is an asynchronous function; it will return immediately, and the
+ * result will be passed to the callback.
+ *
+ * The callback will be invoked with a null-terminated list of files the user
+ * chose. The list will be empty if the user canceled the dialog, and it will
+ * be nullptr if an error occurred.
+ *
+ * Note that the callback may be called from a different thread than the one
+ * the function was invoked on.
+ *
+ * The chosen file may or may not already exist.
+ *
+ * On Linux, dialogs may require XDG Portals, which requires DBus, which
+ * requires an event-handling loop. Apps that do not use SDL to handle events
+ * should add a call to PumpEvents in their main loop.
+ *
+ * @param callback a function pointer to be invoked when the user selects a
+ *                 file and accepts, or cancels the dialog, or an error
+ *                 occurs.
+ * @param userdata an optional pointer to pass extra data to the callback when
+ *                 it will be invoked.
+ * @param window the window that the dialog should be modal for, may be nullptr.
+ *               Not all platforms support this option.
+ * @param filters a list of filters, may be nullptr. Not all platforms support
+ *                this option, and platforms that do support it may allow the
+ *                user to ignore the filters. If non-nullptr, it must remain
+ *                valid at least until the callback is invoked.
+ * @param default_location the default folder or file to start the dialog at,
+ *                         may be nullptr. Not all platforms support this
+ * option.
+ *
+ * @threadsafety This function should be called only from the main thread. The
+ *               callback may be invoked from the same thread or from a
+ *               different one, depending on the OS's constraints.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa DialogFileCallback
+ * @sa DialogFileFilter
+ * @sa ShowOpenFileDialog
+ * @sa ShowOpenFolderDialog
+ * @sa ShowFileDialogWithProperties
+ */
+inline void ShowSaveFileDialog(DialogFileCallback callback,
+                               void* userdata,
+                               WindowParam window = {},
+                               std::span<const DialogFileFilter> filters = {},
+                               StringParam default_location = {})
+{
+  SDL_ShowSaveFileDialog(callback,
+                         userdata,
+                         window,
+                         filters.data(),
+                         filters.size(),
+                         default_location);
+}
+
+/**
+ * Displays a dialog that lets the user choose a new or existing file on their
+ * filesystem.
+ *
+ * This is an asynchronous function; it will return immediately, and the
+ * result will be passed to the callback.
+ *
+ * The callback will be invoked with a null-terminated list of files the user
+ * chose. The list will be empty if the user canceled the dialog, and it will
+ * be nullptr if an error occurred.
+ *
+ * Note that the callback may be called from a different thread than the one
+ * the function was invoked on.
+ *
+ * The chosen file may or may not already exist.
+ *
+ * On Linux, dialogs may require XDG Portals, which requires DBus, which
+ * requires an event-handling loop. Apps that do not use SDL to handle events
+ * should add a call to PumpEvents in their main loop.
+ *
+ * @param callback a function pointer to be invoked when the user selects a
+ *                 file and accepts, or cancels the dialog, or an error
+ *                 occurs.
+ * @param window the window that the dialog should be modal for, may be nullptr.
+ *               Not all platforms support this option.
+ * @param filters a list of filters, may be nullptr. Not all platforms support
+ *                this option, and platforms that do support it may allow the
+ *                user to ignore the filters. If non-nullptr, it must remain
+ *                valid at least until the callback is invoked.
+ * @param default_location the default folder or file to start the dialog at,
+ *                         may be nullptr. Not all platforms support this
+ * option.
+ *
+ * @threadsafety This function should be called only from the main thread. The
+ *               callback may be invoked from the same thread or from a
+ *               different one, depending on the OS's constraints.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa DialogFileCallback
+ * @sa DialogFileFilter
+ * @sa ShowOpenFileDialog
+ * @sa ShowOpenFolderDialog
+ * @sa ShowFileDialogWithProperties
+ */
+inline void ShowSaveFileDialog(DialogFileCB callback,
+                               WindowParam window = {},
+                               std::span<const DialogFileFilter> filters = {},
+                               StringParam default_location = {})
+{
+  using Wrapper = CallbackWrapper<DialogFileCB>;
+  ShowSaveFileDialog(&Wrapper::CallOnce,
+                     Wrapper::Wrap(std::move(callback)),
+                     window,
+                     filters,
+                     std::move(default_location));
+}
+
+/**
+ * Displays a dialog that lets the user select a folder on their filesystem.
+ *
+ * This is an asynchronous function; it will return immediately, and the
+ * result will be passed to the callback.
+ *
+ * The callback will be invoked with a null-terminated list of files the user
+ * chose. The list will be empty if the user canceled the dialog, and it will
+ * be nullptr if an error occurred.
+ *
+ * Note that the callback may be called from a different thread than the one
+ * the function was invoked on.
+ *
+ * Depending on the platform, the user may be allowed to input paths that
+ * don't yet exist.
+ *
+ * On Linux, dialogs may require XDG Portals, which requires DBus, which
+ * requires an event-handling loop. Apps that do not use SDL to handle events
+ * should add a call to PumpEvents in their main loop.
+ *
+ * @param callback a function pointer to be invoked when the user selects a
+ *                 file and accepts, or cancels the dialog, or an error
+ *                 occurs.
+ * @param userdata an optional pointer to pass extra data to the callback when
+ *                 it will be invoked.
+ * @param window the window that the dialog should be modal for, may be nullptr.
+ *               Not all platforms support this option.
+ * @param default_location the default folder or file to start the dialog at,
+ *                         may be nullptr. Not all platforms support this
+ * option.
+ * @param allow_many if non-zero, the user will be allowed to select multiple
+ *                   entries. Not all platforms support this option.
+ *
+ * @threadsafety This function should be called only from the main thread. The
+ *               callback may be invoked from the same thread or from a
+ *               different one, depending on the OS's constraints.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa DialogFileCallback
+ * @sa ShowOpenFileDialog
+ * @sa ShowSaveFileDialog
+ * @sa ShowFileDialogWithProperties
+ */
+inline void ShowOpenFolderDialog(DialogFileCallback callback,
+                                 void* userdata,
+                                 WindowParam window = {},
+                                 StringParam default_location = {},
+                                 bool allow_many = false)
+{
+  SDL_ShowOpenFolderDialog(
+    callback, userdata, window, default_location, allow_many);
+}
+
+/**
+ * Displays a dialog that lets the user select a folder on their filesystem.
+ *
+ * This is an asynchronous function; it will return immediately, and the
+ * result will be passed to the callback.
+ *
+ * The callback will be invoked with a null-terminated list of files the user
+ * chose. The list will be empty if the user canceled the dialog, and it will
+ * be nullptr if an error occurred.
+ *
+ * Note that the callback may be called from a different thread than the one
+ * the function was invoked on.
+ *
+ * Depending on the platform, the user may be allowed to input paths that
+ * don't yet exist.
+ *
+ * On Linux, dialogs may require XDG Portals, which requires DBus, which
+ * requires an event-handling loop. Apps that do not use SDL to handle events
+ * should add a call to PumpEvents in their main loop.
+ *
+ * @param callback a function pointer to be invoked when the user selects a
+ *                 file and accepts, or cancels the dialog, or an error
+ *                 occurs.
+ * @param window the window that the dialog should be modal for, may be nullptr.
+ *               Not all platforms support this option.
+ * @param default_location the default folder or file to start the dialog at,
+ *                         may be nullptr. Not all platforms support this
+ * option.
+ * @param allow_many if non-zero, the user will be allowed to select multiple
+ *                   entries. Not all platforms support this option.
+ *
+ * @threadsafety This function should be called only from the main thread. The
+ *               callback may be invoked from the same thread or from a
+ *               different one, depending on the OS's constraints.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa DialogFileCallback
+ * @sa ShowOpenFileDialog
+ * @sa ShowSaveFileDialog
+ * @sa ShowFileDialogWithProperties
+ */
+inline void ShowOpenFolderDialog(DialogFileCB callback,
+                                 WindowParam window = {},
+                                 StringParam default_location = {},
+                                 bool allow_many = false)
+{
+  using Wrapper = CallbackWrapper<DialogFileCB>;
+  ShowOpenFolderDialog(&Wrapper::CallOnce,
+                       Wrapper::Wrap(std::move(callback)),
+                       std::move(window),
+                       std::move(default_location),
+                       allow_many);
+}
+
+/**
+ * Various types of file dialogs.
+ *
+ * This is used by ShowFileDialogWithProperties() to decide what kind of
+ * dialog to present to the user.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa ShowFileDialogWithProperties
+ */
+using FileDialogType = SDL_FileDialogType;
+
+constexpr FileDialogType FILEDIALOG_OPENFILE =
+  SDL_FILEDIALOG_OPENFILE; ///< OPENFILE
+
+constexpr FileDialogType FILEDIALOG_SAVEFILE =
+  SDL_FILEDIALOG_SAVEFILE; ///< SAVEFILE
+
+constexpr FileDialogType FILEDIALOG_OPENFOLDER =
+  SDL_FILEDIALOG_OPENFOLDER; ///< OPENFOLDER
+
+/**
+ * Create and launch a file dialog with the specified properties.
+ *
+ * These are the supported properties:
+ *
+ * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of
+ *   DialogFileFilter structs, which will be used as filters for
+ *   file-based selections. Ignored if the dialog is an "Open Folder" dialog.
+ *   If non-nullptr, the array of filters must remain valid at least until the
+ *   callback is invoked.
+ * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the
+ *   array of filters, if it exists.
+ * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should
+ *   be modal for.
+ * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to
+ *   start the dialog at.
+ * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select
+ *   more than one entry.
+ * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
+ * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button
+ *   should have.
+ * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button
+ *   should have.
+ *
+ * Note that each platform may or may not support any of the properties.
+ *
+ * @param type the type of file dialog.
+ * @param callback a function pointer to be invoked when the user selects a
+ *                 file and accepts, or cancels the dialog, or an error
+ *                 occurs.
+ * @param userdata an optional pointer to pass extra data to the callback when
+ *                 it will be invoked.
+ * @param props the properties to use.
+ *
+ * @threadsafety This function should be called only from the main thread. The
+ *               callback may be invoked from the same thread or from a
+ *               different one, depending on the OS's constraints.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa FileDialogType
+ * @sa DialogFileCallback
+ * @sa DialogFileFilter
+ * @sa ShowOpenFileDialog
+ * @sa ShowSaveFileDialog
+ * @sa ShowOpenFolderDialog
+ */
+inline void ShowFileDialogWithProperties(FileDialogType type,
+                                         DialogFileCallback callback,
+                                         void* userdata,
+                                         PropertiesParam props)
+{
+  SDL_ShowFileDialogWithProperties(type, callback, userdata, props);
+}
+
+/**
+ * Create and launch a file dialog with the specified properties.
+ *
+ * These are the supported properties:
+ *
+ * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of
+ *   DialogFileFilter structs, which will be used as filters for
+ *   file-based selections. Ignored if the dialog is an "Open Folder" dialog.
+ *   If non-nullptr, the array of filters must remain valid at least until the
+ *   callback is invoked.
+ * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the
+ *   array of filters, if it exists.
+ * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should
+ *   be modal for.
+ * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to
+ *   start the dialog at.
+ * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select
+ *   more than one entry.
+ * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
+ * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button
+ *   should have.
+ * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button
+ *   should have.
+ *
+ * Note that each platform may or may not support any of the properties.
+ *
+ * @param type the type of file dialog.
+ * @param callback a function pointer to be invoked when the user selects a
+ *                 file and accepts, or cancels the dialog, or an error
+ *                 occurs.
+ * @param props the properties to use.
+ *
+ * @threadsafety This function should be called only from the main thread. The
+ *               callback may be invoked from the same thread or from a
+ *               different one, depending on the OS's constraints.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa FileDialogType
+ * @sa DialogFileCallback
+ * @sa DialogFileFilter
+ * @sa ShowOpenFileDialog
+ * @sa ShowSaveFileDialog
+ * @sa ShowOpenFolderDialog
+ */
+inline void ShowFileDialogWithProperties(FileDialogType type,
+                                         DialogFileCB callback,
+                                         PropertiesID props)
+{
+  using Wrapper = CallbackWrapper<DialogFileCB>;
+  ShowFileDialogWithProperties(
+    type, &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), props);
+}
+
+namespace prop::FileDialog {
+
+constexpr auto FILTERS_POINTER = SDL_PROP_FILE_DIALOG_FILTERS_POINTER;
+
+constexpr auto NFILTERS_NUMBER = SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER;
+
+constexpr auto WINDOW_POINTER = SDL_PROP_FILE_DIALOG_WINDOW_POINTER;
+
+constexpr auto LOCATION_STRING = SDL_PROP_FILE_DIALOG_LOCATION_STRING;
+
+constexpr auto MANY_BOOLEAN = SDL_PROP_FILE_DIALOG_MANY_BOOLEAN;
+
+constexpr auto TITLE_STRING = SDL_PROP_FILE_DIALOG_TITLE_STRING;
+
+constexpr auto ACCEPT_STRING = SDL_PROP_FILE_DIALOG_ACCEPT_STRING;
+
+constexpr auto CANCEL_STRING = SDL_PROP_FILE_DIALOG_CANCEL_STRING;
+
+} // namespace prop::FileDialog
 
 /// @}
 

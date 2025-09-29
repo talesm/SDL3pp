@@ -868,6 +868,7 @@ const transform = {
       }
     },
     "SDL_cpuinfo.h": {
+      localIncludes: ["SDL3pp_stdinc.h"],
       transform: {
         "SDL_CACHELINE_SIZE": {
           kind: "var",
@@ -877,13 +878,13 @@ const transform = {
       }
     },
     "SDL_dialog.h": {
-      localIncludes: ["SDL3pp_stdinc.h"],
+      localIncludes: ["SDL3pp_properties.h", "SDL3pp_stdinc.h", "SDL3pp_video.h"],
       namespacesMap: {
         "SDL_PROP_FILE_DIALOG_": "prop::FileDialog"
       },
       transform: {
         "ShowOpenFileDialog": {
-          "name": "SDL_ShowOpenFileDialog",
+          "after": "SDL_ShowOpenFileDialog",
           "kind": "function",
           "type": "void",
           "parameters": [
