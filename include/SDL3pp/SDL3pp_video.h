@@ -2719,6 +2719,239 @@ public:
    * @since This function is available since SDL 3.2.0.
    */
   RendererRef GetRenderer() const;
+
+  /**
+   * Start accepting Unicode text input events in a window.
+   *
+   * This function will enable text input (EVENT_TEXT_INPUT and
+   * EVENT_TEXT_EDITING events) in the specified window. Please use this
+   * function paired with Window.StopTextInput().
+   *
+   * Text input events are not received by default.
+   *
+   * On some platforms using this function shows the screen keyboard and/or
+   * activates an IME, which can prevent some key press events from being passed
+   * through.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.SetTextInputArea
+   * @sa Window.StartTextInput
+   * @sa Window.StopTextInput
+   * @sa Window.IsTextInputActive
+   */
+  void StartTextInput();
+
+  /**
+   * Start accepting Unicode text input events in a window, with properties
+   * describing the input.
+   *
+   * This function will enable text input (EVENT_TEXT_INPUT and
+   * EVENT_TEXT_EDITING events) in the specified window. Please use this
+   * function paired with Window.StopTextInput().
+   *
+   * Text input events are not received by default.
+   *
+   * On some platforms using this function shows the screen keyboard and/or
+   * activates an IME, which can prevent some key press events from being passed
+   * through.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that
+   *   describes text being input, defaults to TEXTINPUT_TYPE_TEXT.
+   * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value
+   *   that describes how text should be capitalized, defaults to
+   *   CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for
+   *   TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail
+   *   addresses, usernames, and passwords.
+   * - `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion
+   *   and auto correction, defaults to true.
+   * - `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text
+   *   are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is
+   *   "0" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME
+   *   is "1".
+   *
+   * On Android you can directly specify the input type:
+   *
+   * - `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to
+   *   use, overriding other properties. This is documented at
+   *   https://developer.android.com/reference/android/text/InputType
+   *
+   * @param props the properties to use.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.SetTextInputArea
+   * @sa Window.StartTextInput
+   * @sa Window.StopTextInput
+   * @sa Window.IsTextInputActive
+   */
+  void StartTextInput(PropertiesParam props);
+
+  /**
+   * Check whether or not Unicode text input events are enabled for a window.
+   *
+   * @returns true if text input events are enabled else false.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.StartTextInput
+   */
+  bool IsTextInputActive() const;
+
+  /**
+   * Stop receiving any text input events in a window.
+   *
+   * If Window.StartTextInput() showed the screen keyboard, this function will
+   * hide it.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.StartTextInput
+   */
+  void StopTextInput();
+
+  /**
+   * Dismiss the composition window/IME without disabling the subsystem.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.StartTextInput
+   * @sa Window.StopTextInput
+   */
+  void ClearComposition();
+
+  /**
+   * Set the area used to type Unicode text input.
+   *
+   * Native input methods may place a window with word suggestions near the
+   * cursor, without covering the text being entered.
+   *
+   * @param rect the Rect representing the text input area, in window
+   *             coordinates, or nullptr to clear it.
+   * @param cursor the offset of the current cursor location relative to
+   *               `rect->x`, in window coordinates.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.GetTextInputArea
+   * @sa Window.StartTextInput
+   */
+  void SetTextInputArea(const RectRaw& rect, int cursor);
+
+  /**
+   * Get the area used to type Unicode text input.
+   *
+   * This returns the values previously set by Window.SetTextInputArea().
+   *
+   * @param rect a pointer to an Rect filled in with the text input area,
+   *             may be nullptr.
+   * @param cursor a pointer to the offset of the current cursor location
+   *               relative to `rect->x`, may be nullptr.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.SetTextInputArea
+   */
+  void GetTextInputArea(RectRaw* rect, int* cursor);
+
+  /**
+   * Check whether the screen keyboard is shown for given window.
+   *
+   * @returns true if screen keyboard is shown or false if not.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa HasScreenKeyboardSupport
+   */
+  bool IsScreenKeyboardShown() const;
+
+  /**
+   * Move the mouse cursor to the given position within the window.
+   *
+   * This function generates a mouse motion event if relative mode is not
+   * enabled. If relative mode is enabled, you can force mouse events for the
+   * warp by setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.
+   *
+   * Note that this function will appear to succeed, but not actually move the
+   * mouse when used over Microsoft Remote Desktop.
+   *
+   *               mouse focus.
+   * @param x the x coordinate within the window.
+   * @param y the y coordinate within the window.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa WarpMouse
+   */
+  void WarpMouse(const FPointRaw& p);
+
+  /**
+   * Set relative mouse mode for a window.
+   *
+   * While the window has focus and relative mouse mode is enabled, the cursor
+   * is hidden, the mouse position is constrained to the window, and SDL will
+   * report continuous relative mouse motion even if the mouse is at the edge of
+   * the window.
+   *
+   * If you'd like to keep the mouse position fixed while in relative mode you
+   * can use Window.SetMouseRect(). If you'd like the cursor to be at a
+   * specific location when relative mode ends, you should use
+   * Window.WarpMouse() before disabling relative mode.
+   *
+   * This function will flush any pending mouse motion for this window.
+   *
+   * @param enabled true to enable relative mode, false to disable.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.GetRelativeMouseMode
+   */
+  void SetRelativeMouseMode(bool enabled);
+
+  /**
+   * Query whether relative mouse mode is enabled for a window.
+   *
+   * @returns true if relative mode is enabled for a window or false otherwise.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.SetRelativeMouseMode
+   */
+  bool GetRelativeMouseMode() const;
 };
 
 /// Semi-safe reference for Window.

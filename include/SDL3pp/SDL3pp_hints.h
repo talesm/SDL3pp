@@ -107,7 +107,7 @@ namespace SDL {
  * devices, or to be able to trap the back button for use in your code
  * reliably. If this hint is true, the back button will show up as an
  * EVENT_KEY_DOWN / EVENT_KEY_UP pair with a keycode of
- * SDL_SCANCODE_AC_BACK.
+ * SCANCODE_AC_BACK.
  *
  * The variable can be set to the following values:
  *
@@ -737,7 +737,7 @@ namespace SDL {
  * - "0": Do not show the on-screen keyboard.
  * - "1": Show the on-screen keyboard, if available.
  *
- * This hint must be set before SDL_StartTextInput() is called
+ * This hint must be set before Window.StartTextInput() is called
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -947,7 +947,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -959,7 +959,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -974,7 +974,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -990,7 +990,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -1001,7 +1001,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -2246,7 +2246,7 @@ namespace SDL {
  *   SDLK_AMPERSAND, or '&'
  * - "latin_letters": For keyboards using non-Latin letters, such as Russian
  *   or Thai, the letter keys generate keycodes as though it had an en_US
- *   layout. e.g. pressing the key associated with SDL_SCANCODE_A on a Russian
+ *   layout. e.g. pressing the key associated with SCANCODE_A on a Russian
  *   keyboard would yield 'a' instead of a Cyrillic letter.
  *
  * The default value for this hint is "french_numbers,latin_letters"
@@ -2254,8 +2254,8 @@ namespace SDL {
  * Some platforms like Emscripten only provide modified keycodes and the
  * options are not used.
  *
- * These options do not affect the return value of SDL_GetKeyFromScancode() or
- * SDL_GetScancodeFromKey(), they just apply to the keycode included in key
+ * These options do not affect the return value of Keycode.Keycode() or
+ * Keycode.GetScancode(), they just apply to the keycode included in key
  * events.
  *
  * This hint can be set anytime.
@@ -2405,7 +2405,7 @@ namespace SDL {
  * ignored. This is particularly useful for applications like terminal
  * emulators and graphical user interfaces (GUIs) that rely on Alt key
  * functionality for shortcuts or navigation. This does not apply to
- * SDL_GetKeyFromScancode and only has an effect if IME is enabled.
+ * Keycode.Keycode and only has an effect if IME is enabled.
  *
  * This hint can be set anytime.
  *
@@ -2494,8 +2494,8 @@ namespace SDL {
 /**
  * A variable setting which system cursor to use as the default cursor.
  *
- * This should be an integer corresponding to the SDL_SystemCursor enum. The
- * default value is zero (SDL_SYSTEM_CURSOR_DEFAULT).
+ * This should be an integer corresponding to the SystemCursor enum. The
+ * default value is zero (SYSTEM_CURSOR_DEFAULT).
  *
  * This hint needs to be set before Init().
  *
@@ -3010,7 +3010,7 @@ namespace SDL {
  * A variable to control whether the return key on the soft keyboard should
  * hide the soft keyboard on Android and iOS.
  *
- * This hint sets the default value of SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN.
+ * This hint sets the default value of prop::TextInput.MULTILINE_BOOLEAN.
  *
  * The variable can be set to the following values:
  *

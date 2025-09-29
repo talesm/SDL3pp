@@ -2395,7 +2395,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * devices, or to be able to trap the back button for use in your code
  * reliably. If this hint is true, the back button will show up as an
  * EVENT_KEY_DOWN / EVENT_KEY_UP pair with a keycode of
- * SDL_SCANCODE_AC_BACK.
+ * SCANCODE_AC_BACK.
  *
  * The variable can be set to the following values:
  *
@@ -3025,7 +3025,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * - "0": Do not show the on-screen keyboard.
  * - "1": Show the on-screen keyboard, if available.
  *
- * This hint must be set before SDL_StartTextInput() is called
+ * This hint must be set before Window.StartTextInput() is called
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3235,7 +3235,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3247,7 +3247,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3262,7 +3262,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3278,7 +3278,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3289,7 +3289,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -4534,7 +4534,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *   SDLK_AMPERSAND, or '&'
  * - "latin_letters": For keyboards using non-Latin letters, such as Russian
  *   or Thai, the letter keys generate keycodes as though it had an en_US
- *   layout. e.g. pressing the key associated with SDL_SCANCODE_A on a Russian
+ *   layout. e.g. pressing the key associated with SCANCODE_A on a Russian
  *   keyboard would yield 'a' instead of a Cyrillic letter.
  *
  * The default value for this hint is "french_numbers,latin_letters"
@@ -4542,8 +4542,8 @@ inline bool ClearError() { return SDL_ClearError(); }
  * Some platforms like Emscripten only provide modified keycodes and the
  * options are not used.
  *
- * These options do not affect the return value of SDL_GetKeyFromScancode() or
- * SDL_GetScancodeFromKey(), they just apply to the keycode included in key
+ * These options do not affect the return value of Keycode.Keycode() or
+ * Keycode.GetScancode(), they just apply to the keycode included in key
  * events.
  *
  * This hint can be set anytime.
@@ -4693,7 +4693,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * ignored. This is particularly useful for applications like terminal
  * emulators and graphical user interfaces (GUIs) that rely on Alt key
  * functionality for shortcuts or navigation. This does not apply to
- * SDL_GetKeyFromScancode and only has an effect if IME is enabled.
+ * Keycode.Keycode and only has an effect if IME is enabled.
  *
  * This hint can be set anytime.
  *
@@ -4782,8 +4782,8 @@ inline bool ClearError() { return SDL_ClearError(); }
 /**
  * A variable setting which system cursor to use as the default cursor.
  *
- * This should be an integer corresponding to the SDL_SystemCursor enum. The
- * default value is zero (SDL_SYSTEM_CURSOR_DEFAULT).
+ * This should be an integer corresponding to the SystemCursor enum. The
+ * default value is zero (SYSTEM_CURSOR_DEFAULT).
  *
  * This hint needs to be set before Init().
  *
@@ -5298,7 +5298,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * A variable to control whether the return key on the soft keyboard should
  * hide the soft keyboard on Android and iOS.
  *
- * This hint sets the default value of SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN.
+ * This hint sets the default value of prop::TextInput.MULTILINE_BOOLEAN.
  *
  * The variable can be set to the following values:
  *
@@ -39862,6 +39862,239 @@ public:
    * @since This function is available since SDL 3.2.0.
    */
   RendererRef GetRenderer() const;
+
+  /**
+   * Start accepting Unicode text input events in a window.
+   *
+   * This function will enable text input (EVENT_TEXT_INPUT and
+   * EVENT_TEXT_EDITING events) in the specified window. Please use this
+   * function paired with Window.StopTextInput().
+   *
+   * Text input events are not received by default.
+   *
+   * On some platforms using this function shows the screen keyboard and/or
+   * activates an IME, which can prevent some key press events from being passed
+   * through.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.SetTextInputArea
+   * @sa Window.StartTextInput
+   * @sa Window.StopTextInput
+   * @sa Window.IsTextInputActive
+   */
+  void StartTextInput();
+
+  /**
+   * Start accepting Unicode text input events in a window, with properties
+   * describing the input.
+   *
+   * This function will enable text input (EVENT_TEXT_INPUT and
+   * EVENT_TEXT_EDITING events) in the specified window. Please use this
+   * function paired with Window.StopTextInput().
+   *
+   * Text input events are not received by default.
+   *
+   * On some platforms using this function shows the screen keyboard and/or
+   * activates an IME, which can prevent some key press events from being passed
+   * through.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that
+   *   describes text being input, defaults to TEXTINPUT_TYPE_TEXT.
+   * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value
+   *   that describes how text should be capitalized, defaults to
+   *   CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for
+   *   TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail
+   *   addresses, usernames, and passwords.
+   * - `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion
+   *   and auto correction, defaults to true.
+   * - `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text
+   *   are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is
+   *   "0" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME
+   *   is "1".
+   *
+   * On Android you can directly specify the input type:
+   *
+   * - `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to
+   *   use, overriding other properties. This is documented at
+   *   https://developer.android.com/reference/android/text/InputType
+   *
+   * @param props the properties to use.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.SetTextInputArea
+   * @sa Window.StartTextInput
+   * @sa Window.StopTextInput
+   * @sa Window.IsTextInputActive
+   */
+  void StartTextInput(PropertiesParam props);
+
+  /**
+   * Check whether or not Unicode text input events are enabled for a window.
+   *
+   * @returns true if text input events are enabled else false.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.StartTextInput
+   */
+  bool IsTextInputActive() const;
+
+  /**
+   * Stop receiving any text input events in a window.
+   *
+   * If Window.StartTextInput() showed the screen keyboard, this function will
+   * hide it.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.StartTextInput
+   */
+  void StopTextInput();
+
+  /**
+   * Dismiss the composition window/IME without disabling the subsystem.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.StartTextInput
+   * @sa Window.StopTextInput
+   */
+  void ClearComposition();
+
+  /**
+   * Set the area used to type Unicode text input.
+   *
+   * Native input methods may place a window with word suggestions near the
+   * cursor, without covering the text being entered.
+   *
+   * @param rect the Rect representing the text input area, in window
+   *             coordinates, or nullptr to clear it.
+   * @param cursor the offset of the current cursor location relative to
+   *               `rect->x`, in window coordinates.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.GetTextInputArea
+   * @sa Window.StartTextInput
+   */
+  void SetTextInputArea(const RectRaw& rect, int cursor);
+
+  /**
+   * Get the area used to type Unicode text input.
+   *
+   * This returns the values previously set by Window.SetTextInputArea().
+   *
+   * @param rect a pointer to an Rect filled in with the text input area,
+   *             may be nullptr.
+   * @param cursor a pointer to the offset of the current cursor location
+   *               relative to `rect->x`, may be nullptr.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.SetTextInputArea
+   */
+  void GetTextInputArea(RectRaw* rect, int* cursor);
+
+  /**
+   * Check whether the screen keyboard is shown for given window.
+   *
+   * @returns true if screen keyboard is shown or false if not.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa HasScreenKeyboardSupport
+   */
+  bool IsScreenKeyboardShown() const;
+
+  /**
+   * Move the mouse cursor to the given position within the window.
+   *
+   * This function generates a mouse motion event if relative mode is not
+   * enabled. If relative mode is enabled, you can force mouse events for the
+   * warp by setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.
+   *
+   * Note that this function will appear to succeed, but not actually move the
+   * mouse when used over Microsoft Remote Desktop.
+   *
+   *               mouse focus.
+   * @param x the x coordinate within the window.
+   * @param y the y coordinate within the window.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa WarpMouse
+   */
+  void WarpMouse(const FPointRaw& p);
+
+  /**
+   * Set relative mouse mode for a window.
+   *
+   * While the window has focus and relative mouse mode is enabled, the cursor
+   * is hidden, the mouse position is constrained to the window, and SDL will
+   * report continuous relative mouse motion even if the mouse is at the edge of
+   * the window.
+   *
+   * If you'd like to keep the mouse position fixed while in relative mode you
+   * can use Window.SetMouseRect(). If you'd like the cursor to be at a
+   * specific location when relative mode ends, you should use
+   * Window.WarpMouse() before disabling relative mode.
+   *
+   * This function will flush any pending mouse motion for this window.
+   *
+   * @param enabled true to enable relative mode, false to disable.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.GetRelativeMouseMode
+   */
+  void SetRelativeMouseMode(bool enabled);
+
+  /**
+   * Query whether relative mouse mode is enabled for a window.
+   *
+   * @returns true if relative mode is enabled for a window or false otherwise.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.SetRelativeMouseMode
+   */
+  bool GetRelativeMouseMode() const;
 };
 
 /// Semi-safe reference for Window.
@@ -44509,15 +44742,15 @@ using KeyboardDeviceEvent = SDL_KeyboardDeviceEvent;
 /**
  * Keyboard button event structure (event.key.*)
  *
- * The `key` is the base SDL_Keycode generated by pressing the `scancode`
+ * The `key` is the base Keycode generated by pressing the `scancode`
  * using the current keyboard layout, applying any options specified in
- * SDL_HINT_KEYCODE_OPTIONS. You can get the SDL_Keycode corresponding to the
+ * SDL_HINT_KEYCODE_OPTIONS. You can get the Keycode corresponding to the
  * event scancode and modifiers directly from the keyboard layout, bypassing
- * SDL_HINT_KEYCODE_OPTIONS, by calling SDL_GetKeyFromScancode().
+ * SDL_HINT_KEYCODE_OPTIONS, by calling Keycode.Keycode().
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa SDL_GetKeyFromScancode
+ * @sa Keycode.Keycode
  * @sa SDL_HINT_KEYCODE_OPTIONS
  */
 using KeyboardEvent = SDL_KeyboardEvent;
@@ -44544,12 +44777,12 @@ using TextEditingCandidatesEvent = SDL_TextEditingCandidatesEvent;
  * Keyboard text input event structure (event.text.*)
  *
  * This event will never be delivered unless text input is enabled by calling
- * SDL_StartTextInput(). Text input is disabled by default!
+ * Window.StartTextInput(). Text input is disabled by default!
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa SDL_StartTextInput
- * @sa SDL_StopTextInput
+ * @sa Window.StartTextInput
+ * @sa Window.StopTextInput
  */
 using TextInputEvent = SDL_TextInputEvent;
 
