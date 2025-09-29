@@ -1085,6 +1085,303 @@ using RefArray = std::span<T>;
 
 /// @}
 
+/**
+ * @defgroup CategoryPlatform Platform Detection
+ *
+ * SDL provides a means to identify the app's platform, both at compile time
+ * and runtime.
+ *
+ * For sanity, we don't wrap the macros, so use the regular SDL_* macros as
+ * documented.
+ *
+ * @{
+ */
+
+/**
+ * Get the name of the platform.
+ *
+ * Here are the names returned for some (but not all) supported platforms:
+ *
+ * - "Windows"
+ * - "macOS"
+ * - "Linux"
+ * - "iOS"
+ * - "Android"
+ *
+ * @returns the name of the platform. If the correct platform name is not
+ *          available, returns a string beginning with the text "Unknown".
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline const char* GetPlatform() { return SDL_GetPlatform(); }
+
+#ifdef SDL3PP_DOC
+
+/**
+ * A preprocessor macro that is only defined if compiling for AIX.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_AIX 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for BSDi
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_BSDI 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for FreeBSD.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_FREEBSD 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for HP-UX.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_HPUX 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for IRIX.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_IRIX 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Linux.
+ *
+ * Note that Android, although ostensibly a Linux-based system, will not
+ * define this. It defines SDL_PLATFORM_ANDROID instead.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_LINUX 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Android.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_ANDROID 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for a Unix-like
+ * system.
+ *
+ * Other platforms, like Linux, might define this in addition to their primary
+ * define.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_UNIX 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Apple platforms.
+ *
+ * iOS, macOS, etc will additionally define a more specific platform macro.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ *
+ * \sa SDL_PLATFORM_MACOS
+ * \sa SDL_PLATFORM_IOS
+ * \sa SDL_PLATFORM_TVOS
+ * \sa SDL_PLATFORM_VISIONOS
+ */
+#define SDL_PLATFORM_APPLE 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for tvOS.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ *
+ * \sa SDL_PLATFORM_APPLE
+ */
+#define SDL_PLATFORM_TVOS 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for VisionOS.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ *
+ * \sa SDL_PLATFORM_APPLE
+ */
+#define SDL_PLATFORM_VISIONOS 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for iOS.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ *
+ * \sa SDL_PLATFORM_APPLE
+ */
+#define SDL_PLATFORM_IOS 1
+/**
+ * A preprocessor macro that is only defined if compiling for macOS.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ *
+ * \sa SDL_PLATFORM_APPLE
+ */
+#define SDL_PLATFORM_MACOS 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Emscripten.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_EMSCRIPTEN 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for NetBSD.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_NETBSD 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for OpenBSD.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_OPENBSD 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for OS/2.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_OS2 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Tru64 (OSF/1).
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_OSF 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for QNX Neutrino.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_QNXNTO 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for RISC OS.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_RISCOS 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for SunOS/Solaris.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_SOLARIS 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Cygwin.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_CYGWIN 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Windows.
+ *
+ * This also covers several other platforms, like Microsoft GDK, Xbox, WinRT,
+ * etc. Each will have their own more-specific platform macros, too.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ *
+ * \sa SDL_PLATFORM_WIN32
+ * \sa SDL_PLATFORM_XBOXONE
+ * \sa SDL_PLATFORM_XBOXSERIES
+ * \sa SDL_PLATFORM_WINGDK
+ * \sa SDL_PLATFORM_GDK
+ */
+#define SDL_PLATFORM_WINDOWS 1
+
+/**
+ * A preprocessor macro that defined to 1 if compiling for Windows Phone.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_WINAPI_FAMILY_PHONE 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Microsoft GDK
+ * for Windows.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_WINGDK 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Xbox Series.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_XBOXSERIES 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for desktop Windows.
+ *
+ * Despite the "32", this also covers 64-bit Windows; as an informal
+ * convention, its system layer tends to still be referred to as "the Win32
+ * API."
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_WIN32 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Microsoft GDK on
+ * any platform.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_GDK 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Sony PSP.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_PSP 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Sony PlayStation
+ * 2.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_PS2 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Sony Vita.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_VITA 1
+
+/**
+ * A preprocessor macro that is only defined if compiling for Nintendo 3DS.
+ *
+ * \since This macro is available since SDL 3.2.0.
+ */
+#define SDL_PLATFORM_3DS 1
+
+#endif // SDL3PP_DOC
+
+/// @}
+
 template<class T, class BASE>
 concept DerivedWrapper =
   std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
@@ -25430,6 +25727,136 @@ inline OwnArray<Locale*> GetPreferredLocales()
   int count = 0;
   auto data = SDL_GetPreferredLocales(&count);
   return OwnArray<Locale*>{CheckError(data), size_t(count)};
+}
+
+/// @}
+
+/**
+ * @defgroup CategoryMisc Miscellaneous
+ *
+ * SDL API functions that don't fit elsewhere.
+ *
+ * @{
+ */
+
+/**
+ * Open a URL/URI in the browser or other appropriate external application.
+ *
+ * Open a URL in a separate, system-provided application. How this works will
+ * vary wildly depending on the platform. This will likely launch what makes
+ * sense to handle a specific URL's protocol (a web browser for `http://`,
+ * etc), but it might also be able to launch file managers for directories and
+ * other things.
+ *
+ * What happens when you open a URL varies wildly as well: your game window
+ * may lose focus (and may or may not lose focus if your game was fullscreen
+ * or grabbing input at the time). On mobile devices, your app will likely
+ * move to the background or your process might be paused. Any given platform
+ * may or may not handle a given URL.
+ *
+ * If this is unimplemented (or simply unavailable) for a platform, this will
+ * fail with an error. A successful result does not mean the URL loaded, just
+ * that we launched _something_ to handle it (or at least believe we did).
+ *
+ * All this to say: this function can be useful, but you should definitely
+ * test it on every platform you target.
+ *
+ * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
+ *            local files, if supported.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void OpenURL(StringParam url) { CheckError(SDL_OpenURL(url)); }
+
+/// @}
+
+/**
+ * @defgroup CategoryPower Power Management Status
+ *
+ * SDL power management routines.
+ *
+ * There is a single function in this category: GetPowerInfo().
+ *
+ * This function is useful for games on the go. This allows an app to know if
+ * it's running on a draining battery, which can be useful if the app wants to
+ * reduce processing, or perhaps framerate, to extend the duration of the
+ * battery's charge. Perhaps the app just wants to show a battery meter when
+ * fullscreen, or alert the user when the power is getting extremely low, so
+ * they can save their game.
+ *
+ * @{
+ */
+
+/**
+ * @name Power States
+ * @{
+ */
+
+/**
+ * The basic state for the system's power supply.
+ *
+ * These are results returned by GetPowerInfo().
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using PowerState = SDL_PowerState;
+
+constexpr PowerState POWERSTATE_ERROR =
+  SDL_POWERSTATE_ERROR; ///< error determining power status
+
+constexpr PowerState POWERSTATE_UNKNOWN =
+  SDL_POWERSTATE_UNKNOWN; ///< cannot determine power status
+
+constexpr PowerState POWERSTATE_ON_BATTERY =
+  SDL_POWERSTATE_ON_BATTERY; ///< Not plugged in, running on the battery.
+
+constexpr PowerState POWERSTATE_NO_BATTERY =
+  SDL_POWERSTATE_NO_BATTERY; ///< Plugged in, no battery available.
+
+constexpr PowerState POWERSTATE_CHARGING =
+  SDL_POWERSTATE_CHARGING; ///< Plugged in, charging battery.
+
+constexpr PowerState POWERSTATE_CHARGED =
+  SDL_POWERSTATE_CHARGED; ///< Plugged in, battery charged.
+
+/// @}
+
+/**
+ * Get the current power supply details.
+ *
+ * You should never take a battery status as absolute truth. Batteries
+ * (especially failing batteries) are delicate hardware, and the values
+ * reported here are best estimates based on what that hardware reports. It's
+ * not uncommon for older batteries to lose stored power much faster than it
+ * reports, or completely drain when reporting it has 20 percent left, etc.
+ *
+ * Battery status can change at any time; if you are concerned with power
+ * state, you should call this function frequently, and perhaps ignore changes
+ * until they seem to be stable for a few seconds.
+ *
+ * It's possible a platform can only report battery percentage or time left
+ * but not both.
+ *
+ * On some platforms, retrieving power supply details might be expensive. If
+ * you want to display continuous status you could call this function every
+ * minute or so.
+ *
+ * @param seconds a pointer filled in with the seconds of battery life left,
+ *                or nullptr to ignore. This will be filled in with -1 if we
+ *                can't determine a value or there is no battery.
+ * @param percent a pointer filled in with the percentage of battery life
+ *                left, between 0 and 100, or nullptr to ignore. This will be
+ *                filled in with -1 we can't determine a value or there is no
+ *                battery.
+ * @returns the current battery state or `POWERSTATE_ERROR` on failure;
+ *          call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline PowerState GetPowerInfo(int* seconds, int* percent)
+{
+  return SDL_GetPowerInfo(seconds, percent);
 }
 
 /// @}
@@ -55184,6 +55611,450 @@ inline bool HasScreenKeyboardSupport()
 inline bool Window::IsScreenKeyboardShown() const
 {
   return SDL_ScreenKeyboardShown(m_resource);
+}
+
+/// @}
+
+/**
+ * @defgroup CategoryMessagebox Message Boxes
+ *
+ * SDL offers a simple message box API, which is useful for simple alerts,
+ * such as informing the user when something fatal happens at startup without
+ * the need to build a UI for it (or informing the user _before_ your UI is
+ * ready).
+ *
+ * These message boxes are native system dialogs where possible.
+ *
+ * There is both a customizable function (MessageBox.Show()) that offers
+ * lots of options for what to display and reports on what choice the user
+ * made, and also a much-simplified version (ShowSimpleMessageBox()),
+ * merely takes a text message and title, and waits until the user presses a
+ * single "OK" UI button. Often, this is all that is necessary.
+ *
+ * @{
+ */
+
+using MessageBoxRaw = SDL_MessageBoxData;
+
+/**
+ * @name MessageBoxFlags
+ * @{
+ */
+
+/**
+ * Message box flags.
+ *
+ * If supported will display warning icon, etc.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using MessageBoxFlags = Uint32;
+
+constexpr MessageBoxFlags MESSAGEBOX_ERROR =
+  SDL_MESSAGEBOX_ERROR; ///< error dialog
+
+constexpr MessageBoxFlags MESSAGEBOX_WARNING =
+  SDL_MESSAGEBOX_WARNING; ///< warning dialog
+
+constexpr MessageBoxFlags MESSAGEBOX_INFORMATION =
+  SDL_MESSAGEBOX_INFORMATION; ///< informational dialog
+
+constexpr MessageBoxFlags MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT =
+  SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT; ///< buttons placed left to right
+
+constexpr MessageBoxFlags MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT =
+  SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT; ///< buttons placed right to left
+
+/// @}
+
+/**
+ * @name MessageBoxButtonFlags
+ * @{
+ */
+
+/**
+ * MessageBoxButtonData flags.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using MessageBoxButtonFlags = Uint32;
+
+constexpr MessageBoxButtonFlags MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT =
+  SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT; ///< Marks the default button when
+                                           ///< return is hit
+
+constexpr MessageBoxButtonFlags MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT =
+  SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT; ///< Marks the default button when
+                                           ///< escape is hit
+
+/// @}
+
+/**
+ * Individual button data.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using MessageBoxButtonData = SDL_MessageBoxButtonData;
+
+/**
+ * RGB value used in a message box color scheme
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using MessageBoxColor = SDL_MessageBoxColor;
+
+/**
+ * @name MessageBoxColorTypes
+ * @{
+ */
+
+/**
+ * An enumeration of indices inside the colors array of
+ * MessageBoxColorScheme.
+ */
+using MessageBoxColorType = SDL_MessageBoxColorType;
+
+constexpr MessageBoxColorType MESSAGEBOX_COLOR_BACKGROUND =
+  SDL_MESSAGEBOX_COLOR_BACKGROUND; ///< BACKGROUND
+
+constexpr MessageBoxColorType MESSAGEBOX_COLOR_TEXT =
+  SDL_MESSAGEBOX_COLOR_TEXT; ///< TEXT
+
+constexpr MessageBoxColorType MESSAGEBOX_COLOR_BUTTON_BORDER =
+  SDL_MESSAGEBOX_COLOR_BUTTON_BORDER; ///< BUTTON_BORDER
+
+constexpr MessageBoxColorType MESSAGEBOX_COLOR_BUTTON_BACKGROUND =
+  SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND; ///< BUTTON_BACKGROUND
+
+constexpr MessageBoxColorType MESSAGEBOX_COLOR_BUTTON_SELECTED =
+  SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED; ///< BUTTON_SELECTED
+
+constexpr MessageBoxColorType MESSAGEBOX_COLOR_COUNT =
+  SDL_MESSAGEBOX_COLOR_COUNT; ///< Count
+
+/// @}
+
+/**
+ * A set of colors to use for message box dialogs
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using MessageBoxColorScheme = SDL_MessageBoxColorScheme;
+
+/**
+ * MessageBox structure containing title, text, window, etc.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+struct MessageBox : MessageBoxRaw
+{
+  /**
+   * Wraps MessageBox.
+   *
+   * @param messageBox the value to be wrapped
+   */
+  constexpr MessageBox(const MessageBoxRaw& messageBox = {})
+    : MessageBoxRaw(messageBox)
+  {
+  }
+
+  /**
+   * Constructs from its fields.
+   *
+   * @param flags the value for flags.
+   * @param window the value for window.
+   * @param title the value for title.
+   * @param message the value for message.
+   * @param buttons the value for buttons.
+   * @param colorScheme the value for colorScheme.
+   */
+  constexpr MessageBox(MessageBoxFlags flags,
+                       WindowRef window,
+                       const char* title,
+                       const char* message,
+                       std::span<const MessageBoxButtonData> buttons,
+                       OptionalRef<const MessageBoxColorScheme> colorScheme)
+    : MessageBoxRaw{flags,
+                    window.get(),
+                    title,
+                    message,
+                    int(buttons.size()),
+                    buttons.data(),
+                    colorScheme}
+  {
+  }
+
+  /**
+   * Get the flags.
+   *
+   * @returns current flags value.
+   */
+  constexpr SDL_MessageBoxFlags GetFlags() const { return flags; }
+
+  /**
+   * Set the flags.
+   *
+   * @param newFlags the new flags value.
+   * @returns Reference to self.
+   */
+  constexpr MessageBox& SetFlags(SDL_MessageBoxFlags newFlags)
+  {
+    flags = newFlags;
+    return *this;
+  }
+
+  /**
+   * Get the window.
+   *
+   * @returns current window value.
+   */
+  constexpr SDL_Window* GetWindow() const { return window; }
+
+  /**
+   * Set the window.
+   *
+   * @param newWindow the new window value.
+   * @returns Reference to self.
+   */
+  constexpr MessageBox& SetWindow(SDL_Window* newWindow)
+  {
+    window = newWindow;
+    return *this;
+  }
+
+  /**
+   * Get the title.
+   *
+   * @returns current title value.
+   */
+  constexpr const char* GetTitle() const { return title; }
+
+  /**
+   * Set the title.
+   *
+   * @param newTitle the new title value.
+   * @returns Reference to self.
+   */
+  constexpr MessageBox& SetTitle(const char* newTitle)
+  {
+    title = newTitle;
+    return *this;
+  }
+
+  /**
+   * Get the message.
+   *
+   * @returns current message value.
+   */
+  constexpr const char* GetMessage() const { return message; }
+
+  /**
+   * Set the message.
+   *
+   * @param newMessage the new message value.
+   * @returns Reference to self.
+   */
+  constexpr MessageBox& SetMessage(const char* newMessage)
+  {
+    message = newMessage;
+    return *this;
+  }
+
+  /**
+   * Get the numbuttons.
+   *
+   * @returns current numbuttons value.
+   */
+  constexpr int GetNumbuttons() const { return numbuttons; }
+
+  /**
+   * Set the numbuttons.
+   *
+   * @param newNumbuttons the new numbuttons value.
+   * @returns Reference to self.
+   */
+  constexpr MessageBox& SetNumbuttons(int newNumbuttons)
+  {
+    numbuttons = newNumbuttons;
+    return *this;
+  }
+
+  /**
+   * Get the buttons.
+   *
+   * @returns current buttons.
+   */
+  constexpr std::span<const MessageBoxButtonData> GetButtons() const
+  {
+    if (numbuttons == 0) return {};
+    return std::span(buttons, size_t(numbuttons));
+  }
+
+  /**
+   * Set the buttons.
+   *
+   * @param newButtons the new buttons value.
+   * @returns Reference to self.
+   */
+  constexpr MessageBox& SetButtons(
+    std::span<const MessageBoxButtonData> newButtons)
+  {
+    if (newButtons.empty()) {
+      numbuttons = 0;
+      buttons = nullptr;
+    } else {
+      numbuttons = newButtons.size();
+      buttons = newButtons.data();
+    }
+    return *this;
+  }
+
+  /**
+   * Get the colorScheme.
+   *
+   * @returns current colorScheme value.
+   */
+  constexpr const MessageBoxColorScheme* GetColorScheme() const
+  {
+    return colorScheme;
+  }
+
+  /**
+   * Set the colorScheme.
+   *
+   * @param newColorScheme the new colorScheme value.
+   * @returns Reference to self.
+   */
+  constexpr MessageBox& SetColorScheme(
+    OptionalRef<const MessageBoxColorScheme> newColorScheme)
+  {
+    colorScheme = newColorScheme;
+    return *this;
+  }
+
+  /**
+   * Create a modal message box.
+   *
+   * If your needs aren't complex, it might be easier to use
+   * ShowSimpleMessageBox.
+   *
+   * This function should be called on the thread that created the parent
+   * window, or on the main thread if the messagebox has no parent. It will
+   * block execution of that thread until the user clicks a button or closes the
+   * messagebox.
+   *
+   * This function may be called at any time, even before Init(). This makes
+   * it useful for reporting errors like a failure to create a renderer or
+   * OpenGL context.
+   *
+   * On X11, SDL rolls its own dialog box with X11 primitives instead of a
+   * formal toolkit like GTK+ or Qt.
+   *
+   * Note that if Init() would fail because there isn't any available video
+   * target, this function is likely to fail for the same reasons. If this is a
+   * concern, check the return value from this function and fall back to writing
+   * to stderr if you can.
+   *
+   *                       other options.
+   * @param buttonid the pointer to which user id of hit button should be
+   *                 copied.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ShowSimpleMessageBox
+   */
+  void Show(int* buttonid) const;
+};
+
+/**
+ * Create a modal message box.
+ *
+ * If your needs aren't complex, it might be easier to use
+ * ShowSimpleMessageBox.
+ *
+ * This function should be called on the thread that created the parent
+ * window, or on the main thread if the messagebox has no parent. It will
+ * block execution of that thread until the user clicks a button or closes the
+ * messagebox.
+ *
+ * This function may be called at any time, even before Init(). This makes
+ * it useful for reporting errors like a failure to create a renderer or
+ * OpenGL context.
+ *
+ * On X11, SDL rolls its own dialog box with X11 primitives instead of a
+ * formal toolkit like GTK+ or Qt.
+ *
+ * Note that if Init() would fail because there isn't any available video
+ * target, this function is likely to fail for the same reasons. If this is a
+ * concern, check the return value from this function and fall back to writing
+ * to stderr if you can.
+ *
+ * @param messageboxdata the MessageBox structure with title, text and
+ *                       other options.
+ * @param buttonid the pointer to which user id of hit button should be
+ *                 copied.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ShowSimpleMessageBox
+ */
+inline void ShowMessageBox(const MessageBoxRaw& messageboxdata, int* buttonid)
+{
+  CheckError(SDL_ShowMessageBox(&messageboxdata, buttonid));
+}
+
+inline void MessageBox::Show(int* buttonid) const
+{
+  SDL::ShowMessageBox(*this, buttonid);
+}
+
+/**
+ * Display a simple modal message box.
+ *
+ * If your needs aren't complex, this function is preferred over
+ * MessageBox.Show.
+ *
+ * `flags` may be any of the following:
+ *
+ * - `MESSAGEBOX_ERROR`: error dialog
+ * - `MESSAGEBOX_WARNING`: warning dialog
+ * - `MESSAGEBOX_INFORMATION`: informational dialog
+ *
+ * This function should be called on the thread that created the parent
+ * window, or on the main thread if the messagebox has no parent. It will
+ * block execution of that thread until the user clicks a button or closes the
+ * messagebox.
+ *
+ * This function may be called at any time, even before Init(). This makes
+ * it useful for reporting errors like a failure to create a renderer or
+ * OpenGL context.
+ *
+ * On X11, SDL rolls its own dialog box with X11 primitives instead of a
+ * formal toolkit like GTK+ or Qt.
+ *
+ * Note that if Init() would fail because there isn't any available video
+ * target, this function is likely to fail for the same reasons. If this is a
+ * concern, check the return value from this function and fall back to writing
+ * to stderr if you can.
+ *
+ * @param flags an MessageBoxFlags value.
+ * @param title UTF-8 title text.
+ * @param message UTF-8 message text.
+ * @param window the parent window, or nullptr for no parent.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa MessageBox.Show
+ */
+inline void ShowSimpleMessageBox(MessageBoxFlags flags,
+                                 StringParam title,
+                                 StringParam message,
+                                 WindowParam window)
+{
+  CheckError(SDL_ShowSimpleMessageBox(flags, title, message, window));
 }
 
 /// @}

@@ -57806,53 +57806,6 @@
                     "MessageBoxRaw{flags, window, title, message, numbuttons, buttons, colorScheme}"
                   ]
                 }
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const SDL_MessageBoxData &",
-                    "name": "messageBox",
-                    "default": "{}"
-                  }
-                ],
-                "name": "MessageBox",
-                "doc": "Wraps MessageBox.\n\n@param messageBox the value to be wrapped"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "MessageBoxFlags",
-                    "name": "flags"
-                  },
-                  {
-                    "type": "WindowParam",
-                    "name": "window"
-                  },
-                  {
-                    "type": "const char *",
-                    "name": "title"
-                  },
-                  {
-                    "type": "const char *",
-                    "name": "message"
-                  },
-                  {
-                    "type": "std::span<const MessageBoxButtonData>",
-                    "name": "buttons"
-                  },
-                  {
-                    "type": "OptionalRef<const MessageBoxColorScheme>",
-                    "name": "colorScheme"
-                  }
-                ],
-                "name": "MessageBox",
-                "doc": "Wraps MessageBox.\n\n@param messageBox the value to be wrapped"
               }
             ],
             "operator bool": {
@@ -58162,7 +58115,8 @@
         "SDL3/SDL_messagebox.h"
       ],
       "localIncludes": [
-        "SDL3pp_stdinc.h"
+        "SDL3pp_stdinc.h",
+        "SDL3pp_video.h"
       ]
     },
     "SDL3pp_dialog.h": {

@@ -2499,7 +2499,7 @@ const transform = {
       transform: {}
     },
     "SDL_messagebox.h": {
-      localIncludes: ['SDL3pp_stdinc.h'],
+      localIncludes: ["SDL3pp_stdinc.h", "SDL3pp_video.h"],
       transform: {
         "SDL_MessageBoxFlags": {
           enum: {
@@ -2522,51 +2522,6 @@ const transform = {
           name: "MessageBox",
           wrapper: true,
           entries: {
-            "MessageBox": [
-              {
-                kind: "function",
-                type: "",
-                constexpr: true,
-                parameters: [
-                  {
-                    type: "const SDL_MessageBoxData &",
-                    name: "messageBox",
-                    default: "{}"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "",
-                constexpr: true,
-                parameters: [
-                  {
-                    type: "MessageBoxFlags",
-                    name: "flags"
-                  },
-                  {
-                    type: "WindowParam",
-                    name: "window"
-                  },
-                  {
-                    type: "const char *",
-                    name: "title"
-                  },
-                  {
-                    type: "const char *",
-                    name: "message"
-                  },
-                  {
-                    type: "std::span<const MessageBoxButtonData>",
-                    name: "buttons"
-                  },
-                  {
-                    type: "OptionalRef<const MessageBoxColorScheme>",
-                    name: "colorScheme"
-                  }
-                ]
-              }
-            ],
             "SDL_ShowMessageBox": "function"
           }
         },
