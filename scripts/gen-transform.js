@@ -1997,12 +1997,12 @@ const transform = {
     },
     "SDL_keycode.h": {
       localIncludes: ['SDL3pp_scancode.h', 'SDL3pp_stdinc.h'],
-      wrappers: {
+      transform: {
         "SDL_Keymod": {
           enum: {
             prefix: "SDL_KMOD_",
           },
-          includeAfter: "__begin"
+          after: "__begin"
         },
         "SDL_Keycode": {
           enum: {
@@ -2028,9 +2028,7 @@ const transform = {
               parameters: []
             }
           }
-        }
-      },
-      transform: {
+        },
         "SDL_SCANCODE_TO_KEYCODE": {
           name: "ScancodeToKeycode",
           kind: "function",

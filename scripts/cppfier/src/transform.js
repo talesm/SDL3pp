@@ -1784,7 +1784,7 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
     let parametersChanged = false;
     const targetParam0 = targetParameters[0];
 
-    const sourceParam0 = sourceEntry.parameters[0];
+    const sourceParam0 = sourceEntry.parameters?.[0];
     if (!targetParam0 || typeof targetParam0 === "string" || targetParam0.type) {
       switch (typeof sourceParam0) {
         case 'object':

@@ -197,7 +197,7 @@ inline void SetModState(Keymod modstate) { SDL_SetModState(modstate); }
  * @param modstate the modifier state to use when translating the scancode to
  *                 a keycode.
  * @param key_event true if the keycode will be used in key events.
- * @returns the Keycode that corresponds to the given Scancode.
+ * @post the Keycode that corresponds to the given Scancode.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -206,18 +206,16 @@ inline void SetModState(Keymod modstate) { SDL_SetModState(modstate); }
  * @sa Keycode.GetName
  * @sa Keycode.GetScancode
  */
-inline Keycode Keycode::Keycode(Scancode scancode,
-                                Keymod modstate,
-                                bool key_event)
+inline Keycode::Keycode(Scancode scancode, Keymod modstate, bool key_event)
+  : m_keycode(SDL_GetKeyFromScancode(scancode, modstate, key_event))
 {
-  return SDL_GetKeyFromScancode(scancode, modstate, key_event);
 }
 
 /**
  * Get a key code from a human-readable name.
  *
  * @param name the human-readable key name.
- * @returns key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call
+ * @post key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call
  *          GetError() for more information.
  *
  * @threadsafety This function is not thread safe.
@@ -228,9 +226,9 @@ inline Keycode Keycode::Keycode(Scancode scancode,
  * @sa Keycode.GetName
  * @sa Scancode.Scancode
  */
-inline Keycode Keycode::Keycode(StringParam name)
+inline Keycode::Keycode(StringParam name)
+  : m_keycode(SDL_GetKeyFromName(name))
 {
-  return SDL_GetKeyFromName(name);
 }
 
 /**
@@ -240,7 +238,6 @@ inline Keycode Keycode::Keycode(StringParam name)
  * Note that there may be multiple scancode+modifier states that can generate
  * this keycode, this will just return the first one found.
  *
- * @param key the desired Keycode to query.
  * @param modstate a pointer to the modifier state that would be used when the
  *                 scancode generates this key, may be nullptr.
  * @returns the Scancode that corresponds to the given Keycode.
@@ -252,9 +249,9 @@ inline Keycode Keycode::Keycode(StringParam name)
  * @sa Keycode.Keycode
  * @sa Scancode.GetName
  */
-inline Scancode Keycode::GetScancode(Keycode key, Keymod* modstate) const
+inline Scancode Keycode::GetScancode(Keymod* modstate) const
 {
-  return SDL_GetScancodeFromKey(key, modstate);
+  return SDL_GetScancodeFromKey(m_keycode, modstate);
 }
 
 /**
@@ -331,7 +328,6 @@ inline Scancode::Scancode(StringParam name)
  *
  * Letters will be presented in their uppercase form, if applicable.
  *
- * @param key the desired Keycode to query.
  * @returns a UTF-8 encoded string of the key name.
  *
  * @threadsafety This function is not thread safe.
@@ -342,9 +338,9 @@ inline Scancode::Scancode(StringParam name)
  * @sa Keycode.Keycode
  * @sa Keycode.GetScancode
  */
-inline const char* Keycode::GetName(Keycode key) const
+inline const char* Keycode::GetName() const
 {
-  return SDL_GetKeyName(key);
+  return SDL_GetKeyName(m_keycode);
 }
 
 /**

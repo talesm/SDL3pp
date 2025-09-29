@@ -1381,7 +1381,7 @@
           }
         },
         "SDL_HINT_KEYCODE_OPTIONS": {
-          "doc": "A variable that controls keycode representation in keyboard events.\n\nThis variable is a comma separated set of options for translating keycodes\nin events:\n\n- \"none\": Keycode options are cleared, this overrides other options.\n- \"hide_numpad\": The numpad keysyms will be translated into their\n  non-numpad versions based on the current NumLock state. For example,\n  SDLK_KP_4 would become SDLK_4 if SDL_KMOD_NUM is set in the event\n  modifiers, and SDLK_LEFT if it is unset.\n- \"french_numbers\": The number row on French keyboards is inverted, so\n  pressing the 1 key would yield the keycode SDLK_1, or '1', instead of\n  SDLK_AMPERSAND, or '&'\n- \"latin_letters\": For keyboards using non-Latin letters, such as Russian\n  or Thai, the letter keys generate keycodes as though it had an en_US\n  layout. e.g. pressing the key associated with SCANCODE_A on a Russian\n  keyboard would yield 'a' instead of a Cyrillic letter.\n\nThe default value for this hint is \"french_numbers,latin_letters\"\n\nSome platforms like Emscripten only provide modified keycodes and the\noptions are not used.\n\nThese options do not affect the return value of Keycode.Keycode() or\nKeycode.GetScancode(), they just apply to the keycode included in key\nevents.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable that controls keycode representation in keyboard events.\n\nThis variable is a comma separated set of options for translating keycodes\nin events:\n\n- \"none\": Keycode options are cleared, this overrides other options.\n- \"hide_numpad\": The numpad keysyms will be translated into their\n  non-numpad versions based on the current NumLock state. For example,\n  SDLK_KP_4 would become SDLK_4 if KMOD_NUM is set in the event\n  modifiers, and SDLK_LEFT if it is unset.\n- \"french_numbers\": The number row on French keyboards is inverted, so\n  pressing the 1 key would yield the keycode SDLK_1, or '1', instead of\n  SDLK_AMPERSAND, or '&'\n- \"latin_letters\": For keyboards using non-Latin letters, such as Russian\n  or Thai, the letter keys generate keycodes as though it had an en_US\n  layout. e.g. pressing the key associated with SCANCODE_A on a Russian\n  keyboard would yield 'a' instead of a Cyrillic letter.\n\nThe default value for this hint is \"french_numbers,latin_letters\"\n\nSome platforms like Emscripten only provide modified keycodes and the\noptions are not used.\n\nThese options do not affect the return value of Keycode.Keycode() or\nKeycode.GetScancode(), they just apply to the keycode included in key\nevents.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_KEYCODE_OPTIONS",
           "kind": "def",
           "value": "\"SDL_KEYCODE_OPTIONS\"",
@@ -38493,10 +38493,10 @@
         },
         "Keycode::Keycode": [
           {
-            "doc": "Get the key code corresponding to the given scancode according to the\ncurrent keyboard layout.\n\nIf you want to get the keycode as it would be delivered in key events,\nincluding options specified in SDL_HINT_KEYCODE_OPTIONS, then you should\npass `key_event` as true. Otherwise this function simply translates the\nscancode based on the given modifier state.\n\n@param scancode the desired Scancode to query.\n@param modstate the modifier state to use when translating the scancode to\n                a keycode.\n@param key_event true if the keycode will be used in key events.\n@returns the Keycode that corresponds to the given Scancode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.GetName\n@sa Keycode.GetScancode",
+            "doc": "Get the key code corresponding to the given scancode according to the\ncurrent keyboard layout.\n\nIf you want to get the keycode as it would be delivered in key events,\nincluding options specified in SDL_HINT_KEYCODE_OPTIONS, then you should\npass `key_event` as true. Otherwise this function simply translates the\nscancode based on the given modifier state.\n\n@param scancode the desired Scancode to query.\n@param modstate the modifier state to use when translating the scancode to\n                a keycode.\n@param key_event true if the keycode will be used in key events.\n@post the Keycode that corresponds to the given Scancode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.GetName\n@sa Keycode.GetScancode",
             "name": "Keycode::Keycode",
             "kind": "function",
-            "type": "Keycode",
+            "type": "",
             "parameters": [
               {
                 "name": "scancode",
@@ -38511,39 +38511,47 @@
                 "type": "bool"
               }
             ],
-            "sourceName": "SDL_GetKeyFromScancode"
+            "sourceName": "SDL_GetKeyFromScancode",
+            "hints": {
+              "self": "m_keycode",
+              "private": true
+            }
           },
           {
-            "doc": "Get a key code from a human-readable name.\n\n@param name the human-readable key name.\n@returns key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call\n         GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Keycode.GetName\n@sa Scancode.Scancode",
+            "doc": "Get a key code from a human-readable name.\n\n@param name the human-readable key name.\n@post key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call\n         GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Keycode.GetName\n@sa Scancode.Scancode",
             "name": "Keycode::Keycode",
             "kind": "function",
-            "type": "Keycode",
+            "type": "",
             "parameters": [
               {
                 "name": "name",
                 "type": "StringParam"
               }
             ],
-            "sourceName": "SDL_GetKeyFromName"
+            "sourceName": "SDL_GetKeyFromName",
+            "hints": {
+              "self": "m_keycode",
+              "private": true
+            }
           }
         ],
         "Keycode::GetScancode": {
-          "doc": "Get the scancode corresponding to the given key code according to the\ncurrent keyboard layout.\n\nNote that there may be multiple scancode+modifier states that can generate\nthis keycode, this will just return the first one found.\n\n@param key the desired Keycode to query.\n@param modstate a pointer to the modifier state that would be used when the\n                scancode generates this key, may be nullptr.\n@returns the Scancode that corresponds to the given Keycode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Scancode.GetName",
+          "doc": "Get the scancode corresponding to the given key code according to the\ncurrent keyboard layout.\n\nNote that there may be multiple scancode+modifier states that can generate\nthis keycode, this will just return the first one found.\n\n@param modstate a pointer to the modifier state that would be used when the\n                scancode generates this key, may be nullptr.\n@returns the Scancode that corresponds to the given Keycode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Scancode.GetName",
           "name": "Keycode::GetScancode",
           "kind": "function",
           "type": "Scancode",
           "parameters": [
-            {
-              "name": "key",
-              "type": "Keycode"
-            },
             {
               "name": "modstate",
               "type": "Keymod *"
             }
           ],
           "sourceName": "SDL_GetScancodeFromKey",
-          "immutable": true
+          "immutable": true,
+          "hints": {
+            "self": "m_keycode",
+            "private": true
+          }
         },
         "Scancode::SetName": {
           "doc": "Set a human-readable name for a scancode.\n\n@param name the name to use for the scancode, encoded as UTF-8. The string\n            is not copied, so the pointer given to this function must stay\n            valid while SDL is being used.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Scancode.GetName",
@@ -38594,18 +38602,17 @@
           }
         },
         "Keycode::GetName": {
-          "doc": "Get a human-readable name for a key.\n\nIf the key doesn't have a name, this function returns an empty string (\"\").\n\nLetters will be presented in their uppercase form, if applicable.\n\n@param key the desired Keycode to query.\n@returns a UTF-8 encoded string of the key name.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Keycode.Keycode\n@sa Keycode.GetScancode",
+          "doc": "Get a human-readable name for a key.\n\nIf the key doesn't have a name, this function returns an empty string (\"\").\n\nLetters will be presented in their uppercase form, if applicable.\n\n@returns a UTF-8 encoded string of the key name.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Keycode.Keycode\n@sa Keycode.GetScancode",
           "name": "Keycode::GetName",
           "kind": "function",
           "type": "const char *",
-          "parameters": [
-            {
-              "name": "key",
-              "type": "Keycode"
-            }
-          ],
+          "parameters": [],
           "sourceName": "SDL_GetKeyName",
-          "immutable": true
+          "immutable": true,
+          "hints": {
+            "self": "m_keycode",
+            "private": true
+          }
         },
         "Window::StartTextInput": [
           {
@@ -38934,26 +38941,2725 @@
       "name": "SDL3pp_keycode.h",
       "doc": "@defgroup CategoryKeycode Category Keycode\n\nDefines constants which identify keyboard keys and modifiers.\n\nPlease refer to the Best Keyboard Practices document for details on what\nthis information means and how best to use it.\n\nhttps://wiki.libsdl.org/SDL3/BestKeyboardPractices",
       "entries": {
+        "KeycodeRaw": {
+          "name": "KeycodeRaw",
+          "kind": "alias",
+          "type": "SDL_Keycode"
+        },
+        "Keymod": {
+          "doc": "Valid key modifiers (possibly OR'd together).\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "Keymod",
+          "kind": "alias",
+          "type": "Uint16",
+          "sourceName": "SDL_Keymod"
+        },
+        "KMOD_NONE": {
+          "doc": "no modifier is applicable.",
+          "name": "KMOD_NONE",
+          "kind": "var",
+          "value": "0x0000u",
+          "sourceName": "SDL_KMOD_NONE",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_LSHIFT": {
+          "doc": "the left Shift key is down.",
+          "name": "KMOD_LSHIFT",
+          "kind": "var",
+          "value": "0x0001u",
+          "sourceName": "SDL_KMOD_LSHIFT",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_RSHIFT": {
+          "doc": "the right Shift key is down.",
+          "name": "KMOD_RSHIFT",
+          "kind": "var",
+          "value": "0x0002u",
+          "sourceName": "SDL_KMOD_RSHIFT",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_LEVEL5": {
+          "doc": "the Level 5 Shift key is down.",
+          "name": "KMOD_LEVEL5",
+          "kind": "var",
+          "value": "0x0004u",
+          "sourceName": "SDL_KMOD_LEVEL5",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_LCTRL": {
+          "doc": "the left Ctrl (Control) key is down.",
+          "name": "KMOD_LCTRL",
+          "kind": "var",
+          "value": "0x0040u",
+          "sourceName": "SDL_KMOD_LCTRL",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_RCTRL": {
+          "doc": "the right Ctrl (Control) key is down.",
+          "name": "KMOD_RCTRL",
+          "kind": "var",
+          "value": "0x0080u",
+          "sourceName": "SDL_KMOD_RCTRL",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_LALT": {
+          "doc": "the left Alt key is down.",
+          "name": "KMOD_LALT",
+          "kind": "var",
+          "value": "0x0100u",
+          "sourceName": "SDL_KMOD_LALT",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_RALT": {
+          "doc": "the right Alt key is down.",
+          "name": "KMOD_RALT",
+          "kind": "var",
+          "value": "0x0200u",
+          "sourceName": "SDL_KMOD_RALT",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_LGUI": {
+          "doc": "the left GUI key (often the Windows key) is down.",
+          "name": "KMOD_LGUI",
+          "kind": "var",
+          "value": "0x0400u",
+          "sourceName": "SDL_KMOD_LGUI",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_RGUI": {
+          "doc": "the right GUI key (often the Windows key) is down.",
+          "name": "KMOD_RGUI",
+          "kind": "var",
+          "value": "0x0800u",
+          "sourceName": "SDL_KMOD_RGUI",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_NUM": {
+          "doc": "the Num Lock key (may be located on an extended keypad) is down.",
+          "name": "KMOD_NUM",
+          "kind": "var",
+          "value": "0x1000u",
+          "sourceName": "SDL_KMOD_NUM",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_CAPS": {
+          "doc": "the Caps Lock key is down.",
+          "name": "KMOD_CAPS",
+          "kind": "var",
+          "value": "0x2000u",
+          "sourceName": "SDL_KMOD_CAPS",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_MODE": {
+          "doc": "the !AltGr key is down.",
+          "name": "KMOD_MODE",
+          "kind": "var",
+          "value": "0x4000u",
+          "sourceName": "SDL_KMOD_MODE",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_SCROLL": {
+          "doc": "the Scroll Lock key is down.",
+          "name": "KMOD_SCROLL",
+          "kind": "var",
+          "value": "0x8000u",
+          "sourceName": "SDL_KMOD_SCROLL",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_CTRL": {
+          "doc": "Any Ctrl key is down.",
+          "name": "KMOD_CTRL",
+          "kind": "var",
+          "value": "(SDL_KMOD_LCTRL | SDL_KMOD_RCTRL)",
+          "sourceName": "SDL_KMOD_CTRL",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_SHIFT": {
+          "doc": "Any Shift key is down.",
+          "name": "KMOD_SHIFT",
+          "kind": "var",
+          "value": "(SDL_KMOD_LSHIFT | SDL_KMOD_RSHIFT)",
+          "sourceName": "SDL_KMOD_SHIFT",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_ALT": {
+          "doc": "Any Alt key is down.",
+          "name": "KMOD_ALT",
+          "kind": "var",
+          "value": "(SDL_KMOD_LALT | SDL_KMOD_RALT)",
+          "sourceName": "SDL_KMOD_ALT",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_GUI": {
+          "doc": "Any GUI key is down.",
+          "name": "KMOD_GUI",
+          "kind": "var",
+          "value": "(SDL_KMOD_LGUI | SDL_KMOD_RGUI)",
+          "sourceName": "SDL_KMOD_GUI",
+          "constexpr": true,
+          "type": "Keymod"
+        },
         "Keycode": {
           "doc": "The SDL virtual key representation.\n\nValues of this type are used to represent keyboard keys using the current\nlayout of the keyboard. These values include Unicode values representing\nthe unmodified character that would be generated by pressing the key, or an\n`SDLK_*` constant for those keys that do not generate characters.\n\nA special exception is the number keys at the top of the keyboard which map\nto SDLK_0...SDLK_9 on AZERTY layouts.\n\nKeys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or\nunicode code point.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "Keycode",
-          "kind": "alias",
-          "type": "SDL_Keycode",
-          "sourceName": "SDL_Keycode"
+          "kind": "struct",
+          "type": "",
+          "sourceName": "SDL_Keycode",
+          "entries": {
+            "m_keycode": {
+              "kind": "var",
+              "name": "m_keycode",
+              "type": "KeycodeRaw"
+            },
+            "Keycode": [
+              {
+                "kind": "function",
+                "name": "Keycode",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "KeycodeRaw",
+                    "name": "keycode",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps Keycode.\n\n@param keycode the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "m_keycode(keycode)"
+                  ],
+                  "changeAccess": "public"
+                }
+              },
+              {
+                "doc": "Get the key code corresponding to the given scancode according to the\ncurrent keyboard layout.\n\nIf you want to get the keycode as it would be delivered in key events,\nincluding options specified in SDL_HINT_KEYCODE_OPTIONS, then you should\npass `key_event` as true. Otherwise this function simply translates the\nscancode based on the given modifier state.\n\n@param scancode the desired Scancode to query.\n@param modstate the modifier state to use when translating the scancode to\n                a keycode.\n@param key_event true if the keycode will be used in key events.\n@post the Keycode that corresponds to the given Scancode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.GetName\n@sa Keycode.GetScancode",
+                "name": "Keycode",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "scancode",
+                    "type": "Scancode"
+                  },
+                  {
+                    "name": "modstate",
+                    "type": "Keymod"
+                  },
+                  {
+                    "name": "key_event",
+                    "type": "bool"
+                  }
+                ],
+                "sourceName": "SDL_GetKeyFromScancode",
+                "proto": true
+              },
+              {
+                "doc": "Get a key code from a human-readable name.\n\n@param name the human-readable key name.\n@post key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call\n         GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Keycode.GetName\n@sa Scancode.Scancode",
+                "name": "Keycode",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "name",
+                    "type": "StringParam"
+                  }
+                ],
+                "sourceName": "SDL_GetKeyFromName",
+                "proto": true
+              }
+            ],
+            "operator<=>": [
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Keycode &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
+                }
+              },
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "KeycodeRaw",
+                    "name": "keycode"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator<=>(Keycode(keycode));"
+                }
+              }
+            ],
+            "operator KeycodeRaw": {
+              "kind": "function",
+              "name": "operator KeycodeRaw",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Unwraps to the underlying Keycode.\n\n@returns the underlying KeycodeRaw.",
+              "hints": {
+                "body": "return m_keycode;"
+              }
+            },
+            "operator bool": {
+              "kind": "function",
+              "name": "operator bool",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return m_keycode != 0;"
+              }
+            },
+            "IsExtended": {
+              "doc": "",
+              "name": "IsExtended",
+              "kind": "function",
+              "value": "(1u << 29)",
+              "sourceName": "SDLK_EXTENDED_MASK",
+              "parameters": [],
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "hints": {
+                "delegate": "SDL::SDLK_EXTENDED_MASK"
+              },
+              "proto": true
+            },
+            "IsScancode": {
+              "doc": "",
+              "name": "IsScancode",
+              "kind": "function",
+              "value": "(1u << 30)",
+              "sourceName": "SDLK_SCANCODE_MASK",
+              "parameters": [],
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "hints": {
+                "delegate": "SDL::SDLK_SCANCODE_MASK"
+              },
+              "proto": true
+            },
+            "GetScancode": {
+              "doc": "Get the scancode corresponding to the given key code according to the\ncurrent keyboard layout.\n\nNote that there may be multiple scancode+modifier states that can generate\nthis keycode, this will just return the first one found.\n\n@param modstate a pointer to the modifier state that would be used when the\n                scancode generates this key, may be nullptr.\n@returns the Scancode that corresponds to the given Keycode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Scancode.GetName",
+              "name": "GetScancode",
+              "kind": "function",
+              "type": "Scancode",
+              "parameters": [
+                {
+                  "name": "modstate",
+                  "type": "Keymod *"
+                }
+              ],
+              "sourceName": "SDL_GetScancodeFromKey",
+              "immutable": true,
+              "proto": true
+            },
+            "GetName": {
+              "doc": "Get a human-readable name for a key.\n\nIf the key doesn't have a name, this function returns an empty string (\"\").\n\nLetters will be presented in their uppercase form, if applicable.\n\n@returns a UTF-8 encoded string of the key name.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Keycode.Keycode\n@sa Keycode.GetScancode",
+              "name": "GetName",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [],
+              "sourceName": "SDL_GetKeyName",
+              "immutable": true,
+              "proto": true
+            }
+          },
+          "hints": {
+            "self": "m_keycode",
+            "private": true
+          }
         },
-        "SDL_SDLK_EXTENDED_MASK": {
+        "KEYCODE_UNKNOWN": {
+          "doc": "0",
+          "name": "KEYCODE_UNKNOWN",
+          "kind": "var",
+          "value": "0x00000000u",
+          "sourceName": "SDLK_UNKNOWN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_RETURN": {
+          "doc": "'\\r'",
+          "name": "KEYCODE_RETURN",
+          "kind": "var",
+          "value": "0x0000000du",
+          "sourceName": "SDLK_RETURN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_ESCAPE": {
+          "doc": "'\\x1B'",
+          "name": "KEYCODE_ESCAPE",
+          "kind": "var",
+          "value": "0x0000001bu",
+          "sourceName": "SDLK_ESCAPE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_BACKSPACE": {
+          "doc": "'\\b'",
+          "name": "KEYCODE_BACKSPACE",
+          "kind": "var",
+          "value": "0x00000008u",
+          "sourceName": "SDLK_BACKSPACE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_TAB": {
+          "doc": "'\\t'",
+          "name": "KEYCODE_TAB",
+          "kind": "var",
+          "value": "0x00000009u",
+          "sourceName": "SDLK_TAB",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_SPACE": {
+          "doc": "' '",
+          "name": "KEYCODE_SPACE",
+          "kind": "var",
+          "value": "0x00000020u",
+          "sourceName": "SDLK_SPACE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_EXCLAIM": {
+          "doc": "'!'",
+          "name": "KEYCODE_EXCLAIM",
+          "kind": "var",
+          "value": "0x00000021u",
+          "sourceName": "SDLK_EXCLAIM",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_DBLAPOSTROPHE": {
+          "doc": "'\"'",
+          "name": "KEYCODE_DBLAPOSTROPHE",
+          "kind": "var",
+          "value": "0x00000022u",
+          "sourceName": "SDLK_DBLAPOSTROPHE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_HASH": {
+          "doc": "'#'",
+          "name": "KEYCODE_HASH",
+          "kind": "var",
+          "value": "0x00000023u",
+          "sourceName": "SDLK_HASH",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_DOLLAR": {
+          "doc": "'$'",
+          "name": "KEYCODE_DOLLAR",
+          "kind": "var",
+          "value": "0x00000024u",
+          "sourceName": "SDLK_DOLLAR",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_PERCENT": {
+          "doc": "'%'",
+          "name": "KEYCODE_PERCENT",
+          "kind": "var",
+          "value": "0x00000025u",
+          "sourceName": "SDLK_PERCENT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AMPERSAND": {
+          "doc": "'&'",
+          "name": "KEYCODE_AMPERSAND",
+          "kind": "var",
+          "value": "0x00000026u",
+          "sourceName": "SDLK_AMPERSAND",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_APOSTROPHE": {
+          "doc": "'\\''",
+          "name": "KEYCODE_APOSTROPHE",
+          "kind": "var",
+          "value": "0x00000027u",
+          "sourceName": "SDLK_APOSTROPHE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LEFTPAREN": {
+          "doc": "'('",
+          "name": "KEYCODE_LEFTPAREN",
+          "kind": "var",
+          "value": "0x00000028u",
+          "sourceName": "SDLK_LEFTPAREN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_RIGHTPAREN": {
+          "doc": "')'",
+          "name": "KEYCODE_RIGHTPAREN",
+          "kind": "var",
+          "value": "0x00000029u",
+          "sourceName": "SDLK_RIGHTPAREN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_ASTERISK": {
+          "doc": "'*'",
+          "name": "KEYCODE_ASTERISK",
+          "kind": "var",
+          "value": "0x0000002au",
+          "sourceName": "SDLK_ASTERISK",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_PLUS": {
+          "doc": "'+'",
+          "name": "KEYCODE_PLUS",
+          "kind": "var",
+          "value": "0x0000002bu",
+          "sourceName": "SDLK_PLUS",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_COMMA": {
+          "doc": "','",
+          "name": "KEYCODE_COMMA",
+          "kind": "var",
+          "value": "0x0000002cu",
+          "sourceName": "SDLK_COMMA",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MINUS": {
+          "doc": "'-'",
+          "name": "KEYCODE_MINUS",
+          "kind": "var",
+          "value": "0x0000002du",
+          "sourceName": "SDLK_MINUS",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_PERIOD": {
+          "doc": "'.'",
+          "name": "KEYCODE_PERIOD",
+          "kind": "var",
+          "value": "0x0000002eu",
+          "sourceName": "SDLK_PERIOD",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_SLASH": {
+          "doc": "'/'",
+          "name": "KEYCODE_SLASH",
+          "kind": "var",
+          "value": "0x0000002fu",
+          "sourceName": "SDLK_SLASH",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_0": {
+          "doc": "'0'",
+          "name": "KEYCODE_0",
+          "kind": "var",
+          "value": "0x00000030u",
+          "sourceName": "SDLK_0",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_1": {
+          "doc": "'1'",
+          "name": "KEYCODE_1",
+          "kind": "var",
+          "value": "0x00000031u",
+          "sourceName": "SDLK_1",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_2": {
+          "doc": "'2'",
+          "name": "KEYCODE_2",
+          "kind": "var",
+          "value": "0x00000032u",
+          "sourceName": "SDLK_2",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_3": {
+          "doc": "'3'",
+          "name": "KEYCODE_3",
+          "kind": "var",
+          "value": "0x00000033u",
+          "sourceName": "SDLK_3",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_4": {
+          "doc": "'4'",
+          "name": "KEYCODE_4",
+          "kind": "var",
+          "value": "0x00000034u",
+          "sourceName": "SDLK_4",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_5": {
+          "doc": "'5'",
+          "name": "KEYCODE_5",
+          "kind": "var",
+          "value": "0x00000035u",
+          "sourceName": "SDLK_5",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_6": {
+          "doc": "'6'",
+          "name": "KEYCODE_6",
+          "kind": "var",
+          "value": "0x00000036u",
+          "sourceName": "SDLK_6",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_7": {
+          "doc": "'7'",
+          "name": "KEYCODE_7",
+          "kind": "var",
+          "value": "0x00000037u",
+          "sourceName": "SDLK_7",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_8": {
+          "doc": "'8'",
+          "name": "KEYCODE_8",
+          "kind": "var",
+          "value": "0x00000038u",
+          "sourceName": "SDLK_8",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_9": {
+          "doc": "'9'",
+          "name": "KEYCODE_9",
+          "kind": "var",
+          "value": "0x00000039u",
+          "sourceName": "SDLK_9",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_COLON": {
+          "doc": "':'",
+          "name": "KEYCODE_COLON",
+          "kind": "var",
+          "value": "0x0000003au",
+          "sourceName": "SDLK_COLON",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_SEMICOLON": {
+          "doc": "';'",
+          "name": "KEYCODE_SEMICOLON",
+          "kind": "var",
+          "value": "0x0000003bu",
+          "sourceName": "SDLK_SEMICOLON",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LESS": {
+          "doc": "'<'",
+          "name": "KEYCODE_LESS",
+          "kind": "var",
+          "value": "0x0000003cu",
+          "sourceName": "SDLK_LESS",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_EQUALS": {
+          "doc": "'='",
+          "name": "KEYCODE_EQUALS",
+          "kind": "var",
+          "value": "0x0000003du",
+          "sourceName": "SDLK_EQUALS",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_GREATER": {
+          "doc": "'>'",
+          "name": "KEYCODE_GREATER",
+          "kind": "var",
+          "value": "0x0000003eu",
+          "sourceName": "SDLK_GREATER",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_QUESTION": {
+          "doc": "'?'",
+          "name": "KEYCODE_QUESTION",
+          "kind": "var",
+          "value": "0x0000003fu",
+          "sourceName": "SDLK_QUESTION",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AT": {
+          "doc": "'@'",
+          "name": "KEYCODE_AT",
+          "kind": "var",
+          "value": "0x00000040u",
+          "sourceName": "SDLK_AT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LEFTBRACKET": {
+          "doc": "'['",
+          "name": "KEYCODE_LEFTBRACKET",
+          "kind": "var",
+          "value": "0x0000005bu",
+          "sourceName": "SDLK_LEFTBRACKET",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_BACKSLASH": {
+          "doc": "'\\\\'",
+          "name": "KEYCODE_BACKSLASH",
+          "kind": "var",
+          "value": "0x0000005cu",
+          "sourceName": "SDLK_BACKSLASH",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_RIGHTBRACKET": {
+          "doc": "']'",
+          "name": "KEYCODE_RIGHTBRACKET",
+          "kind": "var",
+          "value": "0x0000005du",
+          "sourceName": "SDLK_RIGHTBRACKET",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_CARET": {
+          "doc": "'^'",
+          "name": "KEYCODE_CARET",
+          "kind": "var",
+          "value": "0x0000005eu",
+          "sourceName": "SDLK_CARET",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_UNDERSCORE": {
+          "doc": "'_'",
+          "name": "KEYCODE_UNDERSCORE",
+          "kind": "var",
+          "value": "0x0000005fu",
+          "sourceName": "SDLK_UNDERSCORE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_GRAVE": {
+          "doc": "'`'",
+          "name": "KEYCODE_GRAVE",
+          "kind": "var",
+          "value": "0x00000060u",
+          "sourceName": "SDLK_GRAVE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_A": {
+          "doc": "'a'",
+          "name": "KEYCODE_A",
+          "kind": "var",
+          "value": "0x00000061u",
+          "sourceName": "SDLK_A",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_B": {
+          "doc": "'b'",
+          "name": "KEYCODE_B",
+          "kind": "var",
+          "value": "0x00000062u",
+          "sourceName": "SDLK_B",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_C": {
+          "doc": "'c'",
+          "name": "KEYCODE_C",
+          "kind": "var",
+          "value": "0x00000063u",
+          "sourceName": "SDLK_C",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_D": {
+          "doc": "'d'",
+          "name": "KEYCODE_D",
+          "kind": "var",
+          "value": "0x00000064u",
+          "sourceName": "SDLK_D",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_E": {
+          "doc": "'e'",
+          "name": "KEYCODE_E",
+          "kind": "var",
+          "value": "0x00000065u",
+          "sourceName": "SDLK_E",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F": {
+          "doc": "'f'",
+          "name": "KEYCODE_F",
+          "kind": "var",
+          "value": "0x00000066u",
+          "sourceName": "SDLK_F",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_G": {
+          "doc": "'g'",
+          "name": "KEYCODE_G",
+          "kind": "var",
+          "value": "0x00000067u",
+          "sourceName": "SDLK_G",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_H": {
+          "doc": "'h'",
+          "name": "KEYCODE_H",
+          "kind": "var",
+          "value": "0x00000068u",
+          "sourceName": "SDLK_H",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_I": {
+          "doc": "'i'",
+          "name": "KEYCODE_I",
+          "kind": "var",
+          "value": "0x00000069u",
+          "sourceName": "SDLK_I",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_J": {
+          "doc": "'j'",
+          "name": "KEYCODE_J",
+          "kind": "var",
+          "value": "0x0000006au",
+          "sourceName": "SDLK_J",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_K": {
+          "doc": "'k'",
+          "name": "KEYCODE_K",
+          "kind": "var",
+          "value": "0x0000006bu",
+          "sourceName": "SDLK_K",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_L": {
+          "doc": "'l'",
+          "name": "KEYCODE_L",
+          "kind": "var",
+          "value": "0x0000006cu",
+          "sourceName": "SDLK_L",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_M": {
+          "doc": "'m'",
+          "name": "KEYCODE_M",
+          "kind": "var",
+          "value": "0x0000006du",
+          "sourceName": "SDLK_M",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_N": {
+          "doc": "'n'",
+          "name": "KEYCODE_N",
+          "kind": "var",
+          "value": "0x0000006eu",
+          "sourceName": "SDLK_N",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_O": {
+          "doc": "'o'",
+          "name": "KEYCODE_O",
+          "kind": "var",
+          "value": "0x0000006fu",
+          "sourceName": "SDLK_O",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_P": {
+          "doc": "'p'",
+          "name": "KEYCODE_P",
+          "kind": "var",
+          "value": "0x00000070u",
+          "sourceName": "SDLK_P",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_Q": {
+          "doc": "'q'",
+          "name": "KEYCODE_Q",
+          "kind": "var",
+          "value": "0x00000071u",
+          "sourceName": "SDLK_Q",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_R": {
+          "doc": "'r'",
+          "name": "KEYCODE_R",
+          "kind": "var",
+          "value": "0x00000072u",
+          "sourceName": "SDLK_R",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_S": {
+          "doc": "'s'",
+          "name": "KEYCODE_S",
+          "kind": "var",
+          "value": "0x00000073u",
+          "sourceName": "SDLK_S",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_T": {
+          "doc": "'t'",
+          "name": "KEYCODE_T",
+          "kind": "var",
+          "value": "0x00000074u",
+          "sourceName": "SDLK_T",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_U": {
+          "doc": "'u'",
+          "name": "KEYCODE_U",
+          "kind": "var",
+          "value": "0x00000075u",
+          "sourceName": "SDLK_U",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_V": {
+          "doc": "'v'",
+          "name": "KEYCODE_V",
+          "kind": "var",
+          "value": "0x00000076u",
+          "sourceName": "SDLK_V",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_W": {
+          "doc": "'w'",
+          "name": "KEYCODE_W",
+          "kind": "var",
+          "value": "0x00000077u",
+          "sourceName": "SDLK_W",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_X": {
+          "doc": "'x'",
+          "name": "KEYCODE_X",
+          "kind": "var",
+          "value": "0x00000078u",
+          "sourceName": "SDLK_X",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_Y": {
+          "doc": "'y'",
+          "name": "KEYCODE_Y",
+          "kind": "var",
+          "value": "0x00000079u",
+          "sourceName": "SDLK_Y",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_Z": {
+          "doc": "'z'",
+          "name": "KEYCODE_Z",
+          "kind": "var",
+          "value": "0x0000007au",
+          "sourceName": "SDLK_Z",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LEFTBRACE": {
+          "doc": "'{'",
+          "name": "KEYCODE_LEFTBRACE",
+          "kind": "var",
+          "value": "0x0000007bu",
+          "sourceName": "SDLK_LEFTBRACE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_PIPE": {
+          "doc": "'|'",
+          "name": "KEYCODE_PIPE",
+          "kind": "var",
+          "value": "0x0000007cu",
+          "sourceName": "SDLK_PIPE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_RIGHTBRACE": {
+          "doc": "'}'",
+          "name": "KEYCODE_RIGHTBRACE",
+          "kind": "var",
+          "value": "0x0000007du",
+          "sourceName": "SDLK_RIGHTBRACE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_TILDE": {
+          "doc": "'~'",
+          "name": "KEYCODE_TILDE",
+          "kind": "var",
+          "value": "0x0000007eu",
+          "sourceName": "SDLK_TILDE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_DELETE": {
+          "doc": "'\\x7F'",
+          "name": "KEYCODE_DELETE",
+          "kind": "var",
+          "value": "0x0000007fu",
+          "sourceName": "SDLK_DELETE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_PLUSMINUS": {
+          "doc": "'\\xB1'",
+          "name": "KEYCODE_PLUSMINUS",
+          "kind": "var",
+          "value": "0x000000b1u",
+          "sourceName": "SDLK_PLUSMINUS",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_CAPSLOCK": {
+          "doc": "ScancodeToKeycode(SCANCODE_CAPSLOCK)",
+          "name": "KEYCODE_CAPSLOCK",
+          "kind": "var",
+          "value": "0x40000039u",
+          "sourceName": "SDLK_CAPSLOCK",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F1": {
+          "doc": "ScancodeToKeycode(SCANCODE_F1)",
+          "name": "KEYCODE_F1",
+          "kind": "var",
+          "value": "0x4000003au",
+          "sourceName": "SDLK_F1",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F2": {
+          "doc": "ScancodeToKeycode(SCANCODE_F2)",
+          "name": "KEYCODE_F2",
+          "kind": "var",
+          "value": "0x4000003bu",
+          "sourceName": "SDLK_F2",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F3": {
+          "doc": "ScancodeToKeycode(SCANCODE_F3)",
+          "name": "KEYCODE_F3",
+          "kind": "var",
+          "value": "0x4000003cu",
+          "sourceName": "SDLK_F3",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F4": {
+          "doc": "ScancodeToKeycode(SCANCODE_F4)",
+          "name": "KEYCODE_F4",
+          "kind": "var",
+          "value": "0x4000003du",
+          "sourceName": "SDLK_F4",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F5": {
+          "doc": "ScancodeToKeycode(SCANCODE_F5)",
+          "name": "KEYCODE_F5",
+          "kind": "var",
+          "value": "0x4000003eu",
+          "sourceName": "SDLK_F5",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F6": {
+          "doc": "ScancodeToKeycode(SCANCODE_F6)",
+          "name": "KEYCODE_F6",
+          "kind": "var",
+          "value": "0x4000003fu",
+          "sourceName": "SDLK_F6",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F7": {
+          "doc": "ScancodeToKeycode(SCANCODE_F7)",
+          "name": "KEYCODE_F7",
+          "kind": "var",
+          "value": "0x40000040u",
+          "sourceName": "SDLK_F7",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F8": {
+          "doc": "ScancodeToKeycode(SCANCODE_F8)",
+          "name": "KEYCODE_F8",
+          "kind": "var",
+          "value": "0x40000041u",
+          "sourceName": "SDLK_F8",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F9": {
+          "doc": "ScancodeToKeycode(SCANCODE_F9)",
+          "name": "KEYCODE_F9",
+          "kind": "var",
+          "value": "0x40000042u",
+          "sourceName": "SDLK_F9",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F10": {
+          "doc": "ScancodeToKeycode(SCANCODE_F10)",
+          "name": "KEYCODE_F10",
+          "kind": "var",
+          "value": "0x40000043u",
+          "sourceName": "SDLK_F10",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F11": {
+          "doc": "ScancodeToKeycode(SCANCODE_F11)",
+          "name": "KEYCODE_F11",
+          "kind": "var",
+          "value": "0x40000044u",
+          "sourceName": "SDLK_F11",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F12": {
+          "doc": "ScancodeToKeycode(SCANCODE_F12)",
+          "name": "KEYCODE_F12",
+          "kind": "var",
+          "value": "0x40000045u",
+          "sourceName": "SDLK_F12",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_PRINTSCREEN": {
+          "doc": "ScancodeToKeycode(SCANCODE_PRINTSCREEN)",
+          "name": "KEYCODE_PRINTSCREEN",
+          "kind": "var",
+          "value": "0x40000046u",
+          "sourceName": "SDLK_PRINTSCREEN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_SCROLLLOCK": {
+          "doc": "ScancodeToKeycode(SCANCODE_SCROLLLOCK)",
+          "name": "KEYCODE_SCROLLLOCK",
+          "kind": "var",
+          "value": "0x40000047u",
+          "sourceName": "SDLK_SCROLLLOCK",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_PAUSE": {
+          "doc": "ScancodeToKeycode(SCANCODE_PAUSE)",
+          "name": "KEYCODE_PAUSE",
+          "kind": "var",
+          "value": "0x40000048u",
+          "sourceName": "SDLK_PAUSE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_INSERT": {
+          "doc": "ScancodeToKeycode(SCANCODE_INSERT)",
+          "name": "KEYCODE_INSERT",
+          "kind": "var",
+          "value": "0x40000049u",
+          "sourceName": "SDLK_INSERT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_HOME": {
+          "doc": "ScancodeToKeycode(SCANCODE_HOME)",
+          "name": "KEYCODE_HOME",
+          "kind": "var",
+          "value": "0x4000004au",
+          "sourceName": "SDLK_HOME",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_PAGEUP": {
+          "doc": "ScancodeToKeycode(SCANCODE_PAGEUP)",
+          "name": "KEYCODE_PAGEUP",
+          "kind": "var",
+          "value": "0x4000004bu",
+          "sourceName": "SDLK_PAGEUP",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_END": {
+          "doc": "ScancodeToKeycode(SCANCODE_END)",
+          "name": "KEYCODE_END",
+          "kind": "var",
+          "value": "0x4000004du",
+          "sourceName": "SDLK_END",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_PAGEDOWN": {
+          "doc": "ScancodeToKeycode(SCANCODE_PAGEDOWN)",
+          "name": "KEYCODE_PAGEDOWN",
+          "kind": "var",
+          "value": "0x4000004eu",
+          "sourceName": "SDLK_PAGEDOWN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_RIGHT": {
+          "doc": "ScancodeToKeycode(SCANCODE_RIGHT)",
+          "name": "KEYCODE_RIGHT",
+          "kind": "var",
+          "value": "0x4000004fu",
+          "sourceName": "SDLK_RIGHT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LEFT": {
+          "doc": "ScancodeToKeycode(SCANCODE_LEFT)",
+          "name": "KEYCODE_LEFT",
+          "kind": "var",
+          "value": "0x40000050u",
+          "sourceName": "SDLK_LEFT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_DOWN": {
+          "doc": "ScancodeToKeycode(SCANCODE_DOWN)",
+          "name": "KEYCODE_DOWN",
+          "kind": "var",
+          "value": "0x40000051u",
+          "sourceName": "SDLK_DOWN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_UP": {
+          "doc": "ScancodeToKeycode(SCANCODE_UP)",
+          "name": "KEYCODE_UP",
+          "kind": "var",
+          "value": "0x40000052u",
+          "sourceName": "SDLK_UP",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_NUMLOCKCLEAR": {
+          "doc": "ScancodeToKeycode(SCANCODE_NUMLOCKCLEAR)",
+          "name": "KEYCODE_NUMLOCKCLEAR",
+          "kind": "var",
+          "value": "0x40000053u",
+          "sourceName": "SDLK_NUMLOCKCLEAR",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_DIVIDE": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_DIVIDE)",
+          "name": "KEYCODE_KP_DIVIDE",
+          "kind": "var",
+          "value": "0x40000054u",
+          "sourceName": "SDLK_KP_DIVIDE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_MULTIPLY": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MULTIPLY)",
+          "name": "KEYCODE_KP_MULTIPLY",
+          "kind": "var",
+          "value": "0x40000055u",
+          "sourceName": "SDLK_KP_MULTIPLY",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_MINUS": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MINUS)",
+          "name": "KEYCODE_KP_MINUS",
+          "kind": "var",
+          "value": "0x40000056u",
+          "sourceName": "SDLK_KP_MINUS",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_PLUS": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_PLUS)",
+          "name": "KEYCODE_KP_PLUS",
+          "kind": "var",
+          "value": "0x40000057u",
+          "sourceName": "SDLK_KP_PLUS",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_ENTER": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_ENTER)",
+          "name": "KEYCODE_KP_ENTER",
+          "kind": "var",
+          "value": "0x40000058u",
+          "sourceName": "SDLK_KP_ENTER",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_1": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_1)",
+          "name": "KEYCODE_KP_1",
+          "kind": "var",
+          "value": "0x40000059u",
+          "sourceName": "SDLK_KP_1",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_2": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_2)",
+          "name": "KEYCODE_KP_2",
+          "kind": "var",
+          "value": "0x4000005au",
+          "sourceName": "SDLK_KP_2",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_3": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_3)",
+          "name": "KEYCODE_KP_3",
+          "kind": "var",
+          "value": "0x4000005bu",
+          "sourceName": "SDLK_KP_3",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_4": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_4)",
+          "name": "KEYCODE_KP_4",
+          "kind": "var",
+          "value": "0x4000005cu",
+          "sourceName": "SDLK_KP_4",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_5": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_5)",
+          "name": "KEYCODE_KP_5",
+          "kind": "var",
+          "value": "0x4000005du",
+          "sourceName": "SDLK_KP_5",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_6": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_6)",
+          "name": "KEYCODE_KP_6",
+          "kind": "var",
+          "value": "0x4000005eu",
+          "sourceName": "SDLK_KP_6",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_7": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_7)",
+          "name": "KEYCODE_KP_7",
+          "kind": "var",
+          "value": "0x4000005fu",
+          "sourceName": "SDLK_KP_7",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_8": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_8)",
+          "name": "KEYCODE_KP_8",
+          "kind": "var",
+          "value": "0x40000060u",
+          "sourceName": "SDLK_KP_8",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_9": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_9)",
+          "name": "KEYCODE_KP_9",
+          "kind": "var",
+          "value": "0x40000061u",
+          "sourceName": "SDLK_KP_9",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_0": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_0)",
+          "name": "KEYCODE_KP_0",
+          "kind": "var",
+          "value": "0x40000062u",
+          "sourceName": "SDLK_KP_0",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_PERIOD": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_PERIOD)",
+          "name": "KEYCODE_KP_PERIOD",
+          "kind": "var",
+          "value": "0x40000063u",
+          "sourceName": "SDLK_KP_PERIOD",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_APPLICATION": {
+          "doc": "ScancodeToKeycode(SCANCODE_APPLICATION)",
+          "name": "KEYCODE_APPLICATION",
+          "kind": "var",
+          "value": "0x40000065u",
+          "sourceName": "SDLK_APPLICATION",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_POWER": {
+          "doc": "ScancodeToKeycode(SCANCODE_POWER)",
+          "name": "KEYCODE_POWER",
+          "kind": "var",
+          "value": "0x40000066u",
+          "sourceName": "SDLK_POWER",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_EQUALS": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_EQUALS)",
+          "name": "KEYCODE_KP_EQUALS",
+          "kind": "var",
+          "value": "0x40000067u",
+          "sourceName": "SDLK_KP_EQUALS",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F13": {
+          "doc": "ScancodeToKeycode(SCANCODE_F13)",
+          "name": "KEYCODE_F13",
+          "kind": "var",
+          "value": "0x40000068u",
+          "sourceName": "SDLK_F13",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F14": {
+          "doc": "ScancodeToKeycode(SCANCODE_F14)",
+          "name": "KEYCODE_F14",
+          "kind": "var",
+          "value": "0x40000069u",
+          "sourceName": "SDLK_F14",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F15": {
+          "doc": "ScancodeToKeycode(SCANCODE_F15)",
+          "name": "KEYCODE_F15",
+          "kind": "var",
+          "value": "0x4000006au",
+          "sourceName": "SDLK_F15",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F16": {
+          "doc": "ScancodeToKeycode(SCANCODE_F16)",
+          "name": "KEYCODE_F16",
+          "kind": "var",
+          "value": "0x4000006bu",
+          "sourceName": "SDLK_F16",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F17": {
+          "doc": "ScancodeToKeycode(SCANCODE_F17)",
+          "name": "KEYCODE_F17",
+          "kind": "var",
+          "value": "0x4000006cu",
+          "sourceName": "SDLK_F17",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F18": {
+          "doc": "ScancodeToKeycode(SCANCODE_F18)",
+          "name": "KEYCODE_F18",
+          "kind": "var",
+          "value": "0x4000006du",
+          "sourceName": "SDLK_F18",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F19": {
+          "doc": "ScancodeToKeycode(SCANCODE_F19)",
+          "name": "KEYCODE_F19",
+          "kind": "var",
+          "value": "0x4000006eu",
+          "sourceName": "SDLK_F19",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F20": {
+          "doc": "ScancodeToKeycode(SCANCODE_F20)",
+          "name": "KEYCODE_F20",
+          "kind": "var",
+          "value": "0x4000006fu",
+          "sourceName": "SDLK_F20",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F21": {
+          "doc": "ScancodeToKeycode(SCANCODE_F21)",
+          "name": "KEYCODE_F21",
+          "kind": "var",
+          "value": "0x40000070u",
+          "sourceName": "SDLK_F21",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F22": {
+          "doc": "ScancodeToKeycode(SCANCODE_F22)",
+          "name": "KEYCODE_F22",
+          "kind": "var",
+          "value": "0x40000071u",
+          "sourceName": "SDLK_F22",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F23": {
+          "doc": "ScancodeToKeycode(SCANCODE_F23)",
+          "name": "KEYCODE_F23",
+          "kind": "var",
+          "value": "0x40000072u",
+          "sourceName": "SDLK_F23",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_F24": {
+          "doc": "ScancodeToKeycode(SCANCODE_F24)",
+          "name": "KEYCODE_F24",
+          "kind": "var",
+          "value": "0x40000073u",
+          "sourceName": "SDLK_F24",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_EXECUTE": {
+          "doc": "ScancodeToKeycode(SCANCODE_EXECUTE)",
+          "name": "KEYCODE_EXECUTE",
+          "kind": "var",
+          "value": "0x40000074u",
+          "sourceName": "SDLK_EXECUTE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_HELP": {
+          "doc": "ScancodeToKeycode(SCANCODE_HELP)",
+          "name": "KEYCODE_HELP",
+          "kind": "var",
+          "value": "0x40000075u",
+          "sourceName": "SDLK_HELP",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MENU": {
+          "doc": "ScancodeToKeycode(SCANCODE_MENU)",
+          "name": "KEYCODE_MENU",
+          "kind": "var",
+          "value": "0x40000076u",
+          "sourceName": "SDLK_MENU",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_SELECT": {
+          "doc": "ScancodeToKeycode(SCANCODE_SELECT)",
+          "name": "KEYCODE_SELECT",
+          "kind": "var",
+          "value": "0x40000077u",
+          "sourceName": "SDLK_SELECT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_STOP": {
+          "doc": "ScancodeToKeycode(SCANCODE_STOP)",
+          "name": "KEYCODE_STOP",
+          "kind": "var",
+          "value": "0x40000078u",
+          "sourceName": "SDLK_STOP",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AGAIN": {
+          "doc": "ScancodeToKeycode(SCANCODE_AGAIN)",
+          "name": "KEYCODE_AGAIN",
+          "kind": "var",
+          "value": "0x40000079u",
+          "sourceName": "SDLK_AGAIN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_UNDO": {
+          "doc": "ScancodeToKeycode(SCANCODE_UNDO)",
+          "name": "KEYCODE_UNDO",
+          "kind": "var",
+          "value": "0x4000007au",
+          "sourceName": "SDLK_UNDO",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_CUT": {
+          "doc": "ScancodeToKeycode(SCANCODE_CUT)",
+          "name": "KEYCODE_CUT",
+          "kind": "var",
+          "value": "0x4000007bu",
+          "sourceName": "SDLK_CUT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_COPY": {
+          "doc": "ScancodeToKeycode(SCANCODE_COPY)",
+          "name": "KEYCODE_COPY",
+          "kind": "var",
+          "value": "0x4000007cu",
+          "sourceName": "SDLK_COPY",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_PASTE": {
+          "doc": "ScancodeToKeycode(SCANCODE_PASTE)",
+          "name": "KEYCODE_PASTE",
+          "kind": "var",
+          "value": "0x4000007du",
+          "sourceName": "SDLK_PASTE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_FIND": {
+          "doc": "ScancodeToKeycode(SCANCODE_FIND)",
+          "name": "KEYCODE_FIND",
+          "kind": "var",
+          "value": "0x4000007eu",
+          "sourceName": "SDLK_FIND",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MUTE": {
+          "doc": "ScancodeToKeycode(SCANCODE_MUTE)",
+          "name": "KEYCODE_MUTE",
+          "kind": "var",
+          "value": "0x4000007fu",
+          "sourceName": "SDLK_MUTE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_VOLUMEUP": {
+          "doc": "ScancodeToKeycode(SCANCODE_VOLUMEUP)",
+          "name": "KEYCODE_VOLUMEUP",
+          "kind": "var",
+          "value": "0x40000080u",
+          "sourceName": "SDLK_VOLUMEUP",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_VOLUMEDOWN": {
+          "doc": "ScancodeToKeycode(SCANCODE_VOLUMEDOWN)",
+          "name": "KEYCODE_VOLUMEDOWN",
+          "kind": "var",
+          "value": "0x40000081u",
+          "sourceName": "SDLK_VOLUMEDOWN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_COMMA": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_COMMA)",
+          "name": "KEYCODE_KP_COMMA",
+          "kind": "var",
+          "value": "0x40000085u",
+          "sourceName": "SDLK_KP_COMMA",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_EQUALSAS400": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_EQUALSAS400)",
+          "name": "KEYCODE_KP_EQUALSAS400",
+          "kind": "var",
+          "value": "0x40000086u",
+          "sourceName": "SDLK_KP_EQUALSAS400",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_ALTERASE": {
+          "doc": "ScancodeToKeycode(SCANCODE_ALTERASE)",
+          "name": "KEYCODE_ALTERASE",
+          "kind": "var",
+          "value": "0x40000099u",
+          "sourceName": "SDLK_ALTERASE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_SYSREQ": {
+          "doc": "ScancodeToKeycode(SCANCODE_SYSREQ)",
+          "name": "KEYCODE_SYSREQ",
+          "kind": "var",
+          "value": "0x4000009au",
+          "sourceName": "SDLK_SYSREQ",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_CANCEL": {
+          "doc": "ScancodeToKeycode(SCANCODE_CANCEL)",
+          "name": "KEYCODE_CANCEL",
+          "kind": "var",
+          "value": "0x4000009bu",
+          "sourceName": "SDLK_CANCEL",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_CLEAR": {
+          "doc": "ScancodeToKeycode(SCANCODE_CLEAR)",
+          "name": "KEYCODE_CLEAR",
+          "kind": "var",
+          "value": "0x4000009cu",
+          "sourceName": "SDLK_CLEAR",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_PRIOR": {
+          "doc": "ScancodeToKeycode(SCANCODE_PRIOR)",
+          "name": "KEYCODE_PRIOR",
+          "kind": "var",
+          "value": "0x4000009du",
+          "sourceName": "SDLK_PRIOR",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_RETURN2": {
+          "doc": "ScancodeToKeycode(SCANCODE_RETURN2)",
+          "name": "KEYCODE_RETURN2",
+          "kind": "var",
+          "value": "0x4000009eu",
+          "sourceName": "SDLK_RETURN2",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_SEPARATOR": {
+          "doc": "ScancodeToKeycode(SCANCODE_SEPARATOR)",
+          "name": "KEYCODE_SEPARATOR",
+          "kind": "var",
+          "value": "0x4000009fu",
+          "sourceName": "SDLK_SEPARATOR",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_OUT": {
+          "doc": "ScancodeToKeycode(SCANCODE_OUT)",
+          "name": "KEYCODE_OUT",
+          "kind": "var",
+          "value": "0x400000a0u",
+          "sourceName": "SDLK_OUT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_OPER": {
+          "doc": "ScancodeToKeycode(SCANCODE_OPER)",
+          "name": "KEYCODE_OPER",
+          "kind": "var",
+          "value": "0x400000a1u",
+          "sourceName": "SDLK_OPER",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_CLEARAGAIN": {
+          "doc": "ScancodeToKeycode(SCANCODE_CLEARAGAIN)",
+          "name": "KEYCODE_CLEARAGAIN",
+          "kind": "var",
+          "value": "0x400000a2u",
+          "sourceName": "SDLK_CLEARAGAIN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_CRSEL": {
+          "doc": "ScancodeToKeycode(SCANCODE_CRSEL)",
+          "name": "KEYCODE_CRSEL",
+          "kind": "var",
+          "value": "0x400000a3u",
+          "sourceName": "SDLK_CRSEL",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_EXSEL": {
+          "doc": "ScancodeToKeycode(SCANCODE_EXSEL)",
+          "name": "KEYCODE_EXSEL",
+          "kind": "var",
+          "value": "0x400000a4u",
+          "sourceName": "SDLK_EXSEL",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_00": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_00)",
+          "name": "KEYCODE_KP_00",
+          "kind": "var",
+          "value": "0x400000b0u",
+          "sourceName": "SDLK_KP_00",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_000": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_000)",
+          "name": "KEYCODE_KP_000",
+          "kind": "var",
+          "value": "0x400000b1u",
+          "sourceName": "SDLK_KP_000",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_THOUSANDSSEPARATOR": {
+          "doc": "ScancodeToKeycode(SCANCODE_THOUSANDSSEPARATOR)",
+          "name": "KEYCODE_THOUSANDSSEPARATOR",
+          "kind": "var",
+          "value": "0x400000b2u",
+          "sourceName": "SDLK_THOUSANDSSEPARATOR",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_DECIMALSEPARATOR": {
+          "doc": "ScancodeToKeycode(SCANCODE_DECIMALSEPARATOR)",
+          "name": "KEYCODE_DECIMALSEPARATOR",
+          "kind": "var",
+          "value": "0x400000b3u",
+          "sourceName": "SDLK_DECIMALSEPARATOR",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_CURRENCYUNIT": {
+          "doc": "ScancodeToKeycode(SCANCODE_CURRENCYUNIT)",
+          "name": "KEYCODE_CURRENCYUNIT",
+          "kind": "var",
+          "value": "0x400000b4u",
+          "sourceName": "SDLK_CURRENCYUNIT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_CURRENCYSUBUNIT": {
+          "doc": "ScancodeToKeycode(SCANCODE_CURRENCYSUBUNIT)",
+          "name": "KEYCODE_CURRENCYSUBUNIT",
+          "kind": "var",
+          "value": "0x400000b5u",
+          "sourceName": "SDLK_CURRENCYSUBUNIT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_LEFTPAREN": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_LEFTPAREN)",
+          "name": "KEYCODE_KP_LEFTPAREN",
+          "kind": "var",
+          "value": "0x400000b6u",
+          "sourceName": "SDLK_KP_LEFTPAREN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_RIGHTPAREN": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_RIGHTPAREN)",
+          "name": "KEYCODE_KP_RIGHTPAREN",
+          "kind": "var",
+          "value": "0x400000b7u",
+          "sourceName": "SDLK_KP_RIGHTPAREN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_LEFTBRACE": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_LEFTBRACE)",
+          "name": "KEYCODE_KP_LEFTBRACE",
+          "kind": "var",
+          "value": "0x400000b8u",
+          "sourceName": "SDLK_KP_LEFTBRACE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_RIGHTBRACE": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_RIGHTBRACE)",
+          "name": "KEYCODE_KP_RIGHTBRACE",
+          "kind": "var",
+          "value": "0x400000b9u",
+          "sourceName": "SDLK_KP_RIGHTBRACE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_TAB": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_TAB)",
+          "name": "KEYCODE_KP_TAB",
+          "kind": "var",
+          "value": "0x400000bau",
+          "sourceName": "SDLK_KP_TAB",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_BACKSPACE": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_BACKSPACE)",
+          "name": "KEYCODE_KP_BACKSPACE",
+          "kind": "var",
+          "value": "0x400000bbu",
+          "sourceName": "SDLK_KP_BACKSPACE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_A": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_A)",
+          "name": "KEYCODE_KP_A",
+          "kind": "var",
+          "value": "0x400000bcu",
+          "sourceName": "SDLK_KP_A",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_B": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_B)",
+          "name": "KEYCODE_KP_B",
+          "kind": "var",
+          "value": "0x400000bdu",
+          "sourceName": "SDLK_KP_B",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_C": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_C)",
+          "name": "KEYCODE_KP_C",
+          "kind": "var",
+          "value": "0x400000beu",
+          "sourceName": "SDLK_KP_C",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_D": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_D)",
+          "name": "KEYCODE_KP_D",
+          "kind": "var",
+          "value": "0x400000bfu",
+          "sourceName": "SDLK_KP_D",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_E": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_E)",
+          "name": "KEYCODE_KP_E",
+          "kind": "var",
+          "value": "0x400000c0u",
+          "sourceName": "SDLK_KP_E",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_F": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_F)",
+          "name": "KEYCODE_KP_F",
+          "kind": "var",
+          "value": "0x400000c1u",
+          "sourceName": "SDLK_KP_F",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_XOR": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_XOR)",
+          "name": "KEYCODE_KP_XOR",
+          "kind": "var",
+          "value": "0x400000c2u",
+          "sourceName": "SDLK_KP_XOR",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_POWER": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_POWER)",
+          "name": "KEYCODE_KP_POWER",
+          "kind": "var",
+          "value": "0x400000c3u",
+          "sourceName": "SDLK_KP_POWER",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_PERCENT": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_PERCENT)",
+          "name": "KEYCODE_KP_PERCENT",
+          "kind": "var",
+          "value": "0x400000c4u",
+          "sourceName": "SDLK_KP_PERCENT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_LESS": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_LESS)",
+          "name": "KEYCODE_KP_LESS",
+          "kind": "var",
+          "value": "0x400000c5u",
+          "sourceName": "SDLK_KP_LESS",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_GREATER": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_GREATER)",
+          "name": "KEYCODE_KP_GREATER",
+          "kind": "var",
+          "value": "0x400000c6u",
+          "sourceName": "SDLK_KP_GREATER",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_AMPERSAND": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_AMPERSAND)",
+          "name": "KEYCODE_KP_AMPERSAND",
+          "kind": "var",
+          "value": "0x400000c7u",
+          "sourceName": "SDLK_KP_AMPERSAND",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_DBLAMPERSAND": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_DBLAMPERSAND)",
+          "name": "KEYCODE_KP_DBLAMPERSAND",
+          "kind": "var",
+          "value": "0x400000c8u",
+          "sourceName": "SDLK_KP_DBLAMPERSAND",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_VERTICALBAR": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_VERTICALBAR)",
+          "name": "KEYCODE_KP_VERTICALBAR",
+          "kind": "var",
+          "value": "0x400000c9u",
+          "sourceName": "SDLK_KP_VERTICALBAR",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_DBLVERTICALBAR": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_DBLVERTICALBAR)",
+          "name": "KEYCODE_KP_DBLVERTICALBAR",
+          "kind": "var",
+          "value": "0x400000cau",
+          "sourceName": "SDLK_KP_DBLVERTICALBAR",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_COLON": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_COLON)",
+          "name": "KEYCODE_KP_COLON",
+          "kind": "var",
+          "value": "0x400000cbu",
+          "sourceName": "SDLK_KP_COLON",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_HASH": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_HASH)",
+          "name": "KEYCODE_KP_HASH",
+          "kind": "var",
+          "value": "0x400000ccu",
+          "sourceName": "SDLK_KP_HASH",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_SPACE": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_SPACE)",
+          "name": "KEYCODE_KP_SPACE",
+          "kind": "var",
+          "value": "0x400000cdu",
+          "sourceName": "SDLK_KP_SPACE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_AT": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_AT)",
+          "name": "KEYCODE_KP_AT",
+          "kind": "var",
+          "value": "0x400000ceu",
+          "sourceName": "SDLK_KP_AT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_EXCLAM": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_EXCLAM)",
+          "name": "KEYCODE_KP_EXCLAM",
+          "kind": "var",
+          "value": "0x400000cfu",
+          "sourceName": "SDLK_KP_EXCLAM",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_MEMSTORE": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMSTORE)",
+          "name": "KEYCODE_KP_MEMSTORE",
+          "kind": "var",
+          "value": "0x400000d0u",
+          "sourceName": "SDLK_KP_MEMSTORE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_MEMRECALL": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMRECALL)",
+          "name": "KEYCODE_KP_MEMRECALL",
+          "kind": "var",
+          "value": "0x400000d1u",
+          "sourceName": "SDLK_KP_MEMRECALL",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_MEMCLEAR": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMCLEAR)",
+          "name": "KEYCODE_KP_MEMCLEAR",
+          "kind": "var",
+          "value": "0x400000d2u",
+          "sourceName": "SDLK_KP_MEMCLEAR",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_MEMADD": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMADD)",
+          "name": "KEYCODE_KP_MEMADD",
+          "kind": "var",
+          "value": "0x400000d3u",
+          "sourceName": "SDLK_KP_MEMADD",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_MEMSUBTRACT": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMSUBTRACT)",
+          "name": "KEYCODE_KP_MEMSUBTRACT",
+          "kind": "var",
+          "value": "0x400000d4u",
+          "sourceName": "SDLK_KP_MEMSUBTRACT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_MEMMULTIPLY": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMMULTIPLY)",
+          "name": "KEYCODE_KP_MEMMULTIPLY",
+          "kind": "var",
+          "value": "0x400000d5u",
+          "sourceName": "SDLK_KP_MEMMULTIPLY",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_MEMDIVIDE": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMDIVIDE)",
+          "name": "KEYCODE_KP_MEMDIVIDE",
+          "kind": "var",
+          "value": "0x400000d6u",
+          "sourceName": "SDLK_KP_MEMDIVIDE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_PLUSMINUS": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_PLUSMINUS)",
+          "name": "KEYCODE_KP_PLUSMINUS",
+          "kind": "var",
+          "value": "0x400000d7u",
+          "sourceName": "SDLK_KP_PLUSMINUS",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_CLEAR": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_CLEAR)",
+          "name": "KEYCODE_KP_CLEAR",
+          "kind": "var",
+          "value": "0x400000d8u",
+          "sourceName": "SDLK_KP_CLEAR",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_CLEARENTRY": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_CLEARENTRY)",
+          "name": "KEYCODE_KP_CLEARENTRY",
+          "kind": "var",
+          "value": "0x400000d9u",
+          "sourceName": "SDLK_KP_CLEARENTRY",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_BINARY": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_BINARY)",
+          "name": "KEYCODE_KP_BINARY",
+          "kind": "var",
+          "value": "0x400000dau",
+          "sourceName": "SDLK_KP_BINARY",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_OCTAL": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_OCTAL)",
+          "name": "KEYCODE_KP_OCTAL",
+          "kind": "var",
+          "value": "0x400000dbu",
+          "sourceName": "SDLK_KP_OCTAL",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_DECIMAL": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_DECIMAL)",
+          "name": "KEYCODE_KP_DECIMAL",
+          "kind": "var",
+          "value": "0x400000dcu",
+          "sourceName": "SDLK_KP_DECIMAL",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_KP_HEXADECIMAL": {
+          "doc": "ScancodeToKeycode(SCANCODE_KP_HEXADECIMAL)",
+          "name": "KEYCODE_KP_HEXADECIMAL",
+          "kind": "var",
+          "value": "0x400000ddu",
+          "sourceName": "SDLK_KP_HEXADECIMAL",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LCTRL": {
+          "doc": "ScancodeToKeycode(SCANCODE_LCTRL)",
+          "name": "KEYCODE_LCTRL",
+          "kind": "var",
+          "value": "0x400000e0u",
+          "sourceName": "SDLK_LCTRL",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LSHIFT": {
+          "doc": "ScancodeToKeycode(SCANCODE_LSHIFT)",
+          "name": "KEYCODE_LSHIFT",
+          "kind": "var",
+          "value": "0x400000e1u",
+          "sourceName": "SDLK_LSHIFT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LALT": {
+          "doc": "ScancodeToKeycode(SCANCODE_LALT)",
+          "name": "KEYCODE_LALT",
+          "kind": "var",
+          "value": "0x400000e2u",
+          "sourceName": "SDLK_LALT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LGUI": {
+          "doc": "ScancodeToKeycode(SCANCODE_LGUI)",
+          "name": "KEYCODE_LGUI",
+          "kind": "var",
+          "value": "0x400000e3u",
+          "sourceName": "SDLK_LGUI",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_RCTRL": {
+          "doc": "ScancodeToKeycode(SCANCODE_RCTRL)",
+          "name": "KEYCODE_RCTRL",
+          "kind": "var",
+          "value": "0x400000e4u",
+          "sourceName": "SDLK_RCTRL",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_RSHIFT": {
+          "doc": "ScancodeToKeycode(SCANCODE_RSHIFT)",
+          "name": "KEYCODE_RSHIFT",
+          "kind": "var",
+          "value": "0x400000e5u",
+          "sourceName": "SDLK_RSHIFT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_RALT": {
+          "doc": "ScancodeToKeycode(SCANCODE_RALT)",
+          "name": "KEYCODE_RALT",
+          "kind": "var",
+          "value": "0x400000e6u",
+          "sourceName": "SDLK_RALT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_RGUI": {
+          "doc": "ScancodeToKeycode(SCANCODE_RGUI)",
+          "name": "KEYCODE_RGUI",
+          "kind": "var",
+          "value": "0x400000e7u",
+          "sourceName": "SDLK_RGUI",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MODE": {
+          "doc": "ScancodeToKeycode(SCANCODE_MODE)",
+          "name": "KEYCODE_MODE",
+          "kind": "var",
+          "value": "0x40000101u",
+          "sourceName": "SDLK_MODE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_SLEEP": {
+          "doc": "ScancodeToKeycode(SCANCODE_SLEEP)",
+          "name": "KEYCODE_SLEEP",
+          "kind": "var",
+          "value": "0x40000102u",
+          "sourceName": "SDLK_SLEEP",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_WAKE": {
+          "doc": "ScancodeToKeycode(SCANCODE_WAKE)",
+          "name": "KEYCODE_WAKE",
+          "kind": "var",
+          "value": "0x40000103u",
+          "sourceName": "SDLK_WAKE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_CHANNEL_INCREMENT": {
+          "doc": "ScancodeToKeycode(SCANCODE_CHANNEL_INCREMENT)",
+          "name": "KEYCODE_CHANNEL_INCREMENT",
+          "kind": "var",
+          "value": "0x40000104u",
+          "sourceName": "SDLK_CHANNEL_INCREMENT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_CHANNEL_DECREMENT": {
+          "doc": "ScancodeToKeycode(SCANCODE_CHANNEL_DECREMENT)",
+          "name": "KEYCODE_CHANNEL_DECREMENT",
+          "kind": "var",
+          "value": "0x40000105u",
+          "sourceName": "SDLK_CHANNEL_DECREMENT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MEDIA_PLAY": {
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PLAY)",
+          "name": "KEYCODE_MEDIA_PLAY",
+          "kind": "var",
+          "value": "0x40000106u",
+          "sourceName": "SDLK_MEDIA_PLAY",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MEDIA_PAUSE": {
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PAUSE)",
+          "name": "KEYCODE_MEDIA_PAUSE",
+          "kind": "var",
+          "value": "0x40000107u",
+          "sourceName": "SDLK_MEDIA_PAUSE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MEDIA_RECORD": {
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_RECORD)",
+          "name": "KEYCODE_MEDIA_RECORD",
+          "kind": "var",
+          "value": "0x40000108u",
+          "sourceName": "SDLK_MEDIA_RECORD",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MEDIA_FAST_FORWARD": {
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_FAST_FORWARD)",
+          "name": "KEYCODE_MEDIA_FAST_FORWARD",
+          "kind": "var",
+          "value": "0x40000109u",
+          "sourceName": "SDLK_MEDIA_FAST_FORWARD",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MEDIA_REWIND": {
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_REWIND)",
+          "name": "KEYCODE_MEDIA_REWIND",
+          "kind": "var",
+          "value": "0x4000010au",
+          "sourceName": "SDLK_MEDIA_REWIND",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MEDIA_NEXT_TRACK": {
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_NEXT_TRACK)",
+          "name": "KEYCODE_MEDIA_NEXT_TRACK",
+          "kind": "var",
+          "value": "0x4000010bu",
+          "sourceName": "SDLK_MEDIA_NEXT_TRACK",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MEDIA_PREVIOUS_TRACK": {
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PREVIOUS_TRACK)",
+          "name": "KEYCODE_MEDIA_PREVIOUS_TRACK",
+          "kind": "var",
+          "value": "0x4000010cu",
+          "sourceName": "SDLK_MEDIA_PREVIOUS_TRACK",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MEDIA_STOP": {
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_STOP)",
+          "name": "KEYCODE_MEDIA_STOP",
+          "kind": "var",
+          "value": "0x4000010du",
+          "sourceName": "SDLK_MEDIA_STOP",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MEDIA_EJECT": {
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_EJECT)",
+          "name": "KEYCODE_MEDIA_EJECT",
+          "kind": "var",
+          "value": "0x4000010eu",
+          "sourceName": "SDLK_MEDIA_EJECT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MEDIA_PLAY_PAUSE": {
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PLAY_PAUSE)",
+          "name": "KEYCODE_MEDIA_PLAY_PAUSE",
+          "kind": "var",
+          "value": "0x4000010fu",
+          "sourceName": "SDLK_MEDIA_PLAY_PAUSE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MEDIA_SELECT": {
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_SELECT)",
+          "name": "KEYCODE_MEDIA_SELECT",
+          "kind": "var",
+          "value": "0x40000110u",
+          "sourceName": "SDLK_MEDIA_SELECT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_NEW": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_NEW)",
+          "name": "KEYCODE_AC_NEW",
+          "kind": "var",
+          "value": "0x40000111u",
+          "sourceName": "SDLK_AC_NEW",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_OPEN": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_OPEN)",
+          "name": "KEYCODE_AC_OPEN",
+          "kind": "var",
+          "value": "0x40000112u",
+          "sourceName": "SDLK_AC_OPEN",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_CLOSE": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_CLOSE)",
+          "name": "KEYCODE_AC_CLOSE",
+          "kind": "var",
+          "value": "0x40000113u",
+          "sourceName": "SDLK_AC_CLOSE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_EXIT": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_EXIT)",
+          "name": "KEYCODE_AC_EXIT",
+          "kind": "var",
+          "value": "0x40000114u",
+          "sourceName": "SDLK_AC_EXIT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_SAVE": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_SAVE)",
+          "name": "KEYCODE_AC_SAVE",
+          "kind": "var",
+          "value": "0x40000115u",
+          "sourceName": "SDLK_AC_SAVE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_PRINT": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_PRINT)",
+          "name": "KEYCODE_AC_PRINT",
+          "kind": "var",
+          "value": "0x40000116u",
+          "sourceName": "SDLK_AC_PRINT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_PROPERTIES": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_PROPERTIES)",
+          "name": "KEYCODE_AC_PROPERTIES",
+          "kind": "var",
+          "value": "0x40000117u",
+          "sourceName": "SDLK_AC_PROPERTIES",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_SEARCH": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_SEARCH)",
+          "name": "KEYCODE_AC_SEARCH",
+          "kind": "var",
+          "value": "0x40000118u",
+          "sourceName": "SDLK_AC_SEARCH",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_HOME": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_HOME)",
+          "name": "KEYCODE_AC_HOME",
+          "kind": "var",
+          "value": "0x40000119u",
+          "sourceName": "SDLK_AC_HOME",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_BACK": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_BACK)",
+          "name": "KEYCODE_AC_BACK",
+          "kind": "var",
+          "value": "0x4000011au",
+          "sourceName": "SDLK_AC_BACK",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_FORWARD": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_FORWARD)",
+          "name": "KEYCODE_AC_FORWARD",
+          "kind": "var",
+          "value": "0x4000011bu",
+          "sourceName": "SDLK_AC_FORWARD",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_STOP": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_STOP)",
+          "name": "KEYCODE_AC_STOP",
+          "kind": "var",
+          "value": "0x4000011cu",
+          "sourceName": "SDLK_AC_STOP",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_REFRESH": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_REFRESH)",
+          "name": "KEYCODE_AC_REFRESH",
+          "kind": "var",
+          "value": "0x4000011du",
+          "sourceName": "SDLK_AC_REFRESH",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_AC_BOOKMARKS": {
+          "doc": "ScancodeToKeycode(SCANCODE_AC_BOOKMARKS)",
+          "name": "KEYCODE_AC_BOOKMARKS",
+          "kind": "var",
+          "value": "0x4000011eu",
+          "sourceName": "SDLK_AC_BOOKMARKS",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_SOFTLEFT": {
+          "doc": "ScancodeToKeycode(SCANCODE_SOFTLEFT)",
+          "name": "KEYCODE_SOFTLEFT",
+          "kind": "var",
+          "value": "0x4000011fu",
+          "sourceName": "SDLK_SOFTLEFT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_SOFTRIGHT": {
+          "doc": "ScancodeToKeycode(SCANCODE_SOFTRIGHT)",
+          "name": "KEYCODE_SOFTRIGHT",
+          "kind": "var",
+          "value": "0x40000120u",
+          "sourceName": "SDLK_SOFTRIGHT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_CALL": {
+          "doc": "ScancodeToKeycode(SCANCODE_CALL)",
+          "name": "KEYCODE_CALL",
+          "kind": "var",
+          "value": "0x40000121u",
+          "sourceName": "SDLK_CALL",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_ENDCALL": {
+          "doc": "ScancodeToKeycode(SCANCODE_ENDCALL)",
+          "name": "KEYCODE_ENDCALL",
+          "kind": "var",
+          "value": "0x40000122u",
+          "sourceName": "SDLK_ENDCALL",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LEFT_TAB": {
+          "doc": "Extended key Left Tab",
+          "name": "KEYCODE_LEFT_TAB",
+          "kind": "var",
+          "value": "0x20000001u",
+          "sourceName": "SDLK_LEFT_TAB",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LEVEL5_SHIFT": {
+          "doc": "Extended key Level 5 Shift",
+          "name": "KEYCODE_LEVEL5_SHIFT",
+          "kind": "var",
+          "value": "0x20000002u",
+          "sourceName": "SDLK_LEVEL5_SHIFT",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_MULTI_KEY_COMPOSE": {
+          "doc": "Extended key Multi-key Compose",
+          "name": "KEYCODE_MULTI_KEY_COMPOSE",
+          "kind": "var",
+          "value": "0x20000003u",
+          "sourceName": "SDLK_MULTI_KEY_COMPOSE",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LMETA": {
+          "doc": "Extended key Left Meta",
+          "name": "KEYCODE_LMETA",
+          "kind": "var",
+          "value": "0x20000004u",
+          "sourceName": "SDLK_LMETA",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_RMETA": {
+          "doc": "Extended key Right Meta",
+          "name": "KEYCODE_RMETA",
+          "kind": "var",
+          "value": "0x20000005u",
+          "sourceName": "SDLK_RMETA",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_LHYPER": {
+          "doc": "Extended key Left Hyper",
+          "name": "KEYCODE_LHYPER",
+          "kind": "var",
+          "value": "0x20000006u",
+          "sourceName": "SDLK_LHYPER",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "KEYCODE_RHYPER": {
+          "doc": "Extended key Right Hyper",
+          "name": "KEYCODE_RHYPER",
+          "kind": "var",
+          "value": "0x20000007u",
+          "sourceName": "SDLK_RHYPER",
+          "constexpr": true,
+          "type": "Keycode"
+        },
+        "SDLK_EXTENDED_MASK": {
           "doc": "",
-          "name": "SDL_SDLK_EXTENDED_MASK",
-          "kind": "def",
+          "name": "SDLK_EXTENDED_MASK",
+          "kind": "function",
           "value": "(1u << 29)",
-          "sourceName": "SDLK_EXTENDED_MASK"
+          "sourceName": "SDLK_EXTENDED_MASK",
+          "parameters": [],
+          "type": "bool",
+          "constexpr": true
         },
-        "SDL_SDLK_SCANCODE_MASK": {
+        "Keycode::IsExtended": {
+          "name": "Keycode::IsExtended",
+          "kind": "function",
+          "value": "(1u << 29)",
+          "sourceName": "SDLK_EXTENDED_MASK",
+          "parameters": [],
+          "type": "bool",
+          "constexpr": true,
+          "immutable": true,
+          "hints": {
+            "self": "m_keycode",
+            "private": true,
+            "delegate": "SDL::SDLK_EXTENDED_MASK"
+          }
+        },
+        "SDLK_SCANCODE_MASK": {
           "doc": "",
-          "name": "SDL_SDLK_SCANCODE_MASK",
-          "kind": "def",
+          "name": "SDLK_SCANCODE_MASK",
+          "kind": "function",
           "value": "(1u << 30)",
-          "sourceName": "SDLK_SCANCODE_MASK"
+          "sourceName": "SDLK_SCANCODE_MASK",
+          "parameters": [],
+          "type": "bool",
+          "constexpr": true
+        },
+        "Keycode::IsScancode": {
+          "name": "Keycode::IsScancode",
+          "kind": "function",
+          "value": "(1u << 30)",
+          "sourceName": "SDLK_SCANCODE_MASK",
+          "parameters": [],
+          "type": "bool",
+          "constexpr": true,
+          "immutable": true,
+          "hints": {
+            "self": "m_keycode",
+            "private": true,
+            "delegate": "SDL::SDLK_SCANCODE_MASK"
+          }
         },
         "ScancodeToKeycode": {
           "doc": "",
@@ -38969,1931 +41675,6 @@
           "sourceName": "SDL_SCANCODE_TO_KEYCODE",
           "type": "Keycode",
           "constexpr": true
-        },
-        "SDL_SDLK_UNKNOWN": {
-          "doc": "0",
-          "name": "SDL_SDLK_UNKNOWN",
-          "kind": "def",
-          "value": "0x00000000u",
-          "sourceName": "SDLK_UNKNOWN"
-        },
-        "SDL_SDLK_RETURN": {
-          "doc": "'@r'",
-          "name": "SDL_SDLK_RETURN",
-          "kind": "def",
-          "value": "0x0000000du",
-          "sourceName": "SDLK_RETURN"
-        },
-        "SDL_SDLK_ESCAPE": {
-          "doc": "'@x1B'",
-          "name": "SDL_SDLK_ESCAPE",
-          "kind": "def",
-          "value": "0x0000001bu",
-          "sourceName": "SDLK_ESCAPE"
-        },
-        "SDL_SDLK_BACKSPACE": {
-          "doc": "'@b'",
-          "name": "SDL_SDLK_BACKSPACE",
-          "kind": "def",
-          "value": "0x00000008u",
-          "sourceName": "SDLK_BACKSPACE"
-        },
-        "SDL_SDLK_TAB": {
-          "doc": "'@t'",
-          "name": "SDL_SDLK_TAB",
-          "kind": "def",
-          "value": "0x00000009u",
-          "sourceName": "SDLK_TAB"
-        },
-        "SDL_SDLK_SPACE": {
-          "doc": "' '",
-          "name": "SDL_SDLK_SPACE",
-          "kind": "def",
-          "value": "0x00000020u",
-          "sourceName": "SDLK_SPACE"
-        },
-        "SDL_SDLK_EXCLAIM": {
-          "doc": "'!'",
-          "name": "SDL_SDLK_EXCLAIM",
-          "kind": "def",
-          "value": "0x00000021u",
-          "sourceName": "SDLK_EXCLAIM"
-        },
-        "SDL_SDLK_DBLAPOSTROPHE": {
-          "doc": "'\"'",
-          "name": "SDL_SDLK_DBLAPOSTROPHE",
-          "kind": "def",
-          "value": "0x00000022u",
-          "sourceName": "SDLK_DBLAPOSTROPHE"
-        },
-        "SDL_SDLK_HASH": {
-          "doc": "'#'",
-          "name": "SDL_SDLK_HASH",
-          "kind": "def",
-          "value": "0x00000023u",
-          "sourceName": "SDLK_HASH"
-        },
-        "SDL_SDLK_DOLLAR": {
-          "doc": "'$'",
-          "name": "SDL_SDLK_DOLLAR",
-          "kind": "def",
-          "value": "0x00000024u",
-          "sourceName": "SDLK_DOLLAR"
-        },
-        "SDL_SDLK_PERCENT": {
-          "doc": "'%'",
-          "name": "SDL_SDLK_PERCENT",
-          "kind": "def",
-          "value": "0x00000025u",
-          "sourceName": "SDLK_PERCENT"
-        },
-        "SDL_SDLK_AMPERSAND": {
-          "doc": "'&'",
-          "name": "SDL_SDLK_AMPERSAND",
-          "kind": "def",
-          "value": "0x00000026u",
-          "sourceName": "SDLK_AMPERSAND"
-        },
-        "SDL_SDLK_APOSTROPHE": {
-          "doc": "'\\''",
-          "name": "SDL_SDLK_APOSTROPHE",
-          "kind": "def",
-          "value": "0x00000027u",
-          "sourceName": "SDLK_APOSTROPHE"
-        },
-        "SDL_SDLK_LEFTPAREN": {
-          "doc": "'('",
-          "name": "SDL_SDLK_LEFTPAREN",
-          "kind": "def",
-          "value": "0x00000028u",
-          "sourceName": "SDLK_LEFTPAREN"
-        },
-        "SDL_SDLK_RIGHTPAREN": {
-          "doc": "')'",
-          "name": "SDL_SDLK_RIGHTPAREN",
-          "kind": "def",
-          "value": "0x00000029u",
-          "sourceName": "SDLK_RIGHTPAREN"
-        },
-        "SDL_SDLK_ASTERISK": {
-          "doc": "'*'",
-          "name": "SDL_SDLK_ASTERISK",
-          "kind": "def",
-          "value": "0x0000002au",
-          "sourceName": "SDLK_ASTERISK"
-        },
-        "SDL_SDLK_PLUS": {
-          "doc": "'+'",
-          "name": "SDL_SDLK_PLUS",
-          "kind": "def",
-          "value": "0x0000002bu",
-          "sourceName": "SDLK_PLUS"
-        },
-        "SDL_SDLK_COMMA": {
-          "doc": "','",
-          "name": "SDL_SDLK_COMMA",
-          "kind": "def",
-          "value": "0x0000002cu",
-          "sourceName": "SDLK_COMMA"
-        },
-        "SDL_SDLK_MINUS": {
-          "doc": "'-'",
-          "name": "SDL_SDLK_MINUS",
-          "kind": "def",
-          "value": "0x0000002du",
-          "sourceName": "SDLK_MINUS"
-        },
-        "SDL_SDLK_PERIOD": {
-          "doc": "'.'",
-          "name": "SDL_SDLK_PERIOD",
-          "kind": "def",
-          "value": "0x0000002eu",
-          "sourceName": "SDLK_PERIOD"
-        },
-        "SDL_SDLK_SLASH": {
-          "doc": "'/'",
-          "name": "SDL_SDLK_SLASH",
-          "kind": "def",
-          "value": "0x0000002fu",
-          "sourceName": "SDLK_SLASH"
-        },
-        "SDL_SDLK_0": {
-          "doc": "'0'",
-          "name": "SDL_SDLK_0",
-          "kind": "def",
-          "value": "0x00000030u",
-          "sourceName": "SDLK_0"
-        },
-        "SDL_SDLK_1": {
-          "doc": "'1'",
-          "name": "SDL_SDLK_1",
-          "kind": "def",
-          "value": "0x00000031u",
-          "sourceName": "SDLK_1"
-        },
-        "SDL_SDLK_2": {
-          "doc": "'2'",
-          "name": "SDL_SDLK_2",
-          "kind": "def",
-          "value": "0x00000032u",
-          "sourceName": "SDLK_2"
-        },
-        "SDL_SDLK_3": {
-          "doc": "'3'",
-          "name": "SDL_SDLK_3",
-          "kind": "def",
-          "value": "0x00000033u",
-          "sourceName": "SDLK_3"
-        },
-        "SDL_SDLK_4": {
-          "doc": "'4'",
-          "name": "SDL_SDLK_4",
-          "kind": "def",
-          "value": "0x00000034u",
-          "sourceName": "SDLK_4"
-        },
-        "SDL_SDLK_5": {
-          "doc": "'5'",
-          "name": "SDL_SDLK_5",
-          "kind": "def",
-          "value": "0x00000035u",
-          "sourceName": "SDLK_5"
-        },
-        "SDL_SDLK_6": {
-          "doc": "'6'",
-          "name": "SDL_SDLK_6",
-          "kind": "def",
-          "value": "0x00000036u",
-          "sourceName": "SDLK_6"
-        },
-        "SDL_SDLK_7": {
-          "doc": "'7'",
-          "name": "SDL_SDLK_7",
-          "kind": "def",
-          "value": "0x00000037u",
-          "sourceName": "SDLK_7"
-        },
-        "SDL_SDLK_8": {
-          "doc": "'8'",
-          "name": "SDL_SDLK_8",
-          "kind": "def",
-          "value": "0x00000038u",
-          "sourceName": "SDLK_8"
-        },
-        "SDL_SDLK_9": {
-          "doc": "'9'",
-          "name": "SDL_SDLK_9",
-          "kind": "def",
-          "value": "0x00000039u",
-          "sourceName": "SDLK_9"
-        },
-        "SDL_SDLK_COLON": {
-          "doc": "':'",
-          "name": "SDL_SDLK_COLON",
-          "kind": "def",
-          "value": "0x0000003au",
-          "sourceName": "SDLK_COLON"
-        },
-        "SDL_SDLK_SEMICOLON": {
-          "doc": "';'",
-          "name": "SDL_SDLK_SEMICOLON",
-          "kind": "def",
-          "value": "0x0000003bu",
-          "sourceName": "SDLK_SEMICOLON"
-        },
-        "SDL_SDLK_LESS": {
-          "doc": "'<'",
-          "name": "SDL_SDLK_LESS",
-          "kind": "def",
-          "value": "0x0000003cu",
-          "sourceName": "SDLK_LESS"
-        },
-        "SDL_SDLK_EQUALS": {
-          "doc": "'='",
-          "name": "SDL_SDLK_EQUALS",
-          "kind": "def",
-          "value": "0x0000003du",
-          "sourceName": "SDLK_EQUALS"
-        },
-        "SDL_SDLK_GREATER": {
-          "doc": "'>'",
-          "name": "SDL_SDLK_GREATER",
-          "kind": "def",
-          "value": "0x0000003eu",
-          "sourceName": "SDLK_GREATER"
-        },
-        "SDL_SDLK_QUESTION": {
-          "doc": "'?'",
-          "name": "SDL_SDLK_QUESTION",
-          "kind": "def",
-          "value": "0x0000003fu",
-          "sourceName": "SDLK_QUESTION"
-        },
-        "SDL_SDLK_AT": {
-          "doc": "'@'",
-          "name": "SDL_SDLK_AT",
-          "kind": "def",
-          "value": "0x00000040u",
-          "sourceName": "SDLK_AT"
-        },
-        "SDL_SDLK_LEFTBRACKET": {
-          "doc": "'['",
-          "name": "SDL_SDLK_LEFTBRACKET",
-          "kind": "def",
-          "value": "0x0000005bu",
-          "sourceName": "SDLK_LEFTBRACKET"
-        },
-        "SDL_SDLK_BACKSLASH": {
-          "doc": "'\\\\'",
-          "name": "SDL_SDLK_BACKSLASH",
-          "kind": "def",
-          "value": "0x0000005cu",
-          "sourceName": "SDLK_BACKSLASH"
-        },
-        "SDL_SDLK_RIGHTBRACKET": {
-          "doc": "']'",
-          "name": "SDL_SDLK_RIGHTBRACKET",
-          "kind": "def",
-          "value": "0x0000005du",
-          "sourceName": "SDLK_RIGHTBRACKET"
-        },
-        "SDL_SDLK_CARET": {
-          "doc": "'^'",
-          "name": "SDL_SDLK_CARET",
-          "kind": "def",
-          "value": "0x0000005eu",
-          "sourceName": "SDLK_CARET"
-        },
-        "SDL_SDLK_UNDERSCORE": {
-          "doc": "'_'",
-          "name": "SDL_SDLK_UNDERSCORE",
-          "kind": "def",
-          "value": "0x0000005fu",
-          "sourceName": "SDLK_UNDERSCORE"
-        },
-        "SDL_SDLK_GRAVE": {
-          "doc": "'`'",
-          "name": "SDL_SDLK_GRAVE",
-          "kind": "def",
-          "value": "0x00000060u",
-          "sourceName": "SDLK_GRAVE"
-        },
-        "SDL_SDLK_A": {
-          "doc": "'a'",
-          "name": "SDL_SDLK_A",
-          "kind": "def",
-          "value": "0x00000061u",
-          "sourceName": "SDLK_A"
-        },
-        "SDL_SDLK_B": {
-          "doc": "'b'",
-          "name": "SDL_SDLK_B",
-          "kind": "def",
-          "value": "0x00000062u",
-          "sourceName": "SDLK_B"
-        },
-        "SDL_SDLK_C": {
-          "doc": "'c'",
-          "name": "SDL_SDLK_C",
-          "kind": "def",
-          "value": "0x00000063u",
-          "sourceName": "SDLK_C"
-        },
-        "SDL_SDLK_D": {
-          "doc": "'d'",
-          "name": "SDL_SDLK_D",
-          "kind": "def",
-          "value": "0x00000064u",
-          "sourceName": "SDLK_D"
-        },
-        "SDL_SDLK_E": {
-          "doc": "'e'",
-          "name": "SDL_SDLK_E",
-          "kind": "def",
-          "value": "0x00000065u",
-          "sourceName": "SDLK_E"
-        },
-        "SDL_SDLK_F": {
-          "doc": "'f'",
-          "name": "SDL_SDLK_F",
-          "kind": "def",
-          "value": "0x00000066u",
-          "sourceName": "SDLK_F"
-        },
-        "SDL_SDLK_G": {
-          "doc": "'g'",
-          "name": "SDL_SDLK_G",
-          "kind": "def",
-          "value": "0x00000067u",
-          "sourceName": "SDLK_G"
-        },
-        "SDL_SDLK_H": {
-          "doc": "'h'",
-          "name": "SDL_SDLK_H",
-          "kind": "def",
-          "value": "0x00000068u",
-          "sourceName": "SDLK_H"
-        },
-        "SDL_SDLK_I": {
-          "doc": "'i'",
-          "name": "SDL_SDLK_I",
-          "kind": "def",
-          "value": "0x00000069u",
-          "sourceName": "SDLK_I"
-        },
-        "SDL_SDLK_J": {
-          "doc": "'j'",
-          "name": "SDL_SDLK_J",
-          "kind": "def",
-          "value": "0x0000006au",
-          "sourceName": "SDLK_J"
-        },
-        "SDL_SDLK_K": {
-          "doc": "'k'",
-          "name": "SDL_SDLK_K",
-          "kind": "def",
-          "value": "0x0000006bu",
-          "sourceName": "SDLK_K"
-        },
-        "SDL_SDLK_L": {
-          "doc": "'l'",
-          "name": "SDL_SDLK_L",
-          "kind": "def",
-          "value": "0x0000006cu",
-          "sourceName": "SDLK_L"
-        },
-        "SDL_SDLK_M": {
-          "doc": "'m'",
-          "name": "SDL_SDLK_M",
-          "kind": "def",
-          "value": "0x0000006du",
-          "sourceName": "SDLK_M"
-        },
-        "SDL_SDLK_N": {
-          "doc": "'n'",
-          "name": "SDL_SDLK_N",
-          "kind": "def",
-          "value": "0x0000006eu",
-          "sourceName": "SDLK_N"
-        },
-        "SDL_SDLK_O": {
-          "doc": "'o'",
-          "name": "SDL_SDLK_O",
-          "kind": "def",
-          "value": "0x0000006fu",
-          "sourceName": "SDLK_O"
-        },
-        "SDL_SDLK_P": {
-          "doc": "'p'",
-          "name": "SDL_SDLK_P",
-          "kind": "def",
-          "value": "0x00000070u",
-          "sourceName": "SDLK_P"
-        },
-        "SDL_SDLK_Q": {
-          "doc": "'q'",
-          "name": "SDL_SDLK_Q",
-          "kind": "def",
-          "value": "0x00000071u",
-          "sourceName": "SDLK_Q"
-        },
-        "SDL_SDLK_R": {
-          "doc": "'r'",
-          "name": "SDL_SDLK_R",
-          "kind": "def",
-          "value": "0x00000072u",
-          "sourceName": "SDLK_R"
-        },
-        "SDL_SDLK_S": {
-          "doc": "'s'",
-          "name": "SDL_SDLK_S",
-          "kind": "def",
-          "value": "0x00000073u",
-          "sourceName": "SDLK_S"
-        },
-        "SDL_SDLK_T": {
-          "doc": "'t'",
-          "name": "SDL_SDLK_T",
-          "kind": "def",
-          "value": "0x00000074u",
-          "sourceName": "SDLK_T"
-        },
-        "SDL_SDLK_U": {
-          "doc": "'u'",
-          "name": "SDL_SDLK_U",
-          "kind": "def",
-          "value": "0x00000075u",
-          "sourceName": "SDLK_U"
-        },
-        "SDL_SDLK_V": {
-          "doc": "'v'",
-          "name": "SDL_SDLK_V",
-          "kind": "def",
-          "value": "0x00000076u",
-          "sourceName": "SDLK_V"
-        },
-        "SDL_SDLK_W": {
-          "doc": "'w'",
-          "name": "SDL_SDLK_W",
-          "kind": "def",
-          "value": "0x00000077u",
-          "sourceName": "SDLK_W"
-        },
-        "SDL_SDLK_X": {
-          "doc": "'x'",
-          "name": "SDL_SDLK_X",
-          "kind": "def",
-          "value": "0x00000078u",
-          "sourceName": "SDLK_X"
-        },
-        "SDL_SDLK_Y": {
-          "doc": "'y'",
-          "name": "SDL_SDLK_Y",
-          "kind": "def",
-          "value": "0x00000079u",
-          "sourceName": "SDLK_Y"
-        },
-        "SDL_SDLK_Z": {
-          "doc": "'z'",
-          "name": "SDL_SDLK_Z",
-          "kind": "def",
-          "value": "0x0000007au",
-          "sourceName": "SDLK_Z"
-        },
-        "SDL_SDLK_LEFTBRACE": {
-          "doc": "'{'",
-          "name": "SDL_SDLK_LEFTBRACE",
-          "kind": "def",
-          "value": "0x0000007bu",
-          "sourceName": "SDLK_LEFTBRACE"
-        },
-        "SDL_SDLK_PIPE": {
-          "doc": "'|'",
-          "name": "SDL_SDLK_PIPE",
-          "kind": "def",
-          "value": "0x0000007cu",
-          "sourceName": "SDLK_PIPE"
-        },
-        "SDL_SDLK_RIGHTBRACE": {
-          "doc": "'}'",
-          "name": "SDL_SDLK_RIGHTBRACE",
-          "kind": "def",
-          "value": "0x0000007du",
-          "sourceName": "SDLK_RIGHTBRACE"
-        },
-        "SDL_SDLK_TILDE": {
-          "doc": "'~'",
-          "name": "SDL_SDLK_TILDE",
-          "kind": "def",
-          "value": "0x0000007eu",
-          "sourceName": "SDLK_TILDE"
-        },
-        "SDL_SDLK_DELETE": {
-          "doc": "'@x7F'",
-          "name": "SDL_SDLK_DELETE",
-          "kind": "def",
-          "value": "0x0000007fu",
-          "sourceName": "SDLK_DELETE"
-        },
-        "SDL_SDLK_PLUSMINUS": {
-          "doc": "'@xB1'",
-          "name": "SDL_SDLK_PLUSMINUS",
-          "kind": "def",
-          "value": "0x000000b1u",
-          "sourceName": "SDLK_PLUSMINUS"
-        },
-        "SDL_SDLK_CAPSLOCK": {
-          "doc": "ScancodeToKeycode(SCANCODE_CAPSLOCK)",
-          "name": "SDL_SDLK_CAPSLOCK",
-          "kind": "def",
-          "value": "0x40000039u",
-          "sourceName": "SDLK_CAPSLOCK"
-        },
-        "SDL_SDLK_F1": {
-          "doc": "ScancodeToKeycode(SCANCODE_F1)",
-          "name": "SDL_SDLK_F1",
-          "kind": "def",
-          "value": "0x4000003au",
-          "sourceName": "SDLK_F1"
-        },
-        "SDL_SDLK_F2": {
-          "doc": "ScancodeToKeycode(SCANCODE_F2)",
-          "name": "SDL_SDLK_F2",
-          "kind": "def",
-          "value": "0x4000003bu",
-          "sourceName": "SDLK_F2"
-        },
-        "SDL_SDLK_F3": {
-          "doc": "ScancodeToKeycode(SCANCODE_F3)",
-          "name": "SDL_SDLK_F3",
-          "kind": "def",
-          "value": "0x4000003cu",
-          "sourceName": "SDLK_F3"
-        },
-        "SDL_SDLK_F4": {
-          "doc": "ScancodeToKeycode(SCANCODE_F4)",
-          "name": "SDL_SDLK_F4",
-          "kind": "def",
-          "value": "0x4000003du",
-          "sourceName": "SDLK_F4"
-        },
-        "SDL_SDLK_F5": {
-          "doc": "ScancodeToKeycode(SCANCODE_F5)",
-          "name": "SDL_SDLK_F5",
-          "kind": "def",
-          "value": "0x4000003eu",
-          "sourceName": "SDLK_F5"
-        },
-        "SDL_SDLK_F6": {
-          "doc": "ScancodeToKeycode(SCANCODE_F6)",
-          "name": "SDL_SDLK_F6",
-          "kind": "def",
-          "value": "0x4000003fu",
-          "sourceName": "SDLK_F6"
-        },
-        "SDL_SDLK_F7": {
-          "doc": "ScancodeToKeycode(SCANCODE_F7)",
-          "name": "SDL_SDLK_F7",
-          "kind": "def",
-          "value": "0x40000040u",
-          "sourceName": "SDLK_F7"
-        },
-        "SDL_SDLK_F8": {
-          "doc": "ScancodeToKeycode(SCANCODE_F8)",
-          "name": "SDL_SDLK_F8",
-          "kind": "def",
-          "value": "0x40000041u",
-          "sourceName": "SDLK_F8"
-        },
-        "SDL_SDLK_F9": {
-          "doc": "ScancodeToKeycode(SCANCODE_F9)",
-          "name": "SDL_SDLK_F9",
-          "kind": "def",
-          "value": "0x40000042u",
-          "sourceName": "SDLK_F9"
-        },
-        "SDL_SDLK_F10": {
-          "doc": "ScancodeToKeycode(SCANCODE_F10)",
-          "name": "SDL_SDLK_F10",
-          "kind": "def",
-          "value": "0x40000043u",
-          "sourceName": "SDLK_F10"
-        },
-        "SDL_SDLK_F11": {
-          "doc": "ScancodeToKeycode(SCANCODE_F11)",
-          "name": "SDL_SDLK_F11",
-          "kind": "def",
-          "value": "0x40000044u",
-          "sourceName": "SDLK_F11"
-        },
-        "SDL_SDLK_F12": {
-          "doc": "ScancodeToKeycode(SCANCODE_F12)",
-          "name": "SDL_SDLK_F12",
-          "kind": "def",
-          "value": "0x40000045u",
-          "sourceName": "SDLK_F12"
-        },
-        "SDL_SDLK_PRINTSCREEN": {
-          "doc": "ScancodeToKeycode(SCANCODE_PRINTSCREEN)",
-          "name": "SDL_SDLK_PRINTSCREEN",
-          "kind": "def",
-          "value": "0x40000046u",
-          "sourceName": "SDLK_PRINTSCREEN"
-        },
-        "SDL_SDLK_SCROLLLOCK": {
-          "doc": "ScancodeToKeycode(SCANCODE_SCROLLLOCK)",
-          "name": "SDL_SDLK_SCROLLLOCK",
-          "kind": "def",
-          "value": "0x40000047u",
-          "sourceName": "SDLK_SCROLLLOCK"
-        },
-        "SDL_SDLK_PAUSE": {
-          "doc": "ScancodeToKeycode(SCANCODE_PAUSE)",
-          "name": "SDL_SDLK_PAUSE",
-          "kind": "def",
-          "value": "0x40000048u",
-          "sourceName": "SDLK_PAUSE"
-        },
-        "SDL_SDLK_INSERT": {
-          "doc": "ScancodeToKeycode(SCANCODE_INSERT)",
-          "name": "SDL_SDLK_INSERT",
-          "kind": "def",
-          "value": "0x40000049u",
-          "sourceName": "SDLK_INSERT"
-        },
-        "SDL_SDLK_HOME": {
-          "doc": "ScancodeToKeycode(SCANCODE_HOME)",
-          "name": "SDL_SDLK_HOME",
-          "kind": "def",
-          "value": "0x4000004au",
-          "sourceName": "SDLK_HOME"
-        },
-        "SDL_SDLK_PAGEUP": {
-          "doc": "ScancodeToKeycode(SCANCODE_PAGEUP)",
-          "name": "SDL_SDLK_PAGEUP",
-          "kind": "def",
-          "value": "0x4000004bu",
-          "sourceName": "SDLK_PAGEUP"
-        },
-        "SDL_SDLK_END": {
-          "doc": "ScancodeToKeycode(SCANCODE_END)",
-          "name": "SDL_SDLK_END",
-          "kind": "def",
-          "value": "0x4000004du",
-          "sourceName": "SDLK_END"
-        },
-        "SDL_SDLK_PAGEDOWN": {
-          "doc": "ScancodeToKeycode(SCANCODE_PAGEDOWN)",
-          "name": "SDL_SDLK_PAGEDOWN",
-          "kind": "def",
-          "value": "0x4000004eu",
-          "sourceName": "SDLK_PAGEDOWN"
-        },
-        "SDL_SDLK_RIGHT": {
-          "doc": "ScancodeToKeycode(SCANCODE_RIGHT)",
-          "name": "SDL_SDLK_RIGHT",
-          "kind": "def",
-          "value": "0x4000004fu",
-          "sourceName": "SDLK_RIGHT"
-        },
-        "SDL_SDLK_LEFT": {
-          "doc": "ScancodeToKeycode(SCANCODE_LEFT)",
-          "name": "SDL_SDLK_LEFT",
-          "kind": "def",
-          "value": "0x40000050u",
-          "sourceName": "SDLK_LEFT"
-        },
-        "SDL_SDLK_DOWN": {
-          "doc": "ScancodeToKeycode(SCANCODE_DOWN)",
-          "name": "SDL_SDLK_DOWN",
-          "kind": "def",
-          "value": "0x40000051u",
-          "sourceName": "SDLK_DOWN"
-        },
-        "SDL_SDLK_UP": {
-          "doc": "ScancodeToKeycode(SCANCODE_UP)",
-          "name": "SDL_SDLK_UP",
-          "kind": "def",
-          "value": "0x40000052u",
-          "sourceName": "SDLK_UP"
-        },
-        "SDL_SDLK_NUMLOCKCLEAR": {
-          "doc": "ScancodeToKeycode(SCANCODE_NUMLOCKCLEAR)",
-          "name": "SDL_SDLK_NUMLOCKCLEAR",
-          "kind": "def",
-          "value": "0x40000053u",
-          "sourceName": "SDLK_NUMLOCKCLEAR"
-        },
-        "SDL_SDLK_KP_DIVIDE": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_DIVIDE)",
-          "name": "SDL_SDLK_KP_DIVIDE",
-          "kind": "def",
-          "value": "0x40000054u",
-          "sourceName": "SDLK_KP_DIVIDE"
-        },
-        "SDL_SDLK_KP_MULTIPLY": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_MULTIPLY)",
-          "name": "SDL_SDLK_KP_MULTIPLY",
-          "kind": "def",
-          "value": "0x40000055u",
-          "sourceName": "SDLK_KP_MULTIPLY"
-        },
-        "SDL_SDLK_KP_MINUS": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_MINUS)",
-          "name": "SDL_SDLK_KP_MINUS",
-          "kind": "def",
-          "value": "0x40000056u",
-          "sourceName": "SDLK_KP_MINUS"
-        },
-        "SDL_SDLK_KP_PLUS": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_PLUS)",
-          "name": "SDL_SDLK_KP_PLUS",
-          "kind": "def",
-          "value": "0x40000057u",
-          "sourceName": "SDLK_KP_PLUS"
-        },
-        "SDL_SDLK_KP_ENTER": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_ENTER)",
-          "name": "SDL_SDLK_KP_ENTER",
-          "kind": "def",
-          "value": "0x40000058u",
-          "sourceName": "SDLK_KP_ENTER"
-        },
-        "SDL_SDLK_KP_1": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_1)",
-          "name": "SDL_SDLK_KP_1",
-          "kind": "def",
-          "value": "0x40000059u",
-          "sourceName": "SDLK_KP_1"
-        },
-        "SDL_SDLK_KP_2": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_2)",
-          "name": "SDL_SDLK_KP_2",
-          "kind": "def",
-          "value": "0x4000005au",
-          "sourceName": "SDLK_KP_2"
-        },
-        "SDL_SDLK_KP_3": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_3)",
-          "name": "SDL_SDLK_KP_3",
-          "kind": "def",
-          "value": "0x4000005bu",
-          "sourceName": "SDLK_KP_3"
-        },
-        "SDL_SDLK_KP_4": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_4)",
-          "name": "SDL_SDLK_KP_4",
-          "kind": "def",
-          "value": "0x4000005cu",
-          "sourceName": "SDLK_KP_4"
-        },
-        "SDL_SDLK_KP_5": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_5)",
-          "name": "SDL_SDLK_KP_5",
-          "kind": "def",
-          "value": "0x4000005du",
-          "sourceName": "SDLK_KP_5"
-        },
-        "SDL_SDLK_KP_6": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_6)",
-          "name": "SDL_SDLK_KP_6",
-          "kind": "def",
-          "value": "0x4000005eu",
-          "sourceName": "SDLK_KP_6"
-        },
-        "SDL_SDLK_KP_7": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_7)",
-          "name": "SDL_SDLK_KP_7",
-          "kind": "def",
-          "value": "0x4000005fu",
-          "sourceName": "SDLK_KP_7"
-        },
-        "SDL_SDLK_KP_8": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_8)",
-          "name": "SDL_SDLK_KP_8",
-          "kind": "def",
-          "value": "0x40000060u",
-          "sourceName": "SDLK_KP_8"
-        },
-        "SDL_SDLK_KP_9": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_9)",
-          "name": "SDL_SDLK_KP_9",
-          "kind": "def",
-          "value": "0x40000061u",
-          "sourceName": "SDLK_KP_9"
-        },
-        "SDL_SDLK_KP_0": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_0)",
-          "name": "SDL_SDLK_KP_0",
-          "kind": "def",
-          "value": "0x40000062u",
-          "sourceName": "SDLK_KP_0"
-        },
-        "SDL_SDLK_KP_PERIOD": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_PERIOD)",
-          "name": "SDL_SDLK_KP_PERIOD",
-          "kind": "def",
-          "value": "0x40000063u",
-          "sourceName": "SDLK_KP_PERIOD"
-        },
-        "SDL_SDLK_APPLICATION": {
-          "doc": "ScancodeToKeycode(SCANCODE_APPLICATION)",
-          "name": "SDL_SDLK_APPLICATION",
-          "kind": "def",
-          "value": "0x40000065u",
-          "sourceName": "SDLK_APPLICATION"
-        },
-        "SDL_SDLK_POWER": {
-          "doc": "ScancodeToKeycode(SCANCODE_POWER)",
-          "name": "SDL_SDLK_POWER",
-          "kind": "def",
-          "value": "0x40000066u",
-          "sourceName": "SDLK_POWER"
-        },
-        "SDL_SDLK_KP_EQUALS": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_EQUALS)",
-          "name": "SDL_SDLK_KP_EQUALS",
-          "kind": "def",
-          "value": "0x40000067u",
-          "sourceName": "SDLK_KP_EQUALS"
-        },
-        "SDL_SDLK_F13": {
-          "doc": "ScancodeToKeycode(SCANCODE_F13)",
-          "name": "SDL_SDLK_F13",
-          "kind": "def",
-          "value": "0x40000068u",
-          "sourceName": "SDLK_F13"
-        },
-        "SDL_SDLK_F14": {
-          "doc": "ScancodeToKeycode(SCANCODE_F14)",
-          "name": "SDL_SDLK_F14",
-          "kind": "def",
-          "value": "0x40000069u",
-          "sourceName": "SDLK_F14"
-        },
-        "SDL_SDLK_F15": {
-          "doc": "ScancodeToKeycode(SCANCODE_F15)",
-          "name": "SDL_SDLK_F15",
-          "kind": "def",
-          "value": "0x4000006au",
-          "sourceName": "SDLK_F15"
-        },
-        "SDL_SDLK_F16": {
-          "doc": "ScancodeToKeycode(SCANCODE_F16)",
-          "name": "SDL_SDLK_F16",
-          "kind": "def",
-          "value": "0x4000006bu",
-          "sourceName": "SDLK_F16"
-        },
-        "SDL_SDLK_F17": {
-          "doc": "ScancodeToKeycode(SCANCODE_F17)",
-          "name": "SDL_SDLK_F17",
-          "kind": "def",
-          "value": "0x4000006cu",
-          "sourceName": "SDLK_F17"
-        },
-        "SDL_SDLK_F18": {
-          "doc": "ScancodeToKeycode(SCANCODE_F18)",
-          "name": "SDL_SDLK_F18",
-          "kind": "def",
-          "value": "0x4000006du",
-          "sourceName": "SDLK_F18"
-        },
-        "SDL_SDLK_F19": {
-          "doc": "ScancodeToKeycode(SCANCODE_F19)",
-          "name": "SDL_SDLK_F19",
-          "kind": "def",
-          "value": "0x4000006eu",
-          "sourceName": "SDLK_F19"
-        },
-        "SDL_SDLK_F20": {
-          "doc": "ScancodeToKeycode(SCANCODE_F20)",
-          "name": "SDL_SDLK_F20",
-          "kind": "def",
-          "value": "0x4000006fu",
-          "sourceName": "SDLK_F20"
-        },
-        "SDL_SDLK_F21": {
-          "doc": "ScancodeToKeycode(SCANCODE_F21)",
-          "name": "SDL_SDLK_F21",
-          "kind": "def",
-          "value": "0x40000070u",
-          "sourceName": "SDLK_F21"
-        },
-        "SDL_SDLK_F22": {
-          "doc": "ScancodeToKeycode(SCANCODE_F22)",
-          "name": "SDL_SDLK_F22",
-          "kind": "def",
-          "value": "0x40000071u",
-          "sourceName": "SDLK_F22"
-        },
-        "SDL_SDLK_F23": {
-          "doc": "ScancodeToKeycode(SCANCODE_F23)",
-          "name": "SDL_SDLK_F23",
-          "kind": "def",
-          "value": "0x40000072u",
-          "sourceName": "SDLK_F23"
-        },
-        "SDL_SDLK_F24": {
-          "doc": "ScancodeToKeycode(SCANCODE_F24)",
-          "name": "SDL_SDLK_F24",
-          "kind": "def",
-          "value": "0x40000073u",
-          "sourceName": "SDLK_F24"
-        },
-        "SDL_SDLK_EXECUTE": {
-          "doc": "ScancodeToKeycode(SCANCODE_EXECUTE)",
-          "name": "SDL_SDLK_EXECUTE",
-          "kind": "def",
-          "value": "0x40000074u",
-          "sourceName": "SDLK_EXECUTE"
-        },
-        "SDL_SDLK_HELP": {
-          "doc": "ScancodeToKeycode(SCANCODE_HELP)",
-          "name": "SDL_SDLK_HELP",
-          "kind": "def",
-          "value": "0x40000075u",
-          "sourceName": "SDLK_HELP"
-        },
-        "SDL_SDLK_MENU": {
-          "doc": "ScancodeToKeycode(SCANCODE_MENU)",
-          "name": "SDL_SDLK_MENU",
-          "kind": "def",
-          "value": "0x40000076u",
-          "sourceName": "SDLK_MENU"
-        },
-        "SDL_SDLK_SELECT": {
-          "doc": "ScancodeToKeycode(SCANCODE_SELECT)",
-          "name": "SDL_SDLK_SELECT",
-          "kind": "def",
-          "value": "0x40000077u",
-          "sourceName": "SDLK_SELECT"
-        },
-        "SDL_SDLK_STOP": {
-          "doc": "ScancodeToKeycode(SCANCODE_STOP)",
-          "name": "SDL_SDLK_STOP",
-          "kind": "def",
-          "value": "0x40000078u",
-          "sourceName": "SDLK_STOP"
-        },
-        "SDL_SDLK_AGAIN": {
-          "doc": "ScancodeToKeycode(SCANCODE_AGAIN)",
-          "name": "SDL_SDLK_AGAIN",
-          "kind": "def",
-          "value": "0x40000079u",
-          "sourceName": "SDLK_AGAIN"
-        },
-        "SDL_SDLK_UNDO": {
-          "doc": "ScancodeToKeycode(SCANCODE_UNDO)",
-          "name": "SDL_SDLK_UNDO",
-          "kind": "def",
-          "value": "0x4000007au",
-          "sourceName": "SDLK_UNDO"
-        },
-        "SDL_SDLK_CUT": {
-          "doc": "ScancodeToKeycode(SCANCODE_CUT)",
-          "name": "SDL_SDLK_CUT",
-          "kind": "def",
-          "value": "0x4000007bu",
-          "sourceName": "SDLK_CUT"
-        },
-        "SDL_SDLK_COPY": {
-          "doc": "ScancodeToKeycode(SCANCODE_COPY)",
-          "name": "SDL_SDLK_COPY",
-          "kind": "def",
-          "value": "0x4000007cu",
-          "sourceName": "SDLK_COPY"
-        },
-        "SDL_SDLK_PASTE": {
-          "doc": "ScancodeToKeycode(SCANCODE_PASTE)",
-          "name": "SDL_SDLK_PASTE",
-          "kind": "def",
-          "value": "0x4000007du",
-          "sourceName": "SDLK_PASTE"
-        },
-        "SDL_SDLK_FIND": {
-          "doc": "ScancodeToKeycode(SCANCODE_FIND)",
-          "name": "SDL_SDLK_FIND",
-          "kind": "def",
-          "value": "0x4000007eu",
-          "sourceName": "SDLK_FIND"
-        },
-        "SDL_SDLK_MUTE": {
-          "doc": "ScancodeToKeycode(SCANCODE_MUTE)",
-          "name": "SDL_SDLK_MUTE",
-          "kind": "def",
-          "value": "0x4000007fu",
-          "sourceName": "SDLK_MUTE"
-        },
-        "SDL_SDLK_VOLUMEUP": {
-          "doc": "ScancodeToKeycode(SCANCODE_VOLUMEUP)",
-          "name": "SDL_SDLK_VOLUMEUP",
-          "kind": "def",
-          "value": "0x40000080u",
-          "sourceName": "SDLK_VOLUMEUP"
-        },
-        "SDL_SDLK_VOLUMEDOWN": {
-          "doc": "ScancodeToKeycode(SCANCODE_VOLUMEDOWN)",
-          "name": "SDL_SDLK_VOLUMEDOWN",
-          "kind": "def",
-          "value": "0x40000081u",
-          "sourceName": "SDLK_VOLUMEDOWN"
-        },
-        "SDL_SDLK_KP_COMMA": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_COMMA)",
-          "name": "SDL_SDLK_KP_COMMA",
-          "kind": "def",
-          "value": "0x40000085u",
-          "sourceName": "SDLK_KP_COMMA"
-        },
-        "SDL_SDLK_KP_EQUALSAS400": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_EQUALSAS400)",
-          "name": "SDL_SDLK_KP_EQUALSAS400",
-          "kind": "def",
-          "value": "0x40000086u",
-          "sourceName": "SDLK_KP_EQUALSAS400"
-        },
-        "SDL_SDLK_ALTERASE": {
-          "doc": "ScancodeToKeycode(SCANCODE_ALTERASE)",
-          "name": "SDL_SDLK_ALTERASE",
-          "kind": "def",
-          "value": "0x40000099u",
-          "sourceName": "SDLK_ALTERASE"
-        },
-        "SDL_SDLK_SYSREQ": {
-          "doc": "ScancodeToKeycode(SCANCODE_SYSREQ)",
-          "name": "SDL_SDLK_SYSREQ",
-          "kind": "def",
-          "value": "0x4000009au",
-          "sourceName": "SDLK_SYSREQ"
-        },
-        "SDL_SDLK_CANCEL": {
-          "doc": "ScancodeToKeycode(SCANCODE_CANCEL)",
-          "name": "SDL_SDLK_CANCEL",
-          "kind": "def",
-          "value": "0x4000009bu",
-          "sourceName": "SDLK_CANCEL"
-        },
-        "SDL_SDLK_CLEAR": {
-          "doc": "ScancodeToKeycode(SCANCODE_CLEAR)",
-          "name": "SDL_SDLK_CLEAR",
-          "kind": "def",
-          "value": "0x4000009cu",
-          "sourceName": "SDLK_CLEAR"
-        },
-        "SDL_SDLK_PRIOR": {
-          "doc": "ScancodeToKeycode(SCANCODE_PRIOR)",
-          "name": "SDL_SDLK_PRIOR",
-          "kind": "def",
-          "value": "0x4000009du",
-          "sourceName": "SDLK_PRIOR"
-        },
-        "SDL_SDLK_RETURN2": {
-          "doc": "ScancodeToKeycode(SCANCODE_RETURN2)",
-          "name": "SDL_SDLK_RETURN2",
-          "kind": "def",
-          "value": "0x4000009eu",
-          "sourceName": "SDLK_RETURN2"
-        },
-        "SDL_SDLK_SEPARATOR": {
-          "doc": "ScancodeToKeycode(SCANCODE_SEPARATOR)",
-          "name": "SDL_SDLK_SEPARATOR",
-          "kind": "def",
-          "value": "0x4000009fu",
-          "sourceName": "SDLK_SEPARATOR"
-        },
-        "SDL_SDLK_OUT": {
-          "doc": "ScancodeToKeycode(SCANCODE_OUT)",
-          "name": "SDL_SDLK_OUT",
-          "kind": "def",
-          "value": "0x400000a0u",
-          "sourceName": "SDLK_OUT"
-        },
-        "SDL_SDLK_OPER": {
-          "doc": "ScancodeToKeycode(SCANCODE_OPER)",
-          "name": "SDL_SDLK_OPER",
-          "kind": "def",
-          "value": "0x400000a1u",
-          "sourceName": "SDLK_OPER"
-        },
-        "SDL_SDLK_CLEARAGAIN": {
-          "doc": "ScancodeToKeycode(SCANCODE_CLEARAGAIN)",
-          "name": "SDL_SDLK_CLEARAGAIN",
-          "kind": "def",
-          "value": "0x400000a2u",
-          "sourceName": "SDLK_CLEARAGAIN"
-        },
-        "SDL_SDLK_CRSEL": {
-          "doc": "ScancodeToKeycode(SCANCODE_CRSEL)",
-          "name": "SDL_SDLK_CRSEL",
-          "kind": "def",
-          "value": "0x400000a3u",
-          "sourceName": "SDLK_CRSEL"
-        },
-        "SDL_SDLK_EXSEL": {
-          "doc": "ScancodeToKeycode(SCANCODE_EXSEL)",
-          "name": "SDL_SDLK_EXSEL",
-          "kind": "def",
-          "value": "0x400000a4u",
-          "sourceName": "SDLK_EXSEL"
-        },
-        "SDL_SDLK_KP_00": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_00)",
-          "name": "SDL_SDLK_KP_00",
-          "kind": "def",
-          "value": "0x400000b0u",
-          "sourceName": "SDLK_KP_00"
-        },
-        "SDL_SDLK_KP_000": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_000)",
-          "name": "SDL_SDLK_KP_000",
-          "kind": "def",
-          "value": "0x400000b1u",
-          "sourceName": "SDLK_KP_000"
-        },
-        "SDL_SDLK_THOUSANDSSEPARATOR": {
-          "doc": "ScancodeToKeycode(SCANCODE_THOUSANDSSEPARATOR)",
-          "name": "SDL_SDLK_THOUSANDSSEPARATOR",
-          "kind": "def",
-          "value": "0x400000b2u",
-          "sourceName": "SDLK_THOUSANDSSEPARATOR"
-        },
-        "SDL_SDLK_DECIMALSEPARATOR": {
-          "doc": "ScancodeToKeycode(SCANCODE_DECIMALSEPARATOR)",
-          "name": "SDL_SDLK_DECIMALSEPARATOR",
-          "kind": "def",
-          "value": "0x400000b3u",
-          "sourceName": "SDLK_DECIMALSEPARATOR"
-        },
-        "SDL_SDLK_CURRENCYUNIT": {
-          "doc": "ScancodeToKeycode(SCANCODE_CURRENCYUNIT)",
-          "name": "SDL_SDLK_CURRENCYUNIT",
-          "kind": "def",
-          "value": "0x400000b4u",
-          "sourceName": "SDLK_CURRENCYUNIT"
-        },
-        "SDL_SDLK_CURRENCYSUBUNIT": {
-          "doc": "ScancodeToKeycode(SCANCODE_CURRENCYSUBUNIT)",
-          "name": "SDL_SDLK_CURRENCYSUBUNIT",
-          "kind": "def",
-          "value": "0x400000b5u",
-          "sourceName": "SDLK_CURRENCYSUBUNIT"
-        },
-        "SDL_SDLK_KP_LEFTPAREN": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_LEFTPAREN)",
-          "name": "SDL_SDLK_KP_LEFTPAREN",
-          "kind": "def",
-          "value": "0x400000b6u",
-          "sourceName": "SDLK_KP_LEFTPAREN"
-        },
-        "SDL_SDLK_KP_RIGHTPAREN": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_RIGHTPAREN)",
-          "name": "SDL_SDLK_KP_RIGHTPAREN",
-          "kind": "def",
-          "value": "0x400000b7u",
-          "sourceName": "SDLK_KP_RIGHTPAREN"
-        },
-        "SDL_SDLK_KP_LEFTBRACE": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_LEFTBRACE)",
-          "name": "SDL_SDLK_KP_LEFTBRACE",
-          "kind": "def",
-          "value": "0x400000b8u",
-          "sourceName": "SDLK_KP_LEFTBRACE"
-        },
-        "SDL_SDLK_KP_RIGHTBRACE": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_RIGHTBRACE)",
-          "name": "SDL_SDLK_KP_RIGHTBRACE",
-          "kind": "def",
-          "value": "0x400000b9u",
-          "sourceName": "SDLK_KP_RIGHTBRACE"
-        },
-        "SDL_SDLK_KP_TAB": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_TAB)",
-          "name": "SDL_SDLK_KP_TAB",
-          "kind": "def",
-          "value": "0x400000bau",
-          "sourceName": "SDLK_KP_TAB"
-        },
-        "SDL_SDLK_KP_BACKSPACE": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_BACKSPACE)",
-          "name": "SDL_SDLK_KP_BACKSPACE",
-          "kind": "def",
-          "value": "0x400000bbu",
-          "sourceName": "SDLK_KP_BACKSPACE"
-        },
-        "SDL_SDLK_KP_A": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_A)",
-          "name": "SDL_SDLK_KP_A",
-          "kind": "def",
-          "value": "0x400000bcu",
-          "sourceName": "SDLK_KP_A"
-        },
-        "SDL_SDLK_KP_B": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_B)",
-          "name": "SDL_SDLK_KP_B",
-          "kind": "def",
-          "value": "0x400000bdu",
-          "sourceName": "SDLK_KP_B"
-        },
-        "SDL_SDLK_KP_C": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_C)",
-          "name": "SDL_SDLK_KP_C",
-          "kind": "def",
-          "value": "0x400000beu",
-          "sourceName": "SDLK_KP_C"
-        },
-        "SDL_SDLK_KP_D": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_D)",
-          "name": "SDL_SDLK_KP_D",
-          "kind": "def",
-          "value": "0x400000bfu",
-          "sourceName": "SDLK_KP_D"
-        },
-        "SDL_SDLK_KP_E": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_E)",
-          "name": "SDL_SDLK_KP_E",
-          "kind": "def",
-          "value": "0x400000c0u",
-          "sourceName": "SDLK_KP_E"
-        },
-        "SDL_SDLK_KP_F": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_F)",
-          "name": "SDL_SDLK_KP_F",
-          "kind": "def",
-          "value": "0x400000c1u",
-          "sourceName": "SDLK_KP_F"
-        },
-        "SDL_SDLK_KP_XOR": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_XOR)",
-          "name": "SDL_SDLK_KP_XOR",
-          "kind": "def",
-          "value": "0x400000c2u",
-          "sourceName": "SDLK_KP_XOR"
-        },
-        "SDL_SDLK_KP_POWER": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_POWER)",
-          "name": "SDL_SDLK_KP_POWER",
-          "kind": "def",
-          "value": "0x400000c3u",
-          "sourceName": "SDLK_KP_POWER"
-        },
-        "SDL_SDLK_KP_PERCENT": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_PERCENT)",
-          "name": "SDL_SDLK_KP_PERCENT",
-          "kind": "def",
-          "value": "0x400000c4u",
-          "sourceName": "SDLK_KP_PERCENT"
-        },
-        "SDL_SDLK_KP_LESS": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_LESS)",
-          "name": "SDL_SDLK_KP_LESS",
-          "kind": "def",
-          "value": "0x400000c5u",
-          "sourceName": "SDLK_KP_LESS"
-        },
-        "SDL_SDLK_KP_GREATER": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_GREATER)",
-          "name": "SDL_SDLK_KP_GREATER",
-          "kind": "def",
-          "value": "0x400000c6u",
-          "sourceName": "SDLK_KP_GREATER"
-        },
-        "SDL_SDLK_KP_AMPERSAND": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_AMPERSAND)",
-          "name": "SDL_SDLK_KP_AMPERSAND",
-          "kind": "def",
-          "value": "0x400000c7u",
-          "sourceName": "SDLK_KP_AMPERSAND"
-        },
-        "SDL_SDLK_KP_DBLAMPERSAND": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_DBLAMPERSAND)",
-          "name": "SDL_SDLK_KP_DBLAMPERSAND",
-          "kind": "def",
-          "value": "0x400000c8u",
-          "sourceName": "SDLK_KP_DBLAMPERSAND"
-        },
-        "SDL_SDLK_KP_VERTICALBAR": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_VERTICALBAR)",
-          "name": "SDL_SDLK_KP_VERTICALBAR",
-          "kind": "def",
-          "value": "0x400000c9u",
-          "sourceName": "SDLK_KP_VERTICALBAR"
-        },
-        "SDL_SDLK_KP_DBLVERTICALBAR": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_DBLVERTICALBAR)",
-          "name": "SDL_SDLK_KP_DBLVERTICALBAR",
-          "kind": "def",
-          "value": "0x400000cau",
-          "sourceName": "SDLK_KP_DBLVERTICALBAR"
-        },
-        "SDL_SDLK_KP_COLON": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_COLON)",
-          "name": "SDL_SDLK_KP_COLON",
-          "kind": "def",
-          "value": "0x400000cbu",
-          "sourceName": "SDLK_KP_COLON"
-        },
-        "SDL_SDLK_KP_HASH": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_HASH)",
-          "name": "SDL_SDLK_KP_HASH",
-          "kind": "def",
-          "value": "0x400000ccu",
-          "sourceName": "SDLK_KP_HASH"
-        },
-        "SDL_SDLK_KP_SPACE": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_SPACE)",
-          "name": "SDL_SDLK_KP_SPACE",
-          "kind": "def",
-          "value": "0x400000cdu",
-          "sourceName": "SDLK_KP_SPACE"
-        },
-        "SDL_SDLK_KP_AT": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_AT)",
-          "name": "SDL_SDLK_KP_AT",
-          "kind": "def",
-          "value": "0x400000ceu",
-          "sourceName": "SDLK_KP_AT"
-        },
-        "SDL_SDLK_KP_EXCLAM": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_EXCLAM)",
-          "name": "SDL_SDLK_KP_EXCLAM",
-          "kind": "def",
-          "value": "0x400000cfu",
-          "sourceName": "SDLK_KP_EXCLAM"
-        },
-        "SDL_SDLK_KP_MEMSTORE": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMSTORE)",
-          "name": "SDL_SDLK_KP_MEMSTORE",
-          "kind": "def",
-          "value": "0x400000d0u",
-          "sourceName": "SDLK_KP_MEMSTORE"
-        },
-        "SDL_SDLK_KP_MEMRECALL": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMRECALL)",
-          "name": "SDL_SDLK_KP_MEMRECALL",
-          "kind": "def",
-          "value": "0x400000d1u",
-          "sourceName": "SDLK_KP_MEMRECALL"
-        },
-        "SDL_SDLK_KP_MEMCLEAR": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMCLEAR)",
-          "name": "SDL_SDLK_KP_MEMCLEAR",
-          "kind": "def",
-          "value": "0x400000d2u",
-          "sourceName": "SDLK_KP_MEMCLEAR"
-        },
-        "SDL_SDLK_KP_MEMADD": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMADD)",
-          "name": "SDL_SDLK_KP_MEMADD",
-          "kind": "def",
-          "value": "0x400000d3u",
-          "sourceName": "SDLK_KP_MEMADD"
-        },
-        "SDL_SDLK_KP_MEMSUBTRACT": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMSUBTRACT)",
-          "name": "SDL_SDLK_KP_MEMSUBTRACT",
-          "kind": "def",
-          "value": "0x400000d4u",
-          "sourceName": "SDLK_KP_MEMSUBTRACT"
-        },
-        "SDL_SDLK_KP_MEMMULTIPLY": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMMULTIPLY)",
-          "name": "SDL_SDLK_KP_MEMMULTIPLY",
-          "kind": "def",
-          "value": "0x400000d5u",
-          "sourceName": "SDLK_KP_MEMMULTIPLY"
-        },
-        "SDL_SDLK_KP_MEMDIVIDE": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMDIVIDE)",
-          "name": "SDL_SDLK_KP_MEMDIVIDE",
-          "kind": "def",
-          "value": "0x400000d6u",
-          "sourceName": "SDLK_KP_MEMDIVIDE"
-        },
-        "SDL_SDLK_KP_PLUSMINUS": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_PLUSMINUS)",
-          "name": "SDL_SDLK_KP_PLUSMINUS",
-          "kind": "def",
-          "value": "0x400000d7u",
-          "sourceName": "SDLK_KP_PLUSMINUS"
-        },
-        "SDL_SDLK_KP_CLEAR": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_CLEAR)",
-          "name": "SDL_SDLK_KP_CLEAR",
-          "kind": "def",
-          "value": "0x400000d8u",
-          "sourceName": "SDLK_KP_CLEAR"
-        },
-        "SDL_SDLK_KP_CLEARENTRY": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_CLEARENTRY)",
-          "name": "SDL_SDLK_KP_CLEARENTRY",
-          "kind": "def",
-          "value": "0x400000d9u",
-          "sourceName": "SDLK_KP_CLEARENTRY"
-        },
-        "SDL_SDLK_KP_BINARY": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_BINARY)",
-          "name": "SDL_SDLK_KP_BINARY",
-          "kind": "def",
-          "value": "0x400000dau",
-          "sourceName": "SDLK_KP_BINARY"
-        },
-        "SDL_SDLK_KP_OCTAL": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_OCTAL)",
-          "name": "SDL_SDLK_KP_OCTAL",
-          "kind": "def",
-          "value": "0x400000dbu",
-          "sourceName": "SDLK_KP_OCTAL"
-        },
-        "SDL_SDLK_KP_DECIMAL": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_DECIMAL)",
-          "name": "SDL_SDLK_KP_DECIMAL",
-          "kind": "def",
-          "value": "0x400000dcu",
-          "sourceName": "SDLK_KP_DECIMAL"
-        },
-        "SDL_SDLK_KP_HEXADECIMAL": {
-          "doc": "ScancodeToKeycode(SCANCODE_KP_HEXADECIMAL)",
-          "name": "SDL_SDLK_KP_HEXADECIMAL",
-          "kind": "def",
-          "value": "0x400000ddu",
-          "sourceName": "SDLK_KP_HEXADECIMAL"
-        },
-        "SDL_SDLK_LCTRL": {
-          "doc": "ScancodeToKeycode(SCANCODE_LCTRL)",
-          "name": "SDL_SDLK_LCTRL",
-          "kind": "def",
-          "value": "0x400000e0u",
-          "sourceName": "SDLK_LCTRL"
-        },
-        "SDL_SDLK_LSHIFT": {
-          "doc": "ScancodeToKeycode(SCANCODE_LSHIFT)",
-          "name": "SDL_SDLK_LSHIFT",
-          "kind": "def",
-          "value": "0x400000e1u",
-          "sourceName": "SDLK_LSHIFT"
-        },
-        "SDL_SDLK_LALT": {
-          "doc": "ScancodeToKeycode(SCANCODE_LALT)",
-          "name": "SDL_SDLK_LALT",
-          "kind": "def",
-          "value": "0x400000e2u",
-          "sourceName": "SDLK_LALT"
-        },
-        "SDL_SDLK_LGUI": {
-          "doc": "ScancodeToKeycode(SCANCODE_LGUI)",
-          "name": "SDL_SDLK_LGUI",
-          "kind": "def",
-          "value": "0x400000e3u",
-          "sourceName": "SDLK_LGUI"
-        },
-        "SDL_SDLK_RCTRL": {
-          "doc": "ScancodeToKeycode(SCANCODE_RCTRL)",
-          "name": "SDL_SDLK_RCTRL",
-          "kind": "def",
-          "value": "0x400000e4u",
-          "sourceName": "SDLK_RCTRL"
-        },
-        "SDL_SDLK_RSHIFT": {
-          "doc": "ScancodeToKeycode(SCANCODE_RSHIFT)",
-          "name": "SDL_SDLK_RSHIFT",
-          "kind": "def",
-          "value": "0x400000e5u",
-          "sourceName": "SDLK_RSHIFT"
-        },
-        "SDL_SDLK_RALT": {
-          "doc": "ScancodeToKeycode(SCANCODE_RALT)",
-          "name": "SDL_SDLK_RALT",
-          "kind": "def",
-          "value": "0x400000e6u",
-          "sourceName": "SDLK_RALT"
-        },
-        "SDL_SDLK_RGUI": {
-          "doc": "ScancodeToKeycode(SCANCODE_RGUI)",
-          "name": "SDL_SDLK_RGUI",
-          "kind": "def",
-          "value": "0x400000e7u",
-          "sourceName": "SDLK_RGUI"
-        },
-        "SDL_SDLK_MODE": {
-          "doc": "ScancodeToKeycode(SCANCODE_MODE)",
-          "name": "SDL_SDLK_MODE",
-          "kind": "def",
-          "value": "0x40000101u",
-          "sourceName": "SDLK_MODE"
-        },
-        "SDL_SDLK_SLEEP": {
-          "doc": "ScancodeToKeycode(SCANCODE_SLEEP)",
-          "name": "SDL_SDLK_SLEEP",
-          "kind": "def",
-          "value": "0x40000102u",
-          "sourceName": "SDLK_SLEEP"
-        },
-        "SDL_SDLK_WAKE": {
-          "doc": "ScancodeToKeycode(SCANCODE_WAKE)",
-          "name": "SDL_SDLK_WAKE",
-          "kind": "def",
-          "value": "0x40000103u",
-          "sourceName": "SDLK_WAKE"
-        },
-        "SDL_SDLK_CHANNEL_INCREMENT": {
-          "doc": "ScancodeToKeycode(SCANCODE_CHANNEL_INCREMENT)",
-          "name": "SDL_SDLK_CHANNEL_INCREMENT",
-          "kind": "def",
-          "value": "0x40000104u",
-          "sourceName": "SDLK_CHANNEL_INCREMENT"
-        },
-        "SDL_SDLK_CHANNEL_DECREMENT": {
-          "doc": "ScancodeToKeycode(SCANCODE_CHANNEL_DECREMENT)",
-          "name": "SDL_SDLK_CHANNEL_DECREMENT",
-          "kind": "def",
-          "value": "0x40000105u",
-          "sourceName": "SDLK_CHANNEL_DECREMENT"
-        },
-        "SDL_SDLK_MEDIA_PLAY": {
-          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PLAY)",
-          "name": "SDL_SDLK_MEDIA_PLAY",
-          "kind": "def",
-          "value": "0x40000106u",
-          "sourceName": "SDLK_MEDIA_PLAY"
-        },
-        "SDL_SDLK_MEDIA_PAUSE": {
-          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PAUSE)",
-          "name": "SDL_SDLK_MEDIA_PAUSE",
-          "kind": "def",
-          "value": "0x40000107u",
-          "sourceName": "SDLK_MEDIA_PAUSE"
-        },
-        "SDL_SDLK_MEDIA_RECORD": {
-          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_RECORD)",
-          "name": "SDL_SDLK_MEDIA_RECORD",
-          "kind": "def",
-          "value": "0x40000108u",
-          "sourceName": "SDLK_MEDIA_RECORD"
-        },
-        "SDL_SDLK_MEDIA_FAST_FORWARD": {
-          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_FAST_FORWARD)",
-          "name": "SDL_SDLK_MEDIA_FAST_FORWARD",
-          "kind": "def",
-          "value": "0x40000109u",
-          "sourceName": "SDLK_MEDIA_FAST_FORWARD"
-        },
-        "SDL_SDLK_MEDIA_REWIND": {
-          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_REWIND)",
-          "name": "SDL_SDLK_MEDIA_REWIND",
-          "kind": "def",
-          "value": "0x4000010au",
-          "sourceName": "SDLK_MEDIA_REWIND"
-        },
-        "SDL_SDLK_MEDIA_NEXT_TRACK": {
-          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_NEXT_TRACK)",
-          "name": "SDL_SDLK_MEDIA_NEXT_TRACK",
-          "kind": "def",
-          "value": "0x4000010bu",
-          "sourceName": "SDLK_MEDIA_NEXT_TRACK"
-        },
-        "SDL_SDLK_MEDIA_PREVIOUS_TRACK": {
-          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PREVIOUS_TRACK)",
-          "name": "SDL_SDLK_MEDIA_PREVIOUS_TRACK",
-          "kind": "def",
-          "value": "0x4000010cu",
-          "sourceName": "SDLK_MEDIA_PREVIOUS_TRACK"
-        },
-        "SDL_SDLK_MEDIA_STOP": {
-          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_STOP)",
-          "name": "SDL_SDLK_MEDIA_STOP",
-          "kind": "def",
-          "value": "0x4000010du",
-          "sourceName": "SDLK_MEDIA_STOP"
-        },
-        "SDL_SDLK_MEDIA_EJECT": {
-          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_EJECT)",
-          "name": "SDL_SDLK_MEDIA_EJECT",
-          "kind": "def",
-          "value": "0x4000010eu",
-          "sourceName": "SDLK_MEDIA_EJECT"
-        },
-        "SDL_SDLK_MEDIA_PLAY_PAUSE": {
-          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PLAY_PAUSE)",
-          "name": "SDL_SDLK_MEDIA_PLAY_PAUSE",
-          "kind": "def",
-          "value": "0x4000010fu",
-          "sourceName": "SDLK_MEDIA_PLAY_PAUSE"
-        },
-        "SDL_SDLK_MEDIA_SELECT": {
-          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_SELECT)",
-          "name": "SDL_SDLK_MEDIA_SELECT",
-          "kind": "def",
-          "value": "0x40000110u",
-          "sourceName": "SDLK_MEDIA_SELECT"
-        },
-        "SDL_SDLK_AC_NEW": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_NEW)",
-          "name": "SDL_SDLK_AC_NEW",
-          "kind": "def",
-          "value": "0x40000111u",
-          "sourceName": "SDLK_AC_NEW"
-        },
-        "SDL_SDLK_AC_OPEN": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_OPEN)",
-          "name": "SDL_SDLK_AC_OPEN",
-          "kind": "def",
-          "value": "0x40000112u",
-          "sourceName": "SDLK_AC_OPEN"
-        },
-        "SDL_SDLK_AC_CLOSE": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_CLOSE)",
-          "name": "SDL_SDLK_AC_CLOSE",
-          "kind": "def",
-          "value": "0x40000113u",
-          "sourceName": "SDLK_AC_CLOSE"
-        },
-        "SDL_SDLK_AC_EXIT": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_EXIT)",
-          "name": "SDL_SDLK_AC_EXIT",
-          "kind": "def",
-          "value": "0x40000114u",
-          "sourceName": "SDLK_AC_EXIT"
-        },
-        "SDL_SDLK_AC_SAVE": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_SAVE)",
-          "name": "SDL_SDLK_AC_SAVE",
-          "kind": "def",
-          "value": "0x40000115u",
-          "sourceName": "SDLK_AC_SAVE"
-        },
-        "SDL_SDLK_AC_PRINT": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_PRINT)",
-          "name": "SDL_SDLK_AC_PRINT",
-          "kind": "def",
-          "value": "0x40000116u",
-          "sourceName": "SDLK_AC_PRINT"
-        },
-        "SDL_SDLK_AC_PROPERTIES": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_PROPERTIES)",
-          "name": "SDL_SDLK_AC_PROPERTIES",
-          "kind": "def",
-          "value": "0x40000117u",
-          "sourceName": "SDLK_AC_PROPERTIES"
-        },
-        "SDL_SDLK_AC_SEARCH": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_SEARCH)",
-          "name": "SDL_SDLK_AC_SEARCH",
-          "kind": "def",
-          "value": "0x40000118u",
-          "sourceName": "SDLK_AC_SEARCH"
-        },
-        "SDL_SDLK_AC_HOME": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_HOME)",
-          "name": "SDL_SDLK_AC_HOME",
-          "kind": "def",
-          "value": "0x40000119u",
-          "sourceName": "SDLK_AC_HOME"
-        },
-        "SDL_SDLK_AC_BACK": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_BACK)",
-          "name": "SDL_SDLK_AC_BACK",
-          "kind": "def",
-          "value": "0x4000011au",
-          "sourceName": "SDLK_AC_BACK"
-        },
-        "SDL_SDLK_AC_FORWARD": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_FORWARD)",
-          "name": "SDL_SDLK_AC_FORWARD",
-          "kind": "def",
-          "value": "0x4000011bu",
-          "sourceName": "SDLK_AC_FORWARD"
-        },
-        "SDL_SDLK_AC_STOP": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_STOP)",
-          "name": "SDL_SDLK_AC_STOP",
-          "kind": "def",
-          "value": "0x4000011cu",
-          "sourceName": "SDLK_AC_STOP"
-        },
-        "SDL_SDLK_AC_REFRESH": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_REFRESH)",
-          "name": "SDL_SDLK_AC_REFRESH",
-          "kind": "def",
-          "value": "0x4000011du",
-          "sourceName": "SDLK_AC_REFRESH"
-        },
-        "SDL_SDLK_AC_BOOKMARKS": {
-          "doc": "ScancodeToKeycode(SCANCODE_AC_BOOKMARKS)",
-          "name": "SDL_SDLK_AC_BOOKMARKS",
-          "kind": "def",
-          "value": "0x4000011eu",
-          "sourceName": "SDLK_AC_BOOKMARKS"
-        },
-        "SDL_SDLK_SOFTLEFT": {
-          "doc": "ScancodeToKeycode(SCANCODE_SOFTLEFT)",
-          "name": "SDL_SDLK_SOFTLEFT",
-          "kind": "def",
-          "value": "0x4000011fu",
-          "sourceName": "SDLK_SOFTLEFT"
-        },
-        "SDL_SDLK_SOFTRIGHT": {
-          "doc": "ScancodeToKeycode(SCANCODE_SOFTRIGHT)",
-          "name": "SDL_SDLK_SOFTRIGHT",
-          "kind": "def",
-          "value": "0x40000120u",
-          "sourceName": "SDLK_SOFTRIGHT"
-        },
-        "SDL_SDLK_CALL": {
-          "doc": "ScancodeToKeycode(SCANCODE_CALL)",
-          "name": "SDL_SDLK_CALL",
-          "kind": "def",
-          "value": "0x40000121u",
-          "sourceName": "SDLK_CALL"
-        },
-        "SDL_SDLK_ENDCALL": {
-          "doc": "ScancodeToKeycode(SCANCODE_ENDCALL)",
-          "name": "SDL_SDLK_ENDCALL",
-          "kind": "def",
-          "value": "0x40000122u",
-          "sourceName": "SDLK_ENDCALL"
-        },
-        "SDL_SDLK_LEFT_TAB": {
-          "doc": "Extended key Left Tab",
-          "name": "SDL_SDLK_LEFT_TAB",
-          "kind": "def",
-          "value": "0x20000001u",
-          "sourceName": "SDLK_LEFT_TAB"
-        },
-        "SDL_SDLK_LEVEL5_SHIFT": {
-          "doc": "Extended key Level 5 Shift",
-          "name": "SDL_SDLK_LEVEL5_SHIFT",
-          "kind": "def",
-          "value": "0x20000002u",
-          "sourceName": "SDLK_LEVEL5_SHIFT"
-        },
-        "SDL_SDLK_MULTI_KEY_COMPOSE": {
-          "doc": "Extended key Multi-key Compose",
-          "name": "SDL_SDLK_MULTI_KEY_COMPOSE",
-          "kind": "def",
-          "value": "0x20000003u",
-          "sourceName": "SDLK_MULTI_KEY_COMPOSE"
-        },
-        "SDL_SDLK_LMETA": {
-          "doc": "Extended key Left Meta",
-          "name": "SDL_SDLK_LMETA",
-          "kind": "def",
-          "value": "0x20000004u",
-          "sourceName": "SDLK_LMETA"
-        },
-        "SDL_SDLK_RMETA": {
-          "doc": "Extended key Right Meta",
-          "name": "SDL_SDLK_RMETA",
-          "kind": "def",
-          "value": "0x20000005u",
-          "sourceName": "SDLK_RMETA"
-        },
-        "SDL_SDLK_LHYPER": {
-          "doc": "Extended key Left Hyper",
-          "name": "SDL_SDLK_LHYPER",
-          "kind": "def",
-          "value": "0x20000006u",
-          "sourceName": "SDLK_LHYPER"
-        },
-        "SDL_SDLK_RHYPER": {
-          "doc": "Extended key Right Hyper",
-          "name": "SDL_SDLK_RHYPER",
-          "kind": "def",
-          "value": "0x20000007u",
-          "sourceName": "SDLK_RHYPER"
-        },
-        "Keymod": {
-          "doc": "Valid key modifiers (possibly OR'd together).\n\n@since This datatype is available since SDL 3.2.0.",
-          "name": "Keymod",
-          "kind": "alias",
-          "type": "SDL_Keymod",
-          "sourceName": "SDL_Keymod"
-        },
-        "SDL_KMOD_NONE": {
-          "doc": "no modifier is applicable.",
-          "name": "SDL_KMOD_NONE",
-          "kind": "def",
-          "value": "0x0000u",
-          "sourceName": "SDL_KMOD_NONE"
-        },
-        "SDL_KMOD_LSHIFT": {
-          "doc": "the left Shift key is down.",
-          "name": "SDL_KMOD_LSHIFT",
-          "kind": "def",
-          "value": "0x0001u",
-          "sourceName": "SDL_KMOD_LSHIFT"
-        },
-        "SDL_KMOD_RSHIFT": {
-          "doc": "the right Shift key is down.",
-          "name": "SDL_KMOD_RSHIFT",
-          "kind": "def",
-          "value": "0x0002u",
-          "sourceName": "SDL_KMOD_RSHIFT"
-        },
-        "SDL_KMOD_LEVEL5": {
-          "doc": "the Level 5 Shift key is down.",
-          "name": "SDL_KMOD_LEVEL5",
-          "kind": "def",
-          "value": "0x0004u",
-          "sourceName": "SDL_KMOD_LEVEL5"
-        },
-        "SDL_KMOD_LCTRL": {
-          "doc": "the left Ctrl (Control) key is down.",
-          "name": "SDL_KMOD_LCTRL",
-          "kind": "def",
-          "value": "0x0040u",
-          "sourceName": "SDL_KMOD_LCTRL"
-        },
-        "SDL_KMOD_RCTRL": {
-          "doc": "the right Ctrl (Control) key is down.",
-          "name": "SDL_KMOD_RCTRL",
-          "kind": "def",
-          "value": "0x0080u",
-          "sourceName": "SDL_KMOD_RCTRL"
-        },
-        "SDL_KMOD_LALT": {
-          "doc": "the left Alt key is down.",
-          "name": "SDL_KMOD_LALT",
-          "kind": "def",
-          "value": "0x0100u",
-          "sourceName": "SDL_KMOD_LALT"
-        },
-        "SDL_KMOD_RALT": {
-          "doc": "the right Alt key is down.",
-          "name": "SDL_KMOD_RALT",
-          "kind": "def",
-          "value": "0x0200u",
-          "sourceName": "SDL_KMOD_RALT"
-        },
-        "SDL_KMOD_LGUI": {
-          "doc": "the left GUI key (often the Windows key) is down.",
-          "name": "SDL_KMOD_LGUI",
-          "kind": "def",
-          "value": "0x0400u",
-          "sourceName": "SDL_KMOD_LGUI"
-        },
-        "SDL_KMOD_RGUI": {
-          "doc": "the right GUI key (often the Windows key) is down.",
-          "name": "SDL_KMOD_RGUI",
-          "kind": "def",
-          "value": "0x0800u",
-          "sourceName": "SDL_KMOD_RGUI"
-        },
-        "SDL_KMOD_NUM": {
-          "doc": "the Num Lock key (may be located on an extended keypad) is down.",
-          "name": "SDL_KMOD_NUM",
-          "kind": "def",
-          "value": "0x1000u",
-          "sourceName": "SDL_KMOD_NUM"
-        },
-        "SDL_KMOD_CAPS": {
-          "doc": "the Caps Lock key is down.",
-          "name": "SDL_KMOD_CAPS",
-          "kind": "def",
-          "value": "0x2000u",
-          "sourceName": "SDL_KMOD_CAPS"
-        },
-        "SDL_KMOD_MODE": {
-          "doc": "the !AltGr key is down.",
-          "name": "SDL_KMOD_MODE",
-          "kind": "def",
-          "value": "0x4000u",
-          "sourceName": "SDL_KMOD_MODE"
-        },
-        "SDL_KMOD_SCROLL": {
-          "doc": "the Scroll Lock key is down.",
-          "name": "SDL_KMOD_SCROLL",
-          "kind": "def",
-          "value": "0x8000u",
-          "sourceName": "SDL_KMOD_SCROLL"
-        },
-        "SDL_KMOD_CTRL": {
-          "doc": "Any Ctrl key is down.",
-          "name": "SDL_KMOD_CTRL",
-          "kind": "def",
-          "value": "(SDL_KMOD_LCTRL | SDL_KMOD_RCTRL)",
-          "sourceName": "SDL_KMOD_CTRL"
-        },
-        "SDL_KMOD_SHIFT": {
-          "doc": "Any Shift key is down.",
-          "name": "SDL_KMOD_SHIFT",
-          "kind": "def",
-          "value": "(SDL_KMOD_LSHIFT | SDL_KMOD_RSHIFT)",
-          "sourceName": "SDL_KMOD_SHIFT"
-        },
-        "SDL_KMOD_ALT": {
-          "doc": "Any Alt key is down.",
-          "name": "SDL_KMOD_ALT",
-          "kind": "def",
-          "value": "(SDL_KMOD_LALT | SDL_KMOD_RALT)",
-          "sourceName": "SDL_KMOD_ALT"
-        },
-        "SDL_KMOD_GUI": {
-          "doc": "Any GUI key is down.",
-          "name": "SDL_KMOD_GUI",
-          "kind": "def",
-          "value": "(SDL_KMOD_LGUI | SDL_KMOD_RGUI)",
-          "sourceName": "SDL_KMOD_GUI"
         }
       },
       "includes": [
@@ -42768,7 +43549,7 @@
           "name": "SCANCODE_MODE",
           "constexpr": true,
           "type": "Scancode",
-          "doc": "I'm not sure if this is really not covered by any of the above, but since there's a special SDL_KMOD_MODE for it I'm adding it here.",
+          "doc": "I'm not sure if this is really not covered by any of the above, but since there's a special KMOD_MODE for it I'm adding it here.",
           "sourceName": "SDL_SCANCODE_MODE"
         },
         "SCANCODE_SLEEP": {

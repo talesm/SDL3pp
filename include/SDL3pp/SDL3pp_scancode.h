@@ -7,7 +7,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryScancode Category Scancode
+ * @defgroup CategoryScancode Keyboard Scancodes
  *
  * Defines keyboard scancodes.
  *
@@ -654,7 +654,7 @@ constexpr Scancode SCANCODE_RGUI =
 
 /**
  * I'm not sure if this is really not covered by any of the above, but since
- * there's a special SDL_KMOD_MODE for it I'm adding it here.
+ * there's a special KMOD_MODE for it I'm adding it here.
  */
 constexpr Scancode SCANCODE_MODE = SDL_SCANCODE_MODE;
 
