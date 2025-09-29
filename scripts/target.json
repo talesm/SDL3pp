@@ -44507,21 +44507,6 @@
             }
           }
         },
-        "MouseButton": {
-          "kind": "alias",
-          "type": "Uint8",
-          "enum": {
-            "prefix": "SDL_BUTTON_",
-            "values": [
-              "SDL_BUTTON_LEFT",
-              "SDL_BUTTON_MIDDLE",
-              "SDL_BUTTON_RIGHT",
-              "SDL_BUTTON_X1",
-              "SDL_BUTTON_X2"
-            ]
-          },
-          "name": "MouseButton"
-        },
         "MouseWheelDirection": {
           "doc": "Scroll direction types for the Scroll event\n\n@since This enum is available since SDL 3.2.0.",
           "name": "MouseWheelDirection",
@@ -44596,6 +44581,21 @@
           "sourceName": "SDL_BUTTON_X2MASK",
           "constexpr": true,
           "type": "MouseButtonFlags"
+        },
+        "MouseButton": {
+          "kind": "alias",
+          "type": "Uint8",
+          "enum": {
+            "prefix": "SDL_BUTTON_",
+            "values": [
+              "SDL_BUTTON_LEFT",
+              "SDL_BUTTON_MIDDLE",
+              "SDL_BUTTON_RIGHT",
+              "SDL_BUTTON_X1",
+              "SDL_BUTTON_X2"
+            ]
+          },
+          "name": "MouseButton"
         },
         "SDL_BUTTON_LEFT": {
           "doc": "",
@@ -45007,7 +45007,8 @@
         "SDL3/SDL_mouse.h"
       ],
       "localIncludes": [
-        "SDL3pp_stdinc.h"
+        "SDL3pp_stdinc.h",
+        "SDL3pp_video.h"
       ]
     },
     "SDL3pp_timer.h": {

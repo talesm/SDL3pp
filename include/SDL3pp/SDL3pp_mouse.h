@@ -3,11 +3,12 @@
 
 #include <SDL3/SDL_mouse.h>
 #include "SDL3pp_stdinc.h"
+#include "SDL3pp_video.h"
 
 namespace SDL {
 
 /**
- * @defgroup CategoryMouse Category Mouse
+ * @defgroup CategoryMouse Mouse Support
  *
  * Any GUI application has to deal with the mouse, and SDL provides functions
  * to manage mouse input and the displayed cursor.
@@ -236,12 +237,9 @@ public:
    *
    * @param data the color value for each pixel of the cursor.
    * @param mask the mask value for each pixel of the cursor.
-   * @param w the width of the cursor.
-   * @param h the height of the cursor.
-   * @param hot_x the x-axis offset from the left of the cursor image to the
-   *              mouse x position, in the range of 0 to `w` - 1.
-   * @param hot_y the y-axis offset from the top of the cursor image to the
-   *              mouse y position, in the range of 0 to `h` - 1.
+   * @param size the width and height of the cursor.
+   * @param hot the x position of the cursor hot spot, from the top-left, in the
+   *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
    * @post a new cursor with the specified parameters on success.
    * @throws Error on failure.
    *
@@ -258,7 +256,8 @@ public:
          const Uint8* mask,
          const PointRaw& size,
          const PointRaw& hot)
-    : m_resource(CheckError(SDL_CreateCursor(data, mask, size, hot)))
+    : m_resource(
+        CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
   {
   }
 
@@ -276,8 +275,7 @@ public:
    * smaller image will be upscaled and be used instead.
    *
    * @param surface an Surface structure representing the cursor image.
-   * @param hot_x the x position of the cursor hot spot.
-   * @param hot_y the y position of the cursor hot spot.
+   * @param hot the x, y position of the cursor hot spot.
    * @post the new cursor on success.
    * @throws Error on failure.
    *
@@ -291,7 +289,7 @@ public:
    * @sa Cursor.Set
    */
   Cursor(SurfaceParam surface, const PointRaw& hot)
-    : m_resource(CheckError(SDL_CreateColorCursor(surface, hot)))
+    : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
   {
   }
 
@@ -407,8 +405,6 @@ struct CursorRef : Cursor
   ~CursorRef() { release(); }
 };
 
-using MouseButton = Uint8;
-
 /**
  * Scroll direction types for the Scroll event
  *
@@ -449,15 +445,21 @@ constexpr MouseButtonFlags BUTTON_X1MASK = SDL_BUTTON_X1MASK; ///< X1MASK
 
 constexpr MouseButtonFlags BUTTON_X2MASK = SDL_BUTTON_X2MASK; ///< X2MASK
 
-#define SDL_BUTTON_LEFT 1
+/**
+ * Represents a button index.
+ *
+ */
+using MouseButton = Uint8;
 
-#define SDL_BUTTON_MIDDLE 2
+constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< Left button
 
-#define SDL_BUTTON_RIGHT 3
+constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< Middle button
 
-#define SDL_BUTTON_X1 4
+constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< Right button
 
-#define SDL_BUTTON_X2 5
+constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
+
+constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
 
 constexpr MouseButtonFlags ButtonMask(MouseButton button)
 {
@@ -485,11 +487,8 @@ inline bool HasMouse() { return SDL_HasMouse(); }
  * You should wait for input from a device before you consider it actively in
  * use.
  *
- * @param count a pointer filled in with the number of mice returned, may be
- *              nullptr.
- * @returns a 0 terminated array of mouse instance IDs or nullptr on failure;
- *          call GetError() for more information. This should be freed
- *          with free() when it is no longer needed.
+ * @returns a 0 terminated array of mouse instance IDs.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -498,7 +497,12 @@ inline bool HasMouse() { return SDL_HasMouse(); }
  * @sa GetMouseNameForID
  * @sa HasMouse
  */
-inline OwnArray<MouseID> GetMice() { return SDL_GetMice(); }
+inline OwnArray<MouseID> GetMice()
+{
+  int count;
+  auto data = CheckError(SDL_GetMice(&count));
+  return OwnArray<MouseID>{data, size_t(count)};
+}
 
 /**
  * Get the name of a mouse.
@@ -529,7 +533,7 @@ inline const char* GetMouseNameForID(MouseID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline WindowRef GetMouseFocus() { return SDL_GetMouseFocus(); }
+inline WindowRef GetMouseFocus() { return {SDL_GetMouseFocus()}; }
 
 /**
  * Query SDL's cache for the synchronous mouse button state and the
@@ -655,9 +659,7 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
  * Note that this function will appear to succeed, but not actually move the
  * mouse when used over Microsoft Remote Desktop.
  *
- *               mouse focus.
- * @param x the x coordinate within the window.
- * @param y the y coordinate within the window.
+ * @param p the x, y coordinates within the window.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -667,7 +669,7 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
  */
 inline void Window::WarpMouse(const FPointRaw& p)
 {
-  SDL_WarpMouseInWindow(m_resource, p);
+  SDL_WarpMouseInWindow(m_resource, p.x, p.y);
 }
 
 /**
@@ -681,8 +683,7 @@ inline void Window::WarpMouse(const FPointRaw& p)
  * Note that this function will appear to succeed, but not actually move the
  * mouse when used over Microsoft Remote Desktop.
  *
- * @param x the x coordinate.
- * @param y the y coordinate.
+ * @param p the x, y coordinates;
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -693,7 +694,7 @@ inline void Window::WarpMouse(const FPointRaw& p)
  */
 inline void WarpMouse(const FPointRaw& p)
 {
-  CheckError(SDL_WarpMouseGlobal(p));
+  CheckError(SDL_WarpMouseGlobal(p.x, p.y));
 }
 
 /**
@@ -817,12 +818,9 @@ inline void CaptureMouse(bool enabled)
  *
  * @param data the color value for each pixel of the cursor.
  * @param mask the mask value for each pixel of the cursor.
- * @param w the width of the cursor.
- * @param h the height of the cursor.
- * @param hot_x the x-axis offset from the left of the cursor image to the
- *              mouse x position, in the range of 0 to `w` - 1.
- * @param hot_y the y-axis offset from the top of the cursor image to the
- *              mouse y position, in the range of 0 to `h` - 1.
+ * @param size the width and height of the cursor.
+ * @param hot the x position of the cursor hot spot, from the top-left, in the
+ *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
  * @returns a new cursor with the specified parameters on success.
  * @throws Error on failure.
  *
@@ -838,10 +836,9 @@ inline void CaptureMouse(bool enabled)
 inline Cursor CreateCursor(const Uint8* data,
                            const Uint8* mask,
                            const PointRaw& size,
-                           int hot_x,
-                           int hot_y)
+                           const PointRaw& hot)
 {
-  return Cursor(data, mask, size, hot_x, hot_y);
+  return Cursor(data, mask, size, hot);
 }
 
 /**
@@ -858,8 +855,7 @@ inline Cursor CreateCursor(const Uint8* data,
  * smaller image will be upscaled and be used instead.
  *
  * @param surface an Surface structure representing the cursor image.
- * @param hot_x the x position of the cursor hot spot.
- * @param hot_y the y position of the cursor hot spot.
+ * @param hot the position of the cursor hot spot.
  * @returns the new cursor on success.
  * @throws Error on failure.
  *
@@ -872,9 +868,9 @@ inline Cursor CreateCursor(const Uint8* data,
  * @sa Cursor.Destroy
  * @sa Cursor.Set
  */
-inline Cursor CreateColorCursor(SurfaceParam surface, int hot_x, int hot_y)
+inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
 {
-  return Cursor(surface, hot_x, hot_y);
+  return Cursor(surface, hot);
 }
 
 /**
@@ -927,7 +923,7 @@ inline void Cursor::Set() { SDL::SetCursor(m_resource); }
  *
  * @sa Cursor.Set
  */
-inline CursorRef GetCursor() { return SDL_GetCursor(); }
+inline CursorRef GetCursor() { return {SDL_GetCursor()}; }
 
 /**
  * Get the default cursor.
@@ -944,7 +940,7 @@ inline CursorRef GetCursor() { return SDL_GetCursor(); }
  */
 inline CursorRef GetDefaultCursor()
 {
-  return CheckError(SDL_GetDefaultCursor());
+  return {CheckError(SDL_GetDefaultCursor())};
 }
 
 /**

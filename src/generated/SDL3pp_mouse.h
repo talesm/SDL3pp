@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL_mouse.h>
 #include "SDL3pp_stdinc.h"
+#include "SDL3pp_video.h"
 
 namespace SDL {
 
@@ -407,8 +408,6 @@ struct CursorRef : Cursor
   ~CursorRef() { release(); }
 };
 
-using MouseButton = Uint8;
-
 /**
  * Scroll direction types for the Scroll event
  *
@@ -448,6 +447,8 @@ constexpr MouseButtonFlags BUTTON_RMASK = SDL_BUTTON_RMASK; ///< RMASK
 constexpr MouseButtonFlags BUTTON_X1MASK = SDL_BUTTON_X1MASK; ///< X1MASK
 
 constexpr MouseButtonFlags BUTTON_X2MASK = SDL_BUTTON_X2MASK; ///< X2MASK
+
+using MouseButton = Uint8;
 
 #define SDL_BUTTON_LEFT 1
 

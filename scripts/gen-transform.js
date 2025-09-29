@@ -2587,7 +2587,7 @@ const transform = {
       }
     },
     "SDL_mouse.h": {
-      localIncludes: ['SDL3pp_stdinc.h'],
+      localIncludes: ["SDL3pp_stdinc.h", "SDL3pp_video.h"],
       transform: {
         "SDL_SystemCursor": {
           enum: "SDL_SYSTEM_CURSOR_",
@@ -2606,7 +2606,7 @@ const transform = {
               "SDL_BUTTON_X2",
             ],
           },
-          after: "SDL_Cursor",
+          after: "SDL_MouseButtonFlags",
         },
         "SDL_MouseButtonFlags": {
           enum: {
