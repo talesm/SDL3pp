@@ -398,6 +398,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to IOStreamParam
   constexpr operator IOStreamParam() const { return {m_resource}; }
 

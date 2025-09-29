@@ -342,6 +342,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to RendererParam
   constexpr operator RendererParam() const { return {m_resource}; }
 
@@ -2298,6 +2301,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to TextureParam
   constexpr operator TextureParam() const { return {m_resource}; }

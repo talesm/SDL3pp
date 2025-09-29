@@ -208,6 +208,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to PropertiesParam
   constexpr operator PropertiesParam() const { return {m_resource}; }
 

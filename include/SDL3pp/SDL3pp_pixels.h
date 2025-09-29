@@ -2569,6 +2569,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to PaletteParam
   constexpr operator PaletteParam() const { return {m_resource}; }
 

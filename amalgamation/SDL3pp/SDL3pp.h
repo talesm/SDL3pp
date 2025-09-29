@@ -10581,6 +10581,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to PaletteParam
   constexpr operator PaletteParam() const { return {m_resource}; }
 
@@ -11201,6 +11204,9 @@ public:
     m_resource = 0;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to PropertiesParam
   constexpr operator PropertiesParam() const { return {m_resource}; }
@@ -13246,6 +13252,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to EnvironmentParam
   constexpr operator EnvironmentParam() const { return {m_resource}; }
@@ -18046,6 +18055,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to IConvParam
   constexpr operator IConvParam() const { return {m_resource}; }
 
@@ -20689,6 +20701,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to IOStreamParam
   constexpr operator IOStreamParam() const { return {m_resource}; }
@@ -27777,6 +27792,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to AudioDeviceParam
   constexpr operator AudioDeviceParam() const { return {m_resource}; }
 
@@ -28602,6 +28620,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to AudioStreamParam
   constexpr operator AudioStreamParam() const { return {m_resource}; }
@@ -32102,6 +32123,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to StorageParam
   constexpr operator StorageParam() const { return {m_resource}; }
 
@@ -33440,6 +33464,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to SurfaceParam
   constexpr operator SurfaceParam() const { return {m_resource}; }
@@ -38067,6 +38094,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to WindowParam
   constexpr operator WindowParam() const { return {m_resource}; }
 
@@ -39853,6 +39883,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to GLContextParam
   constexpr operator GLContextParam() const { return {m_resource}; }
@@ -45967,6 +46000,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to RendererParam
   constexpr operator RendererParam() const { return {m_resource}; }
 
@@ -47999,6 +48035,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to TextureParam
   constexpr operator TextureParam() const { return {m_resource}; }
@@ -54469,6 +54508,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to AnimationParam
   constexpr operator AnimationParam() const { return {m_resource}; }
 
@@ -55221,6 +55263,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to FontParam
   constexpr operator FontParam() const { return {m_resource}; }
@@ -56668,6 +56713,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to TextEngineParam
   constexpr operator TextEngineParam() const { return {m_resource}; }

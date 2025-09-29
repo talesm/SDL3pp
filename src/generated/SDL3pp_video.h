@@ -1091,6 +1091,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to WindowParam
   constexpr operator WindowParam() const { return {m_resource}; }
 
@@ -2740,6 +2743,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to GLContextParam
   constexpr operator GLContextParam() const { return {m_resource}; }

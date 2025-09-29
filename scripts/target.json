@@ -2767,6 +2767,19 @@
               "doc": "Retrieves underlying PropertiesID and clear this.",
               "name": "release"
             },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
             "operator PropertiesParam": {
               "kind": "function",
               "type": "",
@@ -7141,6 +7154,19 @@
               "doc": "Retrieves underlying WindowRaw and clear this.",
               "name": "release"
             },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
             "operator WindowParam": {
               "kind": "function",
               "type": "",
@@ -8522,6 +8548,19 @@
               },
               "doc": "Retrieves underlying GLContextRaw and clear this.",
               "name": "release"
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
             },
             "operator GLContextParam": {
               "kind": "function",
@@ -13336,6 +13375,19 @@
               "doc": "Retrieves underlying RendererRaw and clear this.",
               "name": "release"
             },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
             "operator RendererParam": {
               "kind": "function",
               "type": "",
@@ -15021,6 +15073,19 @@
               },
               "doc": "Retrieves underlying TextureRaw and clear this.",
               "name": "release"
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
             },
             "operator TextureParam": {
               "kind": "function",
@@ -23981,6 +24046,19 @@
               "doc": "Retrieves underlying PaletteRaw and clear this.",
               "name": "release"
             },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
             "operator PaletteParam": {
               "kind": "function",
               "type": "",
@@ -27570,6 +27648,19 @@
               },
               "doc": "Retrieves underlying SurfaceRaw and clear this.",
               "name": "release"
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
             },
             "operator SurfaceParam": {
               "kind": "function",
@@ -32713,6 +32804,19 @@
               "doc": "Retrieves underlying AudioDeviceID and clear this.",
               "name": "release"
             },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
             "operator AudioDeviceParam": {
               "kind": "function",
               "type": "",
@@ -33325,6 +33429,19 @@
               },
               "doc": "Retrieves underlying AudioStreamRaw and clear this.",
               "name": "release"
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
             },
             "operator AudioStreamParam": {
               "kind": "function",
@@ -39109,6 +39226,19 @@
               "doc": "Retrieves underlying StorageRaw and clear this.",
               "name": "release"
             },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
             "operator StorageParam": {
               "kind": "function",
               "type": "",
@@ -40662,6 +40792,19 @@
               },
               "doc": "Retrieves underlying IOStreamRaw and clear this.",
               "name": "release"
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
             },
             "operator IOStreamParam": {
               "kind": "function",
@@ -44388,6 +44531,19 @@
               "doc": "Retrieves underlying EnvironmentRaw and clear this.",
               "name": "release"
             },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
             "operator EnvironmentParam": {
               "kind": "function",
               "type": "",
@@ -47675,6 +47831,19 @@
               "doc": "Retrieves underlying IConvRaw and clear this.",
               "name": "release"
             },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
             "operator IConvParam": {
               "kind": "function",
               "type": "",
@@ -49296,6 +49465,19 @@
               "doc": "Retrieves underlying AnimationRaw and clear this.",
               "name": "release"
             },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
             "operator AnimationParam": {
               "kind": "function",
               "type": "",
@@ -50354,6 +50536,19 @@
               },
               "doc": "Retrieves underlying FontRaw and clear this.",
               "name": "release"
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
             },
             "operator FontParam": {
               "kind": "function",
@@ -51796,6 +51991,19 @@
               },
               "doc": "Retrieves underlying TextEngineRaw and clear this.",
               "name": "release"
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
             },
             "operator TextEngineParam": {
               "kind": "function",
@@ -54893,6 +55101,19 @@
               },
               "doc": "Retrieves underlying TextRaw and clear this.",
               "name": "release"
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
             },
             "operator TextParam": {
               "kind": "function",

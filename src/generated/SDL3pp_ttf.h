@@ -525,6 +525,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to FontParam
   constexpr operator FontParam() const { return {m_resource}; }
 
@@ -1960,6 +1963,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to TextEngineParam
   constexpr operator TextEngineParam() const { return {m_resource}; }
@@ -4390,6 +4396,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to TextParam
   constexpr operator TextParam() const { return {m_resource}; }

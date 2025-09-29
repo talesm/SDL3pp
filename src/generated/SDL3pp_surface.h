@@ -440,6 +440,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to SurfaceParam
   constexpr operator SurfaceParam() const { return {m_resource}; }
 

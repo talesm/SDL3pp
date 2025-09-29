@@ -452,6 +452,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to StorageParam
   constexpr operator StorageParam() const { return {m_resource}; }
 

@@ -1096,6 +1096,16 @@ function expandTypes(sourceEntries, file, context) {
         hints: { body: `auto r = m_resource;\nm_resource = ${nullValue};\nreturn r;` },
         doc: `Retrieves underlying ${rawName} and clear this.`,
       },
+      "operator bool": {
+        kind: "function",
+        type: '',
+        immutable: true,
+        constexpr: true,
+        explicit: true,
+        parameters: [],
+        hints: { body: "return !!m_resource;" },
+        doc: `Converts to bool`,
+      },
       [`operator ${paramType}`]: {
         kind: "function",
         type: '',

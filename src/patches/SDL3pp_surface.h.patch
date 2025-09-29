@@ -59,17 +59,17 @@
 <   Surface(IOStreamParam src, bool closeio);
 ---
 >   Surface(IOStreamParam src, bool closeio = false);
-500,501c486
+503,504c489
 <    * @param colorspace an Colorspace value describing the surface
 <    *                   colorspace.
 ---
 >    * @param colorspace a Colorspace value describing the surface colorspace.
-600,601c585
+603,604c588
 <    * @param image a pointer to an alternate Surface to associate with this
 <    *              surface.
 ---
 >    * @param image an alternate Surface to associate with this surface.
-635,641d618
+638,644d621
 <    * Freeing the array of surfaces does not affect the surfaces in the array.
 <    * They are still referenced by the surface being queried and will be cleaned
 <    * up normally.
@@ -77,16 +77,16 @@
 <    * @param surface the Surface structure to query.
 <    * @param count a pointer filled in with the number of surface pointers
 <    *              returned, may be nullptr.
-643,644c620
+646,647c623
 <    *          failure; call GetError() for more information. This should be
 <    *          freed with free() when it is no longer needed.
 ---
 >    *          failure; call GetError() for more information.
-676c652
+679c655
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-688,690c664,666
+691,693c667,669
 <    * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates
 <    * to 0, then you can read and write to the surface at any time, and the pixel
 <    * format of the surface will not change.
@@ -94,12 +94,12 @@
 >    * Not all surfaces require locking. If `Surface.MustLock()` evaluates to
 >    * false, then you can read and write to the surface at any time, and the
 >    * pixel format of the surface will not change.
-807,808c783
+810,811c786
 <    * @param enabled true to enable color key, false to disable color key.
 <    * @param key the transparent pixel.
 ---
 >    * @param key the transparent pixel or std::nullopt to disable it.
-821c796,805
+824c799,808
 <   void ClearColorKey() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -112,12 +112,12 @@
 >    * @throws Error on failure.
 >    */
 >   void ClearColorKey() { SetColorKey(std::nullopt); }
-826,827d809
+829,830d812
 <    * It is safe to pass a nullptr `surface` here; it will return false.
 <    *
-922d903
+925d906
 <    * @param alpha a pointer filled in with the current alpha value.
-934c915,933
+937c918,936
 <   void SetMod(Color color) { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -139,7 +139,7 @@
 >     SetColorMod(color.r, color.g, color.b);
 >     SetAlphaMod(color.a);
 >   }
-936c935,948
+939c938,951
 <   Color GetMod() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -156,9 +156,9 @@
 >     c.a = GetAlphaMod();
 >     return c;
 >   }
-987a1000
+990a1003
 >    * @sa Surface.ResetClipRect()
-992c1005,1010
+995c1008,1013
 <   void ResetClipRect() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -167,35 +167,35 @@
 >    * @sa SetClipRect()
 >    */
 >   void ResetClipRect() { SDL_SetSurfaceClipRect(m_resource, nullptr); }
-1000,1002c1018,1019
+1003,1005c1021,1022
 <    *                clipped.
 <    * @param rect an Rect structure filled in with the clipping rectangle for
 <    *             the surface.
 ---
 >    * @returns the Rect structure filled in with the clipping rectangle for the
 >    *          surface on success.
-1031,1032d1047
+1034,1035d1050
 <    * The returned surface should be freed with Surface.Destroy().
 <    *
-1048,1051c1063
+1051,1054c1066
 <    * The returned surface should be freed with Surface.Destroy().
 <    *
 <    * @param width the width of the new surface.
 <    * @param height the height of the new surface.
 ---
 >    * @param size the width and height of the new surface.
-1143c1155
+1146c1158
 <    * otherwise the color is assumed to be in the colorspace of the suface.
 ---
 >    * otherwise the color is assumed to be in the colorspace of the surface.
-1145,1148c1157
+1148,1151c1160
 <    * @param r the red component of the pixel, normally in the range 0-1.
 <    * @param g the green component of the pixel, normally in the range 0-1.
 <    * @param b the blue component of the pixel, normally in the range 0-1.
 <    * @param a the alpha component of the pixel, normally in the range 0-1.
 ---
 >    * @param c the color components of the pixel, normally in the range 0-1.
-1157c1166,1176
+1160c1169,1179
 <   void Fill(Uint32 color) { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -209,13 +209,13 @@
 >    * @throws Error on failure.
 >    */
 >   void Fill(Uint32 color) { FillRect({}, color); }
-1197d1215
+1200d1218
 <    * @param count the number of rectangles in the array.
-1260a1279
+1263a1282
 >    * @param src the SurfaceRaw structure to be copied from.
-1263d1281
+1266d1284
 <    * @param dst the Surface structure that is the blit target.
-1281a1300,1369
+1284a1303,1372
 >   /**
 >    * Performs a fast blit from the source surface to the destination surface
 >    * with clipping.
@@ -286,39 +286,39 @@
 >    * @sa Surface.Blit
 >    * @sa Surface.BlitScaled
 >    */
-1286c1374
+1289c1377
 <     static_assert(false, "Not implemented");
 ---
 >     Blit(src, srcrect, Rect{dstpos, {}});
-1294a1383
+1297a1386
 >    * @param src the Surface structure to be copied from.
-1297d1385
+1300d1388
 <    * @param dst the Surface structure that is the blit target.
-1316a1405
+1319a1408
 >    * @param src the Surface structure to be copied from.
-1319d1407
+1322d1410
 <    * @param dst the Surface structure that is the blit target.
-1343a1432
+1346a1435
 >    * @param src the Surface structure to be copied from.
-1346d1434
+1349d1437
 <    * @param dst the Surface structure that is the blit target.
-1368a1457
+1371a1460
 >    * @param src the Surface structure to be copied from.
-1371d1459
+1374d1462
 <    * @param dst the Surface structure that is the blit target.
-1381c1469
+1384c1472
 <    * @since This function is available since SDL 3.4.0.
 ---
 >    * @since This function is available since SDL 3.2.4.
-1398a1487
+1401a1490
 >    * @param src the SDL_Surface structure to be copied from.
-1401d1489
+1404d1492
 <    * @param dst the Surface structure that is the blit target.
-1424a1513
+1427a1516
 >    * @param src the SDL_Surface structure to be copied from.
-1431d1519
+1434d1522
 <    * @param dst the Surface structure that is the blit target.
-1449a1538,1567
+1452a1541,1570
 >   /**
 >    * Perform a scaled blit using the 9-grid algorithm to a destination surface,
 >    * which may be of a different format.
@@ -349,7 +349,7 @@
 >    *
 >    * @sa Surface.Blit
 >    */
-1458c1576,1584
+1461c1579,1587
 <     static_assert(false, "Not implemented");
 ---
 >     Blit9GridWithScale(src,
@@ -361,18 +361,18 @@
 >                        0.0,
 >                        SDL_SCALEMODE_NEAREST,
 >                        dstrect);
-1470a1597
+1473a1600
 >    * @param src the SDL_Surface structure to be copied from.
-1481d1607
+1484d1610
 <    * @param dst the Surface structure that is the blit target.
-1553,1556c1679
+1556,1559c1682
 <    * @param r the red component of the pixel in the range 0-255.
 <    * @param g the green component of the pixel in the range 0-255.
 <    * @param b the blue component of the pixel in the range 0-255.
 <    * @param a the alpha component of the pixel in the range 0-255.
 ---
 >    * @param c the color components of the pixel in the range 0-255.
-1566a1690,1702
+1569a1693,1705
 >   /**
 >    * This function prioritizes correctness over speed: it is suitable for
 >    * unit tests, but is not intended for use in a game engine.
@@ -386,18 +386,18 @@
 >    *
 >    * @threadsafety This function is not thread safe.
 >    */
-1569c1705,1707
+1572c1708,1710
 <     static_assert(false, "Not implemented");
 ---
 >     Color c;
 >     ReadPixel(p, &c.r, &c.g, &c.b, &c.a);
 >     return c;
-1581,1582c1719
+1584,1585c1722
 <    * @param x the horizontal coordinate, 0 <= x < width.
 <    * @param y the vertical coordinate, 0 <= y < height.
 ---
 >    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
-1602a1740,1751
+1605a1743,1754
 >   /**
 >    * Retrieves a single pixel from a surface.
 >    *
@@ -410,18 +410,18 @@
 >    *
 >    * @threadsafety This function is not thread safe.
 >    */
-1605c1754,1756
+1608c1757,1759
 <     static_assert(false, "Not implemented");
 ---
 >     FColor c;
 >     ReadPixelFloat(p, &c.r, &c.g, &c.b, &c.a);
 >     return c;
-1614,1615c1765
+1617,1618c1768
 <    * @param x the horizontal coordinate, 0 <= x < width.
 <    * @param y the vertical coordinate, 0 <= y < height.
 ---
 >    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
-1645,1650c1795,1796
+1648,1653c1798,1799
 <    * @param x the horizontal coordinate, 0 <= x < width.
 <    * @param y the vertical coordinate, 0 <= y < height.
 <    * @param r the red channel value, 0-255.
@@ -431,7 +431,7 @@
 ---
 >    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
 >    * @param c the color values, 0-255.
-1665,1670c1811,1812
+1668,1673c1814,1815
 <    * @param x the horizontal coordinate, 0 <= x < width.
 <    * @param y the vertical coordinate, 0 <= y < height.
 <    * @param r the red channel value, normally in the range 0-1.
@@ -441,138 +441,138 @@
 ---
 >    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
 >    * @param c the color values, normally in the range 0-1.
-1679c1821,1824
+1682c1824,1827
 <   int GetWidth() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get the width in pixels.
 >    */
 >   constexpr int GetWidth() const { return m_resource->w; }
-1681c1826,1829
+1684c1829,1832
 <   int GetHeight() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get the height in pixels.
 >    */
 >   constexpr int GetHeight() const { return m_resource->h; }
-1683c1831,1834
+1686c1834,1837
 <   Point GetSize() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get the size in pixels.
 >    */
 >   constexpr Point GetSize() const { return Point(GetWidth(), GetHeight()); }
-1685c1836,1839
+1688c1839,1842
 <   int GetPitch() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get pitch in bytes.
 >    */
 >   constexpr int GetPitch() const { return m_resource->pitch; }
-1687c1841,1844
+1690c1844,1847
 <   PixelFormat GetFormat() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get the pixel format.
 >    */
 >   constexpr PixelFormat GetFormat() const { return m_resource->format; }
-1689c1846,1849
+1692c1849,1852
 <   void* GetPixels() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get the pixels.
 >    */
 >   constexpr void* GetPixels() const { return m_resource->pixels; }
-1697,1698c1857
+1700,1701c1860
 <  * @param width the width of the surface.
 <  * @param height the height of the surface.
 ---
 >  * @param size the width and height of the surface.
-1728,1729c1887
+1731,1732c1890
 <  * @param width the width of the surface.
 <  * @param height the height of the surface.
 ---
 >  * @param size the width and height of the surface.
-1807c1965
+1810c1968
 <   return CheckError(SDL_GetSurfaceProperties(surface));
 ---
 >   return {CheckError(SDL_GetSurfaceProperties(surface))};
-1828,1831d1985
+1831,1834d1988
 < #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 < 
 < #if SDL_VERSION_ATLEAST(3, 2, 6)
 < 
-1921c2075
+1924c2078
 <   return CheckError(SDL_CreateSurfacePalette(surface));
 ---
 >   return Palette::Borrow(CheckError(SDL_CreateSurfacePalette(surface)));
-1970c2124
+1973c2127
 <   return SDL_GetSurfacePalette(surface);
 ---
 >   return Palette::Borrow(SDL_GetSurfacePalette(surface));
-2063c2217,2219
+2066c2220,2222
 <   return SDL_GetSurfaceImages(surface);
 ---
 >   int count = 0;
 >   auto data = SDL_GetSurfaceImages(surface, &count);
 >   return OwnArray<SurfaceRaw>(CheckError(data), count);
-2105c2261
+2108c2264
 <  * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates to
 ---
 >  * Not all surfaces require locking. If `Surface.MustLock()` evaluates to
-2190c2346
+2193c2349
 < inline Surface Surface::LoadBMP(IOStreamParam src, bool closeio = false)
 ---
 > inline Surface Surface::LoadBMP(IOStreamParam src, bool closeio)
-2254c2410
+2257c2413
 < inline void Surface::SaveBMP(IOStreamParam dst, bool closeio = false) const
 ---
 > inline void Surface::SaveBMP(IOStreamParam dst, bool closeio) const
-2338c2494
+2341c2497
 <   CheckError(SDL_SetSurfaceColorKey(surface, key));
 ---
 >   CheckError(SDL_SetSurfaceColorKey(surface, key.has_value(), key.value_or(0)));
-2392c2548,2549
+2395c2551,2552
 <   return CheckError(SDL_GetSurfaceColorKey(surface));
 ---
 >   if (Uint32 key; SDL_GetSurfaceColorKey(surface, &key)) return key;
 >   return std::nullopt;
-2506c2663,2665
+2509c2666,2668
 <   return CheckError(SDL_GetSurfaceAlphaMod(surface));
 ---
 >   Uint8 alpha;
 >   CheckError(SDL_GetSurfaceAlphaMod(surface, &alpha));
 >   return alpha;
-2556c2715,2717
+2559c2718,2720
 <   return CheckError(SDL_GetSurfaceBlendMode(surface));
 ---
 >   BlendMode blendmode;
 >   CheckError(SDL_GetSurfaceBlendMode(surface, &blendmode));
 >   return blendmode;
-2616c2777,2779
+2619c2780,2782
 <   return CheckError(SDL_GetSurfaceClipRect(surface));
 ---
 >   Rect r;
 >   CheckError(SDL_GetSurfaceClipRect(surface, &r));
 >   return r;
-2662c2825
+2665c2828
 <   return SDL_DuplicateSurface(surface);
 ---
 >   return Surface(SDL_DuplicateSurface(surface));
-2677,2678c2840
+2680,2681c2843
 <  * @param width the width of the new surface.
 <  * @param height the height of the new surface.
 ---
 >  * @param size the width and height of the surface.
-2693c2855
+2696c2858
 <   return SDL_ScaleSurface(surface, size, scaleMode);
 ---
 >   return Surface(SDL_ScaleSurface(surface, size.x, size.y, scaleMode));
-2729c2891
+2732c2894
 <   return SDL_ConvertSurface(surface, format);
 ---
 >   return Surface(SDL_ConvertSurface(surface, format));
-2737,2745d2898
+2740,2748d2901
 < inline Surface Surface::Convert(PixelFormat format,
 <                                 PaletteParam palette,
 <                                 Colorspace colorspace,
@@ -582,7 +582,7 @@
 <     m_resource, format, palette, colorspace, props);
 < }
 < 
-2779,2780c2932,2942
+2782,2783c2935,2945
 <   return SDL_ConvertSurfaceAndColorspace(
 <     surface, format, palette, colorspace, props);
 ---
@@ -597,31 +597,31 @@
 > {
 >   return SDL::ConvertSurfaceAndColorspace(
 >     m_resource, format, palette, colorspace, props);
-2786,2787c2948
+2789,2790c2951
 <  * @param width the width of the block to copy, in pixels.
 <  * @param height the height of the block to copy, in pixels.
 ---
 >  * @param size the width and height of the surface.
-2813c2974
+2816c2977
 <     size, src_format, src, src_pitch, dst_format, dst, dst_pitch));
 ---
 >     size.x, size.y, src_format, src, src_pitch, dst_format, dst, dst_pitch));
-2820,2821c2981
+2823,2824c2984
 <  * @param width the width of the block to copy, in pixels.
 <  * @param height the height of the block to copy, in pixels.
 ---
 >  * @param size the width and height  of the block to copy, in pixels.
-2858c3018,3019
+2861c3021,3022
 <   CheckError(SDL_ConvertPixelsAndColorspace(size,
 ---
 >   CheckError(SDL_ConvertPixelsAndColorspace(size.x,
 >                                             size.y,
-2876,2877c3037
+2879,2880c3040
 <  * @param width the width of the block to convert, in pixels.
 <  * @param height the height of the block to convert, in pixels.
 ---
 >  * @param size the width and height of the surface.
-2903,2904c3063,3071
+2906,2907c3066,3074
 <   CheckError(SDL_PremultiplyAlpha(
 <     size, src_format, src, src_pitch, dst_format, dst, dst_pitch, linear));
 ---
@@ -634,26 +634,26 @@
 >                                   dst,
 >                                   dst_pitch,
 >                                   linear));
-2940,2943c3107
+2943,2946c3110
 <  * @param r the red component of the pixel, normally in the range 0-1.
 <  * @param g the green component of the pixel, normally in the range 0-1.
 <  * @param b the blue component of the pixel, normally in the range 0-1.
 <  * @param a the alpha component of the pixel, normally in the range 0-1.
 ---
 >  * @param c the color components of the pixel, normally in the range 0-1.
-2952c3116
+2955c3119
 <   CheckError(SDL_ClearSurface(surface, color));
 ---
 >   CheckError(SDL_ClearSurface(surface, color.r, color.g, color.b, color.a));
-3024c3188
+3027c3191
 <   CheckError(SDL_FillSurfaceRects(dst, rects, color));
 ---
 >   CheckError(SDL_FillSurfaceRects(dst, rects.data(), rects.size(), color));
-3114c3278
+3117c3281
 <   SDL::BlitSurface(m_resource, src, srcrect, dstrect);
 ---
 >   SDL::BlitSurface(src, srcrect, m_resource, dstrect);
-3116a3281,3347
+3119a3284,3350
 > /**
 >  * Performs a fast blit from the source surface to the destination surface
 >  * with clipping.
@@ -721,48 +721,48 @@
 >  *
 >  * @sa Surface.BlitSurface
 >  */
-3122c3353
+3125c3356
 <   static_assert(false, "Not implemented");
 ---
 >   BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
-3151c3382
+3154c3385
 <   CheckError(SDL_BlitSurfaceUnchecked(src, srcrect, dst, dstrect));
 ---
 >   CheckError(SDL_BlitSurfaceUnchecked(src, &srcrect, dst, &dstrect));
-3158c3389
+3161c3392
 <   SDL::BlitSurfaceUnchecked(m_resource, src, srcrect, dstrect);
 ---
 >   SDL::BlitSurfaceUnchecked(src, srcrect, m_resource, dstrect);
-3196c3427
+3199c3430
 <   SDL::BlitSurfaceScaled(m_resource, src, srcrect, dstrect, scaleMode);
 ---
 >   SDL::BlitSurfaceScaled(src, srcrect, m_resource, dstrect, scaleMode);
-3228c3459
+3231c3462
 <     SDL_BlitSurfaceUncheckedScaled(src, srcrect, dst, dstrect, scaleMode));
 ---
 >     SDL_BlitSurfaceUncheckedScaled(src, &srcrect, dst, &dstrect, scaleMode));
-3236c3467
+3239c3470
 <   SDL::BlitSurfaceUncheckedScaled(m_resource, src, srcrect, dstrect, scaleMode);
 ---
 >   SDL::BlitSurfaceUncheckedScaled(src, srcrect, m_resource, dstrect, scaleMode);
-3270,3273d3500
+3273,3276d3503
 < #endif // SDL_VERSION_ATLEAST(3, 2, 4)
 < 
 < #if SDL_VERSION_ATLEAST(3, 2, 4)
 < 
-3279c3506
+3282c3509
 <   SDL::StretchSurface(m_resource, src, srcrect, dstrect, scaleMode);
 ---
 >   SDL::StretchSurface(src, srcrect, m_resource, dstrect, scaleMode);
-3319c3546
+3322c3549
 <   SDL::BlitSurfaceTiled(m_resource, src, srcrect, dstrect);
 ---
 >   SDL::BlitSurfaceTiled(src, srcrect, m_resource, dstrect);
-3367c3594
+3370c3597
 <     m_resource, src, srcrect, scale, scaleMode, dstrect);
 ---
 >     src, srcrect, scale, scaleMode, m_resource, dstrect);
-3470c3697,3706
+3473c3700,3709
 <   static_assert(false, "Not implemented");
 ---
 >   BlitSurface9Grid(src,
@@ -775,26 +775,26 @@
 >                    SDL_SCALEMODE_NEAREST,
 >                    dst,
 >                    dstrect);
-3483,3484c3719
+3486,3487c3722
 <   SDL::BlitSurface9Grid(m_resource,
 <                         src,
 ---
 >   SDL::BlitSurface9Grid(src,
-3491a3727
+3494a3730
 >                         m_resource,
-3571c3807
+3574c3810
 <   return SDL_MapSurfaceRGBA(surface, c);
 ---
 >   return SDL_MapSurfaceRGBA(surface, c.r, c.g, c.b, c.a);
-3612c3848
+3615c3851
 <   CheckError(SDL_ReadSurfacePixel(surface, p, r, g, b, a));
 ---
 >   CheckError(SDL_ReadSurfacePixel(surface, p.x, p.y, r, g, b, a));
-3654c3890
+3657c3893
 <   CheckError(SDL_ReadSurfacePixelFloat(surface, p, r, g, b, a));
 ---
 >   CheckError(SDL_ReadSurfacePixelFloat(surface, p.x, p.y, r, g, b, a));
-3676,3681c3912,3913
+3679,3684c3915,3916
 <  * @param x the horizontal coordinate, 0 <= x < width.
 <  * @param y the vertical coordinate, 0 <= y < height.
 <  * @param r the red channel value, 0-255.
@@ -804,11 +804,11 @@
 ---
 >  * @param p the coordinates, 0 <= x < width, 0 <= y < height.
 >  * @param c the color channels value, 0-255.
-3692c3924
+3695c3927
 <   CheckError(SDL_WriteSurfacePixel(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
-3707,3712c3939,3940
+3710,3715c3942,3943
 <  * @param x the horizontal coordinate, 0 <= x < width.
 <  * @param y the vertical coordinate, 0 <= y < height.
 <  * @param r the red channel value, normally in the range 0-1.
@@ -818,7 +818,7 @@
 ---
 >  * @param p the coordinates, 0 <= x < width, 0 <= y < height.
 >  * @param c the color channels values, normally in the range 0-1.
-3723c3951
+3726c3954
 <   CheckError(SDL_WriteSurfacePixelFloat(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixelFloat(surface, p.x, p.y, c.r, c.g, c.b, c.a));

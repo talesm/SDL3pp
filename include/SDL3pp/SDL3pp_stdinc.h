@@ -994,6 +994,9 @@ public:
     return r;
   }
 
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
   /// Converts to EnvironmentParam
   constexpr operator EnvironmentParam() const { return {m_resource}; }
 
@@ -5792,6 +5795,9 @@ public:
     m_resource = nullptr;
     return r;
   }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to IConvParam
   constexpr operator IConvParam() const { return {m_resource}; }
