@@ -38933,8 +38933,10 @@
         "SDL3/SDL_keyboard.h"
       ],
       "localIncludes": [
+        "SDL3pp_keycode.h",
+        "SDL3pp_scancode.h",
         "SDL3pp_stdinc.h",
-        "SDL3pp_keycode.h"
+        "SDL3pp_video.h"
       ]
     },
     "SDL3pp_keycode.h": {

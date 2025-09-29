@@ -3,7 +3,9 @@
 
 #include <SDL3/SDL_keyboard.h>
 #include "SDL3pp_keycode.h"
+#include "SDL3pp_scancode.h"
 #include "SDL3pp_stdinc.h"
+#include "SDL3pp_video.h"
 
 namespace SDL {
 

@@ -1929,7 +1929,12 @@ const transform = {
       }
     },
     "SDL_keyboard.h": {
-      localIncludes: ['SDL3pp_stdinc.h', "SDL3pp_keycode.h"],
+      localIncludes: [
+        "SDL3pp_keycode.h",
+        "SDL3pp_scancode.h",
+        "SDL3pp_stdinc.h",
+        "SDL3pp_video.h",
+      ],
       namespacesMap: {
         "SDL_PROP_TEXTINPUT_": "prop::TextInput"
       },

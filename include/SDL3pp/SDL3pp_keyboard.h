@@ -3,12 +3,14 @@
 
 #include <SDL3/SDL_keyboard.h>
 #include "SDL3pp_keycode.h"
+#include "SDL3pp_scancode.h"
 #include "SDL3pp_stdinc.h"
+#include "SDL3pp_video.h"
 
 namespace SDL {
 
 /**
- * @defgroup CategoryKeyboard Category Keyboard
+ * @defgroup CategoryKeyboard Keyboard Support
  *
  * SDL keyboard management.
  *
@@ -53,11 +55,8 @@ inline bool HasKeyboard() { return SDL_HasKeyboard(); }
  * power buttons, etc. You should wait for input from a device before you
  * consider it actively in use.
  *
- * @param count a pointer filled in with the number of keyboards returned, may
- *              be nullptr.
- * @returns a 0 terminated array of keyboards instance IDs or nullptr on
- * failure; call GetError() for more information. This should be freed with
- * free() when it is no longer needed.
+ * @returns a 0 terminated array of keyboards instance IDs on success..
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -66,7 +65,12 @@ inline bool HasKeyboard() { return SDL_HasKeyboard(); }
  * @sa GetKeyboardNameForID
  * @sa HasKeyboard
  */
-inline OwnArray<KeyboardID> GetKeyboards() { return SDL_GetKeyboards(); }
+inline OwnArray<KeyboardID> GetKeyboards()
+{
+  int count;
+  auto data = CheckError(SDL_GetKeyboards(&count));
+  return OwnArray<KeyboardID>{data, size_t(count)};
+}
 
 /**
  * Get the name of a keyboard.
@@ -97,7 +101,7 @@ inline const char* GetKeyboardNameForID(KeyboardID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline WindowRef GetKeyboardFocus() { return SDL_GetKeyboardFocus(); }
+inline WindowRef GetKeyboardFocus() { return {SDL_GetKeyboardFocus()}; }
 
 /**
  * Get a snapshot of the current state of the keyboard.
@@ -120,7 +124,6 @@ inline WindowRef GetKeyboardFocus() { return SDL_GetKeyboardFocus(); }
  * Note: This function doesn't take into account whether shift has been
  * pressed or not.
  *
- * @param numkeys if non-nullptr, receives the length of the returned array.
  * @returns a pointer to an array of key states.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -132,7 +135,9 @@ inline WindowRef GetKeyboardFocus() { return SDL_GetKeyboardFocus(); }
  */
 inline std::span<const bool> GetKeyboardState()
 {
-  return SDL_GetKeyboardState();
+  int count;
+  auto data = SDL_GetKeyboardState(&count);
+  return std::span{data, size_t(count)};
 }
 
 /**
@@ -583,7 +588,7 @@ inline void Window::ClearComposition()
  */
 inline void Window::SetTextInputArea(const RectRaw& rect, int cursor)
 {
-  CheckError(SDL_SetTextInputArea(m_resource, rect, cursor));
+  CheckError(SDL_SetTextInputArea(m_resource, &rect, cursor));
 }
 
 /**
