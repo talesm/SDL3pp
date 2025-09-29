@@ -4660,22 +4660,22 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,
  *
  * Example:
  *
- * ```c
- * LoadWAV(IOStream.FromFile("sample.wav", "rb"), true, &spec, &buf, &len);
+ * ```cpp
+ * LoadWAV(IOStream.FromFile("sample.wav", "rb"), &spec);
  * ```
  *
  * Note that the LoadWAV function does this same thing for you, but in a
  * less messy way:
  *
- * ```c
- * LoadWAV("sample.wav", &spec, &buf, &len);
+ * ```cpp
+ * LoadWAV("sample.wav", &spec);
  * ```
  *
  * @param src the data source for the WAVE data.
- * @param closeio if true, calls IOStream.Close() on `src` before returning,
- * even in the case of an error.
  * @param spec a pointer to an AudioSpec that will be set to the WAVE
  *             data's format details on successful return.
+ * @param closeio if true, calls IOStream.Close() on `src` before returning,
+ *                even in the case of an error.
  * @throws Error on failure.
  *
  * This function throws if the .WAV file cannot be opened, uses an unknown data

@@ -21107,8 +21107,8 @@ public:
    * Load all the data from an SDL data stream.
    *
    * The data is allocated with a zero byte at the end (null terminated) for
-   * convenience. This extra byte is not included in the value reported via
-   * `datasize`.
+   * convenience. This extra byte is not included in the value reported on
+   * the returned string.
    *
    * @returns the data in bytes
    * @throws Error on failure.
@@ -21126,8 +21126,8 @@ public:
    * Load all the data from an SDL data stream.
    *
    * The data is allocated with a zero byte at the end (null terminated) for
-   * convenience. This extra byte is not included in the value reported via
-   * `datasize`.
+   * convenience. This extra byte is not included in the value reported on
+   * the returned string.
    *
    * @returns the data in bytes
    * @throws Error on failure.
@@ -22638,14 +22638,12 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  * Load all the data from an SDL data stream.
  *
  * The data is allocated with a zero byte at the end (null terminated) for
- * convenience. This extra byte is not included in the value reported via
- * `datasize`.
+ * convenience. This extra byte is not included in the value reported on
+ * the returned string.
  *
  * The data should be freed with free().
  *
  * @param src the IOStream to read all available data from.
- * @param datasize a pointer filled in with the number of bytes read, may be
- *                 nullptr.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
  * even in the case of an error.
  * @returns the data or nullptr on failure; call GetError() for more
@@ -22658,24 +22656,19 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  * @sa LoadFile
  * @sa IOStream.SaveFile
  */
-inline StringResult LoadFile_IO(IOStreamParam src)
+inline StringResult LoadFile(IOStreamParam src, bool closeio = true)
 {
   size_t datasize = 0;
-  auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, false));
+  auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, closeio));
   return StringResult{CheckError(data), datasize};
-}
-
-inline StringResult IOStream::LoadFile()
-{
-  return SDL::LoadFile_IO(m_resource);
 }
 
 /**
  * Load all the data from a file path.
  *
  * The data is allocated with a zero byte at the end (null terminated) for
- * convenience. This extra byte is not included in the value reported via
- * `datasize`.
+ * convenience. This extra byte is not included in the value reported on
+ * the returned string.
  *
  * @param file the path to read all available data from.
  * @returns the data.
@@ -22695,12 +22688,17 @@ inline StringResult LoadFile(StringParam file)
   return StringResult{CheckError(data), datasize};
 }
 
+inline StringResult IOStream::LoadFile()
+{
+  return SDL::LoadFile(m_resource, false);
+}
+
 /**
  * Load all the data from a file path.
  *
  * The data is allocated with a zero byte at the end (null terminated) for
- * convenience. This extra byte is not included in the value reported via
- * `datasize`.
+ * convenience. This extra byte is not included in the value reported on
+ * the returned string.
  *
  * @param file the path to read all available data from.
  * @returns the data.
@@ -22725,9 +22723,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * Save all the data into an SDL data stream.
  *
  * @param src the IOStream to write all data to.
- * @param data the data to be written. If datasize is 0, may be nullptr or a
- *             invalid pointer.
- * @param datasize the number of bytes to be written.
+ * @param data the data to be written.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
  * even in the case of an error.
  * @throws Error on failure.
@@ -22739,22 +22735,16 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @sa SaveFile
  * @sa IOStream.LoadFile
  */
-inline void SaveFile_IO(IOStreamParam src, SourceBytes data)
+inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
 {
-  CheckError(SDL_SaveFile_IO(src, data.data, data.size_bytes, false));
-}
-
-inline void IOStream::SaveFile(SourceBytes data)
-{
-  SDL::SaveFile_IO(m_resource, data);
+  CheckError(SDL_SaveFile_IO(src, data.data, data.size_bytes, closeio));
 }
 
 /**
  * Save all the data into a file path.
  *
  * @param file the path to write all available data into.
- * @param data the data to be written. If datasize is 0, may be nullptr or a
- *             invalid pointer.
+ * @param data the data to be written.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -22767,6 +22757,11 @@ inline void IOStream::SaveFile(SourceBytes data)
 inline void SaveFile(StringParam file, SourceBytes data)
 {
   CheckError(SDL_SaveFile(file, data.data, data.size_bytes));
+}
+
+inline void IOStream::SaveFile(SourceBytes data)
+{
+  SDL::SaveFile(m_resource, data, false);
 }
 
 /**
@@ -31568,22 +31563,22 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,
  *
  * Example:
  *
- * ```c
- * LoadWAV(IOStream.FromFile("sample.wav", "rb"), true, &spec, &buf, &len);
+ * ```cpp
+ * LoadWAV(IOStream.FromFile("sample.wav", "rb"), &spec);
  * ```
  *
  * Note that the LoadWAV function does this same thing for you, but in a
  * less messy way:
  *
- * ```c
- * LoadWAV("sample.wav", &spec, &buf, &len);
+ * ```cpp
+ * LoadWAV("sample.wav", &spec);
  * ```
  *
  * @param src the data source for the WAVE data.
- * @param closeio if true, calls IOStream.Close() on `src` before returning,
- * even in the case of an error.
  * @param spec a pointer to an AudioSpec that will be set to the WAVE
  *             data's format details on successful return.
+ * @param closeio if true, calls IOStream.Close() on `src` before returning,
+ *                even in the case of an error.
  * @throws Error on failure.
  *
  * This function throws if the .WAV file cannot be opened, uses an unknown data
@@ -52529,10 +52524,10 @@ inline int Version() { return IMG_Version(); }
  * software surface: call LoadTextureTyped() instead.
  *
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
+ * @param closeio true to close/free the IOStream before returning, false
+ *                to leave it open.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -52542,8 +52537,8 @@ inline int Version() { return IMG_Version(); }
  * @sa Surface.Destroy
  */
 inline Surface LoadSurfaceTyped(IOStreamParam src,
-                                bool closeio,
-                                StringParam type)
+                                StringParam type,
+                                bool closeio = false)
 {
   return Surface(IMG_LoadTyped_IO(src, closeio, type));
 }
@@ -52943,10 +52938,10 @@ inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
  *
  * @param renderer the Renderer to use to create the GPU texture.
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
+ * @param closeio true to close/free the IOStream before returning, false
+ *                to leave it open.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -52956,8 +52951,8 @@ inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
  */
 inline Texture LoadTextureTyped(RendererParam renderer,
                                 IOStreamParam src,
-                                bool closeio,
-                                StringParam type)
+                                StringParam type,
+                                bool closeio = false)
 {
   return Texture(IMG_LoadTextureTyped_IO(renderer, src, closeio, type));
 }
@@ -54526,18 +54521,18 @@ inline void SaveAVIF(SurfaceParam surface, StringParam file, int quality)
  *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
+ * @param closeio true to close/free the IOStream before returning, false
+ *                to leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
 inline void SaveAVIF(SurfaceParam surface,
                      IOStreamParam dst,
-                     bool closeio,
-                     int quality)
+                     int quality,
+                     bool closeio = false)
 {
   CheckError(IMG_SaveAVIF_IO(surface, dst, closeio, quality));
 }
@@ -54611,18 +54606,18 @@ inline void SaveJPG(SurfaceParam surface, StringParam file, int quality)
  *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
+ * @param closeio true to close/free the IOStream before returning, false
+ *                to leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
 inline void SaveJPG(SurfaceParam surface,
                     IOStreamParam dst,
-                    bool closeio,
-                    int quality)
+                    int quality,
+                    bool closeio = false)
 {
   CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
 }
@@ -54874,9 +54869,9 @@ inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
  * call to Animation.Free().
  *
  * @param src an IOStream that data will be read from.
+ * @param type a filename extension that represent this data ("GIF", etc).
  * @param closeio true to close/free the IOStream before returning, false
  *                to leave it open.
- * @param type a filename extension that represent this data ("GIF", etc).
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -54885,8 +54880,8 @@ inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
  * @sa Animation.Free
  */
 inline Animation LoadAnimationTyped(IOStreamParam src,
-                                    bool closeio,
-                                    StringParam type)
+                                    StringParam type,
+                                    bool closeio = false)
 {
   return Animation(IMG_LoadAnimationTyped_IO(src, closeio, type));
 }
@@ -57296,9 +57291,9 @@ inline Font OpenFont(StringParam file, float ptsize)
  * When done with the returned Font, use Font.Close() to dispose of it.
  *
  * @param src an IOStream to provide a font file's data.
+ * @param ptsize point size to use for the newly-opened font.
  * @param closeio true to close `src` when the font is closed, false to leave
  *                it open.
- * @param ptsize point size to use for the newly-opened font.
  * @returns a valid Font on success.
  * @throws Error on failure.
  *
@@ -57308,9 +57303,9 @@ inline Font OpenFont(StringParam file, float ptsize)
  *
  * @sa Font.Close
  */
-inline Font OpenFontIO(IOStreamParam src, bool closeio, float ptsize)
+inline Font OpenFont(IOStreamParam src, float ptsize, bool closeio = false)
 {
-  return Font(src, closeio, ptsize);
+  return Font(src, ptsize, closeio);
 }
 
 /**

@@ -771,11 +771,29 @@
 >   } else {
 >     SetPutCallback(std::move(callback));
 >   }
-4355,4358d4678
+4339,4340c4663,4664
+<  * ```c
+<  * LoadWAV(IOStream.FromFile("sample.wav", "rb"), true, &spec, &buf, &len);
+---
+>  * ```cpp
+>  * LoadWAV(IOStream.FromFile("sample.wav", "rb"), &spec);
+4346,4347c4670,4671
+<  * ```c
+<  * LoadWAV("sample.wav", &spec, &buf, &len);
+---
+>  * ```cpp
+>  * LoadWAV("sample.wav", &spec);
+4351,4352d4674
+<  * @param closeio if true, calls IOStream.Close() on `src` before returning,
+<  * even in the case of an error.
+4355,4358c4677,4678
 <  * @param audio_buf a pointer filled with the audio data, allocated by the
 <  *                  function.
 <  * @param audio_len a pointer filled with the length of the audio data buffer
 <  *                  in bytes.
+---
+>  * @param closeio if true, calls IOStream.Close() on `src` before returning,
+>  *                even in the case of an error.
 4361,4366c4681,4682
 <  *          This function returns false if the .WAV file cannot be opened,
 <  *          uses an unknown data format, or is corrupt; call GetError()

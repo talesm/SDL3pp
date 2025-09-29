@@ -2341,9 +2341,9 @@ inline Font OpenFont(StringParam file, float ptsize)
  * When done with the returned Font, use Font.Close() to dispose of it.
  *
  * @param src an IOStream to provide a font file's data.
+ * @param ptsize point size to use for the newly-opened font.
  * @param closeio true to close `src` when the font is closed, false to leave
  *                it open.
- * @param ptsize point size to use for the newly-opened font.
  * @returns a valid Font on success.
  * @throws Error on failure.
  *
@@ -2353,9 +2353,9 @@ inline Font OpenFont(StringParam file, float ptsize)
  *
  * @sa Font.Close
  */
-inline Font OpenFontIO(IOStreamParam src, bool closeio, float ptsize)
+inline Font OpenFont(IOStreamParam src, float ptsize, bool closeio = false)
 {
-  return Font(src, closeio, ptsize);
+  return Font(src, ptsize, closeio);
 }
 
 /**

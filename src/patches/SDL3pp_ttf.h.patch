@@ -14,14 +14,12 @@
 <  * @defgroup CategorySDLTTF Category SDLTTF
 ---
 >  * @defgroup CategorySDLTTF True type font support
-125,126c133
+125,126c133,142
 < /// Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
 < #define SDL_TTF_MAJOR_VERSION 3
 ---
 > #ifdef SDL3PP_DOC
-128c135,142
-< #define SDL_TTF_MINOR_VERSION 2
----
+> 
 > /**
 >  * @name TTF version
 >  * @{
@@ -30,15 +28,17 @@
 > #define SDL_TTF_MAJOR_VERSION
 > 
 > #define SDL_TTF_MINOR_VERSION
-130c144
-< #define SDL_TTF_MICRO_VERSION 3
+128c144
+< #define SDL_TTF_MINOR_VERSION 2
 ---
 > #define SDL_TTF_MICRO_VERSION
-132c146,150
-< /// This is the version number macro for the current SDL_ttf version.
+130c146
+< #define SDL_TTF_MICRO_VERSION 3
 ---
 > ///@}
-> 
+132c148,150
+< /// This is the version number macro for the current SDL_ttf version.
+---
 > /**
 >  * This is the version number macro for the current SDL_ttf version.
 >  */
@@ -322,6 +322,10 @@
 <   GPUTextEngineWinding GetGPUWinding(TextEngineParam engine) const;
 ---
 >   GPUTextEngineWinding GetGPUWinding() const;
+2406a2344
+>  * @param ptsize point size to use for the newly-opened font.
+2409d2346
+<  * @param ptsize point size to use for the newly-opened font.
 2528c2465
 <   return CheckError(TTF_CopyFont(existing_font));
 ---
@@ -757,17 +761,17 @@
 < }
 ---
 > inline void GPUTextEngine::Destroy() { DestroyGPUTextEngine(release()); }
-5675,5676c5594
+5675,5681c5594
 < inline void GPUTextEngine::SetGPUWinding(TextEngineParam engine,
 <                                          GPUTextEngineWinding winding)
----
-> inline void GPUTextEngine::SetGPUWinding(GPUTextEngineWinding winding)
-5678,5683c5596
+< {
 <   SDL::TextEngine::SetGPUWinding(engine, winding);
 < }
 < 
 < inline GPUTextEngineWinding TextEngine::GetGPUWinding() const
-< {
+---
+> inline void GPUTextEngine::SetGPUWinding(GPUTextEngineWinding winding)
+5683c5596
 <   return SDL::GetGPUTextEngineWinding(m_resource);
 ---
 >   SDL::SetGPUTextEngineWinding(get(), winding);

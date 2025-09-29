@@ -41921,7 +41921,7 @@
               "parameters": [],
               "sourceName": "SDL_LoadFile_IO",
               "hints": {
-                "delegate": "SDL::LoadFile_IO"
+                "delegate": "SDL::LoadFile"
               },
               "proto": true
             },
@@ -41951,7 +41951,7 @@
               "sourceName": "SDL_SaveFile_IO",
               "hints": {
                 "mayFail": true,
-                "delegate": "SDL::SaveFile_IO"
+                "delegate": "SDL::SaveFile"
               },
               "proto": true
             },
@@ -43159,19 +43159,39 @@
             "delegate": "SDL::FlushIO"
           }
         },
-        "LoadFile_IO": {
-          "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param src the IOStream to read all available data from.\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFile\n@sa IOStream.SaveFile",
-          "name": "LoadFile_IO",
-          "kind": "function",
-          "type": "StringResult",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            }
-          ],
-          "sourceName": "SDL_LoadFile_IO"
-        },
+        "LoadFile": [
+          {
+            "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param src the IOStream to read all available data from.\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFile\n@sa IOStream.SaveFile",
+            "name": "LoadFile",
+            "kind": "function",
+            "type": "StringResult",
+            "parameters": [
+              {
+                "name": "src",
+                "type": "IOStreamParam"
+              },
+              {
+                "name": "closeio",
+                "type": "bool",
+                "default": "true"
+              }
+            ],
+            "sourceName": "SDL_LoadFile_IO"
+          },
+          {
+            "doc": "Load all the data from a file path.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param file the path to read all available data from.\n@param datasize if not nullptr, will store the number of bytes read.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.LoadFile\n@sa SaveFile",
+            "name": "LoadFile",
+            "kind": "function",
+            "type": "StringResult",
+            "parameters": [
+              {
+                "name": "file",
+                "type": "StringParam"
+              }
+            ],
+            "sourceName": "SDL_LoadFile"
+          }
+        ],
         "IOStream::LoadFile": {
           "name": "IOStream::LoadFile",
           "kind": "function",
@@ -43182,21 +43202,8 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "delegate": "SDL::LoadFile_IO"
+            "delegate": "SDL::LoadFile"
           }
-        },
-        "LoadFile": {
-          "doc": "Load all the data from a file path.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param file the path to read all available data from.\n@param datasize if not nullptr, will store the number of bytes read.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.LoadFile\n@sa SaveFile",
-          "name": "LoadFile",
-          "kind": "function",
-          "type": "StringResult",
-          "parameters": [
-            {
-              "name": "file",
-              "type": "StringParam"
-            }
-          ],
-          "sourceName": "SDL_LoadFile"
         },
         "LoadFileAs": {
           "kind": "function",
@@ -43215,26 +43222,53 @@
           ],
           "name": "LoadFileAs"
         },
-        "SaveFile_IO": {
-          "doc": "Save all the data into an SDL data stream.\n\n@param src the IOStream to write all data to.\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveFile\n@sa IOStream.LoadFile",
-          "name": "SaveFile_IO",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "data",
-              "type": "SourceBytes"
+        "SaveFile": [
+          {
+            "doc": "Save all the data into an SDL data stream.\n\n@param src the IOStream to write all data to.\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@param closeio if true, calls IOStream.Close() on `src` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveFile\n@sa IOStream.LoadFile",
+            "name": "SaveFile",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "src",
+                "type": "IOStreamParam"
+              },
+              {
+                "name": "data",
+                "type": "SourceBytes"
+              },
+              {
+                "name": "closeio",
+                "type": "bool",
+                "default": "true"
+              }
+            ],
+            "sourceName": "SDL_SaveFile_IO",
+            "hints": {
+              "mayFail": true
             }
-          ],
-          "sourceName": "SDL_SaveFile_IO",
-          "hints": {
-            "mayFail": true
+          },
+          {
+            "doc": "Save all the data into a file path.\n\n@param file the path to write all available data into.\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.SaveFile\n@sa LoadFile",
+            "name": "SaveFile",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "file",
+                "type": "StringParam"
+              },
+              {
+                "name": "data",
+                "type": "SourceBytes"
+              }
+            ],
+            "sourceName": "SDL_SaveFile",
+            "hints": {
+              "mayFail": true
+            }
           }
-        },
+        ],
         "IOStream::SaveFile": {
           "name": "IOStream::SaveFile",
           "kind": "function",
@@ -43251,27 +43285,7 @@
             "super": "m_resource",
             "private": true,
             "mayFail": true,
-            "delegate": "SDL::SaveFile_IO"
-          }
-        },
-        "SaveFile": {
-          "doc": "Save all the data into a file path.\n\n@param file the path to write all available data into.\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.SaveFile\n@sa LoadFile",
-          "name": "SaveFile",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "file",
-              "type": "StringParam"
-            },
-            {
-              "name": "data",
-              "type": "SourceBytes"
-            }
-          ],
-          "sourceName": "SDL_SaveFile",
-          "hints": {
-            "mayFail": true
+            "delegate": "SDL::SaveFile"
           }
         },
         "ReadU8": {
@@ -49490,12 +49504,13 @@
               "type": "IOStreamParam"
             },
             {
-              "name": "closeio",
-              "type": "bool"
-            },
-            {
               "name": "type",
               "type": "StringParam"
+            },
+            {
+              "name": "closeio",
+              "type": "bool",
+              "default": "false"
             }
           ],
           "sourceName": "IMG_LoadTyped_IO"
@@ -49679,12 +49694,13 @@
               "type": "IOStreamParam"
             },
             {
-              "name": "closeio",
-              "type": "bool"
-            },
-            {
               "name": "type",
               "type": "StringParam"
+            },
+            {
+              "name": "closeio",
+              "type": "bool",
+              "default": "false"
             }
           ],
           "sourceName": "IMG_LoadTextureTyped_IO"
@@ -50253,12 +50269,13 @@
                 "type": "IOStreamParam"
               },
               {
-                "name": "closeio",
-                "type": "bool"
-              },
-              {
                 "name": "quality",
                 "type": "int"
+              },
+              {
+                "name": "closeio",
+                "type": "bool",
+                "default": "false"
               }
             ],
             "sourceName": "IMG_SaveAVIF_IO",
@@ -50304,7 +50321,8 @@
               },
               {
                 "name": "closeio",
-                "type": "bool"
+                "type": "bool",
+                "default": "false"
               }
             ],
             "sourceName": "IMG_SavePNG_IO",
@@ -50353,12 +50371,13 @@
                 "type": "IOStreamParam"
               },
               {
-                "name": "closeio",
-                "type": "bool"
-              },
-              {
                 "name": "quality",
                 "type": "int"
+              },
+              {
+                "name": "closeio",
+                "type": "bool",
+                "default": "false"
               }
             ],
             "sourceName": "IMG_SaveJPG_IO",
@@ -50792,12 +50811,13 @@
               "type": "IOStreamParam"
             },
             {
-              "name": "closeio",
-              "type": "bool"
-            },
-            {
               "name": "type",
               "type": "StringParam"
+            },
+            {
+              "name": "closeio",
+              "type": "bool",
+              "default": "false"
             }
           ],
           "sourceName": "IMG_LoadAnimationTyped_IO"
@@ -53664,54 +53684,57 @@
           "name": "SubStringIterator",
           "kind": "forward"
         },
-        "OpenFont": {
-          "doc": "Create a font from a file, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nWhen done with the returned Font, use Font.Close() to dispose of it.\n\n@param file path to font file.\n@param ptsize point size to use for the newly-opened font.\n@returns a valid Font on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa Font.Close",
-          "name": "OpenFont",
-          "kind": "function",
-          "type": "Font",
-          "parameters": [
-            {
-              "name": "file",
-              "type": "StringParam"
-            },
-            {
-              "name": "ptsize",
-              "type": "float"
+        "OpenFont": [
+          {
+            "doc": "Create a font from a file, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nWhen done with the returned Font, use Font.Close() to dispose of it.\n\n@param file path to font file.\n@param ptsize point size to use for the newly-opened font.\n@returns a valid Font on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa Font.Close",
+            "name": "OpenFont",
+            "kind": "function",
+            "type": "Font",
+            "parameters": [
+              {
+                "name": "file",
+                "type": "StringParam"
+              },
+              {
+                "name": "ptsize",
+                "type": "float"
+              }
+            ],
+            "sourceName": "TTF_OpenFont",
+            "hints": {
+              "mayFail": true,
+              "wrapSelf": true,
+              "delegate": "Font"
             }
-          ],
-          "sourceName": "TTF_OpenFont",
-          "hints": {
-            "mayFail": true,
-            "wrapSelf": true,
-            "delegate": "Font"
-          }
-        },
-        "OpenFontIO": {
-          "doc": "Create a font from an IOStream, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nIf `closeio` is true, `src` will be automatically closed once the font is\nclosed. Otherwise you should keep `src` open until the font is closed.\n\nWhen done with the returned Font, use Font.Close() to dispose of it.\n\n@param src an IOStream to provide a font file's data.\n@param closeio true to close `src` when the font is closed, false to leave\n               it open.\n@param ptsize point size to use for the newly-opened font.\n@returns a valid Font on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa Font.Close",
-          "name": "OpenFontIO",
-          "kind": "function",
-          "type": "Font",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "IOStreamParam"
-            },
-            {
-              "name": "closeio",
-              "type": "bool"
-            },
-            {
-              "name": "ptsize",
-              "type": "float"
+          },
+          {
+            "doc": "Create a font from an IOStream, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nIf `closeio` is true, `src` will be automatically closed once the font is\nclosed. Otherwise you should keep `src` open until the font is closed.\n\nWhen done with the returned Font, use Font.Close() to dispose of it.\n\n@param src an IOStream to provide a font file's data.\n@param closeio true to close `src` when the font is closed, false to leave\n               it open.\n@param ptsize point size to use for the newly-opened font.\n@returns a valid Font on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa Font.Close",
+            "name": "OpenFont",
+            "kind": "function",
+            "type": "Font",
+            "parameters": [
+              {
+                "name": "src",
+                "type": "IOStreamParam"
+              },
+              {
+                "name": "ptsize",
+                "type": "float"
+              },
+              {
+                "name": "closeio",
+                "type": "bool",
+                "default": "false"
+              }
+            ],
+            "sourceName": "TTF_OpenFontIO",
+            "hints": {
+              "mayFail": true,
+              "wrapSelf": true,
+              "delegate": "Font"
             }
-          ],
-          "sourceName": "TTF_OpenFontIO",
-          "hints": {
-            "mayFail": true,
-            "wrapSelf": true,
-            "delegate": "Font"
           }
-        },
+        ],
         "OpenFontWithProperties": {
           "doc": "Create a font with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an\n  IOStream isn't being used. This is required if\n  `prop::Font.CREATE_IOSTREAM_POINTER` and\n  `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.\n- `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the\n  font to be opened. This should not be closed until the font is closed.\n  This is required if `prop::Font.CREATE_FILENAME_STRING` and\n  `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.\n- `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream\n  for the beginning of the font, defaults to 0.\n- `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the\n  font should also close the associated IOStream.\n- `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon\n  fonts will have several sizes embedded in the file, so the point size\n  becomes the index of choosing which size. If the value is too high, the\n  last indexed size will be the default.\n- `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the\n  font contains multiple font faces.\n- `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use\n  for font rendering, defaults to\n  `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.\n- `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for\n  font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`\n  if set, or 72 otherwise.\n- `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional Font that, if set,\n  will be used as the font data source and the initial size and style of\n  the new font.\n\n@param props the properties to use.\n@returns a valid Font on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa Font.Close",
           "name": "OpenFontWithProperties",

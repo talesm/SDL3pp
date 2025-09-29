@@ -1899,6 +1899,11 @@ const transform = {
           type: "StringResult",
           parameters: [{}]
         },
+        "SDL_LoadFile_IO": {
+          name: "LoadFile",
+          type: "StringResult",
+          parameters: [{}, { name: "closeio", type: "bool", default: "true" }]
+        },
         "LoadFileAs": {
           kind: "function",
           template: [{ type: "class", name: "T" }],
@@ -1910,15 +1915,15 @@ const transform = {
         },
         "SDL_SaveFile": {
           type: "void",
+          parameters: [{}, { type: "SourceBytes", name: "data" }]
+        },
+        "SDL_SaveFile_IO": {
+          name: "SaveFile",
+          type: "void",
           parameters: [
-            {
-              type: "StringParam",
-              name: "file"
-            },
-            {
-              type: "SourceBytes",
-              name: "data"
-            }
+            {},
+            { type: "SourceBytes", name: "data" },
+            { name: "closeio", type: "bool", default: "true" }
           ]
         },
       }
@@ -7463,11 +7468,21 @@ const transform = {
         },
         "IMG_LoadAnimationTyped_IO": {
           type: "Animation",
-          name: "LoadAnimationTyped"
+          name: "LoadAnimationTyped",
+          parameters: [
+            { name: "src", type: "IOStreamParam" },
+            { name: "type", type: "StringParam" },
+            { name: "closeio", type: "bool", default: "false" },
+          ]
         },
         "IMG_LoadTyped_IO": {
           type: "Surface",
           name: "LoadSurfaceTyped",
+          parameters: [
+            { name: "src", type: "IOStreamParam" },
+            { name: "type", type: "StringParam" },
+            { name: "closeio", type: "bool", default: "false" },
+          ]
         },
         "IMG_Load": {
           type: "",
@@ -7504,6 +7519,12 @@ const transform = {
         "IMG_LoadTextureTyped_IO": {
           type: "Texture",
           name: "LoadTextureTyped",
+          parameters: [
+            {},
+            {},
+            { name: "type", type: "StringParam" },
+            { name: "closeio", type: "bool", default: "false" },
+          ]
         },
         "IMG_LoadAVIF_IO": {
           "type": "Surface",
@@ -7594,13 +7615,30 @@ const transform = {
           "name": "ReadXPMFromArrayToRGB888"
         },
         "IMG_SaveAVIF_IO": {
-          "name": "SaveAVIF",
+          name: "SaveAVIF",
+          parameters: [
+            {},
+            {},
+            { name: "quality", type: "int" },
+            { name: "closeio", type: "bool", default: "false" },
+          ]
         },
         "IMG_SavePNG_IO": {
-          "name": "SavePNG",
+          name: "SavePNG",
+          parameters: [
+            {},
+            {},
+            { name: "closeio", type: "bool", default: "false" },
+          ]
         },
         "IMG_SaveJPG_IO": {
-          "name": "SaveJPG",
+          name: "SaveJPG",
+          parameters: [
+            {},
+            {},
+            { name: "quality", type: "int" },
+            { name: "closeio", type: "bool", default: "false" },
+          ]
         },
         "IMG_LoadGIFAnimation_IO": {
           "name": "LoadGIFAnimation"
@@ -7957,6 +7995,14 @@ const transform = {
               "type": "Surface"
             },
           }
+        },
+        "TTF_OpenFontIO": {
+          name: "OpenFont",
+          parameters: [
+            {},
+            { type: "float", name: "ptsize" },
+            { type: "bool", name: "closeio", default: "false" },
+          ],
         },
         "TTF_TextEngine": {
           resource: { ref: false },

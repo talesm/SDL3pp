@@ -731,8 +731,8 @@ public:
    * Load all the data from an SDL data stream.
    *
    * The data is allocated with a zero byte at the end (null terminated) for
-   * convenience. This extra byte is not included in the value reported via
-   * `datasize`.
+   * convenience. This extra byte is not included in the value reported on
+   * the returned string.
    *
    * @returns the data in bytes
    * @throws Error on failure.
@@ -750,8 +750,8 @@ public:
    * Load all the data from an SDL data stream.
    *
    * The data is allocated with a zero byte at the end (null terminated) for
-   * convenience. This extra byte is not included in the value reported via
-   * `datasize`.
+   * convenience. This extra byte is not included in the value reported on
+   * the returned string.
    *
    * @returns the data in bytes
    * @throws Error on failure.
@@ -2262,14 +2262,12 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  * Load all the data from an SDL data stream.
  *
  * The data is allocated with a zero byte at the end (null terminated) for
- * convenience. This extra byte is not included in the value reported via
- * `datasize`.
+ * convenience. This extra byte is not included in the value reported on
+ * the returned string.
  *
  * The data should be freed with free().
  *
  * @param src the IOStream to read all available data from.
- * @param datasize a pointer filled in with the number of bytes read, may be
- *                 nullptr.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
  * even in the case of an error.
  * @returns the data or nullptr on failure; call GetError() for more
@@ -2282,24 +2280,19 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  * @sa LoadFile
  * @sa IOStream.SaveFile
  */
-inline StringResult LoadFile_IO(IOStreamParam src)
+inline StringResult LoadFile(IOStreamParam src, bool closeio = true)
 {
   size_t datasize = 0;
-  auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, false));
+  auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, closeio));
   return StringResult{CheckError(data), datasize};
-}
-
-inline StringResult IOStream::LoadFile()
-{
-  return SDL::LoadFile_IO(m_resource);
 }
 
 /**
  * Load all the data from a file path.
  *
  * The data is allocated with a zero byte at the end (null terminated) for
- * convenience. This extra byte is not included in the value reported via
- * `datasize`.
+ * convenience. This extra byte is not included in the value reported on
+ * the returned string.
  *
  * @param file the path to read all available data from.
  * @returns the data.
@@ -2319,12 +2312,17 @@ inline StringResult LoadFile(StringParam file)
   return StringResult{CheckError(data), datasize};
 }
 
+inline StringResult IOStream::LoadFile()
+{
+  return SDL::LoadFile(m_resource, false);
+}
+
 /**
  * Load all the data from a file path.
  *
  * The data is allocated with a zero byte at the end (null terminated) for
- * convenience. This extra byte is not included in the value reported via
- * `datasize`.
+ * convenience. This extra byte is not included in the value reported on
+ * the returned string.
  *
  * @param file the path to read all available data from.
  * @returns the data.
@@ -2349,9 +2347,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * Save all the data into an SDL data stream.
  *
  * @param src the IOStream to write all data to.
- * @param data the data to be written. If datasize is 0, may be nullptr or a
- *             invalid pointer.
- * @param datasize the number of bytes to be written.
+ * @param data the data to be written.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
  * even in the case of an error.
  * @throws Error on failure.
@@ -2363,22 +2359,16 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @sa SaveFile
  * @sa IOStream.LoadFile
  */
-inline void SaveFile_IO(IOStreamParam src, SourceBytes data)
+inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
 {
-  CheckError(SDL_SaveFile_IO(src, data.data, data.size_bytes, false));
-}
-
-inline void IOStream::SaveFile(SourceBytes data)
-{
-  SDL::SaveFile_IO(m_resource, data);
+  CheckError(SDL_SaveFile_IO(src, data.data, data.size_bytes, closeio));
 }
 
 /**
  * Save all the data into a file path.
  *
  * @param file the path to write all available data into.
- * @param data the data to be written. If datasize is 0, may be nullptr or a
- *             invalid pointer.
+ * @param data the data to be written.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2391,6 +2381,11 @@ inline void IOStream::SaveFile(SourceBytes data)
 inline void SaveFile(StringParam file, SourceBytes data)
 {
   CheckError(SDL_SaveFile(file, data.data, data.size_bytes));
+}
+
+inline void IOStream::SaveFile(SourceBytes data)
+{
+  SDL::SaveFile(m_resource, data, false);
 }
 
 /**

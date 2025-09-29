@@ -56,8 +56,14 @@
 <  * When done with the returned surface, the app should dispose of it with a
 <  * call to Surface.Destroy().
 <  *
+142,143d156
+<  * @param closeio true to close/free the IOStream before returning, false
+<  *                to leave it open.
+145a159,160
+>  * @param closeio true to close/free the IOStream before returning, false
+>  *                to leave it open.
 158c173
-<   return IMG_LoadTyped_IO(src, closeio, type);
+<   return IMG_LoadTyped_IO(src, type, closeio);
 ---
 >   return Surface(IMG_LoadTyped_IO(src, closeio, type));
 190,194d204
@@ -124,10 +130,16 @@
 <  * When done with the returned texture, the app should dispose of it with a
 <  * call to Texture.Destroy().
 <  *
+587,588d570
+<  * @param closeio true to close/free the IOStream before returning, false
+<  *                to leave it open.
+590a573,574
+>  * @param closeio true to close/free the IOStream before returning, false
+>  *                to leave it open.
 596d579
 <  * @sa Texture.Texture
 604c587
-<   return IMG_LoadTextureTyped_IO(renderer, src, closeio, type);
+<   return IMG_LoadTextureTyped_IO(renderer, src, type, closeio);
 ---
 >   return Texture(IMG_LoadTextureTyped_IO(renderer, src, closeio, type));
 1414c1397,1400
@@ -288,59 +300,73 @@
 2108,2109d2137
 <  *
 <  * @sa SaveAVIF
+2126,2127d2153
+<  * @param closeio true to close/free the IOStream before returning, false
+<  *                to leave it open.
+2129a2156,2157
+>  * @param closeio true to close/free the IOStream before returning, false
+>  *                to leave it open.
 2133,2134d2160
 <  *
 <  * @sa SaveAVIF
+2141c2167
+<   CheckError(IMG_SaveAVIF_IO(surface, dst, quality, closeio));
+---
+>   CheckError(IMG_SaveAVIF_IO(surface, dst, closeio, quality));
 2177,2178d2202
 <  *
 <  * @sa SavePNG
-2180c2204,2206
-< inline void SavePNG(SurfaceParam surface, IOStreamParam dst, bool closeio)
+2199,2200d2222
+<  *
+<  * @sa SaveJPG
+2217,2218d2238
+<  * @param closeio true to close/free the IOStream before returning, false
+<  *                to leave it open.
+2220a2241,2242
+>  * @param closeio true to close/free the IOStream before returning, false
+>  *                to leave it open.
+2224,2225d2245
+<  *
+<  * @sa SaveJPG
+2232c2252
+<   CheckError(IMG_SaveJPG_IO(surface, dst, quality, closeio));
 ---
-> inline void SavePNG(SurfaceParam surface,
->                     IOStreamParam dst,
->                     bool closeio = false)
-2197,2198d2222
-<  *
-<  * @sa SaveJPG
-2222,2223d2245
-<  *
-<  * @sa SaveJPG
-2310c2332
+>   CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
+2312c2332
 <   Animation(IOStreamParam src, bool closeio)
 ---
 >   Animation(IOStreamParam src, bool closeio = false)
-2357d2378
+2359d2378
 <    * @sa Animation.Animation
-2362c2383,2386
+2364c2383,2386
 <   int GetWidth() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get the width in pixels.
 >    */
 >   int GetWidth() const { return get()->w; }
-2364c2388,2391
+2366c2388,2391
 <   int GetHeight() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get the height in pixels.
 >    */
 >   int GetHeight() const { return get()->h; }
-2366c2393,2396
+2368c2393,2396
 <   Point GetSize() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get the size in pixels.
 >    */
 >   Point GetSize() const { return Point(GetWidth(), GetHeight()); }
-2368c2398,2401
+2370c2398,2401
 <   int GetCount() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Return the number of frames.
 >    */
 >   int GetCount() const { return m_resource->count; }
-2370c2403,2408
+2372c2403,2408
 <   Surface GetFrame(int index) const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -349,7 +375,7 @@
 >    * @param index the index to get frame, within [0, GetCount() - 1]
 >    */
 >   SurfaceRaw GetFrame(int index) const { return m_resource->frames[index]; }
-2372c2410,2415
+2374c2410,2415
 <   int GetDelay(int index) const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -358,38 +384,42 @@
 >    * @param index the index to get frame, within [0, GetCount() - 1]
 >    */
 >   int GetDelay(int index) const { return m_resource->delays[index]; }
-2437c2480
+2439c2480
 < inline Animation LoadAnimation(IOStreamParam src, bool closeio)
 ---
 > inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
-2467d2509
+2460a2502
+>  * @param type a filename extension that represent this data ("GIF", etc).
+2463d2504
+<  * @param type a filename extension that represent this data ("GIF", etc).
+2469d2509
 <  * @sa Animation.Animation
-2474c2516
-<   return IMG_LoadAnimationTyped_IO(src, closeio, type);
+2476c2516
+<   return IMG_LoadAnimationTyped_IO(src, type, closeio);
 ---
 >   return Animation(IMG_LoadAnimationTyped_IO(src, closeio, type));
-2487d2528
+2489d2528
 <  * @sa Animation.Animation
-2512d2552
+2514d2552
 <  * @sa Animation.Animation
-2516c2556
+2518c2556
 < inline AnimationRef LoadGIFAnimation(IOStreamParam src)
 ---
 > inline Animation LoadGIFAnimation(IOStreamParam src)
-2518c2558
+2520c2558
 <   return IMG_LoadGIFAnimation_IO(src);
 ---
 >   return Animation(IMG_LoadGIFAnimation_IO(src));
-2535d2574
+2537d2574
 <  * @sa Animation.Animation
-2539c2578
+2541c2578
 < inline AnimationRef LoadWEBPAnimation(IOStreamParam src)
 ---
 > inline Animation LoadWEBPAnimation(IOStreamParam src)
-2541c2580
+2543c2580
 <   return IMG_LoadWEBPAnimation_IO(src);
 ---
 >   return Animation{IMG_LoadWEBPAnimation_IO(src)};
-2546a2586,2587
+2548a2586,2587
 > 
 > #endif // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)

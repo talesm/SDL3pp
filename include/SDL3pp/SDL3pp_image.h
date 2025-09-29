@@ -154,10 +154,10 @@ inline int Version() { return IMG_Version(); }
  * software surface: call LoadTextureTyped() instead.
  *
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
+ * @param closeio true to close/free the IOStream before returning, false
+ *                to leave it open.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -167,8 +167,8 @@ inline int Version() { return IMG_Version(); }
  * @sa Surface.Destroy
  */
 inline Surface LoadSurfaceTyped(IOStreamParam src,
-                                bool closeio,
-                                StringParam type)
+                                StringParam type,
+                                bool closeio = false)
 {
   return Surface(IMG_LoadTyped_IO(src, closeio, type));
 }
@@ -568,10 +568,10 @@ inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
  *
  * @param renderer the Renderer to use to create the GPU texture.
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
+ * @param closeio true to close/free the IOStream before returning, false
+ *                to leave it open.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -581,8 +581,8 @@ inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
  */
 inline Texture LoadTextureTyped(RendererParam renderer,
                                 IOStreamParam src,
-                                bool closeio,
-                                StringParam type)
+                                StringParam type,
+                                bool closeio = false)
 {
   return Texture(IMG_LoadTextureTyped_IO(renderer, src, closeio, type));
 }
@@ -2151,18 +2151,18 @@ inline void SaveAVIF(SurfaceParam surface, StringParam file, int quality)
  *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
+ * @param closeio true to close/free the IOStream before returning, false
+ *                to leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
 inline void SaveAVIF(SurfaceParam surface,
                      IOStreamParam dst,
-                     bool closeio,
-                     int quality)
+                     int quality,
+                     bool closeio = false)
 {
   CheckError(IMG_SaveAVIF_IO(surface, dst, closeio, quality));
 }
@@ -2236,18 +2236,18 @@ inline void SaveJPG(SurfaceParam surface, StringParam file, int quality)
  *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
+ * @param closeio true to close/free the IOStream before returning, false
+ *                to leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
 inline void SaveJPG(SurfaceParam surface,
                     IOStreamParam dst,
-                    bool closeio,
-                    int quality)
+                    int quality,
+                    bool closeio = false)
 {
   CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
 }
@@ -2499,9 +2499,9 @@ inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
  * call to Animation.Free().
  *
  * @param src an IOStream that data will be read from.
+ * @param type a filename extension that represent this data ("GIF", etc).
  * @param closeio true to close/free the IOStream before returning, false
  *                to leave it open.
- * @param type a filename extension that represent this data ("GIF", etc).
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -2510,8 +2510,8 @@ inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
  * @sa Animation.Free
  */
 inline Animation LoadAnimationTyped(IOStreamParam src,
-                                    bool closeio,
-                                    StringParam type)
+                                    StringParam type,
+                                    bool closeio = false)
 {
   return Animation(IMG_LoadAnimationTyped_IO(src, closeio, type));
 }

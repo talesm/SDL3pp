@@ -2416,9 +2416,9 @@ inline Font OpenFont(StringParam file, float ptsize)
  *
  * @sa Font.Close
  */
-inline Font OpenFontIO(IOStreamParam src, bool closeio, float ptsize)
+inline Font OpenFont(IOStreamParam src, float ptsize, bool closeio = false)
 {
-  return Font(src, closeio, ptsize);
+  return Font(src, ptsize, closeio);
 }
 
 /**

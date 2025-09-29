@@ -1959,14 +1959,9 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  * @sa LoadFile
  * @sa IOStream.SaveFile
  */
-inline StringResult LoadFile_IO(IOStreamParam src)
+inline StringResult LoadFile(IOStreamParam src, bool closeio = true)
 {
-  return SDL_LoadFile_IO(src);
-}
-
-inline StringResult IOStream::LoadFile()
-{
-  return SDL::LoadFile_IO(m_resource);
+  return SDL_LoadFile_IO(src, closeio);
 }
 
 /**
@@ -1992,6 +1987,8 @@ inline StringResult IOStream::LoadFile()
  */
 inline StringResult LoadFile(StringParam file) { return SDL_LoadFile(file); }
 
+inline StringResult IOStream::LoadFile() { return SDL::LoadFile(m_resource); }
+
 template<class T>
 inline OwnArray<T> LoadFileAs(StringParam file)
 {
@@ -2016,14 +2013,9 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @sa SaveFile
  * @sa IOStream.LoadFile
  */
-inline void SaveFile_IO(IOStreamParam src, SourceBytes data)
+inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
 {
-  CheckError(SDL_SaveFile_IO(src, data));
-}
-
-inline void IOStream::SaveFile(SourceBytes data)
-{
-  SDL::SaveFile_IO(m_resource, data);
+  CheckError(SDL_SaveFile_IO(src, data, closeio));
 }
 
 /**
@@ -2045,6 +2037,11 @@ inline void IOStream::SaveFile(SourceBytes data)
 inline void SaveFile(StringParam file, SourceBytes data)
 {
   CheckError(SDL_SaveFile(file, data));
+}
+
+inline void IOStream::SaveFile(SourceBytes data)
+{
+  SDL::SaveFile(m_resource, data);
 }
 
 /**

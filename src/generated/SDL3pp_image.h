@@ -152,10 +152,10 @@ inline int IMG::Version() { return SDL::Version(); }
  * @sa Surface.Destroy
  */
 inline Surface LoadSurfaceTyped(IOStreamParam src,
-                                bool closeio,
-                                StringParam type)
+                                StringParam type,
+                                bool closeio = false)
 {
-  return IMG_LoadTyped_IO(src, closeio, type);
+  return IMG_LoadTyped_IO(src, type, closeio);
 }
 
 /**
@@ -598,10 +598,10 @@ inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
  */
 inline Texture LoadTextureTyped(RendererParam renderer,
                                 IOStreamParam src,
-                                bool closeio,
-                                StringParam type)
+                                StringParam type,
+                                bool closeio = false)
 {
-  return IMG_LoadTextureTyped_IO(renderer, src, closeio, type);
+  return IMG_LoadTextureTyped_IO(renderer, src, type, closeio);
 }
 
 /**
@@ -2135,10 +2135,10 @@ inline void SaveAVIF(SurfaceParam surface, StringParam file, int quality)
  */
 inline void SaveAVIF(SurfaceParam surface,
                      IOStreamParam dst,
-                     bool closeio,
-                     int quality)
+                     int quality,
+                     bool closeio = false)
 {
-  CheckError(IMG_SaveAVIF_IO(surface, dst, closeio, quality));
+  CheckError(IMG_SaveAVIF_IO(surface, dst, quality, closeio));
 }
 
 /**
@@ -2177,7 +2177,9 @@ inline void SavePNG(SurfaceParam surface, StringParam file)
  *
  * @sa SavePNG
  */
-inline void SavePNG(SurfaceParam surface, IOStreamParam dst, bool closeio)
+inline void SavePNG(SurfaceParam surface,
+                    IOStreamParam dst,
+                    bool closeio = false)
 {
   CheckError(IMG_SavePNG_IO(surface, dst, closeio));
 }
@@ -2224,10 +2226,10 @@ inline void SaveJPG(SurfaceParam surface, StringParam file, int quality)
  */
 inline void SaveJPG(SurfaceParam surface,
                     IOStreamParam dst,
-                    bool closeio,
-                    int quality)
+                    int quality,
+                    bool closeio = false)
 {
-  CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
+  CheckError(IMG_SaveJPG_IO(surface, dst, quality, closeio));
 }
 
 /**
@@ -2468,10 +2470,10 @@ inline Animation LoadAnimation(IOStreamParam src, bool closeio)
  * @sa Animation.Free
  */
 inline Animation LoadAnimationTyped(IOStreamParam src,
-                                    bool closeio,
-                                    StringParam type)
+                                    StringParam type,
+                                    bool closeio = false)
 {
-  return IMG_LoadAnimationTyped_IO(src, closeio, type);
+  return IMG_LoadAnimationTyped_IO(src, type, closeio);
 }
 
 /**
