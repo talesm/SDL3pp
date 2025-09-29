@@ -1,0 +1,65 @@
+5c5
+< #include "SDL3pp_iostream"
+---
+> #include "SDL3pp_iostream.h"
+12c12
+<  * @defgroup CategoryProcess Category Process
+---
+>  * @defgroup CategoryProcess Process Control
+392a393,416
+>   /**
+>    * Read all the output from a process.
+>    *
+>    * If a process was created with I/O enabled, you can use this function to
+>    * read the output. This function blocks until the process is complete,
+>    * capturing all output, and providing the process exit code.
+>    *
+>    * The data is allocated with a zero byte at the end (null terminated) for
+>    * convenience. This extra byte is not included in the value reported via
+>    * `datasize`.
+>    *
+>    * The data should be freed with free().
+>    *
+>    * @param exitcode a pointer filled in with the process exit code if the
+>    *                 process has exited, may be nullptr.
+>    * @returns the data or nullptr on failure; call GetError() for more
+>    *          information.
+>    *
+>    * @threadsafety This function is not thread safe.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa ProcessRef.Create
+>    */
+396c420,423
+<     static_assert(false, "Not implemented");
+---
+>     OwnArray<std::byte> data = Read(exitcode);
+>     if (data.empty()) return {};
+>     size_t sz = data.size() / sizeof(T);
+>     return OwnArray{static_cast<T*>(data.release()), sz};
+705c732
+<   return CheckError(SDL_GetProcessProperties(process));
+---
+>   return {CheckError(SDL_GetProcessProperties(process))};
+727,728d753
+<  * @param datasize a pointer filled in with the number of bytes read, may be
+<  *                 nullptr.
+744c769,771
+<   return SDL_ReadProcess(process, exitcode);
+---
+>   size_t size = 0;
+>   auto data = static_cast<char*>(SDL_ReadProcess(process, &size, exitcode));
+>   return StringResult(CheckError(data), size);
+747c774
+< inline StringResult Process::Read(int* exitcode = nullptr)
+---
+> inline StringResult Process::Read(int* exitcode)
+778c805
+<   return SDL_GetProcessInput(process);
+---
+>   return {SDL_GetProcessInput(process)};
+810c837
+<   return SDL_GetProcessOutput(process);
+---
+>   return {SDL_GetProcessOutput(process)};

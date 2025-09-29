@@ -56,7 +56,7 @@
 ---
 >                     int(buttons.size()),
 >                     buttons.data(),
-182,188d200
+161,167d179
 <    * Check if valid.
 <    *
 <    * @returns True if valid state, false otherwise.
@@ -64,11 +64,11 @@
 <   constexpr explicit operator bool() const { return *this != MessageBoxRaw{}; }
 < 
 <   /**
-286c298
+265c277
 <    * @returns current buttons value.
 ---
 >    * @returns current buttons.
-288c300,304
+267c279,283
 <   constexpr SDL_MessageBoxButtonData GetButtons() const { return buttons; }
 ---
 >   constexpr std::span<const MessageBoxButtonData> GetButtons() const
@@ -76,12 +76,12 @@
 >     if (numbuttons == 0) return {};
 >     return std::span(buttons, size_t(numbuttons));
 >   }
-296c312,313
+275c291,292
 <   constexpr MessageBox& SetButtons(SDL_MessageBoxButtonData newButtons)
 ---
 >   constexpr MessageBox& SetButtons(
 >     std::span<const MessageBoxButtonData> newButtons)
-298c315,321
+277c294,300
 <     buttons = newButtons;
 ---
 >     if (newButtons.empty()) {
@@ -91,20 +91,20 @@
 >       numbuttons = newButtons.size();
 >       buttons = newButtons.data();
 >     }
-307c330
+286c309
 <   constexpr SDL_MessageBoxColorScheme GetColorScheme() const
 ---
 >   constexpr const MessageBoxColorScheme* GetColorScheme() const
-318c341,342
+297c320,321
 <   constexpr MessageBox& SetColorScheme(SDL_MessageBoxColorScheme newColorScheme)
 ---
 >   constexpr MessageBox& SetColorScheme(
 >     OptionalRef<const MessageBoxColorScheme> newColorScheme)
-394c418
+373c397
 <   CheckError(SDL_ShowMessageBox(messageboxdata, buttonid));
 ---
 >   CheckError(SDL_ShowMessageBox(&messageboxdata, buttonid));
-399c423
+378c402
 <   SDL::ShowMessageBox(this, buttonid);
 ---
 >   SDL::ShowMessageBox(*this, buttonid);

@@ -3181,7 +3181,7 @@ const transform = {
       }
     },
     "SDL_process.h": {
-      localIncludes: ['SDL3pp_stdinc.h'],
+      localIncludes: ["SDL3pp_iostream", "SDL3pp_properties.h", "SDL3pp_stdinc.h"],
       transform: {
         "SDL_ProcessIO": {
           enum: "SDL_PROCESS_STDIO_",
