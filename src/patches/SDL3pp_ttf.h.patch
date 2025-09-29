@@ -14,12 +14,14 @@
 <  * @defgroup CategorySDLTTF Category SDLTTF
 ---
 >  * @defgroup CategorySDLTTF True type font support
-125,126c133,142
+125,126c133
 < /// Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
 < #define SDL_TTF_MAJOR_VERSION 3
 ---
 > #ifdef SDL3PP_DOC
-> 
+128c135,142
+< #define SDL_TTF_MINOR_VERSION 2
+---
 > /**
 >  * @name TTF version
 >  * @{
@@ -28,17 +30,15 @@
 > #define SDL_TTF_MAJOR_VERSION
 > 
 > #define SDL_TTF_MINOR_VERSION
-128c144
-< #define SDL_TTF_MINOR_VERSION 2
----
-> #define SDL_TTF_MICRO_VERSION
-130c146
+130c144
 < #define SDL_TTF_MICRO_VERSION 3
 ---
-> ///@}
-132c148,150
+> #define SDL_TTF_MICRO_VERSION
+132c146,150
 < /// This is the version number macro for the current SDL_ttf version.
 ---
+> ///@}
+> 
 > /**
 >  * This is the version number macro for the current SDL_ttf version.
 >  */
@@ -170,19 +170,19 @@
 1821,1822d1848
 <    * @param length the length of the text, in bytes, or 0 for null terminated
 <    *               text.
-1971c1997
+1977c2003
 <   ~TextEngine() { Destroy(m_resource); }
 ---
 >   virtual ~TextEngine() = default;
-1974c2000
+1980c2006
 <   TextEngine& operator=(TextEngine other)
 ---
 >   TextEngine& operator=(TextEngine&& other)
-1979a2006,2008
+1985a2012,2014
 >   /// Assignment operator.
 >   TextEngine& operator=(const TextEngine& other) = delete;
 > 
-2003,2090c2032
+2009,2096c2038
 <   void Destroy() { static_assert(false, "Not implemented"); }
 < 
 <   /**
@@ -273,86 +273,86 @@
 <   GPUTextEngineWinding GetGPUWinding() const;
 ---
 >   virtual void Destroy() = 0;
-2098,2099d2039
+2104,2105d2045
 <    * @param length the length of the text, in bytes, or 0 for null terminated
 <    *               text.
-2110c2050
+2116c2056
 <   TextRef CreateText(FontParam font, StringParam text, size_t length);
 ---
 >   Text CreateText(FontParam font, std::string_view text);
-2129c2069
+2135c2075
 <     : T(TTF_CreateSurfaceTextEngine())
 ---
 >     : TextEngine(TTF_CreateSurfaceTextEngine())
-2151c2091
+2157c2097
 <   void Destroy();
 ---
 >   void Destroy() final;
-2173c2113
+2179c2119
 <     : T(TTF_CreateRendererTextEngine(renderer))
 ---
 >     : TextEngine(TTF_CreateRendererTextEngine(renderer))
-2202c2142
+2208c2148
 <     : T(TTF_CreateRendererTextEngineWithProperties(props))
 ---
 >     : TextEngine(TTF_CreateRendererTextEngineWithProperties(props))
-2243,2244c2183,2184
+2249,2250c2189,2190
 <    * @sa TextEngine.DestroyGPU
 <    * @sa Text.GetGPUDrawData
 ---
 >    * @sa GPUTextEngine.Destroy
 >    * @sa GPUTextEngine.GetGPUDrawData
-2247c2187
+2253c2193
 <     : T(TTF_CreateGPUTextEngine(device))
 ---
 >     : TextEngine(TTF_CreateGPUTextEngine(device))
-2276c2216
+2282c2222
 <     : T(TTF_CreateGPUTextEngineWithProperties(props))
 ---
 >     : TextEngine(TTF_CreateGPUTextEngineWithProperties(props))
-2286,2287d2225
+2292,2293d2231
 <    * @param engine a TextEngine object created with
 <    *               GPUTextEngine.GPUTextEngine().
-2297,2298c2235
+2303,2304c2241
 <   static void SetGPUWinding(TextEngineParam engine,
 <                             GPUTextEngineWinding winding);
 ---
 >   void SetGPUWinding(GPUTextEngineWinding winding);
-2316c2253
+2322c2259
 <   GPUTextEngineWinding GetGPUWinding(TextEngineParam engine) const;
 ---
 >   GPUTextEngineWinding GetGPUWinding() const;
-2522c2459
+2528c2465
 <   return CheckError(TTF_CopyFont(existing_font));
 ---
 >   return Font(CheckError(TTF_CopyFont(existing_font)));
-2551c2488
+2557c2494
 <   return CheckError(TTF_GetFontProperties(font));
 ---
 >   return {CheckError(TTF_GetFontProperties(font))};
-3557c3494
+3563c3500
 <   return TTF_GetGlyphImage(font, ch, image_type);
 ---
 >   return Surface{TTF_GetGlyphImage(font, ch, image_type)};
-3587c3524
+3593c3530
 <   return TTF_GetGlyphImageForIndex(font, glyph_index, image_type);
 ---
 >   return Surface(TTF_GetGlyphImageForIndex(font, glyph_index, image_type));
-3662c3599,3600
+3668c3605,3606
 <   return CheckError(TTF_GetGlyphKerning(font, previous_ch, ch));
 ---
 >   if (int r; TTF_GetGlyphKerning(font, previous_ch, ch, &r)) return r;
 >   throw Error();
-3691c3629
+3697c3635
 <   CheckError(TTF_GetStringSize(font, text, w, h));
 ---
 >   CheckError(TTF_GetStringSize(font, text.data(), text.size(), w, h));
-3730c3668,3669
+3736c3674,3675
 <   CheckError(TTF_GetStringSizeWrapped(font, text, wrap_width, w, h));
 ---
 >   CheckError(
 >     TTF_GetStringSizeWrapped(font, text.data(), text.size(), wrap_width, w, h));
-3772,3773c3711,3716
+3778,3779c3717,3722
 <   CheckError(
 <     TTF_MeasureString(font, text, max_width, measured_width, measured_length));
 ---
@@ -362,74 +362,74 @@
 >                                max_width,
 >                                measured_width,
 >                                measured_length));
-3822c3765
+3828c3771
 <   return TTF_RenderText_Solid(font, text, fg);
 ---
 >   return Surface{TTF_RenderText_Solid(font, text.data(), text.size(), fg)};
-3869c3812,3813
+3875c3818,3819
 <   return TTF_RenderText_Solid_Wrapped(font, text, fg, wrapLength);
 ---
 >   return Surface(TTF_RenderText_Solid_Wrapped(
 >     font, text.data(), text.size(), fg, wrapLength));
-3908c3852
+3914c3858
 <   return TTF_RenderGlyph_Solid(font, ch, fg);
 ---
 >   return Surface(TTF_RenderGlyph_Solid(font, ch, fg));
-3957c3901
+3963c3907
 <   return TTF_RenderText_Shaded(font, text, fg, bg);
 ---
 >   return Surface(TTF_RenderText_Shaded(font, text.data(), text.size(), fg, bg));
-4009c3953,3954
+4015c3959,3960
 <   return TTF_RenderText_Shaded_Wrapped(font, text, fg, bg, wrap_width);
 ---
 >   return Surface(TTF_RenderText_Shaded_Wrapped(
 >     font, text.data(), text.size(), fg, bg, wrap_width));
-4054c3999
+4060c4005
 <   return TTF_RenderGlyph_Shaded(font, ch, fg, bg);
 ---
 >   return Surface(TTF_RenderGlyph_Shaded(font, ch, fg, bg));
-4102c4047
+4108c4053
 <   return TTF_RenderText_Blended(font, text, fg);
 ---
 >   return Surface(TTF_RenderText_Blended(font, text.data(), text.size(), fg));
-4149c4094,4095
+4155c4100,4101
 <   return TTF_RenderText_Blended_Wrapped(font, text, fg, wrap_width);
 ---
 >   return Surface(TTF_RenderText_Blended_Wrapped(
 >     font, text.data(), text.size(), fg, wrap_width));
-4188c4134
+4194c4140
 <   return TTF_RenderGlyph_Blended(font, ch, fg);
 ---
 >   return Surface(TTF_RenderGlyph_Blended(font, ch, fg));
-4236c4182
+4242c4188
 <   return TTF_RenderText_LCD(font, text, fg, bg);
 ---
 >   return Surface(TTF_RenderText_LCD(font, text.data(), text.size(), fg, bg));
-4288c4234,4235
+4294c4240,4241
 <   return TTF_RenderText_LCD_Wrapped(font, text, fg, bg, wrap_width);
 ---
 >   return Surface(TTF_RenderText_LCD_Wrapped(
 >     font, text.data(), text.size(), fg, bg, wrap_width));
-4333c4280
+4339c4286
 <   return TTF_RenderGlyph_LCD(font, ch, fg, bg);
 ---
 >   return Surface(TTF_RenderGlyph_LCD(font, ch, fg, bg));
-4392,4393d4338
+4398,4399d4344
 <    * @param length the length of the text, in bytes, or 0 for null terminated
 <    *               text.
-4405c4350
+4411c4356
 <     : m_resource(TTF_CreateText(engine, font, text))
 ---
 >     : m_resource(TTF_CreateText(engine, font, text.data(), text.size()))
-4436c4381
+4442c4387
 <   /// Converts to bool
 ---
 >   /// converts to bool
-4461d4405
+4467d4411
 <    * @param text the text to draw.
-4486d4429
+4492d4435
 <    * @param text the text to draw.
-4687,4691c4630
+4693,4697c4636
 <    * @param text the Text to modify.
 <    * @param r the red color value in the range of 0-255.
 <    * @param g the green color value in the range of 0-255.
@@ -437,7 +437,7 @@
 <    * @param a the alpha value in the range of 0-255.
 ---
 >    * @param c the color values in the range of 0-255.
-4709,4713c4648
+4715,4719c4654
 <    * @param text the Text to modify.
 <    * @param r the red color value, normally in the range of 0-1.
 <    * @param g the green color value, normally in the range of 0-1.
@@ -445,7 +445,7 @@
 <    * @param a the alpha value in the range of 0-1.
 ---
 >    * @param c the color value, normally in the range of 0-1.
-4752,4760c4687
+4758,4766c4693
 <    * @param text the Text to query.
 <    * @param r a pointer filled in with the red color value in the range of
 <    *          0-255, may be nullptr.
@@ -457,11 +457,11 @@
 <    *          may be nullptr.
 ---
 >    * @return The color in the range of 0-255 on success.
-4771c4698
+4777c4704
 <   Color GetColor();
 ---
 >   Color GetColor() const;
-4799,4807c4726
+4805,4813c4732
 <    * @param text the Text to query.
 <    * @param r a pointer filled in with the red color value, normally in the
 <    *          range of 0-1, may be nullptr.
@@ -473,17 +473,17 @@
 <    *          be nullptr.
 ---
 >    * @return The color in the range of 0-1 on success.
-4818c4737
+4824c4743
 <   FColor GetColorFloat();
 ---
 >   FColor GetColorFloat() const;
-4828,4830c4747
+4834,4836c4753
 <    * @param text the Text to modify.
 <    * @param x the x offset of the upper left corner of this text in pixels.
 <    * @param y the y offset of the upper left corner of this text in pixels.
 ---
 >    * @param p the x, y offset of the upper left corner of this text in pixels.
-4861,4865c4778,4780
+4867,4871c4784,4786
 <    * @param text the Text to query.
 <    * @param x a pointer filled in with the x offset of the upper left corner of
 <    *          this text in pixels, may be nullptr.
@@ -493,35 +493,35 @@
 >    * @returns a Point with the offset of the upper left corner of this text in
 >    *          pixels on success.
 >    * @throws Error on failure.
-4874c4789
+4880c4795
 <   Point GetPosition();
 ---
 >   Point GetPosition() const;
-4897,4899c4812,4813
+4903,4905c4818,4819
 <    * @param text the Text to query.
 <    * @param wrap_width a pointer filled in with the maximum width in pixels or 0
 <    *                   if the text is being wrapped on newline characters.
 ---
 >    * @returns an int with the maximum width in pixels or 0 if the text is being
 >    *          wrapped on newline characters on success.
-4954,4957c4868
+4960,4963c4874
 <    * @param text the Text to modify.
 <    * @param string the UTF-8 text to use, may be nullptr.
 <    * @param length the length of the text, in bytes, or 0 for null terminated
 <    *               text.
 ---
 >    * @param string the UTF-8 text to use.
-4976d4886
+4982d4892
 <    * @param text the Text to modify.
-4982,4983d4891
+4988,4989d4897
 <    * @param length the length of the text, in bytes, or 0 for null terminated
 <    *               text.
-5002d4909
+5008d4915
 <    * @param text the Text to modify.
-5004,5005d4910
+5010,5011d4916
 <    * @param length the length of the text, in bytes, or 0 for null terminated
 <    *               text.
-5068,5072c4973
+5074,5078c4979
 <    * @param text the Text to query.
 <    * @param w a pointer filled in with the width of the text, in pixels, may be
 <    *          nullptr.
@@ -529,28 +529,28 @@
 <    *          nullptr.
 ---
 >    * @returns Point containing the size on x and y axis on success.
-5078a4980,4981
+5084a4986,4987
 >    *
 >    * @sa GetSize(int*,int*) if might want only one of the coordinates
-5080c4983
+5086c4989
 <   Point GetSize();
 ---
 >   Point GetSize() const;
-5103c5006,5009
+5109c5012,5015
 <   SubStringIterator begin() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get iterator to first substring
 >    */
 >   SubStringIterator begin() const;
-5105c5011,5014
+5111c5017,5020
 <   SubStringIterator end() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
 >    * Get iterator to one past last substring
 >    */
 >   SubStringIterator end() const;
-5107,5110c5016,5031
+5113,5116c5022,5037
 <   SubStringIterator GetSubStringForLine(int line) const
 <   {
 <     static_assert(false, "Not implemented");
@@ -572,61 +572,54 @@
 >    * @since This function is available since SDL_ttf 3.0.0.
 >    */
 >   SubStringIterator GetSubStringForLine(int line) const;
-5135c5056
+5141c5062
 <     static_assert(false, "Not implemented");
 ---
 >     return GetSubStringsForRange(0);
-5155c5076
+5161c5082
 <   OwnArray<SubString*> GetSubStringsForRange(int offset, int length) const;
 ---
 >   OwnArray<SubString*> GetSubStringsForRange(int offset, int length = -1) const;
-5157,5160c5078
+5163,5166c5084
 <   SubStringIterator GetSubStringForPoint(Point p) const
 <   {
 <     static_assert(false, "Not implemented");
 <   }
 ---
 >   SubStringIterator GetSubStringForPoint(Point p) const;
-5167,5170c5085
+5173,5176c5091
 <    * @param text the Text to query.
 <    * @param x the x coordinate relative to the left side of the text, may be
 <    *          outside the bounds of the text area.
 <    * @param y the y coordinate relative to the top side of the text, may be
 ---
 >    * @param p the coordinates relative to the top-left side of the text, may be
-5199c5114
+5205c5120
 <   void GetPreviousSubString(const SubString* substring,
 ---
 >   void GetPreviousSubString(const SubString& substring,
-5217c5132
+5223c5138
 <   void GetNextSubString(const SubString* substring, SubString* next) const;
 ---
 >   void GetNextSubString(const SubString& substring, SubString* next) const;
-5239c5154
+5245c5160
 <   const char* GetText() const { static_assert(false, "Not implemented"); }
 ---
 >   const char* GetText() const { return m_resource->text; }
-5242c5157
+5248c5163
 <   int GetNumLines() const { static_assert(false, "Not implemented"); }
 ---
 >   int GetNumLines() const { return m_resource->num_lines; }
-5255c5170
+5261c5176
 <   TextRef(TextParam resource)
 ---
 >   TextRef(TextParam resource = nullptr)
-5259a5175,5180
->   /// Copy constructor.
->   TextRef(const TextRef& other)
->     : Text(other.get())
->   {
->   }
-> 
-5263a5185,5188
+5275a5191,5194
 > /**
 >  * Iterator for substrings
 >  *
 >  */
-5270c5195,5199
+5282c5201,5205
 <   constexpr SubStringIterator(TextRef text) {}
 ---
 >   constexpr SubStringIterator(TextRef text)
@@ -634,7 +627,7 @@
 >     , m_subString(0)
 >   {
 >   }
-5273,5277c5202,5204
+5285,5289c5208,5210
 <   constexpr SubStringIterator() {}
 < 
 <   constexpr operator bool() const { static_assert(false, "Not implemented"); }
@@ -644,9 +637,9 @@
 >   /// Default constructor.
 >   constexpr SubStringIterator()
 >     : SubStringIterator(TextRef{})
-5279d5205
+5291d5211
 <     static_assert(false, "Not implemented");
-5282c5208,5218
+5294c5214,5224
 <   constexpr const SubString* operator->() const
 ---
 >   /// True if pointing to valid SubString.
@@ -660,47 +653,47 @@
 > 
 >   /// Comparison.
 >   constexpr bool operator==(const SubStringIterator& other) const
-5284c5220
+5296c5226
 <     static_assert(false, "Not implemented");
 ---
 >     return m_subString.offset == other.m_subString.offset;
-5287,5288c5223
+5299,5300c5229
 <   constexpr bool operator==(const SubStringIterator& other) const = default;
 < 
 ---
 >   /// Increment operator.
-5291c5226,5227
+5303c5232,5233
 <     static_assert(false, "Not implemented");
 ---
 >     m_text.GetNextSubString(m_subString, &m_subString);
 >     return *this;
-5293a5230
+5305a5236
 >   /// Increment operator.
-5296c5233,5235
+5308c5239,5241
 <     static_assert(false, "Not implemented");
 ---
 >     auto curr = *this;
 >     m_text.GetNextSubString(m_subString, &m_subString);
 >     return curr;
-5298a5238
+5310a5244
 >   /// Decrement operator.
-5301c5241,5242
+5313c5247,5248
 <     static_assert(false, "Not implemented");
 ---
 >     m_text.GetPreviousSubString(m_subString, &m_subString);
 >     return *this;
-5303a5245
+5315a5251
 >   /// Decrement operator.
-5306c5248,5250
+5318c5254,5256
 <     static_assert(false, "Not implemented");
 ---
 >     auto curr = *this;
 >     m_text.GetPreviousSubString(m_subString, &m_subString);
 >     return curr;
-5307a5252,5253
+5319a5258,5259
 > 
 >   friend class Text;
-5335,5338c5281,5282
+5347,5350c5287,5288
 <  * @param x the x coordinate in pixels, positive from the left edge towards
 <  *          the right.
 <  * @param y the y coordinate in pixels, positive from the top edge towards the
@@ -708,21 +701,21 @@
 ---
 >  * @param p the (x, y) coordinate in pixels, positive from the left edge
 >  *          towards the right and from the top edge towards the bottom.
-5352c5296
+5364c5302
 <   CheckError(TTF_DrawSurfaceText(text, p, surface));
 ---
 >   CheckError(TTF_DrawSurfaceText(text, p.x, p.y, surface));
-5360,5364d5303
+5372,5376d5309
 < inline void SurfaceTextEngine::Destroy()
 < {
 <   DestroySurfaceTextEngine(release());
 < }
 < 
-5386c5325
+5398c5331
 < inline void TextEngine::DestroySurface()
 ---
 > inline void SurfaceTextEngine::Destroy()
-5460,5463c5399,5400
+5472,5475c5405,5406
 <  * @param x the x coordinate in pixels, positive from the left edge towards
 <  *          the right.
 <  * @param y the y coordinate in pixels, positive from the top edge towards the
@@ -730,32 +723,32 @@
 ---
 >  * @param p the (x, y) coordinate in pixels, positive from the left edge
 >  *          towards the right and from the top edge towards the bottom.
-5472c5409
+5484c5415
 <  * @sa Text.Text
 ---
 >  * @sa GPUTextEngine.GPUTextEngine
-5476c5413
+5488c5419
 <   CheckError(TTF_DrawRendererText(text, p));
 ---
 >   CheckError(TTF_DrawRendererText(text, p.x, p.y));
-5484,5488d5420
+5496,5500d5426
 < inline void RendererTextEngine::Destroy()
 < {
 <   DestroyRendererTextEngine(release());
 < }
 < 
-5510c5442
+5522c5448
 < inline void TextEngine::DestroyRenderer()
 ---
 > inline void RendererTextEngine::Destroy()
-5600c5532
+5612c5538
 <  * @sa Text.Text
 ---
 >  * @sa GPUTextEngine.GPUTextEngine
-5612,5613d5543
+5624,5625d5549
 < inline void GPUTextEngine::Destroy() { DestroyGPUTextEngine(release()); }
 < 
-5635,5640c5565
+5647,5652c5571
 < inline void TextEngine::DestroyGPU() { DestroyGPUTextEngine(release()); }
 < 
 < inline void TextEngine::SetGPUWinding(GPUTextEngineWinding winding)
@@ -764,68 +757,68 @@
 < }
 ---
 > inline void GPUTextEngine::Destroy() { DestroyGPUTextEngine(release()); }
-5663,5669c5588
+5675,5676c5594
 < inline void GPUTextEngine::SetGPUWinding(TextEngineParam engine,
 <                                          GPUTextEngineWinding winding)
-< {
+---
+> inline void GPUTextEngine::SetGPUWinding(GPUTextEngineWinding winding)
+5678,5683c5596
 <   SDL::TextEngine::SetGPUWinding(engine, winding);
 < }
 < 
 < inline GPUTextEngineWinding TextEngine::GetGPUWinding() const
----
-> inline void GPUTextEngine::SetGPUWinding(GPUTextEngineWinding winding)
-5671c5590
+< {
 <   return SDL::GetGPUTextEngineWinding(m_resource);
 ---
 >   SDL::SetGPUTextEngineWinding(get(), winding);
-5695,5696c5614
+5707,5708c5620
 < inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding(
 <   TextEngineParam engine) const
 ---
 > inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding() const
-5698c5616
+5710c5622
 <   return SDL::TextEngine::GetGPUWinding(engine);
 ---
 >   return SDL::GetGPUTextEngineWinding(get());
-5701,5703c5619
+5713,5715c5625
 < inline TextRef TextEngine::CreateText(FontParam font,
 <                                       StringParam text,
 <                                       size_t length)
 ---
 > inline Text TextEngine::CreateText(FontParam font, std::string_view text)
-5705c5621
+5717c5627
 <   return Text(m_resource, font, std::move(text), length);
 ---
 >   return Text(m_resource, font, text);
-5715,5716d5630
+5727,5728d5636
 <  * @param length the length of the text, in bytes, or 0 for null terminated
 <  *               text.
-5729,5730c5643
+5741,5742c5649
 <                        StringParam text,
 <                        size_t length)
 ---
 >                        std::string_view text)
-5732c5645
+5744c5651
 <   return Text(TTF_CreateText(engine, font, text, length));
 ---
 >   return Text(engine, font, text);
-5749c5662
+5761c5668
 <   return CheckError(TTF_GetTextProperties(text));
 ---
 >   return {CheckError(TTF_GetTextProperties(text))};
-5854c5767
+5866c5773
 <   return CheckError(TTF_GetTextFont(text));
 ---
 >   return {CheckError(TTF_GetTextFont(text))};
-5980c5893
+5992c5899
 <   CheckError(TTF_SetTextColor(text, c));
 ---
 >   CheckError(TTF_SetTextColor(text, c.r, c.g, c.b, c.a));
-6007c5920
+6019c5926
 <   CheckError(TTF_SetTextColorFloat(text, c));
 ---
 >   CheckError(TTF_SetTextColorFloat(text, c.r, c.g, c.b, c.a));
-6046,6053c5959
+6058,6065c5965
 <  * @param r a pointer filled in with the red color value in the range of
 <  *          0-255, may be nullptr.
 <  * @param g a pointer filled in with the green color value in the range of
@@ -836,17 +829,17 @@
 <  *          may be nullptr.
 ---
 >  * @return The color in the range of 0-255 on success.
-6066c5972,5974
+6078c5978,5980
 <   static_assert(false, "Not implemented");
 ---
 >   Color c;
 >   GetTextColor(text, &c.r, &c.g, &c.b, &c.a);
 >   return c;
-6074c5982
+6086c5988
 < inline Color Text::GetColor() { return SDL::GetTextColor(m_resource); }
 ---
 > inline Color Text::GetColor() const { return SDL::GetTextColor(m_resource); }
-6111,6118c6019
+6123,6130c6025
 <  * @param r a pointer filled in with the red color value, normally in the
 <  *          range of 0-1, may be nullptr.
 <  * @param g a pointer filled in with the green color value, normally in the
@@ -857,26 +850,26 @@
 <  *          be nullptr.
 ---
 >  * @return The color in the range of 0-1 on success.
-6131c6032,6034
+6143c6038,6040
 <   static_assert(false, "Not implemented");
 ---
 >   FColor c;
 >   GetTextColorFloat(text, &c.r, &c.g, &c.b, &c.a);
 >   return c;
-6139c6042
+6151c6048
 < inline FColor Text::GetColorFloat()
 ---
 > inline FColor Text::GetColorFloat() const
-6153,6154c6056
+6165,6166c6062
 <  * @param x the x offset of the upper left corner of this text in pixels.
 <  * @param y the y offset of the upper left corner of this text in pixels.
 ---
 >  * @param p the x, y offset of the upper left corner of this text in pixels.
-6165c6067
+6177c6073
 <   return TTF_SetTextPosition(text, p);
 ---
 >   return TTF_SetTextPosition(text, p.x, p.y);
-6198,6201c6100,6103
+6210,6213c6106,6109
 <  * @param x a pointer filled in with the x offset of the upper left corner of
 <  *          this text in pixels, may be nullptr.
 <  * @param y a pointer filled in with the y offset of the upper left corner of
@@ -886,38 +879,38 @@
 >  *          pixels on success.
 >  * @throws Error on failure.
 >  *
-6212c6114,6116
+6224c6120,6122
 <   static_assert(false, "Not implemented");
 ---
 >   Point p;
 >   CheckError(GetTextPosition(text, &p.x, &p.y));
 >   return p;
-6220c6124,6127
+6232c6130,6133
 < inline Point Text::GetPosition() { return SDL::GetTextPosition(m_resource); }
 ---
 > inline Point Text::GetPosition() const
 > {
 >   return SDL::GetTextPosition(m_resource);
 > }
-6266c6173,6175
+6278c6179,6181
 <   return CheckError(TTF_GetTextWrapWidth(text));
 ---
 >   int w;
 >   CheckError(TTF_GetTextWrapWidth(text, &w));
 >   return w;
-6352c6261
+6364c6267
 <   CheckError(TTF_SetTextString(text, string));
 ---
 >   CheckError(TTF_SetTextString(text, string.data(), string.size()));
-6388c6297
+6400c6303
 <   CheckError(TTF_InsertTextString(text, offset, string));
 ---
 >   CheckError(TTF_InsertTextString(text, offset, string.data(), string.size()));
-6418c6327
+6430c6333
 <   CheckError(TTF_AppendTextString(text, string));
 ---
 >   CheckError(TTF_AppendTextString(text, string.data(), string.size()));
-6489,6492c6398,6399
+6501,6504c6404,6405
 <  * @param w a pointer filled in with the width of the text, in pixels, may be
 <  *          nullptr.
 <  * @param h a pointer filled in with the height of the text, in pixels, may be
@@ -925,63 +918,63 @@
 ---
 >  * @returns Point containing the size on x and y axis on success or
 >  *          std::nullopt on failure; call GetError() for more information.
-6502c6409,6411
+6514c6415,6417
 <   static_assert(false, "Not implemented");
 ---
 >   Point p;
 >   GetTextSize(text, &p.x, &p.y);
 >   return p;
-6510c6419
+6522c6425
 < inline Point Text::GetSize() { return SDL::GetTextSize(m_resource); }
 ---
 > inline Point Text::GetSize() const { return SDL::GetTextSize(m_resource); }
-6581,6582d6489
+6593,6594d6495
 <  * @param count a pointer filled in with the number of substrings returned,
 <  *              may be nullptr.
-6596c6503,6505
+6608c6509,6511
 <   return TTF_GetTextSubStringsForRange(text, offset, length);
 ---
 >   int count = 0;
 >   auto data = TTF_GetTextSubStringsForRange(text, offset, length, &count);
 >   return OwnArray<SubString*>{data, size_t(count)};
-6611,6613c6520
+6623,6625c6526
 <  * @param x the x coordinate relative to the left side of the text, may be
 <  *          outside the bounds of the text area.
 <  * @param y the y coordinate relative to the top side of the text, may be
 ---
 >  * @param p the coordinates relative to the top-left side of the text, may be
-6628c6535
+6640c6541
 <   CheckError(TTF_GetTextSubStringForPoint(text, p, substring));
 ---
 >   CheckError(TTF_GetTextSubStringForPoint(text, p.x, p.y, substring));
-6654c6561
+6666c6567
 <                                      const SubString* substring,
 ---
 >                                      const SubString& substring,
-6657c6564
+6669c6570
 <   CheckError(TTF_GetPreviousTextSubString(text, substring, previous));
 ---
 >   CheckError(TTF_GetPreviousTextSubString(text, &substring, previous));
-6660c6567
+6672c6573
 < inline void Text::GetPreviousSubString(const SubString* substring,
 ---
 > inline void Text::GetPreviousSubString(const SubString& substring,
-6683c6590
+6695c6596
 <                                  const SubString* substring,
 ---
 >                                  const SubString& substring,
-6686c6593
+6698c6599
 <   CheckError(TTF_GetNextTextSubString(text, substring, next));
 ---
 >   CheckError(TTF_GetNextTextSubString(text, &substring, next));
-6689c6596
+6701c6602
 < inline void Text::GetNextSubString(const SubString* substring,
 ---
 > inline void Text::GetNextSubString(const SubString& substring,
-6724c6631
+6736c6637
 <  * @sa Text.Text
 ---
 >  * @sa RendererTextEngine.RendererTextEngine
-6766a6674,6675
+6778a6680,6681
 > 
 > #endif // defined(SDL3PP_ENABLE_TTF) || defined(SDL3PP_DOC)

@@ -3246,23 +3246,42 @@
           "type": "Properties",
           "doc": "Semi-safe reference for Properties.",
           "entries": {
-            "PropertiesRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "PropertiesParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "Properties(resource.value)"
-                ]
+            "PropertiesRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "PropertiesParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Properties(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from PropertiesParam.\n\n@param resource a PropertiesID or Properties.\n\nThis does not takes ownership!",
+                "name": "PropertiesRef"
               },
-              "doc": "Constructs from PropertiesParam.\n\n@param resource a PropertiesID or Properties.\n\nThis does not takes ownership!",
-              "name": "PropertiesRef"
-            },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const PropertiesRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Properties(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "PropertiesRef"
+              }
+            ],
             "~PropertiesRef": {
               "kind": "function",
               "doc": "Destructor",
@@ -8467,23 +8486,42 @@
           "type": "Window",
           "doc": "Semi-safe reference for Window.",
           "entries": {
-            "WindowRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "WindowParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "Window(resource.value)"
-                ]
+            "WindowRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "WindowParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Window(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from WindowParam.\n\n@param resource a WindowRaw or Window.\n\nThis does not takes ownership!",
+                "name": "WindowRef"
               },
-              "doc": "Constructs from WindowParam.\n\n@param resource a WindowRaw or Window.\n\nThis does not takes ownership!",
-              "name": "WindowRef"
-            },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const WindowRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Window(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "WindowRef"
+              }
+            ],
             "~WindowRef": {
               "kind": "function",
               "doc": "Destructor",
@@ -15083,23 +15121,42 @@
           "type": "Renderer",
           "doc": "Semi-safe reference for Renderer.",
           "entries": {
-            "RendererRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "RendererParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "Renderer(resource.value)"
-                ]
+            "RendererRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "RendererParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Renderer(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from RendererParam.\n\n@param resource a RendererRaw or Renderer.\n\nThis does not takes ownership!",
+                "name": "RendererRef"
               },
-              "doc": "Constructs from RendererParam.\n\n@param resource a RendererRaw or Renderer.\n\nThis does not takes ownership!",
-              "name": "RendererRef"
-            },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const RendererRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Renderer(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "RendererRef"
+              }
+            ],
             "~RendererRef": {
               "kind": "function",
               "doc": "Destructor",
@@ -33736,23 +33793,42 @@
           "type": "AudioDevice",
           "doc": "Semi-safe reference for AudioDevice.",
           "entries": {
-            "AudioDeviceRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "AudioDeviceParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "AudioDevice(resource.value)"
-                ]
+            "AudioDeviceRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "AudioDeviceParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "AudioDevice(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from AudioDeviceParam.\n\n@param resource a AudioDeviceID or AudioDevice.\n\nThis does not takes ownership!",
+                "name": "AudioDeviceRef"
               },
-              "doc": "Constructs from AudioDeviceParam.\n\n@param resource a AudioDeviceID or AudioDevice.\n\nThis does not takes ownership!",
-              "name": "AudioDeviceRef"
-            },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const AudioDeviceRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "AudioDevice(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "AudioDeviceRef"
+              }
+            ],
             "~AudioDeviceRef": {
               "kind": "function",
               "doc": "Destructor",
@@ -34585,23 +34661,42 @@
           "type": "AudioStream",
           "doc": "Semi-safe reference for AudioStream.",
           "entries": {
-            "AudioStreamRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "AudioStreamParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "AudioStream(resource.value)"
-                ]
+            "AudioStreamRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "AudioStreamParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "AudioStream(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from AudioStreamParam.\n\n@param resource a AudioStreamRaw or AudioStream.\n\nThis does not takes ownership!",
+                "name": "AudioStreamRef"
               },
-              "doc": "Constructs from AudioStreamParam.\n\n@param resource a AudioStreamRaw or AudioStream.\n\nThis does not takes ownership!",
-              "name": "AudioStreamRef"
-            },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const AudioStreamRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "AudioStream(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "AudioStreamRef"
+              }
+            ],
             "~AudioStreamRef": {
               "kind": "function",
               "doc": "Destructor",
@@ -40274,23 +40369,42 @@
           "type": "Storage",
           "doc": "Semi-safe reference for Storage.",
           "entries": {
-            "StorageRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "StorageParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "Storage(resource.value)"
-                ]
+            "StorageRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "StorageParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Storage(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from StorageParam.\n\n@param resource a StorageRaw or Storage.\n\nThis does not takes ownership!",
+                "name": "StorageRef"
               },
-              "doc": "Constructs from StorageParam.\n\n@param resource a StorageRaw or Storage.\n\nThis does not takes ownership!",
-              "name": "StorageRef"
-            },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const StorageRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Storage(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "StorageRef"
+              }
+            ],
             "~StorageRef": {
               "kind": "function",
               "doc": "Destructor",
@@ -42372,23 +42486,42 @@
           "type": "IOStream",
           "doc": "Semi-safe reference for IOStream.",
           "entries": {
-            "IOStreamRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "IOStreamParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "IOStream(resource.value)"
-                ]
+            "IOStreamRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "IOStreamParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "IOStream(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from IOStreamParam.\n\n@param resource a IOStreamRaw or IOStream.\n\nThis does not takes ownership!",
+                "name": "IOStreamRef"
               },
-              "doc": "Constructs from IOStreamParam.\n\n@param resource a IOStreamRaw or IOStream.\n\nThis does not takes ownership!",
-              "name": "IOStreamRef"
-            },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const IOStreamRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "IOStream(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "IOStreamRef"
+              }
+            ],
             "~IOStreamRef": {
               "kind": "function",
               "doc": "Destructor",
@@ -45519,23 +45652,42 @@
           "type": "Environment",
           "doc": "Semi-safe reference for Environment.",
           "entries": {
-            "EnvironmentRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "EnvironmentParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "Environment(resource.value)"
-                ]
+            "EnvironmentRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "EnvironmentParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Environment(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from EnvironmentParam.\n\n@param resource a EnvironmentRaw or Environment.\n\nThis does not takes ownership!",
+                "name": "EnvironmentRef"
               },
-              "doc": "Constructs from EnvironmentParam.\n\n@param resource a EnvironmentRaw or Environment.\n\nThis does not takes ownership!",
-              "name": "EnvironmentRef"
-            },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const EnvironmentRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Environment(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "EnvironmentRef"
+              }
+            ],
             "~EnvironmentRef": {
               "kind": "function",
               "doc": "Destructor",
@@ -48806,23 +48958,42 @@
           "type": "IConv",
           "doc": "Semi-safe reference for IConv.",
           "entries": {
-            "IConvRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "IConvParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "IConv(resource.value)"
-                ]
+            "IConvRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "IConvParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "IConv(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from IConvParam.\n\n@param resource a IConvRaw or IConv.\n\nThis does not takes ownership!",
+                "name": "IConvRef"
               },
-              "doc": "Constructs from IConvParam.\n\n@param resource a IConvRaw or IConv.\n\nThis does not takes ownership!",
-              "name": "IConvRef"
-            },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const IConvRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "IConv(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "IConvRef"
+              }
+            ],
             "~IConvRef": {
               "kind": "function",
               "doc": "Destructor",
@@ -50524,23 +50695,42 @@
           "type": "Animation",
           "doc": "Semi-safe reference for Animation.",
           "entries": {
-            "AnimationRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "AnimationParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "Animation(resource.value)"
-                ]
+            "AnimationRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "AnimationParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Animation(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from AnimationParam.\n\n@param resource a AnimationRaw or Animation.\n\nThis does not takes ownership!",
+                "name": "AnimationRef"
               },
-              "doc": "Constructs from AnimationParam.\n\n@param resource a AnimationRaw or Animation.\n\nThis does not takes ownership!",
-              "name": "AnimationRef"
-            },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const AnimationRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Animation(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "AnimationRef"
+              }
+            ],
             "~AnimationRef": {
               "kind": "function",
               "doc": "Destructor",
@@ -52831,23 +53021,42 @@
           "type": "Font",
           "doc": "Semi-safe reference for Font.",
           "entries": {
-            "FontRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "FontParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "Font(resource.value)"
-                ]
+            "FontRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "FontParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Font(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from FontParam.\n\n@param resource a FontRaw or Font.\n\nThis does not takes ownership!",
+                "name": "FontRef"
               },
-              "doc": "Constructs from FontParam.\n\n@param resource a FontRaw or Font.\n\nThis does not takes ownership!",
-              "name": "FontRef"
-            },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const FontRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Font(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "FontRef"
+              }
+            ],
             "~FontRef": {
               "kind": "function",
               "doc": "Destructor",
@@ -57078,23 +57287,42 @@
           "type": "Text",
           "doc": "Semi-safe reference for Text.",
           "entries": {
-            "TextRef": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "TextParam",
-                  "name": "resource"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "Text(resource.value)"
-                ]
+            "TextRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "TextParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Text(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from TextParam.\n\n@param resource a TextRaw or Text.\n\nThis does not takes ownership!",
+                "name": "TextRef"
               },
-              "doc": "Constructs from TextParam.\n\n@param resource a TextRaw or Text.\n\nThis does not takes ownership!",
-              "name": "TextRef"
-            },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const TextRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Text(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "TextRef"
+              }
+            ],
             "~TextRef": {
               "kind": "function",
               "doc": "Destructor",

@@ -1189,7 +1189,7 @@ function expandTypes(sourceEntries, file, context) {
       type: targetName,
       doc: `Semi-safe reference for ${targetName}.`,
       entries: {
-        [refName]: {
+        [refName]: [{
           kind: 'function',
           type: "",
           parameters: [{
@@ -1198,7 +1198,16 @@ function expandTypes(sourceEntries, file, context) {
           }],
           hints: { init: [`${targetName}(resource.value)`] },
           doc: `Constructs from ${paramType}.\n\n@param resource a ${rawName} or ${targetName}.\n\nThis does not takes ownership!`
-        },
+        }, {
+          kind: 'function',
+          type: "",
+          parameters: [{
+            type: `const ${refName} &`,
+            name: "other"
+          }],
+          hints: { init: [`${targetName}(other.get())`] },
+          doc: "Copy constructor.",
+        }],
         [`~${refName}`]: {
           kind: 'function',
           doc: "Destructor",

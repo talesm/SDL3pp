@@ -770,6 +770,12 @@ struct StorageRef : Storage
   {
   }
 
+  /// Copy constructor.
+  StorageRef(const StorageRef& other)
+    : Storage(other.get())
+  {
+  }
+
   /// Destructor
   ~StorageRef() { release(); }
 };

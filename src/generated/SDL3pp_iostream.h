@@ -1325,6 +1325,12 @@ struct IOStreamRef : IOStream
   {
   }
 
+  /// Copy constructor.
+  IOStreamRef(const IOStreamRef& other)
+    : IOStream(other.get())
+  {
+  }
+
   /// Destructor
   ~IOStreamRef() { release(); }
 };

@@ -2736,6 +2736,12 @@ struct WindowRef : Window
   {
   }
 
+  /// Copy constructor.
+  WindowRef(const WindowRef& other)
+    : Window(other.get())
+  {
+  }
+
   /// Destructor
   ~WindowRef() { release(); }
 };

@@ -11579,6 +11579,12 @@ struct PropertiesRef : Properties
   {
   }
 
+  /// Copy constructor.
+  PropertiesRef(const PropertiesRef& other)
+    : Properties(other.get())
+  {
+  }
+
   /// Destructor
   ~PropertiesRef() { release(); }
 };
@@ -13428,6 +13434,12 @@ struct EnvironmentRef : Environment
    */
   EnvironmentRef(EnvironmentParam resource)
     : Environment(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  EnvironmentRef(const EnvironmentRef& other)
+    : Environment(other.get())
   {
   }
 
@@ -18185,6 +18197,12 @@ struct IConvRef : IConv
   {
   }
 
+  /// Copy constructor.
+  IConvRef(const IConvRef& other)
+    : IConv(other.get())
+  {
+  }
+
   /// Destructor
   ~IConvRef() { release(); }
 };
@@ -21994,6 +22012,12 @@ struct IOStreamRef : IOStream
    */
   IOStreamRef(IOStreamParam resource)
     : IOStream(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  IOStreamRef(const IOStreamRef& other)
+    : IOStream(other.get())
   {
   }
 
@@ -28424,6 +28448,12 @@ struct AudioDeviceRef : AudioDevice
   {
   }
 
+  /// Copy constructor.
+  AudioDeviceRef(const AudioDeviceRef& other)
+    : AudioDevice(other.get())
+  {
+  }
+
   /// Destructor
   ~AudioDeviceRef() { release(); }
 };
@@ -29619,6 +29649,12 @@ struct AudioStreamRef : AudioStream
    */
   AudioStreamRef(AudioStreamParam resource)
     : AudioStream(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  AudioStreamRef(const AudioStreamRef& other)
+    : AudioStream(other.get())
   {
   }
 
@@ -32528,6 +32564,12 @@ struct StorageRef : Storage
    */
   StorageRef(StorageParam resource)
     : Storage(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  StorageRef(const StorageRef& other)
+    : Storage(other.get())
   {
   }
 
@@ -39839,6 +39881,12 @@ struct WindowRef : Window
    */
   WindowRef(WindowParam resource)
     : Window(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  WindowRef(const WindowRef& other)
+    : Window(other.get())
   {
   }
 
@@ -47864,6 +47912,12 @@ struct RendererRef : Renderer
   {
   }
 
+  /// Copy constructor.
+  RendererRef(const RendererRef& other)
+    : Renderer(other.get())
+  {
+  }
+
   /// Destructor
   ~RendererRef() { release(); }
 };
@@ -54751,6 +54805,12 @@ struct AnimationRef : Animation
   {
   }
 
+  /// Copy constructor.
+  AnimationRef(const AnimationRef& other)
+    : Animation(other.get())
+  {
+  }
+
   /// Destructor
   ~AnimationRef() { release(); }
 };
@@ -56805,6 +56865,12 @@ struct FontRef : Font
    */
   FontRef(FontParam resource)
     : Font(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  FontRef(const FontRef& other)
+    : Font(other.get())
   {
   }
 

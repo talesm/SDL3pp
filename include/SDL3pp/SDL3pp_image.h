@@ -2430,6 +2430,12 @@ struct AnimationRef : Animation
   {
   }
 
+  /// Copy constructor.
+  AnimationRef(const AnimationRef& other)
+    : Animation(other.get())
+  {
+  }
+
   /// Destructor
   ~AnimationRef() { release(); }
 };

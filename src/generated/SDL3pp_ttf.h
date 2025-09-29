@@ -1887,6 +1887,12 @@ struct FontRef : Font
   {
   }
 
+  /// Copy constructor.
+  FontRef(const FontRef& other)
+    : Font(other.get())
+  {
+  }
+
   /// Destructor
   ~FontRef() { release(); }
 };
@@ -5254,6 +5260,12 @@ struct TextRef : Text
    */
   TextRef(TextParam resource)
     : Text(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  TextRef(const TextRef& other)
+    : Text(other.get())
   {
   }
 

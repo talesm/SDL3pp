@@ -1429,6 +1429,12 @@ struct AudioDeviceRef : AudioDevice
   {
   }
 
+  /// Copy constructor.
+  AudioDeviceRef(const AudioDeviceRef& other)
+    : AudioDevice(other.get())
+  {
+  }
+
   /// Destructor
   ~AudioDeviceRef() { release(); }
 };
@@ -2410,6 +2416,12 @@ struct AudioStreamRef : AudioStream
    */
   AudioStreamRef(AudioStreamParam resource)
     : AudioStream(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  AudioStreamRef(const AudioStreamRef& other)
+    : AudioStream(other.get())
   {
   }
 

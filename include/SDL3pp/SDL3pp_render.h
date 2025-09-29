@@ -2102,6 +2102,12 @@ struct RendererRef : Renderer
   {
   }
 
+  /// Copy constructor.
+  RendererRef(const RendererRef& other)
+    : Renderer(other.get())
+  {
+  }
+
   /// Destructor
   ~RendererRef() { release(); }
 };

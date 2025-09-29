@@ -564,6 +564,12 @@ struct PropertiesRef : Properties
   {
   }
 
+  /// Copy constructor.
+  PropertiesRef(const PropertiesRef& other)
+    : Properties(other.get())
+  {
+  }
+
   /// Destructor
   ~PropertiesRef() { release(); }
 };

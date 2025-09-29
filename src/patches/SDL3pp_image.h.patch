@@ -358,38 +358,38 @@
 >    * @param index the index to get frame, within [0, GetCount() - 1]
 >    */
 >   int GetDelay(int index) const { return m_resource->delays[index]; }
-2431c2474
+2437c2480
 < inline Animation LoadAnimation(IOStreamParam src, bool closeio)
 ---
 > inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
-2461d2503
+2467d2509
 <  * @sa Animation.Animation
-2468c2510
+2474c2516
 <   return IMG_LoadAnimationTyped_IO(src, closeio, type);
 ---
 >   return Animation(IMG_LoadAnimationTyped_IO(src, closeio, type));
-2481d2522
+2487d2528
 <  * @sa Animation.Animation
-2506d2546
+2512d2552
 <  * @sa Animation.Animation
-2510c2550
+2516c2556
 < inline AnimationRef LoadGIFAnimation(IOStreamParam src)
 ---
 > inline Animation LoadGIFAnimation(IOStreamParam src)
-2512c2552
+2518c2558
 <   return IMG_LoadGIFAnimation_IO(src);
 ---
 >   return Animation(IMG_LoadGIFAnimation_IO(src));
-2529d2568
+2535d2574
 <  * @sa Animation.Animation
-2533c2572
+2539c2578
 < inline AnimationRef LoadWEBPAnimation(IOStreamParam src)
 ---
 > inline Animation LoadWEBPAnimation(IOStreamParam src)
-2535c2574
+2541c2580
 <   return IMG_LoadWEBPAnimation_IO(src);
 ---
 >   return Animation{IMG_LoadWEBPAnimation_IO(src)};
-2540a2580,2581
+2546a2586,2587
 > 
 > #endif // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)

@@ -1142,6 +1142,12 @@ struct EnvironmentRef : Environment
   {
   }
 
+  /// Copy constructor.
+  EnvironmentRef(const EnvironmentRef& other)
+    : Environment(other.get())
+  {
+  }
+
   /// Destructor
   ~EnvironmentRef() { release(); }
 };
@@ -5893,6 +5899,12 @@ struct IConvRef : IConv
    */
   IConvRef(IConvParam resource)
     : IConv(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  IConvRef(const IConvRef& other)
+    : IConv(other.get())
   {
   }
 

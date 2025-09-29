@@ -1913,6 +1913,12 @@ struct FontRef : Font
   {
   }
 
+  /// Copy constructor.
+  FontRef(const FontRef& other)
+    : Font(other.get())
+  {
+  }
+
   /// Destructor
   ~FontRef() { release(); }
 };
