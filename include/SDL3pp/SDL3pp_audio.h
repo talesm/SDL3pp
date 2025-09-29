@@ -2486,7 +2486,7 @@ public:
    * protect shared data during those callbacks, locking the stream guarantees
    * that the callback is not running while the lock is held.
    *
-   * As this is just a wrapper over SDL_LockMutex for an internal lock; it has
+   * As this is just a wrapper over Mutex.Lock for an internal lock; it has
    * all the same attributes (recursive locks are allowed, etc).
    *
    * @throws Error on failure.
@@ -4219,7 +4219,7 @@ inline bool AudioStream::DevicePaused() const
  * protect shared data during those callbacks, locking the stream guarantees
  * that the callback is not running while the lock is held.
  *
- * As this is just a wrapper over SDL_LockMutex for an internal lock; it has
+ * As this is just a wrapper over Mutex.Lock for an internal lock; it has
  * all the same attributes (recursive locks are allowed, etc).
  *
  * @param stream the audio stream to lock.

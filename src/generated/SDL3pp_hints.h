@@ -3143,7 +3143,7 @@ namespace SDL {
 #define SDL_HINT_STORAGE_USER_DRIVER "SDL_STORAGE_USER_DRIVER"
 
 /**
- * Specifies whether SDL_THREAD_PRIORITY_TIME_CRITICAL should be treated as
+ * Specifies whether THREAD_PRIORITY_TIME_CRITICAL should be treated as
  * realtime.
  *
  * On some platforms, like Linux, a realtime priority thread may be subject to
@@ -3162,10 +3162,10 @@ namespace SDL {
  * The variable can be set to the following values:
  *
  * - "0": default platform specific behaviour
- * - "1": Force SDL_THREAD_PRIORITY_TIME_CRITICAL to a realtime scheduling
+ * - "1": Force THREAD_PRIORITY_TIME_CRITICAL to a realtime scheduling
  *   policy
  *
- * This hint should be set before calling SDL_SetCurrentThreadPriority()
+ * This hint should be set before calling Thread.SetCurrentPriority()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3174,9 +3174,9 @@ namespace SDL {
 
 /**
  * A string specifying additional information to use with
- * SDL_SetCurrentThreadPriority.
+ * Thread.SetCurrentPriority.
  *
- * By default SDL_SetCurrentThreadPriority will make appropriate system
+ * By default Thread.SetCurrentPriority will make appropriate system
  * changes in order to apply a thread priority. For example on systems using
  * pthreads the scheduler policy is changed automatically to a policy that
  * works well with a given priority. Code which has specific requirements can
@@ -3187,9 +3187,9 @@ namespace SDL {
  *
  * On Linux, the kernel may send SIGKILL to realtime tasks which exceed the
  * distro configured execution budget for rtkit. This budget can be queried
- * through RLIMIT_RTTIME after calling SDL_SetCurrentThreadPriority().
+ * through RLIMIT_RTTIME after calling Thread.SetCurrentPriority().
  *
- * This hint should be set before calling SDL_SetCurrentThreadPriority()
+ * This hint should be set before calling Thread.SetCurrentPriority()
  *
  * @since This hint is available since SDL 3.2.0.
  */

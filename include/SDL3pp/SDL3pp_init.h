@@ -206,8 +206,8 @@ using AppQuit_func = SDL_AppQuit_func;
  * two may be used interchangeably. Though for readability of your code
  * InitSubSystem() might be preferred.
  *
- * The file I/O (for example: IOStream.FromFile) and threading
- * (SDL_CreateThread) subsystems are initialized by default. Message boxes
+ * The file I/O (for example: IOStream.FromFile) and threading (Thread.Thread)
+ * subsystems are initialized by default. Message boxes
  * (SDL_ShowSimpleMessageBox) also attempt to work without initializing the
  * video subsystem, in hopes of being useful in showing an error dialog when
  * Init fails. You must specifically initialize other subsystems if you

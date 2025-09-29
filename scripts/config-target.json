@@ -1,6 +1,7 @@
 {
   "sources": [
     "SDL_assert.h",
+    "SDL_atomic.h",
     "SDL_audio.h",
     "SDL_bits.h",
     "SDL_blendmode.h",
@@ -16,6 +17,7 @@
     "SDL_log.h",
     "SDL_main.h",
     "SDL_mouse.h",
+    "SDL_mutex.h",
     "SDL_pixels.h",
     "SDL_properties.h",
     "SDL_rect.h",
@@ -24,6 +26,7 @@
     "SDL_stdinc.h",
     "SDL_storage.h",
     "SDL_surface.h",
+    "SDL_thread.h",
     "SDL_time.h",
     "SDL_timer.h",
     "SDL_version.h",

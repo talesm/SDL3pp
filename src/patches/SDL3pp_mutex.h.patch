@@ -1,0 +1,91 @@
+11c11
+<  * @defgroup CategoryMutex Category Mutex
+---
+>  * @defgroup CategoryMutex Thread Synchronization Primitives
+191,193d190
+<   /// Default ctor
+<   constexpr Mutex() = default;
+< 
+424,427c421
+< inline void LockMutex(SDL_Mutex* mutex) SDL_ACQUIRE(mutex)
+< {
+<   SDL_LockMutex(SDL_ACQUIRE(mutex);
+< }
+---
+> inline void LockMutex(MutexParam mutex) { SDL_LockMutex(mutex); }
+450c444
+< inline void TryLockMutex(SDL_Mutex* mutex) SDL_TRY_ACQUIRE()
+---
+> inline void TryLockMutex(MutexParam mutex)
+452c446
+<   CheckError(SDL_TryLockMutex(SDL_TRY_ACQUIRE());
+---
+>   CheckError(SDL_TryLockMutex(mutex));
+474,477c468
+< inline void UnlockMutex(SDL_Mutex* mutex) SDL_RELEASE(mutex)
+< {
+<   SDL_UnlockMutex(SDL_RELEASE(mutex);
+< }
+---
+> inline void UnlockMutex(MutexParam mutex) { SDL_UnlockMutex(mutex); }
+529,531d519
+<   /// Default ctor
+<   constexpr RWLock() = default;
+< 
+897c885
+< inline void LockRWLockForReading(SDL_RWLock* rwlock) SDL_ACQUIRE_SHARED(rwlock)
+---
+> inline void LockRWLockForReading(RWLockParam rwlock)
+899c887
+<   SDL_LockRWLockForReading(SDL_ACQUIRE_SHARED(rwlock);
+---
+>   SDL_LockRWLockForReading(rwlock);
+933c921
+< inline void LockRWLockForWriting(SDL_RWLock* rwlock) SDL_ACQUIRE(rwlock)
+---
+> inline void LockRWLockForWriting(RWLockParam rwlock)
+935c923
+<   SDL_LockRWLockForWriting(SDL_ACQUIRE(rwlock);
+---
+>   SDL_LockRWLockForWriting(rwlock);
+963c951
+< inline void TryLockRWLockForReading(SDL_RWLock* rwlock) SDL_TRY_ACQUIRE_SHARED()
+---
+> inline void TryLockRWLockForReading(RWLockParam rwlock)
+965c953
+<   CheckError(SDL_TryLockRWLockForReading(SDL_TRY_ACQUIRE_SHARED());
+---
+>   CheckError(SDL_TryLockRWLockForReading(rwlock));
+1001c989
+< inline void TryLockRWLockForWriting(SDL_RWLock* rwlock) SDL_TRY_ACQUIRE()
+---
+> inline void TryLockRWLockForWriting(RWLockParam rwlock)
+1003c991
+<   CheckError(SDL_TryLockRWLockForWriting(SDL_TRY_ACQUIRE());
+---
+>   CheckError(SDL_TryLockRWLockForWriting(rwlock));
+1034,1037c1022
+< inline void UnlockRWLock(SDL_RWLock* rwlock) SDL_RELEASE_GENERIC(rwlock)
+< {
+<   SDL_UnlockRWLock(SDL_RELEASE_GENERIC(rwlock);
+< }
+---
+> inline void UnlockRWLock(RWLockParam rwlock) { SDL_UnlockRWLock(rwlock); }
+1403c1388
+<   return SDL_WaitSemaphoreTimeout(sem, timeout);
+---
+>   return SDL_WaitSemaphoreTimeout(sem, timeout.count());
+1464,1466d1448
+<   /// Default ctor
+<   constexpr Condition() = default;
+< 
+1802c1784
+<   return SDL_WaitConditionTimeout(cond, mutex, timeout);
+---
+>   return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
+1835,1836c1817,1818
+<  * ```c
+<  *    static SDL_AtomicInitState init;
+---
+>  * ```cpp
+>  *    static SDL::InitState init;

@@ -1,0 +1,12 @@
+12c12
+<  * @defgroup CategoryThread Category Thread
+---
+>  * @defgroup CategoryThread Thread Management
+811c811
+< inline void* GetTLS(TLSID* id) { return SDL_GetTLS(id); }
+---
+> inline void* GetTLS(TLSID* id) { return SDL_GetTLS(*id); }
+842c842
+<   CheckError(SDL_SetTLS(id, value, destructor));
+---
+>   CheckError(SDL_SetTLS(*id, value, destructor));

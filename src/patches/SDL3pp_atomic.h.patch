@@ -1,0 +1,67 @@
+10c10
+<  * @defgroup CategoryAtomic Category Atomic
+---
+>  * @defgroup CategoryAtomic Atomic Operations
+78a79,80
+> #ifdef SDL3PP_DOC
+> 
+176a179,180
+> #endif // SDL3PP_DOC
+> 
+330c334
+<   return SDL::CompareAndSwapAtomicInt(&m_value, oldval, newval);
+---
+>   return SDL_CompareAndSwapAtomicInt(&m_value, oldval, newval);
+333c337
+< inline int AtomicInt::Set(int v) { return SDL::SetAtomicInt(&m_value, v); }
+---
+> inline int AtomicInt::Set(int v) { return SDL_SetAtomicInt(&m_value, v); }
+335c339
+< inline int AtomicInt::Get() { return SDL::GetAtomicInt(&m_value); }
+---
+> inline int AtomicInt::Get() { return SDL_GetAtomicInt(&m_value); }
+337c341
+< inline int AtomicInt::Add(int v) { return SDL::AddAtomicInt(&m_value, v); }
+---
+> inline int AtomicInt::Add(int v) { return SDL_AddAtomicInt(&m_value, v); }
+339c343
+< inline bool AtomicInt::AtomicIncRef() { return SDL::AtomicIncRef(&m_value); }
+---
+> inline bool AtomicInt::AtomicIncRef() { return SDL_AtomicIncRef(&m_value); }
+341c345
+< inline bool AtomicInt::AtomicDecRef() { return SDL::AtomicDecRef(&m_value); }
+---
+> inline bool AtomicInt::AtomicDecRef() { return SDL_AtomicDecRef(&m_value); }
+461d464
+<    * @param a a pointer to a pointer.
+482d484
+<    * @param a a pointer to a pointer.
+501d502
+<    * @param a a pointer to a pointer.
+516c517
+<   return SDL::CompareAndSwapAtomicU32(&m_value, oldval, newval);
+---
+>   return SDL_CompareAndSwapAtomicU32(&m_value, oldval, newval);
+519,522c520
+< inline Uint32 AtomicU32::Set(Uint32 v)
+< {
+<   return SDL::SetAtomicU32(&m_value, v);
+< }
+---
+> inline Uint32 AtomicU32::Set(Uint32 v) { return SDL_SetAtomicU32(&m_value, v); }
+524c522
+< inline Uint32 AtomicU32::Get() { return SDL::GetAtomicU32(&m_value); }
+---
+> inline Uint32 AtomicU32::Get() { return SDL_GetAtomicU32(&m_value); }
+529c527
+<   return SDL::CompareAndSwapAtomicPointer(&m_value, oldval, newval);
+---
+>   return SDL_CompareAndSwapAtomicPointer(&m_value, oldval, newval);
+535c533
+<   return SDL::SetAtomicPointer(&m_value, v);
+---
+>   return SDL_SetAtomicPointer(&m_value, v);
+541c539
+<   return SDL::GetAtomicPointer(&m_value);
+---
+>   return SDL_GetAtomicPointer(&m_value);

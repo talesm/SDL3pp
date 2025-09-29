@@ -124,8 +124,10 @@ const transform = {
         "SDL_MemoryBarrierReleaseFunction": { name: "MemoryBarrierRelease", after: "__begin" },
         "SDL_MemoryBarrierAcquireFunction": { name: "MemoryBarrierAcquire", after: "__begin" },
         "SDL_AtomicInt": {
+          kind: "struct",
           hints: {
             self: "&m_value",
+            private: true,
           },
           entries: {
             "m_value": {
@@ -142,7 +144,8 @@ const transform = {
                   name: "value"
                 }],
                 hints: {
-                  init: ["m_value(value)"]
+                  init: ["m_value(value)"],
+                  changeAccess: "public",
                 }
               },
               {
@@ -196,8 +199,10 @@ const transform = {
           }
         },
         "SDL_AtomicU32": {
+          kind: "struct",
           hints: {
             self: "&m_value",
+            private: true,
           },
           entries: {
             "m_value": {
@@ -214,7 +219,8 @@ const transform = {
                   name: "value"
                 }],
                 hints: {
-                  init: ["m_value(value)"]
+                  init: ["m_value(value)"],
+                  changeAccess: "public",
                 }
               },
               {
@@ -264,6 +270,7 @@ const transform = {
           }],
           hints: {
             self: "&m_value",
+            private: true,
           },
           entries: {
             "m_value": {
@@ -280,7 +287,8 @@ const transform = {
                   name: "value"
                 }],
                 hints: {
-                  init: ["m_value(value)"]
+                  init: ["m_value(value)"],
+                  changeAccess: "public",
                 }
               },
               {
@@ -2672,7 +2680,7 @@ const transform = {
       }
     },
     "SDL_mutex.h": {
-      localIncludes: ['SDL3pp_stdinc.h'],
+      localIncludes: ["SDL3pp_stdinc.h", "SDL3pp_thread.h"],
       ignoreEntries: [
         "SDL_THREAD_ANNOTATION_ATTRIBUTE__",
         "SDL_CAPABILITY",
@@ -6635,7 +6643,11 @@ const transform = {
       }
     },
     "SDL_thread.h": {
-      localIncludes: ['SDL3pp_stdinc.h'],
+      localIncludes: [
+        'SDL3pp_atomic.h',
+        'SDL3pp_properties.h',
+        'SDL3pp_stdinc.h',
+      ],
       namespacesMap: {
         "SDL_PROP_THREAD_": "prop::thread"
       },
@@ -6659,9 +6671,8 @@ const transform = {
         "SDL_Thread": {
           resource: { free: "SDL_DetachThread" },
           entries: {
-            "Create": {
+            "Thread": {
               kind: "function",
-              name: "ctor",
               type: "",
               parameters: [
                 { type: "ThreadCB", name: "fn" },
@@ -6681,7 +6692,7 @@ const transform = {
         },
         "SDL_TLSID": {
           type: "AtomicInt",
-          after: "__begin",
+          before: "SDL_GetTLS",
         }
       }
     },
