@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 {
   SDL::Init(SDL::INIT_VIDEO);
   constexpr SDL::Point WINDOW_SZ = {400, 400};
-  SDL::Window window = SDL::Window("Test", WINDOW_SZ);
+  SDL::Window window{"Test", WINDOW_SZ};
   SDL::Surface screen = window.GetSurface();
   auto smileyImg = SDL::Surface::LoadBMP(
     std::format("{}../assets/smiley.bmp", SDL::GetBasePath()));

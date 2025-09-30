@@ -391,6 +391,10 @@
 <    * @param renderer the renderer which should copy parts of a texture.
 1310d1459
 <    * @param renderer the renderer which should copy parts of a texture.
+1336c1485
+<                             FlipMode flip);
+---
+>                             FlipMode flip = FlipMode::SDL_FLIP_NONE);
 1342d1490
 <    * @param renderer the renderer which should copy parts of a texture.
 1376d1523
@@ -406,6 +410,10 @@
 <    * @param num_indices number of indices.
 ---
 >    *                sequential order.
+1461c1604
+<                       std::span<const int> indices);
+---
+>                       std::span<const int> indices = {});
 1515d1657
 <    * @param renderer the rendering context.
 1633,1635c1775
@@ -851,6 +859,14 @@
 <   CheckError(SDL_RenderFillRects(renderer, rects));
 ---
 >   CheckError(SDL_RenderFillRects(renderer, rects.data(), rects.size()));
+5592c5844
+<                                  FlipMode flip)
+---
+>                                  FlipMode flip = FlipMode::SDL_FLIP_NONE)
+5792c6044
+<                            std::span<const int> indices)
+---
+>                            std::span<const int> indices = {})
 5794c6046,6051
 <   CheckError(SDL_RenderGeometry(renderer, texture, vertices, indices));
 ---

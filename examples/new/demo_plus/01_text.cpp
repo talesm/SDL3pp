@@ -218,8 +218,8 @@ struct Main
     *m = new Main();
     return SDL::APP_CONTINUE;
   }
-  SDL::Window window = SDL::Window("examples/demo/textedit", windowSz);
-  SDL::Renderer renderer = SDL::Renderer(window);
+  SDL::Window window{"examples/demo/textedit", windowSz};
+  SDL::Renderer renderer{window};
   Text text;
   SDL::Point cursor{0, 0};
   bool replaceMode = false;

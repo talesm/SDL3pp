@@ -161,8 +161,8 @@ struct Main
     return SDL::APP_CONTINUE;
   }
 
-  SDL::Window window = SDL::Window("examples/demo/snake", windowSz);
-  SDL::Renderer renderer = SDL::Renderer(window);
+  SDL::Window window{"examples/demo/snake", windowSz};
+  SDL::Renderer renderer{window};
   SnakeContext snake_ctx;
   SDL::Nanoseconds lastStep = SDL::GetTicks();
 

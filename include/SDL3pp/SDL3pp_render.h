@@ -1482,7 +1482,7 @@ public:
                             OptionalRef<const FRectRaw> dstrect,
                             double angle,
                             OptionalRef<const FPointRaw> center,
-                            FlipMode flip);
+                            FlipMode flip = FlipMode::SDL_FLIP_NONE);
 
   /**
    * Copy a portion of the source texture to the current rendering target, with
@@ -1601,7 +1601,7 @@ public:
    */
   void RenderGeometry(TextureParam texture,
                       std::span<const Vertex> vertices,
-                      std::span<const int> indices);
+                      std::span<const int> indices = {});
 
   /**
    * Render a list of triangles, optionally using a texture and indices into the
@@ -5841,7 +5841,7 @@ inline void RenderTextureRotated(RendererParam renderer,
                                  OptionalRef<const FRectRaw> dstrect,
                                  double angle,
                                  OptionalRef<const FPointRaw> center,
-                                 FlipMode flip)
+                                 FlipMode flip = FlipMode::SDL_FLIP_NONE)
 {
   CheckError(SDL_RenderTextureRotated(
     renderer, texture, srcrect, dstrect, angle, center, flip));
@@ -6041,7 +6041,7 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
 inline void RenderGeometry(RendererParam renderer,
                            TextureParam texture,
                            std::span<const Vertex> vertices,
-                           std::span<const int> indices)
+                           std::span<const int> indices = {})
 {
   CheckError(SDL_RenderGeometry(renderer,
                                 texture,

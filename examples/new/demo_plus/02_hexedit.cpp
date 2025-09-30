@@ -51,8 +51,8 @@ struct Main
   }
 
   SDL::Point windowSz = {1024, 800};
-  SDL::Window window = SDL::Window("examples/demo/template", windowSz);
-  SDL::Renderer renderer = SDL::Renderer(window);
+  SDL::Window window{"examples/demo/template", windowSz};
+  SDL::Renderer renderer{window};
   SDL::FPoint charSz{16, 16};
   SDL::FPoint spacingSz{charSz / 2};
   SDL::Texture charTable{makeCharTable()};
@@ -592,7 +592,7 @@ struct Main
     buffer.RenderDebugText({0, 0}, asciiChars);
     buffer.Present();
 
-    SDL::Texture texture = SDL::Texture(renderer, surface);
+    SDL::Texture texture{renderer, surface};
     texture.SetScaleMode(SDL::SCALEMODE_NEAREST);
     return texture;
   }

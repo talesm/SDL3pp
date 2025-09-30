@@ -16,8 +16,8 @@ struct Main
     return SDL::APP_CONTINUE;
   }
 
-  SDL::Window window = SDL::Window("examples/demo/template", windowSz);
-  SDL::Renderer renderer = SDL::Renderer(window);
+  SDL::Window window{"examples/demo/template", windowSz};
+  SDL::Renderer renderer{window};
 
   SDL::AppResult Iterate()
   {
