@@ -11,7 +11,7 @@ string and callbacks.
 
 ## Quick start / TLDR
 
-- Download [the single header](https://raw.githubusercontent.com/talesm/SDL3pp/refs/heads/main/dist/SDL3pp/SDL3pp.h) and add to your project;
+- Download [the single header](https://raw.githubusercontent.com/talesm/SDL3pp/refs/heads/main/amalgamation/SDL3pp/SDL3pp.h) and add to your project;
 - See [API reference](#ApiByCategory);
 - See [Examples directory](https://github.com/talesm/SDL3pp/tree/main/examples).
 
@@ -19,7 +19,7 @@ string and callbacks.
 
 - Be header only, we are mostly wrapping thing here;
   - We even have a 
-    [the single header to just put in your project](https://raw.githubusercontent.com/talesm/SDL3pp/refs/heads/main/dist/SDL3pp/SDL3pp.h)
+    [the single header to just put in your project](https://raw.githubusercontent.com/talesm/SDL3pp/refs/heads/main/amalgamation/SDL3pp/SDL3pp.h)
 - Mostly wrap the naturally OO-looking API into actual OO C++ constructs;
   - Also add little quick improvements like using vocabulary types to better 
     fit C++ idioms;
