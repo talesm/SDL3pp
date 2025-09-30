@@ -24,8 +24,19 @@ Things for a version 0.2
   - [x] wrap functions having the struct as first parameter automatically;
   - [ ] detect refcount as shared;
   - [x] Wrap structs with methods looking like *Destroy* function as resource;
-  - [ ] wrap others as wrappers;
+  - [x] wrap others as wrappers;
 - [ ] Basic wrapping all missing API.
+  - [x] SDL_pen.h
+  - [x] SDL_sensor.h
+  - [x] SDL_touch.h
+  - [ ] SDL_vulkan.h
+  - [ ] SDL_metal.h
+  - [ ] SDL_camera.h
+  - [ ] SDL_asyncio.h
+  - [ ] SDL_joystick.h
+  - [ ] SDL_gamepad.h
+  - [ ] SDL_haptic.h 	
+  - [ ] SDL_gpu.h
 
 Backlog
 =======
