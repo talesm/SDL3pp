@@ -22,59 +22,66 @@
 > #undef KMOD_SCROLL
 > #undef KMOD_SHIFT
 > 
-169c188
+156a176,181
+>   /// Compares with the underlying type
+>   constexpr bool operator==(KeycodeRaw keycode) const
+>   {
+>     return operator==(Keycode(keycode));
+>   }
+> 
+169c194
 <   constexpr explicit operator bool() const { return m_keycode != 0; }
 ---
 >   constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
-170a190
+170a196
 >   /// Has Extended flag.
-172a193
+172a199
 >   /// Has Scancode flag.
-217c238
+217c244
 < constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\r'
 ---
 > constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\\r'
-219c240
+219c246
 < constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\x1B'
 ---
 > constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\\x1B'
-221c242
+221c248
 < constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\b'
 ---
 > constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\\b'
-223c244
+223c250
 < constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\t'
 ---
 > constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\\t'
-293c314
+293c320
 < constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\'
 ---
 > constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\b'
-363c384
+363c390
 < constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\x7F'
 ---
 > constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\\x7F'
-365c386
+365c392
 < constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\xB1'
 ---
 > constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\\xB1'
-874c895
+874c901
 < constexpr bool SDLK_EXTENDED_MASK() { return ::SDLK_EXTENDED_MASK(); }
 ---
 > constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK; ///< EXTENDED_MASK
-878c899
+878c905
 <   return SDL::SDLK_EXTENDED_MASK(m_keycode);
 ---
 >   return m_keycode & SDLK_EXTENDED_MASK;
-881c902
+881c908
 < constexpr bool SDLK_SCANCODE_MASK() { return ::SDLK_SCANCODE_MASK(); }
 ---
 > constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK; ///< SCANCODE_MASK
-885c906
+885c912
 <   return SDL::SDLK_SCANCODE_MASK(m_keycode);
 ---
 >   return m_keycode & SDLK_SCANCODE_MASK;
-887a909,914
+887a915,920
 > /**
 >  * Transform scancode to keycode
 >  *

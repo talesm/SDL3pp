@@ -170,7 +170,13 @@ public:
   /// Compares with the underlying type
   constexpr auto operator<=>(KeycodeRaw keycode) const
   {
-    return operator<=>(Keycode(keycode));
+    return m_keycode <=> keycode;
+  }
+
+  /// Compares with the underlying type
+  constexpr bool operator==(KeycodeRaw keycode) const
+  {
+    return m_keycode == keycode;
   }
 
   /**
