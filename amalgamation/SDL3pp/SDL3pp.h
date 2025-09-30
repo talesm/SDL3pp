@@ -7583,12 +7583,15 @@ public:
   }
 
   /// Default comparison operator
-  constexpr auto operator<=>(const LogCategory& other) const = default;
+  constexpr bool operator==(LogCategoryRaw category) const
+  {
+    return m_category == category;
+  }
 
-  /// Compares with the underlying type
+  /// Default comparison operator
   constexpr auto operator<=>(LogCategoryRaw category) const
   {
-    return operator<=>(LogCategory(category));
+    return m_category <=> category;
   }
 
   /**
@@ -10759,7 +10762,13 @@ struct Color : ColorRaw
   }
 
   /// Default comparison operator
-  constexpr auto operator<=>(const Color& other) const
+  constexpr bool operator==(ColorRaw other) const
+  {
+    return r == other.r && g == other.g && b == other.b && a == other.a;
+  }
+
+  /// Default comparison operator
+  constexpr auto operator<=>(ColorRaw other) const
   {
     auto c = r <=> other.r;
     if (c != std::strong_ordering::equal) return c;
@@ -10768,12 +10777,6 @@ struct Color : ColorRaw
     c = b <=> other.b;
     if (c != std::strong_ordering::equal) return c;
     return a <=> other.a;
-  }
-
-  /// Compares with the underlying type
-  constexpr auto operator<=>(ColorRaw color) const
-  {
-    return operator<=>(Color(color));
   }
 
   /**
@@ -10949,22 +10952,21 @@ struct FColor : FColorRaw
   {
   }
 
-  /// Default comparison operator
-  constexpr auto operator<=>(const FColor& other) const
+  constexpr bool operator==(FColorRaw other) const
   {
-    auto c = r <=> other.r;
-    if (c != std::partial_ordering::equivalent) return c;
-    c = g <=> other.g;
-    if (c != std::partial_ordering::equivalent) return c;
-    c = b <=> other.b;
-    if (c != std::partial_ordering::equivalent) return c;
-    return a <=> other.a;
+    return r == other.r && g == other.g && b == other.b && a == other.a;
   }
 
-  /// Compares with the underlying type
-  constexpr auto operator<=>(const FColorRaw& color) const
+  /// Default comparison operator
+  constexpr auto operator<=>(FColorRaw other) const
   {
-    return operator<=>(FColor(color));
+    auto c = r <=> other.r;
+    if (c != std::strong_ordering::equivalent) return c;
+    c = g <=> other.g;
+    if (c != std::strong_ordering::equivalent) return c;
+    c = b <=> other.b;
+    if (c != std::strong_ordering::equivalent) return c;
+    return a <=> other.a;
   }
 
   /**
@@ -28537,12 +28539,15 @@ public:
   Scancode(StringParam name);
 
   /// Default comparison operator
-  constexpr auto operator<=>(const Scancode& other) const = default;
+  constexpr bool operator==(ScancodeRaw scancode) const
+  {
+    return m_scancode == scancode;
+  }
 
-  /// Compares with the underlying type
+  /// Default comparison operator
   constexpr auto operator<=>(ScancodeRaw scancode) const
   {
-    return operator<=>(Scancode(scancode));
+    return m_scancode <=> scancode;
   }
 
   /**
@@ -35068,18 +35073,15 @@ public:
   Keycode(StringParam name);
 
   /// Default comparison operator
-  constexpr auto operator<=>(const Keycode& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr auto operator<=>(KeycodeRaw keycode) const
-  {
-    return m_keycode <=> keycode;
-  }
-
-  /// Compares with the underlying type
   constexpr bool operator==(KeycodeRaw keycode) const
   {
     return m_keycode == keycode;
+  }
+
+  /// Default comparison operator
+  constexpr auto operator<=>(KeycodeRaw keycode) const
+  {
+    return m_keycode <=> keycode;
   }
 
   /**

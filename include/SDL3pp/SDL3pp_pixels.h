@@ -2199,7 +2199,13 @@ struct Color : ColorRaw
   }
 
   /// Default comparison operator
-  constexpr auto operator<=>(const Color& other) const
+  constexpr bool operator==(ColorRaw other) const
+  {
+    return r == other.r && g == other.g && b == other.b && a == other.a;
+  }
+
+  /// Default comparison operator
+  constexpr auto operator<=>(ColorRaw other) const
   {
     auto c = r <=> other.r;
     if (c != std::strong_ordering::equal) return c;
@@ -2208,12 +2214,6 @@ struct Color : ColorRaw
     c = b <=> other.b;
     if (c != std::strong_ordering::equal) return c;
     return a <=> other.a;
-  }
-
-  /// Compares with the underlying type
-  constexpr auto operator<=>(ColorRaw color) const
-  {
-    return operator<=>(Color(color));
   }
 
   /**
@@ -2389,22 +2389,21 @@ struct FColor : FColorRaw
   {
   }
 
-  /// Default comparison operator
-  constexpr auto operator<=>(const FColor& other) const
+  constexpr bool operator==(FColorRaw other) const
   {
-    auto c = r <=> other.r;
-    if (c != std::partial_ordering::equivalent) return c;
-    c = g <=> other.g;
-    if (c != std::partial_ordering::equivalent) return c;
-    c = b <=> other.b;
-    if (c != std::partial_ordering::equivalent) return c;
-    return a <=> other.a;
+    return r == other.r && g == other.g && b == other.b && a == other.a;
   }
 
-  /// Compares with the underlying type
-  constexpr auto operator<=>(const FColorRaw& color) const
+  /// Default comparison operator
+  constexpr auto operator<=>(FColorRaw other) const
   {
-    return operator<=>(FColor(color));
+    auto c = r <=> other.r;
+    if (c != std::strong_ordering::equivalent) return c;
+    c = g <=> other.g;
+    if (c != std::strong_ordering::equivalent) return c;
+    c = b <=> other.b;
+    if (c != std::strong_ordering::equivalent) return c;
+    return a <=> other.a;
   }
 
   /**

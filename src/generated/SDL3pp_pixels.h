@@ -2089,13 +2089,10 @@ struct Color : ColorRaw
   }
 
   /// Default comparison operator
-  constexpr auto operator<=>(const Color& other) const = default;
+  constexpr bool operator==(ColorRaw color) const { return m_color == color; }
 
-  /// Compares with the underlying type
-  constexpr auto operator<=>(ColorRaw color) const
-  {
-    return operator<=>(Color(color));
-  }
+  /// Default comparison operator
+  constexpr auto operator<=>(ColorRaw color) const { return m_color <=> color; }
 
   /**
    * Get the r.
@@ -2206,12 +2203,15 @@ struct FColor : FColorRaw
   }
 
   /// Default comparison operator
-  constexpr auto operator<=>(const FColor& other) const = default;
+  constexpr bool operator==(const FColorRaw& color) const
+  {
+    return m_color == color;
+  }
 
-  /// Compares with the underlying type
+  /// Default comparison operator
   constexpr auto operator<=>(const FColorRaw& color) const
   {
-    return operator<=>(FColor(color));
+    return m_color <=> color;
   }
 
   /**

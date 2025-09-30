@@ -71,12 +71,15 @@ public:
   Scancode(StringParam name);
 
   /// Default comparison operator
-  constexpr auto operator<=>(const Scancode& other) const = default;
+  constexpr bool operator==(ScancodeRaw scancode) const
+  {
+    return m_scancode == scancode;
+  }
 
-  /// Compares with the underlying type
+  /// Default comparison operator
   constexpr auto operator<=>(ScancodeRaw scancode) const
   {
-    return operator<=>(Scancode(scancode));
+    return m_scancode <=> scancode;
   }
 
   /**

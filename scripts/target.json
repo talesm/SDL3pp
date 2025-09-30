@@ -4502,42 +4502,40 @@
                 "doc": "Wraps LogCategory.\n\n@param category the value to be wrapped"
               }
             ],
-            "operator<=>": [
-              {
-                "kind": "function",
-                "name": "operator<=>",
-                "type": "auto",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const LogCategory &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Default comparison operator",
-                "hints": {
-                  "default": true
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "LogCategoryRaw",
+                  "name": "category"
                 }
-              },
-              {
-                "kind": "function",
-                "name": "operator<=>",
-                "type": "auto",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "LogCategoryRaw",
-                    "name": "category"
-                  }
-                ],
-                "doc": "Compares with the underlying type",
-                "hints": {
-                  "body": "return operator<=>(LogCategory(category));"
-                }
+              ],
+              "doc": "Default comparison operator",
+              "hints": {
+                "body": "return m_category == category;"
               }
-            ],
+            },
+            "operator<=>": {
+              "kind": "function",
+              "name": "operator<=>",
+              "type": "auto",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "LogCategoryRaw",
+                  "name": "category"
+                }
+              ],
+              "doc": "Default comparison operator",
+              "hints": {
+                "body": "return m_category <=> category;"
+              }
+            },
             "operator LogCategoryRaw": {
               "kind": "function",
               "name": "operator LogCategoryRaw",
@@ -24114,42 +24112,40 @@
                 }
               }
             ],
-            "operator<=>": [
-              {
-                "kind": "function",
-                "name": "operator<=>",
-                "type": "auto",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const Color &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Default comparison operator",
-                "hints": {
-                  "default": true
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "ColorRaw",
+                  "name": "color"
                 }
-              },
-              {
-                "kind": "function",
-                "name": "operator<=>",
-                "type": "auto",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "ColorRaw",
-                    "name": "color"
-                  }
-                ],
-                "doc": "Compares with the underlying type",
-                "hints": {
-                  "body": "return operator<=>(Color(color));"
-                }
+              ],
+              "doc": "Default comparison operator",
+              "hints": {
+                "body": "return m_color == color;"
               }
-            ],
+            },
+            "operator<=>": {
+              "kind": "function",
+              "name": "operator<=>",
+              "type": "auto",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "ColorRaw",
+                  "name": "color"
+                }
+              ],
+              "doc": "Default comparison operator",
+              "hints": {
+                "body": "return m_color <=> color;"
+              }
+            },
             "GetR": {
               "kind": "function",
               "name": "GetR",
@@ -24326,42 +24322,40 @@
                 }
               }
             ],
-            "operator<=>": [
-              {
-                "kind": "function",
-                "name": "operator<=>",
-                "type": "auto",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const FColor &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Default comparison operator",
-                "hints": {
-                  "default": true
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const FColorRaw &",
+                  "name": "color"
                 }
-              },
-              {
-                "kind": "function",
-                "name": "operator<=>",
-                "type": "auto",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const FColorRaw &",
-                    "name": "color"
-                  }
-                ],
-                "doc": "Compares with the underlying type",
-                "hints": {
-                  "body": "return operator<=>(FColor(color));"
-                }
+              ],
+              "doc": "Default comparison operator",
+              "hints": {
+                "body": "return m_color == color;"
               }
-            ],
+            },
+            "operator<=>": {
+              "kind": "function",
+              "name": "operator<=>",
+              "type": "auto",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const FColorRaw &",
+                  "name": "color"
+                }
+              ],
+              "doc": "Default comparison operator",
+              "hints": {
+                "body": "return m_color <=> color;"
+              }
+            },
             "GetR": {
               "kind": "function",
               "name": "GetR",
@@ -39187,42 +39181,40 @@
                 "proto": true
               }
             ],
-            "operator<=>": [
-              {
-                "kind": "function",
-                "name": "operator<=>",
-                "type": "auto",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const Keycode &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Default comparison operator",
-                "hints": {
-                  "default": true
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "KeycodeRaw",
+                  "name": "keycode"
                 }
-              },
-              {
-                "kind": "function",
-                "name": "operator<=>",
-                "type": "auto",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "KeycodeRaw",
-                    "name": "keycode"
-                  }
-                ],
-                "doc": "Compares with the underlying type",
-                "hints": {
-                  "body": "return operator<=>(Keycode(keycode));"
-                }
+              ],
+              "doc": "Default comparison operator",
+              "hints": {
+                "body": "return m_keycode == keycode;"
               }
-            ],
+            },
+            "operator<=>": {
+              "kind": "function",
+              "name": "operator<=>",
+              "type": "auto",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "KeycodeRaw",
+                  "name": "keycode"
+                }
+              ],
+              "doc": "Default comparison operator",
+              "hints": {
+                "body": "return m_keycode <=> keycode;"
+              }
+            },
             "operator KeycodeRaw": {
               "kind": "function",
               "name": "operator KeycodeRaw",
@@ -41752,42 +41744,40 @@
                 "proto": true
               }
             ],
-            "operator<=>": [
-              {
-                "kind": "function",
-                "name": "operator<=>",
-                "type": "auto",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const Scancode &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Default comparison operator",
-                "hints": {
-                  "default": true
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "ScancodeRaw",
+                  "name": "scancode"
                 }
-              },
-              {
-                "kind": "function",
-                "name": "operator<=>",
-                "type": "auto",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "ScancodeRaw",
-                    "name": "scancode"
-                  }
-                ],
-                "doc": "Compares with the underlying type",
-                "hints": {
-                  "body": "return operator<=>(Scancode(scancode));"
-                }
+              ],
+              "doc": "Default comparison operator",
+              "hints": {
+                "body": "return m_scancode == scancode;"
               }
-            ],
+            },
+            "operator<=>": {
+              "kind": "function",
+              "name": "operator<=>",
+              "type": "auto",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "ScancodeRaw",
+                  "name": "scancode"
+                }
+              ],
+              "doc": "Default comparison operator",
+              "hints": {
+                "body": "return m_scancode <=> scancode;"
+              }
+            },
             "operator ScancodeRaw": {
               "kind": "function",
               "name": "operator ScancodeRaw",
