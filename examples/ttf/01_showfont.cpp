@@ -17,8 +17,8 @@ struct Main
     return SDL::APP_CONTINUE;
   }
 
-  SDL::Window window = SDL::Window("Test", windowSz);
-  SDL::Renderer renderer = SDL::Renderer(window);
+  SDL::Window window{"Test", windowSz};
+  SDL::Renderer renderer{window};
   SDL::Font font;
   std::string testString = "the quick brown fox jumps over the lazy dog\n"
                            "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG\n"

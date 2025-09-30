@@ -32,8 +32,8 @@ struct Main
     *m = new Main();
     return SDL::APP_CONTINUE;
   }
-  SDL::Window window = SDL::Window("examples/audio/load-wav", windowSz);
-  SDL::Renderer renderer = SDL::Renderer(window);
+  SDL::Window window{"examples/audio/load-wav", windowSz};
+  SDL::Renderer renderer{window};
   SDL::AudioStream stream;
   SDL::OwnArray<Uint8> wav_data;
 

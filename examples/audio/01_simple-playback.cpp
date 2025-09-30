@@ -25,8 +25,8 @@ struct Main
     *m = new Main();
     return SDL::APP_CONTINUE;
   }
-  SDL::Window window = SDL::Window("examples/audio/simple-playback", windowSz);
-  SDL::Renderer renderer = SDL::Renderer(window);
+  SDL::Window window{"examples/audio/simple-playback", windowSz};
+  SDL::Renderer renderer{window};
   SDL::AudioStream stream{
     SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK,
     SDL::AudioSpec{.format = SDL::AUDIO_F32, .channels = 1, .freq = 8000}};

@@ -43,8 +43,8 @@ struct Main
     *m = new Main();
     return SDL::APP_CONTINUE;
   }
-  SDL::Window window = SDL::Window("examples/audio/multiple-streams", windowSz);
-  SDL::Renderer renderer = SDL::Renderer(window);
+  SDL::Window window{"examples/audio/multiple-streams", windowSz};
+  SDL::Renderer renderer{window};
   SDL::AudioDevice audio_device{SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK, {}};
   Sound sounds[2] = {{audio_device, "sample.wav"}, {audio_device, "sword.wav"}};
 
