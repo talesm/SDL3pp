@@ -28,6 +28,6 @@ TEST_CASE("Logging function")
     CHECK(lastMessage == "Test 2, formatted: true");
   }
 
-  SDL::LogCategory::ResetLogPriorities();
+  SDL::ResetLogPriorities();
   SDL::ResetLogOutputFunction();
 }

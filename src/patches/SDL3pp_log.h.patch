@@ -38,6 +38,22 @@
 >     : m_category(SDL_LogCategory(category))
 >   {
 >   }
+124c149
+<   constexpr bool operator==(LogCategoryRaw category) const
+---
+>   constexpr bool operator==(LogCategory category) const
+126c151
+<     return m_category == category;
+---
+>     return m_category == category.m_category;
+130c155
+<   constexpr auto operator<=>(LogCategoryRaw category) const
+---
+>   constexpr auto operator<=>(LogCategory category) const
+132c157
+<     return m_category <=> category;
+---
+>     return m_category <=> category.m_category;
 145d169
 <    * @param category the category to assign a priority to.
 171a196,215

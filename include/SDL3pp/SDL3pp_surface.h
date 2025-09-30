@@ -672,7 +672,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool MustLock() const;
+  constexpr bool MustLock() const { return SDL::MUSTLOCK(m_resource); }
 
   /**
    * Set up a surface for directly accessing the pixels.

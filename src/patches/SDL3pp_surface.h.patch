@@ -86,6 +86,10 @@
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
+699c675
+<   constexpr bool MustLock() const;
+---
+>   constexpr bool MustLock() const { return SDL::MUSTLOCK(m_resource); }
 709,711c685,687
 <    * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates
 <    * to 0, then you can read and write to the surface at any time, and the pixel

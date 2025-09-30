@@ -484,7 +484,7 @@
 >  *
 >  * @since This function is available since SDL 3.2.0.
 >  */
-> void SetWindowHitTest(WindowParam window, HitTestCB callback)
+> inline void SetWindowHitTest(WindowParam window, HitTestCB callback)
 6317c6512,6519
 <   SDL::SetWindowHitTest(m_resource, callback, callback_data);
 ---

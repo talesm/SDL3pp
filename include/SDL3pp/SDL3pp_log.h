@@ -146,15 +146,15 @@ public:
   }
 
   /// Default comparison operator
-  constexpr bool operator==(LogCategoryRaw category) const
+  constexpr bool operator==(LogCategory category) const
   {
-    return m_category == category;
+    return m_category == category.m_category;
   }
 
   /// Default comparison operator
-  constexpr auto operator<=>(LogCategoryRaw category) const
+  constexpr auto operator<=>(LogCategory category) const
   {
-    return m_category <=> category;
+    return m_category <=> category.m_category;
   }
 
   /**

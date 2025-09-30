@@ -6507,7 +6507,7 @@ inline void SetWindowHitTest(WindowParam window,
  *
  * @since This function is available since SDL 3.2.0.
  */
-void SetWindowHitTest(WindowParam window, HitTestCB callback)
+inline void SetWindowHitTest(WindowParam window, HitTestCB callback)
 {
   using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
   void* cbHandle = Wrapper::Wrap(window, std::move(callback));

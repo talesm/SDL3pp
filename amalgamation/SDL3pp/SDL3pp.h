@@ -7583,15 +7583,15 @@ public:
   }
 
   /// Default comparison operator
-  constexpr bool operator==(LogCategoryRaw category) const
+  constexpr bool operator==(LogCategory category) const
   {
-    return m_category == category;
+    return m_category == category.m_category;
   }
 
   /// Default comparison operator
-  constexpr auto operator<=>(LogCategoryRaw category) const
+  constexpr auto operator<=>(LogCategory category) const
   {
-    return m_category <=> category;
+    return m_category <=> category.m_category;
   }
 
   /**
@@ -38795,7 +38795,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool MustLock() const;
+  constexpr bool MustLock() const { return SDL::MUSTLOCK(m_resource); }
 
   /**
    * Set up a surface for directly accessing the pixels.
@@ -52879,7 +52879,7 @@ inline void SetWindowHitTest(WindowParam window,
  *
  * @since This function is available since SDL 3.2.0.
  */
-void SetWindowHitTest(WindowParam window, HitTestCB callback)
+inline void SetWindowHitTest(WindowParam window, HitTestCB callback)
 {
   using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
   void* cbHandle = Wrapper::Wrap(window, std::move(callback));
