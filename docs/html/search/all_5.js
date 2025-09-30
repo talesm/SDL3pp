@@ -14,7 +14,7 @@ var searchData=
   ['eglintarraycallback_11',['EGLIntArrayCallback',['../group__CategoryVideo.html#gaff230867e34e519fce23045e208f158c',1,'SDL']]],
   ['eglintarraycb_12',['EGLIntArrayCB',['../group__CategoryVideo.html#gaf4f4ce9ccb3be39143fbef33fb99abc2',1,'SDL']]],
   ['eglsurface_13',['EGLSurface',['../group__CategoryVideo.html#ga9ae1cbfc15bbe39de9d99d383c7e2eb8',1,'SDL']]],
-  ['empty_14',['empty',['../classSDL_1_1OwnArray.html#a2fd8799a55c9af74fb011cb52774f36c',1,'SDL::OwnArray::empty()'],['../group__CategoryRect.html#ga69592160d95cc8d1d81dcf321559bfae',1,'SDL::Rect::Empty()'],['../group__CategoryRect.html#ga815a929d9f6b4e0866f458155d07c23e',1,'SDL::FRect::Empty()']]],
+  ['empty_14',['empty',['../group__CategoryRect.html#ga69592160d95cc8d1d81dcf321559bfae',1,'SDL::Rect::Empty()'],['../group__CategoryRect.html#ga815a929d9f6b4e0866f458155d07c23e',1,'SDL::FRect::Empty()'],['../classSDL_1_1OwnArray.html#a2fd8799a55c9af74fb011cb52774f36c',1,'SDL::OwnArray::empty()']]],
   ['enablescreensaver_15',['EnableScreenSaver',['../group__CategoryVideo.html#ga17e9494d914dc92aa87bedd2a910d29b',1,'SDL']]],
   ['end_16',['end',['../classSDL_1_1Text.html#a7b8a332dad37c35f1a26f69e0b09f40d',1,'SDL::Text::end()'],['../classSDL_1_1OwnArray.html#aaf52cf9f1144e446a3ad99ae5c51a2ff',1,'SDL::OwnArray::end()']]],
   ['enterappmaincallbacks_17',['EnterAppMainCallbacks',['../group__CategoryMain.html#ga2e1cbd26b90891eef642549754780b48',1,'SDL']]],

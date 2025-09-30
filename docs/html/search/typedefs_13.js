@@ -22,12 +22,14 @@ var searchData=
   ['timerid_19',['TimerID',['../group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146',1,'SDL']]],
   ['tlsdestructorcallback_20',['TLSDestructorCallback',['../group__CategoryThread.html#ga40949cd90f28bc3e1326cd3fbf727345',1,'SDL']]],
   ['tlsid_21',['TLSID',['../group__CategoryThread.html#ga81de0ba54c6c2f2147b1a0b9ff7521ac',1,'SDL']]],
-  ['touchfingerevent_22',['TouchFingerEvent',['../group__CategoryEvents.html#ga4e1360399f8cfe47ae4efacbdcf59040',1,'SDL']]],
-  ['transfercharacteristics_23',['TransferCharacteristics',['../group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5',1,'SDL']]],
-  ['traycallback_24',['TrayCallback',['../group__CategoryTray.html#gadc1822495fb3688687bf1d837d3cce20',1,'SDL']]],
-  ['traycb_25',['TrayCB',['../group__CategoryTray.html#ga7030bb2706f67c696f3ff5299a794b29',1,'SDL']]],
-  ['trayentryflags_26',['TrayEntryFlags',['../group__CategoryTray.html#gae3f0fe92d36aa87cc4f5f720c5064c4b',1,'SDL']]],
-  ['trayentryraw_27',['TrayEntryRaw',['../group__CategoryTray.html#gad4051f3c1a1155f18984e69deade9b95',1,'SDL']]],
-  ['traymenuraw_28',['TrayMenuRaw',['../group__CategoryTray.html#ga0c14d8e675cc7674e8d2ac8a9719341c',1,'SDL']]],
-  ['trayraw_29',['TrayRaw',['../group__CategoryTray.html#gaf3c7345e4cefa38e2797ac974b1ba1fe',1,'SDL']]]
+  ['touchdevicetype_22',['TouchDeviceType',['../group__CategoryTouch.html#ga315cb4712bb3ac93b81a61814c0e93c1',1,'SDL']]],
+  ['touchfingerevent_23',['TouchFingerEvent',['../group__CategoryEvents.html#ga4e1360399f8cfe47ae4efacbdcf59040',1,'SDL']]],
+  ['touchid_24',['TouchID',['../group__CategoryTouch.html#ga31126c0c5baf421df498ae14addf87a0',1,'SDL']]],
+  ['transfercharacteristics_25',['TransferCharacteristics',['../group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5',1,'SDL']]],
+  ['traycallback_26',['TrayCallback',['../group__CategoryTray.html#gadc1822495fb3688687bf1d837d3cce20',1,'SDL']]],
+  ['traycb_27',['TrayCB',['../group__CategoryTray.html#ga7030bb2706f67c696f3ff5299a794b29',1,'SDL']]],
+  ['trayentryflags_28',['TrayEntryFlags',['../group__CategoryTray.html#gae3f0fe92d36aa87cc4f5f720c5064c4b',1,'SDL']]],
+  ['trayentryraw_29',['TrayEntryRaw',['../group__CategoryTray.html#gad4051f3c1a1155f18984e69deade9b95',1,'SDL']]],
+  ['traymenuraw_30',['TrayMenuRaw',['../group__CategoryTray.html#ga0c14d8e675cc7674e8d2ac8a9719341c',1,'SDL']]],
+  ['trayraw_31',['TrayRaw',['../group__CategoryTray.html#gaf3c7345e4cefa38e2797ac974b1ba1fe',1,'SDL']]]
 ];

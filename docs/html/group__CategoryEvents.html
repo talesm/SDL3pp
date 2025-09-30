@@ -199,7 +199,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:ga34d947bd68046b49ad2ee1fa599184b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">An event triggered when the clipboard contents have changed (event.clipboard.  <br /></td></tr>
 <tr class="separator:ga34d947bd68046b49ad2ee1fa599184b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4fae2c347fbaa6db58c8e1b7341411bc" id="r_ga4fae2c347fbaa6db58c8e1b7341411bc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#ga4fae2c347fbaa6db58c8e1b7341411bc">SDL::SensorEvent</a> = SDL_SensorEvent</td></tr>
-<tr class="memdesc:ga4fae2c347fbaa6db58c8e1b7341411bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sensor event structure (event.sensor.  <br /></td></tr>
+<tr class="memdesc:ga4fae2c347fbaa6db58c8e1b7341411bc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSDL_1_1Sensor.html" title="The opaque structure used to identify an opened SDL sensor.">Sensor</a> event structure (event.sensor.  <br /></td></tr>
 <tr class="separator:ga4fae2c347fbaa6db58c8e1b7341411bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae5256a650a64f71e1be8c31d00100b9e" id="r_gae5256a650a64f71e1be8c31d00100b9e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#gae5256a650a64f71e1be8c31d00100b9e">SDL::QuitEvent</a> = SDL_QuitEvent</td></tr>
 <tr class="memdesc:gae5256a650a64f71e1be8c31d00100b9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The "quit requested" event.  <br /></td></tr>
@@ -845,7 +845,7 @@ constexpr <a class="el" href="group__CategoryEvents.html#ga80fcb19ed338e51b0448f
       </table>
 </div><div class="memdoc">
 <p>*)</p>
-<p>Depending on the hardware, you may get motion events when the pen is not touching a tablet, for tracking a pen even when it isn't drawing. You should listen for EVENT_PEN_DOWN and EVENT_PEN_UP events, or check <code>pen_state &amp; SDL_PEN_INPUT_DOWN</code> to decide if a pen is "drawing" when dealing with pen motion.</p>
+<p>Depending on the hardware, you may get motion events when the pen is not touching a tablet, for tracking a pen even when it isn't drawing. You should listen for EVENT_PEN_DOWN and EVENT_PEN_UP events, or check <code>pen_state &amp; PEN_INPUT_DOWN</code> to decide if a pen is "drawing" when dealing with pen motion.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>

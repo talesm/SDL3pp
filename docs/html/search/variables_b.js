@@ -46,6 +46,7 @@ var searchData=
   ['min_5fuint32_43',['MIN_UINT32',['../group__CategoryStdinc.html#gaea113b6d39e254cb015e04423544d8c0',1,'SDL']]],
   ['min_5fuint64_44',['MIN_UINT64',['../group__CategoryStdinc.html#ga566123592c777849589b83a104aab026',1,'SDL']]],
   ['min_5fuint8_45',['MIN_UINT8',['../group__CategoryStdinc.html#gac3dcfab370a63411100eacc70a866b2c',1,'SDL']]],
-  ['mousewheel_5fflipped_46',['MOUSEWHEEL_FLIPPED',['../group__CategoryMouse.html#ga3bcab48c8301bb6b562f5284f60a6624',1,'SDL']]],
-  ['mousewheel_5fnormal_47',['MOUSEWHEEL_NORMAL',['../group__CategoryMouse.html#ga15149191518ae36fb11e310bacba791b',1,'SDL']]]
+  ['mouse_5ftouchid_46',['MOUSE_TOUCHID',['../group__CategoryTouch.html#gaa05e33154350cc5c08a58b725e27a4ae',1,'SDL']]],
+  ['mousewheel_5fflipped_47',['MOUSEWHEEL_FLIPPED',['../group__CategoryMouse.html#ga3bcab48c8301bb6b562f5284f60a6624',1,'SDL']]],
+  ['mousewheel_5fnormal_48',['MOUSEWHEEL_NORMAL',['../group__CategoryMouse.html#ga15149191518ae36fb11e310bacba791b',1,'SDL']]]
 ];

@@ -39,7 +39,7 @@ namespace SDL {
  * mouse device for touch and pen input, which often can make a desktop
  * application work on a touchscreen phone without any code changes. Apps that
  * care about touch/pen separately from mouse input should filter out events
- * with a `which` field of SDL_TOUCH_MOUSEID/SDL_PEN_MOUSEID.
+ * with a `which` field of TOUCH_MOUSEID/PEN_MOUSEID.
  *
  * @{
  */

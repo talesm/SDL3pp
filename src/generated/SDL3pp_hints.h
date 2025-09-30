@@ -527,8 +527,8 @@ namespace SDL {
  *
  * The variable can be set to the following values:
  *
- * - "0": You'll call SDL_UpdateSensors() manually.
- * - "1": SDL will automatically call SDL_UpdateSensors(). (default)
+ * - "0": You'll call UpdateSensors() manually.
+ * - "1": SDL will automatically call UpdateSensors(). (default)
  *
  * This hint can be set anytime.
  *

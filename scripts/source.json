@@ -30275,6 +30275,533 @@
         }
       }
     },
+    "SDL_pen.h": {
+      "name": "SDL_pen.h",
+      "doc": "# CategoryPen\n\nSDL pen event handling.\n\nSDL provides an API for pressure-sensitive pen (stylus and/or eraser)\nhandling, e.g., for input and drawing tablets or suitably equipped mobile /\ntablet devices.\n\nTo get started with pens, simply handle SDL_EVENT_PEN_* events. When a pen\nstarts providing input, SDL will assign it a unique SDL_PenID, which will\nremain for the life of the process, as long as the pen stays connected.\n\nPens may provide more than simple touch input; they might have other axes,\nsuch as pressure, tilt, rotation, etc.",
+      "entries": {
+        "SDL_PenID": {
+          "doc": "SDL pen instance IDs.\n\nZero is used to signify an invalid/null device.\n\nThese show up in pen events when SDL sees input from them. They remain\nconsistent as long as SDL can recognize a tool to be the same pen; but if a\npen physically leaves the area and returns, it might get a new ID.\n\n\\since This datatype is available since SDL 3.2.0.",
+          "name": "SDL_PenID",
+          "kind": "alias",
+          "type": "Uint32"
+        },
+        "SDL_PEN_MOUSEID": {
+          "doc": "The SDL_MouseID for mouse events simulated with pen input.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PEN_MOUSEID",
+          "kind": "def",
+          "value": "((SDL_MouseID)-2)"
+        },
+        "SDL_PEN_TOUCHID": {
+          "doc": "The SDL_TouchID for touch events simulated with pen input.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PEN_TOUCHID",
+          "kind": "def",
+          "value": "((SDL_TouchID)-2)"
+        },
+        "SDL_PenInputFlags": {
+          "doc": "Pen input flags, as reported by various pen events' `pen_state` field.\n\n\\since This datatype is available since SDL 3.2.0.",
+          "name": "SDL_PenInputFlags",
+          "kind": "alias",
+          "type": "Uint32"
+        },
+        "SDL_PEN_INPUT_DOWN": {
+          "doc": "pen is pressed down",
+          "name": "SDL_PEN_INPUT_DOWN",
+          "kind": "def",
+          "value": "(1u << 0)"
+        },
+        "SDL_PEN_INPUT_BUTTON_1": {
+          "doc": "button 1 is pressed",
+          "name": "SDL_PEN_INPUT_BUTTON_1",
+          "kind": "def",
+          "value": "(1u << 1)"
+        },
+        "SDL_PEN_INPUT_BUTTON_2": {
+          "doc": "button 2 is pressed",
+          "name": "SDL_PEN_INPUT_BUTTON_2",
+          "kind": "def",
+          "value": "(1u << 2)"
+        },
+        "SDL_PEN_INPUT_BUTTON_3": {
+          "doc": "button 3 is pressed",
+          "name": "SDL_PEN_INPUT_BUTTON_3",
+          "kind": "def",
+          "value": "(1u << 3)"
+        },
+        "SDL_PEN_INPUT_BUTTON_4": {
+          "doc": "button 4 is pressed",
+          "name": "SDL_PEN_INPUT_BUTTON_4",
+          "kind": "def",
+          "value": "(1u << 4)"
+        },
+        "SDL_PEN_INPUT_BUTTON_5": {
+          "doc": "button 5 is pressed",
+          "name": "SDL_PEN_INPUT_BUTTON_5",
+          "kind": "def",
+          "value": "(1u << 5)"
+        },
+        "SDL_PEN_INPUT_ERASER_TIP": {
+          "doc": "eraser tip is used",
+          "name": "SDL_PEN_INPUT_ERASER_TIP",
+          "kind": "def",
+          "value": "(1u << 30)"
+        },
+        "SDL_PenAxis": {
+          "doc": "Pen axis indices.\n\nThese are the valid values for the `axis` field in SDL_PenAxisEvent. All\naxes are either normalised to 0..1 or report a (positive or negative) angle\nin degrees, with 0.0 representing the centre. Not all pens/backends support\nall axes: unsupported axes are always zero.\n\nTo convert angles for tilt and rotation into vector representation, use\nSDL_sinf on the XTILT, YTILT, or ROTATION component, for example:\n\n`SDL_sinf(xtilt * SDL_PI_F / 180.0)`.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_PenAxis",
+          "kind": "enum",
+          "entries": {
+            "SDL_PEN_AXIS_PRESSURE": {
+              "doc": "Pen pressure.  Unidirectional: 0 to 1.0",
+              "name": "SDL_PEN_AXIS_PRESSURE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PEN_AXIS_XTILT": {
+              "doc": "Pen horizontal tilt angle.  Bidirectional: -90.0 to 90.0 (left-to-right).",
+              "name": "SDL_PEN_AXIS_XTILT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PEN_AXIS_YTILT": {
+              "doc": "Pen vertical tilt angle.  Bidirectional: -90.0 to 90.0 (top-to-down).",
+              "name": "SDL_PEN_AXIS_YTILT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PEN_AXIS_DISTANCE": {
+              "doc": "Pen distance to drawing surface.  Unidirectional: 0.0 to 1.0",
+              "name": "SDL_PEN_AXIS_DISTANCE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PEN_AXIS_ROTATION": {
+              "doc": "Pen barrel rotation.  Bidirectional: -180 to 179.9 (clockwise, 0 is facing up, -180.0 is facing down).",
+              "name": "SDL_PEN_AXIS_ROTATION",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PEN_AXIS_SLIDER": {
+              "doc": "Pen finger wheel or slider (e.g., Airbrush Pen).  Unidirectional: 0 to 1.0",
+              "name": "SDL_PEN_AXIS_SLIDER",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PEN_AXIS_TANGENTIAL_PRESSURE": {
+              "doc": "Pressure from squeezing the pen (\"barrel pressure\").",
+              "name": "SDL_PEN_AXIS_TANGENTIAL_PRESSURE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PEN_AXIS_COUNT": {
+              "doc": "Total known pen axis types in this version of SDL.  This number may grow in future releases!",
+              "name": "SDL_PEN_AXIS_COUNT",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        }
+      }
+    },
+    "SDL_sensor.h": {
+      "name": "SDL_sensor.h",
+      "doc": "# CategorySensor\n\nSDL sensor management.\n\nThese APIs grant access to gyros and accelerometers on various platforms.\n\nIn order to use these functions, SDL_Init() must have been called with the\nSDL_INIT_SENSOR flag. This causes SDL to scan the system for sensors, and\nload appropriate drivers.",
+      "entries": {
+        "SDL_Sensor": {
+          "doc": "The opaque structure used to identify an opened SDL sensor.\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_Sensor",
+          "kind": "alias",
+          "type": "struct SDL_Sensor"
+        },
+        "SDL_SensorID": {
+          "doc": "This is a unique ID for a sensor for the time it is connected to the\nsystem, and is never reused for the lifetime of the application.\n\nThe value 0 is an invalid ID.\n\n\\since This datatype is available since SDL 3.2.0.",
+          "name": "SDL_SensorID",
+          "kind": "alias",
+          "type": "Uint32"
+        },
+        "SDL_STANDARD_GRAVITY": {
+          "doc": "A constant to represent standard gravity for accelerometer sensors.\n\nThe accelerometer returns the current acceleration in SI meters per second\nsquared. This measurement includes the force of gravity, so a device at\nrest will have an value of SDL_STANDARD_GRAVITY away from the center of the\nearth, which is a positive Y value.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_STANDARD_GRAVITY",
+          "kind": "def",
+          "value": "9.80665f"
+        },
+        "SDL_SensorType": {
+          "doc": "The different sensors defined by SDL.\n\nAdditional sensors may be available, using platform dependent semantics.\n\nHere are the additional Android sensors:\n\nhttps://developer.android.com/reference/android/hardware/SensorEvent.html#values\n\nAccelerometer sensor notes:\n\nThe accelerometer returns the current acceleration in SI meters per second\nsquared. This measurement includes the force of gravity, so a device at\nrest will have an value of SDL_STANDARD_GRAVITY away from the center of the\nearth, which is a positive Y value.\n\n- `values[0]`: Acceleration on the x axis\n- `values[1]`: Acceleration on the y axis\n- `values[2]`: Acceleration on the z axis\n\nFor phones and tablets held in natural orientation and game controllers\nheld in front of you, the axes are defined as follows:\n\n- -X ... +X : left ... right\n- -Y ... +Y : bottom ... top\n- -Z ... +Z : farther ... closer\n\nThe accelerometer axis data is not changed when the device is rotated.\n\nGyroscope sensor notes:\n\nThe gyroscope returns the current rate of rotation in radians per second.\nThe rotation is positive in the counter-clockwise direction. That is, an\nobserver looking from a positive location on one of the axes would see\npositive rotation on that axis when it appeared to be rotating\ncounter-clockwise.\n\n- `values[0]`: Angular speed around the x axis (pitch)\n- `values[1]`: Angular speed around the y axis (yaw)\n- `values[2]`: Angular speed around the z axis (roll)\n\nFor phones and tablets held in natural orientation and game controllers\nheld in front of you, the axes are defined as follows:\n\n- -X ... +X : left ... right\n- -Y ... +Y : bottom ... top\n- -Z ... +Z : farther ... closer\n\nThe gyroscope axis data is not changed when the device is rotated.\n\n\\since This enum is available since SDL 3.2.0.\n\n\\sa SDL_GetCurrentDisplayOrientation",
+          "name": "SDL_SensorType",
+          "kind": "enum",
+          "entries": {
+            "SDL_SENSOR_INVALID": {
+              "doc": "Returned for an invalid sensor.",
+              "name": "SDL_SENSOR_INVALID",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SENSOR_UNKNOWN": {
+              "doc": "Unknown sensor type.",
+              "name": "SDL_SENSOR_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SENSOR_ACCEL": {
+              "doc": "Accelerometer.",
+              "name": "SDL_SENSOR_ACCEL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SENSOR_GYRO": {
+              "doc": "Gyroscope.",
+              "name": "SDL_SENSOR_GYRO",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SENSOR_ACCEL_L": {
+              "doc": "Accelerometer for left Joy-Con controller and Wii nunchuk.",
+              "name": "SDL_SENSOR_ACCEL_L",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SENSOR_GYRO_L": {
+              "doc": "Gyroscope for left Joy-Con controller.",
+              "name": "SDL_SENSOR_GYRO_L",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SENSOR_ACCEL_R": {
+              "doc": "Accelerometer for right Joy-Con controller.",
+              "name": "SDL_SENSOR_ACCEL_R",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SENSOR_GYRO_R": {
+              "doc": "Gyroscope for right Joy-Con controller.",
+              "name": "SDL_SENSOR_GYRO_R",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SENSOR_COUNT": {
+              "doc": "",
+              "name": "SDL_SENSOR_COUNT",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
+        "SDL_GetSensors": {
+          "doc": "Get a list of currently connected sensors.\n\n\\param count a pointer filled in with the number of sensors returned, may\n             be NULL.\n\\returns a 0 terminated array of sensor instance IDs or NULL on failure;\n         call SDL_GetError() for more information. This should be freed\n         with SDL_free() when it is no longer needed.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetSensors",
+          "kind": "function",
+          "type": "SDL_SensorID *",
+          "parameters": [
+            {
+              "name": "count",
+              "type": "int *"
+            }
+          ]
+        },
+        "SDL_GetSensorNameForID": {
+          "doc": "Get the implementation dependent name of a sensor.\n\nThis can be called before any sensors are opened.\n\n\\param instance_id the sensor instance ID.\n\\returns the sensor name, or NULL if `instance_id` is not valid.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetSensorNameForID",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "instance_id",
+              "type": "SDL_SensorID"
+            }
+          ]
+        },
+        "SDL_GetSensorTypeForID": {
+          "doc": "Get the type of a sensor.\n\nThis can be called before any sensors are opened.\n\n\\param instance_id the sensor instance ID.\n\\returns the SDL_SensorType, or `SDL_SENSOR_INVALID` if `instance_id` is\n         not valid.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetSensorTypeForID",
+          "kind": "function",
+          "type": "SDL_SensorType",
+          "parameters": [
+            {
+              "name": "instance_id",
+              "type": "SDL_SensorID"
+            }
+          ]
+        },
+        "SDL_GetSensorNonPortableTypeForID": {
+          "doc": "Get the platform dependent type of a sensor.\n\nThis can be called before any sensors are opened.\n\n\\param instance_id the sensor instance ID.\n\\returns the sensor platform dependent type, or -1 if `instance_id` is not\n         valid.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetSensorNonPortableTypeForID",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "instance_id",
+              "type": "SDL_SensorID"
+            }
+          ]
+        },
+        "SDL_OpenSensor": {
+          "doc": "Open a sensor for use.\n\n\\param instance_id the sensor instance ID.\n\\returns an SDL_Sensor object or NULL on failure; call SDL_GetError() for\n         more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_OpenSensor",
+          "kind": "function",
+          "type": "SDL_Sensor *",
+          "parameters": [
+            {
+              "name": "instance_id",
+              "type": "SDL_SensorID"
+            }
+          ]
+        },
+        "SDL_GetSensorFromID": {
+          "doc": "Return the SDL_Sensor associated with an instance ID.\n\n\\param instance_id the sensor instance ID.\n\\returns an SDL_Sensor object or NULL on failure; call SDL_GetError() for\n         more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetSensorFromID",
+          "kind": "function",
+          "type": "SDL_Sensor *",
+          "parameters": [
+            {
+              "name": "instance_id",
+              "type": "SDL_SensorID"
+            }
+          ]
+        },
+        "SDL_GetSensorProperties": {
+          "doc": "Get the properties associated with a sensor.\n\n\\param sensor the SDL_Sensor object.\n\\returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetSensorProperties",
+          "kind": "function",
+          "type": "SDL_PropertiesID",
+          "parameters": [
+            {
+              "name": "sensor",
+              "type": "SDL_Sensor *"
+            }
+          ]
+        },
+        "SDL_GetSensorName": {
+          "doc": "Get the implementation dependent name of a sensor.\n\n\\param sensor the SDL_Sensor object.\n\\returns the sensor name or NULL on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetSensorName",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "sensor",
+              "type": "SDL_Sensor *"
+            }
+          ]
+        },
+        "SDL_GetSensorType": {
+          "doc": "Get the type of a sensor.\n\n\\param sensor the SDL_Sensor object to inspect.\n\\returns the SDL_SensorType type, or `SDL_SENSOR_INVALID` if `sensor` is\n         NULL.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetSensorType",
+          "kind": "function",
+          "type": "SDL_SensorType",
+          "parameters": [
+            {
+              "name": "sensor",
+              "type": "SDL_Sensor *"
+            }
+          ]
+        },
+        "SDL_GetSensorNonPortableType": {
+          "doc": "Get the platform dependent type of a sensor.\n\n\\param sensor the SDL_Sensor object to inspect.\n\\returns the sensor platform dependent type, or -1 if `sensor` is NULL.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetSensorNonPortableType",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "sensor",
+              "type": "SDL_Sensor *"
+            }
+          ]
+        },
+        "SDL_GetSensorID": {
+          "doc": "Get the instance ID of a sensor.\n\n\\param sensor the SDL_Sensor object to inspect.\n\\returns the sensor instance ID, or 0 on failure; call SDL_GetError() for\n         more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetSensorID",
+          "kind": "function",
+          "type": "SDL_SensorID",
+          "parameters": [
+            {
+              "name": "sensor",
+              "type": "SDL_Sensor *"
+            }
+          ]
+        },
+        "SDL_GetSensorData": {
+          "doc": "Get the current state of an opened sensor.\n\nThe number of values and interpretation of the data is sensor dependent.\n\n\\param sensor the SDL_Sensor object to query.\n\\param data a pointer filled with the current sensor state.\n\\param num_values the number of values to write to data.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetSensorData",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "sensor",
+              "type": "SDL_Sensor *"
+            },
+            {
+              "name": "data",
+              "type": "float *"
+            },
+            {
+              "name": "num_values",
+              "type": "int"
+            }
+          ]
+        },
+        "SDL_CloseSensor": {
+          "doc": "Close a sensor previously opened with SDL_OpenSensor().\n\n\\param sensor the SDL_Sensor object to close.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_CloseSensor",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "sensor",
+              "type": "SDL_Sensor *"
+            }
+          ]
+        },
+        "SDL_UpdateSensors": {
+          "doc": "Update the current state of the open sensors.\n\nThis is called automatically by the event loop if sensor events are\nenabled.\n\nThis needs to be called from the thread that initialized the sensor\nsubsystem.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_UpdateSensors",
+          "kind": "function",
+          "type": "void",
+          "parameters": []
+        }
+      }
+    },
+    "SDL_touch.h": {
+      "name": "SDL_touch.h",
+      "doc": "# CategoryTouch\n\nSDL offers touch input, on platforms that support it. It can manage\nmultiple touch devices and track multiple fingers on those devices.\n\nTouches are mostly dealt with through the event system, in the\nSDL_EVENT_FINGER_DOWN, SDL_EVENT_FINGER_MOTION, and SDL_EVENT_FINGER_UP\nevents, but there are also functions to query for hardware details, etc.\n\nThe touch system, by default, will also send virtual mouse events; this can\nbe useful for making a some desktop apps work on a phone without\nsignificant changes. For apps that care about mouse and touch input\nseparately, they should ignore mouse events that have a `which` field of\nSDL_TOUCH_MOUSEID.",
+      "entries": {
+        "SDL_TouchID": {
+          "doc": "A unique ID for a touch device.\n\nThis ID is valid for the time the device is connected to the system, and is\nnever reused for the lifetime of the application.\n\nThe value 0 is an invalid ID.\n\n\\since This datatype is available since SDL 3.2.0.",
+          "name": "SDL_TouchID",
+          "kind": "alias",
+          "type": "Uint64"
+        },
+        "SDL_FingerID": {
+          "doc": "A unique ID for a single finger on a touch device.\n\nThis ID is valid for the time the finger (stylus, etc) is touching and will\nbe unique for all fingers currently in contact, so this ID tracks the\nlifetime of a single continuous touch. This value may represent an index, a\npointer, or some other unique ID, depending on the platform.\n\nThe value 0 is an invalid ID.\n\n\\since This datatype is available since SDL 3.2.0.",
+          "name": "SDL_FingerID",
+          "kind": "alias",
+          "type": "Uint64"
+        },
+        "SDL_TouchDeviceType": {
+          "doc": "An enum that describes the type of a touch device.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_TouchDeviceType",
+          "kind": "enum",
+          "entries": {
+            "SDL_TOUCH_DEVICE_INVALID": {
+              "doc": "",
+              "name": "SDL_TOUCH_DEVICE_INVALID",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TOUCH_DEVICE_DIRECT": {
+              "doc": "touch screen with window-relative coordinates",
+              "name": "SDL_TOUCH_DEVICE_DIRECT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE": {
+              "doc": "trackpad with absolute device coordinates",
+              "name": "SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TOUCH_DEVICE_INDIRECT_RELATIVE": {
+              "doc": "trackpad with screen cursor-relative coordinates",
+              "name": "SDL_TOUCH_DEVICE_INDIRECT_RELATIVE",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
+        "SDL_Finger": {
+          "doc": "Data about a single finger in a multitouch event.\n\nEach touch event is a collection of fingers that are simultaneously in\ncontact with the touch device (so a \"touch\" can be a \"multitouch,\" in\nreality), and this struct reports details of the specific fingers.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_GetTouchFingers",
+          "name": "SDL_Finger",
+          "kind": "struct",
+          "entries": {
+            "id": {
+              "doc": "the finger ID",
+              "name": "id",
+              "kind": "var",
+              "type": "SDL_FingerID"
+            },
+            "x": {
+              "doc": "the x-axis location of the touch event, normalized (0...1)",
+              "name": "x",
+              "kind": "var",
+              "type": "float"
+            },
+            "y": {
+              "doc": "the y-axis location of the touch event, normalized (0...1)",
+              "name": "y",
+              "kind": "var",
+              "type": "float"
+            },
+            "pressure": {
+              "doc": "the quantity of pressure applied, normalized (0...1)",
+              "name": "pressure",
+              "kind": "var",
+              "type": "float"
+            }
+          }
+        },
+        "SDL_TOUCH_MOUSEID": {
+          "doc": "The SDL_MouseID for mouse events simulated with touch input.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_TOUCH_MOUSEID",
+          "kind": "def",
+          "value": "((SDL_MouseID)-1)"
+        },
+        "SDL_MOUSE_TOUCHID": {
+          "doc": "The SDL_TouchID for touch events simulated with mouse input.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_MOUSE_TOUCHID",
+          "kind": "def",
+          "value": "((SDL_TouchID)-1)"
+        },
+        "SDL_GetTouchDevices": {
+          "doc": "Get a list of registered touch devices.\n\nOn some platforms SDL first sees the touch device if it was actually used.\nTherefore the returned list might be empty, although devices are available.\nAfter using all devices at least once the number will be correct.\n\n\\param count a pointer filled in with the number of devices returned, may\n             be NULL.\n\\returns a 0 terminated array of touch device IDs or NULL on failure; call\n         SDL_GetError() for more information. This should be freed with\n         SDL_free() when it is no longer needed.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetTouchDevices",
+          "kind": "function",
+          "type": "SDL_TouchID *",
+          "parameters": [
+            {
+              "name": "count",
+              "type": "int *"
+            }
+          ]
+        },
+        "SDL_GetTouchDeviceName": {
+          "doc": "Get the touch device name as reported from the driver.\n\n\\param touchID the touch device instance ID.\n\\returns touch device name, or NULL on failure; call SDL_GetError() for\n         more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetTouchDeviceName",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "touchID",
+              "type": "SDL_TouchID"
+            }
+          ]
+        },
+        "SDL_GetTouchDeviceType": {
+          "doc": "Get the type of the given touch device.\n\n\\param touchID the ID of a touch device.\n\\returns touch device type.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetTouchDeviceType",
+          "kind": "function",
+          "type": "SDL_TouchDeviceType",
+          "parameters": [
+            {
+              "name": "touchID",
+              "type": "SDL_TouchID"
+            }
+          ]
+        },
+        "SDL_GetTouchFingers": {
+          "doc": "Get a list of active fingers for a given touch device.\n\n\\param touchID the ID of a touch device.\n\\param count a pointer filled in with the number of fingers returned, can\n             be NULL.\n\\returns a NULL terminated array of SDL_Finger pointers or NULL on failure;\n         call SDL_GetError() for more information. This is a single\n         allocation that should be freed with SDL_free() when it is no\n         longer needed.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetTouchFingers",
+          "kind": "function",
+          "type": "SDL_Finger **",
+          "parameters": [
+            {
+              "name": "touchID",
+              "type": "SDL_TouchID"
+            },
+            {
+              "name": "count",
+              "type": "int *"
+            }
+          ]
+        }
+      }
+    },
     "SDL_image.h": {
       "name": "SDL_image.h",
       "doc": "# CategorySDLImage\n\nHeader file for SDL_image library\n\nA simple library to load images of various formats as SDL surfaces",

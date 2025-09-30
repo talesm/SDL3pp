@@ -2732,6 +2732,24 @@ const transform = {
         }
       }
     },
+    "SDL_pen.h": {
+      localIncludes: ["SDL3pp_mouse.h", "SDL3pp_touch.h"],
+      transform: {
+        "SDL_PEN_MOUSEID": {
+          kind: "var",
+          constexpr: true,
+          type: "MouseID",
+        },
+        "SDL_PEN_TOUCHID": {
+          kind: "var",
+          constexpr: true,
+          type: "TouchID",
+        },
+        "SDL_PenInputFlags": {
+          enum: "SDL_PEN_INPUT_",
+        }
+      }
+    },
     "SDL_pixels.h": {
       localIncludes: ["SDL3pp_spanRef.h", "SDL3pp_error.h", "SDL3pp_version.h"],
       transform: {
@@ -5488,6 +5506,22 @@ const transform = {
         },
       },
     },
+    "SDL_sensor.h": {
+      localIncludes: ["SDL3pp_error.h", "SDL3pp_properties.h", "SDL3pp_stdinc.h"],
+      transform: {
+        "SDL_SensorID": { kind: "alias", before: "SDL_Sensor" },
+        "SDL_SensorType": { before: "SDL_Sensor" },
+        "SDL_GetSensors": {
+          parameters: [],
+          type: "OwnArray<SensorID>",
+        },
+        "SDL_STANDARD_GRAVITY": {
+          kind: "var",
+          type: "float",
+          constexpr: true,
+        },
+      }
+    },
     "SDL_surface.h": {
       localIncludes: [
         "SDL3pp_blendmode.h",
@@ -6708,6 +6742,30 @@ const transform = {
               name: "callback"
             }
           ]
+        },
+      }
+    },
+    "SDL_touch.h": {
+      localIncludes: ["SDL3pp_error.h", "SDL3pp_mouse.h", "SDL3pp_stdinc.h"],
+      transform: {
+        "SDL_Finger": { wrapper: true },
+        "SDL_TOUCH_MOUSEID": {
+          kind: "var",
+          constexpr: true,
+          type: "MouseID",
+        },
+        "SDL_MOUSE_TOUCHID": {
+          kind: "var",
+          constexpr: true,
+          type: "TouchID",
+        },
+        "SDL_GetTouchDevices": {
+          parameters: [],
+          type: "OwnArray<TouchID>",
+        },
+        "SDL_GetTouchFingers": {
+          parameters: [{}],
+          type: "OwnArray<Finger*>",
         },
       }
     },

@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,111,31"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1InitState.html" title="A structure used for thread&#45;safe initialization and shutdown." alt="" coords="159,5,269,31"/>
-<area shape="poly" id="edge9_Node000000_Node000001" title=" " alt="" coords="124,15,158,15,158,21,124,21"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,89,31"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1GUID.html" title="An GUID is a 128&#45;bit identifier for an input device that identifies that device across runs of SDL pr..." alt="" coords="137,5,227,31"/>
+<area shape="poly" id="edge9_Node000000_Node000001" title=" " alt="" coords="103,15,137,15,137,21,103,21"/>
 </map>

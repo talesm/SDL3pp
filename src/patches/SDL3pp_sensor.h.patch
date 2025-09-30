@@ -1,0 +1,33 @@
+12c12
+<  * @defgroup CategorySensor Category Sensor
+---
+>  * @defgroup CategorySensor Sensors
+342c342
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+349,350d348
+<  * @param count a pointer filled in with the number of sensors returned, may
+<  *              be nullptr.
+352,353c350
+<  *          call GetError() for more information. This should be freed
+<  *          with free() when it is no longer needed.
+---
+>  *          call GetError() for more information.
+357c354,359
+< inline OwnArray<SensorID> GetSensors() { return SDL_GetSensors(); }
+---
+> inline OwnArray<SensorID> GetSensors()
+> {
+>   int count = 0;
+>   auto data = SDL_GetSensors(&count);
+>   return OwnArray<SensorID>(data, size_t(count));
+> }
+428c430
+<   return SDL_GetSensorFromID(instance_id);
+---
+>   return {SDL_GetSensorFromID(instance_id)};
+442c444
+<   return CheckError(SDL_GetSensorProperties(sensor));
+---
+>   return {CheckError(SDL_GetSensorProperties(sensor))};

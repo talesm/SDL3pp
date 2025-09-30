@@ -60,9 +60,9 @@ Category                 | Header
 @ref CategoryMouse       | SDL3pp_mouse.h
 Joystick Support         | SDL3pp_joystick.h
 Gamepad Support          | SDL3pp_gamepad.h
-Touch Support            | SDL3pp_touch.h
-Pen Support              | SDL3pp_pen.h
-Sensors                  | SDL3pp_sensor.h
+@ref CategoryTouch       | SDL3pp_touch.h
+@ref CategoryPen         | SDL3pp_pen.h
+@ref CategorySensor      | SDL3pp_sensor.h
 HIDAPI                   | SDL3pp_hidapi.h
 
 ## Threads

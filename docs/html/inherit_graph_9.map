@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,139,31"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1MessageBox.html" title="MessageBox structure containing title, text, window, etc." alt="" coords="187,5,325,31"/>
-<area shape="poly" id="edge10_Node000000_Node000001" title=" " alt="" coords="152,15,186,15,186,21,152,21"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,111,31"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1InitState.html" title="A structure used for thread&#45;safe initialization and shutdown." alt="" coords="159,5,269,31"/>
+<area shape="poly" id="edge10_Node000000_Node000001" title=" " alt="" coords="124,15,158,15,158,21,124,21"/>
 </map>

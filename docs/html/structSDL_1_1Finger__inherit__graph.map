@@ -1,0 +1,5 @@
+<map id="SDL::Finger" name="SDL::Finger">
+<area shape="rect" id="Node000001" title="Data about a single finger in a multitouch event." alt="" coords="5,79,100,104"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="7,5,98,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="55,44,55,79,50,79,50,44"/>
+</map>
