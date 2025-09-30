@@ -17,20 +17,20 @@ Things for a version 0.1
   - [x] Implement [span-like type](https://talesm.github.io/SDL3pp/classSDL_1_1SpanRef.html)
     compatible with our empty-derived structs we use to add methods to things
     like SDL_Rect.
-- [ ] Wrap SDL (categories)[https://wiki.libsdl.org/SDL3/APIByCategory]:
+- [x] Wrap SDL (categories)[https://wiki.libsdl.org/SDL3/APIByCategory]:
   - [x] Basics;
-  - [ ] Video;
-  - [ ] Event handling:
+  - [x] Video;
+  - [x] Event handling:
     - [x] Event handling;
-    - [ ] Keyboard support, keycodes and scancodes;
-    - [ ] Mouse support.
-  - [ ] Audio;
-  - [ ] Time;
-  - [ ] File I/O;
-    - [ ] Filesystem Access;
+    - [x] Keyboard support, keycodes and scancodes;
+    - [x] Mouse support.
+  - [x] Audio;
+  - [x] Time;
+  - [x] File I/O;
+    - [x] Filesystem Access;
     - [x] I/O Streams.
-  - [ ] Platform and CPU Information;
-  - [ ] Additional Functionality;
+  - [x] Platform and CPU Information;
+  - [x] Additional Functionality;
 - [x] Satellites libraries:
   - [x] SDL_image;
   - [x] SDL_ttf;
