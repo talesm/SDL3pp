@@ -197,13 +197,6 @@ public:
   constexpr operator DisplayID() const { return m_displayID; }
 
   /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_displayID != 0; }
-
-  /**
    * Get a list of currently connected displays.
    *
    * @param count a pointer filled in with the number of displays returned, may

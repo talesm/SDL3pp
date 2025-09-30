@@ -399,13 +399,6 @@ public:
   constexpr operator TrayMenuRaw() const { return m_trayMenu; }
 
   /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_trayMenu != 0; }
-
-  /**
    * Returns a list of entries in the menu, in order.
    *
    * @returns a nullptr-terminated list of entries within the given menu. The

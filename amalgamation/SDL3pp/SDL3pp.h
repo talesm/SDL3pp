@@ -7602,13 +7602,6 @@ public:
   constexpr operator LogCategoryRaw() const { return m_category; }
 
   /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_category != 0; }
-
-  /**
    * Set the priority of a particular log category.
    *
    * @param priority the LogPriority to assign.
@@ -9042,13 +9035,6 @@ public:
   constexpr operator PixelFormatRaw() const { return m_format; }
 
   /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_format != 0; }
-
-  /**
    * Retrieve the flags of an PixelFormat.
    *
    * This function is generally not needed directly by an app, which should use
@@ -10288,13 +10274,6 @@ public:
    * @returns the underlying ColorspaceRaw.
    */
   constexpr operator ColorspaceRaw() const { return m_cspace; }
-
-  /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_cspace != 0; }
 
   /**
    * Retrieve the type of a Colorspace.
@@ -30325,13 +30304,6 @@ public:
   constexpr operator AudioFormatRaw() const { return m_audioFormat; }
 
   /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_audioFormat != 0; }
-
-  /**
    * Retrieve the size, in bits, from an AudioFormat.
    *
    * For example, `AudioFormat.GetBitSize(AUDIO_S16)` returns 16.
@@ -35083,13 +35055,6 @@ public:
    * @returns the underlying KeycodeRaw.
    */
   constexpr operator KeycodeRaw() const { return m_keycode; }
-
-  /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
 
   /// Has Extended flag.
   constexpr bool IsExtended() const;
@@ -45349,13 +45314,6 @@ public:
   constexpr operator TrayMenuRaw() const { return m_trayMenu; }
 
   /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_trayMenu != 0; }
-
-  /**
    * Returns a list of entries in the menu, in order.
    *
    * @returns a nullptr-terminated list of entries within the given menu. The
@@ -46575,13 +46533,6 @@ public:
    * @returns the underlying DisplayID.
    */
   constexpr operator DisplayID() const { return m_displayID; }
-
-  /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_displayID != 0; }
 
   /**
    * Get a list of currently connected displays.

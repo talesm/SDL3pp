@@ -22,59 +22,55 @@
 > #undef KMOD_SCROLL
 > #undef KMOD_SHIFT
 > 
-172c191
-<   constexpr explicit operator bool() const { return m_keycode != 0; }
----
->   constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
-173a193
+166a186
 >   /// Has Extended flag.
-175a196
+168a189
 >   /// Has Scancode flag.
-220c241
+213c234
 < constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\r'
 ---
 > constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\\r'
-222c243
+215c236
 < constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\x1B'
 ---
 > constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\\x1B'
-224c245
+217c238
 < constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\b'
 ---
 > constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\\b'
-226c247
+219c240
 < constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\t'
 ---
 > constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\\t'
-296c317
+289c310
 < constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\'
 ---
 > constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\b'
-366c387
+359c380
 < constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\x7F'
 ---
 > constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\\x7F'
-368c389
+361c382
 < constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\xB1'
 ---
 > constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\\xB1'
-877c898
+870c891
 < constexpr bool SDLK_EXTENDED_MASK() { return ::SDLK_EXTENDED_MASK(); }
 ---
 > constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK; ///< EXTENDED_MASK
-881c902
+874c895
 <   return SDL::SDLK_EXTENDED_MASK(m_keycode);
 ---
 >   return m_keycode & SDLK_EXTENDED_MASK;
-884c905
+877c898
 < constexpr bool SDLK_SCANCODE_MASK() { return ::SDLK_SCANCODE_MASK(); }
 ---
 > constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK; ///< SCANCODE_MASK
-888c909
+881c902
 <   return SDL::SDLK_SCANCODE_MASK(m_keycode);
 ---
 >   return m_keycode & SDLK_SCANCODE_MASK;
-890a912,917
+883a905,910
 > /**
 >  * Transform scancode to keycode
 >  *

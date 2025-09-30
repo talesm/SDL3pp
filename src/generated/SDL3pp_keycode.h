@@ -164,13 +164,6 @@ public:
    */
   constexpr operator KeycodeRaw() const { return m_keycode; }
 
-  /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_keycode != 0; }
-
   constexpr bool IsExtended() const;
 
   constexpr bool IsScancode() const;

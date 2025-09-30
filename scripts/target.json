@@ -4548,19 +4548,6 @@
                 "body": "return m_category;"
               }
             },
-            "operator bool": {
-              "kind": "function",
-              "name": "operator bool",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "immutable": true,
-              "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
-              "hints": {
-                "body": "return m_category != 0;"
-              }
-            },
             "SetLogPriority": {
               "doc": "Set the priority of a particular log category.\n\n@param category the category to assign a priority to.\n@param priority the LogPriority to assign.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LogCategory.GetLogPriority\n@sa ResetLogPriorities\n@sa SetLogPriorities",
               "name": "SetLogPriority",
@@ -6405,19 +6392,6 @@
               "doc": "Unwraps to the underlying Display.\n\n@returns the underlying DisplayID.",
               "hints": {
                 "body": "return m_displayID;"
-              }
-            },
-            "operator bool": {
-              "kind": "function",
-              "name": "operator bool",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "immutable": true,
-              "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
-              "hints": {
-                "body": "return m_displayID != 0;"
               }
             },
             "GetAll": {
@@ -21413,19 +21387,6 @@
                 "body": "return m_format;"
               }
             },
-            "operator bool": {
-              "kind": "function",
-              "name": "operator bool",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "immutable": true,
-              "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
-              "hints": {
-                "body": "return m_format != 0;"
-              }
-            },
             "GetFlags": {
               "doc": "A macro to retrieve the flags of an PixelFormat.\n\nThis macro is generally not needed directly by an app, which should use\nspecific tests, like PixelFormat.IsFourCC, instead.\n\n@param format an PixelFormat to check.\n@returns the flags of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "GetFlags",
@@ -23391,19 +23352,6 @@
               "doc": "Unwraps to the underlying Colorspace.\n\n@returns the underlying ColorspaceRaw.",
               "hints": {
                 "body": "return m_cspace;"
-              }
-            },
-            "operator bool": {
-              "kind": "function",
-              "name": "operator bool",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "immutable": true,
-              "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
-              "hints": {
-                "body": "return m_cspace != 0;"
               }
             },
             "GetType": {
@@ -32851,19 +32799,6 @@
                 "body": "return m_audioFormat;"
               }
             },
-            "operator bool": {
-              "kind": "function",
-              "name": "operator bool",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "immutable": true,
-              "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
-              "hints": {
-                "body": "return m_audioFormat != 0;"
-              }
-            },
             "GetBitSize": {
               "doc": "Retrieve the size, in bits, from an AudioFormat.\n\nFor example, `AudioFormat.GetBitSize(AUDIO_S16)` returns 16.\n\n@param x an AudioFormat value.\n@returns data size in bits.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
               "name": "GetBitSize",
@@ -39227,19 +39162,6 @@
                 "body": "return m_keycode;"
               }
             },
-            "operator bool": {
-              "kind": "function",
-              "name": "operator bool",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "immutable": true,
-              "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
-              "hints": {
-                "body": "return m_keycode != 0;"
-              }
-            },
             "IsExtended": {
               "doc": "",
               "name": "IsExtended",
@@ -41788,19 +41710,6 @@
               "doc": "Unwraps to the underlying Scancode.\n\n@returns the underlying ScancodeRaw.",
               "hints": {
                 "body": "return m_scancode;"
-              }
-            },
-            "operator bool": {
-              "kind": "function",
-              "name": "operator bool",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "immutable": true,
-              "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
-              "hints": {
-                "body": "return m_scancode != 0;"
               }
             },
             "SetName": {
@@ -59210,19 +59119,6 @@
               "doc": "Unwraps to the underlying TrayMenu.\n\n@returns the underlying TrayMenuRaw.",
               "hints": {
                 "body": "return m_trayMenu;"
-              }
-            },
-            "operator bool": {
-              "kind": "function",
-              "name": "operator bool",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "immutable": true,
-              "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
-              "hints": {
-                "body": "return m_trayMenu != 0;"
               }
             },
             "GetEntries": {

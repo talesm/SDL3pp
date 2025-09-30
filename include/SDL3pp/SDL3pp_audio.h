@@ -314,13 +314,6 @@ public:
   constexpr operator AudioFormatRaw() const { return m_audioFormat; }
 
   /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_audioFormat != 0; }
-
-  /**
    * Retrieve the size, in bits, from an AudioFormat.
    *
    * For example, `AudioFormat.GetBitSize(AUDIO_S16)` returns 16.

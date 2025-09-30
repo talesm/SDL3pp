@@ -19,10 +19,10 @@
 >  * @sa TrayEntry.SetCallback
 >  * @sa TrayCallback
 >  */
-399,400d410
+392,393d403
 <    * @param count An optional pointer to obtain the number of entries in the
 <    *              menu.
-441a452,475
+434a445,468
 >   /**
 >    * Appends a tray entry.
 >    *
@@ -47,7 +47,7 @@
 >    * @sa TrayEntry.Remove
 >    * @sa TrayEntry.GetParent
 >    */
-716a751,763
+709a744,756
 >   /**
 >    * Sets a callback to be invoked when the entry is selected.
 >    *
@@ -61,17 +61,17 @@
 >    * @sa TrayMenu.GetEntries
 >    * @sa TrayMenu.InsertEntry
 >    */
-976,977d1022
+969,970d1015
 <  * @param count An optional pointer to obtain the number of entries in the
 <  *              menu.
-992c1037,1040
+985c1030,1033
 <   return SDL_GetTrayEntries(menu);
 ---
 >   int count;
 >   auto entries = SDL_GetTrayEntries(menu, &count);
 >   return std::span<TrayEntry>{reinterpret_cast<TrayEntry*>(entries),
 >                               size_t(count)};
-1378a1427,1439
+1371a1420,1432
 > 
 > inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 > {

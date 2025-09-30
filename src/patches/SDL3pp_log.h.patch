@@ -38,9 +38,9 @@
 >     : m_category(SDL_LogCategory(category))
 >   {
 >   }
-152d176
+145d169
 <    * @param category the category to assign a priority to.
-178a203,222
+171a196,215
 >   /**
 >    * Log an unformatted message with the specified priority.
 >    *
@@ -61,17 +61,17 @@
 >    * @sa LogVerbose()
 >    * @sa LogWarn()
 >    */
-181c225
+174c218
 <     static_assert(false, "Not implemented");
 ---
 >     SDL_LogMessage(m_category, priority, "%s", (const char*)(message));
-185c229
+178c222
 <    * Log a message with the specified category and priority.
 ---
 >    * Log a message with the specified priority.
-187d230
+180d223
 <    * @param category the category of the message.
-189,191c232,236
+182,184c225,229
 <    * @param fmt a printf() style message format string.
 <    * @param ... additional parameters matching % tokens in the **fmt** string,
 <    *            if any.
@@ -81,12 +81,12 @@
 >    * style message format string.
 >    * @param args additional parameters matching the `{}` tokens in the format
 >    * string, if any.
-197c242,243
+190c235,236
 <    * @sa Log
 ---
 >    * @cat formatted-string
 >    *
-215,219c261,265
+208,212c254,258
 <    * @param category the category of the message.
 <    * @param fmt a printf() style message format string.
 <    * @param ... additional parameters matching % tokens in the **fmt** string,
@@ -98,12 +98,12 @@
 >    * style message format string.
 >    * @param args additional parameters matching the `{}` tokens in the format
 >    * string, if any.
-224c270,271
+217c263,264
 <    * @sa Log
 ---
 >    * @cat formatted-string
 >    *
-241,244c288,292
+234,237c281,285
 <    * @param category the category of the message.
 <    * @param fmt a printf() style message format string.
 <    * @param ... additional parameters matching % tokens in the **fmt** string,
@@ -114,12 +114,12 @@
 >    * style message format string.
 >    * @param args additional parameters matching the `{}` tokens in the format
 >    * string, if any.
-250c298,299
+243c291,292
 <    * @sa Log
 ---
 >    * @cat formatted-string
 >    *
-265,268c314,318
+258,261c307,311
 <    * @param category the category of the message.
 <    * @param fmt a printf() style message format string.
 <    * @param ... additional parameters matching % tokens in the **fmt** string,
@@ -130,12 +130,12 @@
 >    * style message format string.
 >    * @param args additional parameters matching the `{}` tokens in the format
 >    * string, if any.
-274c324,325
+267c317,318
 <    * @sa Log
 ---
 >    * @cat formatted-string
 >    *
-290,293c341,345
+283,286c334,338
 <    * @param category the category of the message.
 <    * @param fmt a printf() style message format string.
 <    * @param ... additional parameters matching % tokens in the **fmt** string,
@@ -146,12 +146,12 @@
 >    * style message format string.
 >    * @param args additional parameters matching the `{}` tokens in the format
 >    * string, if any.
-299c351,352
+292c344,345
 <    * @sa Log
 ---
 >    * @cat formatted-string
 >    *
-315,318c368,372
+308,311c361,365
 <    * @param category the category of the message.
 <    * @param fmt a printf() style message format string.
 <    * @param ... additional parameters matching % tokens in the **fmt** string,
@@ -162,12 +162,12 @@
 >    * style message format string.
 >    * @param args additional parameters matching the `{}` tokens in the format
 >    * string, if any.
-324c378,379
+317c371,372
 <    * @sa Log
 ---
 >    * @cat formatted-string
 >    *
-340,343c395,399
+333,336c388,392
 <    * @param category the category of the message.
 <    * @param fmt a printf() style message format string.
 <    * @param ... additional parameters matching % tokens in the **fmt** string,
@@ -178,12 +178,12 @@
 >    * style message format string.
 >    * @param args additional parameters matching the `{}` tokens in the format
 >    * string, if any.
-349c405,406
+342c398,399
 <    * @sa Log
 ---
 >    * @cat formatted-string
 >    *
-365,368c422,426
+358,361c415,419
 <    * @param category the category of the message.
 <    * @param fmt a printf() style message format string.
 <    * @param ... additional parameters matching % tokens in the **fmt** string,
@@ -194,7 +194,7 @@
 >    * style message format string.
 >    * @param args additional parameters matching the `{}` tokens in the format
 >    * string, if any.
-374,381c432,441
+367,374c425,434
 <    * @sa Log
 <    * @sa LogCategory.LogDebug
 <    * @sa LogCategory.LogError
@@ -214,12 +214,12 @@
 >    * @sa LogCategory.LogUnformatted()
 >    * @sa LogCategory.LogTrace()
 >    * @sa LogCategory.LogVerbose()
-540c600,601
+533c593,594
 <  * Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.
 ---
 >  * Log an unformatted message with LOG_CATEGORY_APPLICATION and
 >  * LOG_PRIORITY_INFO.
-542,544c603,605
+535,537c596,598
 <  * @param fmt a printf() style message format string.
 <  * @param ... additional parameters matching % tokens in the `fmt` string, if
 <  *            any.
@@ -227,45 +227,45 @@
 >  * @param category the category of the message.
 >  * @param priority the priority of the message.
 >  * @param message string to output.
-549a611
+542a604
 >  * @sa Log
-555d616
+548d609
 <  * @sa LogUnformatted
-560,561c621,623
+553,554c614,616
 < template<class... ARGS>
 < inline void Log(std::string_view fmt, ARGS&&... args)
 ---
 > inline void LogUnformatted(LogCategory category,
 >                            LogPriority priority,
 >                            StringParam message)
-563c625
+556c618
 <   SDL_Log(fmt, args);
 ---
 >   SDL_LogMessage(category, priority, "%s", static_cast<const char*>(message));
-567c629,630
+560c622,623
 <  * Log a message with LOG_PRIORITY_TRACE.
 ---
 >  * Log an unformatted message with LOG_CATEGORY_APPLICATION and
 >  * LOG_PRIORITY_INFO.
-569,572c632
+562,565c625
 <  * @param category the category of the message.
 <  * @param fmt a printf() style message format string.
 <  * @param ... additional parameters matching % tokens in the **fmt** string,
 <  *            if any.
 ---
 >  * @param message string to output.
-584d643
+577d636
 <  * @sa LogUnformatted
-589,590c648
+582,583c641
 < template<class... ARGS>
 < inline void LogTrace(LogCategory category, std::string_view fmt, ARGS&&... args)
 ---
 > inline void LogUnformatted(StringParam message)
-592c650
+585c643
 <   SDL_LogTrace(category, fmt, args);
 ---
 >   SDL_Log("%s", static_cast<const char*>(message));
-595c653,681
+588c646,674
 < inline void LogCategory::LogTrace(std::string_view fmt, ARGS&&... args) const
 ---
 > /**
@@ -297,222 +297,222 @@
 >  */
 > template<class... ARGS>
 > inline void Log(std::string_view fmt, ARGS&&... args)
-597c683
+590c676
 <   SDL::LogTrace(m_category, fmt, args);
 ---
 >   LOG_CATEGORY_APPLICATION.LogInfo(fmt, std::forward<ARGS>(args)...);
-601c687
+594c680
 <  * Log a message with LOG_PRIORITY_VERBOSE.
 ---
 >  * Log a message with the specified category and priority.
-603a690
+596a683
 >  * @param priority the priority of the message.
-617d703
+610d696
 <  * @sa LogCategory.LogMessage
-618a705,706
+611a698,699
 >  * @sa LogCategory.LogTrace
 >  * @sa LogCategory.LogVerbose
-622c710,711
+615c703,704
 < inline void LogVerbose(LogCategory category,
 ---
 > inline void LogMessage(LogCategory category,
 >                        LogPriority priority,
-624c713
+617c706
 <                        ARGS&&... args)
 ---
 >                        ARGS... args)
-626c715,716
+619c708,709
 <   SDL_LogVerbose(category, fmt, args);
 ---
 >   LogUnformatted(
 >     category, priority, std::vformat(fmt, std::make_format_args(args...)));
-629c719,722
+622c712,715
 < inline void LogCategory::LogVerbose(std::string_view fmt, ARGS&&... args) const
 ---
 > template<class... ARGS>
 > inline void LogCategory::LogMessage(LogPriority priority,
 >                                     std::string_view fmt,
 >                                     ARGS... args) const
-631c724
+624c717
 <   SDL::LogVerbose(m_category, fmt, args);
 ---
 >   SDL::LogMessage(m_category, priority, fmt, args...);
-635c728
+628c721
 <  * Log a message with LOG_PRIORITY_DEBUG.
 ---
 >  * Log a message with LOG_PRIORITY_TRACE.
-647a741
+640a734
 >  * @sa LogCategory.LogDebug
-657c751
+650c744
 < inline void LogDebug(LogCategory category, std::string_view fmt, ARGS&&... args)
 ---
 > inline void LogTrace(LogCategory category, std::string_view fmt, ARGS&&... args)
-659c753
+652c746
 <   SDL_LogDebug(category, fmt, args);
 ---
 >   LogMessage(category, LOG_PRIORITY_TRACE, fmt, args...);
-662c756,757
+655c749,750
 < inline void LogCategory::LogDebug(std::string_view fmt, ARGS&&... args) const
 ---
 > template<class... ARGS>
 > inline void LogCategory::LogTrace(std::string_view fmt, ARGS&&... args) const
-664c759
+657c752
 <   SDL::LogDebug(m_category, fmt, args);
 ---
 >   SDL::LogTrace(m_category, fmt, args...);
-668c763
+661c756
 <  * Log a message with LOG_PRIORITY_INFO.
 ---
 >  * Log a message with LOG_PRIORITY_VERBOSE.
-682a778
+675a771
 >  * @sa LogCategory.LogInfo
-685,686d780
+678,679d773
 <  * @sa LogCategory.LogTrace
 <  * @sa LogCategory.LogVerbose
-690c784,786
+683c777,779
 < inline void LogInfo(LogCategory category, std::string_view fmt, ARGS&&... args)
 ---
 > inline void LogVerbose(LogCategory category,
 >                        std::string_view fmt,
 >                        ARGS&&... args)
-692c788
+685c781
 <   SDL_LogInfo(category, fmt, args);
 ---
 >   LogMessage(category, LOG_PRIORITY_VERBOSE, fmt, args...);
-695c791,792
+688c784,785
 < inline void LogCategory::LogInfo(std::string_view fmt, ARGS&&... args) const
 ---
 > template<class... ARGS>
 > inline void LogCategory::LogVerbose(std::string_view fmt, ARGS&&... args) const
-697c794
+690c787
 <   SDL::LogInfo(m_category, fmt, args);
 ---
 >   SDL::LogVerbose(m_category, fmt, args...);
-701c798
+694c791
 <  * Log a message with LOG_PRIORITY_WARN.
 ---
 >  * Log a message with LOG_PRIORITY_DEBUG.
-714d810
+707d803
 <  * @sa LogCategory.LogDebug
-720a817
+713a810
 >  * @sa LogCategory.LogWarn
-723c820
+716c813
 < inline void LogWarn(LogCategory category, std::string_view fmt, ARGS&&... args)
 ---
 > inline void LogDebug(LogCategory category, std::string_view fmt, ARGS&&... args)
-725c822
+718c815
 <   SDL_LogWarn(category, fmt, args);
 ---
 >   LogMessage(category, LOG_PRIORITY_DEBUG, fmt, args...);
-728c825,826
+721c818,819
 < inline void LogCategory::LogWarn(std::string_view fmt, ARGS&&... args) const
 ---
 > template<class... ARGS>
 > inline void LogCategory::LogDebug(std::string_view fmt, ARGS&&... args) const
-730c828
+723c821
 <   SDL::LogWarn(m_category, fmt, args);
 ---
 >   SDL::LogDebug(m_category, fmt, args...);
-734c832
+727c825
 <  * Log a message with LOG_PRIORITY_ERROR.
 ---
 >  * Log a message with LOG_PRIORITY_INFO.
-748c846
+741c839
 <  * @sa LogCategory.LogInfo
 ---
 >  * @sa LogCategory.LogError
-756c854
+749c847
 < inline void LogError(LogCategory category, std::string_view fmt, ARGS&&... args)
 ---
 > inline void LogInfo(LogCategory category, std::string_view fmt, ARGS&&... args)
-758c856
+751c849
 <   SDL_LogError(category, fmt, args);
 ---
 >   LogMessage(category, LOG_PRIORITY_INFO, fmt, args...);
-761c859,860
+754c852,853
 < inline void LogCategory::LogError(std::string_view fmt, ARGS&&... args) const
 ---
 > template<class... ARGS>
 > inline void LogCategory::LogInfo(std::string_view fmt, ARGS&&... args) const
-763c862
+756c855
 <   SDL::LogError(m_category, fmt, args);
 ---
 >   SDL::LogInfo(m_category, fmt, args...);
-767c866
+760c859
 <  * Log a message with LOG_PRIORITY_CRITICAL.
 ---
 >  * Log a message with LOG_PRIORITY_WARN.
-778a878
+771a871
 >  * @sa LogCategory.LogCritical
-786d885
+779d878
 <  * @sa LogCategory.LogWarn
-789,791c888
+782,784c881
 < inline void LogCritical(LogCategory category,
 <                         std::string_view fmt,
 <                         ARGS&&... args)
 ---
 > inline void LogWarn(LogCategory category, std::string_view fmt, ARGS&&... args)
-793c890
+786c883
 <   SDL_LogCritical(category, fmt, args);
 ---
 >   LogMessage(category, SDL_LOG_PRIORITY_WARN, fmt, args...);
-796c893,894
+789c886,887
 < inline void LogCategory::LogCritical(std::string_view fmt, ARGS&&... args) const
 ---
 > template<class... ARGS>
 > inline void LogCategory::LogWarn(std::string_view fmt, ARGS&&... args) const
-798c896
+791c889
 <   SDL::LogCritical(m_category, fmt, args);
 ---
 >   SDL::LogWarn(m_category, fmt, args...);
-802c900
+795c893
 <  * Log a message with the specified category and priority.
 ---
 >  * Log a message with LOG_PRIORITY_ERROR.
-805d902
+798d895
 <  * @param priority the priority of the message.
-817d913
+810d906
 <  * @sa LogCategory.LogError
-818a915
+811a908
 >  * @sa LogCategory.LogMessage
-825,828c922
+818,821c915
 < inline void LogMessage(LogCategory category,
 <                        LogPriority priority,
 <                        std::string_view fmt,
 <                        ARGS... args)
 ---
 > inline void LogError(LogCategory category, std::string_view fmt, ARGS&&... args)
-830c924
+823c917
 <   SDL_LogMessage(category, priority, fmt, args);
 ---
 >   LogMessage(category, SDL_LOG_PRIORITY_ERROR, fmt, args...);
-833,835c927,928
+826,828c920,921
 < inline void LogCategory::LogMessage(LogPriority priority,
 <                                     std::string_view fmt,
 <                                     ARGS... args) const
 ---
 > template<class... ARGS>
 > inline void LogCategory::LogError(std::string_view fmt, ARGS&&... args) const
-837c930
+830c923
 <   SDL::LogMessage(m_category, priority, fmt, args);
 ---
 >   SDL::LogError(m_category, fmt, args...);
-841c934
+834c927
 <  * Log a message with the specified category and priority.
 ---
 >  * Log a message with LOG_PRIORITY_CRITICAL.
-844d936
+837d929
 <  * @param priority the priority of the message.
-846c938,939
+839c931,932
 <  * @param ap a variable argument list.
 ---
 >  * @param ... additional parameters matching % tokens in the **fmt** string,
 >  *            if any.
-853d945
+846d938
 <  * @sa LogCategory.LogCritical
-857a950
+850a943
 >  * @sa LogUnformatted
-862c955,967
+855c948,960
 < inline void LogUnformatted(StringParam message) { SDL_LogMessageV(message); }
 ---
 > template<class... ARGS>
@@ -528,30 +528,30 @@
 > {
 >   SDL::LogCritical(m_category, fmt, args...);
 > }
-888,889d992
+881,882d985
 <  * @param userdata what was passed as `userdata` to
 <  *                 SetLogOutputFunction().
-894a998,1000
+887a991,993
 >  *
 >  * @cat listener-callback
 >  *
-919,920c1025
+912,913c1018
 <  * @param callback an LogOutputFunction filled in with the current log
 <  *                 callback.
 ---
 >  * @param callback an LogOutputFunction filled in with the current log callback.
-939,942c1044
+932,935c1037
 <  * @param callback an LogOutputFunction filled in with the current log
 <  *                 callback.
 <  * @param userdata a pointer filled in with the pointer that is passed to
 <  *                 `callback`.
 ---
 >  * @returns the LogOutputCB currently set
-947a1050,1052
+940a1043,1045
 >  * @cat listener-callback
 >  *
 >  * @sa listener-callback
-953c1058,1070
+946c1051,1063
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
@@ -567,22 +567,22 @@
 >   return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
 >     cb(userdata, c, p, m);
 >   };
-967a1085
+960a1078
 >  * @sa ResetLogOutputFunction
-971c1089,1090
+964c1082,1083
 <   SDL_SetLogOutputFunction(callback, userdata);
 ---
 >   UniqueCallbackWrapper<LogOutputCB>::erase();
 >   return SDL_SetLogOutputFunction(callback, userdata);
-978d1096
+971d1089
 <  * @param userdata a pointer that is passed to `callback`.
-983a1102,1104
+976a1095,1097
 >  * @cat listener-callback
 >  *
 >  * @sa listener-callback
-985a1107
+978a1100
 >  * @sa ResetLogOutputFunction
-989c1111,1117
+982c1104,1110
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
@@ -592,7 +592,7 @@
 >       return Wrapper::Call(userdata, LogCategory{category}, priority, message);
 >     },
 >     Wrapper::Wrap(std::move(callback)));
-991a1120,1129
+984a1113,1122
 > /**
 >  * Replace the current log output function with the default one
 >  *
@@ -603,7 +603,7 @@
 >  * @sa GetDefaultLogOutputFunction
 >  * @sa GetLogOutputFunction
 >  */
-994c1132
+987c1125
 <   static_assert(false, "Not implemented");
 ---
 >   return SetLogOutputFunction(GetDefaultLogOutputFunction(), nullptr);

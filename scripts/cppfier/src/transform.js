@@ -628,7 +628,7 @@ function expandTypes(sourceEntries, file, context) {
       doc: `Unwraps to the underlying ${sourceType}.\n\n@returns the underlying ${rawType}.`,
       hints: { body: `return ${attribute};` }
     });
-    if (wrapper.invalidState !== false) insertEntry(entries, {
+    if (wrapper.invalidState !== false && isStruct) insertEntry(entries, {
       kind: "function",
       name: "operator bool",
       type: "",

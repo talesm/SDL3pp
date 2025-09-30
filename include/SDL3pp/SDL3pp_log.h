@@ -165,13 +165,6 @@ public:
   constexpr operator LogCategoryRaw() const { return m_category; }
 
   /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_category != 0; }
-
-  /**
    * Set the priority of a particular log category.
    *
    * @param priority the LogPriority to assign.

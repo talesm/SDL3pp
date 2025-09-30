@@ -479,13 +479,6 @@ public:
   constexpr operator PixelFormatRaw() const { return m_format; }
 
   /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_format != 0; }
-
-  /**
    * Retrieve the flags of an PixelFormat.
    *
    * This function is generally not needed directly by an app, which should use
@@ -1725,13 +1718,6 @@ public:
    * @returns the underlying ColorspaceRaw.
    */
   constexpr operator ColorspaceRaw() const { return m_cspace; }
-
-  /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_cspace != 0; }
 
   /**
    * Retrieve the type of a Colorspace.

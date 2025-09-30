@@ -183,13 +183,6 @@ public:
    */
   constexpr operator KeycodeRaw() const { return m_keycode; }
 
-  /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
-
   /// Has Extended flag.
   constexpr bool IsExtended() const;
 
