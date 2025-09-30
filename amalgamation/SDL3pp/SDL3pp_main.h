@@ -207,13 +207,10 @@ inline void GDKSuspendComplete() { SDL_GDKSuspendComplete(); }
  * @param APPVERSION the app version. If nullptr defaults to "1.0".
  * @param APPID The app id. If nullptr it defaults to APPNAME.
  */
-#define SDL3PP_DEFINE_CALLBACKS(CLASS, APPNAME, APPVERSION, APPID)             \
+#define SDL3PP_DEFINE_CALLBACKS(CLASS)                                         \
   static_assert(SDL::HasIterateFunction<CLASS>, "Main class not compatible");  \
   inline SDL::AppResult SDL_AppInit(void** appstate, int argc, char* argv[])   \
   {                                                                            \
-    if (APPNAME) {                                                             \
-      SDL::SetAppMetadata(APPNAME, APPVERSION ?: "1.0", APPID ?: APPNAME);     \
-    }                                                                          \
     return SDL::InitClass(reinterpret_cast<CLASS**>(appstate),                 \
                           SDL::AppArgs{argv, size_t(argc)});                   \
   }                                                                            \
