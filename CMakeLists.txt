@@ -61,26 +61,15 @@ set(SDL3PP_AMALGAMATION_FILENAME "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp.h")
 set(SDL3PP_AMALGAMATION_MAIN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_main.h")
 file(GLOB SDL3PP_WRAPPED_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include/SDL3pp/*.h)
 
-set(SDL3PP_AMALGAMATION_LEGACY_DIR ${SDL3PP_AMALGAMATION_DIR}/legacy)
-set(SDL3PP_AMALGAMATION_LEGACY_FILENAME "${SDL3PP_AMALGAMATION_LEGACY_DIR}/SDL3pp/SDL3pp.h")
-set(SDL3PP_AMALGAMATION_LEGACY_MAIN "${SDL3PP_AMALGAMATION_LEGACY_DIR}/SDL3pp/SDL3pp_main.h")
-file(GLOB SDL3PP_WRAPPED_LEGACY_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include/legacy/SDL3pp/*.h)
-
 add_library(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_MAIN})
 target_include_directories(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_DIR})
 target_link_libraries(SDL3pp_amalgamated INTERFACE ${SDL3PP_DEPENDENCIES})
 
-add_library(SDL3pp_legacy_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_LEGACY_FILENAME} ${SDL3PP_AMALGAMATION_LEGACY_MAIN})
-target_include_directories(SDL3pp_legacy_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_LEGACY_DIR})
-target_link_libraries(SDL3pp_legacy_amalgamated INTERFACE ${SDL3PP_DEPENDENCIES})
-
 option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" ON)
 
 if (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
-    add_library(SDL3pp_legacy ALIAS SDL3pp_legacy_amalgamated)
     add_library(SDL3pp ALIAS SDL3pp_amalgamated)
 else (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
-    add_library(SDL3pp_legacy ALIAS SDL3pp_legacy_lib)
     add_library(SDL3pp ALIAS SDL3pp_lib)
 endif(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
 
@@ -102,11 +91,6 @@ add_subdirectory(examples)
 add_library(test_main OBJECT test/doctest.cpp test/doctest.h)
 target_include_directories(test_main INTERFACE test/)
 enable_testing()
-
-file(GLOB LEGACY_UNITTEST CONFIGURE_DEPENDS test/legacy/SDL3pp*.cpp)
-add_executable(SDL3pp_unitTests_legacy ${LEGACY_UNITTEST})
-target_link_libraries(SDL3pp_unitTests_legacy PRIVATE SDL3pp_legacy_lib test_main)
-# add_test(NAME SDL3pp_unitTests_legacy COMMAND SDL3pp_unitTests_legacy)
 
 file(GLOB UNITTEST CONFIGURE_DEPENDS test/SDL3pp*.cpp)
 add_executable(SDL3pp_unitTests ${UNITTEST})
