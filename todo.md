@@ -1,39 +1,31 @@
-Todo for some stability
-=======================
+Todo for simplifying
+====================
 
-Things for a version 0.1
+Things for a version 0.2
 
-- [x] C++ helpers and shims to better express the API intent:
-  - [x] Implement [resource management](https://talesm.github.io/SDL3pp/group__CategoryObjectWrapper.html);
-  - [x] Implement [helper](https://talesm.github.io/SDL3pp/classSDL_1_1StringParam.html)
-    to transform `std::string`, `std::string_view` into `const char *`;
-  - [x] Implement [helpers](https://talesm.github.io/SDL3pp/group__CategoryCallbackWrapper.html)
-    to use C++ lambdas and function objects as [callbacks](https://talesm.github.io/SDL3pp/callback.html)
-    on SDL;
-  - [x] Wrap [RAII interface to SDL allocated pointers](https://talesm.github.io/SDL3pp/group__CategoryOwnPtr.html)
-    returned by some SDL APIs;
-  - [x] Implement [Optional reference-like type](https://talesm.github.io/SDL3pp/classSDL_1_1OptionalRef.html)
-    for simulating an `std::optional<T&>`;
-  - [x] Implement [span-like type](https://talesm.github.io/SDL3pp/classSDL_1_1SpanRef.html)
-    compatible with our empty-derived structs we use to add methods to things
-    like SDL_Rect.
-- [x] Wrap SDL (categories)[https://wiki.libsdl.org/SDL3/APIByCategory]:
-  - [x] Basics;
-  - [x] Video;
-  - [x] Event handling:
-    - [x] Event handling;
-    - [x] Keyboard support, keycodes and scancodes;
-    - [x] Mouse support.
-  - [x] Audio;
-  - [x] Time;
-  - [x] File I/O;
-    - [x] Filesystem Access;
-    - [x] I/O Streams.
-  - [x] Platform and CPU Information;
-  - [x] Additional Functionality;
-- [x] Satellites libraries:
-  - [x] SDL_image;
-  - [x] SDL_ttf;
+- [x] Simplify resource model, no more confusion of Base, Owner, Shared!
+  - [x] The main resource has all methods (eg Surface for SDL_Surface);
+  - [x] Resources with refcount will increment it on copy;
+  - [x] Resources without refcount have the copy disallowed;
+    - [x] a derived type with Ref suffix allows copy, but won't destroy the
+      resource;
+  - [x] on weak resources, it instead allows copy, but won't destroy the
+    resource;
+    - [x] a derived type with Scope suffix does not allow copy and destroy the
+      resource;
+  - [x] a class Param suffix (like WindowParam) allows taking both wrapped and
+    unwrapped resource as parameters seamlessly;
+- [x] Wrap both resources and wrappers now have the underlying type aliased
+  with the Raw suffix (as in WindowRaw);
+- [x] Keep freestanding versions of methods-like functions alongside the class
+  function versions;
+- [ ] Automatically detect struct-like and classify as either resources or
+  wrappers;
+  - [x] wrap functions having the struct as first parameter automatically;
+  - [ ] detect refcount as shared;
+  - [x] Wrap structs with methods looking like *Destroy* function as resource;
+  - [ ] wrap others as wrappers;
+- [ ] Basic wrapping all missing API.
 
 Backlog
 =======
@@ -47,17 +39,14 @@ Backlog
     - [ ] Sensors;
     - [ ] HIDAPI.
   - [ ] GPU;
-  - [ ] Threads;
   - [ ] File I/O;
-    - [ ] Storage Abstraction;
     - [ ] Async I/O.
 - [ ] Satellites libraries:
   - [ ] SDL_mixer;
   - [ ] SDL_net
   - [ ] SDL_gfx??
-  - [ ] SDL_rtf??
 
 Think about
 ===========
 
-- Model shared_ptr and weak ptr on resources
+- Build and test on github
