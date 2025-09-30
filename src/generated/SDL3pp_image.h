@@ -23,6 +23,7 @@ namespace SDL {
 // Forward decl
 struct Animation;
 
+/// Alias to raw representation for Animation.
 using AnimationRaw = IMG_Animation*;
 
 // Forward decl

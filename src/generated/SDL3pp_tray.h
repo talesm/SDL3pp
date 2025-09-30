@@ -22,6 +22,7 @@ namespace SDL {
 // Forward decl
 struct Tray;
 
+/// Alias to raw representation for Tray.
 using TrayRaw = SDL_Tray*;
 
 // Forward decl
@@ -54,11 +55,13 @@ struct TrayParam
   constexpr operator TrayRaw() const { return value; }
 };
 
+/// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu;
 
 // Forward decl
 struct TrayEntry;
 
+/// Alias to raw representation for TrayEntry.
 using TrayEntryRaw = SDL_TrayEntry*;
 
 // Forward decl

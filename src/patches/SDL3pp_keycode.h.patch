@@ -2,7 +2,7 @@
 <  * @defgroup CategoryKeycode Category Keycode
 ---
 >  * @defgroup CategoryKeycode Keyboard Keycodes
-31a32,50
+32a33,51
 > // To remove clash with old names:
 > #undef KMOD_ALT
 > #undef KMOD_CAPS
@@ -22,55 +22,55 @@
 > #undef KMOD_SCROLL
 > #undef KMOD_SHIFT
 > 
-166a186
+167a187
 >   /// Has Extended flag.
-168a189
+169a190
 >   /// Has Scancode flag.
-213c234
+214c235
 < constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\r'
 ---
 > constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\\r'
-215c236
+216c237
 < constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\x1B'
 ---
 > constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\\x1B'
-217c238
+218c239
 < constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\b'
 ---
 > constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\\b'
-219c240
+220c241
 < constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\t'
 ---
 > constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\\t'
-289c310
+290c311
 < constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\'
 ---
 > constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\b'
-359c380
+360c381
 < constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\x7F'
 ---
 > constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\\x7F'
-361c382
+362c383
 < constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\xB1'
 ---
 > constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\\xB1'
-870c891
+871c892
 < constexpr bool SDLK_EXTENDED_MASK() { return ::SDLK_EXTENDED_MASK(); }
 ---
 > constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK; ///< EXTENDED_MASK
-874c895
+875c896
 <   return SDL::SDLK_EXTENDED_MASK(m_keycode);
 ---
 >   return m_keycode & SDLK_EXTENDED_MASK;
-877c898
+878c899
 < constexpr bool SDLK_SCANCODE_MASK() { return ::SDLK_SCANCODE_MASK(); }
 ---
 > constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK; ///< SCANCODE_MASK
-881c902
+882c903
 <   return SDL::SDLK_SCANCODE_MASK(m_keycode);
 ---
 >   return m_keycode & SDLK_SCANCODE_MASK;
-883a905,910
+884a906,911
 > /**
 >  * Transform scancode to keycode
 >  *

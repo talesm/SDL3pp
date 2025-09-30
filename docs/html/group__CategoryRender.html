@@ -122,9 +122,11 @@ Macros</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga387fa97019bb7ae65a44d06316b05f85" id="r_ga387fa97019bb7ae65a44d06316b05f85"><td class="memItemLeft" align="right" valign="top"><a id="ga387fa97019bb7ae65a44d06316b05f85" name="ga387fa97019bb7ae65a44d06316b05f85"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::RendererRaw</b> = SDL_Renderer *</td></tr>
+<tr class="memdesc:ga387fa97019bb7ae65a44d06316b05f85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1Renderer.html" title="A structure representing rendering state.">Renderer</a>. <br /></td></tr>
 <tr class="separator:ga387fa97019bb7ae65a44d06316b05f85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa34d28105474337a3ad861838f252d41" id="r_gaa34d28105474337a3ad861838f252d41"><td class="memItemLeft" align="right" valign="top"><a id="gaa34d28105474337a3ad861838f252d41" name="gaa34d28105474337a3ad861838f252d41"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::TextureRaw</b> = SDL_Texture *</td></tr>
+<tr class="memdesc:gaa34d28105474337a3ad861838f252d41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1Texture.html" title="An efficient driver-specific representation of pixel data.">Texture</a>. <br /></td></tr>
 <tr class="separator:gaa34d28105474337a3ad861838f252d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4b86011ede078f9ba75274ed30df602b" id="r_ga4b86011ede078f9ba75274ed30df602b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b">SDL::Vertex</a> = SDL_Vertex</td></tr>
 <tr class="memdesc:ga4b86011ede078f9ba75274ed30df602b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertex structure.  <br /></td></tr>
@@ -144,7 +146,7 @@ Functions</h2></td></tr>
 <tr class="memitem:gaec060bae8c84c9565bf316e335b36c5a" id="r_gaec060bae8c84c9565bf316e335b36c5a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaec060bae8c84c9565bf316e335b36c5a">SDL::GetRenderDriver</a> (int index)</td></tr>
 <tr class="memdesc:gaec060bae8c84c9565bf316e335b36c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to get the name of a built in 2D rendering driver.  <br /></td></tr>
 <tr class="separator:gaec060bae8c84c9565bf316e335b36c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2318fa96305ed7eece28f422fb325250" id="r_ga2318fa96305ed7eece28f422fb325250"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classSDL_1_1Window.html">Window</a>, <a class="el" href="classSDL_1_1Renderer.html">Renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga2318fa96305ed7eece28f422fb325250">SDL::CreateWindowAndRenderer</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> title, const PointRaw &amp;size, <a class="el" href="group__CategoryVideo.html#ga21914121872e1003b92ca3d70161c93a">WindowFlags</a> window_flags=0)</td></tr>
+<tr class="memitem:ga2318fa96305ed7eece28f422fb325250" id="r_ga2318fa96305ed7eece28f422fb325250"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classSDL_1_1Window.html">Window</a>, <a class="el" href="classSDL_1_1Renderer.html">Renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga2318fa96305ed7eece28f422fb325250">SDL::CreateWindowAndRenderer</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> title, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size, <a class="el" href="group__CategoryVideo.html#ga21914121872e1003b92ca3d70161c93a">WindowFlags</a> window_flags=0)</td></tr>
 <tr class="memdesc:ga2318fa96305ed7eece28f422fb325250"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a window and default renderer.  <br /></td></tr>
 <tr class="separator:ga2318fa96305ed7eece28f422fb325250"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabfaecc9a2291288e30b01b09688f8f68" id="r_gabfaecc9a2291288e30b01b09688f8f68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Renderer.html">Renderer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gabfaecc9a2291288e30b01b09688f8f68">SDL::CreateRenderer</a> (<a class="el" href="structSDL_1_1WindowParam.html">WindowParam</a> window, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
@@ -171,7 +173,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga24e05cc45d5a27ea8c5f93cbffb7aaef" id="r_ga24e05cc45d5a27ea8c5f93cbffb7aaef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga24e05cc45d5a27ea8c5f93cbffb7aaef">SDL::GetCurrentRenderOutputSize</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, int *w, int *h)</td></tr>
 <tr class="memdesc:ga24e05cc45d5a27ea8c5f93cbffb7aaef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current output size in pixels of a rendering context.  <br /></td></tr>
 <tr class="separator:ga24e05cc45d5a27ea8c5f93cbffb7aaef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac964ba24f5f884ad520b26f47581ea1c" id="r_gac964ba24f5f884ad520b26f47581ea1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac964ba24f5f884ad520b26f47581ea1c">SDL::CreateTexture</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> access, const PointRaw &amp;size)</td></tr>
+<tr class="memitem:gac964ba24f5f884ad520b26f47581ea1c" id="r_gac964ba24f5f884ad520b26f47581ea1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac964ba24f5f884ad520b26f47581ea1c">SDL::CreateTexture</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> access, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size)</td></tr>
 <tr class="memdesc:gac964ba24f5f884ad520b26f47581ea1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture for a rendering context.  <br /></td></tr>
 <tr class="separator:gac964ba24f5f884ad520b26f47581ea1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga532c55067fb3fdbb6e07026abcb0a518" id="r_ga532c55067fb3fdbb6e07026abcb0a518"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga532c55067fb3fdbb6e07026abcb0a518">SDL::CreateTextureFromSurface</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface)</td></tr>
@@ -225,13 +227,13 @@ Functions</h2></td></tr>
 <tr class="memitem:gaa0845387a5f485079b1116407595ec4f" id="r_gaa0845387a5f485079b1116407595ec4f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaa0845387a5f485079b1116407595ec4f">SDL::GetTextureScaleMode</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture)</td></tr>
 <tr class="memdesc:gaa0845387a5f485079b1116407595ec4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the scale mode used for texture scale operations.  <br /></td></tr>
 <tr class="separator:gaa0845387a5f485079b1116407595ec4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga153e1827b16b7332ebc9764965db7973" id="r_ga153e1827b16b7332ebc9764965db7973"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga153e1827b16b7332ebc9764965db7973">SDL::UpdateTexture</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect, const void *pixels, int pitch)</td></tr>
+<tr class="memitem:ga153e1827b16b7332ebc9764965db7973" id="r_ga153e1827b16b7332ebc9764965db7973"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga153e1827b16b7332ebc9764965db7973">SDL::UpdateTexture</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect, const void *pixels, int pitch)</td></tr>
 <tr class="memdesc:ga153e1827b16b7332ebc9764965db7973"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the given texture rectangle with new pixel data.  <br /></td></tr>
 <tr class="separator:ga153e1827b16b7332ebc9764965db7973"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga893828aac3404a4f3c20100f16ede37a" id="r_ga893828aac3404a4f3c20100f16ede37a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga893828aac3404a4f3c20100f16ede37a">SDL::UpdateYUVTexture</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Yplane, int Ypitch, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Uplane, int Upitch, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Vplane, int Vpitch)</td></tr>
+<tr class="memitem:ga893828aac3404a4f3c20100f16ede37a" id="r_ga893828aac3404a4f3c20100f16ede37a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga893828aac3404a4f3c20100f16ede37a">SDL::UpdateYUVTexture</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Yplane, int Ypitch, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Uplane, int Upitch, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Vplane, int Vpitch)</td></tr>
 <tr class="memdesc:ga893828aac3404a4f3c20100f16ede37a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a rectangle within a planar YV12 or IYUV texture with new pixel data.  <br /></td></tr>
 <tr class="separator:ga893828aac3404a4f3c20100f16ede37a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaeb0a7dbfcefc0385930759fd174a1488" id="r_gaeb0a7dbfcefc0385930759fd174a1488"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaeb0a7dbfcefc0385930759fd174a1488">SDL::UpdateNVTexture</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Yplane, int Ypitch, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *UVplane, int UVpitch)</td></tr>
+<tr class="memitem:gaeb0a7dbfcefc0385930759fd174a1488" id="r_gaeb0a7dbfcefc0385930759fd174a1488"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaeb0a7dbfcefc0385930759fd174a1488">SDL::UpdateNVTexture</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Yplane, int Ypitch, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *UVplane, int UVpitch)</td></tr>
 <tr class="memdesc:gaeb0a7dbfcefc0385930759fd174a1488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a rectangle within a planar NV12 or NV21 texture with new pixels.  <br /></td></tr>
 <tr class="separator:gaeb0a7dbfcefc0385930759fd174a1488"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaddbafe46e08dd1004807397204803185" id="r_gaddbafe46e08dd1004807397204803185"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaddbafe46e08dd1004807397204803185">SDL::LockTexture</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect, void **pixels, int *pitch)</td></tr>
@@ -249,7 +251,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga43d2ba130f7ca91db24e0272cb37391d" id="r_ga43d2ba130f7ca91db24e0272cb37391d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga43d2ba130f7ca91db24e0272cb37391d">SDL::GetRenderTarget</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer)</td></tr>
 <tr class="memdesc:ga43d2ba130f7ca91db24e0272cb37391d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current render target.  <br /></td></tr>
 <tr class="separator:ga43d2ba130f7ca91db24e0272cb37391d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaec2034e730b34b200259bb65e3f6dfab" id="r_gaec2034e730b34b200259bb65e3f6dfab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaec2034e730b34b200259bb65e3f6dfab">SDL::SetRenderLogicalPresentation</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const PointRaw &amp;size, <a class="el" href="group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d">RendererLogicalPresentation</a> mode)</td></tr>
+<tr class="memitem:gaec2034e730b34b200259bb65e3f6dfab" id="r_gaec2034e730b34b200259bb65e3f6dfab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaec2034e730b34b200259bb65e3f6dfab">SDL::SetRenderLogicalPresentation</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size, <a class="el" href="group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d">RendererLogicalPresentation</a> mode)</td></tr>
 <tr class="memdesc:gaec2034e730b34b200259bb65e3f6dfab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a device-independent resolution and presentation mode for rendering.  <br /></td></tr>
 <tr class="separator:gaec2034e730b34b200259bb65e3f6dfab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae742e0813bf1b0ff9647142fa64d0b7b" id="r_gae742e0813bf1b0ff9647142fa64d0b7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gae742e0813bf1b0ff9647142fa64d0b7b">SDL::GetRenderLogicalPresentation</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, int *w, int *h, <a class="el" href="group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d">RendererLogicalPresentation</a> *mode)</td></tr>
@@ -258,16 +260,16 @@ Functions</h2></td></tr>
 <tr class="memitem:gae438d6e5060cbf0778b5bd802217ff73" id="r_gae438d6e5060cbf0778b5bd802217ff73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FRect.html">FRect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gae438d6e5060cbf0778b5bd802217ff73">SDL::GetRenderLogicalPresentationRect</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer)</td></tr>
 <tr class="memdesc:gae438d6e5060cbf0778b5bd802217ff73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the final presentation rectangle for rendering.  <br /></td></tr>
 <tr class="separator:gae438d6e5060cbf0778b5bd802217ff73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga57e1aa5e3c8b3e5d8fb860bbaa4cfe3f" id="r_ga57e1aa5e3c8b3e5d8fb860bbaa4cfe3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga57e1aa5e3c8b3e5d8fb860bbaa4cfe3f">SDL::RenderCoordinatesFromWindow</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const FPointRaw &amp;window_coord)</td></tr>
+<tr class="memitem:ga57e1aa5e3c8b3e5d8fb860bbaa4cfe3f" id="r_ga57e1aa5e3c8b3e5d8fb860bbaa4cfe3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga57e1aa5e3c8b3e5d8fb860bbaa4cfe3f">SDL::RenderCoordinatesFromWindow</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;window_coord)</td></tr>
 <tr class="memdesc:ga57e1aa5e3c8b3e5d8fb860bbaa4cfe3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a point in render coordinates when given a point in window coordinates.  <br /></td></tr>
 <tr class="separator:ga57e1aa5e3c8b3e5d8fb860bbaa4cfe3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga42180394a95962c4007abfff9841afa2" id="r_ga42180394a95962c4007abfff9841afa2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga42180394a95962c4007abfff9841afa2">SDL::RenderCoordinatesToWindow</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const FPointRaw &amp;coord)</td></tr>
+<tr class="memitem:ga42180394a95962c4007abfff9841afa2" id="r_ga42180394a95962c4007abfff9841afa2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga42180394a95962c4007abfff9841afa2">SDL::RenderCoordinatesToWindow</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;coord)</td></tr>
 <tr class="memdesc:ga42180394a95962c4007abfff9841afa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a point in window coordinates when given a point in render coordinates.  <br /></td></tr>
 <tr class="separator:ga42180394a95962c4007abfff9841afa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga981bdb183266a90525c1c4fc2b935a6d" id="r_ga981bdb183266a90525c1c4fc2b935a6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga981bdb183266a90525c1c4fc2b935a6d">SDL::ConvertEventToRenderCoordinates</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">Event</a> *event)</td></tr>
 <tr class="memdesc:ga981bdb183266a90525c1c4fc2b935a6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the coordinates in an event to render coordinates.  <br /></td></tr>
 <tr class="separator:ga981bdb183266a90525c1c4fc2b935a6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga103af79036211e77dde432f2acdee26c" id="r_ga103af79036211e77dde432f2acdee26c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga103af79036211e77dde432f2acdee26c">SDL::SetRenderViewport</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect)</td></tr>
+<tr class="memitem:ga103af79036211e77dde432f2acdee26c" id="r_ga103af79036211e77dde432f2acdee26c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga103af79036211e77dde432f2acdee26c">SDL::SetRenderViewport</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect)</td></tr>
 <tr class="memdesc:ga103af79036211e77dde432f2acdee26c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the drawing area for rendering on the current target.  <br /></td></tr>
 <tr class="separator:ga103af79036211e77dde432f2acdee26c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga962017a3f89698cceeb5780118d2ac8a" id="r_ga962017a3f89698cceeb5780118d2ac8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga962017a3f89698cceeb5780118d2ac8a">SDL::GetRenderViewport</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer)</td></tr>
@@ -279,7 +281,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga00ced37b53a7f501a13be5ff35faf067" id="r_ga00ced37b53a7f501a13be5ff35faf067"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga00ced37b53a7f501a13be5ff35faf067">SDL::GetRenderSafeArea</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer)</td></tr>
 <tr class="memdesc:ga00ced37b53a7f501a13be5ff35faf067"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the safe area for rendering within the current viewport.  <br /></td></tr>
 <tr class="separator:ga00ced37b53a7f501a13be5ff35faf067"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga40e3cfab8008e040bcac7e53e4b5df9f" id="r_ga40e3cfab8008e040bcac7e53e4b5df9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga40e3cfab8008e040bcac7e53e4b5df9f">SDL::SetRenderClipRect</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect)</td></tr>
+<tr class="memitem:ga40e3cfab8008e040bcac7e53e4b5df9f" id="r_ga40e3cfab8008e040bcac7e53e4b5df9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga40e3cfab8008e040bcac7e53e4b5df9f">SDL::SetRenderClipRect</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect)</td></tr>
 <tr class="memdesc:ga40e3cfab8008e040bcac7e53e4b5df9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the clip rectangle for rendering on the specified target.  <br /></td></tr>
 <tr class="separator:ga40e3cfab8008e040bcac7e53e4b5df9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaca4e0a58a758f3dae5cfc1dbec62e8e5" id="r_gaca4e0a58a758f3dae5cfc1dbec62e8e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaca4e0a58a758f3dae5cfc1dbec62e8e5">SDL::GetRenderClipRect</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer)</td></tr>
@@ -288,16 +290,16 @@ Functions</h2></td></tr>
 <tr class="memitem:gaa4088d04743ce167ec4b96c95e6a78c4" id="r_gaa4088d04743ce167ec4b96c95e6a78c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaa4088d04743ce167ec4b96c95e6a78c4">SDL::RenderClipEnabled</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer)</td></tr>
 <tr class="memdesc:gaa4088d04743ce167ec4b96c95e6a78c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get whether clipping is enabled on the given render target.  <br /></td></tr>
 <tr class="separator:gaa4088d04743ce167ec4b96c95e6a78c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga12b8e8f4faa14c3ba22cac59faed59cd" id="r_ga12b8e8f4faa14c3ba22cac59faed59cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga12b8e8f4faa14c3ba22cac59faed59cd">SDL::SetRenderScale</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const FPointRaw &amp;scale)</td></tr>
+<tr class="memitem:ga12b8e8f4faa14c3ba22cac59faed59cd" id="r_ga12b8e8f4faa14c3ba22cac59faed59cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga12b8e8f4faa14c3ba22cac59faed59cd">SDL::SetRenderScale</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;scale)</td></tr>
 <tr class="memdesc:ga12b8e8f4faa14c3ba22cac59faed59cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the drawing scale for rendering on the current target.  <br /></td></tr>
 <tr class="separator:ga12b8e8f4faa14c3ba22cac59faed59cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8d3f9f3b5004c92884c64395edaff6af" id="r_ga8d3f9f3b5004c92884c64395edaff6af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga8d3f9f3b5004c92884c64395edaff6af">SDL::GetRenderScale</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, float *scaleX, float *scaleY)</td></tr>
 <tr class="memdesc:ga8d3f9f3b5004c92884c64395edaff6af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the drawing scale for the current target.  <br /></td></tr>
 <tr class="separator:ga8d3f9f3b5004c92884c64395edaff6af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga208d81f09b7e143ebf63e10217ac7758" id="r_ga208d81f09b7e143ebf63e10217ac7758"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga208d81f09b7e143ebf63e10217ac7758">SDL::SetRenderDrawColor</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, ColorRaw c)</td></tr>
+<tr class="memitem:ga208d81f09b7e143ebf63e10217ac7758" id="r_ga208d81f09b7e143ebf63e10217ac7758"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga208d81f09b7e143ebf63e10217ac7758">SDL::SetRenderDrawColor</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9">ColorRaw</a> c)</td></tr>
 <tr class="memdesc:ga208d81f09b7e143ebf63e10217ac7758"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the color used for drawing operations.  <br /></td></tr>
 <tr class="separator:ga208d81f09b7e143ebf63e10217ac7758"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6b3f1892829d3b6b4aedf57bcd9880de" id="r_ga6b3f1892829d3b6b4aedf57bcd9880de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga6b3f1892829d3b6b4aedf57bcd9880de">SDL::SetRenderDrawColorFloat</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const FColorRaw &amp;c)</td></tr>
+<tr class="memitem:ga6b3f1892829d3b6b4aedf57bcd9880de" id="r_ga6b3f1892829d3b6b4aedf57bcd9880de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga6b3f1892829d3b6b4aedf57bcd9880de">SDL::SetRenderDrawColorFloat</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const <a class="el" href="group__CategoryPixels.html#gadfaf5b77d5957860167740c745343e4e">FColorRaw</a> &amp;c)</td></tr>
 <tr class="memdesc:ga6b3f1892829d3b6b4aedf57bcd9880de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the color used for drawing operations (<a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a>, Line and Clear).  <br /></td></tr>
 <tr class="separator:ga6b3f1892829d3b6b4aedf57bcd9880de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadf6c7d19319a1ccbca0c40f5cdc8e7b0" id="r_gadf6c7d19319a1ccbca0c40f5cdc8e7b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gadf6c7d19319a1ccbca0c40f5cdc8e7b0">SDL::GetRenderDrawColor</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *r, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *g, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *b, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *a)</td></tr>
@@ -321,43 +323,43 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf6b8cf5a41f239ea890176f58223ae23" id="r_gaf6b8cf5a41f239ea890176f58223ae23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaf6b8cf5a41f239ea890176f58223ae23">SDL::RenderClear</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer)</td></tr>
 <tr class="memdesc:gaf6b8cf5a41f239ea890176f58223ae23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the current rendering target with the drawing color.  <br /></td></tr>
 <tr class="separator:gaf6b8cf5a41f239ea890176f58223ae23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae7f6b3c085529037e71221ef840ba5e7" id="r_gae7f6b3c085529037e71221ef840ba5e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gae7f6b3c085529037e71221ef840ba5e7">SDL::RenderPoint</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const FPointRaw &amp;p)</td></tr>
+<tr class="memitem:gae7f6b3c085529037e71221ef840ba5e7" id="r_gae7f6b3c085529037e71221ef840ba5e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gae7f6b3c085529037e71221ef840ba5e7">SDL::RenderPoint</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;p)</td></tr>
 <tr class="memdesc:gae7f6b3c085529037e71221ef840ba5e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a point on the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:gae7f6b3c085529037e71221ef840ba5e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga098c451f3bca2e14c8c84e6a38db9cfe" id="r_ga098c451f3bca2e14c8c84e6a38db9cfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga098c451f3bca2e14c8c84e6a38db9cfe">SDL::RenderPoints</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FPointRaw &gt; points)</td></tr>
+<tr class="memitem:ga098c451f3bca2e14c8c84e6a38db9cfe" id="r_ga098c451f3bca2e14c8c84e6a38db9cfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga098c451f3bca2e14c8c84e6a38db9cfe">SDL::RenderPoints</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt; points)</td></tr>
 <tr class="memdesc:ga098c451f3bca2e14c8c84e6a38db9cfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw multiple points on the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga098c451f3bca2e14c8c84e6a38db9cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga50892e2b0cfe157d68827ce94c872caf" id="r_ga50892e2b0cfe157d68827ce94c872caf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga50892e2b0cfe157d68827ce94c872caf">SDL::RenderLine</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const FPointRaw &amp;p1, const FPointRaw &amp;p2)</td></tr>
+<tr class="memitem:ga50892e2b0cfe157d68827ce94c872caf" id="r_ga50892e2b0cfe157d68827ce94c872caf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga50892e2b0cfe157d68827ce94c872caf">SDL::RenderLine</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;p1, const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;p2)</td></tr>
 <tr class="memdesc:ga50892e2b0cfe157d68827ce94c872caf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a line on the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga50892e2b0cfe157d68827ce94c872caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5b5d37e7924e9d60751883fc8f702493" id="r_ga5b5d37e7924e9d60751883fc8f702493"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga5b5d37e7924e9d60751883fc8f702493">SDL::RenderLines</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FPointRaw &gt; points)</td></tr>
+<tr class="memitem:ga5b5d37e7924e9d60751883fc8f702493" id="r_ga5b5d37e7924e9d60751883fc8f702493"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga5b5d37e7924e9d60751883fc8f702493">SDL::RenderLines</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt; points)</td></tr>
 <tr class="memdesc:ga5b5d37e7924e9d60751883fc8f702493"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a series of connected lines on the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga5b5d37e7924e9d60751883fc8f702493"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae9fd2f7c3ad0994ed48ef36885b21e7a" id="r_gae9fd2f7c3ad0994ed48ef36885b21e7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gae9fd2f7c3ad0994ed48ef36885b21e7a">SDL::RenderRect</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; rect)</td></tr>
+<tr class="memitem:gae9fd2f7c3ad0994ed48ef36885b21e7a" id="r_gae9fd2f7c3ad0994ed48ef36885b21e7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gae9fd2f7c3ad0994ed48ef36885b21e7a">SDL::RenderRect</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; rect)</td></tr>
 <tr class="memdesc:gae9fd2f7c3ad0994ed48ef36885b21e7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a rectangle on the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:gae9fd2f7c3ad0994ed48ef36885b21e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8ab504a5cf9e1dee31ad56b74789a318" id="r_ga8ab504a5cf9e1dee31ad56b74789a318"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga8ab504a5cf9e1dee31ad56b74789a318">SDL::RenderRects</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FRectRaw &gt; rects)</td></tr>
+<tr class="memitem:ga8ab504a5cf9e1dee31ad56b74789a318" id="r_ga8ab504a5cf9e1dee31ad56b74789a318"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga8ab504a5cf9e1dee31ad56b74789a318">SDL::RenderRects</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; rects)</td></tr>
 <tr class="memdesc:ga8ab504a5cf9e1dee31ad56b74789a318"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw some number of rectangles on the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga8ab504a5cf9e1dee31ad56b74789a318"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga28a3b5449f816e2718897dcc1cfdd67a" id="r_ga28a3b5449f816e2718897dcc1cfdd67a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga28a3b5449f816e2718897dcc1cfdd67a">SDL::RenderFillRect</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; rect)</td></tr>
+<tr class="memitem:ga28a3b5449f816e2718897dcc1cfdd67a" id="r_ga28a3b5449f816e2718897dcc1cfdd67a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga28a3b5449f816e2718897dcc1cfdd67a">SDL::RenderFillRect</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; rect)</td></tr>
 <tr class="memdesc:ga28a3b5449f816e2718897dcc1cfdd67a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill a rectangle on the current rendering target with the drawing color at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga28a3b5449f816e2718897dcc1cfdd67a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9869867d36d6ab1dff72a0da771269b3" id="r_ga9869867d36d6ab1dff72a0da771269b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga9869867d36d6ab1dff72a0da771269b3">SDL::RenderFillRects</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FRectRaw &gt; rects)</td></tr>
+<tr class="memitem:ga9869867d36d6ab1dff72a0da771269b3" id="r_ga9869867d36d6ab1dff72a0da771269b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga9869867d36d6ab1dff72a0da771269b3">SDL::RenderFillRects</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; rects)</td></tr>
 <tr class="memdesc:ga9869867d36d6ab1dff72a0da771269b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill some number of rectangles on the current rendering target with the drawing color at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga9869867d36d6ab1dff72a0da771269b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9c6d4a38a60853b42fa1ce35fb9fa85b" id="r_ga9c6d4a38a60853b42fa1ce35fb9fa85b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga9c6d4a38a60853b42fa1ce35fb9fa85b">SDL::RenderTexture</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:ga9c6d4a38a60853b42fa1ce35fb9fa85b" id="r_ga9c6d4a38a60853b42fa1ce35fb9fa85b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga9c6d4a38a60853b42fa1ce35fb9fa85b">SDL::RenderTexture</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:ga9c6d4a38a60853b42fa1ce35fb9fa85b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a portion of the texture to the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga9c6d4a38a60853b42fa1ce35fb9fa85b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga31765162dd2c92092235e881996d4d8f" id="r_ga31765162dd2c92092235e881996d4d8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga31765162dd2c92092235e881996d4d8f">SDL::RenderTextureRotated</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; dstrect, double angle, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt; center, <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e9898f965812b">FlipMode</a> flip=FlipMode::SDL_FLIP_NONE)</td></tr>
+<tr class="memitem:ga31765162dd2c92092235e881996d4d8f" id="r_ga31765162dd2c92092235e881996d4d8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga31765162dd2c92092235e881996d4d8f">SDL::RenderTextureRotated</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; dstrect, double angle, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt; center, <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e9898f965812b">FlipMode</a> flip=FlipMode::SDL_FLIP_NONE)</td></tr>
 <tr class="memdesc:ga31765162dd2c92092235e881996d4d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a portion of the source texture to the current rendering target, with rotation and flipping, at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga31765162dd2c92092235e881996d4d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4986318c67c92f147d1af9ad4446504e" id="r_ga4986318c67c92f147d1af9ad4446504e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga4986318c67c92f147d1af9ad4446504e">SDL::RenderTextureAffine</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt; origin, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt; right, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt; down)</td></tr>
+<tr class="memitem:ga4986318c67c92f147d1af9ad4446504e" id="r_ga4986318c67c92f147d1af9ad4446504e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga4986318c67c92f147d1af9ad4446504e">SDL::RenderTextureAffine</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt; origin, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt; right, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt; down)</td></tr>
 <tr class="memdesc:ga4986318c67c92f147d1af9ad4446504e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a portion of the source texture to the current rendering target, with affine transform, at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga4986318c67c92f147d1af9ad4446504e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaadf005ba222558dae460db2105c70a2c" id="r_gaadf005ba222558dae460db2105c70a2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaadf005ba222558dae460db2105c70a2c">SDL::RenderTextureTiled</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; srcrect, float scale, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:gaadf005ba222558dae460db2105c70a2c" id="r_gaadf005ba222558dae460db2105c70a2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaadf005ba222558dae460db2105c70a2c">SDL::RenderTextureTiled</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; srcrect, float scale, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:gaadf005ba222558dae460db2105c70a2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tile a portion of the texture to the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:gaadf005ba222558dae460db2105c70a2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad162b5d8bca628e299a8163b54d249d8" id="r_gad162b5d8bca628e299a8163b54d249d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gad162b5d8bca628e299a8163b54d249d8">SDL::RenderTexture9Grid</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:gad162b5d8bca628e299a8163b54d249d8" id="r_gad162b5d8bca628e299a8163b54d249d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gad162b5d8bca628e299a8163b54d249d8">SDL::RenderTexture9Grid</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:gad162b5d8bca628e299a8163b54d249d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a scaled copy using the 9-grid algorithm to the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:gad162b5d8bca628e299a8163b54d249d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga67d7ab4a1dec205c64ad21d6a877be6b" id="r_ga67d7ab4a1dec205c64ad21d6a877be6b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga67d7ab4a1dec205c64ad21d6a877be6b">SDL::RenderGeometry</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, std::span&lt; const <a class="el" href="group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b">Vertex</a> &gt; vertices, std::span&lt; const int &gt; indices={})</td></tr>
@@ -366,16 +368,16 @@ Functions</h2></td></tr>
 <tr class="memitem:ga4c7f10926054333a9374fecf97453b46" id="r_ga4c7f10926054333a9374fecf97453b46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga4c7f10926054333a9374fecf97453b46">SDL::RenderGeometryRaw</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, const float *xy, int xy_stride, const <a class="el" href="structSDL_1_1FColor.html">FColor</a> *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices)</td></tr>
 <tr class="memdesc:ga4c7f10926054333a9374fecf97453b46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a list of triangles, optionally using a texture and indices into the vertex arrays <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (<a class="el" href="group__CategoryRender.html#ga67d4f5265d0fd69bac3bd3507bdc24a3" title="Set an additional color value multiplied into render copy operations.">Texture.SetColorMod</a> and <a class="el" href="group__CategoryRender.html#ga304f55542d4831a85fc3dce8438339a7" title="Set an additional alpha value multiplied into render copy operations.">Texture.SetAlphaMod</a> are ignored).  <br /></td></tr>
 <tr class="separator:ga4c7f10926054333a9374fecf97453b46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga60ed5443e337c22752af6a482a9dc534" id="r_ga60ed5443e337c22752af6a482a9dc534"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga60ed5443e337c22752af6a482a9dc534">SDL::RenderReadPixels</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect={})</td></tr>
+<tr class="memitem:ga60ed5443e337c22752af6a482a9dc534" id="r_ga60ed5443e337c22752af6a482a9dc534"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga60ed5443e337c22752af6a482a9dc534">SDL::RenderReadPixels</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect={})</td></tr>
 <tr class="memdesc:ga60ed5443e337c22752af6a482a9dc534"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read pixels from the current rendering target.  <br /></td></tr>
 <tr class="separator:ga60ed5443e337c22752af6a482a9dc534"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3eea71c666b394de692434a6df751e66" id="r_ga3eea71c666b394de692434a6df751e66"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga3eea71c666b394de692434a6df751e66">SDL::RenderPresent</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer)</td></tr>
 <tr class="memdesc:ga3eea71c666b394de692434a6df751e66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the screen with any rendering performed since the previous call.  <br /></td></tr>
 <tr class="separator:ga3eea71c666b394de692434a6df751e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga93519d874ac8c46a73cf69ff2a54f2e2" id="r_ga93519d874ac8c46a73cf69ff2a54f2e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga93519d874ac8c46a73cf69ff2a54f2e2">SDL::DestroyTexture</a> (TextureRaw texture)</td></tr>
+<tr class="memitem:ga93519d874ac8c46a73cf69ff2a54f2e2" id="r_ga93519d874ac8c46a73cf69ff2a54f2e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga93519d874ac8c46a73cf69ff2a54f2e2">SDL::DestroyTexture</a> (<a class="el" href="group__CategoryRender.html#gaa34d28105474337a3ad861838f252d41">TextureRaw</a> texture)</td></tr>
 <tr class="memdesc:ga93519d874ac8c46a73cf69ff2a54f2e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the specified texture.  <br /></td></tr>
 <tr class="separator:ga93519d874ac8c46a73cf69ff2a54f2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5bf62c749fa67676fa468431df370596" id="r_ga5bf62c749fa67676fa468431df370596"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga5bf62c749fa67676fa468431df370596">SDL::DestroyRenderer</a> (RendererRaw renderer)</td></tr>
+<tr class="memitem:ga5bf62c749fa67676fa468431df370596" id="r_ga5bf62c749fa67676fa468431df370596"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga5bf62c749fa67676fa468431df370596">SDL::DestroyRenderer</a> (<a class="el" href="group__CategoryRender.html#ga387fa97019bb7ae65a44d06316b05f85">RendererRaw</a> renderer)</td></tr>
 <tr class="memdesc:ga5bf62c749fa67676fa468431df370596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the rendering context for a window and free all associated textures.  <br /></td></tr>
 <tr class="separator:ga5bf62c749fa67676fa468431df370596"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf443594b910875b189a5b20acfa93843" id="r_gaf443594b910875b189a5b20acfa93843"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaf443594b910875b189a5b20acfa93843">SDL::FlushRenderer</a> (<a class="el" href="structSDL_1_1RendererParam.html">RendererParam</a> renderer)</td></tr>
@@ -421,7 +423,7 @@ Functions</h2></td></tr>
 <tr class="memitem:gaee5334e65e6ea71ba496a33bb90836fe" id="r_gaee5334e65e6ea71ba496a33bb90836fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaee5334e65e6ea71ba496a33bb90836fe">SDL::Renderer::GetCurrentOutputSize</a> (int *w, int *h) const</td></tr>
 <tr class="memdesc:gaee5334e65e6ea71ba496a33bb90836fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current output size in pixels of a rendering context.  <br /></td></tr>
 <tr class="separator:gaee5334e65e6ea71ba496a33bb90836fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf813cc110a79646e13262f6722f0f3cd" id="r_gaf813cc110a79646e13262f6722f0f3cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaf813cc110a79646e13262f6722f0f3cd">SDL::Renderer::CreateTexture</a> (<a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> access, const PointRaw &amp;size)</td></tr>
+<tr class="memitem:gaf813cc110a79646e13262f6722f0f3cd" id="r_gaf813cc110a79646e13262f6722f0f3cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaf813cc110a79646e13262f6722f0f3cd">SDL::Renderer::CreateTexture</a> (<a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> access, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size)</td></tr>
 <tr class="memdesc:gaf813cc110a79646e13262f6722f0f3cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture for a rendering context.  <br /></td></tr>
 <tr class="separator:gaf813cc110a79646e13262f6722f0f3cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac8f3d6ed7d0fb5e23a37ccd8f785da73" id="r_gac8f3d6ed7d0fb5e23a37ccd8f785da73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac8f3d6ed7d0fb5e23a37ccd8f785da73">SDL::Renderer::CreateTextureFromSurface</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface)</td></tr>
@@ -475,13 +477,13 @@ Functions</h2></td></tr>
 <tr class="memitem:gadb1fc4b35388b6a3c289a099e322ca8f" id="r_gadb1fc4b35388b6a3c289a099e322ca8f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gadb1fc4b35388b6a3c289a099e322ca8f">SDL::Texture::GetScaleMode</a> () const</td></tr>
 <tr class="memdesc:gadb1fc4b35388b6a3c289a099e322ca8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the scale mode used for texture scale operations.  <br /></td></tr>
 <tr class="separator:gadb1fc4b35388b6a3c289a099e322ca8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga696b354142b7969d3ae884ce890339a2" id="r_ga696b354142b7969d3ae884ce890339a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga696b354142b7969d3ae884ce890339a2">SDL::Texture::Update</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect, const void *pixels, int pitch)</td></tr>
+<tr class="memitem:ga696b354142b7969d3ae884ce890339a2" id="r_ga696b354142b7969d3ae884ce890339a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga696b354142b7969d3ae884ce890339a2">SDL::Texture::Update</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect, const void *pixels, int pitch)</td></tr>
 <tr class="memdesc:ga696b354142b7969d3ae884ce890339a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the given texture rectangle with new pixel data.  <br /></td></tr>
 <tr class="separator:ga696b354142b7969d3ae884ce890339a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaacb537ac4ebfd984928d43714c794c5c" id="r_gaacb537ac4ebfd984928d43714c794c5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaacb537ac4ebfd984928d43714c794c5c">SDL::Texture::UpdateYUV</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Yplane, int Ypitch, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Uplane, int Upitch, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Vplane, int Vpitch)</td></tr>
+<tr class="memitem:gaacb537ac4ebfd984928d43714c794c5c" id="r_gaacb537ac4ebfd984928d43714c794c5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaacb537ac4ebfd984928d43714c794c5c">SDL::Texture::UpdateYUV</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Yplane, int Ypitch, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Uplane, int Upitch, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Vplane, int Vpitch)</td></tr>
 <tr class="memdesc:gaacb537ac4ebfd984928d43714c794c5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a rectangle within a planar YV12 or IYUV texture with new pixel data.  <br /></td></tr>
 <tr class="separator:gaacb537ac4ebfd984928d43714c794c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacacd67498be9ba63b2e2392c3ca36b52" id="r_gacacd67498be9ba63b2e2392c3ca36b52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gacacd67498be9ba63b2e2392c3ca36b52">SDL::Texture::UpdateNV</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Yplane, int Ypitch, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *UVplane, int UVpitch)</td></tr>
+<tr class="memitem:gacacd67498be9ba63b2e2392c3ca36b52" id="r_gacacd67498be9ba63b2e2392c3ca36b52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gacacd67498be9ba63b2e2392c3ca36b52">SDL::Texture::UpdateNV</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *Yplane, int Ypitch, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *UVplane, int UVpitch)</td></tr>
 <tr class="memdesc:gacacd67498be9ba63b2e2392c3ca36b52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a rectangle within a planar NV12 or NV21 texture with new pixels.  <br /></td></tr>
 <tr class="separator:gacacd67498be9ba63b2e2392c3ca36b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab7a5bd0bc15c994ee673b42be874e094" id="r_gab7a5bd0bc15c994ee673b42be874e094"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gab7a5bd0bc15c994ee673b42be874e094">SDL::Texture::Lock</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect, void **pixels, int *pitch)</td></tr>
@@ -499,7 +501,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga0a30cdcbef1cf2d41b8191bbcfe3201b" id="r_ga0a30cdcbef1cf2d41b8191bbcfe3201b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga0a30cdcbef1cf2d41b8191bbcfe3201b">SDL::Renderer::GetTarget</a> () const</td></tr>
 <tr class="memdesc:ga0a30cdcbef1cf2d41b8191bbcfe3201b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current render target.  <br /></td></tr>
 <tr class="separator:ga0a30cdcbef1cf2d41b8191bbcfe3201b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad228e7087f297d403cb52058f8394710" id="r_gad228e7087f297d403cb52058f8394710"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gad228e7087f297d403cb52058f8394710">SDL::Renderer::SetLogicalPresentation</a> (const PointRaw &amp;size, <a class="el" href="group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d">RendererLogicalPresentation</a> mode)</td></tr>
+<tr class="memitem:gad228e7087f297d403cb52058f8394710" id="r_gad228e7087f297d403cb52058f8394710"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gad228e7087f297d403cb52058f8394710">SDL::Renderer::SetLogicalPresentation</a> (const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size, <a class="el" href="group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d">RendererLogicalPresentation</a> mode)</td></tr>
 <tr class="memdesc:gad228e7087f297d403cb52058f8394710"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a device-independent resolution and presentation mode for rendering.  <br /></td></tr>
 <tr class="separator:gad228e7087f297d403cb52058f8394710"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad35c0f2afc2b27e33b042a4cc34ef72b" id="r_gad35c0f2afc2b27e33b042a4cc34ef72b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gad35c0f2afc2b27e33b042a4cc34ef72b">SDL::Renderer::GetLogicalPresentation</a> (int *w, int *h, <a class="el" href="group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d">RendererLogicalPresentation</a> *mode) const</td></tr>
@@ -508,16 +510,16 @@ Functions</h2></td></tr>
 <tr class="memitem:gabaef5b508c441b3f744df32d96ea6615" id="r_gabaef5b508c441b3f744df32d96ea6615"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FRect.html">FRect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gabaef5b508c441b3f744df32d96ea6615">SDL::Renderer::GetLogicalPresentationRect</a> () const</td></tr>
 <tr class="memdesc:gabaef5b508c441b3f744df32d96ea6615"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the final presentation rectangle for rendering.  <br /></td></tr>
 <tr class="separator:gabaef5b508c441b3f744df32d96ea6615"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9350bd4f1d8b290b34966150b7b72fe3" id="r_ga9350bd4f1d8b290b34966150b7b72fe3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga9350bd4f1d8b290b34966150b7b72fe3">SDL::Renderer::RenderCoordinatesFromWindow</a> (const FPointRaw &amp;window_coord) const</td></tr>
+<tr class="memitem:ga9350bd4f1d8b290b34966150b7b72fe3" id="r_ga9350bd4f1d8b290b34966150b7b72fe3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga9350bd4f1d8b290b34966150b7b72fe3">SDL::Renderer::RenderCoordinatesFromWindow</a> (const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;window_coord) const</td></tr>
 <tr class="memdesc:ga9350bd4f1d8b290b34966150b7b72fe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a point in render coordinates when given a point in window coordinates.  <br /></td></tr>
 <tr class="separator:ga9350bd4f1d8b290b34966150b7b72fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3dfb0f56a4c06ec96719fbedeffda66b" id="r_ga3dfb0f56a4c06ec96719fbedeffda66b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga3dfb0f56a4c06ec96719fbedeffda66b">SDL::Renderer::RenderCoordinatesToWindow</a> (const FPointRaw &amp;coord) const</td></tr>
+<tr class="memitem:ga3dfb0f56a4c06ec96719fbedeffda66b" id="r_ga3dfb0f56a4c06ec96719fbedeffda66b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga3dfb0f56a4c06ec96719fbedeffda66b">SDL::Renderer::RenderCoordinatesToWindow</a> (const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;coord) const</td></tr>
 <tr class="memdesc:ga3dfb0f56a4c06ec96719fbedeffda66b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a point in window coordinates when given a point in render coordinates.  <br /></td></tr>
 <tr class="separator:ga3dfb0f56a4c06ec96719fbedeffda66b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac2ed780f27aaa990ec85577bd840741d" id="r_gac2ed780f27aaa990ec85577bd840741d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac2ed780f27aaa990ec85577bd840741d">SDL::Renderer::ConvertEventToRenderCoordinates</a> (<a class="el" href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">Event</a> *event) const</td></tr>
 <tr class="memdesc:gac2ed780f27aaa990ec85577bd840741d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the coordinates in an event to render coordinates.  <br /></td></tr>
 <tr class="separator:gac2ed780f27aaa990ec85577bd840741d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa53c77e998be5801c1c6c529ce80aa8f" id="r_gaa53c77e998be5801c1c6c529ce80aa8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaa53c77e998be5801c1c6c529ce80aa8f">SDL::Renderer::SetViewport</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect)</td></tr>
+<tr class="memitem:gaa53c77e998be5801c1c6c529ce80aa8f" id="r_gaa53c77e998be5801c1c6c529ce80aa8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaa53c77e998be5801c1c6c529ce80aa8f">SDL::Renderer::SetViewport</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect)</td></tr>
 <tr class="memdesc:gaa53c77e998be5801c1c6c529ce80aa8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the drawing area for rendering on the current target.  <br /></td></tr>
 <tr class="separator:gaa53c77e998be5801c1c6c529ce80aa8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga27c5522635639b890cc1ffb056cabeb0" id="r_ga27c5522635639b890cc1ffb056cabeb0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga27c5522635639b890cc1ffb056cabeb0">SDL::Renderer::GetViewport</a> () const</td></tr>
@@ -529,7 +531,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga9611f6ef04b1a9a4a839c16edf261d8e" id="r_ga9611f6ef04b1a9a4a839c16edf261d8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga9611f6ef04b1a9a4a839c16edf261d8e">SDL::Renderer::GetSafeArea</a> () const</td></tr>
 <tr class="memdesc:ga9611f6ef04b1a9a4a839c16edf261d8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the safe area for rendering within the current viewport.  <br /></td></tr>
 <tr class="separator:ga9611f6ef04b1a9a4a839c16edf261d8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabd24392351bb7214c866e09d6dc456d7" id="r_gabd24392351bb7214c866e09d6dc456d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gabd24392351bb7214c866e09d6dc456d7">SDL::Renderer::SetClipRect</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect)</td></tr>
+<tr class="memitem:gabd24392351bb7214c866e09d6dc456d7" id="r_gabd24392351bb7214c866e09d6dc456d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gabd24392351bb7214c866e09d6dc456d7">SDL::Renderer::SetClipRect</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect)</td></tr>
 <tr class="memdesc:gabd24392351bb7214c866e09d6dc456d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the clip rectangle for rendering on the specified target.  <br /></td></tr>
 <tr class="separator:gabd24392351bb7214c866e09d6dc456d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8c7e0906638637124291b83624d8c245" id="r_ga8c7e0906638637124291b83624d8c245"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga8c7e0906638637124291b83624d8c245">SDL::Renderer::GetClipRect</a> () const</td></tr>
@@ -538,16 +540,16 @@ Functions</h2></td></tr>
 <tr class="memitem:ga3bebf7f75f84acc7abc52067d72dee5a" id="r_ga3bebf7f75f84acc7abc52067d72dee5a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga3bebf7f75f84acc7abc52067d72dee5a">SDL::Renderer::IsClipEnabled</a> () const</td></tr>
 <tr class="memdesc:ga3bebf7f75f84acc7abc52067d72dee5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get whether clipping is enabled on the given render target.  <br /></td></tr>
 <tr class="separator:ga3bebf7f75f84acc7abc52067d72dee5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac6cf0b35e0b44059334232305385a45d" id="r_gac6cf0b35e0b44059334232305385a45d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac6cf0b35e0b44059334232305385a45d">SDL::Renderer::SetScale</a> (const FPointRaw &amp;scale)</td></tr>
+<tr class="memitem:gac6cf0b35e0b44059334232305385a45d" id="r_gac6cf0b35e0b44059334232305385a45d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac6cf0b35e0b44059334232305385a45d">SDL::Renderer::SetScale</a> (const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;scale)</td></tr>
 <tr class="memdesc:gac6cf0b35e0b44059334232305385a45d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the drawing scale for rendering on the current target.  <br /></td></tr>
 <tr class="separator:gac6cf0b35e0b44059334232305385a45d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9f80d903cff053399ba7d641a5b4e717" id="r_ga9f80d903cff053399ba7d641a5b4e717"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga9f80d903cff053399ba7d641a5b4e717">SDL::Renderer::GetScale</a> (float *scaleX, float *scaleY) const</td></tr>
 <tr class="memdesc:ga9f80d903cff053399ba7d641a5b4e717"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the drawing scale for the current target.  <br /></td></tr>
 <tr class="separator:ga9f80d903cff053399ba7d641a5b4e717"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0995b7984427c1a0717d927ebd3e2b27" id="r_ga0995b7984427c1a0717d927ebd3e2b27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga0995b7984427c1a0717d927ebd3e2b27">SDL::Renderer::SetDrawColor</a> (ColorRaw c)</td></tr>
+<tr class="memitem:ga0995b7984427c1a0717d927ebd3e2b27" id="r_ga0995b7984427c1a0717d927ebd3e2b27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga0995b7984427c1a0717d927ebd3e2b27">SDL::Renderer::SetDrawColor</a> (<a class="el" href="group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9">ColorRaw</a> c)</td></tr>
 <tr class="memdesc:ga0995b7984427c1a0717d927ebd3e2b27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the color used for drawing operations.  <br /></td></tr>
 <tr class="separator:ga0995b7984427c1a0717d927ebd3e2b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga079f88a79279d9211ee2e785fb675684" id="r_ga079f88a79279d9211ee2e785fb675684"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga079f88a79279d9211ee2e785fb675684">SDL::Renderer::SetDrawColorFloat</a> (const FColorRaw &amp;c)</td></tr>
+<tr class="memitem:ga079f88a79279d9211ee2e785fb675684" id="r_ga079f88a79279d9211ee2e785fb675684"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga079f88a79279d9211ee2e785fb675684">SDL::Renderer::SetDrawColorFloat</a> (const <a class="el" href="group__CategoryPixels.html#gadfaf5b77d5957860167740c745343e4e">FColorRaw</a> &amp;c)</td></tr>
 <tr class="memdesc:ga079f88a79279d9211ee2e785fb675684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the color used for drawing operations (<a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a>, Line and Clear).  <br /></td></tr>
 <tr class="separator:ga079f88a79279d9211ee2e785fb675684"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga18c19469cb61840dfb4a3701ceb0a3f6" id="r_ga18c19469cb61840dfb4a3701ceb0a3f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga18c19469cb61840dfb4a3701ceb0a3f6">SDL::Renderer::GetDrawColor</a> (<a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *r, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *g, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *b, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *a) const</td></tr>
@@ -571,43 +573,43 @@ Functions</h2></td></tr>
 <tr class="memitem:ga72d05fb671797d464bd5ed275395c604" id="r_ga72d05fb671797d464bd5ed275395c604"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga72d05fb671797d464bd5ed275395c604">SDL::Renderer::RenderClear</a> ()</td></tr>
 <tr class="memdesc:ga72d05fb671797d464bd5ed275395c604"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the current rendering target with the drawing color.  <br /></td></tr>
 <tr class="separator:ga72d05fb671797d464bd5ed275395c604"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1aac3830b905ad29144ad5a44e0e9cfe" id="r_ga1aac3830b905ad29144ad5a44e0e9cfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga1aac3830b905ad29144ad5a44e0e9cfe">SDL::Renderer::RenderPoint</a> (const FPointRaw &amp;p)</td></tr>
+<tr class="memitem:ga1aac3830b905ad29144ad5a44e0e9cfe" id="r_ga1aac3830b905ad29144ad5a44e0e9cfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga1aac3830b905ad29144ad5a44e0e9cfe">SDL::Renderer::RenderPoint</a> (const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;p)</td></tr>
 <tr class="memdesc:ga1aac3830b905ad29144ad5a44e0e9cfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a point on the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga1aac3830b905ad29144ad5a44e0e9cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga440aa03461ee7210e7900c2f671918f0" id="r_ga440aa03461ee7210e7900c2f671918f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga440aa03461ee7210e7900c2f671918f0">SDL::Renderer::RenderPoints</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FPointRaw &gt; points)</td></tr>
+<tr class="memitem:ga440aa03461ee7210e7900c2f671918f0" id="r_ga440aa03461ee7210e7900c2f671918f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga440aa03461ee7210e7900c2f671918f0">SDL::Renderer::RenderPoints</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt; points)</td></tr>
 <tr class="memdesc:ga440aa03461ee7210e7900c2f671918f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw multiple points on the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga440aa03461ee7210e7900c2f671918f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7e16d50d8fe90f0df80e336c126160b2" id="r_ga7e16d50d8fe90f0df80e336c126160b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga7e16d50d8fe90f0df80e336c126160b2">SDL::Renderer::RenderLine</a> (const FPointRaw &amp;p1, const FPointRaw &amp;p2)</td></tr>
+<tr class="memitem:ga7e16d50d8fe90f0df80e336c126160b2" id="r_ga7e16d50d8fe90f0df80e336c126160b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga7e16d50d8fe90f0df80e336c126160b2">SDL::Renderer::RenderLine</a> (const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;p1, const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;p2)</td></tr>
 <tr class="memdesc:ga7e16d50d8fe90f0df80e336c126160b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a line on the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga7e16d50d8fe90f0df80e336c126160b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad0c380eca59c47ed22bf6feb5e895291" id="r_gad0c380eca59c47ed22bf6feb5e895291"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gad0c380eca59c47ed22bf6feb5e895291">SDL::Renderer::RenderLines</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FPointRaw &gt; points)</td></tr>
+<tr class="memitem:gad0c380eca59c47ed22bf6feb5e895291" id="r_gad0c380eca59c47ed22bf6feb5e895291"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gad0c380eca59c47ed22bf6feb5e895291">SDL::Renderer::RenderLines</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt; points)</td></tr>
 <tr class="memdesc:gad0c380eca59c47ed22bf6feb5e895291"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a series of connected lines on the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:gad0c380eca59c47ed22bf6feb5e895291"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga69b3da9809b690f6a5b7204948b17aac" id="r_ga69b3da9809b690f6a5b7204948b17aac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga69b3da9809b690f6a5b7204948b17aac">SDL::Renderer::RenderRect</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; rect)</td></tr>
+<tr class="memitem:ga69b3da9809b690f6a5b7204948b17aac" id="r_ga69b3da9809b690f6a5b7204948b17aac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga69b3da9809b690f6a5b7204948b17aac">SDL::Renderer::RenderRect</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; rect)</td></tr>
 <tr class="memdesc:ga69b3da9809b690f6a5b7204948b17aac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a rectangle on the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga69b3da9809b690f6a5b7204948b17aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gade97ae31772a8fd146a1b38089cdfc44" id="r_gade97ae31772a8fd146a1b38089cdfc44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gade97ae31772a8fd146a1b38089cdfc44">SDL::Renderer::RenderRects</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FRectRaw &gt; rects)</td></tr>
+<tr class="memitem:gade97ae31772a8fd146a1b38089cdfc44" id="r_gade97ae31772a8fd146a1b38089cdfc44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gade97ae31772a8fd146a1b38089cdfc44">SDL::Renderer::RenderRects</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; rects)</td></tr>
 <tr class="memdesc:gade97ae31772a8fd146a1b38089cdfc44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw some number of rectangles on the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:gade97ae31772a8fd146a1b38089cdfc44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaeb2b60d6316f6ecd667a0c3dbca46911" id="r_gaeb2b60d6316f6ecd667a0c3dbca46911"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaeb2b60d6316f6ecd667a0c3dbca46911">SDL::Renderer::RenderFillRect</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; rect)</td></tr>
+<tr class="memitem:gaeb2b60d6316f6ecd667a0c3dbca46911" id="r_gaeb2b60d6316f6ecd667a0c3dbca46911"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaeb2b60d6316f6ecd667a0c3dbca46911">SDL::Renderer::RenderFillRect</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; rect)</td></tr>
 <tr class="memdesc:gaeb2b60d6316f6ecd667a0c3dbca46911"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill a rectangle on the current rendering target with the drawing color at subpixel precision.  <br /></td></tr>
 <tr class="separator:gaeb2b60d6316f6ecd667a0c3dbca46911"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacb21a9179ee6ca3649fa09de56cb71d9" id="r_gacb21a9179ee6ca3649fa09de56cb71d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gacb21a9179ee6ca3649fa09de56cb71d9">SDL::Renderer::RenderFillRects</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FRectRaw &gt; rects)</td></tr>
+<tr class="memitem:gacb21a9179ee6ca3649fa09de56cb71d9" id="r_gacb21a9179ee6ca3649fa09de56cb71d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gacb21a9179ee6ca3649fa09de56cb71d9">SDL::Renderer::RenderFillRects</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; rects)</td></tr>
 <tr class="memdesc:gacb21a9179ee6ca3649fa09de56cb71d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill some number of rectangles on the current rendering target with the drawing color at subpixel precision.  <br /></td></tr>
 <tr class="separator:gacb21a9179ee6ca3649fa09de56cb71d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga75643b70b4d134a8b36fb3344ab8725c" id="r_ga75643b70b4d134a8b36fb3344ab8725c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga75643b70b4d134a8b36fb3344ab8725c">SDL::Renderer::RenderTexture</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:ga75643b70b4d134a8b36fb3344ab8725c" id="r_ga75643b70b4d134a8b36fb3344ab8725c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga75643b70b4d134a8b36fb3344ab8725c">SDL::Renderer::RenderTexture</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:ga75643b70b4d134a8b36fb3344ab8725c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a portion of the texture to the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga75643b70b4d134a8b36fb3344ab8725c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafe438564734b37831a9fc74221fce3ec" id="r_gafe438564734b37831a9fc74221fce3ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gafe438564734b37831a9fc74221fce3ec">SDL::Renderer::RenderTextureRotated</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; dstrect, double angle, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt; center, <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e9898f965812b">FlipMode</a> flip=FlipMode::SDL_FLIP_NONE)</td></tr>
+<tr class="memitem:gafe438564734b37831a9fc74221fce3ec" id="r_gafe438564734b37831a9fc74221fce3ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gafe438564734b37831a9fc74221fce3ec">SDL::Renderer::RenderTextureRotated</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; dstrect, double angle, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt; center, <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e9898f965812b">FlipMode</a> flip=FlipMode::SDL_FLIP_NONE)</td></tr>
 <tr class="memdesc:gafe438564734b37831a9fc74221fce3ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a portion of the source texture to the current rendering target, with rotation and flipping, at subpixel precision.  <br /></td></tr>
 <tr class="separator:gafe438564734b37831a9fc74221fce3ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa213630ed69695ed32e7f6bfc3cc28e0" id="r_gaa213630ed69695ed32e7f6bfc3cc28e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaa213630ed69695ed32e7f6bfc3cc28e0">SDL::Renderer::RenderTextureAffine</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt; origin, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt; right, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt; down)</td></tr>
+<tr class="memitem:gaa213630ed69695ed32e7f6bfc3cc28e0" id="r_gaa213630ed69695ed32e7f6bfc3cc28e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaa213630ed69695ed32e7f6bfc3cc28e0">SDL::Renderer::RenderTextureAffine</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt; origin, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt; right, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt; down)</td></tr>
 <tr class="memdesc:gaa213630ed69695ed32e7f6bfc3cc28e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a portion of the source texture to the current rendering target, with affine transform, at subpixel precision.  <br /></td></tr>
 <tr class="separator:gaa213630ed69695ed32e7f6bfc3cc28e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab4f303b0aee613591f3b38688c7be985" id="r_gab4f303b0aee613591f3b38688c7be985"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gab4f303b0aee613591f3b38688c7be985">SDL::Renderer::RenderTextureTiled</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; srcrect, float scale, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:gab4f303b0aee613591f3b38688c7be985" id="r_gab4f303b0aee613591f3b38688c7be985"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gab4f303b0aee613591f3b38688c7be985">SDL::Renderer::RenderTextureTiled</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; srcrect, float scale, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:gab4f303b0aee613591f3b38688c7be985"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tile a portion of the texture to the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:gab4f303b0aee613591f3b38688c7be985"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga33c14a9122eb90d3e95e78c371681631" id="r_ga33c14a9122eb90d3e95e78c371681631"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga33c14a9122eb90d3e95e78c371681631">SDL::Renderer::RenderTexture9Grid</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:ga33c14a9122eb90d3e95e78c371681631" id="r_ga33c14a9122eb90d3e95e78c371681631"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga33c14a9122eb90d3e95e78c371681631">SDL::Renderer::RenderTexture9Grid</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:ga33c14a9122eb90d3e95e78c371681631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a scaled copy using the 9-grid algorithm to the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga33c14a9122eb90d3e95e78c371681631"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafc3c4f9b46c4a28d45dd3c293684da11" id="r_gafc3c4f9b46c4a28d45dd3c293684da11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gafc3c4f9b46c4a28d45dd3c293684da11">SDL::Renderer::RenderGeometry</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, std::span&lt; const <a class="el" href="group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b">Vertex</a> &gt; vertices, std::span&lt; const int &gt; indices={})</td></tr>
@@ -616,7 +618,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga4a49c9ea8411a47ef86711dc1279fafb" id="r_ga4a49c9ea8411a47ef86711dc1279fafb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga4a49c9ea8411a47ef86711dc1279fafb">SDL::Renderer::RenderGeometryRaw</a> (<a class="el" href="structSDL_1_1TextureParam.html">TextureParam</a> texture, const float *xy, int xy_stride, const <a class="el" href="structSDL_1_1FColor.html">FColor</a> *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices)</td></tr>
 <tr class="memdesc:ga4a49c9ea8411a47ef86711dc1279fafb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a list of triangles, optionally using a texture and indices into the vertex arrays <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (<a class="el" href="group__CategoryRender.html#ga67d4f5265d0fd69bac3bd3507bdc24a3" title="Set an additional color value multiplied into render copy operations.">Texture.SetColorMod</a> and <a class="el" href="group__CategoryRender.html#ga304f55542d4831a85fc3dce8438339a7" title="Set an additional alpha value multiplied into render copy operations.">Texture.SetAlphaMod</a> are ignored).  <br /></td></tr>
 <tr class="separator:ga4a49c9ea8411a47ef86711dc1279fafb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac58ca8684484a13aebd4b49202d35ef2" id="r_gac58ca8684484a13aebd4b49202d35ef2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac58ca8684484a13aebd4b49202d35ef2">SDL::Renderer::ReadPixels</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect={}) const</td></tr>
+<tr class="memitem:gac58ca8684484a13aebd4b49202d35ef2" id="r_gac58ca8684484a13aebd4b49202d35ef2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac58ca8684484a13aebd4b49202d35ef2">SDL::Renderer::ReadPixels</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect={}) const</td></tr>
 <tr class="memdesc:gac58ca8684484a13aebd4b49202d35ef2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read pixels from the current rendering target.  <br /></td></tr>
 <tr class="separator:gac58ca8684484a13aebd4b49202d35ef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7023cdb4ed234a720ee42939ff2611d7" id="r_ga7023cdb4ed234a720ee42939ff2611d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga7023cdb4ed234a720ee42939ff2611d7">SDL::Renderer::Present</a> ()</td></tr>
@@ -1194,7 +1196,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>&#160;</td>
         </tr>
         <tr>
@@ -1263,7 +1265,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>&#160;</td>
         </tr>
         <tr>
@@ -1611,7 +1613,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
@@ -1727,7 +1729,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void SDL::DestroyRenderer </td>
           <td>(</td>
-          <td class="paramtype">RendererRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga387fa97019bb7ae65a44d06316b05f85">RendererRaw</a>&#160;</td>
           <td class="paramname"><em>renderer</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1763,7 +1765,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void SDL::DestroyTexture </td>
           <td>(</td>
-          <td class="paramtype">TextureRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryRender.html#gaa34d28105474337a3ad861838f252d41">TextureRaw</a>&#160;</td>
           <td class="paramname"><em>texture</em></td><td>)</td>
           <td></td>
         </tr>
@@ -5120,7 +5122,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classSDL_1_1Surface.html">Surface</a> SDL::Renderer::ReadPixels </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em> = <code>{}</code></td><td>)</td>
           <td> const</td>
         </tr>
@@ -5280,7 +5282,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a> SDL::Renderer::RenderCoordinatesFromWindow </td>
           <td>(</td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>window_coord</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -5337,7 +5339,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>window_coord</em>&#160;</td>
         </tr>
         <tr>
@@ -5393,7 +5395,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a> SDL::Renderer::RenderCoordinatesToWindow </td>
           <td>(</td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>coord</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -5452,7 +5454,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>coord</em>&#160;</td>
         </tr>
         <tr>
@@ -5719,7 +5721,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::RenderFillRect </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em></td><td>)</td>
           <td></td>
         </tr>
@@ -5766,7 +5768,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>&#160;</td>
         </tr>
         <tr>
@@ -5818,7 +5820,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rects</em>&#160;</td>
         </tr>
         <tr>
@@ -5864,7 +5866,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::RenderFillRects </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rects</em></td><td>)</td>
           <td></td>
         </tr>
@@ -6267,13 +6269,13 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::RenderLine </td>
           <td>(</td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p2</em>&#160;</td>
         </tr>
         <tr>
@@ -6325,13 +6327,13 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p2</em>&#160;</td>
         </tr>
         <tr>
@@ -6384,7 +6386,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>points</em>&#160;</td>
         </tr>
         <tr>
@@ -6430,7 +6432,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::RenderLines </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>points</em></td><td>)</td>
           <td></td>
         </tr>
@@ -6471,7 +6473,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::RenderPoint </td>
           <td>(</td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p</em></td><td>)</td>
           <td></td>
         </tr>
@@ -6518,7 +6520,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p</em>&#160;</td>
         </tr>
         <tr>
@@ -6570,7 +6572,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>points</em>&#160;</td>
         </tr>
         <tr>
@@ -6616,7 +6618,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::RenderPoints </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>points</em></td><td>)</td>
           <td></td>
         </tr>
@@ -6730,7 +6732,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
@@ -6779,7 +6781,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::RenderRect </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em></td><td>)</td>
           <td></td>
         </tr>
@@ -6826,7 +6828,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>&#160;</td>
         </tr>
         <tr>
@@ -6878,7 +6880,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rects</em>&#160;</td>
         </tr>
         <tr>
@@ -6924,7 +6926,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::RenderRects </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rects</em></td><td>)</td>
           <td></td>
         </tr>
@@ -6977,13 +6979,13 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -7039,13 +7041,13 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -7106,7 +7108,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -7142,7 +7144,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -7202,7 +7204,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -7238,7 +7240,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -7303,25 +7305,25 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>origin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>right</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>down</em>&#160;</td>
         </tr>
         <tr>
@@ -7377,25 +7379,25 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>origin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>right</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>down</em>&#160;</td>
         </tr>
         <tr>
@@ -7456,13 +7458,13 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>, </td>
         </tr>
         <tr>
@@ -7474,7 +7476,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>center</em>, </td>
         </tr>
         <tr>
@@ -7537,13 +7539,13 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>, </td>
         </tr>
         <tr>
@@ -7555,7 +7557,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>center</em>, </td>
         </tr>
         <tr>
@@ -7623,7 +7625,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -7635,7 +7637,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -7691,7 +7693,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -7703,7 +7705,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gae2114f14dfc281fe454383bd95bc36a5">FRectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -7930,7 +7932,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::SetClipRect </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em></td><td>)</td>
           <td></td>
         </tr>
@@ -8193,7 +8195,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::SetDrawColor </td>
           <td>(</td>
-          <td class="paramtype">ColorRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9">ColorRaw</a>&#160;</td>
           <td class="paramname"><em>c</em></td><td>)</td>
           <td></td>
         </tr>
@@ -8237,7 +8239,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::SetDrawColorFloat </td>
           <td>(</td>
-          <td class="paramtype">const FColorRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryPixels.html#gadfaf5b77d5957860167740c745343e4e">FColorRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>c</em></td><td>)</td>
           <td></td>
         </tr>
@@ -8281,7 +8283,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::SetLogicalPresentation </td>
           <td>(</td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
@@ -8349,7 +8351,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>&#160;</td>
         </tr>
         <tr>
@@ -8511,7 +8513,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ColorRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9">ColorRaw</a>&#160;</td>
           <td class="paramname"><em>c</em>&#160;</td>
         </tr>
         <tr>
@@ -8566,7 +8568,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const FColorRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryPixels.html#gadfaf5b77d5957860167740c745343e4e">FColorRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>c</em>&#160;</td>
         </tr>
         <tr>
@@ -8621,7 +8623,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
@@ -8690,7 +8692,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>scale</em>&#160;</td>
         </tr>
         <tr>
@@ -8799,7 +8801,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>&#160;</td>
         </tr>
         <tr>
@@ -8904,7 +8906,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::SetScale </td>
           <td>(</td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>scale</em></td><td>)</td>
           <td></td>
         </tr>
@@ -9405,7 +9407,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Renderer::SetViewport </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em></td><td>)</td>
           <td></td>
         </tr>
@@ -9561,7 +9563,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Texture::Update </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>, </td>
         </tr>
         <tr>
@@ -9629,7 +9631,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Texture::UpdateNV </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>, </td>
         </tr>
         <tr>
@@ -9711,7 +9713,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>, </td>
         </tr>
         <tr>
@@ -9794,7 +9796,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>, </td>
         </tr>
         <tr>
@@ -9863,7 +9865,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="memname">void SDL::Texture::UpdateYUV </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>, </td>
         </tr>
         <tr>
@@ -9959,7 +9961,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>, </td>
         </tr>
         <tr>

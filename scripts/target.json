@@ -2454,7 +2454,8 @@
         "PropertiesID": {
           "name": "PropertiesID",
           "kind": "alias",
-          "type": "SDL_PropertiesID"
+          "type": "SDL_PropertiesID",
+          "doc": "Alias to raw representation for Properties."
         },
         "PropertiesRef-forward": {
           "name": "PropertiesRef",
@@ -4355,7 +4356,8 @@
         "LogCategoryRaw": {
           "name": "LogCategoryRaw",
           "kind": "alias",
-          "type": "SDL_LogCategory"
+          "type": "SDL_LogCategory",
+          "doc": "Alias to raw representation for LogCategory."
         },
         "LogPriority": {
           "doc": "The predefined log priorities\n\n@since This enum is available since SDL 3.2.0.",
@@ -6022,7 +6024,8 @@
         "DisplayID": {
           "name": "DisplayID",
           "kind": "alias",
-          "type": "SDL_DisplayID"
+          "type": "SDL_DisplayID",
+          "doc": "Alias to raw representation for Display."
         },
         "Window-forward": {
           "name": "Window",
@@ -6031,7 +6034,8 @@
         "WindowRaw": {
           "name": "WindowRaw",
           "kind": "alias",
-          "type": "SDL_Window *"
+          "type": "SDL_Window *",
+          "doc": "Alias to raw representation for Window."
         },
         "WindowRef-forward": {
           "name": "WindowRef",
@@ -6138,7 +6142,8 @@
         "GLContextRaw": {
           "name": "GLContextRaw",
           "kind": "alias",
-          "type": "SDL_GLContext *"
+          "type": "SDL_GLContext *",
+          "doc": "Alias to raw representation for GLContext."
         },
         "GLContextScoped-forward": {
           "name": "GLContextScoped",
@@ -13265,7 +13270,8 @@
         "RendererRaw": {
           "name": "RendererRaw",
           "kind": "alias",
-          "type": "SDL_Renderer *"
+          "type": "SDL_Renderer *",
+          "doc": "Alias to raw representation for Renderer."
         },
         "RendererRef-forward": {
           "name": "RendererRef",
@@ -13372,7 +13378,8 @@
         "TextureRaw": {
           "name": "TextureRaw",
           "kind": "alias",
-          "type": "SDL_Texture *"
+          "type": "SDL_Texture *",
+          "doc": "Alias to raw representation for Texture."
         },
         "TextureParam": {
           "name": "TextureParam",
@@ -20587,22 +20594,26 @@
         "PixelFormatRaw": {
           "name": "PixelFormatRaw",
           "kind": "alias",
-          "type": "SDL_PixelFormat"
+          "type": "SDL_PixelFormat",
+          "doc": "Alias to raw representation for PixelFormat."
         },
         "ColorspaceRaw": {
           "name": "ColorspaceRaw",
           "kind": "alias",
-          "type": "SDL_Colorspace"
+          "type": "SDL_Colorspace",
+          "doc": "Alias to raw representation for Colorspace."
         },
         "ColorRaw": {
           "name": "ColorRaw",
           "kind": "alias",
-          "type": "SDL_Color"
+          "type": "SDL_Color",
+          "doc": "Alias to raw representation for Color."
         },
         "FColorRaw": {
           "name": "FColorRaw",
           "kind": "alias",
-          "type": "SDL_FColor"
+          "type": "SDL_FColor",
+          "doc": "Alias to raw representation for FColor."
         },
         "Palette-forward": {
           "name": "Palette",
@@ -20611,7 +20622,8 @@
         "PaletteRaw": {
           "name": "PaletteRaw",
           "kind": "alias",
-          "type": "SDL_Palette *"
+          "type": "SDL_Palette *",
+          "doc": "Alias to raw representation for Palette."
         },
         "PaletteParam": {
           "name": "PaletteParam",
@@ -25360,22 +25372,26 @@
         "PointRaw": {
           "name": "PointRaw",
           "kind": "alias",
-          "type": "SDL_Point"
+          "type": "SDL_Point",
+          "doc": "Alias to raw representation for Point."
         },
         "FPointRaw": {
           "name": "FPointRaw",
           "kind": "alias",
-          "type": "SDL_FPoint"
+          "type": "SDL_FPoint",
+          "doc": "Alias to raw representation for FPoint."
         },
         "RectRaw": {
           "name": "RectRaw",
           "kind": "alias",
-          "type": "SDL_Rect"
+          "type": "SDL_Rect",
+          "doc": "Alias to raw representation for Rect."
         },
         "FRectRaw": {
           "name": "FRectRaw",
           "kind": "alias",
-          "type": "SDL_FRect"
+          "type": "SDL_FRect",
+          "doc": "Alias to raw representation for FRect."
         },
         "FPoint-forward": {
           "kind": "forward",
@@ -27644,7 +27660,8 @@
         "SurfaceRaw": {
           "name": "SurfaceRaw",
           "kind": "alias",
-          "type": "SDL_Surface *"
+          "type": "SDL_Surface *",
+          "doc": "Alias to raw representation for Surface."
         },
         "SurfaceParam": {
           "name": "SurfaceParam",
@@ -32422,7 +32439,8 @@
         "AudioFormatRaw": {
           "name": "AudioFormatRaw",
           "kind": "alias",
-          "type": "SDL_AudioFormat"
+          "type": "SDL_AudioFormat",
+          "doc": "Alias to raw representation for AudioFormat."
         },
         "AudioDevice-forward": {
           "name": "AudioDevice",
@@ -32431,7 +32449,8 @@
         "AudioDeviceID": {
           "name": "AudioDeviceID",
           "kind": "alias",
-          "type": "SDL_AudioDeviceID"
+          "type": "SDL_AudioDeviceID",
+          "doc": "Alias to raw representation for AudioDevice."
         },
         "AudioDeviceRef-forward": {
           "name": "AudioDeviceRef",
@@ -32538,7 +32557,8 @@
         "AudioStreamRaw": {
           "name": "AudioStreamRaw",
           "kind": "alias",
-          "type": "SDL_AudioStream *"
+          "type": "SDL_AudioStream *",
+          "doc": "Alias to raw representation for AudioStream."
         },
         "AudioStreamRef-forward": {
           "name": "AudioStreamRef",
@@ -38857,7 +38877,8 @@
         "KeycodeRaw": {
           "name": "KeycodeRaw",
           "kind": "alias",
-          "type": "SDL_Keycode"
+          "type": "SDL_Keycode",
+          "doc": "Alias to raw representation for Keycode."
         },
         "Keymod": {
           "doc": "Valid key modifiers (possibly OR'd together).\n\n@since This datatype is available since SDL 3.2.0.",
@@ -41590,7 +41611,8 @@
         "ScancodeRaw": {
           "name": "ScancodeRaw",
           "kind": "alias",
-          "type": "SDL_Scancode"
+          "type": "SDL_Scancode",
+          "doc": "Alias to raw representation for Scancode."
         },
         "Keycode-forward": {
           "kind": "forward",
@@ -43734,7 +43756,8 @@
         "CursorRaw": {
           "name": "CursorRaw",
           "kind": "alias",
-          "type": "SDL_Cursor *"
+          "type": "SDL_Cursor *",
+          "doc": "Alias to raw representation for Cursor."
         },
         "CursorRef-forward": {
           "name": "CursorRef",
@@ -44903,7 +44926,8 @@
         "ThreadRaw": {
           "name": "ThreadRaw",
           "kind": "alias",
-          "type": "SDL_Thread *"
+          "type": "SDL_Thread *",
+          "doc": "Alias to raw representation for Thread."
         },
         "ThreadRef-forward": {
           "name": "ThreadRef",
@@ -45879,7 +45903,8 @@
         "MutexRaw": {
           "name": "MutexRaw",
           "kind": "alias",
-          "type": "SDL_Mutex *"
+          "type": "SDL_Mutex *",
+          "doc": "Alias to raw representation for Mutex."
         },
         "MutexRef-forward": {
           "name": "MutexRef",
@@ -45986,7 +46011,8 @@
         "RWLockRaw": {
           "name": "RWLockRaw",
           "kind": "alias",
-          "type": "SDL_RWLock *"
+          "type": "SDL_RWLock *",
+          "doc": "Alias to raw representation for RWLock."
         },
         "RWLockRef-forward": {
           "name": "RWLockRef",
@@ -46093,7 +46119,8 @@
         "SemaphoreRaw": {
           "name": "SemaphoreRaw",
           "kind": "alias",
-          "type": "SDL_Semaphore *"
+          "type": "SDL_Semaphore *",
+          "doc": "Alias to raw representation for Semaphore."
         },
         "SemaphoreRef-forward": {
           "name": "SemaphoreRef",
@@ -46200,7 +46227,8 @@
         "ConditionRaw": {
           "name": "ConditionRaw",
           "kind": "alias",
-          "type": "SDL_Condition *"
+          "type": "SDL_Condition *",
+          "doc": "Alias to raw representation for Condition."
         },
         "ConditionRef-forward": {
           "name": "ConditionRef",
@@ -46303,7 +46331,8 @@
         "InitStateRaw": {
           "name": "InitStateRaw",
           "kind": "alias",
-          "type": "SDL_InitState"
+          "type": "SDL_InitState",
+          "doc": "Alias to raw representation for InitState."
         },
         "Mutex": {
           "doc": "A means to serialize access to a resource between threads.\n\nMutexes (short for \"mutual exclusion\") are a synchronization primitive that\nallows exactly one thread to proceed at a time.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Mutex\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource",
@@ -49463,7 +49492,8 @@
         "DateTimeRaw": {
           "name": "DateTimeRaw",
           "kind": "alias",
-          "type": "SDL_DateTime"
+          "type": "SDL_DateTime",
+          "doc": "Alias to raw representation for DateTime."
         },
         "DateTime": {
           "doc": "A structure holding a calendar date and time broken down into its\ncomponents.\n\n@since This struct is available since SDL 3.2.0.",
@@ -50098,7 +50128,8 @@
         "PathInfoRaw": {
           "name": "PathInfoRaw",
           "kind": "alias",
-          "type": "SDL_PathInfo"
+          "type": "SDL_PathInfo",
+          "doc": "Alias to raw representation for PathInfo."
         },
         "Path": {
           "kind": "struct",
@@ -50680,7 +50711,8 @@
         "StorageRaw": {
           "name": "StorageRaw",
           "kind": "alias",
-          "type": "SDL_Storage *"
+          "type": "SDL_Storage *",
+          "doc": "Alias to raw representation for Storage."
         },
         "StorageRef-forward": {
           "name": "StorageRef",
@@ -52225,7 +52257,8 @@
         "IOStreamRaw": {
           "name": "IOStreamRaw",
           "kind": "alias",
-          "type": "SDL_IOStream *"
+          "type": "SDL_IOStream *",
+          "doc": "Alias to raw representation for IOStream."
         },
         "IOStreamRef-forward": {
           "name": "IOStreamRef",
@@ -55861,7 +55894,8 @@
         "SharedObjectRaw": {
           "name": "SharedObjectRaw",
           "kind": "alias",
-          "type": "SDL_SharedObject *"
+          "type": "SDL_SharedObject *",
+          "doc": "Alias to raw representation for SharedObject."
         },
         "SharedObjectRef-forward": {
           "name": "SharedObjectRef",
@@ -56384,7 +56418,8 @@
         "ProcessRaw": {
           "name": "ProcessRaw",
           "kind": "alias",
-          "type": "SDL_Process *"
+          "type": "SDL_Process *",
+          "doc": "Alias to raw representation for Process."
         },
         "ProcessRef-forward": {
           "name": "ProcessRef",
@@ -57467,7 +57502,8 @@
         "MessageBoxRaw": {
           "name": "MessageBoxRaw",
           "kind": "alias",
-          "type": "SDL_MessageBoxData"
+          "type": "SDL_MessageBoxData",
+          "doc": "Alias to raw representation for MessageBox."
         },
         "MessageBoxFlags": {
           "doc": "Message box flags.\n\nIf supported will display warning icon, etc.\n\n@since This datatype is available since SDL 3.2.0.",
@@ -58376,7 +58412,8 @@
         "TrayRaw": {
           "name": "TrayRaw",
           "kind": "alias",
-          "type": "SDL_Tray *"
+          "type": "SDL_Tray *",
+          "doc": "Alias to raw representation for Tray."
         },
         "TrayRef-forward": {
           "name": "TrayRef",
@@ -58479,7 +58516,8 @@
         "TrayMenuRaw": {
           "name": "TrayMenuRaw",
           "kind": "alias",
-          "type": "SDL_TrayMenu"
+          "type": "SDL_TrayMenu",
+          "doc": "Alias to raw representation for TrayMenu."
         },
         "TrayEntry-forward": {
           "name": "TrayEntry",
@@ -58488,7 +58526,8 @@
         "TrayEntryRaw": {
           "name": "TrayEntryRaw",
           "kind": "alias",
-          "type": "SDL_TrayEntry *"
+          "type": "SDL_TrayEntry *",
+          "doc": "Alias to raw representation for TrayEntry."
         },
         "TrayEntryScoped-forward": {
           "name": "TrayEntryScoped",
@@ -60992,7 +61031,8 @@
         "EnvironmentRaw": {
           "name": "EnvironmentRaw",
           "kind": "alias",
-          "type": "SDL_Environment *"
+          "type": "SDL_Environment *",
+          "doc": "Alias to raw representation for Environment."
         },
         "EnvironmentRef-forward": {
           "name": "EnvironmentRef",
@@ -61099,7 +61139,8 @@
         "IConvRaw": {
           "name": "IConvRaw",
           "kind": "alias",
-          "type": "SDL_iconv_t *"
+          "type": "SDL_iconv_t *",
+          "doc": "Alias to raw representation for IConv."
         },
         "IConvRef-forward": {
           "name": "IConvRef",
@@ -66004,7 +66045,8 @@
         "GUIDRaw": {
           "name": "GUIDRaw",
           "kind": "alias",
-          "type": "SDL_GUID"
+          "type": "SDL_GUID",
+          "doc": "Alias to raw representation for GUID."
         },
         "GUID": {
           "doc": "An GUID is a 128-bit identifier for an input device that identifies\nthat device across runs of SDL programs on the same platform.\n\nIf the device is detached and then re-attached to a different port, or if\nthe base system is rebooted, the device should still report the same GUID.\n\nGUIDs are as precise as possible but are not guaranteed to distinguish\nphysically distinct but equivalent devices. For example, two game\ncontrollers from the same vendor with the same product ID and revision may\nhave the same GUID.\n\nGUIDs may be platform-dependent (i.e., the same device may report different\nGUIDs on different operating systems).\n\n@since This struct is available since SDL 3.2.0.",
@@ -66165,7 +66207,8 @@
         "AnimationRaw": {
           "name": "AnimationRaw",
           "kind": "alias",
-          "type": "IMG_Animation *"
+          "type": "IMG_Animation *",
+          "doc": "Alias to raw representation for Animation."
         },
         "AnimationRef-forward": {
           "name": "AnimationRef",
@@ -67738,7 +67781,8 @@
         "FontRaw": {
           "name": "FontRaw",
           "kind": "alias",
-          "type": "TTF_Font *"
+          "type": "TTF_Font *",
+          "doc": "Alias to raw representation for Font."
         },
         "FontRef-forward": {
           "name": "FontRef",
@@ -67845,7 +67889,8 @@
         "TextEngineRaw": {
           "name": "TextEngineRaw",
           "kind": "alias",
-          "type": "TTF_TextEngine *"
+          "type": "TTF_TextEngine *",
+          "doc": "Alias to raw representation for TextEngine."
         },
         "TextEngineParam": {
           "name": "TextEngineParam",
@@ -67948,7 +67993,8 @@
         "TextRaw": {
           "name": "TextRaw",
           "kind": "alias",
-          "type": "TTF_Text *"
+          "type": "TTF_Text *",
+          "doc": "Alias to raw representation for Text."
         },
         "TextRef-forward": {
           "name": "TextRef",

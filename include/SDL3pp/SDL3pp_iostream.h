@@ -23,6 +23,7 @@ namespace SDL {
 // Forward decl
 struct IOStream;
 
+/// Alias to raw representation for IOStream.
 using IOStreamRaw = SDL_IOStream*;
 
 // Forward decl

@@ -34,6 +34,7 @@ namespace SDL {
 // Forward decl
 struct Process;
 
+/// Alias to raw representation for Process.
 using ProcessRaw = SDL_Process*;
 
 // Forward decl

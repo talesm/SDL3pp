@@ -480,7 +480,12 @@ function expandTypes(sourceEntries, file, context) {
     const paramType = wrapper.paramType ?? (isStruct ? `${rawType} *` : targetType);
     const constParamType = wrapper.paramType ?? (isStruct ? `const ${rawType} &` : rawType);
     const attribute = "m_" + paramName;
-    context.includeBefore({ name: rawType, kind: 'alias', type: sourceType }, '__begin');
+    context.includeBefore({
+      name: rawType,
+      kind: 'alias',
+      type: sourceType,
+      doc: `Alias to raw representation for ${targetType}.`,
+    }, '__begin');
 
     /** @type {string[]} */
     const fields = [];
@@ -744,7 +749,12 @@ function expandTypes(sourceEntries, file, context) {
     /** @type {ApiEntryTransform[]} */
     const referenceAliases = [];
     referenceAliases.push({ name: targetName, kind: "forward" });
-    referenceAliases.push({ name: rawName, kind: "alias", type: pointerType });
+    referenceAliases.push({
+      name: rawName,
+      kind: "alias",
+      type: pointerType,
+      doc: `Alias to raw representation for ${targetName}.`,
+    });
     if (hasRef) referenceAliases.push({ name: refName, kind: "forward" });
     if (hasScoped) referenceAliases.push({ name: scopedName, kind: "forward" });
 

@@ -86,7 +86,7 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa2ccf1a5048a862de37f75cd423d9858" id="r_aa2ccf1a5048a862de37f75cd423d9858"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1AudioFormat.html#aa2ccf1a5048a862de37f75cd423d9858">AudioFormat</a> (AudioFormatRaw audioFormat={})</td></tr>
+<tr class="memitem:aa2ccf1a5048a862de37f75cd423d9858" id="r_aa2ccf1a5048a862de37f75cd423d9858"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1AudioFormat.html#aa2ccf1a5048a862de37f75cd423d9858">AudioFormat</a> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> audioFormat={})</td></tr>
 <tr class="memdesc:aa2ccf1a5048a862de37f75cd423d9858"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a>.  <br /></td></tr>
 <tr class="separator:aa2ccf1a5048a862de37f75cd423d9858"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae10766eed6243e53b98df1e0642de581" id="r_ae10766eed6243e53b98df1e0642de581"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1AudioFormat.html#ae10766eed6243e53b98df1e0642de581">AudioFormat</a> (bool sign, bool bigendian, bool flt, <a class="el" href="group__CategoryStdinc.html#ga02c87be2d622586f428a03f6dd3704d8">Uint16</a> size)</td></tr>
@@ -97,7 +97,7 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==<
 <tr class="memdesc:acdf5797d9dac8da1d866991a3a6546d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default comparison operator. <br /></td></tr>
 <tr class="separator:acdf5797d9dac8da1d866991a3a6546d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2a8729574cc5e760ba907ae3fad24ed" id="r_aa2a8729574cc5e760ba907ae3fad24ed"><td class="memItemLeft" align="right" valign="top"><a id="aa2a8729574cc5e760ba907ae3fad24ed" name="aa2a8729574cc5e760ba907ae3fad24ed"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (AudioFormatRaw audioFormat) const</td></tr>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> audioFormat) const</td></tr>
 <tr class="memdesc:aa2a8729574cc5e760ba907ae3fad24ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares with the underlying type. <br /></td></tr>
 <tr class="separator:aa2a8729574cc5e760ba907ae3fad24ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00d8827fb1960aad70e7ffe4b8216334" id="r_a00d8827fb1960aad70e7ffe4b8216334"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1AudioFormat.html#a00d8827fb1960aad70e7ffe4b8216334">operator AudioFormatRaw</a> () const</td></tr>
@@ -164,7 +164,7 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==<
         <tr>
           <td class="memname">constexpr SDL::AudioFormat::AudioFormat </td>
           <td>(</td>
-          <td class="paramtype">AudioFormatRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a>&#160;</td>
           <td class="paramname"><em>audioFormat</em> = <code>{}</code></td><td>)</td>
           <td></td>
         </tr>
@@ -232,8 +232,8 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==<
 <p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> does not support custom audio formats, so this macro is not of much use externally, but it can be illustrative as to what the various bits of an <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a> mean.</p>
 <p>For example, AUDIO_S32LE looks like this:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classSDL_1_1AudioFormat.html">AudioFormat</a>.<a class="code hl_function" href="classSDL_1_1AudioFormat.html#aa2ccf1a5048a862de37f75cd423d9858">AudioFormat</a>(1, 0, 0, 32)</div>
-<div class="ttc" id="aclassSDL_1_1AudioFormat_html"><div class="ttname"><a href="classSDL_1_1AudioFormat.html">SDL::AudioFormat</a></div><div class="ttdoc">Audio format.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:257</div></div>
-<div class="ttc" id="aclassSDL_1_1AudioFormat_html_aa2ccf1a5048a862de37f75cd423d9858"><div class="ttname"><a href="classSDL_1_1AudioFormat.html#aa2ccf1a5048a862de37f75cd423d9858">SDL::AudioFormat::AudioFormat</a></div><div class="ttdeci">constexpr AudioFormat(AudioFormatRaw audioFormat={})</div><div class="ttdoc">Wraps AudioFormat.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:266</div></div>
+<div class="ttc" id="aclassSDL_1_1AudioFormat_html"><div class="ttname"><a href="classSDL_1_1AudioFormat.html">SDL::AudioFormat</a></div><div class="ttdoc">Audio format.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:260</div></div>
+<div class="ttc" id="aclassSDL_1_1AudioFormat_html_aa2ccf1a5048a862de37f75cd423d9858"><div class="ttname"><a href="classSDL_1_1AudioFormat.html#aa2ccf1a5048a862de37f75cd423d9858">SDL::AudioFormat::AudioFormat</a></div><div class="ttdeci">constexpr AudioFormat(AudioFormatRaw audioFormat={})</div><div class="ttdoc">Wraps AudioFormat.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:269</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sign</td><td>1 for signed data, 0 for unsigned data. </td></tr>
@@ -260,7 +260,7 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr SDL::AudioFormat::operator AudioFormatRaw </td>
+          <td class="memname">constexpr SDL::AudioFormat::operator <a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>

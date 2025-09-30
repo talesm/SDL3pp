@@ -43,6 +43,7 @@ namespace SDL {
 // Forward decl
 struct SharedObject;
 
+/// Alias to raw representation for SharedObject.
 using SharedObjectRaw = SDL_SharedObject*;
 
 // Forward decl

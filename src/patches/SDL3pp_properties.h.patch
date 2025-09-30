@@ -11,7 +11,7 @@
 >  * can be created with the Properties.Create function and destroyed with the
 >  * Properties.Destroy function, but the Properties destructor probably will do
 >  * what you want to, automatically.
-117a119,134
+118a120,135
 > /**
 >  * A callback used to enumerate all the properties in a group of properties.
 >  *
@@ -28,18 +28,18 @@
 >  *
 >  * @sa Properties.Enumerate
 >  */
-126a144,145
+127a145,146
 >  *
 >  * @sa Properties.Create
-166,167c185,186
+167,168c186,187
 <    * @returns an ID for a new group of properties, or 0 on failure; call
 <    *          GetError() for more information.
 ---
 >    * @returns a valid ID for a new group of properties on success;
 >    * @throws Error on failure.
-216d234
+217d235
 <    *
-506a525,537
+507a526,538
 >   /**
 >    * Enumerate the properties contained in a group of properties.
 >    *
@@ -53,7 +53,7 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-524a556,562
+525a557,563
 >   /**
 >    * Returns the number of properties this has
 >    *
@@ -61,25 +61,25 @@
 >    *
 >    * @return Uint64
 >    */
-563c601
+564c602
 <   return CheckError(SDL_GetGlobalProperties());
 ---
 >   return {CheckError(SDL_GetGlobalProperties())};
-571,572c609,610
+572,573c610,611
 <  * @returns an ID for a new group of properties, or 0 on failure; call
 <  *          GetError() for more information.
 ---
 >  * @returns a valid ID for a new group of properties on success;
 >  * @throws Error on failure.
-582c620
+583c621
 <   return Properties(SDL_CreateProperties());
 ---
 >   return Properties(CheckError(SDL_CreateProperties()));
-690d727
+691d728
 <  * @param userdata an app-defined pointer passed to the callback.
-760d796
+761d797
 <  * @param userdata a pointer that is passed to the cleanup function.
-776c812,817
+777c813,818
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<CleanupPropertyCB>;
@@ -88,9 +88,9 @@
 >                                     value,
 >                                     &Wrapper::CallOnce,
 >                                     Wrapper::Wrap(std::move(cleanup)));
-1198d1238
+1199d1239
 <  * @param userdata a pointer that is passed to `callback`.
-1208c1248,1254
+1209c1249,1255
 <   static_assert(false, "Not implemented");
 ---
 >   return EnumerateProperties(
@@ -100,13 +100,13 @@
 >       f(props, name);
 >     },
 >     &callback);
-1210a1257,1261
+1211a1258,1262
 > /**
 >  * Returns the number of properties this has
 >  *
 >  * This uses Enumerate() internally, so might not be so fast
 >  */
-1216a1268,1275
+1217a1269,1276
 > /**
 >  * Returns the number of properties this has
 >  *
@@ -115,7 +115,7 @@
 >  * @param props
 >  * @return Uint64
 >  */
-1219c1278,1285
+1220c1279,1286
 <   static_assert(false, "Not implemented");
 ---
 >   Uint64 count = 0;

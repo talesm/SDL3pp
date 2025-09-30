@@ -2,7 +2,7 @@
 <  * @defgroup CategoryGUID Category GUID
 ---
 >  * @defgroup CategoryGUID GUIDs
-73,79d72
+74,80d73
 <    * Check if valid.
 <    *
 <    * @returns True if valid state, false otherwise.
@@ -10,24 +10,24 @@
 <   constexpr explicit operator bool() const { return *this != GUIDRaw{}; }
 < 
 <   /**
-82,84c75
+83,85c76
 <    * @param guid the GUID you wish to convert to string.
 <    * @param pszGUID buffer in which to write the ASCII string.
 <    * @param cbGUID the size of pszGUID, should be at least 33 bytes.
 ---
 >    * @return ASCII string.
-99,100c90
+100,101c91
 <  * @param pszGUID buffer in which to write the ASCII string.
 <  * @param cbGUID the size of pszGUID, should be at least 33 bytes.
 ---
 >  * @return ASCII string.
-110c100,102
+111c101,103
 <   return SDL_GUIDToString(guid);
 ---
 >   std::string result(32, ' ');
 >   SDL_GUIDToString(guid, result.data(), 33);
 >   return result;
-113c105
+114c106
 < inline std::string GUID::ToString() const { return SDL::GUIDToString(this); }
 ---
 > inline std::string GUID::ToString() const { return SDL::GUIDToString(*this); }

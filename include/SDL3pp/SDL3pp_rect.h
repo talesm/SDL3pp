@@ -18,12 +18,16 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for Point.
 using PointRaw = SDL_Point;
 
+/// Alias to raw representation for FPoint.
 using FPointRaw = SDL_FPoint;
 
+/// Alias to raw representation for Rect.
 using RectRaw = SDL_Rect;
 
+/// Alias to raw representation for FRect.
 using FRectRaw = SDL_FRect;
 
 // Forward decl

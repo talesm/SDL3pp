@@ -13,9 +13,13 @@ var searchData=
   ['clipboardevent_10',['ClipboardEvent',['../group__CategoryEvents.html#ga34d947bd68046b49ad2ee1fa599184b5',1,'SDL']]],
   ['colorprimaries_11',['ColorPrimaries',['../group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be',1,'SDL']]],
   ['colorrange_12',['ColorRange',['../group__CategoryPixels.html#ga7ac636ceadc362abb27c105aac593f26',1,'SDL']]],
-  ['colortype_13',['ColorType',['../group__CategoryPixels.html#gaa2ffd13114a8e0729d0a8151cb8690fb',1,'SDL']]],
-  ['commonevent_14',['CommonEvent',['../group__CategoryEvents.html#gacd7d68741f6b72245ec445fd09335554',1,'SDL']]],
-  ['comparecallback_15',['CompareCallback',['../group__CategoryStdinc.html#gabc94be94823c25031d6dd9210ef3e81a',1,'SDL']]],
-  ['comparecallback_5fr_16',['CompareCallback_r',['../group__CategoryStdinc.html#gab5c634ea2ae9a102fa58cd7beac9f478',1,'SDL']]],
-  ['comparecb_17',['CompareCB',['../group__CategoryStdinc.html#ga7dc5ada5f1f8fe87900b8fa72e94abca',1,'SDL']]]
+  ['colorraw_13',['ColorRaw',['../group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9',1,'SDL']]],
+  ['colorspaceraw_14',['ColorspaceRaw',['../group__CategoryPixels.html#ga4f770790a51be848549016c86e922689',1,'SDL']]],
+  ['colortype_15',['ColorType',['../group__CategoryPixels.html#gaa2ffd13114a8e0729d0a8151cb8690fb',1,'SDL']]],
+  ['commonevent_16',['CommonEvent',['../group__CategoryEvents.html#gacd7d68741f6b72245ec445fd09335554',1,'SDL']]],
+  ['comparecallback_17',['CompareCallback',['../group__CategoryStdinc.html#gabc94be94823c25031d6dd9210ef3e81a',1,'SDL']]],
+  ['comparecallback_5fr_18',['CompareCallback_r',['../group__CategoryStdinc.html#gab5c634ea2ae9a102fa58cd7beac9f478',1,'SDL']]],
+  ['comparecb_19',['CompareCB',['../group__CategoryStdinc.html#ga7dc5ada5f1f8fe87900b8fa72e94abca',1,'SDL']]],
+  ['conditionraw_20',['ConditionRaw',['../group__CategoryMutex.html#ga670a2537f9e853749d60e358d891ad65',1,'SDL']]],
+  ['cursorraw_21',['CursorRaw',['../group__CategoryMouse.html#gaaef776a189964573d503bd7e7d3a9970',1,'SDL']]]
 ];

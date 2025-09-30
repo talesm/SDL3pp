@@ -235,6 +235,7 @@ namespace SDL {
 // Forward decl
 struct Storage;
 
+/// Alias to raw representation for Storage.
 using StorageRaw = SDL_Storage*;
 
 // Forward decl

@@ -17,6 +17,7 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for GUID.
 using GUIDRaw = SDL_GUID;
 
 /**

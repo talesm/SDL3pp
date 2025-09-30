@@ -98,6 +98,7 @@ Classes</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga8237493412cda866293e62965cab0e3b" id="r_ga8237493412cda866293e62965cab0e3b"><td class="memItemLeft" align="right" valign="top"><a id="ga8237493412cda866293e62965cab0e3b" name="ga8237493412cda866293e62965cab0e3b"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::SurfaceRaw</b> = SDL_Surface *</td></tr>
+<tr class="memdesc:ga8237493412cda866293e62965cab0e3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1Surface.html" title="A collection of pixels used in software blitting.">Surface</a>. <br /></td></tr>
 <tr class="separator:ga8237493412cda866293e62965cab0e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad69036a1d5b07f56d21deb07fe815fbf" id="r_gad69036a1d5b07f56d21deb07fe815fbf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad69036a1d5b07f56d21deb07fe815fbf">SDL::SurfaceFlags</a> = <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a></td></tr>
 <tr class="memdesc:gad69036a1d5b07f56d21deb07fe815fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The flags on an <a class="el" href="classSDL_1_1Surface.html" title="A collection of pixels used in software blitting.">Surface</a>.  <br /></td></tr>
@@ -114,13 +115,13 @@ Functions</h2></td></tr>
 <tr class="memitem:gada040f112f8d9625be8018201a9acdad" id="r_gada040f112f8d9625be8018201a9acdad"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gada040f112f8d9625be8018201a9acdad">SDL::MUSTLOCK</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> S)</td></tr>
 <tr class="memdesc:gada040f112f8d9625be8018201a9acdad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates to true if the surface needs to be locked before access.  <br /></td></tr>
 <tr class="separator:gada040f112f8d9625be8018201a9acdad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab3726cda4fcfc82e26c5890489980815" id="r_gab3726cda4fcfc82e26c5890489980815"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gab3726cda4fcfc82e26c5890489980815">SDL::CreateSurface</a> (const PointRaw &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format)</td></tr>
+<tr class="memitem:gab3726cda4fcfc82e26c5890489980815" id="r_gab3726cda4fcfc82e26c5890489980815"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gab3726cda4fcfc82e26c5890489980815">SDL::CreateSurface</a> (const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format)</td></tr>
 <tr class="memdesc:gab3726cda4fcfc82e26c5890489980815"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new surface with a specific pixel format.  <br /></td></tr>
 <tr class="separator:gab3726cda4fcfc82e26c5890489980815"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga68c2043282626baefd432bd9f75ebc49" id="r_ga68c2043282626baefd432bd9f75ebc49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga68c2043282626baefd432bd9f75ebc49">SDL::CreateSurfaceFrom</a> (const PointRaw &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, void *pixels, int pitch)</td></tr>
+<tr class="memitem:ga68c2043282626baefd432bd9f75ebc49" id="r_ga68c2043282626baefd432bd9f75ebc49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga68c2043282626baefd432bd9f75ebc49">SDL::CreateSurfaceFrom</a> (const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, void *pixels, int pitch)</td></tr>
 <tr class="memdesc:ga68c2043282626baefd432bd9f75ebc49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new surface with a specific pixel format and existing pixel data.  <br /></td></tr>
 <tr class="separator:ga68c2043282626baefd432bd9f75ebc49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga34253362d1de264e413aadfcd6434be4" id="r_ga34253362d1de264e413aadfcd6434be4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga34253362d1de264e413aadfcd6434be4">SDL::DestroySurface</a> (SurfaceRaw surface)</td></tr>
+<tr class="memitem:ga34253362d1de264e413aadfcd6434be4" id="r_ga34253362d1de264e413aadfcd6434be4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga34253362d1de264e413aadfcd6434be4">SDL::DestroySurface</a> (<a class="el" href="group__CategorySurface.html#ga8237493412cda866293e62965cab0e3b">SurfaceRaw</a> surface)</td></tr>
 <tr class="memdesc:ga34253362d1de264e413aadfcd6434be4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a surface.  <br /></td></tr>
 <tr class="separator:ga34253362d1de264e413aadfcd6434be4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad8b6d3648fc4b4423eb3c3c486bc9a64" id="r_gad8b6d3648fc4b4423eb3c3c486bc9a64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad8b6d3648fc4b4423eb3c3c486bc9a64">SDL::GetSurfaceProperties</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface)</td></tr>
@@ -147,7 +148,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga1ed818815c7d9d433fbf2211acbc2c82" id="r_ga1ed818815c7d9d433fbf2211acbc2c82"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga1ed818815c7d9d433fbf2211acbc2c82">SDL::SurfaceHasAlternateImages</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface)</td></tr>
 <tr class="memdesc:ga1ed818815c7d9d433fbf2211acbc2c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether a surface has alternate versions available.  <br /></td></tr>
 <tr class="separator:ga1ed818815c7d9d433fbf2211acbc2c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab7cad22b2897cccec58dc66aff4edbfa" id="r_gab7cad22b2897cccec58dc66aff4edbfa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; SurfaceRaw &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gab7cad22b2897cccec58dc66aff4edbfa">SDL::GetSurfaceImages</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface)</td></tr>
+<tr class="memitem:gab7cad22b2897cccec58dc66aff4edbfa" id="r_gab7cad22b2897cccec58dc66aff4edbfa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; <a class="el" href="group__CategorySurface.html#ga8237493412cda866293e62965cab0e3b">SurfaceRaw</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gab7cad22b2897cccec58dc66aff4edbfa">SDL::GetSurfaceImages</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface)</td></tr>
 <tr class="memdesc:gab7cad22b2897cccec58dc66aff4edbfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an array including all versions of a surface.  <br /></td></tr>
 <tr class="separator:gab7cad22b2897cccec58dc66aff4edbfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafd5bdc92b564c2e5b8c54fabf44ca56d" id="r_gafd5bdc92b564c2e5b8c54fabf44ca56d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gafd5bdc92b564c2e5b8c54fabf44ca56d">SDL::RemoveSurfaceAlternateImages</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface)</td></tr>
@@ -204,7 +205,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga4101aa38ade9c3c3ef41f2c73a742c74" id="r_ga4101aa38ade9c3c3ef41f2c73a742c74"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga4101aa38ade9c3c3ef41f2c73a742c74">SDL::GetSurfaceBlendMode</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface)</td></tr>
 <tr class="memdesc:ga4101aa38ade9c3c3ef41f2c73a742c74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the blend mode used for blit operations.  <br /></td></tr>
 <tr class="separator:ga4101aa38ade9c3c3ef41f2c73a742c74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga13deb71d85892ac61e485eb2b9a8700a" id="r_ga13deb71d85892ac61e485eb2b9a8700a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga13deb71d85892ac61e485eb2b9a8700a">SDL::SetSurfaceClipRect</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect)</td></tr>
+<tr class="memitem:ga13deb71d85892ac61e485eb2b9a8700a" id="r_ga13deb71d85892ac61e485eb2b9a8700a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga13deb71d85892ac61e485eb2b9a8700a">SDL::SetSurfaceClipRect</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect)</td></tr>
 <tr class="memdesc:ga13deb71d85892ac61e485eb2b9a8700a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the clipping rectangle for a surface.  <br /></td></tr>
 <tr class="separator:ga13deb71d85892ac61e485eb2b9a8700a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0422258bc4e644c891ec7850fa3f2a1b" id="r_ga0422258bc4e644c891ec7850fa3f2a1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga0422258bc4e644c891ec7850fa3f2a1b">SDL::GetSurfaceClipRect</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface)</td></tr>
@@ -216,7 +217,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga5ab7593e27df5fa55224fd9f8931aff7" id="r_ga5ab7593e27df5fa55224fd9f8931aff7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga5ab7593e27df5fa55224fd9f8931aff7">SDL::DuplicateSurface</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface)</td></tr>
 <tr class="memdesc:ga5ab7593e27df5fa55224fd9f8931aff7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new surface identical to the existing surface.  <br /></td></tr>
 <tr class="separator:ga5ab7593e27df5fa55224fd9f8931aff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga045919068d20e40cec0c8f26d6fdaf29" id="r_ga045919068d20e40cec0c8f26d6fdaf29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga045919068d20e40cec0c8f26d6fdaf29">SDL::ScaleSurface</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface, const PointRaw &amp;size, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
+<tr class="memitem:ga045919068d20e40cec0c8f26d6fdaf29" id="r_ga045919068d20e40cec0c8f26d6fdaf29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga045919068d20e40cec0c8f26d6fdaf29">SDL::ScaleSurface</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
 <tr class="memdesc:ga045919068d20e40cec0c8f26d6fdaf29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new surface identical to the existing surface, scaled to the desired size.  <br /></td></tr>
 <tr class="separator:ga045919068d20e40cec0c8f26d6fdaf29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga78f434509232735d2d914bce642cf644" id="r_ga78f434509232735d2d914bce642cf644"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga78f434509232735d2d914bce642cf644">SDL::ConvertSurface</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format)</td></tr>
@@ -225,73 +226,73 @@ Functions</h2></td></tr>
 <tr class="memitem:ga88c4491f6b242f39a621dd80b0ad27dd" id="r_ga88c4491f6b242f39a621dd80b0ad27dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga88c4491f6b242f39a621dd80b0ad27dd">SDL::ConvertSurfaceAndColorspace</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, <a class="el" href="structSDL_1_1PaletteParam.html">PaletteParam</a> palette, <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a> colorspace, <a class="el" href="structSDL_1_1PropertiesParam.html">PropertiesParam</a> props)</td></tr>
 <tr class="memdesc:ga88c4491f6b242f39a621dd80b0ad27dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy an existing surface to a new surface of the specified format and colorspace.  <br /></td></tr>
 <tr class="separator:ga88c4491f6b242f39a621dd80b0ad27dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf03c06bca337a1d8ec1a1ec15dc4b42c" id="r_gaf03c06bca337a1d8ec1a1ec15dc4b42c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaf03c06bca337a1d8ec1a1ec15dc4b42c">SDL::ConvertPixels</a> (const PointRaw &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> src_format, const void *src, int src_pitch, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> dst_format, void *dst, int dst_pitch)</td></tr>
+<tr class="memitem:gaf03c06bca337a1d8ec1a1ec15dc4b42c" id="r_gaf03c06bca337a1d8ec1a1ec15dc4b42c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaf03c06bca337a1d8ec1a1ec15dc4b42c">SDL::ConvertPixels</a> (const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> src_format, const void *src, int src_pitch, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> dst_format, void *dst, int dst_pitch)</td></tr>
 <tr class="memdesc:gaf03c06bca337a1d8ec1a1ec15dc4b42c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a block of pixels of one format to another format.  <br /></td></tr>
 <tr class="separator:gaf03c06bca337a1d8ec1a1ec15dc4b42c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad254a7e08aa5b80f41c2b62a954958a5" id="r_gad254a7e08aa5b80f41c2b62a954958a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad254a7e08aa5b80f41c2b62a954958a5">SDL::ConvertPixelsAndColorspace</a> (const PointRaw &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> src_format, <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a> src_colorspace, <a class="el" href="structSDL_1_1PropertiesParam.html">PropertiesParam</a> src_properties, const void *src, int src_pitch, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> dst_format, <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a> dst_colorspace, <a class="el" href="structSDL_1_1PropertiesParam.html">PropertiesParam</a> dst_properties, void *dst, int dst_pitch)</td></tr>
+<tr class="memitem:gad254a7e08aa5b80f41c2b62a954958a5" id="r_gad254a7e08aa5b80f41c2b62a954958a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad254a7e08aa5b80f41c2b62a954958a5">SDL::ConvertPixelsAndColorspace</a> (const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> src_format, <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a> src_colorspace, <a class="el" href="structSDL_1_1PropertiesParam.html">PropertiesParam</a> src_properties, const void *src, int src_pitch, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> dst_format, <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a> dst_colorspace, <a class="el" href="structSDL_1_1PropertiesParam.html">PropertiesParam</a> dst_properties, void *dst, int dst_pitch)</td></tr>
 <tr class="memdesc:gad254a7e08aa5b80f41c2b62a954958a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a block of pixels of one format and colorspace to another format and colorspace.  <br /></td></tr>
 <tr class="separator:gad254a7e08aa5b80f41c2b62a954958a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaddfb3327839c939594c94e7f5cce3ef" id="r_gaaddfb3327839c939594c94e7f5cce3ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaaddfb3327839c939594c94e7f5cce3ef">SDL::PremultiplyAlpha</a> (const PointRaw &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> src_format, const void *src, int src_pitch, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> dst_format, void *dst, int dst_pitch, bool linear)</td></tr>
+<tr class="memitem:gaaddfb3327839c939594c94e7f5cce3ef" id="r_gaaddfb3327839c939594c94e7f5cce3ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaaddfb3327839c939594c94e7f5cce3ef">SDL::PremultiplyAlpha</a> (const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> src_format, const void *src, int src_pitch, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> dst_format, void *dst, int dst_pitch, bool linear)</td></tr>
 <tr class="memdesc:gaaddfb3327839c939594c94e7f5cce3ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Premultiply the alpha on a block of pixels.  <br /></td></tr>
 <tr class="separator:gaaddfb3327839c939594c94e7f5cce3ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa80e134869c81bb10d507ca71daeb8a0" id="r_gaa80e134869c81bb10d507ca71daeb8a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaa80e134869c81bb10d507ca71daeb8a0">SDL::PremultiplySurfaceAlpha</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface, bool linear)</td></tr>
 <tr class="memdesc:gaa80e134869c81bb10d507ca71daeb8a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Premultiply the alpha in a surface.  <br /></td></tr>
 <tr class="separator:gaa80e134869c81bb10d507ca71daeb8a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab88f215f361b93f3b6eae9ad57705ac7" id="r_gab88f215f361b93f3b6eae9ad57705ac7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gab88f215f361b93f3b6eae9ad57705ac7">SDL::ClearSurface</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface, const FColorRaw &amp;color)</td></tr>
+<tr class="memitem:gab88f215f361b93f3b6eae9ad57705ac7" id="r_gab88f215f361b93f3b6eae9ad57705ac7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gab88f215f361b93f3b6eae9ad57705ac7">SDL::ClearSurface</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface, const <a class="el" href="group__CategoryPixels.html#gadfaf5b77d5957860167740c745343e4e">FColorRaw</a> &amp;color)</td></tr>
 <tr class="memdesc:gab88f215f361b93f3b6eae9ad57705ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear a surface with a specific color, with floating point precision.  <br /></td></tr>
 <tr class="separator:gab88f215f361b93f3b6eae9ad57705ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacc2ecc01aced07bfaf9f38ae6f6360ab" id="r_gacc2ecc01aced07bfaf9f38ae6f6360ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gacc2ecc01aced07bfaf9f38ae6f6360ab">SDL::FillSurfaceRect</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> color)</td></tr>
+<tr class="memitem:gacc2ecc01aced07bfaf9f38ae6f6360ab" id="r_gacc2ecc01aced07bfaf9f38ae6f6360ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gacc2ecc01aced07bfaf9f38ae6f6360ab">SDL::FillSurfaceRect</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> color)</td></tr>
 <tr class="memdesc:gacc2ecc01aced07bfaf9f38ae6f6360ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a fast fill of a rectangle with a specific color.  <br /></td></tr>
 <tr class="separator:gacc2ecc01aced07bfaf9f38ae6f6360ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2150a21de3725becd5c0b7f38f535e8d" id="r_ga2150a21de3725becd5c0b7f38f535e8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga2150a21de3725becd5c0b7f38f535e8d">SDL::FillSurfaceRects</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const RectRaw &gt; rects, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> color)</td></tr>
+<tr class="memitem:ga2150a21de3725becd5c0b7f38f535e8d" id="r_ga2150a21de3725becd5c0b7f38f535e8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga2150a21de3725becd5c0b7f38f535e8d">SDL::FillSurfaceRects</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rects, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> color)</td></tr>
 <tr class="memdesc:ga2150a21de3725becd5c0b7f38f535e8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a fast fill of a set of rectangles with a specific color.  <br /></td></tr>
 <tr class="separator:ga2150a21de3725becd5c0b7f38f535e8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadc46b56e2ce87354c17523ed9576dfbd" id="r_gadc46b56e2ce87354c17523ed9576dfbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gadc46b56e2ce87354c17523ed9576dfbd">SDL::BlitSurface</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:gadc46b56e2ce87354c17523ed9576dfbd" id="r_gadc46b56e2ce87354c17523ed9576dfbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gadc46b56e2ce87354c17523ed9576dfbd">SDL::BlitSurface</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:gadc46b56e2ce87354c17523ed9576dfbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a fast blit from the source surface to the destination surface with clipping.  <br /></td></tr>
 <tr class="separator:gadc46b56e2ce87354c17523ed9576dfbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga502856a9378be976b571c61ba6cf8878" id="r_ga502856a9378be976b571c61ba6cf8878"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga502856a9378be976b571c61ba6cf8878">SDL::BlitSurfaceAt</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, const PointRaw &amp;dstpos)</td></tr>
+<tr class="memitem:ga502856a9378be976b571c61ba6cf8878" id="r_ga502856a9378be976b571c61ba6cf8878"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga502856a9378be976b571c61ba6cf8878">SDL::BlitSurfaceAt</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;dstpos)</td></tr>
 <tr class="memdesc:ga502856a9378be976b571c61ba6cf8878"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a fast blit from the source surface to the destination surface with clipping.  <br /></td></tr>
 <tr class="separator:ga502856a9378be976b571c61ba6cf8878"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga01a78a18bf9d175dca5f73ac6708e3f9" id="r_ga01a78a18bf9d175dca5f73ac6708e3f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga01a78a18bf9d175dca5f73ac6708e3f9">SDL::BlitSurfaceUnchecked</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, const RectRaw &amp;srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, const RectRaw &amp;dstrect)</td></tr>
+<tr class="memitem:ga01a78a18bf9d175dca5f73ac6708e3f9" id="r_ga01a78a18bf9d175dca5f73ac6708e3f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga01a78a18bf9d175dca5f73ac6708e3f9">SDL::BlitSurfaceUnchecked</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;dstrect)</td></tr>
 <tr class="memdesc:ga01a78a18bf9d175dca5f73ac6708e3f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform low-level surface blitting only.  <br /></td></tr>
 <tr class="separator:ga01a78a18bf9d175dca5f73ac6708e3f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1a046f84b877443482cc456591ba0cff" id="r_ga1a046f84b877443482cc456591ba0cff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga1a046f84b877443482cc456591ba0cff">SDL::BlitSurfaceScaled</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; dstrect, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
+<tr class="memitem:ga1a046f84b877443482cc456591ba0cff" id="r_ga1a046f84b877443482cc456591ba0cff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga1a046f84b877443482cc456591ba0cff">SDL::BlitSurfaceScaled</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
 <tr class="memdesc:ga1a046f84b877443482cc456591ba0cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a scaled blit to a destination surface, which may be of a different format.  <br /></td></tr>
 <tr class="separator:ga1a046f84b877443482cc456591ba0cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga39ad9040e5ffc05811521c93e467ee6e" id="r_ga39ad9040e5ffc05811521c93e467ee6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga39ad9040e5ffc05811521c93e467ee6e">SDL::BlitSurfaceUncheckedScaled</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, const RectRaw &amp;srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, const RectRaw &amp;dstrect, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
+<tr class="memitem:ga39ad9040e5ffc05811521c93e467ee6e" id="r_ga39ad9040e5ffc05811521c93e467ee6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga39ad9040e5ffc05811521c93e467ee6e">SDL::BlitSurfaceUncheckedScaled</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;dstrect, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
 <tr class="memdesc:ga39ad9040e5ffc05811521c93e467ee6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform low-level surface scaled blitting only.  <br /></td></tr>
 <tr class="separator:ga39ad9040e5ffc05811521c93e467ee6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac99df0e6def66ccb8e7b3eaf6ae38960" id="r_gac99df0e6def66ccb8e7b3eaf6ae38960"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gac99df0e6def66ccb8e7b3eaf6ae38960">SDL::StretchSurface</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; RectRaw &gt; srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; RectRaw &gt; dstrect, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
+<tr class="memitem:gac99df0e6def66ccb8e7b3eaf6ae38960" id="r_gac99df0e6def66ccb8e7b3eaf6ae38960"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gac99df0e6def66ccb8e7b3eaf6ae38960">SDL::StretchSurface</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
 <tr class="memdesc:gac99df0e6def66ccb8e7b3eaf6ae38960"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a stretched pixel copy from one surface to another.  <br /></td></tr>
 <tr class="separator:gac99df0e6def66ccb8e7b3eaf6ae38960"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9428ddcfbbd1c60703aaf63e44906ed9" id="r_ga9428ddcfbbd1c60703aaf63e44906ed9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga9428ddcfbbd1c60703aaf63e44906ed9">SDL::BlitSurfaceTiled</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:ga9428ddcfbbd1c60703aaf63e44906ed9" id="r_ga9428ddcfbbd1c60703aaf63e44906ed9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga9428ddcfbbd1c60703aaf63e44906ed9">SDL::BlitSurfaceTiled</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:ga9428ddcfbbd1c60703aaf63e44906ed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a tiled blit to a destination surface, which may be of a different format.  <br /></td></tr>
 <tr class="separator:ga9428ddcfbbd1c60703aaf63e44906ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga860ca48d325e0a019a9f76f5397d06d2" id="r_ga860ca48d325e0a019a9f76f5397d06d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga860ca48d325e0a019a9f76f5397d06d2">SDL::BlitSurfaceTiledWithScale</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; srcrect, float scale, SDL_ScaleMode scaleMode, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:ga860ca48d325e0a019a9f76f5397d06d2" id="r_ga860ca48d325e0a019a9f76f5397d06d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga860ca48d325e0a019a9f76f5397d06d2">SDL::BlitSurfaceTiledWithScale</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, float scale, SDL_ScaleMode scaleMode, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:ga860ca48d325e0a019a9f76f5397d06d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a scaled and tiled blit to a destination surface, which may be of a different format.  <br /></td></tr>
 <tr class="separator:ga860ca48d325e0a019a9f76f5397d06d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga839fe7b54144b793566787f7664676b2" id="r_ga839fe7b54144b793566787f7664676b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga839fe7b54144b793566787f7664676b2">SDL::BlitSurface9Grid</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:ga839fe7b54144b793566787f7664676b2" id="r_ga839fe7b54144b793566787f7664676b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga839fe7b54144b793566787f7664676b2">SDL::BlitSurface9Grid</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:ga839fe7b54144b793566787f7664676b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a scaled blit using the 9-grid algorithm to a destination surface, which may be of a different format.  <br /></td></tr>
 <tr class="separator:ga839fe7b54144b793566787f7664676b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac47efab2ea577e49710861c3ad185b93" id="r_gac47efab2ea577e49710861c3ad185b93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gac47efab2ea577e49710861c3ad185b93">SDL::BlitSurface9Grid</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; srcrect, int left_width, int right_width, int top_height, int bottom_height, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:gac47efab2ea577e49710861c3ad185b93" id="r_gac47efab2ea577e49710861c3ad185b93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gac47efab2ea577e49710861c3ad185b93">SDL::BlitSurface9Grid</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, int left_width, int right_width, int top_height, int bottom_height, <a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> dst, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:gac47efab2ea577e49710861c3ad185b93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a scaled blit using the 9-grid algorithm to a destination surface, which may be of a different format.  <br /></td></tr>
 <tr class="separator:gac47efab2ea577e49710861c3ad185b93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa3dd8a1ae371f484990da6136ea02829" id="r_gaa3dd8a1ae371f484990da6136ea02829"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaa3dd8a1ae371f484990da6136ea02829">SDL::MapSurfaceRGB</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> r, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> g, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> b)</td></tr>
 <tr class="memdesc:gaa3dd8a1ae371f484990da6136ea02829"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGB triple to an opaque pixel value for a surface.  <br /></td></tr>
 <tr class="separator:gaa3dd8a1ae371f484990da6136ea02829"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga020040fa70126eb83d51234c1c5bf00a" id="r_ga020040fa70126eb83d51234c1c5bf00a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga020040fa70126eb83d51234c1c5bf00a">SDL::MapSurfaceRGBA</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface, ColorRaw c)</td></tr>
+<tr class="memitem:ga020040fa70126eb83d51234c1c5bf00a" id="r_ga020040fa70126eb83d51234c1c5bf00a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga020040fa70126eb83d51234c1c5bf00a">SDL::MapSurfaceRGBA</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface, <a class="el" href="group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9">ColorRaw</a> c)</td></tr>
 <tr class="memdesc:ga020040fa70126eb83d51234c1c5bf00a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGBA quadruple to a pixel value for a surface.  <br /></td></tr>
 <tr class="separator:ga020040fa70126eb83d51234c1c5bf00a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga634e08c2f20600193ca9ea3c31e851b0" id="r_ga634e08c2f20600193ca9ea3c31e851b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga634e08c2f20600193ca9ea3c31e851b0">SDL::ReadSurfacePixel</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface, const PointRaw &amp;p, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *r, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *g, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *b, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *a)</td></tr>
+<tr class="memitem:ga634e08c2f20600193ca9ea3c31e851b0" id="r_ga634e08c2f20600193ca9ea3c31e851b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga634e08c2f20600193ca9ea3c31e851b0">SDL::ReadSurfacePixel</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;p, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *r, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *g, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *b, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *a)</td></tr>
 <tr class="memdesc:ga634e08c2f20600193ca9ea3c31e851b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a single pixel from a surface.  <br /></td></tr>
 <tr class="separator:ga634e08c2f20600193ca9ea3c31e851b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac68eb909c7f9a4bf22539c859cf6c13a" id="r_gac68eb909c7f9a4bf22539c859cf6c13a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gac68eb909c7f9a4bf22539c859cf6c13a">SDL::ReadSurfacePixelFloat</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface, const PointRaw &amp;p, float *r, float *g, float *b, float *a)</td></tr>
+<tr class="memitem:gac68eb909c7f9a4bf22539c859cf6c13a" id="r_gac68eb909c7f9a4bf22539c859cf6c13a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gac68eb909c7f9a4bf22539c859cf6c13a">SDL::ReadSurfacePixelFloat</a> (<a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a> surface, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;p, float *r, float *g, float *b, float *a)</td></tr>
 <tr class="memdesc:gac68eb909c7f9a4bf22539c859cf6c13a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a single pixel from a surface.  <br /></td></tr>
 <tr class="separator:gac68eb909c7f9a4bf22539c859cf6c13a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3f541a91ab39ec71492369c825c17b78" id="r_ga3f541a91ab39ec71492369c825c17b78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga3f541a91ab39ec71492369c825c17b78">SDL::WriteSurfacePixel</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface, const PointRaw &amp;p, ColorRaw c)</td></tr>
+<tr class="memitem:ga3f541a91ab39ec71492369c825c17b78" id="r_ga3f541a91ab39ec71492369c825c17b78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga3f541a91ab39ec71492369c825c17b78">SDL::WriteSurfacePixel</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;p, <a class="el" href="group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9">ColorRaw</a> c)</td></tr>
 <tr class="memdesc:ga3f541a91ab39ec71492369c825c17b78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a single pixel to a surface.  <br /></td></tr>
 <tr class="separator:ga3f541a91ab39ec71492369c825c17b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf1c4f878e1fdd278ca3c373d8ad2dcf1" id="r_gaf1c4f878e1fdd278ca3c373d8ad2dcf1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaf1c4f878e1fdd278ca3c373d8ad2dcf1">SDL::WriteSurfacePixelFloat</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface, const PointRaw &amp;p, const FColorRaw &amp;c)</td></tr>
+<tr class="memitem:gaf1c4f878e1fdd278ca3c373d8ad2dcf1" id="r_gaf1c4f878e1fdd278ca3c373d8ad2dcf1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaf1c4f878e1fdd278ca3c373d8ad2dcf1">SDL::WriteSurfacePixelFloat</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;p, const <a class="el" href="group__CategoryPixels.html#gadfaf5b77d5957860167740c745343e4e">FColorRaw</a> &amp;c)</td></tr>
 <tr class="memdesc:gaf1c4f878e1fdd278ca3c373d8ad2dcf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a single pixel to a surface.  <br /></td></tr>
 <tr class="separator:gaf1c4f878e1fdd278ca3c373d8ad2dcf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga183c1bec6d887ec1d1418d21afa118eb" id="r_ga183c1bec6d887ec1d1418d21afa118eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga183c1bec6d887ec1d1418d21afa118eb">SDL::Surface::Destroy</a> ()</td></tr>
@@ -321,7 +322,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga7c411a5f7e223f82ad1640c4587aec82" id="r_ga7c411a5f7e223f82ad1640c4587aec82"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga7c411a5f7e223f82ad1640c4587aec82">SDL::Surface::HasAlternateImages</a> () const</td></tr>
 <tr class="memdesc:ga7c411a5f7e223f82ad1640c4587aec82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether a surface has alternate versions available.  <br /></td></tr>
 <tr class="separator:ga7c411a5f7e223f82ad1640c4587aec82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab17caf37930754f25d0da09d4b1a5d7f" id="r_gab17caf37930754f25d0da09d4b1a5d7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; SurfaceRaw &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gab17caf37930754f25d0da09d4b1a5d7f">SDL::Surface::GetImages</a> () const</td></tr>
+<tr class="memitem:gab17caf37930754f25d0da09d4b1a5d7f" id="r_gab17caf37930754f25d0da09d4b1a5d7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; <a class="el" href="group__CategorySurface.html#ga8237493412cda866293e62965cab0e3b">SurfaceRaw</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gab17caf37930754f25d0da09d4b1a5d7f">SDL::Surface::GetImages</a> () const</td></tr>
 <tr class="memdesc:gab17caf37930754f25d0da09d4b1a5d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an array including all versions of a surface.  <br /></td></tr>
 <tr class="separator:gab17caf37930754f25d0da09d4b1a5d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8b8c7cfc852e95919cc001ae2ec09198" id="r_ga8b8c7cfc852e95919cc001ae2ec09198"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga8b8c7cfc852e95919cc001ae2ec09198">SDL::Surface::RemoveAlternateImages</a> ()</td></tr>
@@ -378,7 +379,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga2693b3d251ef5d3d199b95c93d3e0686" id="r_ga2693b3d251ef5d3d199b95c93d3e0686"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga2693b3d251ef5d3d199b95c93d3e0686">SDL::Surface::GetBlendMode</a> () const</td></tr>
 <tr class="memdesc:ga2693b3d251ef5d3d199b95c93d3e0686"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the blend mode used for blit operations.  <br /></td></tr>
 <tr class="separator:ga2693b3d251ef5d3d199b95c93d3e0686"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf8f5aa384bb891899792c8bedec4d825" id="r_gaf8f5aa384bb891899792c8bedec4d825"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaf8f5aa384bb891899792c8bedec4d825">SDL::Surface::SetClipRect</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect)</td></tr>
+<tr class="memitem:gaf8f5aa384bb891899792c8bedec4d825" id="r_gaf8f5aa384bb891899792c8bedec4d825"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaf8f5aa384bb891899792c8bedec4d825">SDL::Surface::SetClipRect</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect)</td></tr>
 <tr class="memdesc:gaf8f5aa384bb891899792c8bedec4d825"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the clipping rectangle for a surface.  <br /></td></tr>
 <tr class="separator:gaf8f5aa384bb891899792c8bedec4d825"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga04ecc9cb35b959182230ccf4d834fff0" id="r_ga04ecc9cb35b959182230ccf4d834fff0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga04ecc9cb35b959182230ccf4d834fff0">SDL::Surface::GetClipRect</a> () const</td></tr>
@@ -390,7 +391,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga908b05ca4534578eea811ac785b66ab3" id="r_ga908b05ca4534578eea811ac785b66ab3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga908b05ca4534578eea811ac785b66ab3">SDL::Surface::Duplicate</a> () const</td></tr>
 <tr class="memdesc:ga908b05ca4534578eea811ac785b66ab3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new surface identical to the existing surface.  <br /></td></tr>
 <tr class="separator:ga908b05ca4534578eea811ac785b66ab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad07b97aa668c792fbee7f687a6782f1c" id="r_gad07b97aa668c792fbee7f687a6782f1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad07b97aa668c792fbee7f687a6782f1c">SDL::Surface::Scale</a> (const PointRaw &amp;size, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode) const</td></tr>
+<tr class="memitem:gad07b97aa668c792fbee7f687a6782f1c" id="r_gad07b97aa668c792fbee7f687a6782f1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad07b97aa668c792fbee7f687a6782f1c">SDL::Surface::Scale</a> (const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode) const</td></tr>
 <tr class="memdesc:gad07b97aa668c792fbee7f687a6782f1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new surface identical to the existing surface, scaled to the desired size.  <br /></td></tr>
 <tr class="separator:gad07b97aa668c792fbee7f687a6782f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8c2e4294568b106b2066860534ea8faf" id="r_ga8c2e4294568b106b2066860534ea8faf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga8c2e4294568b106b2066860534ea8faf">SDL::Surface::Convert</a> (<a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format) const</td></tr>
@@ -402,55 +403,55 @@ Functions</h2></td></tr>
 <tr class="memitem:ga55c9b1ae8693a8969c2837e6279b5806" id="r_ga55c9b1ae8693a8969c2837e6279b5806"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga55c9b1ae8693a8969c2837e6279b5806">SDL::Surface::PremultiplyAlpha</a> (bool linear)</td></tr>
 <tr class="memdesc:ga55c9b1ae8693a8969c2837e6279b5806"><td class="mdescLeft">&#160;</td><td class="mdescRight">Premultiply the alpha in a surface.  <br /></td></tr>
 <tr class="separator:ga55c9b1ae8693a8969c2837e6279b5806"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab84e9c7ded78e7ec3d9a862849346f30" id="r_gab84e9c7ded78e7ec3d9a862849346f30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gab84e9c7ded78e7ec3d9a862849346f30">SDL::Surface::Clear</a> (const FColorRaw &amp;color)</td></tr>
+<tr class="memitem:gab84e9c7ded78e7ec3d9a862849346f30" id="r_gab84e9c7ded78e7ec3d9a862849346f30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gab84e9c7ded78e7ec3d9a862849346f30">SDL::Surface::Clear</a> (const <a class="el" href="group__CategoryPixels.html#gadfaf5b77d5957860167740c745343e4e">FColorRaw</a> &amp;color)</td></tr>
 <tr class="memdesc:gab84e9c7ded78e7ec3d9a862849346f30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear a surface with a specific color, with floating point precision.  <br /></td></tr>
 <tr class="separator:gab84e9c7ded78e7ec3d9a862849346f30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaddd29ff9bad27a4cb2e82b299fa1893f" id="r_gaddd29ff9bad27a4cb2e82b299fa1893f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaddd29ff9bad27a4cb2e82b299fa1893f">SDL::Surface::FillRect</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; rect, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> color)</td></tr>
+<tr class="memitem:gaddd29ff9bad27a4cb2e82b299fa1893f" id="r_gaddd29ff9bad27a4cb2e82b299fa1893f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaddd29ff9bad27a4cb2e82b299fa1893f">SDL::Surface::FillRect</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rect, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> color)</td></tr>
 <tr class="memdesc:gaddd29ff9bad27a4cb2e82b299fa1893f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a fast fill of a rectangle with a specific color.  <br /></td></tr>
 <tr class="separator:gaddd29ff9bad27a4cb2e82b299fa1893f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3745552cc97e4b332db3aa653259f28d" id="r_ga3745552cc97e4b332db3aa653259f28d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga3745552cc97e4b332db3aa653259f28d">SDL::Surface::FillRects</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const RectRaw &gt; rects, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> color)</td></tr>
+<tr class="memitem:ga3745552cc97e4b332db3aa653259f28d" id="r_ga3745552cc97e4b332db3aa653259f28d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga3745552cc97e4b332db3aa653259f28d">SDL::Surface::FillRects</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; rects, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> color)</td></tr>
 <tr class="memdesc:ga3745552cc97e4b332db3aa653259f28d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a fast fill of a set of rectangles with a specific color.  <br /></td></tr>
 <tr class="separator:ga3745552cc97e4b332db3aa653259f28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5dd31c3bdef2c5f215551f2a8c6d6ea1" id="r_ga5dd31c3bdef2c5f215551f2a8c6d6ea1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga5dd31c3bdef2c5f215551f2a8c6d6ea1">SDL::Surface::Blit</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:ga5dd31c3bdef2c5f215551f2a8c6d6ea1" id="r_ga5dd31c3bdef2c5f215551f2a8c6d6ea1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga5dd31c3bdef2c5f215551f2a8c6d6ea1">SDL::Surface::Blit</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:ga5dd31c3bdef2c5f215551f2a8c6d6ea1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a fast blit from the source surface to the destination surface with clipping.  <br /></td></tr>
 <tr class="separator:ga5dd31c3bdef2c5f215551f2a8c6d6ea1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaef33d1c42270a7a93dbb1780783c0437" id="r_gaef33d1c42270a7a93dbb1780783c0437"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaef33d1c42270a7a93dbb1780783c0437">SDL::Surface::BlitUnchecked</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, const RectRaw &amp;srcrect, const RectRaw &amp;dstrect)</td></tr>
+<tr class="memitem:gaef33d1c42270a7a93dbb1780783c0437" id="r_gaef33d1c42270a7a93dbb1780783c0437"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaef33d1c42270a7a93dbb1780783c0437">SDL::Surface::BlitUnchecked</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;srcrect, const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;dstrect)</td></tr>
 <tr class="memdesc:gaef33d1c42270a7a93dbb1780783c0437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform low-level surface blitting only.  <br /></td></tr>
 <tr class="separator:gaef33d1c42270a7a93dbb1780783c0437"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac1a3d13723cf9bbd9d12d207e32b52d2" id="r_gac1a3d13723cf9bbd9d12d207e32b52d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gac1a3d13723cf9bbd9d12d207e32b52d2">SDL::Surface::BlitScaled</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; dstrect, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
+<tr class="memitem:gac1a3d13723cf9bbd9d12d207e32b52d2" id="r_gac1a3d13723cf9bbd9d12d207e32b52d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gac1a3d13723cf9bbd9d12d207e32b52d2">SDL::Surface::BlitScaled</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
 <tr class="memdesc:gac1a3d13723cf9bbd9d12d207e32b52d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a scaled blit to a destination surface, which may be of a different format.  <br /></td></tr>
 <tr class="separator:gac1a3d13723cf9bbd9d12d207e32b52d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga54b5f4a031ab364638aae4b87b4c0c77" id="r_ga54b5f4a031ab364638aae4b87b4c0c77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga54b5f4a031ab364638aae4b87b4c0c77">SDL::Surface::BlitUncheckedScaled</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, const RectRaw &amp;srcrect, const RectRaw &amp;dstrect, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
+<tr class="memitem:ga54b5f4a031ab364638aae4b87b4c0c77" id="r_ga54b5f4a031ab364638aae4b87b4c0c77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga54b5f4a031ab364638aae4b87b4c0c77">SDL::Surface::BlitUncheckedScaled</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;srcrect, const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;dstrect, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
 <tr class="memdesc:ga54b5f4a031ab364638aae4b87b4c0c77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform low-level surface scaled blitting only.  <br /></td></tr>
 <tr class="separator:ga54b5f4a031ab364638aae4b87b4c0c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8c8267a61f6db39c2c576557fcd71172" id="r_ga8c8267a61f6db39c2c576557fcd71172"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga8c8267a61f6db39c2c576557fcd71172">SDL::Surface::Stretch</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; RectRaw &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; RectRaw &gt; dstrect, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
+<tr class="memitem:ga8c8267a61f6db39c2c576557fcd71172" id="r_ga8c8267a61f6db39c2c576557fcd71172"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga8c8267a61f6db39c2c576557fcd71172">SDL::Surface::Stretch</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect, <a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
 <tr class="memdesc:ga8c8267a61f6db39c2c576557fcd71172"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a stretched pixel copy from one surface to another.  <br /></td></tr>
 <tr class="separator:ga8c8267a61f6db39c2c576557fcd71172"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad34dcbe208ec7b7288123d51e7e8202f" id="r_gad34dcbe208ec7b7288123d51e7e8202f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad34dcbe208ec7b7288123d51e7e8202f">SDL::Surface::BlitTiled</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:gad34dcbe208ec7b7288123d51e7e8202f" id="r_gad34dcbe208ec7b7288123d51e7e8202f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad34dcbe208ec7b7288123d51e7e8202f">SDL::Surface::BlitTiled</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:gad34dcbe208ec7b7288123d51e7e8202f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a tiled blit to a destination surface, which may be of a different format.  <br /></td></tr>
 <tr class="separator:gad34dcbe208ec7b7288123d51e7e8202f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga71eb2a21dc2c47943b8c4511366be71b" id="r_ga71eb2a21dc2c47943b8c4511366be71b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga71eb2a21dc2c47943b8c4511366be71b">SDL::Surface::BlitTiledWithScale</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; srcrect, float scale, SDL_ScaleMode scaleMode, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:ga71eb2a21dc2c47943b8c4511366be71b" id="r_ga71eb2a21dc2c47943b8c4511366be71b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga71eb2a21dc2c47943b8c4511366be71b">SDL::Surface::BlitTiledWithScale</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, float scale, SDL_ScaleMode scaleMode, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:ga71eb2a21dc2c47943b8c4511366be71b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a scaled and tiled blit to a destination surface, which may be of a different format.  <br /></td></tr>
 <tr class="separator:ga71eb2a21dc2c47943b8c4511366be71b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga66ad39566ab11566938c31fa4f784d7d" id="r_ga66ad39566ab11566938c31fa4f784d7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga66ad39566ab11566938c31fa4f784d7d">SDL::Surface::Blit9GridWithScale</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; dstrect)</td></tr>
+<tr class="memitem:ga66ad39566ab11566938c31fa4f784d7d" id="r_ga66ad39566ab11566938c31fa4f784d7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga66ad39566ab11566938c31fa4f784d7d">SDL::Surface::Blit9GridWithScale</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> src, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt; dstrect)</td></tr>
 <tr class="memdesc:ga66ad39566ab11566938c31fa4f784d7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a scaled blit using the 9-grid algorithm to a destination surface, which may be of a different format.  <br /></td></tr>
 <tr class="separator:ga66ad39566ab11566938c31fa4f784d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga39402fa717141a1733c997c61939bb08" id="r_ga39402fa717141a1733c997c61939bb08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga39402fa717141a1733c997c61939bb08">SDL::Surface::MapRGB</a> (<a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> r, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> g, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> b) const</td></tr>
 <tr class="memdesc:ga39402fa717141a1733c997c61939bb08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGB triple to an opaque pixel value for a surface.  <br /></td></tr>
 <tr class="separator:ga39402fa717141a1733c997c61939bb08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad012a675f75b664eb33496878a0316f9" id="r_gad012a675f75b664eb33496878a0316f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad012a675f75b664eb33496878a0316f9">SDL::Surface::MapRGBA</a> (ColorRaw c) const</td></tr>
+<tr class="memitem:gad012a675f75b664eb33496878a0316f9" id="r_gad012a675f75b664eb33496878a0316f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad012a675f75b664eb33496878a0316f9">SDL::Surface::MapRGBA</a> (<a class="el" href="group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9">ColorRaw</a> c) const</td></tr>
 <tr class="memdesc:gad012a675f75b664eb33496878a0316f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGBA quadruple to a pixel value for a surface.  <br /></td></tr>
 <tr class="separator:gad012a675f75b664eb33496878a0316f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac53a5915cdde32035b11689eaf9af4ab" id="r_gac53a5915cdde32035b11689eaf9af4ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gac53a5915cdde32035b11689eaf9af4ab">SDL::Surface::ReadPixel</a> (const PointRaw &amp;p, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *r, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *g, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *b, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *a) const</td></tr>
+<tr class="memitem:gac53a5915cdde32035b11689eaf9af4ab" id="r_gac53a5915cdde32035b11689eaf9af4ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gac53a5915cdde32035b11689eaf9af4ab">SDL::Surface::ReadPixel</a> (const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;p, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *r, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *g, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *b, <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *a) const</td></tr>
 <tr class="memdesc:gac53a5915cdde32035b11689eaf9af4ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a single pixel from a surface.  <br /></td></tr>
 <tr class="separator:gac53a5915cdde32035b11689eaf9af4ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae461289d5780ecc4a8ab416dd5e7624f" id="r_gae461289d5780ecc4a8ab416dd5e7624f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gae461289d5780ecc4a8ab416dd5e7624f">SDL::Surface::ReadPixelFloat</a> (const PointRaw &amp;p, float *r, float *g, float *b, float *a) const</td></tr>
+<tr class="memitem:gae461289d5780ecc4a8ab416dd5e7624f" id="r_gae461289d5780ecc4a8ab416dd5e7624f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gae461289d5780ecc4a8ab416dd5e7624f">SDL::Surface::ReadPixelFloat</a> (const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;p, float *r, float *g, float *b, float *a) const</td></tr>
 <tr class="memdesc:gae461289d5780ecc4a8ab416dd5e7624f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a single pixel from a surface.  <br /></td></tr>
 <tr class="separator:gae461289d5780ecc4a8ab416dd5e7624f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad7aa28cb2337012163e9edf69221c611" id="r_gad7aa28cb2337012163e9edf69221c611"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad7aa28cb2337012163e9edf69221c611">SDL::Surface::WritePixel</a> (const PointRaw &amp;p, ColorRaw c)</td></tr>
+<tr class="memitem:gad7aa28cb2337012163e9edf69221c611" id="r_gad7aa28cb2337012163e9edf69221c611"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gad7aa28cb2337012163e9edf69221c611">SDL::Surface::WritePixel</a> (const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;p, <a class="el" href="group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9">ColorRaw</a> c)</td></tr>
 <tr class="memdesc:gad7aa28cb2337012163e9edf69221c611"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a single pixel to a surface.  <br /></td></tr>
 <tr class="separator:gad7aa28cb2337012163e9edf69221c611"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafcb54c8d59df472c3873e8f8543a3192" id="r_gafcb54c8d59df472c3873e8f8543a3192"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gafcb54c8d59df472c3873e8f8543a3192">SDL::Surface::WritePixelFloat</a> (const PointRaw &amp;p, const FColorRaw &amp;c)</td></tr>
+<tr class="memitem:gafcb54c8d59df472c3873e8f8543a3192" id="r_gafcb54c8d59df472c3873e8f8543a3192"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gafcb54c8d59df472c3873e8f8543a3192">SDL::Surface::WritePixelFloat</a> (const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;p, const <a class="el" href="group__CategoryPixels.html#gadfaf5b77d5957860167740c745343e4e">FColorRaw</a> &amp;c)</td></tr>
 <tr class="memdesc:gafcb54c8d59df472c3873e8f8543a3192"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a single pixel to a surface.  <br /></td></tr>
 <tr class="separator:gafcb54c8d59df472c3873e8f8543a3192"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -668,13 +669,13 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -769,7 +770,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -811,7 +812,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -871,13 +872,13 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>, </td>
         </tr>
         <tr>
@@ -937,7 +938,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -949,7 +950,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -1043,7 +1044,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -1091,7 +1092,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -1152,7 +1153,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -1188,7 +1189,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -1247,7 +1248,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -1259,7 +1260,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>dstpos</em>&#160;</td>
         </tr>
         <tr>
@@ -1353,7 +1354,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -1365,7 +1366,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>, </td>
         </tr>
         <tr>
@@ -1426,7 +1427,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -1438,7 +1439,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -1493,7 +1494,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -1517,7 +1518,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -1574,7 +1575,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -1586,7 +1587,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -1641,7 +1642,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -1653,7 +1654,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>dstrect</em>, </td>
         </tr>
         <tr>
@@ -1715,13 +1716,13 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -1775,7 +1776,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -1793,7 +1794,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -1849,13 +1850,13 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>dstrect</em>&#160;</td>
         </tr>
         <tr>
@@ -1909,13 +1910,13 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>dstrect</em>, </td>
         </tr>
         <tr>
@@ -1970,7 +1971,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname">void SDL::Surface::Clear </td>
           <td>(</td>
-          <td class="paramtype">const FColorRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryPixels.html#gadfaf5b77d5957860167740c745343e4e">FColorRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>color</em></td><td>)</td>
           <td></td>
         </tr>
@@ -2018,7 +2019,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const FColorRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryPixels.html#gadfaf5b77d5957860167740c745343e4e">FColorRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>color</em>&#160;</td>
         </tr>
         <tr>
@@ -2171,7 +2172,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname">void SDL::ConvertPixels </td>
           <td>(</td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
@@ -2258,7 +2259,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname">void SDL::ConvertPixelsAndColorspace </td>
           <td>(</td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
@@ -2535,7 +2536,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname"><a class="el" href="classSDL_1_1Surface.html">Surface</a> SDL::CreateSurface </td>
           <td>(</td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
@@ -2585,7 +2586,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname"><a class="el" href="classSDL_1_1Surface.html">Surface</a> SDL::CreateSurfaceFrom </td>
           <td>(</td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
@@ -2727,7 +2728,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname">void SDL::DestroySurface </td>
           <td>(</td>
-          <td class="paramtype">SurfaceRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategorySurface.html#ga8237493412cda866293e62965cab0e3b">SurfaceRaw</a>&#160;</td>
           <td class="paramname"><em>surface</em></td><td>)</td>
           <td></td>
         </tr>
@@ -2833,7 +2834,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname">void SDL::Surface::FillRect </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>, </td>
         </tr>
         <tr>
@@ -2887,7 +2888,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname">void SDL::Surface::FillRects </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rects</em>, </td>
         </tr>
         <tr>
@@ -2947,7 +2948,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>, </td>
         </tr>
         <tr>
@@ -3008,7 +3009,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rects</em>, </td>
         </tr>
         <tr>
@@ -3389,7 +3390,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; SurfaceRaw &gt; SDL::Surface::GetImages </td>
+          <td class="memname"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; <a class="el" href="group__CategorySurface.html#ga8237493412cda866293e62965cab0e3b">SurfaceRaw</a> &gt; SDL::Surface::GetImages </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -3774,7 +3775,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; SurfaceRaw &gt; SDL::GetSurfaceImages </td>
+          <td class="memname"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; <a class="el" href="group__CategorySurface.html#ga8237493412cda866293e62965cab0e3b">SurfaceRaw</a> &gt; SDL::GetSurfaceImages </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structSDL_1_1SurfaceConstParam.html">SurfaceConstParam</a>&#160;</td>
           <td class="paramname"><em>surface</em></td><td>)</td>
@@ -4324,7 +4325,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> SDL::Surface::MapRGBA </td>
           <td>(</td>
-          <td class="paramtype">ColorRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9">ColorRaw</a>&#160;</td>
           <td class="paramname"><em>c</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -4435,7 +4436,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ColorRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9">ColorRaw</a>&#160;</td>
           <td class="paramname"><em>c</em>&#160;</td>
         </tr>
         <tr>
@@ -4548,7 +4549,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname">void SDL::PremultiplyAlpha </td>
           <td>(</td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
@@ -4694,7 +4695,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname">void SDL::Surface::ReadPixel </td>
           <td>(</td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
         </tr>
         <tr>
@@ -4768,7 +4769,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname">void SDL::Surface::ReadPixelFloat </td>
           <td>(</td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
         </tr>
         <tr>
@@ -4847,7 +4848,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
         </tr>
         <tr>
@@ -4928,7 +4929,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
         </tr>
         <tr>
@@ -5291,7 +5292,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname"><a class="el" href="classSDL_1_1Surface.html">Surface</a> SDL::Surface::Scale </td>
           <td>(</td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
@@ -5344,7 +5345,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
@@ -5480,7 +5481,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname">bool SDL::Surface::SetClipRect </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em></td><td>)</td>
           <td></td>
         </tr>
@@ -5877,7 +5878,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>rect</em>&#160;</td>
         </tr>
         <tr>
@@ -6219,13 +6220,13 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>, </td>
         </tr>
         <tr>
@@ -6285,7 +6286,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>srcrect</em>, </td>
         </tr>
         <tr>
@@ -6297,7 +6298,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; RectRaw &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; <a class="el" href="group__CategoryRect.html#gadeb77054b31c63a38d6594652fb0b7f4">RectRaw</a> &gt;&#160;</td>
           <td class="paramname"><em>dstrect</em>, </td>
         </tr>
         <tr>
@@ -6531,13 +6532,13 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname">void SDL::Surface::WritePixel </td>
           <td>(</td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ColorRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9">ColorRaw</a>&#160;</td>
           <td class="paramname"><em>c</em>&#160;</td>
         </tr>
         <tr>
@@ -6584,13 +6585,13 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="memname">void SDL::Surface::WritePixelFloat </td>
           <td>(</td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const FColorRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryPixels.html#gadfaf5b77d5957860167740c745343e4e">FColorRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>c</em>&#160;</td>
         </tr>
         <tr>
@@ -6642,13 +6643,13 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ColorRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#gae5e0ce1ba38a7f759053fb2816f3e7f9">ColorRaw</a>&#160;</td>
           <td class="paramname"><em>c</em>&#160;</td>
         </tr>
         <tr>
@@ -6702,13 +6703,13 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const FColorRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryPixels.html#gadfaf5b77d5957860167740c745343e4e">FColorRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>c</em>&#160;</td>
         </tr>
         <tr>

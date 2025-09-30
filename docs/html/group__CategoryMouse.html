@@ -98,6 +98,7 @@ Classes</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:gaaef776a189964573d503bd7e7d3a9970" id="r_gaaef776a189964573d503bd7e7d3a9970"><td class="memItemLeft" align="right" valign="top"><a id="gaaef776a189964573d503bd7e7d3a9970" name="gaaef776a189964573d503bd7e7d3a9970"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::CursorRaw</b> = SDL_Cursor *</td></tr>
+<tr class="memdesc:gaaef776a189964573d503bd7e7d3a9970"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1Cursor.html" title="The structure used to identify an SDL cursor.">Cursor</a>. <br /></td></tr>
 <tr class="separator:gaaef776a189964573d503bd7e7d3a9970"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga18c02aef67d85f2fbf2758204eba125d" id="r_ga18c02aef67d85f2fbf2758204eba125d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga18c02aef67d85f2fbf2758204eba125d">SDL::SystemCursor</a> = SDL_SystemCursor</td></tr>
 <tr class="memdesc:ga18c02aef67d85f2fbf2758204eba125d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSDL_1_1Cursor.html" title="The structure used to identify an SDL cursor.">Cursor</a> types for <a class="el" href="classSDL_1_1Cursor.html#a1043a4b0f58d80d7156fb4bf01212f5c" title="Default ctor.">Cursor.Cursor()</a>.  <br /></td></tr>
@@ -143,16 +144,16 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe947
 <tr class="memitem:ga43c85ca483981f5a1213b85ecc5bb04c" id="r_ga43c85ca483981f5a1213b85ecc5bb04c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga43c85ca483981f5a1213b85ecc5bb04c">SDL::GetRelativeMouseState</a> (float *x, float *y)</td></tr>
 <tr class="memdesc:ga43c85ca483981f5a1213b85ecc5bb04c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>'s cache for the synchronous mouse button state and accumulated mouse delta since last call.  <br /></td></tr>
 <tr class="separator:ga43c85ca483981f5a1213b85ecc5bb04c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5b42ef9d24e4f0b8656f122410a77809" id="r_ga5b42ef9d24e4f0b8656f122410a77809"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga5b42ef9d24e4f0b8656f122410a77809">SDL::WarpMouse</a> (const FPointRaw &amp;p)</td></tr>
+<tr class="memitem:ga5b42ef9d24e4f0b8656f122410a77809" id="r_ga5b42ef9d24e4f0b8656f122410a77809"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga5b42ef9d24e4f0b8656f122410a77809">SDL::WarpMouse</a> (const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;p)</td></tr>
 <tr class="memdesc:ga5b42ef9d24e4f0b8656f122410a77809"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the mouse to the given position in global screen space.  <br /></td></tr>
 <tr class="separator:ga5b42ef9d24e4f0b8656f122410a77809"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4545ed8ad78078db5e70b80883cb5c3a" id="r_ga4545ed8ad78078db5e70b80883cb5c3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga4545ed8ad78078db5e70b80883cb5c3a">SDL::CaptureMouse</a> (bool enabled)</td></tr>
 <tr class="memdesc:ga4545ed8ad78078db5e70b80883cb5c3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Capture the mouse and to track input outside an <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> window.  <br /></td></tr>
 <tr class="separator:ga4545ed8ad78078db5e70b80883cb5c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0c1d774f3a981c8f2cee9f3121d98b43" id="r_ga0c1d774f3a981c8f2cee9f3121d98b43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Cursor.html">Cursor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga0c1d774f3a981c8f2cee9f3121d98b43">SDL::CreateCursor</a> (const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *data, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *mask, const PointRaw &amp;size, const PointRaw &amp;hot)</td></tr>
+<tr class="memitem:ga0c1d774f3a981c8f2cee9f3121d98b43" id="r_ga0c1d774f3a981c8f2cee9f3121d98b43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Cursor.html">Cursor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga0c1d774f3a981c8f2cee9f3121d98b43">SDL::CreateCursor</a> (const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *data, const <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *mask, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;hot)</td></tr>
 <tr class="memdesc:ga0c1d774f3a981c8f2cee9f3121d98b43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a cursor using the specified bitmap data and mask (in MSB format).  <br /></td></tr>
 <tr class="separator:ga0c1d774f3a981c8f2cee9f3121d98b43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad3ae98f96042dc2229b1488bb71cd62b" id="r_gad3ae98f96042dc2229b1488bb71cd62b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Cursor.html">Cursor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gad3ae98f96042dc2229b1488bb71cd62b">SDL::CreateColorCursor</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface, const PointRaw &amp;hot)</td></tr>
+<tr class="memitem:gad3ae98f96042dc2229b1488bb71cd62b" id="r_gad3ae98f96042dc2229b1488bb71cd62b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Cursor.html">Cursor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gad3ae98f96042dc2229b1488bb71cd62b">SDL::CreateColorCursor</a> (<a class="el" href="structSDL_1_1SurfaceParam.html">SurfaceParam</a> surface, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;hot)</td></tr>
 <tr class="memdesc:gad3ae98f96042dc2229b1488bb71cd62b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a color cursor.  <br /></td></tr>
 <tr class="separator:gad3ae98f96042dc2229b1488bb71cd62b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga465a9b0af9295f406b6ff2b28dd7f687" id="r_ga465a9b0af9295f406b6ff2b28dd7f687"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Cursor.html">Cursor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga465a9b0af9295f406b6ff2b28dd7f687">SDL::CreateSystemCursor</a> (<a class="el" href="group__CategoryMouse.html#ga18c02aef67d85f2fbf2758204eba125d">SystemCursor</a> id)</td></tr>
@@ -167,7 +168,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe947
 <tr class="memitem:gab90863e2d51dd5633508f15fd8906e63" id="r_gab90863e2d51dd5633508f15fd8906e63"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gab90863e2d51dd5633508f15fd8906e63">SDL::GetDefaultCursor</a> ()</td></tr>
 <tr class="memdesc:gab90863e2d51dd5633508f15fd8906e63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the default cursor.  <br /></td></tr>
 <tr class="separator:gab90863e2d51dd5633508f15fd8906e63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga33dd9d02bf5ca2abed16cc90f25f260e" id="r_ga33dd9d02bf5ca2abed16cc90f25f260e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga33dd9d02bf5ca2abed16cc90f25f260e">SDL::DestroyCursor</a> (CursorRaw cursor)</td></tr>
+<tr class="memitem:ga33dd9d02bf5ca2abed16cc90f25f260e" id="r_ga33dd9d02bf5ca2abed16cc90f25f260e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga33dd9d02bf5ca2abed16cc90f25f260e">SDL::DestroyCursor</a> (<a class="el" href="group__CategoryMouse.html#gaaef776a189964573d503bd7e7d3a9970">CursorRaw</a> cursor)</td></tr>
 <tr class="memdesc:ga33dd9d02bf5ca2abed16cc90f25f260e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
 <tr class="separator:ga33dd9d02bf5ca2abed16cc90f25f260e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf819a266866ac1cbc7491c5ad4bd6fdd" id="r_gaf819a266866ac1cbc7491c5ad4bd6fdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gaf819a266866ac1cbc7491c5ad4bd6fdd">SDL::ShowCursor</a> ()</td></tr>
@@ -179,7 +180,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe947
 <tr class="memitem:gac4547e18959c21ca560b54349634f47b" id="r_gac4547e18959c21ca560b54349634f47b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gac4547e18959c21ca560b54349634f47b">SDL::CursorVisible</a> ()</td></tr>
 <tr class="memdesc:gac4547e18959c21ca560b54349634f47b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether the cursor is currently being shown.  <br /></td></tr>
 <tr class="separator:gac4547e18959c21ca560b54349634f47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9c994ef8505f718d3eeb9cae11ae41a1" id="r_ga9c994ef8505f718d3eeb9cae11ae41a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga9c994ef8505f718d3eeb9cae11ae41a1">SDL::Window::WarpMouse</a> (const FPointRaw &amp;p)</td></tr>
+<tr class="memitem:ga9c994ef8505f718d3eeb9cae11ae41a1" id="r_ga9c994ef8505f718d3eeb9cae11ae41a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga9c994ef8505f718d3eeb9cae11ae41a1">SDL::Window::WarpMouse</a> (const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;p)</td></tr>
 <tr class="memdesc:ga9c994ef8505f718d3eeb9cae11ae41a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the mouse cursor to the given position within the window.  <br /></td></tr>
 <tr class="separator:ga9c994ef8505f718d3eeb9cae11ae41a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga973b108b36481b5af96a93f5a8454ce2" id="r_ga973b108b36481b5af96a93f5a8454ce2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga973b108b36481b5af96a93f5a8454ce2">SDL::Window::SetRelativeMouseMode</a> (bool enabled)</td></tr>
@@ -458,7 +459,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>hot</em>&#160;</td>
         </tr>
         <tr>
@@ -524,13 +525,13 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>hot</em>&#160;</td>
         </tr>
         <tr>
@@ -703,7 +704,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
         <tr>
           <td class="memname">void SDL::DestroyCursor </td>
           <td>(</td>
-          <td class="paramtype">CursorRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryMouse.html#gaaef776a189964573d503bd7e7d3a9970">CursorRaw</a>&#160;</td>
           <td class="paramname"><em>cursor</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1323,7 +1324,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
         <tr>
           <td class="memname">void SDL::WarpMouse </td>
           <td>(</td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1367,7 +1368,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
         <tr>
           <td class="memname">void SDL::Window::WarpMouse </td>
           <td>(</td>
-          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#ga6302a4c72e75ffce653823caba34c9a4">FPointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>p</em></td><td>)</td>
           <td></td>
         </tr>

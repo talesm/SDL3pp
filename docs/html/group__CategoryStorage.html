@@ -97,6 +97,7 @@ Classes</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga57214baba0249ab2b02253bc2640f85a" id="r_ga57214baba0249ab2b02253bc2640f85a"><td class="memItemLeft" align="right" valign="top"><a id="ga57214baba0249ab2b02253bc2640f85a" name="ga57214baba0249ab2b02253bc2640f85a"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::StorageRaw</b> = SDL_Storage *</td></tr>
+<tr class="memdesc:ga57214baba0249ab2b02253bc2640f85a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1Storage.html" title="An abstract interface for filesystem access.">Storage</a>. <br /></td></tr>
 <tr class="separator:ga57214baba0249ab2b02253bc2640f85a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga24042115587c5568577e7acc5d0d76f7" id="r_ga24042115587c5568577e7acc5d0d76f7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStorage.html#ga24042115587c5568577e7acc5d0d76f7">SDL::StorageInterface</a> = SDL_StorageInterface</td></tr>
 <tr class="memdesc:ga24042115587c5568577e7acc5d0d76f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function interface for <a class="el" href="classSDL_1_1Storage.html" title="An abstract interface for filesystem access.">Storage</a>.  <br /></td></tr>
@@ -116,7 +117,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga7c95cd8fa2e3e6dd8ece0f20c9a56d56" id="r_ga7c95cd8fa2e3e6dd8ece0f20c9a56d56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Storage.html">Storage</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStorage.html#ga7c95cd8fa2e3e6dd8ece0f20c9a56d56">SDL::OpenStorage</a> (const <a class="el" href="group__CategoryStorage.html#ga24042115587c5568577e7acc5d0d76f7">StorageInterface</a> *iface, void *userdata)</td></tr>
 <tr class="memdesc:ga7c95cd8fa2e3e6dd8ece0f20c9a56d56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens up a container using a client-provided storage interface.  <br /></td></tr>
 <tr class="separator:ga7c95cd8fa2e3e6dd8ece0f20c9a56d56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae2234712fbaa34d165a40fc0147299e4" id="r_gae2234712fbaa34d165a40fc0147299e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStorage.html#gae2234712fbaa34d165a40fc0147299e4">SDL::CloseStorage</a> (StorageRaw storage)</td></tr>
+<tr class="memitem:gae2234712fbaa34d165a40fc0147299e4" id="r_gae2234712fbaa34d165a40fc0147299e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStorage.html#gae2234712fbaa34d165a40fc0147299e4">SDL::CloseStorage</a> (<a class="el" href="group__CategoryStorage.html#ga57214baba0249ab2b02253bc2640f85a">StorageRaw</a> storage)</td></tr>
 <tr class="memdesc:gae2234712fbaa34d165a40fc0147299e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes and frees a storage container.  <br /></td></tr>
 <tr class="separator:gae2234712fbaa34d165a40fc0147299e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5f23b39d4a74fef8f88f83848e6e35ae" id="r_ga5f23b39d4a74fef8f88f83848e6e35ae"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStorage.html#ga5f23b39d4a74fef8f88f83848e6e35ae">SDL::StorageReady</a> (<a class="el" href="structSDL_1_1StorageParam.html">StorageParam</a> storage)</td></tr>
@@ -346,9 +347,9 @@ Functions</h2></td></tr>
 <div class="line">        <span class="comment">// Something bad happened!</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_ga48fe5521cb77ff8e4ae442bc8387be70"><div class="ttname"><a href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70">SDL::malloc</a></div><div class="ttdeci">void * malloc(size_t size)</div><div class="ttdoc">Allocate uninitialized memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:621</div></div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gad1c0b6121968b312e1133bcf0db2a2b0"><div class="ttname"><a href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">SDL::Uint64</a></div><div class="ttdeci">Uint64 Uint64</div><div class="ttdoc">An unsigned 64-bit integer type.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:358</div></div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gadfa01257ca1f966fffb72f002db27fa6"><div class="ttname"><a href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6">SDL::free</a></div><div class="ttdeci">void free(void *mem)</div><div class="ttdoc">Free allocated memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:709</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_ga48fe5521cb77ff8e4ae442bc8387be70"><div class="ttname"><a href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70">SDL::malloc</a></div><div class="ttdeci">void * malloc(size_t size)</div><div class="ttdoc">Allocate uninitialized memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:623</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gad1c0b6121968b312e1133bcf0db2a2b0"><div class="ttname"><a href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">SDL::Uint64</a></div><div class="ttdeci">Uint64 Uint64</div><div class="ttdoc">An unsigned 64-bit integer type.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:360</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gadfa01257ca1f966fffb72f002db27fa6"><div class="ttname"><a href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6">SDL::free</a></div><div class="ttdeci">void free(void *mem)</div><div class="ttdoc">Free allocated memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:711</div></div>
 <div class="ttc" id="agroup__CategoryTimer_html_ga29135876921c3060e1c60a9e839d57b4"><div class="ttname"><a href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">SDL::Delay</a></div><div class="ttdeci">void Delay(std::chrono::nanoseconds duration)</div><div class="ttdoc">Wait a specified duration before returning.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:125</div></div>
 </div><!-- fragment --><p>Note the improvements that <a class="el" href="classSDL_1_1Storage.html" title="An abstract interface for filesystem access.">Storage</a> makes:</p>
 <ol type="1">
@@ -424,7 +425,7 @@ Notes on valid paths</h2>
         <tr>
           <td class="memname">bool SDL::CloseStorage </td>
           <td>(</td>
-          <td class="paramtype">StorageRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryStorage.html#ga57214baba0249ab2b02253bc2640f85a">StorageRaw</a>&#160;</td>
           <td class="paramname"><em>storage</em></td><td>)</td>
           <td></td>
         </tr>

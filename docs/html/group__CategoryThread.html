@@ -98,6 +98,7 @@ Classes</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:gac07e7a67c7df5feb9f40b42b7de1b2b3" id="r_gac07e7a67c7df5feb9f40b42b7de1b2b3"><td class="memItemLeft" align="right" valign="top"><a id="gac07e7a67c7df5feb9f40b42b7de1b2b3" name="gac07e7a67c7df5feb9f40b42b7de1b2b3"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::ThreadRaw</b> = SDL_Thread *</td></tr>
+<tr class="memdesc:gac07e7a67c7df5feb9f40b42b7de1b2b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1Thread.html" title="The SDL thread object.">Thread</a>. <br /></td></tr>
 <tr class="separator:gac07e7a67c7df5feb9f40b42b7de1b2b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga94fa248708fac73a2db5f33a19694db5" id="r_ga94fa248708fac73a2db5f33a19694db5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga94fa248708fac73a2db5f33a19694db5">SDL::ThreadPriority</a> = SDL_ThreadPriority</td></tr>
 <tr class="memdesc:ga94fa248708fac73a2db5f33a19694db5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> thread priority.  <br /></td></tr>
@@ -147,7 +148,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga03912907fb6de7001b2d138b11478f7a" id="r_ga03912907fb6de7001b2d138b11478f7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryThread.html#ga6f7a148f3f241be0fcf98e738225514d">ThreadState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga03912907fb6de7001b2d138b11478f7a">SDL::GetThreadState</a> (<a class="el" href="structSDL_1_1ThreadParam.html">ThreadParam</a> thread)</td></tr>
 <tr class="memdesc:ga03912907fb6de7001b2d138b11478f7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current state of a thread.  <br /></td></tr>
 <tr class="separator:ga03912907fb6de7001b2d138b11478f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3fbbbeca1a71a8826db591c433d4ea79" id="r_ga3fbbbeca1a71a8826db591c433d4ea79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga3fbbbeca1a71a8826db591c433d4ea79">SDL::DetachThread</a> (ThreadRaw thread)</td></tr>
+<tr class="memitem:ga3fbbbeca1a71a8826db591c433d4ea79" id="r_ga3fbbbeca1a71a8826db591c433d4ea79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga3fbbbeca1a71a8826db591c433d4ea79">SDL::DetachThread</a> (<a class="el" href="group__CategoryThread.html#gac07e7a67c7df5feb9f40b42b7de1b2b3">ThreadRaw</a> thread)</td></tr>
 <tr class="memdesc:ga3fbbbeca1a71a8826db591c433d4ea79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Let a thread clean up on exit without intervention.  <br /></td></tr>
 <tr class="separator:ga3fbbbeca1a71a8826db591c433d4ea79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae36f83eb444120b6b0aa0952f5d1085c" id="r_gae36f83eb444120b6b0aa0952f5d1085c"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gae36f83eb444120b6b0aa0952f5d1085c">SDL::GetTLS</a> (<a class="el" href="group__CategoryThread.html#ga81de0ba54c6c2f2147b1a0b9ff7521ac">TLSID</a> *id)</td></tr>
@@ -549,7 +550,7 @@ default" which might be wildly different between platforms. x86 Linux generally 
         <tr>
           <td class="memname">void SDL::DetachThread </td>
           <td>(</td>
-          <td class="paramtype">ThreadRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryThread.html#gac07e7a67c7df5feb9f40b42b7de1b2b3">ThreadRaw</a>&#160;</td>
           <td class="paramname"><em>thread</em></td><td>)</td>
           <td></td>
         </tr>

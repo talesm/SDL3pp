@@ -126,12 +126,15 @@ Macros</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga20a78e54306f2776c59a47921d6bcb47" id="r_ga20a78e54306f2776c59a47921d6bcb47"><td class="memItemLeft" align="right" valign="top"><a id="ga20a78e54306f2776c59a47921d6bcb47" name="ga20a78e54306f2776c59a47921d6bcb47"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AudioFormatRaw</b> = SDL_AudioFormat</td></tr>
+<tr class="memdesc:ga20a78e54306f2776c59a47921d6bcb47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a>. <br /></td></tr>
 <tr class="separator:ga20a78e54306f2776c59a47921d6bcb47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga74e691ab5e038a792055aa4bc254bb18" id="r_ga74e691ab5e038a792055aa4bc254bb18"><td class="memItemLeft" align="right" valign="top"><a id="ga74e691ab5e038a792055aa4bc254bb18" name="ga74e691ab5e038a792055aa4bc254bb18"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AudioDeviceID</b> = SDL_AudioDeviceID</td></tr>
+<tr class="memdesc:ga74e691ab5e038a792055aa4bc254bb18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1AudioDevice.html" title="SDL Audio Device instance IDs.">AudioDevice</a>. <br /></td></tr>
 <tr class="separator:ga74e691ab5e038a792055aa4bc254bb18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaaf3143feb712e43d032552562acdd0ba" id="r_gaaf3143feb712e43d032552562acdd0ba"><td class="memItemLeft" align="right" valign="top"><a id="gaaf3143feb712e43d032552562acdd0ba" name="gaaf3143feb712e43d032552562acdd0ba"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AudioStreamRaw</b> = SDL_AudioStream *</td></tr>
+<tr class="memdesc:gaaf3143feb712e43d032552562acdd0ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1AudioStream.html" title="The opaque handle that represents an audio stream.">AudioStream</a>. <br /></td></tr>
 <tr class="separator:gaaf3143feb712e43d032552562acdd0ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga278e46a8d2922ad0aa9a58e35bbcb92e" id="r_ga278e46a8d2922ad0aa9a58e35bbcb92e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">SDL::AudioSpec</a> = SDL_AudioSpec</td></tr>
 <tr class="memdesc:ga278e46a8d2922ad0aa9a58e35bbcb92e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format specifier for audio data.  <br /></td></tr>
@@ -154,28 +157,28 @@ Functions</h2></td></tr>
 <tr class="memitem:ga420d4e13326be24956113f4dd0ec6aa6" id="r_ga420d4e13326be24956113f4dd0ec6aa6"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1AudioFormat.html">AudioFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga420d4e13326be24956113f4dd0ec6aa6">SDL::DEFINE_AUDIO_FORMAT</a> (bool sign, bool bigendian, bool flt, <a class="el" href="group__CategoryStdinc.html#ga02c87be2d622586f428a03f6dd3704d8">Uint16</a> size)</td></tr>
 <tr class="memdesc:ga420d4e13326be24956113f4dd0ec6aa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define an <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a> value.  <br /></td></tr>
 <tr class="separator:ga420d4e13326be24956113f4dd0ec6aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa96be159897cf1b78363301d0c2633c8" id="r_gaa96be159897cf1b78363301d0c2633c8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryStdinc.html#ga02c87be2d622586f428a03f6dd3704d8">Uint16</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaa96be159897cf1b78363301d0c2633c8">SDL::AUDIO_BITSIZE</a> (AudioFormatRaw x)</td></tr>
+<tr class="memitem:gaa96be159897cf1b78363301d0c2633c8" id="r_gaa96be159897cf1b78363301d0c2633c8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryStdinc.html#ga02c87be2d622586f428a03f6dd3704d8">Uint16</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaa96be159897cf1b78363301d0c2633c8">SDL::AUDIO_BITSIZE</a> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> x)</td></tr>
 <tr class="memdesc:gaa96be159897cf1b78363301d0c2633c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the size, in bits, from an <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a>.  <br /></td></tr>
 <tr class="separator:gaa96be159897cf1b78363301d0c2633c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac5dce6ddfbc727cb8187896209b92bae" id="r_gac5dce6ddfbc727cb8187896209b92bae"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryStdinc.html#ga02c87be2d622586f428a03f6dd3704d8">Uint16</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gac5dce6ddfbc727cb8187896209b92bae">SDL::AUDIO_BYTESIZE</a> (AudioFormatRaw x)</td></tr>
+<tr class="memitem:gac5dce6ddfbc727cb8187896209b92bae" id="r_gac5dce6ddfbc727cb8187896209b92bae"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryStdinc.html#ga02c87be2d622586f428a03f6dd3704d8">Uint16</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gac5dce6ddfbc727cb8187896209b92bae">SDL::AUDIO_BYTESIZE</a> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> x)</td></tr>
 <tr class="memdesc:gac5dce6ddfbc727cb8187896209b92bae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the size, in bytes, from an <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a>.  <br /></td></tr>
 <tr class="separator:gac5dce6ddfbc727cb8187896209b92bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae1c29f25426f11dcd9fefcf09e5e77a5" id="r_gae1c29f25426f11dcd9fefcf09e5e77a5"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gae1c29f25426f11dcd9fefcf09e5e77a5">SDL::AUDIO_ISFLOAT</a> (AudioFormatRaw x)</td></tr>
+<tr class="memitem:gae1c29f25426f11dcd9fefcf09e5e77a5" id="r_gae1c29f25426f11dcd9fefcf09e5e77a5"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gae1c29f25426f11dcd9fefcf09e5e77a5">SDL::AUDIO_ISFLOAT</a> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> x)</td></tr>
 <tr class="memdesc:gae1c29f25426f11dcd9fefcf09e5e77a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if an <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a> represents floating point data.  <br /></td></tr>
 <tr class="separator:gae1c29f25426f11dcd9fefcf09e5e77a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3f6645346a34fda7a71b2e686150c53b" id="r_ga3f6645346a34fda7a71b2e686150c53b"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga3f6645346a34fda7a71b2e686150c53b">SDL::AUDIO_ISBIGENDIAN</a> (AudioFormatRaw x)</td></tr>
+<tr class="memitem:ga3f6645346a34fda7a71b2e686150c53b" id="r_ga3f6645346a34fda7a71b2e686150c53b"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga3f6645346a34fda7a71b2e686150c53b">SDL::AUDIO_ISBIGENDIAN</a> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> x)</td></tr>
 <tr class="memdesc:ga3f6645346a34fda7a71b2e686150c53b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if an <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a> represents bigendian data.  <br /></td></tr>
 <tr class="separator:ga3f6645346a34fda7a71b2e686150c53b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga37332197ff9f3e4a341a04b9c65954ef" id="r_ga37332197ff9f3e4a341a04b9c65954ef"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga37332197ff9f3e4a341a04b9c65954ef">SDL::AUDIO_ISLITTLEENDIAN</a> (AudioFormatRaw x)</td></tr>
+<tr class="memitem:ga37332197ff9f3e4a341a04b9c65954ef" id="r_ga37332197ff9f3e4a341a04b9c65954ef"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga37332197ff9f3e4a341a04b9c65954ef">SDL::AUDIO_ISLITTLEENDIAN</a> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> x)</td></tr>
 <tr class="memdesc:ga37332197ff9f3e4a341a04b9c65954ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if an <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a> represents littleendian data.  <br /></td></tr>
 <tr class="separator:ga37332197ff9f3e4a341a04b9c65954ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga67ebc9afaa1a8c88762a5854cfd26fa0" id="r_ga67ebc9afaa1a8c88762a5854cfd26fa0"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga67ebc9afaa1a8c88762a5854cfd26fa0">SDL::AUDIO_ISSIGNED</a> (AudioFormatRaw x)</td></tr>
+<tr class="memitem:ga67ebc9afaa1a8c88762a5854cfd26fa0" id="r_ga67ebc9afaa1a8c88762a5854cfd26fa0"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga67ebc9afaa1a8c88762a5854cfd26fa0">SDL::AUDIO_ISSIGNED</a> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> x)</td></tr>
 <tr class="memdesc:ga67ebc9afaa1a8c88762a5854cfd26fa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if an <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a> represents signed data.  <br /></td></tr>
 <tr class="separator:ga67ebc9afaa1a8c88762a5854cfd26fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa0f8a0d5653663d5276e82e6ff85c45d" id="r_gaa0f8a0d5653663d5276e82e6ff85c45d"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaa0f8a0d5653663d5276e82e6ff85c45d">SDL::AUDIO_ISINT</a> (AudioFormatRaw x)</td></tr>
+<tr class="memitem:gaa0f8a0d5653663d5276e82e6ff85c45d" id="r_gaa0f8a0d5653663d5276e82e6ff85c45d"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaa0f8a0d5653663d5276e82e6ff85c45d">SDL::AUDIO_ISINT</a> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> x)</td></tr>
 <tr class="memdesc:gaa0f8a0d5653663d5276e82e6ff85c45d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if an <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a> represents integer data.  <br /></td></tr>
 <tr class="separator:gaa0f8a0d5653663d5276e82e6ff85c45d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac1b4edc67c26dfe014fc24fec2132101" id="r_gac1b4edc67c26dfe014fc24fec2132101"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gac1b4edc67c26dfe014fc24fec2132101">SDL::AUDIO_ISUNSIGNED</a> (AudioFormatRaw x)</td></tr>
+<tr class="memitem:gac1b4edc67c26dfe014fc24fec2132101" id="r_gac1b4edc67c26dfe014fc24fec2132101"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gac1b4edc67c26dfe014fc24fec2132101">SDL::AUDIO_ISUNSIGNED</a> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> x)</td></tr>
 <tr class="memdesc:gac1b4edc67c26dfe014fc24fec2132101"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if an <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a> represents unsigned data.  <br /></td></tr>
 <tr class="separator:gac1b4edc67c26dfe014fc24fec2132101"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafd736bb7a8107101eac9d0ad555460c3" id="r_gafd736bb7a8107101eac9d0ad555460c3"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gafd736bb7a8107101eac9d0ad555460c3">SDL::AudioFrameSize</a> (const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;x)</td></tr>
@@ -229,7 +232,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga645a29a1a9ca6457d73eb11c61be3eb0" id="r_ga645a29a1a9ca6457d73eb11c61be3eb0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga645a29a1a9ca6457d73eb11c61be3eb0">SDL::SetAudioDeviceGain</a> (<a class="el" href="structSDL_1_1AudioDeviceParam.html">AudioDeviceParam</a> devid, float gain)</td></tr>
 <tr class="memdesc:ga645a29a1a9ca6457d73eb11c61be3eb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the gain of an audio device.  <br /></td></tr>
 <tr class="separator:ga645a29a1a9ca6457d73eb11c61be3eb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafc69a1c453c9ab07777a70104eed1fba" id="r_gafc69a1c453c9ab07777a70104eed1fba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gafc69a1c453c9ab07777a70104eed1fba">SDL::CloseAudioDevice</a> (AudioDeviceID devid)</td></tr>
+<tr class="memitem:gafc69a1c453c9ab07777a70104eed1fba" id="r_gafc69a1c453c9ab07777a70104eed1fba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gafc69a1c453c9ab07777a70104eed1fba">SDL::CloseAudioDevice</a> (<a class="el" href="group__CategoryAudio.html#ga74e691ab5e038a792055aa4bc254bb18">AudioDeviceID</a> devid)</td></tr>
 <tr class="memdesc:gafc69a1c453c9ab07777a70104eed1fba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close a previously-opened audio device.  <br /></td></tr>
 <tr class="separator:gafc69a1c453c9ab07777a70104eed1fba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabfaed133a6eb3f77b6d1d8be6fc563b8" id="r_gabfaed133a6eb3f77b6d1d8be6fc563b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gabfaed133a6eb3f77b6d1d8be6fc563b8">SDL::BindAudioStreams</a> (<a class="el" href="structSDL_1_1AudioDeviceParam.html">AudioDeviceParam</a> devid, std::span&lt; <a class="el" href="structSDL_1_1AudioStreamRef.html">AudioStreamRef</a> &gt; streams)</td></tr>
@@ -322,7 +325,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga7b312e5ae94091ce2c583c0d5f0b6ff2" id="r_ga7b312e5ae94091ce2c583c0d5f0b6ff2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga7b312e5ae94091ce2c583c0d5f0b6ff2">SDL::SetAudioStreamPutCallback</a> (<a class="el" href="structSDL_1_1AudioStreamParam.html">AudioStreamParam</a> stream, <a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">AudioStreamCallback</a> callback, void *userdata)</td></tr>
 <tr class="memdesc:ga7b312e5ae94091ce2c583c0d5f0b6ff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a callback that runs when data is added to an audio stream.  <br /></td></tr>
 <tr class="separator:ga7b312e5ae94091ce2c583c0d5f0b6ff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad216061d83ec09e36bb41c1b27679b28" id="r_gad216061d83ec09e36bb41c1b27679b28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gad216061d83ec09e36bb41c1b27679b28">SDL::DestroyAudioStream</a> (AudioStreamRaw stream)</td></tr>
+<tr class="memitem:gad216061d83ec09e36bb41c1b27679b28" id="r_gad216061d83ec09e36bb41c1b27679b28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gad216061d83ec09e36bb41c1b27679b28">SDL::DestroyAudioStream</a> (<a class="el" href="group__CategoryAudio.html#gaaf3143feb712e43d032552562acdd0ba">AudioStreamRaw</a> stream)</td></tr>
 <tr class="memdesc:gad216061d83ec09e36bb41c1b27679b28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free an audio stream.  <br /></td></tr>
 <tr class="separator:gad216061d83ec09e36bb41c1b27679b28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9d5ade79899137a17fc6b3abd8f84b8d" id="r_ga9d5ade79899137a17fc6b3abd8f84b8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1AudioStream.html">AudioStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga9d5ade79899137a17fc6b3abd8f84b8d">SDL::OpenAudioDeviceStream</a> (<a class="el" href="structSDL_1_1AudioDeviceParam.html">AudioDeviceParam</a> devid, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; spec, <a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">AudioStreamCallback</a> callback=nullptr, void *userdata=nullptr)</td></tr>
@@ -349,10 +352,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ga21787c751aa8f17579f1dca4a1b8b8ff" id="r_ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga21787c751aa8f17579f1dca4a1b8b8ff">SDL::ConvertAudioSamples</a> (const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;src_spec, <a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> src_data, const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;dst_spec)</td></tr>
 <tr class="memdesc:ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert some audio data of one format to another format.  <br /></td></tr>
 <tr class="separator:ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5a3741582de11b0d3858be6fce00bc9b" id="r_ga5a3741582de11b0d3858be6fce00bc9b"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga5a3741582de11b0d3858be6fce00bc9b">SDL::GetAudioFormatName</a> (AudioFormatRaw format)</td></tr>
+<tr class="memitem:ga5a3741582de11b0d3858be6fce00bc9b" id="r_ga5a3741582de11b0d3858be6fce00bc9b"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga5a3741582de11b0d3858be6fce00bc9b">SDL::GetAudioFormatName</a> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> format)</td></tr>
 <tr class="memdesc:ga5a3741582de11b0d3858be6fce00bc9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the human readable name of an audio format.  <br /></td></tr>
 <tr class="separator:ga5a3741582de11b0d3858be6fce00bc9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2a9c707626fbf0fa36dd10b6aabba81e" id="r_ga2a9c707626fbf0fa36dd10b6aabba81e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga2a9c707626fbf0fa36dd10b6aabba81e">SDL::GetSilenceValueForFormat</a> (AudioFormatRaw format)</td></tr>
+<tr class="memitem:ga2a9c707626fbf0fa36dd10b6aabba81e" id="r_ga2a9c707626fbf0fa36dd10b6aabba81e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga2a9c707626fbf0fa36dd10b6aabba81e">SDL::GetSilenceValueForFormat</a> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> format)</td></tr>
 <tr class="memdesc:ga2a9c707626fbf0fa36dd10b6aabba81e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the appropriate memset value for silencing an audio format.  <br /></td></tr>
 <tr class="separator:ga2a9c707626fbf0fa36dd10b6aabba81e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7e36e6ed8f282431290d14469c4d1697" id="r_ga7e36e6ed8f282431290d14469c4d1697"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryStdinc.html#ga02c87be2d622586f428a03f6dd3704d8">Uint16</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga7e36e6ed8f282431290d14469c4d1697">SDL::AudioFormat::GetBitSize</a> ()</td></tr>
@@ -569,10 +572,10 @@ constexpr <a class="el" href="classSDL_1_1AudioFormat.html">AudioFormat</a>&#160
 constexpr <a class="el" href="classSDL_1_1AudioFormat.html">AudioFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AUDIO_F32</b> = SDL_AUDIO_F32</td></tr>
 <tr class="memdesc:gabf6dc213bbd435c8794ba087b18433ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">AUDIO_F32. <br /></td></tr>
 <tr class="separator:gabf6dc213bbd435c8794ba087b18433ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa2b8859b775c48911c43ee5eea4d77c3" id="r_gaa2b8859b775c48911c43ee5eea4d77c3"><td class="memItemLeft" align="right" valign="top">constexpr AudioDeviceID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaa2b8859b775c48911c43ee5eea4d77c3">SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK</a></td></tr>
+<tr class="memitem:gaa2b8859b775c48911c43ee5eea4d77c3" id="r_gaa2b8859b775c48911c43ee5eea4d77c3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryAudio.html#ga74e691ab5e038a792055aa4bc254bb18">AudioDeviceID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaa2b8859b775c48911c43ee5eea4d77c3">SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK</a></td></tr>
 <tr class="memdesc:gaa2b8859b775c48911c43ee5eea4d77c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">A value used to request a default playback audio device.  <br /></td></tr>
 <tr class="separator:gaa2b8859b775c48911c43ee5eea4d77c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga99dbc0b13f1ef8ee1626060e15d6963a" id="r_ga99dbc0b13f1ef8ee1626060e15d6963a"><td class="memItemLeft" align="right" valign="top">constexpr AudioDeviceID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga99dbc0b13f1ef8ee1626060e15d6963a">SDL::AUDIO_DEVICE_DEFAULT_RECORDING</a></td></tr>
+<tr class="memitem:ga99dbc0b13f1ef8ee1626060e15d6963a" id="r_ga99dbc0b13f1ef8ee1626060e15d6963a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryAudio.html#ga74e691ab5e038a792055aa4bc254bb18">AudioDeviceID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga99dbc0b13f1ef8ee1626060e15d6963a">SDL::AUDIO_DEVICE_DEFAULT_RECORDING</a></td></tr>
 <tr class="memdesc:ga99dbc0b13f1ef8ee1626060e15d6963a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A value used to request a default recording audio device.  <br /></td></tr>
 <tr class="separator:ga99dbc0b13f1ef8ee1626060e15d6963a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -840,7 +843,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">constexpr <a class="el" href="group__CategoryStdinc.html#ga02c87be2d622586f428a03f6dd3704d8">Uint16</a> SDL::AUDIO_BITSIZE </td>
           <td>(</td>
-          <td class="paramtype">AudioFormatRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -876,7 +879,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">constexpr <a class="el" href="group__CategoryStdinc.html#ga02c87be2d622586f428a03f6dd3704d8">Uint16</a> SDL::AUDIO_BYTESIZE </td>
           <td>(</td>
-          <td class="paramtype">AudioFormatRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -912,7 +915,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">constexpr bool SDL::AUDIO_ISBIGENDIAN </td>
           <td>(</td>
-          <td class="paramtype">AudioFormatRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -948,7 +951,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">constexpr bool SDL::AUDIO_ISFLOAT </td>
           <td>(</td>
-          <td class="paramtype">AudioFormatRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -984,7 +987,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">constexpr bool SDL::AUDIO_ISINT </td>
           <td>(</td>
-          <td class="paramtype">AudioFormatRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1020,7 +1023,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">constexpr bool SDL::AUDIO_ISLITTLEENDIAN </td>
           <td>(</td>
-          <td class="paramtype">AudioFormatRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1056,7 +1059,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">constexpr bool SDL::AUDIO_ISSIGNED </td>
           <td>(</td>
-          <td class="paramtype">AudioFormatRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1092,7 +1095,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">constexpr bool SDL::AUDIO_ISUNSIGNED </td>
           <td>(</td>
-          <td class="paramtype">AudioFormatRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1645,7 +1648,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">void SDL::CloseAudioDevice </td>
           <td>(</td>
-          <td class="paramtype">AudioDeviceID&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga74e691ab5e038a792055aa4bc254bb18">AudioDeviceID</a>&#160;</td>
           <td class="paramname"><em>devid</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1843,8 +1846,8 @@ right, then it repeats for the next audio frame".</p>
 <p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> does not support custom audio formats, so this macro is not of much use externally, but it can be illustrative as to what the various bits of an <a class="el" href="classSDL_1_1AudioFormat.html" title="Audio format.">AudioFormat</a> mean.</p>
 <p>For example, AUDIO_S32LE looks like this:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classSDL_1_1AudioFormat.html">AudioFormat</a>.<a class="code hl_function" href="classSDL_1_1AudioFormat.html#aa2ccf1a5048a862de37f75cd423d9858">AudioFormat</a>(1, 0, 0, 32)</div>
-<div class="ttc" id="aclassSDL_1_1AudioFormat_html"><div class="ttname"><a href="classSDL_1_1AudioFormat.html">SDL::AudioFormat</a></div><div class="ttdoc">Audio format.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:257</div></div>
-<div class="ttc" id="aclassSDL_1_1AudioFormat_html_aa2ccf1a5048a862de37f75cd423d9858"><div class="ttname"><a href="classSDL_1_1AudioFormat.html#aa2ccf1a5048a862de37f75cd423d9858">SDL::AudioFormat::AudioFormat</a></div><div class="ttdeci">constexpr AudioFormat(AudioFormatRaw audioFormat={})</div><div class="ttdoc">Wraps AudioFormat.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:266</div></div>
+<div class="ttc" id="aclassSDL_1_1AudioFormat_html"><div class="ttname"><a href="classSDL_1_1AudioFormat.html">SDL::AudioFormat</a></div><div class="ttdoc">Audio format.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:260</div></div>
+<div class="ttc" id="aclassSDL_1_1AudioFormat_html_aa2ccf1a5048a862de37f75cd423d9858"><div class="ttname"><a href="classSDL_1_1AudioFormat.html#aa2ccf1a5048a862de37f75cd423d9858">SDL::AudioFormat::AudioFormat</a></div><div class="ttdeci">constexpr AudioFormat(AudioFormatRaw audioFormat={})</div><div class="ttdoc">Wraps AudioFormat.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:269</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sign</td><td>1 for signed data, 0 for unsigned data. </td></tr>
@@ -1902,7 +1905,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">void SDL::DestroyAudioStream </td>
           <td>(</td>
-          <td class="paramtype">AudioStreamRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#gaaf3143feb712e43d032552562acdd0ba">AudioStreamRaw</a>&#160;</td>
           <td class="paramname"><em>stream</em></td><td>)</td>
           <td></td>
         </tr>
@@ -2263,7 +2266,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">const char * SDL::GetAudioFormatName </td>
           <td>(</td>
-          <td class="paramtype">AudioFormatRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -3475,7 +3478,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">int SDL::GetSilenceValueForFormat </td>
           <td>(</td>
-          <td class="paramtype">AudioFormatRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -3855,9 +3858,9 @@ right, then it repeats for the next audio frame".</p>
 <p>It is required that the data source supports seeking.</p>
 <p>Example:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__CategoryAudio.html#ga2c80e9fb3a54f14798d793e474d26766">LoadWAV</a>(<a class="code hl_class" href="classSDL_1_1IOStream.html">IOStream</a>.<a class="code hl_function" href="group__CategoryIOStream.html#gadd4937dbab104fbc5e421b8a8b3617a8">FromFile</a>(<span class="stringliteral">&quot;sample.wav&quot;</span>, <span class="stringliteral">&quot;rb&quot;</span>), &amp;spec);</div>
-<div class="ttc" id="aclassSDL_1_1IOStream_html"><div class="ttname"><a href="classSDL_1_1IOStream.html">SDL::IOStream</a></div><div class="ttdoc">The read/write operation structure.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:130</div></div>
-<div class="ttc" id="agroup__CategoryAudio_html_ga2c80e9fb3a54f14798d793e474d26766"><div class="ttname"><a href="group__CategoryAudio.html#ga2c80e9fb3a54f14798d793e474d26766">SDL::LoadWAV</a></div><div class="ttdeci">OwnArray&lt; Uint8 &gt; LoadWAV(IOStreamParam src, AudioSpec *spec, bool closeio=false)</div><div class="ttdoc">Load the audio data of a WAVE file into memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:4716</div></div>
-<div class="ttc" id="agroup__CategoryIOStream_html_gadd4937dbab104fbc5e421b8a8b3617a8"><div class="ttname"><a href="group__CategoryIOStream.html#gadd4937dbab104fbc5e421b8a8b3617a8">SDL::IOStream::FromFile</a></div><div class="ttdeci">static IOStream FromFile(StringParam file, StringParam mode)</div><div class="ttdoc">Use this function to create a new IOStream structure for reading from and/or writing to a named file.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:1738</div></div>
+<div class="ttc" id="aclassSDL_1_1IOStream_html"><div class="ttname"><a href="classSDL_1_1IOStream.html">SDL::IOStream</a></div><div class="ttdoc">The read/write operation structure.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:131</div></div>
+<div class="ttc" id="agroup__CategoryAudio_html_ga2c80e9fb3a54f14798d793e474d26766"><div class="ttname"><a href="group__CategoryAudio.html#ga2c80e9fb3a54f14798d793e474d26766">SDL::LoadWAV</a></div><div class="ttdeci">OwnArray&lt; Uint8 &gt; LoadWAV(IOStreamParam src, AudioSpec *spec, bool closeio=false)</div><div class="ttdoc">Load the audio data of a WAVE file into memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:4719</div></div>
+<div class="ttc" id="agroup__CategoryIOStream_html_gadd4937dbab104fbc5e421b8a8b3617a8"><div class="ttname"><a href="group__CategoryIOStream.html#gadd4937dbab104fbc5e421b8a8b3617a8">SDL::IOStream::FromFile</a></div><div class="ttdeci">static IOStream FromFile(StringParam file, StringParam mode)</div><div class="ttdoc">Use this function to create a new IOStream structure for reading from and/or writing to a named file.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:1739</div></div>
 </div><!-- fragment --><p>Note that the LoadWAV function does this same thing for you, but in a less messy way:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__CategoryAudio.html#ga2c80e9fb3a54f14798d793e474d26766">LoadWAV</a>(<span class="stringliteral">&quot;sample.wav&quot;</span>, &amp;spec);</div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
@@ -6285,7 +6288,7 @@ right, then it repeats for the next audio frame".</p>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr AudioDeviceID SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK</td>
+          <td class="memname">constexpr <a class="el" href="group__CategoryAudio.html#ga74e691ab5e038a792055aa4bc254bb18">AudioDeviceID</a> SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK</td>
         </tr>
       </table>
   </td>
@@ -6311,7 +6314,7 @@ right, then it repeats for the next audio frame".</p>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr AudioDeviceID SDL::AUDIO_DEVICE_DEFAULT_RECORDING</td>
+          <td class="memname">constexpr <a class="el" href="group__CategoryAudio.html#ga74e691ab5e038a792055aa4bc254bb18">AudioDeviceID</a> SDL::AUDIO_DEVICE_DEFAULT_RECORDING</td>
         </tr>
       </table>
   </td>

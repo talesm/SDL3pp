@@ -2,7 +2,7 @@
 <  * @defgroup CategoryThread Category Thread
 ---
 >  * @defgroup CategoryThread Thread Management
-136a137,143
+137a138,144
 > /**
 >  * The function passed to Thread.Thread() as the new thread's entry point.
 >  *
@@ -10,11 +10,11 @@
 >  *
 >  * @since This datatype is available since SDL 3.2.0.
 >  */
-811c818
+812c819
 < inline void* GetTLS(TLSID* id) { return SDL_GetTLS(id); }
 ---
 > inline void* GetTLS(TLSID* id) { return SDL_GetTLS(*id); }
-842c849
+843c850
 <   CheckError(SDL_SetTLS(id, value, destructor));
 ---
 >   CheckError(SDL_SetTLS(*id, value, destructor));

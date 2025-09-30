@@ -98,6 +98,7 @@ Classes</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:gae44f11701ab5e1a80e527b875444e170" id="r_gae44f11701ab5e1a80e527b875444e170"><td class="memItemLeft" align="right" valign="top"><a id="gae44f11701ab5e1a80e527b875444e170" name="gae44f11701ab5e1a80e527b875444e170"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::ProcessRaw</b> = SDL_Process *</td></tr>
+<tr class="memdesc:gae44f11701ab5e1a80e527b875444e170"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1Process.html" title="An opaque handle representing a system process.">Process</a>. <br /></td></tr>
 <tr class="separator:gae44f11701ab5e1a80e527b875444e170"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1d1316bf2aedf1db96e190b42b567654" id="r_ga1d1316bf2aedf1db96e190b42b567654"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga1d1316bf2aedf1db96e190b42b567654">SDL::ProcessIO</a> = SDL_ProcessIO</td></tr>
 <tr class="memdesc:ga1d1316bf2aedf1db96e190b42b567654"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of where standard I/O should be directed when creating a process.  <br /></td></tr>
@@ -129,7 +130,7 @@ Functions</h2></td></tr>
 <tr class="memitem:gac726fe9e893843b39a1439e6370f66c8" id="r_gac726fe9e893843b39a1439e6370f66c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#gac726fe9e893843b39a1439e6370f66c8">SDL::WaitProcess</a> (<a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a> process, bool block, int *exitcode)</td></tr>
 <tr class="memdesc:gac726fe9e893843b39a1439e6370f66c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a process to finish.  <br /></td></tr>
 <tr class="separator:gac726fe9e893843b39a1439e6370f66c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad4b9bda6a692a2dc7f81cc20c2feab6b" id="r_gad4b9bda6a692a2dc7f81cc20c2feab6b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#gad4b9bda6a692a2dc7f81cc20c2feab6b">SDL::DestroyProcess</a> (ProcessRaw process)</td></tr>
+<tr class="memitem:gad4b9bda6a692a2dc7f81cc20c2feab6b" id="r_gad4b9bda6a692a2dc7f81cc20c2feab6b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#gad4b9bda6a692a2dc7f81cc20c2feab6b">SDL::DestroyProcess</a> (<a class="el" href="group__CategoryProcess.html#gae44f11701ab5e1a80e527b875444e170">ProcessRaw</a> process)</td></tr>
 <tr class="memdesc:gad4b9bda6a692a2dc7f81cc20c2feab6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a previously created process object.  <br /></td></tr>
 <tr class="separator:gad4b9bda6a692a2dc7f81cc20c2feab6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga74bbbd5929c56e232e6d9afce4f4e570" id="r_ga74bbbd5929c56e232e6d9afce4f4e570"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga74bbbd5929c56e232e6d9afce4f4e570">SDL::Process::GetProperties</a> () const</td></tr>
@@ -381,7 +382,7 @@ constexpr <a class="el" href="group__CategoryProcess.html#ga1d1316bf2aedf1db96e1
         <tr>
           <td class="memname">void SDL::DestroyProcess </td>
           <td>(</td>
-          <td class="paramtype">ProcessRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryProcess.html#gae44f11701ab5e1a80e527b875444e170">ProcessRaw</a>&#160;</td>
           <td class="paramname"><em>process</em></td><td>)</td>
           <td></td>
         </tr>

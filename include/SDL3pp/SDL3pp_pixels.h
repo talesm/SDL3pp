@@ -68,17 +68,22 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for PixelFormat.
 using PixelFormatRaw = SDL_PixelFormat;
 
+/// Alias to raw representation for Colorspace.
 using ColorspaceRaw = SDL_Colorspace;
 
+/// Alias to raw representation for Color.
 using ColorRaw = SDL_Color;
 
+/// Alias to raw representation for FColor.
 using FColorRaw = SDL_FColor;
 
 // Forward decl
 struct Palette;
 
+/// Alias to raw representation for Palette.
 using PaletteRaw = SDL_Palette*;
 
 /// Safely wrap Palette for non owning parameters

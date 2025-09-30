@@ -19,6 +19,7 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for Scancode.
 using ScancodeRaw = SDL_Scancode;
 
 // Forward decl

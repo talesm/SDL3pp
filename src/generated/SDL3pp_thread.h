@@ -31,6 +31,7 @@ namespace SDL {
 // Forward decl
 struct Thread;
 
+/// Alias to raw representation for Thread.
 using ThreadRaw = SDL_Thread*;
 
 // Forward decl

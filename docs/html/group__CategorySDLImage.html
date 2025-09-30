@@ -107,6 +107,7 @@ Macros</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:gae41433a32bd1db56dbd91e5dc0f8b185" id="r_gae41433a32bd1db56dbd91e5dc0f8b185"><td class="memItemLeft" align="right" valign="top"><a id="gae41433a32bd1db56dbd91e5dc0f8b185" name="gae41433a32bd1db56dbd91e5dc0f8b185"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AnimationRaw</b> = IMG_Animation *</td></tr>
+<tr class="memdesc:gae41433a32bd1db56dbd91e5dc0f8b185"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1Animation.html" title="Animated image support.">Animation</a>. <br /></td></tr>
 <tr class="separator:gae41433a32bd1db56dbd91e5dc0f8b185"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -240,7 +241,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga53fc5be40783cf7a689f033aecec5201" id="r_ga53fc5be40783cf7a689f033aecec5201"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga53fc5be40783cf7a689f033aecec5201">SDL::LoadWEBP</a> (<a class="el" href="structSDL_1_1IOStreamParam.html">IOStreamParam</a> src)</td></tr>
 <tr class="memdesc:ga53fc5be40783cf7a689f033aecec5201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a WEBP image directly.  <br /></td></tr>
 <tr class="separator:ga53fc5be40783cf7a689f033aecec5201"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac49d2d577c4bd47aead8fa63722e4790" id="r_gac49d2d577c4bd47aead8fa63722e4790"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#gac49d2d577c4bd47aead8fa63722e4790">SDL::LoadSizedSVG</a> (<a class="el" href="structSDL_1_1IOStreamParam.html">IOStreamParam</a> src, const PointRaw &amp;size)</td></tr>
+<tr class="memitem:gac49d2d577c4bd47aead8fa63722e4790" id="r_gac49d2d577c4bd47aead8fa63722e4790"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#gac49d2d577c4bd47aead8fa63722e4790">SDL::LoadSizedSVG</a> (<a class="el" href="structSDL_1_1IOStreamParam.html">IOStreamParam</a> src, const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;size)</td></tr>
 <tr class="memdesc:gac49d2d577c4bd47aead8fa63722e4790"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an SVG image, scaled to a specific size.  <br /></td></tr>
 <tr class="separator:gac49d2d577c4bd47aead8fa63722e4790"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0bf5a06c59eae3ea0c4361822cf28049" id="r_ga0bf5a06c59eae3ea0c4361822cf28049"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga0bf5a06c59eae3ea0c4361822cf28049">SDL::ReadXPMFromArray</a> (char **xpm)</td></tr>
@@ -276,7 +277,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga67cd36c2a52575b5a9ca66d101c21cfa" id="r_ga67cd36c2a52575b5a9ca66d101c21cfa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Animation.html">Animation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga67cd36c2a52575b5a9ca66d101c21cfa">SDL::LoadAnimationTyped</a> (<a class="el" href="structSDL_1_1IOStreamParam.html">IOStreamParam</a> src, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> type, bool closeio=false)</td></tr>
 <tr class="memdesc:ga67cd36c2a52575b5a9ca66d101c21cfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from an <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> datasource.  <br /></td></tr>
 <tr class="separator:ga67cd36c2a52575b5a9ca66d101c21cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga13f44f394d2907f3bd2dc34f73b93fbe" id="r_ga13f44f394d2907f3bd2dc34f73b93fbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga13f44f394d2907f3bd2dc34f73b93fbe">SDL::FreeAnimation</a> (AnimationRaw anim)</td></tr>
+<tr class="memitem:ga13f44f394d2907f3bd2dc34f73b93fbe" id="r_ga13f44f394d2907f3bd2dc34f73b93fbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga13f44f394d2907f3bd2dc34f73b93fbe">SDL::FreeAnimation</a> (<a class="el" href="group__CategorySDLImage.html#gae41433a32bd1db56dbd91e5dc0f8b185">AnimationRaw</a> anim)</td></tr>
 <tr class="memdesc:ga13f44f394d2907f3bd2dc34f73b93fbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of an <a class="el" href="classSDL_1_1Animation.html" title="Animated image support.">Animation</a> and free its resources.  <br /></td></tr>
 <tr class="separator:ga13f44f394d2907f3bd2dc34f73b93fbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac769113037420db7911310b9fbe4f6aa" id="r_gac769113037420db7911310b9fbe4f6aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Animation.html">Animation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#gac769113037420db7911310b9fbe4f6aa">SDL::LoadGIFAnimation</a> (<a class="el" href="structSDL_1_1IOStreamParam.html">IOStreamParam</a> src)</td></tr>
@@ -402,7 +403,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void SDL::FreeAnimation </td>
           <td>(</td>
-          <td class="paramtype">AnimationRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategorySDLImage.html#gae41433a32bd1db56dbd91e5dc0f8b185">AnimationRaw</a>&#160;</td>
           <td class="paramname"><em>anim</em></td><td>)</td>
           <td></td>
         </tr>
@@ -2747,7 +2748,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryRect.html#gaf764011ce3f1f5844dff2013757df824">PointRaw</a> &amp;&#160;</td>
           <td class="paramname"><em>size</em>&#160;</td>
         </tr>
         <tr>

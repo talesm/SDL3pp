@@ -37,11 +37,13 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for Display.
 using DisplayID = SDL_DisplayID;
 
 // Forward decl
 struct Window;
 
+/// Alias to raw representation for Window.
 using WindowRaw = SDL_Window*;
 
 // Forward decl
@@ -77,6 +79,7 @@ struct WindowParam
 // Forward decl
 struct GLContext;
 
+/// Alias to raw representation for GLContext.
 using GLContextRaw = SDL_GLContext*;
 
 // Forward decl

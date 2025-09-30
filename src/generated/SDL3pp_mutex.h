@@ -30,6 +30,7 @@ namespace SDL {
 // Forward decl
 struct Mutex;
 
+/// Alias to raw representation for Mutex.
 using MutexRaw = SDL_Mutex*;
 
 // Forward decl
@@ -65,6 +66,7 @@ struct MutexParam
 // Forward decl
 struct RWLock;
 
+/// Alias to raw representation for RWLock.
 using RWLockRaw = SDL_RWLock*;
 
 // Forward decl
@@ -100,6 +102,7 @@ struct RWLockParam
 // Forward decl
 struct Semaphore;
 
+/// Alias to raw representation for Semaphore.
 using SemaphoreRaw = SDL_Semaphore*;
 
 // Forward decl
@@ -135,6 +138,7 @@ struct SemaphoreParam
 // Forward decl
 struct Condition;
 
+/// Alias to raw representation for Condition.
 using ConditionRaw = SDL_Condition*;
 
 // Forward decl
@@ -167,6 +171,7 @@ struct ConditionParam
   constexpr operator ConditionRaw() const { return value; }
 };
 
+/// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
 
 /**

@@ -41,6 +41,7 @@ namespace SDL {
 // Forward decl
 struct Environment;
 
+/// Alias to raw representation for Environment.
 using EnvironmentRaw = SDL_Environment*;
 
 // Forward decl
@@ -76,6 +77,7 @@ struct EnvironmentParam
 // Forward decl
 struct IConv;
 
+/// Alias to raw representation for IConv.
 using IConvRaw = SDL_iconv_t;
 
 // Forward decl

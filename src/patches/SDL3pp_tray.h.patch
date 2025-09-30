@@ -2,13 +2,14 @@
 <  * @defgroup CategoryTray Category Tray
 ---
 >  * @defgroup CategoryTray System Tray
-57c57,59
+59c59,62
 < using TrayMenuRaw = SDL_TrayMenu;
 ---
 > struct TrayMenu;
 > 
+> /// Alias to raw representation for TrayMenu.
 > using TrayMenuRaw = SDL_TrayMenu*;
-134a137,146
+137a141,150
 > /**
 >  * A callback that is invoked when a tray entry is selected.
 >  *
@@ -19,10 +20,10 @@
 >  * @sa TrayEntry.SetCallback
 >  * @sa TrayCallback
 >  */
-392,393d403
+395,396d407
 <    * @param count An optional pointer to obtain the number of entries in the
 <    *              menu.
-434a445,468
+437a449,472
 >   /**
 >    * Appends a tray entry.
 >    *
@@ -47,7 +48,7 @@
 >    * @sa TrayEntry.Remove
 >    * @sa TrayEntry.GetParent
 >    */
-709a744,756
+712a748,760
 >   /**
 >    * Sets a callback to be invoked when the entry is selected.
 >    *
@@ -61,17 +62,17 @@
 >    * @sa TrayMenu.GetEntries
 >    * @sa TrayMenu.InsertEntry
 >    */
-969,970d1015
+972,973d1019
 <  * @param count An optional pointer to obtain the number of entries in the
 <  *              menu.
-985c1030,1033
+988c1034,1037
 <   return SDL_GetTrayEntries(menu);
 ---
 >   int count;
 >   auto entries = SDL_GetTrayEntries(menu, &count);
 >   return std::span<TrayEntry>{reinterpret_cast<TrayEntry*>(entries),
 >                               size_t(count)};
-1371a1420,1432
+1374a1424,1436
 > 
 > inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 > {

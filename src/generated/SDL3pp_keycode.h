@@ -20,6 +20,7 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for Keycode.
 using KeycodeRaw = SDL_Keycode;
 
 /**

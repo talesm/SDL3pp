@@ -116,11 +116,13 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for AudioFormat.
 using AudioFormatRaw = SDL_AudioFormat;
 
 // Forward decl
 struct AudioDevice;
 
+/// Alias to raw representation for AudioDevice.
 using AudioDeviceID = SDL_AudioDeviceID;
 
 // Forward decl
@@ -156,6 +158,7 @@ struct AudioDeviceParam
 // Forward decl
 struct AudioStream;
 
+/// Alias to raw representation for AudioStream.
 using AudioStreamRaw = SDL_AudioStream*;
 
 // Forward decl

@@ -98,6 +98,7 @@ Classes</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga262823c2053303f8b38ae2fb66f021ab" id="r_ga262823c2053303f8b38ae2fb66f021ab"><td class="memItemLeft" align="right" valign="top"><a id="ga262823c2053303f8b38ae2fb66f021ab" name="ga262823c2053303f8b38ae2fb66f021ab"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::IOStreamRaw</b> = SDL_IOStream *</td></tr>
+<tr class="memdesc:ga262823c2053303f8b38ae2fb66f021ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a>. <br /></td></tr>
 <tr class="separator:ga262823c2053303f8b38ae2fb66f021ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac6fe4a8e6aa95d60056f3a597416c642" id="r_gac6fe4a8e6aa95d60056f3a597416c642"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#gac6fe4a8e6aa95d60056f3a597416c642">SDL::IOStatus</a> = SDL_IOStatus</td></tr>
 <tr class="memdesc:gac6fe4a8e6aa95d60056f3a597416c642"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> status, set by a read or write operation.  <br /></td></tr>
@@ -126,7 +127,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga3584fb78656fafdab9b73f00bbc8a388" id="r_ga3584fb78656fafdab9b73f00bbc8a388"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1IOStream.html">IOStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#ga3584fb78656fafdab9b73f00bbc8a388">SDL::OpenIO</a> (const <a class="el" href="group__CategoryIOStream.html#gabc1c1a21fb3754b7ecd223f665cb2cd6">IOStreamInterface</a> *iface, void *userdata)</td></tr>
 <tr class="memdesc:ga3584fb78656fafdab9b73f00bbc8a388"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a custom <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a>.  <br /></td></tr>
 <tr class="separator:ga3584fb78656fafdab9b73f00bbc8a388"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadf487c170d67fd7353a2bec2dbb6f45f" id="r_gadf487c170d67fd7353a2bec2dbb6f45f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#gadf487c170d67fd7353a2bec2dbb6f45f">SDL::CloseIO</a> (IOStreamRaw context)</td></tr>
+<tr class="memitem:gadf487c170d67fd7353a2bec2dbb6f45f" id="r_gadf487c170d67fd7353a2bec2dbb6f45f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#gadf487c170d67fd7353a2bec2dbb6f45f">SDL::CloseIO</a> (<a class="el" href="group__CategoryIOStream.html#ga262823c2053303f8b38ae2fb66f021ab">IOStreamRaw</a> context)</td></tr>
 <tr class="memdesc:gadf487c170d67fd7353a2bec2dbb6f45f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close and free an allocated <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> structure.  <br /></td></tr>
 <tr class="separator:gadf487c170d67fd7353a2bec2dbb6f45f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9f9f926fbfc177e4530dc488ed9554d5" id="r_ga9f9f926fbfc177e4530dc488ed9554d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#ga9f9f926fbfc177e4530dc488ed9554d5">SDL::GetIOProperties</a> (<a class="el" href="structSDL_1_1IOStreamParam.html">IOStreamParam</a> context)</td></tr>
@@ -523,7 +524,7 @@ constexpr <a class="el" href="group__CategoryIOStream.html#gac6fe4a8e6aa95d60056
         <tr>
           <td class="memname">void SDL::CloseIO </td>
           <td>(</td>
-          <td class="paramtype">IOStreamRaw&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryIOStream.html#ga262823c2053303f8b38ae2fb66f021ab">IOStreamRaw</a>&#160;</td>
           <td class="paramname"><em>context</em></td><td>)</td>
           <td></td>
         </tr>

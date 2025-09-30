@@ -30,6 +30,7 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for PathInfo.
 using PathInfoRaw = SDL_PathInfo;
 
 /**

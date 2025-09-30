@@ -47,6 +47,7 @@ namespace SDL {
 // Forward decl
 struct Cursor;
 
+/// Alias to raw representation for Cursor.
 using CursorRaw = SDL_Cursor*;
 
 // Forward decl

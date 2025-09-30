@@ -22,6 +22,7 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for DateTime.
 using DateTimeRaw = SDL_DateTime;
 
 /**

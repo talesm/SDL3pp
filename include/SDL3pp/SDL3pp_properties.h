@@ -41,6 +41,7 @@ namespace SDL {
 // Forward decl
 struct Properties;
 
+/// Alias to raw representation for Properties.
 using PropertiesID = SDL_PropertiesID;
 
 // Forward decl

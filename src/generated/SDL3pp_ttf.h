@@ -23,6 +23,7 @@ namespace SDL {
 // Forward decl
 struct Font;
 
+/// Alias to raw representation for Font.
 using FontRaw = TTF_Font*;
 
 // Forward decl
@@ -58,6 +59,7 @@ struct FontParam
 // Forward decl
 struct TextEngine;
 
+/// Alias to raw representation for TextEngine.
 using TextEngineRaw = TTF_TextEngine*;
 
 /// Safely wrap TextEngine for non owning parameters
@@ -90,6 +92,7 @@ struct TextEngineParam
 // Forward decl
 struct Text;
 
+/// Alias to raw representation for Text.
 using TextRaw = TTF_Text*;
 
 // Forward decl

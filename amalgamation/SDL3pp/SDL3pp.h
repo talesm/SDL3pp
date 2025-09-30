@@ -7500,6 +7500,7 @@ inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
  * @{
  */
 
+/// Alias to raw representation for LogCategory.
 using LogCategoryRaw = SDL_LogCategory;
 
 /**
@@ -8627,17 +8628,22 @@ inline void ResetLogOutputFunction()
  * @{
  */
 
+/// Alias to raw representation for PixelFormat.
 using PixelFormatRaw = SDL_PixelFormat;
 
+/// Alias to raw representation for Colorspace.
 using ColorspaceRaw = SDL_Colorspace;
 
+/// Alias to raw representation for Color.
 using ColorRaw = SDL_Color;
 
+/// Alias to raw representation for FColor.
 using FColorRaw = SDL_FColor;
 
 // Forward decl
 struct Palette;
 
+/// Alias to raw representation for Palette.
 using PaletteRaw = SDL_Palette*;
 
 /// Safely wrap Palette for non owning parameters
@@ -11587,6 +11593,7 @@ inline Color PixelFormat::Get(Uint32 pixel,
 // Forward decl
 struct Properties;
 
+/// Alias to raw representation for Properties.
 using PropertiesID = SDL_PropertiesID;
 
 // Forward decl
@@ -12889,6 +12896,7 @@ inline void Properties::Destroy()
 // Forward decl
 struct Environment;
 
+/// Alias to raw representation for Environment.
 using EnvironmentRaw = SDL_Environment*;
 
 // Forward decl
@@ -12924,6 +12932,7 @@ struct EnvironmentParam
 // Forward decl
 struct IConv;
 
+/// Alias to raw representation for IConv.
 using IConvRaw = SDL_iconv_t;
 
 // Forward decl
@@ -20670,6 +20679,7 @@ constexpr float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
  * @{
  */
 
+/// Alias to raw representation for PathInfo.
 using PathInfoRaw = SDL_PathInfo;
 
 /**
@@ -21346,6 +21356,7 @@ inline Path GetCurrentDirectory() { return Path{SDL_GetCurrentDirectory()}; }
  * @{
  */
 
+/// Alias to raw representation for GUID.
 using GUIDRaw = SDL_GUID;
 
 /**
@@ -22262,6 +22273,7 @@ inline void QuitClass(T* state, AppResult result)
 // Forward decl
 struct IOStream;
 
+/// Alias to raw representation for IOStream.
 using IOStreamRaw = SDL_IOStream*;
 
 // Forward decl
@@ -25399,6 +25411,7 @@ inline void IOStream::WriteS64BE(Sint64 value)
 // Forward decl
 struct SharedObject;
 
+/// Alias to raw representation for SharedObject.
 using SharedObjectRaw = SDL_SharedObject*;
 
 // Forward decl
@@ -25890,12 +25903,16 @@ inline PowerState GetPowerInfo(int* seconds, int* percent)
  * @{
  */
 
+/// Alias to raw representation for Point.
 using PointRaw = SDL_Point;
 
+/// Alias to raw representation for FPoint.
 using FPointRaw = SDL_FPoint;
 
+/// Alias to raw representation for Rect.
 using RectRaw = SDL_Rect;
 
+/// Alias to raw representation for FRect.
 using FRectRaw = SDL_FRect;
 
 // Forward decl
@@ -28496,6 +28513,7 @@ constexpr Rect::operator FRect() const
  * @{
  */
 
+/// Alias to raw representation for Scancode.
 using ScancodeRaw = SDL_Scancode;
 
 // Forward decl
@@ -29246,6 +29264,7 @@ constexpr Scancode SCANCODE_COUNT = SDL_SCANCODE_COUNT;
  * @{
  */
 
+/// Alias to raw representation for DateTime.
 using DateTimeRaw = SDL_DateTime;
 
 /**
@@ -30136,11 +30155,13 @@ inline void RemoveTimer(TimerID id)
  * @{
  */
 
+/// Alias to raw representation for AudioFormat.
 using AudioFormatRaw = SDL_AudioFormat;
 
 // Forward decl
 struct AudioDevice;
 
+/// Alias to raw representation for AudioDevice.
 using AudioDeviceID = SDL_AudioDeviceID;
 
 // Forward decl
@@ -30176,6 +30197,7 @@ struct AudioDeviceParam
 // Forward decl
 struct AudioStream;
 
+/// Alias to raw representation for AudioStream.
 using AudioStreamRaw = SDL_AudioStream*;
 
 // Forward decl
@@ -34953,6 +34975,7 @@ inline int AudioFormat::GetSilenceValue() const
  * @{
  */
 
+/// Alias to raw representation for Keycode.
 using KeycodeRaw = SDL_Keycode;
 
 /**
@@ -35874,6 +35897,7 @@ constexpr Keycode ScancodeToKeycode(Scancode x)
 // Forward decl
 struct Process;
 
+/// Alias to raw representation for Process.
 using ProcessRaw = SDL_Process*;
 
 // Forward decl
@@ -36996,6 +37020,7 @@ inline void Process::Destroy()
 // Forward decl
 struct Storage;
 
+/// Alias to raw representation for Storage.
 using StorageRaw = SDL_Storage*;
 
 // Forward decl
@@ -38183,6 +38208,7 @@ inline OwnArray<char*> Storage::GlobDirectory(StringParam path,
 // Forward decl
 struct Surface;
 
+/// Alias to raw representation for Surface.
 using SurfaceRaw = SDL_Surface*;
 
 /// Safely wrap Surface for non owning parameters
@@ -42135,6 +42161,7 @@ inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
 // Forward decl
 struct Thread;
 
+/// Alias to raw representation for Thread.
 using ThreadRaw = SDL_Thread*;
 
 // Forward decl
@@ -42991,6 +43018,7 @@ inline void CleanupTLS() { SDL_CleanupTLS(); }
 // Forward decl
 struct Mutex;
 
+/// Alias to raw representation for Mutex.
 using MutexRaw = SDL_Mutex*;
 
 // Forward decl
@@ -43026,6 +43054,7 @@ struct MutexParam
 // Forward decl
 struct RWLock;
 
+/// Alias to raw representation for RWLock.
 using RWLockRaw = SDL_RWLock*;
 
 // Forward decl
@@ -43061,6 +43090,7 @@ struct RWLockParam
 // Forward decl
 struct Semaphore;
 
+/// Alias to raw representation for Semaphore.
 using SemaphoreRaw = SDL_Semaphore*;
 
 // Forward decl
@@ -43096,6 +43126,7 @@ struct SemaphoreParam
 // Forward decl
 struct Condition;
 
+/// Alias to raw representation for Condition.
 using ConditionRaw = SDL_Condition*;
 
 // Forward decl
@@ -43128,6 +43159,7 @@ struct ConditionParam
   constexpr operator ConditionRaw() const { return value; }
 };
 
+/// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
 
 /**
@@ -44988,6 +45020,7 @@ inline void InitState::SetInitialized(bool initialized)
 // Forward decl
 struct Tray;
 
+/// Alias to raw representation for Tray.
 using TrayRaw = SDL_Tray*;
 
 // Forward decl
@@ -45020,13 +45053,16 @@ struct TrayParam
   constexpr operator TrayRaw() const { return value; }
 };
 
+/// Alias to raw representation for TrayMenu.
 struct TrayMenu;
 
+/// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
 
 // Forward decl
 struct TrayEntry;
 
+/// Alias to raw representation for TrayEntry.
 using TrayEntryRaw = SDL_TrayEntry*;
 
 // Forward decl
@@ -46426,11 +46462,13 @@ inline void TrayEntry::SetCallback(TrayCB callback)
  * @{
  */
 
+/// Alias to raw representation for Display.
 using DisplayID = SDL_DisplayID;
 
 // Forward decl
 struct Window;
 
+/// Alias to raw representation for Window.
 using WindowRaw = SDL_Window*;
 
 // Forward decl
@@ -46466,6 +46504,7 @@ struct WindowParam
 // Forward decl
 struct GLContext;
 
+/// Alias to raw representation for GLContext.
 using GLContextRaw = SDL_GLContext;
 
 // Forward decl
@@ -56531,6 +56570,7 @@ inline bool Window::IsScreenKeyboardShown() const
  * @{
  */
 
+/// Alias to raw representation for MessageBox.
 using MessageBoxRaw = SDL_MessageBoxData;
 
 /**
@@ -56996,6 +57036,7 @@ inline void ShowSimpleMessageBox(MessageBoxFlags flags,
 // Forward decl
 struct Cursor;
 
+/// Alias to raw representation for Cursor.
 using CursorRaw = SDL_Cursor*;
 
 // Forward decl
@@ -57995,6 +58036,7 @@ inline bool CursorVisible() { return SDL_CursorVisible(); }
 // Forward decl
 struct Renderer;
 
+/// Alias to raw representation for Renderer.
 using RendererRaw = SDL_Renderer*;
 
 // Forward decl
@@ -58030,6 +58072,7 @@ struct RendererParam
 // Forward decl
 struct Texture;
 
+/// Alias to raw representation for Texture.
 using TextureRaw = SDL_Texture*;
 
 /// Safely wrap Texture for non owning parameters
@@ -65558,6 +65601,7 @@ namespace SDL {
 // Forward decl
 struct Animation;
 
+/// Alias to raw representation for Animation.
 using AnimationRaw = IMG_Animation*;
 
 // Forward decl
@@ -68138,6 +68182,7 @@ namespace SDL {
 // Forward decl
 struct Font;
 
+/// Alias to raw representation for Font.
 using FontRaw = TTF_Font*;
 
 // Forward decl
@@ -68173,6 +68218,7 @@ struct FontParam
 // Forward decl
 struct TextEngine;
 
+/// Alias to raw representation for TextEngine.
 using TextEngineRaw = TTF_TextEngine*;
 
 /// Safely wrap TextEngine for non owning parameters
@@ -68205,6 +68251,7 @@ struct TextEngineParam
 // Forward decl
 struct Text;
 
+/// Alias to raw representation for Text.
 using TextRaw = TTF_Text*;
 
 // Forward decl
@@ -68386,6 +68433,7 @@ inline void GetHarfBuzzVersion(int* major, int* minor, int* patch)
   TTF_GetHarfBuzzVersion(major, minor, patch);
 }
 
+/// Internal data for Text
 using TextData = TTF_TextData;
 
 /**

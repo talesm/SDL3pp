@@ -38,6 +38,7 @@ namespace SDL {
 // Forward decl
 struct Surface;
 
+/// Alias to raw representation for Surface.
 using SurfaceRaw = SDL_Surface*;
 
 /// Safely wrap Surface for non owning parameters

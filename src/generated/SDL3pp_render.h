@@ -42,6 +42,7 @@ namespace SDL {
 // Forward decl
 struct Renderer;
 
+/// Alias to raw representation for Renderer.
 using RendererRaw = SDL_Renderer*;
 
 // Forward decl
@@ -77,6 +78,7 @@ struct RendererParam
 // Forward decl
 struct Texture;
 
+/// Alias to raw representation for Texture.
 using TextureRaw = SDL_Texture*;
 
 /// Safely wrap Texture for non owning parameters

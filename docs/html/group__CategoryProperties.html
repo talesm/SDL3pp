@@ -98,6 +98,7 @@ Classes</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:gad9c574cae08b680d696ba5e12ae2de11" id="r_gad9c574cae08b680d696ba5e12ae2de11"><td class="memItemLeft" align="right" valign="top"><a id="gad9c574cae08b680d696ba5e12ae2de11" name="gad9c574cae08b680d696ba5e12ae2de11"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PropertiesID</b> = SDL_PropertiesID</td></tr>
+<tr class="memdesc:gad9c574cae08b680d696ba5e12ae2de11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="classSDL_1_1Properties.html" title="SDL properties ID.">Properties</a>. <br /></td></tr>
 <tr class="separator:gad9c574cae08b680d696ba5e12ae2de11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga150010e97d120b9ebadf796038d8c07f" id="r_ga150010e97d120b9ebadf796038d8c07f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga150010e97d120b9ebadf796038d8c07f">SDL::PropertyType</a> = SDL_PropertyType</td></tr>
 <tr class="memdesc:ga150010e97d120b9ebadf796038d8c07f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> property type.  <br /></td></tr>
@@ -105,7 +106,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PropertiesID</b
 <tr class="memitem:ga52e1c12fca5ec69ba32453ddc9d34c6c" id="r_ga52e1c12fca5ec69ba32453ddc9d34c6c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga52e1c12fca5ec69ba32453ddc9d34c6c">SDL::EnumeratePropertiesCallback</a> = SDL_EnumeratePropertiesCallback</td></tr>
 <tr class="memdesc:ga52e1c12fca5ec69ba32453ddc9d34c6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used to enumerate all the properties in a group of properties.  <br /></td></tr>
 <tr class="separator:ga52e1c12fca5ec69ba32453ddc9d34c6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga474c3108e1cfc668a76ceb4f862ec3f5" id="r_ga474c3108e1cfc668a76ceb4f862ec3f5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga474c3108e1cfc668a76ceb4f862ec3f5">SDL::EnumeratePropertiesCB</a> = std::function&lt; void(PropertiesID props, const char *name)&gt;</td></tr>
+<tr class="memitem:ga474c3108e1cfc668a76ceb4f862ec3f5" id="r_ga474c3108e1cfc668a76ceb4f862ec3f5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga474c3108e1cfc668a76ceb4f862ec3f5">SDL::EnumeratePropertiesCB</a> = std::function&lt; void(<a class="el" href="group__CategoryProperties.html#gad9c574cae08b680d696ba5e12ae2de11">PropertiesID</a> props, const char *name)&gt;</td></tr>
 <tr class="memdesc:ga474c3108e1cfc668a76ceb4f862ec3f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used to enumerate all the properties in a group of properties.  <br /></td></tr>
 <tr class="separator:ga474c3108e1cfc668a76ceb4f862ec3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac68e366c86f4169ac6f6928589c0c4a8" id="r_gac68e366c86f4169ac6f6928589c0c4a8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#gac68e366c86f4169ac6f6928589c0c4a8">SDL::CleanupPropertyCallback</a> = SDL_CleanupPropertyCallback</td></tr>
@@ -186,7 +187,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga2cd4aa8722e9b9a491008c28db9ad46c" id="r_ga2cd4aa8722e9b9a491008c28db9ad46c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">Uint64</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga2cd4aa8722e9b9a491008c28db9ad46c">SDL::CountProperties</a> (<a class="el" href="structSDL_1_1PropertiesParam.html">PropertiesParam</a> props)</td></tr>
 <tr class="memdesc:ga2cd4aa8722e9b9a491008c28db9ad46c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of properties this has.  <br /></td></tr>
 <tr class="separator:ga2cd4aa8722e9b9a491008c28db9ad46c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf5a6b3b462ccda2b0f5fba3d11996ea8" id="r_gaf5a6b3b462ccda2b0f5fba3d11996ea8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#gaf5a6b3b462ccda2b0f5fba3d11996ea8">SDL::DestroyProperties</a> (PropertiesID props)</td></tr>
+<tr class="memitem:gaf5a6b3b462ccda2b0f5fba3d11996ea8" id="r_gaf5a6b3b462ccda2b0f5fba3d11996ea8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#gaf5a6b3b462ccda2b0f5fba3d11996ea8">SDL::DestroyProperties</a> (<a class="el" href="group__CategoryProperties.html#gad9c574cae08b680d696ba5e12ae2de11">PropertiesID</a> props)</td></tr>
 <tr class="memdesc:gaf5a6b3b462ccda2b0f5fba3d11996ea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a group of properties.  <br /></td></tr>
 <tr class="separator:gaf5a6b3b462ccda2b0f5fba3d11996ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0772743526d94ccbbc52fec78d29bf0e" id="r_ga0772743526d94ccbbc52fec78d29bf0e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSDL_1_1Properties.html">Properties</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga0772743526d94ccbbc52fec78d29bf0e">SDL::Properties::Create</a> ()</td></tr>
@@ -369,7 +370,7 @@ constexpr <a class="el" href="group__CategoryProperties.html#ga150010e97d120b9eb
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryProperties.html#ga474c3108e1cfc668a76ceb4f862ec3f5">SDL::EnumeratePropertiesCB</a> = typedef std::function&lt;void(PropertiesID props, const char* name)&gt;</td>
+          <td class="memname">using <a class="el" href="group__CategoryProperties.html#ga474c3108e1cfc668a76ceb4f862ec3f5">SDL::EnumeratePropertiesCB</a> = typedef std::function&lt;void(<a class="el" href="group__CategoryProperties.html#gad9c574cae08b680d696ba5e12ae2de11">PropertiesID</a> props, const char* name)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -693,7 +694,7 @@ constexpr <a class="el" href="group__CategoryProperties.html#ga150010e97d120b9eb
         <tr>
           <td class="memname">void SDL::DestroyProperties </td>
           <td>(</td>
-          <td class="paramtype">PropertiesID&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryProperties.html#gad9c574cae08b680d696ba5e12ae2de11">PropertiesID</a>&#160;</td>
           <td class="paramname"><em>props</em></td><td>)</td>
           <td></td>
         </tr>
