@@ -25,8 +25,8 @@ struct Sound
     /* Create an audio stream. Set the source format to the wav's format (what
        we'll input), leave the dest format std::nullopt here (it'll change to
        what the device wants once we bind it). */
-    stream = SDL::AudioStream::Create(spec, std::nullopt);
-    stream->Bind(audio_device);
+    stream = SDL::AudioStream(spec, std::nullopt);
+    audio_device.BindAudioStream(stream);
   }
 };
 
@@ -34,31 +34,34 @@ struct Main
 {
   static constexpr SDL::Point windowSz = {640, 480};
 
-  SDL::SDL init{SDL::INIT_VIDEO, SDL::INIT_AUDIO};
-  SDL::Window window =
-    SDL::Window::Create("examples/audio/multiple-streams", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
-  SDL::AudioDevice audio_device =
-    SDL::AudioDevice::Open(SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK, {});
+  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata("Example Audio Multiple Streams",
+                        "1.0",
+                        "com.example.audio-multiple-streams");
+    SDL::Init(SDL::INIT_VIDEO | SDL::INIT_AUDIO);
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
+  SDL::Window window = SDL::Window("examples/audio/multiple-streams", windowSz);
+  SDL::Renderer renderer = SDL::Renderer(window);
+  SDL::AudioDevice audio_device{SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK, {}};
   Sound sounds[2] = {{audio_device, "sample.wav"}, {audio_device, "sword.wav"}};
 
   SDL::AppResult Iterate()
   {
     for (auto& sound : sounds) {
-      if (sound.stream->GetQueued() < int(sound.wav_data.size())) {
-        sound.stream->PutData(sound.wav_data);
+      if (sound.stream.GetQueued() < int(sound.wav_data.size())) {
+        sound.stream.PutData(sound.wav_data);
       }
     }
 
     // just blank the screen.
-    renderer->RenderClear();
-    renderer->Present();
+    renderer.RenderClear();
+    renderer.Present();
 
     return SDL::APP_CONTINUE;
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main,
-                        "Example Audio Multiple Streams",
-                        "1.0",
-                        "com.example.audio-multiple-streams")
+SDL3PP_DEFINE_CALLBACKS(Main)

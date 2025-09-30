@@ -34299,6 +34299,23 @@ inline void AudioStream::SetGetCallback(AudioStreamCallback callback,
   SDL::SetAudioStreamGetCallback(m_resource, callback, userdata);
 }
 
+inline void AudioStream::SetGetCallback(AudioStreamCB callback)
+{
+  using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 0>;
+  if (!SDL_SetAudioStreamGetCallback(
+        get(),
+        [](void* userdata,
+           SDL_AudioStream* stream,
+           int additional_amount,
+           int total_amount) {
+          Wrapper::Call(userdata, {stream}, additional_amount, total_amount);
+        },
+        Wrapper::Wrap(get(), std::move(callback)))) {
+    Wrapper::release(get());
+    throw Error{};
+  }
+}
+
 /**
  * Set a callback that runs when data is added to an audio stream.
  *
@@ -34356,6 +34373,23 @@ inline void AudioStream::SetPutCallback(AudioStreamCallback callback,
                                         void* userdata)
 {
   SDL::SetAudioStreamPutCallback(m_resource, callback, userdata);
+}
+
+inline void AudioStream::SetPutCallback(AudioStreamCB callback)
+{
+  using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 1>;
+  if (!SDL_SetAudioStreamPutCallback(
+        m_resource,
+        [](void* userdata,
+           SDL_AudioStream* stream,
+           int additional_amount,
+           int total_amount) {
+          Wrapper::Call(userdata, {stream}, additional_amount, total_amount);
+        },
+        Wrapper::Wrap(get(), std::move(callback)))) {
+    Wrapper::release(get());
+    throw Error{};
+  }
 }
 
 /**
