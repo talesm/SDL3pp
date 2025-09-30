@@ -77,18 +77,17 @@ $(function() {
   <div class="headertitle"><div class="title">Resource</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>A Resource is a type where its memory is controlled by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>, usually with functions like <code>SDL_Create*()</code> and <code>SDL_Destroy*()</code>.</p>
-<p>To represent this type, we first create <a href="https://en.cppreference.com/w/cpp/language/crtp">CRTP</a> base class that contains all the functions, but delegates the actual storage to its base class. There is currently two available base classes, ObjectUnique and ObjectRef, and we use them to typedef an owning and a non owning versions of the resource. For example, for SDL_Surface we have:</p>
+<div class="textblock"><p>A Resource is a type where its memory is controlled by <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>, usually with functions like <code>SDL_Create*()</code> and <code>SDL_Destroy*()</code>.</p>
+<p>To represent this type, we create RAII class where the Create* functions become its constructors and the Destroy is called by the destructor. Special *Param and *Ref exist to ease the use and allow flexibility on lifetime handling. Eg, for refcounted structs like SDL_Surface we get:</p>
 <ul>
-<li>SurfaceBase: struct with all OO-like functions wrapped as member functions;</li>
-<li>Surface: an alias for the SurfaceBase instantiated with ObjectUnique, this is the owning version, so it will destruct the contained surface when it goes out of scope by the good old <a href="https://en.cppreference.com/w/cpp/language/raii">RAII rules</a>;<ul>
-<li>You can still opt out of this by either calling ObjectUnique::release() or move assigning it to SurfaceRef;</li>
+<li>Surface: the main class, with all wrapped methods inside it. Copying an object of it increments the refcount field. The surface is destroyed when the last instance goes out of scope.</li>
+<li>SurfaceParam, SurfaceConstParam: wrappers to allow interchangeable use of raw SDL_Surface and Surface as parameter.</li>
 </ul>
-</li>
-<li>SurfaceRef: an alias for the SurfaceBase instantiated with ObjectRef, this is the <b>non</b> owning version, so it can be safely used for parameters that do not take ownership, to use like a rudimentary borrowed or week reference, or just to opt out of RAII and managing the lifetime by yourself;<ul>
-<li>You can destroy manually the resource by calling the respective *Destroy method, eg. SurfaceBase::Destroy(). </li>
-</ul>
-</li>
+<p>For an opaque or non-refcounted type such as SDL_Window e get:</p>
+<ul>
+<li>Window: the main class, with all wrapped methods inside it. Copying it disallowed. When the instance goes out of scope it destroy the window.</li>
+<li>WindowRef: a non owned version, with same methods, but it can be copy and it does not destroy the window.</li>
+<li>WindowParam: a wrapper to allow interchangeable use of raw SDL_Window and Window and WindowRef as parameter. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

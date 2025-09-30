@@ -1,0 +1,38 @@
+13c13
+<  * @defgroup CategoryKeyboard Category Keyboard
+---
+>  * @defgroup CategoryKeyboard Keyboard Support
+58,62c58,59
+<  * @param count a pointer filled in with the number of keyboards returned, may
+<  *              be nullptr.
+<  * @returns a 0 terminated array of keyboards instance IDs or nullptr on
+<  * failure; call GetError() for more information. This should be freed with
+<  * free() when it is no longer needed.
+---
+>  * @returns a 0 terminated array of keyboards instance IDs on success..
+>  * @throws Error on failure.
+71c68,73
+< inline OwnArray<KeyboardID> GetKeyboards() { return SDL_GetKeyboards(); }
+---
+> inline OwnArray<KeyboardID> GetKeyboards()
+> {
+>   int count;
+>   auto data = CheckError(SDL_GetKeyboards(&count));
+>   return OwnArray<KeyboardID>{data, size_t(count)};
+> }
+102c104
+< inline WindowRef GetKeyboardFocus() { return SDL_GetKeyboardFocus(); }
+---
+> inline WindowRef GetKeyboardFocus() { return {SDL_GetKeyboardFocus()}; }
+125d126
+<  * @param numkeys if non-nullptr, receives the length of the returned array.
+137c138,140
+<   return SDL_GetKeyboardState();
+---
+>   int count;
+>   auto data = SDL_GetKeyboardState(&count);
+>   return std::span{data, size_t(count)};
+588c591
+<   CheckError(SDL_SetTextInputArea(m_resource, rect, cursor));
+---
+>   CheckError(SDL_SetTextInputArea(m_resource, &rect, cursor));

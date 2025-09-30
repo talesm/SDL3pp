@@ -76,7 +76,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> does some preprocessor gymnastics to determine if any CPU-specific compiler intrinsics are available, as this is not necessarily an easy thing to calculate, and sometimes depends on quirks of a system, versions of build tools, and other external forces.  
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> does some preprocessor gymnastics to determine if any CPU-specific compiler intrinsics are available, as this is not necessarily an easy thing to calculate, and sometimes depends on quirks of a system, versions of build tools, and other external forces.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -128,9 +128,9 @@ Macros</h2></td></tr>
 <tr class="separator:ga3d53f0b4218cea1b852c3849e8465b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Apps including <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s headers will be able to check consistent preprocessor definitions to decide if it's safe to use compiler intrinsics for a specific CPU architecture. This check only tells you that the compiler is capable of using those intrinsics; at runtime, you should still check if they are available on the current system with the <a href="https://wiki.libsdl.org/SDL3/CategoryCPUInfo">CPU info functions</a>, such as <a class="el" href="group__CategoryCPUInfo.html#ga9a11fe57cbc1230a439beca4b171d435" title="Determine whether the CPU has SSE features.">HasSSE()</a> or <a class="el" href="group__CategoryCPUInfo.html#gafd798c80f082d3f69c8d355154ba0053" title="Determine whether the CPU has NEON (ARM SIMD) features.">HasNEON()</a>. Otherwise, the process might crash for using an unsupported CPU instruction.</p>
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> only sets preprocessor defines for CPU intrinsics if they are supported, so apps should check with <code>#ifdef</code> and not <code>#if</code>.</p>
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will also include the appropriate instruction-set-specific support headers, so if <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> decides to define SDL_SSE2_INTRINSICS, it will also <code>#include &lt;emmintrin.h&gt;</code> as well. </p>
+<p>Apps including <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>'s headers will be able to check consistent preprocessor definitions to decide if it's safe to use compiler intrinsics for a specific CPU architecture. This check only tells you that the compiler is capable of using those intrinsics; at runtime, you should still check if they are available on the current system with the <a href="https://wiki.libsdl.org/SDL3/CategoryCPUInfo">CPU info functions</a> , such as <a class="el" href="group__CategoryCPUInfo.html#ga9a11fe57cbc1230a439beca4b171d435" title="Determine whether the CPU has SSE features.">HasSSE()</a> or <a class="el" href="group__CategoryCPUInfo.html#gafd798c80f082d3f69c8d355154ba0053" title="Determine whether the CPU has NEON (ARM SIMD) features.">HasNEON()</a>. Otherwise, the process might crash for using an unsupported CPU instruction.</p>
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> only sets preprocessor defines for CPU intrinsics if they are supported, so apps should check with <code>#ifdef</code> and not <code>#if</code>.</p>
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will also include the appropriate instruction-set-specific support headers, so if <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> decides to define SDL_SSE2_INTRINSICS, it will also <code>#include &lt;emmintrin.h&gt;</code> as well. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ga6b8464af64e5d4a2878144b974ca9511" name="ga6b8464af64e5d4a2878144b974ca9511"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga6b8464af64e5d4a2878144b974ca9511">&#9670;&#160;</a></span>SDL_ALTIVEC_INTRINSICS</h2>
@@ -143,8 +143,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;altivec.h&gt;</code></p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;altivec.h&gt;</code></p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -159,8 +159,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;immintrin.h&gt;</code></p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;immintrin.h&gt;</code></p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIntrinsics.html#ga7692f299738b4093edde459572e35443" title="Defined if (and only if) the compiler supports Intel AVX intrinsics.">SDL_AVX_INTRINSICS</a> </dd>
 <dd>
 <a class="el" href="group__CategoryIntrinsics.html#gaa78c8eb6294d5849390a5a1a227ef043" title="Defined if (and only if) the compiler supports Intel AVX-512F intrinsics.">SDL_AVX512F_INTRINSICS</a> </dd></dl>
@@ -179,8 +179,8 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>AVX-512F is also sometimes referred to as "AVX-512 Foundation."</p>
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;immintrin.h&gt;</code></p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;immintrin.h&gt;</code></p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIntrinsics.html#ga7692f299738b4093edde459572e35443" title="Defined if (and only if) the compiler supports Intel AVX intrinsics.">SDL_AVX_INTRINSICS</a> </dd>
 <dd>
 <a class="el" href="group__CategoryIntrinsics.html#ga9e96e51919b91497a7cff7745fb330b1" title="Defined if (and only if) the compiler supports Intel AVX2 intrinsics.">SDL_AVX2_INTRINSICS</a> </dd></dl>
@@ -198,8 +198,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;immintrin.h&gt;</code></p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;immintrin.h&gt;</code></p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIntrinsics.html#ga9e96e51919b91497a7cff7745fb330b1" title="Defined if (and only if) the compiler supports Intel AVX2 intrinsics.">SDL_AVX2_INTRINSICS</a> </dd>
 <dd>
 <a class="el" href="group__CategoryIntrinsics.html#gaa78c8eb6294d5849390a5a1a227ef043" title="Defined if (and only if) the compiler supports Intel AVX-512F intrinsics.">SDL_AVX512F_INTRINSICS</a> </dd></dl>
@@ -217,8 +217,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Even though this is defined in <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s public headers, it is generally not used directly by apps. Apps should probably just use SDL_TARGETING directly, instead.</p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<p>Even though this is defined in <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>'s public headers, it is generally not used directly by apps. Apps should probably just use SDL_TARGETING directly, instead.</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIntrinsics.html#ga3d53f0b4218cea1b852c3849e8465b56" title="A macro to tag a function as targeting a specific CPU architecture.">SDL_TARGETING</a> </dd></dl>
 
 </div>
@@ -234,8 +234,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;lasxintrin.h&gt;</code></p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;lasxintrin.h&gt;</code></p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIntrinsics.html#gaf2f327217202e303d2f07b78d56df96c" title="Defined if (and only if) the compiler supports Loongarch LSX intrinsics.">SDL_LASX_INTRINSICS</a> </dd></dl>
 
 </div>
@@ -251,8 +251,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;lsxintrin.h&gt;</code></p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;lsxintrin.h&gt;</code></p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIntrinsics.html#gaf2f327217202e303d2f07b78d56df96c" title="Defined if (and only if) the compiler supports Loongarch LSX intrinsics.">SDL_LASX_INTRINSICS</a> </dd></dl>
 
 </div>
@@ -268,8 +268,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;mmintrin.h&gt;</code></p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;mmintrin.h&gt;</code></p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIntrinsics.html#ga4ebe0a28719a37c32005c0b6f9e5914b" title="Defined if (and only if) the compiler supports Intel SSE intrinsics.">SDL_SSE_INTRINSICS</a> </dd></dl>
 
 </div>
@@ -285,8 +285,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;armintr.h&gt;</code> <code>&lt;arm_neon.h&gt;</code>, <code>&lt;arm64intr.h&gt;</code>, and <code>&lt;arm64_neon.h&gt;</code>, as appropriate.</p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;armintr.h&gt;</code> <code>&lt;arm_neon.h&gt;</code>, <code>&lt;arm64intr.h&gt;</code>, and <code>&lt;arm64_neon.h&gt;</code>, as appropriate.</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -301,8 +301,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;emmintrin.h&gt;</code></p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;emmintrin.h&gt;</code></p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIntrinsics.html#ga4ebe0a28719a37c32005c0b6f9e5914b" title="Defined if (and only if) the compiler supports Intel SSE intrinsics.">SDL_SSE_INTRINSICS</a> </dd>
 <dd>
 <a class="el" href="group__CategoryIntrinsics.html#ga464921b5e8f52918397cdf74e371628b" title="Defined if (and only if) the compiler supports Intel SSE3 intrinsics.">SDL_SSE3_INTRINSICS</a> </dd>
@@ -324,8 +324,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;pmmintrin.h&gt;</code></p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;pmmintrin.h&gt;</code></p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIntrinsics.html#ga4ebe0a28719a37c32005c0b6f9e5914b" title="Defined if (and only if) the compiler supports Intel SSE intrinsics.">SDL_SSE_INTRINSICS</a> </dd>
 <dd>
 <a class="el" href="group__CategoryIntrinsics.html#ga48647e0270f7f84e34e35ea7961a11f2" title="Defined if (and only if) the compiler supports Intel SSE2 intrinsics.">SDL_SSE2_INTRINSICS</a> </dd>
@@ -347,8 +347,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;smmintrin.h&gt;</code></p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;smmintrin.h&gt;</code></p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIntrinsics.html#ga4ebe0a28719a37c32005c0b6f9e5914b" title="Defined if (and only if) the compiler supports Intel SSE intrinsics.">SDL_SSE_INTRINSICS</a> </dd>
 <dd>
 <a class="el" href="group__CategoryIntrinsics.html#ga48647e0270f7f84e34e35ea7961a11f2" title="Defined if (and only if) the compiler supports Intel SSE2 intrinsics.">SDL_SSE2_INTRINSICS</a> </dd>
@@ -370,8 +370,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;nmmintrin.h&gt;</code></p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;nmmintrin.h&gt;</code></p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIntrinsics.html#ga4ebe0a28719a37c32005c0b6f9e5914b" title="Defined if (and only if) the compiler supports Intel SSE intrinsics.">SDL_SSE_INTRINSICS</a> </dd>
 <dd>
 <a class="el" href="group__CategoryIntrinsics.html#ga48647e0270f7f84e34e35ea7961a11f2" title="Defined if (and only if) the compiler supports Intel SSE2 intrinsics.">SDL_SSE2_INTRINSICS</a> </dd>
@@ -393,8 +393,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will have already included <code>&lt;xmmintrin.h&gt;</code></p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<p>If this macro is defined, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will have already included <code>&lt;xmmintrin.h&gt;</code></p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIntrinsics.html#ga48647e0270f7f84e34e35ea7961a11f2" title="Defined if (and only if) the compiler supports Intel SSE2 intrinsics.">SDL_SSE2_INTRINSICS</a> </dd>
 <dd>
 <a class="el" href="group__CategoryIntrinsics.html#ga464921b5e8f52918397cdf74e371628b" title="Defined if (and only if) the compiler supports Intel SSE3 intrinsics.">SDL_SSE3_INTRINSICS</a> </dd>
@@ -436,11 +436,11 @@ Macros</h2></td></tr>
 <div class="line">    DoSomethingWithSSE2(str);</div>
 <div class="line">}</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="agroup__CategoryIntrinsics_html_ga3d53f0b4218cea1b852c3849e8465b56"><div class="ttname"><a href="group__CategoryIntrinsics.html#ga3d53f0b4218cea1b852c3849e8465b56">SDL_TARGETING</a></div><div class="ttdeci">#define SDL_TARGETING(x)</div><div class="ttdoc">A macro to tag a function as targeting a specific CPU architecture.</div><div class="ttdef"><b>Definition</b> SDL3pp_intrin.h:254</div></div>
+<div class="ttc" id="agroup__CategoryIntrinsics_html_ga3d53f0b4218cea1b852c3849e8465b56"><div class="ttname"><a href="group__CategoryIntrinsics.html#ga3d53f0b4218cea1b852c3849e8465b56">SDL_TARGETING</a></div><div class="ttdeci">#define SDL_TARGETING(x)</div><div class="ttdoc">A macro to tag a function as targeting a specific CPU architecture.</div><div class="ttdef"><b>Definition</b> SDL3pp_intrin.h:253</div></div>
 </div><!-- fragment --><p>The application is, on a whole, built without SSE2 instructions, so it will run on Intel machines that don't support SSE2. But then at runtime, it checks if the system supports the instructions, and then calls into a function that uses SSE2 opcodes. The ifdefs make sure that this code isn't used on platforms that don't have SSE2 at all.</p>
 <p>On compilers without target support, this is defined to nothing.</p>
-<p>This symbol is used by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> internally, but apps and other libraries are welcome to use it for their own interfaces as well.</p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<p>This symbol is used by <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> internally, but apps and other libraries are welcome to use it for their own interfaces as well.</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>

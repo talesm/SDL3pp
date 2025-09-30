@@ -8,18 +8,25 @@ struct Main
 {
   static constexpr SDL::Point windowSz = {640, 480};
 
-  SDL::SDL init{SDL::INIT_VIDEO};
-  SDL::Window window = SDL::Window::Create("examples/demo/template", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
+  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata("Example Template", "1.0", "com.example.template");
+    SDL::Init(SDL::INIT_VIDEO);
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
+
+  SDL::Window window{"examples/demo/template", windowSz};
+  SDL::Renderer renderer{window};
 
   SDL::AppResult Iterate()
   {
-    renderer->SetDrawColor(SDL::FColor{.75f, .75f, .75f, 1.f});
-    renderer->RenderClear();
+    renderer.SetDrawColorFloat(SDL::FColor{.75f, .75f, .75f, 1.f});
+    renderer.RenderClear();
 
-    renderer->Present();
+    renderer.Present();
     return SDL::APP_CONTINUE;
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main, "Example Template", "1.0", "com.example.template")
+SDL3PP_DEFINE_CALLBACKS(Main)

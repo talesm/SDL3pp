@@ -100,10 +100,10 @@ inline bool HasMMX() { return SDL_HasMMX(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa HasSSE2()
- * @sa HasSSE3()
- * @sa HasSSE41()
- * @sa HasSSE42()
+ * @sa HasSSE2
+ * @sa HasSSE3
+ * @sa HasSSE41
+ * @sa HasSSE42
  */
 inline bool HasSSE() { return SDL_HasSSE(); }
 
@@ -118,10 +118,10 @@ inline bool HasSSE() { return SDL_HasSSE(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa HasSSE()
- * @sa HasSSE3()
- * @sa HasSSE41()
- * @sa HasSSE42()
+ * @sa HasSSE
+ * @sa HasSSE3
+ * @sa HasSSE41
+ * @sa HasSSE42
  */
 inline bool HasSSE2() { return SDL_HasSSE2(); }
 
@@ -136,10 +136,10 @@ inline bool HasSSE2() { return SDL_HasSSE2(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa HasSSE()
- * @sa HasSSE2()
- * @sa HasSSE41()
- * @sa HasSSE42()
+ * @sa HasSSE
+ * @sa HasSSE2
+ * @sa HasSSE41
+ * @sa HasSSE42
  */
 inline bool HasSSE3() { return SDL_HasSSE3(); }
 
@@ -154,10 +154,10 @@ inline bool HasSSE3() { return SDL_HasSSE3(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa HasSSE()
- * @sa HasSSE2()
- * @sa HasSSE3()
- * @sa HasSSE42()
+ * @sa HasSSE
+ * @sa HasSSE2
+ * @sa HasSSE3
+ * @sa HasSSE42
  */
 inline bool HasSSE41() { return SDL_HasSSE41(); }
 
@@ -172,10 +172,10 @@ inline bool HasSSE41() { return SDL_HasSSE41(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa HasSSE()
- * @sa HasSSE2()
- * @sa HasSSE3()
- * @sa HasSSE41()
+ * @sa HasSSE
+ * @sa HasSSE2
+ * @sa HasSSE3
+ * @sa HasSSE41
  */
 inline bool HasSSE42() { return SDL_HasSSE42(); }
 
@@ -190,8 +190,8 @@ inline bool HasSSE42() { return SDL_HasSSE42(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa HasAVX2()
- * @sa HasAVX512F()
+ * @sa HasAVX2
+ * @sa HasAVX512F
  */
 inline bool HasAVX() { return SDL_HasAVX(); }
 
@@ -206,8 +206,8 @@ inline bool HasAVX() { return SDL_HasAVX(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa HasAVX()
- * @sa HasAVX512F()
+ * @sa HasAVX
+ * @sa HasAVX512F
  */
 inline bool HasAVX2() { return SDL_HasAVX2(); }
 
@@ -222,8 +222,8 @@ inline bool HasAVX2() { return SDL_HasAVX2(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa HasAVX()
- * @sa HasAVX2()
+ * @sa HasAVX
+ * @sa HasAVX2
  */
 inline bool HasAVX512F() { return SDL_HasAVX512F(); }
 
@@ -240,7 +240,7 @@ inline bool HasAVX512F() { return SDL_HasAVX512F(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa HasNEON()
+ * @sa HasNEON
  */
 inline bool HasARMSIMD() { return SDL_HasARMSIMD(); }
 
@@ -315,8 +315,8 @@ inline int GetSystemRAM() { return SDL_GetSystemRAM(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa aligned_alloc()
- * @sa aligned_free()
+ * @sa aligned_alloc
+ * @sa aligned_free
  */
 inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
 

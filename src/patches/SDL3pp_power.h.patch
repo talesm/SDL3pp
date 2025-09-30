@@ -1,0 +1,15 @@
+4a5
+> #include "SDL3pp_stdinc.h"
+9c10
+<  * @defgroup CategoryPower Category Power
+---
+>  * @defgroup CategoryPower Power Management Status
+25a27,31
+>  * @name Power States
+>  * @{
+>  */
+> 
+> /**
+50a57,58
+> 
+> /// @}

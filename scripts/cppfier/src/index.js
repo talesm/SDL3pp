@@ -1,7 +1,9 @@
+const { generateApi } = require("./generate.js");
 const { parseXmlApi } = require("./parse-xml.js");
 const { parseApi } = require("./parse.js");
+const { transformApiLegacy } = require("./transform-legacy.js");
 const { transformApi } = require("./transform.js");
-const { updateApi } = require("./update.js");
+const { updateApi } = require("./update-legacy.js");
 const { readJSONSync, system, writeJSONSync, writeLinesSync } = require("./utils.js");
 /**
  * @import {Api, ApiTransform} from "./types"
@@ -28,11 +30,17 @@ function main(args) {
     case "xml":
       parseXML(args);
       break;
-    case "update":
-      update(args);
+    case "generate":
+      generate(args);
+      break;
+    case "update-legacy":
+      updateLegacy(args);
       break;
     case "transform":
       transform(args);
+      break;
+    case "transform-legacy":
+      transformLegacy(args);
       break;
     case "--help":
     case "help":
@@ -50,7 +58,8 @@ const guideDoc = [
   "    parse      parse headers",
   "    xml        parse xml headers",
   "    transform  transform source C API into C++ API",
-  "    update     update target headers",
+  "    generate   generate target headers",
+  "    update     update target headers DEPRECATED",
   "    help       Show help",
 ];
 
@@ -235,9 +244,75 @@ function mergeInto(destiny, source) {
  * 
  * @param {string[]} args 
  */
-function update(args) {
+function generate(args) {
   if (args?.length == 0) {
-    return help(["update"]);
+    return help(["generate"]);
+  }
+
+  const config = {
+    /** @type {string[]} */
+    targets: [],
+    /** @type {Api} */
+    api: null,
+    baseDir: "",
+  };
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (arg == "--") {
+      config.targets.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+      break;
+    }
+    if (!arg.startsWith('-')) {
+      if (arg.endsWith(".json")) {
+        mergeInto(config, readJSONSync(arg.replaceAll("\\", '/')));
+      } else
+        config.targets.push(arg.replaceAll("\\", '/'));
+      continue;
+    }
+    switch (arg) {
+      case '-a': config.api = readJSONSync(args[++i].replaceAll("\\", '/')); break;
+      case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
+      case '-c': mergeInto(config, readJSONSync(args[++i].replaceAll("\\", '/'))); break;
+      default:
+        throw new Error(`Invalid option ${arg}`);
+    }
+  }
+  if (!config.api) throw new Error("Missing target");
+  if (typeof config.api == "string") config.api = readJSONSync(config.api);
+
+  const files = config.targets;
+  delete config.targets;
+  if (files?.length) {
+    if (!config.baseDir && files[0].includes('/')) {
+      config.baseDir = files[0].slice(0, files[0].lastIndexOf("/") + 1);
+      for (let i = 1; i < files?.length; i++) {
+        const file = files[i];
+        while (!file.startsWith(config.baseDir)) {
+          const pos = config.baseDir.lastIndexOf('/');
+          config.baseDir = config.baseDir.slice(0, pos + 1);
+        }
+      }
+      if (!config.baseDir) {
+        throw new Error("Could not deduce baseDir");
+      }
+    }
+    const baseDirLen = config.baseDir?.length ?? 0;
+    const localFiles = new Set(files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file));
+    for (const file of Object.keys(config.api?.files ?? {})) {
+      if (!localFiles.has(file)) delete config.api.files[file];
+    }
+  }
+
+  generateApi(config);
+}
+
+/**
+ * 
+ * @param {string[]} args 
+ */
+function updateLegacy(args) {
+  if (args?.length == 0) {
+    return help(["update-legacy"]);
   }
   const config = {
     /** @type {string[]} */
@@ -318,6 +393,87 @@ function transform(args) {
     transform: null,
     api: "",
     baseDir: "",
+    /** @type {string[]} */
+    sources: [],
+  };
+  let printConfig = false;
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (arg == "--") {
+      config.sources.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+      break;
+    }
+    if (!arg.startsWith('-')) {
+      if (arg.endsWith(".json")) {
+        mergeTransformInto(config, readJSONSync(arg.replaceAll("\\", '/')));
+      } else
+        config.sources.push(arg.replaceAll("\\", '/'));
+      continue;
+    }
+    switch (arg) {
+      case '--sourceApi':
+      case '-s': config.sourceApi = readJSONSync(args[++i].replaceAll("\\", '/')); break;
+      case '--transform':
+      case '-t': config.transform = readJSONSync(args[++i].replaceAll("\\", '/')); break;
+      case '--outputFile':
+      case '-o': config.api = args[++i].replaceAll("\\", '/'); break;
+      case '--baseDir':
+      case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
+      case '--config':
+      case '-c':
+        mergeTransformInto(config, readJSONSync(args[++i].replaceAll("\\", '/')));
+        break;
+      case '--print-config':
+      case '-p': printConfig = true; break;
+      case '--store-line-numbers':
+      case '-l': config.storeLineNumbers = true; break;
+      default:
+        throw new Error(`Invalid option ${arg}`);
+    }
+  }
+  if (config.sources?.length) {
+    const files = config.sources;
+    if (!config.baseDir && files[0].includes('/')) {
+      config.baseDir = files[0].slice(0, files[0].lastIndexOf("/") + 1);
+      for (let i = 1; i < files?.length; i++) {
+        const file = files[i];
+        while (!file.startsWith(config.baseDir)) {
+          const pos = config.baseDir.lastIndexOf('/');
+          config.baseDir = config.baseDir.slice(0, pos + 1);
+        }
+      }
+      if (!config.baseDir) {
+        throw new Error("Could not deduce baseDir");
+      }
+    }
+    const baseDirLen = config.baseDir?.length ?? 0;
+    const localFiles = new Set(files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file));
+    for (const file of Object.keys(config.sourceApi?.files ?? {})) {
+      if (!localFiles.has(file)) delete config.sourceApi.files[file];
+    }
+  }
+  if (printConfig) {
+    writeJSONSync(config.api ? 1 : 2, config);
+  }
+  const api = transformApi(config);
+  writeJSONSync(config.api || 1, api);
+}
+
+/**
+ * Scan files
+ * @param {string[]} args the arguments
+ */
+function transformLegacy(args) {
+  if (args?.length == 0) {
+    return help(["transform-legacy"]);
+  }
+  const config = {
+    /** @type {Api} */
+    sourceApi: null,
+    /** @type {ApiTransform} */
+    transform: null,
+    api: "",
+    baseDir: "",
   };
   /** @type {string[]} */
   const files = [];
@@ -379,7 +535,7 @@ function transform(args) {
   if (printConfig) {
     writeJSONSync(config.api ? 1 : 2, config);
   }
-  const api = transformApi(config);
+  const api = transformApiLegacy(config);
   writeJSONSync(config.api || 1, api);
 }
 

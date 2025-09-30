@@ -1,0 +1,10 @@
+9c9
+<  * @defgroup CategoryIntrinsics Category Intrinsics
+---
+>  * @defgroup CategoryIntrinsics Compiler Intrinsics Detection
+34a35,36
+> #ifdef SDL3PP_DOC
+> 
+251a254,255
+> 
+> #endif // SDL3PP_DOC

@@ -19,21 +19,28 @@ struct Main
 {
   static constexpr SDL::Point windowSz = {640, 480};
 
-  SDL::SDL init{SDL::INIT_VIDEO, SDL::INIT_AUDIO};
-  SDL::Window window =
-    SDL::Window::Create("examples/audio/simple-playback-callback", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
-  SDL::AudioStream stream = SDL::AudioStream::OpenAudioDeviceStream(
+  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata("Example Simple Audio Playback Callback",
+                        "1.0",
+                        "com.example.audio-simple-playback-callback");
+    SDL::Init(SDL::INIT_VIDEO | SDL::INIT_AUDIO);
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
+  SDL::Window window = {"examples/audio/simple-playback-callback", windowSz};
+  SDL::Renderer renderer = SDL::Renderer(window);
+  SDL::AudioStream stream{
     SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK,
     SDL::AudioSpec{.format = SDL::AUDIO_F32, .channels = 1, .freq = 8000},
     [this](SDL::AudioStreamRef stream,
            int additional_amount,
            int total_amount) {
       FeedTheAudioStreamMore(stream, additional_amount, total_amount);
-    });
+    }};
   int current_sine_sample = 0;
 
-  Main() { stream->ResumeDevice(); }
+  Main() { stream.ResumeDevice(); }
 
   void FeedTheAudioStreamMore(SDL::AudioStreamRef stream,
                               int additional_amount,
@@ -73,14 +80,11 @@ struct Main
   SDL::AppResult Iterate()
   {
     // we're not doing anything with the renderer, so just blank it out.
-    renderer->RenderClear();
-    renderer->Present();
+    renderer.RenderClear();
+    renderer.Present();
 
     return SDL::APP_CONTINUE;
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main,
-                        "Example Simple Audio Playback Callback",
-                        "1.0",
-                        "com.example.audio-simple-playback-callback")
+SDL3PP_DEFINE_CALLBACKS(Main)

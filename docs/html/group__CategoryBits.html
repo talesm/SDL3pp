@@ -81,10 +81,10 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gaa2f08a2af2962e1673e65eeeb4b24bee" id="r_gaa2f08a2af2962e1673e65eeeb4b24bee"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryBits.html#gaa2f08a2af2962e1673e65eeeb4b24bee">SDL::MostSignificantBitIndex32</a> (Uint32 x)</td></tr>
+<tr class="memitem:gaa2f08a2af2962e1673e65eeeb4b24bee" id="r_gaa2f08a2af2962e1673e65eeeb4b24bee"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryBits.html#gaa2f08a2af2962e1673e65eeeb4b24bee">SDL::MostSignificantBitIndex32</a> (<a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> x)</td></tr>
 <tr class="memdesc:gaa2f08a2af2962e1673e65eeeb4b24bee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the most significant (set) bit in a 32-bit number.  <br /></td></tr>
 <tr class="separator:gaa2f08a2af2962e1673e65eeeb4b24bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gade1c444118b2c8286b34617fac25ec5d" id="r_gade1c444118b2c8286b34617fac25ec5d"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryBits.html#gade1c444118b2c8286b34617fac25ec5d">SDL::HasExactlyOneBitSet32</a> (Uint32 x)</td></tr>
+<tr class="memitem:gade1c444118b2c8286b34617fac25ec5d" id="r_gade1c444118b2c8286b34617fac25ec5d"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryBits.html#gade1c444118b2c8286b34617fac25ec5d">SDL::HasExactlyOneBitSet32</a> (<a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> x)</td></tr>
 <tr class="memdesc:gade1c444118b2c8286b34617fac25ec5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if a unsigned 32-bit value has exactly one bit set.  <br /></td></tr>
 <tr class="separator:gade1c444118b2c8286b34617fac25ec5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -102,7 +102,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">constexpr bool SDL::HasExactlyOneBitSet32 </td>
           <td>(</td>
-          <td class="paramtype">Uint32&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -114,7 +114,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>If there are no bits set (<code>x</code> is zero), or more than one bit set, this returns false. If any one bit is exclusively set, this returns true.</p>
-<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> itself).</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>the 32-bit value to examine. </td></tr>
@@ -123,7 +123,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if exactly one bit is set in <code>x</code>, false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -139,7 +139,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">constexpr int SDL::MostSignificantBitIndex32 </td>
           <td>(</td>
-          <td class="paramtype">Uint32&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -151,7 +151,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Result is undefined when called with 0. This operation can also be stated as "count leading zeroes" and "log base 2".</p>
-<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> itself).</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>the 32-bit value to examine. </td></tr>
@@ -160,7 +160,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the index of the most significant bit, or -1 if the value is 0.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>

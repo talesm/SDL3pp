@@ -17,7 +17,7 @@ namespace SDL {
  * Swap32LE, Swap32BE, SwapFloatLE, SwapFloatBE). In the
  * latter case, the functionality is provided by macros that become no-ops if
  * a swap isn't necessary: on an x86 (littleendian) processor, Swap32LE
- * does nothing, but Swap32BE() reverses the bytes of the data. On a PowerPC
+ * does nothing, but Swap32BE reverses the bytes of the data. On a PowerPC
  * processor (bigendian), the macros behavior is reversed.
  *
  * The swap routines are inline functions, and attempt to use compiler

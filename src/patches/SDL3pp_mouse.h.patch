@@ -1,0 +1,138 @@
+11c11
+<  * @defgroup CategoryMouse Category Mouse
+---
+>  * @defgroup CategoryMouse Mouse Support
+241,246c241,243
+<    * @param w the width of the cursor.
+<    * @param h the height of the cursor.
+<    * @param hot_x the x-axis offset from the left of the cursor image to the
+<    *              mouse x position, in the range of 0 to `w` - 1.
+<    * @param hot_y the y-axis offset from the top of the cursor image to the
+<    *              mouse y position, in the range of 0 to `h` - 1.
+---
+>    * @param size the width and height of the cursor.
+>    * @param hot the x position of the cursor hot spot, from the top-left, in the
+>    *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
+263c260,261
+<     : m_resource(CheckError(SDL_CreateCursor(data, mask, size, hot)))
+---
+>     : m_resource(
+>         CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
+281,282c279
+<    * @param hot_x the x position of the cursor hot spot.
+<    * @param hot_y the y position of the cursor hot spot.
+---
+>    * @param hot the x, y position of the cursor hot spot.
+296c293
+<     : m_resource(CheckError(SDL_CreateColorCursor(surface, hot)))
+---
+>     : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
+451a449,452
+> /**
+>  * Represents a button index.
+>  *
+>  */
+454c455
+< #define SDL_BUTTON_LEFT 1
+---
+> constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< Left button
+456c457
+< #define SDL_BUTTON_MIDDLE 2
+---
+> constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< Middle button
+458c459
+< #define SDL_BUTTON_RIGHT 3
+---
+> constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< Right button
+460c461
+< #define SDL_BUTTON_X1 4
+---
+> constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
+462c463
+< #define SDL_BUTTON_X2 5
+---
+> constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
+463a465
+> /** Returns mask for button */
+490,494c492,493
+<  * @param count a pointer filled in with the number of mice returned, may be
+<  *              nullptr.
+<  * @returns a 0 terminated array of mouse instance IDs or nullptr on failure;
+<  *          call GetError() for more information. This should be freed
+<  *          with free() when it is no longer needed.
+---
+>  * @returns a 0 terminated array of mouse instance IDs.
+>  * @throws Error on failure.
+503c502,507
+< inline OwnArray<MouseID> GetMice() { return SDL_GetMice(); }
+---
+> inline OwnArray<MouseID> GetMice()
+> {
+>   int count;
+>   auto data = CheckError(SDL_GetMice(&count));
+>   return OwnArray<MouseID>{data, size_t(count)};
+> }
+534c538
+< inline WindowRef GetMouseFocus() { return SDL_GetMouseFocus(); }
+---
+> inline WindowRef GetMouseFocus() { return {SDL_GetMouseFocus()}; }
+660,662c664
+<  *               mouse focus.
+<  * @param x the x coordinate within the window.
+<  * @param y the y coordinate within the window.
+---
+>  * @param p the x, y coordinates within the window.
+672c674
+<   SDL_WarpMouseInWindow(m_resource, p);
+---
+>   SDL_WarpMouseInWindow(m_resource, p.x, p.y);
+686,687c688
+<  * @param x the x coordinate.
+<  * @param y the y coordinate.
+---
+>  * @param p the x, y coordinates;
+698c699
+<   CheckError(SDL_WarpMouseGlobal(p));
+---
+>   CheckError(SDL_WarpMouseGlobal(p.x, p.y));
+822,827c823,825
+<  * @param w the width of the cursor.
+<  * @param h the height of the cursor.
+<  * @param hot_x the x-axis offset from the left of the cursor image to the
+<  *              mouse x position, in the range of 0 to `w` - 1.
+<  * @param hot_y the y-axis offset from the top of the cursor image to the
+<  *              mouse y position, in the range of 0 to `h` - 1.
+---
+>  * @param size the width and height of the cursor.
+>  * @param hot the x position of the cursor hot spot, from the top-left, in the
+>  *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
+843,844c841
+<                            int hot_x,
+<                            int hot_y)
+---
+>                            const PointRaw& hot)
+846c843
+<   return Cursor(data, mask, size, hot_x, hot_y);
+---
+>   return Cursor(data, mask, size, hot);
+863,864c860
+<  * @param hot_x the x position of the cursor hot spot.
+<  * @param hot_y the y position of the cursor hot spot.
+---
+>  * @param hot the position of the cursor hot spot.
+877c873
+< inline Cursor CreateColorCursor(SurfaceParam surface, int hot_x, int hot_y)
+---
+> inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
+879c875
+<   return Cursor(surface, hot_x, hot_y);
+---
+>   return Cursor(surface, hot);
+932c928
+< inline CursorRef GetCursor() { return SDL_GetCursor(); }
+---
+> inline CursorRef GetCursor() { return {SDL_GetCursor()}; }
+949c945
+<   return CheckError(SDL_GetDefaultCursor());
+---
+>   return {CheckError(SDL_GetDefaultCursor())};

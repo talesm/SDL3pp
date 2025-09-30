@@ -6,11 +6,7 @@ using namespace std::chrono_literals;
 
 int main(int argc, char** argv)
 {
-  SDL::SDL init(SDL::INIT_VIDEO);
-  if (!init) {
-    SDL::LogUnformatted(SDL::GetError());
-    return 1;
-  }
+  SDL::Init(SDL::INIT_VIDEO);
   constexpr SDL::Point WINDOW_SZ = {400, 400};
   auto [window, renderer] = SDL::CreateWindowAndRenderer("Test", {400, 400});
   const char clickString[] = "Click anywhere to open URL";
@@ -31,14 +27,14 @@ int main(int argc, char** argv)
       default: break;
       }
     }
-    renderer->SetDrawColor(SDL::FColor{.5f, .5f, .5f, 1.f});
-    renderer->RenderClear();
-    renderer->SetDrawColor(SDL::FColor{0.f, 0.725f, 0.f, 1.f});
-    renderer->RenderFillRect(SDL::FRect{10, 10, 380, 380});
-    renderer->SetDrawColor(SDL::FColor{1.f, 0.125f, 1.f, 1.f});
-    renderer->RenderDebugText(stringPos, clickString);
+    renderer.SetDrawColorFloat({.5f, .5f, .5f, 1.f});
+    renderer.RenderClear();
+    renderer.SetDrawColorFloat({0.f, 0.725f, 0.f, 1.f});
+    renderer.RenderFillRect(SDL::FRect{10, 10, 380, 380});
+    renderer.SetDrawColorFloat({1.f, 0.125f, 1.f, 1.f});
+    renderer.RenderDebugText(stringPos, clickString);
 
-    renderer->Present();
+    renderer.Present();
     SDL::Delay(1ns);
   }
 

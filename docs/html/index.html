@@ -95,7 +95,7 @@ Goals</h1>
 <li>See <a class="el" href="transformations.html">Transformations</a> for more details;</li>
 </ul>
 </li>
-<li>Put everything into a <code><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a></code> namespace instead of prefixes;<ul>
+<li>Put everything into a <code><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a></code> namespace instead of prefixes;<ul>
 <li>For uniformity we also wrap non OO entities at lower priority (like aliases, functions, constants, etc);</li>
 </ul>
 </li>
@@ -122,12 +122,12 @@ Example</h1>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv)</div>
 <div class="line">{</div>
-<div class="line">  <a class="code hl_class" href="classSDL_1_1SDL.html">SDL::SDL</a> init(<a class="code hl_variable" href="group__InitFlags.html#ga63ca590321877744a1050ab71ff4e3c5">SDL::INIT_VIDEO</a>);</div>
+<div class="line">  <a class="code hl_function" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8">SDL::Init</a>(<a class="code hl_variable" href="group__InitFlags.html#ga63ca590321877744a1050ab71ff4e3c5">SDL::INIT_VIDEO</a>);</div>
 <div class="line">  <span class="keyword">constexpr</span> <a class="code hl_struct" href="structSDL_1_1Point.html">SDL::Point</a> WINDOW_SZ = {400, 400};</div>
-<div class="line">  <span class="keyword">auto</span> [window, renderer] = <a class="code hl_function" href="group__CategoryRender.html#ga6f561280a8311744b01c0615614072e4">SDL::CreateWindowAndRenderer</a>(<span class="stringliteral">&quot;Test&quot;</span>, WINDOW_SZ);</div>
+<div class="line">  <span class="keyword">auto</span> [window, renderer] = <a class="code hl_function" href="group__CategoryRender.html#ga2318fa96305ed7eece28f422fb325250">SDL::CreateWindowAndRenderer</a>(<span class="stringliteral">&quot;Test&quot;</span>, WINDOW_SZ);</div>
 <div class="line"> </div>
-<div class="line">  <a class="code hl_struct" href="structSDL_1_1Texture.html">SDL::Texture</a> characterTexture{<a class="code hl_function" href="structSDL_1_1Texture.html#acb74e6921b712ca4a1ae00ef7326e0fa">SDL::Texture::Load</a>(</div>
-<div class="line">    renderer, std::format(<span class="stringliteral">&quot;{}../assets/smiley.png&quot;</span>, <a class="code hl_function" href="group__CategoryFilesystem.html#gac6d37c85583e1b7b3e5d1b4be48b6efe">SDL::GetBasePath</a>()))};</div>
+<div class="line">  <a class="code hl_class" href="classSDL_1_1Texture.html">SDL::Texture</a> characterTexture{</div>
+<div class="line">    renderer, std::format(<span class="stringliteral">&quot;{}../assets/smiley.png&quot;</span>, <a class="code hl_function" href="group__CategoryFilesystem.html#gac6d37c85583e1b7b3e5d1b4be48b6efe">SDL::GetBasePath</a>())};</div>
 <div class="line">  <a class="code hl_struct" href="structSDL_1_1FRect.html">SDL::FRect</a> characterRect(<a class="code hl_struct" href="structSDL_1_1FPoint.html">SDL::FPoint</a>(WINDOW_SZ) / 2 - <a class="code hl_struct" href="structSDL_1_1FPoint.html">SDL::FPoint</a>{64, 64},</div>
 <div class="line">                           {128, 128});</div>
 <div class="line"> </div>
@@ -136,31 +136,29 @@ Example</h1>
 <div class="line">    <span class="keywordflow">while</span> (<span class="keyword">auto</span> ev = <a class="code hl_function" href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12">SDL::PollEvent</a>()) {</div>
 <div class="line">      <span class="keywordflow">if</span> (ev-&gt;type == <a class="code hl_variable" href="group__EventTypes.html#gaf1b29d7108b0942dfdad98e0ef195a97">SDL::EVENT_QUIT</a>) { running = <span class="keyword">false</span>; }</div>
 <div class="line">    }</div>
-<div class="line">    renderer-&gt;SetDrawColor(<a class="code hl_struct" href="structSDL_1_1FColor.html">SDL::FColor</a>{.5f, .5f, .5f, 1.f});</div>
-<div class="line">    renderer-&gt;RenderClear();</div>
-<div class="line">    renderer-&gt;SetDrawColor(<a class="code hl_struct" href="structSDL_1_1FColor.html">SDL::FColor</a>{0.f, 0.725f, 0.f, 1.f});</div>
-<div class="line">    renderer-&gt;RenderFillRect(<a class="code hl_struct" href="structSDL_1_1FRect.html">SDL::FRect</a>{10, 10, 380, 380});</div>
-<div class="line">    renderer-&gt;RenderTexture(characterTexture, {}, characterRect);</div>
+<div class="line">    renderer.SetDrawColorFloat({.5f, .5f, .5f, 1.f});</div>
+<div class="line">    renderer.RenderClear();</div>
+<div class="line">    renderer.SetDrawColorFloat({0.f, 0.725f, 0.f, 1.f});</div>
+<div class="line">    renderer.RenderFillRect(<a class="code hl_struct" href="structSDL_1_1FRect.html">SDL::FRect</a>{10, 10, 380, 380});</div>
+<div class="line">    renderer.RenderTexture(characterTexture, {}, characterRect);</div>
 <div class="line"> </div>
-<div class="line">    renderer-&gt;Present();</div>
+<div class="line">    renderer.Present();</div>
 <div class="line">    <a class="code hl_function" href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">SDL::Delay</a>(1ns);</div>
 <div class="line">  }</div>
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassSDL_1_1SDL_html"><div class="ttname"><a href="classSDL_1_1SDL.html">SDL::SDL</a></div><div class="ttdoc">Initialize the SDL library.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:551</div></div>
-<div class="ttc" id="agroup__CategoryEvents_html_ga97ffaee5e1e3e41c04226981bb19dc12"><div class="ttname"><a href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12">SDL::PollEvent</a></div><div class="ttdeci">std::optional&lt; Event &gt; PollEvent()</div><div class="ttdoc">Poll for currently pending events.</div><div class="ttdef"><b>Definition</b> SDL3pp_events.h:1118</div></div>
-<div class="ttc" id="agroup__CategoryFilesystem_html_gac6d37c85583e1b7b3e5d1b4be48b6efe"><div class="ttname"><a href="group__CategoryFilesystem.html#gac6d37c85583e1b7b3e5d1b4be48b6efe">SDL::GetBasePath</a></div><div class="ttdeci">const char * GetBasePath()</div><div class="ttdoc">Get the directory where the application was run from.</div><div class="ttdef"><b>Definition</b> SDL3pp_filesystem.h:128</div></div>
-<div class="ttc" id="agroup__CategoryRender_html_ga6f561280a8311744b01c0615614072e4"><div class="ttname"><a href="group__CategoryRender.html#ga6f561280a8311744b01c0615614072e4">SDL::CreateWindowAndRenderer</a></div><div class="ttdeci">std::pair&lt; Window, Renderer &gt; CreateWindowAndRenderer(StringParam title, const SDL_Point &amp;size, WindowFlags window_flags=0)</div><div class="ttdoc">Create a window and default renderer.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:3142</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_ga29135876921c3060e1c60a9e839d57b4"><div class="ttname"><a href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">SDL::Delay</a></div><div class="ttdeci">void Delay(std::chrono::nanoseconds duration)</div><div class="ttdoc">Wait a specified duration before returning.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:128</div></div>
-<div class="ttc" id="agroup__EventTypes_html_gaf1b29d7108b0942dfdad98e0ef195a97"><div class="ttname"><a href="group__EventTypes.html#gaf1b29d7108b0942dfdad98e0ef195a97">SDL::EVENT_QUIT</a></div><div class="ttdeci">constexpr EventType EVENT_QUIT</div><div class="ttdoc">User-requested quit.</div><div class="ttdef"><b>Definition</b> SDL3pp_events.h:60</div></div>
-<div class="ttc" id="agroup__InitFlags_html_ga63ca590321877744a1050ab71ff4e3c5"><div class="ttname"><a href="group__InitFlags.html#ga63ca590321877744a1050ab71ff4e3c5">SDL::INIT_VIDEO</a></div><div class="ttdeci">constexpr InitFlags INIT_VIDEO</div><div class="ttdoc">INIT_VIDEO implies INIT_EVENTS, should be initialized on the main thread</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:88</div></div>
-<div class="ttc" id="astructSDL_1_1FColor_html"><div class="ttname"><a href="structSDL_1_1FColor.html">SDL::FColor</a></div><div class="ttdoc">The bits of this structure can be directly reinterpreted as a float-packed color which uses the PIXEL...</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:1833</div></div>
-<div class="ttc" id="astructSDL_1_1FPoint_html"><div class="ttname"><a href="structSDL_1_1FPoint.html">SDL::FPoint</a></div><div class="ttdoc">The structure that defines a point (using floating point values).</div><div class="ttdef"><b>Definition</b> SDL3pp_rect.h:487</div></div>
-<div class="ttc" id="astructSDL_1_1FRect_html"><div class="ttname"><a href="structSDL_1_1FRect.html">SDL::FRect</a></div><div class="ttdoc">A rectangle, with the origin at the upper left (using floating point values).</div><div class="ttdef"><b>Definition</b> SDL3pp_rect.h:1469</div></div>
-<div class="ttc" id="astructSDL_1_1Point_html"><div class="ttname"><a href="structSDL_1_1Point.html">SDL::Point</a></div><div class="ttdoc">The structure that defines a point (using integers).</div><div class="ttdef"><b>Definition</b> SDL3pp_rect.h:46</div></div>
-<div class="ttc" id="astructSDL_1_1Texture_html"><div class="ttname"><a href="structSDL_1_1Texture.html">SDL::Texture</a></div><div class="ttdoc">Handle to an owned texture.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:2685</div></div>
-<div class="ttc" id="astructSDL_1_1Texture_html_acb74e6921b712ca4a1ae00ef7326e0fa"><div class="ttname"><a href="structSDL_1_1Texture.html#acb74e6921b712ca4a1ae00ef7326e0fa">SDL::Texture::Load</a></div><div class="ttdeci">static Texture Load(RendererRef renderer, StringParam file)</div><div class="ttdoc">Load an image from a filesystem path into a software surface.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2227</div></div>
+<div class="ttc" id="aclassSDL_1_1Texture_html"><div class="ttname"><a href="classSDL_1_1Texture.html">SDL::Texture</a></div><div class="ttdoc">An efficient driver-specific representation of pixel data.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:2127</div></div>
+<div class="ttc" id="agroup__CategoryEvents_html_ga97ffaee5e1e3e41c04226981bb19dc12"><div class="ttname"><a href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12">SDL::PollEvent</a></div><div class="ttdeci">std::optional&lt; Event &gt; PollEvent()</div><div class="ttdoc">Poll for currently pending events.</div><div class="ttdef"><b>Definition</b> SDL3pp_events.h:1087</div></div>
+<div class="ttc" id="agroup__CategoryFilesystem_html_gac6d37c85583e1b7b3e5d1b4be48b6efe"><div class="ttname"><a href="group__CategoryFilesystem.html#gac6d37c85583e1b7b3e5d1b4be48b6efe">SDL::GetBasePath</a></div><div class="ttdeci">const char * GetBasePath()</div><div class="ttdoc">Get the directory where the application was run from.</div><div class="ttdef"><b>Definition</b> SDL3pp_filesystem.h:130</div></div>
+<div class="ttc" id="agroup__CategoryInit_html_ga099a37fb664fc3d46c97ab1d053591f8"><div class="ttname"><a href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8">SDL::Init</a></div><div class="ttdeci">void Init(InitFlags flags)</div><div class="ttdoc">Initialize the SDL library.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:256</div></div>
+<div class="ttc" id="agroup__CategoryRender_html_ga2318fa96305ed7eece28f422fb325250"><div class="ttname"><a href="group__CategoryRender.html#ga2318fa96305ed7eece28f422fb325250">SDL::CreateWindowAndRenderer</a></div><div class="ttdeci">std::pair&lt; Window, Renderer &gt; CreateWindowAndRenderer(StringParam title, const PointRaw &amp;size, WindowFlags window_flags=0)</div><div class="ttdoc">Create a window and default renderer.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:3187</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_ga29135876921c3060e1c60a9e839d57b4"><div class="ttname"><a href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">SDL::Delay</a></div><div class="ttdeci">void Delay(std::chrono::nanoseconds duration)</div><div class="ttdoc">Wait a specified duration before returning.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:125</div></div>
+<div class="ttc" id="agroup__EventTypes_html_gaf1b29d7108b0942dfdad98e0ef195a97"><div class="ttname"><a href="group__EventTypes.html#gaf1b29d7108b0942dfdad98e0ef195a97">SDL::EVENT_QUIT</a></div><div class="ttdeci">constexpr EventType EVENT_QUIT</div><div class="ttdoc">User-requested quit.</div><div class="ttdef"><b>Definition</b> SDL3pp_events.h:58</div></div>
+<div class="ttc" id="agroup__InitFlags_html_ga63ca590321877744a1050ab71ff4e3c5"><div class="ttname"><a href="group__InitFlags.html#ga63ca590321877744a1050ab71ff4e3c5">SDL::INIT_VIDEO</a></div><div class="ttdeci">constexpr InitFlags INIT_VIDEO</div><div class="ttdoc">INIT_VIDEO implies INIT_EVENTS, should be initialized on the main thread</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:70</div></div>
+<div class="ttc" id="astructSDL_1_1FPoint_html"><div class="ttname"><a href="structSDL_1_1FPoint.html">SDL::FPoint</a></div><div class="ttdoc">The structure that defines a point (using floating point values).</div><div class="ttdef"><b>Definition</b> SDL3pp_rect.h:494</div></div>
+<div class="ttc" id="astructSDL_1_1FRect_html"><div class="ttname"><a href="structSDL_1_1FRect.html">SDL::FRect</a></div><div class="ttdoc">A rectangle, with the origin at the upper left (using floating point values).</div><div class="ttdef"><b>Definition</b> SDL3pp_rect.h:1429</div></div>
+<div class="ttc" id="astructSDL_1_1Point_html"><div class="ttname"><a href="structSDL_1_1Point.html">SDL::Point</a></div><div class="ttdoc">The structure that defines a point (using integers).</div><div class="ttdef"><b>Definition</b> SDL3pp_rect.h:56</div></div>
 </div><!-- fragment --><p>See more examples at <a href="https://github.com/talesm/SDL3pp/tree/main/examples">examples directory</a></p>
 <h1><a class="anchor" id="building"></a>
 Building</h1>

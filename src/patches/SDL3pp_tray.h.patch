@@ -1,0 +1,88 @@
+11c11
+<  * @defgroup CategoryTray Category Tray
+---
+>  * @defgroup CategoryTray System Tray
+59c59,62
+< using TrayMenuRaw = SDL_TrayMenu;
+---
+> struct TrayMenu;
+> 
+> /// Alias to raw representation for TrayMenu.
+> using TrayMenuRaw = SDL_TrayMenu*;
+137a141,150
+> /**
+>  * A callback that is invoked when a tray entry is selected.
+>  *
+>  * @param entry the tray entry that was selected.
+>  *
+>  * @since This datatype is available since SDL 3.2.0.
+>  *
+>  * @sa TrayEntry.SetCallback
+>  * @sa TrayCallback
+>  */
+395,396d407
+<    * @param count An optional pointer to obtain the number of entries in the
+<    *              menu.
+437a449,472
+>   /**
+>    * Appends a tray entry.
+>    *
+>    * If label is nullptr, the entry will be a separator. Many functions won't
+>    * work for an entry that is a separator.
+>    *
+>    * An entry does not need to be destroyed; it will be destroyed with the tray.
+>    *
+>    * @param label the text to be displayed on the entry, in UTF-8 encoding, or
+>    *              nullptr for a separator.
+>    * @param flags a combination of flags, some of which are mandatory.
+>    * @returns the newly created entry, or nullptr if pos is out of bounds.
+>    *
+>    * @threadsafety This function should be called on the thread that created the
+>    *               tray.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa TrayMenu.InsertEntry
+>    * @sa TrayEntryFlags
+>    * @sa TrayMenu.GetEntries
+>    * @sa TrayEntry.Remove
+>    * @sa TrayEntry.GetParent
+>    */
+712a748,760
+>   /**
+>    * Sets a callback to be invoked when the entry is selected.
+>    *
+>    * @param callback a callback to be invoked when the entry is selected.
+>    *
+>    * @threadsafety This function should be called on the thread that created the
+>    *               tray.
+>    *
+>    * @since This function is available since SDL 3.2.0.
+>    *
+>    * @sa TrayMenu.GetEntries
+>    * @sa TrayMenu.InsertEntry
+>    */
+972,973d1019
+<  * @param count An optional pointer to obtain the number of entries in the
+<  *              menu.
+988c1034,1037
+<   return SDL_GetTrayEntries(menu);
+---
+>   int count;
+>   auto entries = SDL_GetTrayEntries(menu, &count);
+>   return std::span<TrayEntry>{reinterpret_cast<TrayEntry*>(entries),
+>                               size_t(count)};
+1374a1424,1436
+> 
+> inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
+> {
+>   return InsertEntry(-1, std::move(label), flags);
+> }
+> 
+> inline void TrayEntry::SetCallback(TrayCB callback)
+> {
+>   using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
+>   SetCallback([](void* userdata,
+>                  SDL_TrayEntry* entry) { Wrapper::Call(userdata, entry); },
+>               Wrapper::Wrap(get(), std::move(callback)));
+> }

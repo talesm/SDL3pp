@@ -21,11 +21,18 @@ struct Main
   static constexpr SDL::Point windowSz = {640, 480};
 
   // Init library
-  SDL::SDL init{SDL::INIT_VIDEO};
+  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata(
+      "Example Renderer Clear", "1.0", "com.example.renderer-clear");
+    SDL::Init(SDL::INIT_VIDEO);
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
 
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window = SDL::Window::Create("examples/renderer/clear", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
+  SDL::Window window{"examples/renderer/clear", windowSz};
+  SDL::Renderer renderer{window};
 
   SDL::AppResult Iterate()
   {
@@ -39,15 +46,12 @@ struct Main
       float(0.5f + 0.5f * SDL::sin(now + SDL_PI_D * 2 / 3)),
       float(0.5f + 0.5f * SDL::sin(now + SDL_PI_D * 4 / 3)),
     };
-    renderer->SetDrawColor(color);
-    renderer->RenderClear();
+    renderer.SetDrawColorFloat(color);
+    renderer.RenderClear();
 
-    renderer->Present();
+    renderer.Present();
     return SDL::APP_CONTINUE;
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main,
-                        "Example Renderer Clear",
-                        "1.0",
-                        "com.example.renderer-clear")
+SDL3PP_DEFINE_CALLBACKS(Main)

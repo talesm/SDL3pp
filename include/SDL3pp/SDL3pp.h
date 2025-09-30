@@ -9,6 +9,11 @@
 #ifndef SDL3PP_H_
 #define SDL3PP_H_
 
+/**
+ * @namespace SDL
+ * @brief the main namespace where all SDL3pp public functions and types live
+ */
+
 #include <SDL3/SDL.h>
 #include "SDL3pp_assert.h"
 // #include "SDL3pp_asyncio.h"

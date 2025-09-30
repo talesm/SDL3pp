@@ -18,11 +18,18 @@ struct Main
   static constexpr SDL::Point windowSz = {640, 480};
 
   // Init library
-  SDL::SDL init{SDL::INIT_VIDEO};
+  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata(
+      "Example Renderer Lines", "1.0", "com.example.renderer-lines");
+    SDL::Init(SDL::INIT_VIDEO);
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
 
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window = SDL::Window::Create("examples/renderer/lines", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
+  SDL::Window window{"examples/renderer/lines", windowSz};
+  SDL::Renderer renderer{window};
 
   SDL::AppResult Iterate()
   {
@@ -44,19 +51,19 @@ struct Main
     };
 
     // as you can see, rendering draws over what was drawn before it.
-    renderer->SetDrawColor(SDL::Color{100, 100, 100}); // grey
-    renderer->RenderClear(); // start with a blank canvas.
+    renderer.SetDrawColor(SDL::Color{100, 100, 100}); // grey
+    renderer.RenderClear(); // start with a blank canvas.
 
     // You can draw lines, one at a time, like these brown ones...
-    renderer->SetDrawColor(SDL::Color{127, 49, 32});
-    renderer->RenderLine({240, 450}, {400, 450});
-    renderer->RenderLine({240, 356}, {400, 356});
-    renderer->RenderLine({240, 356}, {240, 450});
-    renderer->RenderLine({400, 356}, {400, 450});
+    renderer.SetDrawColor(SDL::Color{127, 49, 32});
+    renderer.RenderLine({240, 450}, {400, 450});
+    renderer.RenderLine({240, 356}, {400, 356});
+    renderer.RenderLine({240, 356}, {240, 450});
+    renderer.RenderLine({400, 356}, {400, 450});
 
     // You can also draw a series of connected lines in a single batch...
-    renderer->SetDrawColor(SDL::Color{0, 255, 0});
-    renderer->RenderLines(line_points);
+    renderer.SetDrawColor(SDL::Color{0, 255, 0});
+    renderer.RenderLines(line_points);
 
     // here's a bunch of lines drawn out from a center point in a circle.
     // we randomize the color of each line, so it functions as animation.
@@ -64,18 +71,15 @@ struct Main
       const float size = 30.0f;
       const float x = 320.0f;
       const float y = 95.0f - (size / 2.0f);
-      renderer->SetDrawColor(
+      renderer.SetDrawColor(
         SDL::Color(SDL::rand(256), SDL::rand(256), SDL::rand(256)));
-      renderer->RenderLine({x, y},
-                           {x + SDL::sin(i) * size, y + SDL::cos(i) * size});
+      renderer.RenderLine({x, y},
+                          {x + SDL::sin(i) * size, y + SDL::cos(i) * size});
     }
 
-    renderer->Present();      // put it all on the screen!
+    renderer.Present();       // put it all on the screen!
     return SDL::APP_CONTINUE; // carry on with the program!
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main,
-                        "Example Renderer Lines",
-                        "1.0",
-                        "com.example.renderer-lines")
+SDL3PP_DEFINE_CALLBACKS(Main)

@@ -13,9 +13,11 @@ export interface ApiFile {
   namespace?: string;
   entriesBegin?: number;
   entriesEnd?: number;
+  includes?: string[];
+  localIncludes?: string[];
 }
 
-export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns";
+export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns" | 'plc';
 
 export interface ApiEntryBase {
   name?: string;
@@ -48,6 +50,8 @@ export interface EntryHint {
   removeParamThis?: boolean;
   private?: boolean;
   wrapSelf?: boolean;
+  changeAccess?: 'public' | 'private';
+  delegate?: string;
 }
 
 export interface VersionTag {
@@ -87,17 +91,25 @@ export interface ApiTransform {
   files?: Dict<ApiFileTransform>;
   prefixes?: string | string[];
   definitionPrefix?: string;
+  sourceIncludePrefix?: string;
   renameRules?: ReplacementRule[];
   docRules?: ReplacementRule[];
   paramTypeMap?: StringMap;
   returnTypeMap?: StringMap;
-  minVersions?: Dict<VersionTag>
+  minVersions?: Dict<VersionTag>;
+  signatureRules?: SignatureTransform[];
+
+  /// The default namespace
+  namespace: string;
 }
 
 export interface ApiFileTransform {
   name?: string;
   doc?: string;
   ignoreEntries?: string[];
+  includes?: string[];
+  localIncludes?: string[];
+  sourceIncludePrefix?: string;
   includeBefore?: ApiEntryTransformMap;
   includeAfter?: ApiEntryTransformMap;
   transform?: Dict<ApiEntryTransform>;
@@ -112,8 +124,13 @@ export interface ApiFileTransform {
 export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>;
 
 export interface ApiEntryTransform extends ApiEntryBase {
-  entries?: ApiSubEntryTransformMap;
+  entries?: ApiSubEntryTransformLegacyMap;
   link?: ApiEntryTransform;
+  enum?: true | string | EnumerationDefinition;
+  wrapper?: true | WrapperDefinition;
+  resource?: true | string | ResourceDefinition;
+  before?: string;
+  after?: string;
 }
 
 export interface ApiResource extends ApiEntryTransform {
@@ -181,6 +198,52 @@ export interface ApiResource extends ApiEntryTransform {
   extraParameters?: string[]
 }
 
+export interface ResourceDefinition {
+
+  /**
+   * The source name of constructors
+   * 
+   * Anything marked as "ctor" is automatically added here
+   */
+  ctors?: string[]
+
+  /**
+   * The shared field name
+   */
+  shared?: boolean | string
+
+  /**
+   * Name of free function. By default it uses the first subentry with
+   * containing "Destroy", "Close" or "free" substring, in that order.
+   */
+  free?: string
+
+  /**
+   * Name of raw resource type
+   */
+  rawName?: string;
+
+  /**
+   * Enable automatic method detection. Defaults to true
+   */
+  enableAutoMethods?: boolean;
+
+  /**
+   * Enable const parameters
+   */
+  enableConstParam?: boolean
+
+  /**
+   * Enable ref type. Default to false
+   */
+  owning?: boolean
+
+  /**
+   * Enable ref type. Default to true if non shared and owning are both false
+   */
+  ref?: boolean
+}
+
 export interface ApiLock extends ApiEntryTransform {
   kind?: "struct";
 }
@@ -219,6 +282,46 @@ export interface ApiWrapper extends ApiEntryTransform {
   comparable?: boolean
 }
 
+export interface WrapperDefinition {
+  /** Defaults to `value` */
+  attribute?: string;
+
+  /** Defaults to true */
+  invalidState?: boolean;
+
+  /** Defaults to {} */
+  defaultValue?: string
+
+  /** Defaults to true if alias to pointer, false otherwise */
+  nullable?: boolean
+
+  /** Defaults to true */
+  genCtor?: boolean
+
+  /** Defaults to true, relevant only to struct */
+  genMembers?: boolean
+
+  /** 
+   * Defaults to true if alias to anything but `void *`, false otherwise.
+   */
+  ordered?: boolean
+
+  /** 
+   * Defaults to true if ordered is false and not a struct
+   */
+  comparable?: boolean
+
+  /**
+   * Param type for generated methods
+   */
+  paramType?: string
+
+  /**
+   * Name of raw resource type
+   */
+  rawName?: string;
+}
+
 export interface ApiEnumeration extends ApiEntryTransform {
   kind?: "struct" | "alias" | "enum";
   prefix?: string;
@@ -228,9 +331,21 @@ export interface ApiEnumeration extends ApiEntryTransform {
   valueType?: string;
 }
 
+export interface EnumerationDefinition {
+  prefix?: string;
+  newPrefix?: string;
+  values?: string[];
+  valueType?: string;
+}
+
 export type QuickTransform = "immutable" | "ctor" | ApiEntryKind;
 
-export type ApiSubEntryTransformMap = Dict<ApiEntryTransform | ApiEntryBase[] | QuickTransform>;
+export type ApiSubEntryTransformLegacyMap = Dict<ApiEntryTransform | ApiEntryBase[] | QuickTransform>;
+
+export interface SignatureTransform {
+  pattern: ApiParameter[];
+  replaceParams: ApiParameter[];
+}
 
 export interface ReplacementRule {
   pattern: RegExp;

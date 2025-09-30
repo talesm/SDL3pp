@@ -7,5 +7,5 @@ var searchData=
   ['quit_4',['Quit',['../group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c',1,'SDL']]],
   ['quitclass_5',['QuitClass',['../group__CategoryInit.html#ga18ff61b28788b04451ffcd81fc3728cd',1,'SDL']]],
   ['quitevent_6',['QuitEvent',['../group__CategoryEvents.html#gae5256a650a64f71e1be8c31d00100b9e',1,'SDL']]],
-  ['quitsubsystem_7',['quitsubsystem',['../group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5',1,'SDL::QuitSubSystem(InitFlags flags)'],['../group__CategoryInit.html#ga756cb42233cdb7b4f1d2c92051a37c84',1,'SDL::QuitSubSystem(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)'],['../group__CategoryInit.html#ga4a1c2a4b2335da731b48e9cba9987730',1,'SDL::QuitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)'],['../group__CategorySDLTTF.html#ga82f9e1056eeaa39c50c5cf5408dde405',1,'SDL::QuitSubSystem(TtfInitFlag _)']]]
+  ['quitsubsystem_7',['QuitSubSystem',['../group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5',1,'SDL']]]
 ];

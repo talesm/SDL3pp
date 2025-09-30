@@ -7,7 +7,6 @@
 #include "SDL3pp_error.h"
 #include "SDL3pp_optionalRef.h"
 #include "SDL3pp_ownPtr.h"
-#include "SDL3pp_resource.h"
 #include "SDL3pp_spanRef.h"
 #include "SDL3pp_strings.h"
 
@@ -19,76 +18,97 @@ namespace SDL {
  * SDL provides its own implementation of some of the most important C runtime
  * functions.
  *
- * Using these functions allows an app to have access to common C functionality
- * without depending on a specific C runtime (or a C runtime at all). More
- * importantly, the SDL implementations work identically across platforms, so
- * apps can avoid surprises like snprintf() behaving differently between Windows
- * and Linux builds, or itoa() only existing on some platforms.
+ * Using these functions allows an app to have access to common C
+ * functionality without depending on a specific C runtime (or a C runtime at
+ * all). More importantly, the SDL implementations work identically across
+ * platforms, so apps can avoid surprises like snprintf() behaving differently
+ * between Windows and Linux builds, or itoa() only existing on some
+ * platforms.
  *
  * For many of the most common functions, like memcpy, SDL might just call
- * through to the usual C runtime behind the scenes, if it makes sense to do so
- * (if it's faster and always available/reliable on a given platform), reducing
- * library size and offering the most optimized option.
+ * through to the usual C runtime behind the scenes, if it makes sense to do
+ * so (if it's faster and always available/reliable on a given platform),
+ * reducing library size and offering the most optimized option.
  *
  * SDL also offers other C-runtime-adjacent functionality in this header that
  * either isn't, strictly speaking, part of any C runtime standards, like
- * crc32() and SDL_reinterpret_cast, etc. It also offers a few better options,
- * like strlcpy(), which functions as a safer form of strcpy().
+ * crc32() and SDL_reinterpret_cast, etc. It also offers a few better
+ * options, like strlcpy(), which functions as a safer form of strcpy().
  *
  * @{
  */
 
 // Forward decl
-struct EnvironmentRef;
-
-// Forward decl
 struct Environment;
 
-/**
- * Handle to a shared environment.
- *
- * @cat resource
- *
- * @sa EnvironmentRef
- * @sa Environment
- */
-using EnvironmentShared = ResourceShared<Environment>;
-
-/**
- * Weak handle to a shared environment.
- *
- * @cat resource
- *
- * @sa EnvironmentShared
- * @sa EnvironmentRef
- */
-using EnvironmentWeak = ResourceWeak<Environment>;
+/// Alias to raw representation for Environment.
+using EnvironmentRaw = SDL_Environment*;
 
 // Forward decl
-struct IConvRef;
+struct EnvironmentRef;
+
+/// Safely wrap Environment for non owning parameters
+struct EnvironmentParam
+{
+  EnvironmentRaw value; ///< parameter's EnvironmentRaw
+
+  /// Constructs from EnvironmentRaw
+  constexpr EnvironmentParam(EnvironmentRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr EnvironmentParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const EnvironmentParam& other) const = default;
+
+  /// Converts to underlying EnvironmentRaw
+  constexpr operator EnvironmentRaw() const { return value; }
+};
 
 // Forward decl
 struct IConv;
 
-/**
- * Handle to a shared iConv.
- *
- * @cat resource
- *
- * @sa IConvRef
- * @sa IConv
- */
-using IConvShared = ResourceShared<IConv>;
+/// Alias to raw representation for IConv.
+using IConvRaw = SDL_iconv_t;
 
-/**
- * Weak handle to a shared iConv.
- *
- * @cat resource
- *
- * @sa IConvShared
- * @sa IConvRef
- */
-using IConvWeak = ResourceWeak<IConv>;
+// Forward decl
+struct IConvRef;
+
+/// Safely wrap IConv for non owning parameters
+struct IConvParam
+{
+  IConvRaw value; ///< parameter's IConvRaw
+
+  /// Constructs from IConvRaw
+  constexpr IConvParam(IConvRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr IConvParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const IConvParam& other) const = default;
+
+  /// Converts to underlying IConvRaw
+  constexpr operator IConvRaw() const { return value; }
+};
 
 #ifdef SDL3PP_DOC
 
@@ -209,71 +229,163 @@ constexpr Uint32 FourCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
  */
 #define SDL_UINT64_C(c) c##ULL /* or whatever the current compiler uses. */
 
+/**
+ * A signed 8-bit integer type.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+using Sint8 = Sint8;
+
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Sint8 MAX_SINT8 = SDL_MAX_SINT8;
 
+/// Min representable value
 constexpr Sint8 MIN_SINT8 = SDL_MIN_SINT8;
 
+#ifdef SDL3PP_DOC
+
+/**
+ * An unsigned 8-bit integer type.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+using Uint8 = Uint8;
+
+#endif // SDL3PP_DOC
+
+/// Max representable value
 constexpr Uint8 MAX_UINT8 = SDL_MAX_UINT8;
 
+/// Min representable value
 constexpr Uint8 MIN_UINT8 = SDL_MIN_UINT8;
 
+#ifdef SDL3PP_DOC
+
+/**
+ * A signed 16-bit integer type.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+using Sint16 = Sint16;
+
+#endif // SDL3PP_DOC
+
+/// Max representable value
 constexpr Sint16 MAX_SINT16 = SDL_MAX_SINT16;
 
+/// Min representable value
 constexpr Sint16 MIN_SINT16 = SDL_MIN_SINT16;
 
+#ifdef SDL3PP_DOC
+
+/**
+ * An unsigned 16-bit integer type.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+using Uint16 = Uint16;
+
+#endif // SDL3PP_DOC
+
+/// Max representable value
 constexpr Uint16 MAX_UINT16 = SDL_MAX_UINT16;
 
+/// Min representable value
 constexpr Uint16 MIN_UINT16 = SDL_MIN_UINT16;
 
+#ifdef SDL3PP_DOC
+
+/**
+ * A signed 32-bit integer type.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+using Sint32 = Sint32;
+
+#endif // SDL3PP_DOC
+
+/// Max representable value
 constexpr Sint32 MAX_SINT32 = SDL_MAX_SINT32;
 
+/// Min representable value
 constexpr Sint32 MIN_SINT32 = SDL_MIN_SINT32;
 
+#ifdef SDL3PP_DOC
+
+/**
+ * An unsigned 32-bit integer type.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+using Uint32 = Uint32;
+
+#endif // SDL3PP_DOC
+
+/// Max representable value
 constexpr Uint32 MAX_UINT32 = SDL_MAX_UINT32;
 
+/// Min representable value
 constexpr Uint8 MIN_UINT32 = SDL_MIN_UINT32;
 
+#ifdef SDL3PP_DOC
+
+/**
+ * A signed 64-bit integer type.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SINT64_C
+ */
+using Sint64 = Sint64;
+
+#endif // SDL3PP_DOC
+
+/// Max representable value
 constexpr Sint64 MAX_SINT64 = SDL_MAX_SINT64;
 
+/// Min representable value
 constexpr Sint64 MIN_SINT64 = SDL_MIN_SINT64;
 
+#ifdef SDL3PP_DOC
+
+/**
+ * An unsigned 64-bit integer type.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_UINT64_C
+ */
+using Uint64 = Uint64;
+
+#endif // SDL3PP_DOC
+
+/// Max representable value
 constexpr Uint64 MAX_UINT64 = SDL_MAX_UINT64;
 
+/// Min representable value
 constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
 
-/**
- * Duration in seconds (float).
- */
+/// Duration in seconds (float).
 using Seconds = std::chrono::duration<float>;
 
-/**
- * Duration in Nanoseconds (Uint64).
- */
+/// Duration in Nanoseconds (Uint64).
 using Nanoseconds = std::chrono::nanoseconds;
 
-/**
- * Converts a time duration to seconds (float).
- */
+/// Converts a time duration to seconds (float).
 constexpr float ToSeconds(Seconds duration) { return duration.count(); }
 
-/**
- * Converts a float to seconds representation.
- */
+/// Converts a float to seconds representation.
 constexpr Seconds FromSeconds(float duration) { return Seconds(duration); }
 
-/**
- * Converts a time duration to nanoseconds (Sint64);
- */
+/// Converts a time duration to nanoseconds (Sint64);
 constexpr Sint64 ToNS(std::chrono::nanoseconds duration)
 {
   return duration.count();
 }
 
-/**
- * Converts a Sint64 to nanoseconds representation.
- */
+/// Converts a Sint64 to nanoseconds representation.
 constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
 
 /**
@@ -317,6 +429,14 @@ public:
   /// Converts to nanoseconds period
   constexpr operator std::chrono::nanoseconds() const { return m_value; }
 
+  /**
+   * Gets the current value of the system realtime clock in nanoseconds since
+   * Jan 1, 1970 in Universal Coordinated Time (UTC).
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
   static Time Current();
 
   /// Create from a nanoseconds Sint64.
@@ -328,22 +448,67 @@ public:
   /// Converts to nanoseconds Sint64
   constexpr Sint64 ToNS() const { return m_value.count(); }
 
+  /**
+   * Convert seconds to nanoseconds.
+   *
+   * This only converts whole numbers, not fractional seconds.
+   *
+   * @param time the number of seconds to convert.
+   * @returns the converted Time.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
   static constexpr Time FromPosix(Sint64 time);
 
+  /**
+   * Convert nanoseconds to seconds.
+   *
+   * This only converts whole numbers, not fractional seconds.
+   *
+   * @returns Posix time (in seconds).
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
   constexpr Sint64 ToPosix() const;
 
+  /**
+   * Converts a Windows FILETIME (100-nanosecond intervals since January 1,
+   * 1601) to an SDL time.
+   *
+   * This function takes the two 32-bit values of the FILETIME structure as
+   * parameters.
+   *
+   * @param dwLowDateTime the low portion of the Windows FILETIME value.
+   * @param dwHighDateTime the high portion of the Windows FILETIME value.
+   * @returns the converted SDL time.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
   static Time FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
 
+  /**
+   * Converts an SDL time into a Windows FILETIME (100-nanosecond intervals
+   * since January 1, 1601).
+   *
+   * This function fills in the two 32-bit values of the FILETIME structure.
+   *
+   * @param dwLowDateTime a pointer filled in with the low portion of the
+   *                      Windows FILETIME value.
+   * @param dwHighDateTime a pointer filled in with the high portion of the
+   *                       Windows FILETIME value.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
   void ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const;
 
-  /**
-   * Converts a time to seconds (float) since epoch.
-   */
+  /// Converts a time to seconds (float) since epoch.
   constexpr float ToSeconds() const { return Seconds(m_value).count(); }
 
-  /**
-   * Converts a time to seconds (float) since epoch.
-   */
+  /// Converts a time to seconds (float) since epoch.
   static constexpr Time FromSeconds(float interval)
   {
     return std::chrono::duration_cast<std::chrono::nanoseconds>(
@@ -365,8 +530,10 @@ public:
   }
 };
 
+/// Max allowed time representation
 constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
 
+/// Min allowed time representation
 constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
 
 #ifdef SDL3PP_DOC
@@ -408,7 +575,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *     .version = sizeof(iface),
  *     .seek = ...
  * };
- * stream = IOStream.Open(iface, nullptr);
+ * stream = IOStream.Open(&iface, nullptr);
  * ```
  *
  * @threadsafety It is safe to call this macro from any thread.
@@ -417,7 +584,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *
  * @sa IOStreamInterface
  * @sa StorageInterface
- * @sa VirtualJoystickDesc
+ * @sa SDL_VirtualJoystickDesc
  */
 #define SDL_INIT_INTERFACE(iface)                                              \
   do {                                                                         \
@@ -771,18 +938,117 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  *
  * @cat resource
  *
- * @sa Environment
  * @sa GetEnvironment
- * @sa Environment.Create
- * @sa EnvironmentRef.GetVariable
- * @sa EnvironmentRef.GetVariables
- * @sa EnvironmentRef.SetVariable
- * @sa EnvironmentRef.UnsetVariable
+ * @sa Environment.Environment
+ * @sa Environment.GetVariable
+ * @sa Environment.GetVariables
+ * @sa Environment.SetVariable
+ * @sa Environment.UnsetVariable
  * @sa Environment.Destroy
  */
-struct EnvironmentRef : Resource<SDL_Environment*>
+class Environment
 {
-  using Resource::Resource;
+  EnvironmentRaw m_resource = nullptr;
+
+public:
+  /// Default ctor
+  constexpr Environment() = default;
+
+  /**
+   * Constructs from EnvironmentParam.
+   *
+   * @param resource a EnvironmentRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Environment(const EnvironmentRaw resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Environment(const Environment& other) = delete;
+
+  /// Move constructor
+  constexpr Environment(Environment&& other)
+    : Environment(other.release())
+  {
+  }
+
+  constexpr Environment(const EnvironmentRef& other) = delete;
+
+  constexpr Environment(EnvironmentRef&& other) = delete;
+
+  /**
+   * Create a set of environment variables
+   *
+   * @param populated true to initialize it from the C runtime environment,
+   *                  false to create an empty environment.
+   * @post a pointer to the new environment or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety If `populated` is false, it is safe to call this function
+   *               from any thread, otherwise it is safe if no other threads are
+   *               calling setenv() or unsetenv()
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Environment.GetVariable
+   * @sa Environment.GetVariables
+   * @sa Environment.SetVariable
+   * @sa Environment.UnsetVariable
+   * @sa Environment.Destroy
+   */
+  Environment(bool populated)
+    : m_resource(SDL_CreateEnvironment(populated))
+  {
+  }
+
+  /// Destructor
+  ~Environment() { SDL_DestroyEnvironment(m_resource); }
+
+  /// Assignment operator.
+  Environment& operator=(Environment other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Retrieves underlying EnvironmentRaw.
+  constexpr EnvironmentRaw get() const { return m_resource; }
+
+  /// Retrieves underlying EnvironmentRaw and clear this.
+  constexpr EnvironmentRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const Environment& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Converts to EnvironmentParam
+  constexpr operator EnvironmentParam() const { return {m_resource}; }
+
+  /**
+   * Destroy a set of environment variables.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the environment is no longer in use.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Environment.Environment
+   */
+  void Destroy();
 
   /**
    * Get the value of a variable in the environment.
@@ -797,14 +1063,11 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    *
    * @sa GetEnvironment
    * @sa Environment.Environment
-   * @sa EnvironmentRef.GetVariables
-   * @sa EnvironmentRef.SetVariable
-   * @sa EnvironmentRef.UnsetVariable
+   * @sa Environment.GetVariables
+   * @sa Environment.SetVariable
+   * @sa Environment.UnsetVariable
    */
-  const char* GetVariable(StringParam name)
-  {
-    return SDL_GetEnvironmentVariable(get(), name);
-  }
+  const char* GetVariable(StringParam name);
 
   /**
    * Get all variables in the environment.
@@ -821,14 +1084,11 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    *
    * @sa GetEnvironment
    * @sa Environment.Environment
-   * @sa EnvironmentRef.GetVariables
-   * @sa EnvironmentRef.SetVariable
-   * @sa EnvironmentRef.UnsetVariable
+   * @sa Environment.GetVariables
+   * @sa Environment.SetVariable
+   * @sa Environment.UnsetVariable
    */
-  inline OwnArray<char*> GetVariables()
-  {
-    return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(get()))};
-  }
+  OwnArray<char*> GetVariables();
 
   /**
    * Get the Variables count.
@@ -837,7 +1097,7 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    *
    * This might be slow.
    */
-  inline Uint64 GetVariableCount()
+  Uint64 GetVariableCount()
   {
     Uint64 count = 0;
     for (auto& var : GetVariables()) count += 1;
@@ -860,14 +1120,11 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    *
    * @sa GetEnvironment
    * @sa Environment.Environment
-   * @sa EnvironmentRef.GetVariable
-   * @sa EnvironmentRef.GetVariables
-   * @sa EnvironmentRef.UnsetVariable
+   * @sa Environment.GetVariable
+   * @sa Environment.GetVariables
+   * @sa Environment.UnsetVariable
    */
-  void SetVariable(StringParam name, StringParam value, bool overwrite)
-  {
-    CheckError(SDL_SetEnvironmentVariable(get(), name, value, overwrite));
-  }
+  void SetVariable(StringParam name, StringParam value, bool overwrite);
 
   /**
    * Clear a variable from the environment.
@@ -881,123 +1138,45 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    *
    * @sa GetEnvironment
    * @sa Environment.Environment
-   * @sa EnvironmentRef.GetVariable
-   * @sa EnvironmentRef.GetVariables
-   * @sa EnvironmentRef.SetVariable
-   * @sa EnvironmentRef.UnsetVariable
+   * @sa Environment.GetVariable
+   * @sa Environment.GetVariables
+   * @sa Environment.SetVariable
+   * @sa Environment.UnsetVariable
    */
-  void UnsetVariable(StringParam name)
-  {
-    CheckError(SDL_UnsetEnvironmentVariable(get(), name));
-  }
-
-  /**
-   * Destroy a set of environment variables.
-   *
-   * @param resource the environment to destroy.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the environment is no longer in use.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Environment.Create
-   */
-  static void reset(SDL_Environment* resource)
-  {
-    SDL_DestroyEnvironment(resource);
-  }
+  void UnsetVariable(StringParam name);
 };
 
-/**
- * Handle to an owned environment
- *
- * @cat resource
- *
- * @sa EnvironmentRef
- */
-struct Environment : ResourceUnique<EnvironmentRef>
+/// Semi-safe reference for Environment.
+struct EnvironmentRef : Environment
 {
-  using ResourceUnique::ResourceUnique;
-
   /**
-   * Create a set of environment variables
+   * Constructs from EnvironmentParam.
    *
-   * @param populated true to initialize it from the C runtime environment,
-   *                  false to create an empty environment.
-   * @returns the new environment on success.
-   * @throws Error on failure.
+   * @param resource a EnvironmentRaw or Environment.
    *
-   * @threadsafety If `populated` is false, it is safe to call this function
-   *               from any thread, otherwise it is safe if no other threads are
-   *               calling setenv() or unsetenv()
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa EnvironmentRef.GetVariable
-   * @sa EnvironmentRef.GetVariables
-   * @sa EnvironmentRef.SetVariable
-   * @sa EnvironmentRef.UnsetVariable
-   * @sa Environment.Destroy
+   * This does not takes ownership!
    */
-  static Environment Create(bool populated)
-  {
-    return Environment(CheckError(SDL_CreateEnvironment(populated)));
-  }
-
-  /**
-   * Destroy a set of environment variables.
-   *
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the environment is no longer in use.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Environment.Create
-   */
-  void Destroy() { reset(); }
-  /**
-   * Move this environment into a EnvironmentShared.
-   */
-  EnvironmentShared share();
-
-};
-
-
-inline EnvironmentShared Environment::share()
-{
-  return EnvironmentShared(std::move(*this));
-}
-
-/**
- * Unsafe Handle to environment
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa EnvironmentRef
- */
-struct EnvironmentUnsafe : ResourceUnsafe<EnvironmentRef>
-{
-  using ResourceUnsafe::ResourceUnsafe;
-
-  /**
-   * Constructs EnvironmentUnsafe from Environment.
-   */
-  constexpr explicit EnvironmentUnsafe(Environment&& other)
-    : EnvironmentUnsafe(other.release())
+  EnvironmentRef(EnvironmentParam resource)
+    : Environment(resource.value)
   {
   }
+
+  /// Copy constructor.
+  EnvironmentRef(const EnvironmentRef& other)
+    : Environment(other.get())
+  {
+  }
+
+  /// Destructor
+  ~EnvironmentRef() { release(); }
 };
 
 /**
  * Get the process environment.
  *
  * This is initialized at application start and is not affected by setenv()
- * and unsetenv() calls after that point. Use EnvironmentRef.SetVariable() and
- * EnvironmentRef.UnsetVariable() if you want to modify this environment, or
+ * and unsetenv() calls after that point. Use Environment.SetVariable() and
+ * Environment.UnsetVariable() if you want to modify this environment, or
  * setenv_unsafe() or unsetenv_unsafe() if you want changes to persist
  * in the C runtime environment after Quit().
  *
@@ -1008,12 +1187,183 @@ struct EnvironmentUnsafe : ResourceUnsafe<EnvironmentRef>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa EnvironmentRef.GetVariable
- * @sa EnvironmentRef.GetVariables
- * @sa EnvironmentRef.SetVariable
- * @sa EnvironmentRef.UnsetVariable
+ * @sa Environment.GetVariable
+ * @sa Environment.GetVariables
+ * @sa Environment.SetVariable
+ * @sa Environment.UnsetVariable
  */
-inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
+inline EnvironmentRaw GetEnvironment() { return SDL_GetEnvironment(); }
+
+/**
+ * Create a set of environment variables
+ *
+ * @param populated true to initialize it from the C runtime environment,
+ *                  false to create an empty environment.
+ * @returns a pointer to the new environment or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety If `populated` is false, it is safe to call this function
+ *               from any thread, otherwise it is safe if no other threads are
+ *               calling setenv() or unsetenv()
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Environment.GetVariable
+ * @sa Environment.GetVariables
+ * @sa Environment.SetVariable
+ * @sa Environment.UnsetVariable
+ * @sa Environment.Destroy
+ */
+inline Environment CreateEnvironment(bool populated)
+{
+  return Environment(populated);
+}
+
+/**
+ * Get the value of a variable in the environment.
+ *
+ * @param env the environment to query.
+ * @param name the name of the variable to get.
+ * @returns a pointer to the value of the variable or nullptr if it can't be
+ *          found.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetEnvironment
+ * @sa Environment.Environment
+ * @sa Environment.GetVariables
+ * @sa Environment.SetVariable
+ * @sa Environment.UnsetVariable
+ */
+inline const char* GetEnvironmentVariable(EnvironmentParam env,
+                                          StringParam name)
+{
+  return SDL_GetEnvironmentVariable(env, name);
+}
+
+inline const char* Environment::GetVariable(StringParam name)
+{
+  return SDL::GetEnvironmentVariable(m_resource, std::move(name));
+}
+
+/**
+ * Get all variables in the environment.
+ *
+ * @param env the environment to query.
+ * @returns a nullptr terminated array of pointers to environment variables in
+ *          the form "variable=value" or nullptr on failure; call GetError()
+ *          for more information. This is a single allocation that should be
+ *          freed with free() when it is no longer needed.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetEnvironment
+ * @sa Environment.Environment
+ * @sa Environment.GetVariables
+ * @sa Environment.SetVariable
+ * @sa Environment.UnsetVariable
+ */
+inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
+{
+  return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
+}
+
+inline OwnArray<char*> Environment::GetVariables()
+{
+  return SDL::GetEnvironmentVariables(m_resource);
+}
+
+/**
+ * Set the value of a variable in the environment.
+ *
+ * @param env the environment to modify.
+ * @param name the name of the variable to set.
+ * @param value the value of the variable to set.
+ * @param overwrite true to overwrite the variable if it exists, false to
+ *                  return success without setting the variable if it already
+ *                  exists.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetEnvironment
+ * @sa Environment.Environment
+ * @sa Environment.GetVariable
+ * @sa Environment.GetVariables
+ * @sa Environment.UnsetVariable
+ */
+inline void SetEnvironmentVariable(EnvironmentParam env,
+                                   StringParam name,
+                                   StringParam value,
+                                   bool overwrite)
+{
+  CheckError(SDL_SetEnvironmentVariable(env, name, value, overwrite));
+}
+
+inline void Environment::SetVariable(StringParam name,
+                                     StringParam value,
+                                     bool overwrite)
+{
+  SDL::SetEnvironmentVariable(
+    m_resource, std::move(name), std::move(value), overwrite);
+}
+
+/**
+ * Clear a variable from the environment.
+ *
+ * @param env the environment to modify.
+ * @param name the name of the variable to unset.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetEnvironment
+ * @sa Environment.Environment
+ * @sa Environment.GetVariable
+ * @sa Environment.GetVariables
+ * @sa Environment.SetVariable
+ * @sa Environment.UnsetVariable
+ */
+inline void UnsetEnvironmentVariable(EnvironmentParam env, StringParam name)
+{
+  CheckError(SDL_UnsetEnvironmentVariable(env, name));
+}
+
+inline void Environment::UnsetVariable(StringParam name)
+{
+  SDL::UnsetEnvironmentVariable(m_resource, std::move(name));
+}
+
+/**
+ * Destroy a set of environment variables.
+ *
+ * @param env the environment to destroy.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the environment is no longer in use.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Environment.Environment
+ */
+inline void DestroyEnvironment(EnvironmentRaw env)
+{
+  SDL_DestroyEnvironment(env);
+}
+
+inline void Environment::Destroy()
+{
+  SDL_DestroyEnvironment(m_resource);
+  m_resource = nullptr;
+}
 
 /**
  * Get the value of a variable in the environment.
@@ -1062,11 +1412,11 @@ inline const char* getenv_unsafe(StringParam name)
  * @returns 0 on success, -1 on error.
  *
  * @threadsafety This function is not thread safe, consider using
- *               EnvironmentRef.SetVariable() instead.
+ *               Environment.SetVariable() instead.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa EnvironmentRef.SetVariable
+ * @sa Environment.SetVariable
  */
 inline int setenv_unsafe(StringParam name, StringParam value, int overwrite)
 {
@@ -1080,11 +1430,11 @@ inline int setenv_unsafe(StringParam name, StringParam value, int overwrite)
  * @returns 0 on success, -1 on error.
  *
  * @threadsafety This function is not thread safe, consider using
- *               EnvironmentRef.UnsetVariable() instead.
+ *               Environment.UnsetVariable() instead.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa EnvironmentRef.UnsetVariable
+ * @sa Environment.UnsetVariable
  */
 inline int unsetenv_unsafe(StringParam name)
 {
@@ -1536,6 +1886,9 @@ inline int abs(int x) { return SDL_abs(x); }
  *
  * Range: `0 <= y <= INF`
  *
+ * This function operates on double-precision floating point values, use
+ * abs for single-precision floats.
+ *
  * @param x floating point value to use as the magnitude.
  * @returns the absolute value of `x`.
  *
@@ -1553,6 +1906,9 @@ inline double abs(double x) { return SDL_fabs(x); }
  * Domain: `-INF <= x <= INF`
  *
  * Range: `0 <= y <= INF`
+ *
+ * This function operates on single-precision floating point values, use
+ * abs for double-precision floats.
  *
  * @param x floating point value to use as the magnitude.
  * @returns the absolute value of `x`.
@@ -3002,7 +3358,7 @@ inline size_t utf8strnlen(StringParam str, size_t bytes)
  * Convert an integer into a string.
  *
  * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexidecimal, etc. Must be in the range of 2
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
@@ -3033,7 +3389,7 @@ inline char* itoa(int value, char* str, int radix)
  * Convert an unsigned integer into a string.
  *
  * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexidecimal, etc. Must be in the range of 2
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
@@ -3064,7 +3420,7 @@ inline char* uitoa(unsigned int value, char* str, int radix)
  * Convert a long integer into a string.
  *
  * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexidecimal, etc. Must be in the range of 2
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
@@ -3095,7 +3451,7 @@ inline char* ltoa(long value, char* str, int radix)
  * Convert an unsigned long integer into a string.
  *
  * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexidecimal, etc. Must be in the range of 2
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
@@ -3402,15 +3758,15 @@ inline int strncasecmp(StringParam str1, StringParam str2, size_t maxlen)
 }
 
 /**
- * Searches a string for the first occurence of any character contained in a
+ * Searches a string for the first occurrence of any character contained in a
  * breakset, and returns a pointer from the string to that character.
  *
  * @param str The null-terminated string to be searched. Must not be nullptr,
- *            and must not overlap with `breakset`.
+ * and must not overlap with `breakset`.
  * @param breakset A null-terminated string containing the list of characters
  *                 to look for. Must not be nullptr, and must not overlap with
  *                 `str`.
- * @returns A pointer to the location, in str, of the first occurence of a
+ * @returns A pointer to the location, in str, of the first occurrence of a
  *          character present in the breakset, or nullptr if none is found.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -3868,7 +4224,8 @@ inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
 /**
  * Generate a uniform pseudo-random floating point number less than 1.0
  *
- * If you want reproducible output, be sure to initialize with srand() first.
+ * If you want reproducible output, be sure to initialize with srand()
+ * first.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
@@ -3925,10 +4282,15 @@ class Random
   Uint64 m_state;
 
 public:
+  constexpr Random()
+    : m_state(0)
+  {
+  }
+
   /**
    * Init state with the given value
    */
-  constexpr Random(Uint64 state)
+  constexpr explicit Random(Uint64 state)
     : m_state(state)
   {
   }
@@ -4019,6 +4381,93 @@ public:
 };
 
 /**
+ * Generate a pseudo-random number less than n for positive n
+ *
+ * The method used is faster and of better quality than `rand() % n`. Odds are
+ * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
+ * much worse as n gets bigger.
+ *
+ * Example: to simulate a d6 use `Random.rand(state, 6) + 1` The +1 converts
+ * 0..5 to 1..6
+ *
+ * If you want to generate a pseudo-random number in the full range of Sint32,
+ * you should use: (Sint32)Random.rand_bits(state)
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one
+ * of those to meet any serious needs.
+ *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
+ * @param n the number of possible outcomes. n must be positive.
+ * @returns a random value in the range of [0 .. n-1].
+ *
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa rand
+ * @sa Random.rand_bits
+ * @sa Random.randf
+ */
+inline Sint32 rand_r(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
+
+/**
+ * Generate a uniform pseudo-random floating point number less than 1.0
+ *
+ * If you want reproducible output, be sure to initialize with srand()
+ * first.
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one
+ * of those to meet any serious needs.
+ *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
+ * @returns a random value in the range of [0.0, 1.0).
+ *
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Random.rand_bits
+ * @sa Random.rand
+ * @sa randf
+ */
+inline float randf_r(Uint64* state) { return SDL_randf_r(state); }
+
+/**
+ * Generate 32 pseudo-random bits.
+ *
+ * You likely want to use Random.rand() to get a psuedo-random number instead.
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one
+ * of those to meet any serious needs.
+ *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
+ * @returns a random value in the range of [0-MAX_UINT32].
+ *
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Random.rand
+ * @sa Random.randf
+ */
+inline Uint32 rand_bits_r(Uint64* state) { return SDL_rand_bits_r(state); }
+
+/**
  * The value of Pi, as a double-precision floating point literal.
  *
  * @since This macro is available since SDL 3.2.0.
@@ -4045,6 +4494,9 @@ constexpr float PI_F = SDL_PI_F;
  *
  * Range: `0 <= y <= Pi`
  *
+ * This function operates on double-precision floating point values, use
+ * acos for single-precision floats.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4057,6 +4509,7 @@ constexpr float PI_F = SDL_PI_F;
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa acos
  * @sa asin
  * @sa cos
  */
@@ -4071,6 +4524,9 @@ inline double acos(double x) { return SDL_acos(x); }
  *
  * Range: `0 <= y <= Pi`
  *
+ * This function operates on single-precision floating point values, use
+ * acos for double-precision floats.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4083,6 +4539,7 @@ inline double acos(double x) { return SDL_acos(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa acos
  * @sa asin
  * @sa cos
  */
@@ -4097,6 +4554,9 @@ inline float acos(float x) { return SDL_acosf(x); }
  *
  * Range: `-Pi/2 <= y <= Pi/2`
  *
+ * This function operates on double-precision floating point values, use
+ * asin for single-precision floats.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4109,6 +4569,7 @@ inline float acos(float x) { return SDL_acosf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa asin
  * @sa acos
  * @sa sin
  */
@@ -4138,6 +4599,7 @@ inline double asin(double x) { return SDL_asin(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa asin
  * @sa acos
  * @sa sin
  */
@@ -4151,6 +4613,9 @@ inline float asin(float x) { return SDL_asinf(x); }
  * Domain: `-INF <= x <= INF`
  *
  * Range: `-Pi/2 <= y <= Pi/2`
+ *
+ * This function operates on double-precision floating point values, use
+ * atan for single-precision floats.
  *
  * To calculate the arc tangent of y / x, use atan2.
  *
@@ -4166,6 +4631,7 @@ inline float asin(float x) { return SDL_asinf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa atan
  * @sa atan2
  * @sa tan
  */
@@ -4180,7 +4646,10 @@ inline double atan(double x) { return SDL_atan(x); }
  *
  * Range: `-Pi/2 <= y <= Pi/2`
  *
- * To calculate the arc tangent of y / x, use atan2f.
+ * This function operates on single-precision floating point values, use
+ * atan for dboule-precision floats.
+ *
+ * To calculate the arc tangent of y / x, use atan2.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4194,7 +4663,9 @@ inline double atan(double x) { return SDL_atan(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa atan
  * @sa atan2
+ * @sa tan
  */
 inline float atan(float x) { return SDL_atanf(x); }
 
@@ -4210,7 +4681,9 @@ inline float atan(float x) { return SDL_atanf(x); }
  * Range: `-Pi <= y <= Pi`
  *
  * This function operates on double-precision floating point values, use
- * atan2f for single-precision floats.
+ * atan2 for single-precision floats.
+ *
+ * To calculate the arc tangent of a single value, use atan.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4245,6 +4718,8 @@ inline double atan2(double y, double x) { return SDL_atan2(y, x); }
  * This function operates on single-precision floating point values, use
  * atan2 for double-precision floats.
  *
+ * To calculate the arc tangent of a single value, use atan.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4259,6 +4734,7 @@ inline double atan2(double y, double x) { return SDL_atan2(y, x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa atan2
  * @sa atan
  * @sa tan
  */
@@ -4274,6 +4750,9 @@ inline float atan2(float y, float x) { return SDL_atan2f(y, x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
+ * This function operates on double-precision floating point values, use
+ * ceil for single-precision floats.
+ *
  * @param x floating point value.
  * @returns the ceiling of `x`.
  *
@@ -4281,6 +4760,7 @@ inline float atan2(float y, float x) { return SDL_atan2f(y, x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa ceil
  * @sa floor
  * @sa trunc
  * @sa round
@@ -4298,6 +4778,9 @@ inline double ceil(double x) { return SDL_ceil(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
+ * This function operates on single-precision floating point values, use
+ * ceil for double-precision floats.
+ *
  * @param x floating point value.
  * @returns the ceiling of `x`.
  *
@@ -4305,6 +4788,7 @@ inline double ceil(double x) { return SDL_ceil(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa ceil
  * @sa floor
  * @sa trunc
  * @sa round
@@ -4321,6 +4805,9 @@ inline float ceil(float x) { return SDL_ceilf(x); }
  *
  * Range: `-INF <= z <= INF`
  *
+ * This function operates on double-precision floating point values, use
+ * copysign for single-precision floats.
+ *
  * @param x floating point value to use as the magnitude.
  * @param y floating point value to use as the sign.
  * @returns the floating point value with the sign of y and the magnitude of
@@ -4330,6 +4817,7 @@ inline float ceil(float x) { return SDL_ceilf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa copysign
  * @sa abs
  */
 inline double copysign(double x, double y) { return SDL_copysign(x, y); }
@@ -4343,6 +4831,9 @@ inline double copysign(double x, double y) { return SDL_copysign(x, y); }
  *
  * Range: `-INF <= z <= INF`
  *
+ * This function operates on single-precision floating point values, use
+ * copysign for double-precision floats.
+ *
  * @param x floating point value to use as the magnitude.
  * @param y floating point value to use as the sign.
  * @returns the floating point value with the sign of y and the magnitude of
@@ -4352,6 +4843,7 @@ inline double copysign(double x, double y) { return SDL_copysign(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa copysign
  * @sa abs
  */
 inline float copysign(float x, float y) { return SDL_copysignf(x, y); }
@@ -4362,6 +4854,9 @@ inline float copysign(float x, float y) { return SDL_copysignf(x, y); }
  * Domain: `-INF <= x <= INF`
  *
  * Range: `-1 <= y <= 1`
+ *
+ * This function operates on double-precision floating point values, use
+ * cos for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4375,6 +4870,7 @@ inline float copysign(float x, float y) { return SDL_copysignf(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa cos
  * @sa acos
  * @sa sin
  */
@@ -4387,6 +4883,9 @@ inline double cos(double x) { return SDL_cos(x); }
  *
  * Range: `-1 <= y <= 1`
  *
+ * This function operates on single-precision floating point values, use
+ * cos for double-precision floats.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4399,6 +4898,7 @@ inline double cos(double x) { return SDL_cos(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa cos
  * @sa acos
  * @sa sin
  */
@@ -4408,13 +4908,16 @@ inline float cos(float x) { return SDL_cosf(x); }
  * Compute the exponential of `x`.
  *
  * The definition of `y = exp(x)` is `y = e^x`, where `e` is the base of the
- * natural logarithm. The inverse is the natural logarithm, log().
+ * natural logarithm. The inverse is the natural logarithm, log.
  *
  * Domain: `-INF <= x <= INF`
  *
  * Range: `0 <= y <= INF`
  *
  * The output will overflow if `exp(x)` is too large to be represented.
+ *
+ * This function operates on double-precision floating point values, use
+ * exp for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4428,6 +4931,7 @@ inline float cos(float x) { return SDL_cosf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa exp
  * @sa log
  */
 inline double exp(double x) { return SDL_exp(x); }
@@ -4436,13 +4940,16 @@ inline double exp(double x) { return SDL_exp(x); }
  * Compute the exponential of `x`.
  *
  * The definition of `y = exp(x)` is `y = e^x`, where `e` is the base of the
- * natural logarithm. The inverse is the natural logarithm, log().
+ * natural logarithm. The inverse is the natural logarithm, log.
  *
  * Domain: `-INF <= x <= INF`
  *
  * Range: `0 <= y <= INF`
  *
  * The output will overflow if `exp(x)` is too large to be represented.
+ *
+ * This function operates on single-precision floating point values, use
+ * exp for double-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4456,6 +4963,7 @@ inline double exp(double x) { return SDL_exp(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa exp
  * @sa log
  */
 inline float exp(float x) { return SDL_expf(x); }
@@ -4470,6 +4978,9 @@ inline float exp(float x) { return SDL_expf(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
+ * This function operates on double-precision floating point values, use
+ * floor for single-precision floats.
+ *
  * @param x floating point value.
  * @returns the floor of `x`.
  *
@@ -4477,6 +4988,7 @@ inline float exp(float x) { return SDL_expf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa floor
  * @sa ceil
  * @sa trunc
  * @sa round
@@ -4494,6 +5006,9 @@ inline double floor(double x) { return SDL_floor(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
+ * This function operates on single-precision floating point values, use
+ * floor for double-precision floats.
+ *
  * @param x floating point value.
  * @returns the floor of `x`.
  *
@@ -4501,6 +5016,7 @@ inline double floor(double x) { return SDL_floor(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa floor
  * @sa ceil
  * @sa trunc
  * @sa round
@@ -4518,6 +5034,9 @@ inline float floor(float x) { return SDL_floorf(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
+ * This function operates on double-precision floating point values, use
+ * trunc for single-precision floats.
+ *
  * @param x floating point value.
  * @returns `x` truncated to an integer.
  *
@@ -4525,6 +5044,7 @@ inline float floor(float x) { return SDL_floorf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa trunc
  * @sa fmod
  * @sa ceil
  * @sa floor
@@ -4543,6 +5063,9 @@ inline double trunc(double x) { return SDL_trunc(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
+ * This function operates on single-precision floating point values, use
+ * trunc for double-precision floats.
+ *
  * @param x floating point value.
  * @returns `x` truncated to an integer.
  *
@@ -4550,6 +5073,7 @@ inline double trunc(double x) { return SDL_trunc(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa trunc
  * @sa fmod
  * @sa ceil
  * @sa floor
@@ -4567,6 +5091,9 @@ inline float trunc(float x) { return SDL_truncf(x); }
  *
  * Range: `-y <= z <= y`
  *
+ * This function operates on double-precision floating point values, use
+ * fmod for single-precision floats.
+ *
  * @param x the numerator.
  * @param y the denominator. Must not be 0.
  * @returns the remainder of `x / y`.
@@ -4575,6 +5102,7 @@ inline float trunc(float x) { return SDL_truncf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa fmod
  * @sa modf
  * @sa trunc
  * @sa ceil
@@ -4593,6 +5121,9 @@ inline double fmod(double x, double y) { return SDL_fmod(x, y); }
  *
  * Range: `-y <= z <= y`
  *
+ * This function operates on single-precision floating point values, use
+ * fmod for double-precision floats.
+ *
  * @param x the numerator.
  * @param y the denominator. Must not be 0.
  * @returns the remainder of `x / y`.
@@ -4601,6 +5132,7 @@ inline double fmod(double x, double y) { return SDL_fmod(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa fmod
  * @sa trunc
  * @sa modf
  * @sa ceil
@@ -4619,6 +5151,8 @@ inline float fmod(float x, float y) { return SDL_fmodf(x, y); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa isinf
  */
 inline int isinf(double x) { return SDL_isinf(x); }
 
@@ -4631,6 +5165,8 @@ inline int isinf(double x) { return SDL_isinf(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa isinf
  */
 inline int isinf(float x) { return SDL_isinff(x); }
 
@@ -4643,6 +5179,8 @@ inline int isinf(float x) { return SDL_isinff(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa isnan
  */
 inline int isnan(double x) { return SDL_isnan(x); }
 
@@ -4655,6 +5193,8 @@ inline int isnan(double x) { return SDL_isnan(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa isnan
  */
 inline int isnan(float x) { return SDL_isnanf(x); }
 
@@ -4666,6 +5206,9 @@ inline int isnan(float x) { return SDL_isnanf(x); }
  * Range: `-INF <= y <= INF`
  *
  * It is an error for `x` to be less than or equal to 0.
+ *
+ * This function operates on double-precision floating point values, use
+ * log for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4679,6 +5222,7 @@ inline int isnan(float x) { return SDL_isnanf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa log
  * @sa log10
  * @sa exp
  */
@@ -4693,6 +5237,9 @@ inline double log(double x) { return SDL_log(x); }
  *
  * It is an error for `x` to be less than or equal to 0.
  *
+ * This function operates on single-precision floating point values, use
+ * log for double-precision floats.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4705,7 +5252,7 @@ inline double log(double x) { return SDL_log(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa log10
+ * @sa log
  * @sa exp
  */
 inline float log(float x) { return SDL_logf(x); }
@@ -4719,6 +5266,9 @@ inline float log(float x) { return SDL_logf(x); }
  *
  * It is an error for `x` to be less than or equal to 0.
  *
+ * This function operates on double-precision floating point values, use
+ * log10 for single-precision floats.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4731,6 +5281,7 @@ inline float log(float x) { return SDL_logf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa log10
  * @sa log
  * @sa pow
  */
@@ -4745,6 +5296,9 @@ inline double log10(double x) { return SDL_log10(x); }
  *
  * It is an error for `x` to be less than or equal to 0.
  *
+ * This function operates on single-precision floating point values, use
+ * log10 for double-precision floats.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4757,6 +5311,7 @@ inline double log10(double x) { return SDL_log10(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa log10
  * @sa log
  * @sa pow
  */
@@ -4765,6 +5320,9 @@ inline float log10(float x) { return SDL_log10f(x); }
 /**
  * Split `x` into integer and fractional parts
  *
+ * This function operates on double-precision floating point values, use
+ * modf for single-precision floats.
+ *
  * @param x floating point value.
  * @param y output pointer to store the integer part of `x`.
  * @returns the fractional part of `x`.
@@ -4773,6 +5331,7 @@ inline float log10(float x) { return SDL_log10f(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa modf
  * @sa trunc
  * @sa fmod
  */
@@ -4781,6 +5340,9 @@ inline double modf(double x, double* y) { return SDL_modf(x, y); }
 /**
  * Split `x` into integer and fractional parts
  *
+ * This function operates on single-precision floating point values, use
+ * modf for double-precision floats.
+ *
  * @param x floating point value.
  * @param y output pointer to store the integer part of `x`.
  * @returns the fractional part of `x`.
@@ -4789,6 +5351,7 @@ inline double modf(double x, double* y) { return SDL_modf(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa modf
  * @sa trunc
  * @sa fmod
  */
@@ -4804,6 +5367,9 @@ inline float modf(float x, float* y) { return SDL_modff(x, y); }
  * If `y` is the base of the natural logarithm (e), consider using exp
  * instead.
  *
+ * This function operates on double-precision floating point values, use
+ * pow for single-precision floats.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4817,6 +5383,7 @@ inline float modf(float x, float* y) { return SDL_modff(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa pow
  * @sa exp
  * @sa log
  */
@@ -4832,6 +5399,9 @@ inline double pow(double x, double y) { return SDL_pow(x, y); }
  * If `y` is the base of the natural logarithm (e), consider using exp
  * instead.
  *
+ * This function operates on single-precision floating point values, use
+ * pow for double-precision floats.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4845,6 +5415,7 @@ inline double pow(double x, double y) { return SDL_pow(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa pow
  * @sa exp
  * @sa log
  */
@@ -4860,6 +5431,10 @@ inline float pow(float x, float y) { return SDL_powf(x, y); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
+ * This function operates on double-precision floating point values, use
+ * round for single-precision floats. To get the result as an integer
+ * type, use lround.
+ *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
  *
@@ -4867,6 +5442,7 @@ inline float pow(float x, float y) { return SDL_powf(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa round
  * @sa lround
  * @sa floor
  * @sa ceil
@@ -4884,6 +5460,10 @@ inline double round(double x) { return SDL_round(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
+ * This function operates on single-precision floating point values, use
+ * round for double-precision floats. To get the result as an integer
+ * type, use lround.
+ *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
  *
@@ -4891,6 +5471,7 @@ inline double round(double x) { return SDL_round(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa round
  * @sa lround
  * @sa floor
  * @sa ceil
@@ -4908,6 +5489,10 @@ inline float round(float x) { return SDL_roundf(x); }
  *
  * Range: `MIN_LONG <= y <= MAX_LONG`
  *
+ * This function operates on double-precision floating point values, use
+ * lround for single-precision floats. To get the result as a
+ * floating-point type, use round.
+ *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
  *
@@ -4915,6 +5500,7 @@ inline float round(float x) { return SDL_roundf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa lround
  * @sa round
  * @sa floor
  * @sa ceil
@@ -4932,6 +5518,10 @@ inline long lround(double x) { return SDL_lround(x); }
  *
  * Range: `MIN_LONG <= y <= MAX_LONG`
  *
+ * This function operates on single-precision floating point values, use
+ * lround for double-precision floats. To get the result as a
+ * floating-point type, use round.
+ *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
  *
@@ -4939,6 +5529,7 @@ inline long lround(double x) { return SDL_lround(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa lround
  * @sa round
  * @sa floor
  * @sa ceil
@@ -4955,6 +5546,9 @@ inline long lround(float x) { return SDL_lroundf(x); }
  *
  * Range: `-INF <= y <= INF`
  *
+ * This function operates on double-precision floating point values, use
+ * scalbn for single-precision floats.
+ *
  * @param x floating point value to be scaled.
  * @param n integer exponent.
  * @returns `x * 2^n`.
@@ -4963,6 +5557,7 @@ inline long lround(float x) { return SDL_lroundf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa scalbn
  * @sa pow
  */
 inline double scalbn(double x, int n) { return SDL_scalbn(x, n); }
@@ -4976,6 +5571,9 @@ inline double scalbn(double x, int n) { return SDL_scalbn(x, n); }
  *
  * Range: `-INF <= y <= INF`
  *
+ * This function operates on single-precision floating point values, use
+ * scalbn for double-precision floats.
+ *
  * @param x floating point value to be scaled.
  * @param n integer exponent.
  * @returns `x * 2^n`.
@@ -4984,6 +5582,7 @@ inline double scalbn(double x, int n) { return SDL_scalbn(x, n); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa scalbn
  * @sa pow
  */
 inline float scalbn(float x, int n) { return SDL_scalbnf(x, n); }
@@ -4994,6 +5593,9 @@ inline float scalbn(float x, int n) { return SDL_scalbnf(x, n); }
  * Domain: `-INF <= x <= INF`
  *
  * Range: `-1 <= y <= 1`
+ *
+ * This function operates on double-precision floating point values, use
+ * sin for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5007,6 +5609,7 @@ inline float scalbn(float x, int n) { return SDL_scalbnf(x, n); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa sin
  * @sa asin
  * @sa cos
  */
@@ -5019,6 +5622,9 @@ inline double sin(double x) { return SDL_sin(x); }
  *
  * Range: `-1 <= y <= 1`
  *
+ * This function operates on single-precision floating point values, use
+ * sin for double-precision floats.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -5031,6 +5637,7 @@ inline double sin(double x) { return SDL_sin(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa sin
  * @sa asin
  * @sa cos
  */
@@ -5043,6 +5650,9 @@ inline float sin(float x) { return SDL_sinf(x); }
  *
  * Range: `0 <= y <= INF`
  *
+ * This function operates on double-precision floating point values, use
+ * sqrt for single-precision floats.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -5054,6 +5664,8 @@ inline float sin(float x) { return SDL_sinf(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa sqrt
  */
 inline double sqrt(double x) { return SDL_sqrt(x); }
 
@@ -5064,6 +5676,9 @@ inline double sqrt(double x) { return SDL_sqrt(x); }
  *
  * Range: `0 <= y <= INF`
  *
+ * This function operates on single-precision floating point values, use
+ * sqrt for double-precision floats.
+ *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -5075,6 +5690,8 @@ inline double sqrt(double x) { return SDL_sqrt(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa sqrt
  */
 inline float sqrt(float x) { return SDL_sqrtf(x); }
 
@@ -5084,6 +5701,9 @@ inline float sqrt(float x) { return SDL_sqrtf(x); }
  * Domain: `-INF <= x <= INF`
  *
  * Range: `-INF <= y <= INF`
+ *
+ * This function operates on double-precision floating point values, use
+ * tan for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5097,6 +5717,7 @@ inline float sqrt(float x) { return SDL_sqrtf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa tan
  * @sa sin
  * @sa cos
  * @sa atan
@@ -5126,6 +5747,7 @@ inline double tan(double x) { return SDL_tan(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa tan
  * @sa sin
  * @sa cos
  * @sa atan
@@ -5143,9 +5765,106 @@ inline float tan(float x) { return SDL_tanf(x); }
  * @sa IConv.open
  * @sa IConv
  */
-struct IConvRef : Resource<SDL_iconv_data_t*>
+class IConv
 {
-  using Resource::Resource;
+  IConvRaw m_resource = nullptr;
+
+public:
+  /// Default ctor
+  constexpr IConv() = default;
+
+  /**
+   * Constructs from IConvParam.
+   *
+   * @param resource a IConvRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit IConv(const IConvRaw resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr IConv(const IConv& other) = delete;
+
+  /// Move constructor
+  constexpr IConv(IConv&& other)
+    : IConv(other.release())
+  {
+  }
+
+  constexpr IConv(const IConvRef& other) = delete;
+
+  constexpr IConv(IConvRef&& other) = delete;
+
+  /**
+   * This function allocates a context for the specified character set
+   * conversion.
+   *
+   * @param tocode The target character encoding, must not be nullptr.
+   * @param fromcode The source character encoding, must not be nullptr.
+   * @post a valid handle or falsy on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConv.iconv
+   * @sa IConv.close
+   * @sa iconv_string
+   */
+  IConv(StringParam tocode, StringParam fromcode)
+    : m_resource(SDL_iconv_open(tocode, fromcode))
+  {
+  }
+
+  /// Destructor
+  ~IConv() { SDL_iconv_close(m_resource); }
+
+  /// Assignment operator.
+  IConv& operator=(IConv other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Retrieves underlying IConvRaw.
+  constexpr IConvRaw get() const { return m_resource; }
+
+  /// Retrieves underlying IConvRaw and clear this.
+  constexpr IConvRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const IConv& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const
+  {
+    return m_resource != IConvRaw(SDL_ICONV_ERROR);
+  }
+
+  /// Converts to IConvParam
+  constexpr operator IConvParam() const { return {m_resource}; }
+
+  /**
+   * This function frees a context used for character set conversion.
+   *
+   * @returns 0 on success, or -1 on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConv.iconv
+   * @sa IConv.open
+   * @sa iconv_string
+   */
+  int close();
 
   /**
    * This function converts text between encodings, reading from and writing to
@@ -5173,139 +5892,154 @@ struct IConvRef : Resource<SDL_iconv_data_t*>
    * @param inbytesleft The number of bytes in the input buffer.
    * @param outbuf Address of variable that points to the output buffer.
    * @param outbytesleft The number of bytes in the output buffer.
-   * @returns the number of conversions on success, or a negative error code.
+   * @returns the number of conversions on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IConv.IConv
-   * @sa IConvRef.close
+   * @sa IConv.open
+   * @sa IConv.close
    * @sa iconv_string
    */
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
                char** outbuf,
-               size_t* outbytesleft)
+               size_t* outbytesleft);
+};
+
+/// Semi-safe reference for IConv.
+struct IConvRef : IConv
+{
+  /**
+   * Constructs from IConvParam.
+   *
+   * @param resource a IConvRaw or IConv.
+   *
+   * This does not takes ownership!
+   */
+  IConvRef(IConvParam resource)
+    : IConv(resource.value)
   {
-    return SDL_iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
   }
 
-  /**
-   * This function frees a context used for character set conversion.
-   *
-   * @param resource The character set conversion handle.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConvRef.iconv
-   * @sa IConv.open
-   * @sa iconv_string
-   */
-  static void reset(SDL_iconv_data_t* resource)
+  /// Copy constructor.
+  IConvRef(const IConvRef& other)
+    : IConv(other.get())
   {
-    CheckError(SDL_iconv_close(resource) == 0);
   }
+
+  /// Destructor
+  ~IConvRef() { release(); }
 };
 
 /**
- * Handle to an owned iConv
+ * This function allocates a context for the specified character set
+ * conversion.
  *
- * @cat resource
+ * @param tocode The target character encoding, must not be nullptr.
+ * @param fromcode The source character encoding, must not be nullptr.
+ * @returns a handle that must be freed with IConv.close, or
+ *          SDL_ICONV_ERROR on failure.
  *
- * @sa IConvRef
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IConv.iconv
+ * @sa IConv.close
+ * @sa iconv_string
  */
-struct IConv : ResourceUnique<IConvRef>
+inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 {
-  using ResourceUnique::ResourceUnique;
-
-  /**
-   * This function allocates a context for the specified character set
-   * conversion.
-   *
-   * @param tocode The target character encoding, must not be nullptr.
-   * @param fromcode The source character encoding, must not be nullptr.
-   * @returns this becomes a valid handle convertible to true on success, or
-   *          convertible to false on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConvRef.iconv
-   * @sa IConv.close
-   * @sa iconv_string
-   */
-  static IConv open(StringParam tocode, StringParam fromcode)
-  {
-    return IConv(SDL_iconv_open(tocode, fromcode));
-  }
-
-  /**
-   * This function frees a context used for character set conversion.
-   *
-   * @returns 0 on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConvRef.iconv
-   * @sa IConv.open
-   * @sa iconv_string
-   */
-  void close() { reset(); }
-  /**
-   * Move this iConv into a IConvShared.
-   */
-  IConvShared share();
-
-};
-
-
-inline IConvShared IConv::share()
-{
-  return IConvShared(std::move(*this));
+  return IConv(SDL_iconv_open(tocode, fromcode));
 }
 
 /**
- * Unsafe Handle to iConv
+ * This function frees a context used for character set conversion.
  *
- * Must call manually reset() to free.
+ * @param cd The character set conversion handle.
+ * @returns 0 on success.
+ * @throws Error on failure.
  *
- * @cat resource
+ * @since This function is available since SDL 3.2.0.
  *
- * @sa IConvRef
+ * @sa IConv.iconv
+ * @sa IConv.open
+ * @sa iconv_string
  */
-struct IConvUnsafe : ResourceUnsafe<IConvRef>
-{
-  using ResourceUnsafe::ResourceUnsafe;
+inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
 
-  /**
-   * Constructs IConvUnsafe from IConv.
-   */
-  constexpr explicit IConvUnsafe(IConv&& other)
-    : IConvUnsafe(other.release())
-  {
-  }
-};
+inline int IConv::close()
+{
+  auto r = SDL_iconv_close(m_resource);
+  m_resource = nullptr;
+  return r;
+}
+
+/**
+ * This function converts text between encodings, reading from and writing to
+ * a buffer.
+ *
+ * It returns the number of successful conversions on success. On error,
+ * SDL_ICONV_E2BIG is returned when the output buffer is too small, or
+ * SDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,
+ * or SDL_ICONV_EINVAL is returned when an incomplete input sequence is
+ * encountered.
+ *
+ * On exit:
+ *
+ * - inbuf will point to the beginning of the next multibyte sequence. On
+ *   error, this is the location of the problematic input sequence. On
+ *   success, this is the end of the input sequence.
+ * - inbytesleft will be set to the number of bytes left to convert, which
+ *   will be 0 on success.
+ * - outbuf will point to the location where to store the next output byte.
+ * - outbytesleft will be set to the number of bytes left in the output
+ *   buffer.
+ *
+ * @param cd The character set conversion context, created in
+ *           IConv.open().
+ * @param inbuf Address of variable that points to the first character of the
+ *              input sequence.
+ * @param inbytesleft The number of bytes in the input buffer.
+ * @param outbuf Address of variable that points to the output buffer.
+ * @param outbytesleft The number of bytes in the output buffer.
+ * @returns the number of conversions on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IConv.open
+ * @sa IConv.close
+ * @sa iconv_string
+ */
+inline size_t iconv(IConvRaw cd,
+                    const char** inbuf,
+                    size_t* inbytesleft,
+                    char** outbuf,
+                    size_t* outbytesleft)
+{
+  return CheckError(SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft));
+}
+
+inline size_t IConv::iconv(const char** inbuf,
+                           size_t* inbytesleft,
+                           char** outbuf,
+                           size_t* outbytesleft)
+{
+  return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
+}
 
 #ifdef SDL3PP_DOC
 
-/**
- * Generic error. Check GetError()?
- */
+/// Generic error. Check GetError()?
 #define SDL_ICONV_ERROR (size_t)-1
 
-/**
- * Output buffer was too small.
- */
+/// Output buffer was too small.
 #define SDL_ICONV_E2BIG (size_t)-2
 
-/**
- * Invalid input sequence was encountered.
- */
+/// Invalid input sequence was encountered.
 #define SDL_ICONV_EILSEQ (size_t)-3
 
-/**
- * Incomplete input sequence was encountered.
- */
+/// Incomplete input sequence was encountered.
 #define SDL_ICONV_EINVAL (size_t)-4
 
 #endif // SDL3PP_DOC
@@ -5330,7 +6064,7 @@ struct IConvUnsafe : ResourceUnsafe<IConvRef>
  *
  * @sa IConv.open
  * @sa IConv.close
- * @sa IConvRef.iconv
+ * @sa IConv.iconv
  */
 inline OwnPtr<char> iconv_string(StringParam tocode,
                                  StringParam fromcode,
@@ -5466,12 +6200,9 @@ inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
  */
 using FunctionPointer = SDL_FunctionPointer;
 
-#pragma region impl
 /// @}
 
 inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
-
-#pragma endregion impl
 
 } // namespace SDL
 

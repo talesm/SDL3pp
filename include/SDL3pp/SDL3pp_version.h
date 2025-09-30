@@ -2,8 +2,6 @@
 #define SDL3PP_VERSION_H_
 
 #include <SDL3/SDL_version.h>
-#include "SDL3pp_error.h"
-#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 
@@ -25,7 +23,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_MAJOR_VERSION
+#define SDL_MAJOR_VERSION 3
 
 /**
  * The current minor version of the SDL headers.
@@ -34,7 +32,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_MINOR_VERSION
+#define SDL_MINOR_VERSION 2
 
 /**
  * The current micro (or patchlevel) version of the SDL headers.
@@ -43,7 +41,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_MICRO_VERSION
+#define SDL_MICRO_VERSION 23
 
 /**
  * This macro turns the version numbers into a numeric value.
@@ -119,7 +117,7 @@ namespace SDL {
  * function returns the current version, while SDL_VERSION is the version you
  * compiled with.
  *
- * This function may be called safely at any time, even before InitSubSystem().
+ * This function may be called safely at any time, even before Init().
  *
  * @returns the version of the linked library.
  *

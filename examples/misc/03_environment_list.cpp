@@ -4,11 +4,12 @@
 
 int main()
 {
-  SDL::EnvironmentRef appEnv = SDL::GetEnvironment();
+  SDL::EnvironmentRaw appEnv = SDL::GetEnvironment();
   if (!appEnv) {
     std::cout << "No environment\n";
     return 1;
   }
-  for (auto variable : appEnv.GetVariables()) std::cout << variable << '\n';
+  for (auto variable : SDL::GetEnvironmentVariables(appEnv))
+    std::cout << variable << '\n';
   return 0;
 }

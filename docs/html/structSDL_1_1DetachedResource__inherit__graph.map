@@ -1,5 +1,0 @@
-<map id="SDL::DetachedResource&lt; RESOURCE, UNIQUE &gt;" name="SDL::DetachedResource&lt; RESOURCE, UNIQUE &gt;">
-<area shape="rect" id="Node000001" title="A detached reference to resource that might be transformed into an owned handle." alt="" coords="20,108,203,148"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1ResourcePtrBase.html" title=" " alt="" coords="5,5,217,60"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,74,114,108,109,108,109,74"/>
-</map>

@@ -76,126 +76,106 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1MutexRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::MutexRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a> &raquo; <a class="el" href="group__CategoryMutex.html">Thread Synchronization Primitives</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>A means to serialize access to a resource between threads.  
- <a href="structSDL_1_1MutexRef.html#details">More...</a></p>
+<p>Semi-safe reference for <a class="el" href="classSDL_1_1Mutex.html" title="A means to serialize access to a resource between threads.">Mutex</a>.  
+</p>
 <div class="dynheader">
 Inheritance diagram for SDL::MutexRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1MutexRef__inherit__graph.png" border="0" usemap="#aSDL_1_1MutexRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1MutexRef_inherit__map" id="aSDL_1_1MutexRef_inherit__map">
-<area shape="rect" title="A means to serialize access to a resource between threads." alt="" coords="23,93,142,119"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="Semi&#45;safe reference for Mutex." alt="" coords="5,79,124,104"/>
+<area shape="rect" href="classSDL_1_1Mutex.html" title="A means to serialize access to a resource between threads." alt="" coords="17,5,113,31"/>
+<area shape="poly" title=" " alt="" coords="67,44,67,79,62,79,62,44"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aee56f4bcb72708c15e2f5cddd76d3490" id="r_aee56f4bcb72708c15e2f5cddd76d3490"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1MutexRef.html#aee56f4bcb72708c15e2f5cddd76d3490">Lock</a> ()</td></tr>
-<tr class="memdesc:aee56f4bcb72708c15e2f5cddd76d3490"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock the mutex.  <br /></td></tr>
-<tr class="separator:aee56f4bcb72708c15e2f5cddd76d3490"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a132045cdbcb356faa6c57be6ff1f5d2c" id="r_a132045cdbcb356faa6c57be6ff1f5d2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1MutexRef.html#a132045cdbcb356faa6c57be6ff1f5d2c">TryLock</a> ()</td></tr>
-<tr class="memdesc:a132045cdbcb356faa6c57be6ff1f5d2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a mutex without blocking.  <br /></td></tr>
-<tr class="separator:a132045cdbcb356faa6c57be6ff1f5d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6c15ceb8700d3fb796a02fa77a5b576" id="r_aa6c15ceb8700d3fb796a02fa77a5b576"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1MutexRef.html#aa6c15ceb8700d3fb796a02fa77a5b576">Unlock</a> ()</td></tr>
-<tr class="memdesc:aa6c15ceb8700d3fb796a02fa77a5b576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlock the mutex.  <br /></td></tr>
-<tr class="separator:aa6c15ceb8700d3fb796a02fa77a5b576"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top"><a id="a78be254b85f48c12179a782cb04da9ac" name="a78be254b85f48c12179a782cb04da9ac"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; T &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top"><a id="afbb3168108af6a8bd0e23edc712b6a09" name="afbb3168108af6a8bd0e23edc712b6a09"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Mutex * &gt;</a></td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_Mutex * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; SDL_Mutex * &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a06b769401a414a98c0f0276fbe094e82" id="r_a06b769401a414a98c0f0276fbe094e82"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1MutexRef.html#a06b769401a414a98c0f0276fbe094e82">MutexRef</a> (<a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a> resource)</td></tr>
+<tr class="memdesc:a06b769401a414a98c0f0276fbe094e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from <a class="el" href="structSDL_1_1MutexParam.html" title="Safely wrap Mutex for non owning parameters.">MutexParam</a>.  <br /></td></tr>
+<tr class="separator:a06b769401a414a98c0f0276fbe094e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fecc30852c1dfc08461576fb2a16465" id="r_a0fecc30852c1dfc08461576fb2a16465"><td class="memItemLeft" align="right" valign="top"><a id="a0fecc30852c1dfc08461576fb2a16465" name="a0fecc30852c1dfc08461576fb2a16465"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MutexRef</b> (const <a class="el" href="structSDL_1_1MutexRef.html">MutexRef</a> &amp;other)</td></tr>
+<tr class="memdesc:a0fecc30852c1dfc08461576fb2a16465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:a0fecc30852c1dfc08461576fb2a16465"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa310dfcfc8ba3b1fe52a74c08866375c" id="r_aa310dfcfc8ba3b1fe52a74c08866375c"><td class="memItemLeft" align="right" valign="top"><a id="aa310dfcfc8ba3b1fe52a74c08866375c" name="aa310dfcfc8ba3b1fe52a74c08866375c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~MutexRef</b> ()</td></tr>
+<tr class="memdesc:aa310dfcfc8ba3b1fe52a74c08866375c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:aa310dfcfc8ba3b1fe52a74c08866375c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1Mutex"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Mutex')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Mutex.html">SDL::Mutex</a></td></tr>
+<tr class="memitem:ad0f7e723eb38e9b8b04616ff9e9bd19d inherit pub_methods_classSDL_1_1Mutex" id="r_ad0f7e723eb38e9b8b04616ff9e9bd19d"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Mutex.html#ad0f7e723eb38e9b8b04616ff9e9bd19d">Mutex</a> (const <a class="el" href="group__CategoryMutex.html#gac81abd5191b9c0c9c890dcd7f0901943">MutexRaw</a> resource)</td></tr>
+<tr class="memdesc:ad0f7e723eb38e9b8b04616ff9e9bd19d inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from <a class="el" href="structSDL_1_1MutexParam.html" title="Safely wrap Mutex for non owning parameters.">MutexParam</a>.  <br /></td></tr>
+<tr class="separator:ad0f7e723eb38e9b8b04616ff9e9bd19d inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8856137d21e037674530e97d96ce8daa inherit pub_methods_classSDL_1_1Mutex" id="r_a8856137d21e037674530e97d96ce8daa"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Mutex</b> (const <a class="el" href="classSDL_1_1Mutex.html">Mutex</a> &amp;other)=delete</td></tr>
+<tr class="memdesc:a8856137d21e037674530e97d96ce8daa inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:a8856137d21e037674530e97d96ce8daa inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac78ebbdf60bdd3eb67f4f20883cfe8d2 inherit pub_methods_classSDL_1_1Mutex" id="r_ac78ebbdf60bdd3eb67f4f20883cfe8d2"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Mutex</b> (<a class="el" href="classSDL_1_1Mutex.html">Mutex</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:ac78ebbdf60bdd3eb67f4f20883cfe8d2 inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:ac78ebbdf60bdd3eb67f4f20883cfe8d2 inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc8acd21710440e8597084acdf771adc inherit pub_methods_classSDL_1_1Mutex" id="r_abc8acd21710440e8597084acdf771adc"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Mutex</b> (const <a class="el" href="structSDL_1_1MutexRef.html">MutexRef</a> &amp;other)=delete</td></tr>
+<tr class="separator:abc8acd21710440e8597084acdf771adc inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d93126d75613157a574157668a51001 inherit pub_methods_classSDL_1_1Mutex" id="r_a8d93126d75613157a574157668a51001"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Mutex</b> (<a class="el" href="structSDL_1_1MutexRef.html">MutexRef</a> &amp;&amp;other)=delete</td></tr>
+<tr class="separator:a8d93126d75613157a574157668a51001 inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5efc976c19ab75420cc30b00d4317bc4 inherit pub_methods_classSDL_1_1Mutex" id="r_a5efc976c19ab75420cc30b00d4317bc4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Mutex.html#a5efc976c19ab75420cc30b00d4317bc4">Mutex</a> ()</td></tr>
+<tr class="memdesc:a5efc976c19ab75420cc30b00d4317bc4 inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new mutex.  <br /></td></tr>
+<tr class="separator:a5efc976c19ab75420cc30b00d4317bc4 inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a379165d74fe3d28cd3e1c27b6f4a7f50 inherit pub_methods_classSDL_1_1Mutex" id="r_a379165d74fe3d28cd3e1c27b6f4a7f50"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>~Mutex</b> ()</td></tr>
+<tr class="memdesc:a379165d74fe3d28cd3e1c27b6f4a7f50 inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:a379165d74fe3d28cd3e1c27b6f4a7f50 inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49e05a609b85d55720fdecf9b59838e5 inherit pub_methods_classSDL_1_1Mutex" id="r_a49e05a609b85d55720fdecf9b59838e5"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1Mutex.html">Mutex</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1Mutex.html">Mutex</a> other)</td></tr>
+<tr class="memdesc:a49e05a609b85d55720fdecf9b59838e5 inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:a49e05a609b85d55720fdecf9b59838e5 inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5ffafadabab52fc6c3cb9dfd055cd1f inherit pub_methods_classSDL_1_1Mutex" id="r_ad5ffafadabab52fc6c3cb9dfd055cd1f"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="group__CategoryMutex.html#gac81abd5191b9c0c9c890dcd7f0901943">MutexRaw</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="memdesc:ad5ffafadabab52fc6c3cb9dfd055cd1f inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves underlying MutexRaw. <br /></td></tr>
+<tr class="separator:ad5ffafadabab52fc6c3cb9dfd055cd1f inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08284b64c9c24e9be45755edc720c43f inherit pub_methods_classSDL_1_1Mutex" id="r_a08284b64c9c24e9be45755edc720c43f"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="group__CategoryMutex.html#gac81abd5191b9c0c9c890dcd7f0901943">MutexRaw</a>&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
+<tr class="memdesc:a08284b64c9c24e9be45755edc720c43f inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves underlying MutexRaw and clear this. <br /></td></tr>
+<tr class="separator:a08284b64c9c24e9be45755edc720c43f inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a768fdde53543ee308d3014bd4c2b409f inherit pub_methods_classSDL_1_1Mutex" id="r_a768fdde53543ee308d3014bd4c2b409f"><td class="memItemLeft" align="right" valign="top">
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;=&gt;</b> (const <a class="el" href="classSDL_1_1Mutex.html">Mutex</a> &amp;other) const =default</td></tr>
+<tr class="memdesc:a768fdde53543ee308d3014bd4c2b409f inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a768fdde53543ee308d3014bd4c2b409f inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63abc566acdc6dbf2cf156eb128bb623 inherit pub_methods_classSDL_1_1Mutex" id="r_a63abc566acdc6dbf2cf156eb128bb623"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t _) const</td></tr>
+<tr class="memdesc:a63abc566acdc6dbf2cf156eb128bb623 inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a63abc566acdc6dbf2cf156eb128bb623 inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc12dd31788a4e5eb1f7b48eeb6c25a7 inherit pub_methods_classSDL_1_1Mutex" id="r_acc12dd31788a4e5eb1f7b48eeb6c25a7"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
-<tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource" id="r_ab4aa1e63564473a72dc97256340d104f"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_type</b> () const</td></tr>
-<tr class="memdesc:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts back to underlying type. <br /></td></tr>
-<tr class="separator:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
-<tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource" id="r_ad2a82bc79a7dae41ceb1a25647ae1c0d"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
-<tr class="memdesc:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource" id="r_ab110e6568060a7ae58ab7b29ad68f7fc"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t) const</td></tr>
-<tr class="memdesc:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource" id="r_ab273a0a0285b8eed1f70f5d3759f4167"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Mutex *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
-<tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top">
-constexpr const SDL_Mutex *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Mutex *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
-<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aeab45516627aaa38a8566c82300e603d" id="r_aeab45516627aaa38a8566c82300e603d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1MutexRef.html#aeab45516627aaa38a8566c82300e603d">reset</a> (SDL_Mutex *resource)</td></tr>
-<tr class="memdesc:aeab45516627aaa38a8566c82300e603d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a mutex created with <a class="el" href="structSDL_1_1Mutex.html#a71443f08ef2457078fdc48010a0adc59" title="Create a new mutex.">Mutex.Create()</a>.  <br /></td></tr>
-<tr class="separator:aeab45516627aaa38a8566c82300e603d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Mutex * &gt;</a></td></tr>
-<tr class="memitem:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource" id="r_a11ac29cf1f6da9fb29c508669f40b38d"><td class="memItemLeft" align="right" valign="top">
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL_Mutex *</td></tr>
-<tr class="memdesc:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
-<tr class="separator:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:acc12dd31788a4e5eb1f7b48eeb6c25a7 inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to bool. <br /></td></tr>
+<tr class="separator:acc12dd31788a4e5eb1f7b48eeb6c25a7 inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a581da84dca0b83187c8f517e9369f1d3 inherit pub_methods_classSDL_1_1Mutex" id="r_a581da84dca0b83187c8f517e9369f1d3"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator MutexParam</b> () const</td></tr>
+<tr class="memdesc:a581da84dca0b83187c8f517e9369f1d3 inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to <a class="el" href="structSDL_1_1MutexParam.html" title="Safely wrap Mutex for non owning parameters.">MutexParam</a>. <br /></td></tr>
+<tr class="separator:a581da84dca0b83187c8f517e9369f1d3 inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3e550224c844debb0b559ae208ed0b12 inherit pub_methods_classSDL_1_1Mutex" id="r_ga3e550224c844debb0b559ae208ed0b12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga3e550224c844debb0b559ae208ed0b12">Destroy</a> ()</td></tr>
+<tr class="memdesc:ga3e550224c844debb0b559ae208ed0b12 inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a mutex created with <a class="el" href="classSDL_1_1Mutex.html#a5efc976c19ab75420cc30b00d4317bc4" title="Create a new mutex.">Mutex.Mutex()</a>.  <br /></td></tr>
+<tr class="separator:ga3e550224c844debb0b559ae208ed0b12 inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaad5af515507a4ab5944b93716098ceb0 inherit pub_methods_classSDL_1_1Mutex" id="r_gaad5af515507a4ab5944b93716098ceb0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gaad5af515507a4ab5944b93716098ceb0">Lock</a> ()</td></tr>
+<tr class="memdesc:gaad5af515507a4ab5944b93716098ceb0 inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock the mutex.  <br /></td></tr>
+<tr class="separator:gaad5af515507a4ab5944b93716098ceb0 inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4387a947dc87dd0d81d4892898a33c94 inherit pub_methods_classSDL_1_1Mutex" id="r_ga4387a947dc87dd0d81d4892898a33c94"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga4387a947dc87dd0d81d4892898a33c94">TryLock</a> ()</td></tr>
+<tr class="memdesc:ga4387a947dc87dd0d81d4892898a33c94 inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a mutex without blocking.  <br /></td></tr>
+<tr class="separator:ga4387a947dc87dd0d81d4892898a33c94 inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga43f3620a42689aca56a9810c97a218f1 inherit pub_methods_classSDL_1_1Mutex" id="r_ga43f3620a42689aca56a9810c97a218f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga43f3620a42689aca56a9810c97a218f1">Unlock</a> ()</td></tr>
+<tr class="memdesc:ga43f3620a42689aca56a9810c97a218f1 inherit pub_methods_classSDL_1_1Mutex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlock the mutex.  <br /></td></tr>
+<tr class="separator:ga43f3620a42689aca56a9810c97a218f1 inherit pub_methods_classSDL_1_1Mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Mutexes (short for "mutual exclusion") are a synchronization primitive that allows exactly one thread to proceed at a time.</p>
-<p>Wikipedia has a thorough explanation of the concept:</p>
-<p><a href="https://en.wikipedia.org/wiki/Mutex">https://en.wikipedia.org/wiki/Mutex</a></p>
-<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Mutex.html" title="Handle to an owned mutex.">Mutex</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aee56f4bcb72708c15e2f5cddd76d3490" name="aee56f4bcb72708c15e2f5cddd76d3490"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee56f4bcb72708c15e2f5cddd76d3490">&#9670;&#160;</a></span>Lock()</h2>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a06b769401a414a98c0f0276fbe094e82" name="a06b769401a414a98c0f0276fbe094e82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06b769401a414a98c0f0276fbe094e82">&#9670;&#160;</a></span>MutexRef()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -204,129 +184,26 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::MutexRef::Lock </td>
+          <td class="memname">SDL::MutexRef::MutexRef </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This will block until the mutex is available, which is to say it is in the unlocked state and the OS has chosen the caller as the next thread to lock it. Of all threads waiting to lock the mutex, only one may do so at a time.</p>
-<p>It is legal for the owning thread to lock an already-locked mutex. It must unlock it the same number of times before it is actually made available for other threads in the system (this is known as a "recursive mutex").</p>
-<p>This function does not fail; if mutex is nullptr, it will return immediately having locked nothing. If the mutex is valid, this function will always block until it can lock the mutex, and return with it locked.</p>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1MutexRef.html#a132045cdbcb356faa6c57be6ff1f5d2c" title="Try to lock a mutex without blocking.">MutexRef.TryLock</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1MutexRef.html#aa6c15ceb8700d3fb796a02fa77a5b576" title="Unlock the mutex.">MutexRef.Unlock</a> </dd></dl>
-
-</div>
-</div>
-<a id="aeab45516627aaa38a8566c82300e603d" name="aeab45516627aaa38a8566c82300e603d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeab45516627aaa38a8566c82300e603d">&#9670;&#160;</a></span>reset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void SDL::MutexRef::reset </td>
-          <td>(</td>
-          <td class="paramtype">SDL_Mutex *&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a>&#160;</td>
           <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function must be called on any mutex that is no longer needed. Failure to destroy a mutex will result in a system memory or resource leak. While it is safe to destroy a mutex that is <em>unlocked</em>, it is not safe to attempt to destroy a locked mutex, and may result in undefined behavior depending on the platform.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">resource</td><td>the mutex to destroy.</td></tr>
+    <tr><td class="paramname">resource</td><td>a MutexRaw or <a class="el" href="classSDL_1_1Mutex.html" title="A means to serialize access to a resource between threads.">Mutex</a>.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Mutex.html#a71443f08ef2457078fdc48010a0adc59" title="Create a new mutex.">Mutex.Create</a> </dd></dl>
-
-</div>
-</div>
-<a id="a132045cdbcb356faa6c57be6ff1f5d2c" name="a132045cdbcb356faa6c57be6ff1f5d2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a132045cdbcb356faa6c57be6ff1f5d2c">&#9670;&#160;</a></span>TryLock()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::MutexRef::TryLock </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This works just like <a class="el" href="structSDL_1_1MutexRef.html#aee56f4bcb72708c15e2f5cddd76d3490" title="Lock the mutex.">MutexRef.Lock()</a>, but if the mutex is not available, this function returns false immediately.</p>
-<p>This technique is useful if you need exclusive access to a resource but don't want to wait for it, and will return to it to try again later.</p>
-<p>This function returns true if passed a nullptr mutex.</p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1MutexRef.html#aee56f4bcb72708c15e2f5cddd76d3490" title="Lock the mutex.">MutexRef.Lock</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1MutexRef.html#aa6c15ceb8700d3fb796a02fa77a5b576" title="Unlock the mutex.">MutexRef.Unlock</a> </dd></dl>
-
-</div>
-</div>
-<a id="aa6c15ceb8700d3fb796a02fa77a5b576" name="aa6c15ceb8700d3fb796a02fa77a5b576"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6c15ceb8700d3fb796a02fa77a5b576">&#9670;&#160;</a></span>Unlock()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::MutexRef::Unlock </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>It is legal for the owning thread to lock an already-locked mutex. It must unlock it the same number of times before it is actually made available for other threads in the system (this is known as a "recursive mutex").</p>
-<p>It is illegal to unlock a mutex that has not been locked by the current thread, and doing so results in undefined behavior.</p>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1MutexRef.html#aee56f4bcb72708c15e2f5cddd76d3490" title="Lock the mutex.">MutexRef.Lock</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1MutexRef.html#a132045cdbcb356faa6c57be6ff1f5d2c" title="Try to lock a mutex without blocking.">MutexRef.TryLock</a> </dd></dl>
+<p>This does not takes ownership! </p>
 
 </div>
 </div>

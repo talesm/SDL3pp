@@ -18,12 +18,18 @@ struct Main
   static constexpr SDL::Point windowSz = {640, 480};
 
   // Init library
-  SDL::SDL init{SDL::INIT_VIDEO};
+  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata(
+      "Example Renderer Points", "1.0", "com.example.renderer-points");
+    SDL::Init(SDL::INIT_VIDEO);
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
 
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window =
-    SDL::Window::Create("examples/renderer/points", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
+  SDL::Window window{"examples/renderer/points", windowSz};
+  SDL::Renderer renderer{window};
   std::chrono::nanoseconds last_time;
 
   static constexpr int NUM_POINTS = 500;
@@ -88,20 +94,17 @@ struct Main
     last_time = now;
 
     // as you can see, rendering draws over what was drawn before it.
-    renderer->SetDrawColor(SDL::Color{0, 0, 0}); // black
-    renderer->RenderClear();                     // start with a blank canvas.
-    renderer->SetDrawColor(SDL_Color{255, 255, 255}); // white
-    renderer->RenderPoints(points);                   // Draw all the points
+    renderer.SetDrawColor(SDL::Color{0, 0, 0}); // black
+    renderer.RenderClear();                     // start with a blank canvas.
+    renderer.SetDrawColor(SDL_Color{255, 255, 255}); // white
+    renderer.RenderPoints(points);                   // Draw all the points
 
     /* You can also draw single points with SDL_RenderPoint(), but it's
        cheaper (sometimes significantly so) to do them all at once. */
 
-    renderer->Present();      // put it all on the screen!
+    renderer.Present();       // put it all on the screen!
     return SDL::APP_CONTINUE; // carry on with the program!
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main,
-                        "Example Renderer Points",
-                        "1.0",
-                        "com.example.renderer-points")
+SDL3PP_DEFINE_CALLBACKS(Main)

@@ -16,16 +16,23 @@ struct Main
 {
   static constexpr SDL::Point windowSz = {640, 480};
 
-  SDL::SDL init{SDL::INIT_VIDEO, SDL::INIT_AUDIO};
-  SDL::Window window =
-    SDL::Window::Create("examples/audio/simple-playback", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
-  SDL::AudioStream stream = SDL::AudioStream::OpenAudioDeviceStream(
+  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata("Example Simple Audio Simple Playback",
+                        "1.0",
+                        "com.example.audio-simple-playback");
+    SDL::Init(SDL::INIT_VIDEO | SDL::INIT_AUDIO);
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
+  SDL::Window window = SDL::Window("examples/audio/simple-playback", windowSz);
+  SDL::Renderer renderer = SDL::Renderer(window);
+  SDL::AudioStream stream{
     SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK,
-    SDL::AudioSpec{.format = SDL::AUDIO_F32, .channels = 1, .freq = 8000});
+    SDL::AudioSpec{.format = SDL::AUDIO_F32, .channels = 1, .freq = 8000}};
   int current_sine_sample = 0;
 
-  Main() { stream->ResumeDevice(); }
+  Main() { stream.ResumeDevice(); }
 
   SDL::AppResult Iterate()
   {
@@ -37,7 +44,7 @@ struct Main
     // 8000 float samples per second. Half of that.
     constexpr int minimum_audio = (8000 * sizeof(float)) / 2;
 
-    if (stream->GetQueued() < minimum_audio) {
+    if (stream.GetQueued() < minimum_audio) {
       // this will feed 512 samples each frame until we get to our maximum.
       static float samples[512];
       /* generate a 440Hz pure tone */
@@ -53,18 +60,15 @@ struct Main
 
       // feed the new data to the stream. It will queue at the end, and trickle
       // out as the hardware needs more data.
-      stream->PutData(samples);
+      stream.PutData(samples);
     }
 
     // we're not doing anything with the renderer, so just blank it out.
-    renderer->RenderClear();
-    renderer->Present();
+    renderer.RenderClear();
+    renderer.Present();
 
     return SDL::APP_CONTINUE;
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main,
-                        "Example Simple Audio Simple Playback",
-                        "1.0",
-                        "com.example.audio-simple-playback")
+SDL3PP_DEFINE_CALLBACKS(Main)

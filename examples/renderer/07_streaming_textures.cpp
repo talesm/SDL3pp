@@ -19,16 +19,23 @@ struct Main
   static constexpr SDL::Point textureSz = {150, 150};
 
   // Init library
-  SDL::SDL init{SDL::INIT_VIDEO};
+  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata("Example Renderer Streaming Textures",
+                        "1.0",
+                        "com.example.renderer-streaming-textures");
+    SDL::Init(SDL::INIT_VIDEO);
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
 
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window =
-    SDL::Window::Create("examples/renderer/streaming-textures", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
-  SDL::Texture texture{SDL::Texture::Create(renderer,
-                                            SDL::PIXELFORMAT_RGBA8888,
-                                            SDL::TEXTUREACCESS_STREAMING,
-                                            textureSz)};
+  SDL::Window window{"examples/renderer/streaming-textures", windowSz};
+  SDL::Renderer renderer{window};
+  SDL::Texture texture{SDL::Texture(renderer,
+                                    SDL::PIXELFORMAT_RGBA8888,
+                                    SDL::TEXTUREACCESS_STREAMING,
+                                    textureSz)};
 
   SDL::AppResult Iterate()
   {
@@ -47,32 +54,30 @@ struct Main
     /* The texture lock is a surface but at same time it
      *
      */
-    if (SDL::TextureLock surface = texture->Lock()) {
-      surface->Fill(SDL::Color(0, 0, 0));
+    if (auto surface = texture.LockToSurface()) {
+      surface.Fill(0);
       SDL::Rect r{0,
                   int(((float)(textureSz.y * 0.9f)) * ((scale + 1.0f) / 2.0f)),
                   textureSz.x,
                   textureSz.y / 10};
       /* make a strip of the surface green */
-      surface->FillRect(r, SDL::Color{0, 255, 0});
+      auto color = surface.MapRGBA({0, 255, 0});
+      surface.FillRect(r, color);
     }
 
     // as you can see, rendering draws over what was drawn before it.
-    renderer->SetDrawColor(SDL::Color{66, 66, 66}); // gray
-    renderer->RenderClear(); // start with a blank canvas.
+    renderer.SetDrawColor(SDL::Color{66, 66, 66}); // gray
+    renderer.RenderClear();                        // start with a blank canvas.
 
     SDL::FRect dst_rect{(windowSz.x - textureSz.x) / 2.f,
                         (windowSz.y - textureSz.y) / 2.f,
                         float(textureSz.x),
                         float(textureSz.y)};
-    renderer->RenderTexture(texture, std::nullopt, dst_rect);
+    renderer.RenderTexture(texture, std::nullopt, dst_rect);
 
-    renderer->Present();      // put it all on the screen!
+    renderer.Present();       // put it all on the screen!
     return SDL::APP_CONTINUE; // carry on with the program!
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main,
-                        "Example Renderer Streaming Textures",
-                        "1.0",
-                        "com.example.renderer-streaming-textures")
+SDL3PP_DEFINE_CALLBACKS(Main)

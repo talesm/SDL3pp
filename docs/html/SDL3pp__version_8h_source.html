@@ -86,50 +86,48 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define SDL3PP_VERSION_H_</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;SDL3/SDL_version.h&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;SDL3pp_error.h&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;SDL3pp_stdinc.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a> {</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a> {</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#ifdef SDL3PP_DOC</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga8fc808626be61507ade364b399f81468">   28</a></span><span class="preprocessor">#define SDL_MAJOR_VERSION</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga2dd98e1cec119d54322cd9c8ea685c5c">   37</a></span><span class="preprocessor">#define SDL_MINOR_VERSION</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga9aabcb16f903b4c73306ed6049e96ab1">   46</a></span><span class="preprocessor">#define SDL_MICRO_VERSION</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="foldopen" id="foldopen00059" data-start="" data-end="">
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga68644ee0efbb70a4e3abf66f4971a357">   59</a></span><span class="preprocessor">#define SDL_VERSIONNUM(major, minor, patch)                                    \</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">  ((major) * 1000000 + (minor) * 1000 + (patch))</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#ifdef SDL3PP_DOC</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga8fc808626be61507ade364b399f81468">   26</a></span><span class="preprocessor">#define SDL_MAJOR_VERSION 3</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga2dd98e1cec119d54322cd9c8ea685c5c">   35</a></span><span class="preprocessor">#define SDL_MINOR_VERSION 2</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga9aabcb16f903b4c73306ed6049e96ab1">   44</a></span><span class="preprocessor">#define SDL_MICRO_VERSION 23</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="foldopen" id="foldopen00057" data-start="" data-end="">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga68644ee0efbb70a4e3abf66f4971a357">   57</a></span><span class="preprocessor">#define SDL_VERSIONNUM(major, minor, patch)                                    \</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">  ((major) * 1000000 + (minor) * 1000 + (patch))</span></div>
 </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga69dfea6d36584c41d3b0bd3b8f75bb41">   71</a></span><span class="preprocessor">#define SDL_VERSIONNUM_MAJOR(version) ((version) / 1000000)</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#gadf079eb215cf1472ad4ae3f95793b618">   82</a></span><span class="preprocessor">#define SDL_VERSIONNUM_MINOR(version) (((version) / 1000) % 1000)</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga3350ca2e48e7e62dc7cf603f6dd48d8d">   93</a></span><span class="preprocessor">#define SDL_VERSIONNUM_MICRO(version) ((version) % 1000)</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="foldopen" id="foldopen00102" data-start="" data-end="">
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#gac8e8e18cdfe630fabb484d4caf9e2783">  102</a></span><span class="preprocessor">#define SDL_VERSION                                                            \</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">  SDL_VERSIONNUM(SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION)</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga69dfea6d36584c41d3b0bd3b8f75bb41">   69</a></span><span class="preprocessor">#define SDL_VERSIONNUM_MAJOR(version) ((version) / 1000000)</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#gadf079eb215cf1472ad4ae3f95793b618">   80</a></span><span class="preprocessor">#define SDL_VERSIONNUM_MINOR(version) (((version) / 1000) % 1000)</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga3350ca2e48e7e62dc7cf603f6dd48d8d">   91</a></span><span class="preprocessor">#define SDL_VERSIONNUM_MICRO(version) ((version) % 1000)</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="foldopen" id="foldopen00100" data-start="" data-end="">
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#gac8e8e18cdfe630fabb484d4caf9e2783">  100</a></span><span class="preprocessor">#define SDL_VERSION                                                            \</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">  SDL_VERSIONNUM(SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION)</span></div>
 </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga44836f955b961ba74c8c5125af4c9b91">  110</a></span><span class="preprocessor">#define SDL_VERSION_ATLEAST(X, Y, Z) (SDL_VERSION &gt;= SDL_VERSIONNUM(X, Y, Z))</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga44836f955b961ba74c8c5125af4c9b91">  108</a></span><span class="preprocessor">#define SDL_VERSION_ATLEAST(X, Y, Z) (SDL_VERSION &gt;= SDL_VERSIONNUM(X, Y, Z))</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_DOC</span></div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_DOC</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga477962941b910962edf1b91d120511fd">  130</a></span><span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="group__CategoryVersion.html#ga477962941b910962edf1b91d120511fd">GetVersion</a>() { <span class="keywordflow">return</span> SDL_GetVersion(); }</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga7b3594d2efbeb69076db59694679a559">  156</a></span><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="group__CategoryVersion.html#ga7b3594d2efbeb69076db59694679a559">GetRevision</a>() { <span class="keywordflow">return</span> SDL_GetRevision(); }</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga477962941b910962edf1b91d120511fd">  128</a></span><span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="group__CategoryVersion.html#ga477962941b910962edf1b91d120511fd">GetVersion</a>() { <span class="keywordflow">return</span> SDL_GetVersion(); }</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="group__CategoryVersion.html#ga7b3594d2efbeb69076db59694679a559">  154</a></span><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="group__CategoryVersion.html#ga7b3594d2efbeb69076db59694679a559">GetRevision</a>() { <span class="keywordflow">return</span> SDL_GetRevision(); }</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>} <span class="comment">// namespace SDL</span></div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_VERSION_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="agroup__CategoryVersion_html_ga477962941b910962edf1b91d120511fd"><div class="ttname"><a href="group__CategoryVersion.html#ga477962941b910962edf1b91d120511fd">SDL::GetVersion</a></div><div class="ttdeci">int GetVersion()</div><div class="ttdoc">Get the version of SDL that is linked against your program.</div><div class="ttdef"><b>Definition</b> SDL3pp_version.h:130</div></div>
-<div class="ttc" id="agroup__CategoryVersion_html_ga7b3594d2efbeb69076db59694679a559"><div class="ttname"><a href="group__CategoryVersion.html#ga7b3594d2efbeb69076db59694679a559">SDL::GetRevision</a></div><div class="ttdeci">const char * GetRevision()</div><div class="ttdoc">Get the code revision of SDL that is linked against your program.</div><div class="ttdef"><b>Definition</b> SDL3pp_version.h:156</div></div>
-<div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:7</div></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_VERSION_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="agroup__CategoryVersion_html_ga477962941b910962edf1b91d120511fd"><div class="ttname"><a href="group__CategoryVersion.html#ga477962941b910962edf1b91d120511fd">SDL::GetVersion</a></div><div class="ttdeci">int GetVersion()</div><div class="ttdoc">Get the version of SDL that is linked against your program.</div><div class="ttdef"><b>Definition</b> SDL3pp_version.h:128</div></div>
+<div class="ttc" id="agroup__CategoryVersion_html_ga7b3594d2efbeb69076db59694679a559"><div class="ttname"><a href="group__CategoryVersion.html#ga7b3594d2efbeb69076db59694679a559">SDL::GetRevision</a></div><div class="ttdeci">const char * GetRevision()</div><div class="ttdoc">Get the code revision of SDL that is linked against your program.</div><div class="ttdef"><b>Definition</b> SDL3pp_version.h:154</div></div>
+<div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">Main include header for the SDL3pp library.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

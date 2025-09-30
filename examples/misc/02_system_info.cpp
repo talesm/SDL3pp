@@ -16,7 +16,7 @@ struct Main
       cursor.y += SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE + 4;
     };
     auto show = [&](auto&&... args) {
-      renderer->RenderDebugTextFormat(cursor, args...);
+      renderer.RenderDebugTextFormat(cursor, args...);
       rollDown();
     };
     {
@@ -103,7 +103,15 @@ struct Main
     }
   }
 
-  SDL::SDL init{SDL::INIT_VIDEO};
+  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata(
+      "Example System info", "1.0", "com.example.system-info");
+    SDL::Init(SDL::INIT_VIDEO);
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
+
   SDL::Window window;
   SDL::Renderer renderer;
   static constexpr SDL::Point WINDOW_SZ = LOG_SZ * 2;
@@ -112,22 +120,19 @@ struct Main
   {
     std::tie(window, renderer) =
       SDL::CreateWindowAndRenderer("Test", WINDOW_SZ);
-    renderer->SetScale({2.f, 2.f});
+    renderer.SetScale({2.f, 2.f});
   }
 
   SDL::AppResult Iterate()
   {
-    renderer->SetDrawColor(SDL::FColor{.75f, .75f, .75f, 1.f});
-    renderer->RenderClear();
-    renderer->SetDrawColor(SDL::FColor{.0f, .0f, .0f, 1.f});
+    renderer.SetDrawColorFloat(SDL::FColor{.75f, .75f, .75f, 1.f});
+    renderer.RenderClear();
+    renderer.SetDrawColorFloat(SDL::FColor{.0f, .0f, .0f, 1.f});
     showInfo();
 
-    renderer->Present();
+    renderer.Present();
     return SDL::APP_CONTINUE;
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main,
-                        "Example System info",
-                        "1.0",
-                        "com.example.system-info")
+SDL3PP_DEFINE_CALLBACKS(Main)

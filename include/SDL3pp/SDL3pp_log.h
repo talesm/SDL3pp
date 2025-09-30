@@ -3,9 +3,12 @@
 
 #include <format>
 #include <SDL3/SDL_log.h>
-#include "SDL3pp_stdinc.h"
+#include "SDL3pp_callbackWrapper.h"
+#include "SDL3pp_error.h"
+#include "SDL3pp_strings.h"
 
 namespace SDL {
+
 /**
  * @defgroup CategoryLog Log Handling
  *
@@ -55,6 +58,9 @@ namespace SDL {
  *
  * @{
  */
+
+/// Alias to raw representation for LogCategory.
+using LogCategoryRaw = SDL_LogCategory;
 
 /**
  * @name LogPriorities
@@ -117,32 +123,50 @@ constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT; ///< COUNT
  */
 class LogCategory
 {
-  int m_category;
+  LogCategoryRaw m_category;
 
 public:
-  /// Constructor from int.
-  constexpr explicit LogCategory(int category)
+  /**
+   * Wraps LogCategory.
+   *
+   * @param category the value to be wrapped
+   */
+  constexpr LogCategory(LogCategoryRaw category = SDL_LOG_CATEGORY_APPLICATION)
     : m_category(category)
   {
   }
-
-  /// Constructor from SDL_LogCategory.
-  constexpr LogCategory(SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION)
-    : m_category(category)
-  {
-  }
-
-  /// Conversion operator to int.
-  constexpr operator int() { return m_category; }
-
-  /// Conversion operator to SDL_LogCategory
-  constexpr operator SDL_LogCategory() { return SDL_LogCategory(m_category); }
-
-  /// Comparison operator
-  constexpr auto operator<=>(const LogCategory& other) const = default;
 
   /**
-   * Set the priority of all log categories.
+   * Wraps LogCategory.
+   *
+   * @param category the value to be wrapped
+   */
+  constexpr explicit LogCategory(int category)
+    : m_category(SDL_LogCategory(category))
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(LogCategory category) const
+  {
+    return m_category == category.m_category;
+  }
+
+  /// Default comparison operator
+  constexpr auto operator<=>(LogCategory category) const
+  {
+    return m_category <=> category.m_category;
+  }
+
+  /**
+   * Unwraps to the underlying LogCategory.
+   *
+   * @returns the underlying LogCategoryRaw.
+   */
+  constexpr operator LogCategoryRaw() const { return m_category; }
+
+  /**
+   * Set the priority of a particular log category.
    *
    * @param priority the LogPriority to assign.
    *
@@ -150,31 +174,11 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ResetLogPriorities()
-   * @sa SetLogPriority()
+   * @sa LogCategory.GetLogPriority
+   * @sa ResetLogPriorities
+   * @sa SetLogPriorities
    */
-  static void SetLogPriorities(LogPriority priority)
-  {
-    return SDL_SetLogPriorities(priority);
-  }
-
-  /**
-   * Set the priority of a particular log category.
-   *
-   * @param priority the SDL_LogPriority to assign.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetLogPriority()
-   * @sa ResetLogPriorities()
-   * @sa SetLogPriorities()
-   */
-  void SetLogPriority(LogPriority priority)
-  {
-    return SDL_SetLogPriority(m_category, priority);
-  }
+  void SetLogPriority(LogPriority priority) const;
 
   /**
    * Get the priority of a particular log category.
@@ -185,23 +189,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SetLogPriority()
+   * @sa LogCategory.SetLogPriority
    */
-  LogPriority GetLogPriority() const { return SDL_GetLogPriority(m_category); }
-
-  /**
-   * Reset all priorities to default.
-   *
-   * This is called by SDL_Quit().
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SetLogPriorities
-   * @sa SetLogPriority
-   */
-  static void ResetLogPriorities() { return SDL_ResetLogPriorities(); }
+  LogPriority GetLogPriority() const;
 
   /**
    * Log an unformatted message with the specified priority.
@@ -225,7 +215,7 @@ public:
    */
   void LogUnformatted(LogPriority priority, StringParam message) const
   {
-    return SDL_LogMessage(m_category, priority, "%s", (const char*)(message));
+    SDL_LogMessage(m_category, priority, "%s", (const char*)(message));
   }
 
   /**
@@ -244,26 +234,22 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogUnformatted()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
+   * @sa LogCategory.LogCritical
+   * @sa LogCategory.LogDebug
+   * @sa LogCategory.LogError
+   * @sa LogCategory.LogInfo
+   * @sa LogUnformatted
+   * @sa LogCategory.LogTrace
+   * @sa LogCategory.LogVerbose
+   * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void Log(LogPriority priority, std::string_view fmt, ARGS... args) const
-  {
-    return LogUnformatted(priority,
-                          std::vformat(fmt, std::make_format_args(args...)));
-  }
+  void LogMessage(LogPriority priority,
+                  std::string_view fmt,
+                  ARGS... args) const;
 
   /**
-   * Log a message with SDL_LOG_PRIORITY_TRACE.
+   * Log a message with LOG_PRIORITY_TRACE.
    *
    * @param fmt a
    * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
@@ -276,25 +262,21 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogVerbose()
-   * @sa LogWarn()
+   * @sa LogCategory.LogCritical
+   * @sa LogCategory.LogDebug
+   * @sa LogCategory.LogError
+   * @sa LogCategory.LogInfo
+   * @sa LogCategory.LogMessage
+   * @sa LogUnformatted
+   * @sa LogCategory.LogTrace
+   * @sa LogCategory.LogVerbose
+   * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void LogTrace(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_TRACE, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogTrace(std::string_view fmt, ARGS&&... args) const;
 
   /**
-   * Log a message with SDL_LOG_PRIORITY_VERBOSE.
+   * Log a message with LOG_PRIORITY_VERBOSE.
    *
    * @param fmt a
    * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
@@ -308,25 +290,19 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogWarn()
+   * @sa LogCategory.LogCritical
+   * @sa LogCategory.LogDebug
+   * @sa LogCategory.LogError
+   * @sa LogCategory.LogInfo
+   * @sa LogCategory.LogMessage
+   * @sa LogUnformatted
+   * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void LogVerbose(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_VERBOSE, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogVerbose(std::string_view fmt, ARGS&&... args) const;
 
   /**
-   * Log a message with SDL_LOG_PRIORITY_DEBUG.
+   * Log a message with LOG_PRIORITY_DEBUG.
    *
    * @param fmt a
    * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
@@ -340,25 +316,20 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
+   * @sa LogCategory.LogCritical
+   * @sa LogCategory.LogError
+   * @sa LogCategory.LogInfo
+   * @sa LogCategory.LogMessage
+   * @sa LogUnformatted
+   * @sa LogCategory.LogTrace
+   * @sa LogCategory.LogVerbose
+   * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void LogDebug(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_DEBUG, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogDebug(std::string_view fmt, ARGS&&... args) const;
 
   /**
-   * Log a message with SDL_LOG_PRIORITY_INFO.
+   * Log a message with LOG_PRIORITY_INFO.
    *
    * @param fmt a
    * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
@@ -372,25 +343,20 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
+   * @sa LogCategory.LogCritical
+   * @sa LogCategory.LogDebug
+   * @sa LogCategory.LogError
+   * @sa LogCategory.LogMessage
+   * @sa LogUnformatted
+   * @sa LogCategory.LogTrace
+   * @sa LogCategory.LogVerbose
+   * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void LogInfo(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_INFO, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogInfo(std::string_view fmt, ARGS&&... args) const;
 
   /**
-   * Log a message with SDL_LOG_PRIORITY_WARN.
+   * Log a message with LOG_PRIORITY_WARN.
    *
    * @param fmt a
    * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
@@ -404,25 +370,20 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
+   * @sa LogCategory.LogCritical
+   * @sa LogCategory.LogDebug
+   * @sa LogCategory.LogError
+   * @sa LogCategory.LogInfo
+   * @sa LogCategory.LogMessage
+   * @sa LogUnformatted
+   * @sa LogCategory.LogTrace
+   * @sa LogCategory.LogVerbose
    */
   template<class... ARGS>
-  void LogWarn(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_WARN, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogWarn(std::string_view fmt, ARGS&&... args) const;
 
   /**
-   * Log a message with SDL_LOG_PRIORITY_ERROR.
+   * Log a message with LOG_PRIORITY_ERROR.
    *
    * @param fmt a
    * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
@@ -436,25 +397,20 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
+   * @sa LogCategory.LogCritical
+   * @sa LogCategory.LogDebug
+   * @sa LogCategory.LogInfo
+   * @sa LogCategory.LogMessage
+   * @sa LogUnformatted
+   * @sa LogCategory.LogTrace
+   * @sa LogCategory.LogVerbose
+   * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void LogError(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_ERROR, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogError(std::string_view fmt, ARGS&&... args) const;
 
   /**
-   * Log a message with SDL_LOG_PRIORITY_CRITICAL.
+   * Log a message with LOG_PRIORITY_CRITICAL.
    *
    * @param fmt a
    * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
@@ -469,21 +425,17 @@ public:
    * @cat formatted-string
    *
    * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
+   * @sa LogCategory.LogDebug()
+   * @sa LogCategory.LogError()
+   * @sa LogCategory.LogInfo()
    * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
+   * @sa LogCategory.LogUnformatted()
+   * @sa LogCategory.LogTrace()
+   * @sa LogCategory.LogVerbose()
+   * @sa LogCategory.LogWarn
    */
   template<class... ARGS>
-  void LogCritical(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_CRITICAL, fmt, std::forward<ARGS>(args)...);
-  }
+  void LogCritical(std::string_view fmt, ARGS&&... args) const;
 };
 
 constexpr LogCategory LOG_CATEGORY_APPLICATION =
@@ -536,7 +488,82 @@ constexpr LogCategory LOG_CATEGORY_RESERVED10 =
 
 constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM; ///< CUSTOM
 
-/// @}
+/**
+ * Set the priority of all log categories.
+ *
+ * @param priority the LogPriority to assign.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ResetLogPriorities
+ * @sa LogCategory.SetLogPriority
+ */
+inline void SetLogPriorities(LogPriority priority)
+{
+  SDL_SetLogPriorities(priority);
+}
+
+/**
+ * Set the priority of a particular log category.
+ *
+ * @param category the category to assign a priority to.
+ * @param priority the LogPriority to assign.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa LogCategory.GetLogPriority
+ * @sa ResetLogPriorities
+ * @sa SetLogPriorities
+ */
+inline void SetLogPriority(int category, LogPriority priority)
+{
+  SDL_SetLogPriority(category, priority);
+}
+
+inline void LogCategory::SetLogPriority(LogPriority priority) const
+{
+  SDL::SetLogPriority(m_category, priority);
+}
+
+/**
+ * Get the priority of a particular log category.
+ *
+ * @param category the category to query.
+ * @returns the LogPriority for the requested category.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa LogCategory.SetLogPriority
+ */
+inline LogPriority GetLogPriority(int category)
+{
+  return SDL_GetLogPriority(category);
+}
+
+inline LogPriority LogCategory::GetLogPriority() const
+{
+  return SDL::GetLogPriority(m_category);
+}
+
+/**
+ * Reset all priorities to default.
+ *
+ * This is called by Quit().
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetLogPriorities
+ * @sa LogCategory.SetLogPriority
+ */
+inline void ResetLogPriorities() { SDL_ResetLogPriorities(); }
 
 /**
  * Set the text prepended to log messages of a given priority.
@@ -554,12 +581,66 @@ constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM; ///< CUSTOM
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LogCategory.SetLogPriorities
+ * @sa SetLogPriorities
  * @sa LogCategory.SetLogPriority
  */
 inline void SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
 {
   CheckError(SDL_SetLogPriorityPrefix(priority, prefix));
+}
+
+/**
+ * Log an unformatted message with LOG_CATEGORY_APPLICATION and
+ * LOG_PRIORITY_INFO.
+ *
+ * @param category the category of the message.
+ * @param priority the priority of the message.
+ * @param message string to output.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogInfo
+ * @sa LogCategory.LogMessage
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ * @sa LogCategory.LogWarn
+ */
+inline void LogUnformatted(LogCategory category,
+                           LogPriority priority,
+                           StringParam message)
+{
+  SDL_LogMessage(category, priority, "%s", static_cast<const char*>(message));
+}
+
+/**
+ * Log an unformatted message with LOG_CATEGORY_APPLICATION and
+ * LOG_PRIORITY_INFO.
+ *
+ * @param message string to output.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogInfo
+ * @sa LogCategory.LogMessage
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ * @sa LogCategory.LogWarn
+ */
+inline void LogUnformatted(StringParam message)
+{
+  SDL_Log("%s", static_cast<const char*>(message));
 }
 
 /**
@@ -579,47 +660,303 @@ inline void SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
  *
  * @sa formatted-string
  * @sa LogUnformatted()
- * @sa LogCategory.LogCritical()
- * @sa LogCategory.LogDebug()
- * @sa LogCategory.LogError()
- * @sa LogCategory.LogInfo()
- * @sa LogCategory.Log()
- * @sa LogCategory.LogUnformatted()
- * @sa LogCategory.LogTrace()
- * @sa LogCategory.LogVerbose()
- * @sa LogCategory.LogWarn()
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogInfo
+ * @sa LogCategory.LogMessage
+ * @sa LogUnformatted
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ * @sa LogCategory.LogWarn
  */
 template<class... ARGS>
 inline void Log(std::string_view fmt, ARGS&&... args)
 {
-  LOG_CATEGORY_APPLICATION.Log(
-    LOG_PRIORITY_INFO, fmt, std::forward<ARGS>(args)...);
+  LOG_CATEGORY_APPLICATION.LogInfo(fmt, std::forward<ARGS>(args)...);
 }
 
 /**
- * Log an unformatted message with LOG_CATEGORY_APPLICATION and
- * LOG_PRIORITY_INFO.
+ * Log a message with the specified category and priority.
  *
- * @param message string to output.
+ * @param category the category of the message.
+ * @param priority the priority of the message.
+ * @param fmt a printf() style message format string.
+ * @param args additional parameters matching % tokens in the **fmt** string,
+ *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Log()
- * @sa LogCategory.LogCritical()
- * @sa LogCategory.LogDebug()
- * @sa LogCategory.LogError()
- * @sa LogCategory.LogInfo()
- * @sa LogCategory.Log()
- * @sa LogCategory.LogUnformatted()
- * @sa LogCategory.LogTrace()
- * @sa LogCategory.LogVerbose()
- * @sa LogCategory.LogWarn()
+ * @sa Log
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogInfo
+ * @sa LogUnformatted
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ * @sa LogCategory.LogWarn
  */
-inline void LogUnformatted(StringParam message)
+template<class... ARGS>
+inline void LogMessage(LogCategory category,
+                       LogPriority priority,
+                       std::string_view fmt,
+                       ARGS... args)
 {
-  SDL_Log("%s", static_cast<const char*>(message));
+  LogUnformatted(
+    category, priority, std::vformat(fmt, std::make_format_args(args...)));
+}
+
+template<class... ARGS>
+inline void LogCategory::LogMessage(LogPriority priority,
+                                    std::string_view fmt,
+                                    ARGS... args) const
+{
+  SDL::LogMessage(m_category, priority, fmt, args...);
+}
+
+/**
+ * Log a message with LOG_PRIORITY_TRACE.
+ *
+ * @param category the category of the message.
+ * @param fmt a printf() style message format string.
+ * @param args additional parameters matching % tokens in the **fmt** string,
+ *            if any.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogInfo
+ * @sa LogCategory.LogMessage
+ * @sa LogUnformatted
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ * @sa LogCategory.LogWarn
+ */
+template<class... ARGS>
+inline void LogTrace(LogCategory category, std::string_view fmt, ARGS&&... args)
+{
+  LogMessage(category, LOG_PRIORITY_TRACE, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogTrace(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogTrace(m_category, fmt, args...);
+}
+
+/**
+ * Log a message with LOG_PRIORITY_VERBOSE.
+ *
+ * @param category the category of the message.
+ * @param fmt a printf() style message format string.
+ * @param args additional parameters matching % tokens in the **fmt** string,
+ *            if any.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogInfo
+ * @sa LogCategory.LogMessage
+ * @sa LogUnformatted
+ * @sa LogCategory.LogWarn
+ */
+template<class... ARGS>
+inline void LogVerbose(LogCategory category,
+                       std::string_view fmt,
+                       ARGS&&... args)
+{
+  LogMessage(category, LOG_PRIORITY_VERBOSE, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogVerbose(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogVerbose(m_category, fmt, args...);
+}
+
+/**
+ * Log a message with LOG_PRIORITY_DEBUG.
+ *
+ * @param category the category of the message.
+ * @param fmt a printf() style message format string.
+ * @param args additional parameters matching % tokens in the **fmt** string,
+ *            if any.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogInfo
+ * @sa LogCategory.LogMessage
+ * @sa LogUnformatted
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ * @sa LogCategory.LogWarn
+ */
+template<class... ARGS>
+inline void LogDebug(LogCategory category, std::string_view fmt, ARGS&&... args)
+{
+  LogMessage(category, LOG_PRIORITY_DEBUG, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogDebug(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogDebug(m_category, fmt, args...);
+}
+
+/**
+ * Log a message with LOG_PRIORITY_INFO.
+ *
+ * @param category the category of the message.
+ * @param fmt a printf() style message format string.
+ * @param args additional parameters matching % tokens in the **fmt** string,
+ *            if any.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogMessage
+ * @sa LogUnformatted
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ * @sa LogCategory.LogWarn
+ */
+template<class... ARGS>
+inline void LogInfo(LogCategory category, std::string_view fmt, ARGS&&... args)
+{
+  LogMessage(category, LOG_PRIORITY_INFO, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogInfo(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogInfo(m_category, fmt, args...);
+}
+
+/**
+ * Log a message with LOG_PRIORITY_WARN.
+ *
+ * @param category the category of the message.
+ * @param fmt a printf() style message format string.
+ * @param args additional parameters matching % tokens in the **fmt** string,
+ *            if any.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogInfo
+ * @sa LogCategory.LogMessage
+ * @sa LogUnformatted
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ */
+template<class... ARGS>
+inline void LogWarn(LogCategory category, std::string_view fmt, ARGS&&... args)
+{
+  LogMessage(category, SDL_LOG_PRIORITY_WARN, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogWarn(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogWarn(m_category, fmt, args...);
+}
+
+/**
+ * Log a message with LOG_PRIORITY_ERROR.
+ *
+ * @param category the category of the message.
+ * @param fmt a printf() style message format string.
+ * @param args additional parameters matching % tokens in the **fmt** string,
+ *            if any.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log
+ * @sa LogCategory.LogCritical
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogInfo
+ * @sa LogCategory.LogMessage
+ * @sa LogUnformatted
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ * @sa LogCategory.LogWarn
+ */
+template<class... ARGS>
+inline void LogError(LogCategory category, std::string_view fmt, ARGS&&... args)
+{
+  LogMessage(category, SDL_LOG_PRIORITY_ERROR, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogError(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogError(m_category, fmt, args...);
+}
+
+/**
+ * Log a message with LOG_PRIORITY_CRITICAL.
+ *
+ * @param category the category of the message.
+ * @param fmt a printf() style message format string.
+ * @param args additional parameters matching % tokens in the **fmt** string,
+ *            if any.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log
+ * @sa LogCategory.LogDebug
+ * @sa LogCategory.LogError
+ * @sa LogCategory.LogInfo
+ * @sa LogCategory.LogMessage
+ * @sa LogUnformatted
+ * @sa LogCategory.LogTrace
+ * @sa LogCategory.LogVerbose
+ * @sa LogCategory.LogWarn
+ */
+template<class... ARGS>
+inline void LogCritical(LogCategory category,
+                        std::string_view fmt,
+                        ARGS&&... args)
+{
+  LogMessage(category, SDL_LOG_PRIORITY_CRITICAL, fmt, args...);
+}
+
+template<class... ARGS>
+inline void LogCategory::LogCritical(std::string_view fmt, ARGS&&... args) const
+{
+  SDL::LogCritical(m_category, fmt, args...);
 }
 
 /**
@@ -667,8 +1004,8 @@ using LogOutputCB = std::function<void(LogCategory, LogPriority, const char*)>;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SetLogOutputFunction()
- * @sa GetLogOutputFunction()
+ * @sa SetLogOutputFunction
+ * @sa GetLogOutputFunction
  */
 inline LogOutputFunction GetDefaultLogOutputFunction()
 {
@@ -686,12 +1023,12 @@ inline LogOutputFunction GetDefaultLogOutputFunction()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetDefaultLogOutputFunction()
- * @sa SetLogOutputFunction()
+ * @sa GetDefaultLogOutputFunction
+ * @sa SetLogOutputFunction
  */
 inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
 {
-  return SDL_GetLogOutputFunction(callback, userdata);
+  SDL_GetLogOutputFunction(callback, userdata);
 }
 
 /**
@@ -706,8 +1043,8 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
  * @cat listener-callback
  *
  * @sa listener-callback
- * @sa GetDefaultLogOutputFunction()
- * @sa SetLogOutputFunction()
+ * @sa GetDefaultLogOutputFunction
+ * @sa SetLogOutputFunction
  */
 inline LogOutputCB GetLogOutputFunction()
 {
@@ -736,9 +1073,9 @@ inline LogOutputCB GetLogOutputFunction()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetDefaultLogOutputFunction()
- * @sa GetLogOutputFunction()
- * @sa ResetLogOutputFunction()
+ * @sa GetDefaultLogOutputFunction
+ * @sa GetLogOutputFunction
+ * @sa ResetLogOutputFunction
  */
 inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
 {
@@ -758,9 +1095,9 @@ inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  * @cat listener-callback
  *
  * @sa listener-callback
- * @sa GetDefaultLogOutputFunction()
- * @sa GetLogOutputFunction()
- * @sa ResetLogOutputFunction()
+ * @sa GetDefaultLogOutputFunction
+ * @sa GetLogOutputFunction
+ * @sa ResetLogOutputFunction
  */
 inline void SetLogOutputFunction(LogOutputCB callback)
 {
@@ -780,8 +1117,8 @@ inline void SetLogOutputFunction(LogOutputCB callback)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetDefaultLogOutputFunction()
- * @sa GetLogOutputFunction()
+ * @sa GetDefaultLogOutputFunction
+ * @sa GetLogOutputFunction
  */
 inline void ResetLogOutputFunction()
 {

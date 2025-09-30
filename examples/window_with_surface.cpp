@@ -15,17 +15,20 @@ static SDL::Point makeRandomPoint()
 
 int main(int argc, char** argv)
 {
-  SDL::SDL init(SDL::INIT_VIDEO);
+  SDL::Init(SDL::INIT_VIDEO);
   constexpr SDL::Point WINDOW_SZ = {400, 400};
-  SDL::Window window = SDL::Window::Create("Test", WINDOW_SZ);
-  SDL::SurfaceRef screen = window->GetSurface();
-  auto smileyImg = SDL::Surface::Load(
+  SDL::Window window{"Test", WINDOW_SZ};
+  SDL::Surface screen = window.GetSurface();
+  auto smileyImg = SDL::Surface::LoadBMP(
     std::format("{}../assets/smiley.bmp", SDL::GetBasePath()));
 
   constexpr int WW = 64;
 
-  SDL::Point smileyPos{WINDOW_SZ.x / 2 - smileyImg->GetWidth() / 2,
-                       WINDOW_SZ.y / 2 - smileyImg->GetHeight() / 2};
+  SDL::Point smileyPos{WINDOW_SZ.x / 2 - smileyImg.GetWidth() / 2,
+                       WINDOW_SZ.y / 2 - smileyImg.GetHeight() / 2};
+
+  auto clearColor = screen.MapRGB(127, 0, 127);
+  auto rectColor = screen.MapRGB(0, 255, 0);
 
   SDL::Rect rects[] = {
     {10, 10, WW, WW},
@@ -55,12 +58,12 @@ int main(int argc, char** argv)
       if (yy < 0 || yy + rects[i].h >= WINDOW_SZ.y) speed[i].y *= -1;
     }
 
-    screen.Fill(SDL::Color{127, 0, 127});
+    screen.Fill(clearColor);
 
-    screen.Blit(smileyImg, {}, smileyPos);
-    screen.FillRects(rects, SDL::Color{0, 255, 0});
+    screen.BlitAt(smileyImg, {}, smileyPos);
+    screen.FillRects(rects, rectColor);
 
-    window->UpdateSurface();
+    window.UpdateSurface();
     SDL::Delay(10ms);
   }
 

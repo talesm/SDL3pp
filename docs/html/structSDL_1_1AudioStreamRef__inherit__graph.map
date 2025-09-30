@@ -1,5 +1,5 @@
 <map id="SDL::AudioStreamRef" name="SDL::AudioStreamRef">
-<area shape="rect" id="Node000001" title="The opaque handle that represents an audio stream." alt="" coords="5,93,167,119"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="9,5,163,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,59,89,93,83,93,83,59"/>
+<area shape="rect" id="Node000001" title="Semi&#45;safe reference for AudioStream." alt="" coords="5,79,167,104"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1AudioStream.html" title="The opaque handle that represents an audio stream." alt="" coords="17,5,155,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,44,89,79,83,79,83,44"/>
 </map>

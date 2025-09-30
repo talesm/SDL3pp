@@ -77,8 +77,8 @@ $(function() {
   <div class="headertitle"><div class="title">Callback</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>A callback is a invocable object passed to a function as a customization point. Im addition of supporting the default <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> callbacks, whenever we have an <code>void *</code> userdata customization point, we use it wrap a std::function object, with signature similar to original and with the "CB" suffix. See <a class="el" href="transformations.html#callback-rules">Callback rules</a> for more details.</p>
-<p>This module and its submodules document the callback types that use this pattern and functions related to them. In general, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> uses callbacks like this:</p>
+<div class="textblock"><p>A callback is a invocable object passed to a function as a customization point. Im addition of supporting the default <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> callbacks, whenever we have an <code>void *</code> userdata customization point, we use it wrap a std::function object, with signature similar to original and with the "CB" suffix. See <a class="el" href="transformations.html#callback-rules">Callback rules</a> for more details.</p>
+<p>This module and its submodules document the callback types that use this pattern and functions related to them. In general, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> uses callbacks like this:</p>
 <ul>
 <li><a class="el" href="callback.html#immediate-callback">Calling immediately</a>, before the function taking the callback returns;</li>
 <li><a class="el" href="callback.html#delayed-callback">Storing the callback internaly</a>:<ul>

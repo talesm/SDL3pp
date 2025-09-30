@@ -2,7 +2,6 @@
 #define SDL3PP_INTRIN_H_
 
 #include <SDL3/SDL_intrin.h>
-#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 
@@ -19,9 +18,9 @@ namespace SDL {
  * specific CPU architecture. This check only tells you that the compiler is
  * capable of using those intrinsics; at runtime, you should still check if
  * they are available on the current system with the
- * [CPU info functions](https://wiki.libsdl.org/SDL3/CategoryCPUInfo), such as
- * HasSSE() or HasNEON(). Otherwise, the process might crash for using an
- * unsupported CPU instruction.
+ * [CPU info functions](https://wiki.libsdl.org/SDL3/CategoryCPUInfo)
+ * , such as HasSSE() or HasNEON(). Otherwise, the process might crash
+ * for using an unsupported CPU instruction.
  *
  * SDL only sets preprocessor defines for CPU intrinsics if they are
  * supported, so apps should check with `#ifdef` and not `#if`.

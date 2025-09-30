@@ -7,7 +7,6 @@
 namespace SDL {
 
 /**
- *
  * @defgroup CategoryClipboard Clipboard Handling
  *
  * SDL provides access to the system clipboard, both for reading information
@@ -84,7 +83,7 @@ inline void SetClipboardText(StringParam text)
 /**
  * Get UTF-8 text from the clipboard.
  *
- * This functions returns an empty string if there was not enough memory left
+ * This function returns an empty string if there is not enough memory left
  * for a copy of the clipboard's content.
  *
  * @returns the clipboard text on success.
@@ -137,7 +136,7 @@ inline void SetPrimarySelectionText(StringParam text)
 /**
  * Get UTF-8 text from the primary selection.
  *
- * This functions returns an empty string if there was not enough memory left
+ * This function returns an empty string if there is not enough memory left
  * for a copy of the primary selection's content.
  *
  * @returns the primary selection text on success.
@@ -178,15 +177,14 @@ inline bool HasPrimarySelectionText() { return SDL_HasPrimarySelectionText(); }
  * clipboard is cleared or new data is set. The clipboard is automatically
  * cleared in Quit().
  *
- * @param userdata a pointer to provided user data.
+ * @param userdata a pointer to the provided user data.
  * @param mime_type the requested mime-type.
  * @param size a pointer filled in with the length of the returned data.
  * @returns a pointer to the data for the provided mime-type. Returning nullptr
- *          or setting length to 0 will cause no data to be sent to the
+ *          or setting the length to 0 will cause no data to be sent to the
  *          "receiver". It is up to the receiver to handle this. Essentially
  *          returning no data is more or less undefined behavior and may cause
- *          breakage in receiving applications. The returned data will not be
- *          freed so it needs to be retained and dealt with internally.
+ *          breakage in receiving applications.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -202,15 +200,13 @@ using ClipboardDataCallback = SDL_ClipboardDataCallback;
  * clipboard is cleared or new data is set. The clipboard is automatically
  * cleared in Quit().
  *
- * @param userdata a pointer to provided user data.
  * @param mime_type the requested mime-type.
  * @param size a pointer filled in with the length of the returned data.
  * @returns a pointer to the data for the provided mime-type. Returning nullptr
  *          or setting length to 0 will cause no data to be sent to the
  *          "receiver". It is up to the receiver to handle this. Essentially
  *          returning no data is more or less undefined behavior and may cause
- *          breakage in receiving applications. The returned data will not be
- *          freed so it needs to be retained and dealt with internally.
+ *          breakage in receiving applications.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -220,10 +216,10 @@ using ClipboardDataCallback = SDL_ClipboardDataCallback;
 using ClipboardDataCB = std::function<SourceBytes(const char* mime_type)>;
 
 /**
- * Callback function that will be called when the clipboard is cleared, or new
- * data is set.
+ * Callback function that will be called when the clipboard is cleared, or when
+ * new data is set.
  *
- * @param userdata a pointer to provided user data.
+ * @param userdata a pointer to the provided user data.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -232,10 +228,8 @@ using ClipboardDataCB = std::function<SourceBytes(const char* mime_type)>;
 using ClipboardCleanupCallback = SDL_ClipboardCleanupCallback;
 
 /**
- * Callback function that will be called when the clipboard is cleared, or new
- * data is set.
- *
- * @param userdata a pointer to provided user data.
+ * Callback function that will be called when the clipboard is cleared, or when
+ * new data is set.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -253,7 +247,7 @@ using ClipboardCleanupCB = std::function<void()>;
  * respond with the data for the requested mime-type.
  *
  * The size of text data does not include any terminator, and the text does
- * not need to be null terminated (e.g. you can directly copy a portion of a
+ * not need to be null-terminated (e.g., you can directly copy a portion of a
  * document).
  *
  * @param callback a function pointer to the function that provides the
@@ -261,7 +255,8 @@ using ClipboardCleanupCB = std::function<void()>;
  * @param cleanup a function pointer to the function that cleans up the
  *                clipboard data.
  * @param userdata an opaque pointer that will be forwarded to the callbacks.
- * @param mime_types a list of mime-types that are being offered.
+ * @param mime_types a list of mime-types that are being offered. SDL copies the
+ * given list.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -290,14 +285,15 @@ inline void SetClipboardData(ClipboardDataCallback callback,
  * respond with the data for the requested mime-type.
  *
  * The size of text data does not include any terminator, and the text does
- * not need to be null terminated (e.g. you can directly copy a portion of a
+ * not need to be null-terminated (e.g., you can directly copy a portion of a
  * document).
  *
  * @param callback a function pointer to the function that provides the
  *                 clipboard data.
  * @param cleanup a function pointer to the function that cleans up the
  *                clipboard data.
- * @param mime_types a list of mime-types that are being offered.
+ * @param mime_types a list of mime-types that are being offered. SDL copies the
+ * given list.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -344,10 +340,10 @@ inline void SetClipboardData(ClipboardDataCB callback,
 inline void ClearClipboardData() { CheckError(SDL_ClearClipboardData()); }
 
 /**
- * Get the data from clipboard for a given mime type.
+ * Get the data from the clipboard for a given mime type.
  *
  * The size of text data does not include the terminator, but the text is
- * guaranteed to be null terminated.
+ * guaranteed to be null-terminated.
  *
  * @param mime_type the mime type to read from the clipboard.
  * @returns the retrieved data buffer or nullptr on failure; call GetError()
@@ -369,10 +365,10 @@ inline StringResult GetClipboardData(StringParam mime_type)
 }
 
 /**
- * Get the data from clipboard for a given mime type.
+ * Get the data from the clipboard for a given mime type.
  *
  * The size of text data does not include the terminator, but the text is
- * guaranteed to be null terminated.
+ * guaranteed to be null-terminated.
  *
  * @param mime_type the mime type to read from the clipboard.
  * @returns the retrieved data buffer or nullptr on failure; call GetError()
@@ -397,8 +393,8 @@ inline OwnArray<T> GetClipboardDataAs(StringParam mime_type)
 /**
  * Query whether there is data in the clipboard for the provided mime type.
  *
- * @param mime_type the mime type to check for data for.
- * @returns true if there exists data in clipboard for the provided mime type,
+ * @param mime_type the mime type to check for data.
+ * @returns true if data exists in the clipboard for the provided mime type,
  *          false if it does not.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -434,6 +430,7 @@ inline OwnArray<char*> GetClipboardMimeTypes()
 }
 
 /// @}
+
 } // namespace SDL
 
 #endif /* SDL3PP_CLIPBOARD_H_ */

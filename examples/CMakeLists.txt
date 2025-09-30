@@ -3,7 +3,6 @@ string(LENGTH ${PROJECT_SOURCE_DIR} examplesDirLength)
 math(EXPR examplesDirLength "${examplesDirLength} + 10")
 
 file(GLOB_RECURSE exampleSources CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/examples/*.cpp)
-
 foreach(exampleSrc ${exampleSources})
     string(SUBSTRING ${exampleSrc} ${examplesDirLength} -1 exampleNameMatch)
     message(${exampleNameMatch})

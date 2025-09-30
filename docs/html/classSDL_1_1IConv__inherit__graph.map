@@ -1,0 +1,5 @@
+<map id="SDL::IConv" name="SDL::IConv">
+<area shape="rect" id="Node000001" title="An opaque handle representing string encoding conversion state." alt="" coords="17,5,109,31"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1IConvRef.html" title="Semi&#45;safe reference for IConv." alt="" coords="5,79,120,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,44,65,79,60,79,60,44"/>
+</map>

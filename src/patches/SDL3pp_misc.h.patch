@@ -1,0 +1,7 @@
+4a5,6
+> #include "SDL3pp_error.h"
+> #include "SDL3pp_stdinc.h"
+9c11
+<  * @defgroup CategoryMisc Category Misc
+---
+>  * @defgroup CategoryMisc Miscellaneous

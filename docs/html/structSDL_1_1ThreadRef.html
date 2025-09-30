@@ -76,134 +76,127 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1ThreadRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::ThreadRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a> &raquo; <a class="el" href="group__CategoryThread.html">Thread Management</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>The <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> thread object.  
- <a href="structSDL_1_1ThreadRef.html#details">More...</a></p>
+<p>Semi-safe reference for <a class="el" href="classSDL_1_1Thread.html" title="The SDL thread object.">Thread</a>.  
+</p>
 <div class="dynheader">
 Inheritance diagram for SDL::ThreadRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1ThreadRef__inherit__graph.png" border="0" usemap="#aSDL_1_1ThreadRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1ThreadRef_inherit__map" id="aSDL_1_1ThreadRef_inherit__map">
-<area shape="rect" title="The SDL thread object." alt="" coords="21,93,144,119"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="Semi&#45;safe reference for Thread." alt="" coords="5,79,128,104"/>
+<area shape="rect" href="classSDL_1_1Thread.html" title="The SDL thread object." alt="" coords="17,5,117,31"/>
+<area shape="poly" title=" " alt="" coords="69,44,69,79,64,79,64,44"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a99ad3aaee98ff1ea404cef9e4f45ba76" id="r_a99ad3aaee98ff1ea404cef9e4f45ba76"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#a99ad3aaee98ff1ea404cef9e4f45ba76">GetName</a> () const</td></tr>
-<tr class="memdesc:a99ad3aaee98ff1ea404cef9e4f45ba76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the thread name as it was specified in (<a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create</a>).  <br /></td></tr>
-<tr class="separator:a99ad3aaee98ff1ea404cef9e4f45ba76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8b6981474ff03df4e6e734e52712e53" id="r_ab8b6981474ff03df4e6e734e52712e53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryThread.html#gab321ed96bc6b128e8cced2d7fc9c67ea">ThreadID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#ab8b6981474ff03df4e6e734e52712e53">GetID</a> () const</td></tr>
-<tr class="memdesc:ab8b6981474ff03df4e6e734e52712e53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the thread identifier for the specified thread.  <br /></td></tr>
-<tr class="separator:ab8b6981474ff03df4e6e734e52712e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62f2c9592ebcf33574634fce19cfbdab" id="r_a62f2c9592ebcf33574634fce19cfbdab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab">Wait</a> (int *status)</td></tr>
-<tr class="memdesc:a62f2c9592ebcf33574634fce19cfbdab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a thread to finish.  <br /></td></tr>
-<tr class="separator:a62f2c9592ebcf33574634fce19cfbdab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b5c7c344b0f0c99148803c63bfdb4dc" id="r_a4b5c7c344b0f0c99148803c63bfdb4dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryThread.html#ga6f7a148f3f241be0fcf98e738225514d">ThreadState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#a4b5c7c344b0f0c99148803c63bfdb4dc">GetState</a> () const</td></tr>
-<tr class="memdesc:a4b5c7c344b0f0c99148803c63bfdb4dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current state of a thread.  <br /></td></tr>
-<tr class="separator:a4b5c7c344b0f0c99148803c63bfdb4dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top"><a id="a78be254b85f48c12179a782cb04da9ac" name="a78be254b85f48c12179a782cb04da9ac"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; T &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top"><a id="afbb3168108af6a8bd0e23edc712b6a09" name="afbb3168108af6a8bd0e23edc712b6a09"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Thread * &gt;</a></td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_Thread * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; SDL_Thread * &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a696e99643fc9d4cde8a0c3c581ccc136" id="r_a696e99643fc9d4cde8a0c3c581ccc136"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#a696e99643fc9d4cde8a0c3c581ccc136">ThreadRef</a> (<a class="el" href="structSDL_1_1ThreadParam.html">ThreadParam</a> resource)</td></tr>
+<tr class="memdesc:a696e99643fc9d4cde8a0c3c581ccc136"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from <a class="el" href="structSDL_1_1ThreadParam.html" title="Safely wrap Thread for non owning parameters.">ThreadParam</a>.  <br /></td></tr>
+<tr class="separator:a696e99643fc9d4cde8a0c3c581ccc136"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acac51a8fb4a0511be48435f8b2afd084" id="r_acac51a8fb4a0511be48435f8b2afd084"><td class="memItemLeft" align="right" valign="top"><a id="acac51a8fb4a0511be48435f8b2afd084" name="acac51a8fb4a0511be48435f8b2afd084"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ThreadRef</b> (const <a class="el" href="structSDL_1_1ThreadRef.html">ThreadRef</a> &amp;other)</td></tr>
+<tr class="memdesc:acac51a8fb4a0511be48435f8b2afd084"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:acac51a8fb4a0511be48435f8b2afd084"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f926ce39184169924ec155f69729359" id="r_a0f926ce39184169924ec155f69729359"><td class="memItemLeft" align="right" valign="top"><a id="a0f926ce39184169924ec155f69729359" name="a0f926ce39184169924ec155f69729359"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~ThreadRef</b> ()</td></tr>
+<tr class="memdesc:a0f926ce39184169924ec155f69729359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:a0f926ce39184169924ec155f69729359"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1Thread"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Thread')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Thread.html">SDL::Thread</a></td></tr>
+<tr class="memitem:aa6da53a56235900f5b422b6be5ac9074 inherit pub_methods_classSDL_1_1Thread" id="r_aa6da53a56235900f5b422b6be5ac9074"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Thread</b> ()=default</td></tr>
+<tr class="memdesc:aa6da53a56235900f5b422b6be5ac9074 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default ctor. <br /></td></tr>
+<tr class="separator:aa6da53a56235900f5b422b6be5ac9074 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b4982e54ca9978378f7e169546cf8b1 inherit pub_methods_classSDL_1_1Thread" id="r_a3b4982e54ca9978378f7e169546cf8b1"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Thread.html#a3b4982e54ca9978378f7e169546cf8b1">Thread</a> (const <a class="el" href="group__CategoryThread.html#gac07e7a67c7df5feb9f40b42b7de1b2b3">ThreadRaw</a> resource)</td></tr>
+<tr class="memdesc:a3b4982e54ca9978378f7e169546cf8b1 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from <a class="el" href="structSDL_1_1ThreadParam.html" title="Safely wrap Thread for non owning parameters.">ThreadParam</a>.  <br /></td></tr>
+<tr class="separator:a3b4982e54ca9978378f7e169546cf8b1 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afad9d85b5657f10d8c853f77b9017a45 inherit pub_methods_classSDL_1_1Thread" id="r_afad9d85b5657f10d8c853f77b9017a45"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Thread</b> (const <a class="el" href="classSDL_1_1Thread.html">Thread</a> &amp;other)=delete</td></tr>
+<tr class="memdesc:afad9d85b5657f10d8c853f77b9017a45 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:afad9d85b5657f10d8c853f77b9017a45 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a321df11b1f7e9ed6be9bc82716462cb3 inherit pub_methods_classSDL_1_1Thread" id="r_a321df11b1f7e9ed6be9bc82716462cb3"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Thread</b> (<a class="el" href="classSDL_1_1Thread.html">Thread</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:a321df11b1f7e9ed6be9bc82716462cb3 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:a321df11b1f7e9ed6be9bc82716462cb3 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30a30c76ffb62d18eec31f29f1c3f071 inherit pub_methods_classSDL_1_1Thread" id="r_a30a30c76ffb62d18eec31f29f1c3f071"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Thread</b> (const <a class="el" href="structSDL_1_1ThreadRef.html">ThreadRef</a> &amp;other)=delete</td></tr>
+<tr class="separator:a30a30c76ffb62d18eec31f29f1c3f071 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6feb720cc12e3e8c55a3d9e17e70a417 inherit pub_methods_classSDL_1_1Thread" id="r_a6feb720cc12e3e8c55a3d9e17e70a417"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Thread</b> (<a class="el" href="structSDL_1_1ThreadRef.html">ThreadRef</a> &amp;&amp;other)=delete</td></tr>
+<tr class="separator:a6feb720cc12e3e8c55a3d9e17e70a417 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f93a0126d2405217f82f88cbd619c27 inherit pub_methods_classSDL_1_1Thread" id="r_a0f93a0126d2405217f82f88cbd619c27"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>Thread</b> (<a class="el" href="group__CategoryThread.html#ga770353c17c77d7b8d9be568b8c0d5e13">ThreadCB</a> fn, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
+<tr class="memdesc:a0f93a0126d2405217f82f88cbd619c27 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default ctor. <br /></td></tr>
+<tr class="separator:a0f93a0126d2405217f82f88cbd619c27 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65269fc9aaf225ca388ddf29d83ba288 inherit pub_methods_classSDL_1_1Thread" id="r_a65269fc9aaf225ca388ddf29d83ba288"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Thread.html#a65269fc9aaf225ca388ddf29d83ba288">Thread</a> (<a class="el" href="group__CategoryThread.html#gadba78156436b2ebd2964937c09368291">ThreadFunction</a> fn, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name, void *data)</td></tr>
+<tr class="memdesc:a65269fc9aaf225ca388ddf29d83ba288 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new thread with a default stack size.  <br /></td></tr>
+<tr class="separator:a65269fc9aaf225ca388ddf29d83ba288 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad25d6cac533456625c4a6be482c5f19 inherit pub_methods_classSDL_1_1Thread" id="r_aad25d6cac533456625c4a6be482c5f19"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Thread.html#aad25d6cac533456625c4a6be482c5f19">Thread</a> (<a class="el" href="structSDL_1_1PropertiesParam.html">PropertiesParam</a> props)</td></tr>
+<tr class="memdesc:aad25d6cac533456625c4a6be482c5f19 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new thread with with the specified properties.  <br /></td></tr>
+<tr class="separator:aad25d6cac533456625c4a6be482c5f19 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ef1b54fff769866dbdbc8d9d63290eb inherit pub_methods_classSDL_1_1Thread" id="r_a6ef1b54fff769866dbdbc8d9d63290eb"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>~Thread</b> ()</td></tr>
+<tr class="memdesc:a6ef1b54fff769866dbdbc8d9d63290eb inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:a6ef1b54fff769866dbdbc8d9d63290eb inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a7154d1c3346198bc60b835c6877921 inherit pub_methods_classSDL_1_1Thread" id="r_a0a7154d1c3346198bc60b835c6877921"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1Thread.html">Thread</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1Thread.html">Thread</a> other)</td></tr>
+<tr class="memdesc:a0a7154d1c3346198bc60b835c6877921 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:a0a7154d1c3346198bc60b835c6877921 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d6639cfaa67ca7c8cfcf942c4c80f07 inherit pub_methods_classSDL_1_1Thread" id="r_a9d6639cfaa67ca7c8cfcf942c4c80f07"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="group__CategoryThread.html#gac07e7a67c7df5feb9f40b42b7de1b2b3">ThreadRaw</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="memdesc:a9d6639cfaa67ca7c8cfcf942c4c80f07 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves underlying ThreadRaw. <br /></td></tr>
+<tr class="separator:a9d6639cfaa67ca7c8cfcf942c4c80f07 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41e676896802d9bb6bc39e1fa495794c inherit pub_methods_classSDL_1_1Thread" id="r_a41e676896802d9bb6bc39e1fa495794c"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="group__CategoryThread.html#gac07e7a67c7df5feb9f40b42b7de1b2b3">ThreadRaw</a>&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
+<tr class="memdesc:a41e676896802d9bb6bc39e1fa495794c inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves underlying ThreadRaw and clear this. <br /></td></tr>
+<tr class="separator:a41e676896802d9bb6bc39e1fa495794c inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1aaf9a1f4f6aba06f90357420836fe06 inherit pub_methods_classSDL_1_1Thread" id="r_a1aaf9a1f4f6aba06f90357420836fe06"><td class="memItemLeft" align="right" valign="top">
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;=&gt;</b> (const <a class="el" href="classSDL_1_1Thread.html">Thread</a> &amp;other) const =default</td></tr>
+<tr class="memdesc:a1aaf9a1f4f6aba06f90357420836fe06 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a1aaf9a1f4f6aba06f90357420836fe06 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef5f6ab4fefadc237f1909ee2c5de7f7 inherit pub_methods_classSDL_1_1Thread" id="r_aef5f6ab4fefadc237f1909ee2c5de7f7"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t _) const</td></tr>
+<tr class="memdesc:aef5f6ab4fefadc237f1909ee2c5de7f7 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:aef5f6ab4fefadc237f1909ee2c5de7f7 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a578ab5a7ca9c736ea9efcb90f5d8f7d8 inherit pub_methods_classSDL_1_1Thread" id="r_a578ab5a7ca9c736ea9efcb90f5d8f7d8"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
-<tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource" id="r_ab4aa1e63564473a72dc97256340d104f"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_type</b> () const</td></tr>
-<tr class="memdesc:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts back to underlying type. <br /></td></tr>
-<tr class="separator:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
-<tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource" id="r_ad2a82bc79a7dae41ceb1a25647ae1c0d"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
-<tr class="memdesc:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource" id="r_ab110e6568060a7ae58ab7b29ad68f7fc"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t) const</td></tr>
-<tr class="memdesc:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource" id="r_ab273a0a0285b8eed1f70f5d3759f4167"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Thread *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
-<tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top">
-constexpr const SDL_Thread *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Thread *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
-<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa007e9dc0196c86bde2b06e91d8cab07" id="r_aa007e9dc0196c86bde2b06e91d8cab07"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#aa007e9dc0196c86bde2b06e91d8cab07">SetCurrentPriority</a> (<a class="el" href="group__CategoryThread.html#ga94fa248708fac73a2db5f33a19694db5">ThreadPriority</a> priority)</td></tr>
-<tr class="memdesc:aa007e9dc0196c86bde2b06e91d8cab07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the priority for the current thread.  <br /></td></tr>
-<tr class="separator:aa007e9dc0196c86bde2b06e91d8cab07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec863a603950b2529191f27769ac219e" id="r_aec863a603950b2529191f27769ac219e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#aec863a603950b2529191f27769ac219e">reset</a> (SDL_Thread *resource)</td></tr>
-<tr class="memdesc:aec863a603950b2529191f27769ac219e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Let a thread clean up on exit without intervention.  <br /></td></tr>
-<tr class="separator:aec863a603950b2529191f27769ac219e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a578ab5a7ca9c736ea9efcb90f5d8f7d8 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to bool. <br /></td></tr>
+<tr class="separator:a578ab5a7ca9c736ea9efcb90f5d8f7d8 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4f226191384738577af039bd5c21677 inherit pub_methods_classSDL_1_1Thread" id="r_ac4f226191384738577af039bd5c21677"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator ThreadParam</b> () const</td></tr>
+<tr class="memdesc:ac4f226191384738577af039bd5c21677 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to <a class="el" href="structSDL_1_1ThreadParam.html" title="Safely wrap Thread for non owning parameters.">ThreadParam</a>. <br /></td></tr>
+<tr class="separator:ac4f226191384738577af039bd5c21677 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa5572445db86d00a9c939bf0bfed5f85 inherit pub_methods_classSDL_1_1Thread" id="r_gaa5572445db86d00a9c939bf0bfed5f85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gaa5572445db86d00a9c939bf0bfed5f85">Detach</a> ()</td></tr>
+<tr class="memdesc:gaa5572445db86d00a9c939bf0bfed5f85 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Let a thread clean up on exit without intervention.  <br /></td></tr>
+<tr class="separator:gaa5572445db86d00a9c939bf0bfed5f85 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2273b3e7ab23b4d4939a9dedf699372e inherit pub_methods_classSDL_1_1Thread" id="r_ga2273b3e7ab23b4d4939a9dedf699372e"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga2273b3e7ab23b4d4939a9dedf699372e">GetName</a> () const</td></tr>
+<tr class="memdesc:ga2273b3e7ab23b4d4939a9dedf699372e inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the thread name as it was specified in <a class="el" href="classSDL_1_1Thread.html#aa6da53a56235900f5b422b6be5ac9074" title="Default ctor.">Thread.Thread()</a>.  <br /></td></tr>
+<tr class="separator:ga2273b3e7ab23b4d4939a9dedf699372e inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabd9a03287b135af1a2f3e122bae9fbe0 inherit pub_methods_classSDL_1_1Thread" id="r_gabd9a03287b135af1a2f3e122bae9fbe0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryThread.html#gab321ed96bc6b128e8cced2d7fc9c67ea">ThreadID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gabd9a03287b135af1a2f3e122bae9fbe0">GetID</a> () const</td></tr>
+<tr class="memdesc:gabd9a03287b135af1a2f3e122bae9fbe0 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the thread identifier for the specified thread.  <br /></td></tr>
+<tr class="separator:gabd9a03287b135af1a2f3e122bae9fbe0 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab66600b4af530b39983b071d4ff4c812 inherit pub_methods_classSDL_1_1Thread" id="r_gab66600b4af530b39983b071d4ff4c812"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gab66600b4af530b39983b071d4ff4c812">Wait</a> (int *status)</td></tr>
+<tr class="memdesc:gab66600b4af530b39983b071d4ff4c812 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a thread to finish.  <br /></td></tr>
+<tr class="separator:gab66600b4af530b39983b071d4ff4c812 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacbb86783bc29dbb97284ea1b7d84ac69 inherit pub_methods_classSDL_1_1Thread" id="r_gacbb86783bc29dbb97284ea1b7d84ac69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryThread.html#ga6f7a148f3f241be0fcf98e738225514d">ThreadState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gacbb86783bc29dbb97284ea1b7d84ac69">GetState</a> () const</td></tr>
+<tr class="memdesc:gacbb86783bc29dbb97284ea1b7d84ac69 inherit pub_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current state of a thread.  <br /></td></tr>
+<tr class="separator:gacbb86783bc29dbb97284ea1b7d84ac69 inherit pub_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Thread * &gt;</a></td></tr>
-<tr class="memitem:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource" id="r_a11ac29cf1f6da9fb29c508669f40b38d"><td class="memItemLeft" align="right" valign="top">
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL_Thread *</td></tr>
-<tr class="memdesc:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
-<tr class="separator:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSDL_1_1Thread"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSDL_1_1Thread')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSDL_1_1Thread.html">SDL::Thread</a></td></tr>
+<tr class="memitem:gaa7f116f605d3a6c7ba531a3538bdfbbc inherit pub_static_methods_classSDL_1_1Thread" id="r_gaa7f116f605d3a6c7ba531a3538bdfbbc"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gaa7f116f605d3a6c7ba531a3538bdfbbc">SetCurrentPriority</a> (<a class="el" href="group__CategoryThread.html#ga94fa248708fac73a2db5f33a19694db5">ThreadPriority</a> priority)</td></tr>
+<tr class="memdesc:gaa7f116f605d3a6c7ba531a3538bdfbbc inherit pub_static_methods_classSDL_1_1Thread"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the priority for the current thread.  <br /></td></tr>
+<tr class="separator:gaa7f116f605d3a6c7ba531a3538bdfbbc inherit pub_static_methods_classSDL_1_1Thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>These are opaque data.</p>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1Thread.html" title="Handle to an owned thread.">Thread</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab8b6981474ff03df4e6e734e52712e53" name="ab8b6981474ff03df4e6e734e52712e53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8b6981474ff03df4e6e734e52712e53">&#9670;&#160;</a></span>GetID()</h2>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a696e99643fc9d4cde8a0c3c581ccc136" name="a696e99643fc9d4cde8a0c3c581ccc136"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a696e99643fc9d4cde8a0c3c581ccc136">&#9670;&#160;</a></span>ThreadRef()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -212,201 +205,26 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategoryThread.html#gab321ed96bc6b128e8cced2d7fc9c67ea">ThreadID</a> SDL::ThreadRef::GetID </td>
+          <td class="memname">SDL::ThreadRef::ThreadRef </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This thread identifier is as reported by the underlying operating system. If <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> is running on a platform that does not support threads the return value will always be zero.</p>
-<dl class="section return"><dt>Returns</dt><dd>the ID of the specified thread, or the ID of the current thread if <code>thread</code> is nullptr.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryThread.html#ga84839cc3dfbbd4ffb4f61d9c82be09a4" title="Get the thread identifier for the current thread.">GetCurrentThreadID</a> </dd></dl>
-
-</div>
-</div>
-<a id="a99ad3aaee98ff1ea404cef9e4f45ba76" name="a99ad3aaee98ff1ea404cef9e4f45ba76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99ad3aaee98ff1ea404cef9e4f45ba76">&#9670;&#160;</a></span>GetName()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char * SDL::ThreadRef::GetName </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>a pointer to a UTF-8 string that names the specified thread, or nullptr if it doesn't have a name.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-</div>
-</div>
-<a id="a4b5c7c344b0f0c99148803c63bfdb4dc" name="a4b5c7c344b0f0c99148803c63bfdb4dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b5c7c344b0f0c99148803c63bfdb4dc">&#9670;&#160;</a></span>GetState()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategoryThread.html#ga6f7a148f3f241be0fcf98e738225514d">ThreadState</a> SDL::ThreadRef::GetState </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the current state of a thread, or THREAD_UNKNOWN if the thread isn't valid.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryThread.html#ga6f7a148f3f241be0fcf98e738225514d" title="The SDL thread state.">ThreadState</a> </dd></dl>
-
-</div>
-</div>
-<a id="aec863a603950b2529191f27769ac219e" name="aec863a603950b2529191f27769ac219e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec863a603950b2529191f27769ac219e">&#9670;&#160;</a></span>reset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void SDL::ThreadRef::reset </td>
-          <td>(</td>
-          <td class="paramtype">SDL_Thread *&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1ThreadParam.html">ThreadParam</a>&#160;</td>
           <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>A thread may be "detached" to signify that it should not remain until another thread has called <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> on it. Detaching a thread is useful for long-running threads that nothing needs to synchronize with or further manage. When a detached thread is done, it simply goes away.</p>
-<p>There is no way to recover the return code of a detached thread. If you need this, don't detach the thread and instead use <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a>.</p>
-<p>Once a thread is detached, you should usually assume the <a class="el" href="structSDL_1_1ThreadRef.html" title="The SDL thread object.">ThreadRef</a> isn't safe to reference again, as it will become invalid immediately upon the detached thread's exit, instead of remaining until someone has called <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> to finally clean it up. As such, don't detach the same thread more than once.</p>
-<p>If a thread has already exited when passed to <a class="el" href="structSDL_1_1Thread.html#aa5572445db86d00a9c939bf0bfed5f85" title="Let a thread clean up on exit without intervention.">Thread.Detach()</a>, it will stop waiting for a call to <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> and clean up immediately. It is not safe to detach a thread that might be used with <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a>.</p>
-<p>You may not call <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> on a thread that has been detached. Use either that function or this one, but not both, or behavior is undefined.</p>
-<p>It is safe to pass nullptr to this function; it is a no-op.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">resource</td><td>the <a class="el" href="structSDL_1_1ThreadRef.html" title="The SDL thread object.">ThreadRef</a> pointer that was returned from the <a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create()</a> call that started this thread.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait</a> </dd></dl>
-
-</div>
-</div>
-<a id="aa007e9dc0196c86bde2b06e91d8cab07" name="aa007e9dc0196c86bde2b06e91d8cab07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa007e9dc0196c86bde2b06e91d8cab07">&#9670;&#160;</a></span>SetCurrentPriority()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void SDL::ThreadRef::SetCurrentPriority </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryThread.html#ga94fa248708fac73a2db5f33a19694db5">ThreadPriority</a>&#160;</td>
-          <td class="paramname"><em>priority</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Note that some platforms will not let you alter the priority (or at least, promote the thread to a higher priority) at all, and some require you to be an administrator account. Be prepared for this to fail.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">priority</td><td>the ThreadPriority to set. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-</div>
-</div>
-<a id="a62f2c9592ebcf33574634fce19cfbdab" name="a62f2c9592ebcf33574634fce19cfbdab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62f2c9592ebcf33574634fce19cfbdab">&#9670;&#160;</a></span>Wait()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::ThreadRef::Wait </td>
-          <td>(</td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>status</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Threads that haven't been detached will remain until this function cleans them up. Not doing so is a resource leak.</p>
-<p>Once a thread has been cleaned up through this function, the <a class="el" href="structSDL_1_1ThreadRef.html" title="The SDL thread object.">ThreadRef</a> that references it becomes invalid and should not be referenced again. As such, only one thread may call <a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait()</a> on another.</p>
-<p>The return code from the thread function is placed in the area pointed to by <code>status</code>, if <code>status</code> is not nullptr.</p>
-<p>You may not wait on a thread that has been used in a call to ThreadRef.Detach(). Use either that function or this one, but not both, or behavior is undefined.</p>
-<p>It is safe to pass a nullptr thread to this function; it is a no-op.</p>
-<p>Note that the thread pointer is freed by this function and is not valid afterward.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">status</td><td>a pointer filled in with the value returned from the thread function by its 'return', or -1 if the thread has been detached or isn't valid, may be nullptr.</td></tr>
+    <tr><td class="paramname">resource</td><td>a ThreadRaw or <a class="el" href="classSDL_1_1Thread.html" title="The SDL thread object.">Thread</a>.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1Thread.html#aa5572445db86d00a9c939bf0bfed5f85" title="Let a thread clean up on exit without intervention.">Thread.Detach</a> </dd></dl>
+<p>This does not takes ownership! </p>
 
 </div>
 </div>

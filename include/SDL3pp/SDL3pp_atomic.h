@@ -7,7 +7,6 @@
 namespace SDL {
 
 /**
- *
  * @defgroup CategoryAtomic Atomic Operations
  *
  * Atomic operations.
@@ -177,7 +176,7 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
 #define SDL_CPUPauseInstruction()                                              \
   DoACPUPauseInACompilerAndArchitectureSpecificWay
 
-#endif
+#endif // SDL3PP_DOC
 
 /**
  * A type representing an atomic integer value.
@@ -211,8 +210,8 @@ class AtomicInt
   SDL_AtomicInt m_value;
 
 public:
-  /// Constructor
-  constexpr AtomicInt(int value = 0)
+  /// Constructs from an int
+  constexpr AtomicInt(int value)
     : m_value(value)
   {
   }
@@ -221,7 +220,7 @@ public:
 
   AtomicInt& operator=(const AtomicInt& value) = delete;
 
-  /// Convert to underlying type
+  /// Returns unerlying type
   constexpr operator SDL_AtomicInt*() { return &m_value; }
 
   /**
@@ -241,10 +240,7 @@ public:
    * @sa AtomicInt.Get
    * @sa AtomicInt.Set
    */
-  bool CompareAndSwap(int oldval, int newval)
-  {
-    return SDL_CompareAndSwapAtomicInt(&m_value, oldval, newval);
-  }
+  bool CompareAndSwap(int oldval, int newval);
 
   /**
    * Set an atomic variable to a value.
@@ -263,7 +259,7 @@ public:
    *
    * @sa AtomicInt.Get
    */
-  int Set(int v) { return SDL_SetAtomicInt(&m_value, v); }
+  int Set(int v);
 
   /**
    * Get the value of an atomic variable.
@@ -279,7 +275,7 @@ public:
    *
    * @sa AtomicInt.Set
    */
-  int Get() { return SDL_GetAtomicInt(&m_value); }
+  int Get();
 
   /**
    * Add to an atomic variable.
@@ -299,7 +295,7 @@ public:
    * @sa AtomicInt.AtomicDecRef
    * @sa AtomicInt.AtomicIncRef
    */
-  int Add(int v) { return SDL_AddAtomicInt(&m_value, v); }
+  int Add(int v);
 
   /**
    * Increment an atomic variable used as a reference count.
@@ -314,7 +310,7 @@ public:
    *
    * @sa AtomicInt.AtomicDecRef
    */
-  bool AtomicIncRef() { return SDL_AtomicIncRef(&m_value); }
+  bool AtomicIncRef();
 
   /**
    * Decrement an atomic variable used as a reference count.
@@ -330,8 +326,23 @@ public:
    *
    * @sa AtomicInt.AtomicIncRef
    */
-  bool AtomicDecRef() { return SDL_AtomicDecRef(&m_value); }
+  bool AtomicDecRef();
 };
+
+inline bool AtomicInt::CompareAndSwap(int oldval, int newval)
+{
+  return SDL_CompareAndSwapAtomicInt(&m_value, oldval, newval);
+}
+
+inline int AtomicInt::Set(int v) { return SDL_SetAtomicInt(&m_value, v); }
+
+inline int AtomicInt::Get() { return SDL_GetAtomicInt(&m_value); }
+
+inline int AtomicInt::Add(int v) { return SDL_AddAtomicInt(&m_value, v); }
+
+inline bool AtomicInt::AtomicIncRef() { return SDL_AtomicIncRef(&m_value); }
+
+inline bool AtomicInt::AtomicDecRef() { return SDL_AtomicDecRef(&m_value); }
 
 /**
  * A type representing an atomic unsigned 32-bit value.
@@ -364,8 +375,8 @@ class AtomicU32
   SDL_AtomicU32 m_value;
 
 public:
-  /// Constructor
-  constexpr AtomicU32(Uint32 value = 0)
+  /// Constructs from Uint32
+  constexpr AtomicU32(Uint32 value)
     : m_value(value)
   {
   }
@@ -394,10 +405,7 @@ public:
    * @sa AtomicU32.Get
    * @sa AtomicU32.Set
    */
-  bool CompareAndSwap(Uint32 oldval, Uint32 newval)
-  {
-    return SDL_CompareAndSwapAtomicU32(&m_value, oldval, newval);
-  }
+  bool CompareAndSwap(Uint32 oldval, Uint32 newval);
 
   /**
    * Set an atomic variable to a value.
@@ -416,7 +424,7 @@ public:
    *
    * @sa AtomicU32.Get
    */
-  Uint32 Set(Uint32 v) { return SDL_SetAtomicU32(&m_value, v); }
+  Uint32 Set(Uint32 v);
 
   /**
    * Get the value of an atomic variable.
@@ -432,18 +440,17 @@ public:
    *
    * @sa AtomicU32.Set
    */
-  Uint32 Get() { return SDL_GetAtomicU32(&m_value); }
+  Uint32 Get();
 };
 
-/// Type representing an atomic pointer
 template<class T>
 class AtomicPointer
 {
   T* m_value;
 
 public:
-  /// Constructor
-  constexpr AtomicPointer(T* value = nullptr)
+  /// Construcst from T
+  constexpr AtomicPointer(T* value)
     : m_value(value)
   {
   }
@@ -470,10 +477,7 @@ public:
    * @sa AtomicPointer.Get
    * @sa AtomicPointer.Set
    */
-  bool CompareAndSwap(T* oldval, T* newval)
-  {
-    return SDL_CompareAndSwapAtomicPointer(&m_value, oldval, newval);
-  }
+  bool CompareAndSwap(T* oldval, T* newval);
 
   /**
    * Set a pointer to a value atomically.
@@ -491,7 +495,7 @@ public:
    * @sa AtomicPointer.CompareAndSwap
    * @sa AtomicPointer.Get
    */
-  T* Set(T* v) { return SDL_SetAtomicPointer(&m_value, v); }
+  T* Set(T* v);
 
   /**
    * Get the value of a pointer atomically.
@@ -508,10 +512,38 @@ public:
    * @sa AtomicPointer.CompareAndSwap
    * @sa AtomicPointer.Set
    */
-  T* Get() { return SDL_GetAtomicPointer(&m_value); }
+  T* Get();
 };
 
+inline bool AtomicU32::CompareAndSwap(Uint32 oldval, Uint32 newval)
+{
+  return SDL_CompareAndSwapAtomicU32(&m_value, oldval, newval);
+}
+
+inline Uint32 AtomicU32::Set(Uint32 v) { return SDL_SetAtomicU32(&m_value, v); }
+
+inline Uint32 AtomicU32::Get() { return SDL_GetAtomicU32(&m_value); }
+
+template<class T>
+inline bool AtomicPointer<T>::CompareAndSwap(T* oldval, T* newval)
+{
+  return SDL_CompareAndSwapAtomicPointer(&m_value, oldval, newval);
+}
+
+template<class T>
+inline T* AtomicPointer<T>::Set(T* v)
+{
+  return SDL_SetAtomicPointer(&m_value, v);
+}
+
+template<class T>
+inline T* AtomicPointer<T>::Get()
+{
+  return SDL_GetAtomicPointer(&m_value);
+}
+
 /// @}
+
 } // namespace SDL
 
 #endif /* SDL3PP_ATOMIC_H_ */

@@ -1,0 +1,5 @@
+<map id="SDL::GPUTextEngine" name="SDL::GPUTextEngine">
+<area shape="rect" id="Node000001" title="A GPU based text engine." alt="" coords="5,79,160,104"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1TextEngine.html" title="A resource engine." alt="" coords="19,5,146,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,44,85,79,80,79,80,44"/>
+</map>

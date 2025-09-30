@@ -1,5 +1,5 @@
 <map id="SDL::PropertiesRef" name="SDL::PropertiesRef">
-<area shape="rect" id="Node000001" title="SDL properties ID." alt="" coords="11,93,154,119"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" id="Node000001" title="Semi&#45;safe reference for Properties." alt="" coords="5,79,148,104"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Properties.html" title="SDL properties ID." alt="" coords="16,5,137,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,44,79,79,74,79,74,44"/>
 </map>

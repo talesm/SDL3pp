@@ -150,7 +150,7 @@ constexpr <a class="el" href="group__CategoryBlendmode.html#ga34d032507f571bcbdc
 <tr class="separator:gae44cd6ea76e4bd6d50710897c2f082a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">BlendModes</h2></td></tr>
-<tr class="memitem:ga19319fdd1dbe0d4ced9f5f47b4609962" id="r_ga19319fdd1dbe0d4ced9f5f47b4609962"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">SDL::BlendMode</a> = Uint32</td></tr>
+<tr class="memitem:ga19319fdd1dbe0d4ced9f5f47b4609962" id="r_ga19319fdd1dbe0d4ced9f5f47b4609962"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">SDL::BlendMode</a> = <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a></td></tr>
 <tr class="memdesc:ga19319fdd1dbe0d4ced9f5f47b4609962"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of blend modes used in drawing operations.  <br /></td></tr>
 <tr class="separator:ga19319fdd1dbe0d4ced9f5f47b4609962"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5a9cb000dcb8e5ae245dc8d6931c3268" id="r_ga5a9cb000dcb8e5ae245dc8d6931c3268"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryBlendmode.html#ga5a9cb000dcb8e5ae245dc8d6931c3268">SDL::BLENDMODE_NONE</a></td></tr>
@@ -198,7 +198,7 @@ constexpr <a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced
       </table>
 </div><div class="memdoc">
 <p>The blend factors are multiplied with the pixels from a drawing operation (src) and the pixels from the render target (dst) before the blend operation. The comma-separated factors listed above are always applied in the component order red, green, blue, and alpha.</p>
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -209,13 +209,13 @@ constexpr <a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">SDL::BlendMode</a> = typedef Uint32</td>
+          <td class="memname">using <a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">SDL::BlendMode</a> = typedef <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>These predefined blend modes are supported everywhere.</p>
 <p>Additional values may be obtained from ComposeCustomBlendMode.</p>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryBlendmode.html#gaec8c6ddb8b4963d1597c2ccfbb451839" title="Compose a custom blend mode for renderers.">ComposeCustomBlendMode</a> </dd></dl>
 
 </div>
@@ -231,7 +231,7 @@ constexpr <a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -293,7 +293,7 @@ constexpr <a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The functions <a class="el" href="structSDL_1_1RendererRef.html#aca112eda6766ad6147f1287638de7f7a" title="Set the blend mode used for drawing operations (Fill and Line).">RendererRef.SetDrawBlendMode</a> and <a class="el" href="structSDL_1_1TextureRef.html#a15e38be82ab2e673b2449238e6e3c9d2" title="Set the blend mode for a texture, used by RendererRef.RenderTexture().">TextureRef.SetBlendMode</a> accept the BlendMode returned by this function if the renderer supports it.</p>
+<p>The functions <a class="el" href="group__CategoryRender.html#ga296337ed8e64e4cdad15044f825080c8" title="Set the blend mode used for drawing operations (Fill and Line).">Renderer.SetDrawBlendMode</a> and <a class="el" href="group__CategoryRender.html#ga27a5c8dd079db280deb01e2b1ff29dab" title="Set the blend mode for a texture, used by Renderer.RenderTexture().">Texture.SetBlendMode</a> accept the BlendMode returned by this function if the renderer supports it.</p>
 <p>A blend mode controls how the pixels from a drawing operation (source) get combined with the pixels from the render target (destination). First, the components of the source and destination pixels get multiplied with their blend factors. Then, the blend operation takes the two products and calculates the result that will get stored in the render target.</p>
 <p>Expressed in pseudocode, it would look like this:</p>
 <div class="fragment"><div class="line">dstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);</div>
@@ -309,7 +309,7 @@ dst)</code> can return one of the following:</p>
 </ul>
 <p>The red, green, and blue components are always multiplied with the first, second, and third components of the BlendFactor, respectively. The fourth component is not used.</p>
 <p>The alpha component is always multiplied with the fourth component of the BlendFactor. The other components are not used in the alpha calculation.</p>
-<p>Support for these blend modes varies for each renderer. To check if a specific BlendMode is supported, create a renderer and pass it to either <a class="el" href="structSDL_1_1RendererRef.html#aca112eda6766ad6147f1287638de7f7a" title="Set the blend mode used for drawing operations (Fill and Line).">RendererRef.SetDrawBlendMode</a> or <a class="el" href="structSDL_1_1TextureRef.html#a15e38be82ab2e673b2449238e6e3c9d2" title="Set the blend mode for a texture, used by RendererRef.RenderTexture().">TextureRef.SetBlendMode</a>. They will return with an error if the blend mode is not supported.</p>
+<p>Support for these blend modes varies for each renderer. To check if a specific BlendMode is supported, create a renderer and pass it to either <a class="el" href="group__CategoryRender.html#ga296337ed8e64e4cdad15044f825080c8" title="Set the blend mode used for drawing operations (Fill and Line).">Renderer.SetDrawBlendMode</a> or <a class="el" href="group__CategoryRender.html#ga27a5c8dd079db280deb01e2b1ff29dab" title="Set the blend mode for a texture, used by Renderer.RenderTexture().">Texture.SetBlendMode</a>. They will return with an error if the blend mode is not supported.</p>
 <p>This list describes the support of custom blend modes for each renderer. All renderers support the four blend modes listed in the BlendMode enumeration.</p>
 <ul>
 <li><b>direct3d</b>: Supports all operations with all factors. However, some factors produce unexpected results with <code>BLENDOPERATION_MINIMUM</code> and <code>BLENDOPERATION_MAXIMUM</code>.</li>
@@ -333,14 +333,14 @@ dst)</code> can return one of the following:</p>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>an BlendMode that represents the chosen factors and operations.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererRef.html#aca112eda6766ad6147f1287638de7f7a" title="Set the blend mode used for drawing operations (Fill and Line).">RendererRef.SetDrawBlendMode</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga296337ed8e64e4cdad15044f825080c8" title="Set the blend mode used for drawing operations (Fill and Line).">Renderer.SetDrawBlendMode</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1RendererRef.html#a6321d8f0e87d39d4d8f28420e08b0138" title="Get the blend mode used for drawing operations.">RendererRef.GetDrawBlendMode</a> </dd>
+<a class="el" href="group__CategoryRender.html#ga726fa938b24c16f0d09c3fee65a7ad7d" title="Get the blend mode used for drawing operations.">Renderer.GetDrawBlendMode</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextureRef.html#a15e38be82ab2e673b2449238e6e3c9d2" title="Set the blend mode for a texture, used by RendererRef.RenderTexture().">TextureRef.SetBlendMode</a> </dd>
+<a class="el" href="group__CategoryRender.html#ga27a5c8dd079db280deb01e2b1ff29dab" title="Set the blend mode for a texture, used by Renderer.RenderTexture().">Texture.SetBlendMode</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextureRef.html#a1c0d9b5323e067d355a198125a2911aa" title="Get the blend mode used for texture copy operations.">TextureRef.GetBlendMode</a> </dd></dl>
+<a class="el" href="group__CategoryRender.html#gaac870c965387978415fbb6f5f48ea09e" title="Get the blend mode used for texture copy operations.">Texture.GetBlendMode</a> </dd></dl>
 
 </div>
 </div>
