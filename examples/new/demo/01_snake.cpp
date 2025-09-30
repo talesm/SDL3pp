@@ -153,10 +153,16 @@ struct SnakeContext
 
 struct Main
 {
+  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata("Example Snake game", "1.0", "com.example.Snake");
+    SDL::Init(SDL::INIT_VIDEO);
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
 
-  SDL::SDL init{SDL::INIT_VIDEO};
-  SDL::Window window = SDL::Window::Create("examples/demo/snake", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
+  SDL::Window window = SDL::Window("examples/demo/snake", windowSz);
+  SDL::Renderer renderer = SDL::Renderer(window);
   SnakeContext snake_ctx;
   SDL::Nanoseconds lastStep = SDL::GetTicks();
 
@@ -172,22 +178,22 @@ struct Main
       lastStep += stepRate;
     }
 
-    renderer->SetDrawColor(SDL::Color{0, 0, 0});
-    renderer->RenderClear();
+    renderer.SetDrawColor(SDL::Color{0, 0, 0});
+    renderer.RenderClear();
 
     SDL::Point p;
     for (p.x = 0; p.x < gameSz.x; p.x++) {
       for (p.y = 0; p.y < gameSz.y; p.y++) {
         SnakeCell ct = snake_ctx.at(p);
         if (ct == SnakeCell::NOTHING) continue;
-        renderer->SetDrawColor(ct == SnakeCell::FOOD ? foodColor : bodyColor);
-        renderer->RenderFillRect(SDL::FRect{p * blockInPixels, blockSz});
+        renderer.SetDrawColor(ct == SnakeCell::FOOD ? foodColor : bodyColor);
+        renderer.RenderFillRect(SDL::FRect{p * blockInPixels, blockSz});
       }
     }
-    renderer->SetDrawColor(SDL::Color{255, 255, 0});
-    renderer->RenderFillRect(
+    renderer.SetDrawColor(SDL::Color{255, 255, 0});
+    renderer.RenderFillRect(
       SDL::FRect{snake_ctx.head_pos * blockInPixels, blockSz});
-    renderer->Present();
+    renderer.Present();
     return SDL::APP_CONTINUE;
   }
 
@@ -220,4 +226,4 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main, "Example Snake game", "1.0", "com.example.Snake")
+SDL3PP_DEFINE_CALLBACKS(Main)

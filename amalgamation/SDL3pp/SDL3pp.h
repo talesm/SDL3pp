@@ -28558,13 +28558,6 @@ public:
   constexpr operator ScancodeRaw() const { return m_scancode; }
 
   /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_scancode != 0; }
-
-  /**
    * Set a human-readable name for a scancode.
    *
    * @param name the name to use for the scancode, encoded as UTF-8. The string

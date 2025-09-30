@@ -2,3 +2,11 @@
 <  * @defgroup CategoryScancode Category Scancode
 ---
 >  * @defgroup CategoryScancode Keyboard Scancodes
+91,97d90
+< 
+<   /**
+<    * Check if valid.
+<    *
+<    * @returns True if valid state, false otherwise.
+<    */
+<   constexpr explicit operator bool() const { return m_scancode != 0; }
