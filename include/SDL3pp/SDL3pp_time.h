@@ -362,10 +362,10 @@ inline Time Time::Current()
  * the DateTime format.
  *
  * @param ticks the Time to be converted.
- * @param dt the resulting DateTime.
  * @param localTime the resulting DateTime will be expressed in local time
  *                  if true, otherwise it will be in Universal Coordinated
  *                  Time (UTC).
+ * @returns the resulting DateTime.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -382,7 +382,7 @@ inline DateTime TimeToDateTime(Time ticks, bool localTime = true)
  * it may remain unset.
  *
  * @param dt the source DateTime.
- * @param ticks the resulting Time.
+ * @returns the resulting Time.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.

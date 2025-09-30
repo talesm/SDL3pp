@@ -7,10 +7,10 @@ var searchData=
   ['callbackwrapperbase_3c_20result_2c_20args_2e_2e_2e_20_3e_4',['CallbackWrapperBase&lt; Result, Args... &gt;',['../structSDL_1_1CallbackWrapperBase.html',1,'SDL']]],
   ['color_5',['Color',['../structSDL_1_1Color.html',1,'SDL']]],
   ['colorspace_6',['Colorspace',['../classSDL_1_1Colorspace.html',1,'SDL']]],
-  ['condition_7',['Condition',['../structSDL_1_1Condition.html',1,'SDL']]],
-  ['conditionref_8',['ConditionRef',['../structSDL_1_1ConditionRef.html',1,'SDL']]],
-  ['conditionunsafe_9',['ConditionUnsafe',['../structSDL_1_1ConditionUnsafe.html',1,'SDL']]],
-  ['cursor_10',['Cursor',['../structSDL_1_1Cursor.html',1,'SDL']]],
-  ['cursorref_11',['CursorRef',['../structSDL_1_1CursorRef.html',1,'SDL']]],
-  ['cursorunsafe_12',['CursorUnsafe',['../structSDL_1_1CursorUnsafe.html',1,'SDL']]]
+  ['condition_7',['Condition',['../classSDL_1_1Condition.html',1,'SDL']]],
+  ['conditionparam_8',['ConditionParam',['../structSDL_1_1ConditionParam.html',1,'SDL']]],
+  ['conditionref_9',['ConditionRef',['../structSDL_1_1ConditionRef.html',1,'SDL']]],
+  ['cursor_10',['Cursor',['../classSDL_1_1Cursor.html',1,'SDL']]],
+  ['cursorparam_11',['CursorParam',['../structSDL_1_1CursorParam.html',1,'SDL']]],
+  ['cursorref_12',['CursorRef',['../structSDL_1_1CursorRef.html',1,'SDL']]]
 ];

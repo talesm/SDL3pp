@@ -210,6 +210,7 @@ class AtomicInt
   SDL_AtomicInt m_value;
 
 public:
+  /// Constructs from an int
   constexpr AtomicInt(int value)
     : m_value(value)
   {
@@ -219,6 +220,7 @@ public:
 
   AtomicInt& operator=(const AtomicInt& value) = delete;
 
+  /// Returns unerlying type
   constexpr operator SDL_AtomicInt*() { return &m_value; }
 
   /**
@@ -300,7 +302,6 @@ public:
    *
    * ***Note: If you don't know what this macro is for, you shouldn't use it!***
    *
-   * @param a a pointer to an AtomicInt to increment.
    * @returns the previous value of the atomic variable.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -316,7 +317,6 @@ public:
    *
    * ***Note: If you don't know what this macro is for, you shouldn't use it!***
    *
-   * @param a a pointer to an AtomicInt to decrement.
    * @returns true if the variable reached zero after decrementing, false
    *          otherwise.
    *
@@ -375,6 +375,7 @@ class AtomicU32
   SDL_AtomicU32 m_value;
 
 public:
+  /// Constructs from Uint32
   constexpr AtomicU32(Uint32 value)
     : m_value(value)
   {
@@ -384,6 +385,7 @@ public:
 
   AtomicU32& operator=(const AtomicU32& value) = delete;
 
+  /// Convert to underlying type
   constexpr operator SDL_AtomicU32*() { return &m_value; }
 
   /**
@@ -447,6 +449,7 @@ class AtomicPointer
   T* m_value;
 
 public:
+  /// Construcst from T
   constexpr AtomicPointer(T* value)
     : m_value(value)
   {

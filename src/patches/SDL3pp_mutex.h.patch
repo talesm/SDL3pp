@@ -71,6 +71,18 @@
 < }
 ---
 > inline void UnlockRWLock(RWLockParam rwlock) { SDL_UnlockRWLock(rwlock); }
+1230,1231c1215,1216
+<    * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
+<    *                  indefinitely.
+---
+>    * @param timeout the length of the timeout, in milliseconds, or -1 to wait
+>    *                indefinitely.
+1390,1391c1375,1376
+<  * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
+<  *                  indefinitely.
+---
+>  * @param timeout the length of the timeout, in milliseconds, or -1 to wait
+>  *                indefinitely.
 1403c1388
 <   return SDL_WaitSemaphoreTimeout(sem, timeout);
 ---
@@ -79,6 +91,18 @@
 <   /// Default ctor
 <   constexpr Condition() = default;
 < 
+1623,1624c1605,1606
+<    * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
+<    *                  indefinitely.
+---
+>    * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
+>    *                indefinitely.
+1785,1786c1767,1768
+<  * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
+<  *                  indefinitely.
+---
+>  * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
+>  *                indefinitely.
 1802c1784
 <   return SDL_WaitConditionTimeout(cond, mutex, timeout);
 ---

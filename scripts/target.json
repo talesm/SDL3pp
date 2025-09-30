@@ -3174,24 +3174,6 @@
                 "kind": "function",
                 "type": "void",
                 "immutable": true,
-                "template": [
-                  {
-                    "type": "std::output_iterator<const char *>",
-                    "name": "IT"
-                  }
-                ],
-                "parameters": [
-                  {
-                    "type": "IT",
-                    "name": "outputIter"
-                  }
-                ],
-                "name": "Enumerate"
-              },
-              {
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
                 "proto": true,
                 "parameters": [
                   {

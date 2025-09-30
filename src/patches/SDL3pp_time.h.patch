@@ -30,6 +30,14 @@
 >   CheckError(SDL_GetCurrentTime(&t));
 >   return Time::FromNS(t);
 > }
+358d364
+<  * @param dt the resulting DateTime.
+361a368
+>  * @returns the resulting DateTime.
+378c385
+<  * @param ticks the resulting Time.
+---
+>  * @returns the resulting Time.
 385c392,394
 <   return CheckError(SDL_DateTimeToTime(dt));
 ---

@@ -1,5 +1,5 @@
 <map id="SDL::MutexRef" name="SDL::MutexRef">
-<area shape="rect" id="Node000001" title="A means to serialize access to a resource between threads." alt="" coords="23,93,142,119"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" id="Node000001" title="Semi&#45;safe reference for Mutex." alt="" coords="5,79,124,104"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Mutex.html" title="A means to serialize access to a resource between threads." alt="" coords="17,5,113,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,44,67,79,62,79,62,44"/>
 </map>

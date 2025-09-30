@@ -775,8 +775,7 @@ public:
    * Each render target has its own logical presentation state. This function
    * gets the rectangle for the current render target.
    *
-   * @param rect a pointer filled in with the final presentation rectangle, may
-   *             be nullptr.
+   * @returns the final presentation rectangle.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1146,8 +1145,7 @@ public:
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
    *
-   * @param c a pointer filled in with the color channel values used to draw on
-   *          the rendering target. @b must @b not be nullptr.
+   * @returns the color channel values used to draw on the rendering target.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1860,8 +1858,7 @@ public:
    *
    * @param format one of the enumerated values in PixelFormat.
    * @param access one of the enumerated values in TextureAccess.
-   * @param w the width of the texture in pixels.
-   * @param h the height of the texture in pixels.
+   * @param size the width and height of the texture in pixels.
    * @returns the created texture or nullptr on failure; call GetError() for
    *          more information.
    *
@@ -2802,7 +2799,7 @@ public:
   /**
    * Get the additional alpha value multiplied into render copy operations.
    *
-   * @param alpha a pointer filled in with the current alpha value.
+   * @returns the current alpha value.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2818,7 +2815,7 @@ public:
   /**
    * Get the additional alpha value multiplied into render copy operations.
    *
-   * @param alpha a pointer filled in with the current alpha value.
+   * @returns the current alpha value.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -3042,8 +3039,8 @@ public:
    *                `TEXTUREACCESS_STREAMING`.
    * @param rect a pointer to the rectangle to lock for access. If the rect is
    *             nullptr, the entire texture will be locked.
-   * @param surface a pointer to an SDL surface of size **rect**. Don't assume
-   *                any specific pixel content.
+   * @returns a surface of size **rect**. Don't assume any specific pixel
+   *          content.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -3172,8 +3169,7 @@ inline const char* GetRenderDriver(int index)
  * Create a window and default renderer.
  *
  * @param title the title of the window, in UTF-8 encoding.
- * @param width the width of the window.
- * @param height the height of the window.
+ * @param size the width and height of the window.
  * @param window_flags the flags used to create the window (see
  *                     Window.Window()).
  * @returns a pair with window and renderer.
@@ -3640,8 +3636,7 @@ inline Texture Renderer::CreateTexture(PixelFormat format,
  * @param renderer the rendering context.
  * @param format one of the enumerated values in PixelFormat.
  * @param access one of the enumerated values in TextureAccess.
- * @param w the width of the texture in pixels.
- * @param h the height of the texture in pixels.
+ * @param size the width and height of the texture in pixels.
  * @returns the created texture or nullptr on failure; call GetError() for
  *          more information.
  *
@@ -4301,7 +4296,7 @@ inline void Texture::SetAlphaModFloat(float alpha)
  * Get the additional alpha value multiplied into render copy operations.
  *
  * @param texture the texture to query.
- * @param alpha a pointer filled in with the current alpha value.
+ * @returns the current alpha value.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -4328,7 +4323,7 @@ inline Uint8 Texture::GetAlphaMod() const
  * Get the additional alpha value multiplied into render copy operations.
  *
  * @param texture the texture to query.
- * @param alpha a pointer filled in with the current alpha value.
+ * @returns the current alpha value.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -4664,8 +4659,7 @@ inline void Texture::Lock(OptionalRef<const SDL_Rect> rect,
  *                `TEXTUREACCESS_STREAMING`.
  * @param rect a pointer to the rectangle to lock for access. If the rect is
  *             nullptr, the entire texture will be locked.
- * @param surface a pointer to an SDL surface of size **rect**. Don't assume
- *                any specific pixel content.
+ * @returns a surface of size **rect**. Don't assume any specific pixel content.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -4812,8 +4806,7 @@ inline Texture Renderer::GetTarget() const
  * Renderer.ConvertEventToRenderCoordinates().
  *
  * @param renderer the rendering context.
- * @param w the width of the logical resolution.
- * @param h the height of the logical resolution.
+ * @param size the width and height of the logical resolution.
  * @param mode the presentation mode used.
  * @throws Error on failure.
  *
@@ -4887,8 +4880,7 @@ inline void Renderer::GetLogicalPresentation(
  * gets the rectangle for the current render target.
  *
  * @param renderer the rendering context.
- * @param rect a pointer filled in with the final presentation rectangle, may
- *             be nullptr.
+ * @returns with the final presentation rectangle.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -4920,10 +4912,8 @@ inline FRect Renderer::GetLogicalPresentationRect() const
  * - The viewport (Renderer.SetViewport)
  *
  * @param renderer the rendering context.
- * @param window_x the x coordinate in window coordinates.
- * @param window_y the y coordinate in window coordinates.
- * @param x a pointer filled with the x coordinate in render coordinates.
- * @param y a pointer filled with the y coordinate in render coordinates.
+ * @param window_coord the x, y coordinate in window coordinates.
+ * @returns the x, y coordinate in render coordinates.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -4959,12 +4949,8 @@ inline FPoint Renderer::RenderCoordinatesFromWindow(
  * - The viewport (Renderer.SetViewport)
  *
  * @param renderer the rendering context.
- * @param x the x coordinate in render coordinates.
- * @param y the y coordinate in render coordinates.
- * @param window_x a pointer filled with the x coordinate in window
- *                 coordinates.
- * @param window_y a pointer filled with the y coordinate in window
- *                 coordinates.
+ * @param coord the x, y coordinates in render coordinates.
+ * @returns x, y in window coordinates.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5075,7 +5061,7 @@ inline void Renderer::SetViewport(OptionalRef<const RectRaw> rect)
  * for the current render target.
  *
  * @param renderer the rendering context.
- * @param rect an Rect structure filled in with the current drawing area.
+ * @returns an Rect structure filled in with the current drawing area.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5138,8 +5124,7 @@ inline bool Renderer::IsViewportSet() const
  * visually important or interactible content.
  *
  * @param renderer the rendering context.
- * @param rect a pointer filled in with the area that is safe for interactive
- *             content.
+ * @returns the area that is safe for interactive content.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5194,8 +5179,8 @@ inline void Renderer::SetClipRect(OptionalRef<const RectRaw> rect)
  * cliprect for the current render target.
  *
  * @param renderer the rendering context.
- * @param rect an Rect structure filled in with the current clipping area
- *             or an empty rectangle if clipping is disabled.
+ * @returns an Rect structure filled in with the current clipping area
+ *          or an empty rectangle if clipping is disabled.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5259,8 +5244,7 @@ inline bool Renderer::IsClipEnabled() const
  * current render target.
  *
  * @param renderer the rendering context.
- * @param scaleX the horizontal scaling factor.
- * @param scaleY the vertical scaling factor.
+ * @param scale the horizontal and vertical scaling factors.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5313,12 +5297,7 @@ inline void Renderer::GetScale(float* scaleX, float* scaleY) const
  * Renderer.RenderClear().
  *
  * @param renderer the rendering context.
- * @param r the red value used to draw on the rendering target.
- * @param g the green value used to draw on the rendering target.
- * @param b the blue value used to draw on the rendering target.
- * @param a the alpha value used to draw on the rendering target; usually
- *          `ALPHA_OPAQUE` (255). Use Renderer.SetDrawBlendMode to
- *          specify how the alpha channel is used.
+ * @param c the color used to draw on the rendering target.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5345,12 +5324,7 @@ inline void Renderer::SetDrawColor(ColorRaw c)
  * Renderer.RenderClear().
  *
  * @param renderer the rendering context.
- * @param r the red value used to draw on the rendering target.
- * @param g the green value used to draw on the rendering target.
- * @param b the blue value used to draw on the rendering target.
- * @param a the alpha value used to draw on the rendering target. Use
- *          Renderer.SetDrawBlendMode to specify how the alpha channel is
- *          used.
+ * @param c the color used to draw on the rendering target.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5478,7 +5452,7 @@ inline void Renderer::SetColorScale(float scale)
  * Get the color scale used for render operations.
  *
  * @param renderer the rendering context.
- * @param scale a pointer filled in with the current color scale value.
+ * @return the current color scale value.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5528,7 +5502,7 @@ inline void Renderer::SetDrawBlendMode(BlendMode blendMode)
  * Get the blend mode used for drawing operations.
  *
  * @param renderer the rendering context.
- * @param blendMode a pointer filled in with the current BlendMode.
+ * @return the current BlendMode.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5577,8 +5551,7 @@ inline void Renderer::RenderClear() { SDL::RenderClear(m_resource); }
  * Draw a point on the current rendering target at subpixel precision.
  *
  * @param renderer the renderer which should draw a point.
- * @param x the x coordinate of the point.
- * @param y the y coordinate of the point.
+ * @param p the x, y coordinate of the point.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5602,7 +5575,6 @@ inline void Renderer::RenderPoint(const FPointRaw& p)
  *
  * @param renderer the renderer which should draw multiple points.
  * @param points the points to draw.
- * @param count the number of points to draw.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5626,10 +5598,8 @@ inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
  * Draw a line on the current rendering target at subpixel precision.
  *
  * @param renderer the renderer which should draw a line.
- * @param x1 the x coordinate of the start point.
- * @param y1 the y coordinate of the start point.
- * @param x2 the x coordinate of the end point.
- * @param y2 the y coordinate of the end point.
+ * @param p1 the x,y coordinates of the start point.
+ * @param p2 the x,y coordinates of the end point.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5656,7 +5626,6 @@ inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
  *
  * @param renderer the renderer which should draw multiple lines.
  * @param points the points along the lines.
- * @param count the number of points, drawing count-1 lines.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5705,7 +5674,6 @@ inline void Renderer::RenderRect(OptionalRef<const FRectRaw> rect)
  *
  * @param renderer the renderer which should draw multiple rectangles.
  * @param rects a pointer to an array of destination rectangles.
- * @param count the number of rectangles.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5756,7 +5724,6 @@ inline void Renderer::RenderFillRect(OptionalRef<const FRectRaw> rect)
  *
  * @param renderer the renderer which should fill multiple rectangles.
  * @param rects a pointer to an array of destination rectangles.
- * @param count the number of rectangles.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -6025,11 +5992,9 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
  * @param renderer the rendering context.
  * @param texture (optional) The SDL texture to use.
  * @param vertices vertices.
- * @param num_vertices number of vertices.
  * @param indices (optional) An array of integer indices into the 'vertices'
  *                array, if nullptr all vertices will be rendered in sequential
  *                order.
- * @param num_indices number of indices.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -6445,16 +6410,18 @@ inline void Renderer::SetVSync(int vsync)
   SDL::SetRenderVSync(m_resource, vsync);
 }
 
+/// Constant for disabling renderer vsync
 #define SDL_RENDERER_VSYNC_DISABLED 0
 
+/// Constant for enabling asaptive renderer vsync
 #define SDL_RENDERER_VSYNC_ADAPTIVE (-1)
 
 /**
  * Get VSync of the given renderer.
  *
  * @param renderer the renderer to toggle.
- * @param vsync an int filled with the current vertical refresh sync interval.
- *              See Renderer.SetVSync() for the meaning of the value.
+ * @returns the current vertical refresh sync interval. See Renderer.SetVSync()
+ *          for the meaning of the value.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -6512,8 +6479,7 @@ inline int Renderer::GetVSync() const
  * The text is drawn in the color specified by Renderer.SetDrawColor().
  *
  * @param renderer the renderer which should draw a line of text.
- * @param x the x coordinate where the top-left corner of the text will draw.
- * @param y the y coordinate where the top-left corner of the text will draw.
+ * @param p the x,y coordinates where the top-left corner of the text will draw.
  * @param str the string to render.
  * @throws Error on failure.
  *
@@ -6545,10 +6511,9 @@ inline void Renderer::RenderDebugText(FPoint p, StringParam str)
  * Renderer.RenderDebugText.
  *
  * @param renderer the renderer which should draw the text.
- * @param x the x coordinate where the top-left corner of the text will draw.
- * @param y the y coordinate where the top-left corner of the text will draw.
+ * @param p the x,y coordinate where the top-left corner of the text will draw.
  * @param fmt the format string to draw.
- * @param ... additional parameters matching % tokens in the `fmt` string, if
+ * @param args additional parameters matching % tokens in the `fmt` string, if
  *            any.
  * @throws Error on failure.
  *

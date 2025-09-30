@@ -89,43 +89,32 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:gaad3bdff14ac0fcb4c9cb4277048bca70" id="r_gaad3bdff14ac0fcb4c9cb4277048bca70"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70">SDL::LogOutputFunction</a> = SDL_LogOutputFunction</td></tr>
-<tr class="memdesc:gaad3bdff14ac0fcb4c9cb4277048bca70"><td class="mdescLeft">&#160;</td><td class="mdescRight">The prototype for the log output callback function.  <br /></td></tr>
-<tr class="separator:gaad3bdff14ac0fcb4c9cb4277048bca70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9358a764d7eccceda60f37c0d658deb1" id="r_ga9358a764d7eccceda60f37c0d658deb1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga9358a764d7eccceda60f37c0d658deb1">SDL::LogOutputCB</a> = std::function&lt; void(<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>, <a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>, const char *)&gt;</td></tr>
-<tr class="memdesc:ga9358a764d7eccceda60f37c0d658deb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The prototype for the log output callback function.  <br /></td></tr>
-<tr class="separator:ga9358a764d7eccceda60f37c0d658deb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0d290de2caabf5784de249d8f16baa9f" id="r_ga0d290de2caabf5784de249d8f16baa9f"><td class="memItemLeft" align="right" valign="top"><a id="ga0d290de2caabf5784de249d8f16baa9f" name="ga0d290de2caabf5784de249d8f16baa9f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::LogCategoryRaw</b> = SDL_LogCategory</td></tr>
+<tr class="separator:ga0d290de2caabf5784de249d8f16baa9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga17098e2107cc8038245aa234ab84aba4" id="r_ga17098e2107cc8038245aa234ab84aba4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga17098e2107cc8038245aa234ab84aba4">SDL::SetLogPriorityPrefix</a> (<a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> priority, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> prefix)</td></tr>
-<tr class="memdesc:ga17098e2107cc8038245aa234ab84aba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the text prepended to log messages of a given priority.  <br /></td></tr>
-<tr class="separator:ga17098e2107cc8038245aa234ab84aba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga844718b13c9d5fb87fabfd339217199a" id="r_ga844718b13c9d5fb87fabfd339217199a"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
-<tr class="memitem:ga844718b13c9d5fb87fabfd339217199a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a">SDL::Log</a> (std::string_view fmt, ARGS &amp;&amp;... args)</td></tr>
-<tr class="memdesc:ga844718b13c9d5fb87fabfd339217199a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.  <br /></td></tr>
-<tr class="separator:ga844718b13c9d5fb87fabfd339217199a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga525492ed0880eb1b6675e101a265623e" id="r_ga525492ed0880eb1b6675e101a265623e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga525492ed0880eb1b6675e101a265623e">SDL::LogUnformatted</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> message)</td></tr>
-<tr class="memdesc:ga525492ed0880eb1b6675e101a265623e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.  <br /></td></tr>
-<tr class="separator:ga525492ed0880eb1b6675e101a265623e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad4438e5c07b0ca31e83093d4c973f1a2" id="r_gad4438e5c07b0ca31e83093d4c973f1a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70">LogOutputFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2">SDL::GetDefaultLogOutputFunction</a> ()</td></tr>
-<tr class="memdesc:gad4438e5c07b0ca31e83093d4c973f1a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the default log output function.  <br /></td></tr>
-<tr class="separator:gad4438e5c07b0ca31e83093d4c973f1a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8a90cd5b3014ccc0a76470e20fb38413" id="r_ga8a90cd5b3014ccc0a76470e20fb38413"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga8a90cd5b3014ccc0a76470e20fb38413">SDL::GetLogOutputFunction</a> (<a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70">LogOutputFunction</a> *callback, void **userdata)</td></tr>
-<tr class="memdesc:ga8a90cd5b3014ccc0a76470e20fb38413"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current log output function.  <br /></td></tr>
-<tr class="separator:ga8a90cd5b3014ccc0a76470e20fb38413"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga34fd25f38e2e9348e95b37645f021d4d" id="r_ga34fd25f38e2e9348e95b37645f021d4d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryLog.html#ga9358a764d7eccceda60f37c0d658deb1">LogOutputCB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga34fd25f38e2e9348e95b37645f021d4d">SDL::GetLogOutputFunction</a> ()</td></tr>
-<tr class="memdesc:ga34fd25f38e2e9348e95b37645f021d4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current log output function.  <br /></td></tr>
-<tr class="separator:ga34fd25f38e2e9348e95b37645f021d4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga289db14fab774b210d34224e24cc534d" id="r_ga289db14fab774b210d34224e24cc534d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d">SDL::SetLogOutputFunction</a> (<a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70">LogOutputFunction</a> callback, void *userdata)</td></tr>
-<tr class="memdesc:ga289db14fab774b210d34224e24cc534d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the default log output function with one of your own.  <br /></td></tr>
-<tr class="separator:ga289db14fab774b210d34224e24cc534d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaf38a5a30c53684b5c0df27979d853b0" id="r_gaaf38a5a30c53684b5c0df27979d853b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gaaf38a5a30c53684b5c0df27979d853b0">SDL::SetLogOutputFunction</a> (<a class="el" href="group__CategoryLog.html#ga9358a764d7eccceda60f37c0d658deb1">LogOutputCB</a> callback)</td></tr>
-<tr class="memdesc:gaaf38a5a30c53684b5c0df27979d853b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the default log output function with one of your own.  <br /></td></tr>
-<tr class="separator:gaaf38a5a30c53684b5c0df27979d853b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga526c25000071797d56d66a9b58cc457f" id="r_ga526c25000071797d56d66a9b58cc457f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga526c25000071797d56d66a9b58cc457f">SDL::ResetLogOutputFunction</a> ()</td></tr>
-<tr class="memdesc:ga526c25000071797d56d66a9b58cc457f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the current log output function with the default one.  <br /></td></tr>
-<tr class="separator:ga526c25000071797d56d66a9b58cc457f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf61fc05db2d2c907775e1c4963cc065a" id="r_gaf61fc05db2d2c907775e1c4963cc065a"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gaf61fc05db2d2c907775e1c4963cc065a">SDL::LogCategory::LogCategory</a> (LogCategoryRaw category=SDL_LOG_CATEGORY_APPLICATION)</td></tr>
+<tr class="memdesc:gaf61fc05db2d2c907775e1c4963cc065a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <a class="el" href="classSDL_1_1LogCategory.html" title="The predefined log categories.">LogCategory</a>.  <br /></td></tr>
+<tr class="separator:gaf61fc05db2d2c907775e1c4963cc065a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga485ae16531f53a5d34a70f02db8f56f0" id="r_ga485ae16531f53a5d34a70f02db8f56f0"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga485ae16531f53a5d34a70f02db8f56f0">SDL::LogCategory::LogCategory</a> (int category)</td></tr>
+<tr class="memdesc:ga485ae16531f53a5d34a70f02db8f56f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <a class="el" href="classSDL_1_1LogCategory.html" title="The predefined log categories.">LogCategory</a>.  <br /></td></tr>
+<tr class="separator:ga485ae16531f53a5d34a70f02db8f56f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf80ebb088bb7614862738b73d9405fbd" id="r_gaf80ebb088bb7614862738b73d9405fbd"><td class="memItemLeft" align="right" valign="top"><a id="gaf80ebb088bb7614862738b73d9405fbd" name="gaf80ebb088bb7614862738b73d9405fbd"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::LogCategory::operator==</b> (<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a> category) const</td></tr>
+<tr class="memdesc:gaf80ebb088bb7614862738b73d9405fbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default comparison operator. <br /></td></tr>
+<tr class="separator:gaf80ebb088bb7614862738b73d9405fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeded4bdbb28d1d903fd7d9816fdb896e" id="r_gaeded4bdbb28d1d903fd7d9816fdb896e"><td class="memItemLeft" align="right" valign="top"><a id="gaeded4bdbb28d1d903fd7d9816fdb896e" name="gaeded4bdbb28d1d903fd7d9816fdb896e"></a>
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::LogCategory::operator&lt;=&gt;</b> (<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a> category) const</td></tr>
+<tr class="memdesc:gaeded4bdbb28d1d903fd7d9816fdb896e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default comparison operator. <br /></td></tr>
+<tr class="separator:gaeded4bdbb28d1d903fd7d9816fdb896e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae4487938900c23ff279f667bddd847fd" id="r_gae4487938900c23ff279f667bddd847fd"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gae4487938900c23ff279f667bddd847fd">SDL::LogCategory::operator LogCategoryRaw</a> () const</td></tr>
+<tr class="memdesc:gae4487938900c23ff279f667bddd847fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unwraps to the underlying <a class="el" href="classSDL_1_1LogCategory.html" title="The predefined log categories.">LogCategory</a>.  <br /></td></tr>
+<tr class="separator:gae4487938900c23ff279f667bddd847fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1f4ac7674ccfbec01dca7b0e03a0e15f" id="r_ga1f4ac7674ccfbec01dca7b0e03a0e15f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga1f4ac7674ccfbec01dca7b0e03a0e15f">SDL::LogCategory::LogUnformatted</a> (<a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> priority, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> message) const</td></tr>
+<tr class="memdesc:ga1f4ac7674ccfbec01dca7b0e03a0e15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log an unformatted message with the specified priority.  <br /></td></tr>
+<tr class="separator:ga1f4ac7674ccfbec01dca7b0e03a0e15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">LogPriorities</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>The priorities assignable for a <a class="el" href="classSDL_1_1LogCategory.html" title="The predefined log categories.">LogCategory</a>. </p>
@@ -171,6 +160,12 @@ constexpr <a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef
 <tr><td class="ititle" colspan="2"><p>The logging categories.</p>
 <p>see <a class="el" href="classSDL_1_1LogCategory.html" title="The predefined log categories.">LogCategory</a> for more info </p>
 </td></tr>
+<tr class="memitem:gaad3bdff14ac0fcb4c9cb4277048bca70" id="r_gaad3bdff14ac0fcb4c9cb4277048bca70"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70">SDL::LogOutputFunction</a> = SDL_LogOutputFunction</td></tr>
+<tr class="memdesc:gaad3bdff14ac0fcb4c9cb4277048bca70"><td class="mdescLeft">&#160;</td><td class="mdescRight">The prototype for the log output callback function.  <br /></td></tr>
+<tr class="separator:gaad3bdff14ac0fcb4c9cb4277048bca70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9358a764d7eccceda60f37c0d658deb1" id="r_ga9358a764d7eccceda60f37c0d658deb1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga9358a764d7eccceda60f37c0d658deb1">SDL::LogOutputCB</a> = std::function&lt; void(<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>, <a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>, const char *)&gt;</td></tr>
+<tr class="memdesc:ga9358a764d7eccceda60f37c0d658deb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The prototype for the log output callback function.  <br /></td></tr>
+<tr class="separator:ga9358a764d7eccceda60f37c0d658deb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga86f1bba0c66044a1b213f069d41f4b2d" id="r_ga86f1bba0c66044a1b213f069d41f4b2d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga86f1bba0c66044a1b213f069d41f4b2d">SDL::LOG_CATEGORY_APPLICATION</a></td></tr>
 <tr class="memdesc:ga86f1bba0c66044a1b213f069d41f4b2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">APPLICATION.  <br /></td></tr>
 <tr class="separator:ga86f1bba0c66044a1b213f069d41f4b2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -241,11 +236,124 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
 constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::LOG_CATEGORY_CUSTOM</b> = SDL_LOG_CATEGORY_CUSTOM</td></tr>
 <tr class="memdesc:gae02ab8b8c346fa5cd3862fe12e8130a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUSTOM. <br /></td></tr>
 <tr class="separator:gae02ab8b8c346fa5cd3862fe12e8130a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa73099e6f46e218c66e18e135aba6c4c" id="r_gaa73099e6f46e218c66e18e135aba6c4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gaa73099e6f46e218c66e18e135aba6c4c">SDL::LogCategory::SetLogPriority</a> (<a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> priority) const</td></tr>
+<tr class="memdesc:gaa73099e6f46e218c66e18e135aba6c4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the priority of a particular log category.  <br /></td></tr>
+<tr class="separator:gaa73099e6f46e218c66e18e135aba6c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga65ea4161b3babe85d994133fe116be12" id="r_ga65ea4161b3babe85d994133fe116be12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga65ea4161b3babe85d994133fe116be12">SDL::LogCategory::GetLogPriority</a> () const</td></tr>
+<tr class="memdesc:ga65ea4161b3babe85d994133fe116be12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the priority of a particular log category.  <br /></td></tr>
+<tr class="separator:ga65ea4161b3babe85d994133fe116be12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga729fd1a96467d2790fb0d34bc3285858" id="r_ga729fd1a96467d2790fb0d34bc3285858"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga729fd1a96467d2790fb0d34bc3285858"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858">SDL::LogCategory::LogMessage</a> (<a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> priority, std::string_view fmt, ARGS... args) const</td></tr>
+<tr class="memdesc:ga729fd1a96467d2790fb0d34bc3285858"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with the specified priority.  <br /></td></tr>
+<tr class="separator:ga729fd1a96467d2790fb0d34bc3285858"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5157a0ade909be52bc25694bb7fa1981" id="r_ga5157a0ade909be52bc25694bb7fa1981"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga5157a0ade909be52bc25694bb7fa1981"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981">SDL::LogCategory::LogTrace</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga5157a0ade909be52bc25694bb7fa1981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_TRACE.  <br /></td></tr>
+<tr class="separator:ga5157a0ade909be52bc25694bb7fa1981"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4d71732533aee2167b6bed89e6b287ac" id="r_ga4d71732533aee2167b6bed89e6b287ac"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga4d71732533aee2167b6bed89e6b287ac"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac">SDL::LogCategory::LogVerbose</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga4d71732533aee2167b6bed89e6b287ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_VERBOSE.  <br /></td></tr>
+<tr class="separator:ga4d71732533aee2167b6bed89e6b287ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7480d5cd3f635e605b118b5ebfa0e582" id="r_ga7480d5cd3f635e605b118b5ebfa0e582"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga7480d5cd3f635e605b118b5ebfa0e582"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582">SDL::LogCategory::LogDebug</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga7480d5cd3f635e605b118b5ebfa0e582"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_DEBUG.  <br /></td></tr>
+<tr class="separator:ga7480d5cd3f635e605b118b5ebfa0e582"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3aa2fbe389a2d823f62d62615ad9c674" id="r_ga3aa2fbe389a2d823f62d62615ad9c674"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga3aa2fbe389a2d823f62d62615ad9c674"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674">SDL::LogCategory::LogInfo</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga3aa2fbe389a2d823f62d62615ad9c674"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_INFO.  <br /></td></tr>
+<tr class="separator:ga3aa2fbe389a2d823f62d62615ad9c674"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga05ea486e7417da33e623f7a613b3b848" id="r_ga05ea486e7417da33e623f7a613b3b848"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga05ea486e7417da33e623f7a613b3b848"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848">SDL::LogCategory::LogWarn</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga05ea486e7417da33e623f7a613b3b848"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_WARN.  <br /></td></tr>
+<tr class="separator:ga05ea486e7417da33e623f7a613b3b848"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6883dfbc3da8391cbc239c966fc0d89d" id="r_ga6883dfbc3da8391cbc239c966fc0d89d"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga6883dfbc3da8391cbc239c966fc0d89d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d">SDL::LogCategory::LogError</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga6883dfbc3da8391cbc239c966fc0d89d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_ERROR.  <br /></td></tr>
+<tr class="separator:ga6883dfbc3da8391cbc239c966fc0d89d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5bbb6bd9e1f05fc57016309fbab2466f" id="r_ga5bbb6bd9e1f05fc57016309fbab2466f"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga5bbb6bd9e1f05fc57016309fbab2466f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f">SDL::LogCategory::LogCritical</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga5bbb6bd9e1f05fc57016309fbab2466f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_CRITICAL.  <br /></td></tr>
+<tr class="separator:ga5bbb6bd9e1f05fc57016309fbab2466f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga01c177eb91876a7636528c962945f372" id="r_ga01c177eb91876a7636528c962945f372"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga01c177eb91876a7636528c962945f372">SDL::SetLogPriorities</a> (<a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> priority)</td></tr>
+<tr class="memdesc:ga01c177eb91876a7636528c962945f372"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the priority of all log categories.  <br /></td></tr>
+<tr class="separator:ga01c177eb91876a7636528c962945f372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1947d7c71995bf5d63e96c6519ed3d35" id="r_ga1947d7c71995bf5d63e96c6519ed3d35"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga1947d7c71995bf5d63e96c6519ed3d35">SDL::SetLogPriority</a> (int category, <a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> priority)</td></tr>
+<tr class="memdesc:ga1947d7c71995bf5d63e96c6519ed3d35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the priority of a particular log category.  <br /></td></tr>
+<tr class="separator:ga1947d7c71995bf5d63e96c6519ed3d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga18b0cab1ecd6f520333f3d79d752e44e" id="r_ga18b0cab1ecd6f520333f3d79d752e44e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga18b0cab1ecd6f520333f3d79d752e44e">SDL::GetLogPriority</a> (int category)</td></tr>
+<tr class="memdesc:ga18b0cab1ecd6f520333f3d79d752e44e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the priority of a particular log category.  <br /></td></tr>
+<tr class="separator:ga18b0cab1ecd6f520333f3d79d752e44e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab2051554cccc3505f7fbcadc258fee1f" id="r_gab2051554cccc3505f7fbcadc258fee1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gab2051554cccc3505f7fbcadc258fee1f">SDL::ResetLogPriorities</a> ()</td></tr>
+<tr class="memdesc:gab2051554cccc3505f7fbcadc258fee1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset all priorities to default.  <br /></td></tr>
+<tr class="separator:gab2051554cccc3505f7fbcadc258fee1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga17098e2107cc8038245aa234ab84aba4" id="r_ga17098e2107cc8038245aa234ab84aba4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga17098e2107cc8038245aa234ab84aba4">SDL::SetLogPriorityPrefix</a> (<a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> priority, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> prefix)</td></tr>
+<tr class="memdesc:ga17098e2107cc8038245aa234ab84aba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the text prepended to log messages of a given priority.  <br /></td></tr>
+<tr class="separator:ga17098e2107cc8038245aa234ab84aba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga707de7240c3590a9500459f401e785ab" id="r_ga707de7240c3590a9500459f401e785ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga707de7240c3590a9500459f401e785ab">SDL::LogUnformatted</a> (<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a> category, <a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> priority, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> message)</td></tr>
+<tr class="memdesc:ga707de7240c3590a9500459f401e785ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.  <br /></td></tr>
+<tr class="separator:ga707de7240c3590a9500459f401e785ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga525492ed0880eb1b6675e101a265623e" id="r_ga525492ed0880eb1b6675e101a265623e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga525492ed0880eb1b6675e101a265623e">SDL::LogUnformatted</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> message)</td></tr>
+<tr class="memdesc:ga525492ed0880eb1b6675e101a265623e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.  <br /></td></tr>
+<tr class="separator:ga525492ed0880eb1b6675e101a265623e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga844718b13c9d5fb87fabfd339217199a" id="r_ga844718b13c9d5fb87fabfd339217199a"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga844718b13c9d5fb87fabfd339217199a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a">SDL::Log</a> (std::string_view fmt, ARGS &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ga844718b13c9d5fb87fabfd339217199a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.  <br /></td></tr>
+<tr class="separator:ga844718b13c9d5fb87fabfd339217199a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga80d84adb35fd49369ed812aa5f86c86b" id="r_ga80d84adb35fd49369ed812aa5f86c86b"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga80d84adb35fd49369ed812aa5f86c86b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga80d84adb35fd49369ed812aa5f86c86b">SDL::LogMessage</a> (<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a> category, <a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> priority, std::string_view fmt, ARGS... args)</td></tr>
+<tr class="memdesc:ga80d84adb35fd49369ed812aa5f86c86b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with the specified category and priority.  <br /></td></tr>
+<tr class="separator:ga80d84adb35fd49369ed812aa5f86c86b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1d1df65b85d34dab1fc1155ecd0900ab" id="r_ga1d1df65b85d34dab1fc1155ecd0900ab"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga1d1df65b85d34dab1fc1155ecd0900ab"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga1d1df65b85d34dab1fc1155ecd0900ab">SDL::LogTrace</a> (<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a> category, std::string_view fmt, ARGS &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ga1d1df65b85d34dab1fc1155ecd0900ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_TRACE.  <br /></td></tr>
+<tr class="separator:ga1d1df65b85d34dab1fc1155ecd0900ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1108a3feea74df805777664395c19acc" id="r_ga1108a3feea74df805777664395c19acc"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga1108a3feea74df805777664395c19acc"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga1108a3feea74df805777664395c19acc">SDL::LogVerbose</a> (<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a> category, std::string_view fmt, ARGS &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ga1108a3feea74df805777664395c19acc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_VERBOSE.  <br /></td></tr>
+<tr class="separator:ga1108a3feea74df805777664395c19acc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5dcec0672e515571600bcc1c5d6f2272" id="r_ga5dcec0672e515571600bcc1c5d6f2272"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga5dcec0672e515571600bcc1c5d6f2272"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga5dcec0672e515571600bcc1c5d6f2272">SDL::LogDebug</a> (<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a> category, std::string_view fmt, ARGS &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ga5dcec0672e515571600bcc1c5d6f2272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_DEBUG.  <br /></td></tr>
+<tr class="separator:ga5dcec0672e515571600bcc1c5d6f2272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga936761d6ebfb97eda3f99e31377de192" id="r_ga936761d6ebfb97eda3f99e31377de192"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga936761d6ebfb97eda3f99e31377de192"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga936761d6ebfb97eda3f99e31377de192">SDL::LogInfo</a> (<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a> category, std::string_view fmt, ARGS &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ga936761d6ebfb97eda3f99e31377de192"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_INFO.  <br /></td></tr>
+<tr class="separator:ga936761d6ebfb97eda3f99e31377de192"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac36d6ea38eceec270050d8750a104006" id="r_gac36d6ea38eceec270050d8750a104006"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:gac36d6ea38eceec270050d8750a104006"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gac36d6ea38eceec270050d8750a104006">SDL::LogWarn</a> (<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a> category, std::string_view fmt, ARGS &amp;&amp;... args)</td></tr>
+<tr class="memdesc:gac36d6ea38eceec270050d8750a104006"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_WARN.  <br /></td></tr>
+<tr class="separator:gac36d6ea38eceec270050d8750a104006"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga78f71dadbd324db06d95821a4d724703" id="r_ga78f71dadbd324db06d95821a4d724703"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga78f71dadbd324db06d95821a4d724703"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga78f71dadbd324db06d95821a4d724703">SDL::LogError</a> (<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a> category, std::string_view fmt, ARGS &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ga78f71dadbd324db06d95821a4d724703"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_ERROR.  <br /></td></tr>
+<tr class="separator:ga78f71dadbd324db06d95821a4d724703"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4e5763bc74e8a91e043e7252c75b85bb" id="r_ga4e5763bc74e8a91e043e7252c75b85bb"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga4e5763bc74e8a91e043e7252c75b85bb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga4e5763bc74e8a91e043e7252c75b85bb">SDL::LogCritical</a> (<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a> category, std::string_view fmt, ARGS &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ga4e5763bc74e8a91e043e7252c75b85bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_PRIORITY_CRITICAL.  <br /></td></tr>
+<tr class="separator:ga4e5763bc74e8a91e043e7252c75b85bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad4438e5c07b0ca31e83093d4c973f1a2" id="r_gad4438e5c07b0ca31e83093d4c973f1a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70">LogOutputFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2">SDL::GetDefaultLogOutputFunction</a> ()</td></tr>
+<tr class="memdesc:gad4438e5c07b0ca31e83093d4c973f1a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the default log output function.  <br /></td></tr>
+<tr class="separator:gad4438e5c07b0ca31e83093d4c973f1a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8a90cd5b3014ccc0a76470e20fb38413" id="r_ga8a90cd5b3014ccc0a76470e20fb38413"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga8a90cd5b3014ccc0a76470e20fb38413">SDL::GetLogOutputFunction</a> (<a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70">LogOutputFunction</a> *callback, void **userdata)</td></tr>
+<tr class="memdesc:ga8a90cd5b3014ccc0a76470e20fb38413"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current log output function.  <br /></td></tr>
+<tr class="separator:ga8a90cd5b3014ccc0a76470e20fb38413"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga34fd25f38e2e9348e95b37645f021d4d" id="r_ga34fd25f38e2e9348e95b37645f021d4d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryLog.html#ga9358a764d7eccceda60f37c0d658deb1">LogOutputCB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga34fd25f38e2e9348e95b37645f021d4d">SDL::GetLogOutputFunction</a> ()</td></tr>
+<tr class="memdesc:ga34fd25f38e2e9348e95b37645f021d4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current log output function.  <br /></td></tr>
+<tr class="separator:ga34fd25f38e2e9348e95b37645f021d4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga289db14fab774b210d34224e24cc534d" id="r_ga289db14fab774b210d34224e24cc534d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d">SDL::SetLogOutputFunction</a> (<a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70">LogOutputFunction</a> callback, void *userdata)</td></tr>
+<tr class="memdesc:ga289db14fab774b210d34224e24cc534d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the default log output function with one of your own.  <br /></td></tr>
+<tr class="separator:ga289db14fab774b210d34224e24cc534d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaf38a5a30c53684b5c0df27979d853b0" id="r_gaaf38a5a30c53684b5c0df27979d853b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gaaf38a5a30c53684b5c0df27979d853b0">SDL::SetLogOutputFunction</a> (<a class="el" href="group__CategoryLog.html#ga9358a764d7eccceda60f37c0d658deb1">LogOutputCB</a> callback)</td></tr>
+<tr class="memdesc:gaaf38a5a30c53684b5c0df27979d853b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the default log output function with one of your own.  <br /></td></tr>
+<tr class="separator:gaaf38a5a30c53684b5c0df27979d853b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga526c25000071797d56d66a9b58cc457f" id="r_ga526c25000071797d56d66a9b58cc457f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga526c25000071797d56d66a9b58cc457f">SDL::ResetLogOutputFunction</a> ()</td></tr>
+<tr class="memdesc:ga526c25000071797d56d66a9b58cc457f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the current log output function with the default one.  <br /></td></tr>
+<tr class="separator:ga526c25000071797d56d66a9b58cc457f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>A message's LogPriority signifies how important the message is. A message's <a class="el" href="classSDL_1_1LogCategory.html" title="The predefined log categories.">LogCategory</a> signifies from what domain it belongs to. Every category has a minimum priority specified: when a message belongs to that category, it will only be sent out if it has that minimum priority or higher.</p>
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s own logs are sent below the default priority threshold, so they are quiet by default.</p>
-<p>You can change the log verbosity programmatically using <a class="el" href="classSDL_1_1LogCategory.html#a011df65f656938057462aeb5ed7e2b91" title="Set the priority of a particular log category.">LogCategory.SetLogPriority()</a> or with SetHint(SDL_HINT_LOGGING, ...), or with the "SDL_LOGGING" environment variable. This variable is a comma separated set of category=level tokens that define the default logging levels for <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> applications.</p>
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>'s own logs are sent below the default priority threshold, so they are quiet by default.</p>
+<p>You can change the log verbosity programmatically using <a class="el" href="group__CategoryLog.html#gaa73099e6f46e218c66e18e135aba6c4c" title="Set the priority of a particular log category.">LogCategory.SetLogPriority()</a> or with SetHint(SDL_HINT_LOGGING, ...), or with the "SDL_LOGGING" environment variable. This variable is a comma separated set of category=level tokens that define the default logging levels for <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> applications.</p>
 <p>The category can be a numeric category, one of "app", "error", "assert", "system", "audio", "video", "render", "input", "test", or <code>*</code> for any unspecified category.</p>
 <p>The level can be a numeric level, one of "trace", "verbose", "debug", "info", "warn", "error", "critical", or "quiet" to disable that category.</p>
 <p>You can omit the category if you want to set the logging level for all categories.</p>
@@ -271,7 +379,7 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function is called by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> when there is new text to be logged. A mutex is held so that this function is never called by more than one thread at once.</p>
+<p>This function is called by <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> when there is new text to be logged. A mutex is held so that this function is never called by more than one thread at once.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">category</td><td>the category of the message. </td></tr>
@@ -280,7 +388,7 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70" title="The prototype for the log output callback function.">LogOutputFunction</a> </dd></dl>
 
@@ -297,7 +405,7 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function is called by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> when there is new text to be logged. A mutex is held so that this function is never called by more than one thread at once.</p>
+<p>This function is called by <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> when there is new text to be logged. A mutex is held so that this function is never called by more than one thread at once.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">userdata</td><td>what was passed as <code>userdata</code> to <a class="el" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d" title="Replace the default log output function with one of your own.">SetLogOutputFunction()</a>. </td></tr>
@@ -307,7 +415,7 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -322,7 +430,7 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -351,10 +459,10 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the default log output callback.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d" title="Replace the default log output function with one of your own.">SetLogOutputFunction()</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d" title="Replace the default log output function with one of your own.">SetLogOutputFunction</a> </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#ga34fd25f38e2e9348e95b37645f021d4d" title="Get the current log output function.">GetLogOutputFunction()</a> </dd></dl>
+<a class="el" href="group__CategoryLog.html#ga8a90cd5b3014ccc0a76470e20fb38413" title="Get the current log output function.">GetLogOutputFunction</a> </dd></dl>
 
 </div>
 </div>
@@ -382,13 +490,13 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the LogOutputCB currently set</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>listener-callback </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction()</a> </dd>
+<a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction</a> </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d" title="Replace the default log output function with one of your own.">SetLogOutputFunction()</a> </dd></dl>
+<a class="el" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d" title="Replace the default log output function with one of your own.">SetLogOutputFunction</a> </dd></dl>
 
 </div>
 </div>
@@ -433,10 +541,75 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction()</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction</a> </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d" title="Replace the default log output function with one of your own.">SetLogOutputFunction()</a> </dd></dl>
+<a class="el" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d" title="Replace the default log output function with one of your own.">SetLogOutputFunction</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga65ea4161b3babe85d994133fe116be12" name="ga65ea4161b3babe85d994133fe116be12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga65ea4161b3babe85d994133fe116be12">&#9670;&#160;</a></span>GetLogPriority() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> SDL::LogCategory::GetLogPriority </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the LogPriority for the requested category.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gaa73099e6f46e218c66e18e135aba6c4c" title="Set the priority of a particular log category.">LogCategory.SetLogPriority</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga18b0cab1ecd6f520333f3d79d752e44e" name="ga18b0cab1ecd6f520333f3d79d752e44e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga18b0cab1ecd6f520333f3d79d752e44e">&#9670;&#160;</a></span>GetLogPriority() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> SDL::GetLogPriority </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>category</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the category to query. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the LogPriority for the requested category.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gaa73099e6f46e218c66e18e135aba6c4c" title="Set the priority of a particular log category.">LogCategory.SetLogPriority</a> </dd></dl>
 
 </div>
 </div>
@@ -483,34 +656,1053 @@ template&lt;class... ARGS&gt; </div>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="formatted-string.html">Formatted string</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>formatted-string </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#ga525492ed0880eb1b6675e101a265623e" title="Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">LogUnformatted()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga707de7240c3590a9500459f401e785ab" title="Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">LogUnformatted()</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with SDL_LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with SDL_LOG_PRIORITY_DEBUG.">LogCategory.LogDebug()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with SDL_LOG_PRIORITY_ERROR.">LogCategory.LogError()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with SDL_LOG_PRIORITY_INFO.">LogCategory.LogInfo()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a67b420fcb5d7bebbeba43ffd9cd82b9c" title="Log a message with the specified priority.">LogCategory.Log()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogCategory.LogUnformatted()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga707de7240c3590a9500459f401e785ab" title="Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">LogUnformatted</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a5157a0ade909be52bc25694bb7fa1981" title="Log a message with SDL_LOG_PRIORITY_TRACE.">LogCategory.LogTrace()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a4d71732533aee2167b6bed89e6b287ac" title="Log a message with SDL_LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a05ea486e7417da33e623f7a613b3b848" title="Log a message with SDL_LOG_PRIORITY_WARN.">LogCategory.LogWarn()</a> </dd></dl>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga485ae16531f53a5d34a70f02db8f56f0" name="ga485ae16531f53a5d34a70f02db8f56f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga485ae16531f53a5d34a70f02db8f56f0">&#9670;&#160;</a></span>LogCategory() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr SDL::LogCategory::LogCategory </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>category</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the value to be wrapped </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gaf61fc05db2d2c907775e1c4963cc065a" name="gaf61fc05db2d2c907775e1c4963cc065a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf61fc05db2d2c907775e1c4963cc065a">&#9670;&#160;</a></span>LogCategory() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr SDL::LogCategory::LogCategory </td>
+          <td>(</td>
+          <td class="paramtype">LogCategoryRaw&#160;</td>
+          <td class="paramname"><em>category</em> = <code>SDL_LOG_CATEGORY_APPLICATION</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the value to be wrapped </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga4e5763bc74e8a91e043e7252c75b85bb" name="ga4e5763bc74e8a91e043e7252c75b85bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4e5763bc74e8a91e043e7252c75b85bb">&#9670;&#160;</a></span>LogCritical() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCritical </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160;</td>
+          <td class="paramname"><em>category</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the category of the message. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf() style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching % tokens in the <b>fmt</b> string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">Log</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga707de7240c3590a9500459f401e785ab" title="Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga5bbb6bd9e1f05fc57016309fbab2466f" name="ga5bbb6bd9e1f05fc57016309fbab2466f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5bbb6bd9e1f05fc57016309fbab2466f">&#9670;&#160;</a></span>LogCritical() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogCritical </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="formatted-string.html">Formatted string</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd>formatted-string </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogCategory.LogUnformatted()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga5dcec0672e515571600bcc1c5d6f2272" name="ga5dcec0672e515571600bcc1c5d6f2272"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5dcec0672e515571600bcc1c5d6f2272">&#9670;&#160;</a></span>LogDebug() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogDebug </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160;</td>
+          <td class="paramname"><em>category</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the category of the message. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf() style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching % tokens in the <b>fmt</b> string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">Log</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga707de7240c3590a9500459f401e785ab" title="Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga7480d5cd3f635e605b118b5ebfa0e582" name="ga7480d5cd3f635e605b118b5ebfa0e582"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7480d5cd3f635e605b118b5ebfa0e582">&#9670;&#160;</a></span>LogDebug() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogDebug </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="formatted-string.html">Formatted string</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga78f71dadbd324db06d95821a4d724703" name="ga78f71dadbd324db06d95821a4d724703"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga78f71dadbd324db06d95821a4d724703">&#9670;&#160;</a></span>LogError() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogError </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160;</td>
+          <td class="paramname"><em>category</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the category of the message. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf() style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching % tokens in the <b>fmt</b> string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">Log</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga707de7240c3590a9500459f401e785ab" title="Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga6883dfbc3da8391cbc239c966fc0d89d" name="ga6883dfbc3da8391cbc239c966fc0d89d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6883dfbc3da8391cbc239c966fc0d89d">&#9670;&#160;</a></span>LogError() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogError </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="formatted-string.html">Formatted string</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga936761d6ebfb97eda3f99e31377de192" name="ga936761d6ebfb97eda3f99e31377de192"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga936761d6ebfb97eda3f99e31377de192">&#9670;&#160;</a></span>LogInfo() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogInfo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160;</td>
+          <td class="paramname"><em>category</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the category of the message. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf() style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching % tokens in the <b>fmt</b> string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">Log</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga707de7240c3590a9500459f401e785ab" title="Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga3aa2fbe389a2d823f62d62615ad9c674" name="ga3aa2fbe389a2d823f62d62615ad9c674"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3aa2fbe389a2d823f62d62615ad9c674">&#9670;&#160;</a></span>LogInfo() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogInfo </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="formatted-string.html">Formatted string</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga80d84adb35fd49369ed812aa5f86c86b" name="ga80d84adb35fd49369ed812aa5f86c86b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga80d84adb35fd49369ed812aa5f86c86b">&#9670;&#160;</a></span>LogMessage() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogMessage </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160;</td>
+          <td class="paramname"><em>category</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>&#160;</td>
+          <td class="paramname"><em>priority</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the category of the message. </td></tr>
+    <tr><td class="paramname">priority</td><td>the priority of the message. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf() style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching % tokens in the <b>fmt</b> string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">Log</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga707de7240c3590a9500459f401e785ab" title="Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga729fd1a96467d2790fb0d34bc3285858" name="ga729fd1a96467d2790fb0d34bc3285858"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga729fd1a96467d2790fb0d34bc3285858">&#9670;&#160;</a></span>LogMessage() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogMessage </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>&#160;</td>
+          <td class="paramname"><em>priority</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">priority</td><td>the priority of the message. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="formatted-string.html">Formatted string</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga1d1df65b85d34dab1fc1155ecd0900ab" name="ga1d1df65b85d34dab1fc1155ecd0900ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1d1df65b85d34dab1fc1155ecd0900ab">&#9670;&#160;</a></span>LogTrace() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogTrace </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160;</td>
+          <td class="paramname"><em>category</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the category of the message. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf() style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching % tokens in the <b>fmt</b> string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">Log</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga707de7240c3590a9500459f401e785ab" title="Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga5157a0ade909be52bc25694bb7fa1981" name="ga5157a0ade909be52bc25694bb7fa1981"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5157a0ade909be52bc25694bb7fa1981">&#9670;&#160;</a></span>LogTrace() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogTrace </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="formatted-string.html">Formatted string</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga707de7240c3590a9500459f401e785ab" name="ga707de7240c3590a9500459f401e785ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga707de7240c3590a9500459f401e785ab">&#9670;&#160;</a></span>LogUnformatted() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogUnformatted </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160;</td>
+          <td class="paramname"><em>category</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>&#160;</td>
+          <td class="paramname"><em>priority</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>message</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the category of the message. </td></tr>
+    <tr><td class="paramname">priority</td><td>the priority of the message. </td></tr>
+    <tr><td class="paramname">message</td><td>string to output.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">Log</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga1f4ac7674ccfbec01dca7b0e03a0e15f" name="ga1f4ac7674ccfbec01dca7b0e03a0e15f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1f4ac7674ccfbec01dca7b0e03a0e15f">&#9670;&#160;</a></span>LogUnformatted() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogUnformatted </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>&#160;</td>
+          <td class="paramname"><em>priority</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>message</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">priority</td><td>the priority of the message. </td></tr>
+    <tr><td class="paramname">message</td><td>string to output.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">SDL::Log()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">Log()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCritical()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogDebug()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogError()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogInfo()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogTrace()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogVerbose()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogWarn()</a> </dd></dl>
 
 </div>
 </div>
 <a id="ga525492ed0880eb1b6675e101a265623e" name="ga525492ed0880eb1b6675e101a265623e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga525492ed0880eb1b6675e101a265623e">&#9670;&#160;</a></span>LogUnformatted()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga525492ed0880eb1b6675e101a265623e">&#9670;&#160;</a></span>LogUnformatted() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -539,26 +1731,314 @@ template&lt;class... ARGS&gt; </div>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">Log()</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">Log</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with SDL_LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with SDL_LOG_PRIORITY_DEBUG.">LogCategory.LogDebug()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with SDL_LOG_PRIORITY_ERROR.">LogCategory.LogError()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with SDL_LOG_PRIORITY_INFO.">LogCategory.LogInfo()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a67b420fcb5d7bebbeba43ffd9cd82b9c" title="Log a message with the specified priority.">LogCategory.Log()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogCategory.LogUnformatted()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a5157a0ade909be52bc25694bb7fa1981" title="Log a message with SDL_LOG_PRIORITY_TRACE.">LogCategory.LogTrace()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a4d71732533aee2167b6bed89e6b287ac" title="Log a message with SDL_LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga1108a3feea74df805777664395c19acc" name="ga1108a3feea74df805777664395c19acc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1108a3feea74df805777664395c19acc">&#9670;&#160;</a></span>LogVerbose() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogVerbose </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160;</td>
+          <td class="paramname"><em>category</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the category of the message. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf() style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching % tokens in the <b>fmt</b> string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">Log</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a05ea486e7417da33e623f7a613b3b848" title="Log a message with SDL_LOG_PRIORITY_WARN.">LogCategory.LogWarn()</a> </dd></dl>
+<a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga707de7240c3590a9500459f401e785ab" title="Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga4d71732533aee2167b6bed89e6b287ac" name="ga4d71732533aee2167b6bed89e6b287ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4d71732533aee2167b6bed89e6b287ac">&#9670;&#160;</a></span>LogVerbose() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogVerbose </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="formatted-string.html">Formatted string</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with LOG_PRIORITY_WARN.">LogCategory.LogWarn</a> </dd></dl>
+
+</div>
+</div>
+<a id="gac36d6ea38eceec270050d8750a104006" name="gac36d6ea38eceec270050d8750a104006"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac36d6ea38eceec270050d8750a104006">&#9670;&#160;</a></span>LogWarn() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogWarn </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160;</td>
+          <td class="paramname"><em>category</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the category of the message. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf() style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching % tokens in the <b>fmt</b> string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">Log</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga707de7240c3590a9500459f401e785ab" title="Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga05ea486e7417da33e623f7a613b3b848" name="ga05ea486e7417da33e623f7a613b3b848"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga05ea486e7417da33e623f7a613b3b848">&#9670;&#160;</a></span>LogWarn() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogWarn </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="formatted-string.html">Formatted string</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with LOG_PRIORITY_DEBUG.">LogCategory.LogDebug</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with LOG_PRIORITY_ERROR.">LogCategory.LogError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with LOG_PRIORITY_INFO.">LogCategory.LogInfo</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga729fd1a96467d2790fb0d34bc3285858" title="Log a message with the specified priority.">LogCategory.LogMessage</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with LOG_PRIORITY_TRACE.">LogCategory.LogTrace</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose</a> </dd></dl>
+
+</div>
+</div>
+<a id="gae4487938900c23ff279f667bddd847fd" name="gae4487938900c23ff279f667bddd847fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae4487938900c23ff279f667bddd847fd">&#9670;&#160;</a></span>operator LogCategoryRaw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr SDL::LogCategory::operator LogCategoryRaw </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the underlying LogCategoryRaw. </dd></dl>
 
 </div>
 </div>
@@ -585,10 +2065,41 @@ template&lt;class... ARGS&gt; </div>
 </table>
 </div><div class="memdoc">
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction()</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction</a> </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#ga34fd25f38e2e9348e95b37645f021d4d" title="Get the current log output function.">GetLogOutputFunction()</a> </dd></dl>
+<a class="el" href="group__CategoryLog.html#ga8a90cd5b3014ccc0a76470e20fb38413" title="Get the current log output function.">GetLogOutputFunction</a> </dd></dl>
+
+</div>
+</div>
+<a id="gab2051554cccc3505f7fbcadc258fee1f" name="gab2051554cccc3505f7fbcadc258fee1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab2051554cccc3505f7fbcadc258fee1f">&#9670;&#160;</a></span>ResetLogPriorities()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::ResetLogPriorities </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is called by <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a>.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga01c177eb91876a7636528c962945f372" title="Set the priority of all log categories.">SetLogPriorities</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#gaa73099e6f46e218c66e18e135aba6c4c" title="Set the priority of a particular log category.">LogCategory.SetLogPriority</a> </dd></dl>
 
 </div>
 </div>
@@ -622,15 +2133,15 @@ template&lt;class... ARGS&gt; </div>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>listener-callback </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction()</a> </dd>
+<a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction</a> </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#ga34fd25f38e2e9348e95b37645f021d4d" title="Get the current log output function.">GetLogOutputFunction()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga8a90cd5b3014ccc0a76470e20fb38413" title="Get the current log output function.">GetLogOutputFunction</a> </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#ga526c25000071797d56d66a9b58cc457f" title="Replace the current log output function with the default one.">ResetLogOutputFunction()</a> </dd></dl>
+<a class="el" href="group__CategoryLog.html#ga526c25000071797d56d66a9b58cc457f" title="Replace the current log output function with the default one.">ResetLogOutputFunction</a> </dd></dl>
 
 </div>
 </div>
@@ -675,12 +2186,138 @@ template&lt;class... ARGS&gt; </div>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction()</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction</a> </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#ga34fd25f38e2e9348e95b37645f021d4d" title="Get the current log output function.">GetLogOutputFunction()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga8a90cd5b3014ccc0a76470e20fb38413" title="Get the current log output function.">GetLogOutputFunction</a> </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#ga526c25000071797d56d66a9b58cc457f" title="Replace the current log output function with the default one.">ResetLogOutputFunction()</a> </dd></dl>
+<a class="el" href="group__CategoryLog.html#ga526c25000071797d56d66a9b58cc457f" title="Replace the current log output function with the default one.">ResetLogOutputFunction</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga01c177eb91876a7636528c962945f372" name="ga01c177eb91876a7636528c962945f372"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga01c177eb91876a7636528c962945f372">&#9670;&#160;</a></span>SetLogPriorities()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::SetLogPriorities </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>&#160;</td>
+          <td class="paramname"><em>priority</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">priority</td><td>the LogPriority to assign.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gab2051554cccc3505f7fbcadc258fee1f" title="Reset all priorities to default.">ResetLogPriorities</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#gaa73099e6f46e218c66e18e135aba6c4c" title="Set the priority of a particular log category.">LogCategory.SetLogPriority</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga1947d7c71995bf5d63e96c6519ed3d35" name="ga1947d7c71995bf5d63e96c6519ed3d35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1947d7c71995bf5d63e96c6519ed3d35">&#9670;&#160;</a></span>SetLogPriority() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::SetLogPriority </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>category</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>&#160;</td>
+          <td class="paramname"><em>priority</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the category to assign a priority to. </td></tr>
+    <tr><td class="paramname">priority</td><td>the LogPriority to assign.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga65ea4161b3babe85d994133fe116be12" title="Get the priority of a particular log category.">LogCategory.GetLogPriority</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#gab2051554cccc3505f7fbcadc258fee1f" title="Reset all priorities to default.">ResetLogPriorities</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga01c177eb91876a7636528c962945f372" title="Set the priority of all log categories.">SetLogPriorities</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaa73099e6f46e218c66e18e135aba6c4c" name="gaa73099e6f46e218c66e18e135aba6c4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa73099e6f46e218c66e18e135aba6c4c">&#9670;&#160;</a></span>SetLogPriority() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::SetLogPriority </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>&#160;</td>
+          <td class="paramname"><em>priority</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">priority</td><td>the LogPriority to assign.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga65ea4161b3babe85d994133fe116be12" title="Get the priority of a particular log category.">LogCategory.GetLogPriority</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#gab2051554cccc3505f7fbcadc258fee1f" title="Reset all priorities to default.">ResetLogPriorities</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga01c177eb91876a7636528c962945f372" title="Set the priority of all log categories.">SetLogPriorities</a> </dd></dl>
 
 </div>
 </div>
@@ -732,10 +2369,10 @@ template&lt;class... ARGS&gt; </div>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1LogCategory.html#aea4bbac0bfee6260e24ced6bd5502b47" title="Set the priority of all log categories.">LogCategory.SetLogPriorities</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga01c177eb91876a7636528c962945f372" title="Set the priority of all log categories.">SetLogPriorities</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a011df65f656938057462aeb5ed7e2b91" title="Set the priority of a particular log category.">LogCategory.SetLogPriority</a> </dd></dl>
+<a class="el" href="group__CategoryLog.html#gaa73099e6f46e218c66e18e135aba6c4c" title="Set the priority of a particular log category.">LogCategory.SetLogPriority</a> </dd></dl>
 
 </div>
 </div>

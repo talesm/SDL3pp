@@ -522,12 +522,19 @@ public:
    */
   void ClearProperty(StringParam name) const;
 
-  template<std::output_iterator<const char*> IT>
-  void Enumerate(IT outputIter) const
-  {
-    static_assert(false, "Not implemented");
-  }
-
+  /**
+   * Enumerate the properties contained in a group of properties.
+   *
+   * The callback function is called for each property in the group of
+   * properties. The properties are locked during enumeration.
+   *
+   * @param callback the function to call for each property.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
   void Enumerate(EnumeratePropertiesCB callback) const;
 
   /**
@@ -546,6 +553,13 @@ public:
    */
   void Enumerate(EnumeratePropertiesCallback callback, void* userdata) const;
 
+  /**
+   * Returns the number of properties this has
+   *
+   * This uses EnumerateProperties() internally, so might not be so fast
+   *
+   * @return Uint64
+   */
   Uint64 GetCount() const;
 };
 
@@ -1251,6 +1265,14 @@ inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
   SDL::EnumerateProperties(m_resource, callback, userdata);
 }
 
+/**
+ * Returns the number of properties this has
+ *
+ * This uses EnumerateProperties() internally, so might not be so fast
+ *
+ * @param props
+ * @return Uint64
+ */
 inline Uint64 CountProperties(PropertiesParam props)
 {
   Uint64 count = 0;

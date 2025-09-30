@@ -78,7 +78,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> offers a simple message box API, which is useful for simple alerts, such as informing the user when something fatal happens at startup without the need to build a UI for it (or informing the user <em>before</em> your UI is ready).  
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> offers a simple message box API, which is useful for simple alerts, such as informing the user when something fatal happens at startup without the need to build a UI for it (or informing the user <em>before</em> your UI is ready).  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -89,6 +89,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:ga1153004631252a9b43527a2aecb9edd5" id="r_ga1153004631252a9b43527a2aecb9edd5"><td class="memItemLeft" align="right" valign="top"><a id="ga1153004631252a9b43527a2aecb9edd5" name="ga1153004631252a9b43527a2aecb9edd5"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MessageBoxRaw</b> = SDL_MessageBoxData</td></tr>
+<tr class="separator:ga1153004631252a9b43527a2aecb9edd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0706a4c953acdbbd5acbdfc1bfd65c49" id="r_ga0706a4c953acdbbd5acbdfc1bfd65c49"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMessagebox.html#ga0706a4c953acdbbd5acbdfc1bfd65c49">SDL::MessageBoxButtonData</a> = SDL_MessageBoxButtonData</td></tr>
 <tr class="memdesc:ga0706a4c953acdbbd5acbdfc1bfd65c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Individual button data.  <br /></td></tr>
 <tr class="separator:ga0706a4c953acdbbd5acbdfc1bfd65c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -101,12 +104,18 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gad30a11485629e7d31f3c8dbee06bc8d1" id="r_gad30a11485629e7d31f3c8dbee06bc8d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMessagebox.html#gad30a11485629e7d31f3c8dbee06bc8d1">SDL::ShowSimpleMessageBox</a> (<a class="el" href="group__CategoryMessagebox.html#ga1f1cc2ebff8c3b76909040b379ebd491">MessageBoxFlags</a> flags, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> title, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> message, <a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> window)</td></tr>
-<tr class="memdesc:gad30a11485629e7d31f3c8dbee06bc8d1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSDL_1_1Display.html" title="This is a unique ID for a display for the time it is connected to the system, and is never reused for...">Display</a> a simple modal message box.  <br /></td></tr>
-<tr class="separator:gad30a11485629e7d31f3c8dbee06bc8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf15e54ea5cba6478a3a14b326762386c" id="r_gaf15e54ea5cba6478a3a14b326762386c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMessagebox.html#gaf15e54ea5cba6478a3a14b326762386c">SDL::ShowMessageBox</a> (const MessageBoxRaw &amp;messageboxdata, int *buttonid)</td></tr>
+<tr class="memdesc:gaf15e54ea5cba6478a3a14b326762386c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a modal message box.  <br /></td></tr>
+<tr class="separator:gaf15e54ea5cba6478a3a14b326762386c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9562f492c416d4b9939e0879a79b2494" id="r_ga9562f492c416d4b9939e0879a79b2494"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMessagebox.html#ga9562f492c416d4b9939e0879a79b2494">SDL::ShowSimpleMessageBox</a> (<a class="el" href="group__CategoryMessagebox.html#ga1f1cc2ebff8c3b76909040b379ebd491">MessageBoxFlags</a> flags, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> title, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> message, <a class="el" href="structSDL_1_1WindowParam.html">WindowParam</a> window)</td></tr>
+<tr class="memdesc:ga9562f492c416d4b9939e0879a79b2494"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSDL_1_1Display.html" title="This is a unique ID for a display for the time it is connected to the system, and is never reused for...">Display</a> a simple modal message box.  <br /></td></tr>
+<tr class="separator:ga9562f492c416d4b9939e0879a79b2494"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2332a11f0c4f8d0c1f4d5f98bfe0e1cb" id="r_ga2332a11f0c4f8d0c1f4d5f98bfe0e1cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMessagebox.html#ga2332a11f0c4f8d0c1f4d5f98bfe0e1cb">SDL::MessageBox::Show</a> (int *buttonid) const</td></tr>
+<tr class="memdesc:ga2332a11f0c4f8d0c1f4d5f98bfe0e1cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a modal message box.  <br /></td></tr>
+<tr class="separator:ga2332a11f0c4f8d0c1f4d5f98bfe0e1cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">MessageBoxFlags</h2></td></tr>
-<tr class="memitem:ga1f1cc2ebff8c3b76909040b379ebd491" id="r_ga1f1cc2ebff8c3b76909040b379ebd491"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMessagebox.html#ga1f1cc2ebff8c3b76909040b379ebd491">SDL::MessageBoxFlags</a> = Uint32</td></tr>
+<tr class="memitem:ga1f1cc2ebff8c3b76909040b379ebd491" id="r_ga1f1cc2ebff8c3b76909040b379ebd491"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMessagebox.html#ga1f1cc2ebff8c3b76909040b379ebd491">SDL::MessageBoxFlags</a> = <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a></td></tr>
 <tr class="memdesc:ga1f1cc2ebff8c3b76909040b379ebd491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Message box flags.  <br /></td></tr>
 <tr class="separator:ga1f1cc2ebff8c3b76909040b379ebd491"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga65a6fbca8d509ed2a4dc1fe8922904c2" id="r_ga65a6fbca8d509ed2a4dc1fe8922904c2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryMessagebox.html#ga1f1cc2ebff8c3b76909040b379ebd491">MessageBoxFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMessagebox.html#ga65a6fbca8d509ed2a4dc1fe8922904c2">SDL::MESSAGEBOX_ERROR</a></td></tr>
@@ -126,7 +135,7 @@ Functions</h2></td></tr>
 <tr class="separator:ga050d0f8f74946eb5f21b3d5ff731ceeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">MessageBoxButtonFlags</h2></td></tr>
-<tr class="memitem:gaeff8b0d93ec8a25f5835b59e4f0306ec" id="r_gaeff8b0d93ec8a25f5835b59e4f0306ec"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMessagebox.html#gaeff8b0d93ec8a25f5835b59e4f0306ec">SDL::MessageBoxButtonFlags</a> = Uint32</td></tr>
+<tr class="memitem:gaeff8b0d93ec8a25f5835b59e4f0306ec" id="r_gaeff8b0d93ec8a25f5835b59e4f0306ec"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMessagebox.html#gaeff8b0d93ec8a25f5835b59e4f0306ec">SDL::MessageBoxButtonFlags</a> = <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a></td></tr>
 <tr class="memdesc:gaeff8b0d93ec8a25f5835b59e4f0306ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">MessageBoxButtonData flags.  <br /></td></tr>
 <tr class="separator:gaeff8b0d93ec8a25f5835b59e4f0306ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6265e154d5dff11063cd071b9d4ac79d" id="r_ga6265e154d5dff11063cd071b9d4ac79d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryMessagebox.html#gaeff8b0d93ec8a25f5835b59e4f0306ec">MessageBoxButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMessagebox.html#ga6265e154d5dff11063cd071b9d4ac79d">SDL::MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT</a></td></tr>
@@ -162,7 +171,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MessageBoxColor
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>These message boxes are native system dialogs where possible.</p>
-<p>There is both a customizable function (<a class="el" href="structSDL_1_1MessageBox.html#a2332a11f0c4f8d0c1f4d5f98bfe0e1cb" title="Create a modal message box.">MessageBox.Show()</a>) that offers lots of options for what to display and reports on what choice the user made, and also a much-simplified version (<a class="el" href="group__CategoryMessagebox.html#gad30a11485629e7d31f3c8dbee06bc8d1" title="Display a simple modal message box.">ShowSimpleMessageBox()</a>), merely takes a text message and title, and waits until the user presses a single "OK" UI button. Often, this is all that is necessary. </p>
+<p>There is both a customizable function (<a class="el" href="group__CategoryMessagebox.html#ga2332a11f0c4f8d0c1f4d5f98bfe0e1cb" title="Create a modal message box.">MessageBox.Show()</a>) that offers lots of options for what to display and reports on what choice the user made, and also a much-simplified version (<a class="el" href="group__CategoryMessagebox.html#ga9562f492c416d4b9939e0879a79b2494" title="Display a simple modal message box.">ShowSimpleMessageBox()</a>), merely takes a text message and title, and waits until the user presses a single "OK" UI button. Often, this is all that is necessary. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ga0706a4c953acdbbd5acbdfc1bfd65c49" name="ga0706a4c953acdbbd5acbdfc1bfd65c49"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga0706a4c953acdbbd5acbdfc1bfd65c49">&#9670;&#160;</a></span>MessageBoxButtonData</h2>
@@ -175,7 +184,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MessageBoxColor
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -186,11 +195,11 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MessageBoxColor
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryMessagebox.html#gaeff8b0d93ec8a25f5835b59e4f0306ec">SDL::MessageBoxButtonFlags</a> = typedef Uint32</td>
+          <td class="memname">using <a class="el" href="group__CategoryMessagebox.html#gaeff8b0d93ec8a25f5835b59e4f0306ec">SDL::MessageBoxButtonFlags</a> = typedef <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -205,7 +214,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MessageBoxColor
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -220,7 +229,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MessageBoxColor
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -231,18 +240,119 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MessageBoxColor
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryMessagebox.html#ga1f1cc2ebff8c3b76909040b379ebd491">SDL::MessageBoxFlags</a> = typedef Uint32</td>
+          <td class="memname">using <a class="el" href="group__CategoryMessagebox.html#ga1f1cc2ebff8c3b76909040b379ebd491">SDL::MessageBoxFlags</a> = typedef <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>If supported will display warning icon, etc.</p>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gad30a11485629e7d31f3c8dbee06bc8d1" name="gad30a11485629e7d31f3c8dbee06bc8d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad30a11485629e7d31f3c8dbee06bc8d1">&#9670;&#160;</a></span>ShowSimpleMessageBox()</h2>
+<a id="ga2332a11f0c4f8d0c1f4d5f98bfe0e1cb" name="ga2332a11f0c4f8d0c1f4d5f98bfe0e1cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2332a11f0c4f8d0c1f4d5f98bfe0e1cb">&#9670;&#160;</a></span>Show()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::MessageBox::Show </td>
+          <td>(</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>buttonid</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If your needs aren't complex, it might be easier to use ShowSimpleMessageBox.</p>
+<p>This function should be called on the thread that created the parent window, or on the main thread if the messagebox has no parent. It will block execution of that thread until the user clicks a button or closes the messagebox.</p>
+<p>This function may be called at any time, even before <a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a>. This makes it useful for reporting errors like a failure to create a renderer or OpenGL context.</p>
+<p>On X11, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> rolls its own dialog box with X11 primitives instead of a formal toolkit like GTK+ or Qt.</p>
+<p>Note that if <a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a> would fail because there isn't any available video target, this function is likely to fail for the same reasons. If this is a concern, check the return value from this function and fall back to writing to stderr if you can. </p><pre class="fragment">                  other options.
+</pre> <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buttonid</td><td>the pointer to which user id of hit button should be copied. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMessagebox.html#ga9562f492c416d4b9939e0879a79b2494" title="Display a simple modal message box.">ShowSimpleMessageBox</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaf15e54ea5cba6478a3a14b326762386c" name="gaf15e54ea5cba6478a3a14b326762386c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf15e54ea5cba6478a3a14b326762386c">&#9670;&#160;</a></span>ShowMessageBox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::ShowMessageBox </td>
+          <td>(</td>
+          <td class="paramtype">const MessageBoxRaw &amp;&#160;</td>
+          <td class="paramname"><em>messageboxdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>buttonid</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If your needs aren't complex, it might be easier to use ShowSimpleMessageBox.</p>
+<p>This function should be called on the thread that created the parent window, or on the main thread if the messagebox has no parent. It will block execution of that thread until the user clicks a button or closes the messagebox.</p>
+<p>This function may be called at any time, even before <a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a>. This makes it useful for reporting errors like a failure to create a renderer or OpenGL context.</p>
+<p>On X11, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> rolls its own dialog box with X11 primitives instead of a formal toolkit like GTK+ or Qt.</p>
+<p>Note that if <a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a> would fail because there isn't any available video target, this function is likely to fail for the same reasons. If this is a concern, check the return value from this function and fall back to writing to stderr if you can.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">messageboxdata</td><td>the <a class="el" href="structSDL_1_1MessageBox.html" title="MessageBox structure containing title, text, window, etc.">MessageBox</a> structure with title, text and other options. </td></tr>
+    <tr><td class="paramname">buttonid</td><td>the pointer to which user id of hit button should be copied. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMessagebox.html#ga9562f492c416d4b9939e0879a79b2494" title="Display a simple modal message box.">ShowSimpleMessageBox</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga9562f492c416d4b9939e0879a79b2494" name="ga9562f492c416d4b9939e0879a79b2494"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9562f492c416d4b9939e0879a79b2494">&#9670;&#160;</a></span>ShowSimpleMessageBox()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,7 +381,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MessageBoxColor
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1WindowParam.html">WindowParam</a>&#160;</td>
           <td class="paramname"><em>window</em>&#160;</td>
         </tr>
         <tr>
@@ -286,7 +396,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MessageBoxColor
   </tr>
 </table>
 </div><div class="memdoc">
-<p>If your needs aren't complex, this function is preferred over <a class="el" href="structSDL_1_1MessageBox.html#a2332a11f0c4f8d0c1f4d5f98bfe0e1cb" title="Create a modal message box.">MessageBox.Show</a>.</p>
+<p>If your needs aren't complex, this function is preferred over <a class="el" href="group__CategoryMessagebox.html#ga2332a11f0c4f8d0c1f4d5f98bfe0e1cb" title="Create a modal message box.">MessageBox.Show</a>.</p>
 <p><code>flags</code> may be any of the following:</p>
 <ul>
 <li><code>MESSAGEBOX_ERROR</code>: error dialog</li>
@@ -294,9 +404,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MessageBoxColor
 <li><code>MESSAGEBOX_INFORMATION</code>: informational dialog</li>
 </ul>
 <p>This function should be called on the thread that created the parent window, or on the main thread if the messagebox has no parent. It will block execution of that thread until the user clicks a button or closes the messagebox.</p>
-<p>This function may be called at any time, even before <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a>. This makes it useful for reporting errors like a failure to create a renderer or OpenGL context.</p>
-<p>On X11, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> rolls its own dialog box with X11 primitives instead of a formal toolkit like GTK+ or Qt.</p>
-<p>Note that if <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> would fail because there isn't any available video target, this function is likely to fail for the same reasons. If this is a concern, check the return value from this function and fall back to writing to stderr if you can.</p>
+<p>This function may be called at any time, even before <a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a>. This makes it useful for reporting errors like a failure to create a renderer or OpenGL context.</p>
+<p>On X11, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> rolls its own dialog box with X11 primitives instead of a formal toolkit like GTK+ or Qt.</p>
+<p>Note that if <a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a> would fail because there isn't any available video target, this function is likely to fail for the same reasons. If this is a concern, check the return value from this function and fall back to writing to stderr if you can.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">flags</td><td>an MessageBoxFlags value. </td></tr>
@@ -312,8 +422,8 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MessageBoxColor
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1MessageBox.html#a2332a11f0c4f8d0c1f4d5f98bfe0e1cb" title="Create a modal message box.">MessageBox.Show</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMessagebox.html#ga2332a11f0c4f8d0c1f4d5f98bfe0e1cb" title="Create a modal message box.">MessageBox.Show</a> </dd></dl>
 
 </div>
 </div>

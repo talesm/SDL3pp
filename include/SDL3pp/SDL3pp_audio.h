@@ -281,7 +281,7 @@ public:
    * AudioFormat.AudioFormat(1, 0, 0, 32)
    * ```
    *
-   * @param signed 1 for signed data, 0 for unsigned data.
+   * @param sign 1 for signed data, 0 for unsigned data.
    * @param bigendian 1 for bigendian data, 0 for littleendian data.
    * @param flt 1 for floating point data, 0 for integer data.
    * @param size number of bits per sample.
@@ -494,7 +494,7 @@ constexpr AudioFormat AUDIO_F32 = SDL_AUDIO_F32; ///< AUDIO_F32
  * AudioFormat.AudioFormat(1, 0, 0, 32)
  * ```
  *
- * @param signed 1 for signed data, 0 for unsigned data.
+ * @param sign 1 for signed data, 0 for unsigned data.
  * @param bigendian 1 for bigendian data, 0 for littleendian data.
  * @param flt 1 for floating point data, 0 for integer data.
  * @param size number of bits per sample.
@@ -2927,7 +2927,6 @@ inline const char* AudioDevice::GetName() const
  * playback timing. Most apps do not need this.
  *
  * @param devid the instance ID of the device to query.
- * @param spec on return, will be filled with device details.
  * @param sample_frames pointer to store device buffer size, in sample frames.
  *                      Can be nullptr.
  * @throws Error on failure.
@@ -4853,9 +4852,6 @@ inline void MixAudio(TargetBytes dst,
  * @param src_spec the format details of the input audio.
  * @param src_data the audio data to be converted.
  * @param dst_spec the format details of the output audio.
- * @param dst_data will be filled with a pointer to converted audio data,
- *                 which should be freed with free(). On error, it will be
- *                 nullptr.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.

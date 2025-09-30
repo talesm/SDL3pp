@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['glcontext_0',['GLContext',['../structSDL_1_1GLContext.html',1,'SDL']]],
-  ['glcontextref_1',['GLContextRef',['../structSDL_1_1GLContextRef.html',1,'SDL']]],
-  ['glcontextunsafe_2',['GLContextUnsafe',['../structSDL_1_1GLContextUnsafe.html',1,'SDL']]],
-  ['guid_3',['GUID',['../structSDL_1_1GUID.html',1,'SDL']]]
+  ['glcontext_0',['GLContext',['../classSDL_1_1GLContext.html',1,'SDL']]],
+  ['glcontextparam_1',['GLContextParam',['../structSDL_1_1GLContextParam.html',1,'SDL']]],
+  ['glcontextscoped_2',['GLContextScoped',['../structSDL_1_1GLContextScoped.html',1,'SDL']]],
+  ['gputextengine_3',['GPUTextEngine',['../structSDL_1_1GPUTextEngine.html',1,'SDL']]],
+  ['guid_4',['GUID',['../structSDL_1_1GUID.html',1,'SDL']]]
 ];

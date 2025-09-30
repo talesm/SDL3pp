@@ -586,8 +586,7 @@ public:
    * the stream is not at EOF, IOStream.GetStatus() will return a different
    * error value and GetError() will offer a human-readable message.
    *
-   * @param ptr a pointer to a buffer to read data into.
-   * @param size the number of bytes to read from the data source.
+   * @param buf a pointer to a buffer to read data into.
    * @returns the number of bytes read, or 0 on end of file or other failure;
    *          call GetError() for more information.
    *
@@ -634,7 +633,7 @@ public:
    * Prints formatted string.
    *
    * @param fmt a std::format like format string
-   * @param args... the arguments to be formatted
+   * @param args the arguments to be formatted
    * @cat formatted-string
    */
   size_t print(std::string_view fmt, auto... args)
@@ -646,7 +645,7 @@ public:
    * Prints formatted string.
    *
    * @param fmt a std::format like format string
-   * @param args... the arguments to be formatted
+   * @param args the arguments to be formatted
    * @cat formatted-string
    */
   size_t println(std::string_view fmt, auto... args)
@@ -2109,8 +2108,7 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
  * value and GetError() will offer a human-readable message.
  *
  * @param context a pointer to an IOStream structure.
- * @param ptr a pointer to a buffer to read data into.
- * @param size the number of bytes to read from the data source.
+ * @param buf a pointer to a buffer to read data into.
  * @returns the number of bytes read, or 0 on end of file or other failure;
  *          call GetError() for more information.
  *
@@ -2146,8 +2144,7 @@ inline size_t IOStream::Read(TargetBytes buf)
  * or a fatal error.
  *
  * @param context a pointer to an IOStream structure.
- * @param ptr a pointer to a buffer containing data to write.
- * @param size the number of bytes to write.
+ * @param buf a pointer to a buffer containing data to write.
  * @returns the number of bytes written, which will be less than `size` on
  *          failure; call GetError() for more information.
  *
@@ -2397,7 +2394,7 @@ inline void IOStream::SaveFile(SourceBytes data)
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2420,7 +2417,7 @@ inline Uint8 ReadU8(IOStreamParam src)
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2447,7 +2444,7 @@ inline Sint8 ReadS8(IOStreamParam src)
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2476,7 +2473,7 @@ inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2505,7 +2502,7 @@ inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2534,7 +2531,7 @@ inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2563,7 +2560,7 @@ inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2592,7 +2589,7 @@ inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2621,7 +2618,7 @@ inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2650,7 +2647,7 @@ inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2679,7 +2676,7 @@ inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2708,7 +2705,7 @@ inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2737,7 +2734,7 @@ inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2766,7 +2763,7 @@ inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.

@@ -1894,12 +1894,16 @@ struct TargetBytes
   {
   }
 
+  /// Copy constructor
   constexpr TargetBytes(const TargetBytes& other) = default;
 
+  /// Move constructor
   constexpr TargetBytes(TargetBytes&& other) = default;
 
+  /// Copy assignment
   constexpr TargetBytes& operator=(const TargetBytes& other) = default;
 
+  /// Move assignment
   constexpr TargetBytes& operator=(TargetBytes&& other) = default;
 
   /// Just to have better error message
@@ -7619,7 +7623,6 @@ public:
   /**
    * Get the priority of a particular log category.
    *
-   * @param category the category to query.
    * @returns the LogPriority for the requested category.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -8119,7 +8122,7 @@ inline void Log(std::string_view fmt, ARGS&&... args)
  * @param category the category of the message.
  * @param priority the priority of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -8159,7 +8162,7 @@ inline void LogCategory::LogMessage(LogPriority priority,
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -8194,7 +8197,7 @@ inline void LogCategory::LogTrace(std::string_view fmt, ARGS&&... args) const
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -8229,7 +8232,7 @@ inline void LogCategory::LogVerbose(std::string_view fmt, ARGS&&... args) const
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -8263,7 +8266,7 @@ inline void LogCategory::LogDebug(std::string_view fmt, ARGS&&... args) const
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -8297,7 +8300,7 @@ inline void LogCategory::LogInfo(std::string_view fmt, ARGS&&... args) const
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -8331,7 +8334,7 @@ inline void LogCategory::LogWarn(std::string_view fmt, ARGS&&... args) const
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -8365,7 +8368,7 @@ inline void LogCategory::LogError(std::string_view fmt, ARGS&&... args) const
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -9040,7 +9043,6 @@ public:
    * This function is generally not needed directly by an app, which should use
    * specific tests, like PixelFormat.IsFourCC, instead.
    *
-   * @param format an PixelFormat to check.
    * @returns the flags of `format`.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -10931,6 +10933,7 @@ struct FColor : FColorRaw
   {
   }
 
+  /// Default comparison operator
   constexpr bool operator==(FColorRaw other) const
   {
     return r == other.r && g == other.g && b == other.b && a == other.a;
@@ -11147,8 +11150,10 @@ public:
    */
   void Destroy();
 
+  /// Returns number of colors in the palette.
   constexpr int GetSize() const { return m_resource->ncolors; }
 
+  /// Access specific pallete index
   constexpr Color operator[](int index) const
   {
     return m_resource->colors[index];
@@ -11423,10 +11428,7 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
  * @param format a pointer to PixelFormatDetails describing the pixel
  *               format.
  * @param palette an optional palette for indexed formats, may be nullptr.
- * @param r the red component of the pixel in the range 0-255.
- * @param g the green component of the pixel in the range 0-255.
- * @param b the blue component of the pixel in the range 0-255.
- * @param a the alpha component of the pixel in the range 0-255.
+ * @param c the color components of the pixel in the range 0-255.
  * @returns a pixel value.
  *
  * @threadsafety It is safe to call this function from any thread, as long as
@@ -12066,12 +12068,19 @@ public:
    */
   void ClearProperty(StringParam name) const;
 
-  template<std::output_iterator<const char*> IT>
-  void Enumerate(IT outputIter) const
-  {
-    static_assert(false, "Not implemented");
-  }
-
+  /**
+   * Enumerate the properties contained in a group of properties.
+   *
+   * The callback function is called for each property in the group of
+   * properties. The properties are locked during enumeration.
+   *
+   * @param callback the function to call for each property.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
   void Enumerate(EnumeratePropertiesCB callback) const;
 
   /**
@@ -12090,6 +12099,13 @@ public:
    */
   void Enumerate(EnumeratePropertiesCallback callback, void* userdata) const;
 
+  /**
+   * Returns the number of properties this has
+   *
+   * This uses EnumerateProperties() internally, so might not be so fast
+   *
+   * @return Uint64
+   */
   Uint64 GetCount() const;
 };
 
@@ -12795,6 +12811,14 @@ inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
   SDL::EnumerateProperties(m_resource, callback, userdata);
 }
 
+/**
+ * Returns the number of properties this has
+ *
+ * This uses EnumerateProperties() internally, so might not be so fast
+ *
+ * @param props
+ * @return Uint64
+ */
 inline Uint64 CountProperties(PropertiesParam props)
 {
   Uint64 count = 0;
@@ -12928,6 +12952,7 @@ struct IConvParam
   /// Comparison
   constexpr auto operator<=>(const IConvParam& other) const = default;
 
+  /// Converts to underlying IConvRaw
   constexpr operator IConvRaw() const { return value; }
 };
 
@@ -13059,8 +13084,10 @@ using Sint8 = Sint8;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Sint8 MAX_SINT8 = SDL_MAX_SINT8;
 
+/// Min representable value
 constexpr Sint8 MIN_SINT8 = SDL_MIN_SINT8;
 
 #ifdef SDL3PP_DOC
@@ -13074,8 +13101,10 @@ using Uint8 = Uint8;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Uint8 MAX_UINT8 = SDL_MAX_UINT8;
 
+/// Min representable value
 constexpr Uint8 MIN_UINT8 = SDL_MIN_UINT8;
 
 #ifdef SDL3PP_DOC
@@ -13089,8 +13118,10 @@ using Sint16 = Sint16;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Sint16 MAX_SINT16 = SDL_MAX_SINT16;
 
+/// Min representable value
 constexpr Sint16 MIN_SINT16 = SDL_MIN_SINT16;
 
 #ifdef SDL3PP_DOC
@@ -13104,8 +13135,10 @@ using Uint16 = Uint16;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Uint16 MAX_UINT16 = SDL_MAX_UINT16;
 
+/// Min representable value
 constexpr Uint16 MIN_UINT16 = SDL_MIN_UINT16;
 
 #ifdef SDL3PP_DOC
@@ -13119,8 +13152,10 @@ using Sint32 = Sint32;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Sint32 MAX_SINT32 = SDL_MAX_SINT32;
 
+/// Min representable value
 constexpr Sint32 MIN_SINT32 = SDL_MIN_SINT32;
 
 #ifdef SDL3PP_DOC
@@ -13134,8 +13169,10 @@ using Uint32 = Uint32;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Uint32 MAX_UINT32 = SDL_MAX_UINT32;
 
+/// Min representable value
 constexpr Uint8 MIN_UINT32 = SDL_MIN_UINT32;
 
 #ifdef SDL3PP_DOC
@@ -13151,8 +13188,10 @@ using Sint64 = Sint64;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Sint64 MAX_SINT64 = SDL_MAX_SINT64;
 
+/// Min representable value
 constexpr Sint64 MIN_SINT64 = SDL_MIN_SINT64;
 
 #ifdef SDL3PP_DOC
@@ -13168,8 +13207,10 @@ using Uint64 = Uint64;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Uint64 MAX_UINT64 = SDL_MAX_UINT64;
 
+/// Min representable value
 constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
 
 /// Duration in seconds (float).
@@ -13258,27 +13299,25 @@ public:
    *
    * This only converts whole numbers, not fractional seconds.
    *
-   * @param S the number of seconds to convert.
-   * @returns S, expressed in nanoseconds.
+   * @param time the number of seconds to convert.
+   * @returns the converted Time.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   static constexpr Time FromPosix(Sint64 time);
 
   /**
    * Convert nanoseconds to seconds.
    *
-   * This performs a division, so the results can be dramatically different if
-   * `NS` is an integer or floating point value.
+   * This only converts whole numbers, not fractional seconds.
    *
-   * @param NS the number of nanoseconds to convert.
-   * @returns NS, expressed in seconds.
+   * @returns Posix time (in seconds).
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr Sint64 ToPosix() const;
 
@@ -13337,8 +13376,10 @@ public:
   }
 };
 
+/// Max allowed time representation
 constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
 
+/// Min allowed time representation
 constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
 
 #ifdef SDL3PP_DOC
@@ -18609,8 +18650,7 @@ public:
    *
    * @param tocode The target character encoding, must not be nullptr.
    * @param fromcode The source character encoding, must not be nullptr.
-   * @returns a handle that must be freed with IConv.close, or
-   *          SDL_ICONV_ERROR on failure.
+   * @post a valid handle or falsy on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -18651,7 +18691,10 @@ public:
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const
+  {
+    return m_resource != IConvRaw(SDL_ICONV_ERROR);
+  }
 
   /// Converts to IConvParam
   constexpr operator IConvParam() const { return {m_resource}; }
@@ -18659,7 +18702,6 @@ public:
   /**
    * This function frees a context used for character set conversion.
    *
-   * @param cd The character set conversion handle.
    * @returns 0 on success, or -1 on failure.
    *
    * @since This function is available since SDL 3.2.0.
@@ -19212,6 +19254,7 @@ class AtomicInt
   SDL_AtomicInt m_value;
 
 public:
+  /// Constructs from an int
   constexpr AtomicInt(int value)
     : m_value(value)
   {
@@ -19221,6 +19264,7 @@ public:
 
   AtomicInt& operator=(const AtomicInt& value) = delete;
 
+  /// Returns unerlying type
   constexpr operator SDL_AtomicInt*() { return &m_value; }
 
   /**
@@ -19302,7 +19346,6 @@ public:
    *
    * ***Note: If you don't know what this macro is for, you shouldn't use it!***
    *
-   * @param a a pointer to an AtomicInt to increment.
    * @returns the previous value of the atomic variable.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -19318,7 +19361,6 @@ public:
    *
    * ***Note: If you don't know what this macro is for, you shouldn't use it!***
    *
-   * @param a a pointer to an AtomicInt to decrement.
    * @returns true if the variable reached zero after decrementing, false
    *          otherwise.
    *
@@ -19377,6 +19419,7 @@ class AtomicU32
   SDL_AtomicU32 m_value;
 
 public:
+  /// Constructs from Uint32
   constexpr AtomicU32(Uint32 value)
     : m_value(value)
   {
@@ -19386,6 +19429,7 @@ public:
 
   AtomicU32& operator=(const AtomicU32& value) = delete;
 
+  /// Convert to underlying type
   constexpr operator SDL_AtomicU32*() { return &m_value; }
 
   /**
@@ -19449,6 +19493,7 @@ class AtomicPointer
   T* m_value;
 
 public:
+  /// Construcst from T
   constexpr AtomicPointer(T* value)
     : m_value(value)
   {
@@ -21356,9 +21401,7 @@ struct GUID : GUIDRaw
   /**
    * Get an ASCII string representation for a given GUID.
    *
-   * @param guid the GUID you wish to convert to string.
-   * @param pszGUID buffer in which to write the ASCII string.
-   * @param cbGUID the size of pszGUID, should be at least 33 bytes.
+   * @return ASCII string.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -21373,8 +21416,7 @@ struct GUID : GUIDRaw
  * Get an ASCII string representation for a given GUID.
  *
  * @param guid the GUID you wish to convert to string.
- * @param pszGUID buffer in which to write the ASCII string.
- * @param cbGUID the size of pszGUID, should be at least 33 bytes.
+ * @return ASCII string.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -22783,8 +22825,7 @@ public:
    * the stream is not at EOF, IOStream.GetStatus() will return a different
    * error value and GetError() will offer a human-readable message.
    *
-   * @param ptr a pointer to a buffer to read data into.
-   * @param size the number of bytes to read from the data source.
+   * @param buf a pointer to a buffer to read data into.
    * @returns the number of bytes read, or 0 on end of file or other failure;
    *          call GetError() for more information.
    *
@@ -22831,7 +22872,7 @@ public:
    * Prints formatted string.
    *
    * @param fmt a std::format like format string
-   * @param args... the arguments to be formatted
+   * @param args the arguments to be formatted
    * @cat formatted-string
    */
   size_t print(std::string_view fmt, auto... args)
@@ -22843,7 +22884,7 @@ public:
    * Prints formatted string.
    *
    * @param fmt a std::format like format string
-   * @param args... the arguments to be formatted
+   * @param args the arguments to be formatted
    * @cat formatted-string
    */
   size_t println(std::string_view fmt, auto... args)
@@ -24306,8 +24347,7 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
  * value and GetError() will offer a human-readable message.
  *
  * @param context a pointer to an IOStream structure.
- * @param ptr a pointer to a buffer to read data into.
- * @param size the number of bytes to read from the data source.
+ * @param buf a pointer to a buffer to read data into.
  * @returns the number of bytes read, or 0 on end of file or other failure;
  *          call GetError() for more information.
  *
@@ -24343,8 +24383,7 @@ inline size_t IOStream::Read(TargetBytes buf)
  * or a fatal error.
  *
  * @param context a pointer to an IOStream structure.
- * @param ptr a pointer to a buffer containing data to write.
- * @param size the number of bytes to write.
+ * @param buf a pointer to a buffer containing data to write.
  * @returns the number of bytes written, which will be less than `size` on
  *          failure; call GetError() for more information.
  *
@@ -24594,7 +24633,7 @@ inline void IOStream::SaveFile(SourceBytes data)
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24617,7 +24656,7 @@ inline Uint8 ReadU8(IOStreamParam src)
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24644,7 +24683,7 @@ inline Sint8 ReadS8(IOStreamParam src)
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24673,7 +24712,7 @@ inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24702,7 +24741,7 @@ inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24731,7 +24770,7 @@ inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24760,7 +24799,7 @@ inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24789,7 +24828,7 @@ inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24818,7 +24857,7 @@ inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24847,7 +24886,7 @@ inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24876,7 +24915,7 @@ inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24905,7 +24944,7 @@ inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24934,7 +24973,7 @@ inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -24963,7 +25002,7 @@ inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(m_resource); }
  * error value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @param value a pointer filled in with the data read.
+ * @return the  data read.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -27096,8 +27135,8 @@ struct Rect : RectRaw
    * If `result` is nullptr then this function will return false.
    *
    * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns an SDL_Rect structure filled in with the intersection of
-   *               if there is intersection, std::nullopt otherwise.
+   * @returns a Rect structure filled in with the intersection of if there is
+   *          intersection, std::nullopt otherwise.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -27851,8 +27890,7 @@ struct FRect : FRectRaw
  * Convert an Rect to FRect
  *
  * @param rect a pointer to an Rect.
- * @param frect a pointer filled in with the floating point representation of
- *              `rect`.
+ * @returns the floating point representation of `rect`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -27981,9 +28019,8 @@ constexpr bool Rect::HasIntersection(const RectRaw& other) const
  *
  * @param A an Rect structure representing the first rectangle.
  * @param B an Rect structure representing the second rectangle.
- * @param result an Rect structure filled in with the intersection of
- *               rectangles `A` and `B`.
- * @returns true if there is an intersection, false otherwise.
+ * @returns a Rect structure filled in with the intersection of if there is
+ *          intersection, std::nullopt otherwise.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -28006,8 +28043,7 @@ constexpr std::optional<Rect> Rect::GetIntersection(const RectRaw& other) const
  *
  * @param A an Rect structure representing the first rectangle.
  * @param B an Rect structure representing the second rectangle.
- * @param result an Rect structure filled in with the union of rectangles
- *               `A` and `B`.
+ * @returns Rect representing union of two rectangles
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -28027,12 +28063,11 @@ constexpr Rect Rect::GetUnion(const RectRaw& other) const
 /**
  * Calculate a minimal rectangle enclosing a set of points.
  *
- * If `clip` is not nullptr then only points inside of the clipping rectangle
+ * If `clip` is not nullopt then only points inside of the clipping rectangle
  * are considered.
  *
  * @param points an array of Point structures representing points to be
  *               enclosed.
- * @param count the number of structures in the `points` array.
  * @param clip an Rect used for clipping or nullptr to enclose all points.
  * @returns Result if any points were enclosed or empty rect if all the points
  * were outside of the clipping rectangle.
@@ -28246,10 +28281,8 @@ constexpr bool FRect::HasIntersection(const FRectRaw& other) const
  *
  * @param A an FRect structure representing the first rectangle.
  * @param B an FRect structure representing the second rectangle.
- * @param result an FRect structure filled in with the intersection of
- *               rectangles `A` and `B`.
- * @returns an FRect structure filled in with the intersection of rectangles `A`
- *          and `B`if there is an intersection, an empty FRect otherwise.
+ * @returns a FRect structure filled in with the intersection of if there is
+ *          intersection, std::nullopt otherwise.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -28271,8 +28304,8 @@ constexpr FRect FRect::GetIntersection(const FRectRaw& other) const
  *
  * @param A an FRect structure representing the first rectangle.
  * @param B an FRect structure representing the second rectangle.
- * @returns result an FRect structure filled in with the union of rectangles
- *          A` and `B`.
+ * @returns a FRect structure filled in with the union of rectangles `A` and
+ *          `B`.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -28293,17 +28326,14 @@ constexpr FRect FRect::GetUnion(const FRectRaw& other) const
  * Calculate a minimal rectangle enclosing a set of points with float
  * precision.
  *
- * If `clip` is not nullptr then only points inside of the clipping rectangle
- * are considered.
+ * If `clip` is not std::nullopt then only points inside of the clipping
+ * rectangle are considered.
  *
  * @param points an array of FPoint structures representing points to be
  *               enclosed.
- * @param count the number of structures in the `points` array.
  * @param clip an FRect used for clipping or nullptr to enclose all points.
- * @param result an FRect structure filled in with the minimal enclosing
- *               rectangle.
- * @returns true if any points were enclosed or false if all the points were
- *          outside of the clipping rectangle.
+ * @returns a FRect structure filled in with the minimal enclosing rectangle or
+ *          false if all the points were outside of the clipping rectangle.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -29556,10 +29586,10 @@ inline Time Time::Current()
  * the DateTime format.
  *
  * @param ticks the Time to be converted.
- * @param dt the resulting DateTime.
  * @param localTime the resulting DateTime will be expressed in local time
  *                  if true, otherwise it will be in Universal Coordinated
  *                  Time (UTC).
+ * @returns the resulting DateTime.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -29576,7 +29606,7 @@ inline DateTime TimeToDateTime(Time ticks, bool localTime = true)
  * it may remain unset.
  *
  * @param dt the source DateTime.
- * @param ticks the resulting Time.
+ * @returns the resulting Time.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -30271,7 +30301,7 @@ public:
    * AudioFormat.AudioFormat(1, 0, 0, 32)
    * ```
    *
-   * @param signed 1 for signed data, 0 for unsigned data.
+   * @param sign 1 for signed data, 0 for unsigned data.
    * @param bigendian 1 for bigendian data, 0 for littleendian data.
    * @param flt 1 for floating point data, 0 for integer data.
    * @param size number of bits per sample.
@@ -30484,7 +30514,7 @@ constexpr AudioFormat AUDIO_F32 = SDL_AUDIO_F32; ///< AUDIO_F32
  * AudioFormat.AudioFormat(1, 0, 0, 32)
  * ```
  *
- * @param signed 1 for signed data, 0 for unsigned data.
+ * @param sign 1 for signed data, 0 for unsigned data.
  * @param bigendian 1 for bigendian data, 0 for littleendian data.
  * @param flt 1 for floating point data, 0 for integer data.
  * @param size number of bits per sample.
@@ -32917,7 +32947,6 @@ inline const char* AudioDevice::GetName() const
  * playback timing. Most apps do not need this.
  *
  * @param devid the instance ID of the device to query.
- * @param spec on return, will be filled with device details.
  * @param sample_frames pointer to store device buffer size, in sample frames.
  *                      Can be nullptr.
  * @throws Error on failure.
@@ -34843,9 +34872,6 @@ inline void MixAudio(TargetBytes dst,
  * @param src_spec the format details of the input audio.
  * @param src_data the audio data to be converted.
  * @param dst_spec the format details of the output audio.
- * @param dst_data will be filled with a pointer to converted audio data,
- *                 which should be freed with free(). On error, it will be
- *                 nullptr.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -36187,8 +36213,6 @@ public:
    *
    * The data should be freed with free().
    *
-   * @param datasize a pointer filled in with the number of bytes read, may be
-   *                 nullptr.
    * @param exitcode a pointer filled in with the process exit code if the
    *                 process has exited, may be nullptr.
    * @returns the data or nullptr on failure; call GetError() for more
@@ -37295,8 +37319,7 @@ public:
    *
    * @param path the relative path of the file to write.
    * @param source a client-provided buffer to write from.
-   * @returns true if the file was written or false on failure; call
-   *          GetError() for more information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -37367,7 +37390,6 @@ public:
    * @param path the path of the directory to enumerate, or nullptr for the
    * root.
    * @param callback a function that is called for each entry in the directory.
-   * @returns all the directory contents.
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
@@ -38195,6 +38217,7 @@ struct SurfaceConstParam
 {
   const SurfaceRaw value; ///< parameter's const SurfaceRaw
 
+  /// Constructs from SurfaceRaw
   constexpr SurfaceConstParam(const SurfaceRaw value)
     : value(value)
   {
@@ -38970,7 +38993,7 @@ public:
    *
    * If the surface doesn't have color key enabled this function returns false.
    *
-   * @param key a pointer filled in with the transparent pixel.
+   * @returns the transparent pixel or nullopt if none.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -39112,7 +39135,7 @@ public:
   /**
    * Get the blend mode used for blit operations.
    *
-   * @param blendMode a pointer filled in with the current BlendMode.
+   * @returns the current BlendMode.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -39298,7 +39321,7 @@ public:
    * If the surface is YUV, the color is assumed to be in the sRGB colorspace,
    * otherwise the color is assumed to be in the colorspace of the surface.
    *
-   * @param c the color components of the pixel, normally in the range 0-1.
+   * @param color the color components of the pixel, normally in the range 0-1.
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
@@ -40342,11 +40365,8 @@ inline bool Surface::HasAlternateImages() const
  * up normally.
  *
  * @param surface the Surface structure to query.
- * @param count a pointer filled in with the number of surface pointers
- *              returned, may be nullptr.
  * @returns a nullptr terminated array of Surface pointers or nullptr on
- *          failure; call GetError() for more information. This should be
- *          freed with free() when it is no longer needed.
+ *          failure; call GetError() for more information.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -40621,8 +40641,7 @@ inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(m_resource); }
  * MapRGB().
  *
  * @param surface the Surface structure to update.
- * @param enabled true to enable color key, false to disable color key.
- * @param key the transparent pixel.
+ * @param key the transparent pixel or std::nullopt to disable it.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -40677,7 +40696,7 @@ inline bool Surface::HasColorKey() const
  * If the surface doesn't have color key enabled this function returns false.
  *
  * @param surface the Surface structure to query.
- * @param key a pointer filled in with the transparent pixel.
+ * @returns the transparent pixel or nullopt if none.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -40792,7 +40811,7 @@ inline void Surface::SetAlphaMod(Uint8 alpha)
  * Get the additional alpha value used in blit operations.
  *
  * @param surface the Surface structure to query.
- * @param alpha a pointer filled in with the current alpha value.
+ * @returns the current alpha value.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -40845,7 +40864,7 @@ inline void Surface::SetBlendMode(BlendMode blendMode)
  * Get the blend mode used for blit operations.
  *
  * @param surface the Surface structure to query.
- * @param blendMode a pointer filled in with the current BlendMode.
+ * @returns the current BlendMode.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -40906,8 +40925,8 @@ inline bool Surface::SetClipRect(OptionalRef<const RectRaw> rect)
  *
  * @param surface the Surface structure representing the surface to be
  *                clipped.
- * @param rect an Rect structure filled in with the clipping rectangle for
- *             the surface.
+ * @returns the Rect structure filled in with the clipping rectangle for the
+ *          surface.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -41248,7 +41267,7 @@ inline void Surface::PremultiplyAlpha(bool linear)
  * otherwise the color is assumed to be in the colorspace of the suface.
  *
  * @param surface the Surface to clear.
- * @param c the color components of the pixel, normally in the range 0-1.
+ * @param color the color components of the pixel, normally in the range 0-1.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -41315,7 +41334,6 @@ inline void Surface::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
  *
  * @param dst the Surface structure that is the drawing target.
  * @param rects an array of SDL_Rects representing the rectangles to fill.
- * @param count the number of rectangles in the array.
  * @param color the color to fill with.
  * @throws Error on failure.
  *
@@ -41813,9 +41831,6 @@ inline void BlitSurface9Grid(SurfaceParam src,
  * @param top_height the height, in pixels, of the top corners in `srcrect`.
  * @param bottom_height the height, in pixels, of the bottom corners in
  *                      `srcrect`.
- * @param scale the scale used to transform the corner of `srcrect` into the
- *              corner of `dstrect`, or 0.0f for an unscaled blit.
- * @param scaleMode scale algorithm to be used.
  * @param dst the Surface structure that is the blit target.
  * @param dstrect the Rect structure representing the target rectangle in
  *                the destination surface, or nullptr to fill the entire
@@ -41934,10 +41949,7 @@ inline Uint32 Surface::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
  * for an 8-bpp format).
  *
  * @param surface the surface to use for the pixel format and palette.
- * @param r the red component of the pixel in the range 0-255.
- * @param g the green component of the pixel in the range 0-255.
- * @param b the blue component of the pixel in the range 0-255.
- * @param a the alpha component of the pixel in the range 0-255.
+ * @param c the color components of the pixel in the range 0-255.
  * @returns a pixel value.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -41966,8 +41978,7 @@ inline Uint32 Surface::MapRGBA(ColorRaw c) const
  * components from pixel formats with less than 8 bits per RGB component.
  *
  * @param surface the surface to read.
- * @param x the horizontal coordinate, 0 <= x < width.
- * @param y the vertical coordinate, 0 <= y < height.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
  * @param r a pointer filled in with the red channel, 0-255, or nullptr to
  * ignore this channel.
  * @param g a pointer filled in with the green channel, 0-255, or nullptr to
@@ -42008,8 +42019,7 @@ inline void Surface::ReadPixel(const PointRaw& p,
  * tests, but is not intended for use in a game engine.
  *
  * @param surface the surface to read.
- * @param x the horizontal coordinate, 0 <= x < width.
- * @param y the vertical coordinate, 0 <= y < height.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
  * @param r a pointer filled in with the red channel, normally in the range
  *          0-1, or nullptr to ignore this channel.
  * @param g a pointer filled in with the green channel, normally in the range
@@ -42228,6 +42238,13 @@ using ThreadID = SDL_ThreadID;
  */
 using ThreadFunction = SDL_ThreadFunction;
 
+/**
+ * The function passed to Thread.Thread() as the new thread's entry point.
+ *
+ * @returns a value that can be reported through Thread.Wait().
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
 using ThreadCB = std::function<int()>;
 
 /**
@@ -44156,8 +44173,8 @@ public:
    * pointed to by `sem` has a positive value or the specified time has elapsed.
    * If the call is successful it will atomically decrement the semaphore value.
    *
-   * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
-   *                  indefinitely.
+   * @param timeout the length of the timeout, in milliseconds, or -1 to wait
+   *                indefinitely.
    * @returns true if the wait succeeds or false if the wait times out.
    *
    * @since This function is available since SDL 3.2.0.
@@ -44316,8 +44333,8 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
  * If the call is successful it will atomically decrement the semaphore value.
  *
  * @param sem the semaphore to wait on.
- * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
- *                  indefinitely.
+ * @param timeout the length of the timeout, in milliseconds, or -1 to wait
+ *                indefinitely.
  * @returns true if the wait succeeds or false if the wait times out.
  *
  * @since This function is available since SDL 3.2.0.
@@ -44546,8 +44563,8 @@ public:
    * behavior.
    *
    * @param mutex the mutex used to coordinate thread access.
-   * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
-   *                  indefinitely.
+   * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
+   *                indefinitely.
    * @returns true if the condition variable is signaled, false if the condition
    *          is not signaled in the allotted time.
    *
@@ -44708,8 +44725,8 @@ inline void Condition::Wait(MutexParam mutex)
  *
  * @param cond the condition variable to wait on.
  * @param mutex the mutex used to coordinate thread access.
- * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
- *                  indefinitely.
+ * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
+ *                indefinitely.
  * @returns true if the condition variable is signaled, false if the condition
  *          is not signaled in the allotted time.
  *
@@ -46571,11 +46588,8 @@ public:
   /**
    * Get a list of currently connected displays.
    *
-   * @param count a pointer filled in with the number of displays returned, may
-   *              be nullptr.
    * @returns a 0 terminated array of display instance IDs or nullptr on
-   * failure; call GetError() for more information. This should be freed with
-   * free() when it is no longer needed.
+   * failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -46644,7 +46658,7 @@ public:
    * The primary display is often located at (0,0), but may be placed at a
    * different location depending on monitor layout.
    *
-   * @param rect the Rect structure filled in with the display bounds.
+   * @returns the Rect structure filled in with the display bounds.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -46668,8 +46682,7 @@ public:
    * so these are good guidelines for the maximum space available to a
    * non-fullscreen window.
    *
-   * @param displayID the instance ID of the display to query.
-   * @param rect the Rect structure filled in with the display bounds.
+   * @returns the Rect structure filled in with the display bounds.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -46747,12 +46760,8 @@ public:
    * - refresh rate -> highest to lowest
    * - pixel density -> lowest to highest
    *
-   * @param count a pointer filled in with the number of display modes returned,
-   *              may be nullptr.
    * @returns a nullptr terminated array of display mode pointers or nullptr on
-   *          failure; call GetError() for more information. This is a
-   *          single allocation that should be freed with free() when it is
-   *          no longer needed.
+   *          failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -46777,8 +46786,7 @@ public:
    *                     for the desktop refresh rate.
    * @param include_high_density_modes boolean to include high density modes in
    *                                   the search.
-   * @param closest a pointer filled in with the closest display mode equal to
-   *                or larger than the desired mode.
+   * @returns the closest display mode equal to or larger than the desired mode.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -47920,7 +47928,6 @@ public:
    * Additionally, as this is just a request, it can be denied by the windowing
    * system.
    *
-   * @param window the window to reposition.
    * @param p the coordinates of the window, or `SDL_WINDOWPOS_CENTERED` or
    *          `SDL_WINDOWPOS_UNDEFINED`.
    * @throws Error on failure.
@@ -48001,9 +48008,7 @@ public:
    * content area to remain within the usable desktop bounds). Additionally, as
    * this is just a request, it can be denied by the windowing system.
    *
-   * @param window the window to change.
-   * @param w the width of the window, must be > 0.
-   * @param h the height of the window, must be > 0.
+   * @param p the width and height of the window, must be > 0.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -48073,7 +48078,6 @@ public:
    * into the rest of the window, but it should not contain visually important
    * or interactible content.
    *
-   * @param window the window to query.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -48214,9 +48218,7 @@ public:
   /**
    * Set the minimum size of a window's client area.
    *
-   * @param window the window to change.
-   * @param min_w the minimum width of the window, or 0 for no limit.
-   * @param min_h the minimum height of the window, or 0 for no limit.
+   * @param p the minimum width and heigh of the window, or 0 for no limit.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -48249,9 +48251,7 @@ public:
   /**
    * Set the maximum size of a window's client area.
    *
-   * @param window the window to change.
-   * @param max_w the maximum width of the window, or 0 for no limit.
-   * @param max_h the maximum height of the window, or 0 for no limit.
+   * @param p the maximum width and height of the window, or 0 for no limit.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -48599,9 +48599,8 @@ public:
   /**
    * Get VSync for the window surface.
    *
-   * @param window the window to query.
-   * @param vsync an int filled with the current vertical refresh sync interval.
-   *              See Window.SetSurfaceVSync() for the meaning of the value.
+   * @returns the current vertical refresh sync interval. See
+   *          Window.SetSurfaceVSync() for the meaning of the value.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -48646,7 +48645,6 @@ public:
    *
    * @param rects an array of Rect structures representing areas of the
    *              surface to copy, in pixels.
-   * @param numrects the number of rectangles.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -48896,11 +48894,8 @@ public:
    * On platforms or desktops where this is unsupported, this function does
    * nothing.
    *
-   * @param window the window for which the menu will be displayed.
-   * @param x the x coordinate of the menu, relative to the origin (top-left) of
-   *          the client area.
-   * @param y the y coordinate of the menu, relative to the origin (top-left) of
-   *          the client area.
+   * @param p the x, y coordinates of the menu, relative to the origin
+   *          (top-left) of the client area.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -49267,9 +49262,7 @@ public:
    * Note that this function will appear to succeed, but not actually move the
    * mouse when used over Microsoft Remote Desktop.
    *
-   *               mouse focus.
-   * @param x the x coordinate within the window.
-   * @param y the y coordinate within the window.
+   * @param p the x, y coordinates within the window.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -49529,9 +49522,6 @@ public:
   /**
    * Delete an OpenGL context.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -49546,7 +49536,6 @@ public:
    * The context must have been created with a compatible window.
    *
    * @param window the window to associate with the context.
-   * @param context the OpenGL context to associate with the window.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -50008,11 +49997,8 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 /**
  * Get a list of currently connected displays.
  *
- * @param count a pointer filled in with the number of displays returned, may
- *              be nullptr.
  * @returns a 0 terminated array of display instance IDs or nullptr on failure;
- *          call GetError() for more information. This should be freed
- *          with free() when it is no longer needed.
+ *          call GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -50121,7 +50107,7 @@ inline const char* Display::GetName() const
  * different location depending on monitor layout.
  *
  * @param displayID the instance ID of the display to query.
- * @param rect the Rect structure filled in with the display bounds.
+ * @returns the Rect structure filled in with the display bounds.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -50156,7 +50142,7 @@ inline Rect Display::GetBounds() const
  * non-fullscreen window.
  *
  * @param displayID the instance ID of the display to query.
- * @param rect the Rect structure filled in with the display bounds.
+ * @returns the Rect structure filled in with the display bounds.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -50272,12 +50258,8 @@ inline float Display::GetContentScale() const
  * - pixel density -> lowest to highest
  *
  * @param displayID the instance ID of the display to query.
- * @param count a pointer filled in with the number of display modes returned,
- *              may be nullptr.
  * @returns a nullptr terminated array of display mode pointers or nullptr on
- *          failure; call GetError() for more information. This is a
- *          single allocation that should be freed with free() when it is
- *          no longer needed.
+ *          failure; call GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -50313,7 +50295,7 @@ inline OwnArray<DisplayMode*> Display::GetFullscreenModes() const
  *                     for the desktop refresh rate.
  * @param include_high_density_modes boolean to include high density modes in
  *                                   the search.
- * @param closest a pointer filled in with the closest display mode equal to
+ * @returns a pointer filled in with the closest display mode equal to
  *                or larger than the desired mode.
  * @throws Error on failure.
  *
@@ -52322,8 +52304,10 @@ inline void Window::SetSurfaceVSync(int vsync)
   SDL::SetWindowSurfaceVSync(m_resource, vsync);
 }
 
+/// Constant to disable vsync
 constexpr int WINDOW_SURFACE_VSYNC_DISABLED = SDL_WINDOW_SURFACE_VSYNC_DISABLED;
 
+/// Constant to enable adaptive vsync
 constexpr int WINDOW_SURFACE_VSYNC_ADAPTIVE = SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE;
 
 /**
@@ -52391,7 +52375,6 @@ inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
  * @param window the window to update.
  * @param rects an array of Rect structures representing areas of the
  *              surface to copy, in pixels.
- * @param numrects the number of rectangles.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -52872,7 +52855,6 @@ inline void SetWindowHitTest(WindowParam window,
  *
  * @param window the window to set hit-testing on.
  * @param callback the function to call when doing a hit-test.
- * @param callback_data an app-defined void pointer passed to **callback**.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -57428,6 +57410,7 @@ constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
 
 constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
 
+/** Returns mask for button */
 constexpr MouseButtonFlags ButtonMask(MouseButton button)
 {
   return SDL_BUTTON_MASK(button);
@@ -58745,8 +58728,7 @@ public:
    * Each render target has its own logical presentation state. This function
    * gets the rectangle for the current render target.
    *
-   * @param rect a pointer filled in with the final presentation rectangle, may
-   *             be nullptr.
+   * @returns the final presentation rectangle.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -59116,8 +59098,7 @@ public:
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
    *
-   * @param c a pointer filled in with the color channel values used to draw on
-   *          the rendering target. @b must @b not be nullptr.
+   * @returns the color channel values used to draw on the rendering target.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -59830,8 +59811,7 @@ public:
    *
    * @param format one of the enumerated values in PixelFormat.
    * @param access one of the enumerated values in TextureAccess.
-   * @param w the width of the texture in pixels.
-   * @param h the height of the texture in pixels.
+   * @param size the width and height of the texture in pixels.
    * @returns the created texture or nullptr on failure; call GetError() for
    *          more information.
    *
@@ -60772,7 +60752,7 @@ public:
   /**
    * Get the additional alpha value multiplied into render copy operations.
    *
-   * @param alpha a pointer filled in with the current alpha value.
+   * @returns the current alpha value.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -60788,7 +60768,7 @@ public:
   /**
    * Get the additional alpha value multiplied into render copy operations.
    *
-   * @param alpha a pointer filled in with the current alpha value.
+   * @returns the current alpha value.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -61012,8 +60992,8 @@ public:
    *                `TEXTUREACCESS_STREAMING`.
    * @param rect a pointer to the rectangle to lock for access. If the rect is
    *             nullptr, the entire texture will be locked.
-   * @param surface a pointer to an SDL surface of size **rect**. Don't assume
-   *                any specific pixel content.
+   * @returns a surface of size **rect**. Don't assume any specific pixel
+   *          content.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -61142,8 +61122,7 @@ inline const char* GetRenderDriver(int index)
  * Create a window and default renderer.
  *
  * @param title the title of the window, in UTF-8 encoding.
- * @param width the width of the window.
- * @param height the height of the window.
+ * @param size the width and height of the window.
  * @param window_flags the flags used to create the window (see
  *                     Window.Window()).
  * @returns a pair with window and renderer.
@@ -61610,8 +61589,7 @@ inline Texture Renderer::CreateTexture(PixelFormat format,
  * @param renderer the rendering context.
  * @param format one of the enumerated values in PixelFormat.
  * @param access one of the enumerated values in TextureAccess.
- * @param w the width of the texture in pixels.
- * @param h the height of the texture in pixels.
+ * @param size the width and height of the texture in pixels.
  * @returns the created texture or nullptr on failure; call GetError() for
  *          more information.
  *
@@ -62271,7 +62249,7 @@ inline void Texture::SetAlphaModFloat(float alpha)
  * Get the additional alpha value multiplied into render copy operations.
  *
  * @param texture the texture to query.
- * @param alpha a pointer filled in with the current alpha value.
+ * @returns the current alpha value.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -62298,7 +62276,7 @@ inline Uint8 Texture::GetAlphaMod() const
  * Get the additional alpha value multiplied into render copy operations.
  *
  * @param texture the texture to query.
- * @param alpha a pointer filled in with the current alpha value.
+ * @returns the current alpha value.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -62634,8 +62612,7 @@ inline void Texture::Lock(OptionalRef<const SDL_Rect> rect,
  *                `TEXTUREACCESS_STREAMING`.
  * @param rect a pointer to the rectangle to lock for access. If the rect is
  *             nullptr, the entire texture will be locked.
- * @param surface a pointer to an SDL surface of size **rect**. Don't assume
- *                any specific pixel content.
+ * @returns a surface of size **rect**. Don't assume any specific pixel content.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -62782,8 +62759,7 @@ inline Texture Renderer::GetTarget() const
  * Renderer.ConvertEventToRenderCoordinates().
  *
  * @param renderer the rendering context.
- * @param w the width of the logical resolution.
- * @param h the height of the logical resolution.
+ * @param size the width and height of the logical resolution.
  * @param mode the presentation mode used.
  * @throws Error on failure.
  *
@@ -62857,8 +62833,7 @@ inline void Renderer::GetLogicalPresentation(
  * gets the rectangle for the current render target.
  *
  * @param renderer the rendering context.
- * @param rect a pointer filled in with the final presentation rectangle, may
- *             be nullptr.
+ * @returns with the final presentation rectangle.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -62890,10 +62865,8 @@ inline FRect Renderer::GetLogicalPresentationRect() const
  * - The viewport (Renderer.SetViewport)
  *
  * @param renderer the rendering context.
- * @param window_x the x coordinate in window coordinates.
- * @param window_y the y coordinate in window coordinates.
- * @param x a pointer filled with the x coordinate in render coordinates.
- * @param y a pointer filled with the y coordinate in render coordinates.
+ * @param window_coord the x, y coordinate in window coordinates.
+ * @returns the x, y coordinate in render coordinates.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -62929,12 +62902,8 @@ inline FPoint Renderer::RenderCoordinatesFromWindow(
  * - The viewport (Renderer.SetViewport)
  *
  * @param renderer the rendering context.
- * @param x the x coordinate in render coordinates.
- * @param y the y coordinate in render coordinates.
- * @param window_x a pointer filled with the x coordinate in window
- *                 coordinates.
- * @param window_y a pointer filled with the y coordinate in window
- *                 coordinates.
+ * @param coord the x, y coordinates in render coordinates.
+ * @returns x, y in window coordinates.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63045,7 +63014,7 @@ inline void Renderer::SetViewport(OptionalRef<const RectRaw> rect)
  * for the current render target.
  *
  * @param renderer the rendering context.
- * @param rect an Rect structure filled in with the current drawing area.
+ * @returns an Rect structure filled in with the current drawing area.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63108,8 +63077,7 @@ inline bool Renderer::IsViewportSet() const
  * visually important or interactible content.
  *
  * @param renderer the rendering context.
- * @param rect a pointer filled in with the area that is safe for interactive
- *             content.
+ * @returns the area that is safe for interactive content.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63164,8 +63132,8 @@ inline void Renderer::SetClipRect(OptionalRef<const RectRaw> rect)
  * cliprect for the current render target.
  *
  * @param renderer the rendering context.
- * @param rect an Rect structure filled in with the current clipping area
- *             or an empty rectangle if clipping is disabled.
+ * @returns an Rect structure filled in with the current clipping area
+ *          or an empty rectangle if clipping is disabled.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63229,8 +63197,7 @@ inline bool Renderer::IsClipEnabled() const
  * current render target.
  *
  * @param renderer the rendering context.
- * @param scaleX the horizontal scaling factor.
- * @param scaleY the vertical scaling factor.
+ * @param scale the horizontal and vertical scaling factors.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63283,12 +63250,7 @@ inline void Renderer::GetScale(float* scaleX, float* scaleY) const
  * Renderer.RenderClear().
  *
  * @param renderer the rendering context.
- * @param r the red value used to draw on the rendering target.
- * @param g the green value used to draw on the rendering target.
- * @param b the blue value used to draw on the rendering target.
- * @param a the alpha value used to draw on the rendering target; usually
- *          `ALPHA_OPAQUE` (255). Use Renderer.SetDrawBlendMode to
- *          specify how the alpha channel is used.
+ * @param c the color used to draw on the rendering target.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63315,12 +63277,7 @@ inline void Renderer::SetDrawColor(ColorRaw c)
  * Renderer.RenderClear().
  *
  * @param renderer the rendering context.
- * @param r the red value used to draw on the rendering target.
- * @param g the green value used to draw on the rendering target.
- * @param b the blue value used to draw on the rendering target.
- * @param a the alpha value used to draw on the rendering target. Use
- *          Renderer.SetDrawBlendMode to specify how the alpha channel is
- *          used.
+ * @param c the color used to draw on the rendering target.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63448,7 +63405,7 @@ inline void Renderer::SetColorScale(float scale)
  * Get the color scale used for render operations.
  *
  * @param renderer the rendering context.
- * @param scale a pointer filled in with the current color scale value.
+ * @return the current color scale value.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63498,7 +63455,7 @@ inline void Renderer::SetDrawBlendMode(BlendMode blendMode)
  * Get the blend mode used for drawing operations.
  *
  * @param renderer the rendering context.
- * @param blendMode a pointer filled in with the current BlendMode.
+ * @return the current BlendMode.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63547,8 +63504,7 @@ inline void Renderer::RenderClear() { SDL::RenderClear(m_resource); }
  * Draw a point on the current rendering target at subpixel precision.
  *
  * @param renderer the renderer which should draw a point.
- * @param x the x coordinate of the point.
- * @param y the y coordinate of the point.
+ * @param p the x, y coordinate of the point.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63572,7 +63528,6 @@ inline void Renderer::RenderPoint(const FPointRaw& p)
  *
  * @param renderer the renderer which should draw multiple points.
  * @param points the points to draw.
- * @param count the number of points to draw.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63596,10 +63551,8 @@ inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
  * Draw a line on the current rendering target at subpixel precision.
  *
  * @param renderer the renderer which should draw a line.
- * @param x1 the x coordinate of the start point.
- * @param y1 the y coordinate of the start point.
- * @param x2 the x coordinate of the end point.
- * @param y2 the y coordinate of the end point.
+ * @param p1 the x,y coordinates of the start point.
+ * @param p2 the x,y coordinates of the end point.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63626,7 +63579,6 @@ inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
  *
  * @param renderer the renderer which should draw multiple lines.
  * @param points the points along the lines.
- * @param count the number of points, drawing count-1 lines.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63675,7 +63627,6 @@ inline void Renderer::RenderRect(OptionalRef<const FRectRaw> rect)
  *
  * @param renderer the renderer which should draw multiple rectangles.
  * @param rects a pointer to an array of destination rectangles.
- * @param count the number of rectangles.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63726,7 +63677,6 @@ inline void Renderer::RenderFillRect(OptionalRef<const FRectRaw> rect)
  *
  * @param renderer the renderer which should fill multiple rectangles.
  * @param rects a pointer to an array of destination rectangles.
- * @param count the number of rectangles.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -63995,11 +63945,9 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
  * @param renderer the rendering context.
  * @param texture (optional) The SDL texture to use.
  * @param vertices vertices.
- * @param num_vertices number of vertices.
  * @param indices (optional) An array of integer indices into the 'vertices'
  *                array, if nullptr all vertices will be rendered in sequential
  *                order.
- * @param num_indices number of indices.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -64415,16 +64363,18 @@ inline void Renderer::SetVSync(int vsync)
   SDL::SetRenderVSync(m_resource, vsync);
 }
 
+/// Constant for disabling renderer vsync
 #define SDL_RENDERER_VSYNC_DISABLED 0
 
+/// Constant for enabling asaptive renderer vsync
 #define SDL_RENDERER_VSYNC_ADAPTIVE (-1)
 
 /**
  * Get VSync of the given renderer.
  *
  * @param renderer the renderer to toggle.
- * @param vsync an int filled with the current vertical refresh sync interval.
- *              See Renderer.SetVSync() for the meaning of the value.
+ * @returns the current vertical refresh sync interval. See Renderer.SetVSync()
+ *          for the meaning of the value.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -64482,8 +64432,7 @@ inline int Renderer::GetVSync() const
  * The text is drawn in the color specified by Renderer.SetDrawColor().
  *
  * @param renderer the renderer which should draw a line of text.
- * @param x the x coordinate where the top-left corner of the text will draw.
- * @param y the y coordinate where the top-left corner of the text will draw.
+ * @param p the x,y coordinates where the top-left corner of the text will draw.
  * @param str the string to render.
  * @throws Error on failure.
  *
@@ -64515,10 +64464,9 @@ inline void Renderer::RenderDebugText(FPoint p, StringParam str)
  * Renderer.RenderDebugText.
  *
  * @param renderer the renderer which should draw the text.
- * @param x the x coordinate where the top-left corner of the text will draw.
- * @param y the y coordinate where the top-left corner of the text will draw.
+ * @param p the x,y coordinate where the top-left corner of the text will draw.
  * @param fmt the format string to draw.
- * @param ... additional parameters matching % tokens in the `fmt` string, if
+ * @param args additional parameters matching % tokens in the `fmt` string, if
  *            any.
  * @throws Error on failure.
  *
@@ -68524,7 +68472,7 @@ constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
  *
  * The values here are chosen to match
  * [hb_direction_t](https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t)
- * .
+ *
  *
  * @since This enum is available since SDL_ttf 3.0.0.
  *
@@ -69366,10 +69314,9 @@ public:
    *
    * This updates any Text objects using this font.
    *
-   * @param script an
-   *               [ISO 15924
-   * code](https://unicode.org/iso15924/iso15924-codes.html)
-   *               .
+   * @param script an [ISO 15924
+   *               code](https://unicode.org/iso15924/iso15924-codes.html).
+   *
    * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -69801,7 +69748,6 @@ public:
    * You can render at other quality levels with Font.RenderText_Solid_Wrapped,
    * Font.RenderText_Blended_Wrapped, and Font.RenderText_LCD_Wrapped.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
@@ -69871,7 +69817,6 @@ public:
    * You can render at other quality levels with Font.RenderText_Solid,
    * Font.RenderText_Shaded, and Font.RenderText_LCD.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
@@ -69903,7 +69848,6 @@ public:
    * You can render at other quality levels with Font.RenderText_Solid_Wrapped,
    * Font.RenderText_Shaded_Wrapped, and Font.RenderText_LCD_Wrapped.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param wrap_width the maximum width of the text surface or 0 to wrap on
@@ -69969,7 +69913,6 @@ public:
    * You can render at other quality levels with Font.RenderText_Solid,
    * Font.RenderText_Shaded, and Font.RenderText_Blended.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
@@ -70003,7 +69946,6 @@ public:
    * You can render at other quality levels with Font.RenderText_Solid_Wrapped,
    * Font.RenderText_Shaded_Wrapped, and Font.RenderText_Blended_Wrapped.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
@@ -70125,7 +70067,7 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
   TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE; ///< COUNTER_CLOCKWISE
 
 /**
- *
+ * A resource engine
  *
  * @cat resource
  */
@@ -70194,6 +70136,7 @@ public:
   /// Converts to TextEngineParam
   constexpr operator TextEngineParam() const { return {m_resource}; }
 
+  /// Destroy resource. Pure virtual
   virtual void Destroy() = 0;
 
   /**
@@ -70215,6 +70158,7 @@ public:
   Text CreateText(FontParam font, std::string_view text);
 };
 
+/// A surface based text engine
 struct SurfaceTextEngine : TextEngine
 {
   /**
@@ -70243,9 +70187,6 @@ struct SurfaceTextEngine : TextEngine
    * All text created by this engine should be destroyed before calling this
    * function.
    *
-   * @param engine a TextEngine object created with
-   *               SurfaceTextEngine.SurfaceTextEngine().
-   *
    * @threadsafety This function should be called on the thread that created the
    *               engine.
    *
@@ -70256,6 +70197,7 @@ struct SurfaceTextEngine : TextEngine
   void Destroy() final;
 };
 
+/// A renderer based text engine
 struct RendererTextEngine : TextEngine
 {
   /**
@@ -70316,9 +70258,6 @@ struct RendererTextEngine : TextEngine
    * All text created by this engine should be destroyed before calling this
    * function.
    *
-   * @param engine a TextEngine object created with
-   *               RendererTextEngine.RendererTextEngine().
-   *
    * @threadsafety This function should be called on the thread that created the
    *               engine.
    *
@@ -70326,9 +70265,10 @@ struct RendererTextEngine : TextEngine
    *
    * @sa RendererTextEngine.RendererTextEngine
    */
-  void Destroy();
+  void Destroy() final;
 };
 
+/// A GPU based text engine
 struct GPUTextEngine : TextEngine
 {
   /**
@@ -70403,8 +70343,6 @@ struct GPUTextEngine : TextEngine
    * Get the winding order of the vertices returned by Text.GetGPUDrawData
    * for a particular GPU text engine
    *
-   * @param engine a TextEngine object created with
-   *               GPUTextEngine.GPUTextEngine().
    * @returns the winding order used by the GPU text engine or
    *          GPU_TEXTENGINE_WINDING_INVALID in case of error.
    *
@@ -70423,9 +70361,6 @@ struct GPUTextEngine : TextEngine
    * All text created by this engine should be destroyed before calling this
    * function.
    *
-   * @param engine a TextEngine object created with
-   *               GPUTextEngine.GPUTextEngine().
-   *
    * @threadsafety This function should be called on the thread that created the
    *               engine.
    *
@@ -70433,7 +70368,7 @@ struct GPUTextEngine : TextEngine
    *
    * @sa GPUTextEngine.GPUTextEngine
    */
-  void Destroy();
+  void Destroy() final;
 };
 
 /**
@@ -71525,10 +71460,8 @@ inline void TagToString(Uint32 tag, char* string, size_t size)
  * This updates any Text objects using this font.
  *
  * @param font the font to modify.
- * @param script an
- *               [ISO 15924
- * code](https://unicode.org/iso15924/iso15924-codes.html)
- *               .
+ * @param script an [ISO 15924
+ * code](https://unicode.org/iso15924/iso15924-codes.html).
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -71552,9 +71485,9 @@ inline void Font::SetScript(Uint32 script)
  * Get the script used for text shaping a font.
  *
  * @param font the font to query.
- * @returns an
- *          [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)
- *          or 0 if a script hasn't been set.
+ * @returns an [ISO 15924
+ *          code](https://unicode.org/iso15924/iso15924-codes.html) or 0 if a
+ *          script hasn't been set.
  *
  * @threadsafety This function should be called on the thread that created the
  *               font.
@@ -71750,8 +71683,7 @@ inline void Font::GetGlyphMetrics(Uint32 ch,
  * @param font the font to query.
  * @param previous_ch the previous codepoint.
  * @param ch the current codepoint.
- * @param kerning a pointer filled in with the kerning size between the two
- *                glyphs, in pixels, may be nullptr.
+ * @returns the kerning size between the two glyphs, in pixels.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -71778,8 +71710,6 @@ inline int Font::GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
  *
  * @param font the font to query.
  * @param text text to calculate, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param w will be filled with width, in pixels, on return.
  * @param h will be filled with height, in pixels, on return.
  * @throws Error on failure.
@@ -71812,8 +71742,6 @@ inline void Font::GetStringSize(std::string_view text, int* w, int* h) const
  *
  * @param font the font to query.
  * @param text text to calculate, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param wrap_width the maximum width or 0 to wrap on newline characters.
  * @param w will be filled with width, in pixels, on return.
  * @param h will be filled with height, in pixels, on return.
@@ -71852,8 +71780,6 @@ inline void Font::GetStringSizeWrapped(std::string_view text,
  *
  * @param font the font to query.
  * @param text text to calculate, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param max_width maximum width, in pixels, available for the string, or 0
  *                  for unbounded width.
  * @param measured_width a pointer filled in with the width, in pixels, of the
@@ -71909,8 +71835,6 @@ inline void Font::MeasureString(std::string_view text,
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @returns a new 8-bit, palettized surface, or nullptr if there was an error.
  *
@@ -71952,8 +71876,6 @@ inline Surface Font::RenderText_Solid(std::string_view text, Color fg) const
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @param wrapLength the maximum width of the text surface or 0 to wrap on
  *                   newline characters.
@@ -72042,8 +71964,6 @@ inline Surface Font::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @param bg the background color for the text.
  * @returns a new 8-bit, palettized surface, or nullptr if there was an error.
@@ -72091,8 +72011,6 @@ inline Surface Font::RenderText_Shaded(std::string_view text,
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @param bg the background color for the text.
  * @param wrap_width the maximum width of the text surface or 0 to wrap on
@@ -72190,8 +72108,6 @@ inline Surface Font::RenderGlyph_Shaded(Uint32 ch,
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
  *
@@ -72234,8 +72150,6 @@ inline Surface Font::RenderText_Blended(std::string_view text, Color fg) const
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @param wrap_width the maximum width of the text surface or 0 to wrap on
  *                   newline characters.
@@ -72323,8 +72237,6 @@ inline Surface Font::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @param bg the background color for the text.
  * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
@@ -72372,8 +72284,6 @@ inline Surface Font::RenderText_LCD(std::string_view text,
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @param bg the background color for the text.
  * @param wrap_width the maximum width of the text surface or 0 to wrap on
@@ -72568,10 +72478,8 @@ public:
    * `text` must have been created using a TextEngine from
    * SurfaceTextEngine.SurfaceTextEngine().
    *
-   * @param x the x coordinate in pixels, positive from the left edge towards
-   *          the right.
-   * @param y the y coordinate in pixels, positive from the top edge towards the
-   *          bottom.
+   * @param p the x,y coordinates in pixels, positive from the top-left edge
+   *          towards the bottom-right.
    * @param surface the surface to draw on.
    * @throws Error on failure.
    *
@@ -72592,10 +72500,8 @@ public:
    * RendererTextEngine.RendererTextEngine(), and will draw using the renderer
    * passed to that function.
    *
-   * @param x the x coordinate in pixels, positive from the left edge towards
-   *          the right.
-   * @param y the y coordinate in pixels, positive from the top edge towards the
-   *          bottom.
+   * @param p the x,y coordinates in pixels, positive from the top-left edge
+   *          towards the bottom-right.
    * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -72753,10 +72659,8 @@ public:
    *
    * This returns false if SDL_ttf isn't built with HarfBuzz support.
    *
-   * @param script an
-   *               [ISO 15924
-   * code](https://unicode.org/iso15924/iso15924-codes.html)
-   *               .
+   * @param script an [ISO 15924
+   *               code](https://unicode.org/iso15924/iso15924-codes.html).
    * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -73216,6 +73120,17 @@ public:
    */
   void GetSubStringForLine(int line, SubString* substring) const;
 
+  /**
+   * Get all substrings of a text object.
+   *
+   * @returns a nullptr terminated array of substring pointers or nullptr on
+   *          failure; call GetError() for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               text.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   */
   OwnArray<SubString*> GetSubStrings() const
   {
     return GetSubStringsForRange(0);
@@ -73227,8 +73142,6 @@ public:
    * @param offset a byte offset into the text string.
    * @param length the length of the range being queried, in bytes, or -1 for
    *               the remainder of the string.
-   * @param count a pointer filled in with the number of substrings returned,
-   *              may be nullptr.
    * @returns a nullptr terminated array of substring pointers or nullptr on
    * failure; call GetError() for more information. This is a single allocation
    * that should be freed with free() when it is no longer needed.
@@ -73240,6 +73153,21 @@ public:
    */
   OwnArray<SubString*> GetSubStringsForRange(int offset, int length = -1) const;
 
+  /**
+   * Get the portion of a text string that is closest to a point.
+   *
+   * This will return the closest substring of text to the given point.
+   *
+   * @param p the coordinates relative to the top-left side of the text, may be
+   *          outside the bounds of the text area.
+   * @returns the iterator on success or false on failure; call GetError() for
+   *          more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               text.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   */
   SubStringIterator GetSubStringForPoint(Point p) const;
 
   /**
@@ -73988,10 +73916,8 @@ inline Direction Text::GetDirection() const
  * This returns false if SDL_ttf isn't built with HarfBuzz support.
  *
  * @param text the text to modify.
- * @param script an
- *               [ISO 15924
- * code](https://unicode.org/iso15924/iso15924-codes.html)
- *               .
+ * @param script an [ISO 15924
+ *               code](https://unicode.org/iso15924/iso15924-codes.html).
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -74039,10 +73965,7 @@ inline Uint32 Text::GetScript() const { return SDL::GetTextScript(m_resource); }
  * The default text color is white (255, 255, 255, 255).
  *
  * @param text the Text to modify.
- * @param r the red color value in the range of 0-255.
- * @param g the green color value in the range of 0-255.
- * @param b the blue color value in the range of 0-255.
- * @param a the alpha value in the range of 0-255.
+ * @param c the color value in the range of 0-255.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -74066,10 +73989,7 @@ inline void Text::SetColor(Color c) { SDL::SetTextColor(m_resource, c); }
  * The default text color is white (1.0f, 1.0f, 1.0f, 1.0f).
  *
  * @param text the Text to modify.
- * @param r the red color value, normally in the range of 0-1.
- * @param g the green color value, normally in the range of 0-1.
- * @param b the blue color value, normally in the range of 0-1.
- * @param a the alpha value in the range of 0-1.
+ * @param c the color value, normally in the range of 0-1.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -74322,8 +74242,8 @@ inline void Text::SetWrapWidth(int wrap_width)
  * Get whether wrapping is enabled on a text object.
  *
  * @param text the Text to query.
- * @param wrap_width a pointer filled in with the maximum width in pixels or 0
- *                   if the text is being wrapped on newline characters.
+ * @returns maximum width in pixels or 0 if the text is being wrapped on newline
+ *          characters.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -74408,8 +74328,6 @@ inline bool Text::IsWrapWhitespaceVisible() const
  *
  * @param text the Text to modify.
  * @param string the UTF-8 text to use, may be nullptr.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -74442,8 +74360,6 @@ inline void Text::SetString(std::string_view string)
  *               this does not do UTF-8 validation, so you should only insert
  *               at UTF-8 sequence boundaries.
  * @param string the UTF-8 text to insert.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -74474,8 +74390,6 @@ inline void Text::InsertString(int offset, std::string_view string)
  *
  * @param text the Text to modify.
  * @param string the UTF-8 text to insert.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the

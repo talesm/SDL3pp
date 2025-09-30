@@ -104,6 +104,7 @@ struct IConvParam
   /// Comparison
   constexpr auto operator<=>(const IConvParam& other) const = default;
 
+  /// Converts to underlying IConvRaw
   constexpr operator IConvRaw() const { return value; }
 };
 
@@ -235,8 +236,10 @@ using Sint8 = Sint8;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Sint8 MAX_SINT8 = SDL_MAX_SINT8;
 
+/// Min representable value
 constexpr Sint8 MIN_SINT8 = SDL_MIN_SINT8;
 
 #ifdef SDL3PP_DOC
@@ -250,8 +253,10 @@ using Uint8 = Uint8;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Uint8 MAX_UINT8 = SDL_MAX_UINT8;
 
+/// Min representable value
 constexpr Uint8 MIN_UINT8 = SDL_MIN_UINT8;
 
 #ifdef SDL3PP_DOC
@@ -265,8 +270,10 @@ using Sint16 = Sint16;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Sint16 MAX_SINT16 = SDL_MAX_SINT16;
 
+/// Min representable value
 constexpr Sint16 MIN_SINT16 = SDL_MIN_SINT16;
 
 #ifdef SDL3PP_DOC
@@ -280,8 +287,10 @@ using Uint16 = Uint16;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Uint16 MAX_UINT16 = SDL_MAX_UINT16;
 
+/// Min representable value
 constexpr Uint16 MIN_UINT16 = SDL_MIN_UINT16;
 
 #ifdef SDL3PP_DOC
@@ -295,8 +304,10 @@ using Sint32 = Sint32;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Sint32 MAX_SINT32 = SDL_MAX_SINT32;
 
+/// Min representable value
 constexpr Sint32 MIN_SINT32 = SDL_MIN_SINT32;
 
 #ifdef SDL3PP_DOC
@@ -310,8 +321,10 @@ using Uint32 = Uint32;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Uint32 MAX_UINT32 = SDL_MAX_UINT32;
 
+/// Min representable value
 constexpr Uint8 MIN_UINT32 = SDL_MIN_UINT32;
 
 #ifdef SDL3PP_DOC
@@ -327,8 +340,10 @@ using Sint64 = Sint64;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Sint64 MAX_SINT64 = SDL_MAX_SINT64;
 
+/// Min representable value
 constexpr Sint64 MIN_SINT64 = SDL_MIN_SINT64;
 
 #ifdef SDL3PP_DOC
@@ -344,8 +359,10 @@ using Uint64 = Uint64;
 
 #endif // SDL3PP_DOC
 
+/// Max representable value
 constexpr Uint64 MAX_UINT64 = SDL_MAX_UINT64;
 
+/// Min representable value
 constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
 
 /// Duration in seconds (float).
@@ -434,27 +451,25 @@ public:
    *
    * This only converts whole numbers, not fractional seconds.
    *
-   * @param S the number of seconds to convert.
-   * @returns S, expressed in nanoseconds.
+   * @param time the number of seconds to convert.
+   * @returns the converted Time.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   static constexpr Time FromPosix(Sint64 time);
 
   /**
    * Convert nanoseconds to seconds.
    *
-   * This performs a division, so the results can be dramatically different if
-   * `NS` is an integer or floating point value.
+   * This only converts whole numbers, not fractional seconds.
    *
-   * @param NS the number of nanoseconds to convert.
-   * @returns NS, expressed in seconds.
+   * @returns Posix time (in seconds).
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr Sint64 ToPosix() const;
 
@@ -513,8 +528,10 @@ public:
   }
 };
 
+/// Max allowed time representation
 constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
 
+/// Min allowed time representation
 constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
 
 #ifdef SDL3PP_DOC
@@ -5785,8 +5802,7 @@ public:
    *
    * @param tocode The target character encoding, must not be nullptr.
    * @param fromcode The source character encoding, must not be nullptr.
-   * @returns a handle that must be freed with IConv.close, or
-   *          SDL_ICONV_ERROR on failure.
+   * @post a valid handle or falsy on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -5827,7 +5843,10 @@ public:
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const
+  {
+    return m_resource != IConvRaw(SDL_ICONV_ERROR);
+  }
 
   /// Converts to IConvParam
   constexpr operator IConvParam() const { return {m_resource}; }
@@ -5835,7 +5854,6 @@ public:
   /**
    * This function frees a context used for character set conversion.
    *
-   * @param cd The character set conversion handle.
    * @returns 0 on success, or -1 on failure.
    *
    * @since This function is available since SDL 3.2.0.

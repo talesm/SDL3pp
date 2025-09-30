@@ -1263,8 +1263,8 @@ struct Rect : RectRaw
    * If `result` is nullptr then this function will return false.
    *
    * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns an SDL_Rect structure filled in with the intersection of
-   *               if there is intersection, std::nullopt otherwise.
+   * @returns a Rect structure filled in with the intersection of if there is
+   *          intersection, std::nullopt otherwise.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -2018,8 +2018,7 @@ struct FRect : FRectRaw
  * Convert an Rect to FRect
  *
  * @param rect a pointer to an Rect.
- * @param frect a pointer filled in with the floating point representation of
- *              `rect`.
+ * @returns the floating point representation of `rect`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2148,9 +2147,8 @@ constexpr bool Rect::HasIntersection(const RectRaw& other) const
  *
  * @param A an Rect structure representing the first rectangle.
  * @param B an Rect structure representing the second rectangle.
- * @param result an Rect structure filled in with the intersection of
- *               rectangles `A` and `B`.
- * @returns true if there is an intersection, false otherwise.
+ * @returns a Rect structure filled in with the intersection of if there is
+ *          intersection, std::nullopt otherwise.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2173,8 +2171,7 @@ constexpr std::optional<Rect> Rect::GetIntersection(const RectRaw& other) const
  *
  * @param A an Rect structure representing the first rectangle.
  * @param B an Rect structure representing the second rectangle.
- * @param result an Rect structure filled in with the union of rectangles
- *               `A` and `B`.
+ * @returns Rect representing union of two rectangles
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -2194,12 +2191,11 @@ constexpr Rect Rect::GetUnion(const RectRaw& other) const
 /**
  * Calculate a minimal rectangle enclosing a set of points.
  *
- * If `clip` is not nullptr then only points inside of the clipping rectangle
+ * If `clip` is not nullopt then only points inside of the clipping rectangle
  * are considered.
  *
  * @param points an array of Point structures representing points to be
  *               enclosed.
- * @param count the number of structures in the `points` array.
  * @param clip an Rect used for clipping or nullptr to enclose all points.
  * @returns Result if any points were enclosed or empty rect if all the points
  * were outside of the clipping rectangle.
@@ -2413,10 +2409,8 @@ constexpr bool FRect::HasIntersection(const FRectRaw& other) const
  *
  * @param A an FRect structure representing the first rectangle.
  * @param B an FRect structure representing the second rectangle.
- * @param result an FRect structure filled in with the intersection of
- *               rectangles `A` and `B`.
- * @returns an FRect structure filled in with the intersection of rectangles `A`
- *          and `B`if there is an intersection, an empty FRect otherwise.
+ * @returns a FRect structure filled in with the intersection of if there is
+ *          intersection, std::nullopt otherwise.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2438,8 +2432,8 @@ constexpr FRect FRect::GetIntersection(const FRectRaw& other) const
  *
  * @param A an FRect structure representing the first rectangle.
  * @param B an FRect structure representing the second rectangle.
- * @returns result an FRect structure filled in with the union of rectangles
- *          A` and `B`.
+ * @returns a FRect structure filled in with the union of rectangles `A` and
+ *          `B`.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -2460,17 +2454,14 @@ constexpr FRect FRect::GetUnion(const FRectRaw& other) const
  * Calculate a minimal rectangle enclosing a set of points with float
  * precision.
  *
- * If `clip` is not nullptr then only points inside of the clipping rectangle
- * are considered.
+ * If `clip` is not std::nullopt then only points inside of the clipping
+ * rectangle are considered.
  *
  * @param points an array of FPoint structures representing points to be
  *               enclosed.
- * @param count the number of structures in the `points` array.
  * @param clip an FRect used for clipping or nullptr to enclose all points.
- * @param result an FRect structure filled in with the minimal enclosing
- *               rectangle.
- * @returns true if any points were enclosed or false if all the points were
- *          outside of the clipping rectangle.
+ * @returns a FRect structure filled in with the minimal enclosing rectangle or
+ *          false if all the points were outside of the clipping rectangle.
  *
  * @since This function is available since SDL 3.2.0.
  */

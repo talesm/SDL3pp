@@ -3257,20 +3257,7 @@ const transform = {
             "SDL_GetFloatProperty": "immutable",
             "SDL_GetBooleanProperty": "immutable",
             "SDL_ClearProperty": "immutable",
-            "Enumerate": [{
-              kind: "function",
-              type: "void",
-              immutable: true,
-              template: [{
-                type: "std::output_iterator<const char *>",
-                name: "IT"
-              }],
-              parameters: [{
-                type: "IT",
-                name: "outputIter"
-              }]
-            },
-            {
+            "Enumerate": {
               kind: "function",
               type: "void",
               immutable: true,
@@ -3279,7 +3266,7 @@ const transform = {
                 type: "EnumeratePropertiesCB",
                 name: "callback"
               }]
-            }],
+            },
             "SDL_EnumerateProperties": "immutable",
             "GetCount": {
               kind: "function",

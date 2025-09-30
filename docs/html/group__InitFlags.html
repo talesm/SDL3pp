@@ -71,23 +71,16 @@ $(function() {
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Initialization flags<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesBasics.html">Basics</a> &raquo; <a class="el" href="group__CategoryInit.html">Initialization and Shutdown</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1InitFlagsExtra.html">SDL::InitFlagsExtra</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization flags for <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> satellite libraries.  <a href="structSDL_1_1InitFlagsExtra.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga3f64dea7a0f3ad5e14c81da630a0d27d" id="r_ga3f64dea7a0f3ad5e14c81da630a0d27d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">SDL::InitFlags</a> = Uint32</td></tr>
-<tr class="memdesc:ga3f64dea7a0f3ad5e14c81da630a0d27d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization flags for InitSubSystem.  <br /></td></tr>
+<tr class="memitem:ga3f64dea7a0f3ad5e14c81da630a0d27d" id="r_ga3f64dea7a0f3ad5e14c81da630a0d27d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">SDL::InitFlags</a> = <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a></td></tr>
+<tr class="memdesc:ga3f64dea7a0f3ad5e14c81da630a0d27d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization flags for Init and/or InitSubSystem.  <br /></td></tr>
 <tr class="separator:ga3f64dea7a0f3ad5e14c81da630a0d27d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -129,21 +122,21 @@ constexpr <a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">SDL::InitFlags</a> = typedef Uint32</td>
+          <td class="memname">using <a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">SDL::InitFlags</a> = typedef <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>These are the flags which may be passed to <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a>. You should specify the subsystems which you will be using in your application.</p>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1InitFlagsExtra.html" title="Initialization flags for SDL satellite libraries.">InitFlagsExtra</a> </dd>
+<p>These are the flags which may be passed to <a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a>. You should specify the subsystems which you will be using in your application.</p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init</a> </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit</a> </dd>
 <dd>
+<a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Compatibility function to initialize the SDL library.">InitSubSystem</a> </dd>
+<dd>
 <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem</a> </dd>
 <dd>
-<a class="el" href="group__CategoryInit.html#gaa17083ba3ec421956acec4075284b453" title="Check if all of the specified subsystems which are currently initialized.">WasInit</a> </dd></dl>
+<a class="el" href="group__CategoryInit.html#ga2d9c710ec219aa2818bfdc55e4115f44" title="Get a mask of the specified subsystems which are currently initialized.">WasInit</a> </dd></dl>
 
 </div>
 </div>

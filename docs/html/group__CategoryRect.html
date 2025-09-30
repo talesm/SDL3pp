@@ -72,6 +72,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Rectangle Functions<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a></div></div></div>
 </div><!--header-->
@@ -95,19 +96,136 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A rectangle, with the origin at the upper left (using floating point values).  <a href="structSDL_1_1FRect.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:gaf764011ce3f1f5844dff2013757df824" id="r_gaf764011ce3f1f5844dff2013757df824"><td class="memItemLeft" align="right" valign="top"><a id="gaf764011ce3f1f5844dff2013757df824" name="gaf764011ce3f1f5844dff2013757df824"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PointRaw</b> = SDL_Point</td></tr>
+<tr class="separator:gaf764011ce3f1f5844dff2013757df824"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6302a4c72e75ffce653823caba34c9a4" id="r_ga6302a4c72e75ffce653823caba34c9a4"><td class="memItemLeft" align="right" valign="top"><a id="ga6302a4c72e75ffce653823caba34c9a4" name="ga6302a4c72e75ffce653823caba34c9a4"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::FPointRaw</b> = SDL_FPoint</td></tr>
+<tr class="separator:ga6302a4c72e75ffce653823caba34c9a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadeb77054b31c63a38d6594652fb0b7f4" id="r_gadeb77054b31c63a38d6594652fb0b7f4"><td class="memItemLeft" align="right" valign="top"><a id="gadeb77054b31c63a38d6594652fb0b7f4" name="gadeb77054b31c63a38d6594652fb0b7f4"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::RectRaw</b> = SDL_Rect</td></tr>
+<tr class="separator:gadeb77054b31c63a38d6594652fb0b7f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae2114f14dfc281fe454383bd95bc36a5" id="r_gae2114f14dfc281fe454383bd95bc36a5"><td class="memItemLeft" align="right" valign="top"><a id="gae2114f14dfc281fe454383bd95bc36a5" name="gae2114f14dfc281fe454383bd95bc36a5"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::FRectRaw</b> = SDL_FRect</td></tr>
+<tr class="separator:gae2114f14dfc281fe454383bd95bc36a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga04f161ee799e6e7358b9c39dce73d47e" id="r_ga04f161ee799e6e7358b9c39dce73d47e"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga04f161ee799e6e7358b9c39dce73d47e">SDL::Point::IsInRect</a> (const <a class="el" href="structSDL_1_1Rect.html">Rect</a> &amp;r) const</td></tr>
-<tr class="memdesc:ga04f161ee799e6e7358b9c39dce73d47e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a point resides inside a rectangle.  <br /></td></tr>
-<tr class="separator:ga04f161ee799e6e7358b9c39dce73d47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga841de9b06a5c167bb849c20f216ca7bf" id="r_ga841de9b06a5c167bb849c20f216ca7bf"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga841de9b06a5c167bb849c20f216ca7bf">SDL::FPoint::IsInRect</a> (const <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;r) const</td></tr>
-<tr class="memdesc:ga841de9b06a5c167bb849c20f216ca7bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a point resides inside a floating point rectangle.  <br /></td></tr>
-<tr class="separator:ga841de9b06a5c167bb849c20f216ca7bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab65df2d06e30f4ae1c1a0c154c84491a" id="r_gab65df2d06e30f4ae1c1a0c154c84491a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gab65df2d06e30f4ae1c1a0c154c84491a">SDL::RectToFRect</a> (const RectRaw &amp;rect)</td></tr>
+<tr class="memdesc:gab65df2d06e30f4ae1c1a0c154c84491a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> to <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a>.  <br /></td></tr>
+<tr class="separator:gab65df2d06e30f4ae1c1a0c154c84491a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa7146519e8a5634b6a8bffed822d4f70" id="r_gaa7146519e8a5634b6a8bffed822d4f70"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gaa7146519e8a5634b6a8bffed822d4f70">SDL::PointInRect</a> (const PointRaw &amp;p, const RectRaw &amp;r)</td></tr>
+<tr class="memdesc:gaa7146519e8a5634b6a8bffed822d4f70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a point resides inside a rectangle.  <br /></td></tr>
+<tr class="separator:gaa7146519e8a5634b6a8bffed822d4f70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga961a0cad0bb9060f5990d7df0775ac36" id="r_ga961a0cad0bb9060f5990d7df0775ac36"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga961a0cad0bb9060f5990d7df0775ac36">SDL::RectEmpty</a> (const RectRaw &amp;r)</td></tr>
+<tr class="memdesc:ga961a0cad0bb9060f5990d7df0775ac36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a rectangle has no area.  <br /></td></tr>
+<tr class="separator:ga961a0cad0bb9060f5990d7df0775ac36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga77c4f86612d18921558523b92a73e01b" id="r_ga77c4f86612d18921558523b92a73e01b"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga77c4f86612d18921558523b92a73e01b">SDL::RectsEqual</a> (const RectRaw &amp;a, const RectRaw &amp;b)</td></tr>
+<tr class="memdesc:ga77c4f86612d18921558523b92a73e01b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether two rectangles are equal.  <br /></td></tr>
+<tr class="separator:ga77c4f86612d18921558523b92a73e01b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaffffa909b11ff52886a92c8fb9e31270" id="r_gaffffa909b11ff52886a92c8fb9e31270"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gaffffa909b11ff52886a92c8fb9e31270">SDL::HasRectIntersection</a> (const RectRaw &amp;A, const RectRaw &amp;B)</td></tr>
+<tr class="memdesc:gaffffa909b11ff52886a92c8fb9e31270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether two rectangles intersect.  <br /></td></tr>
+<tr class="separator:gaffffa909b11ff52886a92c8fb9e31270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga83d45a5f9c7f76eefe2fff7fa7db1517" id="r_ga83d45a5f9c7f76eefe2fff7fa7db1517"><td class="memItemLeft" align="right" valign="top">constexpr std::optional&lt; <a class="el" href="structSDL_1_1Rect.html">Rect</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga83d45a5f9c7f76eefe2fff7fa7db1517">SDL::GetRectIntersection</a> (const RectRaw &amp;A, const RectRaw &amp;B)</td></tr>
+<tr class="memdesc:ga83d45a5f9c7f76eefe2fff7fa7db1517"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the intersection of two rectangles.  <br /></td></tr>
+<tr class="separator:ga83d45a5f9c7f76eefe2fff7fa7db1517"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab49f02440196a33965e36246e6cd41af" id="r_gab49f02440196a33965e36246e6cd41af"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gab49f02440196a33965e36246e6cd41af">SDL::GetRectUnion</a> (const RectRaw &amp;A, const RectRaw &amp;B)</td></tr>
+<tr class="memdesc:gab49f02440196a33965e36246e6cd41af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the union of two rectangles.  <br /></td></tr>
+<tr class="separator:gab49f02440196a33965e36246e6cd41af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga85c123841f1489a35512cc371fe7bef3" id="r_ga85c123841f1489a35512cc371fe7bef3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga85c123841f1489a35512cc371fe7bef3">SDL::GetRectEnclosingPoints</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const PointRaw &gt; points, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; clip)</td></tr>
+<tr class="memdesc:ga85c123841f1489a35512cc371fe7bef3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate a minimal rectangle enclosing a set of points.  <br /></td></tr>
+<tr class="separator:ga85c123841f1489a35512cc371fe7bef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaca1fe2c7512a5b0c99c3a3b3b10973ae" id="r_gaca1fe2c7512a5b0c99c3a3b3b10973ae"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gaca1fe2c7512a5b0c99c3a3b3b10973ae">SDL::GetRectAndLineIntersection</a> (const RectRaw &amp;rect, int *X1, int *Y1, int *X2, int *Y2)</td></tr>
+<tr class="memdesc:gaca1fe2c7512a5b0c99c3a3b3b10973ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the intersection of a rectangle and line segment.  <br /></td></tr>
+<tr class="separator:gaca1fe2c7512a5b0c99c3a3b3b10973ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga55391dda18cdacd47d3eafce2a6b1631" id="r_ga55391dda18cdacd47d3eafce2a6b1631"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga55391dda18cdacd47d3eafce2a6b1631">SDL::PointInRectFloat</a> (const FPointRaw &amp;p, const FRectRaw &amp;r)</td></tr>
+<tr class="memdesc:ga55391dda18cdacd47d3eafce2a6b1631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a point resides inside a floating point rectangle.  <br /></td></tr>
+<tr class="separator:ga55391dda18cdacd47d3eafce2a6b1631"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0508fa1cc273dd30f97a214490afa58b" id="r_ga0508fa1cc273dd30f97a214490afa58b"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga0508fa1cc273dd30f97a214490afa58b">SDL::RectEmptyFloat</a> (const FRectRaw &amp;r)</td></tr>
+<tr class="memdesc:ga0508fa1cc273dd30f97a214490afa58b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a floating point rectangle can contain any point.  <br /></td></tr>
+<tr class="separator:ga0508fa1cc273dd30f97a214490afa58b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaddf6c596ea64d4e897543ff09bfe37a4" id="r_gaddf6c596ea64d4e897543ff09bfe37a4"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gaddf6c596ea64d4e897543ff09bfe37a4">SDL::RectsEqualEpsilon</a> (const FRectRaw &amp;a, const FRectRaw &amp;b, const float epsilon)</td></tr>
+<tr class="memdesc:gaddf6c596ea64d4e897543ff09bfe37a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether two floating point rectangles are equal, within some given epsilon.  <br /></td></tr>
+<tr class="separator:gaddf6c596ea64d4e897543ff09bfe37a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadc8920b401e943351265dfe6afdf3c8f" id="r_gadc8920b401e943351265dfe6afdf3c8f"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gadc8920b401e943351265dfe6afdf3c8f">SDL::RectsEqualFloat</a> (const FRectRaw &amp;a, const FRectRaw &amp;b)</td></tr>
+<tr class="memdesc:gadc8920b401e943351265dfe6afdf3c8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether two floating point rectangles are equal, within a default epsilon.  <br /></td></tr>
+<tr class="separator:gadc8920b401e943351265dfe6afdf3c8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0e6c49690fa4465b7b3ec4b5eb27651b" id="r_ga0e6c49690fa4465b7b3ec4b5eb27651b"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga0e6c49690fa4465b7b3ec4b5eb27651b">SDL::HasRectIntersectionFloat</a> (const FRectRaw &amp;A, const FRectRaw &amp;B)</td></tr>
+<tr class="memdesc:ga0e6c49690fa4465b7b3ec4b5eb27651b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether two rectangles intersect with float precision.  <br /></td></tr>
+<tr class="separator:ga0e6c49690fa4465b7b3ec4b5eb27651b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1d277c9c31e7b6cd941383c898a761f3" id="r_ga1d277c9c31e7b6cd941383c898a761f3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga1d277c9c31e7b6cd941383c898a761f3">SDL::GetRectIntersectionFloat</a> (const FRectRaw &amp;A, const FRectRaw &amp;B)</td></tr>
+<tr class="memdesc:ga1d277c9c31e7b6cd941383c898a761f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the intersection of two rectangles with float precision.  <br /></td></tr>
+<tr class="separator:ga1d277c9c31e7b6cd941383c898a761f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga09cff6d134e2c33abbb6d69c6d692be4" id="r_ga09cff6d134e2c33abbb6d69c6d692be4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga09cff6d134e2c33abbb6d69c6d692be4">SDL::GetRectUnionFloat</a> (const FRectRaw &amp;A, const FRectRaw &amp;B)</td></tr>
+<tr class="memdesc:ga09cff6d134e2c33abbb6d69c6d692be4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the union of two rectangles with float precision.  <br /></td></tr>
+<tr class="separator:ga09cff6d134e2c33abbb6d69c6d692be4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac5e8169761b5b1413fbe908bed89c4ce" id="r_gac5e8169761b5b1413fbe908bed89c4ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FRect.html">FRect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gac5e8169761b5b1413fbe908bed89c4ce">SDL::GetRectEnclosingPointsFloat</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FPointRaw &gt; points, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; clip)</td></tr>
+<tr class="memdesc:gac5e8169761b5b1413fbe908bed89c4ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate a minimal rectangle enclosing a set of points with float precision.  <br /></td></tr>
+<tr class="separator:gac5e8169761b5b1413fbe908bed89c4ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga541056e7544a243a0ef3edf18bfa0ca6" id="r_ga541056e7544a243a0ef3edf18bfa0ca6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga541056e7544a243a0ef3edf18bfa0ca6">SDL::GetRectAndLineIntersectionFloat</a> (const FRectRaw &amp;rect, float *X1, float *Y1, float *X2, float *Y2)</td></tr>
+<tr class="memdesc:ga541056e7544a243a0ef3edf18bfa0ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the intersection of a rectangle and line segment with float precision.  <br /></td></tr>
+<tr class="separator:ga541056e7544a243a0ef3edf18bfa0ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac67480500dbd8c55f24c36900720d1bc" id="r_gac67480500dbd8c55f24c36900720d1bc"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gac67480500dbd8c55f24c36900720d1bc">SDL::Rect::operator SDL_FRect</a> () const</td></tr>
+<tr class="memdesc:gac67480500dbd8c55f24c36900720d1bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert an SDL_Rect to SDL_FRect.  <br /></td></tr>
+<tr class="separator:gac67480500dbd8c55f24c36900720d1bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0a3908281ae61f815e57a3091be47bc1" id="r_ga0a3908281ae61f815e57a3091be47bc1"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga0a3908281ae61f815e57a3091be47bc1">SDL::Point::InRect</a> (const RectRaw &amp;r) const</td></tr>
+<tr class="memdesc:ga0a3908281ae61f815e57a3091be47bc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a point resides inside a rectangle.  <br /></td></tr>
+<tr class="separator:ga0a3908281ae61f815e57a3091be47bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga69592160d95cc8d1d81dcf321559bfae" id="r_ga69592160d95cc8d1d81dcf321559bfae"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga69592160d95cc8d1d81dcf321559bfae">SDL::Rect::Empty</a> () const</td></tr>
+<tr class="memdesc:ga69592160d95cc8d1d81dcf321559bfae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a rectangle has no area.  <br /></td></tr>
+<tr class="separator:ga69592160d95cc8d1d81dcf321559bfae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6e30293afac8cf7c74c496de5f379872" id="r_ga6e30293afac8cf7c74c496de5f379872"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga6e30293afac8cf7c74c496de5f379872">SDL::Rect::Equal</a> (const RectRaw &amp;other) const</td></tr>
+<tr class="memdesc:ga6e30293afac8cf7c74c496de5f379872"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether two rectangles are equal.  <br /></td></tr>
+<tr class="separator:ga6e30293afac8cf7c74c496de5f379872"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae446742cc2ba3a3d5ea2dde3fde9b645" id="r_gae446742cc2ba3a3d5ea2dde3fde9b645"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gae446742cc2ba3a3d5ea2dde3fde9b645">SDL::Rect::HasIntersection</a> (const RectRaw &amp;other) const</td></tr>
+<tr class="memdesc:gae446742cc2ba3a3d5ea2dde3fde9b645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether two rectangles intersect.  <br /></td></tr>
+<tr class="separator:gae446742cc2ba3a3d5ea2dde3fde9b645"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6161561bc8e840a5a870c6b9b1495c26" id="r_ga6161561bc8e840a5a870c6b9b1495c26"><td class="memItemLeft" align="right" valign="top">constexpr std::optional&lt; <a class="el" href="structSDL_1_1Rect.html">Rect</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga6161561bc8e840a5a870c6b9b1495c26">SDL::Rect::GetIntersection</a> (const RectRaw &amp;other) const</td></tr>
+<tr class="memdesc:ga6161561bc8e840a5a870c6b9b1495c26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the intersection of two rectangles.  <br /></td></tr>
+<tr class="separator:ga6161561bc8e840a5a870c6b9b1495c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa1adac4dc2c8702d277b912ff0b6eb37" id="r_gaa1adac4dc2c8702d277b912ff0b6eb37"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gaa1adac4dc2c8702d277b912ff0b6eb37">SDL::Rect::GetUnion</a> (const RectRaw &amp;other) const</td></tr>
+<tr class="memdesc:gaa1adac4dc2c8702d277b912ff0b6eb37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the union of two rectangles.  <br /></td></tr>
+<tr class="separator:gaa1adac4dc2c8702d277b912ff0b6eb37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaac3bbc2ba525c723c14620c7a80eb54b" id="r_gaac3bbc2ba525c723c14620c7a80eb54b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Rect.html">Rect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gaac3bbc2ba525c723c14620c7a80eb54b">SDL::Rect::GetEnclosingPoints</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const PointRaw &gt; points, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt; clip=std::nullopt)</td></tr>
+<tr class="memdesc:gaac3bbc2ba525c723c14620c7a80eb54b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate a minimal rectangle enclosing a set of points.  <br /></td></tr>
+<tr class="separator:gaac3bbc2ba525c723c14620c7a80eb54b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6530a528fa0a6253dbe4db63063d9c74" id="r_ga6530a528fa0a6253dbe4db63063d9c74"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga6530a528fa0a6253dbe4db63063d9c74">SDL::Rect::GetLineIntersection</a> (int *X1, int *Y1, int *X2, int *Y2) const</td></tr>
+<tr class="memdesc:ga6530a528fa0a6253dbe4db63063d9c74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the intersection of a rectangle and line segment.  <br /></td></tr>
+<tr class="separator:ga6530a528fa0a6253dbe4db63063d9c74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4a2bcb38ce78739dec04d8bf012fe332" id="r_ga4a2bcb38ce78739dec04d8bf012fe332"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga4a2bcb38ce78739dec04d8bf012fe332">SDL::FPoint::InRect</a> (const FRectRaw &amp;r) const</td></tr>
+<tr class="memdesc:ga4a2bcb38ce78739dec04d8bf012fe332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a point resides inside a floating point rectangle.  <br /></td></tr>
+<tr class="separator:ga4a2bcb38ce78739dec04d8bf012fe332"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga815a929d9f6b4e0866f458155d07c23e" id="r_ga815a929d9f6b4e0866f458155d07c23e"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga815a929d9f6b4e0866f458155d07c23e">SDL::FRect::Empty</a> () const</td></tr>
+<tr class="memdesc:ga815a929d9f6b4e0866f458155d07c23e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a rectangle has no area.  <br /></td></tr>
+<tr class="separator:ga815a929d9f6b4e0866f458155d07c23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga453e8226c683c51aefbcc3af56434b4c" id="r_ga453e8226c683c51aefbcc3af56434b4c"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga453e8226c683c51aefbcc3af56434b4c">SDL::FRect::EqualEpsilon</a> (const FRectRaw &amp;other, const float epsilon) const</td></tr>
+<tr class="memdesc:ga453e8226c683c51aefbcc3af56434b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether two floating point rectangles are equal, within some given epsilon.  <br /></td></tr>
+<tr class="separator:ga453e8226c683c51aefbcc3af56434b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5a995e1ff2e59cd6878eea88728f2fb6" id="r_ga5a995e1ff2e59cd6878eea88728f2fb6"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga5a995e1ff2e59cd6878eea88728f2fb6">SDL::FRect::Equal</a> (const FRectRaw &amp;other) const</td></tr>
+<tr class="memdesc:ga5a995e1ff2e59cd6878eea88728f2fb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether two rectangles are equal.  <br /></td></tr>
+<tr class="separator:ga5a995e1ff2e59cd6878eea88728f2fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae7b7bb28fbc462ed7db3705cc040cf62" id="r_gae7b7bb28fbc462ed7db3705cc040cf62"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gae7b7bb28fbc462ed7db3705cc040cf62">SDL::FRect::HasIntersection</a> (const FRectRaw &amp;other) const</td></tr>
+<tr class="memdesc:gae7b7bb28fbc462ed7db3705cc040cf62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether two rectangles intersect.  <br /></td></tr>
+<tr class="separator:gae7b7bb28fbc462ed7db3705cc040cf62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga426e45843446c9c347d2f7749dc63844" id="r_ga426e45843446c9c347d2f7749dc63844"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga426e45843446c9c347d2f7749dc63844">SDL::FRect::GetIntersection</a> (const FRectRaw &amp;other) const</td></tr>
+<tr class="memdesc:ga426e45843446c9c347d2f7749dc63844"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the intersection of two rectangles with float precision.  <br /></td></tr>
+<tr class="separator:ga426e45843446c9c347d2f7749dc63844"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadb1461faa55cfc317fa7ca2969e245ce" id="r_gadb1461faa55cfc317fa7ca2969e245ce"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gadb1461faa55cfc317fa7ca2969e245ce">SDL::FRect::GetUnion</a> (const FRectRaw &amp;other) const</td></tr>
+<tr class="memdesc:gadb1461faa55cfc317fa7ca2969e245ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the union of two rectangles with float precision.  <br /></td></tr>
+<tr class="separator:gadb1461faa55cfc317fa7ca2969e245ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa72382b8b10a4bc09a3a172fd04ca3d6" id="r_gaa72382b8b10a4bc09a3a172fd04ca3d6"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#gaa72382b8b10a4bc09a3a172fd04ca3d6">SDL::FRect::GetEnclosingPoints</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FPointRaw &gt; points, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt; clip=std::nullopt)</td></tr>
+<tr class="memdesc:gaa72382b8b10a4bc09a3a172fd04ca3d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate a minimal rectangle enclosing a set of points with float precision.  <br /></td></tr>
+<tr class="separator:gaa72382b8b10a4bc09a3a172fd04ca3d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga38fcfc947d772c373b5e0533fa2d9b2a" id="r_ga38fcfc947d772c373b5e0533fa2d9b2a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga38fcfc947d772c373b5e0533fa2d9b2a">SDL::FRect::GetLineIntersection</a> (float *X1, float *Y1, float *X2, float *Y2) const</td></tr>
+<tr class="memdesc:ga38fcfc947d772c373b5e0533fa2d9b2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the intersection of a rectangle and line segment with float precision.  <br /></td></tr>
+<tr class="separator:ga38fcfc947d772c373b5e0533fa2d9b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga841de9b06a5c167bb849c20f216ca7bf" name="ga841de9b06a5c167bb849c20f216ca7bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga841de9b06a5c167bb849c20f216ca7bf">&#9670;&#160;</a></span>IsInRect() <span class="overload">[1/2]</span></h2>
+<a id="ga69592160d95cc8d1d81dcf321559bfae" name="ga69592160d95cc8d1d81dcf321559bfae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga69592160d95cc8d1d81dcf321559bfae">&#9670;&#160;</a></span>Empty() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -116,9 +234,1146 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool SDL::FPoint::IsInRect </td>
+          <td class="memname">constexpr bool SDL::Rect::Empty </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A rectangle is considered "empty" for this function if <code>r</code> is nullptr, or if <code>r</code>'s width and/or height are &lt;= 0.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
+<dl class="section return"><dt>Returns</dt><dd>true if the rectangle is "empty", false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga815a929d9f6b4e0866f458155d07c23e" name="ga815a929d9f6b4e0866f458155d07c23e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga815a929d9f6b4e0866f458155d07c23e">&#9670;&#160;</a></span>Empty() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::FRect::Empty </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A rectangle is considered "empty" for this function if <code>r</code> is NULL, or if <code>r</code>'s width and/or height are &lt;= 0.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
+<dl class="section return"><dt>Returns</dt><dd>true if the rectangle is "empty", false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga5a995e1ff2e59cd6878eea88728f2fb6" name="ga5a995e1ff2e59cd6878eea88728f2fb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5a995e1ff2e59cd6878eea88728f2fb6">&#9670;&#160;</a></span>Equal() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::FRect::Equal </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Rectangles are considered equal if both are not nullptr and each of their x, y, width and height are within SDL_FLT_EPSILON of each other. This is often a reasonable way to compare two floating point rectangles and deal with the slight precision variations in floating point calculations that tend to pop up.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>the second rectangle to test. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the rectangles are equal, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRect.html#ga453e8226c683c51aefbcc3af56434b4c" title="Determine whether two floating point rectangles are equal, within some given epsilon.">FRect.EqualEpsilon</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga6e30293afac8cf7c74c496de5f379872" name="ga6e30293afac8cf7c74c496de5f379872"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6e30293afac8cf7c74c496de5f379872">&#9670;&#160;</a></span>Equal() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::Rect::Equal </td>
+          <td>(</td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Rectangles are considered equal if both are not nullptr and each of their x, y, width and height match.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>the second rectangle to test. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the rectangles are equal, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga453e8226c683c51aefbcc3af56434b4c" name="ga453e8226c683c51aefbcc3af56434b4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga453e8226c683c51aefbcc3af56434b4c">&#9670;&#160;</a></span>EqualEpsilon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::FRect::EqualEpsilon </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>other</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>epsilon</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Rectangles are considered equal if both are not nullptr and each of their x, y, width and height are within <code>epsilon</code> of each other. If you don't know what value to use for <code>epsilon</code>, you should call the <a class="el" href="group__CategoryRect.html#ga5a995e1ff2e59cd6878eea88728f2fb6" title="Determine whether two rectangles are equal.">FRect.Equal</a> function instead.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>the second rectangle to test. </td></tr>
+    <tr><td class="paramname">epsilon</td><td>the epsilon value for comparison. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the rectangles are equal, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRect.html#ga5a995e1ff2e59cd6878eea88728f2fb6" title="Determine whether two rectangles are equal.">FRect.Equal</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaa72382b8b10a4bc09a3a172fd04ca3d6" name="gaa72382b8b10a4bc09a3a172fd04ca3d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa72382b8b10a4bc09a3a172fd04ca3d6">&#9670;&#160;</a></span>GetEnclosingPoints() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> SDL::FRect::GetEnclosingPoints </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramname"><em>clip</em> = <code>std::nullopt</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If <code>clip</code> is not nullptr then only points inside of the clipping rectangle are considered.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">points</td><td>a span of SDL_Point structures representing points to be enclosed. </td></tr>
+    <tr><td class="paramname">clip</td><td>an SDL_Rect used for clipping or std::nullopt to enclose all points. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> structure filled in with the minimal enclosing rectangle or an empty <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> if all the points were outside of the clipping rectangle.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gaac3bbc2ba525c723c14620c7a80eb54b" name="gaac3bbc2ba525c723c14620c7a80eb54b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaac3bbc2ba525c723c14620c7a80eb54b">&#9670;&#160;</a></span>GetEnclosingPoints() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1Rect.html">Rect</a> SDL::Rect::GetEnclosingPoints </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const PointRaw &gt;&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramname"><em>clip</em> = <code>std::nullopt</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If <code>clip</code> is not nullptr then only points inside of the clipping rectangle are considered.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">points</td><td>a span of SDL_Point structures representing points to be enclosed. </td></tr>
+    <tr><td class="paramname">clip</td><td>an SDL_Rect used for clipping or std::nullopt to enclose all points. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a SDL_Rect structure filled in with the minimal enclosing rectangle or an empty rect if all the points were outside of the clipping rectangle.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga426e45843446c9c347d2f7749dc63844" name="ga426e45843446c9c347d2f7749dc63844"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga426e45843446c9c347d2f7749dc63844">&#9670;&#160;</a></span>GetIntersection() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> SDL::FRect::GetIntersection </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If <code>result</code> is nullptr then this function will return false.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>an SDL_Rect structure representing the second rectangle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>an SDL_Rect structure filled in with the intersection of if there is intersection, an empty <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> otherwise.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRect.html#gae7b7bb28fbc462ed7db3705cc040cf62" title="Determine whether two rectangles intersect.">FRect.HasIntersection</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga6161561bc8e840a5a870c6b9b1495c26" name="ga6161561bc8e840a5a870c6b9b1495c26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6161561bc8e840a5a870c6b9b1495c26">&#9670;&#160;</a></span>GetIntersection() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::optional&lt; <a class="el" href="structSDL_1_1Rect.html">Rect</a> &gt; SDL::Rect::GetIntersection </td>
+          <td>(</td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If <code>result</code> is nullptr then this function will return false.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>an SDL_Rect structure representing the second rectangle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure filled in with the intersection of if there is intersection, std::nullopt otherwise.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRect.html#gae446742cc2ba3a3d5ea2dde3fde9b645" title="Determine whether two rectangles intersect.">Rect.HasIntersection</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga38fcfc947d772c373b5e0533fa2d9b2a" name="ga38fcfc947d772c373b5e0533fa2d9b2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga38fcfc947d772c373b5e0533fa2d9b2a">&#9670;&#160;</a></span>GetLineIntersection() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::FRect::GetLineIntersection </td>
+          <td>(</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>X1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>Y1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>X2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>Y2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function is used to clip a line segment to a rectangle. A line segment contained entirely within the rectangle or that does not intersect will remain unchanged. A line segment that crosses the rectangle at either or both ends will be clipped to the boundary of the rectangle and the new coordinates saved in <code>X1</code>, <code>Y1</code>, <code>X2</code>, and/or <code>Y2</code> as necessary.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">X1</td><td>a pointer to the starting X-coordinate of the line. </td></tr>
+    <tr><td class="paramname">Y1</td><td>a pointer to the starting Y-coordinate of the line. </td></tr>
+    <tr><td class="paramname">X2</td><td>a pointer to the ending X-coordinate of the line. </td></tr>
+    <tr><td class="paramname">Y2</td><td>a pointer to the ending Y-coordinate of the line. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if there is an intersection, false otherwise.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga6530a528fa0a6253dbe4db63063d9c74" name="ga6530a528fa0a6253dbe4db63063d9c74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6530a528fa0a6253dbe4db63063d9c74">&#9670;&#160;</a></span>GetLineIntersection() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::Rect::GetLineIntersection </td>
+          <td>(</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>X1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>Y1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>X2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>Y2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function is used to clip a line segment to a rectangle. A line segment contained entirely within the rectangle or that does not intersect will remain unchanged. A line segment that crosses the rectangle at either or both ends will be clipped to the boundary of the rectangle and the new coordinates saved in <code>X1</code>, <code>Y1</code>, <code>X2</code>, and/or <code>Y2</code> as necessary.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">X1</td><td>a pointer to the starting X-coordinate of the line. </td></tr>
+    <tr><td class="paramname">Y1</td><td>a pointer to the starting Y-coordinate of the line. </td></tr>
+    <tr><td class="paramname">X2</td><td>a pointer to the ending X-coordinate of the line. </td></tr>
+    <tr><td class="paramname">Y2</td><td>a pointer to the ending Y-coordinate of the line. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if there is an intersection, false otherwise.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gaca1fe2c7512a5b0c99c3a3b3b10973ae" name="gaca1fe2c7512a5b0c99c3a3b3b10973ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaca1fe2c7512a5b0c99c3a3b3b10973ae">&#9670;&#160;</a></span>GetRectAndLineIntersection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::GetRectAndLineIntersection </td>
+          <td>(</td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>rect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>X1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>Y1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>X2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>Y2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function is used to clip a line segment to a rectangle. A line segment contained entirely within the rectangle or that does not intersect will remain unchanged. A line segment that crosses the rectangle at either or both ends will be clipped to the boundary of the rectangle and the new coordinates saved in <code>X1</code>, <code>Y1</code>, <code>X2</code>, and/or <code>Y2</code> as necessary.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rect</td><td>an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure representing the rectangle to intersect. </td></tr>
+    <tr><td class="paramname">X1</td><td>a pointer to the starting X-coordinate of the line. </td></tr>
+    <tr><td class="paramname">Y1</td><td>a pointer to the starting Y-coordinate of the line. </td></tr>
+    <tr><td class="paramname">X2</td><td>a pointer to the ending X-coordinate of the line. </td></tr>
+    <tr><td class="paramname">Y2</td><td>a pointer to the ending Y-coordinate of the line. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if there is an intersection, false otherwise.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga541056e7544a243a0ef3edf18bfa0ca6" name="ga541056e7544a243a0ef3edf18bfa0ca6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga541056e7544a243a0ef3edf18bfa0ca6">&#9670;&#160;</a></span>GetRectAndLineIntersectionFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::GetRectAndLineIntersectionFloat </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>rect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>X1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>Y1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>X2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>Y2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function is used to clip a line segment to a rectangle. A line segment contained entirely within the rectangle or that does not intersect will remain unchanged. A line segment that crosses the rectangle at either or both ends will be clipped to the boundary of the rectangle and the new coordinates saved in <code>X1</code>, <code>Y1</code>, <code>X2</code>, and/or <code>Y2</code> as necessary.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rect</td><td>an <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> structure representing the rectangle to intersect. </td></tr>
+    <tr><td class="paramname">X1</td><td>a pointer to the starting X-coordinate of the line. </td></tr>
+    <tr><td class="paramname">Y1</td><td>a pointer to the starting Y-coordinate of the line. </td></tr>
+    <tr><td class="paramname">X2</td><td>a pointer to the ending X-coordinate of the line. </td></tr>
+    <tr><td class="paramname">Y2</td><td>a pointer to the ending Y-coordinate of the line. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if there is an intersection, false otherwise.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga85c123841f1489a35512cc371fe7bef3" name="ga85c123841f1489a35512cc371fe7bef3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga85c123841f1489a35512cc371fe7bef3">&#9670;&#160;</a></span>GetRectEnclosingPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1Rect.html">Rect</a> SDL::GetRectEnclosingPoints </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const PointRaw &gt;&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const RectRaw &gt;&#160;</td>
+          <td class="paramname"><em>clip</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If <code>clip</code> is not nullopt then only points inside of the clipping rectangle are considered.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">points</td><td>an array of <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers).">Point</a> structures representing points to be enclosed. </td></tr>
+    <tr><td class="paramname">clip</td><td>an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> used for clipping or nullptr to enclose all points. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result if any points were enclosed or empty rect if all the points were outside of the clipping rectangle.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gac5e8169761b5b1413fbe908bed89c4ce" name="gac5e8169761b5b1413fbe908bed89c4ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac5e8169761b5b1413fbe908bed89c4ce">&#9670;&#160;</a></span>GetRectEnclosingPointsFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1FRect.html">FRect</a> SDL::GetRectEnclosingPointsFloat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const FPointRaw &gt;&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const FRectRaw &gt;&#160;</td>
+          <td class="paramname"><em>clip</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If <code>clip</code> is not std::nullopt then only points inside of the clipping rectangle are considered.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">points</td><td>an array of <a class="el" href="structSDL_1_1FPoint.html" title="The structure that defines a point (using floating point values).">FPoint</a> structures representing points to be enclosed. </td></tr>
+    <tr><td class="paramname">clip</td><td>an <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> used for clipping or nullptr to enclose all points. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> structure filled in with the minimal enclosing rectangle or false if all the points were outside of the clipping rectangle.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga83d45a5f9c7f76eefe2fff7fa7db1517" name="ga83d45a5f9c7f76eefe2fff7fa7db1517"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga83d45a5f9c7f76eefe2fff7fa7db1517">&#9670;&#160;</a></span>GetRectIntersection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::optional&lt; <a class="el" href="structSDL_1_1Rect.html">Rect</a> &gt; SDL::GetRectIntersection </td>
+          <td>(</td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>B</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If <code>result</code> is nullptr then this function will return false.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure representing the first rectangle. </td></tr>
+    <tr><td class="paramname">B</td><td>an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure representing the second rectangle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure filled in with the intersection of if there is intersection, std::nullopt otherwise.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRect.html#gae446742cc2ba3a3d5ea2dde3fde9b645" title="Determine whether two rectangles intersect.">Rect.HasIntersection</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga1d277c9c31e7b6cd941383c898a761f3" name="ga1d277c9c31e7b6cd941383c898a761f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1d277c9c31e7b6cd941383c898a761f3">&#9670;&#160;</a></span>GetRectIntersectionFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> SDL::GetRectIntersectionFloat </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>B</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If <code>result</code> is nullptr then this function will return false.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>an <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> structure representing the first rectangle. </td></tr>
+    <tr><td class="paramname">B</td><td>an <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> structure representing the second rectangle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> structure filled in with the intersection of if there is intersection, std::nullopt otherwise.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRect.html#gae7b7bb28fbc462ed7db3705cc040cf62" title="Determine whether two rectangles intersect.">FRect.HasIntersection</a> </dd></dl>
+
+</div>
+</div>
+<a id="gab49f02440196a33965e36246e6cd41af" name="gab49f02440196a33965e36246e6cd41af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab49f02440196a33965e36246e6cd41af">&#9670;&#160;</a></span>GetRectUnion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structSDL_1_1Rect.html">Rect</a> SDL::GetRectUnion </td>
+          <td>(</td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>B</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure representing the first rectangle. </td></tr>
+    <tr><td class="paramname">B</td><td>an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure representing the second rectangle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> representing union of two rectangles </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga09cff6d134e2c33abbb6d69c6d692be4" name="ga09cff6d134e2c33abbb6d69c6d692be4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga09cff6d134e2c33abbb6d69c6d692be4">&#9670;&#160;</a></span>GetRectUnionFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> SDL::GetRectUnionFloat </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>B</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>an <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> structure representing the first rectangle. </td></tr>
+    <tr><td class="paramname">B</td><td>an <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> structure representing the second rectangle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> structure filled in with the union of rectangles <code>A</code> and <code>B</code>. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gadb1461faa55cfc317fa7ca2969e245ce" name="gadb1461faa55cfc317fa7ca2969e245ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadb1461faa55cfc317fa7ca2969e245ce">&#9670;&#160;</a></span>GetUnion() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> SDL::FRect::GetUnion </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>an SDL_Rect structure representing the second rectangle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> representing union of two rectangles </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gaa1adac4dc2c8702d277b912ff0b6eb37" name="gaa1adac4dc2c8702d277b912ff0b6eb37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa1adac4dc2c8702d277b912ff0b6eb37">&#9670;&#160;</a></span>GetUnion() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structSDL_1_1Rect.html">Rect</a> SDL::Rect::GetUnion </td>
+          <td>(</td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>an SDL_Rect structure representing the second rectangle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> representing union of two rectangles </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gae7b7bb28fbc462ed7db3705cc040cf62" name="gae7b7bb28fbc462ed7db3705cc040cf62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae7b7bb28fbc462ed7db3705cc040cf62">&#9670;&#160;</a></span>HasIntersection() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::FRect::HasIntersection </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>an SDL_Rect structure representing the second rectangle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if there is an intersection, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRect.html#ga6161561bc8e840a5a870c6b9b1495c26" title="Calculate the intersection of two rectangles.">Rect.GetIntersection</a> </dd></dl>
+
+</div>
+</div>
+<a id="gae446742cc2ba3a3d5ea2dde3fde9b645" name="gae446742cc2ba3a3d5ea2dde3fde9b645"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae446742cc2ba3a3d5ea2dde3fde9b645">&#9670;&#160;</a></span>HasIntersection() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::Rect::HasIntersection </td>
+          <td>(</td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>an SDL_Rect structure representing the second rectangle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if there is an intersection, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRect.html#ga6161561bc8e840a5a870c6b9b1495c26" title="Calculate the intersection of two rectangles.">Rect.GetIntersection</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaffffa909b11ff52886a92c8fb9e31270" name="gaffffa909b11ff52886a92c8fb9e31270"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaffffa909b11ff52886a92c8fb9e31270">&#9670;&#160;</a></span>HasRectIntersection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::HasRectIntersection </td>
+          <td>(</td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>B</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If either pointer is nullptr the function will return false.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure representing the first rectangle. </td></tr>
+    <tr><td class="paramname">B</td><td>an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure representing the second rectangle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if there is an intersection, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRect.html#ga6161561bc8e840a5a870c6b9b1495c26" title="Calculate the intersection of two rectangles.">Rect.GetIntersection</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga0e6c49690fa4465b7b3ec4b5eb27651b" name="ga0e6c49690fa4465b7b3ec4b5eb27651b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0e6c49690fa4465b7b3ec4b5eb27651b">&#9670;&#160;</a></span>HasRectIntersectionFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::HasRectIntersectionFloat </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>B</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If either pointer is nullptr the function will return false.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>an <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> structure representing the first rectangle. </td></tr>
+    <tr><td class="paramname">B</td><td>an <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> structure representing the second rectangle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if there is an intersection, false otherwise.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRect.html#ga6161561bc8e840a5a870c6b9b1495c26" title="Calculate the intersection of two rectangles.">Rect.GetIntersection</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga4a2bcb38ce78739dec04d8bf012fe332" name="ga4a2bcb38ce78739dec04d8bf012fe332"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4a2bcb38ce78739dec04d8bf012fe332">&#9670;&#160;</a></span>InRect() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::FPoint::InRect </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
           <td class="paramname"><em>r</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -129,8 +1384,8 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>A point is considered part of a rectangle if both <code>p</code> and <code>r</code> are not NULL, and <code>p</code>'s x and y coordinates are &gt;= to the rectangle's top left corner, and &lt;= the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0) and (0,1) as "inside" and (0,2) as not.</p>
-<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> itself).</p>
+<p>A point is considered part of a rectangle if both <code>p</code> and <code>r</code> are not nullptr, and <code>p</code>'s x and y coordinates are &gt;= to the rectangle's top left corner, and &lt;= the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0) and (0,1) as "inside" and (0,2) as not.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">r</td><td>the rectangle to test. </td></tr>
@@ -139,12 +1394,12 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if this is contained by <code>r</code>, false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
-<a id="ga04f161ee799e6e7358b9c39dce73d47e" name="ga04f161ee799e6e7358b9c39dce73d47e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga04f161ee799e6e7358b9c39dce73d47e">&#9670;&#160;</a></span>IsInRect() <span class="overload">[2/2]</span></h2>
+<a id="ga0a3908281ae61f815e57a3091be47bc1" name="ga0a3908281ae61f815e57a3091be47bc1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0a3908281ae61f815e57a3091be47bc1">&#9670;&#160;</a></span>InRect() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -153,9 +1408,9 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool SDL::Point::IsInRect </td>
+          <td class="memname">constexpr bool SDL::Point::InRect </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structSDL_1_1Rect.html">Rect</a> &amp;&#160;</td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
           <td class="paramname"><em>r</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -166,8 +1421,8 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>A point is considered part of a rectangle if both <code>p</code> and <code>r</code> are not NULL, and <code>p</code>'s x and y coordinates are &gt;= to the rectangle's top left corner, and &lt; the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0) as "inside" and (0,1) as not.</p>
-<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> itself).</p>
+<p>A point is considered part of a rectangle if both <code>p</code> and <code>r</code> are not nullptr, and <code>p</code>'s x and y coordinates are &gt;= to the rectangle's top left corner, and &lt; the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0) as "inside" and (0,1) as not.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">r</td><td>the rectangle to test. </td></tr>
@@ -176,7 +1431,393 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if this is contained by <code>r</code>, false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gac67480500dbd8c55f24c36900720d1bc" name="gac67480500dbd8c55f24c36900720d1bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac67480500dbd8c55f24c36900720d1bc">&#9670;&#160;</a></span>operator SDL_FRect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr SDL::Rect::operator SDL_FRect </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floating point values).">FRect</a> filled in with the floating point representation of <code>rect</code>.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gaa7146519e8a5634b6a8bffed822d4f70" name="gaa7146519e8a5634b6a8bffed822d4f70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa7146519e8a5634b6a8bffed822d4f70">&#9670;&#160;</a></span>PointInRect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::PointInRect </td>
+          <td>(</td>
+          <td class="paramtype">const PointRaw &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>r</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A point is considered part of a rectangle if both <code>p</code> and <code>r</code> are not nullptr, and <code>p</code>'s x and y coordinates are &gt;= to the rectangle's top left corner, and &lt; the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0) as "inside" and (0,1) as not.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>the point to test. </td></tr>
+    <tr><td class="paramname">r</td><td>the rectangle to test. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if <code>p</code> is contained by <code>r</code>, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga55391dda18cdacd47d3eafce2a6b1631" name="ga55391dda18cdacd47d3eafce2a6b1631"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga55391dda18cdacd47d3eafce2a6b1631">&#9670;&#160;</a></span>PointInRectFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::PointInRectFloat </td>
+          <td>(</td>
+          <td class="paramtype">const FPointRaw &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>r</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A point is considered part of a rectangle if both <code>p</code> and <code>r</code> are not nullptr, and <code>p</code>'s x and y coordinates are &gt;= to the rectangle's top left corner, and &lt;= the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0) and (0,1) as "inside" and (0,2) as not.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>the point to test. </td></tr>
+    <tr><td class="paramname">r</td><td>the rectangle to test. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if <code>p</code> is contained by <code>r</code>, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga961a0cad0bb9060f5990d7df0775ac36" name="ga961a0cad0bb9060f5990d7df0775ac36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga961a0cad0bb9060f5990d7df0775ac36">&#9670;&#160;</a></span>RectEmpty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::RectEmpty </td>
+          <td>(</td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>r</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A rectangle is considered "empty" for this function if <code>r</code> is nullptr, or if <code>r</code>'s width and/or height are &lt;= 0.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>the rectangle to test. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the rectangle is "empty", false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga0508fa1cc273dd30f97a214490afa58b" name="ga0508fa1cc273dd30f97a214490afa58b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0508fa1cc273dd30f97a214490afa58b">&#9670;&#160;</a></span>RectEmptyFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::RectEmptyFloat </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>r</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A rectangle is considered "empty" for this function if <code>r</code> is nullptr, or if <code>r</code>'s width and/or height are &lt; 0.0f.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>the rectangle to test. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the rectangle is "empty", false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga77c4f86612d18921558523b92a73e01b" name="ga77c4f86612d18921558523b92a73e01b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga77c4f86612d18921558523b92a73e01b">&#9670;&#160;</a></span>RectsEqual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::RectsEqual </td>
+          <td>(</td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Rectangles are considered equal if both are not nullptr and each of their x, y, width and height match.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>the first rectangle to test. </td></tr>
+    <tr><td class="paramname">b</td><td>the second rectangle to test. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the rectangles are equal, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gaddf6c596ea64d4e897543ff09bfe37a4" name="gaddf6c596ea64d4e897543ff09bfe37a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaddf6c596ea64d4e897543ff09bfe37a4">&#9670;&#160;</a></span>RectsEqualEpsilon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::RectsEqualEpsilon </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>epsilon</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Rectangles are considered equal if both are not nullptr and each of their x, y, width and height are within <code>epsilon</code> of each other. If you don't know what value to use for <code>epsilon</code>, you should call the <a class="el" href="group__CategoryRect.html#ga5a995e1ff2e59cd6878eea88728f2fb6" title="Determine whether two rectangles are equal.">FRect.Equal</a> function instead.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>the first rectangle to test. </td></tr>
+    <tr><td class="paramname">b</td><td>the second rectangle to test. </td></tr>
+    <tr><td class="paramname">epsilon</td><td>the epsilon value for comparison. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the rectangles are equal, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRect.html#ga5a995e1ff2e59cd6878eea88728f2fb6" title="Determine whether two rectangles are equal.">FRect.Equal</a> </dd></dl>
+
+</div>
+</div>
+<a id="gadc8920b401e943351265dfe6afdf3c8f" name="gadc8920b401e943351265dfe6afdf3c8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadc8920b401e943351265dfe6afdf3c8f">&#9670;&#160;</a></span>RectsEqualFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::RectsEqualFloat </td>
+          <td>(</td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const FRectRaw &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Rectangles are considered equal if both are not nullptr and each of their x, y, width and height are within SDL_FLT_EPSILON of each other. This is often a reasonable way to compare two floating point rectangles and deal with the slight precision variations in floating point calculations that tend to pop up.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> itself).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>the first rectangle to test. </td></tr>
+    <tr><td class="paramname">b</td><td>the second rectangle to test. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the rectangles are equal, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRect.html#ga453e8226c683c51aefbcc3af56434b4c" title="Determine whether two floating point rectangles are equal, within some given epsilon.">FRect.EqualEpsilon</a> </dd></dl>
+
+</div>
+</div>
+<a id="gab65df2d06e30f4ae1c1a0c154c84491a" name="gab65df2d06e30f4ae1c1a0c154c84491a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab65df2d06e30f4ae1c1a0c154c84491a">&#9670;&#160;</a></span>RectToFRect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> SDL::RectToFRect </td>
+          <td>(</td>
+          <td class="paramtype">const RectRaw &amp;&#160;</td>
+          <td class="paramname"><em>rect</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rect</td><td>a pointer to an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the floating point representation of <code>rect</code>.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>

@@ -76,143 +76,116 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1EnvironmentRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::EnvironmentRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategoryStdinc.html">Standard Library Functionality</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>A thread-safe set of environment variables.  
- <a href="structSDL_1_1EnvironmentRef.html#details">More...</a></p>
+<p>Semi-safe reference for <a class="el" href="classSDL_1_1Environment.html" title="A thread-safe set of environment variables.">Environment</a>.  
+</p>
 <div class="dynheader">
 Inheritance diagram for SDL::EnvironmentRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1EnvironmentRef__inherit__graph.png" border="0" usemap="#aSDL_1_1EnvironmentRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1EnvironmentRef_inherit__map" id="aSDL_1_1EnvironmentRef_inherit__map">
-<area shape="rect" title="A thread&#45;safe set of environment variables." alt="" coords="5,93,165,119"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="8,5,163,45"/>
-<area shape="poly" title=" " alt="" coords="88,59,88,93,83,93,83,59"/>
+<area shape="rect" title="Semi&#45;safe reference for Environment." alt="" coords="5,79,165,104"/>
+<area shape="rect" href="classSDL_1_1Environment.html" title="A thread&#45;safe set of environment variables." alt="" coords="16,5,155,31"/>
+<area shape="poly" title=" " alt="" coords="88,44,88,79,83,79,83,44"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af38b4128673800ba9e46e954a9b38998" id="r_af38b4128673800ba9e46e954a9b38998"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentRef.html#af38b4128673800ba9e46e954a9b38998">GetVariable</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
-<tr class="memdesc:af38b4128673800ba9e46e954a9b38998"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value of a variable in the environment.  <br /></td></tr>
-<tr class="separator:af38b4128673800ba9e46e954a9b38998"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6a4e611b554cb8b580bccfb33596e05" id="r_ab6a4e611b554cb8b580bccfb33596e05"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; char * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentRef.html#ab6a4e611b554cb8b580bccfb33596e05">GetVariables</a> ()</td></tr>
-<tr class="memdesc:ab6a4e611b554cb8b580bccfb33596e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all variables in the environment.  <br /></td></tr>
-<tr class="separator:ab6a4e611b554cb8b580bccfb33596e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75beb23b2af291a4160744e8bc2e4a32" id="r_a75beb23b2af291a4160744e8bc2e4a32"><td class="memItemLeft" align="right" valign="top">Uint64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentRef.html#a75beb23b2af291a4160744e8bc2e4a32">GetVariableCount</a> ()</td></tr>
-<tr class="memdesc:a75beb23b2af291a4160744e8bc2e4a32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Variables count.  <br /></td></tr>
-<tr class="separator:a75beb23b2af291a4160744e8bc2e4a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1f456248fc1c89c2c486671d75d25c8" id="r_ae1f456248fc1c89c2c486671d75d25c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentRef.html#ae1f456248fc1c89c2c486671d75d25c8">SetVariable</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> value, bool overwrite)</td></tr>
-<tr class="memdesc:ae1f456248fc1c89c2c486671d75d25c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value of a variable in the environment.  <br /></td></tr>
-<tr class="separator:ae1f456248fc1c89c2c486671d75d25c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b6d72ef09306d457e4a4ee1e8a114d9" id="r_a2b6d72ef09306d457e4a4ee1e8a114d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9">UnsetVariable</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
-<tr class="memdesc:a2b6d72ef09306d457e4a4ee1e8a114d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear a variable from the environment.  <br /></td></tr>
-<tr class="separator:a2b6d72ef09306d457e4a4ee1e8a114d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top"><a id="a78be254b85f48c12179a782cb04da9ac" name="a78be254b85f48c12179a782cb04da9ac"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; T &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top"><a id="afbb3168108af6a8bd0e23edc712b6a09" name="afbb3168108af6a8bd0e23edc712b6a09"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Environment * &gt;</a></td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_Environment * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; SDL_Environment * &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a34648231e0973829d4b1c798fe42cdb2" id="r_a34648231e0973829d4b1c798fe42cdb2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentRef.html#a34648231e0973829d4b1c798fe42cdb2">EnvironmentRef</a> (<a class="el" href="structSDL_1_1EnvironmentParam.html">EnvironmentParam</a> resource)</td></tr>
+<tr class="memdesc:a34648231e0973829d4b1c798fe42cdb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from <a class="el" href="structSDL_1_1EnvironmentParam.html" title="Safely wrap Environment for non owning parameters.">EnvironmentParam</a>.  <br /></td></tr>
+<tr class="separator:a34648231e0973829d4b1c798fe42cdb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1fa2e5b20bde22747a1a9279978c80b" id="r_ae1fa2e5b20bde22747a1a9279978c80b"><td class="memItemLeft" align="right" valign="top"><a id="ae1fa2e5b20bde22747a1a9279978c80b" name="ae1fa2e5b20bde22747a1a9279978c80b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>EnvironmentRef</b> (const <a class="el" href="structSDL_1_1EnvironmentRef.html">EnvironmentRef</a> &amp;other)</td></tr>
+<tr class="memdesc:ae1fa2e5b20bde22747a1a9279978c80b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:ae1fa2e5b20bde22747a1a9279978c80b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80a1b65485698e89d3544e008628bf0c" id="r_a80a1b65485698e89d3544e008628bf0c"><td class="memItemLeft" align="right" valign="top"><a id="a80a1b65485698e89d3544e008628bf0c" name="a80a1b65485698e89d3544e008628bf0c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~EnvironmentRef</b> ()</td></tr>
+<tr class="memdesc:a80a1b65485698e89d3544e008628bf0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:a80a1b65485698e89d3544e008628bf0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1Environment"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Environment')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Environment.html">SDL::Environment</a></td></tr>
+<tr class="memitem:af659e99bb6cdeee1c5feb01a45003b14 inherit pub_methods_classSDL_1_1Environment" id="r_af659e99bb6cdeee1c5feb01a45003b14"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Environment</b> ()=default</td></tr>
+<tr class="memdesc:af659e99bb6cdeee1c5feb01a45003b14 inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default ctor. <br /></td></tr>
+<tr class="separator:af659e99bb6cdeee1c5feb01a45003b14 inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01bbf2e98ff495f009c753dea3e1b3cd inherit pub_methods_classSDL_1_1Environment" id="r_a01bbf2e98ff495f009c753dea3e1b3cd"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Environment.html#a01bbf2e98ff495f009c753dea3e1b3cd">Environment</a> (const EnvironmentRaw resource)</td></tr>
+<tr class="memdesc:a01bbf2e98ff495f009c753dea3e1b3cd inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from <a class="el" href="structSDL_1_1EnvironmentParam.html" title="Safely wrap Environment for non owning parameters.">EnvironmentParam</a>.  <br /></td></tr>
+<tr class="separator:a01bbf2e98ff495f009c753dea3e1b3cd inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebfc85af40387651c3b02e7b72281d20 inherit pub_methods_classSDL_1_1Environment" id="r_aebfc85af40387651c3b02e7b72281d20"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Environment</b> (const <a class="el" href="classSDL_1_1Environment.html">Environment</a> &amp;other)=delete</td></tr>
+<tr class="memdesc:aebfc85af40387651c3b02e7b72281d20 inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:aebfc85af40387651c3b02e7b72281d20 inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29123b2cc3983265cf4968157078a9bd inherit pub_methods_classSDL_1_1Environment" id="r_a29123b2cc3983265cf4968157078a9bd"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Environment</b> (<a class="el" href="classSDL_1_1Environment.html">Environment</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:a29123b2cc3983265cf4968157078a9bd inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:a29123b2cc3983265cf4968157078a9bd inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0223ccf906f19b75181779d5ab33e343 inherit pub_methods_classSDL_1_1Environment" id="r_a0223ccf906f19b75181779d5ab33e343"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Environment</b> (const <a class="el" href="structSDL_1_1EnvironmentRef.html">EnvironmentRef</a> &amp;other)=delete</td></tr>
+<tr class="separator:a0223ccf906f19b75181779d5ab33e343 inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76d6be281a240c546e010080a81c5b08 inherit pub_methods_classSDL_1_1Environment" id="r_a76d6be281a240c546e010080a81c5b08"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Environment</b> (<a class="el" href="structSDL_1_1EnvironmentRef.html">EnvironmentRef</a> &amp;&amp;other)=delete</td></tr>
+<tr class="separator:a76d6be281a240c546e010080a81c5b08 inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae77b5f28c67d1ee7f774e17d4fd362e7 inherit pub_methods_classSDL_1_1Environment" id="r_ae77b5f28c67d1ee7f774e17d4fd362e7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Environment.html#ae77b5f28c67d1ee7f774e17d4fd362e7">Environment</a> (bool populated)</td></tr>
+<tr class="memdesc:ae77b5f28c67d1ee7f774e17d4fd362e7 inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a set of environment variables.  <br /></td></tr>
+<tr class="separator:ae77b5f28c67d1ee7f774e17d4fd362e7 inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef4e57c14774111422443e494788bade inherit pub_methods_classSDL_1_1Environment" id="r_aef4e57c14774111422443e494788bade"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>~Environment</b> ()</td></tr>
+<tr class="memdesc:aef4e57c14774111422443e494788bade inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:aef4e57c14774111422443e494788bade inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61026b2ca40334f1a0e6e4b288331aaa inherit pub_methods_classSDL_1_1Environment" id="r_a61026b2ca40334f1a0e6e4b288331aaa"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1Environment.html">Environment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1Environment.html">Environment</a> other)</td></tr>
+<tr class="memdesc:a61026b2ca40334f1a0e6e4b288331aaa inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:a61026b2ca40334f1a0e6e4b288331aaa inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2423bff7522b4f20bb4ddff7d0e6571 inherit pub_methods_classSDL_1_1Environment" id="r_ad2423bff7522b4f20bb4ddff7d0e6571"><td class="memItemLeft" align="right" valign="top">
+constexpr EnvironmentRaw&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="memdesc:ad2423bff7522b4f20bb4ddff7d0e6571 inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves underlying EnvironmentRaw. <br /></td></tr>
+<tr class="separator:ad2423bff7522b4f20bb4ddff7d0e6571 inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa39af8c057ef032788d35a0e60b482be inherit pub_methods_classSDL_1_1Environment" id="r_aa39af8c057ef032788d35a0e60b482be"><td class="memItemLeft" align="right" valign="top">
+constexpr EnvironmentRaw&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
+<tr class="memdesc:aa39af8c057ef032788d35a0e60b482be inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves underlying EnvironmentRaw and clear this. <br /></td></tr>
+<tr class="separator:aa39af8c057ef032788d35a0e60b482be inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e1b6c36010e74a20a81f09415ad24a2 inherit pub_methods_classSDL_1_1Environment" id="r_a0e1b6c36010e74a20a81f09415ad24a2"><td class="memItemLeft" align="right" valign="top">
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;=&gt;</b> (const <a class="el" href="classSDL_1_1Environment.html">Environment</a> &amp;other) const =default</td></tr>
+<tr class="memdesc:a0e1b6c36010e74a20a81f09415ad24a2 inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a0e1b6c36010e74a20a81f09415ad24a2 inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae617ce00ce74298ae8d89c2ba1d0bd4c inherit pub_methods_classSDL_1_1Environment" id="r_ae617ce00ce74298ae8d89c2ba1d0bd4c"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t _) const</td></tr>
+<tr class="memdesc:ae617ce00ce74298ae8d89c2ba1d0bd4c inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:ae617ce00ce74298ae8d89c2ba1d0bd4c inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e8e345f9c193d4160e2967238cd4daa inherit pub_methods_classSDL_1_1Environment" id="r_a1e8e345f9c193d4160e2967238cd4daa"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
-<tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource" id="r_ab4aa1e63564473a72dc97256340d104f"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_type</b> () const</td></tr>
-<tr class="memdesc:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts back to underlying type. <br /></td></tr>
-<tr class="separator:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
-<tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource" id="r_ad2a82bc79a7dae41ceb1a25647ae1c0d"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
-<tr class="memdesc:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource" id="r_ab110e6568060a7ae58ab7b29ad68f7fc"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t) const</td></tr>
-<tr class="memdesc:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource" id="r_ab273a0a0285b8eed1f70f5d3759f4167"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Environment *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
-<tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top">
-constexpr const SDL_Environment *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Environment *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
-<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ab9ee1efd14f4708d0a27fec2c714909c" id="r_ab9ee1efd14f4708d0a27fec2c714909c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentRef.html#ab9ee1efd14f4708d0a27fec2c714909c">reset</a> (SDL_Environment *resource)</td></tr>
-<tr class="memdesc:ab9ee1efd14f4708d0a27fec2c714909c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a set of environment variables.  <br /></td></tr>
-<tr class="separator:ab9ee1efd14f4708d0a27fec2c714909c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Environment * &gt;</a></td></tr>
-<tr class="memitem:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource" id="r_a11ac29cf1f6da9fb29c508669f40b38d"><td class="memItemLeft" align="right" valign="top">
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL_Environment *</td></tr>
-<tr class="memdesc:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
-<tr class="separator:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a1e8e345f9c193d4160e2967238cd4daa inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to bool. <br /></td></tr>
+<tr class="separator:a1e8e345f9c193d4160e2967238cd4daa inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba274143ea4519660e78c498f37ec127 inherit pub_methods_classSDL_1_1Environment" id="r_aba274143ea4519660e78c498f37ec127"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator EnvironmentParam</b> () const</td></tr>
+<tr class="memdesc:aba274143ea4519660e78c498f37ec127 inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to <a class="el" href="structSDL_1_1EnvironmentParam.html" title="Safely wrap Environment for non owning parameters.">EnvironmentParam</a>. <br /></td></tr>
+<tr class="separator:aba274143ea4519660e78c498f37ec127 inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad85ebb449ea6da7035d7c94b3aaafa4e inherit pub_methods_classSDL_1_1Environment" id="r_gad85ebb449ea6da7035d7c94b3aaafa4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gad85ebb449ea6da7035d7c94b3aaafa4e">Destroy</a> ()</td></tr>
+<tr class="memdesc:gad85ebb449ea6da7035d7c94b3aaafa4e inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a set of environment variables.  <br /></td></tr>
+<tr class="separator:gad85ebb449ea6da7035d7c94b3aaafa4e inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga96c274cab2dcaa229a7c38aacf79d872 inherit pub_methods_classSDL_1_1Environment" id="r_ga96c274cab2dcaa229a7c38aacf79d872"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga96c274cab2dcaa229a7c38aacf79d872">GetVariable</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
+<tr class="memdesc:ga96c274cab2dcaa229a7c38aacf79d872 inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value of a variable in the environment.  <br /></td></tr>
+<tr class="separator:ga96c274cab2dcaa229a7c38aacf79d872 inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2b6d1029f92e6b84b6b7f99e966e0eaf inherit pub_methods_classSDL_1_1Environment" id="r_ga2b6d1029f92e6b84b6b7f99e966e0eaf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; char * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga2b6d1029f92e6b84b6b7f99e966e0eaf">GetVariables</a> ()</td></tr>
+<tr class="memdesc:ga2b6d1029f92e6b84b6b7f99e966e0eaf inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all variables in the environment.  <br /></td></tr>
+<tr class="separator:ga2b6d1029f92e6b84b6b7f99e966e0eaf inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b85d13c5123211589a40589e716e04c inherit pub_methods_classSDL_1_1Environment" id="r_a7b85d13c5123211589a40589e716e04c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">Uint64</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Environment.html#a7b85d13c5123211589a40589e716e04c">GetVariableCount</a> ()</td></tr>
+<tr class="memdesc:a7b85d13c5123211589a40589e716e04c inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Variables count.  <br /></td></tr>
+<tr class="separator:a7b85d13c5123211589a40589e716e04c inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga066b61021ad21d1b32314a906104400b inherit pub_methods_classSDL_1_1Environment" id="r_ga066b61021ad21d1b32314a906104400b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga066b61021ad21d1b32314a906104400b">SetVariable</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> value, bool overwrite)</td></tr>
+<tr class="memdesc:ga066b61021ad21d1b32314a906104400b inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value of a variable in the environment.  <br /></td></tr>
+<tr class="separator:ga066b61021ad21d1b32314a906104400b inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0d952ccecfe967eebd953a028e9abab6 inherit pub_methods_classSDL_1_1Environment" id="r_ga0d952ccecfe967eebd953a028e9abab6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga0d952ccecfe967eebd953a028e9abab6">UnsetVariable</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
+<tr class="memdesc:ga0d952ccecfe967eebd953a028e9abab6 inherit pub_methods_classSDL_1_1Environment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear a variable from the environment.  <br /></td></tr>
+<tr class="separator:ga0d952ccecfe967eebd953a028e9abab6 inherit pub_methods_classSDL_1_1Environment"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Environment.html" title="Handle to an owned environment.">Environment</a> </dd>
-<dd>
-<a class="el" href="group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660" title="Get the process environment.">GetEnvironment</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1Environment.html#a5a9bd97e706bc30e6a69f5df41d4f193" title="Create a set of environment variables.">Environment.Create</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#af38b4128673800ba9e46e954a9b38998" title="Get the value of a variable in the environment.">EnvironmentRef.GetVariable</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#ab6a4e611b554cb8b580bccfb33596e05" title="Get all variables in the environment.">EnvironmentRef.GetVariables</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#ae1f456248fc1c89c2c486671d75d25c8" title="Set the value of a variable in the environment.">EnvironmentRef.SetVariable</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9" title="Clear a variable from the environment.">EnvironmentRef.UnsetVariable</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1Environment.html#ad85ebb449ea6da7035d7c94b3aaafa4e" title="Destroy a set of environment variables.">Environment.Destroy</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="af38b4128673800ba9e46e954a9b38998" name="af38b4128673800ba9e46e954a9b38998"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af38b4128673800ba9e46e954a9b38998">&#9670;&#160;</a></span>GetVariable()</h2>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a34648231e0973829d4b1c798fe42cdb2" name="a34648231e0973829d4b1c798fe42cdb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34648231e0973829d4b1c798fe42cdb2">&#9670;&#160;</a></span>EnvironmentRef()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -221,260 +194,26 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const char * SDL::EnvironmentRef::GetVariable </td>
+          <td class="memname">SDL::EnvironmentRef::EnvironmentRef </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the variable to get. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a pointer to the value of the variable or nullptr if it can't be found.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660" title="Get the process environment.">GetEnvironment</a> </dd>
-<dd>
-Environment.Environment </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#ab6a4e611b554cb8b580bccfb33596e05" title="Get all variables in the environment.">EnvironmentRef.GetVariables</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#ae1f456248fc1c89c2c486671d75d25c8" title="Set the value of a variable in the environment.">EnvironmentRef.SetVariable</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9" title="Clear a variable from the environment.">EnvironmentRef.UnsetVariable</a> </dd></dl>
-
-</div>
-</div>
-<a id="a75beb23b2af291a4160744e8bc2e4a32" name="a75beb23b2af291a4160744e8bc2e4a32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75beb23b2af291a4160744e8bc2e4a32">&#9670;&#160;</a></span>GetVariableCount()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Uint64 SDL::EnvironmentRef::GetVariableCount </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the number of existing environment variables</dd></dl>
-<p>This might be slow. </p>
-
-</div>
-</div>
-<a id="ab6a4e611b554cb8b580bccfb33596e05" name="ab6a4e611b554cb8b580bccfb33596e05"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6a4e611b554cb8b580bccfb33596e05">&#9670;&#160;</a></span>GetVariables()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; char * &gt; SDL::EnvironmentRef::GetVariables </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>a nullptr terminated array of pointers to environment variables in the form "variable=value" on success. This is wrapped to be auto-deleted, use FreeWrapper.release() if you want to manage manually. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660" title="Get the process environment.">GetEnvironment</a> </dd>
-<dd>
-Environment.Environment </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#ab6a4e611b554cb8b580bccfb33596e05" title="Get all variables in the environment.">EnvironmentRef.GetVariables</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#ae1f456248fc1c89c2c486671d75d25c8" title="Set the value of a variable in the environment.">EnvironmentRef.SetVariable</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9" title="Clear a variable from the environment.">EnvironmentRef.UnsetVariable</a> </dd></dl>
-
-</div>
-</div>
-<a id="ab9ee1efd14f4708d0a27fec2c714909c" name="ab9ee1efd14f4708d0a27fec2c714909c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9ee1efd14f4708d0a27fec2c714909c">&#9670;&#160;</a></span>reset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void SDL::EnvironmentRef::reset </td>
-          <td>(</td>
-          <td class="paramtype">SDL_Environment *&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1EnvironmentParam.html">EnvironmentParam</a>&#160;</td>
           <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">resource</td><td>the environment to destroy.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the environment is no longer in use.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Environment.html#a5a9bd97e706bc30e6a69f5df41d4f193" title="Create a set of environment variables.">Environment.Create</a> </dd></dl>
-
-</div>
-</div>
-<a id="ae1f456248fc1c89c2c486671d75d25c8" name="ae1f456248fc1c89c2c486671d75d25c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1f456248fc1c89c2c486671d75d25c8">&#9670;&#160;</a></span>SetVariable()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::EnvironmentRef::SetVariable </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>overwrite</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the variable to set. </td></tr>
-    <tr><td class="paramname">value</td><td>the value of the variable to set. </td></tr>
-    <tr><td class="paramname">overwrite</td><td>true to overwrite the variable if it exists, false to return success without setting the variable if it already exists. </td></tr>
+    <tr><td class="paramname">resource</td><td>a EnvironmentRaw or <a class="el" href="classSDL_1_1Environment.html" title="A thread-safe set of environment variables.">Environment</a>.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660" title="Get the process environment.">GetEnvironment</a> </dd>
-<dd>
-Environment.Environment </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#af38b4128673800ba9e46e954a9b38998" title="Get the value of a variable in the environment.">EnvironmentRef.GetVariable</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#ab6a4e611b554cb8b580bccfb33596e05" title="Get all variables in the environment.">EnvironmentRef.GetVariables</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9" title="Clear a variable from the environment.">EnvironmentRef.UnsetVariable</a> </dd></dl>
-
-</div>
-</div>
-<a id="a2b6d72ef09306d457e4a4ee1e8a114d9" name="a2b6d72ef09306d457e4a4ee1e8a114d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b6d72ef09306d457e4a4ee1e8a114d9">&#9670;&#160;</a></span>UnsetVariable()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::EnvironmentRef::UnsetVariable </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the variable to unset. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660" title="Get the process environment.">GetEnvironment</a> </dd>
-<dd>
-Environment.Environment </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#af38b4128673800ba9e46e954a9b38998" title="Get the value of a variable in the environment.">EnvironmentRef.GetVariable</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#ab6a4e611b554cb8b580bccfb33596e05" title="Get all variables in the environment.">EnvironmentRef.GetVariables</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#ae1f456248fc1c89c2c486671d75d25c8" title="Set the value of a variable in the environment.">EnvironmentRef.SetVariable</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9" title="Clear a variable from the environment.">EnvironmentRef.UnsetVariable</a> </dd></dl>
+<p>This does not takes ownership! </p>
 
 </div>
 </div>

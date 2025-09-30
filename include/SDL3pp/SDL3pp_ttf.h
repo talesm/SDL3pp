@@ -365,7 +365,7 @@ constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
  *
  * The values here are chosen to match
  * [hb_direction_t](https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t)
- * .
+ *
  *
  * @since This enum is available since SDL_ttf 3.0.0.
  *
@@ -1207,10 +1207,9 @@ public:
    *
    * This updates any Text objects using this font.
    *
-   * @param script an
-   *               [ISO 15924
-   * code](https://unicode.org/iso15924/iso15924-codes.html)
-   *               .
+   * @param script an [ISO 15924
+   *               code](https://unicode.org/iso15924/iso15924-codes.html).
+   *
    * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -1642,7 +1641,6 @@ public:
    * You can render at other quality levels with Font.RenderText_Solid_Wrapped,
    * Font.RenderText_Blended_Wrapped, and Font.RenderText_LCD_Wrapped.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
@@ -1712,7 +1710,6 @@ public:
    * You can render at other quality levels with Font.RenderText_Solid,
    * Font.RenderText_Shaded, and Font.RenderText_LCD.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
@@ -1744,7 +1741,6 @@ public:
    * You can render at other quality levels with Font.RenderText_Solid_Wrapped,
    * Font.RenderText_Shaded_Wrapped, and Font.RenderText_LCD_Wrapped.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param wrap_width the maximum width of the text surface or 0 to wrap on
@@ -1810,7 +1806,6 @@ public:
    * You can render at other quality levels with Font.RenderText_Solid,
    * Font.RenderText_Shaded, and Font.RenderText_Blended.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
@@ -1844,7 +1839,6 @@ public:
    * You can render at other quality levels with Font.RenderText_Solid_Wrapped,
    * Font.RenderText_Shaded_Wrapped, and Font.RenderText_Blended_Wrapped.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
@@ -1966,7 +1960,7 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
   TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE; ///< COUNTER_CLOCKWISE
 
 /**
- *
+ * A resource engine
  *
  * @cat resource
  */
@@ -2035,6 +2029,7 @@ public:
   /// Converts to TextEngineParam
   constexpr operator TextEngineParam() const { return {m_resource}; }
 
+  /// Destroy resource. Pure virtual
   virtual void Destroy() = 0;
 
   /**
@@ -2056,6 +2051,7 @@ public:
   Text CreateText(FontParam font, std::string_view text);
 };
 
+/// A surface based text engine
 struct SurfaceTextEngine : TextEngine
 {
   /**
@@ -2084,9 +2080,6 @@ struct SurfaceTextEngine : TextEngine
    * All text created by this engine should be destroyed before calling this
    * function.
    *
-   * @param engine a TextEngine object created with
-   *               SurfaceTextEngine.SurfaceTextEngine().
-   *
    * @threadsafety This function should be called on the thread that created the
    *               engine.
    *
@@ -2097,6 +2090,7 @@ struct SurfaceTextEngine : TextEngine
   void Destroy() final;
 };
 
+/// A renderer based text engine
 struct RendererTextEngine : TextEngine
 {
   /**
@@ -2157,9 +2151,6 @@ struct RendererTextEngine : TextEngine
    * All text created by this engine should be destroyed before calling this
    * function.
    *
-   * @param engine a TextEngine object created with
-   *               RendererTextEngine.RendererTextEngine().
-   *
    * @threadsafety This function should be called on the thread that created the
    *               engine.
    *
@@ -2167,9 +2158,10 @@ struct RendererTextEngine : TextEngine
    *
    * @sa RendererTextEngine.RendererTextEngine
    */
-  void Destroy();
+  void Destroy() final;
 };
 
+/// A GPU based text engine
 struct GPUTextEngine : TextEngine
 {
   /**
@@ -2244,8 +2236,6 @@ struct GPUTextEngine : TextEngine
    * Get the winding order of the vertices returned by Text.GetGPUDrawData
    * for a particular GPU text engine
    *
-   * @param engine a TextEngine object created with
-   *               GPUTextEngine.GPUTextEngine().
    * @returns the winding order used by the GPU text engine or
    *          GPU_TEXTENGINE_WINDING_INVALID in case of error.
    *
@@ -2264,9 +2254,6 @@ struct GPUTextEngine : TextEngine
    * All text created by this engine should be destroyed before calling this
    * function.
    *
-   * @param engine a TextEngine object created with
-   *               GPUTextEngine.GPUTextEngine().
-   *
    * @threadsafety This function should be called on the thread that created the
    *               engine.
    *
@@ -2274,7 +2261,7 @@ struct GPUTextEngine : TextEngine
    *
    * @sa GPUTextEngine.GPUTextEngine
    */
-  void Destroy();
+  void Destroy() final;
 };
 
 /**
@@ -3366,10 +3353,8 @@ inline void TagToString(Uint32 tag, char* string, size_t size)
  * This updates any Text objects using this font.
  *
  * @param font the font to modify.
- * @param script an
- *               [ISO 15924
- * code](https://unicode.org/iso15924/iso15924-codes.html)
- *               .
+ * @param script an [ISO 15924
+ * code](https://unicode.org/iso15924/iso15924-codes.html).
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -3393,9 +3378,9 @@ inline void Font::SetScript(Uint32 script)
  * Get the script used for text shaping a font.
  *
  * @param font the font to query.
- * @returns an
- *          [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)
- *          or 0 if a script hasn't been set.
+ * @returns an [ISO 15924
+ *          code](https://unicode.org/iso15924/iso15924-codes.html) or 0 if a
+ *          script hasn't been set.
  *
  * @threadsafety This function should be called on the thread that created the
  *               font.
@@ -3591,8 +3576,7 @@ inline void Font::GetGlyphMetrics(Uint32 ch,
  * @param font the font to query.
  * @param previous_ch the previous codepoint.
  * @param ch the current codepoint.
- * @param kerning a pointer filled in with the kerning size between the two
- *                glyphs, in pixels, may be nullptr.
+ * @returns the kerning size between the two glyphs, in pixels.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -3619,8 +3603,6 @@ inline int Font::GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
  *
  * @param font the font to query.
  * @param text text to calculate, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param w will be filled with width, in pixels, on return.
  * @param h will be filled with height, in pixels, on return.
  * @throws Error on failure.
@@ -3653,8 +3635,6 @@ inline void Font::GetStringSize(std::string_view text, int* w, int* h) const
  *
  * @param font the font to query.
  * @param text text to calculate, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param wrap_width the maximum width or 0 to wrap on newline characters.
  * @param w will be filled with width, in pixels, on return.
  * @param h will be filled with height, in pixels, on return.
@@ -3693,8 +3673,6 @@ inline void Font::GetStringSizeWrapped(std::string_view text,
  *
  * @param font the font to query.
  * @param text text to calculate, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param max_width maximum width, in pixels, available for the string, or 0
  *                  for unbounded width.
  * @param measured_width a pointer filled in with the width, in pixels, of the
@@ -3750,8 +3728,6 @@ inline void Font::MeasureString(std::string_view text,
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @returns a new 8-bit, palettized surface, or nullptr if there was an error.
  *
@@ -3793,8 +3769,6 @@ inline Surface Font::RenderText_Solid(std::string_view text, Color fg) const
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @param wrapLength the maximum width of the text surface or 0 to wrap on
  *                   newline characters.
@@ -3883,8 +3857,6 @@ inline Surface Font::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @param bg the background color for the text.
  * @returns a new 8-bit, palettized surface, or nullptr if there was an error.
@@ -3932,8 +3904,6 @@ inline Surface Font::RenderText_Shaded(std::string_view text,
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @param bg the background color for the text.
  * @param wrap_width the maximum width of the text surface or 0 to wrap on
@@ -4031,8 +4001,6 @@ inline Surface Font::RenderGlyph_Shaded(Uint32 ch,
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
  *
@@ -4075,8 +4043,6 @@ inline Surface Font::RenderText_Blended(std::string_view text, Color fg) const
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @param wrap_width the maximum width of the text surface or 0 to wrap on
  *                   newline characters.
@@ -4164,8 +4130,6 @@ inline Surface Font::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @param bg the background color for the text.
  * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
@@ -4213,8 +4177,6 @@ inline Surface Font::RenderText_LCD(std::string_view text,
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @param fg the foreground color for the text.
  * @param bg the background color for the text.
  * @param wrap_width the maximum width of the text surface or 0 to wrap on
@@ -4409,10 +4371,8 @@ public:
    * `text` must have been created using a TextEngine from
    * SurfaceTextEngine.SurfaceTextEngine().
    *
-   * @param x the x coordinate in pixels, positive from the left edge towards
-   *          the right.
-   * @param y the y coordinate in pixels, positive from the top edge towards the
-   *          bottom.
+   * @param p the x,y coordinates in pixels, positive from the top-left edge
+   *          towards the bottom-right.
    * @param surface the surface to draw on.
    * @throws Error on failure.
    *
@@ -4433,10 +4393,8 @@ public:
    * RendererTextEngine.RendererTextEngine(), and will draw using the renderer
    * passed to that function.
    *
-   * @param x the x coordinate in pixels, positive from the left edge towards
-   *          the right.
-   * @param y the y coordinate in pixels, positive from the top edge towards the
-   *          bottom.
+   * @param p the x,y coordinates in pixels, positive from the top-left edge
+   *          towards the bottom-right.
    * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -4594,10 +4552,8 @@ public:
    *
    * This returns false if SDL_ttf isn't built with HarfBuzz support.
    *
-   * @param script an
-   *               [ISO 15924
-   * code](https://unicode.org/iso15924/iso15924-codes.html)
-   *               .
+   * @param script an [ISO 15924
+   *               code](https://unicode.org/iso15924/iso15924-codes.html).
    * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -5057,6 +5013,17 @@ public:
    */
   void GetSubStringForLine(int line, SubString* substring) const;
 
+  /**
+   * Get all substrings of a text object.
+   *
+   * @returns a nullptr terminated array of substring pointers or nullptr on
+   *          failure; call GetError() for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               text.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   */
   OwnArray<SubString*> GetSubStrings() const
   {
     return GetSubStringsForRange(0);
@@ -5068,8 +5035,6 @@ public:
    * @param offset a byte offset into the text string.
    * @param length the length of the range being queried, in bytes, or -1 for
    *               the remainder of the string.
-   * @param count a pointer filled in with the number of substrings returned,
-   *              may be nullptr.
    * @returns a nullptr terminated array of substring pointers or nullptr on
    * failure; call GetError() for more information. This is a single allocation
    * that should be freed with free() when it is no longer needed.
@@ -5081,6 +5046,21 @@ public:
    */
   OwnArray<SubString*> GetSubStringsForRange(int offset, int length = -1) const;
 
+  /**
+   * Get the portion of a text string that is closest to a point.
+   *
+   * This will return the closest substring of text to the given point.
+   *
+   * @param p the coordinates relative to the top-left side of the text, may be
+   *          outside the bounds of the text area.
+   * @returns the iterator on success or false on failure; call GetError() for
+   *          more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               text.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   */
   SubStringIterator GetSubStringForPoint(Point p) const;
 
   /**
@@ -5829,10 +5809,8 @@ inline Direction Text::GetDirection() const
  * This returns false if SDL_ttf isn't built with HarfBuzz support.
  *
  * @param text the text to modify.
- * @param script an
- *               [ISO 15924
- * code](https://unicode.org/iso15924/iso15924-codes.html)
- *               .
+ * @param script an [ISO 15924
+ *               code](https://unicode.org/iso15924/iso15924-codes.html).
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -5880,10 +5858,7 @@ inline Uint32 Text::GetScript() const { return SDL::GetTextScript(m_resource); }
  * The default text color is white (255, 255, 255, 255).
  *
  * @param text the Text to modify.
- * @param r the red color value in the range of 0-255.
- * @param g the green color value in the range of 0-255.
- * @param b the blue color value in the range of 0-255.
- * @param a the alpha value in the range of 0-255.
+ * @param c the color value in the range of 0-255.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -5907,10 +5882,7 @@ inline void Text::SetColor(Color c) { SDL::SetTextColor(m_resource, c); }
  * The default text color is white (1.0f, 1.0f, 1.0f, 1.0f).
  *
  * @param text the Text to modify.
- * @param r the red color value, normally in the range of 0-1.
- * @param g the green color value, normally in the range of 0-1.
- * @param b the blue color value, normally in the range of 0-1.
- * @param a the alpha value in the range of 0-1.
+ * @param c the color value, normally in the range of 0-1.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -6163,8 +6135,8 @@ inline void Text::SetWrapWidth(int wrap_width)
  * Get whether wrapping is enabled on a text object.
  *
  * @param text the Text to query.
- * @param wrap_width a pointer filled in with the maximum width in pixels or 0
- *                   if the text is being wrapped on newline characters.
+ * @returns maximum width in pixels or 0 if the text is being wrapped on newline
+ *          characters.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -6249,8 +6221,6 @@ inline bool Text::IsWrapWhitespaceVisible() const
  *
  * @param text the Text to modify.
  * @param string the UTF-8 text to use, may be nullptr.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -6283,8 +6253,6 @@ inline void Text::SetString(std::string_view string)
  *               this does not do UTF-8 validation, so you should only insert
  *               at UTF-8 sequence boundaries.
  * @param string the UTF-8 text to insert.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -6315,8 +6283,6 @@ inline void Text::InsertString(int offset, std::string_view string)
  *
  * @param text the Text to modify.
  * @param string the UTF-8 text to insert.
- * @param length the length of the text, in bytes, or 0 for null terminated
- *               text.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the

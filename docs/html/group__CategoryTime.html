@@ -79,7 +79,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> realtime clock and date/time routines.  
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> realtime clock and date/time routines.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -90,6 +90,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:ga50f5ac57fd4d44133840be988592807d" id="r_ga50f5ac57fd4d44133840be988592807d"><td class="memItemLeft" align="right" valign="top"><a id="ga50f5ac57fd4d44133840be988592807d" name="ga50f5ac57fd4d44133840be988592807d"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::DateTimeRaw</b> = SDL_DateTime</td></tr>
+<tr class="separator:ga50f5ac57fd4d44133840be988592807d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga86eaf56d5f97fd776764c55f03e9eb6f" id="r_ga86eaf56d5f97fd776764c55f03e9eb6f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#ga86eaf56d5f97fd776764c55f03e9eb6f">SDL::DateFormat</a> = SDL_DateFormat</td></tr>
 <tr class="memdesc:ga86eaf56d5f97fd776764c55f03e9eb6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The preferred date format of the current system locale.  <br /></td></tr>
 <tr class="separator:ga86eaf56d5f97fd776764c55f03e9eb6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -102,6 +105,12 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf7925884b1aacb7f14e8eb4033911359" id="r_gaf7925884b1aacb7f14e8eb4033911359"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#gaf7925884b1aacb7f14e8eb4033911359">SDL::GetDateTimeLocalePreferences</a> (<a class="el" href="group__CategoryTime.html#ga86eaf56d5f97fd776764c55f03e9eb6f">DateFormat</a> *dateFormat, <a class="el" href="group__CategoryTime.html#ga054c5288c34a7c6a75fedada33d3e161">TimeFormat</a> *timeFormat)</td></tr>
 <tr class="memdesc:gaf7925884b1aacb7f14e8eb4033911359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current preferred date and time format for the system locale.  <br /></td></tr>
 <tr class="separator:gaf7925884b1aacb7f14e8eb4033911359"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaab1a67c1cc46df4600867cab8e3ebd03" id="r_gaab1a67c1cc46df4600867cab8e3ebd03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1DateTime.html">DateTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#gaab1a67c1cc46df4600867cab8e3ebd03">SDL::TimeToDateTime</a> (<a class="el" href="classSDL_1_1Time.html">Time</a> ticks, bool localTime=true)</td></tr>
+<tr class="memdesc:gaab1a67c1cc46df4600867cab8e3ebd03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="classSDL_1_1Time.html" title="SDL times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1,...">Time</a> in nanoseconds since the epoch to a calendar time in the <a class="el" href="structSDL_1_1DateTime.html" title="A structure holding a calendar date and time broken down into its components.">DateTime</a> format.  <br /></td></tr>
+<tr class="separator:gaab1a67c1cc46df4600867cab8e3ebd03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabdf901de43495f7f42cc28019c68f6f4" id="r_gabdf901de43495f7f42cc28019c68f6f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#gabdf901de43495f7f42cc28019c68f6f4">SDL::DateTimeToTime</a> (const DateTimeRaw &amp;dt)</td></tr>
+<tr class="memdesc:gabdf901de43495f7f42cc28019c68f6f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a calendar time to an <a class="el" href="classSDL_1_1Time.html" title="SDL times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1,...">Time</a> in nanoseconds since the epoch.  <br /></td></tr>
+<tr class="separator:gabdf901de43495f7f42cc28019c68f6f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadaec7ceca17637d808dea9625d5675fa" id="r_gadaec7ceca17637d808dea9625d5675fa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#gadaec7ceca17637d808dea9625d5675fa">SDL::GetDaysInMonth</a> (int year, int month)</td></tr>
 <tr class="memdesc:gadaec7ceca17637d808dea9625d5675fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of days in a month for a given year.  <br /></td></tr>
 <tr class="separator:gadaec7ceca17637d808dea9625d5675fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,11 +123,14 @@ Functions</h2></td></tr>
 <tr class="memitem:ga185f1c1c0b9c344738ba7a3f0ec57f15" id="r_ga185f1c1c0b9c344738ba7a3f0ec57f15"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#ga185f1c1c0b9c344738ba7a3f0ec57f15">SDL::Time::Current</a> ()</td></tr>
 <tr class="memdesc:ga185f1c1c0b9c344738ba7a3f0ec57f15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current value of the system realtime clock in nanoseconds since Jan 1, 1970 in Universal Coordinated <a class="el" href="classSDL_1_1Time.html" title="SDL times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1,...">Time</a> (UTC).  <br /></td></tr>
 <tr class="separator:ga185f1c1c0b9c344738ba7a3f0ec57f15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1669b0949597d2992112c3aa9732f410" id="r_ga1669b0949597d2992112c3aa9732f410"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#ga1669b0949597d2992112c3aa9732f410">SDL::Time::ToWindows</a> (Uint32 *dwLowDateTime, Uint32 *dwHighDateTime) const</td></tr>
-<tr class="memdesc:ga1669b0949597d2992112c3aa9732f410"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> time into a Windows FILETIME (100-nanosecond intervals since January 1, 1601).  <br /></td></tr>
+<tr class="memitem:ga8625d4e3fe42f290e01c4d7961a5e0be" id="r_ga8625d4e3fe42f290e01c4d7961a5e0be"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#ga8625d4e3fe42f290e01c4d7961a5e0be">SDL::DateTime::operator Time</a> () const</td></tr>
+<tr class="memdesc:ga8625d4e3fe42f290e01c4d7961a5e0be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a calendar time to an <a class="el" href="classSDL_1_1Time.html" title="SDL times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1,...">Time</a> in nanoseconds since the epoch.  <br /></td></tr>
+<tr class="separator:ga8625d4e3fe42f290e01c4d7961a5e0be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1669b0949597d2992112c3aa9732f410" id="r_ga1669b0949597d2992112c3aa9732f410"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#ga1669b0949597d2992112c3aa9732f410">SDL::Time::ToWindows</a> (<a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> *dwLowDateTime, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> *dwHighDateTime) const</td></tr>
+<tr class="memdesc:ga1669b0949597d2992112c3aa9732f410"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> time into a Windows FILETIME (100-nanosecond intervals since January 1, 1601).  <br /></td></tr>
 <tr class="separator:ga1669b0949597d2992112c3aa9732f410"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga16327dd9d2907e293665760b5a2bf845" id="r_ga16327dd9d2907e293665760b5a2bf845"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#ga16327dd9d2907e293665760b5a2bf845">SDL::Time::FromWindows</a> (Uint32 dwLowDateTime, Uint32 dwHighDateTime)</td></tr>
-<tr class="memdesc:ga16327dd9d2907e293665760b5a2bf845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a Windows FILETIME (100-nanosecond intervals since January 1, 1601) to an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> time.  <br /></td></tr>
+<tr class="memitem:ga16327dd9d2907e293665760b5a2bf845" id="r_ga16327dd9d2907e293665760b5a2bf845"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#ga16327dd9d2907e293665760b5a2bf845">SDL::Time::FromWindows</a> (<a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> dwLowDateTime, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> dwHighDateTime)</td></tr>
+<tr class="memdesc:ga16327dd9d2907e293665760b5a2bf845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a Windows FILETIME (100-nanosecond intervals since January 1, 1601) to an <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> time.  <br /></td></tr>
 <tr class="separator:ga16327dd9d2907e293665760b5a2bf845"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -156,7 +168,7 @@ constexpr <a class="el" href="group__CategoryTime.html#ga054c5288c34a7c6a75fedad
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTime.html#gaf7925884b1aacb7f14e8eb4033911359" title="Gets the current preferred date and time format for the system locale.">GetDateTimeLocalePreferences</a> </dd></dl>
 
 </div>
@@ -172,7 +184,7 @@ constexpr <a class="el" href="group__CategoryTime.html#ga054c5288c34a7c6a75fedad
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTime.html#gaf7925884b1aacb7f14e8eb4033911359" title="Gets the current preferred date and time format for the system locale.">GetDateTimeLocalePreferences</a> </dd></dl>
 
 </div>
@@ -206,7 +218,48 @@ constexpr <a class="el" href="group__CategoryTime.html#ga054c5288c34a7c6a75fedad
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gabdf901de43495f7f42cc28019c68f6f4" name="gabdf901de43495f7f42cc28019c68f6f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabdf901de43495f7f42cc28019c68f6f4">&#9670;&#160;</a></span>DateTimeToTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1Time.html">Time</a> SDL::DateTimeToTime </td>
+          <td>(</td>
+          <td class="paramtype">const DateTimeRaw &amp;&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function ignores the day_of_week member of the <a class="el" href="structSDL_1_1DateTime.html" title="A structure holding a calendar date and time broken down into its components.">DateTime</a> struct, so it may remain unset.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>the source <a class="el" href="structSDL_1_1DateTime.html" title="A structure holding a calendar date and time broken down into its components.">DateTime</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the resulting <a class="el" href="classSDL_1_1Time.html" title="SDL times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1,...">Time</a>. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -222,13 +275,13 @@ constexpr <a class="el" href="group__CategoryTime.html#ga054c5288c34a7c6a75fedad
         <tr>
           <td class="memname"><a class="el" href="classSDL_1_1Time.html">Time</a> SDL::Time::FromWindows </td>
           <td>(</td>
-          <td class="paramtype">Uint32&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td>
           <td class="paramname"><em>dwLowDateTime</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Uint32&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td>
           <td class="paramname"><em>dwHighDateTime</em>&#160;</td>
         </tr>
         <tr>
@@ -251,8 +304,8 @@ constexpr <a class="el" href="group__CategoryTime.html#ga054c5288c34a7c6a75fedad
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the converted <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> time.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the converted <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> time.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -303,7 +356,7 @@ constexpr <a class="el" href="group__CategoryTime.html#ga054c5288c34a7c6a75fedad
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -361,7 +414,7 @@ constexpr <a class="el" href="group__CategoryTime.html#ga054c5288c34a7c6a75fedad
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -419,7 +472,7 @@ constexpr <a class="el" href="group__CategoryTime.html#ga054c5288c34a7c6a75fedad
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -470,7 +523,92 @@ constexpr <a class="el" href="group__CategoryTime.html#ga054c5288c34a7c6a75fedad
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga8625d4e3fe42f290e01c4d7961a5e0be" name="ga8625d4e3fe42f290e01c4d7961a5e0be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8625d4e3fe42f290e01c4d7961a5e0be">&#9670;&#160;</a></span>operator Time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SDL::DateTime::operator <a class="el" href="classSDL_1_1Time.html">Time</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function ignores the day_of_week member of the <a class="el" href="structSDL_1_1DateTime.html" title="A structure holding a calendar date and time broken down into its components.">DateTime</a> struct, so it may remain unset.</p>
+<dl class="section return"><dt>Returns</dt><dd>time on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gaab1a67c1cc46df4600867cab8e3ebd03" name="gaab1a67c1cc46df4600867cab8e3ebd03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaab1a67c1cc46df4600867cab8e3ebd03">&#9670;&#160;</a></span>TimeToDateTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1DateTime.html">DateTime</a> SDL::TimeToDateTime </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td>
+          <td class="paramname"><em>ticks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>localTime</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ticks</td><td>the <a class="el" href="classSDL_1_1Time.html" title="SDL times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1,...">Time</a> to be converted. </td></tr>
+    <tr><td class="paramname">localTime</td><td>the resulting <a class="el" href="structSDL_1_1DateTime.html" title="A structure holding a calendar date and time broken down into its components.">DateTime</a> will be expressed in local time if true, otherwise it will be in Universal Coordinated <a class="el" href="classSDL_1_1Time.html" title="SDL times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1,...">Time</a> (UTC). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the resulting <a class="el" href="structSDL_1_1DateTime.html" title="A structure holding a calendar date and time broken down into its components.">DateTime</a>. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -486,13 +624,13 @@ constexpr <a class="el" href="group__CategoryTime.html#ga054c5288c34a7c6a75fedad
         <tr>
           <td class="memname">void SDL::Time::ToWindows </td>
           <td>(</td>
-          <td class="paramtype">Uint32 *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> *&#160;</td>
           <td class="paramname"><em>dwLowDateTime</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Uint32 *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> *&#160;</td>
           <td class="paramname"><em>dwHighDateTime</em>&#160;</td>
         </tr>
         <tr>
@@ -515,7 +653,7 @@ constexpr <a class="el" href="group__CategoryTime.html#ga054c5288c34a7c6a75fedad
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>

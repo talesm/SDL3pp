@@ -79,13 +79,13 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> offers an API for examining and manipulating the system's filesystem.  
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> offers an API for examining and manipulating the system's filesystem.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Path.html">SDL::Path</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience representation of a path under <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>.  <a href="structSDL_1_1Path.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience representation of a path under <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>.  <a href="structSDL_1_1Path.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PathInfo.html">SDL::PathInfo</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information about a path on the filesystem.  <a href="structSDL_1_1PathInfo.html#details">More...</a><br /></td></tr>
@@ -93,13 +93,16 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:ga51cf58fe135e6dc3f29a4b9e98c3cc1c" id="r_ga51cf58fe135e6dc3f29a4b9e98c3cc1c"><td class="memItemLeft" align="right" valign="top"><a id="ga51cf58fe135e6dc3f29a4b9e98c3cc1c" name="ga51cf58fe135e6dc3f29a4b9e98c3cc1c"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PathInfoRaw</b> = SDL_PathInfo</td></tr>
+<tr class="separator:ga51cf58fe135e6dc3f29a4b9e98c3cc1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga897c457d9433b6f3704334f657be3469" id="r_ga897c457d9433b6f3704334f657be3469"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryFilesystem.html#ga897c457d9433b6f3704334f657be3469">SDL::Folder</a> = SDL_Folder</td></tr>
 <tr class="memdesc:ga897c457d9433b6f3704334f657be3469"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of the OS-provided default folder for a specific purpose.  <br /></td></tr>
 <tr class="separator:ga897c457d9433b6f3704334f657be3469"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1df860f9303580f3ddd5d20f4cf5d191" id="r_ga1df860f9303580f3ddd5d20f4cf5d191"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryFilesystem.html#ga1df860f9303580f3ddd5d20f4cf5d191">SDL::PathType</a> = SDL_PathType</td></tr>
 <tr class="memdesc:ga1df860f9303580f3ddd5d20f4cf5d191"><td class="mdescLeft">&#160;</td><td class="mdescRight">Types of filesystem entries.  <br /></td></tr>
 <tr class="separator:ga1df860f9303580f3ddd5d20f4cf5d191"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa05ff4a5a5f7f2e5b5e18072766b6140" id="r_gaa05ff4a5a5f7f2e5b5e18072766b6140"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryFilesystem.html#gaa05ff4a5a5f7f2e5b5e18072766b6140">SDL::GlobFlags</a> = Uint32</td></tr>
+<tr class="memitem:gaa05ff4a5a5f7f2e5b5e18072766b6140" id="r_gaa05ff4a5a5f7f2e5b5e18072766b6140"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryFilesystem.html#gaa05ff4a5a5f7f2e5b5e18072766b6140">SDL::GlobFlags</a> = <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a></td></tr>
 <tr class="memdesc:gaa05ff4a5a5f7f2e5b5e18072766b6140"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags for path matching.  <br /></td></tr>
 <tr class="separator:gaa05ff4a5a5f7f2e5b5e18072766b6140"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga504058b73103fc23dbed949f484c78ed" id="r_ga504058b73103fc23dbed949f484c78ed"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23dbed949f484c78ed">SDL::EnumerationResult</a> = SDL_EnumerationResult</td></tr>
@@ -241,7 +244,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
 <li>What items live in this folder by wildcard? <a class="el" href="group__CategoryFilesystem.html#gaf1f0acd5d1156ebc9767fe76be304300" title="Enumerate a directory tree, filtered by pattern, and return a list.">GlobDirectory()</a>.</li>
 <li>What is my current working directory? <a class="el" href="group__CategoryFilesystem.html#ga6c03b2ad7230dd561df2df1dd58bd3e4" title="Get what the system believes is the &quot;current working directory.&quot;.">GetCurrentDirectory()</a>.</li>
 </ul>
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> also offers functions to manipulate the directory tree: renaming, removing, copying files. </p>
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> also offers functions to manipulate the directory tree: renaming, removing, copying files. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ga78c27b0025198c5c5a2299549b3ed150" name="ga78c27b0025198c5c5a2299549b3ed150"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga78c27b0025198c5c5a2299549b3ed150">&#9670;&#160;</a></span>EnumerateDirectoryCallback</h2>
@@ -266,7 +269,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>how the enumeration should proceed.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryFilesystem.html#ga694ea1ee6c540f0a61261980380e0c97" title="Enumerate a directory through a callback function.">EnumerateDirectory</a> </dd></dl>
 
 </div>
@@ -293,7 +296,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>how the enumeration should proceed.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryFilesystem.html#ga694ea1ee6c540f0a61261980380e0c97" title="Enumerate a directory through a callback function.">EnumerateDirectory</a> </dd>
 <dd>
 <a class="el" href="group__CategoryFilesystem.html#ga78c27b0025198c5c5a2299549b3ed150" title="Callback for directory enumeration.">EnumerateDirectoryCallback</a> </dd></dl>
@@ -311,7 +314,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryFilesystem.html#ga78c27b0025198c5c5a2299549b3ed150" title="Callback for directory enumeration.">EnumerateDirectoryCallback</a> </dd></dl>
 
 </div>
@@ -331,7 +334,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
 <p>The folders supported per platform are: </p><pre class="fragment">        | Windows | macOS/iOS | tvOS | Unix (XDG) | Haiku | Emscripten
 </pre><p> --------&mdash; | ----&mdash; | ------&mdash; | -&mdash; | -------&mdash; | --&mdash; | -------&mdash; HOME | X | X | | X | X | X DESKTOP | X | X | | X | X | DOCUMENTS | X | X | | X | | DOWNLOADS | Vista+ | X | | X | | MUSIC | X | X | | X | | PICTURES | X | X | | X | | PUBLICSHARE | | X | | X | | SAVEDGAMES | Vista+ | | | | | SCREENSHOTS | Vista+ | | | | | TEMPLATES | X | X | | X | | VIDEOS | X | X* | | X | |</p>
 <p>Note that on macOS/iOS, the Videos folder is called "Movies".</p>
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryFilesystem.html#ga7611534a96499155491fcda2a2b08a7d" title="Finds the most suitable user folder for a specific purpose.">GetUserFolder</a> </dd></dl>
 
 </div>
@@ -343,14 +346,14 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryFilesystem.html#gaa05ff4a5a5f7f2e5b5e18072766b6140">SDL::GlobFlags</a> = typedef Uint32</td>
+          <td class="memname">using <a class="el" href="group__CategoryFilesystem.html#gaa05ff4a5a5f7f2e5b5e18072766b6140">SDL::GlobFlags</a> = typedef <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryFilesystem.html#gaf1f0acd5d1156ebc9767fe76be304300" title="Enumerate a directory tree, filtered by pattern, and return a list.">GlobDirectory</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a628b27a4b29d65d50eddefb67d8beb21" title="Enumerate a directory tree, filtered by pattern, and return a list.">StorageRef.GlobDirectory</a> </dd></dl>
+<a class="el" href="group__CategoryStorage.html#ga4aa2f53e26dcc0a441cd1dca57fff38b" title="Enumerate a directory tree, filtered by pattern, and return a list.">Storage.GlobDirectory</a> </dd></dl>
 
 </div>
 </div>
@@ -366,7 +369,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
       </table>
 </div><div class="memdoc">
 <p>Note that there may be other sorts of items on a filesystem: devices, symlinks, named pipes, etc. They are currently reported as PATHTYPE_OTHER.</p>
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PathInfo.html" title="Information about a path on the filesystem.">PathInfo</a> </dd></dl>
 
 </div>
@@ -406,7 +409,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
 </table>
 </div><div class="memdoc">
 <p>If the file at <code>newpath</code> already exists, it will be overwritten with the contents of the file at <code>oldpath</code>.</p>
-<p>This function will block until the copy is complete, which might be a significant time for large files on slow disks. On some platforms, the copy can be handed off to the OS itself, but on others <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> might just open both paths, and read from one and write to the other.</p>
+<p>This function will block until the copy is complete, which might be a significant time for large files on slow disks. On some platforms, the copy can be handed off to the OS itself, but on others <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> might just open both paths, and read from one and write to the other.</p>
 <p>Note that this is not an atomic operation! If something tries to read from <code>newpath</code> while the copy is in progress, it will see an incomplete copy of the data, and if the calling thread terminates (or the power goes out) during the copy, <code>newpath</code>'s previous contents will be gone, replaced with an incomplete copy of the data. To avoid this risk, it is recommended that the app copy to a temporary file in the same directory as <code>newpath</code>, and if the copy is successful, use <a class="el" href="group__CategoryFilesystem.html#ga392c81231bf6947e680228653b407752" title="Rename a file or directory.">RenamePath()</a> to replace <code>newpath</code> with the temporary file. This will ensure that reads of <code>newpath</code> will either see a complete copy of the data, or it will see the pre-copy state of <code>newpath</code>.</p>
 <p>This function attempts to synchronize the newly-copied data to disk before returning, if the platform allows it, so that the renaming trick will not have a problem in a system crash or power failure, where the file could be renamed but the contents never made it from the system file cache to the physical disk.</p>
 <p>If the copy fails for any reason, the state of <code>newpath</code> is undefined. It might be half a copy, it might be the untouched data of what was already there, or it might be a zero-byte file, etc.</p>
@@ -423,7 +426,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -464,7 +467,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -498,7 +501,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>all the directory contents.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -557,7 +560,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -609,7 +612,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -635,8 +638,8 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </tr>
 </table>
 </div><div class="memdoc">
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> caches the result of this call internally, but the first call to this function is not necessarily fast, so plan accordingly.</p>
-<p><b>macOS and iOS Specific Functionality</b>: If the application is in a ".app" bundle, this function returns the <a class="el" href="classSDL_1_1Resource.html" title="A SDL managed resource.">Resource</a> directory (e.g. MyApp.app/Contents/Resources/). This behaviour can be overridden by adding a property to the Info.plist file. Adding a string key with the name SDL_FILESYSTEM_BASE_DIR_TYPE with a supported value will change the behaviour.</p>
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> caches the result of this call internally, but the first call to this function is not necessarily fast, so plan accordingly.</p>
+<p><b>macOS and iOS Specific Functionality</b>: If the application is in a ".app" bundle, this function returns the Resource directory (e.g. MyApp.app/Contents/Resources/). This behaviour can be overridden by adding a property to the Info.plist file. Adding a string key with the name SDL_FILESYSTEM_BASE_DIR_TYPE with a supported value will change the behaviour.</p>
 <p>Supported values for the SDL_FILESYSTEM_BASE_DIR_TYPE property (Given an application in /Applications/SDLApp/MyApp.app):</p>
 <ul>
 <li><code>resource</code>: bundle resource directory (the default). For example: <code>/Applications/SDLApp/MyApp.app/Contents/Resources</code></li>
@@ -646,7 +649,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
 <p><b>Nintendo 3DS Specific Functionality</b>: This function returns "romfs" directory of the application as it is uncommon to store resources outside the executable. As such it is not a writable directory.</p>
 <p>The returned path is guaranteed to end with a path separator ('\' on Windows, '/' on most other platforms).</p>
 <dl class="section return"><dt>Returns</dt><dd>an absolute path in UTF-8 encoding to the application data directory. nullptr will be returned on error or when the platform doesn't implement this functionality, call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryFilesystem.html#ga00d45dea90561c27c5bb5191ad12806b" title="Get the user-and-app-specific path where files can be written.">GetPrefPath</a> </dd></dl>
 
 </div>
@@ -674,10 +677,10 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
 </table>
 </div><div class="memdoc">
 <p>For systems without a concept of a current working directory, this will still attempt to provide something reasonable.</p>
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> does not provide a means to <em>change</em> the current working directory; for platforms without this concept, this would cause surprises with file access outside of <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> does not provide a means to <em>change</em> the current working directory; for platforms without this concept, this would cause surprises with file access outside of <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>.</p>
 <p>The returned path is guaranteed to end with a path separator ('\' on Windows, '/' on most other platforms).</p>
 <dl class="section return"><dt>Returns</dt><dd>a UTF-8 string of the current working directory in platform-dependent notation. nullptr if there's a problem. This should be freed with <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a> when it is no longer needed.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -717,7 +720,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -780,7 +783,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a UTF-8 string of the user directory in platform-dependent notation. nullptr if there's a problem (creating directory failed, etc.). This should be freed with <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a> when it is no longer needed.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryFilesystem.html#gac6d37c85583e1b7b3e5d1b4be48b6efe" title="Get the directory where the application was run from.">GetBasePath</a> </dd></dl>
 
 </div>
@@ -819,7 +822,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>either a null-terminated C string containing the full path to the folder, or nullptr if an error happened.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -881,7 +884,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -921,7 +924,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -974,7 +977,7 @@ constexpr <a class="el" href="group__CategoryFilesystem.html#ga504058b73103fc23d
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>

@@ -12,13 +12,11 @@ var searchData=
   ['enumeratedirectorycallback_9',['EnumerateDirectoryCallback',['../group__CategoryFilesystem.html#ga78c27b0025198c5c5a2299549b3ed150',1,'SDL']]],
   ['enumeratedirectorycb_10',['EnumerateDirectoryCB',['../group__CategoryFilesystem.html#ga085e952ca08d5cf0df8c9238da16ab81',1,'SDL']]],
   ['enumeratepropertiescallback_11',['EnumeratePropertiesCallback',['../group__CategoryProperties.html#ga52e1c12fca5ec69ba32453ddc9d34c6c',1,'SDL']]],
-  ['enumeratepropertiescb_12',['EnumeratePropertiesCB',['../group__CategoryProperties.html#gabca9f4d0180160fe63ebc8829dd9311d',1,'SDL']]],
+  ['enumeratepropertiescb_12',['EnumeratePropertiesCB',['../group__CategoryProperties.html#ga474c3108e1cfc668a76ceb4f862ec3f5',1,'SDL']]],
   ['enumerationresult_13',['EnumerationResult',['../group__CategoryFilesystem.html#ga504058b73103fc23dbed949f484c78ed',1,'SDL']]],
-  ['environmentshared_14',['EnvironmentShared',['../group__CategoryStdinc.html#gab2371bf72eba9168a834c1f14ca950c7',1,'SDL']]],
-  ['environmentweak_15',['EnvironmentWeak',['../group__CategoryStdinc.html#ga2fd16f524ebf6a1ae734d29b7c69a47d',1,'SDL']]],
-  ['event_16',['Event',['../group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a',1,'SDL']]],
-  ['eventaction_17',['EventAction',['../group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef',1,'SDL']]],
-  ['eventfilter_18',['EventFilter',['../group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0',1,'SDL']]],
-  ['eventfiltercb_19',['EventFilterCB',['../group__CategoryEvents.html#gaf8d1bbcd20812ea4df09ab62078b98ef',1,'SDL']]],
-  ['eventtype_20',['EventType',['../group__CategoryEvents.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]]
+  ['event_14',['Event',['../group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a',1,'SDL']]],
+  ['eventaction_15',['EventAction',['../group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef',1,'SDL']]],
+  ['eventfilter_16',['EventFilter',['../group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0',1,'SDL']]],
+  ['eventfiltercb_17',['EventFilterCB',['../group__CategoryEvents.html#gaf8d1bbcd20812ea4df09ab62078b98ef',1,'SDL']]],
+  ['eventtype_18',['EventType',['../group__EventTypes.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]]
 ];

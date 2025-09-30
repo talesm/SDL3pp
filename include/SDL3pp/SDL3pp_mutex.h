@@ -1212,8 +1212,8 @@ public:
    * pointed to by `sem` has a positive value or the specified time has elapsed.
    * If the call is successful it will atomically decrement the semaphore value.
    *
-   * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
-   *                  indefinitely.
+   * @param timeout the length of the timeout, in milliseconds, or -1 to wait
+   *                indefinitely.
    * @returns true if the wait succeeds or false if the wait times out.
    *
    * @since This function is available since SDL 3.2.0.
@@ -1372,8 +1372,8 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
  * If the call is successful it will atomically decrement the semaphore value.
  *
  * @param sem the semaphore to wait on.
- * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
- *                  indefinitely.
+ * @param timeout the length of the timeout, in milliseconds, or -1 to wait
+ *                indefinitely.
  * @returns true if the wait succeeds or false if the wait times out.
  *
  * @since This function is available since SDL 3.2.0.
@@ -1602,8 +1602,8 @@ public:
    * behavior.
    *
    * @param mutex the mutex used to coordinate thread access.
-   * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
-   *                  indefinitely.
+   * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
+   *                indefinitely.
    * @returns true if the condition variable is signaled, false if the condition
    *          is not signaled in the allotted time.
    *
@@ -1764,8 +1764,8 @@ inline void Condition::Wait(MutexParam mutex)
  *
  * @param cond the condition variable to wait on.
  * @param mutex the mutex used to coordinate thread access.
- * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
- *                  indefinitely.
+ * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
+ *                indefinitely.
  * @returns true if the condition variable is signaled, false if the condition
  *          is not signaled in the allotted time.
  *

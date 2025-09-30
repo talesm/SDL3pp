@@ -76,119 +76,104 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1IConvRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::IConvRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategoryStdinc.html">Standard Library Functionality</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>An opaque handle representing string encoding conversion state.  
- <a href="structSDL_1_1IConvRef.html#details">More...</a></p>
+<p>Semi-safe reference for <a class="el" href="classSDL_1_1IConv.html" title="An opaque handle representing string encoding conversion state.">IConv</a>.  
+</p>
 <div class="dynheader">
 Inheritance diagram for SDL::IConvRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1IConvRef__inherit__graph.png" border="0" usemap="#aSDL_1_1IConvRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1IConvRef_inherit__map" id="aSDL_1_1IConvRef_inherit__map">
-<area shape="rect" title="An opaque handle representing string encoding conversion state." alt="" coords="25,93,140,119"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="Semi&#45;safe reference for IConv." alt="" coords="5,79,120,104"/>
+<area shape="rect" href="classSDL_1_1IConv.html" title="An opaque handle representing string encoding conversion state." alt="" coords="17,5,109,31"/>
+<area shape="poly" title=" " alt="" coords="65,44,65,79,60,79,60,44"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1986bf1e484c1388ea3508010b7cb763" id="r_a1986bf1e484c1388ea3508010b7cb763"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvRef.html#a1986bf1e484c1388ea3508010b7cb763">iconv</a> (const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft)</td></tr>
-<tr class="memdesc:a1986bf1e484c1388ea3508010b7cb763"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function converts text between encodings, reading from and writing to a buffer.  <br /></td></tr>
-<tr class="separator:a1986bf1e484c1388ea3508010b7cb763"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top"><a id="a78be254b85f48c12179a782cb04da9ac" name="a78be254b85f48c12179a782cb04da9ac"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; T &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top"><a id="afbb3168108af6a8bd0e23edc712b6a09" name="afbb3168108af6a8bd0e23edc712b6a09"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_iconv_data_t * &gt;</a></td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_iconv_data_t * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; SDL_iconv_data_t * &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a6cf120dec3cba9748d30cd7996244990" id="r_a6cf120dec3cba9748d30cd7996244990"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvRef.html#a6cf120dec3cba9748d30cd7996244990">IConvRef</a> (<a class="el" href="structSDL_1_1IConvParam.html">IConvParam</a> resource)</td></tr>
+<tr class="memdesc:a6cf120dec3cba9748d30cd7996244990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from <a class="el" href="structSDL_1_1IConvParam.html" title="Safely wrap IConv for non owning parameters.">IConvParam</a>.  <br /></td></tr>
+<tr class="separator:a6cf120dec3cba9748d30cd7996244990"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac83c55af434becf9a1185e9db83ccb90" id="r_ac83c55af434becf9a1185e9db83ccb90"><td class="memItemLeft" align="right" valign="top"><a id="ac83c55af434becf9a1185e9db83ccb90" name="ac83c55af434becf9a1185e9db83ccb90"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>IConvRef</b> (const <a class="el" href="structSDL_1_1IConvRef.html">IConvRef</a> &amp;other)</td></tr>
+<tr class="memdesc:ac83c55af434becf9a1185e9db83ccb90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:ac83c55af434becf9a1185e9db83ccb90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a718029d703fcabf1c0a7e311f84eed81" id="r_a718029d703fcabf1c0a7e311f84eed81"><td class="memItemLeft" align="right" valign="top"><a id="a718029d703fcabf1c0a7e311f84eed81" name="a718029d703fcabf1c0a7e311f84eed81"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~IConvRef</b> ()</td></tr>
+<tr class="memdesc:a718029d703fcabf1c0a7e311f84eed81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:a718029d703fcabf1c0a7e311f84eed81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1IConv"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1IConv')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1IConv.html">SDL::IConv</a></td></tr>
+<tr class="memitem:ab8d0122c756789040334a7680956c6b7 inherit pub_methods_classSDL_1_1IConv" id="r_ab8d0122c756789040334a7680956c6b7"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>IConv</b> ()=default</td></tr>
+<tr class="memdesc:ab8d0122c756789040334a7680956c6b7 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default ctor. <br /></td></tr>
+<tr class="separator:ab8d0122c756789040334a7680956c6b7 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2538f9f886cf68880c21427dcde2484 inherit pub_methods_classSDL_1_1IConv" id="r_ad2538f9f886cf68880c21427dcde2484"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1IConv.html#ad2538f9f886cf68880c21427dcde2484">IConv</a> (const IConvRaw resource)</td></tr>
+<tr class="memdesc:ad2538f9f886cf68880c21427dcde2484 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from <a class="el" href="structSDL_1_1IConvParam.html" title="Safely wrap IConv for non owning parameters.">IConvParam</a>.  <br /></td></tr>
+<tr class="separator:ad2538f9f886cf68880c21427dcde2484 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6adae51e5d8fed1440f97f3c3738c4e3 inherit pub_methods_classSDL_1_1IConv" id="r_a6adae51e5d8fed1440f97f3c3738c4e3"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>IConv</b> (const <a class="el" href="classSDL_1_1IConv.html">IConv</a> &amp;other)=delete</td></tr>
+<tr class="memdesc:a6adae51e5d8fed1440f97f3c3738c4e3 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:a6adae51e5d8fed1440f97f3c3738c4e3 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add45eb34659b553bbbc0754dd8afaf32 inherit pub_methods_classSDL_1_1IConv" id="r_add45eb34659b553bbbc0754dd8afaf32"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>IConv</b> (<a class="el" href="classSDL_1_1IConv.html">IConv</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:add45eb34659b553bbbc0754dd8afaf32 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:add45eb34659b553bbbc0754dd8afaf32 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a6ad5273c5aae7e4c4c8d02e94a4ab7 inherit pub_methods_classSDL_1_1IConv" id="r_a8a6ad5273c5aae7e4c4c8d02e94a4ab7"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>IConv</b> (const <a class="el" href="structSDL_1_1IConvRef.html">IConvRef</a> &amp;other)=delete</td></tr>
+<tr class="separator:a8a6ad5273c5aae7e4c4c8d02e94a4ab7 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5860458ef2d602fa244f0c4324d8bf33 inherit pub_methods_classSDL_1_1IConv" id="r_a5860458ef2d602fa244f0c4324d8bf33"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>IConv</b> (<a class="el" href="structSDL_1_1IConvRef.html">IConvRef</a> &amp;&amp;other)=delete</td></tr>
+<tr class="separator:a5860458ef2d602fa244f0c4324d8bf33 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad00682796994d4371e2a8efb913b1b26 inherit pub_methods_classSDL_1_1IConv" id="r_ad00682796994d4371e2a8efb913b1b26"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1IConv.html#ad00682796994d4371e2a8efb913b1b26">IConv</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> tocode, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> fromcode)</td></tr>
+<tr class="memdesc:ad00682796994d4371e2a8efb913b1b26 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a context for the specified character set conversion.  <br /></td></tr>
+<tr class="separator:ad00682796994d4371e2a8efb913b1b26 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a415e459b6982ba314e98d67addc90096 inherit pub_methods_classSDL_1_1IConv" id="r_a415e459b6982ba314e98d67addc90096"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>~IConv</b> ()</td></tr>
+<tr class="memdesc:a415e459b6982ba314e98d67addc90096 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:a415e459b6982ba314e98d67addc90096 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade0023f2b839ca4a255e09eeb6e4fd99 inherit pub_methods_classSDL_1_1IConv" id="r_ade0023f2b839ca4a255e09eeb6e4fd99"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1IConv.html">IConv</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1IConv.html">IConv</a> other)</td></tr>
+<tr class="memdesc:ade0023f2b839ca4a255e09eeb6e4fd99 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:ade0023f2b839ca4a255e09eeb6e4fd99 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7813881f81e32d0ca36886c1f4844924 inherit pub_methods_classSDL_1_1IConv" id="r_a7813881f81e32d0ca36886c1f4844924"><td class="memItemLeft" align="right" valign="top">
+constexpr IConvRaw&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="memdesc:a7813881f81e32d0ca36886c1f4844924 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves underlying IConvRaw. <br /></td></tr>
+<tr class="separator:a7813881f81e32d0ca36886c1f4844924 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7a2c7e11bf6420b57df86008f0c7e8f inherit pub_methods_classSDL_1_1IConv" id="r_ae7a2c7e11bf6420b57df86008f0c7e8f"><td class="memItemLeft" align="right" valign="top">
+constexpr IConvRaw&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
+<tr class="memdesc:ae7a2c7e11bf6420b57df86008f0c7e8f inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves underlying IConvRaw and clear this. <br /></td></tr>
+<tr class="separator:ae7a2c7e11bf6420b57df86008f0c7e8f inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24637dbd910633c9e286434b8589ecc7 inherit pub_methods_classSDL_1_1IConv" id="r_a24637dbd910633c9e286434b8589ecc7"><td class="memItemLeft" align="right" valign="top">
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;=&gt;</b> (const <a class="el" href="classSDL_1_1IConv.html">IConv</a> &amp;other) const =default</td></tr>
+<tr class="memdesc:a24637dbd910633c9e286434b8589ecc7 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a24637dbd910633c9e286434b8589ecc7 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa662ba965be60b85b68b5a0cc112b798 inherit pub_methods_classSDL_1_1IConv" id="r_aa662ba965be60b85b68b5a0cc112b798"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t _) const</td></tr>
+<tr class="memdesc:aa662ba965be60b85b68b5a0cc112b798 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:aa662ba965be60b85b68b5a0cc112b798 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb8c0594bdf120e77447f2517ed61312 inherit pub_methods_classSDL_1_1IConv" id="r_afb8c0594bdf120e77447f2517ed61312"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
-<tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource" id="r_ab4aa1e63564473a72dc97256340d104f"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_type</b> () const</td></tr>
-<tr class="memdesc:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts back to underlying type. <br /></td></tr>
-<tr class="separator:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
-<tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource" id="r_ad2a82bc79a7dae41ceb1a25647ae1c0d"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
-<tr class="memdesc:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource" id="r_ab110e6568060a7ae58ab7b29ad68f7fc"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t) const</td></tr>
-<tr class="memdesc:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource" id="r_ab273a0a0285b8eed1f70f5d3759f4167"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_iconv_data_t *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
-<tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top">
-constexpr const SDL_iconv_data_t *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_iconv_data_t *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
-<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a2c1bf8fc6a05b29fbba0b5ff182afb08" id="r_a2c1bf8fc6a05b29fbba0b5ff182afb08"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvRef.html#a2c1bf8fc6a05b29fbba0b5ff182afb08">reset</a> (SDL_iconv_data_t *resource)</td></tr>
-<tr class="memdesc:a2c1bf8fc6a05b29fbba0b5ff182afb08"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees a context used for character set conversion.  <br /></td></tr>
-<tr class="separator:a2c1bf8fc6a05b29fbba0b5ff182afb08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_iconv_data_t * &gt;</a></td></tr>
-<tr class="memitem:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource" id="r_a11ac29cf1f6da9fb29c508669f40b38d"><td class="memItemLeft" align="right" valign="top">
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL_iconv_data_t *</td></tr>
-<tr class="memdesc:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
-<tr class="separator:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:afb8c0594bdf120e77447f2517ed61312 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to bool. <br /></td></tr>
+<tr class="separator:afb8c0594bdf120e77447f2517ed61312 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74ab2d40c76b2fd4ebe553b3a23a1841 inherit pub_methods_classSDL_1_1IConv" id="r_a74ab2d40c76b2fd4ebe553b3a23a1841"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator IConvParam</b> () const</td></tr>
+<tr class="memdesc:a74ab2d40c76b2fd4ebe553b3a23a1841 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to <a class="el" href="structSDL_1_1IConvParam.html" title="Safely wrap IConv for non owning parameters.">IConvParam</a>. <br /></td></tr>
+<tr class="separator:a74ab2d40c76b2fd4ebe553b3a23a1841 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga81014b11dfba274d3b2668971f021dc0 inherit pub_methods_classSDL_1_1IConv" id="r_ga81014b11dfba274d3b2668971f021dc0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga81014b11dfba274d3b2668971f021dc0">close</a> ()</td></tr>
+<tr class="memdesc:ga81014b11dfba274d3b2668971f021dc0 inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees a context used for character set conversion.  <br /></td></tr>
+<tr class="separator:ga81014b11dfba274d3b2668971f021dc0 inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2ef6f965575f0be342764faf577084cd inherit pub_methods_classSDL_1_1IConv" id="r_ga2ef6f965575f0be342764faf577084cd"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga2ef6f965575f0be342764faf577084cd">iconv</a> (const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft)</td></tr>
+<tr class="memdesc:ga2ef6f965575f0be342764faf577084cd inherit pub_methods_classSDL_1_1IConv"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function converts text between encodings, reading from and writing to a buffer.  <br /></td></tr>
+<tr class="separator:ga2ef6f965575f0be342764faf577084cd inherit pub_methods_classSDL_1_1IConv"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IConv.html#a48e796161ef683fbbfafcb8a8ebdc83a" title="This function allocates a context for the specified character set conversion.">IConv.open</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1IConv.html" title="Handle to an owned iConv.">IConv</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1986bf1e484c1388ea3508010b7cb763" name="a1986bf1e484c1388ea3508010b7cb763"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1986bf1e484c1388ea3508010b7cb763">&#9670;&#160;</a></span>iconv()</h2>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a6cf120dec3cba9748d30cd7996244990" name="a6cf120dec3cba9748d30cd7996244990"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cf120dec3cba9748d30cd7996244990">&#9670;&#160;</a></span>IConvRef()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,33 +182,11 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t SDL::IConvRef::iconv </td>
+          <td class="memname">SDL::IConvRef::IConvRef </td>
           <td>(</td>
-          <td class="paramtype">const char **&#160;</td>
-          <td class="paramname"><em>inbuf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1IConvParam.html">IConvParam</a>&#160;</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>inbytesleft</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char **&#160;</td>
-          <td class="paramname"><em>outbuf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>outbytesleft</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -232,74 +195,13 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   </tr>
 </table>
 </div><div class="memdoc">
-<p>It returns the number of successful conversions on success. On error, SDL_ICONV_E2BIG is returned when the output buffer is too small, or SDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered, or SDL_ICONV_EINVAL is returned when an incomplete input sequence is encountered.</p>
-<p>On exit:</p>
-<ul>
-<li>inbuf will point to the beginning of the next multibyte sequence. On error, this is the location of the problematic input sequence. On success, this is the end of the input sequence.</li>
-<li>inbytesleft will be set to the number of bytes left to convert, which will be 0 on success.</li>
-<li>outbuf will point to the location where to store the next output byte.</li>
-<li>outbytesleft will be set to the number of bytes left in the output buffer.</li>
-</ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">inbuf</td><td>Address of variable that points to the first character of the input sequence. </td></tr>
-    <tr><td class="paramname">inbytesleft</td><td>The number of bytes in the input buffer. </td></tr>
-    <tr><td class="paramname">outbuf</td><td>Address of variable that points to the output buffer. </td></tr>
-    <tr><td class="paramname">outbytesleft</td><td>The number of bytes in the output buffer. </td></tr>
+    <tr><td class="paramname">resource</td><td>a IConvRaw or <a class="el" href="classSDL_1_1IConv.html" title="An opaque handle representing string encoding conversion state.">IConv</a>.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the number of conversions on success, or a negative error code.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>IConv.IConv </dd>
-<dd>
-IConvRef.close </dd>
-<dd>
-<a class="el" href="group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a" title="Helper function to convert a string&#39;s encoding in one call.">iconv_string</a> </dd></dl>
-
-</div>
-</div>
-<a id="a2c1bf8fc6a05b29fbba0b5ff182afb08" name="a2c1bf8fc6a05b29fbba0b5ff182afb08"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c1bf8fc6a05b29fbba0b5ff182afb08">&#9670;&#160;</a></span>reset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void SDL::IConvRef::reset </td>
-          <td>(</td>
-          <td class="paramtype">SDL_iconv_data_t *&#160;</td>
-          <td class="paramname"><em>resource</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">resource</td><td>The character set conversion handle. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IConvRef.html#a1986bf1e484c1388ea3508010b7cb763" title="This function converts text between encodings, reading from and writing to a buffer.">IConvRef.iconv</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1IConv.html#a48e796161ef683fbbfafcb8a8ebdc83a" title="This function allocates a context for the specified character set conversion.">IConv.open</a> </dd>
-<dd>
-<a class="el" href="group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a" title="Helper function to convert a string&#39;s encoding in one call.">iconv_string</a> </dd></dl>
+<p>This does not takes ownership! </p>
 
 </div>
 </div>

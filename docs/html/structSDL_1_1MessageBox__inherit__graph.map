@@ -1,5 +1,5 @@
 <map id="SDL::MessageBox" name="SDL::MessageBox">
-<area shape="rect" id="Node000001" title="MessageBox structure containing title, text, window, etc." alt="" coords="20,79,159,104"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,173,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,44,92,79,87,79,87,44"/>
+<area shape="rect" id="Node000001" title="MessageBox structure containing title, text, window, etc." alt="" coords="5,79,144,104"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="8,5,141,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,44,77,79,72,79,72,44"/>
 </map>

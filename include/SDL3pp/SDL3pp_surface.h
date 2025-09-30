@@ -72,6 +72,7 @@ struct SurfaceConstParam
 {
   const SurfaceRaw value; ///< parameter's const SurfaceRaw
 
+  /// Constructs from SurfaceRaw
   constexpr SurfaceConstParam(const SurfaceRaw value)
     : value(value)
   {
@@ -847,7 +848,7 @@ public:
    *
    * If the surface doesn't have color key enabled this function returns false.
    *
-   * @param key a pointer filled in with the transparent pixel.
+   * @returns the transparent pixel or nullopt if none.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -989,7 +990,7 @@ public:
   /**
    * Get the blend mode used for blit operations.
    *
-   * @param blendMode a pointer filled in with the current BlendMode.
+   * @returns the current BlendMode.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -1175,7 +1176,7 @@ public:
    * If the surface is YUV, the color is assumed to be in the sRGB colorspace,
    * otherwise the color is assumed to be in the colorspace of the surface.
    *
-   * @param c the color components of the pixel, normally in the range 0-1.
+   * @param color the color components of the pixel, normally in the range 0-1.
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
@@ -2219,11 +2220,8 @@ inline bool Surface::HasAlternateImages() const
  * up normally.
  *
  * @param surface the Surface structure to query.
- * @param count a pointer filled in with the number of surface pointers
- *              returned, may be nullptr.
  * @returns a nullptr terminated array of Surface pointers or nullptr on
- *          failure; call GetError() for more information. This should be
- *          freed with free() when it is no longer needed.
+ *          failure; call GetError() for more information.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -2498,8 +2496,7 @@ inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(m_resource); }
  * MapRGB().
  *
  * @param surface the Surface structure to update.
- * @param enabled true to enable color key, false to disable color key.
- * @param key the transparent pixel.
+ * @param key the transparent pixel or std::nullopt to disable it.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -2554,7 +2551,7 @@ inline bool Surface::HasColorKey() const
  * If the surface doesn't have color key enabled this function returns false.
  *
  * @param surface the Surface structure to query.
- * @param key a pointer filled in with the transparent pixel.
+ * @returns the transparent pixel or nullopt if none.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2669,7 +2666,7 @@ inline void Surface::SetAlphaMod(Uint8 alpha)
  * Get the additional alpha value used in blit operations.
  *
  * @param surface the Surface structure to query.
- * @param alpha a pointer filled in with the current alpha value.
+ * @returns the current alpha value.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2722,7 +2719,7 @@ inline void Surface::SetBlendMode(BlendMode blendMode)
  * Get the blend mode used for blit operations.
  *
  * @param surface the Surface structure to query.
- * @param blendMode a pointer filled in with the current BlendMode.
+ * @returns the current BlendMode.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2783,8 +2780,8 @@ inline bool Surface::SetClipRect(OptionalRef<const RectRaw> rect)
  *
  * @param surface the Surface structure representing the surface to be
  *                clipped.
- * @param rect an Rect structure filled in with the clipping rectangle for
- *             the surface.
+ * @returns the Rect structure filled in with the clipping rectangle for the
+ *          surface.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -3125,7 +3122,7 @@ inline void Surface::PremultiplyAlpha(bool linear)
  * otherwise the color is assumed to be in the colorspace of the suface.
  *
  * @param surface the Surface to clear.
- * @param c the color components of the pixel, normally in the range 0-1.
+ * @param color the color components of the pixel, normally in the range 0-1.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -3192,7 +3189,6 @@ inline void Surface::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
  *
  * @param dst the Surface structure that is the drawing target.
  * @param rects an array of SDL_Rects representing the rectangles to fill.
- * @param count the number of rectangles in the array.
  * @param color the color to fill with.
  * @throws Error on failure.
  *
@@ -3690,9 +3686,6 @@ inline void BlitSurface9Grid(SurfaceParam src,
  * @param top_height the height, in pixels, of the top corners in `srcrect`.
  * @param bottom_height the height, in pixels, of the bottom corners in
  *                      `srcrect`.
- * @param scale the scale used to transform the corner of `srcrect` into the
- *              corner of `dstrect`, or 0.0f for an unscaled blit.
- * @param scaleMode scale algorithm to be used.
  * @param dst the Surface structure that is the blit target.
  * @param dstrect the Rect structure representing the target rectangle in
  *                the destination surface, or nullptr to fill the entire
@@ -3811,10 +3804,7 @@ inline Uint32 Surface::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
  * for an 8-bpp format).
  *
  * @param surface the surface to use for the pixel format and palette.
- * @param r the red component of the pixel in the range 0-255.
- * @param g the green component of the pixel in the range 0-255.
- * @param b the blue component of the pixel in the range 0-255.
- * @param a the alpha component of the pixel in the range 0-255.
+ * @param c the color components of the pixel in the range 0-255.
  * @returns a pixel value.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -3843,8 +3833,7 @@ inline Uint32 Surface::MapRGBA(ColorRaw c) const
  * components from pixel formats with less than 8 bits per RGB component.
  *
  * @param surface the surface to read.
- * @param x the horizontal coordinate, 0 <= x < width.
- * @param y the vertical coordinate, 0 <= y < height.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
  * @param r a pointer filled in with the red channel, 0-255, or nullptr to
  * ignore this channel.
  * @param g a pointer filled in with the green channel, 0-255, or nullptr to
@@ -3885,8 +3874,7 @@ inline void Surface::ReadPixel(const PointRaw& p,
  * tests, but is not intended for use in a game engine.
  *
  * @param surface the surface to read.
- * @param x the horizontal coordinate, 0 <= x < width.
- * @param y the vertical coordinate, 0 <= y < height.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
  * @param r a pointer filled in with the red channel, normally in the range
  *          0-1, or nullptr to ignore this channel.
  * @param g a pointer filled in with the green channel, normally in the range

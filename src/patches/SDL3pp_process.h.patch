@@ -6,7 +6,10 @@
 <  * @defgroup CategoryProcess Category Process
 ---
 >  * @defgroup CategoryProcess Process Control
-392a393,416
+376,377d375
+<    * @param datasize a pointer filled in with the number of bytes read, may be
+<    *                 nullptr.
+392a391,414
 >   /**
 >    * Read all the output from a process.
 >    *
@@ -31,35 +34,35 @@
 >    *
 >    * @sa ProcessRef.Create
 >    */
-396c420,423
+396c418,421
 <     static_assert(false, "Not implemented");
 ---
 >     OwnArray<std::byte> data = Read(exitcode);
 >     if (data.empty()) return {};
 >     size_t sz = data.size() / sizeof(T);
 >     return OwnArray{static_cast<T*>(data.release()), sz};
-705c732
+705c730
 <   return CheckError(SDL_GetProcessProperties(process));
 ---
 >   return {CheckError(SDL_GetProcessProperties(process))};
-727,728d753
+727,728d751
 <  * @param datasize a pointer filled in with the number of bytes read, may be
 <  *                 nullptr.
-744c769,771
+744c767,769
 <   return SDL_ReadProcess(process, exitcode);
 ---
 >   size_t size = 0;
 >   auto data = static_cast<char*>(SDL_ReadProcess(process, &size, exitcode));
 >   return StringResult(CheckError(data), size);
-747c774
+747c772
 < inline StringResult Process::Read(int* exitcode = nullptr)
 ---
 > inline StringResult Process::Read(int* exitcode)
-778c805
+778c803
 <   return SDL_GetProcessInput(process);
 ---
 >   return {SDL_GetProcessInput(process)};
-810c837
+810c835
 <   return SDL_GetProcessOutput(process);
 ---
 >   return {SDL_GetProcessOutput(process)};

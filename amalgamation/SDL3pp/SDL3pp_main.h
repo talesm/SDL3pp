@@ -202,10 +202,6 @@ inline void GDKSuspendComplete() { SDL_GDKSuspendComplete(); }
 /**
  * Use this to define the callbacks for given class
  * @param CLASS The class to wrap in callbacks.
- * @param APPNAME the app name. If not nullptr it calls SetAppMetadata to
- *                initialize. If nullptr the user is responsible to set it.
- * @param APPVERSION the app version. If nullptr defaults to "1.0".
- * @param APPID The app id. If nullptr it defaults to APPNAME.
  */
 #define SDL3PP_DEFINE_CALLBACKS(CLASS)                                         \
   static_assert(SDL::HasIterateFunction<CLASS>, "Main class not compatible");  \

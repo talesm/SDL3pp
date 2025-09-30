@@ -8,6 +8,14 @@
 176a179,180
 > #endif // SDL3PP_DOC
 > 
+208a213
+>   /// Constructs from an int
+217a223
+>   /// Returns unerlying type
+299d304
+<    * @param a a pointer to an AtomicInt to increment.
+315d319
+<    * @param a a pointer to an AtomicInt to decrement.
 330c334
 <   return SDL::CompareAndSwapAtomicInt(&m_value, oldval, newval);
 ---
@@ -32,36 +40,42 @@
 < inline bool AtomicInt::AtomicDecRef() { return SDL::AtomicDecRef(&m_value); }
 ---
 > inline bool AtomicInt::AtomicDecRef() { return SDL_AtomicDecRef(&m_value); }
-461d464
+373a378
+>   /// Constructs from Uint32
+382a388
+>   /// Convert to underlying type
+445a452
+>   /// Construcst from T
+461d467
 <    * @param a a pointer to a pointer.
-482d484
+482d487
 <    * @param a a pointer to a pointer.
-501d502
+501d505
 <    * @param a a pointer to a pointer.
-516c517
+516c520
 <   return SDL::CompareAndSwapAtomicU32(&m_value, oldval, newval);
 ---
 >   return SDL_CompareAndSwapAtomicU32(&m_value, oldval, newval);
-519,522c520
+519,522c523
 < inline Uint32 AtomicU32::Set(Uint32 v)
 < {
 <   return SDL::SetAtomicU32(&m_value, v);
 < }
 ---
 > inline Uint32 AtomicU32::Set(Uint32 v) { return SDL_SetAtomicU32(&m_value, v); }
-524c522
+524c525
 < inline Uint32 AtomicU32::Get() { return SDL::GetAtomicU32(&m_value); }
 ---
 > inline Uint32 AtomicU32::Get() { return SDL_GetAtomicU32(&m_value); }
-529c527
+529c530
 <   return SDL::CompareAndSwapAtomicPointer(&m_value, oldval, newval);
 ---
 >   return SDL_CompareAndSwapAtomicPointer(&m_value, oldval, newval);
-535c533
+535c536
 <   return SDL::SetAtomicPointer(&m_value, v);
 ---
 >   return SDL_SetAtomicPointer(&m_value, v);
-541c539
+541c542
 <   return SDL::GetAtomicPointer(&m_value);
 ---
 >   return SDL_GetAtomicPointer(&m_value);

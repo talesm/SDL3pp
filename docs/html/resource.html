@@ -77,7 +77,7 @@ $(function() {
   <div class="headertitle"><div class="title">Resource</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>A Resource is a type where its memory is controlled by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>, usually with functions like <code>SDL_Create*()</code> and <code>SDL_Destroy*()</code>.</p>
+<div class="textblock"><p>A Resource is a type where its memory is controlled by <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>, usually with functions like <code>SDL_Create*()</code> and <code>SDL_Destroy*()</code>.</p>
 <p>To represent this type, we first create <a href="https://en.cppreference.com/w/cpp/language/crtp">CRTP</a> base class that contains all the functions, but delegates the actual storage to its base class. There is currently two available base classes, ObjectUnique and ObjectRef, and we use them to typedef an owning and a non owning versions of the resource. For example, for SDL_Surface we have:</p>
 <ul>
 <li>SurfaceBase: struct with all OO-like functions wrapped as member functions;</li>

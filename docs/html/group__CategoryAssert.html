@@ -133,10 +133,10 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:gab8af1dcb1cc2d54244bf65a8a0c4af4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information about an assertion failure.  <br /></td></tr>
 <tr class="separator:gab8af1dcb1cc2d54244bf65a8a0c4af4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa96234b976cffe73f8c2d3fa30b47a23" id="r_gaa96234b976cffe73f8c2d3fa30b47a23"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#gaa96234b976cffe73f8c2d3fa30b47a23">SDL::AssertionHandler</a> = SDL_AssertionHandler</td></tr>
-<tr class="memdesc:gaa96234b976cffe73f8c2d3fa30b47a23"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="callback.html">Callback</a> that fires when an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> assertion fails.  <br /></td></tr>
+<tr class="memdesc:gaa96234b976cffe73f8c2d3fa30b47a23"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="callback.html">Callback</a> that fires when an <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> assertion fails.  <br /></td></tr>
 <tr class="separator:gaa96234b976cffe73f8c2d3fa30b47a23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga26233ae390b2dfe2932f09fe97419979" id="r_ga26233ae390b2dfe2932f09fe97419979"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#ga26233ae390b2dfe2932f09fe97419979">SDL::AssertionHandlerCB</a> = std::function&lt; SDL_AssertState(const SDL_AssertData *)&gt;</td></tr>
-<tr class="memdesc:ga26233ae390b2dfe2932f09fe97419979"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback that fires when an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> assertion fails.  <br /></td></tr>
+<tr class="memdesc:ga26233ae390b2dfe2932f09fe97419979"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback that fires when an <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> assertion fails.  <br /></td></tr>
 <tr class="separator:ga26233ae390b2dfe2932f09fe97419979"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -185,7 +185,7 @@ Variables</h2></td></tr>
 <tr class="separator:gab10b16a2ed7f0cc68c1564c923b89b9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> assertions operate like your usual <code>assert</code> macro, but with some added features:</p>
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> assertions operate like your usual <code>assert</code> macro, but with some added features:</p>
 <ul>
 <li>It uses a trick with the <code>sizeof</code> operator, so disabled assertions vaporize out of the compiled code, but variables only referenced in the assertion won't trigger compiler warnings about being unused.</li>
 <li>It is safe to use with a dangling-else: <code>if (x) <a class="el" href="group__CategoryAssert.html#gaf03d71e27f06835f6a09358943c33b1d" title="An assertion test that is normally performed only in debug builds.">SDL_assert(y)</a>; else do_something();</code></li>
@@ -198,7 +198,7 @@ Variables</h2></td></tr>
 <li>It lets the user mark an assertion as ignored for the rest of the program's run; if there's a harmless problem that keeps popping up.</li>
 <li>It provides statistics and data on all failed assertions to the app.</li>
 <li>It allows the default assertion handler to be controlled with environment variables, in case an automated script needs to control it.</li>
-<li>It can be used as an aid to Clang's static analysis; it will treat <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> assertions as universally true (under the assumption that you are serious about the asserted claims and that your debug builds will detect when these claims were wrong). This can help the analyzer avoid false positives.</li>
+<li>It can be used as an aid to Clang's static analysis; it will treat <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> assertions as universally true (under the assumption that you are serious about the asserted claims and that your debug builds will detect when these claims were wrong). This can help the analyzer avoid false positives.</li>
 </ul>
 <p>To use it: compile a debug build and just sprinkle around tests to check your code! </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -228,7 +228,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -256,7 +256,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -272,14 +272,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This value changes depending on compiler options and other preprocessor defines.</p>
-<p>It is currently one of the following values, but future <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> releases might add more:</p>
+<p>It is currently one of the following values, but future <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> releases might add more:</p>
 <ul>
-<li>0: All <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> assertion macros are disabled.</li>
+<li>0: All <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> assertion macros are disabled.</li>
 <li>1: Release settings: SDL_assert disabled, SDL_assert_release enabled.</li>
 <li>2: Debug settings: SDL_assert and SDL_assert_release enabled.</li>
-<li>3: Paranoid settings: All <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> assertion macros enabled, including SDL_assert_paranoid.</li>
+<li>3: Paranoid settings: All <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> assertion macros enabled, including SDL_assert_paranoid.</li>
 </ul>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -308,7 +308,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -337,7 +337,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 </li>
 </ul>
 
@@ -358,7 +358,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This isn't for direct use by apps; use SDL_assert or SDL_TriggerBreakpoint instead.</p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -380,7 +380,7 @@ Variables</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                                                         \</div>
 <div class="line">    (void)<span class="keyword">sizeof</span>((condition));                                                 \</div>
 <div class="line">  } <span class="keywordflow">while</span> (<a class="code hl_define" href="group__CategoryAssert.html#ga2ffca06819acf027ec29d6fd14c94cbe">SDL_NULL_WHILE_LOOP_CONDITION</a>)</div>
-<div class="ttc" id="agroup__CategoryAssert_html_ga2ffca06819acf027ec29d6fd14c94cbe"><div class="ttname"><a href="group__CategoryAssert.html#ga2ffca06819acf027ec29d6fd14c94cbe">SDL_NULL_WHILE_LOOP_CONDITION</a></div><div class="ttdeci">#define SDL_NULL_WHILE_LOOP_CONDITION</div><div class="ttdoc">A macro for wrapping code in do {} while (0); without compiler warnings.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:135</div></div>
+<div class="ttc" id="agroup__CategoryAssert_html_ga2ffca06819acf027ec29d6fd14c94cbe"><div class="ttname"><a href="group__CategoryAssert.html#ga2ffca06819acf027ec29d6fd14c94cbe">SDL_NULL_WHILE_LOOP_CONDITION</a></div><div class="ttdeci">#define SDL_NULL_WHILE_LOOP_CONDITION</div><div class="ttdoc">A macro for wrapping code in do {} while (0); without compiler warnings.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:136</div></div>
 </div><!-- fragment --><p>This isn't for direct use by apps, but this is the code that is inserted when an SDL_assert is disabled (perhaps in a release build).</p>
 <p>The code does nothing, but wraps <code>condition</code> in a sizeof operator, which generates no code and has no side effects, but avoid compiler warnings about unused variables.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -389,7 +389,7 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -422,13 +422,13 @@ Variables</h2></td></tr>
 <div class="line">      <span class="keywordflow">break</span>; <span class="comment">/* not retrying. */</span>                                               \</div>
 <div class="line">    }                                                                          \</div>
 <div class="line">  } <span class="keywordflow">while</span> (<a class="code hl_define" href="group__CategoryAssert.html#ga2ffca06819acf027ec29d6fd14c94cbe">SDL_NULL_WHILE_LOOP_CONDITION</a>)</div>
-<div class="ttc" id="agroup__CategoryAssert_html_ga195c2795832718d008000d969eed96c3"><div class="ttname"><a href="group__CategoryAssert.html#ga195c2795832718d008000d969eed96c3">SDL_FILE</a></div><div class="ttdeci">#define SDL_FILE</div><div class="ttdoc">A macro that reports the current file being compiled.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:108</div></div>
-<div class="ttc" id="agroup__CategoryAssert_html_ga30da3daba50f032ecda2c701e97da79d"><div class="ttname"><a href="group__CategoryAssert.html#ga30da3daba50f032ecda2c701e97da79d">SDL_FUNCTION</a></div><div class="ttdeci">#define SDL_FUNCTION</div><div class="ttdoc">A macro that reports the current function being compiled.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:101</div></div>
-<div class="ttc" id="agroup__CategoryAssert_html_ga421a39f96c53fe309aa6d66b5c5bec22"><div class="ttname"><a href="group__CategoryAssert.html#ga421a39f96c53fe309aa6d66b5c5bec22">SDL_LINE</a></div><div class="ttdeci">#define SDL_LINE</div><div class="ttdoc">A macro that reports the current line number of the file being compiled.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:115</div></div>
+<div class="ttc" id="agroup__CategoryAssert_html_ga195c2795832718d008000d969eed96c3"><div class="ttname"><a href="group__CategoryAssert.html#ga195c2795832718d008000d969eed96c3">SDL_FILE</a></div><div class="ttdeci">#define SDL_FILE</div><div class="ttdoc">A macro that reports the current file being compiled.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:109</div></div>
+<div class="ttc" id="agroup__CategoryAssert_html_ga30da3daba50f032ecda2c701e97da79d"><div class="ttname"><a href="group__CategoryAssert.html#ga30da3daba50f032ecda2c701e97da79d">SDL_FUNCTION</a></div><div class="ttdeci">#define SDL_FUNCTION</div><div class="ttdoc">A macro that reports the current function being compiled.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:102</div></div>
+<div class="ttc" id="agroup__CategoryAssert_html_ga421a39f96c53fe309aa6d66b5c5bec22"><div class="ttname"><a href="group__CategoryAssert.html#ga421a39f96c53fe309aa6d66b5c5bec22">SDL_LINE</a></div><div class="ttdeci">#define SDL_LINE</div><div class="ttdoc">A macro that reports the current line number of the file being compiled.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:116</div></div>
 </div><!-- fragment --><p>This isn't for direct use by apps, but this is the code that is inserted when an SDL_assert is enabled.</p>
 <p>The <code>do {} while(0)</code> avoids dangling else problems:</p>
 <div class="fragment"><div class="line"><span class="keywordflow">if</span> (x) <a class="code hl_define" href="group__CategoryAssert.html#gaf03d71e27f06835f6a09358943c33b1d">SDL_assert</a>(y); <span class="keywordflow">else</span> blah();</div>
-<div class="ttc" id="agroup__CategoryAssert_html_gaf03d71e27f06835f6a09358943c33b1d"><div class="ttname"><a href="group__CategoryAssert.html#gaf03d71e27f06835f6a09358943c33b1d">SDL_assert</a></div><div class="ttdeci">#define SDL_assert(condition)</div><div class="ttdoc">An assertion test that is normally performed only in debug builds.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:301</div></div>
+<div class="ttc" id="agroup__CategoryAssert_html_gaf03d71e27f06835f6a09358943c33b1d"><div class="ttname"><a href="group__CategoryAssert.html#gaf03d71e27f06835f6a09358943c33b1d">SDL_assert</a></div><div class="ttdeci">#define SDL_assert(condition)</div><div class="ttdoc">An assertion test that is normally performed only in debug builds.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:302</div></div>
 </div><!-- fragment --><p>... without the do/while, the "else" could attach to this macro's "if". We try to handle just the minimum we need here in a macro...the loop, the static vars, and break points. The heavy lifting is handled in ReportAssertion().</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -436,7 +436,7 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -451,7 +451,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -466,8 +466,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>If <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> can't figure how the compiler reports this, it will use "???".</p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<p>If <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> can't figure how the compiler reports this, it will use "???".</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -482,7 +482,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -501,7 +501,7 @@ Variables</h2></td></tr>
 <p>the <code>do {} while (0);</code> trick is useful for wrapping code in a macro that may or may not be a single statement, to avoid various C language accidents.</p>
 <p>To use:</p>
 <div class="fragment"><div class="line"><span class="keywordflow">do</span> { SomethingOnce(); } <span class="keywordflow">while</span> (<a class="code hl_define" href="group__CategoryAssert.html#ga2ffca06819acf027ec29d6fd14c94cbe">SDL_NULL_WHILE_LOOP_CONDITION</a> (0));</div>
-</div><!-- fragment --><dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+</div><!-- fragment --><dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -520,10 +520,10 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This allows an app to programmatically halt ("break") the debugger as if it had hit a breakpoint, allowing the developer to examine program state, etc.</p>
-<p>This is a macro&ndash;not a function&ndash;so that the debugger breaks on the source code line that used SDL_TriggerBreakpoint and not in some random guts of <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>. SDL_assert uses this macro for the same reason.</p>
+<p>This is a macro&ndash;not a function&ndash;so that the debugger breaks on the source code line that used SDL_TriggerBreakpoint and not in some random guts of <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>. SDL_assert uses this macro for the same reason.</p>
 <p>If the program is not running under a debugger, SDL_TriggerBreakpoint will likely terminate the app, possibly without warning. If the current platform isn't supported, this macro is left undefined.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -540,7 +540,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This structure is filled in with information about a triggered assertion, used by the assertion handler, then added to the assertion report. This is returned as a linked list from <a class="el" href="group__CategoryAssert.html#ga1762888858d7ecdaad03f39e260f8dc8" title="Get a list of all assertion failures.">GetAssertionReport()</a>.</p>
-<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -564,7 +564,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>an AssertState value indicating how to handle the failure.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This callback may be called from any thread that triggers an assert at any time.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -587,7 +587,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>an AssertState value indicating how to handle the failure.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This callback may be called from any thread that triggers an assert at any time.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#gaa96234b976cffe73f8c2d3fa30b47a23" title="A Callback that fires when an SDL assertion fails.">AssertionHandler</a> </dd></dl>
 
 </div>
@@ -604,8 +604,8 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>When an enabled assertion triggers, it may call the assertion handler (possibly one provided by the app via SetAssertionHandler), which will return one of these values, possibly after asking the user.</p>
-<p>Then <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will respond based on this outcome (loop around to retry the condition, try to break in a debugger, kill the program, or ignore the problem).</p>
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<p>Then <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will respond based on this outcome (loop around to retry the condition, try to break in a debugger, kill the program, or ignore the problem).</p>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -636,7 +636,7 @@ Variables</h2></td></tr>
 <p>The parameter <code>puserdata</code> is a pointer to a void*, which will store the "userdata" pointer that was passed to SDL_SetAssertionHandler(). This value will always be nullptr for the default handler. If you don't care about this data, it is safe to pass a nullptr pointer to this function to ignore it.</p>
 <dl class="section return"><dt>Returns</dt><dd>the AssertionHandlerCB that is called when an assert triggers.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#gadc28db02e4fc8cf22d9e839c1780c16a" title="Set an application-defined assertion handler.">SetAssertionHandler</a> </dd></dl>
 
 </div>
@@ -674,7 +674,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the AssertionHandler that is called when an assert triggers.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#gadc28db02e4fc8cf22d9e839c1780c16a" title="Set an application-defined assertion handler.">SetAssertionHandler</a> </dd></dl>
 
 </div>
@@ -711,11 +711,11 @@ Variables</h2></td></tr>
 <div class="line">          item-&gt;always_ignore ? <span class="stringliteral">&quot;yes&quot;</span> : <span class="stringliteral">&quot;no&quot;</span>);</div>
 <div class="line">   item = item-&gt;next;</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__CategoryAssert_html_ga1762888858d7ecdaad03f39e260f8dc8"><div class="ttname"><a href="group__CategoryAssert.html#ga1762888858d7ecdaad03f39e260f8dc8">SDL::GetAssertionReport</a></div><div class="ttdeci">const AssertData * GetAssertionReport()</div><div class="ttdoc">Get a list of all assertion failures.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:589</div></div>
-<div class="ttc" id="agroup__CategoryAssert_html_gab8af1dcb1cc2d54244bf65a8a0c4af4d"><div class="ttname"><a href="group__CategoryAssert.html#gab8af1dcb1cc2d54244bf65a8a0c4af4d">SDL::AssertData</a></div><div class="ttdeci">SDL_AssertData AssertData</div><div class="ttdoc">Information about an assertion failure.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:197</div></div>
+<div class="ttc" id="agroup__CategoryAssert_html_ga1762888858d7ecdaad03f39e260f8dc8"><div class="ttname"><a href="group__CategoryAssert.html#ga1762888858d7ecdaad03f39e260f8dc8">SDL::GetAssertionReport</a></div><div class="ttdeci">const AssertData * GetAssertionReport()</div><div class="ttdoc">Get a list of all assertion failures.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:590</div></div>
+<div class="ttc" id="agroup__CategoryAssert_html_gab8af1dcb1cc2d54244bf65a8a0c4af4d"><div class="ttname"><a href="group__CategoryAssert.html#gab8af1dcb1cc2d54244bf65a8a0c4af4d">SDL::AssertData</a></div><div class="ttdeci">SDL_AssertData AssertData</div><div class="ttdoc">Information about an assertion failure.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:198</div></div>
 </div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>a list of all failed assertions or nullptr if the list is empty. This memory should not be modified or freed by the application. This pointer remains valid until the next call to <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> or <a class="el" href="group__CategoryAssert.html#ga2b6d3ba74888bd9cc5a7634cb0511652" title="Clear the list of all assertion failures.">ResetAssertionReport()</a>.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe. Other threads calling <a class="el" href="group__CategoryAssert.html#ga2b6d3ba74888bd9cc5a7634cb0511652" title="Clear the list of all assertion failures.">ResetAssertionReport()</a> simultaneously, may render the returned pointer invalid.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#ga2b6d3ba74888bd9cc5a7634cb0511652" title="Clear the list of all assertion failures.">ResetAssertionReport</a> </dd></dl>
 
 </div>
@@ -742,10 +742,10 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This returns the function pointer that is called by default when an assertion is triggered. This is an internal function provided by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>, that is used for assertions when <a class="el" href="group__CategoryAssert.html#gadc28db02e4fc8cf22d9e839c1780c16a" title="Set an application-defined assertion handler.">SetAssertionHandler()</a> hasn't been used to provide a different function.</p>
+<p>This returns the function pointer that is called by default when an assertion is triggered. This is an internal function provided by <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>, that is used for assertions when <a class="el" href="group__CategoryAssert.html#gadc28db02e4fc8cf22d9e839c1780c16a" title="Set an application-defined assertion handler.">SetAssertionHandler()</a> hasn't been used to provide a different function.</p>
 <dl class="section return"><dt>Returns</dt><dd>the default AssertionHandler that is called when an assert triggers.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#ga6bdef0173cfd4f9241f2e0dd24029b57" title="Get the current assertion handler.">GetAssertionHandler</a> </dd></dl>
 
 </div>
@@ -807,7 +807,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>assert state.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -835,7 +835,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>This function will clear the list of all assertions triggered up to that point. Immediately following this call, GetAssertionReport will return no items. In addition, any previously-triggered assertions will be reset to a trigger_count of zero, and their always_ignore state will be false.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe. Other threads triggering an assertion, or simultaneously calling this function may cause memory leaks or crashes.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#ga1762888858d7ecdaad03f39e260f8dc8" title="Get a list of all assertion failures.">GetAssertionReport</a> </dd></dl>
 
 </div>
@@ -873,9 +873,9 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function allows an application to show its own assertion UI and/or force the response to an assertion failure. If the application doesn't provide this, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will try to do the right thing, popping up a system-specific GUI dialog, and probably minimizing any fullscreen windows.</p>
+<p>This function allows an application to show its own assertion UI and/or force the response to an assertion failure. If the application doesn't provide this, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will try to do the right thing, popping up a system-specific GUI dialog, and probably minimizing any fullscreen windows.</p>
 <p>This callback may fire from any thread, but it runs wrapped in a mutex, so it will only fire from one thread at a time.</p>
-<p>This callback is NOT reset to <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s internal handler upon <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a>!</p>
+<p>This callback is NOT reset to <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>'s internal handler upon <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a>!</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">handler</td><td>the AssertionHandler function to call when an assertion fails or nullptr for the default handler. </td></tr>
@@ -884,7 +884,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#ga6bdef0173cfd4f9241f2e0dd24029b57" title="Get the current assertion handler.">GetAssertionHandler</a> </dd></dl>
 
 </div>
@@ -912,9 +912,9 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function allows an application to show its own assertion UI and/or force the response to an assertion failure. If the application doesn't provide this, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will try to do the right thing, popping up a system-specific GUI dialog, and probably minimizing any fullscreen windows.</p>
+<p>This function allows an application to show its own assertion UI and/or force the response to an assertion failure. If the application doesn't provide this, <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> will try to do the right thing, popping up a system-specific GUI dialog, and probably minimizing any fullscreen windows.</p>
 <p>This callback may fire from any thread, but it runs wrapped in a mutex, so it will only fire from one thread at a time.</p>
-<p>This callback is NOT reset to <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s internal handler upon SDL_Quit()!</p>
+<p>This callback is NOT reset to <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>'s internal handler upon <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a>!</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">handler</td><td>the SDL_AssertionHandler function to call when an assertion fails.</td></tr>
@@ -922,7 +922,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#ga6bdef0173cfd4f9241f2e0dd24029b57" title="Get the current assertion handler.">GetAssertionHandler</a> </dd></dl>
 
 </div>

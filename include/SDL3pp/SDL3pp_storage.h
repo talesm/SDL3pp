@@ -552,8 +552,7 @@ public:
    *
    * @param path the relative path of the file to write.
    * @param source a client-provided buffer to write from.
-   * @returns true if the file was written or false on failure; call
-   *          GetError() for more information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -624,7 +623,6 @@ public:
    * @param path the path of the directory to enumerate, or nullptr for the
    * root.
    * @param callback a function that is called for each entry in the directory.
-   * @returns all the directory contents.
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.

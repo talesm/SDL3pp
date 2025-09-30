@@ -315,12 +315,16 @@ struct TargetBytes
   {
   }
 
+  /// Copy constructor
   constexpr TargetBytes(const TargetBytes& other) = default;
 
+  /// Move constructor
   constexpr TargetBytes(TargetBytes&& other) = default;
 
+  /// Copy assignment
   constexpr TargetBytes& operator=(const TargetBytes& other) = default;
 
+  /// Move assignment
   constexpr TargetBytes& operator=(TargetBytes&& other) = default;
 
   /// Just to have better error message

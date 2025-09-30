@@ -72,6 +72,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">GUIDs<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a></div></div></div>
 </div><!--header-->
@@ -83,23 +84,32 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GUID.html">SDL::GUID</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An <a class="el" href="structSDL_1_1GUID.html" title="An GUID is a 128-bit identifier for an input device that identifies that device across runs of SDL pr...">GUID</a> is a 128-bit identifier for an input device that identifies that device across runs of <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> programs on the same platform.  <a href="structSDL_1_1GUID.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An <a class="el" href="structSDL_1_1GUID.html" title="An GUID is a 128-bit identifier for an input device that identifies that device across runs of SDL pr...">GUID</a> is a 128-bit identifier for an input device that identifies that device across runs of <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> programs on the same platform.  <a href="structSDL_1_1GUID.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:gad54d85ba8d6284624c989fe065881fe5" id="r_gad54d85ba8d6284624c989fe065881fe5"><td class="memItemLeft" align="right" valign="top"><a id="gad54d85ba8d6284624c989fe065881fe5" name="gad54d85ba8d6284624c989fe065881fe5"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::GUIDRaw</b> = SDL_GUID</td></tr>
+<tr class="separator:gad54d85ba8d6284624c989fe065881fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga4efae6ae549cdb0f0d92ab4011e7d7e7" id="r_ga4efae6ae549cdb0f0d92ab4011e7d7e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryGUID.html#ga4efae6ae549cdb0f0d92ab4011e7d7e7">SDL::GUIDToString</a> (SDL_GUID guid, char *pszGUID, int cbGUID)</td></tr>
-<tr class="memdesc:ga4efae6ae549cdb0f0d92ab4011e7d7e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an ASCII string representation for a given SDL_GUID.  <br /></td></tr>
-<tr class="separator:ga4efae6ae549cdb0f0d92ab4011e7d7e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga08bc07824cac3af27ec0fac342b15382" id="r_ga08bc07824cac3af27ec0fac342b15382"><td class="memItemLeft" align="right" valign="top">SDL_GUID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryGUID.html#ga08bc07824cac3af27ec0fac342b15382">SDL::StringToGUID</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> pchGUID)</td></tr>
-<tr class="memdesc:ga08bc07824cac3af27ec0fac342b15382"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a <a class="el" href="structSDL_1_1GUID.html" title="An GUID is a 128-bit identifier for an input device that identifies that device across runs of SDL pr...">GUID</a> string into a SDL_GUID structure.  <br /></td></tr>
-<tr class="separator:ga08bc07824cac3af27ec0fac342b15382"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa8ab121d31bfe9d5efd78b688f0335a7" id="r_gaa8ab121d31bfe9d5efd78b688f0335a7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryGUID.html#gaa8ab121d31bfe9d5efd78b688f0335a7">SDL::GUIDToString</a> (const GUIDRaw &amp;guid)</td></tr>
+<tr class="memdesc:gaa8ab121d31bfe9d5efd78b688f0335a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an ASCII string representation for a given <a class="el" href="structSDL_1_1GUID.html" title="An GUID is a 128-bit identifier for an input device that identifies that device across runs of SDL pr...">GUID</a>.  <br /></td></tr>
+<tr class="separator:gaa8ab121d31bfe9d5efd78b688f0335a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7a8bac18b8e1ebc760e90d391de8a9c1" id="r_ga7a8bac18b8e1ebc760e90d391de8a9c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1GUID.html">GUID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryGUID.html#ga7a8bac18b8e1ebc760e90d391de8a9c1">SDL::StringToGUID</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> pchGUID)</td></tr>
+<tr class="memdesc:ga7a8bac18b8e1ebc760e90d391de8a9c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a <a class="el" href="structSDL_1_1GUID.html" title="An GUID is a 128-bit identifier for an input device that identifies that device across runs of SDL pr...">GUID</a> string into a <a class="el" href="structSDL_1_1GUID.html" title="An GUID is a 128-bit identifier for an input device that identifies that device across runs of SDL pr...">GUID</a> structure.  <br /></td></tr>
+<tr class="separator:ga7a8bac18b8e1ebc760e90d391de8a9c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac28093a04bc1ab6ef3b73eab31ac1b0e" id="r_gac28093a04bc1ab6ef3b73eab31ac1b0e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryGUID.html#gac28093a04bc1ab6ef3b73eab31ac1b0e">SDL::GUID::ToString</a> () const</td></tr>
+<tr class="memdesc:gac28093a04bc1ab6ef3b73eab31ac1b0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an ASCII string representation for a given <a class="el" href="structSDL_1_1GUID.html" title="An GUID is a 128-bit identifier for an input device that identifies that device across runs of SDL pr...">GUID</a>.  <br /></td></tr>
+<tr class="separator:gac28093a04bc1ab6ef3b73eab31ac1b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> provides functions to convert a <a class="el" href="structSDL_1_1GUID.html" title="An GUID is a 128-bit identifier for an input device that identifies that device across runs of SDL pr...">GUID</a> to/from a string. </p>
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> provides functions to convert a <a class="el" href="structSDL_1_1GUID.html" title="An GUID is a 128-bit identifier for an input device that identifies that device across runs of SDL pr...">GUID</a> to/from a string. </p>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga4efae6ae549cdb0f0d92ab4011e7d7e7" name="ga4efae6ae549cdb0f0d92ab4011e7d7e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4efae6ae549cdb0f0d92ab4011e7d7e7">&#9670;&#160;</a></span>GUIDToString()</h2>
+<a id="gaa8ab121d31bfe9d5efd78b688f0335a7" name="gaa8ab121d31bfe9d5efd78b688f0335a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa8ab121d31bfe9d5efd78b688f0335a7">&#9670;&#160;</a></span>GUIDToString()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -108,27 +118,11 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::GUIDToString </td>
+          <td class="memname">std::string SDL::GUIDToString </td>
           <td>(</td>
-          <td class="paramtype">SDL_GUID&#160;</td>
-          <td class="paramname"><em>guid</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const GUIDRaw &amp;&#160;</td>
+          <td class="paramname"><em>guid</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>pszGUID</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>cbGUID</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -139,20 +133,19 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">guid</td><td>the SDL_GUID you wish to convert to string. </td></tr>
-    <tr><td class="paramname">pszGUID</td><td>buffer in which to write the ASCII string. </td></tr>
-    <tr><td class="paramname">cbGUID</td><td>the size of pszGUID, should be at least 33 bytes.</td></tr>
+    <tr><td class="paramname">guid</td><td>the <a class="el" href="structSDL_1_1GUID.html" title="An GUID is a 128-bit identifier for an input device that identifies that device across runs of SDL pr...">GUID</a> you wish to convert to string. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>ASCII string.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_StringToGUID </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GUID.html#aad609ddd761f1141f7fc9788f029528c" title="Wraps GUID.">GUID.GUID</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga08bc07824cac3af27ec0fac342b15382" name="ga08bc07824cac3af27ec0fac342b15382"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga08bc07824cac3af27ec0fac342b15382">&#9670;&#160;</a></span>StringToGUID()</h2>
+<a id="ga7a8bac18b8e1ebc760e90d391de8a9c1" name="ga7a8bac18b8e1ebc760e90d391de8a9c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7a8bac18b8e1ebc760e90d391de8a9c1">&#9670;&#160;</a></span>StringToGUID()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -161,7 +154,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">SDL_GUID SDL::StringToGUID </td>
+          <td class="memname"><a class="el" href="structSDL_1_1GUID.html">GUID</a> SDL::StringToGUID </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>pchGUID</em></td><td>)</td>
@@ -181,10 +174,39 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a SDL_GUID structure.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1GUID.html" title="An GUID is a 128-bit identifier for an input device that identifies that device across runs of SDL pr...">GUID</a> structure.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GUIDToString </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryGUID.html#gac28093a04bc1ab6ef3b73eab31ac1b0e" title="Get an ASCII string representation for a given GUID.">GUID.ToString</a> </dd></dl>
+
+</div>
+</div>
+<a id="gac28093a04bc1ab6ef3b73eab31ac1b0e" name="gac28093a04bc1ab6ef3b73eab31ac1b0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac28093a04bc1ab6ef3b73eab31ac1b0e">&#9670;&#160;</a></span>ToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string SDL::GUID::ToString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>ASCII string.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GUID.html#aad609ddd761f1141f7fc9788f029528c" title="Wraps GUID.">GUID.GUID</a> </dd></dl>
 
 </div>
 </div>

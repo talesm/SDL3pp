@@ -461,6 +461,7 @@ constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
 
 constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
 
+/** Returns mask for button */
 constexpr MouseButtonFlags ButtonMask(MouseButton button)
 {
   return SDL_BUTTON_MASK(button);

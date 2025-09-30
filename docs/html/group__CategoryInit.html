@@ -73,7 +73,6 @@ $(function() {
   <div class="summary">
 <a href="#groups">Modules</a> &#124;
 <a href="#concepts">Concepts</a> &#124;
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -81,7 +80,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>All <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> programs need to initialize the library before starting to work with it.  
+<p>All <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> programs need to initialize the library before starting to work with it.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="groups" name="groups"></a>
@@ -100,12 +99,6 @@ Concepts</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptSDL_1_1HasQuitFunction.html">SDL::HasQuitFunction</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SDL.html">SDL::SDL</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library.  <a href="classSDL_1_1SDL.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:gab189214a4cfe1df8a756a57d3da2bb07" id="r_gab189214a4cfe1df8a756a57d3da2bb07"><td class="memItemLeft" align="right" valign="top"><a id="gab189214a4cfe1df8a756a57d3da2bb07" name="gab189214a4cfe1df8a756a57d3da2bb07"></a>
@@ -122,39 +115,18 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AppArgs</b> = s
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ga099a37fb664fc3d46c97ab1d053591f8" id="r_ga099a37fb664fc3d46c97ab1d053591f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8">SDL::Init</a> (<a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a> flags)</td></tr>
+<tr class="memdesc:ga099a37fb664fc3d46c97ab1d053591f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library.  <br /></td></tr>
+<tr class="separator:ga099a37fb664fc3d46c97ab1d053591f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga42d4baeeaf5a4b4076dfbf82cebba481" id="r_ga42d4baeeaf5a4b4076dfbf82cebba481"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481">SDL::InitSubSystem</a> (<a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a> flags)</td></tr>
-<tr class="memdesc:ga42d4baeeaf5a4b4076dfbf82cebba481"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library.  <br /></td></tr>
+<tr class="memdesc:ga42d4baeeaf5a4b4076dfbf82cebba481"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compatibility function to initialize the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> library.  <br /></td></tr>
 <tr class="separator:ga42d4baeeaf5a4b4076dfbf82cebba481"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga43d4f0c1caed4824dc77eb4d2b1840b4" id="r_ga43d4f0c1caed4824dc77eb4d2b1840b4"><td class="memTemplParams" colspan="2">template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </td></tr>
-<tr class="memitem:ga43d4f0c1caed4824dc77eb4d2b1840b4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga43d4f0c1caed4824dc77eb4d2b1840b4">SDL::InitSubSystem</a> (FLAG0 flag0, FLAG1 flag1, FLAGS... flags)</td></tr>
-<tr class="memdesc:ga43d4f0c1caed4824dc77eb4d2b1840b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library.  <br /></td></tr>
-<tr class="separator:ga43d4f0c1caed4824dc77eb4d2b1840b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa610e9e7ec419dace942812e2555ecd9" id="r_gaa610e9e7ec419dace942812e2555ecd9"><td class="memTemplParams" colspan="2">template&lt;class FLAG , class... FLAGS&gt; </td></tr>
-<tr class="memitem:gaa610e9e7ec419dace942812e2555ecd9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaa610e9e7ec419dace942812e2555ecd9">SDL::InitSubSystem</a> (FLAG flag0, FLAG flag1, FLAGS... flags)</td></tr>
-<tr class="memdesc:gaa610e9e7ec419dace942812e2555ecd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library.  <br /></td></tr>
-<tr class="separator:gaa610e9e7ec419dace942812e2555ecd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac6d7bd19a4918a51d2a4fc0501f77da5" id="r_gac6d7bd19a4918a51d2a4fc0501f77da5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5">SDL::QuitSubSystem</a> (<a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a> flags)</td></tr>
-<tr class="memdesc:gac6d7bd19a4918a51d2a4fc0501f77da5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shut down specific <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> subsystems.  <br /></td></tr>
+<tr class="memdesc:gac6d7bd19a4918a51d2a4fc0501f77da5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shut down specific <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> subsystems.  <br /></td></tr>
 <tr class="separator:gac6d7bd19a4918a51d2a4fc0501f77da5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga756cb42233cdb7b4f1d2c92051a37c84" id="r_ga756cb42233cdb7b4f1d2c92051a37c84"><td class="memTemplParams" colspan="2">template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </td></tr>
-<tr class="memitem:ga756cb42233cdb7b4f1d2c92051a37c84"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga756cb42233cdb7b4f1d2c92051a37c84">SDL::QuitSubSystem</a> (FLAG0 flag0, FLAG1 flag1, FLAGS... flags)</td></tr>
-<tr class="memdesc:ga756cb42233cdb7b4f1d2c92051a37c84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shut down specific <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> subsystems.  <br /></td></tr>
-<tr class="separator:ga756cb42233cdb7b4f1d2c92051a37c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4a1c2a4b2335da731b48e9cba9987730" id="r_ga4a1c2a4b2335da731b48e9cba9987730"><td class="memTemplParams" colspan="2">template&lt;class FLAG , class... FLAGS&gt; </td></tr>
-<tr class="memitem:ga4a1c2a4b2335da731b48e9cba9987730"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga4a1c2a4b2335da731b48e9cba9987730">SDL::QuitSubSystem</a> (FLAG flag0, FLAG flag1, FLAGS... flags)</td></tr>
-<tr class="memdesc:ga4a1c2a4b2335da731b48e9cba9987730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shut down specific <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> subsystems.  <br /></td></tr>
-<tr class="separator:ga4a1c2a4b2335da731b48e9cba9987730"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa17083ba3ec421956acec4075284b453" id="r_gaa17083ba3ec421956acec4075284b453"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaa17083ba3ec421956acec4075284b453">SDL::WasInit</a> (<a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a> flags)</td></tr>
-<tr class="memdesc:gaa17083ba3ec421956acec4075284b453"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if all of the specified subsystems which are currently initialized.  <br /></td></tr>
-<tr class="separator:gaa17083ba3ec421956acec4075284b453"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga15ebc8497801e6e5d14871b2678e87be" id="r_ga15ebc8497801e6e5d14871b2678e87be"><td class="memTemplParams" colspan="2">template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </td></tr>
-<tr class="memitem:ga15ebc8497801e6e5d14871b2678e87be"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga15ebc8497801e6e5d14871b2678e87be">SDL::WasInit</a> (FLAG0 flag0, FLAG1 flag1, FLAGS... flags)</td></tr>
-<tr class="memdesc:ga15ebc8497801e6e5d14871b2678e87be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if all of the specified subsystems which are currently initialized.  <br /></td></tr>
-<tr class="separator:ga15ebc8497801e6e5d14871b2678e87be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga04a02ae9f4262909c21bad722b19726e" id="r_ga04a02ae9f4262909c21bad722b19726e"><td class="memTemplParams" colspan="2">template&lt;class FLAG , class... FLAGS&gt; </td></tr>
-<tr class="memitem:ga04a02ae9f4262909c21bad722b19726e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga04a02ae9f4262909c21bad722b19726e">SDL::WasInit</a> (FLAG flag0, FLAG flag1, FLAGS... flags)</td></tr>
-<tr class="memdesc:ga04a02ae9f4262909c21bad722b19726e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if all of the specified subsystems which are currently initialized.  <br /></td></tr>
-<tr class="separator:ga04a02ae9f4262909c21bad722b19726e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2d9c710ec219aa2818bfdc55e4115f44" id="r_ga2d9c710ec219aa2818bfdc55e4115f44"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga2d9c710ec219aa2818bfdc55e4115f44">SDL::WasInit</a> (<a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a> flags)</td></tr>
+<tr class="memdesc:ga2d9c710ec219aa2818bfdc55e4115f44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a mask of the specified subsystems which are currently initialized.  <br /></td></tr>
+<tr class="separator:ga2d9c710ec219aa2818bfdc55e4115f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac0812d3287da34e3d6b228677440a24c" id="r_gac0812d3287da34e3d6b228677440a24c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c">SDL::Quit</a> ()</td></tr>
 <tr class="memdesc:gac0812d3287da34e3d6b228677440a24c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up all initialized subsystems.  <br /></td></tr>
 <tr class="separator:gac0812d3287da34e3d6b228677440a24c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -247,8 +219,8 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
 <tr class="separator:ga18ff61b28788b04451ffcd81fc3728cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Almost everything can simply call <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> near startup, with a handful of flags to specify subsystems to touch. These are here to make sure <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> does not even attempt to touch low-level pieces of the operating system that you don't intend to use. For example, you might be using <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> for video and input but chose an external library for audio, and in this case you would just need to leave off the <code>INIT_AUDIO</code> flag to make sure that external library has complete control.</p>
-<p>Most apps, when terminating, should call <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a>. This will clean up (nearly) everything that <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> might have allocated, and crucially, it'll make sure that the display's resolution is back to what the user expects if you had previously changed it for your game.</p>
+<p>Almost everything can simply call <a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a> near startup, with a handful of flags to specify subsystems to touch. These are here to make sure <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> does not even attempt to touch low-level pieces of the operating system that you don't intend to use. For example, you might be using <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> for video and input but chose an external library for audio, and in this case you would just need to leave off the <code>INIT_AUDIO</code> flag to make sure that external library has complete control.</p>
+<p>Most apps, when terminating, should call <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a>. This will clean up (nearly) everything that <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> might have allocated, and crucially, it'll make sure that the display's resolution is back to what the user expects if you had previously changed it for your game.</p>
 <p>SDL3 apps are strongly encouraged to call <a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata()</a> at startup to fill in details about the program. This is completely optional, but it helps in small ways (we can provide an About dialog box for the macOS menu, we can name the app in the system's audio mixer, etc). Those that want to provide a <em>lot</em> of information should look at the more-detailed <a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a>. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="gac6fad763c6a19060601dfb3b0bc06706" name="gac6fad763c6a19060601dfb3b0bc06706"></a>
@@ -271,7 +243,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>APP_FAILURE to terminate with an error, APP_SUCCESS to terminate with success, APP_CONTINUE to continue.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -296,7 +268,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>APP_FAILURE to terminate with an error, APP_SUCCESS to terminate with success, APP_CONTINUE to continue.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -319,7 +291,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>APP_FAILURE to terminate with an error, APP_SUCCESS to terminate with success, APP_CONTINUE to continue.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -342,7 +314,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -360,7 +332,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
 <p>Returning APP_SUCCESS or APP_FAILURE from SDL_AppInit, SDL_AppEvent, or SDL_AppIterate will terminate the program and report success/failure to the operating system. What that means is platform-dependent. On Unix, for example, on success, the process error code will be zero, and on failure it will be 1. This interface doesn't allow you to return specific exit codes, just whether there was an error generally or not.</p>
 <p>Returning APP_CONTINUE from these functions will let the app continue to run.</p>
 <p>See <a href="https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3">Main callbacks in SDL3</a> for complete details.</p>
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -381,7 +353,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gaa84158dc51ac29c236db85acbfc03784" title="Call a function on the main thread during event processing.">RunOnMainThread</a> </dd></dl>
 
 </div>
@@ -397,7 +369,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gaa84158dc51ac29c236db85acbfc03784" title="Call a function on the main thread during event processing.">RunOnMainThread</a> </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c" title="Callback run on the main thread.">MainThreadCallback</a></dd></dl>
@@ -635,10 +607,76 @@ template&lt;class T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the current value of the metadata property, or the default if it is not set, nullptr for properties with no default.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, although the string returned is not protected and could potentially be freed if you call <a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a> to set that property from another thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata</a> </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga099a37fb664fc3d46c97ab1d053591f8" name="ga099a37fb664fc3d46c97ab1d053591f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga099a37fb664fc3d46c97ab1d053591f8">&#9670;&#160;</a></span>Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a>&#160;</td>
+          <td class="paramname"><em>flags</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a> simply forwards to calling <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Compatibility function to initialize the SDL library.">InitSubSystem()</a>. Therefore, the two may be used interchangeably. Though for readability of your code <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Compatibility function to initialize the SDL library.">InitSubSystem()</a> might be preferred.</p>
+<p>The file I/O (for example: <a class="el" href="group__CategoryIOStream.html#gadd4937dbab104fbc5e421b8a8b3617a8" title="Use this function to create a new IOStream structure for reading from and/or writing to a named file.">IOStream.FromFile</a>) and threading (<a class="el" href="classSDL_1_1Thread.html#aa6da53a56235900f5b422b6be5ac9074" title="Default ctor.">Thread.Thread</a>) subsystems are initialized by default. Message boxes (ShowSimpleMessageBox) also attempt to work without initializing the video subsystem, in hopes of being useful in showing an error dialog when Init fails. You must specifically initialize other subsystems if you use them in your application.</p>
+<p>Logging (such as Log) works without initialization, too.</p>
+<p><code>flags</code> may be any of the following OR'd together:</p>
+<ul>
+<li><code>INIT_AUDIO</code>: audio subsystem; automatically initializes the events subsystem</li>
+<li><code>INIT_VIDEO</code>: video subsystem; automatically initializes the events subsystem, should be initialized on the main thread.</li>
+<li><code>INIT_JOYSTICK</code>: joystick subsystem; automatically initializes the events subsystem</li>
+<li><code>INIT_HAPTIC</code>: haptic (force feedback) subsystem</li>
+<li><code>INIT_GAMEPAD</code>: gamepad subsystem; automatically initializes the joystick subsystem</li>
+<li><code>INIT_EVENTS</code>: events subsystem</li>
+<li><code>INIT_SENSOR</code>: sensor subsystem; automatically initializes the events subsystem</li>
+<li><code>INIT_CAMERA</code>: camera subsystem; automatically initializes the events subsystem</li>
+</ul>
+<p>Subsystem initialization is ref-counted, you must call <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a> for each <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Compatibility function to initialize the SDL library.">InitSubSystem()</a> to correctly shutdown a subsystem manually (or call <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> to force shutdown). If a subsystem is already loaded then this call will increase the ref-count and return.</p>
+<p>Consider reporting some basic metadata about your application before calling Init, using either <a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata()</a> or <a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flags</td><td>subsystem initialization flags. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata</a> </dd>
+<dd>
+<a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty</a> </dd>
+<dd>
+<a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Compatibility function to initialize the SDL library.">InitSubSystem</a> </dd>
+<dd>
+<a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of Init() when not using SDL_main() as an entry point.">SetMainReady</a> </dd>
+<dd>
+<a class="el" href="group__CategoryInit.html#ga2d9c710ec219aa2818bfdc55e4115f44" title="Get a mask of the specified subsystems which are currently initialized.">WasInit</a> </dd></dl>
 
 </div>
 </div>
@@ -695,197 +733,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="gaa610e9e7ec419dace942812e2555ecd9" name="gaa610e9e7ec419dace942812e2555ecd9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa610e9e7ec419dace942812e2555ecd9">&#9670;&#160;</a></span>InitSubSystem() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class FLAG , class... FLAGS&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::InitSubSystem </td>
-          <td>(</td>
-          <td class="paramtype">FLAG&#160;</td>
-          <td class="paramname"><em>flag0</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FLAG&#160;</td>
-          <td class="paramname"><em>flag1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FLAGS...&#160;</td>
-          <td class="paramname"><em>flags</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The class Init is probably what you are looking for, as it automatically handles de-initialization.</p>
-<p>The file I/O (for example: <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a>) and threading (CreateThread) subsystems are initialized by default. Message boxes (ShowSimpleMessageBox) also attempt to work without initializing the video subsystem, in hopes of being useful in showing an error dialog when Init fails. You must specifically initialize other subsystems if you use them in your application.</p>
-<p>Logging (such as Log) works without initialization, too.</p>
-<p><code>flags</code> may be any of the following OR'd together:</p>
-<ul>
-<li><code>INIT_AUDIO</code>: audio subsystem; automatically initializes the events subsystem</li>
-<li><code>INIT_VIDEO</code>: video subsystem; automatically initializes the events subsystem, should be initialized on the main thread.</li>
-<li><code>INIT_JOYSTICK</code>: joystick subsystem; automatically initializes the events subsystem</li>
-<li><code>INIT_HAPTIC</code>: haptic (force feedback) subsystem</li>
-<li><code>INIT_GAMEPAD</code>: gamepad subsystem; automatically initializes the joystick subsystem</li>
-<li><code>INIT_EVENTS</code>: events subsystem</li>
-<li><code>INIT_SENSOR</code>: sensor subsystem; automatically initializes the events subsystem</li>
-<li><code>INIT_CAMERA</code>: camera subsystem; automatically initializes the events subsystem</li>
-<li><code>INIT_TTF</code>: ttf satellite library subsystem; automatically initializes the events subsystem</li>
-</ul>
-<p>Subsystem initialization is ref-counted, you must call <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a> for each <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> to correctly shutdown a subsystem manually (or call <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> to force shutdown). If a subsystem is already loaded then this call will increase the ref-count and return.</p>
-<p>Consider reporting some basic metadata about your application before calling Init, using either <a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata()</a> or <a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a>.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">FLAG</td><td></td></tr>
-    <tr><td class="paramname">FLAGS</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">flag0</td><td>subsystem initialization flags. </td></tr>
-    <tr><td class="paramname">flag1</td><td>subsystem initialization flags. </td></tr>
-    <tr><td class="paramname">flags</td><td>subsystem initialization flags. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of InitSubSystem() when not using SDL_main() as an entry point.">SetMainReady()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryInit.html#gaa17083ba3ec421956acec4075284b453" title="Check if all of the specified subsystems which are currently initialized.">WasInit()</a> </dd></dl>
-
-</div>
-</div>
-<a id="ga43d4f0c1caed4824dc77eb4d2b1840b4" name="ga43d4f0c1caed4824dc77eb4d2b1840b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga43d4f0c1caed4824dc77eb4d2b1840b4">&#9670;&#160;</a></span>InitSubSystem() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::InitSubSystem </td>
-          <td>(</td>
-          <td class="paramtype">FLAG0&#160;</td>
-          <td class="paramname"><em>flag0</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FLAG1&#160;</td>
-          <td class="paramname"><em>flag1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FLAGS...&#160;</td>
-          <td class="paramname"><em>flags</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The class Init is probably what you are looking for, as it automatically handles de-initialization.</p>
-<p>The file I/O (for example: <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a>) and threading (CreateThread) subsystems are initialized by default. Message boxes (ShowSimpleMessageBox) also attempt to work without initializing the video subsystem, in hopes of being useful in showing an error dialog when Init fails. You must specifically initialize other subsystems if you use them in your application.</p>
-<p>Logging (such as Log) works without initialization, too.</p>
-<p><code>flags</code> may be any of the following OR'd together:</p>
-<ul>
-<li><code>INIT_AUDIO</code>: audio subsystem; automatically initializes the events subsystem</li>
-<li><code>INIT_VIDEO</code>: video subsystem; automatically initializes the events subsystem, should be initialized on the main thread.</li>
-<li><code>INIT_JOYSTICK</code>: joystick subsystem; automatically initializes the events subsystem</li>
-<li><code>INIT_HAPTIC</code>: haptic (force feedback) subsystem</li>
-<li><code>INIT_GAMEPAD</code>: gamepad subsystem; automatically initializes the joystick subsystem</li>
-<li><code>INIT_EVENTS</code>: events subsystem</li>
-<li><code>INIT_SENSOR</code>: sensor subsystem; automatically initializes the events subsystem</li>
-<li><code>INIT_CAMERA</code>: camera subsystem; automatically initializes the events subsystem</li>
-<li><code>INIT_TTF</code>: ttf satellite library subsystem; automatically initializes the events subsystem</li>
-</ul>
-<p>Subsystem initialization is ref-counted, you must call <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a> for each <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> to correctly shutdown a subsystem manually (or call <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> to force shutdown). If a subsystem is already loaded then this call will increase the ref-count and return.</p>
-<p>Consider reporting some basic metadata about your application before calling Init, using either <a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata()</a> or <a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a>.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">FLAG0</td><td></td></tr>
-    <tr><td class="paramname">FLAG1</td><td></td></tr>
-    <tr><td class="paramname">FLAGS</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">flag0</td><td>subsystem initialization flags. </td></tr>
-    <tr><td class="paramname">flag1</td><td>subsystem initialization flags. </td></tr>
-    <tr><td class="paramname">flags</td><td>subsystem initialization flags. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of InitSubSystem() when not using SDL_main() as an entry point.">SetMainReady()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryInit.html#gaa17083ba3ec421956acec4075284b453" title="Check if all of the specified subsystems which are currently initialized.">WasInit()</a> </dd></dl>
-
-</div>
-</div>
 <a id="ga42d4baeeaf5a4b4076dfbf82cebba481" name="ga42d4baeeaf5a4b4076dfbf82cebba481"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga42d4baeeaf5a4b4076dfbf82cebba481">&#9670;&#160;</a></span>InitSubSystem() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga42d4baeeaf5a4b4076dfbf82cebba481">&#9670;&#160;</a></span>InitSubSystem()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -907,26 +756,10 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The class Init is probably what you are looking for, as it automatically handles de-initialization.</p>
-<p>The file I/O (for example: <a class="el" href="structSDL_1_1IOStream.html#a991da53140a740b71e05f122562173ea" title="Use this function to create a new IOStream structure for reading from and/or writing to a named file.">IOStream.FromFile</a>) and threading (<a class="el" href="structSDL_1_1Thread.html#a257f37ea374c1219668ffb1eefaff8f7" title="Create a new thread with a default stack size.">Thread.Create</a>) subsystems are initialized by default. Message boxes (ShowSimpleMessageBox) also attempt to work without initializing the video subsystem, in hopes of being useful in showing an error dialog when InitSubSystem fails. You must specifically initialize other subsystems if you use them in your application.</p>
-<p>Logging (such as Log) works without initialization, too.</p>
-<p><code>flags</code> may be any of the following OR'd together:</p>
-<ul>
-<li><code>INIT_AUDIO</code>: audio subsystem; automatically initializes the events subsystem</li>
-<li><code>INIT_VIDEO</code>: video subsystem; automatically initializes the events subsystem, should be initialized on the main thread.</li>
-<li><code>INIT_JOYSTICK</code>: joystick subsystem; automatically initializes the events subsystem</li>
-<li><code>INIT_HAPTIC</code>: haptic (force feedback) subsystem</li>
-<li><code>INIT_GAMEPAD</code>: gamepad subsystem; automatically initializes the joystick subsystem</li>
-<li><code>INIT_EVENTS</code>: events subsystem</li>
-<li><code>INIT_SENSOR</code>: sensor subsystem; automatically initializes the events subsystem</li>
-<li><code>INIT_CAMERA</code>: camera subsystem; automatically initializes the events subsystem</li>
-<li><code>INIT_TTF</code>: ttf satellite library subsystem; automatically initializes the events subsystem</li>
-</ul>
-<p>Subsystem initialization is ref-counted, you must call <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a> for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or call <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> to force shutdown). If a subsystem is already loaded then this call will increase the ref-count and return.</p>
-<p>Consider reporting some basic metadata about your application before calling InitSubSystem, using either <a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata()</a> or <a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a>.</p>
+<p>This function and <a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a> are interchangeable.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">flags</td><td>subsystem initialization flags. </td></tr>
+    <tr><td class="paramname">flags</td><td>any of the flags used by <a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a>; see Init for details. </td></tr>
   </table>
   </dd>
 </dl>
@@ -936,16 +769,12 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata</a> </dd>
-<dd>
-<a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init</a> </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit</a> </dd>
 <dd>
-<a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of InitSubSystem() when not using SDL_main() as an entry point.">SetMainReady</a> </dd>
-<dd>
-<a class="el" href="group__CategoryInit.html#gaa17083ba3ec421956acec4075284b453" title="Check if all of the specified subsystems which are currently initialized.">WasInit</a> </dd></dl>
+<a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem</a> </dd></dl>
 
 </div>
 </div>
@@ -971,10 +800,10 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>On Apple platforms, the main thread is the thread that runs your program's main() entry point. On other platforms, the main thread is the one that calls InitSubSystem(INIT_VIDEO), which should usually be the one that runs your program's main() entry point. If you are using the main callbacks, SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the main thread.</p>
+<p>On Apple platforms, the main thread is the thread that runs your program's main() entry point. On other platforms, the main thread is the one that calls Init(INIT_VIDEO), which should usually be the one that runs your program's main() entry point. If you are using the main callbacks, SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the main thread.</p>
 <dl class="section return"><dt>Returns</dt><dd>true if this thread is the main thread, or false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gaa84158dc51ac29c236db85acbfc03784" title="Call a function on the main thread during event processing.">RunOnMainThread</a> </dd></dl>
 
 </div>
@@ -1044,8 +873,8 @@ template&lt;HasIterateFunction T&gt; </div>
 </div><div class="memdoc">
 <p>You should call this function even if you have already shutdown each initialized subsystem with <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a>. It is safe to call this function even in the case of errors in initialization.</p>
 <p>You can use this function with atexit() to ensure that it is run when your application is shutdown, but it is not wise to do this from a library or other dynamically loaded code.</p>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init</a> </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem</a> </dd></dl>
 
@@ -1103,129 +932,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="ga4a1c2a4b2335da731b48e9cba9987730" name="ga4a1c2a4b2335da731b48e9cba9987730"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4a1c2a4b2335da731b48e9cba9987730">&#9670;&#160;</a></span>QuitSubSystem() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class FLAG , class... FLAGS&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::QuitSubSystem </td>
-          <td>(</td>
-          <td class="paramtype">FLAG&#160;</td>
-          <td class="paramname"><em>flag0</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FLAG&#160;</td>
-          <td class="paramname"><em>flag1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FLAGS...&#160;</td>
-          <td class="paramname"><em>flags</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>You still need to call <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> even if you close all open subsystems with <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a>.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">FLAG</td><td></td></tr>
-    <tr><td class="paramname">FLAGS</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">flag0</td><td>any of the flags used by Init(); see InitFlags and <a class="el" href="structSDL_1_1InitFlagsExtra.html" title="Initialization flags for SDL satellite libraries.">InitFlagsExtra</a> for details. </td></tr>
-    <tr><td class="paramname">flag1</td><td>any of the flags used by Init(); see InitFlags and <a class="el" href="structSDL_1_1InitFlagsExtra.html" title="Initialization flags for SDL satellite libraries.">InitFlagsExtra</a> for details. </td></tr>
-    <tr><td class="paramname">flags</td><td>any of the flags used by Init(); see InitFlags and <a class="el" href="structSDL_1_1InitFlagsExtra.html" title="Initialization flags for SDL satellite libraries.">InitFlagsExtra</a> for details. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ga756cb42233cdb7b4f1d2c92051a37c84" name="ga756cb42233cdb7b4f1d2c92051a37c84"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga756cb42233cdb7b4f1d2c92051a37c84">&#9670;&#160;</a></span>QuitSubSystem() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::QuitSubSystem </td>
-          <td>(</td>
-          <td class="paramtype">FLAG0&#160;</td>
-          <td class="paramname"><em>flag0</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FLAG1&#160;</td>
-          <td class="paramname"><em>flag1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FLAGS...&#160;</td>
-          <td class="paramname"><em>flags</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>You still need to call <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> even if you close all open subsystems with <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a>.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">FLAG0</td><td></td></tr>
-    <tr><td class="paramname">FLAG1</td><td></td></tr>
-    <tr><td class="paramname">FLAGS</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">flag0</td><td>any of the flags used by Init(); see InitFlags and <a class="el" href="structSDL_1_1InitFlagsExtra.html" title="Initialization flags for SDL satellite libraries.">InitFlagsExtra</a> for details. </td></tr>
-    <tr><td class="paramname">flag1</td><td>any of the flags used by Init(); see InitFlags and <a class="el" href="structSDL_1_1InitFlagsExtra.html" title="Initialization flags for SDL satellite libraries.">InitFlagsExtra</a> for details. </td></tr>
-    <tr><td class="paramname">flags</td><td>any of the flags used by Init(); see InitFlags and <a class="el" href="structSDL_1_1InitFlagsExtra.html" title="Initialization flags for SDL satellite libraries.">InitFlagsExtra</a> for details. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="gac6d7bd19a4918a51d2a4fc0501f77da5" name="gac6d7bd19a4918a51d2a4fc0501f77da5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac6d7bd19a4918a51d2a4fc0501f77da5">&#9670;&#160;</a></span>QuitSubSystem() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gac6d7bd19a4918a51d2a4fc0501f77da5">&#9670;&#160;</a></span>QuitSubSystem()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1250,12 +958,12 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
 <p>You still need to call <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> even if you close all open subsystems with <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">flags</td><td>any of the flags used by <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a>; see InitFlags for details.</td></tr>
+    <tr><td class="paramname">flags</td><td>any of the flags used by <a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a>; see Init for details.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Compatibility function to initialize the SDL library.">InitSubSystem</a> </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit</a> </dd></dl>
 
@@ -1317,7 +1025,7 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gad2fef35eb16c9c97f46423b6d5df6b5c" title="Return whether this is the main thread.">IsMainThread</a> </dd></dl>
 
 </div>
@@ -1371,8 +1079,8 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gad2fef35eb16c9c97f46423b6d5df6b5c" title="Return whether this is the main thread.">IsMainThread()</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gad2fef35eb16c9c97f46423b6d5df6b5c" title="Return whether this is the main thread.">IsMainThread</a> </dd>
 <dd>
 result-callback</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#result-callback">Result callback</a> </dd></dl>
@@ -1418,9 +1126,9 @@ result-callback</dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>You can optionally provide metadata about your app to <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>. This is not required, but strongly encouraged.</p>
-<p>There are several locations where <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> can make use of metadata (an "About" box in the macOS menu bar, the name of the app can be shown on some audio mixers, etc). Any piece of metadata can be left as nullptr, if a specific detail doesn't make sense for the app.</p>
-<p>This function should be called as early as possible, before InitSubSystem. Multiple calls to this function are allowed, but various state might not change once it has been set up with a previous call to this function.</p>
+<p>You can optionally provide metadata about your app to <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>. This is not required, but strongly encouraged.</p>
+<p>There are several locations where <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> can make use of metadata (an "About" box in the macOS menu bar, the name of the app can be shown on some audio mixers, etc). Any piece of metadata can be left as nullptr, if a specific detail doesn't make sense for the app.</p>
+<p>This function should be called as early as possible, before Init. Multiple calls to this function are allowed, but various state might not change once it has been set up with a previous call to this function.</p>
 <p>Passing a nullptr removes any previous metadata.</p>
 <p>This is a simplified interface for the most important information. You can supply significantly more detailed metadata with <a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1439,7 +1147,7 @@ result-callback</dd></dl>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty</a> </dd></dl>
 
 </div>
@@ -1477,9 +1185,9 @@ result-callback</dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>You can optionally provide metadata about your app to <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>. This is not required, but strongly encouraged.</p>
-<p>There are several locations where <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> can make use of metadata (an "About" box in the macOS menu bar, the name of the app can be shown on some audio mixers, etc). Any piece of metadata can be left out, if a specific detail doesn't make sense for the app.</p>
-<p>This function should be called as early as possible, before InitSubSystem. Multiple calls to this function are allowed, but various state might not change once it has been set up with a previous call to this function.</p>
+<p>You can optionally provide metadata about your app to <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>. This is not required, but strongly encouraged.</p>
+<p>There are several locations where <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> can make use of metadata (an "About" box in the macOS menu bar, the name of the app can be shown on some audio mixers, etc). Any piece of metadata can be left out, if a specific detail doesn't make sense for the app.</p>
+<p>This function should be called as early as possible, before Init. Multiple calls to this function are allowed, but various state might not change once it has been set up with a previous call to this function.</p>
 <p>Once set, this metadata can be read using <a class="el" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2" title="Get metadata about your app.">GetAppMetadataProperty()</a>.</p>
 <p>These are the supported properties:</p>
 <ul>
@@ -1491,7 +1199,7 @@ result-callback</dd></dl>
 <li><code>prop::appMetaData.CREATOR_STRING</code>: The human-readable name of the creator/developer/maker of this app, like "MojoWorkshop, LLC"</li>
 <li><code>prop::appMetaData.COPYRIGHT_STRING</code>: The human-readable copyright notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this to one line, don't paste a copy of a whole software license in here. This has no default.</li>
 <li><code>prop::appMetaData.URL_STRING</code>: A URL to the app on the web. Maybe a product page, or a storefront, or even a GitHub repository, for user's further information This has no default.</li>
-<li><code>prop::appMetaData.TYPE_STRING</code>: The type of application this is. Currently this string can be "game" for a video game, "mediaplayer" for a media player, or generically "application" if nothing else applies. Future versions of <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> might add new types. This defaults to "application".</li>
+<li><code>prop::appMetaData.TYPE_STRING</code>: The type of application this is. Currently this string can be "game" for a video game, "mediaplayer" for a media player, or generically "application" if nothing else applies. Future versions of <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> might add new types. This defaults to "application".</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1507,136 +1215,15 @@ result-callback</dd></dl>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2" title="Get metadata about your app.">GetAppMetadataProperty</a> </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga04a02ae9f4262909c21bad722b19726e" name="ga04a02ae9f4262909c21bad722b19726e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga04a02ae9f4262909c21bad722b19726e">&#9670;&#160;</a></span>WasInit() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class FLAG , class... FLAGS&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::WasInit </td>
-          <td>(</td>
-          <td class="paramtype">FLAG&#160;</td>
-          <td class="paramname"><em>flag0</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FLAG&#160;</td>
-          <td class="paramname"><em>flag1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FLAGS...&#160;</td>
-          <td class="paramname"><em>flags</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">FLAG</td><td></td></tr>
-    <tr><td class="paramname">FLAGS</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">flag0</td><td>flag to check </td></tr>
-    <tr><td class="paramname">flag1</td><td>flag to check </td></tr>
-    <tr><td class="paramname">flags</td><td>flag to check </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if all subsystems are currently initialized </dd></dl>
-
-</div>
-</div>
-<a id="ga15ebc8497801e6e5d14871b2678e87be" name="ga15ebc8497801e6e5d14871b2678e87be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga15ebc8497801e6e5d14871b2678e87be">&#9670;&#160;</a></span>WasInit() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::WasInit </td>
-          <td>(</td>
-          <td class="paramtype">FLAG0&#160;</td>
-          <td class="paramname"><em>flag0</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FLAG1&#160;</td>
-          <td class="paramname"><em>flag1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FLAGS...&#160;</td>
-          <td class="paramname"><em>flags</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">FLAG0</td><td></td></tr>
-    <tr><td class="paramname">FLAG1</td><td></td></tr>
-    <tr><td class="paramname">FLAGS</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">flag0</td><td>flag to check </td></tr>
-    <tr><td class="paramname">flag1</td><td>flag to check </td></tr>
-    <tr><td class="paramname">flags</td><td>flag to check </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if all subsystems are currently initialized </dd></dl>
-
-</div>
-</div>
-<a id="gaa17083ba3ec421956acec4075284b453" name="gaa17083ba3ec421956acec4075284b453"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa17083ba3ec421956acec4075284b453">&#9670;&#160;</a></span>WasInit() <span class="overload">[3/3]</span></h2>
+<a id="ga2d9c710ec219aa2818bfdc55e4115f44" name="ga2d9c710ec219aa2818bfdc55e4115f44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2d9c710ec219aa2818bfdc55e4115f44">&#9670;&#160;</a></span>WasInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1645,7 +1232,7 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool SDL::WasInit </td>
+          <td class="memname"><a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a> SDL::WasInit </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a>&#160;</td>
           <td class="paramname"><em>flags</em></td><td>)</td>
@@ -1660,15 +1247,15 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">flags</td><td>any of the flags used by <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a>; see InitSubSystem for details. </td></tr>
+    <tr><td class="paramname">flags</td><td>any of the flags used by <a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init()</a>; see Init for details. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if all subsystems are currently initialized</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>a mask of all initialized subsystems if <code>flags</code> is 0, otherwise it returns the initialization status of the specified subsystems.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga099a37fb664fc3d46c97ab1d053591f8" title="Initialize the SDL library.">Init</a> </dd>
 <dd>
-SDL_InitSubSystem </dd></dl>
+<a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Compatibility function to initialize the SDL library.">InitSubSystem</a> </dd></dl>
 
 </div>
 </div>

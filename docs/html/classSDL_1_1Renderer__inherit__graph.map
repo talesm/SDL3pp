@@ -1,0 +1,5 @@
+<map id="SDL::Renderer" name="SDL::Renderer">
+<area shape="rect" id="Node000001" title="A structure representing rendering state." alt="" coords="16,5,131,31"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1RendererRef.html" title="Semi&#45;safe reference for Renderer." alt="" coords="5,79,141,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,44,76,79,71,79,71,44"/>
+</map>

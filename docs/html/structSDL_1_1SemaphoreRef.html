@@ -76,132 +76,116 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1SemaphoreRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::SemaphoreRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a> &raquo; <a class="el" href="group__CategoryMutex.html">Thread Synchronization Primitives</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>A means to manage access to a resource, by count, between threads.  
- <a href="structSDL_1_1SemaphoreRef.html#details">More...</a></p>
+<p>Semi-safe reference for <a class="el" href="classSDL_1_1Semaphore.html" title="A means to manage access to a resource, by count, between threads.">Semaphore</a>.  
+</p>
 <div class="dynheader">
 Inheritance diagram for SDL::SemaphoreRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1SemaphoreRef__inherit__graph.png" border="0" usemap="#aSDL_1_1SemaphoreRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1SemaphoreRef_inherit__map" id="aSDL_1_1SemaphoreRef_inherit__map">
-<area shape="rect" title="A means to manage access to a resource, by count, between threads." alt="" coords="7,93,158,119"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="Semi&#45;safe reference for Semaphore." alt="" coords="5,79,156,104"/>
+<area shape="rect" href="classSDL_1_1Semaphore.html" title="A means to manage access to a resource, by count, between threads." alt="" coords="16,5,145,31"/>
+<area shape="poly" title=" " alt="" coords="83,44,83,79,78,79,78,44"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a64c011e7ab0357c0a625c7f2dd001b13" id="r_a64c011e7ab0357c0a625c7f2dd001b13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html#a64c011e7ab0357c0a625c7f2dd001b13">Wait</a> ()</td></tr>
-<tr class="memdesc:a64c011e7ab0357c0a625c7f2dd001b13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a semaphore has a positive value and then decrements it.  <br /></td></tr>
-<tr class="separator:a64c011e7ab0357c0a625c7f2dd001b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4461dcedee7f613b7638893a5533c777" id="r_a4461dcedee7f613b7638893a5533c777"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html#a4461dcedee7f613b7638893a5533c777">TryWait</a> ()</td></tr>
-<tr class="memdesc:a4461dcedee7f613b7638893a5533c777"><td class="mdescLeft">&#160;</td><td class="mdescRight">See if a semaphore has a positive value and decrement it if it does.  <br /></td></tr>
-<tr class="separator:a4461dcedee7f613b7638893a5533c777"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5c6a2e8b0889eb575e7eed82a8ff19a" id="r_af5c6a2e8b0889eb575e7eed82a8ff19a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html#af5c6a2e8b0889eb575e7eed82a8ff19a">WaitTimeout</a> (std::chrono::milliseconds timeout)</td></tr>
-<tr class="memdesc:af5c6a2e8b0889eb575e7eed82a8ff19a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a semaphore has a positive value and then decrements it.  <br /></td></tr>
-<tr class="separator:af5c6a2e8b0889eb575e7eed82a8ff19a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05c7ea8fe1474654a0e03ed8f3253b13" id="r_a05c7ea8fe1474654a0e03ed8f3253b13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html#a05c7ea8fe1474654a0e03ed8f3253b13">Signal</a> ()</td></tr>
-<tr class="memdesc:a05c7ea8fe1474654a0e03ed8f3253b13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Atomically increment a semaphore's value and wake waiting threads.  <br /></td></tr>
-<tr class="separator:a05c7ea8fe1474654a0e03ed8f3253b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46aed8ff327728773d556cfff6b84e0a" id="r_a46aed8ff327728773d556cfff6b84e0a"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html#a46aed8ff327728773d556cfff6b84e0a">GetValue</a> () const</td></tr>
-<tr class="memdesc:a46aed8ff327728773d556cfff6b84e0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current value of a semaphore.  <br /></td></tr>
-<tr class="separator:a46aed8ff327728773d556cfff6b84e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top"><a id="a78be254b85f48c12179a782cb04da9ac" name="a78be254b85f48c12179a782cb04da9ac"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; T &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top"><a id="afbb3168108af6a8bd0e23edc712b6a09" name="afbb3168108af6a8bd0e23edc712b6a09"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Semaphore * &gt;</a></td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_Semaphore * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; SDL_Semaphore * &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a40199ed8346ead29af946fc4e69553e9" id="r_a40199ed8346ead29af946fc4e69553e9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html#a40199ed8346ead29af946fc4e69553e9">SemaphoreRef</a> (<a class="el" href="structSDL_1_1SemaphoreParam.html">SemaphoreParam</a> resource)</td></tr>
+<tr class="memdesc:a40199ed8346ead29af946fc4e69553e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from <a class="el" href="structSDL_1_1SemaphoreParam.html" title="Safely wrap Semaphore for non owning parameters.">SemaphoreParam</a>.  <br /></td></tr>
+<tr class="separator:a40199ed8346ead29af946fc4e69553e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9e04d1cdf194b89dc80f56523d5571c" id="r_ad9e04d1cdf194b89dc80f56523d5571c"><td class="memItemLeft" align="right" valign="top"><a id="ad9e04d1cdf194b89dc80f56523d5571c" name="ad9e04d1cdf194b89dc80f56523d5571c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SemaphoreRef</b> (const <a class="el" href="structSDL_1_1SemaphoreRef.html">SemaphoreRef</a> &amp;other)</td></tr>
+<tr class="memdesc:ad9e04d1cdf194b89dc80f56523d5571c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:ad9e04d1cdf194b89dc80f56523d5571c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc8f41f9d13473c9109fa5cdddb26eb1" id="r_abc8f41f9d13473c9109fa5cdddb26eb1"><td class="memItemLeft" align="right" valign="top"><a id="abc8f41f9d13473c9109fa5cdddb26eb1" name="abc8f41f9d13473c9109fa5cdddb26eb1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~SemaphoreRef</b> ()</td></tr>
+<tr class="memdesc:abc8f41f9d13473c9109fa5cdddb26eb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:abc8f41f9d13473c9109fa5cdddb26eb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1Semaphore"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Semaphore')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Semaphore.html">SDL::Semaphore</a></td></tr>
+<tr class="memitem:a28052b76a8d36260588ad41747677a01 inherit pub_methods_classSDL_1_1Semaphore" id="r_a28052b76a8d36260588ad41747677a01"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Semaphore</b> ()=default</td></tr>
+<tr class="memdesc:a28052b76a8d36260588ad41747677a01 inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default ctor. <br /></td></tr>
+<tr class="separator:a28052b76a8d36260588ad41747677a01 inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa90b9d60a13f16c429fc90ca438b866 inherit pub_methods_classSDL_1_1Semaphore" id="r_afa90b9d60a13f16c429fc90ca438b866"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Semaphore.html#afa90b9d60a13f16c429fc90ca438b866">Semaphore</a> (const SemaphoreRaw resource)</td></tr>
+<tr class="memdesc:afa90b9d60a13f16c429fc90ca438b866 inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from <a class="el" href="structSDL_1_1SemaphoreParam.html" title="Safely wrap Semaphore for non owning parameters.">SemaphoreParam</a>.  <br /></td></tr>
+<tr class="separator:afa90b9d60a13f16c429fc90ca438b866 inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5ede25bf92c737f9a8451501f594dea inherit pub_methods_classSDL_1_1Semaphore" id="r_ad5ede25bf92c737f9a8451501f594dea"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Semaphore</b> (const <a class="el" href="classSDL_1_1Semaphore.html">Semaphore</a> &amp;other)=delete</td></tr>
+<tr class="memdesc:ad5ede25bf92c737f9a8451501f594dea inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:ad5ede25bf92c737f9a8451501f594dea inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81478410d4c97738b4c40415137d9cf0 inherit pub_methods_classSDL_1_1Semaphore" id="r_a81478410d4c97738b4c40415137d9cf0"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Semaphore</b> (<a class="el" href="classSDL_1_1Semaphore.html">Semaphore</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:a81478410d4c97738b4c40415137d9cf0 inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:a81478410d4c97738b4c40415137d9cf0 inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac6e4b357b900898d902905c592c1aca inherit pub_methods_classSDL_1_1Semaphore" id="r_aac6e4b357b900898d902905c592c1aca"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Semaphore</b> (const <a class="el" href="structSDL_1_1SemaphoreRef.html">SemaphoreRef</a> &amp;other)=delete</td></tr>
+<tr class="separator:aac6e4b357b900898d902905c592c1aca inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a033f0c3cf222ceff3d372192f8a3b73f inherit pub_methods_classSDL_1_1Semaphore" id="r_a033f0c3cf222ceff3d372192f8a3b73f"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Semaphore</b> (<a class="el" href="structSDL_1_1SemaphoreRef.html">SemaphoreRef</a> &amp;&amp;other)=delete</td></tr>
+<tr class="separator:a033f0c3cf222ceff3d372192f8a3b73f inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf6bb23fc203041be320038e7469e1ca inherit pub_methods_classSDL_1_1Semaphore" id="r_abf6bb23fc203041be320038e7469e1ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Semaphore.html#abf6bb23fc203041be320038e7469e1ca">Semaphore</a> (<a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> initial_value)</td></tr>
+<tr class="memdesc:abf6bb23fc203041be320038e7469e1ca inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a semaphore.  <br /></td></tr>
+<tr class="separator:abf6bb23fc203041be320038e7469e1ca inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d5961d890007b4e98ed5e6cf83cf873 inherit pub_methods_classSDL_1_1Semaphore" id="r_a3d5961d890007b4e98ed5e6cf83cf873"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>~Semaphore</b> ()</td></tr>
+<tr class="memdesc:a3d5961d890007b4e98ed5e6cf83cf873 inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:a3d5961d890007b4e98ed5e6cf83cf873 inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f257fbf981f52e8f92d46d22cea1ea1 inherit pub_methods_classSDL_1_1Semaphore" id="r_a2f257fbf981f52e8f92d46d22cea1ea1"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1Semaphore.html">Semaphore</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1Semaphore.html">Semaphore</a> other)</td></tr>
+<tr class="memdesc:a2f257fbf981f52e8f92d46d22cea1ea1 inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:a2f257fbf981f52e8f92d46d22cea1ea1 inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7d444bbfbc6c61afc72132fa9a6a0f4 inherit pub_methods_classSDL_1_1Semaphore" id="r_ae7d444bbfbc6c61afc72132fa9a6a0f4"><td class="memItemLeft" align="right" valign="top">
+constexpr SemaphoreRaw&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="memdesc:ae7d444bbfbc6c61afc72132fa9a6a0f4 inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves underlying SemaphoreRaw. <br /></td></tr>
+<tr class="separator:ae7d444bbfbc6c61afc72132fa9a6a0f4 inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3d284e4c42d6e9918d5cf9f8cade370 inherit pub_methods_classSDL_1_1Semaphore" id="r_ab3d284e4c42d6e9918d5cf9f8cade370"><td class="memItemLeft" align="right" valign="top">
+constexpr SemaphoreRaw&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
+<tr class="memdesc:ab3d284e4c42d6e9918d5cf9f8cade370 inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves underlying SemaphoreRaw and clear this. <br /></td></tr>
+<tr class="separator:ab3d284e4c42d6e9918d5cf9f8cade370 inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3880537624ef8835096e80a4e16b7e12 inherit pub_methods_classSDL_1_1Semaphore" id="r_a3880537624ef8835096e80a4e16b7e12"><td class="memItemLeft" align="right" valign="top">
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;=&gt;</b> (const <a class="el" href="classSDL_1_1Semaphore.html">Semaphore</a> &amp;other) const =default</td></tr>
+<tr class="memdesc:a3880537624ef8835096e80a4e16b7e12 inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a3880537624ef8835096e80a4e16b7e12 inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1810680ff0a7beab5cc3ea229ed3827 inherit pub_methods_classSDL_1_1Semaphore" id="r_ae1810680ff0a7beab5cc3ea229ed3827"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t _) const</td></tr>
+<tr class="memdesc:ae1810680ff0a7beab5cc3ea229ed3827 inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:ae1810680ff0a7beab5cc3ea229ed3827 inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1dffa96a6296caa0c539766ba6a8ccf inherit pub_methods_classSDL_1_1Semaphore" id="r_af1dffa96a6296caa0c539766ba6a8ccf"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
-<tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource" id="r_ab4aa1e63564473a72dc97256340d104f"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_type</b> () const</td></tr>
-<tr class="memdesc:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts back to underlying type. <br /></td></tr>
-<tr class="separator:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
-<tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource" id="r_ad2a82bc79a7dae41ceb1a25647ae1c0d"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
-<tr class="memdesc:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource" id="r_ab110e6568060a7ae58ab7b29ad68f7fc"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t) const</td></tr>
-<tr class="memdesc:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource" id="r_ab273a0a0285b8eed1f70f5d3759f4167"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Semaphore *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
-<tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top">
-constexpr const SDL_Semaphore *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_Semaphore *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
-<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a459ed77f999cdcfbfdff1557d4a1f2e2" id="r_a459ed77f999cdcfbfdff1557d4a1f2e2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html#a459ed77f999cdcfbfdff1557d4a1f2e2">reset</a> (SDL_Semaphore *resource)</td></tr>
-<tr class="memdesc:a459ed77f999cdcfbfdff1557d4a1f2e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a semaphore.  <br /></td></tr>
-<tr class="separator:a459ed77f999cdcfbfdff1557d4a1f2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Semaphore * &gt;</a></td></tr>
-<tr class="memitem:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource" id="r_a11ac29cf1f6da9fb29c508669f40b38d"><td class="memItemLeft" align="right" valign="top">
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL_Semaphore *</td></tr>
-<tr class="memdesc:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
-<tr class="separator:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:af1dffa96a6296caa0c539766ba6a8ccf inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to bool. <br /></td></tr>
+<tr class="separator:af1dffa96a6296caa0c539766ba6a8ccf inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef69a336c88430c469dbb61f3cfd3ff4 inherit pub_methods_classSDL_1_1Semaphore" id="r_aef69a336c88430c469dbb61f3cfd3ff4"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator SemaphoreParam</b> () const</td></tr>
+<tr class="memdesc:aef69a336c88430c469dbb61f3cfd3ff4 inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to <a class="el" href="structSDL_1_1SemaphoreParam.html" title="Safely wrap Semaphore for non owning parameters.">SemaphoreParam</a>. <br /></td></tr>
+<tr class="separator:aef69a336c88430c469dbb61f3cfd3ff4 inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab2a3b7e61e083c2b41e08c6e0dc5cc5f inherit pub_methods_classSDL_1_1Semaphore" id="r_gab2a3b7e61e083c2b41e08c6e0dc5cc5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gab2a3b7e61e083c2b41e08c6e0dc5cc5f">Destroy</a> ()</td></tr>
+<tr class="memdesc:gab2a3b7e61e083c2b41e08c6e0dc5cc5f inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a semaphore.  <br /></td></tr>
+<tr class="separator:gab2a3b7e61e083c2b41e08c6e0dc5cc5f inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9cce2f682ce1a121119c687d504980dc inherit pub_methods_classSDL_1_1Semaphore" id="r_ga9cce2f682ce1a121119c687d504980dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga9cce2f682ce1a121119c687d504980dc">Wait</a> ()</td></tr>
+<tr class="memdesc:ga9cce2f682ce1a121119c687d504980dc inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a semaphore has a positive value and then decrements it.  <br /></td></tr>
+<tr class="separator:ga9cce2f682ce1a121119c687d504980dc inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3827d4dbe781c673a7c344291e1b253c inherit pub_methods_classSDL_1_1Semaphore" id="r_ga3827d4dbe781c673a7c344291e1b253c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga3827d4dbe781c673a7c344291e1b253c">TryWait</a> ()</td></tr>
+<tr class="memdesc:ga3827d4dbe781c673a7c344291e1b253c inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">See if a semaphore has a positive value and decrement it if it does.  <br /></td></tr>
+<tr class="separator:ga3827d4dbe781c673a7c344291e1b253c inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8fa14a1fe3a318cc222405fab9480b13 inherit pub_methods_classSDL_1_1Semaphore" id="r_ga8fa14a1fe3a318cc222405fab9480b13"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga8fa14a1fe3a318cc222405fab9480b13">WaitTimeout</a> (std::chrono::milliseconds timeout)</td></tr>
+<tr class="memdesc:ga8fa14a1fe3a318cc222405fab9480b13 inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a semaphore has a positive value and then decrements it.  <br /></td></tr>
+<tr class="separator:ga8fa14a1fe3a318cc222405fab9480b13 inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac24e922f6570dcf2ac6c6292cfa6572d inherit pub_methods_classSDL_1_1Semaphore" id="r_gac24e922f6570dcf2ac6c6292cfa6572d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gac24e922f6570dcf2ac6c6292cfa6572d">Signal</a> ()</td></tr>
+<tr class="memdesc:gac24e922f6570dcf2ac6c6292cfa6572d inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Atomically increment a semaphore's value and wake waiting threads.  <br /></td></tr>
+<tr class="separator:gac24e922f6570dcf2ac6c6292cfa6572d inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga72af6bd5507e67097aace0329eae9547 inherit pub_methods_classSDL_1_1Semaphore" id="r_ga72af6bd5507e67097aace0329eae9547"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga72af6bd5507e67097aace0329eae9547">GetValue</a> () const</td></tr>
+<tr class="memdesc:ga72af6bd5507e67097aace0329eae9547 inherit pub_methods_classSDL_1_1Semaphore"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current value of a semaphore.  <br /></td></tr>
+<tr class="separator:ga72af6bd5507e67097aace0329eae9547 inherit pub_methods_classSDL_1_1Semaphore"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Semaphores (specifically, "counting semaphores"), let X number of threads request access at the same time, each thread granted access decrementing a counter. When the counter reaches zero, future requests block until a prior thread releases their request, incrementing the counter again.</p>
-<p>Wikipedia has a thorough explanation of the concept:</p>
-<p><a href="https://en.wikipedia.org/wiki/Semaphore_(programming)">https://en.wikipedia.org/wiki/Semaphore_(programming)</a></p>
-<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Semaphore.html" title="Handle to an owned semaphore.">Semaphore</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a46aed8ff327728773d556cfff6b84e0a" name="a46aed8ff327728773d556cfff6b84e0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46aed8ff327728773d556cfff6b84e0a">&#9670;&#160;</a></span>GetValue()</h2>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a40199ed8346ead29af946fc4e69553e9" name="a40199ed8346ead29af946fc4e69553e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40199ed8346ead29af946fc4e69553e9">&#9670;&#160;</a></span>SemaphoreRef()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,192 +194,26 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Uint32 SDL::SemaphoreRef::GetValue </td>
+          <td class="memname">SDL::SemaphoreRef::SemaphoreRef </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the current value of the semaphore.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-</div>
-</div>
-<a id="a459ed77f999cdcfbfdff1557d4a1f2e2" name="a459ed77f999cdcfbfdff1557d4a1f2e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a459ed77f999cdcfbfdff1557d4a1f2e2">&#9670;&#160;</a></span>reset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void SDL::SemaphoreRef::reset </td>
-          <td>(</td>
-          <td class="paramtype">SDL_Semaphore *&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SemaphoreParam.html">SemaphoreParam</a>&#160;</td>
           <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>It is not safe to destroy a semaphore if there are threads currently waiting on it.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">resource</td><td>the semaphore to destroy.</td></tr>
+    <tr><td class="paramname">resource</td><td>a SemaphoreRaw or <a class="el" href="classSDL_1_1Semaphore.html" title="A means to manage access to a resource, by count, between threads.">Semaphore</a>.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Semaphore.html#af3fce326bd0690af1ab3d656e1be2302" title="Create a semaphore.">Semaphore.Create</a> </dd></dl>
-
-</div>
-</div>
-<a id="a05c7ea8fe1474654a0e03ed8f3253b13" name="a05c7ea8fe1474654a0e03ed8f3253b13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05c7ea8fe1474654a0e03ed8f3253b13">&#9670;&#160;</a></span>Signal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::SemaphoreRef::Signal </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SemaphoreRef.html#a4461dcedee7f613b7638893a5533c777" title="See if a semaphore has a positive value and decrement it if it does.">SemaphoreRef.TryWait</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SemaphoreRef.html#a64c011e7ab0357c0a625c7f2dd001b13" title="Wait until a semaphore has a positive value and then decrements it.">SemaphoreRef.Wait</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SemaphoreRef.html#af5c6a2e8b0889eb575e7eed82a8ff19a" title="Wait until a semaphore has a positive value and then decrements it.">SemaphoreRef.WaitTimeout</a> </dd></dl>
-
-</div>
-</div>
-<a id="a4461dcedee7f613b7638893a5533c777" name="a4461dcedee7f613b7638893a5533c777"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4461dcedee7f613b7638893a5533c777">&#9670;&#160;</a></span>TryWait()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::SemaphoreRef::TryWait </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This function checks to see if the semaphore pointed to by <code>sem</code> has a positive value and atomically decrements the semaphore value if it does. If the semaphore doesn't have a positive value, the function immediately returns false.</p>
-<dl class="section return"><dt>Returns</dt><dd>true if the wait succeeds, false if the wait would block.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SemaphoreRef.html#a05c7ea8fe1474654a0e03ed8f3253b13" title="Atomically increment a semaphore&#39;s value and wake waiting threads.">SemaphoreRef.Signal</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SemaphoreRef.html#a64c011e7ab0357c0a625c7f2dd001b13" title="Wait until a semaphore has a positive value and then decrements it.">SemaphoreRef.Wait</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SemaphoreRef.html#af5c6a2e8b0889eb575e7eed82a8ff19a" title="Wait until a semaphore has a positive value and then decrements it.">SemaphoreRef.WaitTimeout</a> </dd></dl>
-
-</div>
-</div>
-<a id="a64c011e7ab0357c0a625c7f2dd001b13" name="a64c011e7ab0357c0a625c7f2dd001b13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64c011e7ab0357c0a625c7f2dd001b13">&#9670;&#160;</a></span>Wait()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::SemaphoreRef::Wait </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This function suspends the calling thread until the semaphore pointed to by <code>sem</code> has a positive value, and then atomically decrement the semaphore value.</p>
-<p>This function is the equivalent of calling <a class="el" href="structSDL_1_1SemaphoreRef.html#af5c6a2e8b0889eb575e7eed82a8ff19a" title="Wait until a semaphore has a positive value and then decrements it.">SemaphoreRef.WaitTimeout()</a> with a time length of -1.</p>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SemaphoreRef.html#a05c7ea8fe1474654a0e03ed8f3253b13" title="Atomically increment a semaphore&#39;s value and wake waiting threads.">SemaphoreRef.Signal</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SemaphoreRef.html#a4461dcedee7f613b7638893a5533c777" title="See if a semaphore has a positive value and decrement it if it does.">SemaphoreRef.TryWait</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SemaphoreRef.html#af5c6a2e8b0889eb575e7eed82a8ff19a" title="Wait until a semaphore has a positive value and then decrements it.">SemaphoreRef.WaitTimeout</a> </dd></dl>
-
-</div>
-</div>
-<a id="af5c6a2e8b0889eb575e7eed82a8ff19a" name="af5c6a2e8b0889eb575e7eed82a8ff19a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5c6a2e8b0889eb575e7eed82a8ff19a">&#9670;&#160;</a></span>WaitTimeout()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::SemaphoreRef::WaitTimeout </td>
-          <td>(</td>
-          <td class="paramtype">std::chrono::milliseconds&#160;</td>
-          <td class="paramname"><em>timeout</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This function suspends the calling thread until either the semaphore pointed to by <code>sem</code> has a positive value or the specified time has elapsed. If the call is successful it will atomically decrement the semaphore value.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">timeout</td><td>the length of the timeout, in milliseconds, or -1 to wait indefinitely. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the wait succeeds or false if the wait times out.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SemaphoreRef.html#a05c7ea8fe1474654a0e03ed8f3253b13" title="Atomically increment a semaphore&#39;s value and wake waiting threads.">SemaphoreRef.Signal</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SemaphoreRef.html#a4461dcedee7f613b7638893a5533c777" title="See if a semaphore has a positive value and decrement it if it does.">SemaphoreRef.TryWait</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SemaphoreRef.html#a64c011e7ab0357c0a625c7f2dd001b13" title="Wait until a semaphore has a positive value and then decrements it.">SemaphoreRef.Wait</a> </dd></dl>
+<p>This does not takes ownership! </p>
 
 </div>
 </div>

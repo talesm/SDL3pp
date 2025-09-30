@@ -95,6 +95,22 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TargetBytes</b> 
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TargetBytes</b> (std::nullptr_t)</td></tr>
 <tr class="memdesc:a404c23857f5d87ecd93ded922446ab5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disambiguate between multiple pointer types. <br /></td></tr>
 <tr class="separator:a404c23857f5d87ecd93ded922446ab5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad507ed9218c4eca0b41ab6e4200b89f" id="r_aad507ed9218c4eca0b41ab6e4200b89f"><td class="memItemLeft" align="right" valign="top"><a id="aad507ed9218c4eca0b41ab6e4200b89f" name="aad507ed9218c4eca0b41ab6e4200b89f"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TargetBytes</b> (const <a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> &amp;other)=default</td></tr>
+<tr class="memdesc:aad507ed9218c4eca0b41ab6e4200b89f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:aad507ed9218c4eca0b41ab6e4200b89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a96542cbd8eceba48631610cede3c81" id="r_a1a96542cbd8eceba48631610cede3c81"><td class="memItemLeft" align="right" valign="top"><a id="a1a96542cbd8eceba48631610cede3c81" name="a1a96542cbd8eceba48631610cede3c81"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TargetBytes</b> (<a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> &amp;&amp;other)=default</td></tr>
+<tr class="memdesc:a1a96542cbd8eceba48631610cede3c81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:a1a96542cbd8eceba48631610cede3c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0a67241b233b50d440558101655d0b3" id="r_af0a67241b233b50d440558101655d0b3"><td class="memItemLeft" align="right" valign="top"><a id="af0a67241b233b50d440558101655d0b3" name="af0a67241b233b50d440558101655d0b3"></a>
+constexpr <a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> &amp;other)=default</td></tr>
+<tr class="memdesc:af0a67241b233b50d440558101655d0b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment. <br /></td></tr>
+<tr class="separator:af0a67241b233b50d440558101655d0b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a067e6993895c6e1b18e09bb2b962ae23" id="r_a067e6993895c6e1b18e09bb2b962ae23"><td class="memItemLeft" align="right" valign="top"><a id="a067e6993895c6e1b18e09bb2b962ae23" name="a067e6993895c6e1b18e09bb2b962ae23"></a>
+constexpr <a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> &amp;&amp;other)=default</td></tr>
+<tr class="memdesc:a067e6993895c6e1b18e09bb2b962ae23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment. <br /></td></tr>
+<tr class="separator:a067e6993895c6e1b18e09bb2b962ae23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0f9a66ea062acfdcbc63220afe72ba1" id="r_ae0f9a66ea062acfdcbc63220afe72ba1"><td class="memTemplParams" colspan="2"><a id="ae0f9a66ea062acfdcbc63220afe72ba1" name="ae0f9a66ea062acfdcbc63220afe72ba1"></a>
 template&lt;class T , size_t N&gt; </td></tr>
 <tr class="memitem:ae0f9a66ea062acfdcbc63220afe72ba1"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>TargetBytes</b> (std::span&lt; const T, N &gt; span)</td></tr>
@@ -119,11 +135,11 @@ template&lt;class T , size_t N&gt; </td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ab8abdd8643e3d331f153317b17f24754" id="r_ab8abdd8643e3d331f153317b17f24754"><td class="memItemLeft" align="right" valign="top"><a id="ab8abdd8643e3d331f153317b17f24754" name="ab8abdd8643e3d331f153317b17f24754"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><b>data</b></td></tr>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>data</b> = nullptr</td></tr>
 <tr class="memdesc:ab8abdd8643e3d331f153317b17f24754"><td class="mdescLeft">&#160;</td><td class="mdescRight">The address to have data copied to it. <br /></td></tr>
 <tr class="separator:ab8abdd8643e3d331f153317b17f24754"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83dee61abd3e0664a293c07d21757f05" id="r_a83dee61abd3e0664a293c07d21757f05"><td class="memItemLeft" align="right" valign="top"><a id="a83dee61abd3e0664a293c07d21757f05" name="a83dee61abd3e0664a293c07d21757f05"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size_bytes</b></td></tr>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size_bytes</b> = 0</td></tr>
 <tr class="memdesc:a83dee61abd3e0664a293c07d21757f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size in bytes. <br /></td></tr>
 <tr class="separator:a83dee61abd3e0664a293c07d21757f05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

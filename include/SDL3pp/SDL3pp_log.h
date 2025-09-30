@@ -182,7 +182,6 @@ public:
   /**
    * Get the priority of a particular log category.
    *
-   * @param category the category to query.
    * @returns the LogPriority for the requested category.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -682,7 +681,7 @@ inline void Log(std::string_view fmt, ARGS&&... args)
  * @param category the category of the message.
  * @param priority the priority of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -722,7 +721,7 @@ inline void LogCategory::LogMessage(LogPriority priority,
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -757,7 +756,7 @@ inline void LogCategory::LogTrace(std::string_view fmt, ARGS&&... args) const
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -792,7 +791,7 @@ inline void LogCategory::LogVerbose(std::string_view fmt, ARGS&&... args) const
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -826,7 +825,7 @@ inline void LogCategory::LogDebug(std::string_view fmt, ARGS&&... args) const
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -860,7 +859,7 @@ inline void LogCategory::LogInfo(std::string_view fmt, ARGS&&... args) const
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -894,7 +893,7 @@ inline void LogCategory::LogWarn(std::string_view fmt, ARGS&&... args) const
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -928,7 +927,7 @@ inline void LogCategory::LogError(std::string_view fmt, ARGS&&... args) const
  *
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
- * @param ... additional parameters matching % tokens in the **fmt** string,
+ * @param args additional parameters matching % tokens in the **fmt** string,
  *            if any.
  *
  * @threadsafety It is safe to call this function from any thread.

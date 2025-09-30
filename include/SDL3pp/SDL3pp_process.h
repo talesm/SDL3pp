@@ -373,8 +373,6 @@ public:
    *
    * The data should be freed with free().
    *
-   * @param datasize a pointer filled in with the number of bytes read, may be
-   *                 nullptr.
    * @param exitcode a pointer filled in with the process exit code if the
    *                 process has exited, may be nullptr.
    * @returns the data or nullptr on failure; call GetError() for more

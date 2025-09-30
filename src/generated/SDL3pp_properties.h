@@ -504,12 +504,6 @@ public:
    */
   void ClearProperty(StringParam name) const;
 
-  template<std::output_iterator<const char*> IT>
-  void Enumerate(IT outputIter) const
-  {
-    static_assert(false, "Not implemented");
-  }
-
   void Enumerate(EnumeratePropertiesCB callback) const;
 
   /**

@@ -484,7 +484,6 @@ public:
    * This function is generally not needed directly by an app, which should use
    * specific tests, like PixelFormat.IsFourCC, instead.
    *
-   * @param format an PixelFormat to check.
    * @returns the flags of `format`.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -2375,6 +2374,7 @@ struct FColor : FColorRaw
   {
   }
 
+  /// Default comparison operator
   constexpr bool operator==(FColorRaw other) const
   {
     return r == other.r && g == other.g && b == other.b && a == other.a;
@@ -2591,8 +2591,10 @@ public:
    */
   void Destroy();
 
+  /// Returns number of colors in the palette.
   constexpr int GetSize() const { return m_resource->ncolors; }
 
+  /// Access specific pallete index
   constexpr Color operator[](int index) const
   {
     return m_resource->colors[index];
@@ -2867,10 +2869,7 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
  * @param format a pointer to PixelFormatDetails describing the pixel
  *               format.
  * @param palette an optional palette for indexed formats, may be nullptr.
- * @param r the red component of the pixel in the range 0-255.
- * @param g the green component of the pixel in the range 0-255.
- * @param b the blue component of the pixel in the range 0-255.
- * @param a the alpha component of the pixel in the range 0-255.
+ * @param c the color components of the pixel in the range 0-255.
  * @returns a pixel value.
  *
  * @threadsafety It is safe to call this function from any thread, as long as

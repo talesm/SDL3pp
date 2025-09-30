@@ -79,39 +79,80 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="structSDL_1_1Process.html" title="Handle to an owned process.">Process</a> control support.  
+<p><a class="el" href="classSDL_1_1Process.html" title="An opaque handle representing a system process.">Process</a> control support.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessParam.html">SDL::ProcessParam</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely wrap <a class="el" href="classSDL_1_1Process.html" title="An opaque handle representing a system process.">Process</a> for non owning parameters.  <a href="structSDL_1_1ProcessParam.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Process.html">SDL::Process</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An opaque handle representing a system process.  <a href="classSDL_1_1Process.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessRef.html">SDL::ProcessRef</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An opaque handle representing a system process.  <a href="structSDL_1_1ProcessRef.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Process.html">SDL::Process</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned process.  <a href="structSDL_1_1Process.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessUnsafe.html">SDL::ProcessUnsafe</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to process.  <a href="structSDL_1_1ProcessUnsafe.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semi-safe reference for <a class="el" href="classSDL_1_1Process.html" title="An opaque handle representing a system process.">Process</a>.  <a href="structSDL_1_1ProcessRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga8cf396891ecc70cc8d18ee1b301f6fb9" id="r_ga8cf396891ecc70cc8d18ee1b301f6fb9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga8cf396891ecc70cc8d18ee1b301f6fb9">SDL::ProcessShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Process.html">Process</a> &gt;</td></tr>
-<tr class="memdesc:ga8cf396891ecc70cc8d18ee1b301f6fb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared process.  <br /></td></tr>
-<tr class="separator:ga8cf396891ecc70cc8d18ee1b301f6fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga63ef282570cfcabee77bb3b7e20676a8" id="r_ga63ef282570cfcabee77bb3b7e20676a8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga63ef282570cfcabee77bb3b7e20676a8">SDL::ProcessWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Process.html">Process</a> &gt;</td></tr>
-<tr class="memdesc:ga63ef282570cfcabee77bb3b7e20676a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared process.  <br /></td></tr>
-<tr class="separator:ga63ef282570cfcabee77bb3b7e20676a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae44f11701ab5e1a80e527b875444e170" id="r_gae44f11701ab5e1a80e527b875444e170"><td class="memItemLeft" align="right" valign="top"><a id="gae44f11701ab5e1a80e527b875444e170" name="gae44f11701ab5e1a80e527b875444e170"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::ProcessRaw</b> = SDL_Process *</td></tr>
+<tr class="separator:gae44f11701ab5e1a80e527b875444e170"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1d1316bf2aedf1db96e190b42b567654" id="r_ga1d1316bf2aedf1db96e190b42b567654"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga1d1316bf2aedf1db96e190b42b567654">SDL::ProcessIO</a> = SDL_ProcessIO</td></tr>
 <tr class="memdesc:ga1d1316bf2aedf1db96e190b42b567654"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of where standard I/O should be directed when creating a process.  <br /></td></tr>
 <tr class="separator:ga1d1316bf2aedf1db96e190b42b567654"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gad825a41de00978ebe625b0a9e3f68ac5" id="r_gad825a41de00978ebe625b0a9e3f68ac5"><td class="memItemLeft" align="right" valign="top"><a id="gad825a41de00978ebe625b0a9e3f68ac5" name="gad825a41de00978ebe625b0a9e3f68ac5"></a>
-<a class="el" href="group__CategoryProcess.html#ga8cf396891ecc70cc8d18ee1b301f6fb9">ProcessShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Process::share</b> ()</td></tr>
-<tr class="memdesc:gad825a41de00978ebe625b0a9e3f68ac5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this process into a ProcessShared. <br /></td></tr>
-<tr class="separator:gad825a41de00978ebe625b0a9e3f68ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7cb702f3ac0022073a0ea07b40b931de" id="r_ga7cb702f3ac0022073a0ea07b40b931de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Process.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga7cb702f3ac0022073a0ea07b40b931de">SDL::CreateProcess</a> (const char *const *args, bool pipe_stdio)</td></tr>
+<tr class="memdesc:ga7cb702f3ac0022073a0ea07b40b931de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new process.  <br /></td></tr>
+<tr class="separator:ga7cb702f3ac0022073a0ea07b40b931de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga85340387546d4909f935215348f18873" id="r_ga85340387546d4909f935215348f18873"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Process.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga85340387546d4909f935215348f18873">SDL::CreateProcessWithProperties</a> (<a class="el" href="structSDL_1_1PropertiesParam.html">PropertiesParam</a> props)</td></tr>
+<tr class="memdesc:ga85340387546d4909f935215348f18873"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new process with the specified properties.  <br /></td></tr>
+<tr class="separator:ga85340387546d4909f935215348f18873"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacdb4c729bb42132d4a292b8b21ee8524" id="r_gacdb4c729bb42132d4a292b8b21ee8524"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#gacdb4c729bb42132d4a292b8b21ee8524">SDL::GetProcessProperties</a> (<a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a> process)</td></tr>
+<tr class="memdesc:gacdb4c729bb42132d4a292b8b21ee8524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a process.  <br /></td></tr>
+<tr class="separator:gacdb4c729bb42132d4a292b8b21ee8524"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5a59eb17bddeea20b5d8bfeddff25722" id="r_ga5a59eb17bddeea20b5d8bfeddff25722"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1StringResult.html">StringResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga5a59eb17bddeea20b5d8bfeddff25722">SDL::ReadProcess</a> (<a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a> process, int *exitcode=nullptr)</td></tr>
+<tr class="memdesc:ga5a59eb17bddeea20b5d8bfeddff25722"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read all the output from a process.  <br /></td></tr>
+<tr class="separator:ga5a59eb17bddeea20b5d8bfeddff25722"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga79074f7d23a34d2b9340b1d8591859bc" id="r_ga79074f7d23a34d2b9340b1d8591859bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga79074f7d23a34d2b9340b1d8591859bc">SDL::GetProcessInput</a> (<a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a> process)</td></tr>
+<tr class="memdesc:ga79074f7d23a34d2b9340b1d8591859bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> associated with process standard input.  <br /></td></tr>
+<tr class="separator:ga79074f7d23a34d2b9340b1d8591859bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga59c081f3a58b24cfcb17ad79ae0750b4" id="r_ga59c081f3a58b24cfcb17ad79ae0750b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga59c081f3a58b24cfcb17ad79ae0750b4">SDL::GetProcessOutput</a> (<a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a> process)</td></tr>
+<tr class="memdesc:ga59c081f3a58b24cfcb17ad79ae0750b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> associated with process standard output.  <br /></td></tr>
+<tr class="separator:ga59c081f3a58b24cfcb17ad79ae0750b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga11a05a95cb564b32d12c564488443214" id="r_ga11a05a95cb564b32d12c564488443214"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga11a05a95cb564b32d12c564488443214">SDL::KillProcess</a> (<a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a> process, bool force)</td></tr>
+<tr class="memdesc:ga11a05a95cb564b32d12c564488443214"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop a process.  <br /></td></tr>
+<tr class="separator:ga11a05a95cb564b32d12c564488443214"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac726fe9e893843b39a1439e6370f66c8" id="r_gac726fe9e893843b39a1439e6370f66c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#gac726fe9e893843b39a1439e6370f66c8">SDL::WaitProcess</a> (<a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a> process, bool block, int *exitcode)</td></tr>
+<tr class="memdesc:gac726fe9e893843b39a1439e6370f66c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a process to finish.  <br /></td></tr>
+<tr class="separator:gac726fe9e893843b39a1439e6370f66c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad4b9bda6a692a2dc7f81cc20c2feab6b" id="r_gad4b9bda6a692a2dc7f81cc20c2feab6b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#gad4b9bda6a692a2dc7f81cc20c2feab6b">SDL::DestroyProcess</a> (ProcessRaw process)</td></tr>
+<tr class="memdesc:gad4b9bda6a692a2dc7f81cc20c2feab6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a previously created process object.  <br /></td></tr>
+<tr class="separator:gad4b9bda6a692a2dc7f81cc20c2feab6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga74bbbd5929c56e232e6d9afce4f4e570" id="r_ga74bbbd5929c56e232e6d9afce4f4e570"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga74bbbd5929c56e232e6d9afce4f4e570">SDL::Process::GetProperties</a> () const</td></tr>
+<tr class="memdesc:ga74bbbd5929c56e232e6d9afce4f4e570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a process.  <br /></td></tr>
+<tr class="separator:ga74bbbd5929c56e232e6d9afce4f4e570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf5a3a966477dd35bc72225f97a2ec6ec" id="r_gaf5a3a966477dd35bc72225f97a2ec6ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1StringResult.html">StringResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#gaf5a3a966477dd35bc72225f97a2ec6ec">SDL::Process::Read</a> (int *exitcode=nullptr)</td></tr>
+<tr class="memdesc:gaf5a3a966477dd35bc72225f97a2ec6ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read all the output from a process.  <br /></td></tr>
+<tr class="separator:gaf5a3a966477dd35bc72225f97a2ec6ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadb14ea7cd693954beec04beaae649b96" id="r_gadb14ea7cd693954beec04beaae649b96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#gadb14ea7cd693954beec04beaae649b96">SDL::Process::GetInput</a> ()</td></tr>
+<tr class="memdesc:gadb14ea7cd693954beec04beaae649b96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> associated with process standard input.  <br /></td></tr>
+<tr class="separator:gadb14ea7cd693954beec04beaae649b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0c820d385241a15980ad41fd461db5cf" id="r_ga0c820d385241a15980ad41fd461db5cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga0c820d385241a15980ad41fd461db5cf">SDL::Process::GetOutput</a> ()</td></tr>
+<tr class="memdesc:ga0c820d385241a15980ad41fd461db5cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> associated with process standard output.  <br /></td></tr>
+<tr class="separator:ga0c820d385241a15980ad41fd461db5cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab9e4e00a880cc59359f37242dfd12594" id="r_gab9e4e00a880cc59359f37242dfd12594"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#gab9e4e00a880cc59359f37242dfd12594">SDL::Process::Kill</a> (bool force)</td></tr>
+<tr class="memdesc:gab9e4e00a880cc59359f37242dfd12594"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop a process.  <br /></td></tr>
+<tr class="separator:gab9e4e00a880cc59359f37242dfd12594"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaabc040eac9eaf8ca6e1138bd6092e88c" id="r_gaabc040eac9eaf8ca6e1138bd6092e88c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#gaabc040eac9eaf8ca6e1138bd6092e88c">SDL::Process::Wait</a> (bool block, int *exitcode)</td></tr>
+<tr class="memdesc:gaabc040eac9eaf8ca6e1138bd6092e88c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a process to finish.  <br /></td></tr>
+<tr class="separator:gaabc040eac9eaf8ca6e1138bd6092e88c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga11d4635e09c847d6e04e8429c706f110" id="r_ga11d4635e09c847d6e04e8429c706f110"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110">SDL::Process::Destroy</a> ()</td></tr>
+<tr class="memdesc:ga11d4635e09c847d6e04e8429c706f110"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a previously created process object.  <br /></td></tr>
+<tr class="separator:ga11d4635e09c847d6e04e8429c706f110"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -123,18 +164,18 @@ Variables</h2></td></tr>
 <tr class="separator:ga9b927aebc04f8de9d3cc849a357ae4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga88a2fed48b7d9379404299fb1db6cfae" id="r_ga88a2fed48b7d9379404299fb1db6cfae"><td class="memItemLeft" align="right" valign="top"><a id="ga88a2fed48b7d9379404299fb1db6cfae" name="ga88a2fed48b7d9379404299fb1db6cfae"></a>
 constexpr <a class="el" href="group__CategoryProcess.html#ga1d1316bf2aedf1db96e190b42b567654">ProcessIO</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PROCESS_STDIO_APP</b> = SDL_PROCESS_STDIO_APP</td></tr>
-<tr class="memdesc:ga88a2fed48b7d9379404299fb1db6cfae"><td class="mdescLeft">&#160;</td><td class="mdescRight">The I/O stream is connected to a new <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a> that the application can read or write. <br /></td></tr>
+<tr class="memdesc:ga88a2fed48b7d9379404299fb1db6cfae"><td class="mdescLeft">&#160;</td><td class="mdescRight">The I/O stream is connected to a new <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> that the application can read or write. <br /></td></tr>
 <tr class="separator:ga88a2fed48b7d9379404299fb1db6cfae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaec3785d350205170bf8198577c2eaea6" id="r_gaec3785d350205170bf8198577c2eaea6"><td class="memItemLeft" align="right" valign="top"><a id="gaec3785d350205170bf8198577c2eaea6" name="gaec3785d350205170bf8198577c2eaea6"></a>
 constexpr <a class="el" href="group__CategoryProcess.html#ga1d1316bf2aedf1db96e190b42b567654">ProcessIO</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PROCESS_STDIO_REDIRECT</b> = SDL_PROCESS_STDIO_REDIRECT</td></tr>
-<tr class="memdesc:gaec3785d350205170bf8198577c2eaea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The I/O stream is redirected to an existing <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a>. <br /></td></tr>
+<tr class="memdesc:gaec3785d350205170bf8198577c2eaea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The I/O stream is redirected to an existing <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a>. <br /></td></tr>
 <tr class="separator:gaec3785d350205170bf8198577c2eaea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>These functions provide a cross-platform way to spawn and manage OS-level processes.</p>
-<p>You can create a new subprocess with <a class="el" href="structSDL_1_1Process.html#ad1aa8b4ceab0a0d9aae7841f32852c30" title="Create a new process.">Process.Create()</a> and optionally read and write to it using <a class="el" href="structSDL_1_1ProcessRef.html#a1ef162d18b72e70070d066add10ba5ee" title="Read all the output from a process.">ProcessRef.Read()</a> or <a class="el" href="structSDL_1_1ProcessRef.html#a3095592c81bcc60c5184fee150e9266b" title="Get the IOStreamRef associated with process standard input.">ProcessRef.GetInput()</a> and <a class="el" href="structSDL_1_1ProcessRef.html#a151b8d80dd53ef866957931e5ec54e89" title="Get the IOStreamRef associated with process standard output.">ProcessRef.GetOutput()</a>. If more advanced functionality like chaining input between processes is necessary, you can use <a class="el" href="structSDL_1_1Process.html#a6ab886a9c3d13f62299f606fab03c409" title="Create a new process with the specified properties.">Process.CreateWithProperties()</a>.</p>
-<p>You can get the status of a created process with <a class="el" href="structSDL_1_1ProcessRef.html#ae2211b6a1888aa6181a99cc54db4b9e5" title="Wait for a process to finish.">ProcessRef.Wait()</a>, or terminate the process with <a class="el" href="structSDL_1_1ProcessRef.html#abbdebd7d711567b9f10f2510adaef44e" title="Stop a process.">ProcessRef.Kill()</a>.</p>
-<p>Don't forget to call <a class="el" href="structSDL_1_1Process.html#a11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy()</a> to clean up, whether the process process was killed, terminated on its own, or is still running! </p>
+<p>You can create a new subprocess with <a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process()</a> and optionally read and write to it using <a class="el" href="group__CategoryProcess.html#gaf5a3a966477dd35bc72225f97a2ec6ec" title="Read all the output from a process.">Process.Read()</a> or <a class="el" href="group__CategoryProcess.html#gadb14ea7cd693954beec04beaae649b96" title="Get the IOStream associated with process standard input.">Process.GetInput()</a> and <a class="el" href="group__CategoryProcess.html#ga0c820d385241a15980ad41fd461db5cf" title="Get the IOStream associated with process standard output.">Process.GetOutput()</a>. If more advanced functionality like chaining input between processes is necessary, you can use <a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process()</a>.</p>
+<p>You can get the status of a created process with <a class="el" href="group__CategoryProcess.html#gaabc040eac9eaf8ca6e1138bd6092e88c" title="Wait for a process to finish.">Process.Wait()</a>, or terminate the process with <a class="el" href="group__CategoryProcess.html#gab9e4e00a880cc59359f37242dfd12594" title="Stop a process.">Process.Kill()</a>.</p>
+<p>Don't forget to call <a class="el" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy()</a> to clean up, whether the process process was killed, terminated on its own, or is still running! </p>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ga1d1316bf2aedf1db96e190b42b567654" name="ga1d1316bf2aedf1db96e190b42b567654"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga1d1316bf2aedf1db96e190b42b567654">&#9670;&#160;</a></span>ProcessIO</h2>
@@ -148,56 +189,795 @@ constexpr <a class="el" href="group__CategoryProcess.html#ga1d1316bf2aedf1db96e1
       </table>
 </div><div class="memdoc">
 <p>If a standard I/O stream is set to PROCESS_STDIO_INHERITED, it will go to the same place as the application's I/O stream. This is the default for standard output and standard error.</p>
-<p>If a standard I/O stream is set to SDL_PROCESS_STDIO_NULL, it is connected to <code>NUL:</code> on Windows and <code>/dev/null</code> on POSIX systems. This is the default for standard input.</p>
-<p>If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected to a new <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a> that is available to the application. Standard input will be available as <code>prop::process.STDIN_POINTER</code> and allows <a class="el" href="structSDL_1_1ProcessRef.html#a3095592c81bcc60c5184fee150e9266b" title="Get the IOStreamRef associated with process standard input.">ProcessRef.GetInput()</a>, standard output will be available as <code>prop::process.STDOUT_POINTER</code> and allows <a class="el" href="structSDL_1_1ProcessRef.html#a1ef162d18b72e70070d066add10ba5ee" title="Read all the output from a process.">ProcessRef.Read()</a> and <a class="el" href="structSDL_1_1ProcessRef.html#a151b8d80dd53ef866957931e5ec54e89" title="Get the IOStreamRef associated with process standard output.">ProcessRef.GetOutput()</a>, and standard error will be available as <code>prop::process.STDERR_POINTER</code> in the properties for the created process.</p>
-<p>If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is connected to an existing <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a> provided by the application. Standard input is provided using <code>prop::process.CREATE_STDIN_POINTER</code>, standard output is provided using <code>prop::process.CREATE_STDOUT_POINTER</code>, and standard error is provided using <code>prop::process.CREATE_STDERR_POINTER</code> in the creation properties. These existing streams should be closed by the application once the new process is created.</p>
-<p>In order to use an <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a> with PROCESS_STDIO_REDIRECT, it must have <code>prop::IOStream.WINDOWS_HANDLE_POINTER</code> or <code>prop::IOStream.FILE_DESCRIPTOR_NUMBER</code> set. This is true for streams representing files and process I/O.</p>
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#a6ab886a9c3d13f62299f606fab03c409" title="Create a new process with the specified properties.">Process.CreateWithProperties</a> </dd>
+<p>If a standard I/O stream is set to SDL_PROCESS_STDIO_nullptr, it is connected to <code>NUL:</code> on Windows and <code>/dev/null</code> on POSIX systems. This is the default for standard input.</p>
+<p>If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected to a new <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> that is available to the application. Standard input will be available as <code>prop::process.STDIN_POINTER</code> and allows <a class="el" href="group__CategoryProcess.html#gadb14ea7cd693954beec04beaae649b96" title="Get the IOStream associated with process standard input.">Process.GetInput()</a>, standard output will be available as <code>prop::process.STDOUT_POINTER</code> and allows <a class="el" href="group__CategoryProcess.html#gaf5a3a966477dd35bc72225f97a2ec6ec" title="Read all the output from a process.">Process.Read()</a> and <a class="el" href="group__CategoryProcess.html#ga0c820d385241a15980ad41fd461db5cf" title="Get the IOStream associated with process standard output.">Process.GetOutput()</a>, and standard error will be available as <code>prop::process.STDERR_POINTER</code> in the properties for the created process.</p>
+<p>If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is connected to an existing <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> provided by the application. Standard input is provided using <code>prop::process.CREATE_STDIN_POINTER</code>, standard output is provided using <code>prop::process.CREATE_STDOUT_POINTER</code>, and standard error is provided using <code>prop::process.CREATE_STDERR_POINTER</code> in the creation properties. These existing streams should be closed by the application once the new process is created.</p>
+<p>In order to use an <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> with PROCESS_STDIO_REDIRECT, it must have <code>prop::IOStream.WINDOWS_HANDLE_POINTER</code> or <code>prop::IOStream.FILE_DESCRIPTOR_NUMBER</code> set. This is true for streams representing files and process I/O.</p>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessRef.html#ad885ab1d694d7b6e5d18bb0b2de088c8" title="Get the properties associated with a process.">ProcessRef.GetProperties</a> </dd>
+<a class="el" href="group__CategoryProcess.html#ga74bbbd5929c56e232e6d9afce4f4e570" title="Get the properties associated with a process.">Process.GetProperties</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessRef.html#a1ef162d18b72e70070d066add10ba5ee" title="Read all the output from a process.">ProcessRef.Read</a> </dd>
+<a class="el" href="group__CategoryProcess.html#gaf5a3a966477dd35bc72225f97a2ec6ec" title="Read all the output from a process.">Process.Read</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessRef.html#a3095592c81bcc60c5184fee150e9266b" title="Get the IOStreamRef associated with process standard input.">ProcessRef.GetInput</a> </dd>
+<a class="el" href="group__CategoryProcess.html#gadb14ea7cd693954beec04beaae649b96" title="Get the IOStream associated with process standard input.">Process.GetInput</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessRef.html#a151b8d80dd53ef866957931e5ec54e89" title="Get the IOStreamRef associated with process standard output.">ProcessRef.GetOutput</a> </dd></dl>
+<a class="el" href="group__CategoryProcess.html#ga0c820d385241a15980ad41fd461db5cf" title="Get the IOStream associated with process standard output.">Process.GetOutput</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga8cf396891ecc70cc8d18ee1b301f6fb9" name="ga8cf396891ecc70cc8d18ee1b301f6fb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8cf396891ecc70cc8d18ee1b301f6fb9">&#9670;&#160;</a></span>ProcessShared</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategoryProcess.html#ga8cf396891ecc70cc8d18ee1b301f6fb9">SDL::ProcessShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Process.html">Process</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessRef.html" title="An opaque handle representing a system process.">ProcessRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1Process.html" title="Handle to an owned process.">Process</a> </dd></dl>
-
-</div>
-</div>
-<a id="ga63ef282570cfcabee77bb3b7e20676a8" name="ga63ef282570cfcabee77bb3b7e20676a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga63ef282570cfcabee77bb3b7e20676a8">&#9670;&#160;</a></span>ProcessWeak</h2>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ga7cb702f3ac0022073a0ea07b40b931de" name="ga7cb702f3ac0022073a0ea07b40b931de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7cb702f3ac0022073a0ea07b40b931de">&#9670;&#160;</a></span>CreateProcess()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryProcess.html#ga63ef282570cfcabee77bb3b7e20676a8">SDL::ProcessWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Process.html">Process</a>&gt;</td>
+          <td class="memname"><a class="el" href="classSDL_1_1Process.html">Process</a> SDL::CreateProcess </td>
+          <td>(</td>
+          <td class="paramtype">const char *const *&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>pipe_stdio</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryProcess.html#ga8cf396891ecc70cc8d18ee1b301f6fb9" title="Handle to a shared process.">ProcessShared</a> </dd>
+<p>The path to the executable is supplied in args[0]. args[1..N] are additional arguments passed on the command line of the new process, and the argument list should be terminated with a nullptr, e.g.:</p>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> *args[] = { <span class="stringliteral">&quot;myprogram&quot;</span>, <span class="stringliteral">&quot;argument&quot;</span>, <span class="keyword">nullptr</span> };</div>
+</div><!-- fragment --><p>Setting pipe_stdio to true is equivalent to setting <code>prop::process.CREATE_STDIN_NUMBER</code> and <code>prop::process.CREATE_STDOUT_NUMBER</code> to <code>PROCESS_STDIO_APP</code>, and will allow the use of <a class="el" href="group__CategoryProcess.html#gaf5a3a966477dd35bc72225f97a2ec6ec" title="Read all the output from a process.">Process.Read()</a> or <a class="el" href="group__CategoryProcess.html#gadb14ea7cd693954beec04beaae649b96" title="Get the IOStream associated with process standard input.">Process.GetInput()</a> and <a class="el" href="group__CategoryProcess.html#ga0c820d385241a15980ad41fd461db5cf" title="Get the IOStream associated with process standard output.">Process.GetOutput()</a>.</p>
+<p>See <a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process()</a> for more details.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">args</td><td>the path and arguments for the new process. </td></tr>
+    <tr><td class="paramname">pipe_stdio</td><td>true to create pipes to the process's standard input and from the process's standard output, false for the process to have no input and inherit the application's standard output. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the newly created and running process, or nullptr if the process couldn't be created.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessRef.html" title="An opaque handle representing a system process.">ProcessRef</a> </dd></dl>
+<a class="el" href="group__CategoryProcess.html#ga74bbbd5929c56e232e6d9afce4f4e570" title="Get the properties associated with a process.">Process.GetProperties</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gaf5a3a966477dd35bc72225f97a2ec6ec" title="Read all the output from a process.">Process.Read</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gadb14ea7cd693954beec04beaae649b96" title="Get the IOStream associated with process standard input.">Process.GetInput</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga0c820d385241a15980ad41fd461db5cf" title="Get the IOStream associated with process standard output.">Process.GetOutput</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gab9e4e00a880cc59359f37242dfd12594" title="Stop a process.">Process.Kill</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gaabc040eac9eaf8ca6e1138bd6092e88c" title="Wait for a process to finish.">Process.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga85340387546d4909f935215348f18873" name="ga85340387546d4909f935215348f18873"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga85340387546d4909f935215348f18873">&#9670;&#160;</a></span>CreateProcessWithProperties()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1Process.html">Process</a> SDL::CreateProcessWithProperties </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesParam.html">PropertiesParam</a>&#160;</td>
+          <td class="paramname"><em>props</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>These are the supported properties:</p>
+<ul>
+<li><code>prop::process.CREATE_ARGS_POINTER</code>: an array of strings containing the program to run, any arguments, and a nullptr pointer, e.g. const char *args[] = { "myprogram", "argument", nullptr }. This is a required property.</li>
+<li><code>prop::process.CREATE_ENVIRONMENT_POINTER</code>: an <a class="el" href="classSDL_1_1Environment.html" title="A thread-safe set of environment variables.">Environment</a> pointer. If this property is set, it will be the entire environment for the process, otherwise the current environment is used.</li>
+<li><code>prop::process.CREATE_STDIN_NUMBER</code>: an ProcessIO value describing where standard input for the process comes from, defaults to <code>SDL_PROCESS_STDIO_nullptr</code>.</li>
+<li><code>prop::process.CREATE_STDIN_POINTER</code>: an <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> pointer used for standard input when <code>prop::process.CREATE_STDIN_NUMBER</code> is set to <code>PROCESS_STDIO_REDIRECT</code>.</li>
+<li><code>prop::process.CREATE_STDOUT_NUMBER</code>: an ProcessIO value describing where standard output for the process goes to, defaults to <code>PROCESS_STDIO_INHERITED</code>.</li>
+<li><code>prop::process.CREATE_STDOUT_POINTER</code>: an <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> pointer used for standard output when <code>prop::process.CREATE_STDOUT_NUMBER</code> is set to <code>PROCESS_STDIO_REDIRECT</code>.</li>
+<li><code>prop::process.CREATE_STDERR_NUMBER</code>: an ProcessIO value describing where standard error for the process goes to, defaults to <code>PROCESS_STDIO_INHERITED</code>.</li>
+<li><code>prop::process.CREATE_STDERR_POINTER</code>: an <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> pointer used for standard error when <code>prop::process.CREATE_STDERR_NUMBER</code> is set to <code>PROCESS_STDIO_REDIRECT</code>.</li>
+<li><code>prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN</code>: true if the error output of the process should be redirected into the standard output of the process. This property has no effect if <code>prop::process.CREATE_STDERR_NUMBER</code> is set.</li>
+<li><code>prop::process.CREATE_BACKGROUND_BOOLEAN</code>: true if the process should run in the background. In this case the default input and output is <code>SDL_PROCESS_STDIO_nullptr</code> and the exitcode of the process is not available, and will always be 0.</li>
+</ul>
+<p>On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and SIGCHLD should not be ignored or handled because those would prevent <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> from properly tracking the lifetime of the underlying process. You should use <a class="el" href="group__CategoryProcess.html#gaabc040eac9eaf8ca6e1138bd6092e88c" title="Wait for a process to finish.">Process.Wait()</a> instead.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">props</td><td>the properties to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the newly created and running process, or nullptr if the process couldn't be created.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga74bbbd5929c56e232e6d9afce4f4e570" title="Get the properties associated with a process.">Process.GetProperties</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gaf5a3a966477dd35bc72225f97a2ec6ec" title="Read all the output from a process.">Process.Read</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gadb14ea7cd693954beec04beaae649b96" title="Get the IOStream associated with process standard input.">Process.GetInput</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga0c820d385241a15980ad41fd461db5cf" title="Get the IOStream associated with process standard output.">Process.GetOutput</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gab9e4e00a880cc59359f37242dfd12594" title="Stop a process.">Process.Kill</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gaabc040eac9eaf8ca6e1138bd6092e88c" title="Wait for a process to finish.">Process.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga11d4635e09c847d6e04e8429c706f110" name="ga11d4635e09c847d6e04e8429c706f110"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga11d4635e09c847d6e04e8429c706f110">&#9670;&#160;</a></span>Destroy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Process::Destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Note that this does not stop the process, just destroys the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> object used to track it. If you want to stop the process you should use <a class="el" href="group__CategoryProcess.html#gab9e4e00a880cc59359f37242dfd12594" title="Stop a process.">Process.Kill()</a>.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gab9e4e00a880cc59359f37242dfd12594" title="Stop a process.">Process.Kill</a> </dd></dl>
+
+</div>
+</div>
+<a id="gad4b9bda6a692a2dc7f81cc20c2feab6b" name="gad4b9bda6a692a2dc7f81cc20c2feab6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad4b9bda6a692a2dc7f81cc20c2feab6b">&#9670;&#160;</a></span>DestroyProcess()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::DestroyProcess </td>
+          <td>(</td>
+          <td class="paramtype">ProcessRaw&#160;</td>
+          <td class="paramname"><em>process</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Note that this does not stop the process, just destroys the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> object used to track it. If you want to stop the process you should use <a class="el" href="group__CategoryProcess.html#gab9e4e00a880cc59359f37242dfd12594" title="Stop a process.">Process.Kill()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">process</td><td>The process object to destroy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gab9e4e00a880cc59359f37242dfd12594" title="Stop a process.">Process.Kill</a> </dd></dl>
+
+</div>
+</div>
+<a id="gadb14ea7cd693954beec04beaae649b96" name="gadb14ea7cd693954beec04beaae649b96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadb14ea7cd693954beec04beaae649b96">&#9670;&#160;</a></span>GetInput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> SDL::Process::GetInput </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The process must have been created with <a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process()</a> and pipe_stdio set to true, or with <a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process()</a> and <code>prop::process.CREATE_STDIN_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</p>
+<p>Writing to this stream can return less data than expected if the process hasn't read its input. It may be blocked waiting for its output to be read, if so you may need to call <a class="el" href="group__CategoryProcess.html#ga0c820d385241a15980ad41fd461db5cf" title="Get the IOStream associated with process standard output.">Process.GetOutput()</a> and read the output in parallel with writing input.</p>
+<dl class="section return"><dt>Returns</dt><dd>the input stream or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga0c820d385241a15980ad41fd461db5cf" title="Get the IOStream associated with process standard output.">Process.GetOutput</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga0c820d385241a15980ad41fd461db5cf" name="ga0c820d385241a15980ad41fd461db5cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0c820d385241a15980ad41fd461db5cf">&#9670;&#160;</a></span>GetOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> SDL::Process::GetOutput </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The process must have been created with <a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process()</a> and pipe_stdio set to true, or with <a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process()</a> and <code>prop::process.CREATE_STDOUT_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</p>
+<p>Reading from this stream can return 0 with <a class="el" href="group__CategoryIOStream.html#gae074d7fb8c97056d31cb4ce13c3a8f8b" title="Query the stream status of an IOStream.">IOStream.GetStatus()</a> returning IO_STATUS_NOT_READY if no output is available yet.</p>
+<dl class="section return"><dt>Returns</dt><dd>the output stream or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gadb14ea7cd693954beec04beaae649b96" title="Get the IOStream associated with process standard input.">Process.GetInput</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga79074f7d23a34d2b9340b1d8591859bc" name="ga79074f7d23a34d2b9340b1d8591859bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga79074f7d23a34d2b9340b1d8591859bc">&#9670;&#160;</a></span>GetProcessInput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> SDL::GetProcessInput </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a>&#160;</td>
+          <td class="paramname"><em>process</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The process must have been created with <a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process()</a> and pipe_stdio set to true, or with <a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process()</a> and <code>prop::process.CREATE_STDIN_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</p>
+<p>Writing to this stream can return less data than expected if the process hasn't read its input. It may be blocked waiting for its output to be read, if so you may need to call <a class="el" href="group__CategoryProcess.html#ga0c820d385241a15980ad41fd461db5cf" title="Get the IOStream associated with process standard output.">Process.GetOutput()</a> and read the output in parallel with writing input.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">process</td><td>The process to get the input stream for. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the input stream or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga0c820d385241a15980ad41fd461db5cf" title="Get the IOStream associated with process standard output.">Process.GetOutput</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga59c081f3a58b24cfcb17ad79ae0750b4" name="ga59c081f3a58b24cfcb17ad79ae0750b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga59c081f3a58b24cfcb17ad79ae0750b4">&#9670;&#160;</a></span>GetProcessOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> SDL::GetProcessOutput </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a>&#160;</td>
+          <td class="paramname"><em>process</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The process must have been created with <a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process()</a> and pipe_stdio set to true, or with <a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process()</a> and <code>prop::process.CREATE_STDOUT_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</p>
+<p>Reading from this stream can return 0 with <a class="el" href="group__CategoryIOStream.html#gae074d7fb8c97056d31cb4ce13c3a8f8b" title="Query the stream status of an IOStream.">IOStream.GetStatus()</a> returning IO_STATUS_NOT_READY if no output is available yet.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">process</td><td>The process to get the output stream for. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the output stream or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gadb14ea7cd693954beec04beaae649b96" title="Get the IOStream associated with process standard input.">Process.GetInput</a> </dd></dl>
+
+</div>
+</div>
+<a id="gacdb4c729bb42132d4a292b8b21ee8524" name="gacdb4c729bb42132d4a292b8b21ee8524"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacdb4c729bb42132d4a292b8b21ee8524">&#9670;&#160;</a></span>GetProcessProperties()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> SDL::GetProcessProperties </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a>&#160;</td>
+          <td class="paramname"><em>process</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The following read-only properties are provided by <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>:</p>
+<ul>
+<li><code>prop::process.PID_NUMBER</code>: the process ID of the process.</li>
+<li><code>prop::process.STDIN_POINTER</code>: an <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> that can be used to write input to the process, if it was created with <code>prop::process.CREATE_STDIN_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</li>
+<li><code>prop::process.STDOUT_POINTER</code>: a non-blocking <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> that can be used to read output from the process, if it was created with <code>prop::process.CREATE_STDOUT_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</li>
+<li><code>prop::process.STDERR_POINTER</code>: a non-blocking <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> that can be used to read error output from the process, if it was created with <code>prop::process.CREATE_STDERR_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</li>
+<li><code>prop::process.BACKGROUND_BOOLEAN</code>: true if the process is running in the background.</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">process</td><td>the process to query. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a valid property ID on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga74bbbd5929c56e232e6d9afce4f4e570" name="ga74bbbd5929c56e232e6d9afce4f4e570"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga74bbbd5929c56e232e6d9afce4f4e570">&#9670;&#160;</a></span>GetProperties()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> SDL::Process::GetProperties </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The following read-only properties are provided by <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a>:</p>
+<ul>
+<li><code>prop::process.PID_NUMBER</code>: the process ID of the process.</li>
+<li><code>prop::process.STDIN_POINTER</code>: an <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> that can be used to write input to the process, if it was created with <code>prop::process.CREATE_STDIN_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</li>
+<li><code>prop::process.STDOUT_POINTER</code>: a non-blocking <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> that can be used to read output from the process, if it was created with <code>prop::process.CREATE_STDOUT_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</li>
+<li><code>prop::process.STDERR_POINTER</code>: a non-blocking <a class="el" href="classSDL_1_1IOStream.html" title="The read/write operation structure.">IOStream</a> that can be used to read error output from the process, if it was created with <code>prop::process.CREATE_STDERR_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</li>
+<li><code>prop::process.BACKGROUND_BOOLEAN</code>: true if the process is running in the background.</li>
+</ul>
+<dl class="section return"><dt>Returns</dt><dd>a valid property ID on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd></dl>
+
+</div>
+</div>
+<a id="gab9e4e00a880cc59359f37242dfd12594" name="gab9e4e00a880cc59359f37242dfd12594"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab9e4e00a880cc59359f37242dfd12594">&#9670;&#160;</a></span>Kill()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Process::Kill </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>force</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">force</td><td>true to terminate the process immediately, false to try to stop the process gracefully. In general you should try to stop the process gracefully first as terminating a process may leave it with half-written data or in some other unstable state. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gaabc040eac9eaf8ca6e1138bd6092e88c" title="Wait for a process to finish.">Process.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga11a05a95cb564b32d12c564488443214" name="ga11a05a95cb564b32d12c564488443214"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga11a05a95cb564b32d12c564488443214">&#9670;&#160;</a></span>KillProcess()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::KillProcess </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a>&#160;</td>
+          <td class="paramname"><em>process</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>force</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">process</td><td>The process to stop. </td></tr>
+    <tr><td class="paramname">force</td><td>true to terminate the process immediately, false to try to stop the process gracefully. In general you should try to stop the process gracefully first as terminating a process may leave it with half-written data or in some other unstable state. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gaabc040eac9eaf8ca6e1138bd6092e88c" title="Wait for a process to finish.">Process.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaf5a3a966477dd35bc72225f97a2ec6ec" name="gaf5a3a966477dd35bc72225f97a2ec6ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf5a3a966477dd35bc72225f97a2ec6ec">&#9670;&#160;</a></span>Read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1StringResult.html">StringResult</a> SDL::Process::Read </td>
+          <td>(</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>exitcode</em> = <code>nullptr</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If a process was created with I/O enabled, you can use this function to read the output. This function blocks until the process is complete, capturing all output, and providing the process exit code.</p>
+<p>The data is allocated with a zero byte at the end (null terminated) for convenience. This extra byte is not included in the value reported via <code>datasize</code>.</p>
+<p>The data should be freed with <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">exitcode</td><td>a pointer filled in with the process exit code if the process has exited, may be nullptr. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the data or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga5a59eb17bddeea20b5d8bfeddff25722" name="ga5a59eb17bddeea20b5d8bfeddff25722"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5a59eb17bddeea20b5d8bfeddff25722">&#9670;&#160;</a></span>ReadProcess()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1StringResult.html">StringResult</a> SDL::ReadProcess </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a>&#160;</td>
+          <td class="paramname"><em>process</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>exitcode</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If a process was created with I/O enabled, you can use this function to read the output. This function blocks until the process is complete, capturing all output, and providing the process exit code.</p>
+<p>The data is allocated with a zero byte at the end (null terminated) for convenience. This extra byte is not included in the value reported via <code>datasize</code>.</p>
+<p>The data should be freed with <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">process</td><td>The process to read. </td></tr>
+    <tr><td class="paramname">exitcode</td><td>a pointer filled in with the process exit code if the process has exited, may be nullptr. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the data or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaabc040eac9eaf8ca6e1138bd6092e88c" name="gaabc040eac9eaf8ca6e1138bd6092e88c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaabc040eac9eaf8ca6e1138bd6092e88c">&#9670;&#160;</a></span>Wait()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::Process::Wait </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>exitcode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This can be called multiple times to get the status of a process.</p>
+<p>The exit code will be the exit code of the process if it terminates normally, a negative signal if it terminated due to a signal, or -255 otherwise. It will not be changed if the process is still running.</p>
+<p>If you create a process with standard output piped to the application (<code>pipe_stdio</code> being true) then you should read all of the process output before calling <a class="el" href="group__CategoryProcess.html#gaabc040eac9eaf8ca6e1138bd6092e88c" title="Wait for a process to finish.">Process.Wait()</a>. If you don't do this the process might be blocked indefinitely waiting for output to be read and <a class="el" href="group__CategoryProcess.html#gaabc040eac9eaf8ca6e1138bd6092e88c" title="Wait for a process to finish.">Process.Wait()</a> will never return true;</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">block</td><td>If true, block until the process finishes; otherwise, report on the process' status. </td></tr>
+    <tr><td class="paramname">exitcode</td><td>a pointer filled in with the process exit code if the process has exited, may be nullptr. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the process exited, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gab9e4e00a880cc59359f37242dfd12594" title="Stop a process.">Process.Kill</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="gac726fe9e893843b39a1439e6370f66c8" name="gac726fe9e893843b39a1439e6370f66c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac726fe9e893843b39a1439e6370f66c8">&#9670;&#160;</a></span>WaitProcess()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::WaitProcess </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1ProcessParam.html">ProcessParam</a>&#160;</td>
+          <td class="paramname"><em>process</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>exitcode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This can be called multiple times to get the status of a process.</p>
+<p>The exit code will be the exit code of the process if it terminates normally, a negative signal if it terminated due to a signal, or -255 otherwise. It will not be changed if the process is still running.</p>
+<p>If you create a process with standard output piped to the application (<code>pipe_stdio</code> being true) then you should read all of the process output before calling <a class="el" href="group__CategoryProcess.html#gaabc040eac9eaf8ca6e1138bd6092e88c" title="Wait for a process to finish.">Process.Wait()</a>. If you don't do this the process might be blocked indefinitely waiting for output to be read and <a class="el" href="group__CategoryProcess.html#gaabc040eac9eaf8ca6e1138bd6092e88c" title="Wait for a process to finish.">Process.Wait()</a> will never return true;</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">process</td><td>The process to wait for. </td></tr>
+    <tr><td class="paramname">block</td><td>If true, block until the process finishes; otherwise, report on the process' status. </td></tr>
+    <tr><td class="paramname">exitcode</td><td>a pointer filled in with the process exit code if the process has exited, may be nullptr. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the process exited, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1Process.html#aed255fcce6bcaa4bb0df9aaccb203972" title="Default ctor.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#gab9e4e00a880cc59359f37242dfd12594" title="Stop a process.">Process.Kill</a> </dd>
+<dd>
+<a class="el" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110" title="Destroy a previously created process object.">Process.Destroy</a> </dd></dl>
 
 </div>
 </div>

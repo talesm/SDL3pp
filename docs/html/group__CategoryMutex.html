@@ -79,46 +79,46 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> offers several thread synchronization primitives.  
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> offers several thread synchronization primitives.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1MutexParam.html">SDL::MutexParam</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely wrap <a class="el" href="classSDL_1_1Mutex.html" title="A means to serialize access to a resource between threads.">Mutex</a> for non owning parameters.  <a href="structSDL_1_1MutexParam.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockParam.html">SDL::RWLockParam</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely wrap <a class="el" href="classSDL_1_1RWLock.html" title="A mutex that allows read-only threads to run in parallel.">RWLock</a> for non owning parameters.  <a href="structSDL_1_1RWLockParam.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreParam.html">SDL::SemaphoreParam</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely wrap <a class="el" href="classSDL_1_1Semaphore.html" title="A means to manage access to a resource, by count, between threads.">Semaphore</a> for non owning parameters.  <a href="structSDL_1_1SemaphoreParam.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ConditionParam.html">SDL::ConditionParam</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely wrap <a class="el" href="classSDL_1_1Condition.html" title="A means to block multiple threads until a condition is satisfied.">Condition</a> for non owning parameters.  <a href="structSDL_1_1ConditionParam.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Mutex.html">SDL::Mutex</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A means to serialize access to a resource between threads.  <a href="classSDL_1_1Mutex.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1MutexRef.html">SDL::MutexRef</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A means to serialize access to a resource between threads.  <a href="structSDL_1_1MutexRef.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semi-safe reference for <a class="el" href="classSDL_1_1Mutex.html" title="A means to serialize access to a resource between threads.">Mutex</a>.  <a href="structSDL_1_1MutexRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Mutex.html">SDL::Mutex</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned mutex.  <a href="structSDL_1_1Mutex.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1MutexUnsafe.html">SDL::MutexUnsafe</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to mutex.  <a href="structSDL_1_1MutexUnsafe.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1RWLock.html">SDL::RWLock</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A mutex that allows read-only threads to run in parallel.  <a href="classSDL_1_1RWLock.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockRef.html">SDL::RWLockRef</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A mutex that allows read-only threads to run in parallel.  <a href="structSDL_1_1RWLockRef.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semi-safe reference for <a class="el" href="classSDL_1_1RWLock.html" title="A mutex that allows read-only threads to run in parallel.">RWLock</a>.  <a href="structSDL_1_1RWLockRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLock.html">SDL::RWLock</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned rWLock.  <a href="structSDL_1_1RWLock.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockUnsafe.html">SDL::RWLockUnsafe</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to rWLock.  <a href="structSDL_1_1RWLockUnsafe.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Semaphore.html">SDL::Semaphore</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A means to manage access to a resource, by count, between threads.  <a href="classSDL_1_1Semaphore.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html">SDL::SemaphoreRef</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A means to manage access to a resource, by count, between threads.  <a href="structSDL_1_1SemaphoreRef.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semi-safe reference for <a class="el" href="classSDL_1_1Semaphore.html" title="A means to manage access to a resource, by count, between threads.">Semaphore</a>.  <a href="structSDL_1_1SemaphoreRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Semaphore.html">SDL::Semaphore</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned semaphore.  <a href="structSDL_1_1Semaphore.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreUnsafe.html">SDL::SemaphoreUnsafe</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to semaphore.  <a href="structSDL_1_1SemaphoreUnsafe.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Condition.html">SDL::Condition</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A means to block multiple threads until a condition is satisfied.  <a href="classSDL_1_1Condition.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ConditionRef.html">SDL::ConditionRef</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A means to block multiple threads until a condition is satisfied.  <a href="structSDL_1_1ConditionRef.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Condition.html">SDL::Condition</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned condition.  <a href="structSDL_1_1Condition.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ConditionUnsafe.html">SDL::ConditionUnsafe</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to condition.  <a href="structSDL_1_1ConditionUnsafe.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semi-safe reference for <a class="el" href="classSDL_1_1Condition.html" title="A means to block multiple threads until a condition is satisfied.">Condition</a>.  <a href="structSDL_1_1ConditionRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1InitState.html">SDL::InitState</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structure used for thread-safe initialization and shutdown.  <a href="structSDL_1_1InitState.html#details">More...</a><br /></td></tr>
@@ -126,52 +126,183 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga1cb6bafe32bf415e1f62acad65881bba" id="r_ga1cb6bafe32bf415e1f62acad65881bba"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga1cb6bafe32bf415e1f62acad65881bba">SDL::MutexShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Mutex.html">Mutex</a> &gt;</td></tr>
-<tr class="memdesc:ga1cb6bafe32bf415e1f62acad65881bba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared mutex.  <br /></td></tr>
-<tr class="separator:ga1cb6bafe32bf415e1f62acad65881bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9b88ea48a48d52bfc248ca856898c286" id="r_ga9b88ea48a48d52bfc248ca856898c286"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga9b88ea48a48d52bfc248ca856898c286">SDL::MutexWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Mutex.html">Mutex</a> &gt;</td></tr>
-<tr class="memdesc:ga9b88ea48a48d52bfc248ca856898c286"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared mutex.  <br /></td></tr>
-<tr class="separator:ga9b88ea48a48d52bfc248ca856898c286"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga04341aeacd10e7d42ac217bef263cdd0" id="r_ga04341aeacd10e7d42ac217bef263cdd0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga04341aeacd10e7d42ac217bef263cdd0">SDL::RWLockShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &gt;</td></tr>
-<tr class="memdesc:ga04341aeacd10e7d42ac217bef263cdd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared rWLock.  <br /></td></tr>
-<tr class="separator:ga04341aeacd10e7d42ac217bef263cdd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga68becba0a31a928a67644e5b998b6ce3" id="r_ga68becba0a31a928a67644e5b998b6ce3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga68becba0a31a928a67644e5b998b6ce3">SDL::RWLockWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &gt;</td></tr>
-<tr class="memdesc:ga68becba0a31a928a67644e5b998b6ce3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared rWLock.  <br /></td></tr>
-<tr class="separator:ga68becba0a31a928a67644e5b998b6ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga13ddbe63c1bc45c089ac7ebd05bcb1c7" id="r_ga13ddbe63c1bc45c089ac7ebd05bcb1c7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga13ddbe63c1bc45c089ac7ebd05bcb1c7">SDL::SemaphoreShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Semaphore.html">Semaphore</a> &gt;</td></tr>
-<tr class="memdesc:ga13ddbe63c1bc45c089ac7ebd05bcb1c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared semaphore.  <br /></td></tr>
-<tr class="separator:ga13ddbe63c1bc45c089ac7ebd05bcb1c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga409459af73bf12356b500c006eec61e9" id="r_ga409459af73bf12356b500c006eec61e9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga409459af73bf12356b500c006eec61e9">SDL::SemaphoreWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Semaphore.html">Semaphore</a> &gt;</td></tr>
-<tr class="memdesc:ga409459af73bf12356b500c006eec61e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared semaphore.  <br /></td></tr>
-<tr class="separator:ga409459af73bf12356b500c006eec61e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf4ef31750f4f87310c433b49ddc39eff" id="r_gaf4ef31750f4f87310c433b49ddc39eff"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gaf4ef31750f4f87310c433b49ddc39eff">SDL::ConditionShared</a> = <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt; <a class="el" href="structSDL_1_1Condition.html">Condition</a> &gt;</td></tr>
-<tr class="memdesc:gaf4ef31750f4f87310c433b49ddc39eff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared condition.  <br /></td></tr>
-<tr class="separator:gaf4ef31750f4f87310c433b49ddc39eff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac638b143b5bc916bf3bdae4f00a2877b" id="r_gac638b143b5bc916bf3bdae4f00a2877b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gac638b143b5bc916bf3bdae4f00a2877b">SDL::ConditionWeak</a> = <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt; <a class="el" href="structSDL_1_1Condition.html">Condition</a> &gt;</td></tr>
-<tr class="memdesc:gac638b143b5bc916bf3bdae4f00a2877b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared condition.  <br /></td></tr>
-<tr class="separator:gac638b143b5bc916bf3bdae4f00a2877b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac81abd5191b9c0c9c890dcd7f0901943" id="r_gac81abd5191b9c0c9c890dcd7f0901943"><td class="memItemLeft" align="right" valign="top"><a id="gac81abd5191b9c0c9c890dcd7f0901943" name="gac81abd5191b9c0c9c890dcd7f0901943"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MutexRaw</b> = SDL_Mutex *</td></tr>
+<tr class="separator:gac81abd5191b9c0c9c890dcd7f0901943"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3c734c5dff08f85c2cbede4744185ba3" id="r_ga3c734c5dff08f85c2cbede4744185ba3"><td class="memItemLeft" align="right" valign="top"><a id="ga3c734c5dff08f85c2cbede4744185ba3" name="ga3c734c5dff08f85c2cbede4744185ba3"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::RWLockRaw</b> = SDL_RWLock *</td></tr>
+<tr class="separator:ga3c734c5dff08f85c2cbede4744185ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga72a2f1d3b9b5c5390e6b8b0590a98b9c" id="r_ga72a2f1d3b9b5c5390e6b8b0590a98b9c"><td class="memItemLeft" align="right" valign="top"><a id="ga72a2f1d3b9b5c5390e6b8b0590a98b9c" name="ga72a2f1d3b9b5c5390e6b8b0590a98b9c"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::SemaphoreRaw</b> = SDL_Semaphore *</td></tr>
+<tr class="separator:ga72a2f1d3b9b5c5390e6b8b0590a98b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga670a2537f9e853749d60e358d891ad65" id="r_ga670a2537f9e853749d60e358d891ad65"><td class="memItemLeft" align="right" valign="top"><a id="ga670a2537f9e853749d60e358d891ad65" name="ga670a2537f9e853749d60e358d891ad65"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::ConditionRaw</b> = SDL_Condition *</td></tr>
+<tr class="separator:ga670a2537f9e853749d60e358d891ad65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga419244d716f96b87d995e7288bcba421" id="r_ga419244d716f96b87d995e7288bcba421"><td class="memItemLeft" align="right" valign="top"><a id="ga419244d716f96b87d995e7288bcba421" name="ga419244d716f96b87d995e7288bcba421"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::InitStateRaw</b> = SDL_InitState</td></tr>
+<tr class="separator:ga419244d716f96b87d995e7288bcba421"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4d35138460939f8f2b58769e2bd54851" id="r_ga4d35138460939f8f2b58769e2bd54851"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga4d35138460939f8f2b58769e2bd54851">SDL::InitStatus</a> = SDL_InitStatus</td></tr>
 <tr class="memdesc:ga4d35138460939f8f2b58769e2bd54851"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current status of an <a class="el" href="structSDL_1_1InitState.html" title="A structure used for thread-safe initialization and shutdown.">InitState</a> structure.  <br /></td></tr>
 <tr class="separator:ga4d35138460939f8f2b58769e2bd54851"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gaea008358fa70d3ff433ad3a81e5c4a63" id="r_gaea008358fa70d3ff433ad3a81e5c4a63"><td class="memItemLeft" align="right" valign="top"><a id="gaea008358fa70d3ff433ad3a81e5c4a63" name="gaea008358fa70d3ff433ad3a81e5c4a63"></a>
-<a class="el" href="group__CategoryMutex.html#ga1cb6bafe32bf415e1f62acad65881bba">MutexShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Mutex::share</b> ()</td></tr>
-<tr class="memdesc:gaea008358fa70d3ff433ad3a81e5c4a63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this mutex into a MutexShared. <br /></td></tr>
-<tr class="separator:gaea008358fa70d3ff433ad3a81e5c4a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga05ccdc14b3cbcfd8cdb2574ca6c66a97" id="r_ga05ccdc14b3cbcfd8cdb2574ca6c66a97"><td class="memItemLeft" align="right" valign="top"><a id="ga05ccdc14b3cbcfd8cdb2574ca6c66a97" name="ga05ccdc14b3cbcfd8cdb2574ca6c66a97"></a>
-<a class="el" href="group__CategoryMutex.html#ga04341aeacd10e7d42ac217bef263cdd0">RWLockShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::RWLock::share</b> ()</td></tr>
-<tr class="memdesc:ga05ccdc14b3cbcfd8cdb2574ca6c66a97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this rWLock into a RWLockShared. <br /></td></tr>
-<tr class="separator:ga05ccdc14b3cbcfd8cdb2574ca6c66a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4ad49be5c4e7c1d1f4594ae47c6b5874" id="r_ga4ad49be5c4e7c1d1f4594ae47c6b5874"><td class="memItemLeft" align="right" valign="top"><a id="ga4ad49be5c4e7c1d1f4594ae47c6b5874" name="ga4ad49be5c4e7c1d1f4594ae47c6b5874"></a>
-<a class="el" href="group__CategoryMutex.html#ga13ddbe63c1bc45c089ac7ebd05bcb1c7">SemaphoreShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Semaphore::share</b> ()</td></tr>
-<tr class="memdesc:ga4ad49be5c4e7c1d1f4594ae47c6b5874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this semaphore into a SemaphoreShared. <br /></td></tr>
-<tr class="separator:ga4ad49be5c4e7c1d1f4594ae47c6b5874"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac5ac3885cace6ffbbb11704ff9cec6db" id="r_gac5ac3885cace6ffbbb11704ff9cec6db"><td class="memItemLeft" align="right" valign="top"><a id="gac5ac3885cace6ffbbb11704ff9cec6db" name="gac5ac3885cace6ffbbb11704ff9cec6db"></a>
-<a class="el" href="group__CategoryMutex.html#gaf4ef31750f4f87310c433b49ddc39eff">ConditionShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Condition::share</b> ()</td></tr>
-<tr class="memdesc:gac5ac3885cace6ffbbb11704ff9cec6db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move this condition into a ConditionShared. <br /></td></tr>
-<tr class="separator:gac5ac3885cace6ffbbb11704ff9cec6db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga286ff79ca381dece6e7c98b7f461f85f" id="r_ga286ff79ca381dece6e7c98b7f461f85f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Mutex.html">Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga286ff79ca381dece6e7c98b7f461f85f">SDL::CreateMutex</a> ()</td></tr>
+<tr class="memdesc:ga286ff79ca381dece6e7c98b7f461f85f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new mutex.  <br /></td></tr>
+<tr class="separator:ga286ff79ca381dece6e7c98b7f461f85f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1908a7c56b4d4821e339ee7ba3be9fdd" id="r_ga1908a7c56b4d4821e339ee7ba3be9fdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga1908a7c56b4d4821e339ee7ba3be9fdd">SDL::LockMutex</a> (<a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a> mutex)</td></tr>
+<tr class="memdesc:ga1908a7c56b4d4821e339ee7ba3be9fdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock the mutex.  <br /></td></tr>
+<tr class="separator:ga1908a7c56b4d4821e339ee7ba3be9fdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7dd0b9cd6a0f71ce44814c91867ced56" id="r_ga7dd0b9cd6a0f71ce44814c91867ced56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga7dd0b9cd6a0f71ce44814c91867ced56">SDL::TryLockMutex</a> (<a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a> mutex)</td></tr>
+<tr class="memdesc:ga7dd0b9cd6a0f71ce44814c91867ced56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a mutex without blocking.  <br /></td></tr>
+<tr class="separator:ga7dd0b9cd6a0f71ce44814c91867ced56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ba263985e60f123d9a97e17c338b07f" id="r_ga4ba263985e60f123d9a97e17c338b07f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga4ba263985e60f123d9a97e17c338b07f">SDL::UnlockMutex</a> (<a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a> mutex)</td></tr>
+<tr class="memdesc:ga4ba263985e60f123d9a97e17c338b07f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlock the mutex.  <br /></td></tr>
+<tr class="separator:ga4ba263985e60f123d9a97e17c338b07f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8605a37610cb22e47c5fc2fc7ed88c21" id="r_ga8605a37610cb22e47c5fc2fc7ed88c21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga8605a37610cb22e47c5fc2fc7ed88c21">SDL::DestroyMutex</a> (MutexRaw mutex)</td></tr>
+<tr class="memdesc:ga8605a37610cb22e47c5fc2fc7ed88c21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a mutex created with <a class="el" href="classSDL_1_1Mutex.html#a5efc976c19ab75420cc30b00d4317bc4" title="Create a new mutex.">Mutex.Mutex()</a>.  <br /></td></tr>
+<tr class="separator:ga8605a37610cb22e47c5fc2fc7ed88c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac51718371ff305e3442e924ab2ae07b2" id="r_gac51718371ff305e3442e924ab2ae07b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1RWLock.html">RWLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gac51718371ff305e3442e924ab2ae07b2">SDL::CreateRWLock</a> ()</td></tr>
+<tr class="memdesc:gac51718371ff305e3442e924ab2ae07b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new read/write lock.  <br /></td></tr>
+<tr class="separator:gac51718371ff305e3442e924ab2ae07b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae79c96466c3a7a464a32878fcb5bdaa2" id="r_gae79c96466c3a7a464a32878fcb5bdaa2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gae79c96466c3a7a464a32878fcb5bdaa2">SDL::LockRWLockForReading</a> (<a class="el" href="structSDL_1_1RWLockParam.html">RWLockParam</a> rwlock)</td></tr>
+<tr class="memdesc:gae79c96466c3a7a464a32878fcb5bdaa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock the read/write lock for <em>read only</em> operations.  <br /></td></tr>
+<tr class="separator:gae79c96466c3a7a464a32878fcb5bdaa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9594c2b9f24fbc38515baacd90dca846" id="r_ga9594c2b9f24fbc38515baacd90dca846"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga9594c2b9f24fbc38515baacd90dca846">SDL::LockRWLockForWriting</a> (<a class="el" href="structSDL_1_1RWLockParam.html">RWLockParam</a> rwlock)</td></tr>
+<tr class="memdesc:ga9594c2b9f24fbc38515baacd90dca846"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock the read/write lock for <em>write</em> operations.  <br /></td></tr>
+<tr class="separator:ga9594c2b9f24fbc38515baacd90dca846"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga39d8ca117d0586a6e47141f29cdf2a9d" id="r_ga39d8ca117d0586a6e47141f29cdf2a9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga39d8ca117d0586a6e47141f29cdf2a9d">SDL::TryLockRWLockForReading</a> (<a class="el" href="structSDL_1_1RWLockParam.html">RWLockParam</a> rwlock)</td></tr>
+<tr class="memdesc:ga39d8ca117d0586a6e47141f29cdf2a9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a read/write lock <em>for reading</em> without blocking.  <br /></td></tr>
+<tr class="separator:ga39d8ca117d0586a6e47141f29cdf2a9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace1b357bca906a69d4a77e8699b67bf0" id="r_gace1b357bca906a69d4a77e8699b67bf0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gace1b357bca906a69d4a77e8699b67bf0">SDL::TryLockRWLockForWriting</a> (<a class="el" href="structSDL_1_1RWLockParam.html">RWLockParam</a> rwlock)</td></tr>
+<tr class="memdesc:gace1b357bca906a69d4a77e8699b67bf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a read/write lock <em>for writing</em> without blocking.  <br /></td></tr>
+<tr class="separator:gace1b357bca906a69d4a77e8699b67bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga798d70f756d0573eb824ca4ed36c7a10" id="r_ga798d70f756d0573eb824ca4ed36c7a10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga798d70f756d0573eb824ca4ed36c7a10">SDL::UnlockRWLock</a> (<a class="el" href="structSDL_1_1RWLockParam.html">RWLockParam</a> rwlock)</td></tr>
+<tr class="memdesc:ga798d70f756d0573eb824ca4ed36c7a10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlock the read/write lock.  <br /></td></tr>
+<tr class="separator:ga798d70f756d0573eb824ca4ed36c7a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4f2c8395535275b7f3f1202733e4c7a4" id="r_ga4f2c8395535275b7f3f1202733e4c7a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga4f2c8395535275b7f3f1202733e4c7a4">SDL::DestroyRWLock</a> (RWLockRaw rwlock)</td></tr>
+<tr class="memdesc:ga4f2c8395535275b7f3f1202733e4c7a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="classSDL_1_1RWLock.html#a8dcdd21f17d07913492090ed97b44b91" title="Create a new read/write lock.">RWLock.RWLock()</a>.  <br /></td></tr>
+<tr class="separator:ga4f2c8395535275b7f3f1202733e4c7a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9388756ce864bdbdaa6768a7630adc7a" id="r_ga9388756ce864bdbdaa6768a7630adc7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Semaphore.html">Semaphore</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga9388756ce864bdbdaa6768a7630adc7a">SDL::CreateSemaphore</a> (<a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> initial_value)</td></tr>
+<tr class="memdesc:ga9388756ce864bdbdaa6768a7630adc7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a semaphore.  <br /></td></tr>
+<tr class="separator:ga9388756ce864bdbdaa6768a7630adc7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacfc0cd78e7f6828b2e03dba8268fd38f" id="r_gacfc0cd78e7f6828b2e03dba8268fd38f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gacfc0cd78e7f6828b2e03dba8268fd38f">SDL::DestroySemaphore</a> (SemaphoreRaw sem)</td></tr>
+<tr class="memdesc:gacfc0cd78e7f6828b2e03dba8268fd38f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a semaphore.  <br /></td></tr>
+<tr class="separator:gacfc0cd78e7f6828b2e03dba8268fd38f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafd996516f0658713da5f43ef49c5a6c2" id="r_gafd996516f0658713da5f43ef49c5a6c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gafd996516f0658713da5f43ef49c5a6c2">SDL::WaitSemaphore</a> (<a class="el" href="structSDL_1_1SemaphoreParam.html">SemaphoreParam</a> sem)</td></tr>
+<tr class="memdesc:gafd996516f0658713da5f43ef49c5a6c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a semaphore has a positive value and then decrements it.  <br /></td></tr>
+<tr class="separator:gafd996516f0658713da5f43ef49c5a6c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1ab136960d54273366e66aa63a94fce1" id="r_ga1ab136960d54273366e66aa63a94fce1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga1ab136960d54273366e66aa63a94fce1">SDL::TryWaitSemaphore</a> (<a class="el" href="structSDL_1_1SemaphoreParam.html">SemaphoreParam</a> sem)</td></tr>
+<tr class="memdesc:ga1ab136960d54273366e66aa63a94fce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">See if a semaphore has a positive value and decrement it if it does.  <br /></td></tr>
+<tr class="separator:ga1ab136960d54273366e66aa63a94fce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3d5b6f09b59e6e13d83f12640830b693" id="r_ga3d5b6f09b59e6e13d83f12640830b693"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga3d5b6f09b59e6e13d83f12640830b693">SDL::WaitSemaphoreTimeout</a> (<a class="el" href="structSDL_1_1SemaphoreParam.html">SemaphoreParam</a> sem, std::chrono::milliseconds timeout)</td></tr>
+<tr class="memdesc:ga3d5b6f09b59e6e13d83f12640830b693"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a semaphore has a positive value and then decrements it.  <br /></td></tr>
+<tr class="separator:ga3d5b6f09b59e6e13d83f12640830b693"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga33ac0cd365ea4db06e7a6fc5e8900206" id="r_ga33ac0cd365ea4db06e7a6fc5e8900206"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga33ac0cd365ea4db06e7a6fc5e8900206">SDL::SignalSemaphore</a> (<a class="el" href="structSDL_1_1SemaphoreParam.html">SemaphoreParam</a> sem)</td></tr>
+<tr class="memdesc:ga33ac0cd365ea4db06e7a6fc5e8900206"><td class="mdescLeft">&#160;</td><td class="mdescRight">Atomically increment a semaphore's value and wake waiting threads.  <br /></td></tr>
+<tr class="separator:ga33ac0cd365ea4db06e7a6fc5e8900206"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga075d2da6d0259354804967315f1b92a7" id="r_ga075d2da6d0259354804967315f1b92a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga075d2da6d0259354804967315f1b92a7">SDL::GetSemaphoreValue</a> (<a class="el" href="structSDL_1_1SemaphoreParam.html">SemaphoreParam</a> sem)</td></tr>
+<tr class="memdesc:ga075d2da6d0259354804967315f1b92a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current value of a semaphore.  <br /></td></tr>
+<tr class="separator:ga075d2da6d0259354804967315f1b92a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ec39ca43769d4013d1e7520f4c0c223" id="r_ga4ec39ca43769d4013d1e7520f4c0c223"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Condition.html">Condition</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga4ec39ca43769d4013d1e7520f4c0c223">SDL::CreateCondition</a> ()</td></tr>
+<tr class="memdesc:ga4ec39ca43769d4013d1e7520f4c0c223"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a condition variable.  <br /></td></tr>
+<tr class="separator:ga4ec39ca43769d4013d1e7520f4c0c223"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaddad56bd3ae8d86f1c031f9ea23dfa62" id="r_gaddad56bd3ae8d86f1c031f9ea23dfa62"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gaddad56bd3ae8d86f1c031f9ea23dfa62">SDL::DestroyCondition</a> (ConditionRaw cond)</td></tr>
+<tr class="memdesc:gaddad56bd3ae8d86f1c031f9ea23dfa62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a condition variable.  <br /></td></tr>
+<tr class="separator:gaddad56bd3ae8d86f1c031f9ea23dfa62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga917c2f129f4f36477752a7aaddc4fca0" id="r_ga917c2f129f4f36477752a7aaddc4fca0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga917c2f129f4f36477752a7aaddc4fca0">SDL::SignalCondition</a> (<a class="el" href="structSDL_1_1ConditionParam.html">ConditionParam</a> cond)</td></tr>
+<tr class="memdesc:ga917c2f129f4f36477752a7aaddc4fca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restart one of the threads that are waiting on the condition variable.  <br /></td></tr>
+<tr class="separator:ga917c2f129f4f36477752a7aaddc4fca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga61368a7b58cc90f359c5b713837c4ca3" id="r_ga61368a7b58cc90f359c5b713837c4ca3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga61368a7b58cc90f359c5b713837c4ca3">SDL::BroadcastCondition</a> (<a class="el" href="structSDL_1_1ConditionParam.html">ConditionParam</a> cond)</td></tr>
+<tr class="memdesc:ga61368a7b58cc90f359c5b713837c4ca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restart all threads that are waiting on the condition variable.  <br /></td></tr>
+<tr class="separator:ga61368a7b58cc90f359c5b713837c4ca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeedb3238b49f8d8a894e5ea7aa3724c3" id="r_gaeedb3238b49f8d8a894e5ea7aa3724c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gaeedb3238b49f8d8a894e5ea7aa3724c3">SDL::WaitCondition</a> (<a class="el" href="structSDL_1_1ConditionParam.html">ConditionParam</a> cond, <a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a> mutex)</td></tr>
+<tr class="memdesc:gaeedb3238b49f8d8a894e5ea7aa3724c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a condition variable is signaled.  <br /></td></tr>
+<tr class="separator:gaeedb3238b49f8d8a894e5ea7aa3724c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad52a36348f6505e88c21d923cd25ae4d" id="r_gad52a36348f6505e88c21d923cd25ae4d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gad52a36348f6505e88c21d923cd25ae4d">SDL::WaitConditionTimeout</a> (<a class="el" href="structSDL_1_1ConditionParam.html">ConditionParam</a> cond, <a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a> mutex, std::chrono::milliseconds timeout)</td></tr>
+<tr class="memdesc:gad52a36348f6505e88c21d923cd25ae4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a condition variable is signaled or a certain time has passed.  <br /></td></tr>
+<tr class="separator:gad52a36348f6505e88c21d923cd25ae4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga53842ff6b42b05fe74be300406ce7f62" id="r_ga53842ff6b42b05fe74be300406ce7f62"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga53842ff6b42b05fe74be300406ce7f62">SDL::ShouldInit</a> (InitStateRaw *state)</td></tr>
+<tr class="memdesc:ga53842ff6b42b05fe74be300406ce7f62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether initialization should be done.  <br /></td></tr>
+<tr class="separator:ga53842ff6b42b05fe74be300406ce7f62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga03368e3cc612edad3a41d70f0ca5066c" id="r_ga03368e3cc612edad3a41d70f0ca5066c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga03368e3cc612edad3a41d70f0ca5066c">SDL::ShouldQuit</a> (InitStateRaw *state)</td></tr>
+<tr class="memdesc:ga03368e3cc612edad3a41d70f0ca5066c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether cleanup should be done.  <br /></td></tr>
+<tr class="separator:ga03368e3cc612edad3a41d70f0ca5066c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad7d2324e6c8ca8f59798c9b89d5cf211" id="r_gad7d2324e6c8ca8f59798c9b89d5cf211"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gad7d2324e6c8ca8f59798c9b89d5cf211">SDL::SetInitialized</a> (InitStateRaw *state, bool initialized)</td></tr>
+<tr class="memdesc:gad7d2324e6c8ca8f59798c9b89d5cf211"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finish an initialization state transition.  <br /></td></tr>
+<tr class="separator:gad7d2324e6c8ca8f59798c9b89d5cf211"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaad5af515507a4ab5944b93716098ceb0" id="r_gaad5af515507a4ab5944b93716098ceb0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gaad5af515507a4ab5944b93716098ceb0">SDL::Mutex::Lock</a> ()</td></tr>
+<tr class="memdesc:gaad5af515507a4ab5944b93716098ceb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock the mutex.  <br /></td></tr>
+<tr class="separator:gaad5af515507a4ab5944b93716098ceb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4387a947dc87dd0d81d4892898a33c94" id="r_ga4387a947dc87dd0d81d4892898a33c94"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga4387a947dc87dd0d81d4892898a33c94">SDL::Mutex::TryLock</a> ()</td></tr>
+<tr class="memdesc:ga4387a947dc87dd0d81d4892898a33c94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a mutex without blocking.  <br /></td></tr>
+<tr class="separator:ga4387a947dc87dd0d81d4892898a33c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga43f3620a42689aca56a9810c97a218f1" id="r_ga43f3620a42689aca56a9810c97a218f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga43f3620a42689aca56a9810c97a218f1">SDL::Mutex::Unlock</a> ()</td></tr>
+<tr class="memdesc:ga43f3620a42689aca56a9810c97a218f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlock the mutex.  <br /></td></tr>
+<tr class="separator:ga43f3620a42689aca56a9810c97a218f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3e550224c844debb0b559ae208ed0b12" id="r_ga3e550224c844debb0b559ae208ed0b12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga3e550224c844debb0b559ae208ed0b12">SDL::Mutex::Destroy</a> ()</td></tr>
+<tr class="memdesc:ga3e550224c844debb0b559ae208ed0b12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a mutex created with <a class="el" href="classSDL_1_1Mutex.html#a5efc976c19ab75420cc30b00d4317bc4" title="Create a new mutex.">Mutex.Mutex()</a>.  <br /></td></tr>
+<tr class="separator:ga3e550224c844debb0b559ae208ed0b12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6fd30256700ceee59b352de8a098d88c" id="r_ga6fd30256700ceee59b352de8a098d88c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga6fd30256700ceee59b352de8a098d88c">SDL::RWLock::LockForReading</a> ()</td></tr>
+<tr class="memdesc:ga6fd30256700ceee59b352de8a098d88c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock the read/write lock for <em>read only</em> operations.  <br /></td></tr>
+<tr class="separator:ga6fd30256700ceee59b352de8a098d88c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad00b0645ab619b825db9a52d75ff3731" id="r_gad00b0645ab619b825db9a52d75ff3731"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gad00b0645ab619b825db9a52d75ff3731">SDL::RWLock::LockForWriting</a> ()</td></tr>
+<tr class="memdesc:gad00b0645ab619b825db9a52d75ff3731"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock the read/write lock for <em>write</em> operations.  <br /></td></tr>
+<tr class="separator:gad00b0645ab619b825db9a52d75ff3731"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad86be81e139760604168161a5a252731" id="r_gad86be81e139760604168161a5a252731"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gad86be81e139760604168161a5a252731">SDL::RWLock::TryLockForReading</a> ()</td></tr>
+<tr class="memdesc:gad86be81e139760604168161a5a252731"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a read/write lock <em>for reading</em> without blocking.  <br /></td></tr>
+<tr class="separator:gad86be81e139760604168161a5a252731"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1e09f752575c19c972d1fcbcb3571f63" id="r_ga1e09f752575c19c972d1fcbcb3571f63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga1e09f752575c19c972d1fcbcb3571f63">SDL::RWLock::TryLockForWriting</a> ()</td></tr>
+<tr class="memdesc:ga1e09f752575c19c972d1fcbcb3571f63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a read/write lock <em>for writing</em> without blocking.  <br /></td></tr>
+<tr class="separator:ga1e09f752575c19c972d1fcbcb3571f63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga132f3e9ba3722f3793030b6a170439a4" id="r_ga132f3e9ba3722f3793030b6a170439a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga132f3e9ba3722f3793030b6a170439a4">SDL::RWLock::Unlock</a> ()</td></tr>
+<tr class="memdesc:ga132f3e9ba3722f3793030b6a170439a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlock the read/write lock.  <br /></td></tr>
+<tr class="separator:ga132f3e9ba3722f3793030b6a170439a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad3171fab613668ec474642da3b0ecbc0" id="r_gad3171fab613668ec474642da3b0ecbc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gad3171fab613668ec474642da3b0ecbc0">SDL::RWLock::Destroy</a> ()</td></tr>
+<tr class="memdesc:gad3171fab613668ec474642da3b0ecbc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="classSDL_1_1RWLock.html#a8dcdd21f17d07913492090ed97b44b91" title="Create a new read/write lock.">RWLock.RWLock()</a>.  <br /></td></tr>
+<tr class="separator:gad3171fab613668ec474642da3b0ecbc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab2a3b7e61e083c2b41e08c6e0dc5cc5f" id="r_gab2a3b7e61e083c2b41e08c6e0dc5cc5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gab2a3b7e61e083c2b41e08c6e0dc5cc5f">SDL::Semaphore::Destroy</a> ()</td></tr>
+<tr class="memdesc:gab2a3b7e61e083c2b41e08c6e0dc5cc5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a semaphore.  <br /></td></tr>
+<tr class="separator:gab2a3b7e61e083c2b41e08c6e0dc5cc5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9cce2f682ce1a121119c687d504980dc" id="r_ga9cce2f682ce1a121119c687d504980dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga9cce2f682ce1a121119c687d504980dc">SDL::Semaphore::Wait</a> ()</td></tr>
+<tr class="memdesc:ga9cce2f682ce1a121119c687d504980dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a semaphore has a positive value and then decrements it.  <br /></td></tr>
+<tr class="separator:ga9cce2f682ce1a121119c687d504980dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3827d4dbe781c673a7c344291e1b253c" id="r_ga3827d4dbe781c673a7c344291e1b253c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga3827d4dbe781c673a7c344291e1b253c">SDL::Semaphore::TryWait</a> ()</td></tr>
+<tr class="memdesc:ga3827d4dbe781c673a7c344291e1b253c"><td class="mdescLeft">&#160;</td><td class="mdescRight">See if a semaphore has a positive value and decrement it if it does.  <br /></td></tr>
+<tr class="separator:ga3827d4dbe781c673a7c344291e1b253c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8fa14a1fe3a318cc222405fab9480b13" id="r_ga8fa14a1fe3a318cc222405fab9480b13"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga8fa14a1fe3a318cc222405fab9480b13">SDL::Semaphore::WaitTimeout</a> (std::chrono::milliseconds timeout)</td></tr>
+<tr class="memdesc:ga8fa14a1fe3a318cc222405fab9480b13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a semaphore has a positive value and then decrements it.  <br /></td></tr>
+<tr class="separator:ga8fa14a1fe3a318cc222405fab9480b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac24e922f6570dcf2ac6c6292cfa6572d" id="r_gac24e922f6570dcf2ac6c6292cfa6572d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gac24e922f6570dcf2ac6c6292cfa6572d">SDL::Semaphore::Signal</a> ()</td></tr>
+<tr class="memdesc:gac24e922f6570dcf2ac6c6292cfa6572d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Atomically increment a semaphore's value and wake waiting threads.  <br /></td></tr>
+<tr class="separator:gac24e922f6570dcf2ac6c6292cfa6572d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga72af6bd5507e67097aace0329eae9547" id="r_ga72af6bd5507e67097aace0329eae9547"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga72af6bd5507e67097aace0329eae9547">SDL::Semaphore::GetValue</a> () const</td></tr>
+<tr class="memdesc:ga72af6bd5507e67097aace0329eae9547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current value of a semaphore.  <br /></td></tr>
+<tr class="separator:ga72af6bd5507e67097aace0329eae9547"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae6150d641d97d92378f6af6ed9112077" id="r_gae6150d641d97d92378f6af6ed9112077"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gae6150d641d97d92378f6af6ed9112077">SDL::Condition::Destroy</a> ()</td></tr>
+<tr class="memdesc:gae6150d641d97d92378f6af6ed9112077"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a condition variable.  <br /></td></tr>
+<tr class="separator:gae6150d641d97d92378f6af6ed9112077"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2834f691abac7d403a66ddbcdc6a7dcc" id="r_ga2834f691abac7d403a66ddbcdc6a7dcc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga2834f691abac7d403a66ddbcdc6a7dcc">SDL::Condition::Signal</a> ()</td></tr>
+<tr class="memdesc:ga2834f691abac7d403a66ddbcdc6a7dcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restart one of the threads that are waiting on the condition variable.  <br /></td></tr>
+<tr class="separator:ga2834f691abac7d403a66ddbcdc6a7dcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab317b9ce9c64aeb87f53c4cc0acee380" id="r_gab317b9ce9c64aeb87f53c4cc0acee380"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gab317b9ce9c64aeb87f53c4cc0acee380">SDL::Condition::Broadcast</a> ()</td></tr>
+<tr class="memdesc:gab317b9ce9c64aeb87f53c4cc0acee380"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restart all threads that are waiting on the condition variable.  <br /></td></tr>
+<tr class="separator:gab317b9ce9c64aeb87f53c4cc0acee380"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1f3f75b35e2c53a6bba3a3e655af1ddb" id="r_ga1f3f75b35e2c53a6bba3a3e655af1ddb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga1f3f75b35e2c53a6bba3a3e655af1ddb">SDL::Condition::Wait</a> (<a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a> mutex)</td></tr>
+<tr class="memdesc:ga1f3f75b35e2c53a6bba3a3e655af1ddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a condition variable is signaled.  <br /></td></tr>
+<tr class="separator:ga1f3f75b35e2c53a6bba3a3e655af1ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab6dfb5158549a9219549acaac0cf6fd6" id="r_gab6dfb5158549a9219549acaac0cf6fd6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gab6dfb5158549a9219549acaac0cf6fd6">SDL::Condition::WaitTimeout</a> (<a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a> mutex, std::chrono::milliseconds timeout)</td></tr>
+<tr class="memdesc:gab6dfb5158549a9219549acaac0cf6fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a condition variable is signaled or a certain time has passed.  <br /></td></tr>
+<tr class="separator:gab6dfb5158549a9219549acaac0cf6fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga88ae3e9ca5be7ce111d7bf7f25265800" id="r_ga88ae3e9ca5be7ce111d7bf7f25265800"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga88ae3e9ca5be7ce111d7bf7f25265800">SDL::InitState::ShouldInit</a> ()</td></tr>
+<tr class="memdesc:ga88ae3e9ca5be7ce111d7bf7f25265800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether initialization should be done.  <br /></td></tr>
+<tr class="separator:ga88ae3e9ca5be7ce111d7bf7f25265800"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6cdf5fc9261968650987909aa26c8638" id="r_ga6cdf5fc9261968650987909aa26c8638"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#ga6cdf5fc9261968650987909aa26c8638">SDL::InitState::ShouldQuit</a> ()</td></tr>
+<tr class="memdesc:ga6cdf5fc9261968650987909aa26c8638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether cleanup should be done.  <br /></td></tr>
+<tr class="separator:ga6cdf5fc9261968650987909aa26c8638"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf53fbb15cf6d3cc7b6d772f34d1aa6bb" id="r_gaf53fbb15cf6d3cc7b6d772f34d1aa6bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMutex.html#gaf53fbb15cf6d3cc7b6d772f34d1aa6bb">SDL::InitState::SetInitialized</a> (bool initialized)</td></tr>
+<tr class="memdesc:gaf53fbb15cf6d3cc7b6d772f34d1aa6bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finish an initialization state transition.  <br /></td></tr>
+<tr class="separator:gaf53fbb15cf6d3cc7b6d772f34d1aa6bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -191,49 +322,13 @@ Variables</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>This document can't cover the complicated topic of thread safety, but reading up on what each of these primitives are, why they are useful, and how to correctly use them is vital to writing correct and safe multithreaded programs.</p>
 <ul>
-<li>Mutexes: <a class="el" href="structSDL_1_1Mutex.html#a71443f08ef2457078fdc48010a0adc59" title="Create a new mutex.">Mutex.Create()</a></li>
-<li>Read/Write locks: <a class="el" href="structSDL_1_1RWLock.html#a41ece4523b5f948bb19fcad38adaa254" title="Create a new read/write lock.">RWLock.Create()</a></li>
-<li>Semaphores: <a class="el" href="structSDL_1_1Semaphore.html#af3fce326bd0690af1ab3d656e1be2302" title="Create a semaphore.">Semaphore.Create()</a></li>
-<li><a class="el" href="structSDL_1_1Condition.html" title="Handle to an owned condition.">Condition</a> variables: <a class="el" href="structSDL_1_1Condition.html#aa70e6c5acbd8b641ca2b32242697c628" title="Create a condition variable.">Condition.Create()</a></li>
+<li>Mutexes: <a class="el" href="classSDL_1_1Mutex.html#a5efc976c19ab75420cc30b00d4317bc4" title="Create a new mutex.">Mutex.Mutex()</a></li>
+<li>Read/Write locks: <a class="el" href="classSDL_1_1RWLock.html#a8dcdd21f17d07913492090ed97b44b91" title="Create a new read/write lock.">RWLock.RWLock()</a></li>
+<li>Semaphores: <a class="el" href="classSDL_1_1Semaphore.html#a28052b76a8d36260588ad41747677a01" title="Default ctor.">Semaphore.Semaphore()</a></li>
+<li><a class="el" href="classSDL_1_1Condition.html" title="A means to block multiple threads until a condition is satisfied.">Condition</a> variables: <a class="el" href="classSDL_1_1Condition.html#a226cebe2073619b474e7c83dc5d7d264" title="Create a condition variable.">Condition.Condition()</a></li>
 </ul>
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> also offers a datatype, <a class="el" href="structSDL_1_1InitState.html" title="A structure used for thread-safe initialization and shutdown.">InitState</a>, which can be used to make sure only one thread initializes/deinitializes some resource that several threads might try to use for the first time simultaneously. </p>
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> also offers a datatype, <a class="el" href="structSDL_1_1InitState.html" title="A structure used for thread-safe initialization and shutdown.">InitState</a>, which can be used to make sure only one thread initializes/deinitializes some resource that several threads might try to use for the first time simultaneously. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="gaf4ef31750f4f87310c433b49ddc39eff" name="gaf4ef31750f4f87310c433b49ddc39eff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf4ef31750f4f87310c433b49ddc39eff">&#9670;&#160;</a></span>ConditionShared</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategoryMutex.html#gaf4ef31750f4f87310c433b49ddc39eff">SDL::ConditionShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Condition.html">Condition</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ConditionRef.html" title="A means to block multiple threads until a condition is satisfied.">ConditionRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1Condition.html" title="Handle to an owned condition.">Condition</a> </dd></dl>
-
-</div>
-</div>
-<a id="gac638b143b5bc916bf3bdae4f00a2877b" name="gac638b143b5bc916bf3bdae4f00a2877b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac638b143b5bc916bf3bdae4f00a2877b">&#9670;&#160;</a></span>ConditionWeak</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategoryMutex.html#gac638b143b5bc916bf3bdae4f00a2877b">SDL::ConditionWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Condition.html">Condition</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gaf4ef31750f4f87310c433b49ddc39eff" title="Handle to a shared condition.">ConditionShared</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1ConditionRef.html" title="A means to block multiple threads until a condition is satisfied.">ConditionRef</a> </dd></dl>
-
-</div>
-</div>
 <a id="ga4d35138460939f8f2b58769e2bd54851" name="ga4d35138460939f8f2b58769e2bd54851"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga4d35138460939f8f2b58769e2bd54851">&#9670;&#160;</a></span>InitStatus</h2>
 
@@ -245,115 +340,2010 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
-<a id="ga1cb6bafe32bf415e1f62acad65881bba" name="ga1cb6bafe32bf415e1f62acad65881bba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1cb6bafe32bf415e1f62acad65881bba">&#9670;&#160;</a></span>MutexShared</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategoryMutex.html#ga1cb6bafe32bf415e1f62acad65881bba">SDL::MutexShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Mutex.html">Mutex</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1MutexRef.html" title="A means to serialize access to a resource between threads.">MutexRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1Mutex.html" title="Handle to an owned mutex.">Mutex</a> </dd></dl>
-
-</div>
-</div>
-<a id="ga9b88ea48a48d52bfc248ca856898c286" name="ga9b88ea48a48d52bfc248ca856898c286"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9b88ea48a48d52bfc248ca856898c286">&#9670;&#160;</a></span>MutexWeak</h2>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="gab317b9ce9c64aeb87f53c4cc0acee380" name="gab317b9ce9c64aeb87f53c4cc0acee380"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab317b9ce9c64aeb87f53c4cc0acee380">&#9670;&#160;</a></span>Broadcast()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryMutex.html#ga9b88ea48a48d52bfc248ca856898c286">SDL::MutexWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Mutex.html">Mutex</a>&gt;</td>
+          <td class="memname">void SDL::Condition::Broadcast </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga1cb6bafe32bf415e1f62acad65881bba" title="Handle to a shared mutex.">MutexShared</a> </dd>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga2834f691abac7d403a66ddbcdc6a7dcc" title="Restart one of the threads that are waiting on the condition variable.">Condition.Signal</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1MutexRef.html" title="A means to serialize access to a resource between threads.">MutexRef</a> </dd></dl>
+<a class="el" href="group__CategoryMutex.html#ga1f3f75b35e2c53a6bba3a3e655af1ddb" title="Wait until a condition variable is signaled.">Condition.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gab6dfb5158549a9219549acaac0cf6fd6" title="Wait until a condition variable is signaled or a certain time has passed.">Condition.WaitTimeout</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga04341aeacd10e7d42ac217bef263cdd0" name="ga04341aeacd10e7d42ac217bef263cdd0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga04341aeacd10e7d42ac217bef263cdd0">&#9670;&#160;</a></span>RWLockShared</h2>
+<a id="ga61368a7b58cc90f359c5b713837c4ca3" name="ga61368a7b58cc90f359c5b713837c4ca3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga61368a7b58cc90f359c5b713837c4ca3">&#9670;&#160;</a></span>BroadcastCondition()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryMutex.html#ga04341aeacd10e7d42ac217bef263cdd0">SDL::RWLockShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1RWLock.html">RWLock</a>&gt;</td>
+          <td class="memname">void SDL::BroadcastCondition </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1ConditionParam.html">ConditionParam</a>&#160;</td>
+          <td class="paramname"><em>cond</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RWLockRef.html" title="A mutex that allows read-only threads to run in parallel.">RWLockRef</a> </dd>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cond</td><td>the condition variable to signal.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga2834f691abac7d403a66ddbcdc6a7dcc" title="Restart one of the threads that are waiting on the condition variable.">Condition.Signal</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1RWLock.html" title="Handle to an owned rWLock.">RWLock</a> </dd></dl>
+<a class="el" href="group__CategoryMutex.html#ga1f3f75b35e2c53a6bba3a3e655af1ddb" title="Wait until a condition variable is signaled.">Condition.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gab6dfb5158549a9219549acaac0cf6fd6" title="Wait until a condition variable is signaled or a certain time has passed.">Condition.WaitTimeout</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga68becba0a31a928a67644e5b998b6ce3" name="ga68becba0a31a928a67644e5b998b6ce3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga68becba0a31a928a67644e5b998b6ce3">&#9670;&#160;</a></span>RWLockWeak</h2>
+<a id="ga4ec39ca43769d4013d1e7520f4c0c223" name="ga4ec39ca43769d4013d1e7520f4c0c223"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4ec39ca43769d4013d1e7520f4c0c223">&#9670;&#160;</a></span>CreateCondition()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryMutex.html#ga68becba0a31a928a67644e5b998b6ce3">SDL::RWLockWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1RWLock.html">RWLock</a>&gt;</td>
+          <td class="memname"><a class="el" href="classSDL_1_1Condition.html">Condition</a> SDL::CreateCondition </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga04341aeacd10e7d42ac217bef263cdd0" title="Handle to a shared rWLock.">RWLockShared</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>a new condition variable or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gab317b9ce9c64aeb87f53c4cc0acee380" title="Restart all threads that are waiting on the condition variable.">Condition.Broadcast</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1RWLockRef.html" title="A mutex that allows read-only threads to run in parallel.">RWLockRef</a> </dd></dl>
+<a class="el" href="group__CategoryMutex.html#ga2834f691abac7d403a66ddbcdc6a7dcc" title="Restart one of the threads that are waiting on the condition variable.">Condition.Signal</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga1f3f75b35e2c53a6bba3a3e655af1ddb" title="Wait until a condition variable is signaled.">Condition.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gab6dfb5158549a9219549acaac0cf6fd6" title="Wait until a condition variable is signaled or a certain time has passed.">Condition.WaitTimeout</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gae6150d641d97d92378f6af6ed9112077" title="Destroy a condition variable.">Condition.Destroy</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga13ddbe63c1bc45c089ac7ebd05bcb1c7" name="ga13ddbe63c1bc45c089ac7ebd05bcb1c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga13ddbe63c1bc45c089ac7ebd05bcb1c7">&#9670;&#160;</a></span>SemaphoreShared</h2>
+<a id="ga286ff79ca381dece6e7c98b7f461f85f" name="ga286ff79ca381dece6e7c98b7f461f85f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga286ff79ca381dece6e7c98b7f461f85f">&#9670;&#160;</a></span>CreateMutex()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryMutex.html#ga13ddbe63c1bc45c089ac7ebd05bcb1c7">SDL::SemaphoreShared</a> = typedef <a class="el" href="classSDL_1_1ResourceShared.html">ResourceShared</a>&lt;<a class="el" href="structSDL_1_1Semaphore.html">Semaphore</a>&gt;</td>
+          <td class="memname"><a class="el" href="classSDL_1_1Mutex.html">Mutex</a> SDL::CreateMutex </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SemaphoreRef.html" title="A means to manage access to a resource, by count, between threads.">SemaphoreRef</a> </dd>
+<p>All newly-created mutexes begin in the <em>unlocked</em> state.</p>
+<p>Calls to <a class="el" href="group__CategoryMutex.html#gaad5af515507a4ab5944b93716098ceb0" title="Lock the mutex.">Mutex.Lock()</a> will not return while the mutex is locked by another thread. See <a class="el" href="group__CategoryMutex.html#ga4387a947dc87dd0d81d4892898a33c94" title="Try to lock a mutex without blocking.">Mutex.TryLock()</a> to attempt to lock without blocking.</p>
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> mutexes are reentrant.</p>
+<dl class="section return"><dt>Returns</dt><dd>the initialized and unlocked mutex or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga3e550224c844debb0b559ae208ed0b12" title="Destroy a mutex created with Mutex.Mutex().">Mutex.Destroy</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Semaphore.html" title="Handle to an owned semaphore.">Semaphore</a> </dd></dl>
+<a class="el" href="group__CategoryMutex.html#gaad5af515507a4ab5944b93716098ceb0" title="Lock the mutex.">Mutex.Lock</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga4387a947dc87dd0d81d4892898a33c94" title="Try to lock a mutex without blocking.">Mutex.TryLock</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga43f3620a42689aca56a9810c97a218f1" title="Unlock the mutex.">Mutex.Unlock</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga409459af73bf12356b500c006eec61e9" name="ga409459af73bf12356b500c006eec61e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga409459af73bf12356b500c006eec61e9">&#9670;&#160;</a></span>SemaphoreWeak</h2>
+<a id="gac51718371ff305e3442e924ab2ae07b2" name="gac51718371ff305e3442e924ab2ae07b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac51718371ff305e3442e924ab2ae07b2">&#9670;&#160;</a></span>CreateRWLock()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryMutex.html#ga409459af73bf12356b500c006eec61e9">SDL::SemaphoreWeak</a> = typedef <a class="el" href="classSDL_1_1ResourceWeak.html">ResourceWeak</a>&lt;<a class="el" href="structSDL_1_1Semaphore.html">Semaphore</a>&gt;</td>
+          <td class="memname"><a class="el" href="classSDL_1_1RWLock.html">RWLock</a> SDL::CreateRWLock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga13ddbe63c1bc45c089ac7ebd05bcb1c7" title="Handle to a shared semaphore.">SemaphoreShared</a> </dd>
+<p>A read/write lock is useful for situations where you have multiple threads trying to access a resource that is rarely updated. All threads requesting a read-only lock will be allowed to run in parallel; if a thread requests a write lock, it will be provided exclusive access. This makes it safe for multiple threads to use a resource at the same time if they promise not to change it, and when it has to be changed, the rwlock will serve as a gateway to make sure those changes can be made safely.</p>
+<p>In the right situation, a rwlock can be more efficient than a mutex, which only lets a single thread proceed at a time, even if it won't be modifying the data.</p>
+<p>All newly-created read/write locks begin in the <em>unlocked</em> state.</p>
+<p>Calls to <a class="el" href="group__CategoryMutex.html#ga6fd30256700ceee59b352de8a098d88c" title="Lock the read/write lock for read only operations.">RWLock.LockForReading()</a> and <a class="el" href="group__CategoryMutex.html#gad00b0645ab619b825db9a52d75ff3731" title="Lock the read/write lock for write operations.">RWLock.LockForWriting</a> will not return while the rwlock is locked <em>for writing</em> by another thread. See <a class="el" href="group__CategoryMutex.html#gad86be81e139760604168161a5a252731" title="Try to lock a read/write lock for reading without blocking.">RWLock.TryLockForReading()</a> and <a class="el" href="group__CategoryMutex.html#ga1e09f752575c19c972d1fcbcb3571f63" title="Try to lock a read/write lock for writing without blocking.">RWLock.TryLockForWriting()</a> to attempt to lock without blocking.</p>
+<p><a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> read/write locks are only recursive for read-only locks! They are not guaranteed to be fair, or provide access in a FIFO manner! They are not guaranteed to favor writers. You may not lock a rwlock for both read-only and write access at the same time from the same thread (so you can't promote your read-only lock to a write lock without unlocking first).</p>
+<dl class="section return"><dt>Returns</dt><dd>the initialized and unlocked read/write lock or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gad3171fab613668ec474642da3b0ecbc0" title="Destroy a read/write lock created with RWLock.RWLock().">RWLock.Destroy</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SemaphoreRef.html" title="A means to manage access to a resource, by count, between threads.">SemaphoreRef</a> </dd></dl>
+<a class="el" href="group__CategoryMutex.html#ga6fd30256700ceee59b352de8a098d88c" title="Lock the read/write lock for read only operations.">RWLock.LockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gad00b0645ab619b825db9a52d75ff3731" title="Lock the read/write lock for write operations.">RWLock.LockForWriting</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gad86be81e139760604168161a5a252731" title="Try to lock a read/write lock for reading without blocking.">RWLock.TryLockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga1e09f752575c19c972d1fcbcb3571f63" title="Try to lock a read/write lock for writing without blocking.">RWLock.TryLockForWriting</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga132f3e9ba3722f3793030b6a170439a4" title="Unlock the read/write lock.">RWLock.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga9388756ce864bdbdaa6768a7630adc7a" name="ga9388756ce864bdbdaa6768a7630adc7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9388756ce864bdbdaa6768a7630adc7a">&#9670;&#160;</a></span>CreateSemaphore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1Semaphore.html">Semaphore</a> SDL::CreateSemaphore </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td>
+          <td class="paramname"><em>initial_value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function creates a new semaphore and initializes it with the value <code>initial_value</code>. Each wait operation on the semaphore will atomically decrement the semaphore value and potentially block if the semaphore value is 0. Each post operation will atomically increment the semaphore value and wake waiting threads and allow them to retry the wait operation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">initial_value</td><td>the starting value of the semaphore. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new semaphore or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gab2a3b7e61e083c2b41e08c6e0dc5cc5f" title="Destroy a semaphore.">Semaphore.Destroy</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gac24e922f6570dcf2ac6c6292cfa6572d" title="Atomically increment a semaphore&#39;s value and wake waiting threads.">Semaphore.Signal</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga3827d4dbe781c673a7c344291e1b253c" title="See if a semaphore has a positive value and decrement it if it does.">Semaphore.TryWait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga72af6bd5507e67097aace0329eae9547" title="Get the current value of a semaphore.">Semaphore.GetValue</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga9cce2f682ce1a121119c687d504980dc" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga8fa14a1fe3a318cc222405fab9480b13" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.WaitTimeout</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga3e550224c844debb0b559ae208ed0b12" name="ga3e550224c844debb0b559ae208ed0b12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3e550224c844debb0b559ae208ed0b12">&#9670;&#160;</a></span>Destroy() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Mutex::Destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function must be called on any mutex that is no longer needed. Failure to destroy a mutex will result in a system memory or resource leak. While it is safe to destroy a mutex that is <em>unlocked</em>, it is not safe to attempt to destroy a locked mutex, and may result in undefined behavior depending on the platform.</p>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Mutex.html#ad0f7e723eb38e9b8b04616ff9e9bd19d" title="Constructs from MutexParam.">Mutex.Mutex</a> </dd></dl>
+
+</div>
+</div>
+<a id="gad3171fab613668ec474642da3b0ecbc0" name="gad3171fab613668ec474642da3b0ecbc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad3171fab613668ec474642da3b0ecbc0">&#9670;&#160;</a></span>Destroy() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::RWLock::Destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function must be called on any read/write lock that is no longer needed. Failure to destroy a rwlock will result in a system memory or resource leak. While it is safe to destroy a rwlock that is <em>unlocked</em>, it is not safe to attempt to destroy a locked rwlock, and may result in undefined behavior depending on the platform.</p>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1RWLock.html#a6818ef9cac4a1a725241cbe93363e95f" title="Constructs from RWLockParam.">RWLock.RWLock</a> </dd></dl>
+
+</div>
+</div>
+<a id="gab2a3b7e61e083c2b41e08c6e0dc5cc5f" name="gab2a3b7e61e083c2b41e08c6e0dc5cc5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab2a3b7e61e083c2b41e08c6e0dc5cc5f">&#9670;&#160;</a></span>Destroy() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Semaphore::Destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>It is not safe to destroy a semaphore if there are threads currently waiting on it.</p>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Semaphore.html#a28052b76a8d36260588ad41747677a01" title="Default ctor.">Semaphore.Semaphore</a> </dd></dl>
+
+</div>
+</div>
+<a id="gae6150d641d97d92378f6af6ed9112077" name="gae6150d641d97d92378f6af6ed9112077"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae6150d641d97d92378f6af6ed9112077">&#9670;&#160;</a></span>Destroy() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Condition::Destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Condition.html#ae87a9c45ccd82f2042130f566fcf2fbf" title="Constructs from ConditionParam.">Condition.Condition</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaddad56bd3ae8d86f1c031f9ea23dfa62" name="gaddad56bd3ae8d86f1c031f9ea23dfa62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaddad56bd3ae8d86f1c031f9ea23dfa62">&#9670;&#160;</a></span>DestroyCondition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::DestroyCondition </td>
+          <td>(</td>
+          <td class="paramtype">ConditionRaw&#160;</td>
+          <td class="paramname"><em>cond</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cond</td><td>the condition variable to destroy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Condition.html#ae87a9c45ccd82f2042130f566fcf2fbf" title="Constructs from ConditionParam.">Condition.Condition</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga8605a37610cb22e47c5fc2fc7ed88c21" name="ga8605a37610cb22e47c5fc2fc7ed88c21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8605a37610cb22e47c5fc2fc7ed88c21">&#9670;&#160;</a></span>DestroyMutex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::DestroyMutex </td>
+          <td>(</td>
+          <td class="paramtype">MutexRaw&#160;</td>
+          <td class="paramname"><em>mutex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function must be called on any mutex that is no longer needed. Failure to destroy a mutex will result in a system memory or resource leak. While it is safe to destroy a mutex that is <em>unlocked</em>, it is not safe to attempt to destroy a locked mutex, and may result in undefined behavior depending on the platform.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mutex</td><td>the mutex to destroy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Mutex.html#ad0f7e723eb38e9b8b04616ff9e9bd19d" title="Constructs from MutexParam.">Mutex.Mutex</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga4f2c8395535275b7f3f1202733e4c7a4" name="ga4f2c8395535275b7f3f1202733e4c7a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4f2c8395535275b7f3f1202733e4c7a4">&#9670;&#160;</a></span>DestroyRWLock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::DestroyRWLock </td>
+          <td>(</td>
+          <td class="paramtype">RWLockRaw&#160;</td>
+          <td class="paramname"><em>rwlock</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function must be called on any read/write lock that is no longer needed. Failure to destroy a rwlock will result in a system memory or resource leak. While it is safe to destroy a rwlock that is <em>unlocked</em>, it is not safe to attempt to destroy a locked rwlock, and may result in undefined behavior depending on the platform.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rwlock</td><td>the rwlock to destroy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1RWLock.html#a6818ef9cac4a1a725241cbe93363e95f" title="Constructs from RWLockParam.">RWLock.RWLock</a> </dd></dl>
+
+</div>
+</div>
+<a id="gacfc0cd78e7f6828b2e03dba8268fd38f" name="gacfc0cd78e7f6828b2e03dba8268fd38f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacfc0cd78e7f6828b2e03dba8268fd38f">&#9670;&#160;</a></span>DestroySemaphore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::DestroySemaphore </td>
+          <td>(</td>
+          <td class="paramtype">SemaphoreRaw&#160;</td>
+          <td class="paramname"><em>sem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>It is not safe to destroy a semaphore if there are threads currently waiting on it.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sem</td><td>the semaphore to destroy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Semaphore.html#a28052b76a8d36260588ad41747677a01" title="Default ctor.">Semaphore.Semaphore</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga075d2da6d0259354804967315f1b92a7" name="ga075d2da6d0259354804967315f1b92a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga075d2da6d0259354804967315f1b92a7">&#9670;&#160;</a></span>GetSemaphoreValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> SDL::GetSemaphoreValue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SemaphoreParam.html">SemaphoreParam</a>&#160;</td>
+          <td class="paramname"><em>sem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sem</td><td>the semaphore to query. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the current value of the semaphore.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga72af6bd5507e67097aace0329eae9547" name="ga72af6bd5507e67097aace0329eae9547"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga72af6bd5507e67097aace0329eae9547">&#9670;&#160;</a></span>GetValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> SDL::Semaphore::GetValue </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the current value of the semaphore.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gaad5af515507a4ab5944b93716098ceb0" name="gaad5af515507a4ab5944b93716098ceb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaad5af515507a4ab5944b93716098ceb0">&#9670;&#160;</a></span>Lock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Mutex::Lock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This will block until the mutex is available, which is to say it is in the unlocked state and the OS has chosen the caller as the next thread to lock it. Of all threads waiting to lock the mutex, only one may do so at a time.</p>
+<p>It is legal for the owning thread to lock an already-locked mutex. It must unlock it the same number of times before it is actually made available for other threads in the system (this is known as a "recursive mutex").</p>
+<p>This function does not fail; if mutex is nullptr, it will return immediately having locked nothing. If the mutex is valid, this function will always block until it can lock the mutex, and return with it locked.</p>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga4387a947dc87dd0d81d4892898a33c94" title="Try to lock a mutex without blocking.">Mutex.TryLock</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga43f3620a42689aca56a9810c97a218f1" title="Unlock the mutex.">Mutex.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga6fd30256700ceee59b352de8a098d88c" name="ga6fd30256700ceee59b352de8a098d88c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6fd30256700ceee59b352de8a098d88c">&#9670;&#160;</a></span>LockForReading()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::RWLock::LockForReading </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This will block until the rwlock is available, which is to say it is not locked for writing by any other thread. Of all threads waiting to lock the rwlock, all may do so at the same time as long as they are requesting read-only access; if a thread wants to lock for writing, only one may do so at a time, and no other threads, read-only or not, may hold the lock at the same time.</p>
+<p>It is legal for the owning thread to lock an already-locked rwlock for reading. It must unlock it the same number of times before it is actually made available for other threads in the system (this is known as a "recursive rwlock").</p>
+<p>Note that locking for writing is not recursive (this is only available to read-only locks).</p>
+<p>It is illegal to request a read-only lock from a thread that already holds the write lock. Doing so results in undefined behavior. Unlock the write lock before requesting a read-only lock. (But, of course, if you have the write lock, you don't need further locks to read in any case.)</p>
+<p>This function does not fail; if rwlock is nullptr, it will return immediately having locked nothing. If the rwlock is valid, this function will always block until it can lock the mutex, and return with it locked.</p>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gad00b0645ab619b825db9a52d75ff3731" title="Lock the read/write lock for write operations.">RWLock.LockForWriting</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gad86be81e139760604168161a5a252731" title="Try to lock a read/write lock for reading without blocking.">RWLock.TryLockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga132f3e9ba3722f3793030b6a170439a4" title="Unlock the read/write lock.">RWLock.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="gad00b0645ab619b825db9a52d75ff3731" name="gad00b0645ab619b825db9a52d75ff3731"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad00b0645ab619b825db9a52d75ff3731">&#9670;&#160;</a></span>LockForWriting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::RWLock::LockForWriting </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This will block until the rwlock is available, which is to say it is not locked for reading or writing by any other thread. Only one thread may hold the lock when it requests write access; all other threads, whether they also want to write or only want read-only access, must wait until the writer thread has released the lock.</p>
+<p>It is illegal for the owning thread to lock an already-locked rwlock for writing (read-only may be locked recursively, writing can not). Doing so results in undefined behavior.</p>
+<p>It is illegal to request a write lock from a thread that already holds a read-only lock. Doing so results in undefined behavior. Unlock the read-only lock before requesting a write lock.</p>
+<p>This function does not fail; if rwlock is nullptr, it will return immediately having locked nothing. If the rwlock is valid, this function will always block until it can lock the mutex, and return with it locked.</p>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga6fd30256700ceee59b352de8a098d88c" title="Lock the read/write lock for read only operations.">RWLock.LockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga1e09f752575c19c972d1fcbcb3571f63" title="Try to lock a read/write lock for writing without blocking.">RWLock.TryLockForWriting</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga132f3e9ba3722f3793030b6a170439a4" title="Unlock the read/write lock.">RWLock.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga1908a7c56b4d4821e339ee7ba3be9fdd" name="ga1908a7c56b4d4821e339ee7ba3be9fdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1908a7c56b4d4821e339ee7ba3be9fdd">&#9670;&#160;</a></span>LockMutex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LockMutex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a>&#160;</td>
+          <td class="paramname"><em>mutex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This will block until the mutex is available, which is to say it is in the unlocked state and the OS has chosen the caller as the next thread to lock it. Of all threads waiting to lock the mutex, only one may do so at a time.</p>
+<p>It is legal for the owning thread to lock an already-locked mutex. It must unlock it the same number of times before it is actually made available for other threads in the system (this is known as a "recursive mutex").</p>
+<p>This function does not fail; if mutex is nullptr, it will return immediately having locked nothing. If the mutex is valid, this function will always block until it can lock the mutex, and return with it locked.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mutex</td><td>the mutex to lock.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga4387a947dc87dd0d81d4892898a33c94" title="Try to lock a mutex without blocking.">Mutex.TryLock</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga43f3620a42689aca56a9810c97a218f1" title="Unlock the mutex.">Mutex.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="gae79c96466c3a7a464a32878fcb5bdaa2" name="gae79c96466c3a7a464a32878fcb5bdaa2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae79c96466c3a7a464a32878fcb5bdaa2">&#9670;&#160;</a></span>LockRWLockForReading()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LockRWLockForReading </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RWLockParam.html">RWLockParam</a>&#160;</td>
+          <td class="paramname"><em>rwlock</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This will block until the rwlock is available, which is to say it is not locked for writing by any other thread. Of all threads waiting to lock the rwlock, all may do so at the same time as long as they are requesting read-only access; if a thread wants to lock for writing, only one may do so at a time, and no other threads, read-only or not, may hold the lock at the same time.</p>
+<p>It is legal for the owning thread to lock an already-locked rwlock for reading. It must unlock it the same number of times before it is actually made available for other threads in the system (this is known as a "recursive rwlock").</p>
+<p>Note that locking for writing is not recursive (this is only available to read-only locks).</p>
+<p>It is illegal to request a read-only lock from a thread that already holds the write lock. Doing so results in undefined behavior. Unlock the write lock before requesting a read-only lock. (But, of course, if you have the write lock, you don't need further locks to read in any case.)</p>
+<p>This function does not fail; if rwlock is nullptr, it will return immediately having locked nothing. If the rwlock is valid, this function will always block until it can lock the mutex, and return with it locked.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rwlock</td><td>the read/write lock to lock.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gad00b0645ab619b825db9a52d75ff3731" title="Lock the read/write lock for write operations.">RWLock.LockForWriting</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gad86be81e139760604168161a5a252731" title="Try to lock a read/write lock for reading without blocking.">RWLock.TryLockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga132f3e9ba3722f3793030b6a170439a4" title="Unlock the read/write lock.">RWLock.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga9594c2b9f24fbc38515baacd90dca846" name="ga9594c2b9f24fbc38515baacd90dca846"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9594c2b9f24fbc38515baacd90dca846">&#9670;&#160;</a></span>LockRWLockForWriting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LockRWLockForWriting </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RWLockParam.html">RWLockParam</a>&#160;</td>
+          <td class="paramname"><em>rwlock</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This will block until the rwlock is available, which is to say it is not locked for reading or writing by any other thread. Only one thread may hold the lock when it requests write access; all other threads, whether they also want to write or only want read-only access, must wait until the writer thread has released the lock.</p>
+<p>It is illegal for the owning thread to lock an already-locked rwlock for writing (read-only may be locked recursively, writing can not). Doing so results in undefined behavior.</p>
+<p>It is illegal to request a write lock from a thread that already holds a read-only lock. Doing so results in undefined behavior. Unlock the read-only lock before requesting a write lock.</p>
+<p>This function does not fail; if rwlock is nullptr, it will return immediately having locked nothing. If the rwlock is valid, this function will always block until it can lock the mutex, and return with it locked.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rwlock</td><td>the read/write lock to lock.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga6fd30256700ceee59b352de8a098d88c" title="Lock the read/write lock for read only operations.">RWLock.LockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga1e09f752575c19c972d1fcbcb3571f63" title="Try to lock a read/write lock for writing without blocking.">RWLock.TryLockForWriting</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga132f3e9ba3722f3793030b6a170439a4" title="Unlock the read/write lock.">RWLock.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaf53fbb15cf6d3cc7b6d772f34d1aa6bb" name="gaf53fbb15cf6d3cc7b6d772f34d1aa6bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf53fbb15cf6d3cc7b6d772f34d1aa6bb">&#9670;&#160;</a></span>SetInitialized() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::InitState::SetInitialized </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>initialized</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function sets the status of the passed in state to <code>INIT_STATUS_INITIALIZED</code> or <code>INIT_STATUS_UNINITIALIZED</code> and allows any threads waiting for the status to proceed.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">initialized</td><td>the new initialization state.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga88ae3e9ca5be7ce111d7bf7f25265800" title="Return whether initialization should be done.">InitState.ShouldInit</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga6cdf5fc9261968650987909aa26c8638" title="Return whether cleanup should be done.">InitState.ShouldQuit</a> </dd></dl>
+
+</div>
+</div>
+<a id="gad7d2324e6c8ca8f59798c9b89d5cf211" name="gad7d2324e6c8ca8f59798c9b89d5cf211"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad7d2324e6c8ca8f59798c9b89d5cf211">&#9670;&#160;</a></span>SetInitialized() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::SetInitialized </td>
+          <td>(</td>
+          <td class="paramtype">InitStateRaw *&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>initialized</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function sets the status of the passed in state to <code>INIT_STATUS_INITIALIZED</code> or <code>INIT_STATUS_UNINITIALIZED</code> and allows any threads waiting for the status to proceed.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>the initialization state to check. </td></tr>
+    <tr><td class="paramname">initialized</td><td>the new initialization state.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga88ae3e9ca5be7ce111d7bf7f25265800" title="Return whether initialization should be done.">InitState.ShouldInit</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga6cdf5fc9261968650987909aa26c8638" title="Return whether cleanup should be done.">InitState.ShouldQuit</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga88ae3e9ca5be7ce111d7bf7f25265800" name="ga88ae3e9ca5be7ce111d7bf7f25265800"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga88ae3e9ca5be7ce111d7bf7f25265800">&#9670;&#160;</a></span>ShouldInit() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::InitState::ShouldInit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function checks the passed in state and if initialization should be done, sets the status to <code>INIT_STATUS_INITIALIZING</code> and returns true. If another thread is already modifying this state, it will wait until that's done before returning.</p>
+<p>If this function returns true, the calling code must call <a class="el" href="group__CategoryMutex.html#gaf53fbb15cf6d3cc7b6d772f34d1aa6bb" title="Finish an initialization state transition.">InitState.SetInitialized()</a> to complete the initialization.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if initialization needs to be done, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gaf53fbb15cf6d3cc7b6d772f34d1aa6bb" title="Finish an initialization state transition.">InitState.SetInitialized</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga6cdf5fc9261968650987909aa26c8638" title="Return whether cleanup should be done.">InitState.ShouldQuit</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga53842ff6b42b05fe74be300406ce7f62" name="ga53842ff6b42b05fe74be300406ce7f62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga53842ff6b42b05fe74be300406ce7f62">&#9670;&#160;</a></span>ShouldInit() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::ShouldInit </td>
+          <td>(</td>
+          <td class="paramtype">InitStateRaw *&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function checks the passed in state and if initialization should be done, sets the status to <code>INIT_STATUS_INITIALIZING</code> and returns true. If another thread is already modifying this state, it will wait until that's done before returning.</p>
+<p>If this function returns true, the calling code must call <a class="el" href="group__CategoryMutex.html#gaf53fbb15cf6d3cc7b6d772f34d1aa6bb" title="Finish an initialization state transition.">InitState.SetInitialized()</a> to complete the initialization.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>the initialization state to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if initialization needs to be done, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gaf53fbb15cf6d3cc7b6d772f34d1aa6bb" title="Finish an initialization state transition.">InitState.SetInitialized</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga6cdf5fc9261968650987909aa26c8638" title="Return whether cleanup should be done.">InitState.ShouldQuit</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga6cdf5fc9261968650987909aa26c8638" name="ga6cdf5fc9261968650987909aa26c8638"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6cdf5fc9261968650987909aa26c8638">&#9670;&#160;</a></span>ShouldQuit() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::InitState::ShouldQuit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function checks the passed in state and if cleanup should be done, sets the status to <code>INIT_STATUS_UNINITIALIZING</code> and returns true.</p>
+<p>If this function returns true, the calling code must call <a class="el" href="group__CategoryMutex.html#gaf53fbb15cf6d3cc7b6d772f34d1aa6bb" title="Finish an initialization state transition.">InitState.SetInitialized()</a> to complete the cleanup.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if cleanup needs to be done, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gaf53fbb15cf6d3cc7b6d772f34d1aa6bb" title="Finish an initialization state transition.">InitState.SetInitialized</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga88ae3e9ca5be7ce111d7bf7f25265800" title="Return whether initialization should be done.">InitState.ShouldInit</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga03368e3cc612edad3a41d70f0ca5066c" name="ga03368e3cc612edad3a41d70f0ca5066c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga03368e3cc612edad3a41d70f0ca5066c">&#9670;&#160;</a></span>ShouldQuit() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::ShouldQuit </td>
+          <td>(</td>
+          <td class="paramtype">InitStateRaw *&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function checks the passed in state and if cleanup should be done, sets the status to <code>INIT_STATUS_UNINITIALIZING</code> and returns true.</p>
+<p>If this function returns true, the calling code must call <a class="el" href="group__CategoryMutex.html#gaf53fbb15cf6d3cc7b6d772f34d1aa6bb" title="Finish an initialization state transition.">InitState.SetInitialized()</a> to complete the cleanup.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>the initialization state to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if cleanup needs to be done, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gaf53fbb15cf6d3cc7b6d772f34d1aa6bb" title="Finish an initialization state transition.">InitState.SetInitialized</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga88ae3e9ca5be7ce111d7bf7f25265800" title="Return whether initialization should be done.">InitState.ShouldInit</a> </dd></dl>
+
+</div>
+</div>
+<a id="gac24e922f6570dcf2ac6c6292cfa6572d" name="gac24e922f6570dcf2ac6c6292cfa6572d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac24e922f6570dcf2ac6c6292cfa6572d">&#9670;&#160;</a></span>Signal() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Semaphore::Signal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga3827d4dbe781c673a7c344291e1b253c" title="See if a semaphore has a positive value and decrement it if it does.">Semaphore.TryWait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga9cce2f682ce1a121119c687d504980dc" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga8fa14a1fe3a318cc222405fab9480b13" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.WaitTimeout</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga2834f691abac7d403a66ddbcdc6a7dcc" name="ga2834f691abac7d403a66ddbcdc6a7dcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2834f691abac7d403a66ddbcdc6a7dcc">&#9670;&#160;</a></span>Signal() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Condition::Signal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gab317b9ce9c64aeb87f53c4cc0acee380" title="Restart all threads that are waiting on the condition variable.">Condition.Broadcast</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga1f3f75b35e2c53a6bba3a3e655af1ddb" title="Wait until a condition variable is signaled.">Condition.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gab6dfb5158549a9219549acaac0cf6fd6" title="Wait until a condition variable is signaled or a certain time has passed.">Condition.WaitTimeout</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga917c2f129f4f36477752a7aaddc4fca0" name="ga917c2f129f4f36477752a7aaddc4fca0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga917c2f129f4f36477752a7aaddc4fca0">&#9670;&#160;</a></span>SignalCondition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::SignalCondition </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1ConditionParam.html">ConditionParam</a>&#160;</td>
+          <td class="paramname"><em>cond</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cond</td><td>the condition variable to signal.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gab317b9ce9c64aeb87f53c4cc0acee380" title="Restart all threads that are waiting on the condition variable.">Condition.Broadcast</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga1f3f75b35e2c53a6bba3a3e655af1ddb" title="Wait until a condition variable is signaled.">Condition.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gab6dfb5158549a9219549acaac0cf6fd6" title="Wait until a condition variable is signaled or a certain time has passed.">Condition.WaitTimeout</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga33ac0cd365ea4db06e7a6fc5e8900206" name="ga33ac0cd365ea4db06e7a6fc5e8900206"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga33ac0cd365ea4db06e7a6fc5e8900206">&#9670;&#160;</a></span>SignalSemaphore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::SignalSemaphore </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SemaphoreParam.html">SemaphoreParam</a>&#160;</td>
+          <td class="paramname"><em>sem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sem</td><td>the semaphore to increment.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga3827d4dbe781c673a7c344291e1b253c" title="See if a semaphore has a positive value and decrement it if it does.">Semaphore.TryWait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga9cce2f682ce1a121119c687d504980dc" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga8fa14a1fe3a318cc222405fab9480b13" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.WaitTimeout</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga4387a947dc87dd0d81d4892898a33c94" name="ga4387a947dc87dd0d81d4892898a33c94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4387a947dc87dd0d81d4892898a33c94">&#9670;&#160;</a></span>TryLock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Mutex::TryLock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This works just like <a class="el" href="group__CategoryMutex.html#gaad5af515507a4ab5944b93716098ceb0" title="Lock the mutex.">Mutex.Lock()</a>, but if the mutex is not available, this function returns false immediately.</p>
+<p>This technique is useful if you need exclusive access to a resource but don't want to wait for it, and will return to it to try again later.</p>
+<p>This function returns true if passed a nullptr mutex.</p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gaad5af515507a4ab5944b93716098ceb0" title="Lock the mutex.">Mutex.Lock</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga43f3620a42689aca56a9810c97a218f1" title="Unlock the mutex.">Mutex.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="gad86be81e139760604168161a5a252731" name="gad86be81e139760604168161a5a252731"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad86be81e139760604168161a5a252731">&#9670;&#160;</a></span>TryLockForReading()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::RWLock::TryLockForReading </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This works just like <a class="el" href="group__CategoryMutex.html#ga6fd30256700ceee59b352de8a098d88c" title="Lock the read/write lock for read only operations.">RWLock.LockForReading()</a>, but if the rwlock is not available, then this function returns false immediately.</p>
+<p>This technique is useful if you need access to a resource but don't want to wait for it, and will return to it to try again later.</p>
+<p>Trying to lock for read-only access can succeed if other threads are holding read-only locks, as this won't prevent access.</p>
+<p>This function returns true if passed a nullptr rwlock.</p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga6fd30256700ceee59b352de8a098d88c" title="Lock the read/write lock for read only operations.">RWLock.LockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga1e09f752575c19c972d1fcbcb3571f63" title="Try to lock a read/write lock for writing without blocking.">RWLock.TryLockForWriting</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga132f3e9ba3722f3793030b6a170439a4" title="Unlock the read/write lock.">RWLock.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga1e09f752575c19c972d1fcbcb3571f63" name="ga1e09f752575c19c972d1fcbcb3571f63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1e09f752575c19c972d1fcbcb3571f63">&#9670;&#160;</a></span>TryLockForWriting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::RWLock::TryLockForWriting </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This works just like <a class="el" href="group__CategoryMutex.html#gad00b0645ab619b825db9a52d75ff3731" title="Lock the read/write lock for write operations.">RWLock.LockForWriting()</a>, but if the rwlock is not available, then this function returns false immediately.</p>
+<p>This technique is useful if you need exclusive access to a resource but don't want to wait for it, and will return to it to try again later.</p>
+<p>It is illegal for the owning thread to lock an already-locked rwlock for writing (read-only may be locked recursively, writing can not). Doing so results in undefined behavior.</p>
+<p>It is illegal to request a write lock from a thread that already holds a read-only lock. Doing so results in undefined behavior. Unlock the read-only lock before requesting a write lock.</p>
+<p>This function returns true if passed a nullptr rwlock.</p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gad00b0645ab619b825db9a52d75ff3731" title="Lock the read/write lock for write operations.">RWLock.LockForWriting</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gad86be81e139760604168161a5a252731" title="Try to lock a read/write lock for reading without blocking.">RWLock.TryLockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga132f3e9ba3722f3793030b6a170439a4" title="Unlock the read/write lock.">RWLock.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga7dd0b9cd6a0f71ce44814c91867ced56" name="ga7dd0b9cd6a0f71ce44814c91867ced56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7dd0b9cd6a0f71ce44814c91867ced56">&#9670;&#160;</a></span>TryLockMutex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TryLockMutex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a>&#160;</td>
+          <td class="paramname"><em>mutex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This works just like <a class="el" href="group__CategoryMutex.html#gaad5af515507a4ab5944b93716098ceb0" title="Lock the mutex.">Mutex.Lock()</a>, but if the mutex is not available, this function returns false immediately.</p>
+<p>This technique is useful if you need exclusive access to a resource but don't want to wait for it, and will return to it to try again later.</p>
+<p>This function returns true if passed a nullptr mutex.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mutex</td><td>the mutex to try to lock. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gaad5af515507a4ab5944b93716098ceb0" title="Lock the mutex.">Mutex.Lock</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga43f3620a42689aca56a9810c97a218f1" title="Unlock the mutex.">Mutex.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga39d8ca117d0586a6e47141f29cdf2a9d" name="ga39d8ca117d0586a6e47141f29cdf2a9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga39d8ca117d0586a6e47141f29cdf2a9d">&#9670;&#160;</a></span>TryLockRWLockForReading()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TryLockRWLockForReading </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RWLockParam.html">RWLockParam</a>&#160;</td>
+          <td class="paramname"><em>rwlock</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This works just like <a class="el" href="group__CategoryMutex.html#ga6fd30256700ceee59b352de8a098d88c" title="Lock the read/write lock for read only operations.">RWLock.LockForReading()</a>, but if the rwlock is not available, then this function returns false immediately.</p>
+<p>This technique is useful if you need access to a resource but don't want to wait for it, and will return to it to try again later.</p>
+<p>Trying to lock for read-only access can succeed if other threads are holding read-only locks, as this won't prevent access.</p>
+<p>This function returns true if passed a nullptr rwlock.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rwlock</td><td>the rwlock to try to lock. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga6fd30256700ceee59b352de8a098d88c" title="Lock the read/write lock for read only operations.">RWLock.LockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga1e09f752575c19c972d1fcbcb3571f63" title="Try to lock a read/write lock for writing without blocking.">RWLock.TryLockForWriting</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga132f3e9ba3722f3793030b6a170439a4" title="Unlock the read/write lock.">RWLock.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="gace1b357bca906a69d4a77e8699b67bf0" name="gace1b357bca906a69d4a77e8699b67bf0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gace1b357bca906a69d4a77e8699b67bf0">&#9670;&#160;</a></span>TryLockRWLockForWriting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TryLockRWLockForWriting </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RWLockParam.html">RWLockParam</a>&#160;</td>
+          <td class="paramname"><em>rwlock</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This works just like <a class="el" href="group__CategoryMutex.html#gad00b0645ab619b825db9a52d75ff3731" title="Lock the read/write lock for write operations.">RWLock.LockForWriting()</a>, but if the rwlock is not available, then this function returns false immediately.</p>
+<p>This technique is useful if you need exclusive access to a resource but don't want to wait for it, and will return to it to try again later.</p>
+<p>It is illegal for the owning thread to lock an already-locked rwlock for writing (read-only may be locked recursively, writing can not). Doing so results in undefined behavior.</p>
+<p>It is illegal to request a write lock from a thread that already holds a read-only lock. Doing so results in undefined behavior. Unlock the read-only lock before requesting a write lock.</p>
+<p>This function returns true if passed a nullptr rwlock.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rwlock</td><td>the rwlock to try to lock. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gad00b0645ab619b825db9a52d75ff3731" title="Lock the read/write lock for write operations.">RWLock.LockForWriting</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gad86be81e139760604168161a5a252731" title="Try to lock a read/write lock for reading without blocking.">RWLock.TryLockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga132f3e9ba3722f3793030b6a170439a4" title="Unlock the read/write lock.">RWLock.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga3827d4dbe781c673a7c344291e1b253c" name="ga3827d4dbe781c673a7c344291e1b253c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3827d4dbe781c673a7c344291e1b253c">&#9670;&#160;</a></span>TryWait()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::Semaphore::TryWait </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function checks to see if the semaphore pointed to by <code>sem</code> has a positive value and atomically decrements the semaphore value if it does. If the semaphore doesn't have a positive value, the function immediately returns false.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if the wait succeeds, false if the wait would block.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gac24e922f6570dcf2ac6c6292cfa6572d" title="Atomically increment a semaphore&#39;s value and wake waiting threads.">Semaphore.Signal</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga9cce2f682ce1a121119c687d504980dc" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga8fa14a1fe3a318cc222405fab9480b13" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.WaitTimeout</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga1ab136960d54273366e66aa63a94fce1" name="ga1ab136960d54273366e66aa63a94fce1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1ab136960d54273366e66aa63a94fce1">&#9670;&#160;</a></span>TryWaitSemaphore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::TryWaitSemaphore </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SemaphoreParam.html">SemaphoreParam</a>&#160;</td>
+          <td class="paramname"><em>sem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function checks to see if the semaphore pointed to by <code>sem</code> has a positive value and atomically decrements the semaphore value if it does. If the semaphore doesn't have a positive value, the function immediately returns false.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sem</td><td>the semaphore to wait on. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the wait succeeds, false if the wait would block.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gac24e922f6570dcf2ac6c6292cfa6572d" title="Atomically increment a semaphore&#39;s value and wake waiting threads.">Semaphore.Signal</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga9cce2f682ce1a121119c687d504980dc" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.Wait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga8fa14a1fe3a318cc222405fab9480b13" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.WaitTimeout</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga43f3620a42689aca56a9810c97a218f1" name="ga43f3620a42689aca56a9810c97a218f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga43f3620a42689aca56a9810c97a218f1">&#9670;&#160;</a></span>Unlock() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Mutex::Unlock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>It is legal for the owning thread to lock an already-locked mutex. It must unlock it the same number of times before it is actually made available for other threads in the system (this is known as a "recursive mutex").</p>
+<p>It is illegal to unlock a mutex that has not been locked by the current thread, and doing so results in undefined behavior.</p>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gaad5af515507a4ab5944b93716098ceb0" title="Lock the mutex.">Mutex.Lock</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga4387a947dc87dd0d81d4892898a33c94" title="Try to lock a mutex without blocking.">Mutex.TryLock</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga132f3e9ba3722f3793030b6a170439a4" name="ga132f3e9ba3722f3793030b6a170439a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga132f3e9ba3722f3793030b6a170439a4">&#9670;&#160;</a></span>Unlock() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::RWLock::Unlock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Use this function to unlock the rwlock, whether it was locked for read-only or write operations.</p>
+<p>It is legal for the owning thread to lock an already-locked read-only lock. It must unlock it the same number of times before it is actually made available for other threads in the system (this is known as a "recursive
+rwlock").</p>
+<p>It is illegal to unlock a rwlock that has not been locked by the current thread, and doing so results in undefined behavior.</p>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga6fd30256700ceee59b352de8a098d88c" title="Lock the read/write lock for read only operations.">RWLock.LockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gad00b0645ab619b825db9a52d75ff3731" title="Lock the read/write lock for write operations.">RWLock.LockForWriting</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gad86be81e139760604168161a5a252731" title="Try to lock a read/write lock for reading without blocking.">RWLock.TryLockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga1e09f752575c19c972d1fcbcb3571f63" title="Try to lock a read/write lock for writing without blocking.">RWLock.TryLockForWriting</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga4ba263985e60f123d9a97e17c338b07f" name="ga4ba263985e60f123d9a97e17c338b07f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4ba263985e60f123d9a97e17c338b07f">&#9670;&#160;</a></span>UnlockMutex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::UnlockMutex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a>&#160;</td>
+          <td class="paramname"><em>mutex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>It is legal for the owning thread to lock an already-locked mutex. It must unlock it the same number of times before it is actually made available for other threads in the system (this is known as a "recursive mutex").</p>
+<p>It is illegal to unlock a mutex that has not been locked by the current thread, and doing so results in undefined behavior.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mutex</td><td>the mutex to unlock.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gaad5af515507a4ab5944b93716098ceb0" title="Lock the mutex.">Mutex.Lock</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga4387a947dc87dd0d81d4892898a33c94" title="Try to lock a mutex without blocking.">Mutex.TryLock</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga798d70f756d0573eb824ca4ed36c7a10" name="ga798d70f756d0573eb824ca4ed36c7a10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga798d70f756d0573eb824ca4ed36c7a10">&#9670;&#160;</a></span>UnlockRWLock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::UnlockRWLock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RWLockParam.html">RWLockParam</a>&#160;</td>
+          <td class="paramname"><em>rwlock</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Use this function to unlock the rwlock, whether it was locked for read-only or write operations.</p>
+<p>It is legal for the owning thread to lock an already-locked read-only lock. It must unlock it the same number of times before it is actually made available for other threads in the system (this is known as a "recursive
+rwlock").</p>
+<p>It is illegal to unlock a rwlock that has not been locked by the current thread, and doing so results in undefined behavior.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rwlock</td><td>the rwlock to unlock.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#ga6fd30256700ceee59b352de8a098d88c" title="Lock the read/write lock for read only operations.">RWLock.LockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gad00b0645ab619b825db9a52d75ff3731" title="Lock the read/write lock for write operations.">RWLock.LockForWriting</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gad86be81e139760604168161a5a252731" title="Try to lock a read/write lock for reading without blocking.">RWLock.TryLockForReading</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga1e09f752575c19c972d1fcbcb3571f63" title="Try to lock a read/write lock for writing without blocking.">RWLock.TryLockForWriting</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga9cce2f682ce1a121119c687d504980dc" name="ga9cce2f682ce1a121119c687d504980dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9cce2f682ce1a121119c687d504980dc">&#9670;&#160;</a></span>Wait() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Semaphore::Wait </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function suspends the calling thread until the semaphore pointed to by <code>sem</code> has a positive value, and then atomically decrement the semaphore value.</p>
+<p>This function is the equivalent of calling <a class="el" href="group__CategoryMutex.html#ga8fa14a1fe3a318cc222405fab9480b13" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.WaitTimeout()</a> with a time length of -1.</p>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gac24e922f6570dcf2ac6c6292cfa6572d" title="Atomically increment a semaphore&#39;s value and wake waiting threads.">Semaphore.Signal</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga3827d4dbe781c673a7c344291e1b253c" title="See if a semaphore has a positive value and decrement it if it does.">Semaphore.TryWait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga8fa14a1fe3a318cc222405fab9480b13" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.WaitTimeout</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga1f3f75b35e2c53a6bba3a3e655af1ddb" name="ga1f3f75b35e2c53a6bba3a3e655af1ddb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1f3f75b35e2c53a6bba3a3e655af1ddb">&#9670;&#160;</a></span>Wait() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Condition::Wait </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a>&#160;</td>
+          <td class="paramname"><em>mutex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function unlocks the specified <code>mutex</code> and waits for another thread to call <a class="el" href="group__CategoryMutex.html#ga2834f691abac7d403a66ddbcdc6a7dcc" title="Restart one of the threads that are waiting on the condition variable.">Condition.Signal()</a> or <a class="el" href="group__CategoryMutex.html#gab317b9ce9c64aeb87f53c4cc0acee380" title="Restart all threads that are waiting on the condition variable.">Condition.Broadcast()</a> on the condition variable <code>cond</code>. Once the condition variable is signaled, the mutex is re-locked and the function returns.</p>
+<p>The mutex must be locked before calling this function. Locking the mutex recursively (more than once) is not supported and leads to undefined behavior.</p>
+<p>This function is the equivalent of calling <a class="el" href="group__CategoryMutex.html#gab6dfb5158549a9219549acaac0cf6fd6" title="Wait until a condition variable is signaled or a certain time has passed.">Condition.WaitTimeout()</a> with a time length of -1.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mutex</td><td>the mutex used to coordinate thread access.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gab317b9ce9c64aeb87f53c4cc0acee380" title="Restart all threads that are waiting on the condition variable.">Condition.Broadcast</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga2834f691abac7d403a66ddbcdc6a7dcc" title="Restart one of the threads that are waiting on the condition variable.">Condition.Signal</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gab6dfb5158549a9219549acaac0cf6fd6" title="Wait until a condition variable is signaled or a certain time has passed.">Condition.WaitTimeout</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaeedb3238b49f8d8a894e5ea7aa3724c3" name="gaeedb3238b49f8d8a894e5ea7aa3724c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaeedb3238b49f8d8a894e5ea7aa3724c3">&#9670;&#160;</a></span>WaitCondition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::WaitCondition </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1ConditionParam.html">ConditionParam</a>&#160;</td>
+          <td class="paramname"><em>cond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a>&#160;</td>
+          <td class="paramname"><em>mutex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function unlocks the specified <code>mutex</code> and waits for another thread to call <a class="el" href="group__CategoryMutex.html#ga2834f691abac7d403a66ddbcdc6a7dcc" title="Restart one of the threads that are waiting on the condition variable.">Condition.Signal()</a> or <a class="el" href="group__CategoryMutex.html#gab317b9ce9c64aeb87f53c4cc0acee380" title="Restart all threads that are waiting on the condition variable.">Condition.Broadcast()</a> on the condition variable <code>cond</code>. Once the condition variable is signaled, the mutex is re-locked and the function returns.</p>
+<p>The mutex must be locked before calling this function. Locking the mutex recursively (more than once) is not supported and leads to undefined behavior.</p>
+<p>This function is the equivalent of calling <a class="el" href="group__CategoryMutex.html#gab6dfb5158549a9219549acaac0cf6fd6" title="Wait until a condition variable is signaled or a certain time has passed.">Condition.WaitTimeout()</a> with a time length of -1.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cond</td><td>the condition variable to wait on. </td></tr>
+    <tr><td class="paramname">mutex</td><td>the mutex used to coordinate thread access.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gab317b9ce9c64aeb87f53c4cc0acee380" title="Restart all threads that are waiting on the condition variable.">Condition.Broadcast</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga2834f691abac7d403a66ddbcdc6a7dcc" title="Restart one of the threads that are waiting on the condition variable.">Condition.Signal</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#gab6dfb5158549a9219549acaac0cf6fd6" title="Wait until a condition variable is signaled or a certain time has passed.">Condition.WaitTimeout</a> </dd></dl>
+
+</div>
+</div>
+<a id="gad52a36348f6505e88c21d923cd25ae4d" name="gad52a36348f6505e88c21d923cd25ae4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad52a36348f6505e88c21d923cd25ae4d">&#9670;&#160;</a></span>WaitConditionTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::WaitConditionTimeout </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1ConditionParam.html">ConditionParam</a>&#160;</td>
+          <td class="paramname"><em>cond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a>&#160;</td>
+          <td class="paramname"><em>mutex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::milliseconds&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function unlocks the specified <code>mutex</code> and waits for another thread to call <a class="el" href="group__CategoryMutex.html#ga2834f691abac7d403a66ddbcdc6a7dcc" title="Restart one of the threads that are waiting on the condition variable.">Condition.Signal()</a> or <a class="el" href="group__CategoryMutex.html#gab317b9ce9c64aeb87f53c4cc0acee380" title="Restart all threads that are waiting on the condition variable.">Condition.Broadcast()</a> on the condition variable <code>cond</code>, or for the specified time to elapse. Once the condition variable is signaled or the time elapsed, the mutex is re-locked and the function returns.</p>
+<p>The mutex must be locked before calling this function. Locking the mutex recursively (more than once) is not supported and leads to undefined behavior.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cond</td><td>the condition variable to wait on. </td></tr>
+    <tr><td class="paramname">mutex</td><td>the mutex used to coordinate thread access. </td></tr>
+    <tr><td class="paramname">timeout</td><td>the maximum time to wait, in milliseconds, or -1 to wait indefinitely. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the condition variable is signaled, false if the condition is not signaled in the allotted time.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gab317b9ce9c64aeb87f53c4cc0acee380" title="Restart all threads that are waiting on the condition variable.">Condition.Broadcast</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga2834f691abac7d403a66ddbcdc6a7dcc" title="Restart one of the threads that are waiting on the condition variable.">Condition.Signal</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga1f3f75b35e2c53a6bba3a3e655af1ddb" title="Wait until a condition variable is signaled.">Condition.Wait</a> </dd></dl>
+
+</div>
+</div>
+<a id="gafd996516f0658713da5f43ef49c5a6c2" name="gafd996516f0658713da5f43ef49c5a6c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafd996516f0658713da5f43ef49c5a6c2">&#9670;&#160;</a></span>WaitSemaphore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::WaitSemaphore </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SemaphoreParam.html">SemaphoreParam</a>&#160;</td>
+          <td class="paramname"><em>sem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function suspends the calling thread until the semaphore pointed to by <code>sem</code> has a positive value, and then atomically decrement the semaphore value.</p>
+<p>This function is the equivalent of calling <a class="el" href="group__CategoryMutex.html#ga8fa14a1fe3a318cc222405fab9480b13" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.WaitTimeout()</a> with a time length of -1.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sem</td><td>the semaphore wait on.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gac24e922f6570dcf2ac6c6292cfa6572d" title="Atomically increment a semaphore&#39;s value and wake waiting threads.">Semaphore.Signal</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga3827d4dbe781c673a7c344291e1b253c" title="See if a semaphore has a positive value and decrement it if it does.">Semaphore.TryWait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga8fa14a1fe3a318cc222405fab9480b13" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.WaitTimeout</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga3d5b6f09b59e6e13d83f12640830b693" name="ga3d5b6f09b59e6e13d83f12640830b693"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3d5b6f09b59e6e13d83f12640830b693">&#9670;&#160;</a></span>WaitSemaphoreTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::WaitSemaphoreTimeout </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SemaphoreParam.html">SemaphoreParam</a>&#160;</td>
+          <td class="paramname"><em>sem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::milliseconds&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function suspends the calling thread until either the semaphore pointed to by <code>sem</code> has a positive value or the specified time has elapsed. If the call is successful it will atomically decrement the semaphore value.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sem</td><td>the semaphore to wait on. </td></tr>
+    <tr><td class="paramname">timeout</td><td>the length of the timeout, in milliseconds, or -1 to wait indefinitely. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the wait succeeds or false if the wait times out.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gac24e922f6570dcf2ac6c6292cfa6572d" title="Atomically increment a semaphore&#39;s value and wake waiting threads.">Semaphore.Signal</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga3827d4dbe781c673a7c344291e1b253c" title="See if a semaphore has a positive value and decrement it if it does.">Semaphore.TryWait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga9cce2f682ce1a121119c687d504980dc" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.Wait</a> </dd></dl>
+
+</div>
+</div>
+<a id="gab6dfb5158549a9219549acaac0cf6fd6" name="gab6dfb5158549a9219549acaac0cf6fd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab6dfb5158549a9219549acaac0cf6fd6">&#9670;&#160;</a></span>WaitTimeout() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::Condition::WaitTimeout </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1MutexParam.html">MutexParam</a>&#160;</td>
+          <td class="paramname"><em>mutex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::milliseconds&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function unlocks the specified <code>mutex</code> and waits for another thread to call <a class="el" href="group__CategoryMutex.html#ga2834f691abac7d403a66ddbcdc6a7dcc" title="Restart one of the threads that are waiting on the condition variable.">Condition.Signal()</a> or <a class="el" href="group__CategoryMutex.html#gab317b9ce9c64aeb87f53c4cc0acee380" title="Restart all threads that are waiting on the condition variable.">Condition.Broadcast()</a> on the condition variable <code>cond</code>, or for the specified time to elapse. Once the condition variable is signaled or the time elapsed, the mutex is re-locked and the function returns.</p>
+<p>The mutex must be locked before calling this function. Locking the mutex recursively (more than once) is not supported and leads to undefined behavior.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mutex</td><td>the mutex used to coordinate thread access. </td></tr>
+    <tr><td class="paramname">timeout</td><td>the maximum time to wait, in milliseconds, or -1 to wait indefinitely. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the condition variable is signaled, false if the condition is not signaled in the allotted time.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gab317b9ce9c64aeb87f53c4cc0acee380" title="Restart all threads that are waiting on the condition variable.">Condition.Broadcast</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga2834f691abac7d403a66ddbcdc6a7dcc" title="Restart one of the threads that are waiting on the condition variable.">Condition.Signal</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga1f3f75b35e2c53a6bba3a3e655af1ddb" title="Wait until a condition variable is signaled.">Condition.Wait</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga8fa14a1fe3a318cc222405fab9480b13" name="ga8fa14a1fe3a318cc222405fab9480b13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8fa14a1fe3a318cc222405fab9480b13">&#9670;&#160;</a></span>WaitTimeout() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::Semaphore::WaitTimeout </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::milliseconds&#160;</td>
+          <td class="paramname"><em>timeout</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function suspends the calling thread until either the semaphore pointed to by <code>sem</code> has a positive value or the specified time has elapsed. If the call is successful it will atomically decrement the semaphore value.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeout</td><td>the length of the timeout, in milliseconds, or -1 to wait indefinitely. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the wait succeeds or false if the wait times out.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMutex.html#gac24e922f6570dcf2ac6c6292cfa6572d" title="Atomically increment a semaphore&#39;s value and wake waiting threads.">Semaphore.Signal</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga3827d4dbe781c673a7c344291e1b253c" title="See if a semaphore has a positive value and decrement it if it does.">Semaphore.TryWait</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMutex.html#ga9cce2f682ce1a121119c687d504980dc" title="Wait until a semaphore has a positive value and then decrements it.">Semaphore.Wait</a> </dd></dl>
 
 </div>
 </div>

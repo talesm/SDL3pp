@@ -76,123 +76,104 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1SharedObjectRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::SharedObjectRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategorySharedObject.html">Shared Object/DLL Management</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>An opaque datatype that represents a loaded shared object.  
- <a href="structSDL_1_1SharedObjectRef.html#details">More...</a></p>
+<p>Semi-safe reference for <a class="el" href="classSDL_1_1SharedObject.html" title="An opaque datatype that represents a loaded shared object.">SharedObject</a>.  
+</p>
 <div class="dynheader">
 Inheritance diagram for SDL::SharedObjectRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1SharedObjectRef__inherit__graph.png" border="0" usemap="#aSDL_1_1SharedObjectRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1SharedObjectRef_inherit__map" id="aSDL_1_1SharedObjectRef_inherit__map">
-<area shape="rect" title="An opaque datatype that represents a loaded shared object." alt="" coords="5,93,169,119"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="10,5,165,45"/>
-<area shape="poly" title=" " alt="" coords="90,59,90,93,85,93,85,59"/>
+<area shape="rect" title="Semi&#45;safe reference for SharedObject." alt="" coords="5,79,169,104"/>
+<area shape="rect" href="classSDL_1_1SharedObject.html" title="An opaque datatype that represents a loaded shared object." alt="" coords="16,5,159,31"/>
+<area shape="poly" title=" " alt="" coords="90,44,90,79,85,79,85,44"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac0a75bdc0eea4ce18e9801bbf176b2d2" id="r_ac0a75bdc0eea4ce18e9801bbf176b2d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">FunctionPointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectRef.html#ac0a75bdc0eea4ce18e9801bbf176b2d2">LoadFunction</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
-<tr class="memdesc:ac0a75bdc0eea4ce18e9801bbf176b2d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look up the address of the named function in a shared object.  <br /></td></tr>
-<tr class="separator:ac0a75bdc0eea4ce18e9801bbf176b2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top"><a id="a78be254b85f48c12179a782cb04da9ac" name="a78be254b85f48c12179a782cb04da9ac"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; T &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top"><a id="afbb3168108af6a8bd0e23edc712b6a09" name="afbb3168108af6a8bd0e23edc712b6a09"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_SharedObject * &gt;</a></td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_SharedObject * resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource" id="r_a78be254b85f48c12179a782cb04da9ac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const ResourceHandle&lt; <a class="el" href="classSDL_1_1Resource.html">Resource</a>&lt; SDL_SharedObject * &gt; &gt; auto &amp;resource)</td></tr>
-<tr class="memdesc:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from pointer like. <br /></td></tr>
-<tr class="separator:a78be254b85f48c12179a782cb04da9ac inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:ada53fb5441bc63f5a915c23538503732" id="r_ada53fb5441bc63f5a915c23538503732"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectRef.html#ada53fb5441bc63f5a915c23538503732">SharedObjectRef</a> (<a class="el" href="structSDL_1_1SharedObjectParam.html">SharedObjectParam</a> resource)</td></tr>
+<tr class="memdesc:ada53fb5441bc63f5a915c23538503732"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from <a class="el" href="structSDL_1_1SharedObjectParam.html" title="Safely wrap SharedObject for non owning parameters.">SharedObjectParam</a>.  <br /></td></tr>
+<tr class="separator:ada53fb5441bc63f5a915c23538503732"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79ed327fcdf0b1b7d403fa8e3f332e4f" id="r_a79ed327fcdf0b1b7d403fa8e3f332e4f"><td class="memItemLeft" align="right" valign="top"><a id="a79ed327fcdf0b1b7d403fa8e3f332e4f" name="a79ed327fcdf0b1b7d403fa8e3f332e4f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SharedObjectRef</b> (const <a class="el" href="structSDL_1_1SharedObjectRef.html">SharedObjectRef</a> &amp;other)</td></tr>
+<tr class="memdesc:a79ed327fcdf0b1b7d403fa8e3f332e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:a79ed327fcdf0b1b7d403fa8e3f332e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72b16a1ed715d727481ddd751c78651e" id="r_a72b16a1ed715d727481ddd751c78651e"><td class="memItemLeft" align="right" valign="top"><a id="a72b16a1ed715d727481ddd751c78651e" name="a72b16a1ed715d727481ddd751c78651e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~SharedObjectRef</b> ()</td></tr>
+<tr class="memdesc:a72b16a1ed715d727481ddd751c78651e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:a72b16a1ed715d727481ddd751c78651e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSDL_1_1SharedObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1SharedObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1SharedObject.html">SDL::SharedObject</a></td></tr>
+<tr class="memitem:a08d68582080ba6791eb2974588a55dae inherit pub_methods_classSDL_1_1SharedObject" id="r_a08d68582080ba6791eb2974588a55dae"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SharedObject</b> ()=default</td></tr>
+<tr class="memdesc:a08d68582080ba6791eb2974588a55dae inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default ctor. <br /></td></tr>
+<tr class="separator:a08d68582080ba6791eb2974588a55dae inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8e5f3b5ca23c4c3d7ebca20e7793d81 inherit pub_methods_classSDL_1_1SharedObject" id="r_ad8e5f3b5ca23c4c3d7ebca20e7793d81"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SharedObject.html#ad8e5f3b5ca23c4c3d7ebca20e7793d81">SharedObject</a> (const SharedObjectRaw resource)</td></tr>
+<tr class="memdesc:ad8e5f3b5ca23c4c3d7ebca20e7793d81 inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from <a class="el" href="structSDL_1_1SharedObjectParam.html" title="Safely wrap SharedObject for non owning parameters.">SharedObjectParam</a>.  <br /></td></tr>
+<tr class="separator:ad8e5f3b5ca23c4c3d7ebca20e7793d81 inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61a2c11f7f4ff6e10c3634f9d7c314ed inherit pub_methods_classSDL_1_1SharedObject" id="r_a61a2c11f7f4ff6e10c3634f9d7c314ed"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SharedObject</b> (const <a class="el" href="classSDL_1_1SharedObject.html">SharedObject</a> &amp;other)=delete</td></tr>
+<tr class="memdesc:a61a2c11f7f4ff6e10c3634f9d7c314ed inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:a61a2c11f7f4ff6e10c3634f9d7c314ed inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c5ac57b3d0bd3672a1a209f3559a1f5 inherit pub_methods_classSDL_1_1SharedObject" id="r_a6c5ac57b3d0bd3672a1a209f3559a1f5"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SharedObject</b> (<a class="el" href="classSDL_1_1SharedObject.html">SharedObject</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:a6c5ac57b3d0bd3672a1a209f3559a1f5 inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:a6c5ac57b3d0bd3672a1a209f3559a1f5 inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fb6771e70dbc3893368680a7629d656 inherit pub_methods_classSDL_1_1SharedObject" id="r_a0fb6771e70dbc3893368680a7629d656"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SharedObject</b> (const <a class="el" href="structSDL_1_1SharedObjectRef.html">SharedObjectRef</a> &amp;other)=delete</td></tr>
+<tr class="separator:a0fb6771e70dbc3893368680a7629d656 inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fd38750698719adff719f2eb8e241e9 inherit pub_methods_classSDL_1_1SharedObject" id="r_a3fd38750698719adff719f2eb8e241e9"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SharedObject</b> (<a class="el" href="structSDL_1_1SharedObjectRef.html">SharedObjectRef</a> &amp;&amp;other)=delete</td></tr>
+<tr class="separator:a3fd38750698719adff719f2eb8e241e9 inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24c243e181cc33c36f66c119ac267b32 inherit pub_methods_classSDL_1_1SharedObject" id="r_a24c243e181cc33c36f66c119ac267b32"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SharedObject.html#a24c243e181cc33c36f66c119ac267b32">SharedObject</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> sofile)</td></tr>
+<tr class="memdesc:a24c243e181cc33c36f66c119ac267b32 inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamically load a shared object.  <br /></td></tr>
+<tr class="separator:a24c243e181cc33c36f66c119ac267b32 inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77799a94987e1d784acf02ab368c7dac inherit pub_methods_classSDL_1_1SharedObject" id="r_a77799a94987e1d784acf02ab368c7dac"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>~SharedObject</b> ()</td></tr>
+<tr class="memdesc:a77799a94987e1d784acf02ab368c7dac inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:a77799a94987e1d784acf02ab368c7dac inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a307b1af68c4e636f460ade0abe7c4cd2 inherit pub_methods_classSDL_1_1SharedObject" id="r_a307b1af68c4e636f460ade0abe7c4cd2"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSDL_1_1SharedObject.html">SharedObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1SharedObject.html">SharedObject</a> other)</td></tr>
+<tr class="memdesc:a307b1af68c4e636f460ade0abe7c4cd2 inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:a307b1af68c4e636f460ade0abe7c4cd2 inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee11863ac3de91d6b33c4710cad0dc62 inherit pub_methods_classSDL_1_1SharedObject" id="r_aee11863ac3de91d6b33c4710cad0dc62"><td class="memItemLeft" align="right" valign="top">
+constexpr SharedObjectRaw&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="memdesc:aee11863ac3de91d6b33c4710cad0dc62 inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves underlying SharedObjectRaw. <br /></td></tr>
+<tr class="separator:aee11863ac3de91d6b33c4710cad0dc62 inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9acd72436fb4c8074fa076bbf85e2e33 inherit pub_methods_classSDL_1_1SharedObject" id="r_a9acd72436fb4c8074fa076bbf85e2e33"><td class="memItemLeft" align="right" valign="top">
+constexpr SharedObjectRaw&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
+<tr class="memdesc:a9acd72436fb4c8074fa076bbf85e2e33 inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves underlying SharedObjectRaw and clear this. <br /></td></tr>
+<tr class="separator:a9acd72436fb4c8074fa076bbf85e2e33 inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32a6b07fe97d549dc52a005296314f34 inherit pub_methods_classSDL_1_1SharedObject" id="r_a32a6b07fe97d549dc52a005296314f34"><td class="memItemLeft" align="right" valign="top">
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;=&gt;</b> (const <a class="el" href="classSDL_1_1SharedObject.html">SharedObject</a> &amp;other) const =default</td></tr>
+<tr class="memdesc:a32a6b07fe97d549dc52a005296314f34 inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a32a6b07fe97d549dc52a005296314f34 inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82a53ca3bb2ded9b949b714225dc9fae inherit pub_methods_classSDL_1_1SharedObject" id="r_a82a53ca3bb2ded9b949b714225dc9fae"><td class="memItemLeft" align="right" valign="top">
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t _) const</td></tr>
+<tr class="memdesc:a82a53ca3bb2ded9b949b714225dc9fae inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
+<tr class="separator:a82a53ca3bb2ded9b949b714225dc9fae inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a646fc27b4c2011764cfb5f5d0605115e inherit pub_methods_classSDL_1_1SharedObject" id="r_a646fc27b4c2011764cfb5f5d0605115e"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
-<tr class="separator:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource" id="r_ab4aa1e63564473a72dc97256340d104f"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_type</b> () const</td></tr>
-<tr class="memdesc:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts back to underlying type. <br /></td></tr>
-<tr class="separator:ab4aa1e63564473a72dc97256340d104f inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource" id="r_a00783ea48f16c278f89467a3ade29b18"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other) const=default</td></tr>
-<tr class="memdesc:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a00783ea48f16c278f89467a3ade29b18 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource" id="r_ad2a82bc79a7dae41ceb1a25647ae1c0d"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullopt_t) const</td></tr>
-<tr class="memdesc:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ad2a82bc79a7dae41ceb1a25647ae1c0d inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource" id="r_ab110e6568060a7ae58ab7b29ad68f7fc"><td class="memItemLeft" align="right" valign="top">
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (std::nullptr_t) const</td></tr>
-<tr class="memdesc:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:ab110e6568060a7ae58ab7b29ad68f7fc inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource" id="r_ab273a0a0285b8eed1f70f5d3759f4167"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_SharedObject *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
-<tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top">
-constexpr const SDL_SharedObject *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top">
-constexpr SDL_SharedObject *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
-<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
-<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a1452fb66b4f7fcda41f7dce4df29c567" id="r_a1452fb66b4f7fcda41f7dce4df29c567"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectRef.html#a1452fb66b4f7fcda41f7dce4df29c567">reset</a> (SDL_SharedObject *resource)</td></tr>
-<tr class="memdesc:a1452fb66b4f7fcda41f7dce4df29c567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unload a shared object from memory.  <br /></td></tr>
-<tr class="separator:a1452fb66b4f7fcda41f7dce4df29c567"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_SharedObject * &gt;</a></td></tr>
-<tr class="memitem:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource" id="r_a11ac29cf1f6da9fb29c508669f40b38d"><td class="memItemLeft" align="right" valign="top">
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL_SharedObject *</td></tr>
-<tr class="memdesc:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw resource type. <br /></td></tr>
-<tr class="separator:a11ac29cf1f6da9fb29c508669f40b38d inherit pub_types_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a646fc27b4c2011764cfb5f5d0605115e inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to bool. <br /></td></tr>
+<tr class="separator:a646fc27b4c2011764cfb5f5d0605115e inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f34a835f794f207d754a69376628b75 inherit pub_methods_classSDL_1_1SharedObject" id="r_a2f34a835f794f207d754a69376628b75"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator SharedObjectParam</b> () const</td></tr>
+<tr class="memdesc:a2f34a835f794f207d754a69376628b75 inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to <a class="el" href="structSDL_1_1SharedObjectParam.html" title="Safely wrap SharedObject for non owning parameters.">SharedObjectParam</a>. <br /></td></tr>
+<tr class="separator:a2f34a835f794f207d754a69376628b75 inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga868c6678d9d82b71020ef26f72297740 inherit pub_methods_classSDL_1_1SharedObject" id="r_ga868c6678d9d82b71020ef26f72297740"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySharedObject.html#ga868c6678d9d82b71020ef26f72297740">Unload</a> ()</td></tr>
+<tr class="memdesc:ga868c6678d9d82b71020ef26f72297740 inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unload a shared object from memory.  <br /></td></tr>
+<tr class="separator:ga868c6678d9d82b71020ef26f72297740 inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga33ba9d92bf58fb43f3ec27f089b63455 inherit pub_methods_classSDL_1_1SharedObject" id="r_ga33ba9d92bf58fb43f3ec27f089b63455"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">FunctionPointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySharedObject.html#ga33ba9d92bf58fb43f3ec27f089b63455">LoadFunction</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
+<tr class="memdesc:ga33ba9d92bf58fb43f3ec27f089b63455 inherit pub_methods_classSDL_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look up the address of the named function in a shared object.  <br /></td></tr>
+<tr class="separator:ga33ba9d92bf58fb43f3ec27f089b63455 inherit pub_methods_classSDL_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObject.html#abee85b377f61e0e9f2bffc201e3b6907" title="Dynamically load a shared object.">SharedObject.Load</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SharedObjectRef.html#ac0a75bdc0eea4ce18e9801bbf176b2d2" title="Look up the address of the named function in a shared object.">SharedObjectRef.LoadFunction</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SharedObject.html#a868c6678d9d82b71020ef26f72297740" title="Unload a shared object from memory.">SharedObject.Unload</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SharedObject.html" title="Handle to an owned sharedObject.">SharedObject</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac0a75bdc0eea4ce18e9801bbf176b2d2" name="ac0a75bdc0eea4ce18e9801bbf176b2d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0a75bdc0eea4ce18e9801bbf176b2d2">&#9670;&#160;</a></span>LoadFunction()</h2>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ada53fb5441bc63f5a915c23538503732" name="ada53fb5441bc63f5a915c23538503732"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada53fb5441bc63f5a915c23538503732">&#9670;&#160;</a></span>SharedObjectRef()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,10 +182,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">FunctionPointer</a> SDL::SharedObjectRef::LoadFunction </td>
+          <td class="memname">SDL::SharedObjectRef::SharedObjectRef </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SharedObjectParam.html">SharedObjectParam</a>&#160;</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -214,56 +195,13 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function pointer is no longer valid after calling <a class="el" href="structSDL_1_1SharedObject.html#a868c6678d9d82b71020ef26f72297740" title="Unload a shared object from memory.">SharedObject.Unload()</a>.</p>
-<p>This function can only look up C function names. Other languages may have name mangling and intrinsic language support that varies from compiler to compiler.</p>
-<p>Make sure you declare your function pointers with the same calling convention as the actual library function. Your code will crash mysteriously if you do not do this.</p>
-<p>If the requested function doesn't exist, nullptr is returned.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the function to look up. </td></tr>
+    <tr><td class="paramname">resource</td><td>a SharedObjectRaw or <a class="el" href="classSDL_1_1SharedObject.html" title="An opaque datatype that represents a loaded shared object.">SharedObject</a>.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a pointer to the function or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObject.html#abee85b377f61e0e9f2bffc201e3b6907" title="Dynamically load a shared object.">SharedObject.Load</a> </dd></dl>
-
-</div>
-</div>
-<a id="a1452fb66b4f7fcda41f7dce4df29c567" name="a1452fb66b4f7fcda41f7dce4df29c567"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1452fb66b4f7fcda41f7dce4df29c567">&#9670;&#160;</a></span>reset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void SDL::SharedObjectRef::reset </td>
-          <td>(</td>
-          <td class="paramtype">SDL_SharedObject *&#160;</td>
-          <td class="paramname"><em>resource</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Note that any pointers from this object looked up through <a class="el" href="structSDL_1_1SharedObjectRef.html#ac0a75bdc0eea4ce18e9801bbf176b2d2" title="Look up the address of the named function in a shared object.">SharedObjectRef.LoadFunction()</a> will no longer be valid.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">resource</td><td>a valid shared object handle returned.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObject.html#abee85b377f61e0e9f2bffc201e3b6907" title="Dynamically load a shared object.">SharedObject.Load</a> </dd></dl>
+<p>This does not takes ownership! </p>
 
 </div>
 </div>

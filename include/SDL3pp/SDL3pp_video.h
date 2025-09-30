@@ -199,11 +199,8 @@ public:
   /**
    * Get a list of currently connected displays.
    *
-   * @param count a pointer filled in with the number of displays returned, may
-   *              be nullptr.
    * @returns a 0 terminated array of display instance IDs or nullptr on
-   * failure; call GetError() for more information. This should be freed with
-   * free() when it is no longer needed.
+   * failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -272,7 +269,7 @@ public:
    * The primary display is often located at (0,0), but may be placed at a
    * different location depending on monitor layout.
    *
-   * @param rect the Rect structure filled in with the display bounds.
+   * @returns the Rect structure filled in with the display bounds.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -296,8 +293,7 @@ public:
    * so these are good guidelines for the maximum space available to a
    * non-fullscreen window.
    *
-   * @param displayID the instance ID of the display to query.
-   * @param rect the Rect structure filled in with the display bounds.
+   * @returns the Rect structure filled in with the display bounds.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -375,12 +371,8 @@ public:
    * - refresh rate -> highest to lowest
    * - pixel density -> lowest to highest
    *
-   * @param count a pointer filled in with the number of display modes returned,
-   *              may be nullptr.
    * @returns a nullptr terminated array of display mode pointers or nullptr on
-   *          failure; call GetError() for more information. This is a
-   *          single allocation that should be freed with free() when it is
-   *          no longer needed.
+   *          failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -405,8 +397,7 @@ public:
    *                     for the desktop refresh rate.
    * @param include_high_density_modes boolean to include high density modes in
    *                                   the search.
-   * @param closest a pointer filled in with the closest display mode equal to
-   *                or larger than the desired mode.
+   * @returns the closest display mode equal to or larger than the desired mode.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1548,7 +1539,6 @@ public:
    * Additionally, as this is just a request, it can be denied by the windowing
    * system.
    *
-   * @param window the window to reposition.
    * @param p the coordinates of the window, or `SDL_WINDOWPOS_CENTERED` or
    *          `SDL_WINDOWPOS_UNDEFINED`.
    * @throws Error on failure.
@@ -1629,9 +1619,7 @@ public:
    * content area to remain within the usable desktop bounds). Additionally, as
    * this is just a request, it can be denied by the windowing system.
    *
-   * @param window the window to change.
-   * @param w the width of the window, must be > 0.
-   * @param h the height of the window, must be > 0.
+   * @param p the width and height of the window, must be > 0.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1701,7 +1689,6 @@ public:
    * into the rest of the window, but it should not contain visually important
    * or interactible content.
    *
-   * @param window the window to query.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1842,9 +1829,7 @@ public:
   /**
    * Set the minimum size of a window's client area.
    *
-   * @param window the window to change.
-   * @param min_w the minimum width of the window, or 0 for no limit.
-   * @param min_h the minimum height of the window, or 0 for no limit.
+   * @param p the minimum width and heigh of the window, or 0 for no limit.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1877,9 +1862,7 @@ public:
   /**
    * Set the maximum size of a window's client area.
    *
-   * @param window the window to change.
-   * @param max_w the maximum width of the window, or 0 for no limit.
-   * @param max_h the maximum height of the window, or 0 for no limit.
+   * @param p the maximum width and height of the window, or 0 for no limit.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2227,9 +2210,8 @@ public:
   /**
    * Get VSync for the window surface.
    *
-   * @param window the window to query.
-   * @param vsync an int filled with the current vertical refresh sync interval.
-   *              See Window.SetSurfaceVSync() for the meaning of the value.
+   * @returns the current vertical refresh sync interval. See
+   *          Window.SetSurfaceVSync() for the meaning of the value.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2274,7 +2256,6 @@ public:
    *
    * @param rects an array of Rect structures representing areas of the
    *              surface to copy, in pixels.
-   * @param numrects the number of rectangles.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2524,11 +2505,8 @@ public:
    * On platforms or desktops where this is unsupported, this function does
    * nothing.
    *
-   * @param window the window for which the menu will be displayed.
-   * @param x the x coordinate of the menu, relative to the origin (top-left) of
-   *          the client area.
-   * @param y the y coordinate of the menu, relative to the origin (top-left) of
-   *          the client area.
+   * @param p the x, y coordinates of the menu, relative to the origin
+   *          (top-left) of the client area.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2895,9 +2873,7 @@ public:
    * Note that this function will appear to succeed, but not actually move the
    * mouse when used over Microsoft Remote Desktop.
    *
-   *               mouse focus.
-   * @param x the x coordinate within the window.
-   * @param y the y coordinate within the window.
+   * @param p the x, y coordinates within the window.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -3157,9 +3133,6 @@ public:
   /**
    * Delete an OpenGL context.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -3174,7 +3147,6 @@ public:
    * The context must have been created with a compatible window.
    *
    * @param window the window to associate with the context.
-   * @param context the OpenGL context to associate with the window.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -3636,11 +3608,8 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 /**
  * Get a list of currently connected displays.
  *
- * @param count a pointer filled in with the number of displays returned, may
- *              be nullptr.
  * @returns a 0 terminated array of display instance IDs or nullptr on failure;
- *          call GetError() for more information. This should be freed
- *          with free() when it is no longer needed.
+ *          call GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -3749,7 +3718,7 @@ inline const char* Display::GetName() const
  * different location depending on monitor layout.
  *
  * @param displayID the instance ID of the display to query.
- * @param rect the Rect structure filled in with the display bounds.
+ * @returns the Rect structure filled in with the display bounds.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -3784,7 +3753,7 @@ inline Rect Display::GetBounds() const
  * non-fullscreen window.
  *
  * @param displayID the instance ID of the display to query.
- * @param rect the Rect structure filled in with the display bounds.
+ * @returns the Rect structure filled in with the display bounds.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -3900,12 +3869,8 @@ inline float Display::GetContentScale() const
  * - pixel density -> lowest to highest
  *
  * @param displayID the instance ID of the display to query.
- * @param count a pointer filled in with the number of display modes returned,
- *              may be nullptr.
  * @returns a nullptr terminated array of display mode pointers or nullptr on
- *          failure; call GetError() for more information. This is a
- *          single allocation that should be freed with free() when it is
- *          no longer needed.
+ *          failure; call GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -3941,7 +3906,7 @@ inline OwnArray<DisplayMode*> Display::GetFullscreenModes() const
  *                     for the desktop refresh rate.
  * @param include_high_density_modes boolean to include high density modes in
  *                                   the search.
- * @param closest a pointer filled in with the closest display mode equal to
+ * @returns a pointer filled in with the closest display mode equal to
  *                or larger than the desired mode.
  * @throws Error on failure.
  *
@@ -5950,8 +5915,10 @@ inline void Window::SetSurfaceVSync(int vsync)
   SDL::SetWindowSurfaceVSync(m_resource, vsync);
 }
 
+/// Constant to disable vsync
 constexpr int WINDOW_SURFACE_VSYNC_DISABLED = SDL_WINDOW_SURFACE_VSYNC_DISABLED;
 
+/// Constant to enable adaptive vsync
 constexpr int WINDOW_SURFACE_VSYNC_ADAPTIVE = SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE;
 
 /**
@@ -6019,7 +5986,6 @@ inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
  * @param window the window to update.
  * @param rects an array of Rect structures representing areas of the
  *              surface to copy, in pixels.
- * @param numrects the number of rectangles.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -6500,7 +6466,6 @@ inline void SetWindowHitTest(WindowParam window,
  *
  * @param window the window to set hit-testing on.
  * @param callback the function to call when doing a hit-test.
- * @param callback_data an app-defined void pointer passed to **callback**.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.

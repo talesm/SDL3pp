@@ -72,9 +72,7 @@ struct GUID : GUIDRaw
   /**
    * Get an ASCII string representation for a given GUID.
    *
-   * @param guid the GUID you wish to convert to string.
-   * @param pszGUID buffer in which to write the ASCII string.
-   * @param cbGUID the size of pszGUID, should be at least 33 bytes.
+   * @return ASCII string.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -89,8 +87,7 @@ struct GUID : GUIDRaw
  * Get an ASCII string representation for a given GUID.
  *
  * @param guid the GUID you wish to convert to string.
- * @param pszGUID buffer in which to write the ASCII string.
- * @param cbGUID the size of pszGUID, should be at least 33 bytes.
+ * @return ASCII string.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
