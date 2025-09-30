@@ -49,10 +49,6 @@ add_library(SDL3pp_lib INTERFACE)
 target_include_directories(SDL3pp_lib INTERFACE include)
 target_link_libraries(SDL3pp_lib INTERFACE ${SDL3PP_DEPENDENCIES})
 
-add_library(SDL3pp_legacy_lib INTERFACE)
-target_include_directories(SDL3pp_legacy_lib INTERFACE include/legacy)
-target_link_libraries(SDL3pp_legacy_lib INTERFACE ${SDL3PP_DEPENDENCIES})
-
 file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
 
 # The amalgamation header
