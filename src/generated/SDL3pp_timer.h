@@ -54,7 +54,7 @@ constexpr Time Time::FromPosix(Sint64 time) { return SDL_SECONDS_TO_NS(time); }
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr Sint64 Time::ToPosix() const { return SDL_NS_TO_SECONDS(); }
+constexpr Sint64 Time::ToPosix() const { return SDL_NS_TO_SECONDS(m_time); }
 
 /**
  * Get the number of nanoseconds since SDL library initialization.

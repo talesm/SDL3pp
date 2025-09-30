@@ -10,11 +10,3 @@
 >  *
 >  * @since This datatype is available since SDL 3.2.0.
 >  */
-812c819
-< inline void* GetTLS(TLSID* id) { return SDL_GetTLS(id); }
----
-> inline void* GetTLS(TLSID* id) { return SDL_GetTLS(*id); }
-843c850
-<   CheckError(SDL_SetTLS(id, value, destructor));
----
->   CheckError(SDL_SetTLS(*id, value, destructor));

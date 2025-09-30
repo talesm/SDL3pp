@@ -22,7 +22,7 @@
 ---
 >    * @returns time on success.
 352c354,359
-< inline Time Time::Current() { return CheckError(SDL_GetCurrentTime()); }
+< inline Time Time::Current() { return CheckError(SDL_GetCurrentTime(m_time)); }
 ---
 > inline Time Time::Current()
 > {
@@ -49,7 +49,7 @@
 ---
 > inline DateTime::operator Time() const { return SDL::DateTimeToTime(*this); }
 406c415
-<   SDL_TimeToWindows(dwLowDateTime, dwHighDateTime);
+<   SDL_TimeToWindows(m_time, dwLowDateTime, dwHighDateTime);
 ---
 >   SDL_TimeToWindows(ToNS(), dwLowDateTime, dwHighDateTime);
 424c433

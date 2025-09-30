@@ -127,8 +127,8 @@ export interface ApiEntryTransform extends ApiEntryBase {
   entries?: ApiSubEntryTransformLegacyMap;
   link?: ApiEntryTransform;
   enum?: true | string | EnumerationDefinition;
-  wrapper?: true | WrapperDefinition;
-  resource?: true | string | ResourceDefinition;
+  wrapper?: boolean | WrapperDefinition;
+  resource?: boolean | string | ResourceDefinition;
   before?: string;
   after?: string;
 }

@@ -73,6 +73,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Atomic Operations<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a></div></div></div>
 </div><!--header-->
@@ -83,11 +84,11 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1AtomicInt.html">SDL::AtomicInt</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A type representing an atomic integer value.  <a href="classSDL_1_1AtomicInt.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AtomicInt.html">SDL::AtomicInt</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A type representing an atomic integer value.  <a href="structSDL_1_1AtomicInt.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1AtomicU32.html">SDL::AtomicU32</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A type representing an atomic unsigned 32-bit value.  <a href="classSDL_1_1AtomicU32.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AtomicU32.html">SDL::AtomicU32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A type representing an atomic unsigned 32-bit value.  <a href="structSDL_1_1AtomicU32.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1AtomicPointer.html">SDL::AtomicPointer&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -107,6 +108,17 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga6aa8f8635b3a07f02fe26e5cc052a5f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro to insert a CPU-specific "pause" instruction into the program.  <br /></td></tr>
 <tr class="separator:ga6aa8f8635b3a07f02fe26e5cc052a5f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga67dd37e9ba3e6db09737e0930d184d32" id="r_ga67dd37e9ba3e6db09737e0930d184d32"><td class="memItemLeft" align="right" valign="top"><a id="ga67dd37e9ba3e6db09737e0930d184d32" name="ga67dd37e9ba3e6db09737e0930d184d32"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AtomicIntRaw</b> = SDL_AtomicInt</td></tr>
+<tr class="memdesc:ga67dd37e9ba3e6db09737e0930d184d32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="structSDL_1_1AtomicInt.html" title="A type representing an atomic integer value.">AtomicInt</a>. <br /></td></tr>
+<tr class="separator:ga67dd37e9ba3e6db09737e0930d184d32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0fec8da2cd6ce7698baca8c6410926d7" id="r_ga0fec8da2cd6ce7698baca8c6410926d7"><td class="memItemLeft" align="right" valign="top"><a id="ga0fec8da2cd6ce7698baca8c6410926d7" name="ga0fec8da2cd6ce7698baca8c6410926d7"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AtomicU32Raw</b> = SDL_AtomicU32</td></tr>
+<tr class="memdesc:ga0fec8da2cd6ce7698baca8c6410926d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to raw representation for <a class="el" href="structSDL_1_1AtomicU32.html" title="A type representing an atomic unsigned 32-bit value.">AtomicU32</a>. <br /></td></tr>
+<tr class="separator:ga0fec8da2cd6ce7698baca8c6410926d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:gae63499665b3f82267248d33e774ace12" id="r_gae63499665b3f82267248d33e774ace12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAtomic.html#gae63499665b3f82267248d33e774ace12">SDL::MemoryBarrierRelease</a> ()</td></tr>
@@ -115,6 +127,33 @@ Functions</h2></td></tr>
 <tr class="memitem:gacd81ade5d5ee905d0ea12d0c6e061668" id="r_gacd81ade5d5ee905d0ea12d0c6e061668"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAtomic.html#gacd81ade5d5ee905d0ea12d0c6e061668">SDL::MemoryBarrierAcquire</a> ()</td></tr>
 <tr class="memdesc:gacd81ade5d5ee905d0ea12d0c6e061668"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a memory acquire barrier (function version).  <br /></td></tr>
 <tr class="separator:gacd81ade5d5ee905d0ea12d0c6e061668"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad35a020a0d42334d68aa0cb9df3ff47f" id="r_gad35a020a0d42334d68aa0cb9df3ff47f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAtomic.html#gad35a020a0d42334d68aa0cb9df3ff47f">SDL::CompareAndSwapAtomicInt</a> (<a class="el" href="group__CategoryAtomic.html#ga67dd37e9ba3e6db09737e0930d184d32">AtomicIntRaw</a> *a, int oldval, int newval)</td></tr>
+<tr class="memdesc:gad35a020a0d42334d68aa0cb9df3ff47f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an atomic variable to a new value if it is currently an old value.  <br /></td></tr>
+<tr class="separator:gad35a020a0d42334d68aa0cb9df3ff47f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab8be42cbfad7b18f516177cca3a25b39" id="r_gab8be42cbfad7b18f516177cca3a25b39"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAtomic.html#gab8be42cbfad7b18f516177cca3a25b39">SDL::SetAtomicInt</a> (<a class="el" href="group__CategoryAtomic.html#ga67dd37e9ba3e6db09737e0930d184d32">AtomicIntRaw</a> *a, int v)</td></tr>
+<tr class="memdesc:gab8be42cbfad7b18f516177cca3a25b39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an atomic variable to a value.  <br /></td></tr>
+<tr class="separator:gab8be42cbfad7b18f516177cca3a25b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4b927a00efa45efa4152bf50a4c995e0" id="r_ga4b927a00efa45efa4152bf50a4c995e0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAtomic.html#ga4b927a00efa45efa4152bf50a4c995e0">SDL::GetAtomicInt</a> (<a class="el" href="group__CategoryAtomic.html#ga67dd37e9ba3e6db09737e0930d184d32">AtomicIntRaw</a> *a)</td></tr>
+<tr class="memdesc:ga4b927a00efa45efa4152bf50a4c995e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value of an atomic variable.  <br /></td></tr>
+<tr class="separator:ga4b927a00efa45efa4152bf50a4c995e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf6f31c8b1c0882d2b76e0989216b814b" id="r_gaf6f31c8b1c0882d2b76e0989216b814b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAtomic.html#gaf6f31c8b1c0882d2b76e0989216b814b">SDL::AddAtomicInt</a> (<a class="el" href="group__CategoryAtomic.html#ga67dd37e9ba3e6db09737e0930d184d32">AtomicIntRaw</a> *a, int v)</td></tr>
+<tr class="memdesc:gaf6f31c8b1c0882d2b76e0989216b814b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add to an atomic variable.  <br /></td></tr>
+<tr class="separator:gaf6f31c8b1c0882d2b76e0989216b814b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga421e6027176162dbd59e4bedc13e99dc" id="r_ga421e6027176162dbd59e4bedc13e99dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAtomic.html#ga421e6027176162dbd59e4bedc13e99dc">SDL::AtomicIncRef</a> (<a class="el" href="group__CategoryAtomic.html#ga67dd37e9ba3e6db09737e0930d184d32">AtomicIntRaw</a> *a)</td></tr>
+<tr class="memdesc:ga421e6027176162dbd59e4bedc13e99dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment an atomic variable used as a reference count.  <br /></td></tr>
+<tr class="separator:ga421e6027176162dbd59e4bedc13e99dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4c1b49dd6819b1d2ee76d31181409def" id="r_ga4c1b49dd6819b1d2ee76d31181409def"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAtomic.html#ga4c1b49dd6819b1d2ee76d31181409def">SDL::AtomicDecRef</a> (<a class="el" href="group__CategoryAtomic.html#ga67dd37e9ba3e6db09737e0930d184d32">AtomicIntRaw</a> *a)</td></tr>
+<tr class="memdesc:ga4c1b49dd6819b1d2ee76d31181409def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement an atomic variable used as a reference count.  <br /></td></tr>
+<tr class="separator:ga4c1b49dd6819b1d2ee76d31181409def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf6f101a533c06761e143235a5bf9b3bd" id="r_gaf6f101a533c06761e143235a5bf9b3bd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAtomic.html#gaf6f101a533c06761e143235a5bf9b3bd">SDL::CompareAndSwapAtomicU32</a> (<a class="el" href="group__CategoryAtomic.html#ga0fec8da2cd6ce7698baca8c6410926d7">AtomicU32Raw</a> *a, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> oldval, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> newval)</td></tr>
+<tr class="memdesc:gaf6f101a533c06761e143235a5bf9b3bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an atomic variable to a new value if it is currently an old value.  <br /></td></tr>
+<tr class="separator:gaf6f101a533c06761e143235a5bf9b3bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa5b598b69d311d8ebeeded5f25e9b7ba" id="r_gaa5b598b69d311d8ebeeded5f25e9b7ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAtomic.html#gaa5b598b69d311d8ebeeded5f25e9b7ba">SDL::SetAtomicU32</a> (<a class="el" href="group__CategoryAtomic.html#ga0fec8da2cd6ce7698baca8c6410926d7">AtomicU32Raw</a> *a, <a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> v)</td></tr>
+<tr class="memdesc:gaa5b598b69d311d8ebeeded5f25e9b7ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an atomic variable to a value.  <br /></td></tr>
+<tr class="separator:gaa5b598b69d311d8ebeeded5f25e9b7ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga96a135147890457cbd147cb667381310" id="r_ga96a135147890457cbd147cb667381310"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAtomic.html#ga96a135147890457cbd147cb667381310">SDL::GetAtomicU32</a> (<a class="el" href="group__CategoryAtomic.html#ga0fec8da2cd6ce7698baca8c6410926d7">AtomicU32Raw</a> *a)</td></tr>
+<tr class="memdesc:ga96a135147890457cbd147cb667381310"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value of an atomic variable.  <br /></td></tr>
+<tr class="separator:ga96a135147890457cbd147cb667381310"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga16701ba4af31f536491f1241f3f986e8" id="r_ga16701ba4af31f536491f1241f3f986e8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAtomic.html#ga16701ba4af31f536491f1241f3f986e8">SDL::AtomicInt::CompareAndSwap</a> (int oldval, int newval)</td></tr>
 <tr class="memdesc:ga16701ba4af31f536491f1241f3f986e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an atomic variable to a new value if it is currently an old value.  <br /></td></tr>
 <tr class="separator:ga16701ba4af31f536491f1241f3f986e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -298,8 +337,59 @@ MemoryBarrierRelease </dd></dl>
 
 </div>
 </div>
+<a id="gaf6f31c8b1c0882d2b76e0989216b814b" name="gaf6f31c8b1c0882d2b76e0989216b814b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf6f31c8b1c0882d2b76e0989216b814b">&#9670;&#160;</a></span>AddAtomicInt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL::AddAtomicInt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAtomic.html#ga67dd37e9ba3e6db09737e0930d184d32">AtomicIntRaw</a> *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function also acts as a full memory barrier.</p>
+<p><em><b>Note: If you don't know what this function is for, you shouldn't use it!</b></em></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>a pointer to an <a class="el" href="structSDL_1_1AtomicInt.html" title="A type representing an atomic integer value.">AtomicInt</a> variable to be modified. </td></tr>
+    <tr><td class="paramname">v</td><td>the desired value to add. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the previous value of the atomic variable.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAtomic.html#ga4a1a156145c772f3b9d2b1bf6ba1e187" title="Decrement an atomic variable used as a reference count.">AtomicInt.AtomicDecRef</a> </dd>
+<dd>
+<a class="el" href="group__CategoryAtomic.html#gab4ce325df13c6bf5efddd374455516b4" title="Increment an atomic variable used as a reference count.">AtomicInt.AtomicIncRef</a> </dd></dl>
+
+</div>
+</div>
 <a id="ga4a1a156145c772f3b9d2b1bf6ba1e187" name="ga4a1a156145c772f3b9d2b1bf6ba1e187"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4a1a156145c772f3b9d2b1bf6ba1e187">&#9670;&#160;</a></span>AtomicDecRef()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4a1a156145c772f3b9d2b1bf6ba1e187">&#9670;&#160;</a></span>AtomicDecRef() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -328,8 +418,45 @@ MemoryBarrierRelease </dd></dl>
 
 </div>
 </div>
+<a id="ga4c1b49dd6819b1d2ee76d31181409def" name="ga4c1b49dd6819b1d2ee76d31181409def"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4c1b49dd6819b1d2ee76d31181409def">&#9670;&#160;</a></span>AtomicDecRef() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::AtomicDecRef </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAtomic.html#ga67dd37e9ba3e6db09737e0930d184d32">AtomicIntRaw</a> *&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em><b>Note: If you don't know what this macro is for, you shouldn't use it!</b></em></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>a pointer to an <a class="el" href="structSDL_1_1AtomicInt.html" title="A type representing an atomic integer value.">AtomicInt</a> to decrement. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the variable reached zero after decrementing, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAtomic.html#gab4ce325df13c6bf5efddd374455516b4" title="Increment an atomic variable used as a reference count.">AtomicInt.AtomicIncRef</a> </dd></dl>
+
+</div>
+</div>
 <a id="gab4ce325df13c6bf5efddd374455516b4" name="gab4ce325df13c6bf5efddd374455516b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab4ce325df13c6bf5efddd374455516b4">&#9670;&#160;</a></span>AtomicIncRef()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gab4ce325df13c6bf5efddd374455516b4">&#9670;&#160;</a></span>AtomicIncRef() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -351,6 +478,43 @@ MemoryBarrierRelease </dd></dl>
 </table>
 </div><div class="memdoc">
 <p><em><b>Note: If you don't know what this macro is for, you shouldn't use it!</b></em></p>
+<dl class="section return"><dt>Returns</dt><dd>the previous value of the atomic variable.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAtomic.html#ga4a1a156145c772f3b9d2b1bf6ba1e187" title="Decrement an atomic variable used as a reference count.">AtomicInt.AtomicDecRef</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga421e6027176162dbd59e4bedc13e99dc" name="ga421e6027176162dbd59e4bedc13e99dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga421e6027176162dbd59e4bedc13e99dc">&#9670;&#160;</a></span>AtomicIncRef() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::AtomicIncRef </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAtomic.html#ga67dd37e9ba3e6db09737e0930d184d32">AtomicIntRaw</a> *&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em><b>Note: If you don't know what this macro is for, you shouldn't use it!</b></em></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>a pointer to an <a class="el" href="structSDL_1_1AtomicInt.html" title="A type representing an atomic integer value.">AtomicInt</a> to increment. </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>the previous value of the atomic variable.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
@@ -512,6 +676,120 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
+<a id="gad35a020a0d42334d68aa0cb9df3ff47f" name="gad35a020a0d42334d68aa0cb9df3ff47f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad35a020a0d42334d68aa0cb9df3ff47f">&#9670;&#160;</a></span>CompareAndSwapAtomicInt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::CompareAndSwapAtomicInt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAtomic.html#ga67dd37e9ba3e6db09737e0930d184d32">AtomicIntRaw</a> *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>oldval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>newval</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em><b>Note: If you don't know what this function is for, you shouldn't use it!</b></em></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>a pointer to an <a class="el" href="structSDL_1_1AtomicInt.html" title="A type representing an atomic integer value.">AtomicInt</a> variable to be modified. </td></tr>
+    <tr><td class="paramname">oldval</td><td>the old value. </td></tr>
+    <tr><td class="paramname">newval</td><td>the new value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the atomic variable was set, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAtomic.html#ga8cf0b1fbd88d762113275ceceeb812e6" title="Get the value of an atomic variable.">AtomicInt.Get</a> </dd>
+<dd>
+<a class="el" href="group__CategoryAtomic.html#gac718cfa969aa0ff572975aaaac99b91b" title="Set an atomic variable to a value.">AtomicInt.Set</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaf6f101a533c06761e143235a5bf9b3bd" name="gaf6f101a533c06761e143235a5bf9b3bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf6f101a533c06761e143235a5bf9b3bd">&#9670;&#160;</a></span>CompareAndSwapAtomicU32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::CompareAndSwapAtomicU32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAtomic.html#ga0fec8da2cd6ce7698baca8c6410926d7">AtomicU32Raw</a> *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td>
+          <td class="paramname"><em>oldval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td>
+          <td class="paramname"><em>newval</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em><b>Note: If you don't know what this function is for, you shouldn't use it!</b></em></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>a pointer to an <a class="el" href="structSDL_1_1AtomicU32.html" title="A type representing an atomic unsigned 32-bit value.">AtomicU32</a> variable to be modified. </td></tr>
+    <tr><td class="paramname">oldval</td><td>the old value. </td></tr>
+    <tr><td class="paramname">newval</td><td>the new value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the atomic variable was set, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAtomic.html#gae669a7585c18f9fcf51e6ed9debc96e3" title="Get the value of an atomic variable.">AtomicU32.Get</a> </dd>
+<dd>
+<a class="el" href="group__CategoryAtomic.html#ga6c192a995c272792415d8b191baaedfb" title="Set an atomic variable to a value.">AtomicU32.Set</a> </dd></dl>
+
+</div>
+</div>
 <a id="ga8cf0b1fbd88d762113275ceceeb812e6" name="ga8cf0b1fbd88d762113275ceceeb812e6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga8cf0b1fbd88d762113275ceceeb812e6">&#9670;&#160;</a></span>Get() <span class="overload">[1/3]</span></h2>
 
@@ -603,6 +881,80 @@ template&lt;class T &gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAtomic.html#gab43864a06ef7797bbcb638e38207ed88" title="Set a pointer to a new value if it is currently an old value.">AtomicPointer.CompareAndSwap</a> </dd>
 <dd>
 <a class="el" href="group__CategoryAtomic.html#ga44d70519fbb8d71f2cb5b3646d5f0637" title="Set a pointer to a value atomically.">AtomicPointer.Set</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga4b927a00efa45efa4152bf50a4c995e0" name="ga4b927a00efa45efa4152bf50a4c995e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4b927a00efa45efa4152bf50a4c995e0">&#9670;&#160;</a></span>GetAtomicInt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL::GetAtomicInt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAtomic.html#ga67dd37e9ba3e6db09737e0930d184d32">AtomicIntRaw</a> *&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em><b>Note: If you don't know what this function is for, you shouldn't use it!</b></em></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>a pointer to an <a class="el" href="structSDL_1_1AtomicInt.html" title="A type representing an atomic integer value.">AtomicInt</a> variable. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the current value of an atomic variable.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAtomic.html#gac718cfa969aa0ff572975aaaac99b91b" title="Set an atomic variable to a value.">AtomicInt.Set</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga96a135147890457cbd147cb667381310" name="ga96a135147890457cbd147cb667381310"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga96a135147890457cbd147cb667381310">&#9670;&#160;</a></span>GetAtomicU32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> SDL::GetAtomicU32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAtomic.html#ga0fec8da2cd6ce7698baca8c6410926d7">AtomicU32Raw</a> *&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em><b>Note: If you don't know what this function is for, you shouldn't use it!</b></em></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>a pointer to an <a class="el" href="structSDL_1_1AtomicU32.html" title="A type representing an atomic unsigned 32-bit value.">AtomicU32</a> variable. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the current value of an atomic variable.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAtomic.html#ga6c192a995c272792415d8b191baaedfb" title="Set an atomic variable to a value.">AtomicU32.Set</a> </dd></dl>
 
 </div>
 </div>
@@ -770,6 +1122,104 @@ template&lt;class T &gt; </div>
 <p><em><b>Note: If you don't know what this function is for, you shouldn't use it!</b></em></p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">v</td><td>the desired value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the previous value of the atomic variable.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAtomic.html#gae669a7585c18f9fcf51e6ed9debc96e3" title="Get the value of an atomic variable.">AtomicU32.Get</a> </dd></dl>
+
+</div>
+</div>
+<a id="gab8be42cbfad7b18f516177cca3a25b39" name="gab8be42cbfad7b18f516177cca3a25b39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab8be42cbfad7b18f516177cca3a25b39">&#9670;&#160;</a></span>SetAtomicInt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL::SetAtomicInt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAtomic.html#ga67dd37e9ba3e6db09737e0930d184d32">AtomicIntRaw</a> *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function also acts as a full memory barrier.</p>
+<p><em><b>Note: If you don't know what this function is for, you shouldn't use it!</b></em></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>a pointer to an <a class="el" href="structSDL_1_1AtomicInt.html" title="A type representing an atomic integer value.">AtomicInt</a> variable to be modified. </td></tr>
+    <tr><td class="paramname">v</td><td>the desired value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the previous value of the atomic variable.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAtomic.html#ga8cf0b1fbd88d762113275ceceeb812e6" title="Get the value of an atomic variable.">AtomicInt.Get</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaa5b598b69d311d8ebeeded5f25e9b7ba" name="gaa5b598b69d311d8ebeeded5f25e9b7ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa5b598b69d311d8ebeeded5f25e9b7ba">&#9670;&#160;</a></span>SetAtomicU32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a> SDL::SetAtomicU32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAtomic.html#ga0fec8da2cd6ce7698baca8c6410926d7">AtomicU32Raw</a> *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryStdinc.html#gaa223864b2586e8faf963fdfa230ceaa0">Uint32</a>&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function also acts as a full memory barrier.</p>
+<p><em><b>Note: If you don't know what this function is for, you shouldn't use it!</b></em></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>a pointer to an <a class="el" href="structSDL_1_1AtomicU32.html" title="A type representing an atomic unsigned 32-bit value.">AtomicU32</a> variable to be modified. </td></tr>
     <tr><td class="paramname">v</td><td>the desired value. </td></tr>
   </table>
   </dd>

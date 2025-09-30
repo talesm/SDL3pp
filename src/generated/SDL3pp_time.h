@@ -349,7 +349,7 @@ inline void GetDateTimeLocalePreferences(DateFormat* dateFormat,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Time Time::Current() { return CheckError(SDL_GetCurrentTime()); }
+inline Time Time::Current() { return CheckError(SDL_GetCurrentTime(m_time)); }
 
 /**
  * Converts an Time in nanoseconds since the epoch to a calendar time in
@@ -403,7 +403,7 @@ inline DateTime::operator Time() const : DateTimeRaw(SDL::DateTimeToTime()) {}
  */
 inline void Time::ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const
 {
-  SDL_TimeToWindows(dwLowDateTime, dwHighDateTime);
+  SDL_TimeToWindows(m_time, dwLowDateTime, dwHighDateTime);
 }
 
 /**

@@ -54,7 +54,7 @@ constexpr Time Time::FromPosix(Sint64 time)
  */
 constexpr Sint64 Time::ToPosix() const
 {
-  return SDL_NS_TO_SECONDS(m_value.count());
+  return SDL_NS_TO_SECONDS(m_time.count());
 }
 
 /**

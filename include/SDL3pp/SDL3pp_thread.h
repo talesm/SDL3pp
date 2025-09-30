@@ -816,7 +816,7 @@ inline void Thread::Detach()
  *
  * @sa SetTLS
  */
-inline void* GetTLS(TLSID* id) { return SDL_GetTLS(*id); }
+inline void* GetTLS(TLSID* id) { return SDL_GetTLS(id); }
 
 /**
  * Set the current thread's value associated with a thread local storage ID.
@@ -847,7 +847,7 @@ inline void SetTLS(TLSID* id,
                    const void* value,
                    TLSDestructorCallback destructor)
 {
-  CheckError(SDL_SetTLS(*id, value, destructor));
+  CheckError(SDL_SetTLS(id, value, destructor));
 }
 
 /**

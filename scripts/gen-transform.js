@@ -125,15 +125,12 @@ const transform = {
         "SDL_MemoryBarrierAcquireFunction": { name: "MemoryBarrierAcquire", after: "__begin" },
         "SDL_AtomicInt": {
           kind: "struct",
-          hints: {
-            self: "&m_value",
-            private: true,
+          wrapper: {
+            genMembers: false,
+            invalidState: false,
+            genCtor: false,
           },
           entries: {
-            "m_value": {
-              kind: "var",
-              type: "SDL_AtomicInt",
-            },
             "AtomicInt": [
               {
                 kind: "function",
@@ -144,8 +141,7 @@ const transform = {
                   name: "value"
                 }],
                 hints: {
-                  init: ["m_value(value)"],
-                  changeAccess: "public",
+                  init: ["AtomicIntRaw(value)"],
                 }
               },
               {
@@ -173,15 +169,6 @@ const transform = {
                 delete: true
               }
             },
-            "operator SDL_AtomicInt *": {
-              kind: "function",
-              type: "",
-              parameters: [],
-              constexpr: true,
-              hints: {
-                body: "return &m_value;"
-              }
-            },
             "SDL_CompareAndSwapAtomicInt": "function",
             "SDL_SetAtomicInt": "function",
             "SDL_GetAtomicInt": "function",
@@ -200,15 +187,12 @@ const transform = {
         },
         "SDL_AtomicU32": {
           kind: "struct",
-          hints: {
-            self: "&m_value",
-            private: true,
+          wrapper: {
+            genMembers: false,
+            invalidState: false,
+            genCtor: false,
           },
           entries: {
-            "m_value": {
-              kind: "var",
-              type: "SDL_AtomicU32",
-            },
             "AtomicU32": [
               {
                 kind: "function",
@@ -246,15 +230,6 @@ const transform = {
               }],
               hints: {
                 delete: true
-              }
-            },
-            "operator SDL_AtomicU32 *": {
-              kind: "function",
-              type: "",
-              parameters: [],
-              constexpr: true,
-              hints: {
-                body: "return &m_value;"
               }
             },
             "SDL_CompareAndSwapAtomicU32": "function",
@@ -1399,7 +1374,8 @@ const transform = {
         },
         "SDL_GetWindowFromEvent": {
           parameters: [{ type: "const Event &" }]
-        }
+        },
+        "SDL_Event": { wrapper: false },
       }
     },
     "SDL_filesystem.h": {
@@ -4898,50 +4874,17 @@ const transform = {
         },
         "SDL_Time": {
           kind: "struct",
-          type: "",
           entries: {
-            "m_value": {
-              "kind": "var",
-              "type": "std::chrono::nanoseconds"
-            },
-            "Time": [
-              {
-                "kind": "function",
-                "constexpr": true,
-                "type": "",
-                "parameters": []
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "std::chrono::nanoseconds",
-                    "name": "time"
-                  }
-                ]
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Time",
-                    "name": "time"
-                  }
-                ]
-              }
-            ],
-            "operator bool": {
-              "kind": "function",
-              "type": "",
-              "explicit": true,
-              "immutable": true,
-              "constexpr": true,
-              "parameters": []
+            "Time": {
+              kind: "function",
+              type: "",
+              constexpr: true,
+              parameters: [
+                {
+                  "type": "std::chrono::nanoseconds",
+                  "name": "time"
+                }
+              ]
             },
             "operator std::chrono::nanoseconds": {
               "kind": "function",
@@ -6623,8 +6566,6 @@ const transform = {
       localIncludes: ["SDL3pp_stdinc.h"],
       transform: {
         "SDL_DateTime": {
-          wrapper: true,
-          // "ordered": true,
           "entries": {
             "SDL_TimeToDateTime": {
               "name": "DateTime",

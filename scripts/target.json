@@ -37807,6 +37807,7 @@
           "name": "Event",
           "kind": "alias",
           "sourceName": "SDL_Event",
+          "wrapper": false,
           "type": "SDL_Event"
         },
         "PumpEvents": {
@@ -48631,6 +48632,18 @@
       "name": "SDL3pp_atomic.h",
       "doc": "@defgroup CategoryAtomic Category Atomic\n\nAtomic operations.\n\nIMPORTANT: If you are not an expert in concurrent lockless programming, you\nshould not be using any functions in this file. You should be protecting\nyour data structures with full mutexes instead.\n\n***Seriously, here be dragons!***\n\nYou can find out a little more about lockless programming and the subtle\nissues that can arise here:\nhttps://learn.microsoft.com/en-us/windows/win32/dxtecharts/lockless-programming\n\nThere's also lots of good information here:\n\n- https://www.1024cores.net/home/lock-free-algorithms\n- https://preshing.com/\n\nThese operations may or may not actually be implemented using processor\nspecific atomic operations. When possible they are implemented as true\nprocessor specific atomic operations. When that is not possible the are\nimplemented using locks that *do* use the available atomic operations.\n\nAll of the atomic operations that modify memory are full memory barriers.",
       "entries": {
+        "AtomicIntRaw": {
+          "name": "AtomicIntRaw",
+          "kind": "alias",
+          "type": "SDL_AtomicInt",
+          "doc": "Alias to raw representation for AtomicInt."
+        },
+        "AtomicU32Raw": {
+          "name": "AtomicU32Raw",
+          "kind": "alias",
+          "type": "SDL_AtomicU32",
+          "doc": "Alias to raw representation for AtomicU32."
+        },
         "MemoryBarrierRelease": {
           "doc": "Insert a memory release barrier (function version).\n\nPlease refer to SDL_MemoryBarrierRelease for details. This is a function\nversion, which might be useful if you need to use this functionality from a\nscripting language, etc. Also, some of the macro versions call this\nfunction behind the scenes, where more heavy lifting can happen inside of\nSDL. Generally, though, an app written in C/C++/etc should use the macro\nversion, as it will be more efficient.\n\n@threadsafety Obviously this function is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_MemoryBarrierRelease",
           "name": "MemoryBarrierRelease",
@@ -48684,16 +48697,7 @@
           "name": "AtomicInt",
           "kind": "struct",
           "sourceName": "SDL_AtomicInt",
-          "hints": {
-            "self": "&m_value",
-            "private": true
-          },
           "entries": {
-            "m_value": {
-              "kind": "var",
-              "type": "SDL_AtomicInt",
-              "name": "m_value"
-            },
             "AtomicInt": [
               {
                 "kind": "function",
@@ -48707,9 +48711,8 @@
                 ],
                 "hints": {
                   "init": [
-                    "m_value(value)"
-                  ],
-                  "changeAccess": "public"
+                    "AtomicIntRaw(value)"
+                  ]
                 },
                 "name": "AtomicInt"
               },
@@ -48743,16 +48746,6 @@
                 "delete": true
               },
               "name": "operator="
-            },
-            "operator SDL_AtomicInt *": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "constexpr": true,
-              "hints": {
-                "body": "return &m_value;"
-              },
-              "name": "operator SDL_AtomicInt *"
             },
             "CompareAndSwap": {
               "doc": "Set an atomic variable to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param oldval the old value.\n@param newval the new value.\n@returns true if the atomic variable was set, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.Get\n@sa AtomicInt.Set",
@@ -48847,7 +48840,33 @@
               },
               "proto": true
             }
-          }
+          },
+          "hints": {
+            "self": "this",
+            "super": "AtomicIntRaw"
+          },
+          "type": "AtomicIntRaw"
+        },
+        "CompareAndSwapAtomicInt": {
+          "doc": "Set an atomic variable to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicInt variable to be modified.\n@param oldval the old value.\n@param newval the new value.\n@returns true if the atomic variable was set, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.Get\n@sa AtomicInt.Set",
+          "name": "CompareAndSwapAtomicInt",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicIntRaw *"
+            },
+            {
+              "name": "oldval",
+              "type": "int"
+            },
+            {
+              "name": "newval",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_CompareAndSwapAtomicInt"
         },
         "AtomicInt::CompareAndSwap": {
           "name": "AtomicInt::CompareAndSwap",
@@ -48865,10 +48884,27 @@
           ],
           "sourceName": "SDL_CompareAndSwapAtomicInt",
           "hints": {
-            "self": "&m_value",
-            "private": true,
+            "self": "this",
+            "super": "AtomicIntRaw",
             "delegate": "SDL::CompareAndSwapAtomicInt"
           }
+        },
+        "SetAtomicInt": {
+          "doc": "Set an atomic variable to a value.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicInt variable to be modified.\n@param v the desired value.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.Get",
+          "name": "SetAtomicInt",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicIntRaw *"
+            },
+            {
+              "name": "v",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_SetAtomicInt"
         },
         "AtomicInt::Set": {
           "name": "AtomicInt::Set",
@@ -48882,10 +48918,23 @@
           ],
           "sourceName": "SDL_SetAtomicInt",
           "hints": {
-            "self": "&m_value",
-            "private": true,
+            "self": "this",
+            "super": "AtomicIntRaw",
             "delegate": "SDL::SetAtomicInt"
           }
+        },
+        "GetAtomicInt": {
+          "doc": "Get the value of an atomic variable.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicInt variable.\n@returns the current value of an atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.Set",
+          "name": "GetAtomicInt",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicIntRaw *"
+            }
+          ],
+          "sourceName": "SDL_GetAtomicInt"
         },
         "AtomicInt::Get": {
           "name": "AtomicInt::Get",
@@ -48894,10 +48943,27 @@
           "parameters": [],
           "sourceName": "SDL_GetAtomicInt",
           "hints": {
-            "self": "&m_value",
-            "private": true,
+            "self": "this",
+            "super": "AtomicIntRaw",
             "delegate": "SDL::GetAtomicInt"
           }
+        },
+        "AddAtomicInt": {
+          "doc": "Add to an atomic variable.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicInt variable to be modified.\n@param v the desired value to add.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.AtomicDecRef\n@sa AtomicInt.AtomicIncRef",
+          "name": "AddAtomicInt",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicIntRaw *"
+            },
+            {
+              "name": "v",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_AddAtomicInt"
         },
         "AtomicInt::Add": {
           "name": "AtomicInt::Add",
@@ -48911,10 +48977,24 @@
           ],
           "sourceName": "SDL_AddAtomicInt",
           "hints": {
-            "self": "&m_value",
-            "private": true,
+            "self": "this",
+            "super": "AtomicIntRaw",
             "delegate": "SDL::AddAtomicInt"
           }
+        },
+        "AtomicIncRef": {
+          "doc": "Increment an atomic variable used as a reference count.\n\n***Note: If you don't know what this macro is for, you shouldn't use it!***\n\n@param a a pointer to an AtomicInt to increment.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa AtomicInt.AtomicDecRef",
+          "name": "AtomicIncRef",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "const AtomicIntRaw &"
+            }
+          ],
+          "value": "SDL_AddAtomicInt(a, 1)",
+          "sourceName": "SDL_AtomicIncRef",
+          "type": "bool"
         },
         "AtomicInt::AtomicIncRef": {
           "name": "AtomicInt::AtomicIncRef",
@@ -48924,10 +49004,24 @@
           "sourceName": "SDL_AtomicIncRef",
           "type": "bool",
           "hints": {
-            "self": "&m_value",
-            "private": true,
+            "self": "this",
+            "super": "AtomicIntRaw",
             "delegate": "SDL::AtomicIncRef"
           }
+        },
+        "AtomicDecRef": {
+          "doc": "Decrement an atomic variable used as a reference count.\n\n***Note: If you don't know what this macro is for, you shouldn't use it!***\n\n@param a a pointer to an AtomicInt to decrement.\n@returns true if the variable reached zero after decrementing, false\n         otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa AtomicInt.AtomicIncRef",
+          "name": "AtomicDecRef",
+          "kind": "function",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "const AtomicIntRaw &"
+            }
+          ],
+          "value": "(SDL_AddAtomicInt(a, -1) == 1)",
+          "sourceName": "SDL_AtomicDecRef",
+          "type": "bool"
         },
         "AtomicInt::AtomicDecRef": {
           "name": "AtomicInt::AtomicDecRef",
@@ -48937,8 +49031,8 @@
           "sourceName": "SDL_AtomicDecRef",
           "type": "bool",
           "hints": {
-            "self": "&m_value",
-            "private": true,
+            "self": "this",
+            "super": "AtomicIntRaw",
             "delegate": "SDL::AtomicDecRef"
           }
         },
@@ -48947,16 +49041,7 @@
           "name": "AtomicU32",
           "kind": "struct",
           "sourceName": "SDL_AtomicU32",
-          "hints": {
-            "self": "&m_value",
-            "private": true
-          },
           "entries": {
-            "m_value": {
-              "kind": "var",
-              "type": "SDL_AtomicU32",
-              "name": "m_value"
-            },
             "AtomicU32": [
               {
                 "kind": "function",
@@ -49006,16 +49091,6 @@
                 "delete": true
               },
               "name": "operator="
-            },
-            "operator SDL_AtomicU32 *": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "constexpr": true,
-              "hints": {
-                "body": "return &m_value;"
-              },
-              "name": "operator SDL_AtomicU32 *"
             },
             "CompareAndSwap": {
               "doc": "Set an atomic variable to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param oldval the old value.\n@param newval the new value.\n@returns true if the atomic variable was set, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicU32.Get\n@sa AtomicU32.Set",
@@ -49067,7 +49142,12 @@
               },
               "proto": true
             }
-          }
+          },
+          "hints": {
+            "self": "this",
+            "super": "AtomicU32Raw"
+          },
+          "type": "AtomicU32Raw"
         },
         "AtomicPointer": {
           "kind": "struct",
@@ -49193,6 +49273,27 @@
           },
           "name": "AtomicPointer"
         },
+        "CompareAndSwapAtomicU32": {
+          "doc": "Set an atomic variable to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicU32 variable to be modified.\n@param oldval the old value.\n@param newval the new value.\n@returns true if the atomic variable was set, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicU32.Get\n@sa AtomicU32.Set",
+          "name": "CompareAndSwapAtomicU32",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicU32Raw *"
+            },
+            {
+              "name": "oldval",
+              "type": "Uint32"
+            },
+            {
+              "name": "newval",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_CompareAndSwapAtomicU32"
+        },
         "AtomicU32::CompareAndSwap": {
           "name": "AtomicU32::CompareAndSwap",
           "kind": "function",
@@ -49209,10 +49310,27 @@
           ],
           "sourceName": "SDL_CompareAndSwapAtomicU32",
           "hints": {
-            "self": "&m_value",
-            "private": true,
+            "self": "this",
+            "super": "AtomicU32Raw",
             "delegate": "SDL::CompareAndSwapAtomicU32"
           }
+        },
+        "SetAtomicU32": {
+          "doc": "Set an atomic variable to a value.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicU32 variable to be modified.\n@param v the desired value.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicU32.Get",
+          "name": "SetAtomicU32",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicU32Raw *"
+            },
+            {
+              "name": "v",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_SetAtomicU32"
         },
         "AtomicU32::Set": {
           "name": "AtomicU32::Set",
@@ -49226,10 +49344,23 @@
           ],
           "sourceName": "SDL_SetAtomicU32",
           "hints": {
-            "self": "&m_value",
-            "private": true,
+            "self": "this",
+            "super": "AtomicU32Raw",
             "delegate": "SDL::SetAtomicU32"
           }
+        },
+        "GetAtomicU32": {
+          "doc": "Get the value of an atomic variable.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to an AtomicU32 variable.\n@returns the current value of an atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicU32.Set",
+          "name": "GetAtomicU32",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "AtomicU32Raw *"
+            }
+          ],
+          "sourceName": "SDL_GetAtomicU32"
         },
         "AtomicU32::Get": {
           "name": "AtomicU32::Get",
@@ -49238,8 +49369,8 @@
           "parameters": [],
           "sourceName": "SDL_GetAtomicU32",
           "hints": {
-            "self": "&m_value",
-            "private": true,
+            "self": "this",
+            "super": "AtomicU32Raw",
             "delegate": "SDL::GetAtomicU32"
           }
         },
@@ -49338,6 +49469,8 @@
           "type": "Time",
           "constexpr": true,
           "hints": {
+            "self": "m_time",
+            "private": true,
             "static": true
           }
         },
@@ -49350,7 +49483,11 @@
           "sourceName": "SDL_NS_TO_SECONDS",
           "type": "Sint64",
           "constexpr": true,
-          "immutable": true
+          "immutable": true,
+          "hints": {
+            "self": "m_time",
+            "private": true
+          }
         },
         "GetTicks": {
           "doc": "Get the number of nanoseconds since SDL library initialization.\n\n@returns an unsigned 64-bit value representing the number of nanoseconds\n         since the SDL library initialized.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -49961,6 +50098,8 @@
           "parameters": [],
           "sourceName": "SDL_GetCurrentTime",
           "hints": {
+            "self": "m_time",
+            "private": true,
             "mayFail": true
           }
         },
@@ -50032,7 +50171,11 @@
             }
           ],
           "sourceName": "SDL_TimeToWindows",
-          "immutable": true
+          "immutable": true,
+          "hints": {
+            "self": "m_time",
+            "private": true
+          }
         },
         "Time::FromWindows": {
           "doc": "Converts a Windows FILETIME (100-nanosecond intervals since January 1,\n1601) to an SDL time.\n\nThis function takes the two 32-bit values of the FILETIME structure as\nparameters.\n\n@param dwLowDateTime the low portion of the Windows FILETIME value.\n@param dwHighDateTime the high portion of the Windows FILETIME value.\n@returns the converted SDL time.\n\n@since This function is available since SDL 3.2.0.",
@@ -50051,6 +50194,8 @@
           ],
           "sourceName": "SDL_TimeFromWindows",
           "hints": {
+            "self": "m_time",
+            "private": true,
             "static": true
           }
         },
@@ -61024,6 +61169,12 @@
       "name": "SDL3pp_stdinc.h",
       "doc": "@defgroup CategoryStdinc Category Stdinc\n\nSDL provides its own implementation of some of the most important C runtime\nfunctions.\n\nUsing these functions allows an app to have access to common C\nfunctionality without depending on a specific C runtime (or a C runtime at\nall). More importantly, the SDL implementations work identically across\nplatforms, so apps can avoid surprises like snprintf() behaving differently\nbetween Windows and Linux builds, or itoa() only existing on some\nplatforms.\n\nFor many of the most common functions, like memcpy, SDL might just call\nthrough to the usual C runtime behind the scenes, if it makes sense to do\nso (if it's faster and always available/reliable on a given platform),\nreducing library size and offering the most optimized option.\n\nSDL also offers other C-runtime-adjacent functionality in this header that\neither isn't, strictly speaking, part of any C runtime standards, like\ncrc32() and SDL_reinterpret_cast, etc. It also offers a few better\noptions, like strlcpy(), which functions as a safer form of strcpy().",
       "entries": {
+        "TimeRaw": {
+          "name": "TimeRaw",
+          "kind": "alias",
+          "type": "SDL_Time",
+          "doc": "Alias to raw representation for Time."
+        },
         "Environment-forward": {
           "name": "Environment",
           "kind": "forward"
@@ -61607,18 +61758,31 @@
           "type": "",
           "sourceName": "SDL_Time",
           "entries": {
-            "m_value": {
+            "m_time": {
               "kind": "var",
-              "type": "std::chrono::nanoseconds",
-              "name": "m_value"
+              "name": "m_time",
+              "type": "TimeRaw"
             },
             "Time": [
               {
                 "kind": "function",
-                "constexpr": true,
+                "name": "Time",
                 "type": "",
-                "parameters": [],
-                "name": "Time"
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "TimeRaw",
+                    "name": "time",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps Time.\n\n@param time the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "m_time(time)"
+                  ],
+                  "changeAccess": "public"
+                }
               },
               {
                 "kind": "function",
@@ -61630,30 +61794,57 @@
                     "name": "time"
                   }
                 ],
-                "name": "Time"
+                "name": "Time",
+                "doc": "Wraps Time.\n\n@param time the value to be wrapped"
+              }
+            ],
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Time &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
+                }
               },
               {
                 "kind": "function",
-                "type": "",
-                "explicit": true,
+                "name": "operator==",
+                "type": "bool",
                 "constexpr": true,
+                "immutable": true,
                 "parameters": [
                   {
-                    "type": "SDL_Time",
+                    "type": "TimeRaw",
                     "name": "time"
                   }
                 ],
-                "name": "Time"
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator==(Time(time));"
+                }
               }
             ],
-            "operator bool": {
+            "operator TimeRaw": {
               "kind": "function",
+              "name": "operator TimeRaw",
               "type": "",
-              "explicit": true,
-              "immutable": true,
               "constexpr": true,
+              "immutable": true,
               "parameters": [],
-              "name": "operator bool"
+              "doc": "Unwraps to the underlying Time.\n\n@returns the underlying TimeRaw.",
+              "hints": {
+                "body": "return m_time;"
+              }
             },
             "operator std::chrono::nanoseconds": {
               "kind": "function",
@@ -61810,6 +62001,10 @@
               ],
               "name": "operator-="
             }
+          },
+          "hints": {
+            "self": "m_time",
+            "private": true
           }
         },
         "MAX_TIME": {

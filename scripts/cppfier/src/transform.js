@@ -389,7 +389,6 @@ function expandTypes(sourceEntries, file, context) {
   function tryDetectOoLike(sourceEntry, targetDelta) {
     const sourceName = sourceEntry.name;
     if (typeof targetDelta.resource !== "undefined" || typeof targetDelta.wrapper !== "undefined") return;
-    if (sourceName === 'SDL_Storage') console.log(targetDelta);
 
     let fCount = 0;
     let free = '';
@@ -412,15 +411,15 @@ function expandTypes(sourceEntries, file, context) {
       }
     }
 
-    if (ctors.length) {
-      if (!targetDelta.entries) targetDelta.entries = {};
+    if (ctors.length && !targetDelta.entries) {
+      targetDelta.entries = {};
       ctors.forEach(n => targetDelta.entries[n] = "ctor");
     }
 
     if (free) {
       targetDelta.resource = { free };
-      // } else if (fCount > 5) {
-      //   targetDelta.wrapper = true;
+    } else if (fCount > 5 || targetDelta.entries) {
+      targetDelta.wrapper = true;
     }
   }
 
@@ -470,6 +469,7 @@ function expandTypes(sourceEntries, file, context) {
    */
   function expandWrapper(sourceType, sourceEntry, targetType, transform) {
     const wrapper = transform.wrapper === true ? {} : transform.wrapper;
+    if (!wrapper) return;
     const isStruct = sourceEntry.kind === "struct" && !transform.type;
     if (!transform.kind) transform.kind = "struct";
 

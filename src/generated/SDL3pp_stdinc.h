@@ -38,6 +38,9 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for Time.
+using TimeRaw = SDL_Time;
+
 // Forward decl
 struct Environment;
 
@@ -358,20 +361,43 @@ constexpr Nanoseconds FromNS(Sint64 duration)
  * @sa MAX_SINT64
  * @sa MIN_SINT64
  */
-struct Time
+class Time
 {
-  std::chrono::nanoseconds m_value;
+  TimeRaw m_time;
 
-  constexpr Time() {}
+public:
+  /**
+   * Wraps Time.
+   *
+   * @param time the value to be wrapped
+   */
+  constexpr Time(TimeRaw time = {})
+    : m_time(time)
+  {
+  }
 
+  /**
+   * Wraps Time.
+   *
+   * @param time the value to be wrapped
+   */
   constexpr Time(std::chrono::nanoseconds time) {}
 
-  constexpr explicit Time(SDL_Time time) {}
+  /// Default comparison operator
+  constexpr bool operator==(const Time& other) const = default;
 
-  constexpr explicit operator bool() const
+  /// Compares with the underlying type
+  constexpr bool operator==(TimeRaw time) const
   {
-    static_assert(false, "Not implemented");
+    return operator==(Time(time));
   }
+
+  /**
+   * Unwraps to the underlying Time.
+   *
+   * @returns the underlying TimeRaw.
+   */
+  constexpr operator TimeRaw() const { return m_time; }
 
   constexpr operator std::chrono::nanoseconds() const
   {

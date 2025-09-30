@@ -38,6 +38,9 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for Time.
+using TimeRaw = SDL_Time;
+
 // Forward decl
 struct Environment;
 
@@ -380,10 +383,7 @@ constexpr float ToSeconds(Seconds duration) { return duration.count(); }
 constexpr Seconds FromSeconds(float duration) { return Seconds(duration); }
 
 /// Converts a time duration to nanoseconds (Sint64);
-constexpr Sint64 ToNS(std::chrono::nanoseconds duration)
-{
-  return duration.count();
-}
+constexpr Sint64 ToNS(Nanoseconds duration) { return duration.count(); }
 
 /// Converts a Sint64 to nanoseconds representation.
 constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
@@ -403,31 +403,39 @@ constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
  */
 class Time
 {
-  std::chrono::nanoseconds m_value;
+  Nanoseconds m_time;
 
 public:
   constexpr Time() = default;
 
-  /// Constructs from a nanoseconds period.
-  constexpr Time(std::chrono::nanoseconds time)
-    : m_value(time)
+  /**
+   * Wraps Time.
+   *
+   * @param time the value to be wrapped
+   */
+  constexpr explicit Time(TimeRaw time)
+    : m_time(time)
   {
   }
 
-  /// Constructs from SDL_Time
-  constexpr explicit Time(SDL_Time time)
-    : m_value(FromNS(time))
+  /**
+   * Wraps Time.
+   *
+   * @param time the value to be wrapped
+   */
+  constexpr Time(std::chrono::nanoseconds time)
+    : m_time(time)
   {
   }
 
   /// True if not zero
   constexpr explicit operator bool() const
   {
-    return m_value != std::chrono::nanoseconds{};
+    return m_time != std::chrono::nanoseconds{};
   }
 
   /// Converts to nanoseconds period
-  constexpr operator std::chrono::nanoseconds() const { return m_value; }
+  constexpr operator std::chrono::nanoseconds() const { return m_time; }
 
   /**
    * Gets the current value of the system realtime clock in nanoseconds since
@@ -446,7 +454,7 @@ public:
   }
 
   /// Converts to nanoseconds Sint64
-  constexpr Sint64 ToNS() const { return m_value.count(); }
+  constexpr Sint64 ToNS() const { return m_time.count(); }
 
   /**
    * Convert seconds to nanoseconds.
@@ -506,7 +514,7 @@ public:
   void ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const;
 
   /// Converts a time to seconds (float) since epoch.
-  constexpr float ToSeconds() const { return Seconds(m_value).count(); }
+  constexpr float ToSeconds() const { return Seconds(m_time).count(); }
 
   /// Converts a time to seconds (float) since epoch.
   static constexpr Time FromSeconds(float interval)
@@ -518,14 +526,14 @@ public:
   /// Increment time
   constexpr Time& operator+=(std::chrono::nanoseconds interval)
   {
-    m_value += interval;
+    m_time += interval;
     return *this;
   }
 
   /// Decrement
   constexpr Time& operator-=(std::chrono::nanoseconds interval)
   {
-    m_value -= interval;
+    m_time -= interval;
     return *this;
   }
 };

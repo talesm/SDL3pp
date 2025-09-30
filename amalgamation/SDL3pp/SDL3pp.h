@@ -12893,6 +12893,9 @@ inline void Properties::Destroy()
  * @{
  */
 
+/// Alias to raw representation for Time.
+using TimeRaw = SDL_Time;
+
 // Forward decl
 struct Environment;
 
@@ -13235,10 +13238,7 @@ constexpr float ToSeconds(Seconds duration) { return duration.count(); }
 constexpr Seconds FromSeconds(float duration) { return Seconds(duration); }
 
 /// Converts a time duration to nanoseconds (Sint64);
-constexpr Sint64 ToNS(std::chrono::nanoseconds duration)
-{
-  return duration.count();
-}
+constexpr Sint64 ToNS(Nanoseconds duration) { return duration.count(); }
 
 /// Converts a Sint64 to nanoseconds representation.
 constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
@@ -13258,31 +13258,39 @@ constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
  */
 class Time
 {
-  std::chrono::nanoseconds m_value;
+  Nanoseconds m_time;
 
 public:
   constexpr Time() = default;
 
-  /// Constructs from a nanoseconds period.
-  constexpr Time(std::chrono::nanoseconds time)
-    : m_value(time)
+  /**
+   * Wraps Time.
+   *
+   * @param time the value to be wrapped
+   */
+  constexpr explicit Time(TimeRaw time)
+    : m_time(time)
   {
   }
 
-  /// Constructs from SDL_Time
-  constexpr explicit Time(SDL_Time time)
-    : m_value(FromNS(time))
+  /**
+   * Wraps Time.
+   *
+   * @param time the value to be wrapped
+   */
+  constexpr Time(std::chrono::nanoseconds time)
+    : m_time(time)
   {
   }
 
   /// True if not zero
   constexpr explicit operator bool() const
   {
-    return m_value != std::chrono::nanoseconds{};
+    return m_time != std::chrono::nanoseconds{};
   }
 
   /// Converts to nanoseconds period
-  constexpr operator std::chrono::nanoseconds() const { return m_value; }
+  constexpr operator std::chrono::nanoseconds() const { return m_time; }
 
   /**
    * Gets the current value of the system realtime clock in nanoseconds since
@@ -13301,7 +13309,7 @@ public:
   }
 
   /// Converts to nanoseconds Sint64
-  constexpr Sint64 ToNS() const { return m_value.count(); }
+  constexpr Sint64 ToNS() const { return m_time.count(); }
 
   /**
    * Convert seconds to nanoseconds.
@@ -13361,7 +13369,7 @@ public:
   void ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const;
 
   /// Converts a time to seconds (float) since epoch.
-  constexpr float ToSeconds() const { return Seconds(m_value).count(); }
+  constexpr float ToSeconds() const { return Seconds(m_time).count(); }
 
   /// Converts a time to seconds (float) since epoch.
   static constexpr Time FromSeconds(float interval)
@@ -13373,14 +13381,14 @@ public:
   /// Increment time
   constexpr Time& operator+=(std::chrono::nanoseconds interval)
   {
-    m_value += interval;
+    m_time += interval;
     return *this;
   }
 
   /// Decrement
   constexpr Time& operator-=(std::chrono::nanoseconds interval)
   {
-    m_value -= interval;
+    m_time -= interval;
     return *this;
   }
 };
@@ -19089,6 +19097,12 @@ inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
  * @{
  */
 
+/// Alias to raw representation for AtomicInt.
+using AtomicIntRaw = SDL_AtomicInt;
+
+/// Alias to raw representation for AtomicU32.
+using AtomicU32Raw = SDL_AtomicU32;
+
 /**
  * Insert a memory release barrier (function version).
  *
@@ -19258,23 +19272,21 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
  * @sa AtomicInt.Set
  * @sa AtomicInt.Add
  */
-class AtomicInt
+struct AtomicInt : AtomicIntRaw
 {
-  SDL_AtomicInt m_value;
-
-public:
-  /// Constructs from an int
+  /**
+   * Wraps AtomicInt.
+   *
+   * @param value the value for value.
+   */
   constexpr AtomicInt(int value)
-    : m_value(value)
+    : AtomicIntRaw(value)
   {
   }
 
   AtomicInt(const AtomicInt& value) = delete;
 
   AtomicInt& operator=(const AtomicInt& value) = delete;
-
-  /// Returns unerlying type
-  constexpr operator SDL_AtomicInt*() { return &m_value; }
 
   /**
    * Set an atomic variable to a new value if it is currently an old value.
@@ -19382,20 +19394,140 @@ public:
   bool AtomicDecRef();
 };
 
-inline bool AtomicInt::CompareAndSwap(int oldval, int newval)
+/**
+ * Set an atomic variable to a new value if it is currently an old value.
+ *
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
+ *
+ * @param a a pointer to an AtomicInt variable to be modified.
+ * @param oldval the old value.
+ * @param newval the new value.
+ * @returns true if the atomic variable was set, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AtomicInt.Get
+ * @sa AtomicInt.Set
+ */
+inline bool CompareAndSwapAtomicInt(AtomicIntRaw* a, int oldval, int newval)
 {
-  return SDL_CompareAndSwapAtomicInt(&m_value, oldval, newval);
+  return SDL_CompareAndSwapAtomicInt(a, oldval, newval);
 }
 
-inline int AtomicInt::Set(int v) { return SDL_SetAtomicInt(&m_value, v); }
+inline bool AtomicInt::CompareAndSwap(int oldval, int newval)
+{
+  return SDL::CompareAndSwapAtomicInt(this, oldval, newval);
+}
 
-inline int AtomicInt::Get() { return SDL_GetAtomicInt(&m_value); }
+/**
+ * Set an atomic variable to a value.
+ *
+ * This function also acts as a full memory barrier.
+ *
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
+ *
+ * @param a a pointer to an AtomicInt variable to be modified.
+ * @param v the desired value.
+ * @returns the previous value of the atomic variable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AtomicInt.Get
+ */
+inline int SetAtomicInt(AtomicIntRaw* a, int v)
+{
+  return SDL_SetAtomicInt(a, v);
+}
 
-inline int AtomicInt::Add(int v) { return SDL_AddAtomicInt(&m_value, v); }
+inline int AtomicInt::Set(int v) { return SDL::SetAtomicInt(this, v); }
 
-inline bool AtomicInt::AtomicIncRef() { return SDL_AtomicIncRef(&m_value); }
+/**
+ * Get the value of an atomic variable.
+ *
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
+ *
+ * @param a a pointer to an AtomicInt variable.
+ * @returns the current value of an atomic variable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AtomicInt.Set
+ */
+inline int GetAtomicInt(AtomicIntRaw* a) { return SDL_GetAtomicInt(a); }
 
-inline bool AtomicInt::AtomicDecRef() { return SDL_AtomicDecRef(&m_value); }
+inline int AtomicInt::Get() { return SDL::GetAtomicInt(this); }
+
+/**
+ * Add to an atomic variable.
+ *
+ * This function also acts as a full memory barrier.
+ *
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
+ *
+ * @param a a pointer to an AtomicInt variable to be modified.
+ * @param v the desired value to add.
+ * @returns the previous value of the atomic variable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AtomicInt.AtomicDecRef
+ * @sa AtomicInt.AtomicIncRef
+ */
+inline int AddAtomicInt(AtomicIntRaw* a, int v)
+{
+  return SDL_AddAtomicInt(a, v);
+}
+
+inline int AtomicInt::Add(int v) { return SDL::AddAtomicInt(this, v); }
+
+/**
+ * Increment an atomic variable used as a reference count.
+ *
+ * ***Note: If you don't know what this macro is for, you shouldn't use it!***
+ *
+ * @param a a pointer to an AtomicInt to increment.
+ * @returns the previous value of the atomic variable.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa AtomicInt.AtomicDecRef
+ */
+inline bool AtomicIncRef(AtomicIntRaw* a) { return SDL_AtomicIncRef(a); }
+
+inline bool AtomicInt::AtomicIncRef() { return SDL::AtomicIncRef(this); }
+
+/**
+ * Decrement an atomic variable used as a reference count.
+ *
+ * ***Note: If you don't know what this macro is for, you shouldn't use it!***
+ *
+ * @param a a pointer to an AtomicInt to decrement.
+ * @returns true if the variable reached zero after decrementing, false
+ *          otherwise.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa AtomicInt.AtomicIncRef
+ */
+inline bool AtomicDecRef(AtomicIntRaw* a) { return SDL_AtomicDecRef(a); }
+
+inline bool AtomicInt::AtomicDecRef() { return SDL::AtomicDecRef(this); }
 
 /**
  * A type representing an atomic unsigned 32-bit value.
@@ -19423,23 +19555,21 @@ inline bool AtomicInt::AtomicDecRef() { return SDL_AtomicDecRef(&m_value); }
  * @sa AtomicU32.Get
  * @sa AtomicU32.Set
  */
-class AtomicU32
+struct AtomicU32 : AtomicU32Raw
 {
-  SDL_AtomicU32 m_value;
-
-public:
-  /// Constructs from Uint32
+  /**
+   * Wraps value.
+   *
+   * @param value the value to be wrapped
+   */
   constexpr AtomicU32(Uint32 value)
-    : m_value(value)
+    : AtomicU32Raw(value)
   {
   }
 
   AtomicU32(const AtomicU32& value) = delete;
 
   AtomicU32& operator=(const AtomicU32& value) = delete;
-
-  /// Convert to underlying type
-  constexpr operator SDL_AtomicU32*() { return &m_value; }
 
   /**
    * Set an atomic variable to a new value if it is currently an old value.
@@ -19568,14 +19698,79 @@ public:
   T* Get();
 };
 
-inline bool AtomicU32::CompareAndSwap(Uint32 oldval, Uint32 newval)
+/**
+ * Set an atomic variable to a new value if it is currently an old value.
+ *
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
+ *
+ * @param a a pointer to an AtomicU32 variable to be modified.
+ * @param oldval the old value.
+ * @param newval the new value.
+ * @returns true if the atomic variable was set, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AtomicU32.Get
+ * @sa AtomicU32.Set
+ */
+inline bool CompareAndSwapAtomicU32(AtomicU32Raw* a,
+                                    Uint32 oldval,
+                                    Uint32 newval)
 {
-  return SDL_CompareAndSwapAtomicU32(&m_value, oldval, newval);
+  return SDL_CompareAndSwapAtomicU32(a, oldval, newval);
 }
 
-inline Uint32 AtomicU32::Set(Uint32 v) { return SDL_SetAtomicU32(&m_value, v); }
+inline bool AtomicU32::CompareAndSwap(Uint32 oldval, Uint32 newval)
+{
+  return SDL::CompareAndSwapAtomicU32(this, oldval, newval);
+}
 
-inline Uint32 AtomicU32::Get() { return SDL_GetAtomicU32(&m_value); }
+/**
+ * Set an atomic variable to a value.
+ *
+ * This function also acts as a full memory barrier.
+ *
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
+ *
+ * @param a a pointer to an AtomicU32 variable to be modified.
+ * @param v the desired value.
+ * @returns the previous value of the atomic variable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AtomicU32.Get
+ */
+inline Uint32 SetAtomicU32(AtomicU32Raw* a, Uint32 v)
+{
+  return SDL_SetAtomicU32(a, v);
+}
+
+inline Uint32 AtomicU32::Set(Uint32 v) { return SDL::SetAtomicU32(this, v); }
+
+/**
+ * Get the value of an atomic variable.
+ *
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
+ *
+ * @param a a pointer to an AtomicU32 variable.
+ * @returns the current value of an atomic variable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AtomicU32.Set
+ */
+inline Uint32 GetAtomicU32(AtomicU32Raw* a) { return SDL_GetAtomicU32(a); }
+
+inline Uint32 AtomicU32::Get() { return SDL::GetAtomicU32(this); }
 
 template<class T>
 inline bool AtomicPointer<T>::CompareAndSwap(T* oldval, T* newval)
@@ -29772,7 +29967,7 @@ constexpr Time Time::FromPosix(Sint64 time)
  */
 constexpr Sint64 Time::ToPosix() const
 {
-  return SDL_NS_TO_SECONDS(m_value.count());
+  return SDL_NS_TO_SECONDS(m_time.count());
 }
 
 /**
@@ -42946,7 +43141,7 @@ inline void Thread::Detach()
  *
  * @sa SetTLS
  */
-inline void* GetTLS(TLSID* id) { return SDL_GetTLS(*id); }
+inline void* GetTLS(TLSID* id) { return SDL_GetTLS(id); }
 
 /**
  * Set the current thread's value associated with a thread local storage ID.
@@ -42977,7 +43172,7 @@ inline void SetTLS(TLSID* id,
                    const void* value,
                    TLSDestructorCallback destructor)
 {
-  CheckError(SDL_SetTLS(*id, value, destructor));
+  CheckError(SDL_SetTLS(id, value, destructor));
 }
 
 /**

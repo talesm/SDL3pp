@@ -50,11 +50,11 @@
 ---
 >  * @since This function is available since SDL 3.2.0.
 57c55,58
-< constexpr Sint64 Time::ToPosix() const { return SDL_NS_TO_SECONDS(); }
+< constexpr Sint64 Time::ToPosix() const { return SDL_NS_TO_SECONDS(m_time); }
 ---
 > constexpr Sint64 Time::ToPosix() const
 > {
->   return SDL_NS_TO_SECONDS(m_value.count());
+>   return SDL_NS_TO_SECONDS(m_time.count());
 > }
 60c61
 <  * Get the number of nanoseconds since SDL library initialization.
