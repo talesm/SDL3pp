@@ -11106,8 +11106,11 @@ public:
    */
   static constexpr Palette Borrow(PaletteParam resource)
   {
-    ++resource.value->refcount;
-    return Palette(resource.value);
+    if (resource) {
+      ++resource.value->refcount;
+      return Palette(resource.value);
+    }
+    return {};
   }
 
   /// Destructor
@@ -39297,8 +39300,11 @@ public:
    */
   static constexpr Surface Borrow(SurfaceParam resource)
   {
-    ++resource.value->refcount;
-    return Surface(resource.value);
+    if (resource) {
+      ++resource.value->refcount;
+      return Surface(resource.value);
+    }
+    return {};
   }
 
   /**
@@ -62307,8 +62313,11 @@ public:
    */
   static constexpr Texture Borrow(TextureParam resource)
   {
-    ++resource.value->refcount;
-    return Texture(resource.value);
+    if (resource) {
+      ++resource.value->refcount;
+      return Texture(resource.value);
+    }
+    return {};
   }
 
   /// Destructor

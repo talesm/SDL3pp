@@ -15483,7 +15483,7 @@
                 }
               ],
               "hints": {
-                "body": "++resource.value->refcount;\nreturn Texture(resource.value);"
+                "body": "if (resource) {\n  ++resource.value->refcount;\n  return Texture(resource.value);}\nreturn {};"
               },
               "doc": "Safely borrows the from TextureParam.\n\n@param resource a TextureRaw or Texture.\n\nThis does not takes ownership!",
               "name": "Borrow"
@@ -24524,7 +24524,7 @@
                 }
               ],
               "hints": {
-                "body": "++resource.value->refcount;\nreturn Palette(resource.value);"
+                "body": "if (resource) {\n  ++resource.value->refcount;\n  return Palette(resource.value);}\nreturn {};"
               },
               "doc": "Safely borrows the from PaletteParam.\n\n@param resource a PaletteRaw or Palette.\n\nThis does not takes ownership!",
               "name": "Borrow"
@@ -28181,7 +28181,7 @@
                 }
               ],
               "hints": {
-                "body": "++resource.value->refcount;\nreturn Surface(resource.value);"
+                "body": "if (resource) {\n  ++resource.value->refcount;\n  return Surface(resource.value);}\nreturn {};"
               },
               "doc": "Safely borrows the from SurfaceParam.\n\n@param resource a SurfaceRaw or Surface.\n\nThis does not takes ownership!",
               "name": "Borrow"

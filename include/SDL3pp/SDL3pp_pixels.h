@@ -2546,8 +2546,11 @@ public:
    */
   static constexpr Palette Borrow(PaletteParam resource)
   {
-    ++resource.value->refcount;
-    return Palette(resource.value);
+    if (resource) {
+      ++resource.value->refcount;
+      return Palette(resource.value);
+    }
+    return {};
   }
 
   /// Destructor

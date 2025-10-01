@@ -373,8 +373,11 @@ public:
    */
   static constexpr Surface Borrow(SurfaceParam resource)
   {
-    ++resource.value->refcount;
-    return Surface(resource.value);
+    if (resource) {
+      ++resource.value->refcount;
+      return Surface(resource.value);
+    }
+    return {};
   }
 
   /**

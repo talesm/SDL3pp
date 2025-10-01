@@ -2410,8 +2410,11 @@ public:
    */
   static constexpr Texture Borrow(TextureParam resource)
   {
-    ++resource.value->refcount;
-    return Texture(resource.value);
+    if (resource) {
+      ++resource.value->refcount;
+      return Texture(resource.value);
+    }
+    return {};
   }
 
   /// Destructor

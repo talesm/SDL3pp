@@ -909,46 +909,46 @@
 <    * @param newA the new a value.
 ---
 >    * @param newA New alpha component value.
-2404c2599,2600
+2407c2602,2603
 <   constexpr int GetSize() const { static_assert(false, "Not implemented"); }
 ---
 >   /// Returns number of colors in the palette.
 >   constexpr int GetSize() const { return m_resource->ncolors; }
-2405a2602
+2408a2605
 >   /// Access specific pallete index
-2408c2605
+2411c2608
 <     static_assert(false, "Not implemented");
 ---
 >     return m_resource->colors[index];
-2416d2612
+2419d2615
 <    * @param ncolors the number of entries to modify.
-2422a2619,2620
+2425a2622,2623
 >    *
 >    * @sa Palette.Palette
-2573d2770
+2576d2773
 <  * @param ncolors the number of entries to modify.
-2585c2782,2783
+2588c2785,2786
 <   CheckError(SDL_SetPaletteColors(palette, colors, firstcolor));
 ---
 >   CheckError(
 >     SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
-2588,2589c2786
+2591,2592c2789
 < inline void Palette::SetColors(SpanRef<const ColorRaw> colors,
 <                                int firstcolor = 0)
 ---
 > inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
-2680,2683c2877
+2683,2686c2880
 <  * @param r the red component of the pixel in the range 0-255.
 <  * @param g the green component of the pixel in the range 0-255.
 <  * @param b the blue component of the pixel in the range 0-255.
 <  * @param a the alpha component of the pixel in the range 0-255.
 ---
 >  * @param c the color components of the pixel in the range 0-255.
-2700c2894
+2703c2897
 <   return SDL_MapRGBA(format, palette, c);
 ---
 >   return SDL_MapRGBA(format, palette, c.r, c.g, c.b, c.a);
-2780a2975,3001
+2783a2978,3004
 > 
 > inline Uint32 Color::Map(const PixelFormatDetails& format,
 >                          PaletteConstParam palette = nullptr) const

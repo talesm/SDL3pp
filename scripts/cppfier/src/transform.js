@@ -952,7 +952,7 @@ function expandTypes(sourceEntries, file, context) {
           constexpr: true,
           type: targetName,
           parameters: [{ name: "resource", type: paramType }],
-          hints: { body: `++resource.value->${resourceEntry.shared};\nreturn ${targetName}(resource.value);` },
+          hints: { body: `if (resource) {\n  ++resource.value->${resourceEntry.shared};\n  return ${targetName}(resource.value);}\nreturn {};` },
           doc: `Safely borrows the from ${paramType}.\n\n@param resource a ${rawName} or ${targetName}.\n\nThis does not takes ownership!`
         };
       }
