@@ -211,6 +211,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Seconds</b> = s
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Nanoseconds</b> = std::chrono::nanoseconds</td></tr>
 <tr class="memdesc:ga70b3f6375d1dd34a431d52b44f1c0034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Duration in Nanoseconds (Uint64). <br /></td></tr>
 <tr class="separator:ga70b3f6375d1dd34a431d52b44f1c0034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5765477d75fe29a5fb40cb8e8f6cc68f" id="r_ga5765477d75fe29a5fb40cb8e8f6cc68f"><td class="memItemLeft" align="right" valign="top"><a id="ga5765477d75fe29a5fb40cb8e8f6cc68f" name="ga5765477d75fe29a5fb40cb8e8f6cc68f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Milliseconds</b> = std::chrono::milliseconds</td></tr>
+<tr class="memdesc:ga5765477d75fe29a5fb40cb8e8f6cc68f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Duration in Miliseconds (Uint32). <br /></td></tr>
+<tr class="separator:ga5765477d75fe29a5fb40cb8e8f6cc68f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga20e849be3a477a832c3f5b49aa71f793" id="r_ga20e849be3a477a832c3f5b49aa71f793"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga20e849be3a477a832c3f5b49aa71f793">SDL::malloc_func</a> = SDL_malloc_func</td></tr>
 <tr class="memdesc:ga20e849be3a477a832c3f5b49aa71f793"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used to implement <a class="el" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70" title="Allocate uninitialized memory.">malloc()</a>.  <br /></td></tr>
 <tr class="separator:ga20e849be3a477a832c3f5b49aa71f793"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -923,7 +927,7 @@ constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td clas
 <div class="line">    SDL_COMPILE_TIME_ASSERT(<a class="code hl_define" href="group__CategoryStdinc.html#gaa20b552293de849b3c1c7576cb158e9e">SDL_copyp</a>, <span class="keyword">sizeof</span>(*(dst)) == <span class="keyword">sizeof</span>(*(src)));      \</div>
 <div class="line">  }                                                                            \</div>
 <div class="line">  SDL_memcpy((dst), (src), <span class="keyword">sizeof</span>(*(src)))</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaa20b552293de849b3c1c7576cb158e9e"><div class="ttname"><a href="group__CategoryStdinc.html#gaa20b552293de849b3c1c7576cb158e9e">SDL_copyp</a></div><div class="ttdeci">#define SDL_copyp(dst, src)</div><div class="ttdoc">A macro to copy memory between objects, with basic type checking.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:2370</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaa20b552293de849b3c1c7576cb158e9e"><div class="ttname"><a href="group__CategoryStdinc.html#gaa20b552293de849b3c1c7576cb158e9e">SDL_copyp</a></div><div class="ttdeci">#define SDL_copyp(dst, src)</div><div class="ttdoc">A macro to copy memory between objects, with basic type checking.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:2373</div></div>
 </div><!-- fragment --><p>memcpy and memmove do not care where you copy memory to and from, which can lead to bugs. This macro aims to avoid most of those bugs by making sure that the source and destination are both pointers to objects that are the same size. It does not check that the objects are the same <em>type</em>, just that the copy will not overflow either object.</p>
 <p>The size check happens at compile time, and the compiler will throw an error if the objects are different sizes.</p>
 <p>Generally this is intended to copy a single object, not an array.</p>
@@ -1095,7 +1099,7 @@ constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td clas
 <div class="line">iface.seek = ...</div>
 <div class="line"> </div>
 <div class="line">stream = IOStream.Open(&amp;iface, <span class="keyword">nullptr</span>);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaad520b6fa62d69fe36edadb0925196aa"><div class="ttname"><a href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa">SDL_INIT_INTERFACE</a></div><div class="ttdeci">#define SDL_INIT_INTERFACE(iface)</div><div class="ttdoc">A macro to initialize an SDL interface.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:597</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaad520b6fa62d69fe36edadb0925196aa"><div class="ttname"><a href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa">SDL_INIT_INTERFACE</a></div><div class="ttdeci">#define SDL_INIT_INTERFACE(iface)</div><div class="ttdoc">A macro to initialize an SDL interface.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:600</div></div>
 </div><!-- fragment --><p>If you are using designated initializers, you can use the size of the interface as the version, e.g.</p>
 <div class="fragment"><div class="line">IOStreamInterface iface = {</div>
 <div class="line">    .version = <span class="keyword">sizeof</span>(iface),</div>
@@ -2411,7 +2415,7 @@ SDL_strtoull </dd>
 <div class="line">data *result = <a class="code hl_function" href="group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541">bsearch</a>(&amp;key, values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]),</div>
 <div class="line">compare);</div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga20b4cc6c53a1dbd7789ee90af065b5f9"><div class="ttname"><a href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">SDL::arraysize</a></div><div class="ttdeci">constexpr std::size_t arraysize(const T(&amp;array)[N])</div><div class="ttdoc">The number of elements in a static array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:163</div></div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gada62aea13b8eceffa3e57359e124e541"><div class="ttname"><a href="group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541">SDL::bsearch</a></div><div class="ttdeci">void * bsearch(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback compare)</div><div class="ttdoc">Perform a binary search on a previously sorted array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1569</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gada62aea13b8eceffa3e57359e124e541"><div class="ttname"><a href="group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541">SDL::bsearch</a></div><div class="ttdeci">void * bsearch(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback compare)</div><div class="ttdoc">Perform a binary search on a previously sorted array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1572</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">key</td><td>a pointer to a key equal to the element being searched for. </td></tr>
@@ -2521,7 +2525,7 @@ SDL_strtoull </dd>
 <div class="line"> </div>
 <div class="line">data *result = <a class="code hl_function" href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">bsearch_r</a>(&amp;key, values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]),</div>
 <div class="line">compare, (<span class="keyword">const</span> <span class="keywordtype">void</span> *)(uintptr_t)sort_increasing);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaf22f982867b4598c8caa2de8f5a9e0e4"><div class="ttname"><a href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">SDL::bsearch_r</a></div><div class="ttdeci">void * bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Perform a binary search on a previously sorted array, passing a userdata pointer to the compare funct...</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1794</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaf22f982867b4598c8caa2de8f5a9e0e4"><div class="ttname"><a href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">SDL::bsearch_r</a></div><div class="ttdeci">void * bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Perform a binary search on a previously sorted array, passing a userdata pointer to the compare funct...</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1797</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">key</td><td>a pointer to a key equal to the element being searched for. </td></tr>
@@ -6218,7 +6222,7 @@ template&lt;class T , class U &gt; </div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="group__CategoryStdinc.html#gab52a0ec3d96fb4c04972b1b322f75857">qsort</a>(values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]), compare);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gab52a0ec3d96fb4c04972b1b322f75857"><div class="ttname"><a href="group__CategoryStdinc.html#gab52a0ec3d96fb4c04972b1b322f75857">SDL::qsort</a></div><div class="ttdeci">void qsort(void *base, size_t nmemb, size_t size, CompareCallback compare)</div><div class="ttdoc">Sort an array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1512</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gab52a0ec3d96fb4c04972b1b322f75857"><div class="ttname"><a href="group__CategoryStdinc.html#gab52a0ec3d96fb4c04972b1b322f75857">SDL::qsort</a></div><div class="ttdeci">void qsort(void *base, size_t nmemb, size_t size, CompareCallback compare)</div><div class="ttdoc">Sort an array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1515</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">base</td><td>a pointer to the start of the array. </td></tr>
@@ -6319,7 +6323,7 @@ template&lt;class T , class U &gt; </div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2">qsort_r</a>(values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]), compare, (<span class="keyword">const</span> <span class="keywordtype">void</span></div>
 <div class="line">*)(uintptr_t)sort_increasing);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaa3b0083aa5cb6236224048d437834dd2"><div class="ttname"><a href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2">SDL::qsort_r</a></div><div class="ttdeci">void qsort_r(void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Sort an array, passing a userdata pointer to the compare function.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1664</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaa3b0083aa5cb6236224048d437834dd2"><div class="ttname"><a href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2">SDL::qsort_r</a></div><div class="ttdeci">void qsort_r(void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Sort an array, passing a userdata pointer to the compare function.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1667</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">base</td><td>a pointer to the start of the array. </td></tr>

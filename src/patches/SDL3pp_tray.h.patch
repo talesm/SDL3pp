@@ -2,13 +2,10 @@
 <  * @defgroup CategoryTray Category Tray
 ---
 >  * @defgroup CategoryTray System Tray
-59c59,62
-< using TrayMenuRaw = SDL_TrayMenu;
----
+58a59,61
 > struct TrayMenu;
 > 
 > /// Alias to raw representation for TrayMenu.
-> using TrayMenuRaw = SDL_TrayMenu*;
 137a141,150
 > /**
 >  * A callback that is invoked when a tray entry is selected.

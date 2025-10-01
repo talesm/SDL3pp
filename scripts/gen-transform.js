@@ -112,6 +112,39 @@ const transform = {
         },
       }
     },
+    "SDL_asyncio.h": {
+      localIncludes: ["SDL3pp_log.h", "SDL3pp_stdinc.h"],
+      transform: {
+        "SDL_AsyncIO": {
+          resource: { free: "SDL_CloseAsyncIO" },
+          entries: {
+            "SDL_AsyncIOFromFile": "ctor",
+            "SDL_CloseAsyncIO": "function"
+          },
+        },
+        "SDL_AsyncIOQueue": {
+          entries: {
+            "SDL_CreateAsyncIOQueue": "ctor",
+          }
+        },
+        "SDL_GetAsyncIOResult": {
+          type: "std::optional<AsyncIOOutcome>",
+          parameters: [{}],
+          hints: { methodName: "GetResult" }
+        },
+        "SDL_WaitAsyncIOResult": {
+          type: "std::optional<AsyncIOOutcome>",
+          parameters: [{}, { type: "Milliseconds", name: "timeout" }],
+          hints: { methodName: "WaitResult" },
+        },
+        "WaitAsyncIOResult": {
+          kind: "function",
+          type: "std::optional<AsyncIOOutcome>",
+          parameters: [{ type: "AsyncIOQueueParam", name: "queue" }],
+          hints: { methodName: "WaitResult" },
+        },
+      }
+    },
     "SDL_atomic.h": {
       localIncludes: ["SDL3pp_stdinc.h"],
       ignoreEntries: [
@@ -4860,9 +4893,14 @@ const transform = {
         "Nanoseconds": {
           before: "SDL_Time",
           kind: "alias",
-          name: "Nanoseconds",
           type: "std::chrono::nanoseconds",
           doc: "Duration in Nanoseconds (Uint64)."
+        },
+        "Milliseconds": {
+          before: "SDL_Time",
+          kind: "alias",
+          type: "std::chrono::milliseconds",
+          doc: "Duration in Miliseconds (Uint32)."
         },
         "ToSeconds": {
           before: "SDL_Time",

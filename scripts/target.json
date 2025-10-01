@@ -58661,7 +58661,7 @@
         "TrayMenuRaw": {
           "name": "TrayMenuRaw",
           "kind": "alias",
-          "type": "SDL_TrayMenu",
+          "type": "SDL_TrayMenu *",
           "doc": "Alias to raw representation for TrayMenu."
         },
         "TrayEntry-forward": {
@@ -61695,9 +61695,15 @@
         },
         "Nanoseconds": {
           "kind": "alias",
-          "name": "Nanoseconds",
           "type": "std::chrono::nanoseconds",
-          "doc": "Duration in Nanoseconds (Uint64)."
+          "doc": "Duration in Nanoseconds (Uint64).",
+          "name": "Nanoseconds"
+        },
+        "Milliseconds": {
+          "kind": "alias",
+          "type": "std::chrono::milliseconds",
+          "doc": "Duration in Miliseconds (Uint32).",
+          "name": "Milliseconds"
         },
         "ToSeconds": {
           "kind": "function",
@@ -69318,6 +69324,1509 @@
         "SDL3pp_surface.h"
       ]
     },
+    "SDL3pp_asyncio.h": {
+      "name": "SDL3pp_asyncio.h",
+      "doc": "@defgroup CategoryAsyncIO Category AsyncIO\n\nSDL offers a way to perform I/O asynchronously. This allows an app to read\nor write files without waiting for data to actually transfer; the functions\nthat request I/O never block while the request is fulfilled.\n\nInstead, the data moves in the background and the app can check for results\nat their leisure.\n\nThis is more complicated than just reading and writing files in a\nsynchronous way, but it can allow for more efficiency, and never having\nframerate drops as the hard drive catches up, etc.\n\nThe general usage pattern for async I/O is:\n\n- Create one or more AsyncIOQueue objects.\n- Open files with AsyncIO.AsyncIO.\n- Start I/O tasks to the files with AsyncIO.Read or AsyncIO.Write,\n  putting those tasks into one of the queues.\n- Later on, use AsyncIOQueue.GetResult on a queue to see if any task is\n  finished without blocking. Tasks might finish in any order with success\n  or failure.\n- When all your tasks are done, close the file with AsyncIO.Close. This\n  also generates a task, since it might flush data to disk!\n\nThis all works, without blocking, in a single thread, but one can also wait\non a queue in a background thread, sleeping until new results have arrived:\n\n- Call AsyncIOQueue.WaitResult from one or more threads to efficiently block\n  until new tasks complete.\n- When shutting down, call AsyncIOQueue.Signal to unblock any sleeping\n  threads despite there being no new tasks completed.\n\nAnd, of course, to match the synchronous LoadFile, we offer\nLoadFileAsync as a convenience function. This will handle allocating a\nbuffer, slurping in the file data, and null-terminating it; you still check\nfor results later.\n\nBehind the scenes, SDL will use newer, efficient APIs on platforms that\nsupport them: Linux's io_uring and Windows 11's IoRing, for example. If\nthose technologies aren't available, SDL will offload the work to a thread\npool that will manage otherwise-synchronous loads without blocking the app.\n\n## Best Practices\n\nSimple non-blocking I/O--for an app that just wants to pick up data\nwhenever it's ready without losing framerate waiting on disks to spin--can\nuse whatever pattern works well for the program. In this case, simply call\nAsyncIO.Read, or maybe LoadFileAsync, as needed. Once a frame, call\nAsyncIOQueue.GetResult to check for any completed tasks and deal with the\ndata as it arrives.\n\nIf two separate pieces of the same program need their own I/O, it is legal\nfor each to create their own queue. This will prevent either piece from\naccidentally consuming the other's completed tasks. Each queue does require\nsome amount of resources, but it is not an overwhelming cost. Do not make a\nqueue for each task, however. It is better to put many tasks into a single\nqueue. They will be reported in order of completion, not in the order they\nwere submitted, so it doesn't generally matter what order tasks are\nstarted.\n\nOne async I/O queue can be shared by multiple threads, or one thread can\nhave more than one queue, but the most efficient way--if ruthless\nefficiency is the goal--is to have one queue per thread, with multiple\nthreads working in parallel, and attempt to keep each queue loaded with\ntasks that are both started by and consumed by the same thread. On modern\nplatforms that can use newer interfaces, this can keep data flowing as\nefficiently as possible all the way from storage hardware to the app, with\nno contention between threads for access to the same queue.\n\nWritten data is not guaranteed to make it to physical media by the time a\nclosing task is completed, unless AsyncIO.Close is called with its\n`flush` parameter set to true, which is to say that a successful result\nhere can still result in lost data during an unfortunately-timed power\noutage if not flushed. However, flushing will take longer and may be\nunnecessary, depending on the app's needs.",
+      "entries": {
+        "AsyncIO-forward": {
+          "name": "AsyncIO",
+          "kind": "forward"
+        },
+        "AsyncIORaw": {
+          "name": "AsyncIORaw",
+          "kind": "alias",
+          "type": "SDL_AsyncIO *",
+          "doc": "Alias to raw representation for AsyncIO."
+        },
+        "AsyncIORef-forward": {
+          "name": "AsyncIORef",
+          "kind": "forward"
+        },
+        "AsyncIOParam": {
+          "name": "AsyncIOParam",
+          "kind": "struct",
+          "doc": "Safely wrap AsyncIO for non owning parameters",
+          "entries": {
+            "value": {
+              "kind": "var",
+              "name": "value",
+              "doc": "parameter's AsyncIORaw",
+              "type": "AsyncIORaw"
+            },
+            "AsyncIOParam": [
+              {
+                "kind": "function",
+                "name": "AsyncIOParam",
+                "doc": "Constructs from AsyncIORaw",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "AsyncIORaw",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(value)"
+                  ]
+                }
+              },
+              {
+                "kind": "function",
+                "name": "AsyncIOParam",
+                "doc": "Constructs null/invalid",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "std::nullptr_t",
+                    "name": "_",
+                    "default": "nullptr"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(nullptr)"
+                  ]
+                }
+              }
+            ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const AsyncIOParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator AsyncIORaw": {
+              "kind": "function",
+              "name": "operator AsyncIORaw",
+              "doc": "Converts to underlying AsyncIORaw",
+              "constexpr": true,
+              "immutable": true,
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "return value;"
+              }
+            }
+          }
+        },
+        "AsyncIOQueue-forward": {
+          "name": "AsyncIOQueue",
+          "kind": "forward"
+        },
+        "AsyncIOQueueRaw": {
+          "name": "AsyncIOQueueRaw",
+          "kind": "alias",
+          "type": "SDL_AsyncIOQueue *",
+          "doc": "Alias to raw representation for AsyncIOQueue."
+        },
+        "AsyncIOQueueRef-forward": {
+          "name": "AsyncIOQueueRef",
+          "kind": "forward"
+        },
+        "AsyncIOQueueParam": {
+          "name": "AsyncIOQueueParam",
+          "kind": "struct",
+          "doc": "Safely wrap AsyncIOQueue for non owning parameters",
+          "entries": {
+            "value": {
+              "kind": "var",
+              "name": "value",
+              "doc": "parameter's AsyncIOQueueRaw",
+              "type": "AsyncIOQueueRaw"
+            },
+            "AsyncIOQueueParam": [
+              {
+                "kind": "function",
+                "name": "AsyncIOQueueParam",
+                "doc": "Constructs from AsyncIOQueueRaw",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "AsyncIOQueueRaw",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(value)"
+                  ]
+                }
+              },
+              {
+                "kind": "function",
+                "name": "AsyncIOQueueParam",
+                "doc": "Constructs null/invalid",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "std::nullptr_t",
+                    "name": "_",
+                    "default": "nullptr"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(nullptr)"
+                  ]
+                }
+              }
+            ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const AsyncIOQueueParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator AsyncIOQueueRaw": {
+              "kind": "function",
+              "name": "operator AsyncIOQueueRaw",
+              "doc": "Converts to underlying AsyncIOQueueRaw",
+              "constexpr": true,
+              "immutable": true,
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "return value;"
+              }
+            }
+          }
+        },
+        "AsyncIO": {
+          "doc": "The asynchronous I/O operation structure.\n\nThis operates as an opaque handle. One can then request read or write\noperations on it.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa AsyncIO.AsyncIO\n\n@cat resource",
+          "name": "AsyncIO",
+          "kind": "struct",
+          "type": "",
+          "sourceName": "SDL_AsyncIO",
+          "entries": {
+            "m_resource": {
+              "kind": "var",
+              "type": "AsyncIORaw",
+              "hints": {
+                "body": "nullptr"
+              },
+              "name": "m_resource"
+            },
+            "AsyncIO": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "hints": {
+                  "default": true,
+                  "changeAccess": "public"
+                },
+                "doc": "Default ctor",
+                "name": "AsyncIO"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "name": "resource",
+                    "type": "const AsyncIORaw"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_resource(resource)"
+                  ]
+                },
+                "doc": "Constructs from AsyncIOParam.\n\n@param resource a AsyncIORaw to be wrapped.\n\nThis assumes the ownership, call release() if you need to take back.",
+                "name": "AsyncIO"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AsyncIO &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": "Copy constructor",
+                "name": "AsyncIO"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "AsyncIO &&"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "AsyncIO(other.release())"
+                  ]
+                },
+                "doc": "Move constructor",
+                "name": "AsyncIO"
+              },
+              {
+                "kind": "function",
+                "doc": "",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AsyncIORef &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "AsyncIO"
+              },
+              {
+                "kind": "function",
+                "doc": "",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "AsyncIORef &&"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "AsyncIO"
+              },
+              {
+                "doc": "Use this function to create a new AsyncIO object for reading from\nand/or writing to a named file.\n\nThe `mode` string understands the following values:\n\n- \"r\": Open a file for reading only. It must exist.\n- \"w\": Open a file for writing only. It will create missing files or\n  truncate existing ones.\n- \"r+\": Open a file for update both reading and writing. The file must\n  exist.\n- \"w+\": Create an empty file for both reading and writing. If a file with\n  the same name already exists its content is erased and the file is\n  treated as a new empty file.\n\nThere is no \"b\" mode, as there is only \"binary\" style I/O, and no \"a\" mode\nfor appending, since you specify the position when starting a task.\n\nThis function supports Unicode filenames, but they must be encoded in UTF-8\nformat, regardless of the underlying operating system.\n\nThis call is _not_ asynchronous; it will open the file before returning,\nunder the assumption that doing so is generally a fast operation. Future\nreads and writes to the opened file will be async, however.\n\n@param file a UTF-8 string representing the filename to open.\n@param mode an ASCII string representing the mode to be used for opening\n            the file.\n@post a pointer to the AsyncIO structure that is created or nullptr on\n         failure; call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIO.Close\n@sa AsyncIO.Read\n@sa AsyncIO.Write",
+                "name": "AsyncIO",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "file",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "mode",
+                    "type": "StringParam"
+                  }
+                ],
+                "sourceName": "SDL_AsyncIOFromFile"
+              }
+            ],
+            "~AsyncIO": {
+              "kind": "function",
+              "doc": "Destructor",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_CloseAsyncIO(m_resource);"
+              },
+              "name": "~AsyncIO"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "AsyncIO &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "AsyncIO"
+                }
+              ],
+              "hints": {
+                "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
+              },
+              "doc": "Assignment operator.",
+              "name": "operator="
+            },
+            "get": {
+              "kind": "function",
+              "type": "AsyncIORaw",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "return m_resource;"
+              },
+              "doc": "Retrieves underlying AsyncIORaw.",
+              "name": "get"
+            },
+            "release": {
+              "kind": "function",
+              "type": "AsyncIORaw",
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
+              },
+              "doc": "Retrieves underlying AsyncIORaw and clear this.",
+              "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const AsyncIO &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator AsyncIOParam": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "return {m_resource};"
+              },
+              "doc": "Converts to AsyncIOParam",
+              "name": "operator AsyncIOParam"
+            },
+            "Close": {
+              "doc": "Close and free any allocated resources for an async I/O object.\n\nClosing a file is _also_ an asynchronous task! If a write failure were to\nhappen during the closing process, for example, the task results will\nreport it as usual.\n\nClosing a file that has been written to does not guarantee the data has\nmade it to physical media; it may remain in the operating system's file\ncache, for later writing to disk. This means that a successfully-closed\nfile can be lost if the system crashes or loses power in this small window.\nTo prevent this, call this function with the `flush` parameter set to true.\nThis will make the operation take longer, and perhaps increase system load\nin general, but a successful result guarantees that the data has made it to\nphysical storage. Don't use this for temporary files, caches, and\nunimportant data, and definitely use it for crucial irreplaceable files,\nlike game saves.\n\nThis function guarantees that the close will happen after any other pending\ntasks to `asyncio`, so it's safe to open a file, start several operations,\nclose the file immediately, then check for all results later. This function\nwill not block until the tasks have completed.\n\nOnce this function returns true, `asyncio` is no longer valid, regardless\nof any future outcomes. Any completed tasks might still contain this\npointer in their AsyncIOOutcome data, in case the app was using this\nvalue to track information, but it should not be used again.\n\nIf this function returns false, the close wasn't started at all, and it's\nsafe to attempt to close again later.\n\nAn AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n@param flush true if data should sync to disk before the task completes.\n@param queue a queue to add the new AsyncIO to.\n@param userdata an app-defined pointer that will be provided with the task\n                results.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread, but two\n              threads should not attempt to close the same object.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "Close",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "flush",
+                  "type": "bool"
+                },
+                {
+                  "name": "queue",
+                  "type": "SDL_AsyncIOQueue *"
+                },
+                {
+                  "name": "userdata",
+                  "type": "void *"
+                }
+              ],
+              "sourceName": "SDL_CloseAsyncIO",
+              "hints": {
+                "mayFail": true,
+                "body": "auto r = SDL_CloseAsyncIO(m_resource);\nm_resource = nullptr;\nreturn r;",
+                "delegate": "SDL::CloseAsyncIO"
+              },
+              "proto": true
+            },
+            "GetSize": {
+              "doc": "Use this function to get the size of the data stream in an AsyncIO.\n\nThis call is _not_ asynchronous; it assumes that obtaining this info is a\nnon-blocking operation in most reasonable cases.\n\n@returns the size of the data stream in the IOStream on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetSize",
+              "kind": "function",
+              "type": "Sint64",
+              "parameters": [],
+              "sourceName": "SDL_GetAsyncIOSize",
+              "hints": {
+                "mayFail": true,
+                "delegate": "SDL::GetAsyncIOSize"
+              },
+              "proto": true
+            },
+            "Read": {
+              "doc": "Start an async read.\n\nThis function reads up to `size` bytes from `offset` position in the data\nsource to the area pointed at by `ptr`. This function may read less bytes\nthan requested.\n\nThis function returns as quickly as possible; it does not wait for the read\nto complete. On a successful return, this work will continue in the\nbackground. If the work begins, even failure is asynchronous: a failing\nreturn value from this function only means the work couldn't start at all.\n\n`ptr` must remain available until the work is done, and may be accessed by\nthe system at any time until then. Do not allocate it on the stack, as this\nmight take longer than the life of the calling function to complete!\n\nAn AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n@param ptr a pointer to a buffer to read data into.\n@param offset the position to start reading in the data source.\n@param size the number of bytes to read from the data source.\n@param queue a queue to add the new AsyncIO to.\n@param userdata an app-defined pointer that will be provided with the task\n                results.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIO.Write\n@sa AsyncIOQueue.AsyncIOQueue",
+              "name": "Read",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "ptr",
+                  "type": "void *"
+                },
+                {
+                  "name": "offset",
+                  "type": "Uint64"
+                },
+                {
+                  "name": "size",
+                  "type": "Uint64"
+                },
+                {
+                  "name": "queue",
+                  "type": "AsyncIOQueueParam"
+                },
+                {
+                  "name": "userdata",
+                  "type": "void *"
+                }
+              ],
+              "sourceName": "SDL_ReadAsyncIO",
+              "hints": {
+                "mayFail": true,
+                "delegate": "SDL::ReadAsyncIO"
+              },
+              "proto": true
+            },
+            "Write": {
+              "doc": "Start an async write.\n\nThis function writes `size` bytes from `offset` position in the data source\nto the area pointed at by `ptr`.\n\nThis function returns as quickly as possible; it does not wait for the\nwrite to complete. On a successful return, this work will continue in the\nbackground. If the work begins, even failure is asynchronous: a failing\nreturn value from this function only means the work couldn't start at all.\n\n`ptr` must remain available until the work is done, and may be accessed by\nthe system at any time until then. Do not allocate it on the stack, as this\nmight take longer than the life of the calling function to complete!\n\nAn AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n@param ptr a pointer to a buffer to write data from.\n@param offset the position to start writing to the data source.\n@param size the number of bytes to write to the data source.\n@param queue a queue to add the new AsyncIO to.\n@param userdata an app-defined pointer that will be provided with the task\n                results.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIO.Read\n@sa AsyncIOQueue.AsyncIOQueue",
+              "name": "Write",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "ptr",
+                  "type": "void *"
+                },
+                {
+                  "name": "offset",
+                  "type": "Uint64"
+                },
+                {
+                  "name": "size",
+                  "type": "Uint64"
+                },
+                {
+                  "name": "queue",
+                  "type": "AsyncIOQueueParam"
+                },
+                {
+                  "name": "userdata",
+                  "type": "void *"
+                }
+              ],
+              "sourceName": "SDL_WriteAsyncIO",
+              "hints": {
+                "mayFail": true,
+                "delegate": "SDL::WriteAsyncIO"
+              },
+              "proto": true
+            }
+          },
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true
+          }
+        },
+        "AsyncIORef": {
+          "kind": "struct",
+          "name": "AsyncIORef",
+          "type": "AsyncIO",
+          "doc": "Semi-safe reference for AsyncIO.",
+          "entries": {
+            "AsyncIORef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "AsyncIOParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "AsyncIO(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from AsyncIOParam.\n\n@param resource a AsyncIORaw or AsyncIO.\n\nThis does not takes ownership!",
+                "name": "AsyncIORef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const AsyncIORef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "AsyncIO(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "AsyncIORef"
+              }
+            ],
+            "~AsyncIORef": {
+              "kind": "function",
+              "doc": "Destructor",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "release();"
+              },
+              "name": "~AsyncIORef"
+            }
+          }
+        },
+        "AsyncIOTaskType": {
+          "doc": "Types of asynchronous I/O tasks.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "AsyncIOTaskType",
+          "kind": "alias",
+          "sourceName": "SDL_AsyncIOTaskType",
+          "type": "SDL_AsyncIOTaskType"
+        },
+        "ASYNCIO_TASK_READ": {
+          "kind": "var",
+          "name": "ASYNCIO_TASK_READ",
+          "constexpr": true,
+          "type": "AsyncIOTaskType",
+          "doc": "A read operation.",
+          "sourceName": "SDL_ASYNCIO_TASK_READ"
+        },
+        "ASYNCIO_TASK_WRITE": {
+          "kind": "var",
+          "name": "ASYNCIO_TASK_WRITE",
+          "constexpr": true,
+          "type": "AsyncIOTaskType",
+          "doc": "A write operation.",
+          "sourceName": "SDL_ASYNCIO_TASK_WRITE"
+        },
+        "ASYNCIO_TASK_CLOSE": {
+          "kind": "var",
+          "name": "ASYNCIO_TASK_CLOSE",
+          "constexpr": true,
+          "type": "AsyncIOTaskType",
+          "doc": "A close operation.",
+          "sourceName": "SDL_ASYNCIO_TASK_CLOSE"
+        },
+        "AsyncIOResult": {
+          "doc": "Possible outcomes of an asynchronous I/O task.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "AsyncIOResult",
+          "kind": "alias",
+          "sourceName": "SDL_AsyncIOResult",
+          "type": "SDL_AsyncIOResult"
+        },
+        "ASYNCIO_COMPLETE": {
+          "kind": "var",
+          "name": "ASYNCIO_COMPLETE",
+          "constexpr": true,
+          "type": "AsyncIOResult",
+          "doc": "request was completed without error",
+          "sourceName": "SDL_ASYNCIO_COMPLETE"
+        },
+        "ASYNCIO_FAILURE": {
+          "kind": "var",
+          "name": "ASYNCIO_FAILURE",
+          "constexpr": true,
+          "type": "AsyncIOResult",
+          "doc": "request failed for some reason; check GetError()!",
+          "sourceName": "SDL_ASYNCIO_FAILURE"
+        },
+        "ASYNCIO_CANCELED": {
+          "kind": "var",
+          "name": "ASYNCIO_CANCELED",
+          "constexpr": true,
+          "type": "AsyncIOResult",
+          "doc": "request was canceled before completing.",
+          "sourceName": "SDL_ASYNCIO_CANCELED"
+        },
+        "AsyncIOOutcome": {
+          "doc": "Information about a completed asynchronous I/O request.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "AsyncIOOutcome",
+          "kind": "alias",
+          "sourceName": "SDL_AsyncIOOutcome",
+          "type": "SDL_AsyncIOOutcome"
+        },
+        "AsyncIOQueue": {
+          "doc": "A queue of completed asynchronous I/O tasks.\n\nWhen starting an asynchronous operation, you specify a queue for the new\ntask. A queue can be asked later if any tasks in it have completed,\nallowing an app to manage multiple pending tasks in one place, in whatever\norder they complete.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa AsyncIOQueue.AsyncIOQueue\n@sa AsyncIO.Read\n@sa AsyncIO.Write\n@sa AsyncIOQueue.GetResult\n@sa AsyncIOQueue.WaitResult\n\n@cat resource",
+          "name": "AsyncIOQueue",
+          "kind": "struct",
+          "type": "",
+          "sourceName": "SDL_AsyncIOQueue",
+          "entries": {
+            "m_resource": {
+              "kind": "var",
+              "type": "AsyncIOQueueRaw",
+              "hints": {
+                "body": "nullptr"
+              },
+              "name": "m_resource"
+            },
+            "AsyncIOQueue": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "hints": {
+                  "default": true,
+                  "changeAccess": "public"
+                },
+                "doc": "Default ctor",
+                "name": "AsyncIOQueue"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "name": "resource",
+                    "type": "const AsyncIOQueueRaw"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_resource(resource)"
+                  ]
+                },
+                "doc": "Constructs from AsyncIOQueueParam.\n\n@param resource a AsyncIOQueueRaw to be wrapped.\n\nThis assumes the ownership, call release() if you need to take back.",
+                "name": "AsyncIOQueue"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AsyncIOQueue &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": "Copy constructor",
+                "name": "AsyncIOQueue"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "AsyncIOQueue &&"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "AsyncIOQueue(other.release())"
+                  ]
+                },
+                "doc": "Move constructor",
+                "name": "AsyncIOQueue"
+              },
+              {
+                "kind": "function",
+                "doc": "",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AsyncIOQueueRef &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "AsyncIOQueue"
+              },
+              {
+                "kind": "function",
+                "doc": "",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "AsyncIOQueueRef &&"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "AsyncIOQueue"
+              },
+              {
+                "doc": "Create a task queue for tracking multiple I/O operations.\n\nAsync I/O operations are assigned to a queue when started. The queue can be\nchecked for completed tasks thereafter.\n\n@post a new task queue object or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIOQueue.Destroy\n@sa AsyncIOQueue.GetResult\n@sa AsyncIOQueue.WaitResult",
+                "name": "AsyncIOQueue",
+                "kind": "function",
+                "type": "",
+                "parameters": [],
+                "sourceName": "SDL_CreateAsyncIOQueue"
+              }
+            ],
+            "~AsyncIOQueue": {
+              "kind": "function",
+              "doc": "Destructor",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyAsyncIOQueue(m_resource);"
+              },
+              "name": "~AsyncIOQueue"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "AsyncIOQueue &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "AsyncIOQueue"
+                }
+              ],
+              "hints": {
+                "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
+              },
+              "doc": "Assignment operator.",
+              "name": "operator="
+            },
+            "get": {
+              "kind": "function",
+              "type": "AsyncIOQueueRaw",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "return m_resource;"
+              },
+              "doc": "Retrieves underlying AsyncIOQueueRaw.",
+              "name": "get"
+            },
+            "release": {
+              "kind": "function",
+              "type": "AsyncIOQueueRaw",
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
+              },
+              "doc": "Retrieves underlying AsyncIOQueueRaw and clear this.",
+              "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const AsyncIOQueue &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator AsyncIOQueueParam": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "return {m_resource};"
+              },
+              "doc": "Converts to AsyncIOQueueParam",
+              "name": "operator AsyncIOQueueParam"
+            },
+            "Destroy": {
+              "doc": "Destroy a previously-created async I/O task queue.\n\nIf there are still tasks pending for this queue, this call will block until\nthose tasks are finished. All those tasks will be deallocated. Their\nresults will be lost to the app.\n\nAny pending reads from LoadFileAsync() that are still in this queue\nwill have their buffers deallocated by this function, to prevent a memory\nleak.\n\nOnce this function is called, the queue is no longer valid and should not\nbe used, including by other threads that might access it while destruction\nis blocking on pending tasks.\n\nDo not destroy a queue that still has threads waiting on it through\nAsyncIOQueue.WaitResult(). You can call AsyncIOQueue.Signal() first to\nunblock those threads, and take measures (such as Thread.Wait()) to make\nsure they have finished their wait and won't wait on the queue again.\n\n\n@threadsafety It is safe to call this function from any thread, so long as\n              no other thread is waiting on the queue with\n              AsyncIOQueue.WaitResult.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyAsyncIOQueue",
+              "hints": {
+                "body": "SDL_DestroyAsyncIOQueue(m_resource);\nm_resource = nullptr;",
+                "delegate": "SDL::DestroyAsyncIOQueue"
+              },
+              "proto": true
+            },
+            "GetResult": {
+              "doc": "Query an async I/O task queue for completed tasks.\n\nIf a task assigned to this queue has finished, this will return true and\nfill in `outcome` with the details of the task. If no task in the queue has\nfinished, this function will return false. This function does not block.\n\nIf a task has completed, this function will free its resources and the task\npointer will no longer be valid. The task will be removed from the queue.\n\nIt is safe for multiple threads to call this function on the same queue at\nonce; a completed task will only go to one of the threads.\n\n@param outcome details of a finished task will be written here. May not be\n               nullptr.\n@returns true if a task has completed, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIOQueue.WaitResult",
+              "name": "GetResult",
+              "kind": "function",
+              "type": "std::optional<AsyncIOOutcome>",
+              "parameters": [],
+              "sourceName": "SDL_GetAsyncIOResult",
+              "hints": {
+                "methodName": "GetResult",
+                "delegate": "SDL::GetAsyncIOResult"
+              },
+              "proto": true
+            },
+            "WaitResult": [
+              {
+                "doc": "Block until an async I/O task queue has a completed task.\n\nThis function puts the calling thread to sleep until there a task assigned\nto the queue that has finished.\n\nIf a task assigned to the queue has finished, this will return true and\nfill in `outcome` with the details of the task. If no task in the queue has\nfinished, this function will return false.\n\nIf a task has completed, this function will free its resources and the task\npointer will no longer be valid. The task will be removed from the queue.\n\nIt is safe for multiple threads to call this function on the same queue at\nonce; a completed task will only go to one of the threads.\n\nNote that by the nature of various platforms, more than one waiting thread\nmay wake to handle a single task, but only one will obtain it, so\n`timeoutMS` is a _maximum_ wait time, and this function may return false\nsooner.\n\nThis function may return false if there was a system error, the OS\ninadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was\ncalled to wake up all waiting threads without a finished task.\n\nA timeout can be used to specify a maximum wait time, but rather than\npolling, it is possible to have a timeout of -1 to wait forever, and use\nAsyncIOQueue.Signal() to wake up the waiting threads later.\n\n@param outcome details of a finished task will be written here. May not be\n               nullptr.\n@param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait\n                 indefinitely.\n@returns true if task has completed, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIOQueue.Signal",
+                "name": "WaitResult",
+                "kind": "function",
+                "type": "std::optional<AsyncIOOutcome>",
+                "parameters": [
+                  {
+                    "name": "timeout",
+                    "type": "Milliseconds"
+                  }
+                ],
+                "sourceName": "SDL_WaitAsyncIOResult",
+                "hints": {
+                  "methodName": "WaitResult",
+                  "delegate": "SDL::WaitAsyncIOResult"
+                },
+                "proto": true
+              },
+              {
+                "kind": "function",
+                "type": "std::optional<AsyncIOOutcome>",
+                "parameters": [],
+                "hints": {
+                  "delegate": "SDL::WaitAsyncIOResult"
+                },
+                "name": "WaitResult",
+                "static": false,
+                "doc": "Block until an async I/O task queue has a completed task.\n\nThis function puts the calling thread to sleep until there a task assigned\nto the queue that has finished.\n\nIf a task assigned to the queue has finished, this will return true and\nfill in `outcome` with the details of the task. If no task in the queue has\nfinished, this function will return false.\n\nIf a task has completed, this function will free its resources and the task\npointer will no longer be valid. The task will be removed from the queue.\n\nIt is safe for multiple threads to call this function on the same queue at\nonce; a completed task will only go to one of the threads.\n\nNote that by the nature of various platforms, more than one waiting thread\nmay wake to handle a single task, but only one will obtain it, so\n`timeoutMS` is a _maximum_ wait time, and this function may return false\nsooner.\n\nThis function may return false if there was a system error, the OS\ninadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was\ncalled to wake up all waiting threads without a finished task.\n\nA timeout can be used to specify a maximum wait time, but rather than\npolling, it is possible to have a timeout of -1 to wait forever, and use\nAsyncIOQueue.Signal() to wake up the waiting threads later.\n\n@param queue the async I/O task queue to wait on.\n@param outcome details of a finished task will be written here. May not be\n               nullptr.\n@param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait\n                 indefinitely.\n@returns true if task has completed, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIOQueue.Signal",
+                "proto": true
+              }
+            ],
+            "Signal": {
+              "doc": "Wake up any threads that are blocking in AsyncIOQueue.WaitResult().\n\nThis will unblock any threads that are sleeping in a call to\nAsyncIOQueue.WaitResult for the specified queue, and cause them to return\nfrom that function.\n\nThis can be useful when destroying a queue to make sure nothing is touching\nit indefinitely. In this case, once this call completes, the caller should\ntake measures to make sure any previously-blocked threads have returned\nfrom their wait and will not touch the queue again (perhaps by setting a\nflag to tell the threads to terminate and then using Thread.Wait() to\nmake sure they've done so).\n\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIOQueue.WaitResult",
+              "name": "Signal",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_SignalAsyncIOQueue",
+              "hints": {
+                "delegate": "SDL::SignalAsyncIOQueue"
+              },
+              "proto": true
+            }
+          },
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true
+          }
+        },
+        "AsyncIOQueueRef": {
+          "kind": "struct",
+          "name": "AsyncIOQueueRef",
+          "type": "AsyncIOQueue",
+          "doc": "Semi-safe reference for AsyncIOQueue.",
+          "entries": {
+            "AsyncIOQueueRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "AsyncIOQueueParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "AsyncIOQueue(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from AsyncIOQueueParam.\n\n@param resource a AsyncIOQueueRaw or AsyncIOQueue.\n\nThis does not takes ownership!",
+                "name": "AsyncIOQueueRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const AsyncIOQueueRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "AsyncIOQueue(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "AsyncIOQueueRef"
+              }
+            ],
+            "~AsyncIOQueueRef": {
+              "kind": "function",
+              "doc": "Destructor",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "release();"
+              },
+              "name": "~AsyncIOQueueRef"
+            }
+          }
+        },
+        "AsyncIOFromFile": {
+          "doc": "Use this function to create a new AsyncIO object for reading from\nand/or writing to a named file.\n\nThe `mode` string understands the following values:\n\n- \"r\": Open a file for reading only. It must exist.\n- \"w\": Open a file for writing only. It will create missing files or\n  truncate existing ones.\n- \"r+\": Open a file for update both reading and writing. The file must\n  exist.\n- \"w+\": Create an empty file for both reading and writing. If a file with\n  the same name already exists its content is erased and the file is\n  treated as a new empty file.\n\nThere is no \"b\" mode, as there is only \"binary\" style I/O, and no \"a\" mode\nfor appending, since you specify the position when starting a task.\n\nThis function supports Unicode filenames, but they must be encoded in UTF-8\nformat, regardless of the underlying operating system.\n\nThis call is _not_ asynchronous; it will open the file before returning,\nunder the assumption that doing so is generally a fast operation. Future\nreads and writes to the opened file will be async, however.\n\n@param file a UTF-8 string representing the filename to open.\n@param mode an ASCII string representing the mode to be used for opening\n            the file.\n@returns a pointer to the AsyncIO structure that is created or nullptr on\n         failure; call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIO.Close\n@sa AsyncIO.Read\n@sa AsyncIO.Write",
+          "name": "AsyncIOFromFile",
+          "kind": "function",
+          "type": "AsyncIO",
+          "parameters": [
+            {
+              "name": "file",
+              "type": "StringParam"
+            },
+            {
+              "name": "mode",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_AsyncIOFromFile",
+          "hints": {
+            "wrapSelf": true,
+            "delegate": "AsyncIO"
+          }
+        },
+        "GetAsyncIOSize": {
+          "doc": "Use this function to get the size of the data stream in an AsyncIO.\n\nThis call is _not_ asynchronous; it assumes that obtaining this info is a\nnon-blocking operation in most reasonable cases.\n\n@param asyncio the AsyncIO to get the size of the data stream from.\n@returns the size of the data stream in the IOStream on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetAsyncIOSize",
+          "kind": "function",
+          "type": "Sint64",
+          "parameters": [
+            {
+              "name": "asyncio",
+              "type": "AsyncIOParam"
+            }
+          ],
+          "sourceName": "SDL_GetAsyncIOSize",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "AsyncIO::GetSize": {
+          "name": "AsyncIO::GetSize",
+          "kind": "function",
+          "type": "Sint64",
+          "parameters": [],
+          "sourceName": "SDL_GetAsyncIOSize",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "mayFail": true,
+            "delegate": "SDL::GetAsyncIOSize"
+          }
+        },
+        "ReadAsyncIO": {
+          "doc": "Start an async read.\n\nThis function reads up to `size` bytes from `offset` position in the data\nsource to the area pointed at by `ptr`. This function may read less bytes\nthan requested.\n\nThis function returns as quickly as possible; it does not wait for the read\nto complete. On a successful return, this work will continue in the\nbackground. If the work begins, even failure is asynchronous: a failing\nreturn value from this function only means the work couldn't start at all.\n\n`ptr` must remain available until the work is done, and may be accessed by\nthe system at any time until then. Do not allocate it on the stack, as this\nmight take longer than the life of the calling function to complete!\n\nAn AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n@param asyncio a pointer to an AsyncIO structure.\n@param ptr a pointer to a buffer to read data into.\n@param offset the position to start reading in the data source.\n@param size the number of bytes to read from the data source.\n@param queue a queue to add the new AsyncIO to.\n@param userdata an app-defined pointer that will be provided with the task\n                results.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIO.Write\n@sa AsyncIOQueue.AsyncIOQueue",
+          "name": "ReadAsyncIO",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "asyncio",
+              "type": "AsyncIOParam"
+            },
+            {
+              "name": "ptr",
+              "type": "void *"
+            },
+            {
+              "name": "offset",
+              "type": "Uint64"
+            },
+            {
+              "name": "size",
+              "type": "Uint64"
+            },
+            {
+              "name": "queue",
+              "type": "AsyncIOQueueParam"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_ReadAsyncIO",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "AsyncIO::Read": {
+          "name": "AsyncIO::Read",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "ptr",
+              "type": "void *"
+            },
+            {
+              "name": "offset",
+              "type": "Uint64"
+            },
+            {
+              "name": "size",
+              "type": "Uint64"
+            },
+            {
+              "name": "queue",
+              "type": "AsyncIOQueueParam"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_ReadAsyncIO",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "mayFail": true,
+            "delegate": "SDL::ReadAsyncIO"
+          }
+        },
+        "WriteAsyncIO": {
+          "doc": "Start an async write.\n\nThis function writes `size` bytes from `offset` position in the data source\nto the area pointed at by `ptr`.\n\nThis function returns as quickly as possible; it does not wait for the\nwrite to complete. On a successful return, this work will continue in the\nbackground. If the work begins, even failure is asynchronous: a failing\nreturn value from this function only means the work couldn't start at all.\n\n`ptr` must remain available until the work is done, and may be accessed by\nthe system at any time until then. Do not allocate it on the stack, as this\nmight take longer than the life of the calling function to complete!\n\nAn AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n@param asyncio a pointer to an AsyncIO structure.\n@param ptr a pointer to a buffer to write data from.\n@param offset the position to start writing to the data source.\n@param size the number of bytes to write to the data source.\n@param queue a queue to add the new AsyncIO to.\n@param userdata an app-defined pointer that will be provided with the task\n                results.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIO.Read\n@sa AsyncIOQueue.AsyncIOQueue",
+          "name": "WriteAsyncIO",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "asyncio",
+              "type": "AsyncIOParam"
+            },
+            {
+              "name": "ptr",
+              "type": "void *"
+            },
+            {
+              "name": "offset",
+              "type": "Uint64"
+            },
+            {
+              "name": "size",
+              "type": "Uint64"
+            },
+            {
+              "name": "queue",
+              "type": "AsyncIOQueueParam"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_WriteAsyncIO",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "AsyncIO::Write": {
+          "name": "AsyncIO::Write",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "ptr",
+              "type": "void *"
+            },
+            {
+              "name": "offset",
+              "type": "Uint64"
+            },
+            {
+              "name": "size",
+              "type": "Uint64"
+            },
+            {
+              "name": "queue",
+              "type": "AsyncIOQueueParam"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_WriteAsyncIO",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "mayFail": true,
+            "delegate": "SDL::WriteAsyncIO"
+          }
+        },
+        "CloseAsyncIO": {
+          "doc": "Close and free any allocated resources for an async I/O object.\n\nClosing a file is _also_ an asynchronous task! If a write failure were to\nhappen during the closing process, for example, the task results will\nreport it as usual.\n\nClosing a file that has been written to does not guarantee the data has\nmade it to physical media; it may remain in the operating system's file\ncache, for later writing to disk. This means that a successfully-closed\nfile can be lost if the system crashes or loses power in this small window.\nTo prevent this, call this function with the `flush` parameter set to true.\nThis will make the operation take longer, and perhaps increase system load\nin general, but a successful result guarantees that the data has made it to\nphysical storage. Don't use this for temporary files, caches, and\nunimportant data, and definitely use it for crucial irreplaceable files,\nlike game saves.\n\nThis function guarantees that the close will happen after any other pending\ntasks to `asyncio`, so it's safe to open a file, start several operations,\nclose the file immediately, then check for all results later. This function\nwill not block until the tasks have completed.\n\nOnce this function returns true, `asyncio` is no longer valid, regardless\nof any future outcomes. Any completed tasks might still contain this\npointer in their AsyncIOOutcome data, in case the app was using this\nvalue to track information, but it should not be used again.\n\nIf this function returns false, the close wasn't started at all, and it's\nsafe to attempt to close again later.\n\nAn AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n@param asyncio a pointer to an AsyncIO structure to close.\n@param flush true if data should sync to disk before the task completes.\n@param queue a queue to add the new AsyncIO to.\n@param userdata an app-defined pointer that will be provided with the task\n                results.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread, but two\n              threads should not attempt to close the same object.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "CloseAsyncIO",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "asyncio",
+              "type": "AsyncIORaw"
+            },
+            {
+              "name": "flush",
+              "type": "bool"
+            },
+            {
+              "name": "queue",
+              "type": "SDL_AsyncIOQueue *"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_CloseAsyncIO",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "AsyncIO::Close": {
+          "name": "AsyncIO::Close",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "flush",
+              "type": "bool"
+            },
+            {
+              "name": "queue",
+              "type": "SDL_AsyncIOQueue *"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_CloseAsyncIO",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "mayFail": true,
+            "body": "auto r = SDL_CloseAsyncIO(m_resource);\nm_resource = nullptr;\nreturn r;",
+            "delegate": "SDL::CloseAsyncIO"
+          }
+        },
+        "CreateAsyncIOQueue": {
+          "doc": "Create a task queue for tracking multiple I/O operations.\n\nAsync I/O operations are assigned to a queue when started. The queue can be\nchecked for completed tasks thereafter.\n\n@returns a new task queue object or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIOQueue.Destroy\n@sa AsyncIOQueue.GetResult\n@sa AsyncIOQueue.WaitResult",
+          "name": "CreateAsyncIOQueue",
+          "kind": "function",
+          "type": "AsyncIOQueue",
+          "parameters": [],
+          "sourceName": "SDL_CreateAsyncIOQueue",
+          "hints": {
+            "wrapSelf": true,
+            "delegate": "AsyncIOQueue"
+          }
+        },
+        "DestroyAsyncIOQueue": {
+          "doc": "Destroy a previously-created async I/O task queue.\n\nIf there are still tasks pending for this queue, this call will block until\nthose tasks are finished. All those tasks will be deallocated. Their\nresults will be lost to the app.\n\nAny pending reads from LoadFileAsync() that are still in this queue\nwill have their buffers deallocated by this function, to prevent a memory\nleak.\n\nOnce this function is called, the queue is no longer valid and should not\nbe used, including by other threads that might access it while destruction\nis blocking on pending tasks.\n\nDo not destroy a queue that still has threads waiting on it through\nAsyncIOQueue.WaitResult(). You can call AsyncIOQueue.Signal() first to\nunblock those threads, and take measures (such as Thread.Wait()) to make\nsure they have finished their wait and won't wait on the queue again.\n\n@param queue the task queue to destroy.\n\n@threadsafety It is safe to call this function from any thread, so long as\n              no other thread is waiting on the queue with\n              AsyncIOQueue.WaitResult.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "DestroyAsyncIOQueue",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "queue",
+              "type": "AsyncIOQueueRaw"
+            }
+          ],
+          "sourceName": "SDL_DestroyAsyncIOQueue"
+        },
+        "AsyncIOQueue::Destroy": {
+          "name": "AsyncIOQueue::Destroy",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_DestroyAsyncIOQueue",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "body": "SDL_DestroyAsyncIOQueue(m_resource);\nm_resource = nullptr;",
+            "delegate": "SDL::DestroyAsyncIOQueue"
+          }
+        },
+        "GetAsyncIOResult": {
+          "doc": "Query an async I/O task queue for completed tasks.\n\nIf a task assigned to this queue has finished, this will return true and\nfill in `outcome` with the details of the task. If no task in the queue has\nfinished, this function will return false. This function does not block.\n\nIf a task has completed, this function will free its resources and the task\npointer will no longer be valid. The task will be removed from the queue.\n\nIt is safe for multiple threads to call this function on the same queue at\nonce; a completed task will only go to one of the threads.\n\n@param queue the async I/O task queue to query.\n@param outcome details of a finished task will be written here. May not be\n               nullptr.\n@returns true if a task has completed, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIOQueue.WaitResult",
+          "name": "GetAsyncIOResult",
+          "kind": "function",
+          "type": "std::optional<AsyncIOOutcome>",
+          "parameters": [
+            {
+              "name": "queue",
+              "type": "AsyncIOQueueParam"
+            }
+          ],
+          "sourceName": "SDL_GetAsyncIOResult",
+          "hints": {
+            "methodName": "GetResult"
+          }
+        },
+        "AsyncIOQueue::GetResult": {
+          "name": "AsyncIOQueue::GetResult",
+          "kind": "function",
+          "type": "std::optional<AsyncIOOutcome>",
+          "parameters": [],
+          "sourceName": "SDL_GetAsyncIOResult",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "methodName": "GetResult",
+            "delegate": "SDL::GetAsyncIOResult"
+          }
+        },
+        "WaitAsyncIOResult": [
+          {
+            "doc": "Block until an async I/O task queue has a completed task.\n\nThis function puts the calling thread to sleep until there a task assigned\nto the queue that has finished.\n\nIf a task assigned to the queue has finished, this will return true and\nfill in `outcome` with the details of the task. If no task in the queue has\nfinished, this function will return false.\n\nIf a task has completed, this function will free its resources and the task\npointer will no longer be valid. The task will be removed from the queue.\n\nIt is safe for multiple threads to call this function on the same queue at\nonce; a completed task will only go to one of the threads.\n\nNote that by the nature of various platforms, more than one waiting thread\nmay wake to handle a single task, but only one will obtain it, so\n`timeoutMS` is a _maximum_ wait time, and this function may return false\nsooner.\n\nThis function may return false if there was a system error, the OS\ninadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was\ncalled to wake up all waiting threads without a finished task.\n\nA timeout can be used to specify a maximum wait time, but rather than\npolling, it is possible to have a timeout of -1 to wait forever, and use\nAsyncIOQueue.Signal() to wake up the waiting threads later.\n\n@param queue the async I/O task queue to wait on.\n@param outcome details of a finished task will be written here. May not be\n               nullptr.\n@param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait\n                 indefinitely.\n@returns true if task has completed, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIOQueue.Signal",
+            "name": "WaitAsyncIOResult",
+            "kind": "function",
+            "type": "std::optional<AsyncIOOutcome>",
+            "parameters": [
+              {
+                "name": "queue",
+                "type": "AsyncIOQueueParam"
+              },
+              {
+                "name": "timeout",
+                "type": "Milliseconds"
+              }
+            ],
+            "sourceName": "SDL_WaitAsyncIOResult",
+            "hints": {
+              "methodName": "WaitResult"
+            }
+          },
+          {
+            "kind": "function",
+            "type": "std::optional<AsyncIOOutcome>",
+            "parameters": [
+              {
+                "type": "AsyncIOQueueParam",
+                "name": "queue"
+              }
+            ],
+            "hints": {
+              "methodName": "WaitResult"
+            },
+            "name": "WaitAsyncIOResult",
+            "doc": "Block until an async I/O task queue has a completed task.\n\nThis function puts the calling thread to sleep until there a task assigned\nto the queue that has finished.\n\nIf a task assigned to the queue has finished, this will return true and\nfill in `outcome` with the details of the task. If no task in the queue has\nfinished, this function will return false.\n\nIf a task has completed, this function will free its resources and the task\npointer will no longer be valid. The task will be removed from the queue.\n\nIt is safe for multiple threads to call this function on the same queue at\nonce; a completed task will only go to one of the threads.\n\nNote that by the nature of various platforms, more than one waiting thread\nmay wake to handle a single task, but only one will obtain it, so\n`timeoutMS` is a _maximum_ wait time, and this function may return false\nsooner.\n\nThis function may return false if there was a system error, the OS\ninadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was\ncalled to wake up all waiting threads without a finished task.\n\nA timeout can be used to specify a maximum wait time, but rather than\npolling, it is possible to have a timeout of -1 to wait forever, and use\nAsyncIOQueue.Signal() to wake up the waiting threads later.\n\n@param queue the async I/O task queue to wait on.\n@param outcome details of a finished task will be written here. May not be\n               nullptr.\n@param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait\n                 indefinitely.\n@returns true if task has completed, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIOQueue.Signal"
+          }
+        ],
+        "AsyncIOQueue::WaitResult": [
+          {
+            "name": "AsyncIOQueue::WaitResult",
+            "kind": "function",
+            "type": "std::optional<AsyncIOOutcome>",
+            "parameters": [
+              {
+                "name": "timeout",
+                "type": "Milliseconds"
+              }
+            ],
+            "sourceName": "SDL_WaitAsyncIOResult",
+            "hints": {
+              "self": "m_resource",
+              "super": "m_resource",
+              "private": true,
+              "methodName": "WaitResult",
+              "delegate": "SDL::WaitAsyncIOResult"
+            }
+          },
+          {
+            "kind": "function",
+            "type": "std::optional<AsyncIOOutcome>",
+            "parameters": [],
+            "hints": {
+              "self": "m_resource",
+              "super": "m_resource",
+              "private": true,
+              "delegate": "SDL::WaitAsyncIOResult"
+            },
+            "name": "AsyncIOQueue::WaitResult"
+          }
+        ],
+        "SignalAsyncIOQueue": {
+          "doc": "Wake up any threads that are blocking in AsyncIOQueue.WaitResult().\n\nThis will unblock any threads that are sleeping in a call to\nAsyncIOQueue.WaitResult for the specified queue, and cause them to return\nfrom that function.\n\nThis can be useful when destroying a queue to make sure nothing is touching\nit indefinitely. In this case, once this call completes, the caller should\ntake measures to make sure any previously-blocked threads have returned\nfrom their wait and will not touch the queue again (perhaps by setting a\nflag to tell the threads to terminate and then using Thread.Wait() to\nmake sure they've done so).\n\n@param queue the async I/O task queue to signal.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AsyncIOQueue.WaitResult",
+          "name": "SignalAsyncIOQueue",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "queue",
+              "type": "AsyncIOQueueParam"
+            }
+          ],
+          "sourceName": "SDL_SignalAsyncIOQueue"
+        },
+        "AsyncIOQueue::Signal": {
+          "name": "AsyncIOQueue::Signal",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_SignalAsyncIOQueue",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "delegate": "SDL::SignalAsyncIOQueue"
+          }
+        },
+        "LoadFileAsync": {
+          "doc": "Load all the data from a file path, asynchronously.\n\nThis function returns as quickly as possible; it does not wait for the read\nto complete. On a successful return, this work will continue in the\nbackground. If the work begins, even failure is asynchronous: a failing\nreturn value from this function only means the work couldn't start at all.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in AsyncIOOutcome's\nbytes_transferred value.\n\nThis function will allocate the buffer to contain the file. It must be\ndeallocated by calling free() on AsyncIOOutcome's buffer field\nafter completion.\n\nAn AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n@param file the path to read all available data from.\n@param queue a queue to add the new AsyncIO to.\n@param userdata an app-defined pointer that will be provided with the task\n                results.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStream.LoadFile",
+          "name": "LoadFileAsync",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "file",
+              "type": "StringParam"
+            },
+            {
+              "name": "queue",
+              "type": "AsyncIOQueueParam"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_LoadFileAsync",
+          "hints": {
+            "mayFail": true
+          }
+        }
+      },
+      "includes": [
+        "SDL3/SDL_asyncio.h"
+      ],
+      "localIncludes": [
+        "SDL3pp_log.h",
+        "SDL3pp_stdinc.h"
+      ]
+    },
     "SDL3pp_image.h": {
       "name": "SDL3pp_image.h",
       "doc": "@defgroup CategorySDLImage Category SDLImage\n\nHeader file for SDL_image library\n\nA simple library to load images of various formats as SDL surfaces",
@@ -73508,8 +75017,7 @@
               "sourceName": "TTF_DestroySurfaceTextEngine",
               "static": false,
               "hints": {
-                "body": "DestroySurfaceTextEngine(release());",
-                "delegate": "SDL::SurfaceTextEngine::Destroy"
+                "body": "DestroySurfaceTextEngine(release());"
               },
               "proto": true
             }
@@ -73566,8 +75074,7 @@
               "sourceName": "TTF_DestroyRendererTextEngine",
               "static": false,
               "hints": {
-                "body": "DestroyRendererTextEngine(release());",
-                "delegate": "SDL::RendererTextEngine::Destroy"
+                "body": "DestroyRendererTextEngine(release());"
               },
               "proto": true
             }
@@ -73666,8 +75173,7 @@
               "sourceName": "TTF_DestroyGPUTextEngine",
               "static": false,
               "hints": {
-                "body": "DestroyGPUTextEngine(release());",
-                "delegate": "SDL::GPUTextEngine::Destroy"
+                "body": "DestroyGPUTextEngine(release());"
               },
               "proto": true
             }
@@ -77548,8 +79054,7 @@
           "parameters": [],
           "sourceName": "TTF_DestroySurfaceTextEngine",
           "hints": {
-            "body": "DestroySurfaceTextEngine(release());",
-            "delegate": "SDL::SurfaceTextEngine::Destroy"
+            "body": "DestroySurfaceTextEngine(release());"
           }
         },
         "DestroySurfaceTextEngine": {
@@ -77682,8 +79187,7 @@
           "parameters": [],
           "sourceName": "TTF_DestroyRendererTextEngine",
           "hints": {
-            "body": "DestroyRendererTextEngine(release());",
-            "delegate": "SDL::RendererTextEngine::Destroy"
+            "body": "DestroyRendererTextEngine(release());"
           }
         },
         "DestroyRendererTextEngine": {
@@ -77803,8 +79307,7 @@
           "parameters": [],
           "sourceName": "TTF_DestroyGPUTextEngine",
           "hints": {
-            "body": "DestroyGPUTextEngine(release());",
-            "delegate": "SDL::GPUTextEngine::Destroy"
+            "body": "DestroyGPUTextEngine(release());"
           }
         },
         "DestroyGPUTextEngine": {

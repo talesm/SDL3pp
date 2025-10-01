@@ -16,7 +16,7 @@
 
 #include <SDL3/SDL.h>
 #include "SDL3pp_assert.h"
-// #include "SDL3pp_asyncio.h"
+#include "SDL3pp_asyncio.h"
 #include "SDL3pp_atomic.h"
 #include "SDL3pp_audio.h"
 #include "SDL3pp_bits.h"

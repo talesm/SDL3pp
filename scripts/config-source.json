@@ -51,6 +51,7 @@
     "SDL_vulkan.h",
     "SDL_metal.h",
     "SDL_camera.h",
+    "SDL_asyncio.h",
     "SDL_image.h",
     "SDL_ttf.h"
   ],

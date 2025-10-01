@@ -482,7 +482,7 @@ function expandTypes(sourceEntries, file, context) {
     context.includeBefore({
       name: rawType,
       kind: 'alias',
-      type: sourceType,
+      type: (sourceEntry.type && sourceEntry.type == `struct ${sourceType}`) ? `${sourceType} *` : sourceType,
       doc: `Alias to raw representation for ${targetType}.`,
     }, '__begin');
 
@@ -1078,7 +1078,7 @@ function expandTypes(sourceEntries, file, context) {
       }
       subEntries[sourceName] = freeFunction;
       if (!file.transform[sourceName]) {
-        file.transform[sourceName] = { parameters: [{ type: rawName }] };
+        file.transform[sourceName] = { parameters: [{ type: rawName }, ...freeFunction.parameters.slice(1)] };
       }
     } else {
       freeFunction = {
@@ -1339,7 +1339,7 @@ function expandTypes(sourceEntries, file, context) {
           immutable: m === 'immutable'
         };
       } else {
-        const name = transformMemberName(transformEntry.name ?? sourceName, targetType, context);
+        const name = transformMemberName(transformEntry.hints?.methodName ?? transformEntry.name ?? sourceName, targetType, context);
         if (blockedNames.has(name)) continue;
         const key = `${targetType}::${transformMemberName(sourceName, targetType, context)}`;
         transformMap[key] = {
@@ -1363,12 +1363,13 @@ function expandTypes(sourceEntries, file, context) {
       const m = paramMatchesVariants(param0, [sourceType, `${sourceType} *`], [`const ${sourceType}`, `const ${sourceType} *`]);
       if (!m) continue;
       const transformEntry = /** @type {ApiEntryTransform}*/(transformMap[sourceName]);
-      if (transformEntry?.name || transformEntry?.parameters) {
+      if (transformEntry?.name || transformEntry?.parameters || transformEntry?.hints?.methodName) {
+        /** @type {ApiEntryTransform} */
         const e = {
-          ...transformEntry,
-          immutable: m === 'immutable' || undefined
+          ...deepClone(transformEntry),
+          immutable: m === 'immutable' || undefined,
         };
-        delete e.name;
+        e.name = transformEntry.hints?.methodName ?? undefined;
         foundEntries[sourceName] = e;
       } else {
         foundEntries[sourceName] = m;

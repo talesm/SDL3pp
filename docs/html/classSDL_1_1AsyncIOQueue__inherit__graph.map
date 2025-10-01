@@ -1,0 +1,5 @@
+<map id="SDL::AsyncIOQueue" name="SDL::AsyncIOQueue">
+<area shape="rect" id="Node000001" title="A queue of completed asynchronous I/O tasks." alt="" coords="16,5,167,31"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1AsyncIOQueueRef.html" title="Semi&#45;safe reference for AsyncIOQueue." alt="" coords="5,79,177,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,44,94,79,89,79,89,44"/>
+</map>

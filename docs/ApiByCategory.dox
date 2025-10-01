@@ -91,7 +91,7 @@ Category                 | Header
 @ref CategoryFilesystem  | SDL3pp_filesystem.h
 @ref CategoryStorage     | SDL3pp_storage.h
 @ref CategoryIOStream    | SDL3pp_iostream.h
-Async I/O                | SDL3pp_asyncio.h
+@ref CategoryAsyncIO     | SDL3pp_asyncio.h
 
 ## Platform and CPU Information
 

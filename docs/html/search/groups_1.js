@@ -19,6 +19,7 @@ var searchData=
   ['arrays_16',['Helpers to use C++ strings and byte arrays.',['../group__CategoryStrings.html',1,'']]],
   ['assertions_17',['Assertions',['../group__CategoryAssert.html',1,'']]],
   ['async_20callback_20helpers_18',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]],
-  ['atomic_20operations_19',['Atomic Operations',['../group__CategoryAtomic.html',1,'']]],
-  ['audio_20playback_20recording_20and_20mixing_20',['Audio Playback, Recording, and Mixing',['../group__CategoryAudio.html',1,'']]]
+  ['async_20i_20o_19',['Async I/O',['../group__CategoryAsyncIO.html',1,'']]],
+  ['atomic_20operations_20',['Atomic Operations',['../group__CategoryAtomic.html',1,'']]],
+  ['audio_20playback_20recording_20and_20mixing_21',['Audio Playback, Recording, and Mixing',['../group__CategoryAudio.html',1,'']]]
 ];

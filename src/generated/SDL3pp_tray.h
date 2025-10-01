@@ -56,7 +56,7 @@ struct TrayParam
 };
 
 /// Alias to raw representation for TrayMenu.
-using TrayMenuRaw = SDL_TrayMenu;
+using TrayMenuRaw = SDL_TrayMenu*;
 
 // Forward decl
 struct TrayEntry;

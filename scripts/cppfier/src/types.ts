@@ -52,6 +52,7 @@ export interface EntryHint {
   wrapSelf?: boolean;
   changeAccess?: 'public' | 'private';
   delegate?: string;
+  methodName?: string;
 }
 
 export interface VersionTag {

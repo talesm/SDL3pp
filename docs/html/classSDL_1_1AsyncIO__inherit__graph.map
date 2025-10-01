@@ -1,0 +1,5 @@
+<map id="SDL::AsyncIO" name="SDL::AsyncIO">
+<area shape="rect" id="Node000001" title="The asynchronous I/O operation structure." alt="" coords="17,5,125,31"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1AsyncIORef.html" title="Semi&#45;safe reference for AsyncIO." alt="" coords="5,79,136,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,44,73,79,68,79,68,44"/>
+</map>

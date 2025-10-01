@@ -376,6 +376,9 @@ using Seconds = std::chrono::duration<float>;
 /// Duration in Nanoseconds (Uint64).
 using Nanoseconds = std::chrono::nanoseconds;
 
+/// Duration in Miliseconds (Uint32).
+using Milliseconds = std::chrono::milliseconds;
+
 /// Converts a time duration to seconds (float).
 constexpr float ToSeconds(Seconds duration) { return duration.count(); }
 
