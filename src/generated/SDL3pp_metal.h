@@ -102,7 +102,7 @@ public:
    * its own. It is up to user code to do that.
    *
    * The returned handle can be casted directly to a NSView or UIView. To access
-   * the backing CAMetalLayer, call MetalView.Metal_GetLayer().
+   * the backing CAMetalLayer, call MetalView.GetLayer().
    *
    * @param window the window.
    * @post handle NSView or UIView.
@@ -110,7 +110,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa MetalView.Metal_DestroyView
-   * @sa MetalView.Metal_GetLayer
+   * @sa MetalView.GetLayer
    */
   MetalView(WindowParam window)
     : m_resource(SDL_Metal_CreateView(window))
@@ -170,7 +170,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void* Metal_GetLayer();
+  void* GetLayer();
 };
 
 /// Semi-safe reference for MetalView.
@@ -206,7 +206,7 @@ struct MetalViewRef : MetalView
  * its own. It is up to user code to do that.
  *
  * The returned handle can be casted directly to a NSView or UIView. To access
- * the backing CAMetalLayer, call MetalView.Metal_GetLayer().
+ * the backing CAMetalLayer, call MetalView.GetLayer().
  *
  * @param window the window.
  * @returns handle NSView or UIView.
@@ -214,7 +214,7 @@ struct MetalViewRef : MetalView
  * @since This function is available since SDL 3.2.0.
  *
  * @sa MetalView.Metal_DestroyView
- * @sa MetalView.Metal_GetLayer
+ * @sa MetalView.GetLayer
  */
 inline MetalView Metal_CreateView(WindowParam window)
 {
@@ -253,10 +253,7 @@ inline void* Metal_GetLayer(MetalViewParam view)
   return SDL_Metal_GetLayer(view);
 }
 
-inline void* MetalView::Metal_GetLayer()
-{
-  return SDL::Metal_GetLayer(m_resource);
-}
+inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(m_resource); }
 
 /// @}
 

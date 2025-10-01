@@ -68155,7 +68155,7 @@
                 "name": "MetalView"
               },
               {
-                "doc": "Create a CAMetalLayer-backed NSView/UIView and attach it to the specified\nwindow.\n\nOn macOS, this does *not* associate a MTLDevice with the CAMetalLayer on\nits own. It is up to user code to do that.\n\nThe returned handle can be casted directly to a NSView or UIView. To access\nthe backing CAMetalLayer, call MetalView.Metal_GetLayer().\n\n@param window the window.\n@post handle NSView or UIView.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MetalView.Metal_DestroyView\n@sa MetalView.Metal_GetLayer",
+                "doc": "Create a CAMetalLayer-backed NSView/UIView and attach it to the specified\nwindow.\n\nOn macOS, this does *not* associate a MTLDevice with the CAMetalLayer on\nits own. It is up to user code to do that.\n\nThe returned handle can be casted directly to a NSView or UIView. To access\nthe backing CAMetalLayer, call MetalView.GetLayer().\n\n@param window the window.\n@post handle NSView or UIView.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MetalView.Metal_DestroyView\n@sa MetalView.GetLayer",
                 "name": "MetalView",
                 "kind": "function",
                 "type": "",
@@ -68288,14 +68288,15 @@
               },
               "proto": true
             },
-            "Metal_GetLayer": {
+            "GetLayer": {
               "doc": "Get a pointer to the backing CAMetalLayer for the given view.\n\n@returns a pointer.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "Metal_GetLayer",
+              "name": "GetLayer",
               "kind": "function",
               "type": "void *",
               "parameters": [],
               "sourceName": "SDL_Metal_GetLayer",
               "hints": {
+                "methodName": "GetLayer",
                 "delegate": "SDL::Metal_GetLayer"
               },
               "proto": true
@@ -68362,7 +68363,7 @@
           }
         },
         "Metal_CreateView": {
-          "doc": "Create a CAMetalLayer-backed NSView/UIView and attach it to the specified\nwindow.\n\nOn macOS, this does *not* associate a MTLDevice with the CAMetalLayer on\nits own. It is up to user code to do that.\n\nThe returned handle can be casted directly to a NSView or UIView. To access\nthe backing CAMetalLayer, call MetalView.Metal_GetLayer().\n\n@param window the window.\n@returns handle NSView or UIView.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MetalView.Metal_DestroyView\n@sa MetalView.Metal_GetLayer",
+          "doc": "Create a CAMetalLayer-backed NSView/UIView and attach it to the specified\nwindow.\n\nOn macOS, this does *not* associate a MTLDevice with the CAMetalLayer on\nits own. It is up to user code to do that.\n\nThe returned handle can be casted directly to a NSView or UIView. To access\nthe backing CAMetalLayer, call MetalView.GetLayer().\n\n@param window the window.\n@returns handle NSView or UIView.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MetalView.Metal_DestroyView\n@sa MetalView.GetLayer",
           "name": "Metal_CreateView",
           "kind": "function",
           "type": "MetalView",
@@ -68416,10 +68417,13 @@
               "type": "MetalViewParam"
             }
           ],
-          "sourceName": "SDL_Metal_GetLayer"
+          "sourceName": "SDL_Metal_GetLayer",
+          "hints": {
+            "methodName": "GetLayer"
+          }
         },
-        "MetalView::Metal_GetLayer": {
-          "name": "MetalView::Metal_GetLayer",
+        "MetalView::GetLayer": {
+          "name": "MetalView::GetLayer",
           "kind": "function",
           "type": "void *",
           "parameters": [],
@@ -68428,6 +68432,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
+            "methodName": "GetLayer",
             "delegate": "SDL::Metal_GetLayer"
           }
         }

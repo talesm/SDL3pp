@@ -2556,6 +2556,11 @@ const transform = {
     },
     "SDL_metal.h": {
       localIncludes: ["SDL3pp_video.h"],
+      transform: {
+        "SDL_Metal_GetLayer": {
+          hints: { methodName: "GetLayer" }
+        },
+      }
     },
     "SDL_mouse.h": {
       localIncludes: ["SDL3pp_stdinc.h", "SDL3pp_video.h"],

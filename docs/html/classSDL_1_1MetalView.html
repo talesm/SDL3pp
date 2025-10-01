@@ -152,12 +152,12 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator MetalViewParam</b> () const</td></tr>
 <tr class="memdesc:a52f726345064cfde422694a380e7e83b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to <a class="el" href="structSDL_1_1MetalViewParam.html" title="Safely wrap MetalView for non owning parameters.">MetalViewParam</a>. <br /></td></tr>
 <tr class="separator:a52f726345064cfde422694a380e7e83b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9f5d1aff08369a7aed22f343ac85c502" id="r_ga9f5d1aff08369a7aed22f343ac85c502"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMetal.html#ga9f5d1aff08369a7aed22f343ac85c502">Metal_DestroyView</a> ()</td></tr>
-<tr class="memdesc:ga9f5d1aff08369a7aed22f343ac85c502"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy an existing <a class="el" href="classSDL_1_1MetalView.html" title="A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).">MetalView</a> object.  <br /></td></tr>
-<tr class="separator:ga9f5d1aff08369a7aed22f343ac85c502"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga941440f637b7144a22bae9bc1c1d43b2" id="r_ga941440f637b7144a22bae9bc1c1d43b2"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMetal.html#ga941440f637b7144a22bae9bc1c1d43b2">Metal_GetLayer</a> ()</td></tr>
-<tr class="memdesc:ga941440f637b7144a22bae9bc1c1d43b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a pointer to the backing CAMetalLayer for the given view.  <br /></td></tr>
-<tr class="separator:ga941440f637b7144a22bae9bc1c1d43b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac2d84279583e961ca93f4024e46e4b37" id="r_gac2d84279583e961ca93f4024e46e4b37"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMetal.html#gac2d84279583e961ca93f4024e46e4b37">Destroy</a> ()</td></tr>
+<tr class="memdesc:gac2d84279583e961ca93f4024e46e4b37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy an existing <a class="el" href="classSDL_1_1MetalView.html" title="A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).">MetalView</a> object.  <br /></td></tr>
+<tr class="separator:gac2d84279583e961ca93f4024e46e4b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadb2477bdf0a2f6212daca1efd89eb7af" id="r_gadb2477bdf0a2f6212daca1efd89eb7af"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMetal.html#gadb2477bdf0a2f6212daca1efd89eb7af">GetLayer</a> ()</td></tr>
+<tr class="memdesc:gadb2477bdf0a2f6212daca1efd89eb7af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a pointer to the backing CAMetalLayer for the given view.  <br /></td></tr>
+<tr class="separator:gadb2477bdf0a2f6212daca1efd89eb7af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
@@ -220,7 +220,7 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator MetalVi
 </table>
 </div><div class="memdoc">
 <p>On macOS, this does <em>not</em> associate a MTLDevice with the CAMetalLayer on its own. It is up to user code to do that.</p>
-<p>The returned handle can be casted directly to a NSView or UIView. To access the backing CAMetalLayer, call <a class="el" href="group__CategoryMetal.html#ga941440f637b7144a22bae9bc1c1d43b2" title="Get a pointer to the backing CAMetalLayer for the given view.">MetalView.Metal_GetLayer()</a>.</p>
+<p>The returned handle can be casted directly to a NSView or UIView. To access the backing CAMetalLayer, call <a class="el" href="group__CategoryMetal.html#gadb2477bdf0a2f6212daca1efd89eb7af" title="Get a pointer to the backing CAMetalLayer for the given view.">MetalView.GetLayer()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">window</td><td>the window. </td></tr>
@@ -229,9 +229,9 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator MetalVi
 </dl>
 <dl class="section post"><dt>Postcondition</dt><dd>handle NSView or UIView.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMetal.html#ga9f5d1aff08369a7aed22f343ac85c502" title="Destroy an existing MetalView object.">MetalView.Metal_DestroyView</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMetal.html#gac2d84279583e961ca93f4024e46e4b37" title="Destroy an existing MetalView object.">MetalView.Destroy</a> </dd>
 <dd>
-<a class="el" href="group__CategoryMetal.html#ga941440f637b7144a22bae9bc1c1d43b2" title="Get a pointer to the backing CAMetalLayer for the given view.">MetalView.Metal_GetLayer</a> </dd></dl>
+<a class="el" href="group__CategoryMetal.html#gadb2477bdf0a2f6212daca1efd89eb7af" title="Get a pointer to the backing CAMetalLayer for the given view.">MetalView.GetLayer</a> </dd></dl>
 
 </div>
 </div>

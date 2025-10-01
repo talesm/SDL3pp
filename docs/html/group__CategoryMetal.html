@@ -111,16 +111,71 @@ Functions</h2></td></tr>
 <tr class="memitem:ga3bdce4ea7122368926c833852862fc43" id="r_ga3bdce4ea7122368926c833852862fc43"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMetal.html#ga3bdce4ea7122368926c833852862fc43">SDL::Metal_GetLayer</a> (<a class="el" href="structSDL_1_1MetalViewParam.html">MetalViewParam</a> view)</td></tr>
 <tr class="memdesc:ga3bdce4ea7122368926c833852862fc43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a pointer to the backing CAMetalLayer for the given view.  <br /></td></tr>
 <tr class="separator:ga3bdce4ea7122368926c833852862fc43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9f5d1aff08369a7aed22f343ac85c502" id="r_ga9f5d1aff08369a7aed22f343ac85c502"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMetal.html#ga9f5d1aff08369a7aed22f343ac85c502">SDL::MetalView::Metal_DestroyView</a> ()</td></tr>
-<tr class="memdesc:ga9f5d1aff08369a7aed22f343ac85c502"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy an existing <a class="el" href="classSDL_1_1MetalView.html" title="A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).">MetalView</a> object.  <br /></td></tr>
-<tr class="separator:ga9f5d1aff08369a7aed22f343ac85c502"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga941440f637b7144a22bae9bc1c1d43b2" id="r_ga941440f637b7144a22bae9bc1c1d43b2"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMetal.html#ga941440f637b7144a22bae9bc1c1d43b2">SDL::MetalView::Metal_GetLayer</a> ()</td></tr>
-<tr class="memdesc:ga941440f637b7144a22bae9bc1c1d43b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a pointer to the backing CAMetalLayer for the given view.  <br /></td></tr>
-<tr class="separator:ga941440f637b7144a22bae9bc1c1d43b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac2d84279583e961ca93f4024e46e4b37" id="r_gac2d84279583e961ca93f4024e46e4b37"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMetal.html#gac2d84279583e961ca93f4024e46e4b37">SDL::MetalView::Destroy</a> ()</td></tr>
+<tr class="memdesc:gac2d84279583e961ca93f4024e46e4b37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy an existing <a class="el" href="classSDL_1_1MetalView.html" title="A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).">MetalView</a> object.  <br /></td></tr>
+<tr class="separator:gac2d84279583e961ca93f4024e46e4b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadb2477bdf0a2f6212daca1efd89eb7af" id="r_gadb2477bdf0a2f6212daca1efd89eb7af"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMetal.html#gadb2477bdf0a2f6212daca1efd89eb7af">SDL::MetalView::GetLayer</a> ()</td></tr>
+<tr class="memdesc:gadb2477bdf0a2f6212daca1efd89eb7af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a pointer to the backing CAMetalLayer for the given view.  <br /></td></tr>
+<tr class="separator:gadb2477bdf0a2f6212daca1efd89eb7af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>This provides some platform-specific glue for Apple platforms. Most macOS and iOS apps can use <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> without these functions, but this API they can be useful for specific OS-level integration tasks. </p>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gac2d84279583e961ca93f4024e46e4b37" name="gac2d84279583e961ca93f4024e46e4b37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac2d84279583e961ca93f4024e46e4b37">&#9670;&#160;</a></span>Destroy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::MetalView::Destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This should be called before <a class="el" href="group__CategoryVideo.html#gac275b64e073379ade67c15cbc5febe97" title="Destroy a window.">Window.Destroy</a>, if <a class="el" href="classSDL_1_1MetalView.html#abd8669d279041257b337f66819e52c7d" title="Default ctor.">MetalView.MetalView</a> was called after <a class="el" href="classSDL_1_1Window.html#afaeece8f8e2d43de3bed1b011dddadd0" title="Default ctor.">Window.Window</a>.</p>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1MetalView.html#abd8669d279041257b337f66819e52c7d" title="Default ctor.">MetalView.MetalView</a> </dd></dl>
+
+</div>
+</div>
+<a id="gadb2477bdf0a2f6212daca1efd89eb7af" name="gadb2477bdf0a2f6212daca1efd89eb7af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadb2477bdf0a2f6212daca1efd89eb7af">&#9670;&#160;</a></span>GetLayer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * SDL::MetalView::GetLayer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>a pointer.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
 <a id="ga877b3c91a2771a50b2a93f8e973524b3" name="ga877b3c91a2771a50b2a93f8e973524b3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga877b3c91a2771a50b2a93f8e973524b3">&#9670;&#160;</a></span>Metal_CreateView()</h2>
 
@@ -145,7 +200,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>On macOS, this does <em>not</em> associate a MTLDevice with the CAMetalLayer on its own. It is up to user code to do that.</p>
-<p>The returned handle can be casted directly to a NSView or UIView. To access the backing CAMetalLayer, call <a class="el" href="group__CategoryMetal.html#ga941440f637b7144a22bae9bc1c1d43b2" title="Get a pointer to the backing CAMetalLayer for the given view.">MetalView.Metal_GetLayer()</a>.</p>
+<p>The returned handle can be casted directly to a NSView or UIView. To access the backing CAMetalLayer, call <a class="el" href="group__CategoryMetal.html#gadb2477bdf0a2f6212daca1efd89eb7af" title="Get a pointer to the backing CAMetalLayer for the given view.">MetalView.GetLayer()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">window</td><td>the window. </td></tr>
@@ -154,42 +209,14 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>handle NSView or UIView.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMetal.html#ga9f5d1aff08369a7aed22f343ac85c502" title="Destroy an existing MetalView object.">MetalView.Metal_DestroyView</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMetal.html#gac2d84279583e961ca93f4024e46e4b37" title="Destroy an existing MetalView object.">MetalView.Destroy</a> </dd>
 <dd>
-<a class="el" href="group__CategoryMetal.html#ga941440f637b7144a22bae9bc1c1d43b2" title="Get a pointer to the backing CAMetalLayer for the given view.">MetalView.Metal_GetLayer</a> </dd></dl>
-
-</div>
-</div>
-<a id="ga9f5d1aff08369a7aed22f343ac85c502" name="ga9f5d1aff08369a7aed22f343ac85c502"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9f5d1aff08369a7aed22f343ac85c502">&#9670;&#160;</a></span>Metal_DestroyView() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::MetalView::Metal_DestroyView </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This should be called before <a class="el" href="group__CategoryVideo.html#gac275b64e073379ade67c15cbc5febe97" title="Destroy a window.">Window.Destroy</a>, if <a class="el" href="classSDL_1_1MetalView.html#abd8669d279041257b337f66819e52c7d" title="Default ctor.">MetalView.MetalView</a> was called after <a class="el" href="classSDL_1_1Window.html#afaeece8f8e2d43de3bed1b011dddadd0" title="Default ctor.">Window.Window</a>.</p>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1MetalView.html#abd8669d279041257b337f66819e52c7d" title="Default ctor.">MetalView.MetalView</a> </dd></dl>
+<a class="el" href="group__CategoryMetal.html#gadb2477bdf0a2f6212daca1efd89eb7af" title="Get a pointer to the backing CAMetalLayer for the given view.">MetalView.GetLayer</a> </dd></dl>
 
 </div>
 </div>
 <a id="gaf8ea32ac915096c63f85bc6065adec71" name="gaf8ea32ac915096c63f85bc6065adec71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf8ea32ac915096c63f85bc6065adec71">&#9670;&#160;</a></span>Metal_DestroyView() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf8ea32ac915096c63f85bc6065adec71">&#9670;&#160;</a></span>Metal_DestroyView()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -223,35 +250,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga941440f637b7144a22bae9bc1c1d43b2" name="ga941440f637b7144a22bae9bc1c1d43b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga941440f637b7144a22bae9bc1c1d43b2">&#9670;&#160;</a></span>Metal_GetLayer() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void * SDL::MetalView::Metal_GetLayer </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>a pointer.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
-
-</div>
-</div>
 <a id="ga3bdce4ea7122368926c833852862fc43" name="ga3bdce4ea7122368926c833852862fc43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3bdce4ea7122368926c833852862fc43">&#9670;&#160;</a></span>Metal_GetLayer() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3bdce4ea7122368926c833852862fc43">&#9670;&#160;</a></span>Metal_GetLayer()</h2>
 
 <div class="memitem">
 <div class="memproto">
