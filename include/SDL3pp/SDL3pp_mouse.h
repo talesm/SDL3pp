@@ -963,11 +963,7 @@ inline CursorRef GetDefaultCursor()
  */
 inline void DestroyCursor(CursorRaw cursor) { SDL_DestroyCursor(cursor); }
 
-inline void Cursor::Destroy()
-{
-  SDL_DestroyCursor(m_resource);
-  m_resource = nullptr;
-}
+inline void Cursor::Destroy() { DestroyCursor(release()); }
 
 /**
  * Show the cursor.

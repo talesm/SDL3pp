@@ -6565,11 +6565,7 @@ inline void Window::Flash(FlashOperation operation)
  */
 inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
 
-inline void Window::Destroy()
-{
-  SDL_DestroyWindow(m_resource);
-  m_resource = nullptr;
-}
+inline void Window::Destroy() { DestroyWindow(release()); }
 
 /**
  * Check whether the screensaver is currently enabled.
@@ -7074,11 +7070,7 @@ inline void GL_DestroyContext(GLContextRaw context)
   CheckError(SDL_GL_DestroyContext(context));
 }
 
-inline void GLContext::Destroy()
-{
-  CheckError(SDL_GL_DestroyContext(m_resource));
-  m_resource = nullptr;
-}
+inline void GLContext::Destroy() { GL_DestroyContext(release()); }
 
 /// @}
 

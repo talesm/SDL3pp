@@ -1313,11 +1313,7 @@ inline void DestroyEnvironment(EnvironmentRaw env)
   SDL_DestroyEnvironment(env);
 }
 
-inline void Environment::Destroy()
-{
-  SDL_DestroyEnvironment(m_resource);
-  m_resource = nullptr;
-}
+inline void Environment::Destroy() { DestroyEnvironment(release()); }
 
 /**
  * Get the value of a variable in the environment.
@@ -5860,12 +5856,7 @@ inline IConv IConv::open(StringParam tocode, StringParam fromcode)
  */
 inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
 
-inline int IConv::close()
-{
-  auto r = SDL_iconv_close(m_resource);
-  m_resource = nullptr;
-  return r;
-}
+inline int IConv::close() { return iconv_close(release()); }
 
 /**
  * This function converts text between encodings, reading from and writing to

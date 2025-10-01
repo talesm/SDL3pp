@@ -1009,9 +1009,7 @@ inline void CloseAsyncIO(AsyncIORaw asyncio,
 
 inline bool AsyncIO::Close(bool flush, SDL_AsyncIOQueue* queue, void* userdata)
 {
-  auto r = SDL_CloseAsyncIO(m_resource);
-  m_resource = nullptr;
-  return r;
+  return CloseAsyncIO(release());
 }
 
 /**
@@ -1066,11 +1064,7 @@ inline void DestroyAsyncIOQueue(AsyncIOQueueRaw queue)
   SDL_DestroyAsyncIOQueue(queue);
 }
 
-inline void AsyncIOQueue::Destroy()
-{
-  SDL_DestroyAsyncIOQueue(m_resource);
-  m_resource = nullptr;
-}
+inline void AsyncIOQueue::Destroy() { DestroyAsyncIOQueue(release()); }
 
 /**
  * Query an async I/O task queue for completed tasks.

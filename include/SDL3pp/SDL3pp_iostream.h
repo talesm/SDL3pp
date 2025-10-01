@@ -1965,11 +1965,7 @@ inline IOStream IOStream::Open(const IOStreamInterface* iface, void* userdata)
  */
 inline void CloseIO(IOStreamRaw context) { CheckError(SDL_CloseIO(context)); }
 
-inline void IOStream::Close()
-{
-  CheckError(SDL_CloseIO(m_resource));
-  m_resource = nullptr;
-}
+inline void IOStream::Close() { CloseIO(release()); }
 
 /**
  * Get the properties associated with an IOStream.

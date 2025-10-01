@@ -903,11 +903,7 @@ inline bool Process::Wait(bool block, int* exitcode)
  */
 inline void DestroyProcess(ProcessRaw process) { SDL_DestroyProcess(process); }
 
-inline void Process::Destroy()
-{
-  SDL_DestroyProcess(m_resource);
-  m_resource = nullptr;
-}
+inline void Process::Destroy() { DestroyProcess(release()); }
 
 /// @}
 

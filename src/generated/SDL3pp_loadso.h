@@ -314,11 +314,7 @@ inline FunctionPointer SharedObject::LoadFunction(StringParam name)
  */
 inline void UnloadObject(SharedObjectRaw handle) { SDL_UnloadObject(handle); }
 
-inline void SharedObject::Unload()
-{
-  SDL_UnloadObject(m_resource);
-  m_resource = nullptr;
-}
+inline void SharedObject::Unload() { UnloadObject(release()); }
 
 /// @}
 

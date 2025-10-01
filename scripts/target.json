@@ -2865,7 +2865,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyProperties",
               "hints": {
-                "body": "SDL_DestroyProperties(m_resource);\nm_resource = 0;",
+                "body": "DestroyProperties(release());",
                 "delegate": "SDL::DestroyProperties"
               },
               "proto": true
@@ -4129,7 +4129,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyProperties(m_resource);\nm_resource = 0;",
+            "body": "DestroyProperties(release());",
             "delegate": "SDL::DestroyProperties"
           }
         }
@@ -7323,7 +7323,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyWindow",
               "hints": {
-                "body": "SDL_DestroyWindow(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyWindow(release());",
                 "delegate": "SDL::DestroyWindow"
               },
               "proto": true
@@ -8930,7 +8930,7 @@
               "sourceName": "SDL_GL_DestroyContext",
               "hints": {
                 "mayFail": true,
-                "body": "CheckError(SDL_GL_DestroyContext(m_resource));\nm_resource = nullptr;",
+                "body": "GL_DestroyContext(release());",
                 "delegate": "SDL::GL_DestroyContext"
               },
               "proto": true
@@ -12896,7 +12896,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyWindow(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyWindow(release());",
             "delegate": "SDL::DestroyWindow"
           }
         },
@@ -13245,7 +13245,7 @@
             "super": "m_resource",
             "private": true,
             "mayFail": true,
-            "body": "CheckError(SDL_GL_DestroyContext(m_resource));\nm_resource = nullptr;",
+            "body": "GL_DestroyContext(release());",
             "delegate": "SDL::GL_DestroyContext"
           }
         }
@@ -13851,7 +13851,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyRenderer",
               "hints": {
-                "body": "SDL_DestroyRenderer(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyRenderer(release());",
                 "delegate": "SDL::DestroyRenderer"
               },
               "proto": true
@@ -15603,7 +15603,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyTexture",
               "hints": {
-                "body": "SDL_DestroyTexture(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyTexture(release());",
                 "delegate": "SDL::DestroyTexture"
               },
               "proto": true
@@ -20233,7 +20233,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyTexture(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyTexture(release());",
             "delegate": "SDL::DestroyTexture"
           }
         },
@@ -20260,7 +20260,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyRenderer(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyRenderer(release());",
             "delegate": "SDL::DestroyRenderer"
           }
         },
@@ -24644,7 +24644,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyPalette",
               "hints": {
-                "body": "SDL_DestroyPalette(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyPalette(release());",
                 "delegate": "SDL::DestroyPalette"
               },
               "proto": true
@@ -24976,7 +24976,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyPalette(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyPalette(release());",
             "delegate": "SDL::DestroyPalette"
           }
         },
@@ -28346,7 +28346,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroySurface",
               "hints": {
-                "body": "SDL_DestroySurface(m_resource);\nm_resource = nullptr;",
+                "body": "DestroySurface(release());",
                 "delegate": "SDL::DestroySurface"
               },
               "proto": true
@@ -29650,7 +29650,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroySurface(m_resource);\nm_resource = nullptr;",
+            "body": "DestroySurface(release());",
             "delegate": "SDL::DestroySurface"
           }
         },
@@ -33585,7 +33585,7 @@
               "parameters": [],
               "sourceName": "SDL_CloseAudioDevice",
               "hints": {
-                "body": "SDL_CloseAudioDevice(m_resource);\nm_resource = 0;",
+                "body": "CloseAudioDevice(release());",
                 "delegate": "SDL::CloseAudioDevice"
               },
               "proto": true
@@ -34264,7 +34264,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyAudioStream",
               "hints": {
-                "body": "SDL_DestroyAudioStream(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyAudioStream(release());",
                 "delegate": "SDL::DestroyAudioStream"
               },
               "proto": true
@@ -35191,7 +35191,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_CloseAudioDevice(m_resource);\nm_resource = 0;",
+            "body": "CloseAudioDevice(release());",
             "delegate": "SDL::CloseAudioDevice"
           }
         },
@@ -36203,7 +36203,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyAudioStream(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyAudioStream(release());",
             "delegate": "SDL::DestroyAudioStream"
           }
         },
@@ -44333,7 +44333,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyCursor",
               "hints": {
-                "body": "SDL_DestroyCursor(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyCursor(release());",
                 "delegate": "SDL::DestroyCursor"
               },
               "proto": true
@@ -44873,7 +44873,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyCursor(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyCursor(release());",
             "delegate": "SDL::DestroyCursor"
           }
         },
@@ -45417,7 +45417,7 @@
               "parameters": [],
               "sourceName": "SDL_DetachThread",
               "hints": {
-                "body": "SDL_DetachThread(m_resource);\nm_resource = nullptr;",
+                "body": "DetachThread(release());",
                 "delegate": "SDL::DetachThread"
               },
               "proto": true
@@ -45834,7 +45834,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DetachThread(m_resource);\nm_resource = nullptr;",
+            "body": "DetachThread(release());",
             "delegate": "SDL::DetachThread"
           }
         },
@@ -46572,7 +46572,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyMutex",
               "hints": {
-                "body": "SDL_DestroyMutex(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyMutex(release());",
                 "delegate": "SDL::DestroyMutex"
               },
               "proto": true
@@ -46792,7 +46792,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyMutex(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyMutex(release());",
             "delegate": "SDL::DestroyMutex"
           }
         },
@@ -47033,7 +47033,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyRWLock",
               "hints": {
-                "body": "SDL_DestroyRWLock(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyRWLock(release());",
                 "delegate": "SDL::DestroyRWLock"
               },
               "proto": true
@@ -47334,7 +47334,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyRWLock(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyRWLock(release());",
             "delegate": "SDL::DestroyRWLock"
           }
         },
@@ -47580,7 +47580,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroySemaphore",
               "hints": {
-                "body": "SDL_DestroySemaphore(m_resource);\nm_resource = nullptr;",
+                "body": "DestroySemaphore(release());",
                 "delegate": "SDL::DestroySemaphore"
               },
               "proto": true
@@ -47752,7 +47752,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroySemaphore(m_resource);\nm_resource = nullptr;",
+            "body": "DestroySemaphore(release());",
             "delegate": "SDL::DestroySemaphore"
           }
         },
@@ -48133,7 +48133,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyCondition",
               "hints": {
-                "body": "SDL_DestroyCondition(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyCondition(release());",
                 "delegate": "SDL::DestroyCondition"
               },
               "proto": true
@@ -48296,7 +48296,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyCondition(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyCondition(release());",
             "delegate": "SDL::DestroyCondition"
           }
         },
@@ -51273,7 +51273,7 @@
               "parameters": [],
               "sourceName": "SDL_CloseStorage",
               "hints": {
-                "body": "auto r = SDL_CloseStorage(m_resource);\nm_resource = nullptr;\nreturn r;",
+                "body": "return CloseStorage(release());",
                 "delegate": "SDL::CloseStorage"
               },
               "proto": true
@@ -51747,7 +51747,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "auto r = SDL_CloseStorage(m_resource);\nm_resource = nullptr;\nreturn r;",
+            "body": "return CloseStorage(release());",
             "delegate": "SDL::CloseStorage"
           }
         },
@@ -52925,7 +52925,7 @@
               "sourceName": "SDL_CloseIO",
               "hints": {
                 "mayFail": true,
-                "body": "CheckError(SDL_CloseIO(m_resource));\nm_resource = nullptr;",
+                "body": "CloseIO(release());",
                 "delegate": "SDL::CloseIO"
               },
               "proto": true
@@ -54055,7 +54055,7 @@
             "super": "m_resource",
             "private": true,
             "mayFail": true,
-            "body": "CheckError(SDL_CloseIO(m_resource));\nm_resource = nullptr;",
+            "body": "CloseIO(release());",
             "delegate": "SDL::CloseIO"
           }
         },
@@ -56382,7 +56382,7 @@
               "parameters": [],
               "sourceName": "SDL_UnloadObject",
               "hints": {
-                "body": "SDL_UnloadObject(m_resource);\nm_resource = nullptr;",
+                "body": "UnloadObject(release());",
                 "delegate": "SDL::UnloadObject"
               },
               "proto": true
@@ -56540,7 +56540,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_UnloadObject(m_resource);\nm_resource = nullptr;",
+            "body": "UnloadObject(release());",
             "delegate": "SDL::UnloadObject"
           }
         }
@@ -56962,7 +56962,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyProcess",
               "hints": {
-                "body": "SDL_DestroyProcess(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyProcess(release());",
                 "delegate": "SDL::DestroyProcess"
               },
               "proto": true
@@ -57545,7 +57545,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyProcess(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyProcess(release());",
             "delegate": "SDL::DestroyProcess"
           }
         }
@@ -59082,7 +59082,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyTray",
               "hints": {
-                "body": "SDL_DestroyTray(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyTray(release());",
                 "delegate": "SDL::DestroyTray"
               },
               "proto": true
@@ -59570,7 +59570,7 @@
               "parameters": [],
               "sourceName": "SDL_RemoveTrayEntry",
               "hints": {
-                "body": "SDL_RemoveTrayEntry(m_resource);\nm_resource = nullptr;",
+                "body": "RemoveTrayEntry(release());",
                 "delegate": "SDL::RemoveTrayEntry"
               },
               "proto": true
@@ -60056,7 +60056,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_RemoveTrayEntry(m_resource);\nm_resource = nullptr;",
+            "body": "RemoveTrayEntry(release());",
             "delegate": "SDL::RemoveTrayEntry"
           }
         },
@@ -60388,7 +60388,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyTray(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyTray(release());",
             "delegate": "SDL::DestroyTray"
           }
         },
@@ -62494,7 +62494,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyEnvironment",
               "hints": {
-                "body": "SDL_DestroyEnvironment(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyEnvironment(release());",
                 "delegate": "SDL::DestroyEnvironment"
               },
               "proto": true
@@ -62842,7 +62842,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyEnvironment(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyEnvironment(release());",
             "delegate": "SDL::DestroyEnvironment"
           }
         },
@@ -65848,7 +65848,7 @@
               "sourceName": "SDL_iconv_close",
               "hints": {
                 "mayFail": true,
-                "body": "auto r = SDL_iconv_close(m_resource);\nm_resource = nullptr;\nreturn r;",
+                "body": "return iconv_close(release());",
                 "delegate": "SDL::iconv_close"
               },
               "static": false,
@@ -66016,7 +66016,7 @@
             "super": "m_resource",
             "private": true,
             "mayFail": true,
-            "body": "auto r = SDL_iconv_close(m_resource);\nm_resource = nullptr;\nreturn r;",
+            "body": "return iconv_close(release());",
             "delegate": "SDL::iconv_close"
           }
         },
@@ -67016,7 +67016,7 @@
               "parameters": [],
               "sourceName": "SDL_CloseSensor",
               "hints": {
-                "body": "SDL_CloseSensor(m_resource);\nm_resource = nullptr;",
+                "body": "CloseSensor(release());",
                 "delegate": "SDL::CloseSensor"
               },
               "proto": true
@@ -67455,7 +67455,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_CloseSensor(m_resource);\nm_resource = nullptr;",
+            "body": "CloseSensor(release());",
             "delegate": "SDL::CloseSensor"
           }
         },
@@ -68283,7 +68283,7 @@
               "parameters": [],
               "sourceName": "SDL_Metal_DestroyView",
               "hints": {
-                "body": "SDL_Metal_DestroyView(m_resource);\nm_resource = 0;",
+                "body": "Metal_DestroyView(release());",
                 "delegate": "SDL::Metal_DestroyView"
               },
               "proto": true
@@ -68401,7 +68401,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_Metal_DestroyView(m_resource);\nm_resource = 0;",
+            "body": "Metal_DestroyView(release());",
             "delegate": "SDL::Metal_DestroyView"
           }
         },
@@ -68842,7 +68842,7 @@
               "parameters": [],
               "sourceName": "SDL_CloseCamera",
               "hints": {
-                "body": "SDL_CloseCamera(m_resource);\nm_resource = nullptr;",
+                "body": "CloseCamera(release());",
                 "delegate": "SDL::CloseCamera"
               },
               "proto": true
@@ -69308,7 +69308,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_CloseCamera(m_resource);\nm_resource = nullptr;",
+            "body": "CloseCamera(release());",
             "delegate": "SDL::CloseCamera"
           }
         }
@@ -69804,7 +69804,7 @@
               "sourceName": "SDL_CloseAsyncIO",
               "hints": {
                 "mayFail": true,
-                "body": "auto r = SDL_CloseAsyncIO(m_resource);\nm_resource = nullptr;\nreturn r;",
+                "body": "return CloseAsyncIO(release());",
                 "delegate": "SDL::CloseAsyncIO"
               },
               "proto": true
@@ -70257,7 +70257,7 @@
               "parameters": [],
               "sourceName": "SDL_DestroyAsyncIOQueue",
               "hints": {
-                "body": "SDL_DestroyAsyncIOQueue(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyAsyncIOQueue(release());",
                 "delegate": "SDL::DestroyAsyncIOQueue"
               },
               "proto": true
@@ -70625,7 +70625,7 @@
             "super": "m_resource",
             "private": true,
             "mayFail": true,
-            "body": "auto r = SDL_CloseAsyncIO(m_resource);\nm_resource = nullptr;\nreturn r;",
+            "body": "return CloseAsyncIO(release());",
             "delegate": "SDL::CloseAsyncIO"
           }
         },
@@ -70664,7 +70664,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "SDL_DestroyAsyncIOQueue(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyAsyncIOQueue(release());",
             "delegate": "SDL::DestroyAsyncIOQueue"
           }
         },
@@ -72158,7 +72158,7 @@
               "parameters": [],
               "sourceName": "IMG_FreeAnimation",
               "hints": {
-                "body": "IMG_FreeAnimation(m_resource);\nm_resource = nullptr;",
+                "body": "FreeAnimation(release());",
                 "delegate": "SDL::FreeAnimation"
               },
               "proto": true
@@ -72359,7 +72359,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "IMG_FreeAnimation(m_resource);\nm_resource = nullptr;",
+            "body": "FreeAnimation(release());",
             "delegate": "SDL::FreeAnimation"
           }
         },
@@ -73377,7 +73377,7 @@
               "parameters": [],
               "sourceName": "TTF_CloseFont",
               "hints": {
-                "body": "TTF_CloseFont(m_resource);\nm_resource = nullptr;",
+                "body": "CloseFont(release());",
                 "delegate": "SDL::CloseFont"
               },
               "proto": true
@@ -78029,7 +78029,7 @@
               "parameters": [],
               "sourceName": "TTF_DestroyText",
               "hints": {
-                "body": "TTF_DestroyText(m_resource);\nm_resource = nullptr;",
+                "body": "DestroyText(release());",
                 "delegate": "SDL::DestroyText"
               },
               "proto": true
@@ -80878,7 +80878,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "TTF_DestroyText(m_resource);\nm_resource = nullptr;",
+            "body": "DestroyText(release());",
             "delegate": "SDL::DestroyText"
           }
         },
@@ -80905,7 +80905,7 @@
             "self": "m_resource",
             "super": "m_resource",
             "private": true,
-            "body": "TTF_CloseFont(m_resource);\nm_resource = nullptr;",
+            "body": "CloseFont(release());",
             "delegate": "SDL::CloseFont"
           }
         }

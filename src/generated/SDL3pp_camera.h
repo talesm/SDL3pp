@@ -889,11 +889,7 @@ inline void Camera::ReleaseFrame(SurfaceParam frame)
  */
 inline void CloseCamera(CameraRaw camera) { SDL_CloseCamera(camera); }
 
-inline void Camera::Close()
-{
-  SDL_CloseCamera(m_resource);
-  m_resource = nullptr;
-}
+inline void Camera::Close() { CloseCamera(release()); }
 
 /// @}
 

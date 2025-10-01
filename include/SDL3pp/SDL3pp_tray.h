@@ -1057,11 +1057,7 @@ inline std::span<TrayEntry> TrayMenu::GetEntries()
  */
 inline void RemoveTrayEntry(TrayEntryRaw entry) { SDL_RemoveTrayEntry(entry); }
 
-inline void TrayEntry::Remove()
-{
-  SDL_RemoveTrayEntry(m_resource);
-  m_resource = nullptr;
-}
+inline void TrayEntry::Remove() { RemoveTrayEntry(release()); }
 
 /**
  * Insert a tray entry at a given position.
@@ -1323,11 +1319,7 @@ inline void TrayEntry::Click() { SDL::ClickTrayEntry(m_resource); }
  */
 inline void DestroyTray(TrayRaw tray) { SDL_DestroyTray(tray); }
 
-inline void Tray::Destroy()
-{
-  SDL_DestroyTray(m_resource);
-  m_resource = nullptr;
-}
+inline void Tray::Destroy() { DestroyTray(release()); }
 
 /**
  * Gets the menu containing a certain tray entry.

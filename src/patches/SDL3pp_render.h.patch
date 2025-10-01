@@ -1029,43 +1029,43 @@
 < inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect = {}) const
 ---
 > inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
-6195a6418
+6187a6410
 > /// Constant for disabling renderer vsync
-6197a6421
+6189a6413
 > /// Constant for enabling asaptive renderer vsync
-6204,6205c6428,6429
+6196,6197c6420,6421
 <  * @param vsync an int filled with the current vertical refresh sync interval.
 <  *              See Renderer.SetVSync() for the meaning of the value.
 ---
 >  * @returns the current vertical refresh sync interval. See Renderer.SetVSync()
 >  *          for the meaning of the value.
-6216c6440,6442
+6208c6432,6434
 <   return CheckError(SDL_GetRenderVSync(renderer));
 ---
 >   int vsync;
 >   CheckError(SDL_GetRenderVSync(renderer, &vsync));
 >   return vsync;
-6261,6262c6487
+6253,6254c6479
 <  * @param x the x coordinate where the top-left corner of the text will draw.
 <  * @param y the y coordinate where the top-left corner of the text will draw.
 ---
 >  * @param p the x,y coordinates where the top-left corner of the text will draw.
-6275c6500
+6267c6492
 <   CheckError(SDL_RenderDebugText(renderer, p, str));
 ---
 >   CheckError(SDL_RenderDebugText(renderer, p.x, p.y, str));
-6294,6295c6519
+6286,6287c6511
 <  * @param x the x coordinate where the top-left corner of the text will draw.
 <  * @param y the y coordinate where the top-left corner of the text will draw.
 ---
 >  * @param p the x,y coordinate where the top-left corner of the text will draw.
-6297c6521
+6289c6513
 <  * @param ... additional parameters matching % tokens in the `fmt` string, if
 ---
 >  * @param args additional parameters matching % tokens in the `fmt` string, if
-6307a6532
+6299a6524
 > template<class... ARGS>
-6309,6312c6534,6536
+6301,6304c6526,6528
 <                                   float x,
 <                                   float y,
 <                                   SDL_PRINTF_FORMAT_STRING const char* fmt,
@@ -1074,7 +1074,7 @@
 >                                   FPoint p,
 >                                   std::string_view fmt,
 >                                   ARGS... args)
-6314c6538,6539
+6306c6530,6531
 <   CheckError(SDL_RenderDebugTextFormat(renderer, x, y, fmt, ...));
 ---
 >   RenderDebugText(

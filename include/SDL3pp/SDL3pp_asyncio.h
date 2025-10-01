@@ -1061,11 +1061,7 @@ inline void DestroyAsyncIOQueue(AsyncIOQueueRaw queue)
   SDL_DestroyAsyncIOQueue(queue);
 }
 
-inline void AsyncIOQueue::Destroy()
-{
-  SDL_DestroyAsyncIOQueue(m_resource);
-  m_resource = nullptr;
-}
+inline void AsyncIOQueue::Destroy() { DestroyAsyncIOQueue(release()); }
 
 /**
  * Query an async I/O task queue for completed tasks.

@@ -400,26 +400,26 @@
 >   return Animation(IMG_LoadAnimationTyped_IO(src, closeio, type));
 2490d2529
 <  * @sa Animation.Animation
-2515d2553
+2511d2549
 <  * @sa Animation.Animation
-2519c2557
+2515c2553
 < inline AnimationRef LoadGIFAnimation(IOStreamParam src)
 ---
 > inline Animation LoadGIFAnimation(IOStreamParam src)
-2521c2559
+2517c2555
 <   return IMG_LoadGIFAnimation_IO(src);
 ---
 >   return Animation(IMG_LoadGIFAnimation_IO(src));
-2538d2575
+2534d2571
 <  * @sa Animation.Animation
-2542c2579
+2538c2575
 < inline AnimationRef LoadWEBPAnimation(IOStreamParam src)
 ---
 > inline Animation LoadWEBPAnimation(IOStreamParam src)
-2544c2581
+2540c2577
 <   return IMG_LoadWEBPAnimation_IO(src);
 ---
 >   return Animation{IMG_LoadWEBPAnimation_IO(src)};
-2549a2587,2588
+2545a2583,2584
 > 
 > #endif // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)

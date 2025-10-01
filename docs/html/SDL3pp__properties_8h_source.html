@@ -607,18 +607,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l01308" name="l01308"></a><span class="lineno"> 1308</span>}</div>
 </div>
 <div class="line"><a id="l01309" name="l01309"></a><span class="lineno"> 1309</span> </div>
-<div class="foldopen" id="foldopen01310" data-start="{" data-end="}">
-<div class="line"><a id="l01310" name="l01310"></a><span class="lineno"><a class="line" href="group__CategoryProperties.html#gabc95ece9f5b4babfe9aa66e79b03ec34"> 1310</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryProperties.html#gabc95ece9f5b4babfe9aa66e79b03ec34">Properties::Destroy</a>()</div>
-<div class="line"><a id="l01311" name="l01311"></a><span class="lineno"> 1311</span>{</div>
-<div class="line"><a id="l01312" name="l01312"></a><span class="lineno"> 1312</span>  SDL_DestroyProperties(m_resource);</div>
-<div class="line"><a id="l01313" name="l01313"></a><span class="lineno"> 1313</span>  m_resource = 0;</div>
-<div class="line"><a id="l01314" name="l01314"></a><span class="lineno"> 1314</span>}</div>
-</div>
+<div class="line"><a id="l01310" name="l01310"></a><span class="lineno"><a class="line" href="group__CategoryProperties.html#gabc95ece9f5b4babfe9aa66e79b03ec34"> 1310</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryProperties.html#gabc95ece9f5b4babfe9aa66e79b03ec34">Properties::Destroy</a>() { <a class="code hl_function" href="group__CategoryProperties.html#gaf5a6b3b462ccda2b0f5fba3d11996ea8">DestroyProperties</a>(<a class="code hl_function" href="classSDL_1_1Properties.html#acdfcffa2a732fb044e97bf7aab295bb2">release</a>()); }</div>
+<div class="line"><a id="l01311" name="l01311"></a><span class="lineno"> 1311</span> </div>
+<div class="line"><a id="l01313" name="l01313"></a><span class="lineno"> 1313</span> </div>
+<div class="line"><a id="l01314" name="l01314"></a><span class="lineno"> 1314</span>} <span class="comment">// namespace SDL</span></div>
 <div class="line"><a id="l01315" name="l01315"></a><span class="lineno"> 1315</span> </div>
-<div class="line"><a id="l01317" name="l01317"></a><span class="lineno"> 1317</span> </div>
-<div class="line"><a id="l01318" name="l01318"></a><span class="lineno"> 1318</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l01319" name="l01319"></a><span class="lineno"> 1319</span> </div>
-<div class="line"><a id="l01320" name="l01320"></a><span class="lineno"> 1320</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_PROPERTIES_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l01316" name="l01316"></a><span class="lineno"> 1316</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_PROPERTIES_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassSDL_1_1Properties_html"><div class="ttname"><a href="classSDL_1_1Properties.html">SDL::Properties</a></div><div class="ttdoc">SDL properties ID.</div><div class="ttdef"><b>Definition</b> SDL3pp_properties.h:149</div></div>
 <div class="ttc" id="aclassSDL_1_1Properties_html_a05e4e991eeec5e320da4b909ff9f84b3"><div class="ttname"><a href="classSDL_1_1Properties.html#a05e4e991eeec5e320da4b909ff9f84b3">SDL::Properties::Properties</a></div><div class="ttdeci">constexpr Properties(const Properties &amp;other)=delete</div><div class="ttdoc">Copy constructor.</div></div>
 <div class="ttc" id="aclassSDL_1_1Properties_html_a09f69741bd800c63e5868c808959b6eb"><div class="ttname"><a href="classSDL_1_1Properties.html#a09f69741bd800c63e5868c808959b6eb">SDL::Properties::get</a></div><div class="ttdeci">constexpr PropertiesID get() const</div><div class="ttdoc">Retrieves underlying PropertiesID.</div><div class="ttdef"><b>Definition</b> SDL3pp_properties.h:208</div></div>

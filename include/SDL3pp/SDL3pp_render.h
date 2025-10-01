@@ -6214,11 +6214,7 @@ inline void Renderer::Present() { SDL::RenderPresent(m_resource); }
  */
 inline void DestroyTexture(TextureRaw texture) { SDL_DestroyTexture(texture); }
 
-inline void Texture::Destroy()
-{
-  SDL_DestroyTexture(m_resource);
-  m_resource = nullptr;
-}
+inline void Texture::Destroy() { DestroyTexture(release()); }
 
 /**
  * Destroy the rendering context for a window and free all associated
@@ -6239,11 +6235,7 @@ inline void DestroyRenderer(RendererRaw renderer)
   SDL_DestroyRenderer(renderer);
 }
 
-inline void Renderer::Destroy()
-{
-  SDL_DestroyRenderer(m_resource);
-  m_resource = nullptr;
-}
+inline void Renderer::Destroy() { DestroyRenderer(release()); }
 
 /**
  * Force the rendering context to flush any pending commands and state.

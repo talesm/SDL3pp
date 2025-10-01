@@ -797,11 +797,7 @@ inline ThreadState Thread::GetState() const
  */
 inline void DetachThread(ThreadRaw thread) { SDL_DetachThread(thread); }
 
-inline void Thread::Detach()
-{
-  SDL_DetachThread(m_resource);
-  m_resource = nullptr;
-}
+inline void Thread::Detach() { DetachThread(release()); }
 
 /**
  * Get the current thread's value associated with a thread local storage ID.

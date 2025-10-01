@@ -68,27 +68,25 @@
 < inline bool AsyncIO::Close(bool flush, SDL_AsyncIOQueue* queue, void* userdata)
 ---
 > inline bool AsyncIO::Close(bool flush, AsyncIOQueueParam queue, void* userdata)
-1012,1014c1009
-<   auto r = SDL_CloseAsyncIO(m_resource);
-<   m_resource = nullptr;
-<   return r;
+1012c1009
+<   return CloseAsyncIO(release());
 ---
 >   return CloseAsyncIO(release(), flush, queue, userdata);
-1089,1091c1084,1085
+1083,1085c1080,1081
 <  * @param outcome details of a finished task will be written here. May not be
 <  *                nullptr.
 <  * @returns true if a task has completed, false otherwise.
 ---
 >  * @returns details of a finished task if a task has completed, std::nullopt
 >  *          otherwise.
-1101c1095,1098
+1095c1091,1094
 <   return SDL_GetAsyncIOResult(queue);
 ---
 >   if (AsyncIOOutcome outcome; SDL_GetAsyncIOResult(queue, &outcome)) {
 >     return outcome;
 >   }
 >   return std::nullopt;
-1139,1143c1136,1138
+1133,1137c1132,1134
 <  * @param outcome details of a finished task will be written here. May not be
 <  *                nullptr.
 <  * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
@@ -98,7 +96,7 @@
 >  * @param timeout the maximum time to wait, in milliseconds.
 >  * @returns details of a finished task if a task has completed, std::nullopt
 >  *          otherwise.
-1154c1149,1153
+1148c1145,1149
 <   return SDL_WaitAsyncIOResult(queue, timeout);
 ---
 >   if (AsyncIOOutcome outcome;
@@ -106,7 +104,7 @@
 >     return outcome;
 >   }
 >   return std::nullopt;
-1187,1191c1186,1187
+1181,1185c1182,1183
 <  * @param outcome details of a finished task will be written here. May not be
 <  *                nullptr.
 <  * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
@@ -115,7 +113,7 @@
 ---
 >  * @returns details of a finished task if a task has completed, std::nullopt
 >  *          otherwise.
-1201c1197,1200
+1195c1193,1196
 <   static_assert(false, "Not implemented");
 ---
 >   if (AsyncIOOutcome outcome; SDL_WaitAsyncIOResult(queue, &outcome, -1)) {

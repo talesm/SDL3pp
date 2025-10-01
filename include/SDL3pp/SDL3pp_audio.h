@@ -3311,11 +3311,7 @@ inline void CloseAudioDevice(AudioDeviceID devid)
   SDL_CloseAudioDevice(devid);
 }
 
-inline void AudioDevice::Close()
-{
-  SDL_CloseAudioDevice(m_resource);
-  m_resource = 0;
-}
+inline void AudioDevice::Close() { CloseAudioDevice(release()); }
 
 /**
  * Bind a list of audio streams to an audio device.
@@ -4428,11 +4424,7 @@ inline void DestroyAudioStream(AudioStreamRaw stream)
   SDL_DestroyAudioStream(stream);
 }
 
-inline void AudioStream::Destroy()
-{
-  SDL_DestroyAudioStream(m_resource);
-  m_resource = nullptr;
-}
+inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
 
 inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
                                            AudioStreamCallback callback,

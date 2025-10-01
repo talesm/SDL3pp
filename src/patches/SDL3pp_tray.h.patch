@@ -69,7 +69,7 @@
 >   auto entries = SDL_GetTrayEntries(menu, &count);
 >   return std::span<TrayEntry>{reinterpret_cast<TrayEntry*>(entries),
 >                               size_t(count)};
-1374a1424,1436
+1366a1416,1428
 > 
 > inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 > {

@@ -2608,11 +2608,7 @@ inline void Palette::SetColors(SpanRef<const ColorRaw> colors,
  */
 inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
 
-inline void Palette::Destroy()
-{
-  SDL_DestroyPalette(m_resource);
-  m_resource = nullptr;
-}
+inline void Palette::Destroy() { DestroyPalette(release()); }
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.

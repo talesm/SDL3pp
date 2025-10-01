@@ -6740,11 +6740,7 @@ inline void Text::Update() { SDL::UpdateText(m_resource); }
  */
 inline void DestroyText(TextRaw text) { TTF_DestroyText(text); }
 
-inline void Text::Destroy()
-{
-  TTF_DestroyText(m_resource);
-  m_resource = nullptr;
-}
+inline void Text::Destroy() { DestroyText(release()); }
 
 /**
  * Dispose of a previously-created font.
@@ -6770,11 +6766,7 @@ inline void Text::Destroy()
  */
 inline void CloseFont(FontRaw font) { TTF_CloseFont(font); }
 
-inline void Font::Close()
-{
-  TTF_CloseFont(m_resource);
-  m_resource = nullptr;
-}
+inline void Font::Close() { CloseFont(release()); }
 
 /// @}
 

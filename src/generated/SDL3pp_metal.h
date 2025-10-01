@@ -238,11 +238,7 @@ inline void Metal_DestroyView(MetalViewRaw view)
   SDL_Metal_DestroyView(view);
 }
 
-inline void MetalView::Metal_DestroyView()
-{
-  SDL_Metal_DestroyView(m_resource);
-  m_resource = 0;
-}
+inline void MetalView::Metal_DestroyView() { Metal_DestroyView(release()); }
 
 /**
  * Get a pointer to the backing CAMetalLayer for the given view.

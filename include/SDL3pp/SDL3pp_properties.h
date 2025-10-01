@@ -1307,11 +1307,7 @@ inline void DestroyProperties(PropertiesID props)
   SDL_DestroyProperties(props);
 }
 
-inline void Properties::Destroy()
-{
-  SDL_DestroyProperties(m_resource);
-  m_resource = 0;
-}
+inline void Properties::Destroy() { DestroyProperties(release()); }
 
 /// @}
 

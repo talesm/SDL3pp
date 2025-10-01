@@ -1066,20 +1066,18 @@ function expandTypes(sourceEntries, file, context) {
       combineObject(freeFunction, freeTransformEntry);
       freeFunction.name = freeTransformEntry.name ?? makeNaturalName(transformName(sourceName, context), targetName);
       freeFunction.doc = freeFunction.doc ? transformDoc(freeFunction.doc, context) : `frees up ${title}.`;
+      const fileLevelEntry = file.transform[sourceName] ?? { parameters: [{ type: rawName }, ...freeFunction.parameters.slice(1)] };
+      file.transform[sourceName] = fileLevelEntry;
+      const fileLevelName = fileLevelEntry.name ?? transformName(sourceName, context);
       if (!freeFunction.hints?.body) {
-        let body = `${sourceName}(m_resource)`;
-        if (freeFunction.hints?.mayFail) {
-          body = `CheckError(${body})`;
-          if (freeFunction.type === "bool") freeFunction.type = "void";
+        let body = `${fileLevelName}(release());`;
+        if (freeFunction.hints?.mayFail && freeFunction.type === "bool") {
+          freeFunction.type = "void";
         }
-        body += `;\nm_resource = ${nullValue};`;
-        if (freeFunction.type !== "void") body = `auto r = ${body}\nreturn r;`;
+        if (freeFunction.type !== "void") body = `return ${body}`;
         combineHints(freeFunction, { body });
       }
       subEntries[sourceName] = freeFunction;
-      if (!file.transform[sourceName]) {
-        file.transform[sourceName] = { parameters: [{ type: rawName }, ...freeFunction.parameters.slice(1)] };
-      }
     } else {
       freeFunction = {
         kind: "function",

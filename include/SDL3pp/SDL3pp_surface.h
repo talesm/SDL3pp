@@ -1948,11 +1948,7 @@ inline Surface CreateSurfaceFrom(const PointRaw& size,
  */
 inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
 
-inline void Surface::Destroy()
-{
-  SDL_DestroySurface(m_resource);
-  m_resource = nullptr;
-}
+inline void Surface::Destroy() { DestroySurface(release()); }
 
 /**
  * Get the properties associated with a surface.

@@ -382,18 +382,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span> </div>
 <div class="line"><a id="l00894" name="l00894"></a><span class="lineno"><a class="line" href="group__CategoryCamera.html#ga486991fc86f6837e98d962e8a9dd8aeb">  894</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryCamera.html#ga486991fc86f6837e98d962e8a9dd8aeb">CloseCamera</a>(<a class="code hl_typedef" href="group__CategoryCamera.html#ga990c2e49dc4cb021c2c5172089e2b2bf">CameraRaw</a> camera) { SDL_CloseCamera(camera); }</div>
 <div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span> </div>
-<div class="foldopen" id="foldopen00896" data-start="{" data-end="}">
-<div class="line"><a id="l00896" name="l00896"></a><span class="lineno"><a class="line" href="group__CategoryCamera.html#ga588b076f31eef4f401b21437c05fde2b">  896</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryCamera.html#ga588b076f31eef4f401b21437c05fde2b">Camera::Close</a>()</div>
-<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>{</div>
-<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>  SDL_CloseCamera(m_resource);</div>
-<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>  m_resource = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>}</div>
-</div>
+<div class="line"><a id="l00896" name="l00896"></a><span class="lineno"><a class="line" href="group__CategoryCamera.html#ga588b076f31eef4f401b21437c05fde2b">  896</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryCamera.html#ga588b076f31eef4f401b21437c05fde2b">Camera::Close</a>() { <a class="code hl_function" href="group__CategoryCamera.html#ga486991fc86f6837e98d962e8a9dd8aeb">CloseCamera</a>(<a class="code hl_function" href="classSDL_1_1Camera.html#a3ff654ac212021260612420a11d54170">release</a>()); }</div>
+<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span> </div>
+<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span> </div>
+<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>} <span class="comment">// namespace SDL</span></div>
 <div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span> </div>
-<div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span> </div>
-<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span> </div>
-<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_CAMERA_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_CAMERA_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassSDL_1_1Camera_html"><div class="ttname"><a href="classSDL_1_1Camera.html">SDL::Camera</a></div><div class="ttdoc">The opaque structure used to identify an opened SDL camera.</div><div class="ttdef"><b>Definition</b> SDL3pp_camera.h:150</div></div>
 <div class="ttc" id="aclassSDL_1_1Camera_html_a0ed35301160a1f26f468fd911546dd55"><div class="ttname"><a href="classSDL_1_1Camera.html#a0ed35301160a1f26f468fd911546dd55">SDL::Camera::Camera</a></div><div class="ttdeci">constexpr Camera()=default</div><div class="ttdoc">Default ctor.</div></div>
 <div class="ttc" id="aclassSDL_1_1Camera_html_a1f7cefa178d84c5c1fa7e5b4c0933377"><div class="ttname"><a href="classSDL_1_1Camera.html#a1f7cefa178d84c5c1fa7e5b4c0933377">SDL::Camera::operator=</a></div><div class="ttdeci">Camera &amp; operator=(Camera other)</div><div class="ttdoc">Assignment operator.</div><div class="ttdef"><b>Definition</b> SDL3pp_camera.h:236</div></div>

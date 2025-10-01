@@ -910,12 +910,7 @@ inline bool CloseStorage(StorageRaw storage)
   return SDL_CloseStorage(storage);
 }
 
-inline bool Storage::Close()
-{
-  auto r = SDL_CloseStorage(m_resource);
-  m_resource = nullptr;
-  return r;
-}
+inline bool Storage::Close() { return CloseStorage(release()); }
 
 /**
  * Checks if the storage container is ready to use.

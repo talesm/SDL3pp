@@ -240,8 +240,7 @@ inline void Metal_DestroyView(MetalViewRaw view)
 
 inline void MetalView::Metal_DestroyView()
 {
-  SDL_Metal_DestroyView(m_resource);
-  m_resource = 0;
+  SDL::Metal_DestroyView(release());
 }
 
 /**

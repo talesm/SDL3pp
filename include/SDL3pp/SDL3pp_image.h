@@ -2531,11 +2531,7 @@ inline Animation LoadAnimationTyped(IOStreamParam src,
  */
 inline void FreeAnimation(AnimationRaw anim) { IMG_FreeAnimation(anim); }
 
-inline void Animation::Free()
-{
-  IMG_FreeAnimation(m_resource);
-  m_resource = nullptr;
-}
+inline void Animation::Free() { FreeAnimation(release()); }
 
 /**
  * Load a GIF animation directly.

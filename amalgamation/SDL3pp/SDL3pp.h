@@ -11365,11 +11365,7 @@ inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
  */
 inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
 
-inline void Palette::Destroy()
-{
-  SDL_DestroyPalette(m_resource);
-  m_resource = nullptr;
-}
+inline void Palette::Destroy() { DestroyPalette(release()); }
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.
@@ -12862,11 +12858,7 @@ inline void DestroyProperties(PropertiesID props)
   SDL_DestroyProperties(props);
 }
 
-inline void Properties::Destroy()
-{
-  SDL_DestroyProperties(m_resource);
-  m_resource = 0;
-}
+inline void Properties::Destroy() { DestroyProperties(release()); }
 
 /// @}
 
@@ -14228,11 +14220,7 @@ inline void DestroyEnvironment(EnvironmentRaw env)
   SDL_DestroyEnvironment(env);
 }
 
-inline void Environment::Destroy()
-{
-  SDL_DestroyEnvironment(m_resource);
-  m_resource = nullptr;
-}
+inline void Environment::Destroy() { DestroyEnvironment(release()); }
 
 /**
  * Get the value of a variable in the environment.
@@ -18836,12 +18824,7 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
  */
 inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
 
-inline int IConv::close()
-{
-  auto r = SDL_iconv_close(m_resource);
-  m_resource = nullptr;
-  return r;
-}
+inline int IConv::close() { return iconv_close(release()); }
 
 /**
  * This function converts text between encodings, reading from and writing to
@@ -20127,11 +20110,7 @@ inline void DestroyAsyncIOQueue(AsyncIOQueueRaw queue)
   SDL_DestroyAsyncIOQueue(queue);
 }
 
-inline void AsyncIOQueue::Destroy()
-{
-  SDL_DestroyAsyncIOQueue(m_resource);
-  m_resource = nullptr;
-}
+inline void AsyncIOQueue::Destroy() { DestroyAsyncIOQueue(release()); }
 
 /**
  * Query an async I/O task queue for completed tasks.
@@ -25687,11 +25666,7 @@ inline IOStream IOStream::Open(const IOStreamInterface* iface, void* userdata)
  */
 inline void CloseIO(IOStreamRaw context) { CheckError(SDL_CloseIO(context)); }
 
-inline void IOStream::Close()
-{
-  CheckError(SDL_CloseIO(m_resource));
-  m_resource = nullptr;
-}
+inline void IOStream::Close() { CloseIO(release()); }
 
 /**
  * Get the properties associated with an IOStream.
@@ -27154,11 +27129,7 @@ inline FunctionPointer SharedObject::LoadFunction(StringParam name)
  */
 inline void UnloadObject(SharedObjectRaw handle) { SDL_UnloadObject(handle); }
 
-inline void SharedObject::Unload()
-{
-  SDL_UnloadObject(m_resource);
-  m_resource = nullptr;
-}
+inline void SharedObject::Unload() { UnloadObject(release()); }
 
 /// @}
 
@@ -31258,11 +31229,7 @@ inline void Sensor::GetData(float* data, int num_values)
  */
 inline void CloseSensor(SensorRaw sensor) { SDL_CloseSensor(sensor); }
 
-inline void Sensor::Close()
-{
-  SDL_CloseSensor(m_resource);
-  m_resource = nullptr;
-}
+inline void Sensor::Close() { CloseSensor(release()); }
 
 /**
  * Update the current state of the open sensors.
@@ -35381,11 +35348,7 @@ inline void CloseAudioDevice(AudioDeviceID devid)
   SDL_CloseAudioDevice(devid);
 }
 
-inline void AudioDevice::Close()
-{
-  SDL_CloseAudioDevice(m_resource);
-  m_resource = 0;
-}
+inline void AudioDevice::Close() { CloseAudioDevice(release()); }
 
 /**
  * Bind a list of audio streams to an audio device.
@@ -36498,11 +36461,7 @@ inline void DestroyAudioStream(AudioStreamRaw stream)
   SDL_DestroyAudioStream(stream);
 }
 
-inline void AudioStream::Destroy()
-{
-  SDL_DestroyAudioStream(m_resource);
-  m_resource = nullptr;
-}
+inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
 
 inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
                                            AudioStreamCallback callback,
@@ -38822,11 +38781,7 @@ inline bool Process::Wait(bool block, int* exitcode)
  */
 inline void DestroyProcess(ProcessRaw process) { SDL_DestroyProcess(process); }
 
-inline void Process::Destroy()
-{
-  SDL_DestroyProcess(m_resource);
-  m_resource = nullptr;
-}
+inline void Process::Destroy() { DestroyProcess(release()); }
 
 /// @}
 
@@ -39732,12 +39687,7 @@ inline bool CloseStorage(StorageRaw storage)
   return SDL_CloseStorage(storage);
 }
 
-inline bool Storage::Close()
-{
-  auto r = SDL_CloseStorage(m_resource);
-  m_resource = nullptr;
-  return r;
-}
+inline bool Storage::Close() { return CloseStorage(release()); }
 
 /**
  * Checks if the storage container is ready to use.
@@ -42149,11 +42099,7 @@ inline Surface CreateSurfaceFrom(const PointRaw& size,
  */
 inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
 
-inline void Surface::Destroy()
-{
-  SDL_DestroySurface(m_resource);
-  m_resource = nullptr;
-}
+inline void Surface::Destroy() { DestroySurface(release()); }
 
 /**
  * Get the properties associated with a surface.
@@ -44961,11 +44907,7 @@ inline ThreadState Thread::GetState() const
  */
 inline void DetachThread(ThreadRaw thread) { SDL_DetachThread(thread); }
 
-inline void Thread::Detach()
-{
-  SDL_DetachThread(m_resource);
-  m_resource = nullptr;
-}
+inline void Thread::Detach() { DetachThread(release()); }
 
 /**
  * Get the current thread's value associated with a thread local storage ID.
@@ -45912,11 +45854,7 @@ inline void Camera::ReleaseFrame(SurfaceParam frame)
  */
 inline void CloseCamera(CameraRaw camera) { SDL_CloseCamera(camera); }
 
-inline void Camera::Close()
-{
-  SDL_CloseCamera(m_resource);
-  m_resource = nullptr;
-}
+inline void Camera::Close() { CloseCamera(release()); }
 
 /// @}
 
@@ -46404,11 +46342,7 @@ inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
  */
 inline void DestroyMutex(MutexRaw mutex) { SDL_DestroyMutex(mutex); }
 
-inline void Mutex::Destroy()
-{
-  SDL_DestroyMutex(m_resource);
-  m_resource = nullptr;
-}
+inline void Mutex::Destroy() { DestroyMutex(release()); }
 
 /**
  * A mutex that allows read-only threads to run in parallel.
@@ -46958,11 +46892,7 @@ inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
  */
 inline void DestroyRWLock(RWLockRaw rwlock) { SDL_DestroyRWLock(rwlock); }
 
-inline void RWLock::Destroy()
-{
-  SDL_DestroyRWLock(m_resource);
-  m_resource = nullptr;
-}
+inline void RWLock::Destroy() { DestroyRWLock(release()); }
 
 /**
  * A means to manage access to a resource, by count, between threads.
@@ -47230,11 +47160,7 @@ inline Semaphore CreateSemaphore(Uint32 initial_value)
  */
 inline void DestroySemaphore(SemaphoreRaw sem) { SDL_DestroySemaphore(sem); }
 
-inline void Semaphore::Destroy()
-{
-  SDL_DestroySemaphore(m_resource);
-  m_resource = nullptr;
-}
+inline void Semaphore::Destroy() { DestroySemaphore(release()); }
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -47588,11 +47514,7 @@ inline Condition CreateCondition() { return Condition(); }
  */
 inline void DestroyCondition(ConditionRaw cond) { SDL_DestroyCondition(cond); }
 
-inline void Condition::Destroy()
-{
-  SDL_DestroyCondition(m_resource);
-  m_resource = nullptr;
-}
+inline void Condition::Destroy() { DestroyCondition(release()); }
 
 /**
  * Restart one of the threads that are waiting on the condition variable.
@@ -48980,11 +48902,7 @@ inline std::span<TrayEntry> TrayMenu::GetEntries()
  */
 inline void RemoveTrayEntry(TrayEntryRaw entry) { SDL_RemoveTrayEntry(entry); }
 
-inline void TrayEntry::Remove()
-{
-  SDL_RemoveTrayEntry(m_resource);
-  m_resource = nullptr;
-}
+inline void TrayEntry::Remove() { RemoveTrayEntry(release()); }
 
 /**
  * Insert a tray entry at a given position.
@@ -49246,11 +49164,7 @@ inline void TrayEntry::Click() { SDL::ClickTrayEntry(m_resource); }
  */
 inline void DestroyTray(TrayRaw tray) { SDL_DestroyTray(tray); }
 
-inline void Tray::Destroy()
-{
-  SDL_DestroyTray(m_resource);
-  m_resource = nullptr;
-}
+inline void Tray::Destroy() { DestroyTray(release()); }
 
 /**
  * Gets the menu containing a certain tray entry.
@@ -55915,11 +55829,7 @@ inline void Window::Flash(FlashOperation operation)
  */
 inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
 
-inline void Window::Destroy()
-{
-  SDL_DestroyWindow(m_resource);
-  m_resource = nullptr;
-}
+inline void Window::Destroy() { DestroyWindow(release()); }
 
 /**
  * Check whether the screensaver is currently enabled.
@@ -56424,11 +56334,7 @@ inline void GL_DestroyContext(GLContextRaw context)
   CheckError(SDL_GL_DestroyContext(context));
 }
 
-inline void GLContext::Destroy()
-{
-  CheckError(SDL_GL_DestroyContext(m_resource));
-  m_resource = nullptr;
-}
+inline void GLContext::Destroy() { GL_DestroyContext(release()); }
 
 /// @}
 
@@ -60155,8 +60061,7 @@ inline void Metal_DestroyView(MetalViewRaw view)
 
 inline void MetalView::Metal_DestroyView()
 {
-  SDL_Metal_DestroyView(m_resource);
-  m_resource = 0;
+  SDL::Metal_DestroyView(release());
 }
 
 /**
@@ -61135,11 +61040,7 @@ inline CursorRef GetDefaultCursor()
  */
 inline void DestroyCursor(CursorRaw cursor) { SDL_DestroyCursor(cursor); }
 
-inline void Cursor::Destroy()
-{
-  SDL_DestroyCursor(m_resource);
-  m_resource = nullptr;
-}
+inline void Cursor::Destroy() { DestroyCursor(release()); }
 
 /**
  * Show the cursor.
@@ -67391,11 +67292,7 @@ inline void Renderer::Present() { SDL::RenderPresent(m_resource); }
  */
 inline void DestroyTexture(TextureRaw texture) { SDL_DestroyTexture(texture); }
 
-inline void Texture::Destroy()
-{
-  SDL_DestroyTexture(m_resource);
-  m_resource = nullptr;
-}
+inline void Texture::Destroy() { DestroyTexture(release()); }
 
 /**
  * Destroy the rendering context for a window and free all associated
@@ -67416,11 +67313,7 @@ inline void DestroyRenderer(RendererRaw renderer)
   SDL_DestroyRenderer(renderer);
 }
 
-inline void Renderer::Destroy()
-{
-  SDL_DestroyRenderer(m_resource);
-  m_resource = nullptr;
-}
+inline void Renderer::Destroy() { DestroyRenderer(release()); }
 
 /**
  * Force the rendering context to flush any pending commands and state.
@@ -71678,11 +71571,7 @@ inline Animation LoadAnimationTyped(IOStreamParam src,
  */
 inline void FreeAnimation(AnimationRaw anim) { IMG_FreeAnimation(anim); }
 
-inline void Animation::Free()
-{
-  IMG_FreeAnimation(m_resource);
-  m_resource = nullptr;
-}
+inline void Animation::Free() { FreeAnimation(release()); }
 
 /**
  * Load a GIF animation directly.
@@ -78336,11 +78225,7 @@ inline void Text::Update() { SDL::UpdateText(m_resource); }
  */
 inline void DestroyText(TextRaw text) { TTF_DestroyText(text); }
 
-inline void Text::Destroy()
-{
-  TTF_DestroyText(m_resource);
-  m_resource = nullptr;
-}
+inline void Text::Destroy() { DestroyText(release()); }
 
 /**
  * Dispose of a previously-created font.
@@ -78366,11 +78251,7 @@ inline void Text::Destroy()
  */
 inline void CloseFont(FontRaw font) { TTF_CloseFont(font); }
 
-inline void Font::Close()
-{
-  TTF_CloseFont(m_resource);
-  m_resource = nullptr;
-}
+inline void Font::Close() { CloseFont(release()); }
 
 /// @}
 

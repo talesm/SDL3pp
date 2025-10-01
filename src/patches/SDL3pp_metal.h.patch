@@ -2,3 +2,10 @@
 <  * @defgroup CategoryMetal Category Metal
 ---
 >  * @defgroup CategoryMetal Metal Support
+241c241,244
+< inline void MetalView::Metal_DestroyView() { Metal_DestroyView(release()); }
+---
+> inline void MetalView::Metal_DestroyView()
+> {
+>   SDL::Metal_DestroyView(release());
+> }

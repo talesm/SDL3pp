@@ -500,11 +500,7 @@ inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
  */
 inline void DestroyMutex(MutexRaw mutex) { SDL_DestroyMutex(mutex); }
 
-inline void Mutex::Destroy()
-{
-  SDL_DestroyMutex(m_resource);
-  m_resource = nullptr;
-}
+inline void Mutex::Destroy() { DestroyMutex(release()); }
 
 /**
  * A mutex that allows read-only threads to run in parallel.
@@ -1060,11 +1056,7 @@ inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
  */
 inline void DestroyRWLock(RWLockRaw rwlock) { SDL_DestroyRWLock(rwlock); }
 
-inline void RWLock::Destroy()
-{
-  SDL_DestroyRWLock(m_resource);
-  m_resource = nullptr;
-}
+inline void RWLock::Destroy() { DestroyRWLock(release()); }
 
 /**
  * A means to manage access to a resource, by count, between threads.
@@ -1332,11 +1324,7 @@ inline Semaphore CreateSemaphore(Uint32 initial_value)
  */
 inline void DestroySemaphore(SemaphoreRaw sem) { SDL_DestroySemaphore(sem); }
 
-inline void Semaphore::Destroy()
-{
-  SDL_DestroySemaphore(m_resource);
-  m_resource = nullptr;
-}
+inline void Semaphore::Destroy() { DestroySemaphore(release()); }
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -1693,11 +1681,7 @@ inline Condition CreateCondition() { return Condition(); }
  */
 inline void DestroyCondition(ConditionRaw cond) { SDL_DestroyCondition(cond); }
 
-inline void Condition::Destroy()
-{
-  SDL_DestroyCondition(m_resource);
-  m_resource = nullptr;
-}
+inline void Condition::Destroy() { DestroyCondition(release()); }
 
 /**
  * Restart one of the threads that are waiting on the condition variable.

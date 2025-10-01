@@ -544,11 +544,7 @@ inline void Sensor::GetData(float* data, int num_values)
  */
 inline void CloseSensor(SensorRaw sensor) { SDL_CloseSensor(sensor); }
 
-inline void Sensor::Close()
-{
-  SDL_CloseSensor(m_resource);
-  m_resource = nullptr;
-}
+inline void Sensor::Close() { CloseSensor(release()); }
 
 /**
  * Update the current state of the open sensors.

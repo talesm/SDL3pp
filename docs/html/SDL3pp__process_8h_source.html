@@ -392,18 +392,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span> </div>
 <div class="line"><a id="l00929" name="l00929"></a><span class="lineno"><a class="line" href="group__CategoryProcess.html#gad4b9bda6a692a2dc7f81cc20c2feab6b">  929</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryProcess.html#gad4b9bda6a692a2dc7f81cc20c2feab6b">DestroyProcess</a>(<a class="code hl_typedef" href="group__CategoryProcess.html#gae44f11701ab5e1a80e527b875444e170">ProcessRaw</a> process) { SDL_DestroyProcess(process); }</div>
 <div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span> </div>
-<div class="foldopen" id="foldopen00931" data-start="{" data-end="}">
-<div class="line"><a id="l00931" name="l00931"></a><span class="lineno"><a class="line" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110">  931</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110">Process::Destroy</a>()</div>
-<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span>{</div>
-<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span>  SDL_DestroyProcess(m_resource);</div>
-<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span>  m_resource = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span>}</div>
-</div>
+<div class="line"><a id="l00931" name="l00931"></a><span class="lineno"><a class="line" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110">  931</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryProcess.html#ga11d4635e09c847d6e04e8429c706f110">Process::Destroy</a>() { <a class="code hl_function" href="group__CategoryProcess.html#gad4b9bda6a692a2dc7f81cc20c2feab6b">DestroyProcess</a>(<a class="code hl_function" href="classSDL_1_1Process.html#a68f1a484c2cb03657b8718eae43f235b">release</a>()); }</div>
+<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span> </div>
+<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span> </div>
+<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span>} <span class="comment">// namespace SDL</span></div>
 <div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span> </div>
-<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span> </div>
-<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span> </div>
-<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_PROCESS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_PROCESS_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassSDL_1_1OwnArray_html"><div class="ttname"><a href="classSDL_1_1OwnArray.html">SDL::OwnArray</a></div><div class="ttdoc">Base class for SDL memory allocated array wrap.</div><div class="ttdef"><b>Definition</b> SDL3pp_ownPtr.h:43</div></div>
 <div class="ttc" id="aclassSDL_1_1OwnArray_html_a2fd8799a55c9af74fb011cb52774f36c"><div class="ttname"><a href="classSDL_1_1OwnArray.html#a2fd8799a55c9af74fb011cb52774f36c">SDL::OwnArray::empty</a></div><div class="ttdeci">constexpr bool empty() const</div><div class="ttdoc">True if size() == 0.</div><div class="ttdef"><b>Definition</b> SDL3pp_ownPtr.h:70</div></div>
 <div class="ttc" id="aclassSDL_1_1OwnArray_html_a6de4a3f14d7d617c81883b2b38890dd6"><div class="ttname"><a href="classSDL_1_1OwnArray.html#a6de4a3f14d7d617c81883b2b38890dd6">SDL::OwnArray::release</a></div><div class="ttdeci">T * release()</div><div class="ttdoc">Release control on object.</div><div class="ttdef"><b>Definition</b> SDL3pp_ownPtr.h:87</div></div>
