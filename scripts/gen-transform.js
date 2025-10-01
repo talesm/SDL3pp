@@ -771,6 +771,21 @@ const transform = {
         }
       }
     },
+    "SDL_camera.h": {
+      localIncludes: ["SDL3pp_error.h", "SDL3pp_pixels.h", "SDL3pp_properties.h", "SDL3pp_stdinc.h", "SDL3pp_surface.h"],
+      transform: {
+        "SDL_CameraSpec": { before: "SDL_Camera" },
+        "SDL_CameraPosition": { before: "SDL_Camera" },
+        "SDL_GetCameras": {
+          type: "OwnArray<CameraID>",
+          parameters: [],
+        },
+        "SDL_GetCameraFormat": {
+          type: "std::optional<CameraSpec>",
+          parameters: [{}],
+        }
+      },
+    },
     "SDL_clipboard.h": {
       localIncludes: ["SDL3pp_stdinc.h"],
       transform: {
@@ -2505,6 +2520,9 @@ const transform = {
           parameters: [{}, {}, {}, { type: "WindowParam" }]
         }
       }
+    },
+    "SDL_metal.h": {
+      localIncludes: ["SDL3pp_video.h"],
     },
     "SDL_mouse.h": {
       localIncludes: ["SDL3pp_stdinc.h", "SDL3pp_video.h"],
@@ -7324,6 +7342,16 @@ const transform = {
         "SDL_GL_MakeCurrent": {
           parameters: [{}, {}],
         },
+      }
+    },
+    "SDL_vulkan.h": {
+      localIncludes: ["SDL3pp.h"],
+      ignoreEntries: ["VK_DEFINE_HANDLE", "VK_DEFINE_NON_DISPATCHABLE_HANDLE"],
+      transform: {
+        "SDL_Vulkan_GetInstanceExtensions": {
+          type: "std::span<char const * const>",
+          parameters: [],
+        }
       }
     },
 

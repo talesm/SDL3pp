@@ -1,0 +1,5 @@
+<map id="SDL::MetalView" name="SDL::MetalView">
+<area shape="rect" id="Node000001" title="A handle to a CAMetalLayer&#45;backed NSView (macOS) or UIView (iOS/tvOS)." alt="" coords="17,5,141,31"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1MetalViewRef.html" title="Semi&#45;safe reference for MetalView." alt="" coords="5,79,152,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,44,81,79,76,79,76,44"/>
+</map>

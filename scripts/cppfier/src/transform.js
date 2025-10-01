@@ -395,7 +395,6 @@ function expandTypes(sourceEntries, file, context) {
     const ctors = [];
 
     for (const functionEntry of Object.values(sourceEntries)) {
-      if (sourceName === 'SDL_Storage') console.log(functionEntry);
       if (Array.isArray(functionEntry) || functionEntry.kind !== "function") continue;
 
       const param0 = functionEntry.parameters?.[0];
@@ -1330,7 +1329,6 @@ function expandTypes(sourceEntries, file, context) {
       }
       if (!param0.type) continue;
       const m = paramMatchesVariants(param0, [paramType, `${paramType} *`], [constParamType, `${constParamType} &`]);
-      if (sourceName === "ReadFileAs") console.log(transformEntry, m, paramType);
       if (!m) {
         blockedNames.add(sourceName);
         continue;

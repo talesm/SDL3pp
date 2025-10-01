@@ -15,7 +15,7 @@ var searchData=
   ['storage_20abstraction_12',['Storage Abstraction',['../group__CategoryStorage.html',1,'']]],
   ['streams_13',['I/O Streams',['../group__CategoryIOStream.html',1,'']]],
   ['strings_20and_20byte_20arrays_14',['Helpers to use C++ strings and byte arrays.',['../group__CategoryStrings.html',1,'']]],
-  ['support_15',['support',['../group__CategoriesCppSupport.html',1,'C++ Support'],['../group__CategoryKeyboard.html',1,'Keyboard Support'],['../group__CategoryMouse.html',1,'Mouse Support'],['../group__CategoryPen.html',1,'Pen Support'],['../group__CategoryTimer.html',1,'Timer Support'],['../group__CategoryTouch.html',1,'Touch Support'],['../group__CategorySDLTTF.html',1,'True type font support']]],
+  ['support_15',['support',['../group__CategoriesCppSupport.html',1,'C++ Support'],['../group__CategoryCamera.html',1,'Camera Support'],['../group__CategoryKeyboard.html',1,'Keyboard Support'],['../group__CategoryMetal.html',1,'Metal Support'],['../group__CategoryMouse.html',1,'Mouse Support'],['../group__CategoryPen.html',1,'Pen Support'],['../group__CategoryTimer.html',1,'Timer Support'],['../group__CategoryTouch.html',1,'Touch Support'],['../group__CategorySDLTTF.html',1,'True type font support'],['../group__CategoryVulkan.html',1,'Vulkan Support']]],
   ['surface_20creation_20and_20simple_20drawing_16',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
   ['swapping_17',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]],
   ['synchronization_20primitives_18',['Thread Synchronization Primitives',['../group__CategoryMutex.html',1,'']]],

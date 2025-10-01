@@ -29,9 +29,9 @@ Things for a version 0.2
   - [x] SDL_pen.h
   - [x] SDL_sensor.h
   - [x] SDL_touch.h
-  - [ ] SDL_vulkan.h
-  - [ ] SDL_metal.h
-  - [ ] SDL_camera.h
+  - [x] SDL_vulkan.h
+  - [x] SDL_metal.h
+  - [x] SDL_camera.h
   - [ ] SDL_asyncio.h
   - [ ] SDL_joystick.h
   - [ ] SDL_gamepad.h

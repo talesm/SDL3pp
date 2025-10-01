@@ -826,11 +826,11 @@ public:
    *
    * If the window is created with any of the WINDOW_OPENGL or
    * WINDOW_VULKAN flags, then the corresponding LoadLibrary function
-   * (GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the
+   * (GL_LoadLibrary or Vulkan_LoadLibrary) is called and the
    * corresponding UnloadLibrary function is called by Window.Destroy().
    *
    * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
-   * Window.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.
+   * Window.Window() will fail, because Vulkan_LoadLibrary() will fail.
    *
    * If WINDOW_METAL is specified on an OS that does not support Metal,
    * Window.Window() will fail.
@@ -4188,11 +4188,11 @@ inline OwnArray<WindowRef> GetWindows() { return SDL_GetWindows(); }
  *
  * If the window is created with any of the WINDOW_OPENGL or
  * WINDOW_VULKAN flags, then the corresponding LoadLibrary function
- * (GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the
+ * (GL_LoadLibrary or Vulkan_LoadLibrary) is called and the
  * corresponding UnloadLibrary function is called by Window.Destroy().
  *
  * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
- * Window.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.
+ * Window.Window() will fail, because Vulkan_LoadLibrary() will fail.
  *
  * If WINDOW_METAL is specified on an OS that does not support Metal,
  * Window.Window() will fail.

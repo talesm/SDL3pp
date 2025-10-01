@@ -12,13 +12,14 @@ var searchData=
   ['messageboxcolortype_9',['MessageBoxColorType',['../group__CategoryMessagebox.html#ga4188ef2b3a57de9a30d4e72283977e6b',1,'SDL']]],
   ['messageboxflags_10',['MessageBoxFlags',['../group__CategoryMessagebox.html#ga1f1cc2ebff8c3b76909040b379ebd491',1,'SDL']]],
   ['messageboxraw_11',['MessageBoxRaw',['../group__CategoryMessagebox.html#ga1153004631252a9b43527a2aecb9edd5',1,'SDL']]],
-  ['mousebutton_12',['MouseButton',['../group__CategoryMouse.html#ga9b8df445d428312de2e9e08aa83d87fa',1,'SDL']]],
-  ['mousebuttonevent_13',['MouseButtonEvent',['../group__CategoryEvents.html#ga74309768261a3e9b6ea0f512fa5acacc',1,'SDL']]],
-  ['mousebuttonflags_14',['MouseButtonFlags',['../group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120',1,'SDL']]],
-  ['mousedeviceevent_15',['MouseDeviceEvent',['../group__CategoryEvents.html#ga45f1c9410b70b9d5e5531a1acefa2055',1,'SDL']]],
-  ['mouseid_16',['MouseID',['../group__CategoryMouse.html#ga733d09de50440ff2a5587b8a47080440',1,'SDL']]],
-  ['mousemotionevent_17',['MouseMotionEvent',['../group__CategoryEvents.html#gab544bd86a6b21b3ebef030f92d1c8c28',1,'SDL']]],
-  ['mousewheeldirection_18',['MouseWheelDirection',['../group__CategoryMouse.html#gadbe9935692f8af3d5db0c9133cc03f1d',1,'SDL']]],
-  ['mousewheelevent_19',['MouseWheelEvent',['../group__CategoryEvents.html#gac44f32e104cbfb90d50082136405d4ba',1,'SDL']]],
-  ['mutexraw_20',['MutexRaw',['../group__CategoryMutex.html#gac81abd5191b9c0c9c890dcd7f0901943',1,'SDL']]]
+  ['metalviewraw_12',['MetalViewRaw',['../group__CategoryMetal.html#gaf01a8c6e58735f0e9f3003c2cb6a02cc',1,'SDL']]],
+  ['mousebutton_13',['MouseButton',['../group__CategoryMouse.html#ga9b8df445d428312de2e9e08aa83d87fa',1,'SDL']]],
+  ['mousebuttonevent_14',['MouseButtonEvent',['../group__CategoryEvents.html#ga74309768261a3e9b6ea0f512fa5acacc',1,'SDL']]],
+  ['mousebuttonflags_15',['MouseButtonFlags',['../group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120',1,'SDL']]],
+  ['mousedeviceevent_16',['MouseDeviceEvent',['../group__CategoryEvents.html#ga45f1c9410b70b9d5e5531a1acefa2055',1,'SDL']]],
+  ['mouseid_17',['MouseID',['../group__CategoryMouse.html#ga733d09de50440ff2a5587b8a47080440',1,'SDL']]],
+  ['mousemotionevent_18',['MouseMotionEvent',['../group__CategoryEvents.html#gab544bd86a6b21b3ebef030f92d1c8c28',1,'SDL']]],
+  ['mousewheeldirection_19',['MouseWheelDirection',['../group__CategoryMouse.html#gadbe9935692f8af3d5db0c9133cc03f1d',1,'SDL']]],
+  ['mousewheelevent_20',['MouseWheelEvent',['../group__CategoryEvents.html#gac44f32e104cbfb90d50082136405d4ba',1,'SDL']]],
+  ['mutexraw_21',['MutexRaw',['../group__CategoryMutex.html#gac81abd5191b9c0c9c890dcd7f0901943',1,'SDL']]]
 ];

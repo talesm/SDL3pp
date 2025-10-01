@@ -27,9 +27,9 @@ Category                 | Header
 @ref CategoryRect        | SDL3pp_rect.h
 @ref CategorySurface     | SDL3pp_surface.h
 @ref CategoryClipboard   | SDL3pp_clipboard.h
-Vulkan Support           | SDL3pp_vulkan.h
-Metal Support            | SDL3pp_metal.h
-Camera Support           | SDL3pp_camera.h
+@ref CategoryVulkan      | SDL3pp_vulkan.h
+@ref CategoryMetal       | SDL3pp_metal.h
+@ref CategoryCamera      | SDL3pp_camera.h
 
 ## Force Feedback ("Haptic")
 

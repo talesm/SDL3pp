@@ -4,8 +4,9 @@ var searchData=
   ['management_20status_1',['Power Management Status',['../group__CategoryPower.html',1,'']]],
   ['manipulation_2',['Bit Manipulation',['../group__CategoryBits.html',1,'']]],
   ['message_20boxes_3',['Message Boxes',['../group__CategoryMessagebox.html',1,'']]],
-  ['miscellaneous_4',['Miscellaneous',['../group__CategoryMisc.html',1,'']]],
-  ['mixing_5',['Audio Playback, Recording, and Mixing',['../group__CategoryAudio.html',1,'']]],
-  ['modes_6',['Blend modes',['../group__CategoryBlendmode.html',1,'']]],
-  ['mouse_20support_7',['Mouse Support',['../group__CategoryMouse.html',1,'']]]
+  ['metal_20support_4',['Metal Support',['../group__CategoryMetal.html',1,'']]],
+  ['miscellaneous_5',['Miscellaneous',['../group__CategoryMisc.html',1,'']]],
+  ['mixing_6',['Audio Playback, Recording, and Mixing',['../group__CategoryAudio.html',1,'']]],
+  ['modes_7',['Blend modes',['../group__CategoryBlendmode.html',1,'']]],
+  ['mouse_20support_8',['Mouse Support',['../group__CategoryMouse.html',1,'']]]
 ];

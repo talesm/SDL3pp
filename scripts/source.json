@@ -30802,6 +30802,456 @@
         }
       }
     },
+    "SDL_vulkan.h": {
+      "name": "SDL_vulkan.h",
+      "doc": "# CategoryVulkan\n\nFunctions for creating Vulkan surfaces on SDL windows.\n\nFor the most part, Vulkan operates independent of SDL, but it benefits from\na little support during setup.\n\nUse SDL_Vulkan_GetInstanceExtensions() to get platform-specific bits for\ncreating a VkInstance, then SDL_Vulkan_GetVkGetInstanceProcAddr() to get\nthe appropriate function for querying Vulkan entry points. Then\nSDL_Vulkan_CreateSurface() will get you the final pieces you need to\nprepare for rendering into an SDL_Window with Vulkan.\n\nUnlike OpenGL, most of the details of \"context\" creation and window buffer\nswapping are handled by the Vulkan API directly, so SDL doesn't provide\nVulkan equivalents of SDL_GL_SwapWindow(), etc; they aren't necessary.",
+      "entries": {
+        "VK_DEFINE_HANDLE": {
+          "doc": "",
+          "name": "VK_DEFINE_HANDLE",
+          "kind": "def",
+          "parameters": [
+            "object"
+          ],
+          "value": "typedef struct object##_T* object;"
+        },
+        "VK_DEFINE_NON_DISPATCHABLE_HANDLE": {
+          "doc": "",
+          "name": "VK_DEFINE_NON_DISPATCHABLE_HANDLE",
+          "kind": "def",
+          "parameters": [
+            "object"
+          ],
+          "value": "typedef uint64_t object;"
+        },
+        "SDL_Vulkan_LoadLibrary": {
+          "doc": "Dynamically load the Vulkan loader library.\n\nThis should be called after initializing the video driver, but before\ncreating any Vulkan windows. If no Vulkan loader library is loaded, the\ndefault library will be loaded upon creation of the first Vulkan window.\n\nSDL keeps a counter of how many times this function has been successfully\ncalled, so it is safe to call this function multiple times, so long as it\nis eventually paired with an equivalent number of calls to\nSDL_Vulkan_UnloadLibrary. The `path` argument is ignored unless there is no\nlibrary currently loaded, and and the library isn't actually unloaded until\nthere have been an equivalent number of calls to SDL_Vulkan_UnloadLibrary.\n\nIt is fairly common for Vulkan applications to link with libvulkan instead\nof explicitly loading it at run time. This will work with SDL provided the\napplication links to a dynamic library and both it and SDL use the same\nsearch path.\n\nIf you specify a non-NULL `path`, an application should retrieve all of the\nVulkan functions it uses from the dynamic library using\nSDL_Vulkan_GetVkGetInstanceProcAddr unless you can guarantee `path` points\nto the same vulkan loader library the application linked to.\n\nOn Apple devices, if `path` is NULL, SDL will attempt to find the\n`vkGetInstanceProcAddr` address within all the Mach-O images of the current\nprocess. This is because it is fairly common for Vulkan applications to\nlink with libvulkan (and historically MoltenVK was provided as a static\nlibrary). If it is not found, on macOS, SDL will attempt to load\n`vulkan.framework/vulkan`, `libvulkan.1.dylib`,\n`MoltenVK.framework/MoltenVK`, and `libMoltenVK.dylib`, in that order. On\niOS, SDL will attempt to load `libMoltenVK.dylib`. Applications using a\ndynamic framework or .dylib must ensure it is included in its application\nbundle.\n\nOn non-Apple devices, application linking with a static libvulkan is not\nsupported. Either do not link to the Vulkan loader or link to a dynamic\nlibrary version.\n\n\\param path the platform dependent Vulkan loader library name or NULL.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety This function is not thread safe.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Vulkan_GetVkGetInstanceProcAddr\n\\sa SDL_Vulkan_UnloadLibrary",
+          "name": "SDL_Vulkan_LoadLibrary",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "const char *"
+            }
+          ]
+        },
+        "SDL_Vulkan_GetVkGetInstanceProcAddr": {
+          "doc": "Get the address of the `vkGetInstanceProcAddr` function.\n\nThis should be called after either calling SDL_Vulkan_LoadLibrary() or\ncreating an SDL_Window with the `SDL_WINDOW_VULKAN` flag.\n\nThe actual type of the returned function pointer is\nPFN_vkGetInstanceProcAddr, but that isn't available because the Vulkan\nheaders are not included here. You should cast the return value of this\nfunction to that type, e.g.\n\n`vkGetInstanceProcAddr =\n(PFN_vkGetInstanceProcAddr)SDL_Vulkan_GetVkGetInstanceProcAddr();`\n\n\\returns the function pointer for `vkGetInstanceProcAddr` or NULL on\n         failure; call SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_Vulkan_GetVkGetInstanceProcAddr",
+          "kind": "function",
+          "type": "SDL_FunctionPointer",
+          "parameters": []
+        },
+        "SDL_Vulkan_UnloadLibrary": {
+          "doc": "Unload the Vulkan library previously loaded by SDL_Vulkan_LoadLibrary().\n\nSDL keeps a counter of how many times this function has been called, so it\nis safe to call this function multiple times, so long as it is paired with\nan equivalent number of calls to SDL_Vulkan_LoadLibrary. The library isn't\nactually unloaded until there have been an equivalent number of calls to\nSDL_Vulkan_UnloadLibrary.\n\nOnce the library has actually been unloaded, if any Vulkan instances\nremain, they will likely crash the program. Clean up any existing Vulkan\nresources, and destroy appropriate windows, renderers and GPU devices\nbefore calling this function.\n\n\\threadsafety This function is not thread safe.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Vulkan_LoadLibrary",
+          "name": "SDL_Vulkan_UnloadLibrary",
+          "kind": "function",
+          "type": "void",
+          "parameters": []
+        },
+        "SDL_Vulkan_GetInstanceExtensions": {
+          "doc": "Get the Vulkan instance extensions needed for vkCreateInstance.\n\nThis should be called after either calling SDL_Vulkan_LoadLibrary() or\ncreating an SDL_Window with the `SDL_WINDOW_VULKAN` flag.\n\nOn return, the variable pointed to by `count` will be set to the number of\nelements returned, suitable for using with\nVkInstanceCreateInfo::enabledExtensionCount, and the returned array can be\nused with VkInstanceCreateInfo::ppEnabledExtensionNames, for calling\nVulkan's vkCreateInstance API.\n\nYou should not free the returned array; it is owned by SDL.\n\n\\param count a pointer filled in with the number of extensions returned.\n\\returns an array of extension name strings on success, NULL on failure;\n         call SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Vulkan_CreateSurface",
+          "name": "SDL_Vulkan_GetInstanceExtensions",
+          "kind": "function",
+          "type": "char const *const *",
+          "parameters": [
+            {
+              "name": "count",
+              "type": "Uint32 *"
+            }
+          ]
+        },
+        "SDL_Vulkan_CreateSurface": {
+          "doc": "Create a Vulkan rendering surface for a window.\n\nThe `window` must have been created with the `SDL_WINDOW_VULKAN` flag and\n`instance` must have been created with extensions returned by\nSDL_Vulkan_GetInstanceExtensions() enabled.\n\nIf `allocator` is NULL, Vulkan will use the system default allocator. This\nargument is passed directly to Vulkan and isn't used by SDL itself.\n\n\\param window the window to which to attach the Vulkan surface.\n\\param instance the Vulkan instance handle.\n\\param allocator a VkAllocationCallbacks struct, which lets the app set the\n                 allocator that creates the surface. Can be NULL.\n\\param surface a pointer to a VkSurfaceKHR handle to output the newly\n               created surface.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Vulkan_GetInstanceExtensions\n\\sa SDL_Vulkan_DestroySurface",
+          "name": "SDL_Vulkan_CreateSurface",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "SDL_Window *"
+            },
+            {
+              "name": "instance",
+              "type": "VkInstance"
+            },
+            {
+              "name": "allocator",
+              "type": "const struct VkAllocationCallbacks *"
+            },
+            {
+              "name": "surface",
+              "type": "VkSurfaceKHR *"
+            }
+          ]
+        },
+        "SDL_Vulkan_DestroySurface": {
+          "doc": "Destroy the Vulkan rendering surface of a window.\n\nThis should be called before SDL_DestroyWindow, if SDL_Vulkan_CreateSurface\nwas called after SDL_CreateWindow.\n\nThe `instance` must have been created with extensions returned by\nSDL_Vulkan_GetInstanceExtensions() enabled and `surface` must have been\ncreated successfully by an SDL_Vulkan_CreateSurface() call.\n\nIf `allocator` is NULL, Vulkan will use the system default allocator. This\nargument is passed directly to Vulkan and isn't used by SDL itself.\n\n\\param instance the Vulkan instance handle.\n\\param surface vkSurfaceKHR handle to destroy.\n\\param allocator a VkAllocationCallbacks struct, which lets the app set the\n                 allocator that destroys the surface. Can be NULL.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Vulkan_GetInstanceExtensions\n\\sa SDL_Vulkan_CreateSurface",
+          "name": "SDL_Vulkan_DestroySurface",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "instance",
+              "type": "VkInstance"
+            },
+            {
+              "name": "surface",
+              "type": "VkSurfaceKHR"
+            },
+            {
+              "name": "allocator",
+              "type": "const struct VkAllocationCallbacks *"
+            }
+          ]
+        },
+        "SDL_Vulkan_GetPresentationSupport": {
+          "doc": "Query support for presentation via a given physical device and queue\nfamily.\n\nThe `instance` must have been created with extensions returned by\nSDL_Vulkan_GetInstanceExtensions() enabled.\n\n\\param instance the Vulkan instance handle.\n\\param physicalDevice a valid Vulkan physical device handle.\n\\param queueFamilyIndex a valid queue family index for the given physical\n                        device.\n\\returns true if supported, false if unsupported or an error occurred.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Vulkan_GetInstanceExtensions",
+          "name": "SDL_Vulkan_GetPresentationSupport",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "instance",
+              "type": "VkInstance"
+            },
+            {
+              "name": "physicalDevice",
+              "type": "VkPhysicalDevice"
+            },
+            {
+              "name": "queueFamilyIndex",
+              "type": "Uint32"
+            }
+          ]
+        }
+      }
+    },
+    "SDL_metal.h": {
+      "name": "SDL_metal.h",
+      "doc": "# CategoryMetal\n\nFunctions to creating Metal layers and views on SDL windows.\n\nThis provides some platform-specific glue for Apple platforms. Most macOS\nand iOS apps can use SDL without these functions, but this API they can be\nuseful for specific OS-level integration tasks.",
+      "entries": {
+        "SDL_MetalView": {
+          "doc": "A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).\n\n\\since This datatype is available since SDL 3.2.0.",
+          "name": "SDL_MetalView",
+          "kind": "alias",
+          "type": "void *"
+        },
+        "SDL_Metal_CreateView": {
+          "doc": "Create a CAMetalLayer-backed NSView/UIView and attach it to the specified\nwindow.\n\nOn macOS, this does *not* associate a MTLDevice with the CAMetalLayer on\nits own. It is up to user code to do that.\n\nThe returned handle can be casted directly to a NSView or UIView. To access\nthe backing CAMetalLayer, call SDL_Metal_GetLayer().\n\n\\param window the window.\n\\returns handle NSView or UIView.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Metal_DestroyView\n\\sa SDL_Metal_GetLayer",
+          "name": "SDL_Metal_CreateView",
+          "kind": "function",
+          "type": "SDL_MetalView",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "SDL_Window *"
+            }
+          ]
+        },
+        "SDL_Metal_DestroyView": {
+          "doc": "Destroy an existing SDL_MetalView object.\n\nThis should be called before SDL_DestroyWindow, if SDL_Metal_CreateView was\ncalled after SDL_CreateWindow.\n\n\\param view the SDL_MetalView object.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Metal_CreateView",
+          "name": "SDL_Metal_DestroyView",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "view",
+              "type": "SDL_MetalView"
+            }
+          ]
+        },
+        "SDL_Metal_GetLayer": {
+          "doc": "Get a pointer to the backing CAMetalLayer for the given view.\n\n\\param view the SDL_MetalView object.\n\\returns a pointer.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_Metal_GetLayer",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [
+            {
+              "name": "view",
+              "type": "SDL_MetalView"
+            }
+          ]
+        }
+      }
+    },
+    "SDL_camera.h": {
+      "name": "SDL_camera.h",
+      "doc": "# CategoryCamera\n\nVideo capture for the SDL library.\n\nThis API lets apps read input from video sources, like webcams. Camera\ndevices can be enumerated, queried, and opened. Once opened, it will\nprovide SDL_Surface objects as new frames of video come in. These surfaces\ncan be uploaded to an SDL_Texture or processed as pixels in memory.\n\nSeveral platforms will alert the user if an app tries to access a camera,\nand some will present a UI asking the user if your application should be\nallowed to obtain images at all, which they can deny. A successfully opened\ncamera will not provide images until permission is granted. Applications,\nafter opening a camera device, can see if they were granted access by\neither polling with the SDL_GetCameraPermissionState() function, or waiting\nfor an SDL_EVENT_CAMERA_DEVICE_APPROVED or SDL_EVENT_CAMERA_DEVICE_DENIED\nevent. Platforms that don't have any user approval process will report\napproval immediately.\n\nNote that SDL cameras only provide video as individual frames; they will\nnot provide full-motion video encoded in a movie file format, although an\napp is free to encode the acquired frames into any format it likes. It also\ndoes not provide audio from the camera hardware through this API; not only\ndo many webcams not have microphones at all, many people--from streamers to\npeople on Zoom calls--will want to use a separate microphone regardless of\nthe camera. In any case, recorded audio will be available through SDL's\naudio API no matter what hardware provides the microphone.\n\n## Camera gotchas\n\nConsumer-level camera hardware tends to take a little while to warm up,\nonce the device has been opened. Generally most camera apps have some sort\nof UI to take a picture (a button to snap a pic while a preview is showing,\nsome sort of multi-second countdown for the user to pose, like a photo\nbooth), which puts control in the users' hands, or they are intended to\nstay on for long times (Pokemon Go, etc).\n\nIt's not uncommon that a newly-opened camera will provide a couple of\ncompletely black frames, maybe followed by some under-exposed images. If\ntaking a single frame automatically, or recording video from a camera's\ninput without the user initiating it from a preview, it could be wise to\ndrop the first several frames (if not the first several _seconds_ worth of\nframes!) before using images from a camera.",
+      "entries": {
+        "SDL_CameraID": {
+          "doc": "This is a unique ID for a camera device for the time it is connected to the\nsystem, and is never reused for the lifetime of the application.\n\nIf the device is disconnected and reconnected, it will get a new ID.\n\nThe value 0 is an invalid ID.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_GetCameras",
+          "name": "SDL_CameraID",
+          "kind": "alias",
+          "type": "Uint32"
+        },
+        "SDL_Camera": {
+          "doc": "The opaque structure used to identify an opened SDL camera.\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_Camera",
+          "kind": "alias",
+          "type": "struct SDL_Camera"
+        },
+        "SDL_CameraSpec": {
+          "doc": "The details of an output format for a camera device.\n\nCameras often support multiple formats; each one will be encapsulated in\nthis struct.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_GetCameraSupportedFormats\n\\sa SDL_GetCameraFormat",
+          "name": "SDL_CameraSpec",
+          "kind": "struct",
+          "entries": {
+            "format": {
+              "doc": "Frame format",
+              "name": "format",
+              "kind": "var",
+              "type": "SDL_PixelFormat"
+            },
+            "colorspace": {
+              "doc": "Frame colorspace",
+              "name": "colorspace",
+              "kind": "var",
+              "type": "SDL_Colorspace"
+            },
+            "width": {
+              "doc": "Frame width",
+              "name": "width",
+              "kind": "var",
+              "type": "int"
+            },
+            "height": {
+              "doc": "Frame height",
+              "name": "height",
+              "kind": "var",
+              "type": "int"
+            },
+            "framerate_numerator": {
+              "doc": "Frame rate numerator ((num / denom) == FPS, (denom / num) == duration in seconds)",
+              "name": "framerate_numerator",
+              "kind": "var",
+              "type": "int"
+            },
+            "framerate_denominator": {
+              "doc": "Frame rate denominator ((num / denom) == FPS, (denom / num) == duration in seconds)",
+              "name": "framerate_denominator",
+              "kind": "var",
+              "type": "int"
+            }
+          }
+        },
+        "SDL_CameraPosition": {
+          "doc": "The position of camera in relation to system device.\n\n\\since This enum is available since SDL 3.2.0.\n\n\\sa SDL_GetCameraPosition",
+          "name": "SDL_CameraPosition",
+          "kind": "enum",
+          "entries": {
+            "SDL_CAMERA_POSITION_UNKNOWN": {
+              "doc": "",
+              "name": "SDL_CAMERA_POSITION_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_CAMERA_POSITION_FRONT_FACING": {
+              "doc": "",
+              "name": "SDL_CAMERA_POSITION_FRONT_FACING",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_CAMERA_POSITION_BACK_FACING": {
+              "doc": "",
+              "name": "SDL_CAMERA_POSITION_BACK_FACING",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
+        "SDL_GetNumCameraDrivers": {
+          "doc": "Use this function to get the number of built-in camera drivers.\n\nThis function returns a hardcoded number. This never returns a negative\nvalue; if there are no drivers compiled into this build of SDL, this\nfunction returns zero. The presence of a driver in this list does not mean\nit will function, it just means SDL is capable of interacting with that\ninterface. For example, a build of SDL might have v4l2 support, but if\nthere's no kernel support available, SDL's v4l2 driver would fail if used.\n\nBy default, SDL tries all drivers, in its preferred order, until one is\nfound to be usable.\n\n\\returns the number of built-in camera drivers.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetCameraDriver",
+          "name": "SDL_GetNumCameraDrivers",
+          "kind": "function",
+          "type": "int",
+          "parameters": []
+        },
+        "SDL_GetCameraDriver": {
+          "doc": "Use this function to get the name of a built in camera driver.\n\nThe list of camera drivers is given in the order that they are normally\ninitialized by default; the drivers that seem more reasonable to choose\nfirst (as far as the SDL developers believe) are earlier in the list.\n\nThe names of drivers are all simple, low-ASCII identifiers, like \"v4l2\",\n\"coremedia\" or \"android\". These never have Unicode characters, and are not\nmeant to be proper names.\n\n\\param index the index of the camera driver; the value ranges from 0 to\n             SDL_GetNumCameraDrivers() - 1.\n\\returns the name of the camera driver at the requested index, or NULL if\n         an invalid index was specified.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetNumCameraDrivers",
+          "name": "SDL_GetCameraDriver",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "index",
+              "type": "int"
+            }
+          ]
+        },
+        "SDL_GetCurrentCameraDriver": {
+          "doc": "Get the name of the current camera driver.\n\nThe names of drivers are all simple, low-ASCII identifiers, like \"v4l2\",\n\"coremedia\" or \"android\". These never have Unicode characters, and are not\nmeant to be proper names.\n\n\\returns the name of the current camera driver or NULL if no driver has\n         been initialized.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetCurrentCameraDriver",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": []
+        },
+        "SDL_GetCameras": {
+          "doc": "Get a list of currently connected camera devices.\n\n\\param count a pointer filled in with the number of cameras returned, may\n             be NULL.\n\\returns a 0 terminated array of camera instance IDs or NULL on failure;\n         call SDL_GetError() for more information. This should be freed\n         with SDL_free() when it is no longer needed.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_OpenCamera",
+          "name": "SDL_GetCameras",
+          "kind": "function",
+          "type": "SDL_CameraID *",
+          "parameters": [
+            {
+              "name": "count",
+              "type": "int *"
+            }
+          ]
+        },
+        "SDL_GetCameraSupportedFormats": {
+          "doc": "Get the list of native formats/sizes a camera supports.\n\nThis returns a list of all formats and frame sizes that a specific camera\ncan offer. This is useful if your app can accept a variety of image formats\nand sizes and so want to find the optimal spec that doesn't require\nconversion.\n\nThis function isn't strictly required; if you call SDL_OpenCamera with a\nNULL spec, SDL will choose a native format for you, and if you instead\nspecify a desired format, it will transparently convert to the requested\nformat on your behalf.\n\nIf `count` is not NULL, it will be filled with the number of elements in\nthe returned array.\n\nNote that it's legal for a camera to supply an empty list. This is what\nwill happen on Emscripten builds, since that platform won't tell _anything_\nabout available cameras until you've opened one, and won't even tell if\nthere _is_ a camera until the user has given you permission to check\nthrough a scary warning popup.\n\n\\param instance_id the camera device instance ID.\n\\param count a pointer filled in with the number of elements in the list,\n             may be NULL.\n\\returns a NULL terminated array of pointers to SDL_CameraSpec or NULL on\n         failure; call SDL_GetError() for more information. This is a\n         single allocation that should be freed with SDL_free() when it is\n         no longer needed.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetCameras\n\\sa SDL_OpenCamera",
+          "name": "SDL_GetCameraSupportedFormats",
+          "kind": "function",
+          "type": "SDL_CameraSpec **",
+          "parameters": [
+            {
+              "name": "instance_id",
+              "type": "SDL_CameraID"
+            },
+            {
+              "name": "count",
+              "type": "int *"
+            }
+          ]
+        },
+        "SDL_GetCameraName": {
+          "doc": "Get the human-readable device name for a camera.\n\n\\param instance_id the camera device instance ID.\n\\returns a human-readable device name or NULL on failure; call\n         SDL_GetError() for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetCameras",
+          "name": "SDL_GetCameraName",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "instance_id",
+              "type": "SDL_CameraID"
+            }
+          ]
+        },
+        "SDL_GetCameraPosition": {
+          "doc": "Get the position of the camera in relation to the system.\n\nMost platforms will report UNKNOWN, but mobile devices, like phones, can\noften make a distinction between cameras on the front of the device (that\npoints towards the user, for taking \"selfies\") and cameras on the back (for\nfilming in the direction the user is facing).\n\n\\param instance_id the camera device instance ID.\n\\returns the position of the camera on the system hardware.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetCameras",
+          "name": "SDL_GetCameraPosition",
+          "kind": "function",
+          "type": "SDL_CameraPosition",
+          "parameters": [
+            {
+              "name": "instance_id",
+              "type": "SDL_CameraID"
+            }
+          ]
+        },
+        "SDL_OpenCamera": {
+          "doc": "Open a video recording device (a \"camera\").\n\nYou can open the device with any reasonable spec, and if the hardware can't\ndirectly support it, it will convert data seamlessly to the requested\nformat. This might incur overhead, including scaling of image data.\n\nIf you would rather accept whatever format the device offers, you can pass\na NULL spec here and it will choose one for you (and you can use\nSDL_Surface's conversion/scaling functions directly if necessary).\n\nYou can call SDL_GetCameraFormat() to get the actual data format if passing\na NULL spec here. You can see the exact specs a device can support without\nconversion with SDL_GetCameraSupportedFormats().\n\nSDL will not attempt to emulate framerate; it will try to set the hardware\nto the rate closest to the requested speed, but it won't attempt to limit\nor duplicate frames artificially; call SDL_GetCameraFormat() to see the\nactual framerate of the opened the device, and check your timestamps if\nthis is crucial to your app!\n\nNote that the camera is not usable until the user approves its use! On some\nplatforms, the operating system will prompt the user to permit access to\nthe camera, and they can choose Yes or No at that point. Until they do, the\ncamera will not be usable. The app should either wait for an\nSDL_EVENT_CAMERA_DEVICE_APPROVED (or SDL_EVENT_CAMERA_DEVICE_DENIED) event,\nor poll SDL_GetCameraPermissionState() occasionally until it returns\nnon-zero. On platforms that don't require explicit user approval (and\nperhaps in places where the user previously permitted access), the approval\nevent might come immediately, but it might come seconds, minutes, or hours\nlater!\n\n\\param instance_id the camera device instance ID.\n\\param spec the desired format for data the device will provide. Can be\n            NULL.\n\\returns an SDL_Camera object or NULL on failure; call SDL_GetError() for\n         more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetCameras\n\\sa SDL_GetCameraFormat",
+          "name": "SDL_OpenCamera",
+          "kind": "function",
+          "type": "SDL_Camera *",
+          "parameters": [
+            {
+              "name": "instance_id",
+              "type": "SDL_CameraID"
+            },
+            {
+              "name": "spec",
+              "type": "const SDL_CameraSpec *"
+            }
+          ]
+        },
+        "SDL_GetCameraPermissionState": {
+          "doc": "Query if camera access has been approved by the user.\n\nCameras will not function between when the device is opened by the app and\nwhen the user permits access to the hardware. On some platforms, this\npresents as a popup dialog where the user has to explicitly approve access;\non others the approval might be implicit and not alert the user at all.\n\nThis function can be used to check the status of that approval. It will\nreturn 0 if still waiting for user response, 1 if the camera is approved\nfor use, and -1 if the user denied access.\n\nInstead of polling with this function, you can wait for a\nSDL_EVENT_CAMERA_DEVICE_APPROVED (or SDL_EVENT_CAMERA_DEVICE_DENIED) event\nin the standard SDL event loop, which is guaranteed to be sent once when\npermission to use the camera is decided.\n\nIf a camera is declined, there's nothing to be done but call\nSDL_CloseCamera() to dispose of it.\n\n\\param camera the opened camera device to query.\n\\returns -1 if user denied access to the camera, 1 if user approved access,\n         0 if no decision has been made yet.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_OpenCamera\n\\sa SDL_CloseCamera",
+          "name": "SDL_GetCameraPermissionState",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "camera",
+              "type": "SDL_Camera *"
+            }
+          ]
+        },
+        "SDL_GetCameraID": {
+          "doc": "Get the instance ID of an opened camera.\n\n\\param camera an SDL_Camera to query.\n\\returns the instance ID of the specified camera on success or 0 on\n         failure; call SDL_GetError() for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_OpenCamera",
+          "name": "SDL_GetCameraID",
+          "kind": "function",
+          "type": "SDL_CameraID",
+          "parameters": [
+            {
+              "name": "camera",
+              "type": "SDL_Camera *"
+            }
+          ]
+        },
+        "SDL_GetCameraProperties": {
+          "doc": "Get the properties associated with an opened camera.\n\n\\param camera the SDL_Camera obtained from SDL_OpenCamera().\n\\returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetCameraProperties",
+          "kind": "function",
+          "type": "SDL_PropertiesID",
+          "parameters": [
+            {
+              "name": "camera",
+              "type": "SDL_Camera *"
+            }
+          ]
+        },
+        "SDL_GetCameraFormat": {
+          "doc": "Get the spec that a camera is using when generating images.\n\nNote that this might not be the native format of the hardware, as SDL might\nbe converting to this format behind the scenes.\n\nIf the system is waiting for the user to approve access to the camera, as\nsome platforms require, this will return false, but this isn't necessarily\na fatal error; you should either wait for an\nSDL_EVENT_CAMERA_DEVICE_APPROVED (or SDL_EVENT_CAMERA_DEVICE_DENIED) event,\nor poll SDL_GetCameraPermissionState() occasionally until it returns\nnon-zero.\n\n\\param camera opened camera device.\n\\param spec the SDL_CameraSpec to be initialized by this function.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_OpenCamera",
+          "name": "SDL_GetCameraFormat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "camera",
+              "type": "SDL_Camera *"
+            },
+            {
+              "name": "spec",
+              "type": "SDL_CameraSpec *"
+            }
+          ]
+        },
+        "SDL_AcquireCameraFrame": {
+          "doc": "Acquire a frame.\n\nThe frame is a memory pointer to the image data, whose size and format are\ngiven by the spec requested when opening the device.\n\nThis is a non blocking API. If there is a frame available, a non-NULL\nsurface is returned, and timestampNS will be filled with a non-zero value.\n\nNote that an error case can also return NULL, but a NULL by itself is\nnormal and just signifies that a new frame is not yet available. Note that\neven if a camera device fails outright (a USB camera is unplugged while in\nuse, etc), SDL will send an event separately to notify the app, but\ncontinue to provide blank frames at ongoing intervals until\nSDL_CloseCamera() is called, so real failure here is almost always an out\nof memory condition.\n\nAfter use, the frame should be released with SDL_ReleaseCameraFrame(). If\nyou don't do this, the system may stop providing more video!\n\nDo not call SDL_DestroySurface() on the returned surface! It must be given\nback to the camera subsystem with SDL_ReleaseCameraFrame!\n\nIf the system is waiting for the user to approve access to the camera, as\nsome platforms require, this will return NULL (no frames available); you\nshould either wait for an SDL_EVENT_CAMERA_DEVICE_APPROVED (or\nSDL_EVENT_CAMERA_DEVICE_DENIED) event, or poll\nSDL_GetCameraPermissionState() occasionally until it returns non-zero.\n\n\\param camera opened camera device.\n\\param timestampNS a pointer filled in with the frame's timestamp, or 0 on\n                   error. Can be NULL.\n\\returns a new frame of video on success, NULL if none is currently\n         available.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ReleaseCameraFrame",
+          "name": "SDL_AcquireCameraFrame",
+          "kind": "function",
+          "type": "SDL_Surface *",
+          "parameters": [
+            {
+              "name": "camera",
+              "type": "SDL_Camera *"
+            },
+            {
+              "name": "timestampNS",
+              "type": "Uint64 *"
+            }
+          ]
+        },
+        "SDL_ReleaseCameraFrame": {
+          "doc": "Release a frame of video acquired from a camera.\n\nLet the back-end re-use the internal buffer for camera.\n\nThis function _must_ be called only on surface objects returned by\nSDL_AcquireCameraFrame(). This function should be called as quickly as\npossible after acquisition, as SDL keeps a small FIFO queue of surfaces for\nvideo frames; if surfaces aren't released in a timely manner, SDL may drop\nupcoming video frames from the camera.\n\nIf the app needs to keep the surface for a significant time, they should\nmake a copy of it and release the original.\n\nThe app should not use the surface again after calling this function;\nassume the surface is freed and the pointer is invalid.\n\n\\param camera opened camera device.\n\\param frame the video frame surface to release.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_AcquireCameraFrame",
+          "name": "SDL_ReleaseCameraFrame",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "camera",
+              "type": "SDL_Camera *"
+            },
+            {
+              "name": "frame",
+              "type": "SDL_Surface *"
+            }
+          ]
+        },
+        "SDL_CloseCamera": {
+          "doc": "Use this function to shut down camera processing and close the camera\ndevice.\n\n\\param camera opened camera device.\n\n\\threadsafety It is safe to call this function from any thread, but no\n              thread may reference `device` once this function is called.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_OpenCamera",
+          "name": "SDL_CloseCamera",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "camera",
+              "type": "SDL_Camera *"
+            }
+          ]
+        }
+      }
+    },
     "SDL_image.h": {
       "name": "SDL_image.h",
       "doc": "# CategorySDLImage\n\nHeader file for SDL_image library\n\nA simple library to load images of various formats as SDL surfaces",

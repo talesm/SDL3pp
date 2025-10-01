@@ -3846,11 +3846,11 @@ namespace SDL {
 #define SDL_HINT_VITA_TOUCH_MOUSE_DEVICE "SDL_VITA_TOUCH_MOUSE_DEVICE"
 
 /**
- * A variable overriding the display index used in SDL_Vulkan_CreateSurface()
+ * A variable overriding the display index used in Vulkan_CreateSurface()
  *
  * The display index starts at 0, which is the default.
  *
- * This hint should be set before calling SDL_Vulkan_CreateSurface()
+ * This hint should be set before calling Vulkan_CreateSurface()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3860,7 +3860,7 @@ namespace SDL {
  * Specify the Vulkan library to load.
  *
  * This hint should be set before creating a Vulkan window or calling
- * SDL_Vulkan_LoadLibrary().
+ * Vulkan_LoadLibrary().
  *
  * @since This hint is available since SDL 3.2.0.
  */

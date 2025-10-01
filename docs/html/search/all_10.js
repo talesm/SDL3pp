@@ -148,7 +148,7 @@ var searchData=
   ['pixelformatraw_145',['PixelFormatRaw',['../group__CategoryPixels.html#ga8f7fbc84bbe29503a7d697e7bf13bed7',1,'SDL']]],
   ['pixellayout_146',['PIXELLAYOUT',['../group__CategoryPixels.html#ga51c136e6faa2b4cd25d25bfd34225026',1,'SDL']]],
   ['pixelorder_147',['PIXELORDER',['../group__CategoryPixels.html#ga9fcfef06907ea64edd3b67204bb49ea2',1,'SDL']]],
-  ['pixeltype_148',['pixeltype',['../group__CategoryPixels.html#ga39ee6d9417c8b9e283459c410c1fecb7',1,'SDL::PIXELTYPE(PixelFormatRaw format)'],['../group__CategoryPixels.html#gaedfdadf087ddd7d55c732a8f05d2bde2',1,'SDL::PixelType']]],
+  ['pixeltype_148',['pixeltype',['../group__CategoryPixels.html#gaedfdadf087ddd7d55c732a8f05d2bde2',1,'SDL::PixelType'],['../group__CategoryPixels.html#ga39ee6d9417c8b9e283459c410c1fecb7',1,'SDL::PIXELTYPE(PixelFormatRaw format)']]],
   ['pixeltype_5farrayf16_149',['PIXELTYPE_ARRAYF16',['../group__CategoryPixels.html#ga283d5075b0c6d22927f55514f2dc0109',1,'SDL']]],
   ['pixeltype_5farrayf32_150',['PIXELTYPE_ARRAYF32',['../group__CategoryPixels.html#ga13f0c9aec0a6f94ea923d645585289e7',1,'SDL']]],
   ['pixeltype_5farrayu16_151',['PIXELTYPE_ARRAYU16',['../group__CategoryPixels.html#ga6d06fece8c6212216393c194a66a7b23',1,'SDL']]],

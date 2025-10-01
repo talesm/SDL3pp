@@ -1,0 +1,14 @@
+10c10
+<  * @defgroup CategoryVulkan Category Vulkan
+---
+>  * @defgroup CategoryVulkan Vulkan Support
+142,144d141
+<  * You should not free the returned array; it is owned by SDL.
+<  *
+<  * @param count a pointer filled in with the number of extensions returned.
+154c151,153
+<   return CheckError(SDL_Vulkan_GetInstanceExtensions());
+---
+>   Uint32 count;
+>   auto data = CheckError(SDL_Vulkan_GetInstanceExtensions(&count));
+>   return std::span<char const* const>(data, size_t(count));
