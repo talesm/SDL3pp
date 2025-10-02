@@ -235,7 +235,11 @@ function generateBody(entry, prefix) {
   if (entry.proto) return ";";
   /** @type {Dict<string>} */
   const paramReplacements = {};
-  if (hint?.delegate) paramReplacements.StringParam = "std::move($)";
+  if (hint?.delegate) {
+    paramReplacements.StringParam = "std::move($)";
+    paramReplacements.SourceBytes = "std::move($)";
+    paramReplacements.TargetBytes = "std::move($)";
+  }
 
   const selfStr = entry.type && !entry.static && !entry.hints?.static && hint?.self;
   const selfStrPrefix = (selfStr || "") + ((entry.parameters?.length && selfStr) ? ", " : "");

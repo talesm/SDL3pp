@@ -3611,7 +3611,7 @@ inline void PutAudioStreamData(AudioStreamParam stream, SourceBytes buf)
 
 inline void AudioStream::PutData(SourceBytes buf)
 {
-  SDL::PutAudioStreamData(m_resource, buf);
+  SDL::PutAudioStreamData(m_resource, std::move(buf));
 }
 
 /**
@@ -3649,7 +3649,7 @@ inline int GetAudioStreamData(AudioStreamParam stream, TargetBytes buf)
 
 inline int AudioStream::GetData(TargetBytes buf)
 {
-  return SDL::GetAudioStreamData(m_resource, buf);
+  return SDL::GetAudioStreamData(m_resource, std::move(buf));
 }
 
 /**

@@ -1788,10 +1788,9 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
  *   that was passed to this function.
  *
- * @param mem a pointer to a buffer to feed an IOStream stream.
- * @param size the buffer size, in bytes.
- * @returns a pointer to a new IOStream structure or nullptr on failure; call
- *          GetError() for more information.
+ * @param mem a buffer to feed an IOStream stream.
+ * @returns a valid IOStream on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1805,14 +1804,14 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * @sa IOStream.Tell
  * @sa IOStream.Write
  */
-inline IOStream IOFromMem(void* mem, size_t size)
+inline IOStream IOFromMem(TargetBytes mem)
 {
-  return IOStream(SDL_IOFromMem(mem, size));
+  return IOStream(CheckError(SDL_IOFromMem(mem.data, mem.size_bytes)));
 }
 
 inline IOStream IOStream::FromMem(TargetBytes mem)
 {
-  return SDL::IOFromMem(mem.data, mem.size_bytes);
+  return SDL::IOFromMem(std::move(mem));
 }
 
 /**
@@ -1839,10 +1838,9 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
  *   that was passed to this function.
  *
- * @param mem a pointer to a read-only buffer to feed an IOStream stream.
- * @param size the buffer size, in bytes.
- * @returns a pointer to a new IOStream structure or nullptr on failure; call
- *          GetError() for more information.
+ * @param mem a read-only buffer to feed an IOStreamRef stream.
+ * @returns a valid IOStream on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1854,14 +1852,14 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  * @sa IOStream.Seek
  * @sa IOStream.Tell
  */
-inline IOStream IOFromConstMem(const void* mem, size_t size)
+inline IOStream IOFromConstMem(SourceBytes mem)
 {
-  return IOStream(SDL_IOFromConstMem(mem, size));
+  return IOStream(CheckError(SDL_IOFromConstMem(mem.data, mem.size_bytes)));
 }
 
 inline IOStream IOStream::FromConstMem(SourceBytes mem)
 {
-  return SDL::IOFromConstMem(mem.data, mem.size_bytes);
+  return SDL::IOFromConstMem(std::move(mem));
 }
 
 /**
@@ -2162,7 +2160,7 @@ inline size_t WriteIO(IOStreamParam context, SourceBytes buf)
 
 inline size_t IOStream::Write(SourceBytes buf)
 {
-  return SDL::WriteIO(m_resource, buf);
+  return SDL::WriteIO(m_resource, std::move(buf));
 }
 
 /**
@@ -2353,7 +2351,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @sa SaveFile
  * @sa IOStream.LoadFile
  */
-inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
+inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = false)
 {
   CheckError(SDL_SaveFile_IO(src, data.data, data.size_bytes, closeio));
 }
@@ -2379,7 +2377,7 @@ inline void SaveFile(StringParam file, SourceBytes data)
 
 inline void IOStream::SaveFile(SourceBytes data)
 {
-  SDL::SaveFile(m_resource, data, false);
+  SDL::SaveFile(m_resource, std::move(data));
 }
 
 /**

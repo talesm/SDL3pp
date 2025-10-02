@@ -723,20 +723,12 @@
 <   CheckError(SDL_PutAudioStreamData(stream, buf));
 ---
 >   CheckError(SDL_PutAudioStreamData(stream, buf.data, buf.size_bytes));
-3614c3943
-<   SDL::PutAudioStreamData(m_resource, buf);
----
->   SDL::PutAudioStreamData(m_resource, std::move(buf));
 3631d3959
 <  * @param len the maximum number of bytes to fill.
 3647c3975
 <   return SDL_GetAudioStreamData(stream, buf);
 ---
 >   return SDL_GetAudioStreamData(stream, buf.data, buf.size_bytes);
-3652c3980
-<   return SDL::GetAudioStreamData(m_resource, buf);
----
->   return SDL::GetAudioStreamData(m_resource, std::move(buf));
 3981a4310,4326
 > inline void AudioStream::SetGetCallback(AudioStreamCB callback)
 > {

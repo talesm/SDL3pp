@@ -1499,7 +1499,7 @@ inline IOStream IOFromMem(void* mem, size_t size)
 
 inline IOStream IOStream::FromMem(TargetBytes mem)
 {
-  return SDL::IOFromMem(mem);
+  return SDL::IOFromMem(std::move(mem));
 }
 
 /**
@@ -1548,7 +1548,7 @@ inline IOStream IOFromConstMem(const void* mem, size_t size)
 
 inline IOStream IOStream::FromConstMem(SourceBytes mem)
 {
-  return SDL::IOFromConstMem(mem);
+  return SDL::IOFromConstMem(std::move(mem));
 }
 
 /**
@@ -1811,7 +1811,7 @@ inline size_t ReadIO(IOStreamParam context, TargetBytes buf)
 
 inline size_t IOStream::Read(TargetBytes buf)
 {
-  return SDL::ReadIO(m_resource, buf);
+  return SDL::ReadIO(m_resource, std::move(buf));
 }
 
 /**
@@ -1851,7 +1851,7 @@ inline size_t WriteIO(IOStreamParam context, SourceBytes buf)
 
 inline size_t IOStream::Write(SourceBytes buf)
 {
-  return SDL::WriteIO(m_resource, buf);
+  return SDL::WriteIO(m_resource, std::move(buf));
 }
 
 /**
@@ -2038,7 +2038,7 @@ inline void SaveFile(StringParam file, SourceBytes data)
 
 inline void IOStream::SaveFile(SourceBytes data)
 {
-  SDL::SaveFile(m_resource, data);
+  SDL::SaveFile(m_resource, std::move(data));
 }
 
 /**

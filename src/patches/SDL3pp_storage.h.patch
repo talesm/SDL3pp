@@ -173,12 +173,7 @@
 >   std::string buffer(*sz, 0);
 >   CheckError(ReadStorageFile(storage, std::move(path), buffer));
 >   return buffer;
-1019c1012,1013
-<   return SDL::ReadStorageFile(m_resource, std::move(path), destination);
----
->   return SDL::ReadStorageFile(
->     m_resource, std::move(path), std::move(destination));
-1026a1021,1035
+1027a1021,1035
 > /**
 >  * Synchronously read a file from a storage container into a client-provided
 >  * buffer.
@@ -194,7 +189,7 @@
 >  * @sa Storage.Ready
 >  * @sa Storage.WriteFile
 >  */
-1030c1039,1043
+1031c1039,1043
 <   static_assert(false, "Not implemented");
 ---
 >   auto sz = GetStorageFileSize(storage, path.c_str());
@@ -202,30 +197,26 @@
 >   std::vector<T> buffer(*sz / sizeof(T) + (*sz % sizeof(T) ? 1 : 0), 0);
 >   CheckError(ReadFile(std::move(path), {buffer.data(), *sz}));
 >   return buffer;
-1032a1046
+1033a1046
 > template<class T>
-1035c1049
+1036c1049
 <   return SDL::ReadStorageFileAs(m_resource, std::move(path));
 ---
 >   return SDL::ReadStorageFileAs<T>(m_resource, std::move(path));
-1044,1046c1058
+1045,1047c1058
 <  * @param length the length of the source buffer.
 <  * @returns true if the file was written or false on failure; call
 <  *          GetError() for more information.
 ---
 >  * @throws Error on failure.
-1058c1070,1071
+1059c1070,1071
 <   SDL_WriteStorageFile(storage, path, source);
 ---
 >   CheckError(
 >     SDL_WriteStorageFile(storage, path, source.data, source.size_bytes));
-1063c1076
-<   SDL::WriteStorageFile(m_resource, std::move(path), source);
----
->   SDL::WriteStorageFile(m_resource, std::move(path), std::move(source));
-1140d1152
+1141d1152
 <  * @param userdata a pointer that is passed to `callback`.
-1151c1163,1170
+1152c1163,1170
 <   static_assert(false, "Not implemented");
 ---
 >   EnumerateStorageDirectory(
@@ -236,12 +227,12 @@
 >       return cb(dirname, fname);
 >     },
 >     &callback);
-1172,1173c1191
+1173,1174c1191
 <  * @param callback a function that is called for each entry in the directory.
 <  * @param userdata a pointer that is passed to `callback`.
 ---
 >  * @returns all the directory contents.
-1183c1201,1206
+1184c1201,1206
 <   static_assert(false, "Not implemented");
 ---
 >   std::vector<Path> r;
@@ -250,24 +241,24 @@
 >     return ENUM_CONTINUE;
 >   });
 >   return r;
-1274,1276c1297,1298
+1275,1277c1297,1298
 <  * @param info a pointer filled in with information about the path, or nullptr
 <  * to check for the existence of a file.
 <  * @throws Error on failure.
 ---
 >  * @returns the info on success or false if the file doesn't exist, or another
 >  *          failure; call GetError() for more information.
-1284c1306,1309
+1285c1306,1309
 <   return CheckError(SDL_GetStoragePathInfo(storage, path));
 ---
 >   if (PathInfo info; SDL_GetStoragePathInfo(storage, path, &info)) {
 >     return info;
 >   }
 >   return {};
-1338,1339d1362
+1339,1340d1362
 <  * @param count on return, will be set to the number of items in the returned
 <  *              array. Can be nullptr.
-1353c1376,1379
+1354c1376,1379
 <   return CheckError(SDL_GlobStorageDirectory(storage, path, pattern, flags));
 ---
 >   int count;

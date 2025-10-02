@@ -1016,7 +1016,8 @@ inline std::string ReadStorageFile(StorageParam storage, StringParam path)
 
 inline bool Storage::ReadFile(StringParam path, TargetBytes destination)
 {
-  return SDL::ReadStorageFile(m_resource, std::move(path), destination);
+  return SDL::ReadStorageFile(
+    m_resource, std::move(path), std::move(destination));
 }
 
 inline std::string Storage::ReadFile(StringParam path)
@@ -1060,7 +1061,7 @@ inline void WriteStorageFile(StorageParam storage,
 
 inline void Storage::WriteFile(StringParam path, SourceBytes source)
 {
-  SDL::WriteStorageFile(m_resource, std::move(path), source);
+  SDL::WriteStorageFile(m_resource, std::move(path), std::move(source));
 }
 
 /**
