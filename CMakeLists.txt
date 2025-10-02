@@ -239,3 +239,10 @@ add_custom_target(SDL3pp_refresh
     DEPENDS SDL3pp_generate
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
+
+# Apply patches
+add_custom_target(SDL3pp_check_all
+    COMMAND echo "Everything ran!"
+    DEPENDS SDL3pp_refresh SDL3pp_amalgamated SDL3pp_doxygen SDL3pp_lib
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
