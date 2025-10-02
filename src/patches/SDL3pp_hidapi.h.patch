@@ -82,7 +82,7 @@
 649d625
 <  * @param length the length in bytes of the data to send.
 657c633,634
-<   return SDL_hid_write(dev, data);
+<   return SDL_hid_write(dev, data.data, data.size_bytes);
 ---
 >   return SDL_hid_write(
 >     dev, static_cast<const unsigned char*>(data.data), data.size_bytes);
@@ -94,7 +94,7 @@
 ---
 >  * @param timeout timeout in milliseconds
 688c662,665
-<   return SDL_hid_read_timeout(dev, data, timeout);
+<   return SDL_hid_read_timeout(dev, data.data, data.size_bytes, timeout);
 ---
 >   return SDL_hid_read_timeout(dev,
 >                               static_cast<unsigned char*>(data.data),
@@ -105,7 +105,7 @@
 <  *               reports, make sure to read an extra byte for the report
 <  *               number.
 717c691,692
-<   return SDL_hid_read(dev, data);
+<   return SDL_hid_read(dev, data.data, data.size_bytes);
 ---
 >   return SDL_hid_read(
 >     dev, static_cast<unsigned char*>(data.data), data.size_bytes);
@@ -120,7 +120,7 @@
 <  * @param length the length in bytes of the data to send, including the report
 <  *               number.
 777c749,750
-<   return SDL_hid_send_feature_report(dev, data);
+<   return SDL_hid_send_feature_report(dev, data.data, data.size_bytes);
 ---
 >   return SDL_hid_send_feature_report(
 >     dev, static_cast<const unsigned char*>(data.data), data.size_bytes);
@@ -128,7 +128,7 @@
 <  * @param length the number of bytes to read, including an extra byte for the
 <  *               report ID. The buffer can be longer than the actual report.
 808c779,780
-<   return SDL_hid_get_feature_report(dev, data);
+<   return SDL_hid_get_feature_report(dev, data.data, data.size_bytes);
 ---
 >   return SDL_hid_get_feature_report(
 >     dev, static_cast<unsigned char*>(data.data), data.size_bytes);
@@ -136,7 +136,7 @@
 <  * @param length the number of bytes to read, including an extra byte for the
 <  *               report ID. The buffer can be longer than the actual report.
 839c809,810
-<   return SDL_hid_get_input_report(dev, data);
+<   return SDL_hid_get_input_report(dev, data.data, data.size_bytes);
 ---
 >   return SDL_hid_get_input_report(
 >     dev, static_cast<unsigned char*>(data.data), data.size_bytes);
@@ -170,7 +170,7 @@
 988d954
 <  * @param buf_size the size of the buffer in bytes.
 996c962,963
-<   return SDL_hid_get_report_descriptor(dev, buf);
+<   return SDL_hid_get_report_descriptor(dev, buf.data, buf.size_bytes);
 ---
 >   return SDL_hid_get_report_descriptor(
 >     dev, static_cast<unsigned char*>(buf.data), buf.size_bytes);

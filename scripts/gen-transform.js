@@ -80,6 +80,15 @@ const transform = {
     pattern: [{ type: "float", name: "offset_x" }, { type: "float", name: "offset_y" }],
     replaceParams: [{ type: "const FPointRaw &", name: "offset" }]
   }],
+  paramReplacements: {
+    "SourceBytes": "$.data, $.size_bytes",
+    "TargetBytes": "$.data, $.size_bytes",
+  },
+  delegatedReplacements: {
+    "StringParam": "std::move($)",
+    "SourceBytes": "std::move($)",
+    "TargetBytes": "std::move($)",
+  },
   files: {
     "SDL_assert.h": {
       localIncludes: ['SDL3pp_callbackWrapper.h', 'SDL3pp_strings.h'],

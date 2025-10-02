@@ -3606,7 +3606,7 @@ inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
  */
 inline void PutAudioStreamData(AudioStreamParam stream, SourceBytes buf)
 {
-  CheckError(SDL_PutAudioStreamData(stream, buf));
+  CheckError(SDL_PutAudioStreamData(stream, buf.data, buf.size_bytes));
 }
 
 inline void AudioStream::PutData(SourceBytes buf)
@@ -3644,7 +3644,7 @@ inline void AudioStream::PutData(SourceBytes buf)
  */
 inline int GetAudioStreamData(AudioStreamParam stream, TargetBytes buf)
 {
-  return SDL_GetAudioStreamData(stream, buf);
+  return SDL_GetAudioStreamData(stream, buf.data, buf.size_bytes);
 }
 
 inline int AudioStream::GetData(TargetBytes buf)
@@ -4442,7 +4442,7 @@ inline void MixAudio(Uint8* dst,
                      AudioFormat format,
                      float volume)
 {
-  CheckError(SDL_MixAudio(dst, src, format, volume));
+  CheckError(SDL_MixAudio(dst, src.data, src.size_bytes, format, volume));
 }
 
 /**
@@ -4517,7 +4517,8 @@ inline OwnArray<Uint8> ConvertAudioSamples(const AudioSpec& src_spec,
                                            SourceBytes src_data,
                                            const AudioSpec& dst_spec)
 {
-  return CheckError(SDL_ConvertAudioSamples(src_spec, src_data, dst_spec));
+  return CheckError(SDL_ConvertAudioSamples(
+    src_spec, src_data.data, src_data.size_bytes, dst_spec));
 }
 
 /**

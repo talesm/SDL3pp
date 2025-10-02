@@ -82411,5 +82411,14 @@
         "SDL3pp_video.h"
       ]
     }
+  },
+  "paramReplacements": {
+    "SourceBytes": "$.data, $.size_bytes",
+    "TargetBytes": "$.data, $.size_bytes"
+  },
+  "delegatedReplacements": {
+    "StringParam": "std::move($)",
+    "SourceBytes": "std::move($)",
+    "TargetBytes": "std::move($)"
   }
 }

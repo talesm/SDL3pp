@@ -719,16 +719,8 @@
 >     SDL_SetAudioStreamOutputChannelMap(stream, chmap.data(), chmap.size()));
 3593d3922
 <  * @param len the number of bytes to write to the stream.
-3609c3938
-<   CheckError(SDL_PutAudioStreamData(stream, buf));
----
->   CheckError(SDL_PutAudioStreamData(stream, buf.data, buf.size_bytes));
 3631d3959
 <  * @param len the maximum number of bytes to fill.
-3647c3975
-<   return SDL_GetAudioStreamData(stream, buf);
----
->   return SDL_GetAudioStreamData(stream, buf.data, buf.size_bytes);
 3981a4310,4326
 > inline void AudioStream::SetGetCallback(AudioStreamCB callback)
 > {
@@ -878,7 +870,7 @@
 4431d4775
 <  * @param len the length of the audio buffer in bytes.
 4445c4789,4790
-<   CheckError(SDL_MixAudio(dst, src, format, volume));
+<   CheckError(SDL_MixAudio(dst, src.data, src.size_bytes, format, volume));
 ---
 >   CheckError(SDL_MixAudio(
 >     dst, static_cast<const Uint8*>(src.data), format, src.size_bytes, volume));
@@ -896,8 +888,9 @@
 <  *                 which should be freed with free(). On error, it will be
 <  *                 nullptr.
 <  * @param dst_len will be filled with the len of dst_data.
-4520c4860,4868
-<   return CheckError(SDL_ConvertAudioSamples(src_spec, src_data, dst_spec));
+4520,4521c4860,4868
+<   return CheckError(SDL_ConvertAudioSamples(
+<     src_spec, src_data.data, src_data.size_bytes, dst_spec));
 ---
 >   Uint8* buf;
 >   int len;

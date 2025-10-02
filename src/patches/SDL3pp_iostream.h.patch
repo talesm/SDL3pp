@@ -624,19 +624,11 @@
 <  * @param size the number of bytes to read from the data source.
 ---
 >  * @param buf a pointer to a buffer to read data into.
-1809c2119
-<   return SDL_ReadIO(context, buf);
----
->   return SDL_ReadIO(context, buf.data, buf.size_bytes);
 1832,1833c2142
 <  * @param ptr a pointer to a buffer containing data to write.
 <  * @param size the number of bytes to write.
 ---
 >  * @param buf a pointer to a buffer containing data to write.
-1849c2158
-<   return SDL_WriteIO(context, buf);
----
->   return SDL_WriteIO(context, buf.data, buf.size_bytes);
 1859a2169,2170
 >  * @warning this is not typesafe! Prefer using print() and println()
 >  *
@@ -732,20 +724,12 @@
 < inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
 ---
 > inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = false)
-2015c2356
-<   CheckError(SDL_SaveFile_IO(src, data, closeio));
----
->   CheckError(SDL_SaveFile_IO(src, data.data, data.size_bytes, closeio));
 2022,2024c2363
 <  * @param data the data to be written. If datasize is 0, may be nullptr or a
 <  *             invalid pointer.
 <  * @param datasize the number of bytes to be written.
 ---
 >  * @param data the data to be written.
-2036c2375
-<   CheckError(SDL_SaveFile(file, data));
----
->   CheckError(SDL_SaveFile(file, data.data, data.size_bytes));
 2053c2392
 <  * @param value a pointer filled in with the data read.
 ---

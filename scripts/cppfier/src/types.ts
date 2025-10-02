@@ -2,6 +2,8 @@ export type Dict<T> = { [key: string]: T };
 
 export interface Api {
   files: Dict<ApiFile>;
+  paramReplacements?: Dict<string>;
+  delegatedReplacements?: Dict<string>;
 }
 
 export interface ApiFile {
@@ -102,6 +104,10 @@ export interface ApiTransform {
 
   /// The default namespace
   namespace: string;
+
+  /// Replacements
+  paramReplacements?: Dict<string>;
+  delegatedReplacements?: Dict<string>;
 }
 
 export interface ApiFileTransform {

@@ -83,7 +83,11 @@ function transformApi(config) {
   }
 
   /** @type {Api} */
-  const api = { files: {} };
+  const api = {
+    files: {},
+    paramReplacements: transform.paramReplacements,
+    delegatedReplacements: transform.delegatedReplacements,
+  };
   files.forEach(file => api.files[file.name] = file);
 
   return api;
