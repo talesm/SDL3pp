@@ -63,7 +63,7 @@ Gamepad Support          | SDL3pp_gamepad.h
 @ref CategoryTouch       | SDL3pp_touch.h
 @ref CategoryPen         | SDL3pp_pen.h
 @ref CategorySensor      | SDL3pp_sensor.h
-HIDAPI                   | SDL3pp_hidapi.h
+@ref CategoryHIDAPI      | SDL3pp_hidapi.h
 
 ## Threads
 
@@ -163,6 +163,9 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryRect
 @addtogroup CategorySurface
 @addtogroup CategoryClipboard
+@addtogroup CategoryVulkan
+@addtogroup CategoryMetal
+@addtogroup CategoryCamera
 @}
 
 @addtogroup CategoryAudio
@@ -174,6 +177,10 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryKeycode
 @addtogroup CategoryScancode
 @addtogroup CategoryMouse
+@addtogroup CategoryTouch
+@addtogroup CategoryPen
+@addtogroup CategorySensor
+@addtogroup CategoryHIDAPI
 @}
 
 @defgroup CategoriesThreads Threads
@@ -199,6 +206,7 @@ thread facilities.
 @addtogroup CategoryFilesystem
 @addtogroup CategoryStorage
 @addtogroup CategoryIOStream
+@addtogroup CategoryAsyncIO
 @}
 
 @defgroup CategoriesPlatformAndCpuInformation Platform and CPU Information

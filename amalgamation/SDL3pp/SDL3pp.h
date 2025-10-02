@@ -2792,6 +2792,21 @@ constexpr T CheckError(T result, T invalidValue)
 }
 
 /**
+ * Check and throw if returned value from SDL is an error.
+ *
+ * This should be called only for things that may set SetError(). If the result
+ * parameter is equals to invalidValue it will throw Error.
+ *
+ * @param result       the result returned
+ * @param validValue the value that if equal to result indicates this is valid.
+ */
+template<class T>
+constexpr void CheckErrorIfNot(T result, T validValue)
+{
+  if (result != validValue) throw Error();
+}
+
+/**
  * Clear any previous error message for this thread.
  *
  * @returns true.
@@ -3912,13 +3927,13 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_GPU_DRIVER "SDL_GPU_DRIVER"
 
 /**
- * A variable to control whether SDL_hid_enumerate() enumerates all HID
+ * A variable to control whether hid_enumerate() enumerates all HID
  * devices or only controllers.
  *
  * The variable can be set to the following values:
  *
- * - "0": SDL_hid_enumerate() will enumerate all HID devices.
- * - "1": SDL_hid_enumerate() will only enumerate controllers. (default)
+ * - "0": hid_enumerate() will enumerate all HID devices.
+ * - "1": hid_enumerate() will only enumerate controllers. (default)
  *
  * By default SDL will only enumerate controllers, to reduce risk of hanging
  * or crashing on devices with bad drivers and avoiding macOS keyboard capture
@@ -3932,7 +3947,7 @@ inline bool ClearError() { return SDL_ClearError(); }
   "SDL_HIDAPI_ENUMERATE_ONLY_CONTROLLERS"
 
 /**
- * A variable containing a list of devices to ignore in SDL_hid_enumerate().
+ * A variable containing a list of devices to ignore in hid_enumerate().
  *
  * The format of the string is a comma separated list of USB VID/PID pairs in
  * hexadecimal form, e.g.
@@ -25489,10 +25504,9 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
  *   that was passed to this function.
  *
- * @param mem a pointer to a buffer to feed an IOStream stream.
- * @param size the buffer size, in bytes.
- * @returns a pointer to a new IOStream structure or nullptr on failure; call
- *          GetError() for more information.
+ * @param mem a buffer to feed an IOStream stream.
+ * @returns a valid IOStream on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -25506,14 +25520,14 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * @sa IOStream.Tell
  * @sa IOStream.Write
  */
-inline IOStream IOFromMem(void* mem, size_t size)
+inline IOStream IOFromMem(TargetBytes mem)
 {
-  return IOStream(SDL_IOFromMem(mem, size));
+  return IOStream(CheckError(SDL_IOFromMem(mem.data, mem.size_bytes)));
 }
 
 inline IOStream IOStream::FromMem(TargetBytes mem)
 {
-  return SDL::IOFromMem(mem.data, mem.size_bytes);
+  return SDL::IOFromMem(std::move(mem));
 }
 
 /**
@@ -25540,10 +25554,9 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
  *   that was passed to this function.
  *
- * @param mem a pointer to a read-only buffer to feed an IOStream stream.
- * @param size the buffer size, in bytes.
- * @returns a pointer to a new IOStream structure or nullptr on failure; call
- *          GetError() for more information.
+ * @param mem a read-only buffer to feed an IOStreamRef stream.
+ * @returns a valid IOStream on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -25555,14 +25568,14 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  * @sa IOStream.Seek
  * @sa IOStream.Tell
  */
-inline IOStream IOFromConstMem(const void* mem, size_t size)
+inline IOStream IOFromConstMem(SourceBytes mem)
 {
-  return IOStream(SDL_IOFromConstMem(mem, size));
+  return IOStream(CheckError(SDL_IOFromConstMem(mem.data, mem.size_bytes)));
 }
 
 inline IOStream IOStream::FromConstMem(SourceBytes mem)
 {
-  return SDL::IOFromConstMem(mem.data, mem.size_bytes);
+  return SDL::IOFromConstMem(std::move(mem));
 }
 
 /**
@@ -25863,7 +25876,7 @@ inline size_t WriteIO(IOStreamParam context, SourceBytes buf)
 
 inline size_t IOStream::Write(SourceBytes buf)
 {
-  return SDL::WriteIO(m_resource, buf);
+  return SDL::WriteIO(m_resource, std::move(buf));
 }
 
 /**
@@ -26054,7 +26067,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @sa SaveFile
  * @sa IOStream.LoadFile
  */
-inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
+inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = false)
 {
   CheckError(SDL_SaveFile_IO(src, data.data, data.size_bytes, closeio));
 }
@@ -26080,7 +26093,7 @@ inline void SaveFile(StringParam file, SourceBytes data)
 
 inline void IOStream::SaveFile(SourceBytes data)
 {
-  SDL::SaveFile(m_resource, data, false);
+  SDL::SaveFile(m_resource, std::move(data));
 }
 
 /**

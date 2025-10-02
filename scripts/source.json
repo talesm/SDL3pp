@@ -31578,6 +31578,513 @@
         }
       }
     },
+    "SDL_hidapi.h": {
+      "name": "SDL_hidapi.h",
+      "doc": "# CategoryHIDAPI\n\nHeader file for SDL HIDAPI functions.\n\nThis is an adaptation of the original HIDAPI interface by Alan Ott, and\nincludes source code licensed under the following license:\n\n```\nHIDAPI - Multi-Platform library for\ncommunication with HID devices.\n\nCopyright 2009, Alan Ott, Signal 11 Software.\nAll Rights Reserved.\n\nThis software may be used by anyone for any reason so\nlong as the copyright notice in the source files\nremains intact.\n```\n\n(Note that this license is the same as item three of SDL's zlib license, so\nit adds no new requirements on the user.)\n\nIf you would like a version of SDL without this code, you can build SDL\nwith SDL_HIDAPI_DISABLED defined to 1. You might want to do this for\nexample on iOS or tvOS to avoid a dependency on the CoreBluetooth\nframework.",
+      "entries": {
+        "SDL_hid_device": {
+          "doc": "An opaque handle representing an open HID device.\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_hid_device",
+          "kind": "alias",
+          "type": "struct SDL_hid_device"
+        },
+        "SDL_hid_bus_type": {
+          "doc": "HID underlying bus types.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_hid_bus_type",
+          "kind": "enum",
+          "entries": {
+            "SDL_HID_API_BUS_UNKNOWN": {
+              "doc": "Unknown bus type.",
+              "name": "SDL_HID_API_BUS_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HID_API_BUS_USB": {
+              "doc": "[object Object]",
+              "name": "SDL_HID_API_BUS_USB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HID_API_BUS_BLUETOOTH": {
+              "doc": "[object Object]",
+              "name": "SDL_HID_API_BUS_BLUETOOTH",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HID_API_BUS_I2C": {
+              "doc": "[object Object]",
+              "name": "SDL_HID_API_BUS_I2C",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HID_API_BUS_SPI": {
+              "doc": "[object Object]",
+              "name": "SDL_HID_API_BUS_SPI",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
+        "SDL_hid_device_info": {
+          "doc": "Information about a connected HID device\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_hid_device_info",
+          "kind": "struct",
+          "entries": {
+            "path": {
+              "doc": "",
+              "name": "path",
+              "kind": "var",
+              "type": "char *"
+            },
+            "vendor_id": {
+              "doc": "",
+              "name": "vendor_id",
+              "kind": "var",
+              "type": "unsigned short"
+            },
+            "product_id": {
+              "doc": "",
+              "name": "product_id",
+              "kind": "var",
+              "type": "unsigned short"
+            },
+            "serial_number": {
+              "doc": "",
+              "name": "serial_number",
+              "kind": "var",
+              "type": "wchar_t *"
+            },
+            "release_number": {
+              "doc": "",
+              "name": "release_number",
+              "kind": "var",
+              "type": "unsigned short"
+            },
+            "manufacturer_string": {
+              "doc": "",
+              "name": "manufacturer_string",
+              "kind": "var",
+              "type": "wchar_t *"
+            },
+            "product_string": {
+              "doc": "",
+              "name": "product_string",
+              "kind": "var",
+              "type": "wchar_t *"
+            },
+            "usage_page": {
+              "doc": "",
+              "name": "usage_page",
+              "kind": "var",
+              "type": "unsigned short"
+            },
+            "usage": {
+              "doc": "",
+              "name": "usage",
+              "kind": "var",
+              "type": "unsigned short"
+            },
+            "interface_number": {
+              "doc": "The USB interface which this logical device\n        represents.\n\n        Valid only if the device is a USB HID device.\n        Set to -1 in all other cases.",
+              "name": "interface_number",
+              "kind": "var",
+              "type": "int"
+            },
+            "interface_class": {
+              "doc": "",
+              "name": "interface_class",
+              "kind": "var",
+              "type": "int"
+            },
+            "interface_subclass": {
+              "doc": "",
+              "name": "interface_subclass",
+              "kind": "var",
+              "type": "int"
+            },
+            "interface_protocol": {
+              "doc": "",
+              "name": "interface_protocol",
+              "kind": "var",
+              "type": "int"
+            },
+            "bus_type": {
+              "doc": "",
+              "name": "bus_type",
+              "kind": "var",
+              "type": "SDL_hid_bus_type"
+            },
+            "next": {
+              "doc": "",
+              "name": "next",
+              "kind": "var",
+              "type": "SDL_hid_device_info"
+            }
+          }
+        },
+        "SDL_hid_init": {
+          "doc": "Initialize the HIDAPI library.\n\nThis function initializes the HIDAPI library. Calling it is not strictly\nnecessary, as it will be called automatically by SDL_hid_enumerate() and\nany of the SDL_hid_open_*() functions if it is needed. This function should\nbe called at the beginning of execution however, if there is a chance of\nHIDAPI handles being opened by different threads simultaneously.\n\nEach call to this function should have a matching call to SDL_hid_exit()\n\n\\returns 0 on success or a negative error code on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_hid_exit",
+          "name": "SDL_hid_init",
+          "kind": "function",
+          "type": "int",
+          "parameters": []
+        },
+        "SDL_hid_exit": {
+          "doc": "Finalize the HIDAPI library.\n\nThis function frees all of the static data associated with HIDAPI. It\nshould be called at the end of execution to avoid memory leaks.\n\n\\returns 0 on success or a negative error code on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_hid_init",
+          "name": "SDL_hid_exit",
+          "kind": "function",
+          "type": "int",
+          "parameters": []
+        },
+        "SDL_hid_device_change_count": {
+          "doc": "Check to see if devices may have been added or removed.\n\nEnumerating the HID devices is an expensive operation, so you can call this\nto see if there have been any system device changes since the last call to\nthis function. A change in the counter returned doesn't necessarily mean\nthat anything has changed, but you can call SDL_hid_enumerate() to get an\nupdated device list.\n\nCalling this function for the first time may cause a thread or other system\nresource to be allocated to track device change notifications.\n\n\\returns a change counter that is incremented with each potential device\n         change, or 0 if device change detection isn't available.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_hid_enumerate",
+          "name": "SDL_hid_device_change_count",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": []
+        },
+        "SDL_hid_enumerate": {
+          "doc": "Enumerate the HID Devices.\n\nThis function returns a linked list of all the HID devices attached to the\nsystem which match vendor_id and product_id. If `vendor_id` is set to 0\nthen any vendor matches. If `product_id` is set to 0 then any product\nmatches. If `vendor_id` and `product_id` are both set to 0, then all HID\ndevices will be returned.\n\nBy default SDL will only enumerate controllers, to reduce risk of hanging\nor crashing on bad drivers, but SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS\ncan be set to \"0\" to enumerate all HID devices.\n\n\\param vendor_id the Vendor ID (VID) of the types of device to open, or 0\n                 to match any vendor.\n\\param product_id the Product ID (PID) of the types of device to open, or 0\n                  to match any product.\n\\returns a pointer to a linked list of type SDL_hid_device_info, containing\n         information about the HID devices attached to the system, or NULL\n         in the case of failure. Free this linked list by calling\n         SDL_hid_free_enumeration().\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_hid_device_change_count",
+          "name": "SDL_hid_enumerate",
+          "kind": "function",
+          "type": "SDL_hid_device_info *",
+          "parameters": [
+            {
+              "name": "vendor_id",
+              "type": "unsigned short"
+            },
+            {
+              "name": "product_id",
+              "type": "unsigned short"
+            }
+          ]
+        },
+        "SDL_hid_free_enumeration": {
+          "doc": "Free an enumeration linked list.\n\nThis function frees a linked list created by SDL_hid_enumerate().\n\n\\param devs pointer to a list of struct_device returned from\n            SDL_hid_enumerate().\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_free_enumeration",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "devs",
+              "type": "SDL_hid_device_info *"
+            }
+          ]
+        },
+        "SDL_hid_open": {
+          "doc": "Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally\na serial number.\n\nIf `serial_number` is NULL, the first device with the specified VID and PID\nis opened.\n\n\\param vendor_id the Vendor ID (VID) of the device to open.\n\\param product_id the Product ID (PID) of the device to open.\n\\param serial_number the Serial Number of the device to open (Optionally\n                     NULL).\n\\returns a pointer to a SDL_hid_device object on success or NULL on\n         failure; call SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_open",
+          "kind": "function",
+          "type": "SDL_hid_device *",
+          "parameters": [
+            {
+              "name": "vendor_id",
+              "type": "unsigned short"
+            },
+            {
+              "name": "product_id",
+              "type": "unsigned short"
+            },
+            {
+              "name": "serial_number",
+              "type": "const wchar_t *"
+            }
+          ]
+        },
+        "SDL_hid_open_path": {
+          "doc": "Open a HID device by its path name.\n\nThe path name be determined by calling SDL_hid_enumerate(), or a\nplatform-specific path name can be used (eg: /dev/hidraw0 on Linux).\n\n\\param path the path name of the device to open.\n\\returns a pointer to a SDL_hid_device object on success or NULL on\n         failure; call SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_open_path",
+          "kind": "function",
+          "type": "SDL_hid_device *",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "const char *"
+            }
+          ]
+        },
+        "SDL_hid_write": {
+          "doc": "Write an Output report to a HID device.\n\nThe first byte of `data` must contain the Report ID. For devices which only\nsupport a single report, this must be set to 0x0. The remaining bytes\ncontain the report data. Since the Report ID is mandatory, calls to\nSDL_hid_write() will always contain one more byte than the report contains.\nFor example, if a hid report is 16 bytes long, 17 bytes must be passed to\nSDL_hid_write(), the Report ID (or 0x0, for devices with a single report),\nfollowed by the report data (16 bytes). In this example, the length passed\nin would be 17.\n\nSDL_hid_write() will send the data on the first OUT endpoint, if one\nexists. If it does not, it will send the data through the Control Endpoint\n(Endpoint 0).\n\n\\param dev a device handle returned from SDL_hid_open().\n\\param data the data to send, including the report number as the first\n            byte.\n\\param length the length in bytes of the data to send.\n\\returns the actual number of bytes written and -1 on on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_write",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            },
+            {
+              "name": "data",
+              "type": "const unsigned char *"
+            },
+            {
+              "name": "length",
+              "type": "size_t"
+            }
+          ]
+        },
+        "SDL_hid_read_timeout": {
+          "doc": "Read an Input report from a HID device with timeout.\n\nInput reports are returned to the host through the INTERRUPT IN endpoint.\nThe first byte will contain the Report number if the device uses numbered\nreports.\n\n\\param dev a device handle returned from SDL_hid_open().\n\\param data a buffer to put the read data into.\n\\param length the number of bytes to read. For devices with multiple\n              reports, make sure to read an extra byte for the report\n              number.\n\\param milliseconds timeout in milliseconds or -1 for blocking wait.\n\\returns the actual number of bytes read and -1 on on failure; call\n         SDL_GetError() for more information. If no packet was available to\n         be read within the timeout period, this function returns 0.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_read_timeout",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            },
+            {
+              "name": "data",
+              "type": "unsigned char *"
+            },
+            {
+              "name": "length",
+              "type": "size_t"
+            },
+            {
+              "name": "milliseconds",
+              "type": "int"
+            }
+          ]
+        },
+        "SDL_hid_read": {
+          "doc": "Read an Input report from a HID device.\n\nInput reports are returned to the host through the INTERRUPT IN endpoint.\nThe first byte will contain the Report number if the device uses numbered\nreports.\n\n\\param dev a device handle returned from SDL_hid_open().\n\\param data a buffer to put the read data into.\n\\param length the number of bytes to read. For devices with multiple\n              reports, make sure to read an extra byte for the report\n              number.\n\\returns the actual number of bytes read and -1 on failure; call\n         SDL_GetError() for more information. If no packet was available to\n         be read and the handle is in non-blocking mode, this function\n         returns 0.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_read",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            },
+            {
+              "name": "data",
+              "type": "unsigned char *"
+            },
+            {
+              "name": "length",
+              "type": "size_t"
+            }
+          ]
+        },
+        "SDL_hid_set_nonblocking": {
+          "doc": "Set the device handle to be non-blocking.\n\nIn non-blocking mode calls to SDL_hid_read() will return immediately with a\nvalue of 0 if there is no data to be read. In blocking mode, SDL_hid_read()\nwill wait (block) until there is data to read before returning.\n\nNonblocking can be turned on and off at any time.\n\n\\param dev a device handle returned from SDL_hid_open().\n\\param nonblock enable or not the nonblocking reads - 1 to enable\n                nonblocking - 0 to disable nonblocking.\n\\returns 0 on success or a negative error code on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_set_nonblocking",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            },
+            {
+              "name": "nonblock",
+              "type": "int"
+            }
+          ]
+        },
+        "SDL_hid_send_feature_report": {
+          "doc": "Send a Feature report to the device.\n\nFeature reports are sent over the Control endpoint as a Set_Report\ntransfer. The first byte of `data` must contain the Report ID. For devices\nwhich only support a single report, this must be set to 0x0. The remaining\nbytes contain the report data. Since the Report ID is mandatory, calls to\nSDL_hid_send_feature_report() will always contain one more byte than the\nreport contains. For example, if a hid report is 16 bytes long, 17 bytes\nmust be passed to SDL_hid_send_feature_report(): the Report ID (or 0x0, for\ndevices which do not use numbered reports), followed by the report data (16\nbytes). In this example, the length passed in would be 17.\n\n\\param dev a device handle returned from SDL_hid_open().\n\\param data the data to send, including the report number as the first\n            byte.\n\\param length the length in bytes of the data to send, including the report\n              number.\n\\returns the actual number of bytes written and -1 on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_send_feature_report",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            },
+            {
+              "name": "data",
+              "type": "const unsigned char *"
+            },
+            {
+              "name": "length",
+              "type": "size_t"
+            }
+          ]
+        },
+        "SDL_hid_get_feature_report": {
+          "doc": "Get a feature report from a HID device.\n\nSet the first byte of `data` to the Report ID of the report to be read.\nMake sure to allow space for this extra byte in `data`. Upon return, the\nfirst byte will still contain the Report ID, and the report data will start\nin data[1].\n\n\\param dev a device handle returned from SDL_hid_open().\n\\param data a buffer to put the read data into, including the Report ID.\n            Set the first byte of `data` to the Report ID of the report to\n            be read, or set it to zero if your device does not use numbered\n            reports.\n\\param length the number of bytes to read, including an extra byte for the\n              report ID. The buffer can be longer than the actual report.\n\\returns the number of bytes read plus one for the report ID (which is\n         still in the first byte), or -1 on on failure; call SDL_GetError()\n         for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_get_feature_report",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            },
+            {
+              "name": "data",
+              "type": "unsigned char *"
+            },
+            {
+              "name": "length",
+              "type": "size_t"
+            }
+          ]
+        },
+        "SDL_hid_get_input_report": {
+          "doc": "Get an input report from a HID device.\n\nSet the first byte of `data` to the Report ID of the report to be read.\nMake sure to allow space for this extra byte in `data`. Upon return, the\nfirst byte will still contain the Report ID, and the report data will start\nin data[1].\n\n\\param dev a device handle returned from SDL_hid_open().\n\\param data a buffer to put the read data into, including the Report ID.\n            Set the first byte of `data` to the Report ID of the report to\n            be read, or set it to zero if your device does not use numbered\n            reports.\n\\param length the number of bytes to read, including an extra byte for the\n              report ID. The buffer can be longer than the actual report.\n\\returns the number of bytes read plus one for the report ID (which is\n         still in the first byte), or -1 on on failure; call SDL_GetError()\n         for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_get_input_report",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            },
+            {
+              "name": "data",
+              "type": "unsigned char *"
+            },
+            {
+              "name": "length",
+              "type": "size_t"
+            }
+          ]
+        },
+        "SDL_hid_close": {
+          "doc": "Close a HID device.\n\n\\param dev a device handle returned from SDL_hid_open().\n\\returns 0 on success or a negative error code on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_close",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            }
+          ]
+        },
+        "SDL_hid_get_manufacturer_string": {
+          "doc": "Get The Manufacturer String from a HID device.\n\n\\param dev a device handle returned from SDL_hid_open().\n\\param string a wide string buffer to put the data into.\n\\param maxlen the length of the buffer in multiples of wchar_t.\n\\returns 0 on success or a negative error code on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_get_manufacturer_string",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            },
+            {
+              "name": "string",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            }
+          ]
+        },
+        "SDL_hid_get_product_string": {
+          "doc": "Get The Product String from a HID device.\n\n\\param dev a device handle returned from SDL_hid_open().\n\\param string a wide string buffer to put the data into.\n\\param maxlen the length of the buffer in multiples of wchar_t.\n\\returns 0 on success or a negative error code on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_get_product_string",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            },
+            {
+              "name": "string",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            }
+          ]
+        },
+        "SDL_hid_get_serial_number_string": {
+          "doc": "Get The Serial Number String from a HID device.\n\n\\param dev a device handle returned from SDL_hid_open().\n\\param string a wide string buffer to put the data into.\n\\param maxlen the length of the buffer in multiples of wchar_t.\n\\returns 0 on success or a negative error code on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_get_serial_number_string",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            },
+            {
+              "name": "string",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            }
+          ]
+        },
+        "SDL_hid_get_indexed_string": {
+          "doc": "Get a string from a HID device, based on its string index.\n\n\\param dev a device handle returned from SDL_hid_open().\n\\param string_index the index of the string to get.\n\\param string a wide string buffer to put the data into.\n\\param maxlen the length of the buffer in multiples of wchar_t.\n\\returns 0 on success or a negative error code on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_get_indexed_string",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            },
+            {
+              "name": "string_index",
+              "type": "int"
+            },
+            {
+              "name": "string",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            }
+          ]
+        },
+        "SDL_hid_get_device_info": {
+          "doc": "Get the device info from a HID device.\n\n\\param dev a device handle returned from SDL_hid_open().\n\\returns a pointer to the SDL_hid_device_info for this hid_device or NULL\n         on failure; call SDL_GetError() for more information. This struct\n         is valid until the device is closed with SDL_hid_close().\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_get_device_info",
+          "kind": "function",
+          "type": "SDL_hid_device_info *",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            }
+          ]
+        },
+        "SDL_hid_get_report_descriptor": {
+          "doc": "Get a report descriptor from a HID device.\n\nUser has to provide a preallocated buffer where descriptor will be copied\nto. The recommended size for a preallocated buffer is 4096 bytes.\n\n\\param dev a device handle returned from SDL_hid_open().\n\\param buf the buffer to copy descriptor into.\n\\param buf_size the size of the buffer in bytes.\n\\returns the number of bytes actually copied or -1 on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_get_report_descriptor",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "SDL_hid_device *"
+            },
+            {
+              "name": "buf",
+              "type": "unsigned char *"
+            },
+            {
+              "name": "buf_size",
+              "type": "size_t"
+            }
+          ]
+        },
+        "SDL_hid_ble_scan": {
+          "doc": "Start or stop a BLE scan on iOS and tvOS to pair Steam Controllers.\n\n\\param active true to start the scan, false to stop the scan.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_hid_ble_scan",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "active",
+              "type": "bool"
+            }
+          ]
+        }
+      }
+    },
     "SDL_image.h": {
       "name": "SDL_image.h",
       "doc": "# CategorySDLImage\n\nHeader file for SDL_image library\n\nA simple library to load images of various formats as SDL surfaces",

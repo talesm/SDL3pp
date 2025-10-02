@@ -140,22 +140,37 @@
 >  * @param invalidValue the value that if equal to result indicates this is
 >  *                     invalid.
 >  */
-168c231,232
+168c231,247
 <   static_assert(false, "Not implemented");
 ---
 >   if (result == invalidValue) throw Error();
 >   return result;
-184a249,250
+> }
+> 
+> /**
+>  * Check and throw if returned value from SDL is an error.
+>  *
+>  * This should be called only for things that may set SetError(). If the result
+>  * parameter is equals to invalidValue it will throw Error.
+>  *
+>  * @param result       the result returned
+>  * @param validValue the value that if equal to result indicates this is valid.
+>  */
+> template<class T>
+> constexpr void CheckErrorIfNot(T result, T validValue)
+> {
+>   if (result != validValue) throw Error();
+184a264,265
 > #ifdef SDL3PP_DOC
 > 
-188c254
+188c269
 <  * This simply calls SetErrorUnformatted() with a standardized error string, for
 ---
 >  * This simply calls SetError() with a standardized error string, for
-200c266
+200c281
 <  * This simply calls SetErrorUnformatted() with a standardized error string, for
 ---
 >  * This simply calls SetError() with a standardized error string, for
-220a287,288
+220a302,303
 > 
 > #endif // SDL3PP_DOC

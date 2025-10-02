@@ -1072,13 +1072,13 @@ namespace SDL {
 #define SDL_HINT_GPU_DRIVER "SDL_GPU_DRIVER"
 
 /**
- * A variable to control whether SDL_hid_enumerate() enumerates all HID
+ * A variable to control whether hid_enumerate() enumerates all HID
  * devices or only controllers.
  *
  * The variable can be set to the following values:
  *
- * - "0": SDL_hid_enumerate() will enumerate all HID devices.
- * - "1": SDL_hid_enumerate() will only enumerate controllers. (default)
+ * - "0": hid_enumerate() will enumerate all HID devices.
+ * - "1": hid_enumerate() will only enumerate controllers. (default)
  *
  * By default SDL will only enumerate controllers, to reduce risk of hanging
  * or crashing on devices with bad drivers and avoiding macOS keyboard capture
@@ -1092,7 +1092,7 @@ namespace SDL {
   "SDL_HIDAPI_ENUMERATE_ONLY_CONTROLLERS"
 
 /**
- * A variable containing a list of devices to ignore in SDL_hid_enumerate().
+ * A variable containing a list of devices to ignore in hid_enumerate().
  *
  * The format of the string is a comma separated list of USB VID/PID pairs in
  * hexadecimal form, e.g.

@@ -46,7 +46,7 @@ export interface EntryHint {
   self?: string;
   super?: string;
   static?: boolean;
-  mayFail?: boolean;
+  mayFail?: boolean | string;
   removeParamThis?: boolean;
   private?: boolean;
   wrapSelf?: boolean;

@@ -36,7 +36,7 @@ Things for a version 0.2
   - [ ] SDL_joystick.h
   - [ ] SDL_gamepad.h
   - [ ] SDL_hidapi.h
-  - [ ] SDL_haptic.h
+  - [x] SDL_haptic.h
   - [ ] SDL_gpu.h
 
 Backlog

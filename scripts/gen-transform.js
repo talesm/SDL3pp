@@ -1568,6 +1568,107 @@ const transform = {
         }
       }
     },
+    "SDL_hidapi.h": {
+      localIncludes: ["SDL3pp_error.h", "SDL3pp_properties.h", "SDL3pp_stdinc.h"],
+      transform: {
+        "SDL_hid_init": {
+          type: "void",
+          hints: { mayFail: "0" }
+        },
+        "SDL_hid_exit": {
+          type: "void",
+          hints: { mayFail: "0" }
+        },
+        "SDL_hid_enumerate": {
+          hints: { mayFail: true },
+        },
+        "SDL_hid_bus_type": { before: "SDL_hid_device" },
+        "SDL_hid_device_info": { before: "SDL_hid_device" },
+        "SDL_hid_device": {
+          name: "HidDevice",
+          resource: { free: "SDL_hid_close" },
+          entries: {
+            "SDL_hid_open": "ctor",
+            "SDL_hid_open_path": "ctor",
+            "SDL_hid_close": {
+              name: "close",
+              type: "void",
+              hints: { mayFail: "0" }
+            },
+          }
+        },
+        "SDL_hid_write": {
+          parameters: [{}, { type: "SourceBytes" }],
+          hints: { methodName: "write" }
+        },
+        "SDL_hid_read_timeout": {
+          parameters: [{}, { type: "TargetBytes" }, { type: "Milliseconds", name: "timeout" }],
+          hints: { methodName: "read_timeout" }
+        },
+        "SDL_hid_read": {
+          parameters: [{}, { type: "TargetBytes" }],
+          hints: { methodName: "read" }
+        },
+        "SDL_hid_set_nonblocking": {
+          type: "void",
+          parameters: [{}, { type: "bool" }],
+          hints: {
+            methodName: "set_nonblocking",
+            mayFail: "0",
+          }
+        },
+        "SDL_hid_send_feature_report": {
+          parameters: [{}, { type: "SourceBytes" }],
+          hints: { methodName: "send_feature_report" }
+        },
+        "SDL_hid_get_feature_report": {
+          parameters: [{}, { type: "TargetBytes" }],
+          hints: { methodName: "get_feature_report" }
+        },
+        "SDL_hid_get_input_report": {
+          parameters: [{}, { type: "TargetBytes" }],
+          hints: { methodName: "get_input_report" }
+        },
+        "SDL_hid_get_manufacturer_string": {
+          type: "void",
+          hints: {
+            methodName: "get_manufacturer_string",
+            mayFail: "0",
+          }
+        },
+        "SDL_hid_get_product_string": {
+          type: "void",
+          hints: {
+            methodName: "get_product_string",
+            mayFail: "0",
+          }
+        },
+        "SDL_hid_get_serial_number_string": {
+          type: "void",
+          hints: {
+            methodName: "get_serial_number_string",
+            mayFail: "0",
+          }
+        },
+        "SDL_hid_get_indexed_string": {
+          type: "void",
+          hints: {
+            methodName: "get_indexed_string",
+            mayFail: "0",
+          }
+        },
+        "SDL_hid_get_device_info": {
+          hints: {
+            methodName: "get_device_info",
+            mayFail: true,
+          }
+        },
+        "SDL_hid_get_report_descriptor": {
+          parameters: [{}, { type: "TargetBytes" }],
+          hints: { methodName: "get_report_descriptor" }
+        },
+      },
+    },
     "SDL_hints.h": {
       localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_strings.h"],
       transform: {

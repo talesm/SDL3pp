@@ -245,7 +245,7 @@ function generateBody(entry, prefix) {
   const selfStrPrefix = (selfStr || "") + ((entry.parameters?.length && selfStr) ? ", " : "");
   const paramStr = selfStrPrefix + generateCallParameters(entry.parameters, paramReplacements);
   const internalCallStr = `${delegatedTo}(${paramStr})`;
-  const callStr = (hint?.mayFail && !hint?.delegate) ? `CheckError(${internalCallStr})` : internalCallStr;
+  const callStr = wrapFailCheck(internalCallStr);
   if (!entry.type && !entry.name.startsWith("operator")) {
     const superStr = hint?.super ?? hint?.self ?? "T";
     return `\n${prefix}  : ${superStr}(${callStr})\n${prefix}{}`;
@@ -255,6 +255,13 @@ function generateBody(entry, prefix) {
   }
   const returnStr = entry.type === "void" ? "" : "return ";
   return `\n${prefix}{\n${prefix}  ${returnStr}${callStr};\n${prefix}}`;
+
+  /** @param {string} source  */
+  function wrapFailCheck(source) {
+    if (!hint?.mayFail || hint?.delegate) return source;
+    if (typeof hint.mayFail === 'string') return `CheckErrorIfNot(${internalCallStr}, ${hint.mayFail})`;
+    return `CheckError(${internalCallStr})`;
+  }
 }
 
 /**

@@ -233,6 +233,21 @@ constexpr T CheckError(T result, T invalidValue)
 }
 
 /**
+ * Check and throw if returned value from SDL is an error.
+ *
+ * This should be called only for things that may set SetError(). If the result
+ * parameter is equals to invalidValue it will throw Error.
+ *
+ * @param result       the result returned
+ * @param validValue the value that if equal to result indicates this is valid.
+ */
+template<class T>
+constexpr void CheckErrorIfNot(T result, T validValue)
+{
+  if (result != validValue) throw Error();
+}
+
+/**
  * Clear any previous error message for this thread.
  *
  * @returns true.

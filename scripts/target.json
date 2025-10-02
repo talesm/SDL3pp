@@ -920,14 +920,14 @@
           "sourceName": "SDL_HINT_GPU_DRIVER"
         },
         "SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS": {
-          "doc": "A variable to control whether SDL_hid_enumerate() enumerates all HID\ndevices or only controllers.\n\nThe variable can be set to the following values:\n\n- \"0\": SDL_hid_enumerate() will enumerate all HID devices.\n- \"1\": SDL_hid_enumerate() will only enumerate controllers. (default)\n\nBy default SDL will only enumerate controllers, to reduce risk of hanging\nor crashing on devices with bad drivers and avoiding macOS keyboard capture\npermission prompts.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable to control whether hid_enumerate() enumerates all HID\ndevices or only controllers.\n\nThe variable can be set to the following values:\n\n- \"0\": hid_enumerate() will enumerate all HID devices.\n- \"1\": hid_enumerate() will only enumerate controllers. (default)\n\nBy default SDL will only enumerate controllers, to reduce risk of hanging\nor crashing on devices with bad drivers and avoiding macOS keyboard capture\npermission prompts.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS",
           "kind": "def",
           "value": "\"SDL_HIDAPI_ENUMERATE_ONLY_CONTROLLERS\"",
           "sourceName": "SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS"
         },
         "SDL_HINT_HIDAPI_IGNORE_DEVICES": {
-          "doc": "A variable containing a list of devices to ignore in SDL_hid_enumerate().\n\nThe format of the string is a comma separated list of USB VID/PID pairs in\nhexadecimal form, e.g.\n\n`0xAAAA/0xBBBB,0xCCCC/0xDDDD`\n\nFor example, to ignore the Shanwan DS3 controller and any Valve controller,\nyou might use the string \"0x2563/0x0523,0x28de/0x0000\"\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable containing a list of devices to ignore in hid_enumerate().\n\nThe format of the string is a comma separated list of USB VID/PID pairs in\nhexadecimal form, e.g.\n\n`0xAAAA/0xBBBB,0xCCCC/0xDDDD`\n\nFor example, to ignore the Shanwan DS3 controller and any Valve controller,\nyou might use the string \"0x2563/0x0523,0x28de/0x0000\"\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_HIDAPI_IGNORE_DEVICES",
           "kind": "def",
           "value": "\"SDL_HIDAPI_IGNORE_DEVICES\"",
@@ -70829,6 +70829,1486 @@
       ],
       "localIncludes": [
         "SDL3pp_log.h",
+        "SDL3pp_stdinc.h"
+      ]
+    },
+    "SDL3pp_hidapi.h": {
+      "name": "SDL3pp_hidapi.h",
+      "doc": "@defgroup CategoryHIDAPI Category HIDAPI\n\nHeader file for SDL HIDAPI functions.\n\nThis is an adaptation of the original HIDAPI interface by Alan Ott, and\nincludes source code licensed under the following license:\n\n```\nHIDAPI - Multi-Platform library for\ncommunication with HID devices.\n\nCopyright 2009, Alan Ott, Signal 11 Software.\nAll Rights Reserved.\n\nThis software may be used by anyone for any reason so\nlong as the copyright notice in the source files\nremains intact.\n```\n\n(Note that this license is the same as item three of SDL's zlib license, so\nit adds no new requirements on the user.)\n\nIf you would like a version of SDL without this code, you can build SDL\nwith SDL_HIDAPI_DISABLED defined to 1. You might want to do this for\nexample on iOS or tvOS to avoid a dependency on the CoreBluetooth\nframework.",
+      "entries": {
+        "HidDevice-forward": {
+          "name": "HidDevice",
+          "kind": "forward"
+        },
+        "HidDeviceRaw": {
+          "name": "HidDeviceRaw",
+          "kind": "alias",
+          "type": "SDL_hid_device *",
+          "doc": "Alias to raw representation for HidDevice."
+        },
+        "HidDeviceRef-forward": {
+          "name": "HidDeviceRef",
+          "kind": "forward"
+        },
+        "HidDeviceParam": {
+          "name": "HidDeviceParam",
+          "kind": "struct",
+          "doc": "Safely wrap HidDevice for non owning parameters",
+          "entries": {
+            "value": {
+              "kind": "var",
+              "name": "value",
+              "doc": "parameter's HidDeviceRaw",
+              "type": "HidDeviceRaw"
+            },
+            "HidDeviceParam": [
+              {
+                "kind": "function",
+                "name": "HidDeviceParam",
+                "doc": "Constructs from HidDeviceRaw",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "HidDeviceRaw",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(value)"
+                  ]
+                }
+              },
+              {
+                "kind": "function",
+                "name": "HidDeviceParam",
+                "doc": "Constructs null/invalid",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "std::nullptr_t",
+                    "name": "_",
+                    "default": "nullptr"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "value(nullptr)"
+                  ]
+                }
+              }
+            ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!value;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const HidDeviceParam &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator HidDeviceRaw": {
+              "kind": "function",
+              "name": "operator HidDeviceRaw",
+              "doc": "Converts to underlying HidDeviceRaw",
+              "constexpr": true,
+              "immutable": true,
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "return value;"
+              }
+            }
+          }
+        },
+        "hid_bus_type": {
+          "doc": "HID underlying bus types.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "hid_bus_type",
+          "kind": "alias",
+          "sourceName": "SDL_hid_bus_type",
+          "type": "SDL_hid_bus_type"
+        },
+        "HID_API_BUS_UNKNOWN": {
+          "kind": "var",
+          "name": "HID_API_BUS_UNKNOWN",
+          "constexpr": true,
+          "type": "hid_bus_type",
+          "doc": "Unknown bus type.",
+          "sourceName": "SDL_HID_API_BUS_UNKNOWN"
+        },
+        "HID_API_BUS_USB": {
+          "kind": "var",
+          "name": "HID_API_BUS_USB",
+          "constexpr": true,
+          "type": "hid_bus_type",
+          "doc": "[object Object]",
+          "sourceName": "SDL_HID_API_BUS_USB"
+        },
+        "HID_API_BUS_BLUETOOTH": {
+          "kind": "var",
+          "name": "HID_API_BUS_BLUETOOTH",
+          "constexpr": true,
+          "type": "hid_bus_type",
+          "doc": "[object Object]",
+          "sourceName": "SDL_HID_API_BUS_BLUETOOTH"
+        },
+        "HID_API_BUS_I2C": {
+          "kind": "var",
+          "name": "HID_API_BUS_I2C",
+          "constexpr": true,
+          "type": "hid_bus_type",
+          "doc": "[object Object]",
+          "sourceName": "SDL_HID_API_BUS_I2C"
+        },
+        "HID_API_BUS_SPI": {
+          "kind": "var",
+          "name": "HID_API_BUS_SPI",
+          "constexpr": true,
+          "type": "hid_bus_type",
+          "doc": "[object Object]",
+          "sourceName": "SDL_HID_API_BUS_SPI"
+        },
+        "hid_device_info": {
+          "doc": "Information about a connected HID device\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "hid_device_info",
+          "kind": "alias",
+          "sourceName": "SDL_hid_device_info",
+          "type": "SDL_hid_device_info"
+        },
+        "HidDevice": {
+          "doc": "An opaque handle representing an open HID device.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource",
+          "name": "HidDevice",
+          "kind": "struct",
+          "type": "",
+          "sourceName": "SDL_hid_device",
+          "entries": {
+            "m_resource": {
+              "kind": "var",
+              "type": "HidDeviceRaw",
+              "hints": {
+                "body": "nullptr"
+              },
+              "name": "m_resource"
+            },
+            "HidDevice": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "hints": {
+                  "default": true,
+                  "changeAccess": "public"
+                },
+                "doc": "Default ctor",
+                "name": "HidDevice"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "name": "resource",
+                    "type": "const HidDeviceRaw"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_resource(resource)"
+                  ]
+                },
+                "doc": "Constructs from HidDeviceParam.\n\n@param resource a HidDeviceRaw to be wrapped.\n\nThis assumes the ownership, call release() if you need to take back.",
+                "name": "HidDevice"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const HidDevice &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": "Copy constructor",
+                "name": "HidDevice"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "HidDevice &&"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "HidDevice(other.release())"
+                  ]
+                },
+                "doc": "Move constructor",
+                "name": "HidDevice"
+              },
+              {
+                "kind": "function",
+                "doc": "",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const HidDeviceRef &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "HidDevice"
+              },
+              {
+                "kind": "function",
+                "doc": "",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "HidDeviceRef &&"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "HidDevice"
+              },
+              {
+                "doc": "Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally\na serial number.\n\nIf `serial_number` is nullptr, the first device with the specified VID and PID\nis opened.\n\n@param vendor_id the Vendor ID (VID) of the device to open.\n@param product_id the Product ID (PID) of the device to open.\n@param serial_number the Serial Number of the device to open (Optionally\n                     nullptr).\n@post a pointer to a HidDevice object on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+                "name": "HidDevice",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "vendor_id",
+                    "type": "unsigned short"
+                  },
+                  {
+                    "name": "product_id",
+                    "type": "unsigned short"
+                  },
+                  {
+                    "name": "serial_number",
+                    "type": "const wchar_t *"
+                  }
+                ],
+                "sourceName": "SDL_hid_open",
+                "hints": {
+                  "mayFail": true
+                }
+              },
+              {
+                "doc": "Open a HID device by its path name.\n\nThe path name be determined by calling hid_enumerate(), or a\nplatform-specific path name can be used (eg: /dev/hidraw0 on Linux).\n\n@param path the path name of the device to open.\n@post a pointer to a HidDevice object on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+                "name": "HidDevice",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "path",
+                    "type": "StringParam"
+                  }
+                ],
+                "sourceName": "SDL_hid_open_path",
+                "hints": {
+                  "mayFail": true
+                }
+              }
+            ],
+            "~HidDevice": {
+              "kind": "function",
+              "doc": "Destructor",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_hid_close(m_resource);"
+              },
+              "name": "~HidDevice"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "HidDevice &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "HidDevice"
+                }
+              ],
+              "hints": {
+                "body": "std::swap(m_resource, other.m_resource);\nreturn *this;"
+              },
+              "doc": "Assignment operator.",
+              "name": "operator="
+            },
+            "get": {
+              "kind": "function",
+              "type": "HidDeviceRaw",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "return m_resource;"
+              },
+              "doc": "Retrieves underlying HidDeviceRaw.",
+              "name": "get"
+            },
+            "release": {
+              "kind": "function",
+              "type": "HidDeviceRaw",
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "auto r = m_resource;\nm_resource = nullptr;\nreturn r;"
+              },
+              "doc": "Retrieves underlying HidDeviceRaw and clear this.",
+              "name": "release"
+            },
+            "operator <=>": {
+              "kind": "function",
+              "type": "auto",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "const HidDevice &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "doc": "Comparison",
+              "name": "operator <=>"
+            },
+            "operator ==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
+                }
+              ],
+              "hints": {
+                "body": "return !m_resource;"
+              },
+              "doc": "Comparison",
+              "name": "operator =="
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [],
+              "hints": {
+                "body": "return !!m_resource;"
+              },
+              "doc": "Converts to bool",
+              "name": "operator bool"
+            },
+            "operator HidDeviceParam": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "return {m_resource};"
+              },
+              "doc": "Converts to HidDeviceParam",
+              "name": "operator HidDeviceParam"
+            },
+            "close": {
+              "doc": "Close a HID device.\n\n@returns 0 on success or a negative error code on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "close",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_hid_close",
+              "hints": {
+                "mayFail": "0",
+                "body": "hid_close(release());",
+                "delegate": "SDL::hid_close"
+              },
+              "proto": true
+            },
+            "write": {
+              "doc": "Write an Output report to a HID device.\n\nThe first byte of `data` must contain the Report ID. For devices which only\nsupport a single report, this must be set to 0x0. The remaining bytes\ncontain the report data. Since the Report ID is mandatory, calls to\nHidDevice.write() will always contain one more byte than the report contains.\nFor example, if a hid report is 16 bytes long, 17 bytes must be passed to\nHidDevice.write(), the Report ID (or 0x0, for devices with a single report),\nfollowed by the report data (16 bytes). In this example, the length passed\nin would be 17.\n\nHidDevice.write() will send the data on the first OUT endpoint, if one\nexists. If it does not, it will send the data through the Control Endpoint\n(Endpoint 0).\n\n@param data the data to send, including the report number as the first\n            byte.\n@param length the length in bytes of the data to send.\n@returns the actual number of bytes written and -1 on on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "write",
+              "kind": "function",
+              "type": "int",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "SourceBytes"
+                }
+              ],
+              "sourceName": "SDL_hid_write",
+              "hints": {
+                "methodName": "write",
+                "delegate": "SDL::hid_write"
+              },
+              "proto": true
+            },
+            "read_timeout": {
+              "doc": "Read an Input report from a HID device with timeout.\n\nInput reports are returned to the host through the INTERRUPT IN endpoint.\nThe first byte will contain the Report number if the device uses numbered\nreports.\n\n@param data a buffer to put the read data into.\n@param length the number of bytes to read. For devices with multiple\n              reports, make sure to read an extra byte for the report\n              number.\n@param milliseconds timeout in milliseconds or -1 for blocking wait.\n@returns the actual number of bytes read and -1 on on failure; call\n         GetError() for more information. If no packet was available to\n         be read within the timeout period, this function returns 0.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "read_timeout",
+              "kind": "function",
+              "type": "int",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "TargetBytes"
+                },
+                {
+                  "name": "timeout",
+                  "type": "Milliseconds"
+                }
+              ],
+              "sourceName": "SDL_hid_read_timeout",
+              "hints": {
+                "methodName": "read_timeout",
+                "delegate": "SDL::hid_read_timeout"
+              },
+              "proto": true
+            },
+            "read": {
+              "doc": "Read an Input report from a HID device.\n\nInput reports are returned to the host through the INTERRUPT IN endpoint.\nThe first byte will contain the Report number if the device uses numbered\nreports.\n\n@param data a buffer to put the read data into.\n@param length the number of bytes to read. For devices with multiple\n              reports, make sure to read an extra byte for the report\n              number.\n@returns the actual number of bytes read and -1 on failure; call\n         GetError() for more information. If no packet was available to\n         be read and the handle is in non-blocking mode, this function\n         returns 0.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "read",
+              "kind": "function",
+              "type": "int",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "TargetBytes"
+                }
+              ],
+              "sourceName": "SDL_hid_read",
+              "hints": {
+                "methodName": "read",
+                "delegate": "SDL::hid_read"
+              },
+              "proto": true
+            },
+            "set_nonblocking": {
+              "doc": "Set the device handle to be non-blocking.\n\nIn non-blocking mode calls to HidDevice.read() will return immediately with a\nvalue of 0 if there is no data to be read. In blocking mode, HidDevice.read()\nwill wait (block) until there is data to read before returning.\n\nNonblocking can be turned on and off at any time.\n\n@param nonblock enable or not the nonblocking reads - 1 to enable\n                nonblocking - 0 to disable nonblocking.\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "set_nonblocking",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "nonblock",
+                  "type": "bool"
+                }
+              ],
+              "sourceName": "SDL_hid_set_nonblocking",
+              "hints": {
+                "mayFail": "0",
+                "methodName": "set_nonblocking",
+                "delegate": "SDL::hid_set_nonblocking"
+              },
+              "proto": true
+            },
+            "send_feature_report": {
+              "doc": "Send a Feature report to the device.\n\nFeature reports are sent over the Control endpoint as a Set_Report\ntransfer. The first byte of `data` must contain the Report ID. For devices\nwhich only support a single report, this must be set to 0x0. The remaining\nbytes contain the report data. Since the Report ID is mandatory, calls to\nHidDevice.send_feature_report() will always contain one more byte than the\nreport contains. For example, if a hid report is 16 bytes long, 17 bytes\nmust be passed to HidDevice.send_feature_report(): the Report ID (or 0x0, for\ndevices which do not use numbered reports), followed by the report data (16\nbytes). In this example, the length passed in would be 17.\n\n@param data the data to send, including the report number as the first\n            byte.\n@param length the length in bytes of the data to send, including the report\n              number.\n@returns the actual number of bytes written and -1 on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "send_feature_report",
+              "kind": "function",
+              "type": "int",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "SourceBytes"
+                }
+              ],
+              "sourceName": "SDL_hid_send_feature_report",
+              "hints": {
+                "methodName": "send_feature_report",
+                "delegate": "SDL::hid_send_feature_report"
+              },
+              "proto": true
+            },
+            "get_feature_report": {
+              "doc": "Get a feature report from a HID device.\n\nSet the first byte of `data` to the Report ID of the report to be read.\nMake sure to allow space for this extra byte in `data`. Upon return, the\nfirst byte will still contain the Report ID, and the report data will start\nin data[1].\n\n@param data a buffer to put the read data into, including the Report ID.\n            Set the first byte of `data` to the Report ID of the report to\n            be read, or set it to zero if your device does not use numbered\n            reports.\n@param length the number of bytes to read, including an extra byte for the\n              report ID. The buffer can be longer than the actual report.\n@returns the number of bytes read plus one for the report ID (which is\n         still in the first byte), or -1 on on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "get_feature_report",
+              "kind": "function",
+              "type": "int",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "TargetBytes"
+                }
+              ],
+              "sourceName": "SDL_hid_get_feature_report",
+              "hints": {
+                "methodName": "get_feature_report",
+                "delegate": "SDL::hid_get_feature_report"
+              },
+              "proto": true
+            },
+            "get_input_report": {
+              "doc": "Get an input report from a HID device.\n\nSet the first byte of `data` to the Report ID of the report to be read.\nMake sure to allow space for this extra byte in `data`. Upon return, the\nfirst byte will still contain the Report ID, and the report data will start\nin data[1].\n\n@param data a buffer to put the read data into, including the Report ID.\n            Set the first byte of `data` to the Report ID of the report to\n            be read, or set it to zero if your device does not use numbered\n            reports.\n@param length the number of bytes to read, including an extra byte for the\n              report ID. The buffer can be longer than the actual report.\n@returns the number of bytes read plus one for the report ID (which is\n         still in the first byte), or -1 on on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "get_input_report",
+              "kind": "function",
+              "type": "int",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "TargetBytes"
+                }
+              ],
+              "sourceName": "SDL_hid_get_input_report",
+              "hints": {
+                "methodName": "get_input_report",
+                "delegate": "SDL::hid_get_input_report"
+              },
+              "proto": true
+            },
+            "get_manufacturer_string": {
+              "doc": "Get The Manufacturer String from a HID device.\n\n@param string a wide string buffer to put the data into.\n@param maxlen the length of the buffer in multiples of wchar_t.\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "get_manufacturer_string",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "string",
+                  "type": "wchar_t *"
+                },
+                {
+                  "name": "maxlen",
+                  "type": "size_t"
+                }
+              ],
+              "sourceName": "SDL_hid_get_manufacturer_string",
+              "hints": {
+                "mayFail": "0",
+                "methodName": "get_manufacturer_string",
+                "delegate": "SDL::hid_get_manufacturer_string"
+              },
+              "proto": true
+            },
+            "get_product_string": {
+              "doc": "Get The Product String from a HID device.\n\n@param string a wide string buffer to put the data into.\n@param maxlen the length of the buffer in multiples of wchar_t.\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "get_product_string",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "string",
+                  "type": "wchar_t *"
+                },
+                {
+                  "name": "maxlen",
+                  "type": "size_t"
+                }
+              ],
+              "sourceName": "SDL_hid_get_product_string",
+              "hints": {
+                "mayFail": "0",
+                "methodName": "get_product_string",
+                "delegate": "SDL::hid_get_product_string"
+              },
+              "proto": true
+            },
+            "get_serial_number_string": {
+              "doc": "Get The Serial Number String from a HID device.\n\n@param string a wide string buffer to put the data into.\n@param maxlen the length of the buffer in multiples of wchar_t.\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "get_serial_number_string",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "string",
+                  "type": "wchar_t *"
+                },
+                {
+                  "name": "maxlen",
+                  "type": "size_t"
+                }
+              ],
+              "sourceName": "SDL_hid_get_serial_number_string",
+              "hints": {
+                "mayFail": "0",
+                "methodName": "get_serial_number_string",
+                "delegate": "SDL::hid_get_serial_number_string"
+              },
+              "proto": true
+            },
+            "get_indexed_string": {
+              "doc": "Get a string from a HID device, based on its string index.\n\n@param string_index the index of the string to get.\n@param string a wide string buffer to put the data into.\n@param maxlen the length of the buffer in multiples of wchar_t.\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "get_indexed_string",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "string_index",
+                  "type": "int"
+                },
+                {
+                  "name": "string",
+                  "type": "wchar_t *"
+                },
+                {
+                  "name": "maxlen",
+                  "type": "size_t"
+                }
+              ],
+              "sourceName": "SDL_hid_get_indexed_string",
+              "hints": {
+                "mayFail": "0",
+                "methodName": "get_indexed_string",
+                "delegate": "SDL::hid_get_indexed_string"
+              },
+              "proto": true
+            },
+            "get_device_info": {
+              "doc": "Get the device info from a HID device.\n\n@returns a pointer to the hid_device_info for this hid_device or nullptr\n         on failure; call GetError() for more information. This struct\n         is valid until the device is closed with HidDevice.close().\n\n@since This function is available since SDL 3.2.0.",
+              "name": "get_device_info",
+              "kind": "function",
+              "type": "hid_device_info *",
+              "parameters": [],
+              "sourceName": "SDL_hid_get_device_info",
+              "hints": {
+                "methodName": "get_device_info",
+                "mayFail": true,
+                "delegate": "SDL::hid_get_device_info"
+              },
+              "proto": true
+            },
+            "get_report_descriptor": {
+              "doc": "Get a report descriptor from a HID device.\n\nUser has to provide a preallocated buffer where descriptor will be copied\nto. The recommended size for a preallocated buffer is 4096 bytes.\n\n@param buf the buffer to copy descriptor into.\n@param buf_size the size of the buffer in bytes.\n@returns the number of bytes actually copied or -1 on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "get_report_descriptor",
+              "kind": "function",
+              "type": "int",
+              "parameters": [
+                {
+                  "name": "buf",
+                  "type": "TargetBytes"
+                }
+              ],
+              "sourceName": "SDL_hid_get_report_descriptor",
+              "hints": {
+                "methodName": "get_report_descriptor",
+                "delegate": "SDL::hid_get_report_descriptor"
+              },
+              "proto": true
+            }
+          },
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true
+          }
+        },
+        "HidDeviceRef": {
+          "kind": "struct",
+          "name": "HidDeviceRef",
+          "type": "HidDevice",
+          "doc": "Semi-safe reference for HidDevice.",
+          "entries": {
+            "HidDeviceRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "HidDeviceParam",
+                    "name": "resource"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "HidDevice(resource.value)"
+                  ]
+                },
+                "doc": "Constructs from HidDeviceParam.\n\n@param resource a HidDeviceRaw or HidDevice.\n\nThis does not takes ownership!",
+                "name": "HidDeviceRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const HidDeviceRef &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "HidDevice(other.get())"
+                  ]
+                },
+                "doc": "Copy constructor.",
+                "name": "HidDeviceRef"
+              }
+            ],
+            "~HidDeviceRef": {
+              "kind": "function",
+              "doc": "Destructor",
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "release();"
+              },
+              "name": "~HidDeviceRef"
+            }
+          }
+        },
+        "hid_init": {
+          "doc": "Initialize the HIDAPI library.\n\nThis function initializes the HIDAPI library. Calling it is not strictly\nnecessary, as it will be called automatically by hid_enumerate() and\nany of the SDL_hid_open_*() functions if it is needed. This function should\nbe called at the beginning of execution however, if there is a chance of\nHIDAPI handles being opened by different threads simultaneously.\n\nEach call to this function should have a matching call to hid_exit()\n\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa hid_exit",
+          "name": "hid_init",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_hid_init",
+          "hints": {
+            "mayFail": "0"
+          }
+        },
+        "hid_exit": {
+          "doc": "Finalize the HIDAPI library.\n\nThis function frees all of the static data associated with HIDAPI. It\nshould be called at the end of execution to avoid memory leaks.\n\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa hid_init",
+          "name": "hid_exit",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_hid_exit",
+          "hints": {
+            "mayFail": "0"
+          }
+        },
+        "hid_device_change_count": {
+          "doc": "Check to see if devices may have been added or removed.\n\nEnumerating the HID devices is an expensive operation, so you can call this\nto see if there have been any system device changes since the last call to\nthis function. A change in the counter returned doesn't necessarily mean\nthat anything has changed, but you can call hid_enumerate() to get an\nupdated device list.\n\nCalling this function for the first time may cause a thread or other system\nresource to be allocated to track device change notifications.\n\n@returns a change counter that is incremented with each potential device\n         change, or 0 if device change detection isn't available.\n\n@since This function is available since SDL 3.2.0.\n\n@sa hid_enumerate",
+          "name": "hid_device_change_count",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [],
+          "sourceName": "SDL_hid_device_change_count"
+        },
+        "hid_enumerate": {
+          "doc": "Enumerate the HID Devices.\n\nThis function returns a linked list of all the HID devices attached to the\nsystem which match vendor_id and product_id. If `vendor_id` is set to 0\nthen any vendor matches. If `product_id` is set to 0 then any product\nmatches. If `vendor_id` and `product_id` are both set to 0, then all HID\ndevices will be returned.\n\nBy default SDL will only enumerate controllers, to reduce risk of hanging\nor crashing on bad drivers, but SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS\ncan be set to \"0\" to enumerate all HID devices.\n\n@param vendor_id the Vendor ID (VID) of the types of device to open, or 0\n                 to match any vendor.\n@param product_id the Product ID (PID) of the types of device to open, or 0\n                  to match any product.\n@returns a pointer to a linked list of type hid_device_info, containing\n         information about the HID devices attached to the system, or nullptr\n         in the case of failure. Free this linked list by calling\n         hid_free_enumeration().\n\n@since This function is available since SDL 3.2.0.\n\n@sa hid_device_change_count",
+          "name": "hid_enumerate",
+          "kind": "function",
+          "type": "hid_device_info *",
+          "parameters": [
+            {
+              "name": "vendor_id",
+              "type": "unsigned short"
+            },
+            {
+              "name": "product_id",
+              "type": "unsigned short"
+            }
+          ],
+          "sourceName": "SDL_hid_enumerate",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "hid_free_enumeration": {
+          "doc": "Free an enumeration linked list.\n\nThis function frees a linked list created by hid_enumerate().\n\n@param devs pointer to a list of struct_device returned from\n            hid_enumerate().\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_free_enumeration",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "devs",
+              "type": "hid_device_info *"
+            }
+          ],
+          "sourceName": "SDL_hid_free_enumeration"
+        },
+        "hid_open": {
+          "doc": "Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally\na serial number.\n\nIf `serial_number` is nullptr, the first device with the specified VID and PID\nis opened.\n\n@param vendor_id the Vendor ID (VID) of the device to open.\n@param product_id the Product ID (PID) of the device to open.\n@param serial_number the Serial Number of the device to open (Optionally\n                     nullptr).\n@returns a pointer to a HidDevice object on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_open",
+          "kind": "function",
+          "type": "HidDevice",
+          "parameters": [
+            {
+              "name": "vendor_id",
+              "type": "unsigned short"
+            },
+            {
+              "name": "product_id",
+              "type": "unsigned short"
+            },
+            {
+              "name": "serial_number",
+              "type": "const wchar_t *"
+            }
+          ],
+          "sourceName": "SDL_hid_open",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true,
+            "delegate": "HidDevice"
+          }
+        },
+        "hid_open_path": {
+          "doc": "Open a HID device by its path name.\n\nThe path name be determined by calling hid_enumerate(), or a\nplatform-specific path name can be used (eg: /dev/hidraw0 on Linux).\n\n@param path the path name of the device to open.\n@returns a pointer to a HidDevice object on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_open_path",
+          "kind": "function",
+          "type": "HidDevice",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_hid_open_path",
+          "hints": {
+            "mayFail": true,
+            "wrapSelf": true,
+            "delegate": "HidDevice"
+          }
+        },
+        "hid_write": {
+          "doc": "Write an Output report to a HID device.\n\nThe first byte of `data` must contain the Report ID. For devices which only\nsupport a single report, this must be set to 0x0. The remaining bytes\ncontain the report data. Since the Report ID is mandatory, calls to\nHidDevice.write() will always contain one more byte than the report contains.\nFor example, if a hid report is 16 bytes long, 17 bytes must be passed to\nHidDevice.write(), the Report ID (or 0x0, for devices with a single report),\nfollowed by the report data (16 bytes). In this example, the length passed\nin would be 17.\n\nHidDevice.write() will send the data on the first OUT endpoint, if one\nexists. If it does not, it will send the data through the Control Endpoint\n(Endpoint 0).\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@param data the data to send, including the report number as the first\n            byte.\n@param length the length in bytes of the data to send.\n@returns the actual number of bytes written and -1 on on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_write",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            },
+            {
+              "name": "data",
+              "type": "SourceBytes"
+            }
+          ],
+          "sourceName": "SDL_hid_write",
+          "hints": {
+            "methodName": "write"
+          }
+        },
+        "HidDevice::write": {
+          "name": "HidDevice::write",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "SourceBytes"
+            }
+          ],
+          "sourceName": "SDL_hid_write",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "methodName": "write",
+            "delegate": "SDL::hid_write"
+          }
+        },
+        "hid_read_timeout": {
+          "doc": "Read an Input report from a HID device with timeout.\n\nInput reports are returned to the host through the INTERRUPT IN endpoint.\nThe first byte will contain the Report number if the device uses numbered\nreports.\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@param data a buffer to put the read data into.\n@param length the number of bytes to read. For devices with multiple\n              reports, make sure to read an extra byte for the report\n              number.\n@param milliseconds timeout in milliseconds or -1 for blocking wait.\n@returns the actual number of bytes read and -1 on on failure; call\n         GetError() for more information. If no packet was available to\n         be read within the timeout period, this function returns 0.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_read_timeout",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            },
+            {
+              "name": "data",
+              "type": "TargetBytes"
+            },
+            {
+              "name": "timeout",
+              "type": "Milliseconds"
+            }
+          ],
+          "sourceName": "SDL_hid_read_timeout",
+          "hints": {
+            "methodName": "read_timeout"
+          }
+        },
+        "HidDevice::read_timeout": {
+          "name": "HidDevice::read_timeout",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "TargetBytes"
+            },
+            {
+              "name": "timeout",
+              "type": "Milliseconds"
+            }
+          ],
+          "sourceName": "SDL_hid_read_timeout",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "methodName": "read_timeout",
+            "delegate": "SDL::hid_read_timeout"
+          }
+        },
+        "hid_read": {
+          "doc": "Read an Input report from a HID device.\n\nInput reports are returned to the host through the INTERRUPT IN endpoint.\nThe first byte will contain the Report number if the device uses numbered\nreports.\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@param data a buffer to put the read data into.\n@param length the number of bytes to read. For devices with multiple\n              reports, make sure to read an extra byte for the report\n              number.\n@returns the actual number of bytes read and -1 on failure; call\n         GetError() for more information. If no packet was available to\n         be read and the handle is in non-blocking mode, this function\n         returns 0.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_read",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            },
+            {
+              "name": "data",
+              "type": "TargetBytes"
+            }
+          ],
+          "sourceName": "SDL_hid_read",
+          "hints": {
+            "methodName": "read"
+          }
+        },
+        "HidDevice::read": {
+          "name": "HidDevice::read",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "TargetBytes"
+            }
+          ],
+          "sourceName": "SDL_hid_read",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "methodName": "read",
+            "delegate": "SDL::hid_read"
+          }
+        },
+        "hid_set_nonblocking": {
+          "doc": "Set the device handle to be non-blocking.\n\nIn non-blocking mode calls to HidDevice.read() will return immediately with a\nvalue of 0 if there is no data to be read. In blocking mode, HidDevice.read()\nwill wait (block) until there is data to read before returning.\n\nNonblocking can be turned on and off at any time.\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@param nonblock enable or not the nonblocking reads - 1 to enable\n                nonblocking - 0 to disable nonblocking.\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_set_nonblocking",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            },
+            {
+              "name": "nonblock",
+              "type": "bool"
+            }
+          ],
+          "sourceName": "SDL_hid_set_nonblocking",
+          "hints": {
+            "mayFail": "0",
+            "methodName": "set_nonblocking"
+          }
+        },
+        "HidDevice::set_nonblocking": {
+          "name": "HidDevice::set_nonblocking",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "nonblock",
+              "type": "bool"
+            }
+          ],
+          "sourceName": "SDL_hid_set_nonblocking",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "mayFail": "0",
+            "methodName": "set_nonblocking",
+            "delegate": "SDL::hid_set_nonblocking"
+          }
+        },
+        "hid_send_feature_report": {
+          "doc": "Send a Feature report to the device.\n\nFeature reports are sent over the Control endpoint as a Set_Report\ntransfer. The first byte of `data` must contain the Report ID. For devices\nwhich only support a single report, this must be set to 0x0. The remaining\nbytes contain the report data. Since the Report ID is mandatory, calls to\nHidDevice.send_feature_report() will always contain one more byte than the\nreport contains. For example, if a hid report is 16 bytes long, 17 bytes\nmust be passed to HidDevice.send_feature_report(): the Report ID (or 0x0, for\ndevices which do not use numbered reports), followed by the report data (16\nbytes). In this example, the length passed in would be 17.\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@param data the data to send, including the report number as the first\n            byte.\n@param length the length in bytes of the data to send, including the report\n              number.\n@returns the actual number of bytes written and -1 on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_send_feature_report",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            },
+            {
+              "name": "data",
+              "type": "SourceBytes"
+            }
+          ],
+          "sourceName": "SDL_hid_send_feature_report",
+          "hints": {
+            "methodName": "send_feature_report"
+          }
+        },
+        "HidDevice::send_feature_report": {
+          "name": "HidDevice::send_feature_report",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "SourceBytes"
+            }
+          ],
+          "sourceName": "SDL_hid_send_feature_report",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "methodName": "send_feature_report",
+            "delegate": "SDL::hid_send_feature_report"
+          }
+        },
+        "hid_get_feature_report": {
+          "doc": "Get a feature report from a HID device.\n\nSet the first byte of `data` to the Report ID of the report to be read.\nMake sure to allow space for this extra byte in `data`. Upon return, the\nfirst byte will still contain the Report ID, and the report data will start\nin data[1].\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@param data a buffer to put the read data into, including the Report ID.\n            Set the first byte of `data` to the Report ID of the report to\n            be read, or set it to zero if your device does not use numbered\n            reports.\n@param length the number of bytes to read, including an extra byte for the\n              report ID. The buffer can be longer than the actual report.\n@returns the number of bytes read plus one for the report ID (which is\n         still in the first byte), or -1 on on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_get_feature_report",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            },
+            {
+              "name": "data",
+              "type": "TargetBytes"
+            }
+          ],
+          "sourceName": "SDL_hid_get_feature_report",
+          "hints": {
+            "methodName": "get_feature_report"
+          }
+        },
+        "HidDevice::get_feature_report": {
+          "name": "HidDevice::get_feature_report",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "TargetBytes"
+            }
+          ],
+          "sourceName": "SDL_hid_get_feature_report",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "methodName": "get_feature_report",
+            "delegate": "SDL::hid_get_feature_report"
+          }
+        },
+        "hid_get_input_report": {
+          "doc": "Get an input report from a HID device.\n\nSet the first byte of `data` to the Report ID of the report to be read.\nMake sure to allow space for this extra byte in `data`. Upon return, the\nfirst byte will still contain the Report ID, and the report data will start\nin data[1].\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@param data a buffer to put the read data into, including the Report ID.\n            Set the first byte of `data` to the Report ID of the report to\n            be read, or set it to zero if your device does not use numbered\n            reports.\n@param length the number of bytes to read, including an extra byte for the\n              report ID. The buffer can be longer than the actual report.\n@returns the number of bytes read plus one for the report ID (which is\n         still in the first byte), or -1 on on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_get_input_report",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            },
+            {
+              "name": "data",
+              "type": "TargetBytes"
+            }
+          ],
+          "sourceName": "SDL_hid_get_input_report",
+          "hints": {
+            "methodName": "get_input_report"
+          }
+        },
+        "HidDevice::get_input_report": {
+          "name": "HidDevice::get_input_report",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "TargetBytes"
+            }
+          ],
+          "sourceName": "SDL_hid_get_input_report",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "methodName": "get_input_report",
+            "delegate": "SDL::hid_get_input_report"
+          }
+        },
+        "hid_close": {
+          "doc": "Close a HID device.\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_close",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceRaw"
+            }
+          ],
+          "sourceName": "SDL_hid_close",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "HidDevice::close": {
+          "name": "HidDevice::close",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_hid_close",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "mayFail": "0",
+            "body": "hid_close(release());",
+            "delegate": "SDL::hid_close"
+          }
+        },
+        "hid_get_manufacturer_string": {
+          "doc": "Get The Manufacturer String from a HID device.\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@param string a wide string buffer to put the data into.\n@param maxlen the length of the buffer in multiples of wchar_t.\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_get_manufacturer_string",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            },
+            {
+              "name": "string",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            }
+          ],
+          "sourceName": "SDL_hid_get_manufacturer_string",
+          "hints": {
+            "mayFail": "0",
+            "methodName": "get_manufacturer_string"
+          }
+        },
+        "HidDevice::get_manufacturer_string": {
+          "name": "HidDevice::get_manufacturer_string",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "string",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            }
+          ],
+          "sourceName": "SDL_hid_get_manufacturer_string",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "mayFail": "0",
+            "methodName": "get_manufacturer_string",
+            "delegate": "SDL::hid_get_manufacturer_string"
+          }
+        },
+        "hid_get_product_string": {
+          "doc": "Get The Product String from a HID device.\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@param string a wide string buffer to put the data into.\n@param maxlen the length of the buffer in multiples of wchar_t.\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_get_product_string",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            },
+            {
+              "name": "string",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            }
+          ],
+          "sourceName": "SDL_hid_get_product_string",
+          "hints": {
+            "mayFail": "0",
+            "methodName": "get_product_string"
+          }
+        },
+        "HidDevice::get_product_string": {
+          "name": "HidDevice::get_product_string",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "string",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            }
+          ],
+          "sourceName": "SDL_hid_get_product_string",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "mayFail": "0",
+            "methodName": "get_product_string",
+            "delegate": "SDL::hid_get_product_string"
+          }
+        },
+        "hid_get_serial_number_string": {
+          "doc": "Get The Serial Number String from a HID device.\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@param string a wide string buffer to put the data into.\n@param maxlen the length of the buffer in multiples of wchar_t.\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_get_serial_number_string",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            },
+            {
+              "name": "string",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            }
+          ],
+          "sourceName": "SDL_hid_get_serial_number_string",
+          "hints": {
+            "mayFail": "0",
+            "methodName": "get_serial_number_string"
+          }
+        },
+        "HidDevice::get_serial_number_string": {
+          "name": "HidDevice::get_serial_number_string",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "string",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            }
+          ],
+          "sourceName": "SDL_hid_get_serial_number_string",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "mayFail": "0",
+            "methodName": "get_serial_number_string",
+            "delegate": "SDL::hid_get_serial_number_string"
+          }
+        },
+        "hid_get_indexed_string": {
+          "doc": "Get a string from a HID device, based on its string index.\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@param string_index the index of the string to get.\n@param string a wide string buffer to put the data into.\n@param maxlen the length of the buffer in multiples of wchar_t.\n@returns 0 on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_get_indexed_string",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            },
+            {
+              "name": "string_index",
+              "type": "int"
+            },
+            {
+              "name": "string",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            }
+          ],
+          "sourceName": "SDL_hid_get_indexed_string",
+          "hints": {
+            "mayFail": "0",
+            "methodName": "get_indexed_string"
+          }
+        },
+        "HidDevice::get_indexed_string": {
+          "name": "HidDevice::get_indexed_string",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "string_index",
+              "type": "int"
+            },
+            {
+              "name": "string",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            }
+          ],
+          "sourceName": "SDL_hid_get_indexed_string",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "mayFail": "0",
+            "methodName": "get_indexed_string",
+            "delegate": "SDL::hid_get_indexed_string"
+          }
+        },
+        "hid_get_device_info": {
+          "doc": "Get the device info from a HID device.\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@returns a pointer to the hid_device_info for this hid_device or nullptr\n         on failure; call GetError() for more information. This struct\n         is valid until the device is closed with HidDevice.close().\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_get_device_info",
+          "kind": "function",
+          "type": "hid_device_info *",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            }
+          ],
+          "sourceName": "SDL_hid_get_device_info",
+          "hints": {
+            "methodName": "get_device_info",
+            "mayFail": true
+          }
+        },
+        "HidDevice::get_device_info": {
+          "name": "HidDevice::get_device_info",
+          "kind": "function",
+          "type": "hid_device_info *",
+          "parameters": [],
+          "sourceName": "SDL_hid_get_device_info",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "methodName": "get_device_info",
+            "mayFail": true,
+            "delegate": "SDL::hid_get_device_info"
+          }
+        },
+        "hid_get_report_descriptor": {
+          "doc": "Get a report descriptor from a HID device.\n\nUser has to provide a preallocated buffer where descriptor will be copied\nto. The recommended size for a preallocated buffer is 4096 bytes.\n\n@param dev a device handle returned from HidDevice.HidDevice().\n@param buf the buffer to copy descriptor into.\n@param buf_size the size of the buffer in bytes.\n@returns the number of bytes actually copied or -1 on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_get_report_descriptor",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "dev",
+              "type": "HidDeviceParam"
+            },
+            {
+              "name": "buf",
+              "type": "TargetBytes"
+            }
+          ],
+          "sourceName": "SDL_hid_get_report_descriptor",
+          "hints": {
+            "methodName": "get_report_descriptor"
+          }
+        },
+        "HidDevice::get_report_descriptor": {
+          "name": "HidDevice::get_report_descriptor",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "buf",
+              "type": "TargetBytes"
+            }
+          ],
+          "sourceName": "SDL_hid_get_report_descriptor",
+          "hints": {
+            "self": "m_resource",
+            "super": "m_resource",
+            "private": true,
+            "methodName": "get_report_descriptor",
+            "delegate": "SDL::hid_get_report_descriptor"
+          }
+        },
+        "hid_ble_scan": {
+          "doc": "Start or stop a BLE scan on iOS and tvOS to pair Steam Controllers.\n\n@param active true to start the scan, false to stop the scan.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "hid_ble_scan",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "active",
+              "type": "bool"
+            }
+          ],
+          "sourceName": "SDL_hid_ble_scan"
+        }
+      },
+      "includes": [
+        "SDL3/SDL_hidapi.h"
+      ],
+      "localIncludes": [
+        "SDL3pp_error.h",
+        "SDL3pp_properties.h",
         "SDL3pp_stdinc.h"
       ]
     },

@@ -52,6 +52,7 @@
     "SDL_metal.h",
     "SDL_camera.h",
     "SDL_asyncio.h",
+    "SDL_hidapi.h",
     "SDL_image.h",
     "SDL_ttf.h"
   ],
