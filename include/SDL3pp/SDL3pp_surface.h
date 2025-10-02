@@ -1475,7 +1475,7 @@ public:
                            const RectRaw& dstrect,
                            ScaleMode scaleMode);
 
-#if SDL_VERSION_ATLEAST(3, 2, 4)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Perform a stretched pixel copy from one surface to another.
@@ -1492,7 +1492,7 @@ public:
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
    *
-   * @since This function is available since SDL 3.2.4.
+   * @since This function is available since SDL 3.4.0.
    *
    * @sa Surface.BlitScaled
    */
@@ -1501,7 +1501,7 @@ public:
                OptionalRef<RectRaw> dstrect,
                ScaleMode scaleMode);
 
-#endif // SDL_VERSION_ATLEAST(3, 2, 4)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Perform a tiled blit to a destination surface, which may be of a different
@@ -3484,7 +3484,7 @@ inline void Surface::BlitUncheckedScaled(SurfaceParam src,
   SDL::BlitSurfaceUncheckedScaled(src, srcrect, m_resource, dstrect, scaleMode);
 }
 
-#if SDL_VERSION_ATLEAST(3, 2, 4)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Perform a stretched pixel copy from one surface to another.
@@ -3523,7 +3523,7 @@ inline void Surface::Stretch(SurfaceParam src,
   SDL::StretchSurface(src, srcrect, m_resource, dstrect, scaleMode);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 2, 4)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Perform a tiled blit to a destination surface, which may be of a different

@@ -320,10 +320,6 @@
 >    * @param src the Surface structure to be copied from.
 1396d1485
 <    * @param dst the Surface structure that is the blit target.
-1406c1495
-<    * @since This function is available since SDL 3.4.0.
----
->    * @since This function is available since SDL 3.2.4.
 1423a1513
 >    * @param src the SDL_Surface structure to be copied from.
 1426d1515
@@ -793,9 +789,9 @@
 ---
 >   SDL::BlitSurfaceUncheckedScaled(src, srcrect, m_resource, dstrect, scaleMode);
 3291,3294d3517
-< #endif // SDL_VERSION_ATLEAST(3, 2, 4)
+< #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 < 
-< #if SDL_VERSION_ATLEAST(3, 2, 4)
+< #if SDL_VERSION_ATLEAST(3, 4, 0)
 < 
 3300c3523
 <   SDL::StretchSurface(m_resource, src, srcrect, dstrect, scaleMode);

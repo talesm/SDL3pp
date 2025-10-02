@@ -29189,13 +29189,13 @@
                 "mayFail": true,
                 "delegate": "SDL::StretchSurface"
               },
+              "proto": true,
               "since": {
                 "tag": "SDL",
                 "major": 3,
-                "minor": 2,
-                "patch": 4
-              },
-              "proto": true
+                "minor": 4,
+                "patch": 0
+              }
             },
             "BlitTiled": {
               "doc": "Perform a tiled blit to a destination surface, which may be of a different\nformat.\n\nThe pixels in `srcrect` will be repeated as many times as needed to\ncompletely fill `dstrect`.\n\n@param srcrect the Rect structure representing the rectangle to be\n               copied, or nullptr to copy the entire surface.\n@param dst the Surface structure that is the blit target.\n@param dstrect the Rect structure representing the target rectangle in\n               the destination surface, or nullptr to fill the entire surface.\n@throws Error on failure.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Blit",
@@ -31558,8 +31558,8 @@
           "since": {
             "tag": "SDL",
             "major": 3,
-            "minor": 2,
-            "patch": 4
+            "minor": 4,
+            "patch": 0
           }
         },
         "Surface::Stretch": {
@@ -31595,8 +31595,8 @@
           "since": {
             "tag": "SDL",
             "major": 3,
-            "minor": 2,
-            "patch": 4
+            "minor": 4,
+            "patch": 0
           }
         },
         "BlitSurfaceTiled": {
@@ -77537,6 +77537,12 @@
             "super": "m_resource",
             "private": true,
             "delegate": "SDL::GetFontWeight"
+          },
+          "since": {
+            "tag": "SDL_TTF",
+            "major": 3,
+            "minor": 2,
+            "patch": 2
           }
         },
         "SDL_FONT_WEIGHT_THIN": {

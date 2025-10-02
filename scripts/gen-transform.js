@@ -6022,12 +6022,6 @@ const transform = {
             },
             "SDL_StretchSurface": {
               kind: "function",
-              since: {
-                tag: "SDL",
-                major: 3,
-                minor: 2,
-                patch: 4
-              },
               parameters: [
                 {
                 },
@@ -6465,12 +6459,6 @@ const transform = {
         },
         "SDL_StretchSurface": {
           kind: "function",
-          since: {
-            tag: "SDL",
-            major: 3,
-            minor: 2,
-            patch: 4
-          },
           parameters: [{
             type: "SurfaceParam",
             name: "src"

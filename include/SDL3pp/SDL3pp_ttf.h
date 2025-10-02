@@ -2947,9 +2947,9 @@ inline bool Font::GetSDF() const { return SDL::GetFontSDF(m_resource); }
  */
 inline int GetFontWeight(FontParam font) { return TTF_GetFontWeight(font); }
 
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
-
 inline int Font::GetWeight() const { return SDL::GetFontWeight(m_resource); }
+
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 /// Thin (100) named font weight value
 #define SDL_FONT_WEIGHT_THIN TTF_FONT_WEIGHT_THIN
