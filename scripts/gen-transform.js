@@ -2933,28 +2933,10 @@ const transform = {
           type: "float",
           constexpr: true,
         },
-        "SDL_DEFINE_PIXELFOURCC": {
-          kind: "function",
-          type: "Uint32",
-          constexpr: true,
-          parameters: [{
-            name: "A",
-            type: "Uint8"
-          }, {
-            name: "B",
-            type: "Uint8"
-          }, {
-            name: "C",
-            type: "Uint8"
-          }, {
-            name: "D",
-            type: "Uint8"
-          }]
-        },
         "SDL_PixelFormat": {
           kind: 'struct',
           enum: "SDL_PIXELFORMAT_",
-          before: "SDL_DEFINE_PIXELFORMAT",
+          before: "SDL_DEFINE_PIXELFOURCC",
           wrapper: {
             attribute: "format",
           },
@@ -3140,6 +3122,67 @@ const transform = {
         "SDL_PIXELFORMAT_MJPG": {
           since: { tag: "SDL", major: 3, minor: 2, patch: 10 },
         },
+        "SDL_DEFINE_PIXELFOURCC": {
+          kind: "function",
+          name: "DefinePixelFourCC",
+          type: "Uint32",
+          constexpr: true,
+          parameters: [{
+            name: "A",
+            type: "Uint8"
+          }, {
+            name: "B",
+            type: "Uint8"
+          }, {
+            name: "C",
+            type: "Uint8"
+          }, {
+            name: "D",
+            type: "Uint8"
+          }]
+        },
+        "SDL_DEFINE_PIXELFORMAT": {
+          name: "DefinePixelFormat",
+        },
+        "SDL_PIXELFLAG": {
+          name: "PixelFormatFlags",
+        },
+        "SDL_PIXELTYPE": {
+          name: "PixelFormatType",
+        },
+        "SDL_PIXELORDER": {
+          name: "PixelFormatOrder",
+        },
+        "SDL_PIXELLAYOUT": {
+          name: "PixelFormatLayout",
+        },
+        "SDL_BITSPERPIXEL": {
+          name: "PixelFormatBitsPerPixel",
+        },
+        "SDL_BYTESPERPIXEL": {
+          name: "PixelFormatBytesPerPixel",
+        },
+        "SDL_ISPIXELFORMAT_INDEXED": {
+          name: "IsPixelFormatIndexed",
+        },
+        "SDL_ISPIXELFORMAT_PACKED": {
+          name: "IsPixelFormatPacked",
+        },
+        "SDL_ISPIXELFORMAT_ARRAY": {
+          name: "IsPixelFormatArray",
+        },
+        "SDL_ISPIXELFORMAT_10BIT": {
+          name: "IsPixelFormat10Bit",
+        },
+        "SDL_ISPIXELFORMAT_FLOAT": {
+          name: "IsPixelFormatFloat",
+        },
+        "SDL_ISPIXELFORMAT_ALPHA": {
+          name: "IsPixelFormatAlpha",
+        },
+        "SDL_ISPIXELFORMAT_FOURCC": {
+          name: "IsPixelFormatFourCC",
+        },
         "SDL_Colorspace": {
           kind: "struct",
           enum: "SDL_COLORSPACE_",
@@ -3269,6 +3312,42 @@ const transform = {
               "constexpr": true
             }
           }
+        },
+        "SDL_DEFINE_COLORSPACE": {
+          name: "DefineColorspace",
+        },
+        "SDL_COLORSPACETYPE": {
+          name: "ColorspaceType",
+        },
+        "SDL_COLORSPACERANGE": {
+          name: "ColorspaceRange",
+        },
+        "SDL_COLORSPACECHROMA": {
+          name: "ColorspaceChroma",
+        },
+        "SDL_COLORSPACEPRIMARIES": {
+          name: "ColorspacePrimaries",
+        },
+        "SDL_COLORSPACETRANSFER": {
+          name: "ColorspaceTransfer",
+        },
+        "SDL_COLORSPACEMATRIX": {
+          name: "ColorspaceMatrix",
+        },
+        "SDL_ISCOLORSPACE_MATRIX_BT601": {
+          name: "IsColorspaceMatrixBT601",
+        },
+        "SDL_ISCOLORSPACE_MATRIX_BT709": {
+          name: "IsColorspaceMatrixBT709",
+        },
+        "SDL_ISCOLORSPACE_MATRIX_BT2020_NCL": {
+          name: "IsColorspaceMatrixBT2020_NCL",
+        },
+        "SDL_ISCOLORSPACE_LIMITED_RANGE": {
+          name: "IsColorspaceLimitedRange",
+        },
+        "SDL_ISCOLORSPACE_FULL_RANGE": {
+          name: "IsColorspaceFullRange",
         },
         "SDL_Color": {
           wrapper: {
