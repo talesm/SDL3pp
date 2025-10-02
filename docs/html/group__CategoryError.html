@@ -122,6 +122,10 @@ Functions</h2></td></tr>
 <tr class="memitem:gabf844fa614d2924b3711811e67d20c78"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryError.html#gabf844fa614d2924b3711811e67d20c78">SDL::CheckError</a> (T result, T invalidValue)</td></tr>
 <tr class="memdesc:gabf844fa614d2924b3711811e67d20c78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check and throw if returned value from <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> is an error.  <br /></td></tr>
 <tr class="separator:gabf844fa614d2924b3711811e67d20c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8c94fdec69f9adae18cebc55fc65f24f" id="r_ga8c94fdec69f9adae18cebc55fc65f24f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga8c94fdec69f9adae18cebc55fc65f24f"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryError.html#ga8c94fdec69f9adae18cebc55fc65f24f">SDL::CheckErrorIfNot</a> (T result, T validValue)</td></tr>
+<tr class="memdesc:ga8c94fdec69f9adae18cebc55fc65f24f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check and throw if returned value from <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> is an error.  <br /></td></tr>
+<tr class="separator:ga8c94fdec69f9adae18cebc55fc65f24f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7307f5502856bade5976f55c8adf5326" id="r_ga7307f5502856bade5976f55c8adf5326"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryError.html#ga7307f5502856bade5976f55c8adf5326">SDL::ClearError</a> ()</td></tr>
 <tr class="memdesc:ga7307f5502856bade5976f55c8adf5326"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear any previous error message for this thread.  <br /></td></tr>
 <tr class="separator:ga7307f5502856bade5976f55c8adf5326"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,7 +164,7 @@ Functions</h2></td></tr>
 <div class="line">    DoSomething(str);</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__CategoryError_html_ga5875c9c083a88408e11abeaa8391dfa5"><div class="ttname"><a href="group__CategoryError.html#ga5875c9c083a88408e11abeaa8391dfa5">SDL_InvalidParamError</a></div><div class="ttdeci">#define SDL_InvalidParamError(param)</div><div class="ttdoc">A macro to standardize error reporting on unsupported operations.</div><div class="ttdef"><b>Definition</b> SDL3pp_error.h:285</div></div>
+<div class="ttc" id="agroup__CategoryError_html_ga5875c9c083a88408e11abeaa8391dfa5"><div class="ttname"><a href="group__CategoryError.html#ga5875c9c083a88408e11abeaa8391dfa5">SDL_InvalidParamError</a></div><div class="ttdeci">#define SDL_InvalidParamError(param)</div><div class="ttdoc">A macro to standardize error reporting on unsupported operations.</div><div class="ttdef"><b>Definition</b> SDL3pp_error.h:300</div></div>
 </div><!-- fragment --><dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
@@ -295,6 +299,52 @@ template&lt;class T &gt; </div>
   <table class="params">
     <tr><td class="paramname">result</td><td>the result returned </td></tr>
     <tr><td class="paramname">invalidValue</td><td>the value that if equal to result indicates this is invalid. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga8c94fdec69f9adae18cebc55fc65f24f" name="ga8c94fdec69f9adae18cebc55fc65f24f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8c94fdec69f9adae18cebc55fc65f24f">&#9670;&#160;</a></span>CheckErrorIfNot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void SDL::CheckErrorIfNot </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>validValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This should be called only for things that may set <a class="el" href="group__CategoryError.html#gaf25860d775629ffbdc0fa04bf1e4b7ca" title="Set the SDL error message for the current thread.">SetError()</a>. If the result parameter is equals to invalidValue it will throw <a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>the result returned </td></tr>
+    <tr><td class="paramname">validValue</td><td>the value that if equal to result indicates this is valid. </td></tr>
   </table>
   </dd>
 </dl>

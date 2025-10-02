@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1StringParam.html" title="Helpers to use C++ strings parameters." alt="" coords="5,5,140,31"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Storage.html" title="An abstract interface for filesystem access." alt="" coords="5,5,111,31"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1StorageRef.html" title="Semi&#45;safe reference for Storage." alt="" coords="159,5,285,31"/>
+<area shape="poly" id="edge46_Node000000_Node000001" title=" " alt="" coords="124,15,158,15,158,21,124,21"/>
 </map>

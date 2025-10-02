@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structSDL_1_1TextParam.html" title="Safely wrap Text for non owning parameters." alt="" coords="5,5,128,31"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1TextEngine.html" title="A resource engine." alt="" coords="5,55,132,80"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1GPUTextEngine.html" title="A GPU based text engine." alt="" coords="195,5,350,31"/>
+<area shape="poly" id="edge48_Node000000_Node000001" title=" " alt="" coords="134,49,219,28,220,33,136,54"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1RendererTextEngine.html" title="A renderer based text engine." alt="" coords="180,55,365,80"/>
+<area shape="poly" id="edge49_Node000000_Node000002" title=" " alt="" coords="145,65,180,65,180,70,145,70"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1SurfaceTextEngine.html" title="A surface based text engine." alt="" coords="185,104,360,129"/>
+<area shape="poly" id="edge50_Node000000_Node000003" title=" " alt="" coords="136,81,220,101,219,107,134,86"/>
 </map>

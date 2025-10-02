@@ -1,0 +1,5 @@
+<map id="SDL::HidDeviceRef" name="SDL::HidDeviceRef">
+<area shape="rect" id="Node000001" title="Semi&#45;safe reference for HidDevice." alt="" coords="5,79,149,104"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1HidDevice.html" title="An opaque handle representing an open HID device." alt="" coords="16,5,139,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,44,80,79,75,79,75,44"/>
+</map>
