@@ -1457,7 +1457,7 @@ public:
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_MAJOR_VERSION 3
+#define SDL_MAJOR_VERSION
 
 /**
  * The current minor version of the SDL headers.
@@ -1466,7 +1466,7 @@ public:
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_MINOR_VERSION 2
+#define SDL_MINOR_VERSION
 
 /**
  * The current micro (or patchlevel) version of the SDL headers.
@@ -1475,7 +1475,7 @@ public:
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_MICRO_VERSION 23
+#define SDL_MICRO_VERSION
 
 /**
  * This macro turns the version numbers into a numeric value.

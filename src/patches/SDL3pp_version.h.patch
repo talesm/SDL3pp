@@ -5,6 +5,18 @@
 16a17,18
 > #ifdef SDL3PP_DOC
 > 
+24c26
+< #define SDL_MAJOR_VERSION 3
+---
+> #define SDL_MAJOR_VERSION
+33c35
+< #define SDL_MINOR_VERSION 2
+---
+> #define SDL_MINOR_VERSION
+42c44
+< #define SDL_MICRO_VERSION 24
+---
+> #define SDL_MICRO_VERSION
 106a109,110
 > 
 > #endif // SDL3PP_DOC

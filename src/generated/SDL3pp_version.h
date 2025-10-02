@@ -39,7 +39,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_MICRO_VERSION 23
+#define SDL_MICRO_VERSION 25
 
 /**
  * This macro turns the version numbers into a numeric value.
