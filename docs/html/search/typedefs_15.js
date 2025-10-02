@@ -1,5 +1,8 @@
 var searchData=
 [
   ['valuetype_0',['valuetype',['../structSDL_1_1CallbackWrapperBase.html#aaff0472f83a6648961c1fe64f3fe407f',1,'SDL::CallbackWrapperBase::ValueType'],['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::ValueType'],['../structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919',1,'SDL::KeyValueWrapper::ValueType'],['../structSDL_1_1KeyValueCallbackWrapper_3_01KEY_00_01std_1_1function_3_01Result_07Args_8_8_8_08_4_00_01VARIANT_01_4.html#a98673d5d3023b09c39741adcd16c06d8',1,'SDL::KeyValueCallbackWrapper&lt; KEY, std::function&lt; Result(Args...)&gt;, VARIANT &gt;::ValueType'],['../structSDL_1_1UniqueCallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a63ba888bb61bbe6cc65e11edea88d86a',1,'SDL::UniqueCallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::ValueType']]],
-  ['vertex_1',['Vertex',['../group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b',1,'SDL']]]
+  ['vertex_1',['Vertex',['../group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b',1,'SDL']]],
+  ['virtualjoystickdesc_2',['VirtualJoystickDesc',['../group__CategoryJoystick.html#gac6c78a4223809d6dd815dc3aaf12d77a',1,'SDL']]],
+  ['virtualjoysticksensordesc_3',['VirtualJoystickSensorDesc',['../group__CategoryJoystick.html#gaaef593687d413aa1232f138122f7d163',1,'SDL']]],
+  ['virtualjoysticktouchpaddesc_4',['VirtualJoystickTouchpadDesc',['../group__CategoryJoystick.html#ga216bea700a2704851a566e0658bf9e3d',1,'SDL']]]
 ];

@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1GLContext.html" title="An opaque handle to an OpenGL context." alt="" coords="5,5,128,31"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1GLContextScoped.html" title="RAII owning version GLContext." alt="" coords="176,5,347,31"/>
-<area shape="poly" id="edge31_Node000000_Node000001" title=" " alt="" coords="142,15,176,15,176,21,142,21"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Gamepad.html" title="The structure used to identify an SDL gamepad." alt="" coords="5,5,124,31"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1GamepadRef.html" title="Semi&#45;safe reference for Gamepad." alt="" coords="172,5,312,31"/>
+<area shape="poly" id="edge31_Node000000_Node000001" title=" " alt="" coords="138,15,172,15,172,21,138,21"/>
 </map>

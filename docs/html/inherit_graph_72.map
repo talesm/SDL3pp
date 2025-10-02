@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structSDL_1_1RendererParam.html" title="Safely wrap Renderer for non owning parameters." alt="" coords="5,5,160,31"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Process.html" title="An opaque handle representing a system process." alt="" coords="5,5,111,31"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1ProcessRef.html" title="Semi&#45;safe reference for Process." alt="" coords="159,5,285,31"/>
+<area shape="poly" id="edge42_Node000000_Node000001" title=" " alt="" coords="124,15,158,15,158,21,124,21"/>
 </map>

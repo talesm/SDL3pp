@@ -553,7 +553,7 @@ constexpr Time MIN_TIME = SDL_MIN_TIME;
  *
  * @sa IOStreamInterface
  * @sa StorageInterface
- * @sa SDL_VirtualJoystickDesc
+ * @sa VirtualJoystickDesc
  */
 #define SDL_INIT_INTERFACE(iface)                                              \
   do {                                                                         \

@@ -33,9 +33,9 @@ Category                 | Header
 
 ## Force Feedback ("Haptic")
 
-Category                | Header
------------------------ | -----------------
-Force Feedback Support  | SDL3pp_haptic.h
+Category            | Header
+------------------- | -----------------
+@ref CategoryHaptic | SDL3pp_haptic.h
 
 ## Audio
 
@@ -58,8 +58,8 @@ Category                 | Header
 @ref CategoryKeycode     | SDL3pp_keycode.h
 @ref CategoryScancode    | SDL3pp_scancode.h
 @ref CategoryMouse       | SDL3pp_mouse.h
-Joystick Support         | SDL3pp_joystick.h
-Gamepad Support          | SDL3pp_gamepad.h
+@ref CategoryJoystick    | SDL3pp_joystick.h
+@ref CategoryGamepad     | SDL3pp_gamepad.h
 @ref CategoryTouch       | SDL3pp_touch.h
 @ref CategoryPen         | SDL3pp_pen.h
 @ref CategorySensor      | SDL3pp_sensor.h
@@ -168,6 +168,8 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryCamera
 @}
 
+@addtogroup CategoryHaptic
+
 @addtogroup CategoryAudio
 
 @defgroup CategoriesEvents Input Events
@@ -177,6 +179,8 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryKeycode
 @addtogroup CategoryScancode
 @addtogroup CategoryMouse
+@addtogroup CategoryJoystick
+@addtogroup CategoryGamepad
 @addtogroup CategoryTouch
 @addtogroup CategoryPen
 @addtogroup CategorySensor

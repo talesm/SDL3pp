@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1IConv.html" title="An opaque handle representing string encoding conversion state." alt="" coords="5,5,97,31"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1IConvRef.html" title="Semi&#45;safe reference for IConv." alt="" coords="145,5,260,31"/>
-<area shape="poly" id="edge33_Node000000_Node000001" title=" " alt="" coords="111,15,145,15,145,21,111,21"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Haptic.html" title="The haptic structure used to identify an SDL haptic." alt="" coords="5,5,103,31"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1HapticRef.html" title="Semi&#45;safe reference for Haptic." alt="" coords="151,5,269,31"/>
+<area shape="poly" id="edge33_Node000000_Node000001" title=" " alt="" coords="117,15,150,15,150,21,117,21"/>
 </map>

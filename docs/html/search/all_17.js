@@ -69,7 +69,7 @@ var searchData=
   ['wrap_20extending_20struct_66',['Wrap extending struct',['../wrap-extending-struct.html',1,'DesignNotes']]],
   ['wrap_20state_67',['Wrap state',['../wrap-state.html',1,'DesignNotes']]],
   ['wrapper_20to_20sdl_3a_3afree_68',['Pointer wrapper to SDL::free()',['../group__CategoryOwnPtr.html',1,'']]],
-  ['write_69',['write',['../group__CategoryHIDAPI.html#gac600697be8c1fe2fa7cc558b8d5b9cf0',1,'SDL::HidDevice::write()'],['../group__CategoryIOStream.html#ga89e88948700e856cc273b7ca5cb5c3a7',1,'SDL::IOStream::Write()'],['../group__CategoryAsyncIO.html#gab67259533ebe86aeee8fc41d12008845',1,'SDL::AsyncIO::Write()']]],
+  ['write_69',['write',['../group__CategoryIOStream.html#ga89e88948700e856cc273b7ca5cb5c3a7',1,'SDL::IOStream::Write()'],['../group__CategoryAsyncIO.html#gab67259533ebe86aeee8fc41d12008845',1,'SDL::AsyncIO::Write()'],['../group__CategoryHIDAPI.html#gac600697be8c1fe2fa7cc558b8d5b9cf0',1,'SDL::HidDevice::write()']]],
   ['writeasyncio_70',['WriteAsyncIO',['../group__CategoryAsyncIO.html#ga8b8d20d62189de16c9fb13302546d82e',1,'SDL']]],
   ['writefile_71',['WriteFile',['../group__CategoryStorage.html#ga43315060a7296b4c543dd68fd849103f',1,'SDL::Storage']]],
   ['writeio_72',['WriteIO',['../group__CategoryIOStream.html#gae1366522482bff607ff7935e69a3d001',1,'SDL']]],

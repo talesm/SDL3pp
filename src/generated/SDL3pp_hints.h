@@ -512,8 +512,8 @@ namespace SDL {
  *
  * The variable can be set to the following values:
  *
- * - "0": You'll call SDL_UpdateJoysticks() manually.
- * - "1": SDL will automatically call SDL_UpdateJoysticks(). (default)
+ * - "0": You'll call UpdateJoysticks() manually.
+ * - "1": SDL will automatically call UpdateJoysticks(). (default)
  *
  * This hint can be set anytime.
  *
@@ -830,7 +830,7 @@ namespace SDL {
  * data, see SDL_gamepad.h
  *
  * You can update mappings after SDL is initialized with
- * SDL_GetGamepadMappingForGUID() and SDL_AddGamepadMapping()
+ * GetGamepadMappingForGUID() and AddGamepadMapping()
  *
  * This hint should be set before SDL is initialized.
  *
@@ -846,7 +846,7 @@ namespace SDL {
  * SDL_gamepad.h
  *
  * You can update mappings after SDL is initialized with
- * SDL_GetGamepadMappingForGUID() and SDL_AddGamepadMapping()
+ * GetGamepadMappingForGUID() and AddGamepadMapping()
  *
  * This hint should be set before SDL is initialized.
  *

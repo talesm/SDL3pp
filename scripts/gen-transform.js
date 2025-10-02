@@ -1561,6 +1561,33 @@ const transform = {
         }
       }
     },
+    "SDL_gamepad.h": {
+      localIncludes: [
+        "SDL3pp_error.h",
+        "SDL3pp_guid.h",
+        "SDL3pp_iostream.h",
+        "SDL3pp_joystick.h",
+        "SDL3pp_power.h",
+        "SDL3pp_properties.h",
+        "SDL3pp_sensor.h",
+        "SDL3pp_stdinc.h",
+      ],
+      namespacesMap: {
+        "SDL_PROP_GAMEPAD_CAP_": "prop::GamepadCap",
+      },
+      transform: {
+        "SDL_GamepadType": { before: "SDL_Gamepad" },
+        "SDL_GamepadButton": { before: "SDL_Gamepad" },
+        "SDL_GamepadButtonLabel": { before: "SDL_Gamepad" },
+        "SDL_GamepadAxis": { before: "SDL_Gamepad" },
+        "SDL_GamepadBindingType": { before: "SDL_Gamepad" },
+        "SDL_GamepadBinding": { before: "SDL_Gamepad" },
+        "SDL_GetGamepads": {
+          type: "OwnArray<JoystickID>",
+          parameters: [],
+        },
+      },
+    },
     "SDL_guid.h": {
       localIncludes: ['SDL3pp_stdinc.h'],
       transform: {
@@ -1576,6 +1603,140 @@ const transform = {
           }
         }
       }
+    },
+    "SDL_joystick.h": {
+      localIncludes: [
+        "SDL3pp_error.h",
+        "SDL3pp_guid.h",
+        "SDL3pp_mutex.h",
+        "SDL3pp_power.h",
+        "SDL3pp_properties.h",
+        "SDL3pp_sensor.h",
+        "SDL3pp_stdinc.h",
+        "SDL3pp_rect.h",
+      ],
+      namespacesMap: {
+        "SDL_PROP_JOYSTICK_CAP_": "prop::JoystickCap",
+      },
+      transform: {
+        "SDL_JoystickID": { before: "SDL_Joystick" },
+        "SDL_JoystickType": { before: "JoystickID" },
+        "SDL_JoystickConnectionState": { before: "SDL_Joystick" },
+        "HatState": {
+          kind: "alias",
+          type: "Uint8",
+          enum: {
+            prefix: "SDL_HAT_",
+            values: [
+              "SDL_HAT_CENTERED",
+              "SDL_HAT_UP",
+              "SDL_HAT_RIGHT",
+              "SDL_HAT_DOWN",
+              "SDL_HAT_LEFT",
+              "SDL_HAT_RIGHTUP",
+              "SDL_HAT_RIGHTDOWN",
+              "SDL_HAT_LEFTUP",
+              "SDL_HAT_LEFTDOWN",
+            ],
+          },
+          before: "SDL_Joystick",
+        },
+        "SDL_HAT_CENTERED": { kind: "var", type: "Uint8", constexpr: true, after: "HatState" },
+        "SDL_HAT_UP": { kind: "var", type: "Uint8", constexpr: true, after: "HatState" },
+        "SDL_HAT_RIGHT": { kind: "var", type: "Uint8", constexpr: true, after: "HatState" },
+        "SDL_HAT_DOWN": { kind: "var", type: "Uint8", constexpr: true, after: "HatState" },
+        "SDL_HAT_LEFT": { kind: "var", type: "Uint8", constexpr: true, after: "HatState" },
+        "SDL_HAT_RIGHTUP": { kind: "var", type: "Uint8", constexpr: true, after: "HatState" },
+        "SDL_HAT_RIGHTDOWN": { kind: "var", type: "Uint8", constexpr: true, after: "HatState" },
+        "SDL_HAT_LEFTUP": { kind: "var", type: "Uint8", constexpr: true, after: "HatState" },
+        "SDL_HAT_LEFTDOWN": { kind: "var", type: "Uint8", constexpr: true, after: "HatState" },
+        "SDL_JOYSTICK_AXIS_MAX": {
+          kind: "var",
+          type: "int",
+          constexpr: true,
+        },
+        "SDL_JOYSTICK_AXIS_MIN": {
+          kind: "var",
+          type: "int",
+          constexpr: true,
+        },
+        "SDL_GetJoysticks": {
+          type: "OwnArray<JoystickID>",
+          parameters: [],
+        },
+      },
+    },
+    "SDL_haptic.h": {
+      localIncludes: ["SDL3pp_error.h", "SDL3pp_joystick.h", "SDL3pp_stdinc.h"],
+      transform: {
+        "HapticEffectType": {
+          before: "SDL_Haptic",
+          kind: "alias",
+          type: "Uint32",
+        },
+        "SDL_HAPTIC_CONSTANT": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_SINE": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_SQUARE": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_TRIANGLE": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_SAWTOOTHUP": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_SAWTOOTHDOWN": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_RAMP": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_SPRING": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_DAMPER": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_INERTIA": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_FRICTION": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_LEFTRIGHT": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_RESERVED1": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_RESERVED2": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_RESERVED3": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_CUSTOM": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_GAIN": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_AUTOCENTER": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_STATUS": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "SDL_HAPTIC_PAUSE": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
+        "HapticDirectionType": {
+          before: "SDL_Haptic",
+          kind: "alias",
+          type: "Uint8",
+        },
+        "SDL_HAPTIC_POLAR": { after: "HapticDirectionType", kind: "var", type: "HapticDirectionType", constexpr: true },
+        "SDL_HAPTIC_CARTESIAN": { after: "HapticDirectionType", kind: "var", type: "HapticDirectionType", constexpr: true },
+        "SDL_HAPTIC_SPHERICAL": { after: "HapticDirectionType", kind: "var", type: "HapticDirectionType", constexpr: true },
+        "SDL_HAPTIC_STEERING_AXIS": { after: "HapticDirectionType", kind: "var", type: "HapticDirectionType", constexpr: true },
+        "SDL_HAPTIC_INFINITY": { before: "SDL_Haptic", kind: "var", type: "Uint32", constexpr: true },
+        "SDL_HapticDirection": { before: "SDL_Haptic" },
+        "SDL_HapticConstant": { before: "SDL_Haptic" },
+        "SDL_HapticPeriodic": { before: "SDL_Haptic" },
+        "SDL_HapticCondition": { before: "SDL_Haptic" },
+        "SDL_HapticRamp": { before: "SDL_Haptic" },
+        "SDL_HapticLeftRight": { before: "SDL_Haptic" },
+        "SDL_HapticCustom": { before: "SDL_Haptic" },
+        "SDL_HapticEffect": { before: "SDL_Haptic" },
+        "SDL_HapticID": { before: "SDL_Haptic" },
+        "SDL_Haptic": {
+          resource: {
+            free: "SDL_CloseHaptic",
+            ctors: ["SDL_OpenHapticFromMouse"],
+          },
+          entries: {
+            "SDL_OpenHaptic": "ctor",
+            "SDL_OpenHapticFromJoystick": "ctor",
+          }
+        },
+        "SDL_GetHaptics": {
+          type: "OwnArray<HapticID>",
+          parameters: [],
+        },
+        "SDL_HapticEffectSupported": {
+          parameters: [{}, { type: "const HapticEffect &" }],
+        },
+        "SDL_CreateHapticEffect": {
+          parameters: [{}, { type: "const HapticEffect &" }],
+        },
+        "SDL_UpdateHapticEffect": {
+          parameters: [{}, {}, { type: "const HapticEffect &" }],
+        },
+      },
     },
     "SDL_hidapi.h": {
       localIncludes: ["SDL3pp_error.h", "SDL3pp_properties.h", "SDL3pp_stdinc.h"],

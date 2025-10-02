@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structSDL_1_1WindowParam.html" title="Safely wrap Window for non owning parameters." alt="" coords="5,5,153,31"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Tray.html" title="An opaque handle representing a toplevel system tray object." alt="" coords="5,5,88,31"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1TrayRef.html" title="Semi&#45;safe reference for Tray." alt="" coords="136,5,240,31"/>
+<area shape="poly" id="edge55_Node000000_Node000001" title=" " alt="" coords="101,15,136,15,136,21,101,21"/>
 </map>

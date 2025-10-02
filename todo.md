@@ -33,10 +33,10 @@ Things for a version 0.2
   - [x] SDL_metal.h
   - [x] SDL_camera.h
   - [x] SDL_asyncio.h
-  - [ ] SDL_joystick.h
-  - [ ] SDL_gamepad.h
+  - [x] SDL_joystick.h
+  - [x] SDL_gamepad.h
   - [x] SDL_hidapi.h
-  - [ ] SDL_haptic.h
+  - [x] SDL_haptic.h
   - [ ] SDL_gpu.h
 
 Backlog

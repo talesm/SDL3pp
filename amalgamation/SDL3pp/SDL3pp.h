@@ -3369,8 +3369,8 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * The variable can be set to the following values:
  *
- * - "0": You'll call SDL_UpdateJoysticks() manually.
- * - "1": SDL will automatically call SDL_UpdateJoysticks(). (default)
+ * - "0": You'll call UpdateJoysticks() manually.
+ * - "1": SDL will automatically call UpdateJoysticks(). (default)
  *
  * This hint can be set anytime.
  *
@@ -3687,7 +3687,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * data, see SDL_gamepad.h
  *
  * You can update mappings after SDL is initialized with
- * SDL_GetGamepadMappingForGUID() and SDL_AddGamepadMapping()
+ * GetGamepadMappingForGUID() and AddGamepadMapping()
  *
  * This hint should be set before SDL is initialized.
  *
@@ -3703,7 +3703,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * SDL_gamepad.h
  *
  * You can update mappings after SDL is initialized with
- * SDL_GetGamepadMappingForGUID() and SDL_AddGamepadMapping()
+ * GetGamepadMappingForGUID() and AddGamepadMapping()
  *
  * This hint should be set before SDL is initialized.
  *
@@ -13460,7 +13460,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *
  * @sa IOStreamInterface
  * @sa StorageInterface
- * @sa SDL_VirtualJoystickDesc
+ * @sa VirtualJoystickDesc
  */
 #define SDL_INIT_INTERFACE(iface)                                              \
   do {                                                                         \
@@ -59727,6 +59727,2500 @@ inline WindowRef GetWindowFromEvent(const Event& event)
 /// @}
 
 /**
+ * @defgroup CategoryJoystick Joystick Support
+ *
+ * SDL joystick support.
+ *
+ * This is the lower-level joystick handling. If you want the simpler option,
+ * where what each button does is well-defined, you should use the gamepad API
+ * instead.
+ *
+ * The term "instance_id" is the current instantiation of a joystick device in
+ * the system, if the joystick is removed and then re-inserted then it will
+ * get a new instance_id, instance_id's are monotonically increasing
+ * identifiers of a joystick plugged in.
+ *
+ * The term "player_index" is the number assigned to a player on a specific
+ * controller. For XInput controllers this returns the XInput user index. Many
+ * joysticks will not be able to supply this information.
+ *
+ * GUID is used as a stable 128-bit identifier for a joystick device that
+ * does not change over time. It identifies class of the device (a X360 wired
+ * controller for example). This identifier is platform dependent.
+ *
+ * In order to use these functions, Init() must have been called with the
+ * INIT_JOYSTICK flag. This causes SDL to scan the system for joysticks,
+ * and load appropriate drivers.
+ *
+ * If you would like to receive joystick updates while the application is in
+ * the background, you should set the following hint before calling
+ * Init(): SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
+ *
+ * @{
+ */
+
+// Forward decl
+struct Joystick;
+
+/// Alias to raw representation for Joystick.
+using JoystickRaw = SDL_Joystick*;
+
+// Forward decl
+struct JoystickRef;
+
+/// Safely wrap Joystick for non owning parameters
+struct JoystickParam
+{
+  JoystickRaw value; ///< parameter's JoystickRaw
+
+  /// Constructs from JoystickRaw
+  constexpr JoystickParam(JoystickRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr JoystickParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const JoystickParam& other) const = default;
+
+  /// Converts to underlying JoystickRaw
+  constexpr operator JoystickRaw() const { return value; }
+};
+
+/// Alias to raw representation for JoystickID.
+using JoystickIDRaw = SDL_JoystickID;
+
+/**
+ * An enum of some common joystick types.
+ *
+ * In some cases, SDL can identify a low-level joystick as being a certain
+ * type of device, and will report it through Joystick.GetType (or
+ * JoystickID.GetJoystickTypeForID).
+ *
+ * This is by no means a complete list of everything that can be plugged into
+ * a computer.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using JoystickType = SDL_JoystickType;
+
+constexpr JoystickType JOYSTICK_TYPE_UNKNOWN =
+  SDL_JOYSTICK_TYPE_UNKNOWN; ///< JOYSTICK_TYPE_UNKNOWN
+
+constexpr JoystickType JOYSTICK_TYPE_GAMEPAD =
+  SDL_JOYSTICK_TYPE_GAMEPAD; ///< JOYSTICK_TYPE_GAMEPAD
+
+constexpr JoystickType JOYSTICK_TYPE_WHEEL =
+  SDL_JOYSTICK_TYPE_WHEEL; ///< JOYSTICK_TYPE_WHEEL
+
+constexpr JoystickType JOYSTICK_TYPE_ARCADE_STICK =
+  SDL_JOYSTICK_TYPE_ARCADE_STICK; ///< JOYSTICK_TYPE_ARCADE_STICK
+
+constexpr JoystickType JOYSTICK_TYPE_FLIGHT_STICK =
+  SDL_JOYSTICK_TYPE_FLIGHT_STICK; ///< JOYSTICK_TYPE_FLIGHT_STICK
+
+constexpr JoystickType JOYSTICK_TYPE_DANCE_PAD =
+  SDL_JOYSTICK_TYPE_DANCE_PAD; ///< JOYSTICK_TYPE_DANCE_PAD
+
+constexpr JoystickType JOYSTICK_TYPE_GUITAR =
+  SDL_JOYSTICK_TYPE_GUITAR; ///< JOYSTICK_TYPE_GUITAR
+
+constexpr JoystickType JOYSTICK_TYPE_DRUM_KIT =
+  SDL_JOYSTICK_TYPE_DRUM_KIT; ///< JOYSTICK_TYPE_DRUM_KIT
+
+constexpr JoystickType JOYSTICK_TYPE_ARCADE_PAD =
+  SDL_JOYSTICK_TYPE_ARCADE_PAD; ///< JOYSTICK_TYPE_ARCADE_PAD
+
+constexpr JoystickType JOYSTICK_TYPE_THROTTLE =
+  SDL_JOYSTICK_TYPE_THROTTLE; ///< JOYSTICK_TYPE_THROTTLE
+
+constexpr JoystickType JOYSTICK_TYPE_COUNT =
+  SDL_JOYSTICK_TYPE_COUNT; ///< JOYSTICK_TYPE_COUNT
+
+/**
+ * This is a unique ID for a joystick for the time it is connected to the
+ * system, and is never reused for the lifetime of the application.
+ *
+ * If the joystick is disconnected and reconnected, it will get a new ID.
+ *
+ * The value 0 is an invalid ID.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+class JoystickID
+{
+  JoystickIDRaw m_joystickID;
+
+public:
+  /**
+   * Wraps JoystickID.
+   *
+   * @param joystickID the value to be wrapped
+   */
+  constexpr JoystickID(JoystickIDRaw joystickID = {})
+    : m_joystickID(joystickID)
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(const JoystickID& other) const = default;
+
+  /// Compares with the underlying type
+  constexpr bool operator==(JoystickIDRaw joystickID) const
+  {
+    return operator==(JoystickID(joystickID));
+  }
+
+  /**
+   * Unwraps to the underlying JoystickID.
+   *
+   * @returns the underlying JoystickIDRaw.
+   */
+  constexpr operator JoystickIDRaw() const { return m_joystickID; }
+
+  /**
+   * Get the implementation dependent name of a joystick.
+   *
+   * This can be called before any joysticks are opened.
+   *
+   * @returns the name of the selected joystick. If no name can be found, this
+   *          function returns nullptr; call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetName
+   * @sa GetJoysticks
+   */
+  const char* GetJoystickNameForID();
+
+  /**
+   * Get the implementation dependent path of a joystick.
+   *
+   * This can be called before any joysticks are opened.
+   *
+   * @returns the path of the selected joystick. If no path can be found, this
+   *          function returns nullptr; call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetPath
+   * @sa GetJoysticks
+   */
+  const char* GetJoystickPathForID();
+
+  /**
+   * Get the player index of a joystick.
+   *
+   * This can be called before any joysticks are opened.
+   *
+   * @returns the player index of a joystick, or -1 if it's not available.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetPlayerIndex
+   * @sa GetJoysticks
+   */
+  int GetJoystickPlayerIndexForID();
+
+  /**
+   * Get the implementation-dependent GUID of a joystick.
+   *
+   * This can be called before any joysticks are opened.
+   *
+   * @returns the GUID of the selected joystick. If called with an invalid
+   *          instance_id, this function returns a zero GUID.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetGUID
+   * @sa GUID.ToString
+   */
+  GUID GetJoystickGUIDForID();
+
+  /**
+   * Get the USB vendor ID of a joystick, if available.
+   *
+   * This can be called before any joysticks are opened. If the vendor ID isn't
+   * available this function returns 0.
+   *
+   * @returns the USB vendor ID of the selected joystick. If called with an
+   *          invalid instance_id, this function returns 0.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetVendor
+   * @sa GetJoysticks
+   */
+  Uint16 GetJoystickVendorForID();
+
+  /**
+   * Get the USB product ID of a joystick, if available.
+   *
+   * This can be called before any joysticks are opened. If the product ID isn't
+   * available this function returns 0.
+   *
+   * @returns the USB product ID of the selected joystick. If called with an
+   *          invalid instance_id, this function returns 0.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetProduct
+   * @sa GetJoysticks
+   */
+  Uint16 GetJoystickProductForID();
+
+  /**
+   * Get the product version of a joystick, if available.
+   *
+   * This can be called before any joysticks are opened. If the product version
+   * isn't available this function returns 0.
+   *
+   * @returns the product version of the selected joystick. If called with an
+   *          invalid instance_id, this function returns 0.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetProductVersion
+   * @sa GetJoysticks
+   */
+  Uint16 GetJoystickProductVersionForID();
+
+  /**
+   * Get the type of a joystick, if available.
+   *
+   * This can be called before any joysticks are opened.
+   *
+   * @returns the JoystickType of the selected joystick. If called with an
+   *          invalid instance_id, this function returns
+   *          `JOYSTICK_TYPE_UNKNOWN`.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetType
+   * @sa GetJoysticks
+   */
+  JoystickType GetJoystickTypeForID();
+
+  /**
+   * Open a joystick for use.
+   *
+   * The joystick subsystem must be initialized before a joystick can be opened
+   * for use.
+   *
+   * @returns an Joystick on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.Close
+   */
+  Joystick OpenJoystick();
+
+  /**
+   * Get the Joystick associated with an instance ID, if it has been opened.
+   *
+   * @returns an Joystick on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  JoystickRef GetJoystickFromID();
+
+  /**
+   * Detach a virtual joystick.
+   *
+   *                    AttachVirtualJoystick().
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AttachVirtualJoystick
+   */
+  void DetachVirtualJoystick();
+
+  /**
+   * Query whether or not a joystick is virtual.
+   *
+   * @returns true if the joystick is virtual, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool IsJoystickVirtual();
+};
+
+/**
+ * Possible connection states for a joystick device.
+ *
+ * This is used by Joystick.GetConnectionState to report how a device is
+ * connected to the system.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using JoystickConnectionState = SDL_JoystickConnectionState;
+
+constexpr JoystickConnectionState JOYSTICK_CONNECTION_INVALID =
+  SDL_JOYSTICK_CONNECTION_INVALID; ///< JOYSTICK_CONNECTION_INVALID
+
+constexpr JoystickConnectionState JOYSTICK_CONNECTION_UNKNOWN =
+  SDL_JOYSTICK_CONNECTION_UNKNOWN; ///< JOYSTICK_CONNECTION_UNKNOWN
+
+constexpr JoystickConnectionState JOYSTICK_CONNECTION_WIRED =
+  SDL_JOYSTICK_CONNECTION_WIRED; ///< JOYSTICK_CONNECTION_WIRED
+
+constexpr JoystickConnectionState JOYSTICK_CONNECTION_WIRELESS =
+  SDL_JOYSTICK_CONNECTION_WIRELESS; ///< JOYSTICK_CONNECTION_WIRELESS
+
+using HatState = Uint8;
+
+constexpr Uint8 HAT_CENTERED = SDL_HAT_CENTERED;
+
+constexpr Uint8 HAT_UP = SDL_HAT_UP;
+
+constexpr Uint8 HAT_RIGHT = SDL_HAT_RIGHT;
+
+constexpr Uint8 HAT_DOWN = SDL_HAT_DOWN;
+
+constexpr Uint8 HAT_LEFT = SDL_HAT_LEFT;
+
+constexpr Uint8 HAT_RIGHTUP = SDL_HAT_RIGHTUP;
+
+constexpr Uint8 HAT_RIGHTDOWN = SDL_HAT_RIGHTDOWN;
+
+constexpr Uint8 HAT_LEFTUP = SDL_HAT_LEFTUP;
+
+constexpr Uint8 HAT_LEFTDOWN = SDL_HAT_LEFTDOWN;
+
+/**
+ * The joystick structure used to identify an SDL joystick.
+ *
+ * This is opaque data.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+class Joystick
+{
+  JoystickRaw m_resource = nullptr;
+
+public:
+  /// Default ctor
+  constexpr Joystick() = default;
+
+  /**
+   * Constructs from JoystickParam.
+   *
+   * @param resource a JoystickRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Joystick(const JoystickRaw resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Joystick(const Joystick& other) = delete;
+
+  /// Move constructor
+  constexpr Joystick(Joystick&& other)
+    : Joystick(other.release())
+  {
+  }
+
+  constexpr Joystick(const JoystickRef& other) = delete;
+
+  constexpr Joystick(JoystickRef&& other) = delete;
+
+  /**
+   * Open a joystick for use.
+   *
+   * The joystick subsystem must be initialized before a joystick can be opened
+   * for use.
+   *
+   * @param instance_id the joystick instance ID.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.Close
+   */
+  Joystick(JoystickID instance_id)
+    : m_resource(CheckError(SDL_OpenJoystick(instance_id)))
+  {
+  }
+
+  /// Destructor
+  ~Joystick() { SDL_CloseJoystick(m_resource); }
+
+  /// Assignment operator.
+  Joystick& operator=(Joystick other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Retrieves underlying JoystickRaw.
+  constexpr JoystickRaw get() const { return m_resource; }
+
+  /// Retrieves underlying JoystickRaw and clear this.
+  constexpr JoystickRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const Joystick& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Converts to JoystickParam
+  constexpr operator JoystickParam() const { return {m_resource}; }
+
+  /**
+   * Close a joystick previously opened with JoystickID.OpenJoystick().
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa JoystickID.OpenJoystick
+   */
+  void Close();
+
+  /**
+   * Set the state of an axis on an opened virtual joystick.
+   *
+   * Please note that values set here will not be applied until the next call to
+   * UpdateJoysticks, which can either be called directly, or can be called
+   * indirectly through various other SDL APIs, including, but not limited to
+   * the following: PollEvent, PumpEvents, WaitEventTimeout,
+   * WaitEvent.
+   *
+   * Note that when sending trigger axes, you should scale the value to the full
+   * range of Sint16. For example, a trigger at rest would have the value of
+   * `JOYSTICK_AXIS_MIN`.
+   *
+   * @param axis the index of the axis on the virtual joystick to update.
+   * @param value the new value for the specified axis.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetVirtualAxis(int axis, Sint16 value);
+
+  /**
+   * Generate ball motion on an opened virtual joystick.
+   *
+   * Please note that values set here will not be applied until the next call to
+   * UpdateJoysticks, which can either be called directly, or can be called
+   * indirectly through various other SDL APIs, including, but not limited to
+   * the following: PollEvent, PumpEvents, WaitEventTimeout,
+   * WaitEvent.
+   *
+   * @param ball the index of the ball on the virtual joystick to update.
+   * @param xrel the relative motion on the X axis.
+   * @param yrel the relative motion on the Y axis.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel);
+
+  /**
+   * Set the state of a button on an opened virtual joystick.
+   *
+   * Please note that values set here will not be applied until the next call to
+   * UpdateJoysticks, which can either be called directly, or can be called
+   * indirectly through various other SDL APIs, including, but not limited to
+   * the following: PollEvent, PumpEvents, WaitEventTimeout,
+   * WaitEvent.
+   *
+   * @param button the index of the button on the virtual joystick to update.
+   * @param down true if the button is pressed, false otherwise.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetVirtualButton(int button, bool down);
+
+  /**
+   * Set the state of a hat on an opened virtual joystick.
+   *
+   * Please note that values set here will not be applied until the next call to
+   * UpdateJoysticks, which can either be called directly, or can be called
+   * indirectly through various other SDL APIs, including, but not limited to
+   * the following: PollEvent, PumpEvents, WaitEventTimeout,
+   * WaitEvent.
+   *
+   * @param hat the index of the hat on the virtual joystick to update.
+   * @param value the new value for the specified hat.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetVirtualHat(int hat, Uint8 value);
+
+  /**
+   * Set touchpad finger state on an opened virtual joystick.
+   *
+   * Please note that values set here will not be applied until the next call to
+   * UpdateJoysticks, which can either be called directly, or can be called
+   * indirectly through various other SDL APIs, including, but not limited to
+   * the following: PollEvent, PumpEvents, WaitEventTimeout,
+   * WaitEvent.
+   *
+   * @param touchpad the index of the touchpad on the virtual joystick to
+   *                 update.
+   * @param finger the index of the finger on the touchpad to set.
+   * @param down true if the finger is pressed, false if the finger is released.
+   * @param x the x coordinate of the finger on the touchpad, normalized 0 to 1,
+   *          with the origin in the upper left.
+   * @param y the y coordinate of the finger on the touchpad, normalized 0 to 1,
+   *          with the origin in the upper left.
+   * @param pressure the pressure of the finger.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetVirtualTouchpad(int touchpad,
+                          int finger,
+                          bool down,
+                          const FPointRaw& p,
+                          float pressure);
+
+  /**
+   * Send a sensor update for an opened virtual joystick.
+   *
+   * Please note that values set here will not be applied until the next call to
+   * UpdateJoysticks, which can either be called directly, or can be called
+   * indirectly through various other SDL APIs, including, but not limited to
+   * the following: PollEvent, PumpEvents, WaitEventTimeout,
+   * WaitEvent.
+   *
+   * @param type the type of the sensor on the virtual joystick to update.
+   * @param sensor_timestamp a 64-bit timestamp in nanoseconds associated with
+   *                         the sensor reading.
+   * @param data the data associated with the sensor reading.
+   * @param num_values the number of values pointed to by `data`.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SendVirtualSensorData(SensorType type,
+                             Uint64 sensor_timestamp,
+                             const float* data,
+                             int num_values);
+
+  /**
+   * Get the properties associated with a joystick.
+   *
+   * The following read-only properties are provided by SDL:
+   *
+   * - `prop::JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an
+   *   LED that has adjustable brightness
+   * - `prop::JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED
+   *   that has adjustable color
+   * - `prop::JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a
+   *   player LED
+   * - `prop::JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has
+   *   left/right rumble
+   * - `prop::JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has
+   *   simple trigger rumble
+   *
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  PropertiesRef GetProperties();
+
+  /**
+   * Get the implementation dependent name of a joystick.
+   *
+   * @returns the name of the selected joystick. If no name can be found, this
+   *          function returns nullptr; call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa JoystickID.GetJoystickNameForID
+   */
+  const char* GetName();
+
+  /**
+   * Get the implementation dependent path of a joystick.
+   *
+   * @returns the path of the selected joystick. If no path can be found, this
+   *          function returns nullptr; call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa JoystickID.GetJoystickPathForID
+   */
+  const char* GetPath();
+
+  /**
+   * Get the player index of an opened joystick.
+   *
+   * For XInput controllers this returns the XInput user index. Many joysticks
+   * will not be able to supply this information.
+   *
+   * @returns the player index, or -1 if it's not available.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetPlayerIndex
+   */
+  int GetPlayerIndex();
+
+  /**
+   * Set the player index of an opened joystick.
+   *
+   * @param player_index player index to assign to this joystick, or -1 to clear
+   *                     the player index and turn off player LEDs.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetPlayerIndex
+   */
+  void SetPlayerIndex(int player_index);
+
+  /**
+   * Get the implementation-dependent GUID for the joystick.
+   *
+   * This function requires an open joystick.
+   *
+   * @returns the GUID of the given joystick. If called on an invalid index,
+   *          this function returns a zero GUID; call GetError() for more
+   *          information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa JoystickID.GetJoystickGUIDForID
+   * @sa GUID.ToString
+   */
+  GUID GetGUID();
+
+  /**
+   * Get the USB vendor ID of an opened joystick, if available.
+   *
+   * If the vendor ID isn't available this function returns 0.
+   *
+   * @returns the USB vendor ID of the selected joystick, or 0 if unavailable.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa JoystickID.GetJoystickVendorForID
+   */
+  Uint16 GetVendor();
+
+  /**
+   * Get the USB product ID of an opened joystick, if available.
+   *
+   * If the product ID isn't available this function returns 0.
+   *
+   * @returns the USB product ID of the selected joystick, or 0 if unavailable.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa JoystickID.GetJoystickProductForID
+   */
+  Uint16 GetProduct();
+
+  /**
+   * Get the product version of an opened joystick, if available.
+   *
+   * If the product version isn't available this function returns 0.
+   *
+   * @returns the product version of the selected joystick, or 0 if unavailable.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa JoystickID.GetJoystickProductVersionForID
+   */
+  Uint16 GetProductVersion();
+
+  /**
+   * Get the firmware version of an opened joystick, if available.
+   *
+   * If the firmware version isn't available this function returns 0.
+   *
+   * @returns the firmware version of the selected joystick, or 0 if
+   *          unavailable.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Uint16 GetFirmwareVersion();
+
+  /**
+   * Get the serial number of an opened joystick, if available.
+   *
+   * Returns the serial number of the joystick, or nullptr if it is not
+   * available.
+   *
+   * @returns the serial number of the selected joystick, or nullptr if
+   *          unavailable.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  const char* GetSerial();
+
+  /**
+   * Get the type of an opened joystick.
+   *
+   * @returns the JoystickType of the selected joystick.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa JoystickID.GetJoystickTypeForID
+   */
+  JoystickType GetType();
+
+  /**
+   * Get the status of a specified joystick.
+   *
+   * @returns true if the joystick has been opened, false if it has not; call
+   *          GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool Connected();
+
+  /**
+   * Get the instance ID of an opened joystick.
+   *
+   * @returns the instance ID of the specified joystick on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  JoystickID GetID();
+
+  /**
+   * Get the number of general axis controls on a joystick.
+   *
+   * Often, the directional pad on a game controller will either look like 4
+   * separate buttons or a POV hat, and not axes, but all of this is up to the
+   * device and platform.
+   *
+   * @returns the number of axis controls/number of axes on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetAxis
+   * @sa Joystick.GetNumBalls
+   * @sa Joystick.GetNumButtons
+   * @sa Joystick.GetNumHats
+   */
+  int GetNumAxes();
+
+  /**
+   * Get the number of trackballs on a joystick.
+   *
+   * Joystick trackballs have only relative motion events associated with them
+   * and their state cannot be polled.
+   *
+   * Most joysticks do not have trackballs.
+   *
+   * @returns the number of trackballs on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetBall
+   * @sa Joystick.GetNumAxes
+   * @sa Joystick.GetNumButtons
+   * @sa Joystick.GetNumHats
+   */
+  int GetNumBalls();
+
+  /**
+   * Get the number of POV hats on a joystick.
+   *
+   * @returns the number of POV hats on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetHat
+   * @sa Joystick.GetNumAxes
+   * @sa Joystick.GetNumBalls
+   * @sa Joystick.GetNumButtons
+   */
+  int GetNumHats();
+
+  /**
+   * Get the number of buttons on a joystick.
+   *
+   * @returns the number of buttons on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetButton
+   * @sa Joystick.GetNumAxes
+   * @sa Joystick.GetNumBalls
+   * @sa Joystick.GetNumHats
+   */
+  int GetNumButtons();
+
+  /**
+   * Get the current state of an axis control on a joystick.
+   *
+   * SDL makes no promises about what part of the joystick any given axis refers
+   * to. Your game should have some sort of configuration UI to let users
+   * specify what each axis should be bound to. Alternately, SDL's higher-level
+   * Game Controller API makes a great effort to apply order to this lower-level
+   * interface, so you know that a specific axis is the "left thumb stick," etc.
+   *
+   * The value returned by Joystick.GetAxis() is a signed integer (-32768 to
+   * 32767) representing the current position of the axis. It may be necessary
+   * to impose certain tolerances on these values to account for jitter.
+   *
+   * @param axis the axis to query; the axis indices start at index 0.
+   * @returns a 16-bit signed integer representing the current position of the
+   *          axis or 0 on failure; call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetNumAxes
+   */
+  Sint16 GetAxis(int axis);
+
+  /**
+   * Get the initial state of an axis control on a joystick.
+   *
+   * The state is a value ranging from -32768 to 32767.
+   *
+   * The axis indices start at index 0.
+   *
+   * @param axis the axis to query; the axis indices start at index 0.
+   * @param state upon return, the initial value is supplied here.
+   * @returns true if this axis has any initial value, or false if not.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool GetAxisInitialState(int axis, Sint16* state);
+
+  /**
+   * Get the ball axis change since the last poll.
+   *
+   * Trackballs can only return relative motion since the last call to
+   * Joystick.GetBall(), these motion deltas are placed into `dx` and `dy`.
+   *
+   * Most joysticks do not have trackballs.
+   *
+   * @param ball the ball index to query; ball indices start at index 0.
+   * @param dx stores the difference in the x axis position since the last poll.
+   * @param dy stores the difference in the y axis position since the last poll.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetNumBalls
+   */
+  void GetBall(int ball, int* dx, int* dy);
+
+  /**
+   * Get the current state of a POV hat on a joystick.
+   *
+   * The returned value will be one of the `SDL_HAT_*` values.
+   *
+   * @param hat the hat index to get the state from; indices start at index 0.
+   * @returns the current hat position.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetNumHats
+   */
+  Uint8 GetHat(int hat);
+
+  /**
+   * Get the current state of a button on a joystick.
+   *
+   * @param button the button index to get the state from; indices start at
+   *               index 0.
+   * @returns true if the button is pressed, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.GetNumButtons
+   */
+  bool GetButton(int button);
+
+  /**
+   * Start a rumble effect.
+   *
+   * Each call to this function cancels any previous rumble effect, and calling
+   * it with 0 intensity stops any rumbling.
+   *
+   * This function requires you to process SDL events or call
+   * UpdateJoysticks() to update rumble state.
+   *
+   * @param low_frequency_rumble the intensity of the low frequency (left)
+   *                             rumble motor, from 0 to 0xFFFF.
+   * @param high_frequency_rumble the intensity of the high frequency (right)
+   *                              rumble motor, from 0 to 0xFFFF.
+   * @param duration_ms the duration of the rumble effect, in milliseconds.
+   * @returns true, or false if rumble isn't supported on this joystick.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool Rumble(Uint16 low_frequency_rumble,
+              Uint16 high_frequency_rumble,
+              Uint32 duration_ms);
+
+  /**
+   * Start a rumble effect in the joystick's triggers.
+   *
+   * Each call to this function cancels any previous trigger rumble effect, and
+   * calling it with 0 intensity stops any rumbling.
+   *
+   * Note that this is rumbling of the _triggers_ and not the game controller as
+   * a whole. This is currently only supported on Xbox One controllers. If you
+   * want the (more common) whole-controller rumble, use Joystick.Rumble()
+   * instead.
+   *
+   * This function requires you to process SDL events or call
+   * UpdateJoysticks() to update rumble state.
+   *
+   * @param left_rumble the intensity of the left trigger rumble motor, from 0
+   *                    to 0xFFFF.
+   * @param right_rumble the intensity of the right trigger rumble motor, from 0
+   *                     to 0xFFFF.
+   * @param duration_ms the duration of the rumble effect, in milliseconds.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.Rumble
+   */
+  void RumbleTriggers(Uint16 left_rumble,
+                      Uint16 right_rumble,
+                      Uint32 duration_ms);
+
+  /**
+   * Update a joystick's LED color.
+   *
+   * An example of a joystick LED is the light on the back of a PlayStation 4's
+   * DualShock 4 controller.
+   *
+   * For joysticks with a single color LED, the maximum of the RGB values will
+   * be used as the LED brightness.
+   *
+   * @param red the intensity of the red LED.
+   * @param green the intensity of the green LED.
+   * @param blue the intensity of the blue LED.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetLED(Uint8 red, Uint8 green, Uint8 blue);
+
+  /**
+   * Send a joystick specific effect packet.
+   *
+   * @param data the data to send to the joystick.
+   * @param size the size of the data to send to the joystick.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SendEffect(const void* data, int size);
+
+  /**
+   * Get the connection state of a joystick.
+   *
+   * @returns the connection state on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  JoystickConnectionState GetConnectionState();
+
+  /**
+   * Get the battery state of a joystick.
+   *
+   * You should never take a battery status as absolute truth. Batteries
+   * (especially failing batteries) are delicate hardware, and the values
+   * reported here are best estimates based on what that hardware reports. It's
+   * not uncommon for older batteries to lose stored power much faster than it
+   * reports, or completely drain when reporting it has 20 percent left, etc.
+   *
+   * @param percent a pointer filled in with the percentage of battery life
+   *                left, between 0 and 100, or nullptr to ignore. This will be
+   *                filled in with -1 we can't determine a value or there is no
+   *                battery.
+   * @returns the current battery state or `POWERSTATE_ERROR` on failure;
+   *          call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  PowerState GetPowerInfo(int* percent);
+};
+
+/// Semi-safe reference for Joystick.
+struct JoystickRef : Joystick
+{
+  /**
+   * Constructs from JoystickParam.
+   *
+   * @param resource a JoystickRaw or Joystick.
+   *
+   * This does not takes ownership!
+   */
+  JoystickRef(JoystickParam resource)
+    : Joystick(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  JoystickRef(const JoystickRef& other)
+    : Joystick(other.get())
+  {
+  }
+
+  /// Destructor
+  ~JoystickRef() { release(); }
+};
+
+/**
+ * The largest value an Joystick's axis can report.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa JOYSTICK_AXIS_MIN
+ */
+constexpr int JOYSTICK_AXIS_MAX = SDL_JOYSTICK_AXIS_MAX;
+
+/**
+ * The smallest value an Joystick's axis can report.
+ *
+ * This is a negative number!
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa JOYSTICK_AXIS_MAX
+ */
+constexpr int JOYSTICK_AXIS_MIN = SDL_JOYSTICK_AXIS_MIN;
+
+/**
+ * Locking for atomic access to the joystick API.
+ *
+ * The SDL joystick functions are thread-safe, however you can lock the
+ * joysticks while processing to guarantee that the joystick list won't change
+ * and joystick and gamepad events will not be delivered.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void LockJoysticks(void) { SDL_LockJoysticks(); }
+
+/**
+ * Unlocking for atomic access to the joystick API.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void UnlockJoysticks(void) { SDL_UnlockJoysticks(); }
+
+/**
+ * Return whether a joystick is currently connected.
+ *
+ * @returns true if a joystick is connected, false otherwise.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetJoysticks
+ */
+inline bool HasJoystick() { return SDL_HasJoystick(); }
+
+/**
+ * Get a list of currently connected joysticks.
+ *
+ * @returns a 0 terminated array of joystick instance IDs or nullptr on failure;
+ *          call GetError() for more information. This should be freed
+ *          with free() when it is no longer needed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasJoystick
+ * @sa JoystickID.OpenJoystick
+ */
+inline OwnArray<JoystickID> GetJoysticks()
+{
+  int count;
+  auto r = reinterpret_cast<JoystickID*>(SDL_GetJoysticks(&count));
+  return OwnArray<JoystickID>(r, count);
+}
+
+/**
+ * Get the implementation dependent name of a joystick.
+ *
+ * This can be called before any joysticks are opened.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the name of the selected joystick. If no name can be found, this
+ *          function returns nullptr; call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetName
+ * @sa GetJoysticks
+ */
+inline const char* GetJoystickNameForID(JoystickID instance_id)
+{
+  return SDL_GetJoystickNameForID(instance_id);
+}
+
+inline const char* JoystickID::GetJoystickNameForID()
+{
+  return SDL::GetJoystickNameForID(m_joystickID);
+}
+
+/**
+ * Get the implementation dependent path of a joystick.
+ *
+ * This can be called before any joysticks are opened.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the path of the selected joystick. If no path can be found, this
+ *          function returns nullptr; call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetPath
+ * @sa GetJoysticks
+ */
+inline const char* GetJoystickPathForID(JoystickID instance_id)
+{
+  return SDL_GetJoystickPathForID(instance_id);
+}
+
+inline const char* JoystickID::GetJoystickPathForID()
+{
+  return SDL::GetJoystickPathForID(m_joystickID);
+}
+
+/**
+ * Get the player index of a joystick.
+ *
+ * This can be called before any joysticks are opened.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the player index of a joystick, or -1 if it's not available.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetPlayerIndex
+ * @sa GetJoysticks
+ */
+inline int GetJoystickPlayerIndexForID(JoystickID instance_id)
+{
+  return SDL_GetJoystickPlayerIndexForID(instance_id);
+}
+
+inline int JoystickID::GetJoystickPlayerIndexForID()
+{
+  return SDL::GetJoystickPlayerIndexForID(m_joystickID);
+}
+
+/**
+ * Get the implementation-dependent GUID of a joystick.
+ *
+ * This can be called before any joysticks are opened.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the GUID of the selected joystick. If called with an invalid
+ *          instance_id, this function returns a zero GUID.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetGUID
+ * @sa GUID.ToString
+ */
+inline GUID GetJoystickGUIDForID(JoystickID instance_id)
+{
+  return SDL_GetJoystickGUIDForID(instance_id);
+}
+
+inline GUID JoystickID::GetJoystickGUIDForID()
+{
+  return SDL::GetJoystickGUIDForID(m_joystickID);
+}
+
+/**
+ * Get the USB vendor ID of a joystick, if available.
+ *
+ * This can be called before any joysticks are opened. If the vendor ID isn't
+ * available this function returns 0.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the USB vendor ID of the selected joystick. If called with an
+ *          invalid instance_id, this function returns 0.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetVendor
+ * @sa GetJoysticks
+ */
+inline Uint16 GetJoystickVendorForID(JoystickID instance_id)
+{
+  return SDL_GetJoystickVendorForID(instance_id);
+}
+
+inline Uint16 JoystickID::GetJoystickVendorForID()
+{
+  return SDL::GetJoystickVendorForID(m_joystickID);
+}
+
+/**
+ * Get the USB product ID of a joystick, if available.
+ *
+ * This can be called before any joysticks are opened. If the product ID isn't
+ * available this function returns 0.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the USB product ID of the selected joystick. If called with an
+ *          invalid instance_id, this function returns 0.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetProduct
+ * @sa GetJoysticks
+ */
+inline Uint16 GetJoystickProductForID(JoystickID instance_id)
+{
+  return SDL_GetJoystickProductForID(instance_id);
+}
+
+inline Uint16 JoystickID::GetJoystickProductForID()
+{
+  return SDL::GetJoystickProductForID(m_joystickID);
+}
+
+/**
+ * Get the product version of a joystick, if available.
+ *
+ * This can be called before any joysticks are opened. If the product version
+ * isn't available this function returns 0.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the product version of the selected joystick. If called with an
+ *          invalid instance_id, this function returns 0.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetProductVersion
+ * @sa GetJoysticks
+ */
+inline Uint16 GetJoystickProductVersionForID(JoystickID instance_id)
+{
+  return SDL_GetJoystickProductVersionForID(instance_id);
+}
+
+inline Uint16 JoystickID::GetJoystickProductVersionForID()
+{
+  return SDL::GetJoystickProductVersionForID(m_joystickID);
+}
+
+/**
+ * Get the type of a joystick, if available.
+ *
+ * This can be called before any joysticks are opened.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the JoystickType of the selected joystick. If called with an
+ *          invalid instance_id, this function returns
+ *          `JOYSTICK_TYPE_UNKNOWN`.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetType
+ * @sa GetJoysticks
+ */
+inline JoystickType GetJoystickTypeForID(JoystickID instance_id)
+{
+  return SDL_GetJoystickTypeForID(instance_id);
+}
+
+inline JoystickType JoystickID::GetJoystickTypeForID()
+{
+  return SDL::GetJoystickTypeForID(m_joystickID);
+}
+
+/**
+ * Open a joystick for use.
+ *
+ * The joystick subsystem must be initialized before a joystick can be opened
+ * for use.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns an Joystick on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.Close
+ */
+inline Joystick OpenJoystick(JoystickID instance_id)
+{
+  return Joystick(instance_id);
+}
+
+inline Joystick JoystickID::OpenJoystick() { return Joystick(m_joystickID); }
+
+/**
+ * Get the Joystick associated with an instance ID, if it has been opened.
+ *
+ * @param instance_id the instance ID to get the Joystick for.
+ * @returns an Joystick on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline JoystickRef GetJoystickFromID(JoystickID instance_id)
+{
+  return {CheckError(SDL_GetJoystickFromID(instance_id))};
+}
+
+inline JoystickRef JoystickID::GetJoystickFromID()
+{
+  return SDL::GetJoystickFromID(m_joystickID);
+}
+
+/**
+ * Get the Joystick associated with a player index.
+ *
+ * @param player_index the player index to get the Joystick for.
+ * @returns an Joystick on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetPlayerIndex
+ * @sa Joystick.SetPlayerIndex
+ */
+inline JoystickRef GetJoystickFromPlayerIndex(int player_index)
+{
+  return {CheckError(SDL_GetJoystickFromPlayerIndex(player_index))};
+}
+
+/**
+ * The structure that describes a virtual joystick touchpad.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa VirtualJoystickDesc
+ */
+using VirtualJoystickTouchpadDesc = SDL_VirtualJoystickTouchpadDesc;
+
+/**
+ * The structure that describes a virtual joystick sensor.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa VirtualJoystickDesc
+ */
+using VirtualJoystickSensorDesc = SDL_VirtualJoystickSensorDesc;
+
+/**
+ * The structure that describes a virtual joystick.
+ *
+ * This structure should be initialized using SDL_INIT_INTERFACE(). All
+ * elements of this structure are optional.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa AttachVirtualJoystick
+ * @sa SDL_INIT_INTERFACE
+ * @sa VirtualJoystickSensorDesc
+ * @sa VirtualJoystickTouchpadDesc
+ */
+using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
+
+/**
+ * Attach a new virtual joystick.
+ *
+ * @param desc joystick description, initialized using SDL_INIT_INTERFACE().
+ * @returns the joystick instance ID, or 0 on failure; call GetError() for
+ *          more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa JoystickID.DetachVirtualJoystick
+ */
+inline JoystickID AttachVirtualJoystick(const VirtualJoystickDesc* desc)
+{
+  return SDL_AttachVirtualJoystick(desc);
+}
+
+/**
+ * Detach a virtual joystick.
+ *
+ * @param instance_id the joystick instance ID, previously returned from
+ *                    AttachVirtualJoystick().
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AttachVirtualJoystick
+ */
+inline void DetachVirtualJoystick(JoystickID instance_id)
+{
+  CheckError(SDL_DetachVirtualJoystick(instance_id));
+}
+
+inline void JoystickID::DetachVirtualJoystick()
+{
+  SDL::DetachVirtualJoystick(m_joystickID);
+}
+
+/**
+ * Query whether or not a joystick is virtual.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns true if the joystick is virtual, false otherwise.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool IsJoystickVirtual(JoystickID instance_id)
+{
+  return SDL_IsJoystickVirtual(instance_id);
+}
+
+inline bool JoystickID::IsJoystickVirtual()
+{
+  return SDL::IsJoystickVirtual(m_joystickID);
+}
+
+/**
+ * Set the state of an axis on an opened virtual joystick.
+ *
+ * Please note that values set here will not be applied until the next call to
+ * UpdateJoysticks, which can either be called directly, or can be called
+ * indirectly through various other SDL APIs, including, but not limited to
+ * the following: PollEvent, PumpEvents, WaitEventTimeout,
+ * WaitEvent.
+ *
+ * Note that when sending trigger axes, you should scale the value to the full
+ * range of Sint16. For example, a trigger at rest would have the value of
+ * `JOYSTICK_AXIS_MIN`.
+ *
+ * @param joystick the virtual joystick on which to set state.
+ * @param axis the index of the axis on the virtual joystick to update.
+ * @param value the new value for the specified axis.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SetJoystickVirtualAxis(JoystickParam joystick,
+                                   int axis,
+                                   Sint16 value)
+{
+  CheckError(SDL_SetJoystickVirtualAxis(joystick, axis, value));
+}
+
+inline void Joystick::SetVirtualAxis(int axis, Sint16 value)
+{
+  SDL::SetJoystickVirtualAxis(m_resource, axis, value);
+}
+
+/**
+ * Generate ball motion on an opened virtual joystick.
+ *
+ * Please note that values set here will not be applied until the next call to
+ * UpdateJoysticks, which can either be called directly, or can be called
+ * indirectly through various other SDL APIs, including, but not limited to
+ * the following: PollEvent, PumpEvents, WaitEventTimeout,
+ * WaitEvent.
+ *
+ * @param joystick the virtual joystick on which to set state.
+ * @param ball the index of the ball on the virtual joystick to update.
+ * @param xrel the relative motion on the X axis.
+ * @param yrel the relative motion on the Y axis.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SetJoystickVirtualBall(JoystickParam joystick,
+                                   int ball,
+                                   Sint16 xrel,
+                                   Sint16 yrel)
+{
+  CheckError(SDL_SetJoystickVirtualBall(joystick, ball, xrel, yrel));
+}
+
+inline void Joystick::SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel)
+{
+  SDL::SetJoystickVirtualBall(m_resource, ball, xrel, yrel);
+}
+
+/**
+ * Set the state of a button on an opened virtual joystick.
+ *
+ * Please note that values set here will not be applied until the next call to
+ * UpdateJoysticks, which can either be called directly, or can be called
+ * indirectly through various other SDL APIs, including, but not limited to
+ * the following: PollEvent, PumpEvents, WaitEventTimeout,
+ * WaitEvent.
+ *
+ * @param joystick the virtual joystick on which to set state.
+ * @param button the index of the button on the virtual joystick to update.
+ * @param down true if the button is pressed, false otherwise.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SetJoystickVirtualButton(JoystickParam joystick,
+                                     int button,
+                                     bool down)
+{
+  CheckError(SDL_SetJoystickVirtualButton(joystick, button, down));
+}
+
+inline void Joystick::SetVirtualButton(int button, bool down)
+{
+  SDL::SetJoystickVirtualButton(m_resource, button, down);
+}
+
+/**
+ * Set the state of a hat on an opened virtual joystick.
+ *
+ * Please note that values set here will not be applied until the next call to
+ * UpdateJoysticks, which can either be called directly, or can be called
+ * indirectly through various other SDL APIs, including, but not limited to
+ * the following: PollEvent, PumpEvents, WaitEventTimeout,
+ * WaitEvent.
+ *
+ * @param joystick the virtual joystick on which to set state.
+ * @param hat the index of the hat on the virtual joystick to update.
+ * @param value the new value for the specified hat.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SetJoystickVirtualHat(JoystickParam joystick, int hat, Uint8 value)
+{
+  CheckError(SDL_SetJoystickVirtualHat(joystick, hat, value));
+}
+
+inline void Joystick::SetVirtualHat(int hat, Uint8 value)
+{
+  SDL::SetJoystickVirtualHat(m_resource, hat, value);
+}
+
+/**
+ * Set touchpad finger state on an opened virtual joystick.
+ *
+ * Please note that values set here will not be applied until the next call to
+ * UpdateJoysticks, which can either be called directly, or can be called
+ * indirectly through various other SDL APIs, including, but not limited to
+ * the following: PollEvent, PumpEvents, WaitEventTimeout,
+ * WaitEvent.
+ *
+ * @param joystick the virtual joystick on which to set state.
+ * @param touchpad the index of the touchpad on the virtual joystick to
+ *                 update.
+ * @param finger the index of the finger on the touchpad to set.
+ * @param down true if the finger is pressed, false if the finger is released.
+ * @param p the x, y coordinates of the finger on the touchpad, normalized 0 to
+ *          1, with the origin in the upper left.
+ * @param pressure the pressure of the finger.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SetJoystickVirtualTouchpad(JoystickParam joystick,
+                                       int touchpad,
+                                       int finger,
+                                       bool down,
+                                       const FPointRaw& p,
+                                       float pressure)
+{
+  CheckError(SDL_SetJoystickVirtualTouchpad(
+    joystick, touchpad, finger, down, p.x, p.y, pressure));
+}
+
+inline void Joystick::SetVirtualTouchpad(int touchpad,
+                                         int finger,
+                                         bool down,
+                                         const FPointRaw& p,
+                                         float pressure)
+{
+  SDL::SetJoystickVirtualTouchpad(
+    m_resource, touchpad, finger, down, p, pressure);
+}
+
+/**
+ * Send a sensor update for an opened virtual joystick.
+ *
+ * Please note that values set here will not be applied until the next call to
+ * UpdateJoysticks, which can either be called directly, or can be called
+ * indirectly through various other SDL APIs, including, but not limited to
+ * the following: PollEvent, PumpEvents, WaitEventTimeout,
+ * WaitEvent.
+ *
+ * @param joystick the virtual joystick on which to set state.
+ * @param type the type of the sensor on the virtual joystick to update.
+ * @param sensor_timestamp a 64-bit timestamp in nanoseconds associated with
+ *                         the sensor reading.
+ * @param data the data associated with the sensor reading.
+ * @param num_values the number of values pointed to by `data`.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SendJoystickVirtualSensorData(JoystickParam joystick,
+                                          SensorType type,
+                                          Uint64 sensor_timestamp,
+                                          const float* data,
+                                          int num_values)
+{
+  CheckError(SDL_SendJoystickVirtualSensorData(
+    joystick, type, sensor_timestamp, data, num_values));
+}
+
+inline void Joystick::SendVirtualSensorData(SensorType type,
+                                            Uint64 sensor_timestamp,
+                                            const float* data,
+                                            int num_values)
+{
+  SDL::SendJoystickVirtualSensorData(
+    m_resource, type, sensor_timestamp, data, num_values);
+}
+
+/**
+ * Get the properties associated with a joystick.
+ *
+ * The following read-only properties are provided by SDL:
+ *
+ * - `prop::JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an
+ *   LED that has adjustable brightness
+ * - `prop::JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED
+ *   that has adjustable color
+ * - `prop::JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a
+ *   player LED
+ * - `prop::JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has
+ *   left/right rumble
+ * - `prop::JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has
+ *   simple trigger rumble
+ *
+ * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @returns a valid property ID on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline PropertiesRef GetJoystickProperties(JoystickParam joystick)
+{
+  return {CheckError(SDL_GetJoystickProperties(joystick))};
+}
+
+inline PropertiesRef Joystick::GetProperties()
+{
+  return SDL::GetJoystickProperties(m_resource);
+}
+
+namespace prop::JoystickCap {
+
+constexpr auto MONO_LED_BOOLEAN = SDL_PROP_JOYSTICK_CAP_MONO_LED_BOOLEAN;
+
+constexpr auto RGB_LED_BOOLEAN = SDL_PROP_JOYSTICK_CAP_RGB_LED_BOOLEAN;
+
+constexpr auto PLAYER_LED_BOOLEAN = SDL_PROP_JOYSTICK_CAP_PLAYER_LED_BOOLEAN;
+
+constexpr auto RUMBLE_BOOLEAN = SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN;
+
+constexpr auto TRIGGER_RUMBLE_BOOLEAN =
+  SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN;
+
+} // namespace prop::JoystickCap
+
+/**
+ * Get the implementation dependent name of a joystick.
+ *
+ * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @returns the name of the selected joystick. If no name can be found, this
+ *          function returns nullptr; call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa JoystickID.GetJoystickNameForID
+ */
+inline const char* GetJoystickName(JoystickParam joystick)
+{
+  return SDL_GetJoystickName(joystick);
+}
+
+inline const char* Joystick::GetName()
+{
+  return SDL::GetJoystickName(m_resource);
+}
+
+/**
+ * Get the implementation dependent path of a joystick.
+ *
+ * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @returns the path of the selected joystick. If no path can be found, this
+ *          function returns nullptr; call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa JoystickID.GetJoystickPathForID
+ */
+inline const char* GetJoystickPath(JoystickParam joystick)
+{
+  return SDL_GetJoystickPath(joystick);
+}
+
+inline const char* Joystick::GetPath()
+{
+  return SDL::GetJoystickPath(m_resource);
+}
+
+/**
+ * Get the player index of an opened joystick.
+ *
+ * For XInput controllers this returns the XInput user index. Many joysticks
+ * will not be able to supply this information.
+ *
+ * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @returns the player index, or -1 if it's not available.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetPlayerIndex
+ */
+inline int GetJoystickPlayerIndex(JoystickParam joystick)
+{
+  return SDL_GetJoystickPlayerIndex(joystick);
+}
+
+inline int Joystick::GetPlayerIndex()
+{
+  return SDL::GetJoystickPlayerIndex(m_resource);
+}
+
+/**
+ * Set the player index of an opened joystick.
+ *
+ * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param player_index player index to assign to this joystick, or -1 to clear
+ *                     the player index and turn off player LEDs.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetPlayerIndex
+ */
+inline void SetJoystickPlayerIndex(JoystickParam joystick, int player_index)
+{
+  CheckError(SDL_SetJoystickPlayerIndex(joystick, player_index));
+}
+
+inline void Joystick::SetPlayerIndex(int player_index)
+{
+  SDL::SetJoystickPlayerIndex(m_resource, player_index);
+}
+
+/**
+ * Get the implementation-dependent GUID for the joystick.
+ *
+ * This function requires an open joystick.
+ *
+ * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @returns the GUID of the given joystick. If called on an invalid index,
+ *          this function returns a zero GUID; call GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa JoystickID.GetJoystickGUIDForID
+ * @sa GUID.ToString
+ */
+inline GUID GetJoystickGUID(JoystickParam joystick)
+{
+  return SDL_GetJoystickGUID(joystick);
+}
+
+inline GUID Joystick::GetGUID() { return SDL::GetJoystickGUID(m_resource); }
+
+/**
+ * Get the USB vendor ID of an opened joystick, if available.
+ *
+ * If the vendor ID isn't available this function returns 0.
+ *
+ * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @returns the USB vendor ID of the selected joystick, or 0 if unavailable.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa JoystickID.GetJoystickVendorForID
+ */
+inline Uint16 GetJoystickVendor(JoystickParam joystick)
+{
+  return SDL_GetJoystickVendor(joystick);
+}
+
+inline Uint16 Joystick::GetVendor()
+{
+  return SDL::GetJoystickVendor(m_resource);
+}
+
+/**
+ * Get the USB product ID of an opened joystick, if available.
+ *
+ * If the product ID isn't available this function returns 0.
+ *
+ * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @returns the USB product ID of the selected joystick, or 0 if unavailable.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa JoystickID.GetJoystickProductForID
+ */
+inline Uint16 GetJoystickProduct(JoystickParam joystick)
+{
+  return SDL_GetJoystickProduct(joystick);
+}
+
+inline Uint16 Joystick::GetProduct()
+{
+  return SDL::GetJoystickProduct(m_resource);
+}
+
+/**
+ * Get the product version of an opened joystick, if available.
+ *
+ * If the product version isn't available this function returns 0.
+ *
+ * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @returns the product version of the selected joystick, or 0 if unavailable.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa JoystickID.GetJoystickProductVersionForID
+ */
+inline Uint16 GetJoystickProductVersion(JoystickParam joystick)
+{
+  return SDL_GetJoystickProductVersion(joystick);
+}
+
+inline Uint16 Joystick::GetProductVersion()
+{
+  return SDL::GetJoystickProductVersion(m_resource);
+}
+
+/**
+ * Get the firmware version of an opened joystick, if available.
+ *
+ * If the firmware version isn't available this function returns 0.
+ *
+ * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @returns the firmware version of the selected joystick, or 0 if
+ *          unavailable.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline Uint16 GetJoystickFirmwareVersion(JoystickParam joystick)
+{
+  return SDL_GetJoystickFirmwareVersion(joystick);
+}
+
+inline Uint16 Joystick::GetFirmwareVersion()
+{
+  return SDL::GetJoystickFirmwareVersion(m_resource);
+}
+
+/**
+ * Get the serial number of an opened joystick, if available.
+ *
+ * Returns the serial number of the joystick, or nullptr if it is not available.
+ *
+ * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @returns the serial number of the selected joystick, or nullptr if
+ *          unavailable.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline const char* GetJoystickSerial(JoystickParam joystick)
+{
+  return SDL_GetJoystickSerial(joystick);
+}
+
+inline const char* Joystick::GetSerial()
+{
+  return SDL::GetJoystickSerial(m_resource);
+}
+
+/**
+ * Get the type of an opened joystick.
+ *
+ * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @returns the JoystickType of the selected joystick.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa JoystickID.GetJoystickTypeForID
+ */
+inline JoystickType GetJoystickType(JoystickParam joystick)
+{
+  return SDL_GetJoystickType(joystick);
+}
+
+inline JoystickType Joystick::GetType()
+{
+  return SDL::GetJoystickType(m_resource);
+}
+
+/**
+ * Get the device information encoded in a GUID structure.
+ *
+ * @param guid the GUID you wish to get info about.
+ * @param vendor a pointer filled in with the device VID, or 0 if not
+ *               available.
+ * @param product a pointer filled in with the device PID, or 0 if not
+ *                available.
+ * @param version a pointer filled in with the device version, or 0 if not
+ *                available.
+ * @param crc16 a pointer filled in with a CRC used to distinguish different
+ *              products with the same VID/PID, or 0 if not available.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa JoystickID.GetJoystickGUIDForID
+ */
+inline void GetJoystickGUIDInfo(GUID guid,
+                                Uint16* vendor,
+                                Uint16* product,
+                                Uint16* version,
+                                Uint16* crc16)
+{
+  SDL_GetJoystickGUIDInfo(guid, vendor, product, version, crc16);
+}
+
+/**
+ * Get the status of a specified joystick.
+ *
+ * @param joystick the joystick to query.
+ * @returns true if the joystick has been opened, false if it has not; call
+ *          GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool JoystickConnected(JoystickParam joystick)
+{
+  return SDL_JoystickConnected(joystick);
+}
+
+inline bool Joystick::Connected() { return SDL::JoystickConnected(m_resource); }
+
+/**
+ * Get the instance ID of an opened joystick.
+ *
+ * @param joystick an Joystick structure containing joystick information.
+ * @returns the instance ID of the specified joystick on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline JoystickID GetJoystickID(JoystickParam joystick)
+{
+  return CheckError(SDL_GetJoystickID(joystick));
+}
+
+inline JoystickID Joystick::GetID() { return SDL::GetJoystickID(m_resource); }
+
+/**
+ * Get the number of general axis controls on a joystick.
+ *
+ * Often, the directional pad on a game controller will either look like 4
+ * separate buttons or a POV hat, and not axes, but all of this is up to the
+ * device and platform.
+ *
+ * @param joystick an Joystick structure containing joystick information.
+ * @returns the number of axis controls/number of axes on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetAxis
+ * @sa Joystick.GetNumBalls
+ * @sa Joystick.GetNumButtons
+ * @sa Joystick.GetNumHats
+ */
+inline int GetNumJoystickAxes(JoystickParam joystick)
+{
+  return CheckError(SDL_GetNumJoystickAxes(joystick));
+}
+
+inline int Joystick::GetNumAxes()
+{
+  return SDL::GetNumJoystickAxes(m_resource);
+}
+
+/**
+ * Get the number of trackballs on a joystick.
+ *
+ * Joystick trackballs have only relative motion events associated with them
+ * and their state cannot be polled.
+ *
+ * Most joysticks do not have trackballs.
+ *
+ * @param joystick an Joystick structure containing joystick information.
+ * @returns the number of trackballs on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetBall
+ * @sa Joystick.GetNumAxes
+ * @sa Joystick.GetNumButtons
+ * @sa Joystick.GetNumHats
+ */
+inline int GetNumJoystickBalls(JoystickParam joystick)
+{
+  return CheckError(SDL_GetNumJoystickBalls(joystick));
+}
+
+inline int Joystick::GetNumBalls()
+{
+  return SDL::GetNumJoystickBalls(m_resource);
+}
+
+/**
+ * Get the number of POV hats on a joystick.
+ *
+ * @param joystick an Joystick structure containing joystick information.
+ * @returns the number of POV hats on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetHat
+ * @sa Joystick.GetNumAxes
+ * @sa Joystick.GetNumBalls
+ * @sa Joystick.GetNumButtons
+ */
+inline int GetNumJoystickHats(JoystickParam joystick)
+{
+  return CheckError(SDL_GetNumJoystickHats(joystick));
+}
+
+inline int Joystick::GetNumHats()
+{
+  return SDL::GetNumJoystickHats(m_resource);
+}
+
+/**
+ * Get the number of buttons on a joystick.
+ *
+ * @param joystick an Joystick structure containing joystick information.
+ * @returns the number of buttons on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetButton
+ * @sa Joystick.GetNumAxes
+ * @sa Joystick.GetNumBalls
+ * @sa Joystick.GetNumHats
+ */
+inline int GetNumJoystickButtons(JoystickParam joystick)
+{
+  return CheckError(SDL_GetNumJoystickButtons(joystick));
+}
+
+inline int Joystick::GetNumButtons()
+{
+  return SDL::GetNumJoystickButtons(m_resource);
+}
+
+/**
+ * Set the state of joystick event processing.
+ *
+ * If joystick events are disabled, you must call UpdateJoysticks()
+ * yourself and check the state of the joystick when you want joystick
+ * information.
+ *
+ * @param enabled whether to process joystick events or not.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa JoystickEventsEnabled
+ * @sa UpdateJoysticks
+ */
+inline void SetJoystickEventsEnabled(bool enabled)
+{
+  SDL_SetJoystickEventsEnabled(enabled);
+}
+
+/**
+ * Query the state of joystick event processing.
+ *
+ * If joystick events are disabled, you must call UpdateJoysticks()
+ * yourself and check the state of the joystick when you want joystick
+ * information.
+ *
+ * @returns true if joystick events are being processed, false otherwise.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetJoystickEventsEnabled
+ */
+inline bool JoystickEventsEnabled() { return SDL_JoystickEventsEnabled(); }
+
+/**
+ * Update the current state of the open joysticks.
+ *
+ * This is called automatically by the event loop if any joystick events are
+ * enabled.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void UpdateJoysticks() { SDL_UpdateJoysticks(); }
+
+/**
+ * Get the current state of an axis control on a joystick.
+ *
+ * SDL makes no promises about what part of the joystick any given axis refers
+ * to. Your game should have some sort of configuration UI to let users
+ * specify what each axis should be bound to. Alternately, SDL's higher-level
+ * Game Controller API makes a great effort to apply order to this lower-level
+ * interface, so you know that a specific axis is the "left thumb stick," etc.
+ *
+ * The value returned by Joystick.GetAxis() is a signed integer (-32768 to
+ * 32767) representing the current position of the axis. It may be necessary
+ * to impose certain tolerances on these values to account for jitter.
+ *
+ * @param joystick an Joystick structure containing joystick information.
+ * @param axis the axis to query; the axis indices start at index 0.
+ * @returns a 16-bit signed integer representing the current position of the
+ *          axis or 0 on failure; call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetNumAxes
+ */
+inline Sint16 GetJoystickAxis(JoystickParam joystick, int axis)
+{
+  return SDL_GetJoystickAxis(joystick, axis);
+}
+
+inline Sint16 Joystick::GetAxis(int axis)
+{
+  return SDL::GetJoystickAxis(m_resource, axis);
+}
+
+/**
+ * Get the initial state of an axis control on a joystick.
+ *
+ * The state is a value ranging from -32768 to 32767.
+ *
+ * The axis indices start at index 0.
+ *
+ * @param joystick an Joystick structure containing joystick information.
+ * @param axis the axis to query; the axis indices start at index 0.
+ * @param state upon return, the initial value is supplied here.
+ * @returns true if this axis has any initial value, or false if not.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool GetJoystickAxisInitialState(JoystickParam joystick,
+                                        int axis,
+                                        Sint16* state)
+{
+  return SDL_GetJoystickAxisInitialState(joystick, axis, state);
+}
+
+inline bool Joystick::GetAxisInitialState(int axis, Sint16* state)
+{
+  return SDL::GetJoystickAxisInitialState(m_resource, axis, state);
+}
+
+/**
+ * Get the ball axis change since the last poll.
+ *
+ * Trackballs can only return relative motion since the last call to
+ * Joystick.GetBall(), these motion deltas are placed into `dx` and `dy`.
+ *
+ * Most joysticks do not have trackballs.
+ *
+ * @param joystick the Joystick to query.
+ * @param ball the ball index to query; ball indices start at index 0.
+ * @param dx stores the difference in the x axis position since the last poll.
+ * @param dy stores the difference in the y axis position since the last poll.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetNumBalls
+ */
+inline void GetJoystickBall(JoystickParam joystick, int ball, int* dx, int* dy)
+{
+  CheckError(SDL_GetJoystickBall(joystick, ball, dx, dy));
+}
+
+inline void Joystick::GetBall(int ball, int* dx, int* dy)
+{
+  SDL::GetJoystickBall(m_resource, ball, dx, dy);
+}
+
+/**
+ * Get the current state of a POV hat on a joystick.
+ *
+ * The returned value will be one of the `SDL_HAT_*` values.
+ *
+ * @param joystick an Joystick structure containing joystick information.
+ * @param hat the hat index to get the state from; indices start at index 0.
+ * @returns the current hat position.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetNumHats
+ */
+inline Uint8 GetJoystickHat(JoystickParam joystick, int hat)
+{
+  return SDL_GetJoystickHat(joystick, hat);
+}
+
+inline Uint8 Joystick::GetHat(int hat)
+{
+  return SDL::GetJoystickHat(m_resource, hat);
+}
+
+/**
+ * Get the current state of a button on a joystick.
+ *
+ * @param joystick an Joystick structure containing joystick information.
+ * @param button the button index to get the state from; indices start at
+ *               index 0.
+ * @returns true if the button is pressed, false otherwise.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.GetNumButtons
+ */
+inline bool GetJoystickButton(JoystickParam joystick, int button)
+{
+  return SDL_GetJoystickButton(joystick, button);
+}
+
+inline bool Joystick::GetButton(int button)
+{
+  return SDL::GetJoystickButton(m_resource, button);
+}
+
+/**
+ * Start a rumble effect.
+ *
+ * Each call to this function cancels any previous rumble effect, and calling
+ * it with 0 intensity stops any rumbling.
+ *
+ * This function requires you to process SDL events or call
+ * UpdateJoysticks() to update rumble state.
+ *
+ * @param joystick the joystick to vibrate.
+ * @param low_frequency_rumble the intensity of the low frequency (left)
+ *                             rumble motor, from 0 to 0xFFFF.
+ * @param high_frequency_rumble the intensity of the high frequency (right)
+ *                              rumble motor, from 0 to 0xFFFF.
+ * @param duration_ms the duration of the rumble effect, in milliseconds.
+ * @returns true, or false if rumble isn't supported on this joystick.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool RumbleJoystick(JoystickParam joystick,
+                           Uint16 low_frequency_rumble,
+                           Uint16 high_frequency_rumble,
+                           Uint32 duration_ms)
+{
+  return SDL_RumbleJoystick(
+    joystick, low_frequency_rumble, high_frequency_rumble, duration_ms);
+}
+
+inline bool Joystick::Rumble(Uint16 low_frequency_rumble,
+                             Uint16 high_frequency_rumble,
+                             Uint32 duration_ms)
+{
+  return SDL::RumbleJoystick(
+    m_resource, low_frequency_rumble, high_frequency_rumble, duration_ms);
+}
+
+/**
+ * Start a rumble effect in the joystick's triggers.
+ *
+ * Each call to this function cancels any previous trigger rumble effect, and
+ * calling it with 0 intensity stops any rumbling.
+ *
+ * Note that this is rumbling of the _triggers_ and not the game controller as
+ * a whole. This is currently only supported on Xbox One controllers. If you
+ * want the (more common) whole-controller rumble, use Joystick.Rumble()
+ * instead.
+ *
+ * This function requires you to process SDL events or call
+ * UpdateJoysticks() to update rumble state.
+ *
+ * @param joystick the joystick to vibrate.
+ * @param left_rumble the intensity of the left trigger rumble motor, from 0
+ *                    to 0xFFFF.
+ * @param right_rumble the intensity of the right trigger rumble motor, from 0
+ *                     to 0xFFFF.
+ * @param duration_ms the duration of the rumble effect, in milliseconds.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.Rumble
+ */
+inline void RumbleJoystickTriggers(JoystickParam joystick,
+                                   Uint16 left_rumble,
+                                   Uint16 right_rumble,
+                                   Uint32 duration_ms)
+{
+  CheckError(SDL_RumbleJoystickTriggers(
+    joystick, left_rumble, right_rumble, duration_ms));
+}
+
+inline void Joystick::RumbleTriggers(Uint16 left_rumble,
+                                     Uint16 right_rumble,
+                                     Uint32 duration_ms)
+{
+  SDL::RumbleJoystickTriggers(
+    m_resource, left_rumble, right_rumble, duration_ms);
+}
+
+/**
+ * Update a joystick's LED color.
+ *
+ * An example of a joystick LED is the light on the back of a PlayStation 4's
+ * DualShock 4 controller.
+ *
+ * For joysticks with a single color LED, the maximum of the RGB values will
+ * be used as the LED brightness.
+ *
+ * @param joystick the joystick to update.
+ * @param red the intensity of the red LED.
+ * @param green the intensity of the green LED.
+ * @param blue the intensity of the blue LED.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SetJoystickLED(JoystickParam joystick,
+                           Uint8 red,
+                           Uint8 green,
+                           Uint8 blue)
+{
+  CheckError(SDL_SetJoystickLED(joystick, red, green, blue));
+}
+
+inline void Joystick::SetLED(Uint8 red, Uint8 green, Uint8 blue)
+{
+  SDL::SetJoystickLED(m_resource, red, green, blue);
+}
+
+/**
+ * Send a joystick specific effect packet.
+ *
+ * @param joystick the joystick to affect.
+ * @param data the data to send to the joystick.
+ * @param size the size of the data to send to the joystick.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SendJoystickEffect(JoystickParam joystick,
+                               const void* data,
+                               int size)
+{
+  CheckError(SDL_SendJoystickEffect(joystick, data, size));
+}
+
+inline void Joystick::SendEffect(const void* data, int size)
+{
+  SDL::SendJoystickEffect(m_resource, data, size);
+}
+
+/**
+ * Close a joystick previously opened with JoystickID.OpenJoystick().
+ *
+ * @param joystick the joystick device to close.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa JoystickID.OpenJoystick
+ */
+inline void CloseJoystick(JoystickRaw joystick) { SDL_CloseJoystick(joystick); }
+
+inline void Joystick::Close() { CloseJoystick(release()); }
+
+/**
+ * Get the connection state of a joystick.
+ *
+ * @param joystick the joystick to query.
+ * @returns the connection state on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline JoystickConnectionState GetJoystickConnectionState(
+  JoystickParam joystick)
+{
+  return CheckError(SDL_GetJoystickConnectionState(joystick));
+}
+
+inline JoystickConnectionState Joystick::GetConnectionState()
+{
+  return SDL::GetJoystickConnectionState(m_resource);
+}
+
+/**
+ * Get the battery state of a joystick.
+ *
+ * You should never take a battery status as absolute truth. Batteries
+ * (especially failing batteries) are delicate hardware, and the values
+ * reported here are best estimates based on what that hardware reports. It's
+ * not uncommon for older batteries to lose stored power much faster than it
+ * reports, or completely drain when reporting it has 20 percent left, etc.
+ *
+ * @param joystick the joystick to query.
+ * @param percent a pointer filled in with the percentage of battery life
+ *                left, between 0 and 100, or nullptr to ignore. This will be
+ *                filled in with -1 we can't determine a value or there is no
+ *                battery.
+ * @returns the current battery state or `POWERSTATE_ERROR` on failure;
+ *          call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline PowerState GetJoystickPowerInfo(JoystickParam joystick, int* percent)
+{
+  return SDL_GetJoystickPowerInfo(joystick, percent);
+}
+
+inline PowerState Joystick::GetPowerInfo(int* percent)
+{
+  return SDL::GetJoystickPowerInfo(m_resource, percent);
+}
+
+/// @}
+
+/**
  * @defgroup CategoryKeyboard Keyboard Support
  *
  * SDL keyboard management.
@@ -62062,6 +64556,4646 @@ inline void HideCursor() { CheckError(SDL_HideCursor()); }
  * @sa ShowCursor
  */
 inline bool CursorVisible() { return SDL_CursorVisible(); }
+
+/// @}
+
+/**
+ * @defgroup CategoryGamepad Gamepad Support
+ *
+ * SDL provides a low-level joystick API, which just treats joysticks as an
+ * arbitrary pile of buttons, axes, and hat switches. If you're planning to
+ * write your own control configuration screen, this can give you a lot of
+ * flexibility, but that's a lot of work, and most things that we consider
+ * "joysticks" now are actually console-style gamepads. So SDL provides the
+ * gamepad API on top of the lower-level joystick functionality.
+ *
+ * The difference between a joystick and a gamepad is that a gamepad tells you
+ * _where_ a button or axis is on the device. You don't speak to gamepads in
+ * terms of arbitrary numbers like "button 3" or "axis 2" but in standard
+ * locations: the d-pad, the shoulder buttons, triggers, A/B/X/Y (or
+ * X/O/Square/Triangle, if you will).
+ *
+ * One turns a joystick into a gamepad by providing a magic configuration
+ * string, which tells SDL the details of a specific device: when you see this
+ * specific hardware, if button 2 gets pressed, this is actually D-Pad Up,
+ * etc.
+ *
+ * SDL has many popular controllers configured out of the box, and users can
+ * add their own controller details through an environment variable if it's
+ * otherwise unknown to SDL.
+ *
+ * In order to use these functions, Init() must have been called with the
+ * INIT_GAMEPAD flag. This causes SDL to scan the system for gamepads, and
+ * load appropriate drivers.
+ *
+ * If you would like to receive gamepad updates while the application is in
+ * the background, you should set the following hint before calling
+ * Init(): SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
+ *
+ * Gamepads support various optional features such as rumble, color LEDs,
+ * touchpad, gyro, etc. The support for these features varies depending on the
+ * controller and OS support available. You can check for LED and rumble
+ * capabilities at runtime by calling Gamepad.GetProperties() and checking
+ * the various capability properties. You can check for touchpad by calling
+ * Gamepad.GetNumTouchpads() and check for gyro and accelerometer by
+ * calling Gamepad.HasSensor().
+ *
+ * By default SDL will try to use the most capable driver available, but you
+ * can tune which OS drivers to use with the various joystick hints in
+ * SDL_hints.h.
+ *
+ * Your application should always support gamepad hotplugging. On some
+ * platforms like Xbox, Steam Deck, etc., this is a requirement for
+ * certification. On other platforms, like macOS and Windows when using
+ * Windows.Gaming.Input, controllers may not be available at startup and will
+ * come in at some point after you've started processing events.
+ *
+ * @{
+ */
+
+// Forward decl
+struct Gamepad;
+
+/// Alias to raw representation for Gamepad.
+using GamepadRaw = SDL_Gamepad*;
+
+// Forward decl
+struct GamepadRef;
+
+/// Safely wrap Gamepad for non owning parameters
+struct GamepadParam
+{
+  GamepadRaw value; ///< parameter's GamepadRaw
+
+  /// Constructs from GamepadRaw
+  constexpr GamepadParam(GamepadRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr GamepadParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const GamepadParam& other) const = default;
+
+  /// Converts to underlying GamepadRaw
+  constexpr operator GamepadRaw() const { return value; }
+};
+
+/**
+ * Standard gamepad types.
+ *
+ * This type does not necessarily map to first-party controllers from
+ * Microsoft/Sony/Nintendo; in many cases, third-party controllers can report
+ * as these, either because they were designed for a specific console, or they
+ * simply most closely match that console's controllers (does it have A/B/X/Y
+ * buttons or X/O/Square/Triangle? Does it have a touchpad? etc).
+ */
+using GamepadType = SDL_GamepadType;
+
+constexpr GamepadType GAMEPAD_TYPE_UNKNOWN =
+  SDL_GAMEPAD_TYPE_UNKNOWN; ///< GAMEPAD_TYPE_UNKNOWN
+
+constexpr GamepadType GAMEPAD_TYPE_STANDARD =
+  SDL_GAMEPAD_TYPE_STANDARD; ///< GAMEPAD_TYPE_STANDARD
+
+constexpr GamepadType GAMEPAD_TYPE_XBOX360 =
+  SDL_GAMEPAD_TYPE_XBOX360; ///< GAMEPAD_TYPE_XBOX360
+
+constexpr GamepadType GAMEPAD_TYPE_XBOXONE =
+  SDL_GAMEPAD_TYPE_XBOXONE; ///< GAMEPAD_TYPE_XBOXONE
+
+constexpr GamepadType GAMEPAD_TYPE_PS3 =
+  SDL_GAMEPAD_TYPE_PS3; ///< GAMEPAD_TYPE_PS3
+
+constexpr GamepadType GAMEPAD_TYPE_PS4 =
+  SDL_GAMEPAD_TYPE_PS4; ///< GAMEPAD_TYPE_PS4
+
+constexpr GamepadType GAMEPAD_TYPE_PS5 =
+  SDL_GAMEPAD_TYPE_PS5; ///< GAMEPAD_TYPE_PS5
+
+constexpr GamepadType GAMEPAD_TYPE_NINTENDO_SWITCH_PRO =
+  SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_PRO; ///< GAMEPAD_TYPE_NINTENDO_SWITCH_PRO
+
+constexpr GamepadType GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_LEFT =
+  SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_LEFT; ///< GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_LEFT
+
+constexpr GamepadType GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT =
+  SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT; ///< GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT
+
+constexpr GamepadType GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR =
+  SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR; ///< GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR
+
+constexpr GamepadType GAMEPAD_TYPE_COUNT =
+  SDL_GAMEPAD_TYPE_COUNT; ///< GAMEPAD_TYPE_COUNT
+
+/**
+ * The list of buttons available on a gamepad
+ *
+ * For controllers that use a diamond pattern for the face buttons, the
+ * south/east/west/north buttons below correspond to the locations in the
+ * diamond pattern. For Xbox controllers, this would be A/B/X/Y, for Nintendo
+ * Switch controllers, this would be B/A/Y/X, for PlayStation controllers this
+ * would be Cross/Circle/Square/Triangle.
+ *
+ * For controllers that don't use a diamond pattern for the face buttons, the
+ * south/east/west/north buttons indicate the buttons labeled A, B, C, D, or
+ * 1, 2, 3, 4, or for controllers that aren't labeled, they are the primary,
+ * secondary, etc. buttons.
+ *
+ * The activate action is often the south button and the cancel action is
+ * often the east button, but in some regions this is reversed, so your game
+ * should allow remapping actions based on user preferences.
+ *
+ * You can query the labels for the face buttons using
+ * Gamepad.GetButtonLabel()
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using GamepadButton = SDL_GamepadButton;
+
+constexpr GamepadButton GAMEPAD_BUTTON_INVALID =
+  SDL_GAMEPAD_BUTTON_INVALID; ///< GAMEPAD_BUTTON_INVALID
+
+constexpr GamepadButton GAMEPAD_BUTTON_SOUTH =
+  SDL_GAMEPAD_BUTTON_SOUTH; ///< Bottom face button (e.g.  Xbox A button)
+
+constexpr GamepadButton GAMEPAD_BUTTON_EAST =
+  SDL_GAMEPAD_BUTTON_EAST; ///< Right face button (e.g.  Xbox B button)
+
+constexpr GamepadButton GAMEPAD_BUTTON_WEST =
+  SDL_GAMEPAD_BUTTON_WEST; ///< Left face button (e.g.  Xbox X button)
+
+constexpr GamepadButton GAMEPAD_BUTTON_NORTH =
+  SDL_GAMEPAD_BUTTON_NORTH; ///< Top face button (e.g.  Xbox Y button)
+
+constexpr GamepadButton GAMEPAD_BUTTON_BACK =
+  SDL_GAMEPAD_BUTTON_BACK; ///< GAMEPAD_BUTTON_BACK
+
+constexpr GamepadButton GAMEPAD_BUTTON_GUIDE =
+  SDL_GAMEPAD_BUTTON_GUIDE; ///< GAMEPAD_BUTTON_GUIDE
+
+constexpr GamepadButton GAMEPAD_BUTTON_START =
+  SDL_GAMEPAD_BUTTON_START; ///< GAMEPAD_BUTTON_START
+
+constexpr GamepadButton GAMEPAD_BUTTON_LEFT_STICK =
+  SDL_GAMEPAD_BUTTON_LEFT_STICK; ///< GAMEPAD_BUTTON_LEFT_STICK
+
+constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_STICK =
+  SDL_GAMEPAD_BUTTON_RIGHT_STICK; ///< GAMEPAD_BUTTON_RIGHT_STICK
+
+constexpr GamepadButton GAMEPAD_BUTTON_LEFT_SHOULDER =
+  SDL_GAMEPAD_BUTTON_LEFT_SHOULDER; ///< GAMEPAD_BUTTON_LEFT_SHOULDER
+
+constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_SHOULDER =
+  SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER; ///< GAMEPAD_BUTTON_RIGHT_SHOULDER
+
+constexpr GamepadButton GAMEPAD_BUTTON_DPAD_UP =
+  SDL_GAMEPAD_BUTTON_DPAD_UP; ///< GAMEPAD_BUTTON_DPAD_UP
+
+constexpr GamepadButton GAMEPAD_BUTTON_DPAD_DOWN =
+  SDL_GAMEPAD_BUTTON_DPAD_DOWN; ///< GAMEPAD_BUTTON_DPAD_DOWN
+
+constexpr GamepadButton GAMEPAD_BUTTON_DPAD_LEFT =
+  SDL_GAMEPAD_BUTTON_DPAD_LEFT; ///< GAMEPAD_BUTTON_DPAD_LEFT
+
+constexpr GamepadButton GAMEPAD_BUTTON_DPAD_RIGHT =
+  SDL_GAMEPAD_BUTTON_DPAD_RIGHT; ///< GAMEPAD_BUTTON_DPAD_RIGHT
+
+/**
+ * Additional button (e.g.  Xbox Series X share button, PS5 microphone button,
+ * Nintendo Switch Pro capture button, Amazon Luna microphone button, Google
+ * Stadia capture button)
+ */
+constexpr GamepadButton GAMEPAD_BUTTON_MISC1 = SDL_GAMEPAD_BUTTON_MISC1;
+
+/**
+ * Upper or primary paddle, under your right hand (e.g.  Xbox Elite paddle P1)
+ */
+constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE1 =
+  SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1;
+
+/// Upper or primary paddle, under your left hand (e.g.  Xbox Elite paddle P3)
+constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE1 =
+  SDL_GAMEPAD_BUTTON_LEFT_PADDLE1;
+
+/**
+ * Lower or secondary paddle, under your right hand (e.g.  Xbox Elite paddle P2)
+ */
+constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE2 =
+  SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2;
+
+/**
+ * Lower or secondary paddle, under your left hand (e.g.  Xbox Elite paddle P4)
+ */
+constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE2 =
+  SDL_GAMEPAD_BUTTON_LEFT_PADDLE2;
+
+constexpr GamepadButton GAMEPAD_BUTTON_TOUCHPAD =
+  SDL_GAMEPAD_BUTTON_TOUCHPAD; ///< PS4/PS5 touchpad button.
+
+constexpr GamepadButton GAMEPAD_BUTTON_MISC2 =
+  SDL_GAMEPAD_BUTTON_MISC2; ///< Additional button.
+
+constexpr GamepadButton GAMEPAD_BUTTON_MISC3 =
+  SDL_GAMEPAD_BUTTON_MISC3; ///< Additional button.
+
+constexpr GamepadButton GAMEPAD_BUTTON_MISC4 =
+  SDL_GAMEPAD_BUTTON_MISC4; ///< Additional button.
+
+constexpr GamepadButton GAMEPAD_BUTTON_MISC5 =
+  SDL_GAMEPAD_BUTTON_MISC5; ///< Additional button.
+
+constexpr GamepadButton GAMEPAD_BUTTON_MISC6 =
+  SDL_GAMEPAD_BUTTON_MISC6; ///< Additional button.
+
+constexpr GamepadButton GAMEPAD_BUTTON_COUNT =
+  SDL_GAMEPAD_BUTTON_COUNT; ///< GAMEPAD_BUTTON_COUNT
+
+/**
+ * The set of gamepad button labels
+ *
+ * This isn't a complete set, just the face buttons to make it easy to show
+ * button prompts.
+ *
+ * For a complete set, you should look at the button and gamepad type and have
+ * a set of symbols that work well with your art style.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using GamepadButtonLabel = SDL_GamepadButtonLabel;
+
+constexpr GamepadButtonLabel GAMEPAD_BUTTON_LABEL_UNKNOWN =
+  SDL_GAMEPAD_BUTTON_LABEL_UNKNOWN; ///< GAMEPAD_BUTTON_LABEL_UNKNOWN
+
+constexpr GamepadButtonLabel GAMEPAD_BUTTON_LABEL_A =
+  SDL_GAMEPAD_BUTTON_LABEL_A; ///< GAMEPAD_BUTTON_LABEL_A
+
+constexpr GamepadButtonLabel GAMEPAD_BUTTON_LABEL_B =
+  SDL_GAMEPAD_BUTTON_LABEL_B; ///< GAMEPAD_BUTTON_LABEL_B
+
+constexpr GamepadButtonLabel GAMEPAD_BUTTON_LABEL_X =
+  SDL_GAMEPAD_BUTTON_LABEL_X; ///< GAMEPAD_BUTTON_LABEL_X
+
+constexpr GamepadButtonLabel GAMEPAD_BUTTON_LABEL_Y =
+  SDL_GAMEPAD_BUTTON_LABEL_Y; ///< GAMEPAD_BUTTON_LABEL_Y
+
+constexpr GamepadButtonLabel GAMEPAD_BUTTON_LABEL_CROSS =
+  SDL_GAMEPAD_BUTTON_LABEL_CROSS; ///< GAMEPAD_BUTTON_LABEL_CROSS
+
+constexpr GamepadButtonLabel GAMEPAD_BUTTON_LABEL_CIRCLE =
+  SDL_GAMEPAD_BUTTON_LABEL_CIRCLE; ///< GAMEPAD_BUTTON_LABEL_CIRCLE
+
+constexpr GamepadButtonLabel GAMEPAD_BUTTON_LABEL_SQUARE =
+  SDL_GAMEPAD_BUTTON_LABEL_SQUARE; ///< GAMEPAD_BUTTON_LABEL_SQUARE
+
+constexpr GamepadButtonLabel GAMEPAD_BUTTON_LABEL_TRIANGLE =
+  SDL_GAMEPAD_BUTTON_LABEL_TRIANGLE; ///< GAMEPAD_BUTTON_LABEL_TRIANGLE
+
+/**
+ * The list of axes available on a gamepad
+ *
+ * Thumbstick axis values range from JOYSTICK_AXIS_MIN to
+ * JOYSTICK_AXIS_MAX, and are centered within ~8000 of zero, though
+ * advanced UI will allow users to set or autodetect the dead zone, which
+ * varies between gamepads.
+ *
+ * Trigger axis values range from 0 (released) to JOYSTICK_AXIS_MAX (fully
+ * pressed) when reported by Gamepad.GetAxis(). Note that this is not the
+ * same range that will be reported by the lower-level Joystick.GetAxis().
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using GamepadAxis = SDL_GamepadAxis;
+
+constexpr GamepadAxis GAMEPAD_AXIS_INVALID =
+  SDL_GAMEPAD_AXIS_INVALID; ///< GAMEPAD_AXIS_INVALID
+
+constexpr GamepadAxis GAMEPAD_AXIS_LEFTX =
+  SDL_GAMEPAD_AXIS_LEFTX; ///< GAMEPAD_AXIS_LEFTX
+
+constexpr GamepadAxis GAMEPAD_AXIS_LEFTY =
+  SDL_GAMEPAD_AXIS_LEFTY; ///< GAMEPAD_AXIS_LEFTY
+
+constexpr GamepadAxis GAMEPAD_AXIS_RIGHTX =
+  SDL_GAMEPAD_AXIS_RIGHTX; ///< GAMEPAD_AXIS_RIGHTX
+
+constexpr GamepadAxis GAMEPAD_AXIS_RIGHTY =
+  SDL_GAMEPAD_AXIS_RIGHTY; ///< GAMEPAD_AXIS_RIGHTY
+
+constexpr GamepadAxis GAMEPAD_AXIS_LEFT_TRIGGER =
+  SDL_GAMEPAD_AXIS_LEFT_TRIGGER; ///< GAMEPAD_AXIS_LEFT_TRIGGER
+
+constexpr GamepadAxis GAMEPAD_AXIS_RIGHT_TRIGGER =
+  SDL_GAMEPAD_AXIS_RIGHT_TRIGGER; ///< GAMEPAD_AXIS_RIGHT_TRIGGER
+
+constexpr GamepadAxis GAMEPAD_AXIS_COUNT =
+  SDL_GAMEPAD_AXIS_COUNT; ///< GAMEPAD_AXIS_COUNT
+
+/**
+ * Types of gamepad control bindings.
+ *
+ * A gamepad is a collection of bindings that map arbitrary joystick buttons,
+ * axes and hat switches to specific positions on a generic console-style
+ * gamepad. This enum is used as part of GamepadBinding to specify those
+ * mappings.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using GamepadBindingType = SDL_GamepadBindingType;
+
+constexpr GamepadBindingType GAMEPAD_BINDTYPE_NONE =
+  SDL_GAMEPAD_BINDTYPE_NONE; ///< GAMEPAD_BINDTYPE_NONE
+
+constexpr GamepadBindingType GAMEPAD_BINDTYPE_BUTTON =
+  SDL_GAMEPAD_BINDTYPE_BUTTON; ///< GAMEPAD_BINDTYPE_BUTTON
+
+constexpr GamepadBindingType GAMEPAD_BINDTYPE_AXIS =
+  SDL_GAMEPAD_BINDTYPE_AXIS; ///< GAMEPAD_BINDTYPE_AXIS
+
+constexpr GamepadBindingType GAMEPAD_BINDTYPE_HAT =
+  SDL_GAMEPAD_BINDTYPE_HAT; ///< GAMEPAD_BINDTYPE_HAT
+
+/**
+ * A mapping between one joystick input to a gamepad control.
+ *
+ * A gamepad has a collection of several bindings, to say, for example, when
+ * joystick button number 5 is pressed, that should be treated like the
+ * gamepad's "start" button.
+ *
+ * SDL has these bindings built-in for many popular controllers, and can add
+ * more with a simple text string. Those strings are parsed into a collection
+ * of these structs to make it easier to operate on the data.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetBindings
+ */
+using GamepadBinding = SDL_GamepadBinding;
+
+/**
+ * The structure used to identify an SDL gamepad
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+class Gamepad
+{
+  GamepadRaw m_resource = nullptr;
+
+public:
+  /// Default ctor
+  constexpr Gamepad() = default;
+
+  /**
+   * Constructs from GamepadParam.
+   *
+   * @param resource a GamepadRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Gamepad(const GamepadRaw resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Gamepad(const Gamepad& other) = delete;
+
+  /// Move constructor
+  constexpr Gamepad(Gamepad&& other)
+    : Gamepad(other.release())
+  {
+  }
+
+  constexpr Gamepad(const GamepadRef& other) = delete;
+
+  constexpr Gamepad(GamepadRef&& other) = delete;
+
+  /**
+   * Open a gamepad for use.
+   *
+   * @param instance_id the joystick instance ID.
+   * @post a gamepad identifier or nullptr if an error occurred; call
+   *          GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.Close
+   * @sa IsGamepad
+   */
+  Gamepad(JoystickID instance_id)
+    : m_resource(SDL_OpenGamepad(instance_id))
+  {
+  }
+
+  /// Destructor
+  ~Gamepad() { SDL_CloseGamepad(m_resource); }
+
+  /// Assignment operator.
+  Gamepad& operator=(Gamepad other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Retrieves underlying GamepadRaw.
+  constexpr GamepadRaw get() const { return m_resource; }
+
+  /// Retrieves underlying GamepadRaw and clear this.
+  constexpr GamepadRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const Gamepad& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Converts to GamepadParam
+  constexpr operator GamepadParam() const { return {m_resource}; }
+
+  /**
+   * Close a gamepad previously opened with Gamepad.Gamepad().
+   *
+   *                Gamepad.Gamepad().
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.Gamepad
+   */
+  void Close();
+
+  /**
+   * Get the current mapping of a gamepad.
+   *
+   * Details about mappings are discussed with AddGamepadMapping().
+   *
+   * @returns a string that has the gamepad's mapping or nullptr if no mapping
+   * is available; call GetError() for more information. This should be freed
+   * with free() when it is no longer needed.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AddGamepadMapping
+   * @sa GetGamepadMappingForID
+   * @sa GetGamepadMappingForGUID
+   * @sa SetGamepadMapping
+   */
+  char* GetMapping();
+
+  /**
+   * Get the properties associated with an opened gamepad.
+   *
+   * These properties are shared with the underlying joystick object.
+   *
+   * The following read-only properties are provided by SDL:
+   *
+   * - `prop::GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED
+   *   that has adjustable brightness
+   * - `prop::GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED
+   *   that has adjustable color
+   * - `prop::GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a
+   *   player LED
+   * - `prop::GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has
+   *   left/right rumble
+   * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has
+   *   simple trigger rumble
+   *
+   *                Gamepad.Gamepad().
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  PropertiesRef GetProperties();
+
+  /**
+   * Get the instance ID of an opened gamepad.
+   *
+   *                Gamepad.Gamepad().
+   * @returns the instance ID of the specified gamepad on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  JoystickID GetID();
+
+  /**
+   * Get the implementation-dependent name for an opened gamepad.
+   *
+   *                Gamepad.Gamepad().
+   * @returns the implementation dependent name for the gamepad, or nullptr if
+   *          there is no name or the identifier passed is invalid.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetGamepadNameForID
+   */
+  const char* GetName();
+
+  /**
+   * Get the implementation-dependent path for an opened gamepad.
+   *
+   *                Gamepad.Gamepad().
+   * @returns the implementation dependent path for the gamepad, or nullptr if
+   *          there is no path or the identifier passed is invalid.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetGamepadPathForID
+   */
+  const char* GetPath();
+
+  /**
+   * Get the type of an opened gamepad.
+   *
+   * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not
+   *          available.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetGamepadTypeForID
+   */
+  GamepadType GetType();
+
+  /**
+   * Get the type of an opened gamepad, ignoring any mapping override.
+   *
+   * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not
+   *          available.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetRealGamepadTypeForID
+   */
+  GamepadType GetRealType();
+
+  /**
+   * Get the player index of an opened gamepad.
+   *
+   * For XInput gamepads this returns the XInput user index.
+   *
+   * @returns the player index for gamepad, or -1 if it's not available.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.SetPlayerIndex
+   */
+  int GetPlayerIndex();
+
+  /**
+   * Set the player index of an opened gamepad.
+   *
+   * @param player_index player index to assign to this gamepad, or -1 to clear
+   *                     the player index and turn off player LEDs.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.GetPlayerIndex
+   */
+  void SetPlayerIndex(int player_index);
+
+  /**
+   * Get the USB vendor ID of an opened gamepad, if available.
+   *
+   * If the vendor ID isn't available this function returns 0.
+   *
+   * @returns the USB vendor ID, or zero if unavailable.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetGamepadVendorForID
+   */
+  Uint16 GetVendor();
+
+  /**
+   * Get the USB product ID of an opened gamepad, if available.
+   *
+   * If the product ID isn't available this function returns 0.
+   *
+   * @returns the USB product ID, or zero if unavailable.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetGamepadProductForID
+   */
+  Uint16 GetProduct();
+
+  /**
+   * Get the product version of an opened gamepad, if available.
+   *
+   * If the product version isn't available this function returns 0.
+   *
+   * @returns the USB product version, or zero if unavailable.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetGamepadProductVersionForID
+   */
+  Uint16 GetProductVersion();
+
+  /**
+   * Get the firmware version of an opened gamepad, if available.
+   *
+   * If the firmware version isn't available this function returns 0.
+   *
+   * @returns the gamepad firmware version, or zero if unavailable.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Uint16 GetFirmwareVersion();
+
+  /**
+   * Get the serial number of an opened gamepad, if available.
+   *
+   * Returns the serial number of the gamepad, or nullptr if it is not
+   * available.
+   *
+   * @returns the serial number, or nullptr if unavailable.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  const char* GetSerial();
+
+  /**
+   * Get the Steam Input handle of an opened gamepad, if available.
+   *
+   * Returns an InputHandle_t for the gamepad that can be used with Steam Input
+   * API: https://partner.steamgames.com/doc/api/ISteamInput
+   *
+   * @returns the gamepad handle, or 0 if unavailable.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Uint64 GetSteamHandle();
+
+  /**
+   * Get the connection state of a gamepad.
+   *
+   * @returns the connection state on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  JoystickConnectionState GetConnectionState();
+
+  /**
+   * Get the battery state of a gamepad.
+   *
+   * You should never take a battery status as absolute truth. Batteries
+   * (especially failing batteries) are delicate hardware, and the values
+   * reported here are best estimates based on what that hardware reports. It's
+   * not uncommon for older batteries to lose stored power much faster than it
+   * reports, or completely drain when reporting it has 20 percent left, etc.
+   *
+   * @param percent a pointer filled in with the percentage of battery life
+   *                left, between 0 and 100, or nullptr to ignore. This will be
+   *                filled in with -1 we can't determine a value or there is no
+   *                battery.
+   * @returns the current battery state.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  PowerState GetPowerInfo(int* percent);
+
+  /**
+   * Check if a gamepad has been opened and is currently connected.
+   *
+   *                Gamepad.Gamepad().
+   * @returns true if the gamepad has been opened and is currently connected, or
+   *          false if not.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool Connected();
+
+  /**
+   * Get the underlying joystick from a gamepad.
+   *
+   * This function will give you a Joystick object, which allows you to use
+   * the Joystick functions with a Gamepad object. This would be useful
+   * for getting a joystick's position at any given time, even if it hasn't
+   * moved (moving it would produce an event, which would have the axis' value).
+   *
+   * The pointer returned is owned by the Gamepad. You should not call
+   * Joystick.Close() on it, for example, since doing so will likely cause
+   * SDL to crash.
+   *
+   * @returns an Joystick object, or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  JoystickRef GetJoystick();
+
+  /**
+   * Get the SDL joystick layer bindings for a gamepad.
+   *
+   * @param count a pointer filled in with the number of bindings returned.
+   * @returns a nullptr terminated array of pointers to bindings or nullptr on
+   *          failure; call GetError() for more information. This is a
+   *          single allocation that should be freed with free() when it is
+   *          no longer needed.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  SDL_GamepadBinding** GetBindings(int* count);
+
+  /**
+   * Query whether a gamepad has a given axis.
+   *
+   * This merely reports whether the gamepad's mapping defined this axis, as
+   * that is all the information SDL has about the physical device.
+   *
+   * @param axis an axis enum value (an GamepadAxis value).
+   * @returns true if the gamepad has this axis, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.HasButton
+   * @sa Gamepad.GetAxis
+   */
+  bool HasAxis(GamepadAxis axis);
+
+  /**
+   * Get the current state of an axis control on a gamepad.
+   *
+   * The axis indices start at index 0.
+   *
+   * For thumbsticks, the state is a value ranging from -32768 (up/left) to
+   * 32767 (down/right).
+   *
+   * Triggers range from 0 when released to 32767 when fully pressed, and never
+   * return a negative value. Note that this differs from the value reported by
+   * the lower-level Joystick.GetAxis(), which normally uses the full range.
+   *
+   * @param axis an axis index (one of the GamepadAxis values).
+   * @returns axis state (including 0) on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.HasAxis
+   * @sa Gamepad.GetButton
+   */
+  Sint16 GetAxis(GamepadAxis axis);
+
+  /**
+   * Query whether a gamepad has a given button.
+   *
+   * This merely reports whether the gamepad's mapping defined this button, as
+   * that is all the information SDL has about the physical device.
+   *
+   * @param button a button enum value (an GamepadButton value).
+   * @returns true if the gamepad has this button, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.HasAxis
+   */
+  bool HasButton(GamepadButton button);
+
+  /**
+   * Get the current state of a button on a gamepad.
+   *
+   * @param button a button index (one of the GamepadButton values).
+   * @returns true if the button is pressed, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.HasButton
+   * @sa Gamepad.GetAxis
+   */
+  bool GetButton(GamepadButton button);
+
+  /**
+   * Get the label of a button on a gamepad.
+   *
+   * @param button a button index (one of the GamepadButton values).
+   * @returns the GamepadButtonLabel enum corresponding to the button label.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetGamepadButtonLabelForType
+   */
+  GamepadButtonLabel GetButtonLabel(GamepadButton button);
+
+  /**
+   * Get the number of touchpads on a gamepad.
+   *
+   * @returns number of touchpads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.GetNumTouchpadFingers
+   */
+  int GetNumTouchpads();
+
+  /**
+   * Get the number of supported simultaneous fingers on a touchpad on a game
+   * gamepad.
+   *
+   * @param touchpad a touchpad.
+   * @returns number of supported simultaneous fingers.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.GetTouchpadFinger
+   * @sa Gamepad.GetNumTouchpads
+   */
+  int GetNumTouchpadFingers(int touchpad);
+
+  /**
+   * Get the current state of a finger on a touchpad on a gamepad.
+   *
+   * @param touchpad a touchpad.
+   * @param finger a finger.
+   * @param down a pointer filled with true if the finger is down, false
+   *             otherwise, may be nullptr.
+   * @param x a pointer filled with the x position, normalized 0 to 1, with the
+   *          origin in the upper left, may be nullptr.
+   * @param y a pointer filled with the y position, normalized 0 to 1, with the
+   *          origin in the upper left, may be nullptr.
+   * @param pressure a pointer filled with pressure value, may be nullptr.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.GetNumTouchpadFingers
+   */
+  void GetTouchpadFinger(int touchpad,
+                         int finger,
+                         bool* down,
+                         float* x,
+                         float* y,
+                         float* pressure);
+
+  /**
+   * Return whether a gamepad has a particular sensor.
+   *
+   * @param type the type of sensor to query.
+   * @returns true if the sensor exists, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.GetSensorData
+   * @sa Gamepad.GetSensorDataRate
+   * @sa Gamepad.SetSensorEnabled
+   */
+  bool HasSensor(SensorType type);
+
+  /**
+   * Set whether data reporting for a gamepad sensor is enabled.
+   *
+   * @param type the type of sensor to enable/disable.
+   * @param enabled whether data reporting should be enabled.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.HasSensor
+   * @sa Gamepad.SensorEnabled
+   */
+  void SetSensorEnabled(SensorType type, bool enabled);
+
+  /**
+   * Query whether sensor data reporting is enabled for a gamepad.
+   *
+   * @param type the type of sensor to query.
+   * @returns true if the sensor is enabled, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.SetSensorEnabled
+   */
+  bool SensorEnabled(SensorType type);
+
+  /**
+   * Get the data rate (number of events per second) of a gamepad sensor.
+   *
+   * @param type the type of sensor to query.
+   * @returns the data rate, or 0.0f if the data rate is not available.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  float GetSensorDataRate(SensorType type);
+
+  /**
+   * Get the current state of a gamepad sensor.
+   *
+   * The number of values and interpretation of the data is sensor dependent.
+   * See SDL_sensor.h for the details for each type of sensor.
+   *
+   * @param type the type of sensor to query.
+   * @param data a pointer filled with the current sensor state.
+   * @param num_values the number of values to write to data.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void GetSensorData(SensorType type, float* data, int num_values);
+
+  /**
+   * Start a rumble effect on a gamepad.
+   *
+   * Each call to this function cancels any previous rumble effect, and calling
+   * it with 0 intensity stops any rumbling.
+   *
+   * This function requires you to process SDL events or call
+   * UpdateJoysticks() to update rumble state.
+   *
+   * @param low_frequency_rumble the intensity of the low frequency (left)
+   *                             rumble motor, from 0 to 0xFFFF.
+   * @param high_frequency_rumble the intensity of the high frequency (right)
+   *                              rumble motor, from 0 to 0xFFFF.
+   * @param duration_ms the duration of the rumble effect, in milliseconds.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Rumble(Uint16 low_frequency_rumble,
+              Uint16 high_frequency_rumble,
+              Uint32 duration_ms);
+
+  /**
+   * Start a rumble effect in the gamepad's triggers.
+   *
+   * Each call to this function cancels any previous trigger rumble effect, and
+   * calling it with 0 intensity stops any rumbling.
+   *
+   * Note that this is rumbling of the _triggers_ and not the gamepad as a
+   * whole. This is currently only supported on Xbox One gamepads. If you want
+   * the (more common) whole-gamepad rumble, use Gamepad.Rumble() instead.
+   *
+   * This function requires you to process SDL events or call
+   * UpdateJoysticks() to update rumble state.
+   *
+   * @param left_rumble the intensity of the left trigger rumble motor, from 0
+   *                    to 0xFFFF.
+   * @param right_rumble the intensity of the right trigger rumble motor, from 0
+   *                     to 0xFFFF.
+   * @param duration_ms the duration of the rumble effect, in milliseconds.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.Rumble
+   */
+  void RumbleTriggers(Uint16 left_rumble,
+                      Uint16 right_rumble,
+                      Uint32 duration_ms);
+
+  /**
+   * Update a gamepad's LED color.
+   *
+   * An example of a joystick LED is the light on the back of a PlayStation 4's
+   * DualShock 4 controller.
+   *
+   * For gamepads with a single color LED, the maximum of the RGB values will be
+   * used as the LED brightness.
+   *
+   * @param red the intensity of the red LED.
+   * @param green the intensity of the green LED.
+   * @param blue the intensity of the blue LED.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetLED(Uint8 red, Uint8 green, Uint8 blue);
+
+  /**
+   * Send a gamepad specific effect packet.
+   *
+   * @param data the data to send to the gamepad.
+   * @param size the size of the data to send to the gamepad.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SendEffect(const void* data, int size);
+
+  /**
+   * Return the sfSymbolsName for a given button on a gamepad on Apple
+   * platforms.
+   *
+   * @param button a button on the gamepad.
+   * @returns the sfSymbolsName or nullptr if the name can't be found.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.GetAppleSFSymbolsNameForAxis
+   */
+  const char* GetAppleSFSymbolsNameForButton(GamepadButton button);
+
+  /**
+   * Return the sfSymbolsName for a given axis on a gamepad on Apple platforms.
+   *
+   * @param axis an axis on the gamepad.
+   * @returns the sfSymbolsName or nullptr if the name can't be found.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Gamepad.GetAppleSFSymbolsNameForButton
+   */
+  const char* GetAppleSFSymbolsNameForAxis(GamepadAxis axis);
+};
+
+/// Semi-safe reference for Gamepad.
+struct GamepadRef : Gamepad
+{
+  /**
+   * Constructs from GamepadParam.
+   *
+   * @param resource a GamepadRaw or Gamepad.
+   *
+   * This does not takes ownership!
+   */
+  GamepadRef(GamepadParam resource)
+    : Gamepad(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  GamepadRef(const GamepadRef& other)
+    : Gamepad(other.get())
+  {
+  }
+
+  /// Destructor
+  ~GamepadRef() { release(); }
+};
+
+/**
+ * Add support for gamepads that SDL is unaware of or change the binding of an
+ * existing gamepad.
+ *
+ * The mapping string has the format "GUID,name,mapping", where GUID is the
+ * string value from GUID.ToString(), name is the human readable string for
+ * the device and mappings are gamepad mappings to joystick ones. Under
+ * Windows there is a reserved GUID of "xinput" that covers all XInput
+ * devices. The mapping format for joystick is:
+ *
+ * - `bX`: a joystick button, index X
+ * - `hX.Y`: hat X with value Y
+ * - `aX`: axis X of the joystick
+ *
+ * Buttons can be used as a gamepad axes and vice versa.
+ *
+ * If a device with this GUID is already plugged in, SDL will generate an
+ * EVENT_GAMEPAD_ADDED event.
+ *
+ * This string shows an example of a valid mapping for a gamepad:
+ *
+ * ```c
+ * "341a3608000000000000504944564944,Afterglow PS3
+ * Controller,a:b1,b:b2,y:b3,x:b0,start:b9,guide:b12,back:b8,dpup:h0.1,dpleft:h0.8,dpdown:h0.4,dpright:h0.2,leftshoulder:b4,rightshoulder:b5,leftstick:b10,rightstick:b11,leftx:a0,lefty:a1,rightx:a2,righty:a3,lefttrigger:b6,righttrigger:b7"
+ * ```
+ *
+ * @param mapping the mapping string.
+ * @returns 1 if a new mapping is added, 0 if an existing mapping is updated,
+ *          -1 on failure; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddGamepadMappingsFromFile
+ * @sa AddGamepadMappingsFromIO
+ * @sa Gamepad.GetMapping
+ * @sa GetGamepadMappingForGUID
+ * @sa SDL_HINT_GAMECONTROLLERCONFIG
+ * @sa SDL_HINT_GAMECONTROLLERCONFIG_FILE
+ * @sa EVENT_GAMEPAD_ADDED
+ */
+inline int AddGamepadMapping(StringParam mapping)
+{
+  return SDL_AddGamepadMapping(mapping);
+}
+
+/**
+ * Load a set of gamepad mappings from an IOStream.
+ *
+ * You can call this function several times, if needed, to load different
+ * database files.
+ *
+ * If a new mapping is loaded for an already known gamepad GUID, the later
+ * version will overwrite the one currently loaded.
+ *
+ * Any new mappings for already plugged in controllers will generate
+ * EVENT_GAMEPAD_ADDED events.
+ *
+ * Mappings not belonging to the current platform or with no platform field
+ * specified will be ignored (i.e. mappings for Linux will be ignored in
+ * Windows, etc).
+ *
+ * This function will load the text database entirely in memory before
+ * processing it, so take this into consideration if you are in a memory
+ * constrained environment.
+ *
+ * @param src the data stream for the mappings to be added.
+ * @param closeio if true, calls IOStream.Close() on `src` before returning,
+ * even in the case of an error.
+ * @returns the number of mappings added or -1 on failure; call GetError()
+ *          for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddGamepadMapping
+ * @sa AddGamepadMappingsFromFile
+ * @sa Gamepad.GetMapping
+ * @sa GetGamepadMappingForGUID
+ * @sa SDL_HINT_GAMECONTROLLERCONFIG
+ * @sa SDL_HINT_GAMECONTROLLERCONFIG_FILE
+ * @sa EVENT_GAMEPAD_ADDED
+ */
+inline int AddGamepadMappingsFromIO(IOStreamParam src, bool closeio)
+{
+  return SDL_AddGamepadMappingsFromIO(src, closeio);
+}
+
+/**
+ * Load a set of gamepad mappings from a file.
+ *
+ * You can call this function several times, if needed, to load different
+ * database files.
+ *
+ * If a new mapping is loaded for an already known gamepad GUID, the later
+ * version will overwrite the one currently loaded.
+ *
+ * Any new mappings for already plugged in controllers will generate
+ * EVENT_GAMEPAD_ADDED events.
+ *
+ * Mappings not belonging to the current platform or with no platform field
+ * specified will be ignored (i.e. mappings for Linux will be ignored in
+ * Windows, etc).
+ *
+ * @param file the mappings file to load.
+ * @returns the number of mappings added or -1 on failure; call GetError()
+ *          for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddGamepadMapping
+ * @sa AddGamepadMappingsFromIO
+ * @sa Gamepad.GetMapping
+ * @sa GetGamepadMappingForGUID
+ * @sa SDL_HINT_GAMECONTROLLERCONFIG
+ * @sa SDL_HINT_GAMECONTROLLERCONFIG_FILE
+ * @sa EVENT_GAMEPAD_ADDED
+ */
+inline int AddGamepadMappingsFromFile(StringParam file)
+{
+  return SDL_AddGamepadMappingsFromFile(file);
+}
+
+/**
+ * Reinitialize the SDL mapping database to its initial state.
+ *
+ * This will generate gamepad events as needed if device mappings change.
+ *
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void ReloadGamepadMappings() { CheckError(SDL_ReloadGamepadMappings()); }
+
+/**
+ * Get the current gamepad mappings.
+ *
+ * @param count a pointer filled in with the number of mappings returned, can
+ *              be nullptr.
+ * @returns an array of the mapping strings, nullptr-terminated, or nullptr on
+ *          failure; call GetError() for more information. This is a
+ *          single allocation that should be freed with free() when it is
+ *          no longer needed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline char** GetGamepadMappings(int* count)
+{
+  return SDL_GetGamepadMappings(count);
+}
+
+/**
+ * Get the gamepad mapping string for a given GUID.
+ *
+ * @param guid a structure containing the GUID for which a mapping is desired.
+ * @returns a mapping string or nullptr on failure; call GetError() for more
+ *          information. This should be freed with free() when it is no
+ *          longer needed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa JoystickID.GetJoystickGUIDForID
+ * @sa Joystick.GetGUID
+ */
+inline char* GetGamepadMappingForGUID(GUID guid)
+{
+  return SDL_GetGamepadMappingForGUID(guid);
+}
+
+/**
+ * Get the current mapping of a gamepad.
+ *
+ * Details about mappings are discussed with AddGamepadMapping().
+ *
+ * @param gamepad the gamepad you want to get the current mapping for.
+ * @returns a string that has the gamepad's mapping or nullptr if no mapping is
+ *          available; call GetError() for more information. This should
+ *          be freed with free() when it is no longer needed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddGamepadMapping
+ * @sa GetGamepadMappingForID
+ * @sa GetGamepadMappingForGUID
+ * @sa SetGamepadMapping
+ */
+inline char* GetGamepadMapping(GamepadParam gamepad)
+{
+  return SDL_GetGamepadMapping(gamepad);
+}
+
+inline char* Gamepad::GetMapping()
+{
+  return SDL::GetGamepadMapping(m_resource);
+}
+
+/**
+ * Set the current mapping of a joystick or gamepad.
+ *
+ * Details about mappings are discussed with AddGamepadMapping().
+ *
+ * @param instance_id the joystick instance ID.
+ * @param mapping the mapping to use for this device, or nullptr to clear the
+ *                mapping.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddGamepadMapping
+ * @sa Gamepad.GetMapping
+ */
+inline void SetGamepadMapping(JoystickID instance_id, StringParam mapping)
+{
+  CheckError(SDL_SetGamepadMapping(instance_id, mapping));
+}
+
+/**
+ * Return whether a gamepad is currently connected.
+ *
+ * @returns true if a gamepad is connected, false otherwise.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepads
+ */
+inline bool HasGamepad() { return SDL_HasGamepad(); }
+
+/**
+ * Get a list of currently connected gamepads.
+ *
+ * @returns a 0 terminated array of joystick instance IDs or nullptr on failure;
+ *          call GetError() for more information. This should be freed
+ *          with free() when it is no longer needed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasGamepad
+ * @sa Gamepad.Gamepad
+ */
+inline OwnArray<JoystickID> GetGamepads()
+{
+  int count;
+  auto r = reinterpret_cast<JoystickID*>(SDL_GetGamepads(&count));
+  return OwnArray<JoystickID>(r, count);
+}
+
+/**
+ * Check if the given joystick is supported by the gamepad interface.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns true if the given joystick is supported by the gamepad interface,
+ *          false if it isn't or it's an invalid index.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetJoysticks
+ * @sa Gamepad.Gamepad
+ */
+inline bool IsGamepad(JoystickID instance_id)
+{
+  return SDL_IsGamepad(instance_id);
+}
+
+/**
+ * Get the implementation dependent name of a gamepad.
+ *
+ * This can be called before any gamepads are opened.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the name of the selected gamepad. If no name can be found, this
+ *          function returns nullptr; call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetName
+ * @sa GetGamepads
+ */
+inline const char* GetGamepadNameForID(JoystickID instance_id)
+{
+  return SDL_GetGamepadNameForID(instance_id);
+}
+
+/**
+ * Get the implementation dependent path of a gamepad.
+ *
+ * This can be called before any gamepads are opened.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the path of the selected gamepad. If no path can be found, this
+ *          function returns nullptr; call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetPath
+ * @sa GetGamepads
+ */
+inline const char* GetGamepadPathForID(JoystickID instance_id)
+{
+  return SDL_GetGamepadPathForID(instance_id);
+}
+
+/**
+ * Get the player index of a gamepad.
+ *
+ * This can be called before any gamepads are opened.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the player index of a gamepad, or -1 if it's not available.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetPlayerIndex
+ * @sa GetGamepads
+ */
+inline int GetGamepadPlayerIndexForID(JoystickID instance_id)
+{
+  return SDL_GetGamepadPlayerIndexForID(instance_id);
+}
+
+/**
+ * Get the implementation-dependent GUID of a gamepad.
+ *
+ * This can be called before any gamepads are opened.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the GUID of the selected gamepad. If called on an invalid index,
+ *          this function returns a zero GUID.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GUID.ToString
+ * @sa GetGamepads
+ */
+inline GUID GetGamepadGUIDForID(JoystickID instance_id)
+{
+  return SDL_GetGamepadGUIDForID(instance_id);
+}
+
+/**
+ * Get the USB vendor ID of a gamepad, if available.
+ *
+ * This can be called before any gamepads are opened. If the vendor ID isn't
+ * available this function returns 0.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the USB vendor ID of the selected gamepad. If called on an invalid
+ *          index, this function returns zero.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetVendor
+ * @sa GetGamepads
+ */
+inline Uint16 GetGamepadVendorForID(JoystickID instance_id)
+{
+  return SDL_GetGamepadVendorForID(instance_id);
+}
+
+/**
+ * Get the USB product ID of a gamepad, if available.
+ *
+ * This can be called before any gamepads are opened. If the product ID isn't
+ * available this function returns 0.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the USB product ID of the selected gamepad. If called on an
+ *          invalid index, this function returns zero.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetProduct
+ * @sa GetGamepads
+ */
+inline Uint16 GetGamepadProductForID(JoystickID instance_id)
+{
+  return SDL_GetGamepadProductForID(instance_id);
+}
+
+/**
+ * Get the product version of a gamepad, if available.
+ *
+ * This can be called before any gamepads are opened. If the product version
+ * isn't available this function returns 0.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the product version of the selected gamepad. If called on an
+ *          invalid index, this function returns zero.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetProductVersion
+ * @sa GetGamepads
+ */
+inline Uint16 GetGamepadProductVersionForID(JoystickID instance_id)
+{
+  return SDL_GetGamepadProductVersionForID(instance_id);
+}
+
+/**
+ * Get the type of a gamepad.
+ *
+ * This can be called before any gamepads are opened.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the gamepad type.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetType
+ * @sa GetGamepads
+ * @sa GetRealGamepadTypeForID
+ */
+inline GamepadType GetGamepadTypeForID(JoystickID instance_id)
+{
+  return SDL_GetGamepadTypeForID(instance_id);
+}
+
+/**
+ * Get the type of a gamepad, ignoring any mapping override.
+ *
+ * This can be called before any gamepads are opened.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the gamepad type.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadTypeForID
+ * @sa GetGamepads
+ * @sa Gamepad.GetRealType
+ */
+inline GamepadType GetRealGamepadTypeForID(JoystickID instance_id)
+{
+  return SDL_GetRealGamepadTypeForID(instance_id);
+}
+
+/**
+ * Get the mapping of a gamepad.
+ *
+ * This can be called before any gamepads are opened.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns the mapping string. Returns nullptr if no mapping is available. This
+ *          should be freed with free() when it is no longer needed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepads
+ * @sa Gamepad.GetMapping
+ */
+inline char* GetGamepadMappingForID(JoystickID instance_id)
+{
+  return SDL_GetGamepadMappingForID(instance_id);
+}
+
+/**
+ * Open a gamepad for use.
+ *
+ * @param instance_id the joystick instance ID.
+ * @returns a gamepad identifier or nullptr if an error occurred; call
+ *          GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.Close
+ * @sa IsGamepad
+ */
+inline Gamepad OpenGamepad(JoystickID instance_id)
+{
+  return Gamepad(instance_id);
+}
+
+/**
+ * Get the Gamepad associated with a joystick instance ID, if it has been
+ * opened.
+ *
+ * @param instance_id the joystick instance ID of the gamepad.
+ * @returns an Gamepad on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline GamepadRef GetGamepadFromID(JoystickID instance_id)
+{
+  return {CheckError(SDL_GetGamepadFromID(instance_id))};
+}
+
+/**
+ * Get the Gamepad associated with a player index.
+ *
+ * @param player_index the player index, which different from the instance ID.
+ * @returns the Gamepad associated with a player index.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetPlayerIndex
+ * @sa Gamepad.SetPlayerIndex
+ */
+inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
+{
+  return {SDL_GetGamepadFromPlayerIndex(player_index)};
+}
+
+/**
+ * Get the properties associated with an opened gamepad.
+ *
+ * These properties are shared with the underlying joystick object.
+ *
+ * The following read-only properties are provided by SDL:
+ *
+ * - `prop::GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED
+ *   that has adjustable brightness
+ * - `prop::GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED
+ *   that has adjustable color
+ * - `prop::GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a
+ *   player LED
+ * - `prop::GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has
+ *   left/right rumble
+ * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has
+ *   simple trigger rumble
+ *
+ * @param gamepad a gamepad identifier previously returned by
+ *                Gamepad.Gamepad().
+ * @returns a valid property ID on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline PropertiesRef GetGamepadProperties(GamepadParam gamepad)
+{
+  return {CheckError(SDL_GetGamepadProperties(gamepad))};
+}
+
+inline PropertiesRef Gamepad::GetProperties()
+{
+  return SDL::GetGamepadProperties(m_resource);
+}
+
+namespace prop::GamepadCap {
+
+constexpr auto MONO_LED_BOOLEAN = SDL_PROP_GAMEPAD_CAP_MONO_LED_BOOLEAN;
+
+constexpr auto RGB_LED_BOOLEAN = SDL_PROP_GAMEPAD_CAP_RGB_LED_BOOLEAN;
+
+constexpr auto PLAYER_LED_BOOLEAN = SDL_PROP_GAMEPAD_CAP_PLAYER_LED_BOOLEAN;
+
+constexpr auto RUMBLE_BOOLEAN = SDL_PROP_GAMEPAD_CAP_RUMBLE_BOOLEAN;
+
+constexpr auto TRIGGER_RUMBLE_BOOLEAN =
+  SDL_PROP_GAMEPAD_CAP_TRIGGER_RUMBLE_BOOLEAN;
+
+} // namespace prop::GamepadCap
+
+/**
+ * Get the instance ID of an opened gamepad.
+ *
+ * @param gamepad a gamepad identifier previously returned by
+ *                Gamepad.Gamepad().
+ * @returns the instance ID of the specified gamepad on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline JoystickID GetGamepadID(GamepadParam gamepad)
+{
+  return CheckError(SDL_GetGamepadID(gamepad));
+}
+
+inline JoystickID Gamepad::GetID() { return SDL::GetGamepadID(m_resource); }
+
+/**
+ * Get the implementation-dependent name for an opened gamepad.
+ *
+ * @param gamepad a gamepad identifier previously returned by
+ *                Gamepad.Gamepad().
+ * @returns the implementation dependent name for the gamepad, or nullptr if
+ *          there is no name or the identifier passed is invalid.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadNameForID
+ */
+inline const char* GetGamepadName(GamepadParam gamepad)
+{
+  return SDL_GetGamepadName(gamepad);
+}
+
+inline const char* Gamepad::GetName()
+{
+  return SDL::GetGamepadName(m_resource);
+}
+
+/**
+ * Get the implementation-dependent path for an opened gamepad.
+ *
+ * @param gamepad a gamepad identifier previously returned by
+ *                Gamepad.Gamepad().
+ * @returns the implementation dependent path for the gamepad, or nullptr if
+ *          there is no path or the identifier passed is invalid.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadPathForID
+ */
+inline const char* GetGamepadPath(GamepadParam gamepad)
+{
+  return SDL_GetGamepadPath(gamepad);
+}
+
+inline const char* Gamepad::GetPath()
+{
+  return SDL::GetGamepadPath(m_resource);
+}
+
+/**
+ * Get the type of an opened gamepad.
+ *
+ * @param gamepad the gamepad object to query.
+ * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not
+ *          available.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadTypeForID
+ */
+inline GamepadType GetGamepadType(GamepadParam gamepad)
+{
+  return SDL_GetGamepadType(gamepad);
+}
+
+inline GamepadType Gamepad::GetType()
+{
+  return SDL::GetGamepadType(m_resource);
+}
+
+/**
+ * Get the type of an opened gamepad, ignoring any mapping override.
+ *
+ * @param gamepad the gamepad object to query.
+ * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not
+ *          available.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetRealGamepadTypeForID
+ */
+inline GamepadType GetRealGamepadType(GamepadParam gamepad)
+{
+  return SDL_GetRealGamepadType(gamepad);
+}
+
+inline GamepadType Gamepad::GetRealType()
+{
+  return SDL::GetRealGamepadType(m_resource);
+}
+
+/**
+ * Get the player index of an opened gamepad.
+ *
+ * For XInput gamepads this returns the XInput user index.
+ *
+ * @param gamepad the gamepad object to query.
+ * @returns the player index for gamepad, or -1 if it's not available.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.SetPlayerIndex
+ */
+inline int GetGamepadPlayerIndex(GamepadParam gamepad)
+{
+  return SDL_GetGamepadPlayerIndex(gamepad);
+}
+
+inline int Gamepad::GetPlayerIndex()
+{
+  return SDL::GetGamepadPlayerIndex(m_resource);
+}
+
+/**
+ * Set the player index of an opened gamepad.
+ *
+ * @param gamepad the gamepad object to adjust.
+ * @param player_index player index to assign to this gamepad, or -1 to clear
+ *                     the player index and turn off player LEDs.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetPlayerIndex
+ */
+inline void SetGamepadPlayerIndex(GamepadParam gamepad, int player_index)
+{
+  CheckError(SDL_SetGamepadPlayerIndex(gamepad, player_index));
+}
+
+inline void Gamepad::SetPlayerIndex(int player_index)
+{
+  SDL::SetGamepadPlayerIndex(m_resource, player_index);
+}
+
+/**
+ * Get the USB vendor ID of an opened gamepad, if available.
+ *
+ * If the vendor ID isn't available this function returns 0.
+ *
+ * @param gamepad the gamepad object to query.
+ * @returns the USB vendor ID, or zero if unavailable.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadVendorForID
+ */
+inline Uint16 GetGamepadVendor(GamepadParam gamepad)
+{
+  return SDL_GetGamepadVendor(gamepad);
+}
+
+inline Uint16 Gamepad::GetVendor() { return SDL::GetGamepadVendor(m_resource); }
+
+/**
+ * Get the USB product ID of an opened gamepad, if available.
+ *
+ * If the product ID isn't available this function returns 0.
+ *
+ * @param gamepad the gamepad object to query.
+ * @returns the USB product ID, or zero if unavailable.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadProductForID
+ */
+inline Uint16 GetGamepadProduct(GamepadParam gamepad)
+{
+  return SDL_GetGamepadProduct(gamepad);
+}
+
+inline Uint16 Gamepad::GetProduct()
+{
+  return SDL::GetGamepadProduct(m_resource);
+}
+
+/**
+ * Get the product version of an opened gamepad, if available.
+ *
+ * If the product version isn't available this function returns 0.
+ *
+ * @param gamepad the gamepad object to query.
+ * @returns the USB product version, or zero if unavailable.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadProductVersionForID
+ */
+inline Uint16 GetGamepadProductVersion(GamepadParam gamepad)
+{
+  return SDL_GetGamepadProductVersion(gamepad);
+}
+
+inline Uint16 Gamepad::GetProductVersion()
+{
+  return SDL::GetGamepadProductVersion(m_resource);
+}
+
+/**
+ * Get the firmware version of an opened gamepad, if available.
+ *
+ * If the firmware version isn't available this function returns 0.
+ *
+ * @param gamepad the gamepad object to query.
+ * @returns the gamepad firmware version, or zero if unavailable.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline Uint16 GetGamepadFirmwareVersion(GamepadParam gamepad)
+{
+  return SDL_GetGamepadFirmwareVersion(gamepad);
+}
+
+inline Uint16 Gamepad::GetFirmwareVersion()
+{
+  return SDL::GetGamepadFirmwareVersion(m_resource);
+}
+
+/**
+ * Get the serial number of an opened gamepad, if available.
+ *
+ * Returns the serial number of the gamepad, or nullptr if it is not available.
+ *
+ * @param gamepad the gamepad object to query.
+ * @returns the serial number, or nullptr if unavailable.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline const char* GetGamepadSerial(GamepadParam gamepad)
+{
+  return SDL_GetGamepadSerial(gamepad);
+}
+
+inline const char* Gamepad::GetSerial()
+{
+  return SDL::GetGamepadSerial(m_resource);
+}
+
+/**
+ * Get the Steam Input handle of an opened gamepad, if available.
+ *
+ * Returns an InputHandle_t for the gamepad that can be used with Steam Input
+ * API: https://partner.steamgames.com/doc/api/ISteamInput
+ *
+ * @param gamepad the gamepad object to query.
+ * @returns the gamepad handle, or 0 if unavailable.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline Uint64 GetGamepadSteamHandle(GamepadParam gamepad)
+{
+  return SDL_GetGamepadSteamHandle(gamepad);
+}
+
+inline Uint64 Gamepad::GetSteamHandle()
+{
+  return SDL::GetGamepadSteamHandle(m_resource);
+}
+
+/**
+ * Get the connection state of a gamepad.
+ *
+ * @param gamepad the gamepad object to query.
+ * @returns the connection state on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline JoystickConnectionState GetGamepadConnectionState(GamepadParam gamepad)
+{
+  return CheckError(SDL_GetGamepadConnectionState(gamepad));
+}
+
+inline JoystickConnectionState Gamepad::GetConnectionState()
+{
+  return SDL::GetGamepadConnectionState(m_resource);
+}
+
+/**
+ * Get the battery state of a gamepad.
+ *
+ * You should never take a battery status as absolute truth. Batteries
+ * (especially failing batteries) are delicate hardware, and the values
+ * reported here are best estimates based on what that hardware reports. It's
+ * not uncommon for older batteries to lose stored power much faster than it
+ * reports, or completely drain when reporting it has 20 percent left, etc.
+ *
+ * @param gamepad the gamepad object to query.
+ * @param percent a pointer filled in with the percentage of battery life
+ *                left, between 0 and 100, or nullptr to ignore. This will be
+ *                filled in with -1 we can't determine a value or there is no
+ *                battery.
+ * @returns the current battery state.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline PowerState GetGamepadPowerInfo(GamepadParam gamepad, int* percent)
+{
+  return SDL_GetGamepadPowerInfo(gamepad, percent);
+}
+
+inline PowerState Gamepad::GetPowerInfo(int* percent)
+{
+  return SDL::GetGamepadPowerInfo(m_resource, percent);
+}
+
+/**
+ * Check if a gamepad has been opened and is currently connected.
+ *
+ * @param gamepad a gamepad identifier previously returned by
+ *                Gamepad.Gamepad().
+ * @returns true if the gamepad has been opened and is currently connected, or
+ *          false if not.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool GamepadConnected(GamepadParam gamepad)
+{
+  return SDL_GamepadConnected(gamepad);
+}
+
+inline bool Gamepad::Connected() { return SDL::GamepadConnected(m_resource); }
+
+/**
+ * Get the underlying joystick from a gamepad.
+ *
+ * This function will give you a Joystick object, which allows you to use
+ * the Joystick functions with a Gamepad object. This would be useful
+ * for getting a joystick's position at any given time, even if it hasn't
+ * moved (moving it would produce an event, which would have the axis' value).
+ *
+ * The pointer returned is owned by the Gamepad. You should not call
+ * Joystick.Close() on it, for example, since doing so will likely cause
+ * SDL to crash.
+ *
+ * @param gamepad the gamepad object that you want to get a joystick from.
+ * @returns an Joystick object, or nullptr on failure; call GetError()
+ *          for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline JoystickRef GetGamepadJoystick(GamepadParam gamepad)
+{
+  return {SDL_GetGamepadJoystick(gamepad)};
+}
+
+inline JoystickRef Gamepad::GetJoystick()
+{
+  return SDL::GetGamepadJoystick(m_resource);
+}
+
+/**
+ * Set the state of gamepad event processing.
+ *
+ * If gamepad events are disabled, you must call UpdateGamepads() yourself
+ * and check the state of the gamepad when you want gamepad information.
+ *
+ * @param enabled whether to process gamepad events or not.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GamepadEventsEnabled
+ * @sa UpdateGamepads
+ */
+inline void SetGamepadEventsEnabled(bool enabled)
+{
+  SDL_SetGamepadEventsEnabled(enabled);
+}
+
+/**
+ * Query the state of gamepad event processing.
+ *
+ * If gamepad events are disabled, you must call UpdateGamepads() yourself
+ * and check the state of the gamepad when you want gamepad information.
+ *
+ * @returns true if gamepad events are being processed, false otherwise.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetGamepadEventsEnabled
+ */
+inline bool GamepadEventsEnabled() { return SDL_GamepadEventsEnabled(); }
+
+/**
+ * Get the SDL joystick layer bindings for a gamepad.
+ *
+ * @param gamepad a gamepad.
+ * @param count a pointer filled in with the number of bindings returned.
+ * @returns a nullptr terminated array of pointers to bindings or nullptr on
+ *          failure; call GetError() for more information. This is a
+ *          single allocation that should be freed with free() when it is
+ *          no longer needed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline SDL_GamepadBinding** GetGamepadBindings(GamepadParam gamepad, int* count)
+{
+  return SDL_GetGamepadBindings(gamepad, count);
+}
+
+inline SDL_GamepadBinding** Gamepad::GetBindings(int* count)
+{
+  return SDL::GetGamepadBindings(m_resource, count);
+}
+
+/**
+ * Manually pump gamepad updates if not using the loop.
+ *
+ * This function is called automatically by the event loop if events are
+ * enabled. Under such circumstances, it will not be necessary to call this
+ * function.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void UpdateGamepads() { SDL_UpdateGamepads(); }
+
+/**
+ * Convert a string into GamepadType enum.
+ *
+ * This function is called internally to translate Gamepad mapping strings
+ * for the underlying joystick device into the consistent Gamepad mapping.
+ * You do not normally need to call this function unless you are parsing
+ * Gamepad mappings in your own code.
+ *
+ * @param str string representing a GamepadType type.
+ * @returns the GamepadType enum corresponding to the input string, or
+ *          `GAMEPAD_TYPE_UNKNOWN` if no match was found.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadStringForType
+ */
+inline GamepadType GetGamepadTypeFromString(StringParam str)
+{
+  return SDL_GetGamepadTypeFromString(str);
+}
+
+/**
+ * Convert from an GamepadType enum to a string.
+ *
+ * @param type an enum value for a given GamepadType.
+ * @returns a string for the given type, or nullptr if an invalid type is
+ *          specified. The string returned is of the format used by
+ *          Gamepad mapping strings.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadTypeFromString
+ */
+inline const char* GetGamepadStringForType(GamepadType type)
+{
+  return SDL_GetGamepadStringForType(type);
+}
+
+/**
+ * Convert a string into GamepadAxis enum.
+ *
+ * This function is called internally to translate Gamepad mapping strings
+ * for the underlying joystick device into the consistent Gamepad mapping.
+ * You do not normally need to call this function unless you are parsing
+ * Gamepad mappings in your own code.
+ *
+ * Note specially that "righttrigger" and "lefttrigger" map to
+ * `GAMEPAD_AXIS_RIGHT_TRIGGER` and `GAMEPAD_AXIS_LEFT_TRIGGER`,
+ * respectively.
+ *
+ * @param str string representing a Gamepad axis.
+ * @returns the GamepadAxis enum corresponding to the input string, or
+ *          `GAMEPAD_AXIS_INVALID` if no match was found.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadStringForAxis
+ */
+inline GamepadAxis GetGamepadAxisFromString(StringParam str)
+{
+  return SDL_GetGamepadAxisFromString(str);
+}
+
+/**
+ * Convert from an GamepadAxis enum to a string.
+ *
+ * @param axis an enum value for a given GamepadAxis.
+ * @returns a string for the given axis, or nullptr if an invalid axis is
+ *          specified. The string returned is of the format used by
+ *          Gamepad mapping strings.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadAxisFromString
+ */
+inline const char* GetGamepadStringForAxis(GamepadAxis axis)
+{
+  return SDL_GetGamepadStringForAxis(axis);
+}
+
+/**
+ * Query whether a gamepad has a given axis.
+ *
+ * This merely reports whether the gamepad's mapping defined this axis, as
+ * that is all the information SDL has about the physical device.
+ *
+ * @param gamepad a gamepad.
+ * @param axis an axis enum value (an GamepadAxis value).
+ * @returns true if the gamepad has this axis, false otherwise.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.HasButton
+ * @sa Gamepad.GetAxis
+ */
+inline bool GamepadHasAxis(GamepadParam gamepad, GamepadAxis axis)
+{
+  return SDL_GamepadHasAxis(gamepad, axis);
+}
+
+inline bool Gamepad::HasAxis(GamepadAxis axis)
+{
+  return SDL::GamepadHasAxis(m_resource, axis);
+}
+
+/**
+ * Get the current state of an axis control on a gamepad.
+ *
+ * The axis indices start at index 0.
+ *
+ * For thumbsticks, the state is a value ranging from -32768 (up/left) to
+ * 32767 (down/right).
+ *
+ * Triggers range from 0 when released to 32767 when fully pressed, and never
+ * return a negative value. Note that this differs from the value reported by
+ * the lower-level Joystick.GetAxis(), which normally uses the full range.
+ *
+ * @param gamepad a gamepad.
+ * @param axis an axis index (one of the GamepadAxis values).
+ * @returns axis state (including 0) on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.HasAxis
+ * @sa Gamepad.GetButton
+ */
+inline Sint16 GetGamepadAxis(GamepadParam gamepad, GamepadAxis axis)
+{
+  return CheckError(SDL_GetGamepadAxis(gamepad, axis));
+}
+
+inline Sint16 Gamepad::GetAxis(GamepadAxis axis)
+{
+  return SDL::GetGamepadAxis(m_resource, axis);
+}
+
+/**
+ * Convert a string into an GamepadButton enum.
+ *
+ * This function is called internally to translate Gamepad mapping strings
+ * for the underlying joystick device into the consistent Gamepad mapping.
+ * You do not normally need to call this function unless you are parsing
+ * Gamepad mappings in your own code.
+ *
+ * @param str string representing a Gamepad axis.
+ * @returns the GamepadButton enum corresponding to the input string, or
+ *          `GAMEPAD_BUTTON_INVALID` if no match was found.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadStringForButton
+ */
+inline GamepadButton GetGamepadButtonFromString(StringParam str)
+{
+  return SDL_GetGamepadButtonFromString(str);
+}
+
+/**
+ * Convert from an GamepadButton enum to a string.
+ *
+ * @param button an enum value for a given GamepadButton.
+ * @returns a string for the given button, or nullptr if an invalid button is
+ *          specified. The string returned is of the format used by
+ *          Gamepad mapping strings.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadButtonFromString
+ */
+inline const char* GetGamepadStringForButton(GamepadButton button)
+{
+  return SDL_GetGamepadStringForButton(button);
+}
+
+/**
+ * Query whether a gamepad has a given button.
+ *
+ * This merely reports whether the gamepad's mapping defined this button, as
+ * that is all the information SDL has about the physical device.
+ *
+ * @param gamepad a gamepad.
+ * @param button a button enum value (an GamepadButton value).
+ * @returns true if the gamepad has this button, false otherwise.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.HasAxis
+ */
+inline bool GamepadHasButton(GamepadParam gamepad, GamepadButton button)
+{
+  return SDL_GamepadHasButton(gamepad, button);
+}
+
+inline bool Gamepad::HasButton(GamepadButton button)
+{
+  return SDL::GamepadHasButton(m_resource, button);
+}
+
+/**
+ * Get the current state of a button on a gamepad.
+ *
+ * @param gamepad a gamepad.
+ * @param button a button index (one of the GamepadButton values).
+ * @returns true if the button is pressed, false otherwise.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.HasButton
+ * @sa Gamepad.GetAxis
+ */
+inline bool GetGamepadButton(GamepadParam gamepad, GamepadButton button)
+{
+  return SDL_GetGamepadButton(gamepad, button);
+}
+
+inline bool Gamepad::GetButton(GamepadButton button)
+{
+  return SDL::GetGamepadButton(m_resource, button);
+}
+
+/**
+ * Get the label of a button on a gamepad.
+ *
+ * @param type the type of gamepad to check.
+ * @param button a button index (one of the GamepadButton values).
+ * @returns the GamepadButtonLabel enum corresponding to the button label.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetButtonLabel
+ */
+inline GamepadButtonLabel GetGamepadButtonLabelForType(GamepadType type,
+                                                       GamepadButton button)
+{
+  return SDL_GetGamepadButtonLabelForType(type, button);
+}
+
+/**
+ * Get the label of a button on a gamepad.
+ *
+ * @param gamepad a gamepad.
+ * @param button a button index (one of the GamepadButton values).
+ * @returns the GamepadButtonLabel enum corresponding to the button label.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetGamepadButtonLabelForType
+ */
+inline GamepadButtonLabel GetGamepadButtonLabel(GamepadParam gamepad,
+                                                GamepadButton button)
+{
+  return SDL_GetGamepadButtonLabel(gamepad, button);
+}
+
+inline GamepadButtonLabel Gamepad::GetButtonLabel(GamepadButton button)
+{
+  return SDL::GetGamepadButtonLabel(m_resource, button);
+}
+
+/**
+ * Get the number of touchpads on a gamepad.
+ *
+ * @param gamepad a gamepad.
+ * @returns number of touchpads.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetNumTouchpadFingers
+ */
+inline int GetNumGamepadTouchpads(GamepadParam gamepad)
+{
+  return SDL_GetNumGamepadTouchpads(gamepad);
+}
+
+inline int Gamepad::GetNumTouchpads()
+{
+  return SDL::GetNumGamepadTouchpads(m_resource);
+}
+
+/**
+ * Get the number of supported simultaneous fingers on a touchpad on a game
+ * gamepad.
+ *
+ * @param gamepad a gamepad.
+ * @param touchpad a touchpad.
+ * @returns number of supported simultaneous fingers.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetTouchpadFinger
+ * @sa Gamepad.GetNumTouchpads
+ */
+inline int GetNumGamepadTouchpadFingers(GamepadParam gamepad, int touchpad)
+{
+  return SDL_GetNumGamepadTouchpadFingers(gamepad, touchpad);
+}
+
+inline int Gamepad::GetNumTouchpadFingers(int touchpad)
+{
+  return SDL::GetNumGamepadTouchpadFingers(m_resource, touchpad);
+}
+
+/**
+ * Get the current state of a finger on a touchpad on a gamepad.
+ *
+ * @param gamepad a gamepad.
+ * @param touchpad a touchpad.
+ * @param finger a finger.
+ * @param down a pointer filled with true if the finger is down, false
+ *             otherwise, may be nullptr.
+ * @param x a pointer filled with the x position, normalized 0 to 1, with the
+ *          origin in the upper left, may be nullptr.
+ * @param y a pointer filled with the y position, normalized 0 to 1, with the
+ *          origin in the upper left, may be nullptr.
+ * @param pressure a pointer filled with pressure value, may be nullptr.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetNumTouchpadFingers
+ */
+inline void GetGamepadTouchpadFinger(GamepadParam gamepad,
+                                     int touchpad,
+                                     int finger,
+                                     bool* down,
+                                     float* x,
+                                     float* y,
+                                     float* pressure)
+{
+  CheckError(SDL_GetGamepadTouchpadFinger(
+    gamepad, touchpad, finger, down, x, y, pressure));
+}
+
+inline void Gamepad::GetTouchpadFinger(int touchpad,
+                                       int finger,
+                                       bool* down,
+                                       float* x,
+                                       float* y,
+                                       float* pressure)
+{
+  SDL::GetGamepadTouchpadFinger(
+    m_resource, touchpad, finger, down, x, y, pressure);
+}
+
+/**
+ * Return whether a gamepad has a particular sensor.
+ *
+ * @param gamepad the gamepad to query.
+ * @param type the type of sensor to query.
+ * @returns true if the sensor exists, false otherwise.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetSensorData
+ * @sa Gamepad.GetSensorDataRate
+ * @sa Gamepad.SetSensorEnabled
+ */
+inline bool GamepadHasSensor(GamepadParam gamepad, SensorType type)
+{
+  return SDL_GamepadHasSensor(gamepad, type);
+}
+
+inline bool Gamepad::HasSensor(SensorType type)
+{
+  return SDL::GamepadHasSensor(m_resource, type);
+}
+
+/**
+ * Set whether data reporting for a gamepad sensor is enabled.
+ *
+ * @param gamepad the gamepad to update.
+ * @param type the type of sensor to enable/disable.
+ * @param enabled whether data reporting should be enabled.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.HasSensor
+ * @sa Gamepad.SensorEnabled
+ */
+inline void SetGamepadSensorEnabled(GamepadParam gamepad,
+                                    SensorType type,
+                                    bool enabled)
+{
+  CheckError(SDL_SetGamepadSensorEnabled(gamepad, type, enabled));
+}
+
+inline void Gamepad::SetSensorEnabled(SensorType type, bool enabled)
+{
+  SDL::SetGamepadSensorEnabled(m_resource, type, enabled);
+}
+
+/**
+ * Query whether sensor data reporting is enabled for a gamepad.
+ *
+ * @param gamepad the gamepad to query.
+ * @param type the type of sensor to query.
+ * @returns true if the sensor is enabled, false otherwise.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.SetSensorEnabled
+ */
+inline bool GamepadSensorEnabled(GamepadParam gamepad, SensorType type)
+{
+  return SDL_GamepadSensorEnabled(gamepad, type);
+}
+
+inline bool Gamepad::SensorEnabled(SensorType type)
+{
+  return SDL::GamepadSensorEnabled(m_resource, type);
+}
+
+/**
+ * Get the data rate (number of events per second) of a gamepad sensor.
+ *
+ * @param gamepad the gamepad to query.
+ * @param type the type of sensor to query.
+ * @returns the data rate, or 0.0f if the data rate is not available.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline float GetGamepadSensorDataRate(GamepadParam gamepad, SensorType type)
+{
+  return SDL_GetGamepadSensorDataRate(gamepad, type);
+}
+
+inline float Gamepad::GetSensorDataRate(SensorType type)
+{
+  return SDL::GetGamepadSensorDataRate(m_resource, type);
+}
+
+/**
+ * Get the current state of a gamepad sensor.
+ *
+ * The number of values and interpretation of the data is sensor dependent.
+ * See SDL_sensor.h for the details for each type of sensor.
+ *
+ * @param gamepad the gamepad to query.
+ * @param type the type of sensor to query.
+ * @param data a pointer filled with the current sensor state.
+ * @param num_values the number of values to write to data.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void GetGamepadSensorData(GamepadParam gamepad,
+                                 SensorType type,
+                                 float* data,
+                                 int num_values)
+{
+  CheckError(SDL_GetGamepadSensorData(gamepad, type, data, num_values));
+}
+
+inline void Gamepad::GetSensorData(SensorType type, float* data, int num_values)
+{
+  SDL::GetGamepadSensorData(m_resource, type, data, num_values);
+}
+
+/**
+ * Start a rumble effect on a gamepad.
+ *
+ * Each call to this function cancels any previous rumble effect, and calling
+ * it with 0 intensity stops any rumbling.
+ *
+ * This function requires you to process SDL events or call
+ * UpdateJoysticks() to update rumble state.
+ *
+ * @param gamepad the gamepad to vibrate.
+ * @param low_frequency_rumble the intensity of the low frequency (left)
+ *                             rumble motor, from 0 to 0xFFFF.
+ * @param high_frequency_rumble the intensity of the high frequency (right)
+ *                              rumble motor, from 0 to 0xFFFF.
+ * @param duration_ms the duration of the rumble effect, in milliseconds.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void RumbleGamepad(GamepadParam gamepad,
+                          Uint16 low_frequency_rumble,
+                          Uint16 high_frequency_rumble,
+                          Uint32 duration_ms)
+{
+  CheckError(SDL_RumbleGamepad(
+    gamepad, low_frequency_rumble, high_frequency_rumble, duration_ms));
+}
+
+inline void Gamepad::Rumble(Uint16 low_frequency_rumble,
+                            Uint16 high_frequency_rumble,
+                            Uint32 duration_ms)
+{
+  SDL::RumbleGamepad(
+    m_resource, low_frequency_rumble, high_frequency_rumble, duration_ms);
+}
+
+/**
+ * Start a rumble effect in the gamepad's triggers.
+ *
+ * Each call to this function cancels any previous trigger rumble effect, and
+ * calling it with 0 intensity stops any rumbling.
+ *
+ * Note that this is rumbling of the _triggers_ and not the gamepad as a
+ * whole. This is currently only supported on Xbox One gamepads. If you want
+ * the (more common) whole-gamepad rumble, use Gamepad.Rumble() instead.
+ *
+ * This function requires you to process SDL events or call
+ * UpdateJoysticks() to update rumble state.
+ *
+ * @param gamepad the gamepad to vibrate.
+ * @param left_rumble the intensity of the left trigger rumble motor, from 0
+ *                    to 0xFFFF.
+ * @param right_rumble the intensity of the right trigger rumble motor, from 0
+ *                     to 0xFFFF.
+ * @param duration_ms the duration of the rumble effect, in milliseconds.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.Rumble
+ */
+inline void RumbleGamepadTriggers(GamepadParam gamepad,
+                                  Uint16 left_rumble,
+                                  Uint16 right_rumble,
+                                  Uint32 duration_ms)
+{
+  CheckError(
+    SDL_RumbleGamepadTriggers(gamepad, left_rumble, right_rumble, duration_ms));
+}
+
+inline void Gamepad::RumbleTriggers(Uint16 left_rumble,
+                                    Uint16 right_rumble,
+                                    Uint32 duration_ms)
+{
+  SDL::RumbleGamepadTriggers(
+    m_resource, left_rumble, right_rumble, duration_ms);
+}
+
+/**
+ * Update a gamepad's LED color.
+ *
+ * An example of a joystick LED is the light on the back of a PlayStation 4's
+ * DualShock 4 controller.
+ *
+ * For gamepads with a single color LED, the maximum of the RGB values will be
+ * used as the LED brightness.
+ *
+ * @param gamepad the gamepad to update.
+ * @param red the intensity of the red LED.
+ * @param green the intensity of the green LED.
+ * @param blue the intensity of the blue LED.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SetGamepadLED(GamepadParam gamepad,
+                          Uint8 red,
+                          Uint8 green,
+                          Uint8 blue)
+{
+  CheckError(SDL_SetGamepadLED(gamepad, red, green, blue));
+}
+
+inline void Gamepad::SetLED(Uint8 red, Uint8 green, Uint8 blue)
+{
+  SDL::SetGamepadLED(m_resource, red, green, blue);
+}
+
+/**
+ * Send a gamepad specific effect packet.
+ *
+ * @param gamepad the gamepad to affect.
+ * @param data the data to send to the gamepad.
+ * @param size the size of the data to send to the gamepad.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SendGamepadEffect(GamepadParam gamepad, const void* data, int size)
+{
+  CheckError(SDL_SendGamepadEffect(gamepad, data, size));
+}
+
+inline void Gamepad::SendEffect(const void* data, int size)
+{
+  SDL::SendGamepadEffect(m_resource, data, size);
+}
+
+/**
+ * Close a gamepad previously opened with Gamepad.Gamepad().
+ *
+ * @param gamepad a gamepad identifier previously returned by
+ *                Gamepad.Gamepad().
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.Gamepad
+ */
+inline void CloseGamepad(GamepadRaw gamepad) { SDL_CloseGamepad(gamepad); }
+
+inline void Gamepad::Close() { CloseGamepad(release()); }
+
+/**
+ * Return the sfSymbolsName for a given button on a gamepad on Apple
+ * platforms.
+ *
+ * @param gamepad the gamepad to query.
+ * @param button a button on the gamepad.
+ * @returns the sfSymbolsName or nullptr if the name can't be found.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetAppleSFSymbolsNameForAxis
+ */
+inline const char* GetGamepadAppleSFSymbolsNameForButton(GamepadParam gamepad,
+                                                         GamepadButton button)
+{
+  return SDL_GetGamepadAppleSFSymbolsNameForButton(gamepad, button);
+}
+
+inline const char* Gamepad::GetAppleSFSymbolsNameForButton(GamepadButton button)
+{
+  return SDL::GetGamepadAppleSFSymbolsNameForButton(m_resource, button);
+}
+
+/**
+ * Return the sfSymbolsName for a given axis on a gamepad on Apple platforms.
+ *
+ * @param gamepad the gamepad to query.
+ * @param axis an axis on the gamepad.
+ * @returns the sfSymbolsName or nullptr if the name can't be found.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Gamepad.GetAppleSFSymbolsNameForButton
+ */
+inline const char* GetGamepadAppleSFSymbolsNameForAxis(GamepadParam gamepad,
+                                                       GamepadAxis axis)
+{
+  return SDL_GetGamepadAppleSFSymbolsNameForAxis(gamepad, axis);
+}
+
+inline const char* Gamepad::GetAppleSFSymbolsNameForAxis(GamepadAxis axis)
+{
+  return SDL::GetGamepadAppleSFSymbolsNameForAxis(m_resource, axis);
+}
+
+/// @}
+
+/**
+ * @defgroup CategoryHaptic Force Feedback Support
+ *
+ * The SDL haptic subsystem manages haptic (force feedback) devices.
+ *
+ * The basic usage is as follows:
+ *
+ * - Initialize the subsystem (INIT_HAPTIC).
+ * - Open a haptic device.
+ * - Haptic.Haptic() to open from index.
+ * - Haptic.Haptic() to open from an existing joystick.
+ * - Create an effect (HapticEffect).
+ * - Upload the effect with Haptic.CreateEffect().
+ * - Run the effect with Haptic.RunEffect().
+ * - (optional) Free the effect with Haptic.DestroyEffect().
+ * - Close the haptic device with Haptic.Close().
+ *
+ * Simple rumble example:
+ *
+ * ```c
+ *    Haptic *haptic = nullptr;
+ *
+ *    // Open the device
+ *    HapticID *haptics = GetHaptics(nullptr);
+ *    if (haptics) {
+ *        haptic = Haptic.Haptic(haptics[0]);
+ *        free(haptics);
+ *    }
+ *    if (haptic == nullptr)
+ *       return;
+ *
+ *    // Initialize simple rumble
+ *    if (!Haptic.InitRumble(haptic))
+ *       return;
+ *
+ *    // Play effect at 50% strength for 2 seconds
+ *    if (!Haptic.PlayRumble(haptic, 0.5, 2000))
+ *       return;
+ *    Delay(2000);
+ *
+ *    // Clean up
+ *    Haptic.Close(haptic);
+ * ```
+ *
+ * Complete example:
+ *
+ * ```c
+ * bool test_haptic(Joystick *joystick)
+ * {
+ *    Haptic *haptic;
+ *    HapticEffect effect;
+ *    int effect_id;
+ *
+ *    // Open the device
+ *    haptic = Haptic.Haptic(joystick);
+ *    if (haptic == nullptr) return false; // Most likely joystick isn't haptic
+ *
+ *    // See if it can do sine waves
+ *    if ((Haptic.GetFeatures(haptic) & HAPTIC_SINE)==0) {
+ *       Haptic.Close(haptic); // No sine effect
+ *       return false;
+ *    }
+ *
+ *    // Create the effect
+ *    memset(&effect, 0, sizeof(HapticEffect)); // 0 is safe default
+ *    effect.type = HAPTIC_SINE;
+ *    effect.periodic.direction.type = HAPTIC_POLAR; // Polar coordinates
+ *    effect.periodic.direction.dir[0] = 18000; // Force comes from south
+ *    effect.periodic.period = 1000; // 1000 ms
+ *    effect.periodic.magnitude = 20000; // 20000/32767 strength
+ *    effect.periodic.length = 5000; // 5 seconds long
+ *    effect.periodic.attack_length = 1000; // Takes 1 second to get max
+ * strength effect.periodic.fade_length = 1000; // Takes 1 second to fade away
+ *
+ *    // Upload the effect
+ *    effect_id = Haptic.CreateEffect(haptic, &effect);
+ *
+ *    // Test the effect
+ *    Haptic.RunEffect(haptic, effect_id, 1);
+ *    Delay(5000); // Wait for the effect to finish
+ *
+ *    // We destroy the effect, although closing the device also does this
+ *    Haptic.DestroyEffect(haptic, effect_id);
+ *
+ *    // Close the device
+ *    Haptic.Close(haptic);
+ *
+ *    return true; // Success
+ * }
+ * ```
+ *
+ * Note that the SDL haptic subsystem is not thread-safe.
+ *
+ * @{
+ */
+
+// Forward decl
+struct Haptic;
+
+/// Alias to raw representation for Haptic.
+using HapticRaw = SDL_Haptic*;
+
+// Forward decl
+struct HapticRef;
+
+/// Safely wrap Haptic for non owning parameters
+struct HapticParam
+{
+  HapticRaw value; ///< parameter's HapticRaw
+
+  /// Constructs from HapticRaw
+  constexpr HapticParam(HapticRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr HapticParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const HapticParam& other) const = default;
+
+  /// Converts to underlying HapticRaw
+  constexpr operator HapticRaw() const { return value; }
+};
+
+/**
+ * @name Haptic effects
+ * @{
+ */
+
+/**
+ * Haptic effects flag constants
+ *
+ */
+using HapticEffectType = Uint32;
+
+/**
+ * Constant effect supported.
+ *
+ * Constant haptic effect.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticCondition
+ */
+constexpr HapticEffectType HAPTIC_CONSTANT = SDL_HAPTIC_CONSTANT;
+
+/**
+ * Sine wave effect supported.
+ *
+ * Periodic haptic effect that simulates sine waves.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticPeriodic
+ */
+constexpr HapticEffectType HAPTIC_SINE = SDL_HAPTIC_SINE;
+
+/**
+ * Square wave effect supported.
+ *
+ * Periodic haptic effect that simulates square waves.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticPeriodic
+ */
+constexpr HapticEffectType HAPTIC_SQUARE = SDL_HAPTIC_SQUARE;
+
+/**
+ * Triangle wave effect supported.
+ *
+ * Periodic haptic effect that simulates triangular waves.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticPeriodic
+ */
+constexpr HapticEffectType HAPTIC_TRIANGLE = SDL_HAPTIC_TRIANGLE;
+
+/**
+ * Sawtoothup wave effect supported.
+ *
+ * Periodic haptic effect that simulates saw tooth up waves.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticPeriodic
+ */
+constexpr HapticEffectType HAPTIC_SAWTOOTHUP = SDL_HAPTIC_SAWTOOTHUP;
+
+/**
+ * Sawtoothdown wave effect supported.
+ *
+ * Periodic haptic effect that simulates saw tooth down waves.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticPeriodic
+ */
+constexpr HapticEffectType HAPTIC_SAWTOOTHDOWN = SDL_HAPTIC_SAWTOOTHDOWN;
+
+/**
+ * Ramp effect supported.
+ *
+ * Ramp haptic effect.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticRamp
+ */
+constexpr HapticEffectType HAPTIC_RAMP = SDL_HAPTIC_RAMP;
+
+/**
+ * Spring effect supported - uses axes position.
+ *
+ * Condition haptic effect that simulates a spring. Effect is based on the
+ * axes position.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticCondition
+ */
+constexpr HapticEffectType HAPTIC_SPRING = SDL_HAPTIC_SPRING;
+
+/**
+ * Damper effect supported - uses axes velocity.
+ *
+ * Condition haptic effect that simulates dampening. Effect is based on the
+ * axes velocity.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticCondition
+ */
+constexpr HapticEffectType HAPTIC_DAMPER = SDL_HAPTIC_DAMPER;
+
+/**
+ * Inertia effect supported - uses axes acceleration.
+ *
+ * Condition haptic effect that simulates inertia. Effect is based on the axes
+ * acceleration.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticCondition
+ */
+constexpr HapticEffectType HAPTIC_INERTIA = SDL_HAPTIC_INERTIA;
+
+/**
+ * Friction effect supported - uses axes movement.
+ *
+ * Condition haptic effect that simulates friction. Effect is based on the
+ * axes movement.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticCondition
+ */
+constexpr HapticEffectType HAPTIC_FRICTION = SDL_HAPTIC_FRICTION;
+
+/**
+ * Left/Right effect supported.
+ *
+ * Haptic effect for direct control over high/low frequency motors.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticLeftRight
+ */
+constexpr HapticEffectType HAPTIC_LEFTRIGHT = SDL_HAPTIC_LEFTRIGHT;
+
+/**
+ * Reserved for future use.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ */
+constexpr HapticEffectType HAPTIC_RESERVED1 = SDL_HAPTIC_RESERVED1;
+
+/**
+ * Reserved for future use.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ */
+constexpr HapticEffectType HAPTIC_RESERVED2 = SDL_HAPTIC_RESERVED2;
+
+/**
+ * Reserved for future use.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ */
+constexpr HapticEffectType HAPTIC_RESERVED3 = SDL_HAPTIC_RESERVED3;
+
+/**
+ * Custom effect is supported.
+ *
+ * User defined custom haptic effect.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ */
+constexpr HapticEffectType HAPTIC_CUSTOM = SDL_HAPTIC_CUSTOM;
+
+/**
+ * Device can set global gain.
+ *
+ * Device supports setting the global gain.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa Haptic.SetGain
+ */
+constexpr HapticEffectType HAPTIC_GAIN = SDL_HAPTIC_GAIN;
+
+/**
+ * Device can set autocenter.
+ *
+ * Device supports setting autocenter.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa Haptic.SetAutocenter
+ */
+constexpr HapticEffectType HAPTIC_AUTOCENTER = SDL_HAPTIC_AUTOCENTER;
+
+/**
+ * Device can be queried for effect status.
+ *
+ * Device supports querying effect status.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa Haptic.GetEffectStatus
+ */
+constexpr HapticEffectType HAPTIC_STATUS = SDL_HAPTIC_STATUS;
+
+/**
+ * Device can be paused.
+ *
+ * Devices supports being paused.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa Haptic.Pause
+ * @sa Haptic.Resume
+ */
+constexpr HapticEffectType HAPTIC_PAUSE = SDL_HAPTIC_PAUSE;
+
+/// @}
+
+/**
+ * @name Direction encodings
+ * @{
+ */
+
+/// Direction encoding
+using HapticDirectionType = Uint8;
+
+/**
+ * Uses polar coordinates for the direction.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticDirection
+ */
+constexpr HapticDirectionType HAPTIC_POLAR = SDL_HAPTIC_POLAR;
+
+/**
+ * Uses cartesian coordinates for the direction.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticDirection
+ */
+constexpr HapticDirectionType HAPTIC_CARTESIAN = SDL_HAPTIC_CARTESIAN;
+
+/**
+ * Uses spherical coordinates for the direction.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticDirection
+ */
+constexpr HapticDirectionType HAPTIC_SPHERICAL = SDL_HAPTIC_SPHERICAL;
+
+/**
+ * Use this value to play an effect on the steering wheel axis.
+ *
+ * This provides better compatibility across platforms and devices as SDL will
+ * guess the correct axis.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa HapticDirection
+ */
+constexpr HapticDirectionType HAPTIC_STEERING_AXIS = SDL_HAPTIC_STEERING_AXIS;
+
+/// @}
+
+/**
+ * Used to play a device an infinite number of times.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa Haptic.RunEffect
+ */
+constexpr Uint32 HAPTIC_INFINITY = SDL_HAPTIC_INFINITY;
+
+/**
+ * Structure that represents a haptic direction.
+ *
+ * This is the direction where the force comes from, instead of the direction
+ * in which the force is exerted.
+ *
+ * Directions can be specified by:
+ *
+ * - HAPTIC_POLAR : Specified by polar coordinates.
+ * - HAPTIC_CARTESIAN : Specified by cartesian coordinates.
+ * - HAPTIC_SPHERICAL : Specified by spherical coordinates.
+ *
+ * Cardinal directions of the haptic device are relative to the positioning of
+ * the device. North is considered to be away from the user.
+ *
+ * The following diagram represents the cardinal directions:
+ *
+ * ```
+ *                .--.
+ *                |__| .-------.
+ *                |=.| |.-----.|
+ *                |--| ||     ||
+ *                |  | |'-----'|
+ *                |__|~')_____('
+ *                  [ COMPUTER ]
+ *
+ *
+ *                    North (0,-1)
+ *                        ^
+ *                        |
+ *                        |
+ *  (-1,0)  West <----[ HAPTIC ]----> East (1,0)
+ *                        |
+ *                        |
+ *                        v
+ *                     South (0,1)
+ *
+ *
+ *                     [ USER ]
+ *                       \|||/
+ *                       (o o)
+ *                 ---ooO-(_)-Ooo---
+ * ```
+ *
+ * If type is HAPTIC_POLAR, direction is encoded by hundredths of a degree
+ * starting north and turning clockwise. HAPTIC_POLAR only uses the first
+ * `dir` parameter. The cardinal directions would be:
+ *
+ * - North: 0 (0 degrees)
+ * - East: 9000 (90 degrees)
+ * - South: 18000 (180 degrees)
+ * - West: 27000 (270 degrees)
+ *
+ * If type is HAPTIC_CARTESIAN, direction is encoded by three positions (X
+ * axis, Y axis and Z axis (with 3 axes)). HAPTIC_CARTESIAN uses the first
+ * three `dir` parameters. The cardinal directions would be:
+ *
+ * - North: 0,-1, 0
+ * - East: 1, 0, 0
+ * - South: 0, 1, 0
+ * - West: -1, 0, 0
+ *
+ * The Z axis represents the height of the effect if supported, otherwise it's
+ * unused. In cartesian encoding (1, 2) would be the same as (2, 4), you can
+ * use any multiple you want, only the direction matters.
+ *
+ * If type is HAPTIC_SPHERICAL, direction is encoded by two rotations. The
+ * first two `dir` parameters are used. The `dir` parameters are as follows
+ * (all values are in hundredths of degrees):
+ *
+ * - Degrees from (1, 0) rotated towards (0, 1).
+ * - Degrees towards (0, 0, 1) (device needs at least 3 axes).
+ *
+ * Example of force coming from the south with all encodings (force coming
+ * from the south means the user will have to pull the stick to counteract):
+ *
+ * ```c
+ *  HapticDirection direction;
+ *
+ *  // Cartesian directions
+ *  direction.type = HAPTIC_CARTESIAN; // Using cartesian direction encoding.
+ *  direction.dir[0] = 0; // X position
+ *  direction.dir[1] = 1; // Y position
+ *  // Assuming the device has 2 axes, we don't need to specify third parameter.
+ *
+ *  // Polar directions
+ *  direction.type = HAPTIC_POLAR; // We'll be using polar direction encoding.
+ *  direction.dir[0] = 18000; // Polar only uses first parameter
+ *
+ *  // Spherical coordinates
+ *  direction.type = HAPTIC_SPHERICAL; // Spherical encoding
+ *  direction.dir[0] = 9000; // Since we only have two axes we don't need more
+ * parameters.
+ * ```
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa HAPTIC_POLAR
+ * @sa HAPTIC_CARTESIAN
+ * @sa HAPTIC_SPHERICAL
+ * @sa HAPTIC_STEERING_AXIS
+ * @sa HapticEffect
+ * @sa Haptic.GetNumAxes
+ */
+using HapticDirection = SDL_HapticDirection;
+
+/**
+ * A structure containing a template for a Constant effect.
+ *
+ * This struct is exclusively for the HAPTIC_CONSTANT effect.
+ *
+ * A constant effect applies a constant force in the specified direction to
+ * the joystick.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa HAPTIC_CONSTANT
+ * @sa HapticEffect
+ */
+using HapticConstant = SDL_HapticConstant;
+
+/**
+ * A structure containing a template for a Periodic effect.
+ *
+ * The struct handles the following effects:
+ *
+ * - HAPTIC_SINE
+ * - HAPTIC_SQUARE
+ * - HAPTIC_TRIANGLE
+ * - HAPTIC_SAWTOOTHUP
+ * - HAPTIC_SAWTOOTHDOWN
+ *
+ * A periodic effect consists in a wave-shaped effect that repeats itself over
+ * time. The type determines the shape of the wave and the parameters
+ * determine the dimensions of the wave.
+ *
+ * Phase is given by hundredth of a degree meaning that giving the phase a
+ * value of 9000 will displace it 25% of its period. Here are sample values:
+ *
+ * - 0: No phase displacement.
+ * - 9000: Displaced 25% of its period.
+ * - 18000: Displaced 50% of its period.
+ * - 27000: Displaced 75% of its period.
+ * - 36000: Displaced 100% of its period, same as 0, but 0 is preferred.
+ *
+ * Examples:
+ *
+ * ```
+ *   HAPTIC_SINE
+ *     __      __      __      __
+ *    /  \    /  \    /  \    /
+ *   /    @__/    @__/    @__/
+ *
+ *   HAPTIC_SQUARE
+ *    __    __    __    __    __
+ *   |  |  |  |  |  |  |  |  |  |
+ *   |  |__|  |__|  |__|  |__|  |
+ *
+ *   HAPTIC_TRIANGLE
+ *     /\    /\    /\    /\    /\
+ *    /  \  /  \  /  \  /  \  /
+ *   /    \/    \/    \/    \/
+ *
+ *   HAPTIC_SAWTOOTHUP
+ *     /|  /|  /|  /|  /|  /|  /|
+ *    / | / | / | / | / | / | / |
+ *   /  |/  |/  |/  |/  |/  |/  |
+ *
+ *   HAPTIC_SAWTOOTHDOWN
+ *   \  |\  |\  |\  |\  |\  |\  |
+ *    \ | \ | \ | \ | \ | \ | \ |
+ *     \|  \|  \|  \|  \|  \|  \|
+ * ```
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa HAPTIC_SINE
+ * @sa HAPTIC_SQUARE
+ * @sa HAPTIC_TRIANGLE
+ * @sa HAPTIC_SAWTOOTHUP
+ * @sa HAPTIC_SAWTOOTHDOWN
+ * @sa HapticEffect
+ */
+using HapticPeriodic = SDL_HapticPeriodic;
+
+/**
+ * A structure containing a template for a Condition effect.
+ *
+ * The struct handles the following effects:
+ *
+ * - HAPTIC_SPRING: Effect based on axes position.
+ * - HAPTIC_DAMPER: Effect based on axes velocity.
+ * - HAPTIC_INERTIA: Effect based on axes acceleration.
+ * - HAPTIC_FRICTION: Effect based on axes movement.
+ *
+ * Direction is handled by condition internals instead of a direction member.
+ * The condition effect specific members have three parameters. The first
+ * refers to the X axis, the second refers to the Y axis and the third refers
+ * to the Z axis. The right terms refer to the positive side of the axis and
+ * the left terms refer to the negative side of the axis. Please refer to the
+ * HapticDirection diagram for which side is positive and which is
+ * negative.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa HapticDirection
+ * @sa HAPTIC_SPRING
+ * @sa HAPTIC_DAMPER
+ * @sa HAPTIC_INERTIA
+ * @sa HAPTIC_FRICTION
+ * @sa HapticEffect
+ */
+using HapticCondition = SDL_HapticCondition;
+
+/**
+ * A structure containing a template for a Ramp effect.
+ *
+ * This struct is exclusively for the HAPTIC_RAMP effect.
+ *
+ * The ramp effect starts at start strength and ends at end strength. It
+ * augments in linear fashion. If you use attack and fade with a ramp the
+ * effects get added to the ramp effect making the effect become quadratic
+ * instead of linear.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa HAPTIC_RAMP
+ * @sa HapticEffect
+ */
+using HapticRamp = SDL_HapticRamp;
+
+/**
+ * A structure containing a template for a Left/Right effect.
+ *
+ * This struct is exclusively for the HAPTIC_LEFTRIGHT effect.
+ *
+ * The Left/Right effect is used to explicitly control the large and small
+ * motors, commonly found in modern game controllers. The small (right) motor
+ * is high frequency, and the large (left) motor is low frequency.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa HAPTIC_LEFTRIGHT
+ * @sa HapticEffect
+ */
+using HapticLeftRight = SDL_HapticLeftRight;
+
+/**
+ * A structure containing a template for the HAPTIC_CUSTOM effect.
+ *
+ * This struct is exclusively for the HAPTIC_CUSTOM effect.
+ *
+ * A custom force feedback effect is much like a periodic effect, where the
+ * application can define its exact shape. You will have to allocate the data
+ * yourself. Data should consist of channels * samples Uint16 samples.
+ *
+ * If channels is one, the effect is rotated using the defined direction.
+ * Otherwise it uses the samples in data for the different axes.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa HAPTIC_CUSTOM
+ * @sa HapticEffect
+ */
+using HapticCustom = SDL_HapticCustom;
+
+/**
+ * The generic template for any haptic effect.
+ *
+ * All values max at 32767 (0x7FFF). Signed values also can be negative. Time
+ * values unless specified otherwise are in milliseconds.
+ *
+ * You can also pass HAPTIC_INFINITY to length instead of a 0-32767 value.
+ * Neither delay, interval, attack_length nor fade_length support
+ * HAPTIC_INFINITY. Fade will also not be used since effect never ends.
+ *
+ * Additionally, the HAPTIC_RAMP effect does not support a duration of
+ * HAPTIC_INFINITY.
+ *
+ * Button triggers may not be supported on all devices, it is advised to not
+ * use them if possible. Buttons start at index 1 instead of index 0 like the
+ * joystick.
+ *
+ * If both attack_length and fade_level are 0, the envelope is not used,
+ * otherwise both values are used.
+ *
+ * Common parts:
+ *
+ * ```c
+ *  // Replay - All effects have this
+ *  Uint32 length;        // Duration of effect (ms).
+ *  Uint16 delay;         // Delay before starting effect.
+ *
+ *  // Trigger - All effects have this
+ *  Uint16 button;        // Button that triggers effect.
+ *  Uint16 interval;      // How soon before effect can be triggered again.
+ *
+ *  // Envelope - All effects except condition effects have this
+ *  Uint16 attack_length; // Duration of the attack (ms).
+ *  Uint16 attack_level;  // Level at the start of the attack.
+ *  Uint16 fade_length;   // Duration of the fade out (ms).
+ *  Uint16 fade_level;    // Level at the end of the fade.
+ * ```
+ *
+ * Here we have an example of a constant effect evolution in time:
+ *
+ * ```
+ *  Strength
+ *  ^
+ *  |
+ *  |    effect level -->  _________________
+ *  |                     /                 \
+ *  |                    /                   \
+ *  |                   /                     \
+ *  |                  /                       \
+ *  | attack_level --> |                        \
+ *  |                  |                        |  <---  fade_level
+ *  |
+ *  +--------------------------------------------------> Time
+ *                     [--]                 [---]
+ *                     attack_length        fade_length
+ *
+ *  [------------------][-----------------------]
+ *  delay               length
+ * ```
+ *
+ * Note either the attack_level or the fade_level may be above the actual
+ * effect level.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa HapticConstant
+ * @sa HapticPeriodic
+ * @sa HapticCondition
+ * @sa HapticRamp
+ * @sa HapticLeftRight
+ * @sa HapticCustom
+ */
+using HapticEffect = SDL_HapticEffect;
+
+/**
+ * This is a unique ID for a haptic device for the time it is connected to the
+ * system, and is never reused for the lifetime of the application.
+ *
+ * If the haptic device is disconnected and reconnected, it will get a new ID.
+ *
+ * The value 0 is an invalid ID.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using HapticID = SDL_HapticID;
+
+/**
+ * The haptic structure used to identify an SDL haptic.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa Haptic.Haptic
+ * @sa Haptic.Haptic
+ * @sa Haptic.Close
+ *
+ * @cat resource
+ */
+class Haptic
+{
+  HapticRaw m_resource = nullptr;
+
+public:
+  /// Default ctor
+  constexpr Haptic() = default;
+
+  /**
+   * Constructs from HapticParam.
+   *
+   * @param resource a HapticRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Haptic(const HapticRaw resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Haptic(const Haptic& other) = delete;
+
+  /// Move constructor
+  constexpr Haptic(Haptic&& other)
+    : Haptic(other.release())
+  {
+  }
+
+  constexpr Haptic(const HapticRef& other) = delete;
+
+  constexpr Haptic(HapticRef&& other) = delete;
+
+  /**
+   * Open a haptic device for use.
+   *
+   * The index passed as an argument refers to the N'th haptic device on this
+   * system.
+   *
+   * When opening a haptic device, its gain will be set to maximum and
+   * autocenter will be disabled. To modify these values use Haptic.SetGain()
+   * and Haptic.SetAutocenter().
+   *
+   * @param instance_id the haptic device instance ID.
+   * @post the device identifier or nullptr on failure; call GetError() for
+   *          more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.Close
+   * @sa GetHaptics
+   * @sa Haptic.Haptic
+   * @sa Haptic.OpenFromMouse
+   * @sa Haptic.SetAutocenter
+   * @sa Haptic.SetGain
+   */
+  Haptic(HapticID instance_id)
+    : m_resource(SDL_OpenHaptic(instance_id))
+  {
+  }
+
+  /**
+   * Open a haptic device for use from a joystick device.
+   *
+   * You must still close the haptic device separately. It will not be closed
+   * with the joystick.
+   *
+   * When opened from a joystick you should first close the haptic device before
+   * closing the joystick device. If not, on some implementations the haptic
+   * device will also get unallocated and you'll be unable to use force feedback
+   * on that device.
+   *
+   * @param joystick the Joystick to create a haptic device from.
+   * @post a valid haptic device identifier on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.Close
+   * @sa IsJoystickHaptic
+   */
+  Haptic(JoystickParam joystick)
+    : m_resource(CheckError(SDL_OpenHapticFromJoystick(joystick)))
+  {
+  }
+
+  /**
+   * Try to open a haptic device from the current mouse.
+   *
+   * @returns the haptic device identifier or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.Close
+   * @sa IsMouseHaptic
+   */
+  static Haptic OpenFromMouse();
+
+  /// Destructor
+  ~Haptic() { SDL_CloseHaptic(m_resource); }
+
+  /// Assignment operator.
+  Haptic& operator=(Haptic other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Retrieves underlying HapticRaw.
+  constexpr HapticRaw get() const { return m_resource; }
+
+  /// Retrieves underlying HapticRaw and clear this.
+  constexpr HapticRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const Haptic& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Converts to HapticParam
+  constexpr operator HapticParam() const { return {m_resource}; }
+
+  /**
+   * Close a haptic device previously opened with Haptic.Haptic().
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.Haptic
+   */
+  void Close();
+
+  /**
+   * Get the instance ID of an opened haptic device.
+   *
+   * @returns the instance ID of the specified haptic device on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  HapticID GetID();
+
+  /**
+   * Get the implementation dependent name of a haptic device.
+   *
+   * @returns the name of the selected haptic device. If no name can be found,
+   *          this function returns nullptr; call GetError() for more
+   *          information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetHapticNameForID
+   */
+  const char* GetName();
+
+  /**
+   * Get the number of effects a haptic device can store.
+   *
+   * On some platforms this isn't fully supported, and therefore is an
+   * approximation. Always check to see if your created effect was actually
+   * created and do not rely solely on Haptic.GetMaxEffects().
+   *
+   * @returns the number of effects the haptic device can store or a negative
+   *          error code on failure; call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.GetMaxEffectsPlaying
+   * @sa Haptic.GetFeatures
+   */
+  int GetMaxEffects();
+
+  /**
+   * Get the number of effects a haptic device can play at the same time.
+   *
+   * This is not supported on all platforms, but will always return a value.
+   *
+   * @returns the number of effects the haptic device can play at the same time
+   *          or -1 on failure; call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.GetMaxEffects
+   * @sa Haptic.GetFeatures
+   */
+  int GetMaxEffectsPlaying();
+
+  /**
+   * Get the haptic device's supported features in bitwise manner.
+   *
+   * @returns a list of supported haptic features in bitwise manner (OR'd), or 0
+   *          on failure; call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.EffectSupported
+   * @sa Haptic.GetMaxEffects
+   */
+  Uint32 GetFeatures();
+
+  /**
+   * Get the number of haptic axes the device has.
+   *
+   * The number of haptic axes might be useful if working with the
+   * HapticDirection effect.
+   *
+   * @returns the number of axes on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  int GetNumAxes();
+
+  /**
+   * Check to see if an effect is supported by a haptic device.
+   *
+   * @param effect the desired effect to query.
+   * @returns true if the effect is supported or false if it isn't.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.CreateEffect
+   * @sa Haptic.GetFeatures
+   */
+  bool EffectSupported(const HapticEffect& effect);
+
+  /**
+   * Create a new haptic effect on a specified device.
+   *
+   * @param effect an HapticEffect structure containing the properties of
+   *               the effect to create.
+   * @returns the ID of the effect on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.DestroyEffect
+   * @sa Haptic.RunEffect
+   * @sa Haptic.UpdateEffect
+   */
+  int CreateEffect(const HapticEffect& effect);
+
+  /**
+   * Update the properties of an effect.
+   *
+   * Can be used dynamically, although behavior when dynamically changing
+   * direction may be strange. Specifically the effect may re-upload itself and
+   * start playing from the start. You also cannot change the type either when
+   * running Haptic.UpdateEffect().
+   *
+   * @param effect the identifier of the effect to update.
+   * @param data an HapticEffect structure containing the new effect
+   *             properties to use.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.CreateEffect
+   * @sa Haptic.RunEffect
+   */
+  void UpdateEffect(int effect, const HapticEffect& data);
+
+  /**
+   * Run the haptic effect on its associated haptic device.
+   *
+   * To repeat the effect over and over indefinitely, set `iterations` to
+   * `HAPTIC_INFINITY`. (Repeats the envelope - attack and fade.) To make
+   * one instance of the effect last indefinitely (so the effect does not fade),
+   * set the effect's `length` in its structure/union to `HAPTIC_INFINITY`
+   * instead.
+   *
+   * @param effect the ID of the haptic effect to run.
+   * @param iterations the number of iterations to run the effect; use
+   *                   `HAPTIC_INFINITY` to repeat forever.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.GetEffectStatus
+   * @sa Haptic.StopEffect
+   * @sa Haptic.StopEffects
+   */
+  void RunEffect(int effect, Uint32 iterations);
+
+  /**
+   * Stop the haptic effect on its associated haptic device.
+   *
+   * @param effect the ID of the haptic effect to stop.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.RunEffect
+   * @sa Haptic.StopEffects
+   */
+  void StopEffect(int effect);
+
+  /**
+   * Destroy a haptic effect on the device.
+   *
+   * This will stop the effect if it's running. Effects are automatically
+   * destroyed when the device is closed.
+   *
+   * @param effect the ID of the haptic effect to destroy.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.CreateEffect
+   */
+  void DestroyEffect(int effect);
+
+  /**
+   * Get the status of the current effect on the specified haptic device.
+   *
+   * Device must support the HAPTIC_STATUS feature.
+   *
+   * @param effect the ID of the haptic effect to query its status.
+   * @returns true if it is playing, false if it isn't playing or haptic status
+   *          isn't supported.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.GetFeatures
+   */
+  bool GetEffectStatus(int effect);
+
+  /**
+   * Set the global gain of the specified haptic device.
+   *
+   * Device must support the HAPTIC_GAIN feature.
+   *
+   * The user may specify the maximum gain by setting the environment variable
+   * `SDL_HAPTIC_GAIN_MAX` which should be between 0 and 100. All calls to
+   * Haptic.SetGain() will scale linearly using `SDL_HAPTIC_GAIN_MAX` as the
+   * maximum.
+   *
+   * @param gain value to set the gain to, should be between 0 and 100 (0 -
+   *             100).
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.GetFeatures
+   */
+  void SetGain(int gain);
+
+  /**
+   * Set the global autocenter of the device.
+   *
+   * Autocenter should be between 0 and 100. Setting it to 0 will disable
+   * autocentering.
+   *
+   * Device must support the HAPTIC_AUTOCENTER feature.
+   *
+   * @param autocenter value to set autocenter to (0-100).
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.GetFeatures
+   */
+  void SetAutocenter(int autocenter);
+
+  /**
+   * Pause a haptic device.
+   *
+   * Device must support the `HAPTIC_PAUSE` feature. Call Haptic.Resume()
+   * to resume playback.
+   *
+   * Do not modify the effects nor add new ones while the device is paused. That
+   * can cause all sorts of weird errors.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.Resume
+   */
+  void Pause();
+
+  /**
+   * Resume a haptic device.
+   *
+   * Call to unpause after Haptic.Pause().
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.Pause
+   */
+  void Resume();
+
+  /**
+   * Stop all the currently playing effects on a haptic device.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.RunEffect
+   * @sa Haptic.StopEffects
+   */
+  void StopEffects();
+
+  /**
+   * Check whether rumble is supported on a haptic device.
+   *
+   * @returns true if the effect is supported or false if it isn't.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.InitRumble
+   */
+  bool RumbleSupported();
+
+  /**
+   * Initialize a haptic device for simple rumble playback.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.PlayRumble
+   * @sa Haptic.StopRumble
+   * @sa Haptic.RumbleSupported
+   */
+  void InitRumble();
+
+  /**
+   * Run a simple rumble effect on a haptic device.
+   *
+   * @param strength strength of the rumble to play as a 0-1 float value.
+   * @param length length of the rumble to play in milliseconds.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.InitRumble
+   * @sa Haptic.StopRumble
+   */
+  void PlayRumble(float strength, Uint32 length);
+
+  /**
+   * Stop the simple rumble on a haptic device.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Haptic.PlayRumble
+   */
+  void StopRumble();
+};
+
+/// Semi-safe reference for Haptic.
+struct HapticRef : Haptic
+{
+  /**
+   * Constructs from HapticParam.
+   *
+   * @param resource a HapticRaw or Haptic.
+   *
+   * This does not takes ownership!
+   */
+  HapticRef(HapticParam resource)
+    : Haptic(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  HapticRef(const HapticRef& other)
+    : Haptic(other.get())
+  {
+  }
+
+  /// Destructor
+  ~HapticRef() { release(); }
+};
+
+/**
+ * Get a list of currently connected haptic devices.
+ *
+ * @returns a 0 terminated array of haptic device instance IDs or nullptr on
+ *          failure; call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.Haptic
+ */
+inline OwnArray<HapticID> GetHaptics()
+{
+  int count;
+  auto data = SDL_GetHaptics(&count);
+  return OwnArray<HapticID>{data};
+}
+
+/**
+ * Get the implementation dependent name of a haptic device.
+ *
+ * This can be called before any haptic devices are opened.
+ *
+ * @param instance_id the haptic device instance ID.
+ * @returns the name of the selected haptic device. If no name can be found,
+ *          this function returns nullptr; call GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.GetName
+ * @sa Haptic.Haptic
+ */
+inline const char* GetHapticNameForID(HapticID instance_id)
+{
+  return SDL_GetHapticNameForID(instance_id);
+}
+
+/**
+ * Open a haptic device for use.
+ *
+ * The index passed as an argument refers to the N'th haptic device on this
+ * system.
+ *
+ * When opening a haptic device, its gain will be set to maximum and
+ * autocenter will be disabled. To modify these values use Haptic.SetGain()
+ * and Haptic.SetAutocenter().
+ *
+ * @param instance_id the haptic device instance ID.
+ * @returns the device identifier or nullptr on failure; call GetError() for
+ *          more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.Close
+ * @sa GetHaptics
+ * @sa Haptic.Haptic
+ * @sa Haptic.OpenFromMouse
+ * @sa Haptic.SetAutocenter
+ * @sa Haptic.SetGain
+ */
+inline Haptic OpenHaptic(HapticID instance_id) { return Haptic(instance_id); }
+
+/**
+ * Get the Haptic associated with an instance ID, if it has been opened.
+ *
+ * @param instance_id the instance ID to get the Haptic for.
+ * @returns an Haptic on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline HapticRef GetHapticFromID(HapticID instance_id)
+{
+  return {CheckError(SDL_GetHapticFromID(instance_id))};
+}
+
+/**
+ * Get the instance ID of an opened haptic device.
+ *
+ * @param haptic the Haptic device to query.
+ * @returns the instance ID of the specified haptic device on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline HapticID GetHapticID(HapticParam haptic)
+{
+  return CheckError(SDL_GetHapticID(haptic));
+}
+
+inline HapticID Haptic::GetID() { return SDL::GetHapticID(m_resource); }
+
+/**
+ * Get the implementation dependent name of a haptic device.
+ *
+ * @param haptic the Haptic obtained from JoystickID.OpenJoystick().
+ * @returns the name of the selected haptic device. If no name can be found,
+ *          this function returns nullptr; call GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetHapticNameForID
+ */
+inline const char* GetHapticName(HapticParam haptic)
+{
+  return SDL_GetHapticName(haptic);
+}
+
+inline const char* Haptic::GetName() { return SDL::GetHapticName(m_resource); }
+
+/**
+ * Query whether or not the current mouse has haptic capabilities.
+ *
+ * @returns true if the mouse is haptic or false if it isn't.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.OpenFromMouse
+ */
+inline bool IsMouseHaptic() { return SDL_IsMouseHaptic(); }
+
+/**
+ * Try to open a haptic device from the current mouse.
+ *
+ * @returns the haptic device identifier or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.Close
+ * @sa IsMouseHaptic
+ */
+inline Haptic OpenHapticFromMouse()
+{
+  return Haptic(SDL_OpenHapticFromMouse());
+}
+
+inline Haptic Haptic::OpenFromMouse() { return SDL::OpenHapticFromMouse(); }
+
+/**
+ * Query if a joystick has haptic features.
+ *
+ * @param joystick the Joystick to test for haptic capabilities.
+ * @returns true if the joystick is haptic or false if it isn't.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.Haptic
+ */
+inline bool IsJoystickHaptic(JoystickParam joystick)
+{
+  return SDL_IsJoystickHaptic(joystick);
+}
+
+/**
+ * Open a haptic device for use from a joystick device.
+ *
+ * You must still close the haptic device separately. It will not be closed
+ * with the joystick.
+ *
+ * When opened from a joystick you should first close the haptic device before
+ * closing the joystick device. If not, on some implementations the haptic
+ * device will also get unallocated and you'll be unable to use force feedback
+ * on that device.
+ *
+ * @param joystick the Joystick to create a haptic device from.
+ * @returns a valid haptic device identifier on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.Close
+ * @sa IsJoystickHaptic
+ */
+inline Haptic OpenHapticFromJoystick(JoystickParam joystick)
+{
+  return Haptic(joystick);
+}
+
+/**
+ * Close a haptic device previously opened with Haptic.Haptic().
+ *
+ * @param haptic the Haptic device to close.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.Haptic
+ */
+inline void CloseHaptic(HapticRaw haptic) { SDL_CloseHaptic(haptic); }
+
+inline void Haptic::Close() { CloseHaptic(release()); }
+
+/**
+ * Get the number of effects a haptic device can store.
+ *
+ * On some platforms this isn't fully supported, and therefore is an
+ * approximation. Always check to see if your created effect was actually
+ * created and do not rely solely on Haptic.GetMaxEffects().
+ *
+ * @param haptic the Haptic device to query.
+ * @returns the number of effects the haptic device can store or a negative
+ *          error code on failure; call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.GetMaxEffectsPlaying
+ * @sa Haptic.GetFeatures
+ */
+inline int GetMaxHapticEffects(HapticParam haptic)
+{
+  return SDL_GetMaxHapticEffects(haptic);
+}
+
+inline int Haptic::GetMaxEffects()
+{
+  return SDL::GetMaxHapticEffects(m_resource);
+}
+
+/**
+ * Get the number of effects a haptic device can play at the same time.
+ *
+ * This is not supported on all platforms, but will always return a value.
+ *
+ * @param haptic the Haptic device to query maximum playing effects.
+ * @returns the number of effects the haptic device can play at the same time
+ *          or -1 on failure; call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.GetMaxEffects
+ * @sa Haptic.GetFeatures
+ */
+inline int GetMaxHapticEffectsPlaying(HapticParam haptic)
+{
+  return SDL_GetMaxHapticEffectsPlaying(haptic);
+}
+
+inline int Haptic::GetMaxEffectsPlaying()
+{
+  return SDL::GetMaxHapticEffectsPlaying(m_resource);
+}
+
+/**
+ * Get the haptic device's supported features in bitwise manner.
+ *
+ * @param haptic the Haptic device to query.
+ * @returns a list of supported haptic features in bitwise manner (OR'd), or 0
+ *          on failure; call GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.EffectSupported
+ * @sa Haptic.GetMaxEffects
+ */
+inline Uint32 GetHapticFeatures(HapticParam haptic)
+{
+  return SDL_GetHapticFeatures(haptic);
+}
+
+inline Uint32 Haptic::GetFeatures()
+{
+  return SDL::GetHapticFeatures(m_resource);
+}
+
+/**
+ * Get the number of haptic axes the device has.
+ *
+ * The number of haptic axes might be useful if working with the
+ * HapticDirection effect.
+ *
+ * @param haptic the Haptic device to query.
+ * @returns the number of axes on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int GetNumHapticAxes(HapticParam haptic)
+{
+  return CheckError(SDL_GetNumHapticAxes(haptic));
+}
+
+inline int Haptic::GetNumAxes() { return SDL::GetNumHapticAxes(m_resource); }
+
+/**
+ * Check to see if an effect is supported by a haptic device.
+ *
+ * @param haptic the Haptic device to query.
+ * @param effect the desired effect to query.
+ * @returns true if the effect is supported or false if it isn't.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.CreateEffect
+ * @sa Haptic.GetFeatures
+ */
+inline bool HapticEffectSupported(HapticParam haptic,
+                                  const HapticEffect& effect)
+{
+  return SDL_HapticEffectSupported(haptic, &effect);
+}
+
+inline bool Haptic::EffectSupported(const HapticEffect& effect)
+{
+  return SDL::HapticEffectSupported(m_resource, effect);
+}
+
+/**
+ * Create a new haptic effect on a specified device.
+ *
+ * @param haptic an Haptic device to create the effect on.
+ * @param effect an HapticEffect structure containing the properties of
+ *               the effect to create.
+ * @returns the ID of the effect on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.DestroyEffect
+ * @sa Haptic.RunEffect
+ * @sa Haptic.UpdateEffect
+ */
+inline int CreateHapticEffect(HapticParam haptic, const HapticEffect& effect)
+{
+  return CheckError(SDL_CreateHapticEffect(haptic, &effect));
+}
+
+inline int Haptic::CreateEffect(const HapticEffect& effect)
+{
+  return SDL::CreateHapticEffect(m_resource, effect);
+}
+
+/**
+ * Update the properties of an effect.
+ *
+ * Can be used dynamically, although behavior when dynamically changing
+ * direction may be strange. Specifically the effect may re-upload itself and
+ * start playing from the start. You also cannot change the type either when
+ * running Haptic.UpdateEffect().
+ *
+ * @param haptic the Haptic device that has the effect.
+ * @param effect the identifier of the effect to update.
+ * @param data an HapticEffect structure containing the new effect
+ *             properties to use.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.CreateEffect
+ * @sa Haptic.RunEffect
+ */
+inline void UpdateHapticEffect(HapticParam haptic,
+                               int effect,
+                               const HapticEffect& data)
+{
+  CheckError(SDL_UpdateHapticEffect(haptic, effect, &data));
+}
+
+inline void Haptic::UpdateEffect(int effect, const HapticEffect& data)
+{
+  SDL::UpdateHapticEffect(m_resource, effect, data);
+}
+
+/**
+ * Run the haptic effect on its associated haptic device.
+ *
+ * To repeat the effect over and over indefinitely, set `iterations` to
+ * `HAPTIC_INFINITY`. (Repeats the envelope - attack and fade.) To make
+ * one instance of the effect last indefinitely (so the effect does not fade),
+ * set the effect's `length` in its structure/union to `HAPTIC_INFINITY`
+ * instead.
+ *
+ * @param haptic the Haptic device to run the effect on.
+ * @param effect the ID of the haptic effect to run.
+ * @param iterations the number of iterations to run the effect; use
+ *                   `HAPTIC_INFINITY` to repeat forever.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.GetEffectStatus
+ * @sa Haptic.StopEffect
+ * @sa Haptic.StopEffects
+ */
+inline void RunHapticEffect(HapticParam haptic, int effect, Uint32 iterations)
+{
+  CheckError(SDL_RunHapticEffect(haptic, effect, iterations));
+}
+
+inline void Haptic::RunEffect(int effect, Uint32 iterations)
+{
+  SDL::RunHapticEffect(m_resource, effect, iterations);
+}
+
+/**
+ * Stop the haptic effect on its associated haptic device.
+ *
+ * @param haptic the Haptic device to stop the effect on.
+ * @param effect the ID of the haptic effect to stop.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.RunEffect
+ * @sa Haptic.StopEffects
+ */
+inline void StopHapticEffect(HapticParam haptic, int effect)
+{
+  CheckError(SDL_StopHapticEffect(haptic, effect));
+}
+
+inline void Haptic::StopEffect(int effect)
+{
+  SDL::StopHapticEffect(m_resource, effect);
+}
+
+/**
+ * Destroy a haptic effect on the device.
+ *
+ * This will stop the effect if it's running. Effects are automatically
+ * destroyed when the device is closed.
+ *
+ * @param haptic the Haptic device to destroy the effect on.
+ * @param effect the ID of the haptic effect to destroy.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.CreateEffect
+ */
+inline void DestroyHapticEffect(HapticParam haptic, int effect)
+{
+  SDL_DestroyHapticEffect(haptic, effect);
+}
+
+inline void Haptic::DestroyEffect(int effect)
+{
+  SDL::DestroyHapticEffect(m_resource, effect);
+}
+
+/**
+ * Get the status of the current effect on the specified haptic device.
+ *
+ * Device must support the HAPTIC_STATUS feature.
+ *
+ * @param haptic the Haptic device to query for the effect status on.
+ * @param effect the ID of the haptic effect to query its status.
+ * @returns true if it is playing, false if it isn't playing or haptic status
+ *          isn't supported.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.GetFeatures
+ */
+inline bool GetHapticEffectStatus(HapticParam haptic, int effect)
+{
+  return SDL_GetHapticEffectStatus(haptic, effect);
+}
+
+inline bool Haptic::GetEffectStatus(int effect)
+{
+  return SDL::GetHapticEffectStatus(m_resource, effect);
+}
+
+/**
+ * Set the global gain of the specified haptic device.
+ *
+ * Device must support the HAPTIC_GAIN feature.
+ *
+ * The user may specify the maximum gain by setting the environment variable
+ * `SDL_HAPTIC_GAIN_MAX` which should be between 0 and 100. All calls to
+ * Haptic.SetGain() will scale linearly using `SDL_HAPTIC_GAIN_MAX` as the
+ * maximum.
+ *
+ * @param haptic the Haptic device to set the gain on.
+ * @param gain value to set the gain to, should be between 0 and 100 (0 -
+ *             100).
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.GetFeatures
+ */
+inline void SetHapticGain(HapticParam haptic, int gain)
+{
+  CheckError(SDL_SetHapticGain(haptic, gain));
+}
+
+inline void Haptic::SetGain(int gain) { SDL::SetHapticGain(m_resource, gain); }
+
+/**
+ * Set the global autocenter of the device.
+ *
+ * Autocenter should be between 0 and 100. Setting it to 0 will disable
+ * autocentering.
+ *
+ * Device must support the HAPTIC_AUTOCENTER feature.
+ *
+ * @param haptic the Haptic device to set autocentering on.
+ * @param autocenter value to set autocenter to (0-100).
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.GetFeatures
+ */
+inline void SetHapticAutocenter(HapticParam haptic, int autocenter)
+{
+  CheckError(SDL_SetHapticAutocenter(haptic, autocenter));
+}
+
+inline void Haptic::SetAutocenter(int autocenter)
+{
+  SDL::SetHapticAutocenter(m_resource, autocenter);
+}
+
+/**
+ * Pause a haptic device.
+ *
+ * Device must support the `HAPTIC_PAUSE` feature. Call Haptic.Resume()
+ * to resume playback.
+ *
+ * Do not modify the effects nor add new ones while the device is paused. That
+ * can cause all sorts of weird errors.
+ *
+ * @param haptic the Haptic device to pause.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.Resume
+ */
+inline void PauseHaptic(HapticParam haptic)
+{
+  CheckError(SDL_PauseHaptic(haptic));
+}
+
+inline void Haptic::Pause() { SDL::PauseHaptic(m_resource); }
+
+/**
+ * Resume a haptic device.
+ *
+ * Call to unpause after Haptic.Pause().
+ *
+ * @param haptic the Haptic device to unpause.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.Pause
+ */
+inline void ResumeHaptic(HapticParam haptic)
+{
+  CheckError(SDL_ResumeHaptic(haptic));
+}
+
+inline void Haptic::Resume() { SDL::ResumeHaptic(m_resource); }
+
+/**
+ * Stop all the currently playing effects on a haptic device.
+ *
+ * @param haptic the Haptic device to stop.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.RunEffect
+ * @sa Haptic.StopEffects
+ */
+inline void StopHapticEffects(HapticParam haptic)
+{
+  CheckError(SDL_StopHapticEffects(haptic));
+}
+
+inline void Haptic::StopEffects() { SDL::StopHapticEffects(m_resource); }
+
+/**
+ * Check whether rumble is supported on a haptic device.
+ *
+ * @param haptic haptic device to check for rumble support.
+ * @returns true if the effect is supported or false if it isn't.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.InitRumble
+ */
+inline bool HapticRumbleSupported(HapticParam haptic)
+{
+  return SDL_HapticRumbleSupported(haptic);
+}
+
+inline bool Haptic::RumbleSupported()
+{
+  return SDL::HapticRumbleSupported(m_resource);
+}
+
+/**
+ * Initialize a haptic device for simple rumble playback.
+ *
+ * @param haptic the haptic device to initialize for simple rumble playback.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.PlayRumble
+ * @sa Haptic.StopRumble
+ * @sa Haptic.RumbleSupported
+ */
+inline void InitHapticRumble(HapticParam haptic)
+{
+  CheckError(SDL_InitHapticRumble(haptic));
+}
+
+inline void Haptic::InitRumble() { SDL::InitHapticRumble(m_resource); }
+
+/**
+ * Run a simple rumble effect on a haptic device.
+ *
+ * @param haptic the haptic device to play the rumble effect on.
+ * @param strength strength of the rumble to play as a 0-1 float value.
+ * @param length length of the rumble to play in milliseconds.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.InitRumble
+ * @sa Haptic.StopRumble
+ */
+inline void PlayHapticRumble(HapticParam haptic, float strength, Uint32 length)
+{
+  CheckError(SDL_PlayHapticRumble(haptic, strength, length));
+}
+
+inline void Haptic::PlayRumble(float strength, Uint32 length)
+{
+  SDL::PlayHapticRumble(m_resource, strength, length);
+}
+
+/**
+ * Stop the simple rumble on a haptic device.
+ *
+ * @param haptic the haptic device to stop the rumble effect on.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Haptic.PlayRumble
+ */
+inline void StopHapticRumble(HapticParam haptic)
+{
+  CheckError(SDL_StopHapticRumble(haptic));
+}
+
+inline void Haptic::StopRumble() { SDL::StopHapticRumble(m_resource); }
 
 /// @}
 

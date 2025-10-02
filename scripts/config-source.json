@@ -53,6 +53,9 @@
     "SDL_camera.h",
     "SDL_asyncio.h",
     "SDL_hidapi.h",
+    "SDL_haptic.h",
+    "SDL_joystick.h",
+    "SDL_gamepad.h",
     "SDL_image.h",
     "SDL_ttf.h"
   ],
