@@ -111,12 +111,7 @@ export interface ApiFileTransform {
   includes?: string[];
   localIncludes?: string[];
   sourceIncludePrefix?: string;
-  includeBefore?: ApiEntryTransformMap;
-  includeAfter?: ApiEntryTransformMap;
   transform?: Dict<ApiEntryTransform>;
-  resources?: Dict<ApiResource>;
-  enumerations?: Dict<ApiEnumeration>;
-  wrappers?: Dict<ApiWrapper>;
   namespacesMap?: StringMap;
   definitionPrefix?: string;
   enableException?: boolean;
@@ -132,71 +127,6 @@ export interface ApiEntryTransform extends ApiEntryBase {
   resource?: boolean | string | ResourceDefinition;
   before?: string;
   after?: string;
-}
-
-export interface ApiResource extends ApiEntryTransform {
-  kind?: "struct";
-
-  includeAfter?: string;
-
-  /**
-   * Name of free function. By default it uses the first subentry with
-   * containing "Destroy", "Close" or "free" substring, in that order.
-   */
-  free?: string
-
-  /**
-   * The name of base resource class, defaults to _uniqueName_`Base`
-   */
-  name?: string;
-
-  /**
-   * The wrapped type, defaults to the original type
-   */
-  type?: string;
-
-  /**
-   * The type of pointer. Defaults to _type_`*`
-   */
-  pointerType?: string;
-
-  /**
-   * The source name of constructors
-   * 
-   * Anything marked as "ctor" is automatically added here
-   */
-  ctors?: string[]
-
-  /**
-   * If true it prepend an alias to DetachedResource
-   */
-  aliasDetached?: boolean
-
-  /**
-   * The type to replace on return types, defaults to "ref"
-   * 
-   */
-  returnType?: "ref" | "unique" | "none";
-
-  /**
-   * If true or object, the object to lock
-   */
-  lock?: ApiLock | boolean;
-
-  /**
-   * The lock function name to be added to the lock class
-   */
-  lockFunction?: string;
-
-  /**
-   * The unlock function name to be added to the lock class
-   */
-  unlockFunction?: string;
-
-  /**
-   * Extra parameters to the base classes.
-   */
-  extraParameters?: string[]
 }
 
 export interface ResourceDefinition {
@@ -249,40 +179,6 @@ export interface ApiLock extends ApiEntryTransform {
   kind?: "struct";
 }
 
-export interface ApiWrapper extends ApiEntryTransform {
-  kind?: "struct";
-
-  includeAfter?: string;
-
-  /** Defaults to `value` */
-  attribute?: string;
-
-  /** Defaults to true */
-  invalidState?: boolean;
-
-  /** Defaults to {} */
-  defaultValue?: string
-
-  /** Defaults to true if alias to pointer, false otherwise */
-  nullable?: boolean
-
-  /** Defaults to true */
-  genCtor?: boolean
-
-  /** Defaults to true, relevant only to struct */
-  genMembers?: boolean
-
-  /** 
-   * Defaults to true if alias to anything but `void *`, false otherwise.
-   */
-  ordered?: boolean
-
-  /** 
-   * Defaults to true if ordered is false and not a struct
-   */
-  comparable?: boolean
-}
-
 export interface WrapperDefinition {
   /** Defaults to `value` */
   attribute?: string;
@@ -321,15 +217,6 @@ export interface WrapperDefinition {
    * Name of raw resource type
    */
   rawName?: string;
-}
-
-export interface ApiEnumeration extends ApiEntryTransform {
-  kind?: "struct" | "alias" | "enum";
-  prefix?: string;
-  newPrefix?: string;
-  values?: string[];
-  includeAfter?: string;
-  valueType?: string;
 }
 
 export interface EnumerationDefinition {

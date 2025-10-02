@@ -1085,9 +1085,6 @@ const transform = {
       ignoreEntries: [
         "SDL_SetErrorV"
       ],
-      includeAfter: {
-        "SDL_GetError": [],
-      },
       transform: {
         "SDL_SetError": {
           name: "SetErrorUnformatted",

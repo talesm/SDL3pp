@@ -1,9 +1,7 @@
 const { generateApi } = require("./generate.js");
 const { parseXmlApi } = require("./parse-xml.js");
 const { parseApi } = require("./parse.js");
-const { transformApiLegacy } = require("./transform-legacy.js");
 const { transformApi } = require("./transform.js");
-const { updateApi } = require("./update-legacy.js");
 const { readJSONSync, system, writeJSONSync, writeLinesSync } = require("./utils.js");
 /**
  * @import {Api, ApiTransform} from "./types"
@@ -33,14 +31,8 @@ function main(args) {
     case "generate":
       generate(args);
       break;
-    case "update-legacy":
-      updateLegacy(args);
-      break;
     case "transform":
       transform(args);
-      break;
-    case "transform-legacy":
-      transformLegacy(args);
       break;
     case "--help":
     case "help":
@@ -307,78 +299,6 @@ function generate(args) {
 }
 
 /**
- * 
- * @param {string[]} args 
- */
-function updateLegacy(args) {
-  if (args?.length == 0) {
-    return help(["update-legacy"]);
-  }
-  const config = {
-    /** @type {string[]} */
-    targets: [],
-    /** @type {Api} */
-    api: null,
-    baseDir: "",
-    currentApi: null,
-    resetDoc: false,
-  };
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
-    if (arg == "--") {
-      config.targets.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
-      break;
-    }
-    if (!arg.startsWith('-')) {
-      if (arg.endsWith(".json")) {
-        mergeInto(config, readJSONSync(arg.replaceAll("\\", '/')));
-      } else
-        config.targets.push(arg.replaceAll("\\", '/'));
-      continue;
-    }
-    switch (arg) {
-      case '-a': config.api = readJSONSync(args[++i].replaceAll("\\", '/')); break;
-      case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
-      case '-c': mergeInto(config, readJSONSync(args[++i].replaceAll("\\", '/'))); break;
-      case '-s': config.currentApi = readJSONSync(args[++i].replaceAll("\\", '/')); break;
-      case '--reset-docs':
-      case '--reset-doc': config.resetDoc = true; break;
-      case '--no-reset-docs':
-      case '--no-reset-doc': config.resetDoc = false; break;
-      default:
-        throw new Error(`Invalid option ${arg}`);
-    }
-  }
-  if (!config.api) throw new Error("Missing target");
-  if (typeof config.api == "string") config.api = readJSONSync(config.api);
-
-  const files = config.targets;
-  delete config.targets;
-  if (files?.length) {
-    if (!config.baseDir && files[0].includes('/')) {
-      config.baseDir = files[0].slice(0, files[0].lastIndexOf("/") + 1);
-      for (let i = 1; i < files?.length; i++) {
-        const file = files[i];
-        while (!file.startsWith(config.baseDir)) {
-          const pos = config.baseDir.lastIndexOf('/');
-          config.baseDir = config.baseDir.slice(0, pos + 1);
-        }
-      }
-      if (!config.baseDir) {
-        throw new Error("Could not deduce baseDir");
-      }
-    }
-    const baseDirLen = config.baseDir?.length ?? 0;
-    const localFiles = new Set(files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file));
-    for (const file of Object.keys(config.api?.files ?? {})) {
-      if (!localFiles.has(file)) delete config.api.files[file];
-    }
-  }
-
-  updateApi(config);
-}
-
-/**
  * Scan files
  * @param {string[]} args the arguments
  */
@@ -460,86 +380,6 @@ function transform(args) {
 }
 
 /**
- * Scan files
- * @param {string[]} args the arguments
- */
-function transformLegacy(args) {
-  if (args?.length == 0) {
-    return help(["transform-legacy"]);
-  }
-  const config = {
-    /** @type {Api} */
-    sourceApi: null,
-    /** @type {ApiTransform} */
-    transform: null,
-    api: "",
-    baseDir: "",
-  };
-  /** @type {string[]} */
-  const files = [];
-  let printConfig = false;
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
-    if (arg == "--") {
-      files.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
-      break;
-    }
-    if (!arg.startsWith('-')) {
-      if (arg.endsWith(".json")) {
-        mergeTransformInto(config, readJSONSync(arg.replaceAll("\\", '/')));
-      } else
-        files.push(arg.replaceAll("\\", '/'));
-      continue;
-    }
-    switch (arg) {
-      case '--sourceApi':
-      case '-s': config.sourceApi = readJSONSync(args[++i].replaceAll("\\", '/')); break;
-      case '--transform':
-      case '-t': config.transform = readJSONSync(args[++i].replaceAll("\\", '/')); break;
-      case '--outputFile':
-      case '-o': config.api = args[++i].replaceAll("\\", '/'); break;
-      case '--baseDir':
-      case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
-      case '--config':
-      case '-c':
-        mergeTransformInto(config, readJSONSync(args[++i].replaceAll("\\", '/')));
-        break;
-      case '--print-config':
-      case '-p': printConfig = true; break;
-      case '--store-line-numbers':
-      case '-l': config.storeLineNumbers = true; break;
-      default:
-        throw new Error(`Invalid option ${arg}`);
-    }
-  }
-  if (files?.length) {
-    if (!config.baseDir && files[0].includes('/')) {
-      config.baseDir = files[0].slice(0, files[0].lastIndexOf("/") + 1);
-      for (let i = 1; i < files?.length; i++) {
-        const file = files[i];
-        while (!file.startsWith(config.baseDir)) {
-          const pos = config.baseDir.lastIndexOf('/');
-          config.baseDir = config.baseDir.slice(0, pos + 1);
-        }
-      }
-      if (!config.baseDir) {
-        throw new Error("Could not deduce baseDir");
-      }
-    }
-    const baseDirLen = config.baseDir?.length ?? 0;
-    const localFiles = new Set(files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file));
-    for (const file of Object.keys(config.sourceApi?.files ?? {})) {
-      if (!localFiles.has(file)) delete config.sourceApi.files[file];
-    }
-  }
-  if (printConfig) {
-    writeJSONSync(config.api ? 1 : 2, config);
-  }
-  const api = transformApiLegacy(config);
-  writeJSONSync(config.api || 1, api);
-}
-
-/**
  * 
  * @param {{[key: string]: any}} destiny 
  * @param  {{[key: string]: any}} source 
@@ -566,22 +406,6 @@ function help(args = []) {
           "parse [ [-c] <config-file>] [-o <output-file>] [-d <base-dir>] [--] <input>..."),
         "",
         wrapText("If no base-dir is defined, we try to deduce the closest common ancestor from the inputs. If no output file is given or if it is a single dash (\" - \") it just outputs on stdout. If the first filename ends with \".json\" it interprets it as a config file, making the \" - c\" optional. Multiple configurations can be added and their content is merged."),
-      );
-      break;
-    case "update":
-      printLog(
-        "Update header file to match API",
-        "",
-        wrapUsageText(
-          `usage: node ${process.argv[1]} `,
-          "update [ [-c] <config-file>] [-a <api-file>] [-d <base-dir>] [-s <source-api>] [--] [target-file]..."
-        ),
-        "",
-        wrapText(`If no base-dir is defined, we try to deduce the closest \
-common ancestor from the inputs. If no output file is given or if it is a \
-single dash ("-") it just outputs on stdout. If the first filename ends with \
-".json" it interprets it as a config file, making the "-c" optional. Multiple \
-configurations can be added and their content is merged.`),
       );
       break;
     default:
