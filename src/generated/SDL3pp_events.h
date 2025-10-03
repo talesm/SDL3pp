@@ -1711,7 +1711,7 @@ inline Uint32 RegisterEvents(int numevents)
  */
 inline WindowRef GetWindowFromEvent(const Event& event)
 {
-  return CheckError(SDL_GetWindowFromEvent(event));
+  return CheckError(SDL_GetWindowFromEvent(&event));
 }
 
 /// @}

@@ -85,8 +85,8 @@ function transformApi(config) {
   /** @type {Api} */
   const api = {
     files: {},
-    paramReplacements: transform.paramReplacements,
-    delegatedReplacements: transform.delegatedReplacements,
+    paramReplacements: context.paramReplacements,
+    delegatedReplacements: context.delegatedReplacements,
   };
   files.forEach(file => api.files[file.name] = file);
 
@@ -161,6 +161,9 @@ class ApiContext {
     this.types = {};
 
     this.enableException = false;
+
+    this.paramReplacements = transform.paramReplacements ?? {};
+    this.delegatedReplacements = transform.delegatedReplacements ?? {};
   }
 
   /**
@@ -203,7 +206,11 @@ class ApiContext {
    * @param {string} targetType 
    */
   addParamType(originalType, targetType) {
-    if (!this.paramTypeMap[originalType]) this.paramTypeMap[originalType] = targetType;
+    if (!this.paramTypeMap[originalType]) {
+      this.paramTypeMap[originalType] = targetType;
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -378,11 +385,13 @@ function expandTypes(sourceEntries, file, context) {
     context.addParamType(sourceName, targetName);
     context.addParamType(`${sourceName} *`, `${targetName} *`);
     context.addParamType(`const ${sourceName}`, `const ${targetName}`);
-    context.addParamType(`const ${sourceName} *`, `const ${targetName} *`);
+    if (context.addParamType(`const ${sourceName} *`, `const ${targetName} &`)) {
+      context.paramReplacements[`const ${targetName} &`] = "&$";
+    }
     context.addReturnType(sourceName, targetName);
     context.addReturnType(`${sourceName} *`, `${targetName} *`);
     context.addReturnType(`const ${sourceName}`, `const ${targetName}`);
-    context.addReturnType(`const ${sourceName} *`, `const ${targetName} *`);
+    context.addReturnType(`const ${sourceName} *`, `const ${targetName} &`);
   }
 
   /**

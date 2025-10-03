@@ -587,9 +587,9 @@ inline AssertionHandlerCB GetAssertionHandler()
  *
  * @sa ResetAssertionReport
  */
-inline const AssertData* GetAssertionReport()
+inline const AssertData& GetAssertionReport()
 {
-  return SDL_GetAssertionReport();
+  return *SDL_GetAssertionReport();
 }
 
 /**

@@ -461,8 +461,8 @@ public:
    * @sa GPUComputePass.DispatchGPUComputeIndirect
    * @sa GPUDevice.ReleaseGPUBuffer
    */
-  GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo* createinfo)
-    : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, createinfo)))
+  GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo& createinfo)
+    : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, &createinfo)))
   {
   }
 
@@ -551,9 +551,9 @@ public:
    * @sa GPUDevice.ReleaseGPUTransferBuffer
    */
   GPUTransferBuffer(GPUDeviceParam device,
-                    const GPUTransferBufferCreateInfo* createinfo)
+                    const GPUTransferBufferCreateInfo& createinfo)
     : m_gPUTransferBuffer(
-        CheckError(SDL_CreateGPUTransferBuffer(device, createinfo)))
+        CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo)))
   {
   }
 
@@ -682,8 +682,8 @@ public:
    * @sa GPUDevice.ReleaseGPUTexture
    * @sa GPUDevice.GPUTextureSupportsFormat
    */
-  GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo* createinfo)
-    : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, createinfo)))
+  GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo& createinfo)
+    : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, &createinfo)))
   {
   }
 
@@ -766,8 +766,8 @@ public:
    * @sa GPURenderPass.BindGPUFragmentSamplers
    * @sa GPUDevice.ReleaseGPUSampler
    */
-  GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo* createinfo)
-    : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, createinfo)))
+  GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo& createinfo)
+    : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, &createinfo)))
   {
   }
 
@@ -894,8 +894,8 @@ public:
    * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
    * @sa GPUDevice.ReleaseGPUShader
    */
-  GPUShader(GPUDeviceParam device, const GPUShaderCreateInfo* createinfo)
-    : m_gPUShader(CheckError(SDL_CreateGPUShader(device, createinfo)))
+  GPUShader(GPUDeviceParam device, const GPUShaderCreateInfo& createinfo)
+    : m_gPUShader(CheckError(SDL_CreateGPUShader(device, &createinfo)))
   {
   }
 
@@ -998,9 +998,9 @@ public:
    * @sa GPUDevice.ReleaseGPUComputePipeline
    */
   GPUComputePipeline(GPUDeviceParam device,
-                     const GPUComputePipelineCreateInfo* createinfo)
+                     const GPUComputePipelineCreateInfo& createinfo)
     : m_gPUComputePipeline(
-        CheckError(SDL_CreateGPUComputePipeline(device, createinfo)))
+        CheckError(SDL_CreateGPUComputePipeline(device, &createinfo)))
   {
   }
 
@@ -1088,9 +1088,9 @@ public:
    * @sa GPUDevice.ReleaseGPUGraphicsPipeline
    */
   GPUGraphicsPipeline(GPUDeviceParam device,
-                      const GPUGraphicsPipelineCreateInfo* createinfo)
+                      const GPUGraphicsPipelineCreateInfo& createinfo)
     : m_gPUGraphicsPipeline(
-        CheckError(SDL_CreateGPUGraphicsPipeline(device, createinfo)))
+        CheckError(SDL_CreateGPUGraphicsPipeline(device, &createinfo)))
   {
   }
 
@@ -1218,7 +1218,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetGPUViewport(const GPUViewport* viewport);
+  void SetGPUViewport(const GPUViewport& viewport);
 
   /**
    * Sets the current scissor state on a command buffer.
@@ -1262,7 +1262,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    */
   void BindGPUVertexBuffers(Uint32 first_slot,
-                            const GPUBufferBinding* bindings,
+                            const GPUBufferBinding& bindings,
                             Uint32 num_bindings);
 
   /**
@@ -1275,7 +1275,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void BindGPUIndexBuffer(const GPUBufferBinding* binding,
+  void BindGPUIndexBuffer(const GPUBufferBinding& binding,
                           GPUIndexElementSize index_element_size);
 
   /**
@@ -1298,7 +1298,7 @@ public:
    */
   void BindGPUVertexSamplers(
     Uint32 first_slot,
-    const GPUTextureSamplerBinding* texture_sampler_bindings,
+    const GPUTextureSamplerBinding& texture_sampler_bindings,
     Uint32 num_bindings);
 
   /**
@@ -1363,7 +1363,7 @@ public:
    */
   void BindGPUFragmentSamplers(
     Uint32 first_slot,
-    const GPUTextureSamplerBinding* texture_sampler_bindings,
+    const GPUTextureSamplerBinding& texture_sampler_bindings,
     Uint32 num_bindings);
 
   /**
@@ -1581,7 +1581,7 @@ public:
    */
   void BindGPUComputeSamplers(
     Uint32 first_slot,
-    const GPUTextureSamplerBinding* texture_sampler_bindings,
+    const GPUTextureSamplerBinding& texture_sampler_bindings,
     Uint32 num_bindings);
 
   /**
@@ -1808,8 +1808,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void UploadToGPUTexture(const GPUTextureTransferInfo* source,
-                          const GPUTextureRegion* destination,
+  void UploadToGPUTexture(const GPUTextureTransferInfo& source,
+                          const GPUTextureRegion& destination,
                           bool cycle);
 
   /**
@@ -1825,8 +1825,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void UploadToGPUBuffer(const GPUTransferBufferLocation* source,
-                         const GPUBufferRegion* destination,
+  void UploadToGPUBuffer(const GPUTransferBufferLocation& source,
+                         const GPUBufferRegion& destination,
                          bool cycle);
 
   /**
@@ -1845,8 +1845,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void CopyGPUTextureToTexture(const GPUTextureLocation* source,
-                               const GPUTextureLocation* destination,
+  void CopyGPUTextureToTexture(const GPUTextureLocation& source,
+                               const GPUTextureLocation& destination,
                                Uint32 w,
                                Uint32 h,
                                Uint32 d,
@@ -1866,8 +1866,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void CopyGPUBufferToBuffer(const GPUBufferLocation* source,
-                             const GPUBufferLocation* destination,
+  void CopyGPUBufferToBuffer(const GPUBufferLocation& source,
+                             const GPUBufferLocation& destination,
                              Uint32 size,
                              bool cycle);
 
@@ -1883,8 +1883,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void DownloadFromGPUTexture(const GPUTextureRegion* source,
-                              const GPUTextureTransferInfo* destination);
+  void DownloadFromGPUTexture(const GPUTextureRegion& source,
+                              const GPUTextureTransferInfo& destination);
 
   /**
    * Copies data from a buffer to a transfer buffer on the GPU timeline.
@@ -1897,8 +1897,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void DownloadFromGPUBuffer(const GPUBufferRegion* source,
-                             const GPUTransferBufferLocation* destination);
+  void DownloadFromGPUBuffer(const GPUBufferRegion& source,
+                             const GPUTransferBufferLocation& destination);
 
   /**
    * Ends the current copy pass.
@@ -2212,9 +2212,9 @@ public:
    * @sa GPURenderPass.End
    */
   GPURenderPass BeginGPURenderPass(
-    const GPUColorTargetInfo* color_target_infos,
+    const GPUColorTargetInfo& color_target_infos,
     Uint32 num_color_targets,
-    const GPUDepthStencilTargetInfo* depth_stencil_target_info);
+    const GPUDepthStencilTargetInfo& depth_stencil_target_info);
 
   /**
    * Begins a compute pass on a command buffer.
@@ -2253,9 +2253,9 @@ public:
    * @sa GPUComputePass.End
    */
   GPUComputePass BeginGPUComputePass(
-    const GPUStorageTextureReadWriteBinding* storage_texture_bindings,
+    const GPUStorageTextureReadWriteBinding& storage_texture_bindings,
     Uint32 num_storage_texture_bindings,
-    const GPUStorageBufferReadWriteBinding* storage_buffer_bindings,
+    const GPUStorageBufferReadWriteBinding& storage_buffer_bindings,
     Uint32 num_storage_buffer_bindings);
 
   /**
@@ -2291,7 +2291,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void BlitGPUTexture(const GPUBlitInfo* info);
+  void BlitGPUTexture(const GPUBlitInfo& info);
 
   /**
    * Acquire a texture to use in presentation.
@@ -3287,7 +3287,7 @@ public:
    * @sa GPUDevice.ReleaseGPUComputePipeline
    */
   GPUComputePipeline CreateGPUComputePipeline(
-    const GPUComputePipelineCreateInfo* createinfo);
+    const GPUComputePipelineCreateInfo& createinfo);
 
   /**
    * Creates a pipeline object to be used in a graphics workflow.
@@ -3310,7 +3310,7 @@ public:
    * @sa GPUDevice.ReleaseGPUGraphicsPipeline
    */
   GPUGraphicsPipeline CreateGPUGraphicsPipeline(
-    const GPUGraphicsPipelineCreateInfo* createinfo);
+    const GPUGraphicsPipelineCreateInfo& createinfo);
 
   /**
    * Creates a sampler object to be used when binding textures in a graphics
@@ -3332,7 +3332,7 @@ public:
    * @sa GPURenderPass.BindGPUFragmentSamplers
    * @sa GPUDevice.ReleaseGPUSampler
    */
-  GPUSampler CreateGPUSampler(const GPUSamplerCreateInfo* createinfo);
+  GPUSampler CreateGPUSampler(const GPUSamplerCreateInfo& createinfo);
 
   /**
    * Creates a shader to be used when creating a graphics pipeline.
@@ -3406,7 +3406,7 @@ public:
    * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
    * @sa GPUDevice.ReleaseGPUShader
    */
-  GPUShader CreateGPUShader(const GPUShaderCreateInfo* createinfo);
+  GPUShader CreateGPUShader(const GPUShaderCreateInfo& createinfo);
 
   /**
    * Creates a texture object to be used in graphics or compute workflows.
@@ -3462,7 +3462,7 @@ public:
    * @sa GPUDevice.ReleaseGPUTexture
    * @sa GPUDevice.GPUTextureSupportsFormat
    */
-  GPUTexture CreateGPUTexture(const GPUTextureCreateInfo* createinfo);
+  GPUTexture CreateGPUTexture(const GPUTextureCreateInfo& createinfo);
 
   /**
    * Creates a buffer object to be used in graphics or compute workflows.
@@ -3507,7 +3507,7 @@ public:
    * @sa GPUComputePass.DispatchGPUComputeIndirect
    * @sa GPUDevice.ReleaseGPUBuffer
    */
-  GPUBuffer CreateGPUBuffer(const GPUBufferCreateInfo* createinfo);
+  GPUBuffer CreateGPUBuffer(const GPUBufferCreateInfo& createinfo);
 
   /**
    * Creates a transfer buffer to be used when uploading to or downloading from
@@ -3536,7 +3536,7 @@ public:
    * @sa GPUDevice.ReleaseGPUTransferBuffer
    */
   GPUTransferBuffer CreateGPUTransferBuffer(
-    const GPUTransferBufferCreateInfo* createinfo);
+    const GPUTransferBufferCreateInfo& createinfo);
 
   /**
    * Sets an arbitrary string constant to label a buffer.
@@ -4964,7 +4964,7 @@ inline GPUShaderFormat GPUDevice::GetGPUShaderFormats()
 }
 
 inline GPUComputePipeline GPUDevice::CreateGPUComputePipeline(
-  const GPUComputePipelineCreateInfo* createinfo)
+  const GPUComputePipelineCreateInfo& createinfo)
 {
   return GPUComputePipeline(m_resource, createinfo);
 }
@@ -5016,9 +5016,9 @@ inline GPUComputePipeline GPUDevice::CreateGPUComputePipeline(
  */
 inline GPUComputePipeline CreateGPUComputePipeline(
   GPUDeviceParam device,
-  const GPUComputePipelineCreateInfo* createinfo)
+  const GPUComputePipelineCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUComputePipeline(device, createinfo));
+  return CheckError(SDL_CreateGPUComputePipeline(device, &createinfo));
 }
 
 namespace prop::GPUComputePipeline {
@@ -5029,7 +5029,7 @@ constexpr auto CREATE_NAME_STRING =
 } // namespace prop::GPUComputePipeline
 
 inline GPUGraphicsPipeline GPUDevice::CreateGPUGraphicsPipeline(
-  const GPUGraphicsPipelineCreateInfo* createinfo)
+  const GPUGraphicsPipelineCreateInfo& createinfo)
 {
   return GPUGraphicsPipeline(m_resource, createinfo);
 }
@@ -5057,9 +5057,9 @@ inline GPUGraphicsPipeline GPUDevice::CreateGPUGraphicsPipeline(
  */
 inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
   GPUDeviceParam device,
-  const GPUGraphicsPipelineCreateInfo* createinfo)
+  const GPUGraphicsPipelineCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUGraphicsPipeline(device, createinfo));
+  return CheckError(SDL_CreateGPUGraphicsPipeline(device, &createinfo));
 }
 
 namespace prop::GPUGraphicsPipeline {
@@ -5070,7 +5070,7 @@ constexpr auto CREATE_NAME_STRING =
 } // namespace prop::GPUGraphicsPipeline
 
 inline GPUSampler GPUDevice::CreateGPUSampler(
-  const GPUSamplerCreateInfo* createinfo)
+  const GPUSamplerCreateInfo& createinfo)
 {
   return GPUSampler(m_resource, createinfo);
 }
@@ -5097,9 +5097,9 @@ inline GPUSampler GPUDevice::CreateGPUSampler(
  * @sa GPUDevice.ReleaseGPUSampler
  */
 inline GPUSampler CreateGPUSampler(GPUDeviceParam device,
-                                   const GPUSamplerCreateInfo* createinfo)
+                                   const GPUSamplerCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUSampler(device, createinfo));
+  return CheckError(SDL_CreateGPUSampler(device, &createinfo));
 }
 
 namespace prop::GPUSampler {
@@ -5109,7 +5109,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
 } // namespace prop::GPUSampler
 
 inline GPUShader GPUDevice::CreateGPUShader(
-  const GPUShaderCreateInfo* createinfo)
+  const GPUShaderCreateInfo& createinfo)
 {
   return GPUShader(m_resource, createinfo);
 }
@@ -5188,9 +5188,9 @@ inline GPUShader GPUDevice::CreateGPUShader(
  * @sa GPUDevice.ReleaseGPUShader
  */
 inline GPUShader CreateGPUShader(GPUDeviceParam device,
-                                 const GPUShaderCreateInfo* createinfo)
+                                 const GPUShaderCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUShader(device, createinfo));
+  return CheckError(SDL_CreateGPUShader(device, &createinfo));
 }
 
 namespace prop::GPUShader {
@@ -5200,7 +5200,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
 } // namespace prop::GPUShader
 
 inline GPUTexture GPUDevice::CreateGPUTexture(
-  const GPUTextureCreateInfo* createinfo)
+  const GPUTextureCreateInfo& createinfo)
 {
   return GPUTexture(m_resource, createinfo);
 }
@@ -5261,9 +5261,9 @@ inline GPUTexture GPUDevice::CreateGPUTexture(
  * @sa GPUDevice.GPUTextureSupportsFormat
  */
 inline GPUTexture CreateGPUTexture(GPUDeviceParam device,
-                                   const GPUTextureCreateInfo* createinfo)
+                                   const GPUTextureCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUTexture(device, createinfo));
+  return CheckError(SDL_CreateGPUTexture(device, &createinfo));
 }
 
 namespace prop::GPUTexture {
@@ -5291,7 +5291,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
 } // namespace prop::GPUTexture
 
 inline GPUBuffer GPUDevice::CreateGPUBuffer(
-  const GPUBufferCreateInfo* createinfo)
+  const GPUBufferCreateInfo& createinfo)
 {
   return GPUBuffer(m_resource, createinfo);
 }
@@ -5341,9 +5341,9 @@ inline GPUBuffer GPUDevice::CreateGPUBuffer(
  * @sa GPUDevice.ReleaseGPUBuffer
  */
 inline GPUBuffer CreateGPUBuffer(GPUDeviceParam device,
-                                 const GPUBufferCreateInfo* createinfo)
+                                 const GPUBufferCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUBuffer(device, createinfo));
+  return CheckError(SDL_CreateGPUBuffer(device, &createinfo));
 }
 
 namespace prop::GPUBuffer {
@@ -5353,7 +5353,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
 } // namespace prop::GPUBuffer
 
 inline GPUTransferBuffer GPUDevice::CreateGPUTransferBuffer(
-  const GPUTransferBufferCreateInfo* createinfo)
+  const GPUTransferBufferCreateInfo& createinfo)
 {
   return GPUTransferBuffer(m_resource, createinfo);
 }
@@ -5387,9 +5387,9 @@ inline GPUTransferBuffer GPUDevice::CreateGPUTransferBuffer(
  */
 inline GPUTransferBuffer CreateGPUTransferBuffer(
   GPUDeviceParam device,
-  const GPUTransferBufferCreateInfo* createinfo)
+  const GPUTransferBufferCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUTransferBuffer(device, createinfo));
+  return CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo));
 }
 
 namespace prop::GPUTransferBuffer {
@@ -5829,20 +5829,20 @@ inline void GPUCommandBuffer::PushGPUComputeUniformData(Uint32 slot_index,
  */
 inline GPURenderPass BeginGPURenderPass(
   GPUCommandBuffer command_buffer,
-  const GPUColorTargetInfo* color_target_infos,
+  const GPUColorTargetInfo& color_target_infos,
   Uint32 num_color_targets,
-  const GPUDepthStencilTargetInfo* depth_stencil_target_info)
+  const GPUDepthStencilTargetInfo& depth_stencil_target_info)
 {
   return SDL_BeginGPURenderPass(command_buffer,
-                                color_target_infos,
+                                &color_target_infos,
                                 num_color_targets,
-                                depth_stencil_target_info);
+                                &depth_stencil_target_info);
 }
 
 inline GPURenderPass GPUCommandBuffer::BeginGPURenderPass(
-  const GPUColorTargetInfo* color_target_infos,
+  const GPUColorTargetInfo& color_target_infos,
   Uint32 num_color_targets,
-  const GPUDepthStencilTargetInfo* depth_stencil_target_info)
+  const GPUDepthStencilTargetInfo& depth_stencil_target_info)
 {
   return SDL::BeginGPURenderPass(m_gPUCommandBuffer,
                                  color_target_infos,
@@ -5881,12 +5881,12 @@ inline void GPURenderPass::BindGPUGraphicsPipeline(
  * @since This function is available since SDL 3.2.0.
  */
 inline void SetGPUViewport(GPURenderPass render_pass,
-                           const GPUViewport* viewport)
+                           const GPUViewport& viewport)
 {
-  SDL_SetGPUViewport(render_pass, viewport);
+  SDL_SetGPUViewport(render_pass, &viewport);
 }
 
-inline void GPURenderPass::SetGPUViewport(const GPUViewport* viewport)
+inline void GPURenderPass::SetGPUViewport(const GPUViewport& viewport)
 {
   SDL::SetGPUViewport(m_gPURenderPass, viewport);
 }
@@ -5963,15 +5963,15 @@ inline void GPURenderPass::SetGPUStencilReference(Uint8 reference)
  */
 inline void BindGPUVertexBuffers(GPURenderPass render_pass,
                                  Uint32 first_slot,
-                                 const GPUBufferBinding* bindings,
+                                 const GPUBufferBinding& bindings,
                                  Uint32 num_bindings)
 {
-  SDL_BindGPUVertexBuffers(render_pass, first_slot, bindings, num_bindings);
+  SDL_BindGPUVertexBuffers(render_pass, first_slot, &bindings, num_bindings);
 }
 
 inline void GPURenderPass::BindGPUVertexBuffers(
   Uint32 first_slot,
-  const GPUBufferBinding* bindings,
+  const GPUBufferBinding& bindings,
   Uint32 num_bindings)
 {
   SDL::BindGPUVertexBuffers(
@@ -5990,14 +5990,14 @@ inline void GPURenderPass::BindGPUVertexBuffers(
  * @since This function is available since SDL 3.2.0.
  */
 inline void BindGPUIndexBuffer(GPURenderPass render_pass,
-                               const GPUBufferBinding* binding,
+                               const GPUBufferBinding& binding,
                                GPUIndexElementSize index_element_size)
 {
-  SDL_BindGPUIndexBuffer(render_pass, binding, index_element_size);
+  SDL_BindGPUIndexBuffer(render_pass, &binding, index_element_size);
 }
 
 inline void GPURenderPass::BindGPUIndexBuffer(
-  const GPUBufferBinding* binding,
+  const GPUBufferBinding& binding,
   GPUIndexElementSize index_element_size)
 {
   SDL::BindGPUIndexBuffer(m_gPURenderPass, binding, index_element_size);
@@ -6025,16 +6025,16 @@ inline void GPURenderPass::BindGPUIndexBuffer(
 inline void BindGPUVertexSamplers(
   GPURenderPass render_pass,
   Uint32 first_slot,
-  const GPUTextureSamplerBinding* texture_sampler_bindings,
+  const GPUTextureSamplerBinding& texture_sampler_bindings,
   Uint32 num_bindings)
 {
   SDL_BindGPUVertexSamplers(
-    render_pass, first_slot, texture_sampler_bindings, num_bindings);
+    render_pass, first_slot, &texture_sampler_bindings, num_bindings);
 }
 
 inline void GPURenderPass::BindGPUVertexSamplers(
   Uint32 first_slot,
-  const GPUTextureSamplerBinding* texture_sampler_bindings,
+  const GPUTextureSamplerBinding& texture_sampler_bindings,
   Uint32 num_bindings)
 {
   SDL::BindGPUVertexSamplers(
@@ -6136,16 +6136,16 @@ inline void GPURenderPass::BindGPUVertexStorageBuffers(
 inline void BindGPUFragmentSamplers(
   GPURenderPass render_pass,
   Uint32 first_slot,
-  const GPUTextureSamplerBinding* texture_sampler_bindings,
+  const GPUTextureSamplerBinding& texture_sampler_bindings,
   Uint32 num_bindings)
 {
   SDL_BindGPUFragmentSamplers(
-    render_pass, first_slot, texture_sampler_bindings, num_bindings);
+    render_pass, first_slot, &texture_sampler_bindings, num_bindings);
 }
 
 inline void GPURenderPass::BindGPUFragmentSamplers(
   Uint32 first_slot,
-  const GPUTextureSamplerBinding* texture_sampler_bindings,
+  const GPUTextureSamplerBinding& texture_sampler_bindings,
   Uint32 num_bindings)
 {
   SDL::BindGPUFragmentSamplers(
@@ -6435,22 +6435,22 @@ inline void GPURenderPass::End() { SDL::EndGPURenderPass(m_gPURenderPass); }
  */
 inline GPUComputePass BeginGPUComputePass(
   GPUCommandBuffer command_buffer,
-  const GPUStorageTextureReadWriteBinding* storage_texture_bindings,
+  const GPUStorageTextureReadWriteBinding& storage_texture_bindings,
   Uint32 num_storage_texture_bindings,
-  const GPUStorageBufferReadWriteBinding* storage_buffer_bindings,
+  const GPUStorageBufferReadWriteBinding& storage_buffer_bindings,
   Uint32 num_storage_buffer_bindings)
 {
   return SDL_BeginGPUComputePass(command_buffer,
-                                 storage_texture_bindings,
+                                 &storage_texture_bindings,
                                  num_storage_texture_bindings,
-                                 storage_buffer_bindings,
+                                 &storage_buffer_bindings,
                                  num_storage_buffer_bindings);
 }
 
 inline GPUComputePass GPUCommandBuffer::BeginGPUComputePass(
-  const GPUStorageTextureReadWriteBinding* storage_texture_bindings,
+  const GPUStorageTextureReadWriteBinding& storage_texture_bindings,
   Uint32 num_storage_texture_bindings,
-  const GPUStorageBufferReadWriteBinding* storage_buffer_bindings,
+  const GPUStorageBufferReadWriteBinding& storage_buffer_bindings,
   Uint32 num_storage_buffer_bindings)
 {
   return SDL::BeginGPUComputePass(m_gPUCommandBuffer,
@@ -6502,16 +6502,16 @@ inline void GPUComputePass::BindGPUComputePipeline(
 inline void BindGPUComputeSamplers(
   GPUComputePass compute_pass,
   Uint32 first_slot,
-  const GPUTextureSamplerBinding* texture_sampler_bindings,
+  const GPUTextureSamplerBinding& texture_sampler_bindings,
   Uint32 num_bindings)
 {
   SDL_BindGPUComputeSamplers(
-    compute_pass, first_slot, texture_sampler_bindings, num_bindings);
+    compute_pass, first_slot, &texture_sampler_bindings, num_bindings);
 }
 
 inline void GPUComputePass::BindGPUComputeSamplers(
   Uint32 first_slot,
-  const GPUTextureSamplerBinding* texture_sampler_bindings,
+  const GPUTextureSamplerBinding& texture_sampler_bindings,
   Uint32 num_bindings)
 {
   SDL::BindGPUComputeSamplers(
@@ -6763,16 +6763,16 @@ inline GPUCopyPass GPUCommandBuffer::BeginGPUCopyPass()
  * @since This function is available since SDL 3.2.0.
  */
 inline void UploadToGPUTexture(GPUCopyPass copy_pass,
-                               const GPUTextureTransferInfo* source,
-                               const GPUTextureRegion* destination,
+                               const GPUTextureTransferInfo& source,
+                               const GPUTextureRegion& destination,
                                bool cycle)
 {
-  SDL_UploadToGPUTexture(copy_pass, source, destination, cycle);
+  SDL_UploadToGPUTexture(copy_pass, &source, &destination, cycle);
 }
 
 inline void GPUCopyPass::UploadToGPUTexture(
-  const GPUTextureTransferInfo* source,
-  const GPUTextureRegion* destination,
+  const GPUTextureTransferInfo& source,
+  const GPUTextureRegion& destination,
   bool cycle)
 {
   SDL::UploadToGPUTexture(m_gPUCopyPass, source, destination, cycle);
@@ -6793,16 +6793,16 @@ inline void GPUCopyPass::UploadToGPUTexture(
  * @since This function is available since SDL 3.2.0.
  */
 inline void UploadToGPUBuffer(GPUCopyPass copy_pass,
-                              const GPUTransferBufferLocation* source,
-                              const GPUBufferRegion* destination,
+                              const GPUTransferBufferLocation& source,
+                              const GPUBufferRegion& destination,
                               bool cycle)
 {
-  SDL_UploadToGPUBuffer(copy_pass, source, destination, cycle);
+  SDL_UploadToGPUBuffer(copy_pass, &source, &destination, cycle);
 }
 
 inline void GPUCopyPass::UploadToGPUBuffer(
-  const GPUTransferBufferLocation* source,
-  const GPUBufferRegion* destination,
+  const GPUTransferBufferLocation& source,
+  const GPUBufferRegion& destination,
   bool cycle)
 {
   SDL::UploadToGPUBuffer(m_gPUCopyPass, source, destination, cycle);
@@ -6826,19 +6826,19 @@ inline void GPUCopyPass::UploadToGPUBuffer(
  * @since This function is available since SDL 3.2.0.
  */
 inline void CopyGPUTextureToTexture(GPUCopyPass copy_pass,
-                                    const GPUTextureLocation* source,
-                                    const GPUTextureLocation* destination,
+                                    const GPUTextureLocation& source,
+                                    const GPUTextureLocation& destination,
                                     Uint32 w,
                                     Uint32 h,
                                     Uint32 d,
                                     bool cycle)
 {
-  SDL_CopyGPUTextureToTexture(copy_pass, source, destination, w, h, d, cycle);
+  SDL_CopyGPUTextureToTexture(copy_pass, &source, &destination, w, h, d, cycle);
 }
 
 inline void GPUCopyPass::CopyGPUTextureToTexture(
-  const GPUTextureLocation* source,
-  const GPUTextureLocation* destination,
+  const GPUTextureLocation& source,
+  const GPUTextureLocation& destination,
   Uint32 w,
   Uint32 h,
   Uint32 d,
@@ -6864,17 +6864,17 @@ inline void GPUCopyPass::CopyGPUTextureToTexture(
  * @since This function is available since SDL 3.2.0.
  */
 inline void CopyGPUBufferToBuffer(GPUCopyPass copy_pass,
-                                  const GPUBufferLocation* source,
-                                  const GPUBufferLocation* destination,
+                                  const GPUBufferLocation& source,
+                                  const GPUBufferLocation& destination,
                                   Uint32 size,
                                   bool cycle)
 {
-  SDL_CopyGPUBufferToBuffer(copy_pass, source, destination, size, cycle);
+  SDL_CopyGPUBufferToBuffer(copy_pass, &source, &destination, size, cycle);
 }
 
 inline void GPUCopyPass::CopyGPUBufferToBuffer(
-  const GPUBufferLocation* source,
-  const GPUBufferLocation* destination,
+  const GPUBufferLocation& source,
+  const GPUBufferLocation& destination,
   Uint32 size,
   bool cycle)
 {
@@ -6895,15 +6895,15 @@ inline void GPUCopyPass::CopyGPUBufferToBuffer(
  * @since This function is available since SDL 3.2.0.
  */
 inline void DownloadFromGPUTexture(GPUCopyPass copy_pass,
-                                   const GPUTextureRegion* source,
-                                   const GPUTextureTransferInfo* destination)
+                                   const GPUTextureRegion& source,
+                                   const GPUTextureTransferInfo& destination)
 {
-  SDL_DownloadFromGPUTexture(copy_pass, source, destination);
+  SDL_DownloadFromGPUTexture(copy_pass, &source, &destination);
 }
 
 inline void GPUCopyPass::DownloadFromGPUTexture(
-  const GPUTextureRegion* source,
-  const GPUTextureTransferInfo* destination)
+  const GPUTextureRegion& source,
+  const GPUTextureTransferInfo& destination)
 {
   SDL::DownloadFromGPUTexture(m_gPUCopyPass, source, destination);
 }
@@ -6921,15 +6921,15 @@ inline void GPUCopyPass::DownloadFromGPUTexture(
  * @since This function is available since SDL 3.2.0.
  */
 inline void DownloadFromGPUBuffer(GPUCopyPass copy_pass,
-                                  const GPUBufferRegion* source,
-                                  const GPUTransferBufferLocation* destination)
+                                  const GPUBufferRegion& source,
+                                  const GPUTransferBufferLocation& destination)
 {
-  SDL_DownloadFromGPUBuffer(copy_pass, source, destination);
+  SDL_DownloadFromGPUBuffer(copy_pass, &source, &destination);
 }
 
 inline void GPUCopyPass::DownloadFromGPUBuffer(
-  const GPUBufferRegion* source,
-  const GPUTransferBufferLocation* destination)
+  const GPUBufferRegion& source,
+  const GPUTransferBufferLocation& destination)
 {
   SDL::DownloadFromGPUBuffer(m_gPUCopyPass, source, destination);
 }
@@ -6980,12 +6980,12 @@ inline void GPUCommandBuffer::GenerateMipmapsForGPUTexture(GPUTexture texture)
  * @since This function is available since SDL 3.2.0.
  */
 inline void BlitGPUTexture(GPUCommandBuffer command_buffer,
-                           const GPUBlitInfo* info)
+                           const GPUBlitInfo& info)
 {
-  SDL_BlitGPUTexture(command_buffer, info);
+  SDL_BlitGPUTexture(command_buffer, &info);
 }
 
-inline void GPUCommandBuffer::BlitGPUTexture(const GPUBlitInfo* info)
+inline void GPUCommandBuffer::BlitGPUTexture(const GPUBlitInfo& info)
 {
   SDL::BlitGPUTexture(m_gPUCommandBuffer, info);
 }

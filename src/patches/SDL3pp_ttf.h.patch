@@ -768,14 +768,6 @@
 >    * This will return the closest substring of text to the given point.
 >    *
 >    * @param p the coordinates relative to the top-left side of the text, may be
-5213c5105
-<   void GetPreviousSubString(const SubString* substring,
----
->   void GetPreviousSubString(const SubString& substring,
-5231c5123
-<   void GetNextSubString(const SubString* substring, SubString* next) const;
----
->   void GetNextSubString(const SubString& substring, SubString* next) const;
 5253c5145
 <   const char* GetText() const { static_assert(false, "Not implemented"); }
 ---
@@ -1158,30 +1150,6 @@
 <   CheckError(TTF_GetTextSubStringForPoint(text, p, substring));
 ---
 >   CheckError(TTF_GetTextSubStringForPoint(text, p.x, p.y, substring));
-6674c6538
-<                                      const SubString* substring,
----
->                                      const SubString& substring,
-6677c6541
-<   CheckError(TTF_GetPreviousTextSubString(text, substring, previous));
----
->   CheckError(TTF_GetPreviousTextSubString(text, &substring, previous));
-6680c6544
-< inline void Text::GetPreviousSubString(const SubString* substring,
----
-> inline void Text::GetPreviousSubString(const SubString& substring,
-6703c6567
-<                                  const SubString* substring,
----
->                                  const SubString& substring,
-6706c6570
-<   CheckError(TTF_GetNextTextSubString(text, substring, next));
----
->   CheckError(TTF_GetNextTextSubString(text, &substring, next));
-6709c6573
-< inline void Text::GetNextSubString(const SubString* substring,
----
-> inline void Text::GetNextSubString(const SubString& substring,
 6744c6608
 <  * @sa Text.Text
 ---

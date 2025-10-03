@@ -1450,9 +1450,9 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  *
  * @sa JoystickID.DetachVirtualJoystick
  */
-inline JoystickID AttachVirtualJoystick(const VirtualJoystickDesc* desc)
+inline JoystickID AttachVirtualJoystick(const VirtualJoystickDesc& desc)
 {
-  return SDL_AttachVirtualJoystick(desc);
+  return SDL_AttachVirtualJoystick(&desc);
 }
 
 /**

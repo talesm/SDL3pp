@@ -382,7 +382,7 @@ public:
    * @sa IOStream.FromFile
    * @sa IOStream.FromMem
    */
-  static IOStream Open(const IOStreamInterface* iface, void* userdata);
+  static IOStream Open(const IOStreamInterface& iface, void* userdata);
 
   /// Destructor
   ~IOStream() { SDL_CloseIO(m_resource); }
@@ -1921,12 +1921,12 @@ inline IOStream IOStream::FromDynamicMem() { return SDL::IOFromDynamicMem(); }
  * @sa IOStream.FromFile
  * @sa IOStream.FromMem
  */
-inline IOStream OpenIO(const IOStreamInterface* iface, void* userdata)
+inline IOStream OpenIO(const IOStreamInterface& iface, void* userdata)
 {
-  return IOStream(CheckError(SDL_OpenIO(iface, userdata)));
+  return IOStream(CheckError(SDL_OpenIO(&iface, userdata)));
 }
 
-inline IOStream IOStream::Open(const IOStreamInterface* iface, void* userdata)
+inline IOStream IOStream::Open(const IOStreamInterface& iface, void* userdata)
 {
   return SDL::OpenIO(iface, userdata);
 }

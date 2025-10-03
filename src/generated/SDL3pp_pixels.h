@@ -691,7 +691,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  const PixelFormatDetails* GetDetails() const;
+  const PixelFormatDetails& GetDetails() const;
 
   Uint32 Map(Color color, PaletteConstParam palette) const;
 
@@ -2538,12 +2538,12 @@ inline PixelFormat PixelFormat::ForMasks(int bpp,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const PixelFormatDetails* GetPixelFormatDetails(PixelFormatRaw format)
+inline const PixelFormatDetails& GetPixelFormatDetails(PixelFormatRaw format)
 {
   return SDL_GetPixelFormatDetails(format);
 }
 
-inline const PixelFormatDetails* PixelFormat::GetDetails() const
+inline const PixelFormatDetails& PixelFormat::GetDetails() const
 {
   return SDL::GetPixelFormatDetails(m_format);
 }
@@ -2646,13 +2646,13 @@ inline void Palette::Destroy() { DestroyPalette(release()); }
  * @sa MapRGBA
  * @sa Surface.MapRGB
  */
-inline Uint32 MapRGB(const PixelFormatDetails* format,
+inline Uint32 MapRGB(const PixelFormatDetails& format,
                      PaletteConstParam palette,
                      Uint8 r,
                      Uint8 g,
                      Uint8 b)
 {
-  return SDL_MapRGB(format, palette, r, g, b);
+  return SDL_MapRGB(&format, palette, r, g, b);
 }
 
 /**
@@ -2692,11 +2692,11 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
  * @sa MapRGB
  * @sa Surface.MapRGBA
  */
-inline Uint32 MapRGBA(const PixelFormatDetails* format,
+inline Uint32 MapRGBA(const PixelFormatDetails& format,
                       PaletteConstParam palette,
                       ColorRaw c)
 {
-  return SDL_MapRGBA(format, palette, c);
+  return SDL_MapRGBA(&format, palette, c);
 }
 
 /**
@@ -2726,13 +2726,13 @@ inline Uint32 MapRGBA(const PixelFormatDetails* format,
  * @sa MapRGBA
  */
 inline void GetRGB(Uint32 pixel,
-                   const PixelFormatDetails* format,
+                   const PixelFormatDetails& format,
                    PaletteConstParam palette,
                    Uint8* r,
                    Uint8* g,
                    Uint8* b)
 {
-  SDL_GetRGB(pixel, format, palette, r, g, b);
+  SDL_GetRGB(pixel, &format, palette, r, g, b);
 }
 
 /**
@@ -2766,14 +2766,14 @@ inline void GetRGB(Uint32 pixel,
  * @sa MapRGBA
  */
 inline void GetRGBA(Uint32 pixel,
-                    const PixelFormatDetails* format,
+                    const PixelFormatDetails& format,
                     PaletteConstParam palette,
                     Uint8* r,
                     Uint8* g,
                     Uint8* b,
                     Uint8* a)
 {
-  SDL_GetRGBA(pixel, format, palette, r, g, b, a);
+  SDL_GetRGBA(pixel, &format, palette, r, g, b, a);
 }
 
 /// @}

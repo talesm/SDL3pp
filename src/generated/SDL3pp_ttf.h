@@ -5210,7 +5210,7 @@ public:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  void GetPreviousSubString(const SubString* substring,
+  void GetPreviousSubString(const SubString& substring,
                             SubString* previous) const;
 
   /**
@@ -5228,7 +5228,7 @@ public:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  void GetNextSubString(const SubString* substring, SubString* next) const;
+  void GetNextSubString(const SubString& substring, SubString* next) const;
 
   /**
    * Update the layout of a text object.
@@ -6671,13 +6671,13 @@ inline void Text::GetSubStringForPoint(Point p, SubString* substring) const
  * @since This function is available since SDL_ttf 3.0.0.
  */
 inline void GetPreviousTextSubString(TextParam text,
-                                     const SubString* substring,
+                                     const SubString& substring,
                                      SubString* previous)
 {
-  CheckError(TTF_GetPreviousTextSubString(text, substring, previous));
+  CheckError(TTF_GetPreviousTextSubString(text, &substring, previous));
 }
 
-inline void Text::GetPreviousSubString(const SubString* substring,
+inline void Text::GetPreviousSubString(const SubString& substring,
                                        SubString* previous) const
 {
   SDL::GetPreviousTextSubString(m_resource, substring, previous);
@@ -6700,13 +6700,13 @@ inline void Text::GetPreviousSubString(const SubString* substring,
  * @since This function is available since SDL_ttf 3.0.0.
  */
 inline void GetNextTextSubString(TextParam text,
-                                 const SubString* substring,
+                                 const SubString& substring,
                                  SubString* next)
 {
-  CheckError(TTF_GetNextTextSubString(text, substring, next));
+  CheckError(TTF_GetNextTextSubString(text, &substring, next));
 }
 
-inline void Text::GetNextSubString(const SubString* substring,
+inline void Text::GetNextSubString(const SubString& substring,
                                    SubString* next) const
 {
   SDL::GetNextTextSubString(m_resource, substring, next);

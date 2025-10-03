@@ -1553,7 +1553,7 @@ inline int Haptic::GetNumAxes() { return SDL::GetNumHapticAxes(m_resource); }
 inline bool HapticEffectSupported(HapticParam haptic,
                                   const HapticEffect& effect)
 {
-  return SDL_HapticEffectSupported(haptic, effect);
+  return SDL_HapticEffectSupported(haptic, &effect);
 }
 
 inline bool Haptic::EffectSupported(const HapticEffect& effect)
@@ -1578,7 +1578,7 @@ inline bool Haptic::EffectSupported(const HapticEffect& effect)
  */
 inline int CreateHapticEffect(HapticParam haptic, const HapticEffect& effect)
 {
-  return CheckError(SDL_CreateHapticEffect(haptic, effect));
+  return CheckError(SDL_CreateHapticEffect(haptic, &effect));
 }
 
 inline int Haptic::CreateEffect(const HapticEffect& effect)
@@ -1609,7 +1609,7 @@ inline void UpdateHapticEffect(HapticParam haptic,
                                int effect,
                                const HapticEffect& data)
 {
-  CheckError(SDL_UpdateHapticEffect(haptic, effect, data));
+  CheckError(SDL_UpdateHapticEffect(haptic, effect, &data));
 }
 
 inline void Haptic::UpdateEffect(int effect, const HapticEffect& data)
