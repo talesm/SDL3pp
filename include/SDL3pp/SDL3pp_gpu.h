@@ -12,7 +12,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryGPU Category GPU
+ * @defgroup CategoryGPU 3D Rendering and GPU Compute
  *
  * The GPU API offers a cross-platform way for apps to talk to modern graphics
  * hardware. It offers both 3D graphics and compute support, in the style of
