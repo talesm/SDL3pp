@@ -15,6 +15,7 @@
     "SDL_events.h",
     "SDL_filesystem.h",
     "SDL_gamepad.h",
+    "SDL_gpu.h",
     "SDL_guid.h",
     "SDL_haptic.h",
     "SDL_hidapi.h",

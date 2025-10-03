@@ -532,7 +532,7 @@ public:
    *
    * With the gpu renderer:
    *
-   * - `prop::Renderer.GPU_DEVICE_POINTER`: the SDL_GPUDevice associated with
+   * - `prop::Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with
    *   the renderer
    *
    * @returns a valid property ID on success.
@@ -3326,7 +3326,7 @@ inline const char* Renderer::GetName() const
  *
  * With the gpu renderer:
  *
- * - `prop::Renderer.GPU_DEVICE_POINTER`: the SDL_GPUDevice associated with
+ * - `prop::Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with
  *   the renderer
  *
  * @param renderer the rendering context.

@@ -2,6 +2,7 @@
 #define SDL3PP_TTF_H_
 
 #include <SDL3/SDL_ttf.h>
+#include "SDL3pp_gpu.h"
 #include "SDL3pp_render.h"
 #include "SDL3pp_surface.h"
 #include "SDL3pp_version.h"
@@ -2238,7 +2239,7 @@ struct GPUTextEngine : TextEngine
   /**
    * Create a text engine for drawing text with the SDL GPU API.
    *
-   * @param device the SDL_GPUDevice to use for creating textures and drawing
+   * @param device the GPUDevice to use for creating textures and drawing
    *               text.
    * @post a TextEngine object or nullptr on failure; call GetError()
    *          for more information.
@@ -2252,7 +2253,7 @@ struct GPUTextEngine : TextEngine
    * @sa TextEngine.DestroyGPU
    * @sa Text.GetGPUDrawData
    */
-  GPUTextEngine(SDL_GPUDevice* device)
+  GPUTextEngine(GPUDeviceParam device)
     : T(TTF_CreateGPUTextEngine(device))
   {
   }
@@ -2263,8 +2264,8 @@ struct GPUTextEngine : TextEngine
    *
    * These are the supported properties:
    *
-   * - `prop::GpuTextEngine.DEVICE_POINTER`: the SDL_GPUDevice to use for
-   * creating textures and drawing text.
+   * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
+   *   textures and drawing text.
    * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
    *   atlas
    *
@@ -5534,7 +5535,7 @@ inline void TextEngine::DestroyRenderer()
 /**
  * Create a text engine for drawing text with the SDL GPU API.
  *
- * @param device the SDL_GPUDevice to use for creating textures and drawing
+ * @param device the GPUDevice to use for creating textures and drawing
  *               text.
  * @returns a TextEngine object or nullptr on failure; call GetError()
  *          for more information.
@@ -5548,7 +5549,7 @@ inline void TextEngine::DestroyRenderer()
  * @sa TextEngine.DestroyGPU
  * @sa Text.GetGPUDrawData
  */
-inline GPUTextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
+inline GPUTextEngine CreateGPUTextEngine(GPUDeviceParam device)
 {
   return GPUTextEngine(device);
 }
@@ -5559,7 +5560,7 @@ inline GPUTextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
  *
  * These are the supported properties:
  *
- * - `prop::GpuTextEngine.DEVICE_POINTER`: the SDL_GPUDevice to use for creating
+ * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
  *   textures and drawing text.
  * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
  *   atlas

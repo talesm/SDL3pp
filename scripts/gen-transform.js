@@ -1588,6 +1588,16 @@ const transform = {
         },
       },
     },
+    "SDL_gpu.h": {
+      localIncludes: [
+        "SDL3pp_pixels.h",
+        "SDL3pp_properties.h",
+        "SDL3pp_rect.h",
+        "SDL3pp_surface.h",
+        "SDL3pp_stdinc.h",
+        "SDL3pp_video.h",
+      ],
+    },
     "SDL_guid.h": {
       localIncludes: ['SDL3pp_stdinc.h'],
       transform: {
@@ -7992,6 +8002,7 @@ const transform = {
     },
     "SDL_ttf.h": {
       localIncludes: [
+        "SDL3pp_gpu.h",
         "SDL3pp_render.h",
         "SDL3pp_surface.h",
         "SDL3pp_version.h",
