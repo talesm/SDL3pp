@@ -311,7 +311,7 @@
 >         return Wrapper::Call(data, win, Point(*area));
 >       },
 >       cbHandle);
-2757,2759c2879
+2745,2747c2867
 <    *               mouse focus.
 <    * @param x the x coordinate within the window.
 <    * @param y the y coordinate within the window.

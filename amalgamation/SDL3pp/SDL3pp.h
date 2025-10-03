@@ -52931,18 +52931,6 @@ public:
   static WindowRef GetGrabbed();
 
   /**
-   * Get the renderer associated with a window.
-   *
-   * @returns the rendering context on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  RendererRef GetRenderer() const;
-
-  /**
    * Start accepting Unicode text input events in a window.
    *
    * This function will enable text input (EVENT_TEXT_INPUT and
@@ -53172,6 +53160,18 @@ public:
    * @sa Window.SetRelativeMouseMode
    */
   bool GetRelativeMouseMode() const;
+
+  /**
+   * Get the renderer associated with a window.
+   *
+   * @returns the rendering context on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  RendererRef GetRenderer() const;
 };
 
 /// Semi-safe reference for Window.
