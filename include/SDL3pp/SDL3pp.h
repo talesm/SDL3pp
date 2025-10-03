@@ -30,7 +30,7 @@
 #include "SDL3pp_events.h"
 #include "SDL3pp_filesystem.h"
 #include "SDL3pp_gamepad.h"
-// #include "SDL3pp_gpu.h"
+#include "SDL3pp_gpu.h"
 #include "SDL3pp_guid.h"
 #include "SDL3pp_haptic.h"
 #include "SDL3pp_hidapi.h"
