@@ -1597,6 +1597,16 @@ const transform = {
         "SDL3pp_stdinc.h",
         "SDL3pp_video.h",
       ],
+      namespacesMap: {
+        "SDL_PROP_GPU_DEVICE_": "prop::GpuDevice",
+        "SDL_PROP_GPU_COMPUTEPIPELINE_": "prop::GPUComputePipeline",
+        "SDL_PROP_GPU_GRAPHICSPIPELINE_": "prop::GPUGraphicsPipeline",
+        "SDL_PROP_GPU_SAMPLER_": "prop::GPUSampler",
+        "SDL_PROP_GPU_SHADER_": "prop::GPUShader",
+        "SDL_PROP_GPU_TEXTURE_": "prop::GPUTexture",
+        "SDL_PROP_GPU_BUFFER_": "prop::GPUBuffer",
+        "SDL_PROP_GPU_TRANSFERBUFFER_": "prop::GPUTransferBuffer",
+      },
       transform: {
         "SDL_GPUBufferCreateInfo": { before: "GPUBuffer" },
         "SDL_GPUBuffer": { before: "SDL_GPUDevice" },
@@ -1632,13 +1642,21 @@ const transform = {
         "SDL_GPUBlitInfo": { before: "GPUCommandBuffer" },
         "SDL_GPUFence": { before: "GPUCommandBuffer" },
         "SDL_GPUCommandBuffer": { before: "SDL_GPUDevice" },
-        "SDL_GPUShaderFormat": { before: "SDL_GPUDevice" },
+        "SDL_GPUShaderFormat": {
+          before: "SDL_GPUDevice",
+          enum: "SDL_GPU_SHADERFORMAT_",
+        },
         "SDL_GPUSwapchainComposition": { before: "SDL_GPUDevice" },
         "SDL_GPUPresentMode": { before: "SDL_GPUDevice" },
         "SDL_GPUTextureFormat": { before: "SDL_GPUDevice" },
         "SDL_GPUTextureType": { before: "SDL_GPUDevice" },
-        "SDL_GPUTextureUsageFlags": { before: "SDL_GPUDevice" },
+        "SDL_GPUTextureUsageFlags": {
+          before: "SDL_GPUDevice",
+          enum: "SDL_GPU_TEXTUREUSAGE_",
+        },
         "SDL_GPUSampleCount": { before: "SDL_GPUDevice" },
+        "SDL_GPUBufferUsageFlags": { enum: "SDL_GPU_BUFFERUSAGE_" },
+        "SDL_GPUColorComponentFlags": { enum: "SDL_GPU_COLORCOMPONENT_" },
       }
     },
     "SDL_guid.h": {

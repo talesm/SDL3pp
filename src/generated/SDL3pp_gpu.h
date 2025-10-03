@@ -438,7 +438,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop::GPUBuffer.CREATE_NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param device a GPU Context.
@@ -533,7 +533,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING`: a name that can be
+   * - `prop::GPUTransferBuffer.CREATE_NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param device a GPU Context.
@@ -643,25 +643,25 @@ public:
    * There are optional properties that can be provided through
    * GPUTextureCreateInfo's `props`. These are the supported properties:
    *
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if
-   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if
+   *   the texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
    *   to a color with this red intensity. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if
-   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if
+   *   the texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
    *   to a color with this green intensity. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if
-   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if
+   *   the texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
    *   to a color with this blue intensity. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if
-   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if
+   *   the texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
    *   to a color with this alpha intensity. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only)
-   *   if the texture usage is SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear
+   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only)
+   *   if the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear
    *   the texture to a depth of this value. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12
-   *   only) if the texture usage is SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
+   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12
+   *   only) if the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
    *   clear the texture to a stencil of this Uint8 value. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING`: a name that can be displayed
+   * - `prop::GPUTexture.CREATE_NAME_STRING`: a name that can be displayed
    *   in debugging tools.
    *
    * @param device a GPU Context.
@@ -752,7 +752,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING`: a name that can be displayed
+   * - `prop::GPUSampler.CREATE_NAME_STRING`: a name that can be displayed
    *   in debugging tools.
    *
    * @param device a GPU Context.
@@ -875,13 +875,13 @@ public:
    * language, your vertex semantics should start at TEXCOORD0 and increment
    * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
    * prefix to something other than TEXCOORD you can use
-   * SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING with
+   * prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
    * GPUDevice.GPUDevice().
    *
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `SDL_PROP_GPU_SHADER_CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop::GPUShader.CREATE_NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param device a GPU Context.
@@ -983,7 +983,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING`: a name that can be
+   * - `prop::GPUComputePipeline.CREATE_NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param device a GPU Context.
@@ -1072,7 +1072,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING`: a name that can be
+   * - `prop::GPUGraphicsPipeline.CREATE_NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param device a GPU Context.
@@ -1281,7 +1281,7 @@ public:
   /**
    * Binds texture-sampler pairs for use on the vertex shader.
    *
-   * The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
+   * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
    * GPUShader.GPUShader().
@@ -1305,7 +1305,7 @@ public:
    * Binds storage textures for use on the vertex shader.
    *
    * These textures must have been created with
-   * SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+   * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
    * GPUShader.GPUShader().
@@ -1326,7 +1326,7 @@ public:
    * Binds storage buffers for use on the vertex shader.
    *
    * These buffers must have been created with
-   * SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
+   * GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
    * GPUShader.GPUShader().
@@ -1346,7 +1346,7 @@ public:
   /**
    * Binds texture-sampler pairs for use on the fragment shader.
    *
-   * The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
+   * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
    * GPUShader.GPUShader().
@@ -1370,7 +1370,7 @@ public:
    * Binds storage textures for use on the fragment shader.
    *
    * These textures must have been created with
-   * SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+   * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
    * GPUShader.GPUShader().
@@ -1391,7 +1391,7 @@ public:
    * Binds storage buffers for use on the fragment shader.
    *
    * These buffers must have been created with
-   * SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
+   * GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
    * GPUShader.GPUShader().
@@ -1564,7 +1564,7 @@ public:
   /**
    * Binds texture-sampler pairs for use on the compute shader.
    *
-   * The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
+   * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
    * GPUShader.GPUShader().
@@ -1588,7 +1588,7 @@ public:
    * Binds storage textures as readonly for use on the compute pipeline.
    *
    * These textures must have been created with
-   * SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
+   * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
    * GPUShader.GPUShader().
@@ -1609,7 +1609,7 @@ public:
    * Binds storage buffers as readonly for use on the compute pipeline.
    *
    * These buffers must have been created with
-   * SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
+   * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
    * GPUShader.GPUShader().
@@ -2465,7 +2465,28 @@ public:
  *
  * @sa GPUShader.GPUShader
  */
-using GPUShaderFormat = SDL_GPUShaderFormat;
+using GPUShaderFormat = Uint32;
+
+constexpr GPUShaderFormat GPU_SHADERFORMAT_INVALID =
+  SDL_GPU_SHADERFORMAT_INVALID; ///< INVALID
+
+constexpr GPUShaderFormat GPU_SHADERFORMAT_PRIVATE =
+  SDL_GPU_SHADERFORMAT_PRIVATE; ///< Shaders for NDA'd platforms.
+
+constexpr GPUShaderFormat GPU_SHADERFORMAT_SPIRV =
+  SDL_GPU_SHADERFORMAT_SPIRV; ///< SPIR-V shaders for Vulkan.
+
+constexpr GPUShaderFormat GPU_SHADERFORMAT_DXBC =
+  SDL_GPU_SHADERFORMAT_DXBC; ///< DXBC SM5_1 shaders for D3D12.
+
+constexpr GPUShaderFormat GPU_SHADERFORMAT_DXIL =
+  SDL_GPU_SHADERFORMAT_DXIL; ///< DXIL SM6_0 shaders for D3D12.
+
+constexpr GPUShaderFormat GPU_SHADERFORMAT_MSL =
+  SDL_GPU_SHADERFORMAT_MSL; ///< MSL shaders for Metal.
+
+constexpr GPUShaderFormat GPU_SHADERFORMAT_METALLIB =
+  SDL_GPU_SHADERFORMAT_METALLIB; ///< Precompiled metallib shaders for Metal.
 
 /**
  * Specifies the texture format and colorspace of the swapchain textures.
@@ -2990,7 +3011,37 @@ constexpr GPUTextureType GPU_TEXTURETYPE_CUBE_ARRAY =
  *
  * @sa GPUTexture.GPUTexture
  */
-using GPUTextureUsageFlags = SDL_GPUTextureUsageFlags;
+using GPUTextureUsageFlags = Uint32;
+
+constexpr GPUTextureUsageFlags GPU_TEXTUREUSAGE_SAMPLER =
+  SDL_GPU_TEXTUREUSAGE_SAMPLER; ///< Texture supports sampling.
+
+constexpr GPUTextureUsageFlags GPU_TEXTUREUSAGE_COLOR_TARGET =
+  SDL_GPU_TEXTUREUSAGE_COLOR_TARGET; ///< Texture is a color render target.
+
+constexpr GPUTextureUsageFlags GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET =
+  SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET; ///< Texture is a depth stencil
+                                             ///< target.
+
+constexpr GPUTextureUsageFlags GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ =
+  SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ; ///< Texture supports storage
+                                              ///< reads in graphics stages.
+
+/// Texture supports storage reads in the compute stage.
+constexpr GPUTextureUsageFlags GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ =
+  SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ;
+
+/// Texture supports storage writes in the compute stage.
+constexpr GPUTextureUsageFlags GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE =
+  SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE;
+
+/**
+ * Texture supports reads and writes in the same compute shader. This is NOT
+ * equivalent to READ | WRITE.
+ */
+constexpr GPUTextureUsageFlags
+  GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE =
+    SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE;
 
 /**
  * Specifies the sample count of a texture.
@@ -3086,31 +3137,31 @@ public:
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN`: enable debug mode
+   * - `prop::GpuDevice.CREATE_DEBUGMODE_BOOLEAN`: enable debug mode
    *   properties and validations, defaults to true.
-   * - `SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer
+   * - `prop::GpuDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer
    *   energy efficiency over maximum GPU performance, defaults to false.
-   * - `SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING`: the name of the GPU driver to
+   * - `prop::GpuDevice.CREATE_NAME_STRING`: the name of the GPU driver to
    *   use, if a specific one is desired.
    *
    * These are the current shader format properties:
    *
-   * - `SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to
+   * - `prop::GpuDevice.CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to
    *   provide shaders for an NDA platform.
-   * - `SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to
+   * - `prop::GpuDevice.CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to
    *   provide SPIR-V shaders if applicable.
-   * - `SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to
+   * - `prop::GpuDevice.CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to
    *   provide DXBC shaders if applicable
-   * - `SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to
+   * - `prop::GpuDevice.CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to
    *   provide DXIL shaders if applicable.
-   * - `SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN`: The app is able to
+   * - `prop::GpuDevice.CREATE_SHADERS_MSL_BOOLEAN`: The app is able to
    *   provide MSL shaders if applicable.
-   * - `SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
+   * - `prop::GpuDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
    *   provide Metal shader libraries if applicable.
    *
    * With the D3D12 renderer:
    *
-   * - `SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to
+   * - `prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to
    *   use for all vertex semantics, default is "TEXCOORD".
    *
    * @param props the properties to use.
@@ -3222,7 +3273,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING`: a name that can be
+   * - `prop::GPUComputePipeline.CREATE_NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param createinfo a struct describing the state of the compute pipeline to
@@ -3244,7 +3295,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING`: a name that can be
+   * - `prop::GPUGraphicsPipeline.CREATE_NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param createinfo a struct describing the state of the graphics pipeline to
@@ -3268,7 +3319,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING`: a name that can be displayed
+   * - `prop::GPUSampler.CREATE_NAME_STRING`: a name that can be displayed
    *   in debugging tools.
    *
    * @param createinfo a struct describing the state of the sampler to create.
@@ -3337,13 +3388,13 @@ public:
    * language, your vertex semantics should start at TEXCOORD0 and increment
    * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
    * prefix to something other than TEXCOORD you can use
-   * SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING with
+   * prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
    * GPUDevice.GPUDevice().
    *
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `SDL_PROP_GPU_SHADER_CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop::GPUShader.CREATE_NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param createinfo a struct describing the state of the shader to create.
@@ -3373,25 +3424,25 @@ public:
    * There are optional properties that can be provided through
    * GPUTextureCreateInfo's `props`. These are the supported properties:
    *
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if
-   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if
+   *   the texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
    *   to a color with this red intensity. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if
-   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if
+   *   the texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
    *   to a color with this green intensity. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if
-   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if
+   *   the texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
    *   to a color with this blue intensity. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if
-   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if
+   *   the texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
    *   to a color with this alpha intensity. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only)
-   *   if the texture usage is SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear
+   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only)
+   *   if the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear
    *   the texture to a depth of this value. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12
-   *   only) if the texture usage is SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
+   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12
+   *   only) if the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
    *   clear the texture to a stencil of this Uint8 value. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING`: a name that can be displayed
+   * - `prop::GPUTexture.CREATE_NAME_STRING`: a name that can be displayed
    *   in debugging tools.
    *
    * @param createinfo a struct describing the state of the texture to create.
@@ -3434,7 +3485,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop::GPUBuffer.CREATE_NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param createinfo a struct describing the state of the buffer to create.
@@ -3468,7 +3519,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING`: a name that can be
+   * - `prop::GPUTransferBuffer.CREATE_NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param createinfo a struct describing the state of the transfer buffer to
@@ -3490,7 +3541,7 @@ public:
   /**
    * Sets an arbitrary string constant to label a buffer.
    *
-   * You should use SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING with
+   * You should use prop::GPUBuffer.CREATE_NAME_STRING with
    * GPUBuffer.GPUBuffer instead of this function to avoid thread safety issues.
    *
    * @param buffer a buffer to attach the name to.
@@ -3508,7 +3559,7 @@ public:
   /**
    * Sets an arbitrary string constant to label a texture.
    *
-   * You should use SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING with
+   * You should use prop::GPUTexture.CREATE_NAME_STRING with
    * GPUTexture.GPUTexture instead of this function to avoid thread safety
    * issues.
    *
@@ -4005,30 +4056,6 @@ constexpr GPUStoreOp GPU_STOREOP_RESOLVE = SDL_GPU_STOREOP_RESOLVE;
 constexpr GPUStoreOp GPU_STOREOP_RESOLVE_AND_STORE =
   SDL_GPU_STOREOP_RESOLVE_AND_STORE;
 
-/// Texture supports sampling.
-#define SDL_GPU_TEXTUREUSAGE_SAMPLER (1u << 0)
-
-/// Texture is a color render target.
-#define SDL_GPU_TEXTUREUSAGE_COLOR_TARGET (1u << 1)
-
-/// Texture is a depth stencil target.
-#define SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET (1u << 2)
-
-/// Texture supports storage reads in graphics stages.
-#define SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ (1u << 3)
-
-/// Texture supports storage reads in the compute stage.
-#define SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ (1u << 4)
-
-/// Texture supports storage writes in the compute stage.
-#define SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE (1u << 5)
-
-/**
- * Texture supports reads and writes in the same compute shader. This is NOT
- * equivalent to READ | WRITE.
- */
-#define SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE (1u << 6)
-
 /**
  * Specifies the face of a cube map.
  *
@@ -4073,25 +4100,28 @@ constexpr GPUCubeMapFace GPU_CUBEMAPFACE_NEGATIVEZ =
  *
  * @sa GPUBuffer.GPUBuffer
  */
-using GPUBufferUsageFlags = SDL_GPUBufferUsageFlags;
+using GPUBufferUsageFlags = Uint32;
 
-/// Buffer is a vertex buffer.
-#define SDL_GPU_BUFFERUSAGE_VERTEX (1u << 0)
+constexpr GPUBufferUsageFlags GPU_BUFFERUSAGE_VERTEX =
+  SDL_GPU_BUFFERUSAGE_VERTEX; ///< Buffer is a vertex buffer.
 
-/// Buffer is an index buffer.
-#define SDL_GPU_BUFFERUSAGE_INDEX (1u << 1)
+constexpr GPUBufferUsageFlags GPU_BUFFERUSAGE_INDEX =
+  SDL_GPU_BUFFERUSAGE_INDEX; ///< Buffer is an index buffer.
 
-/// Buffer is an indirect buffer.
-#define SDL_GPU_BUFFERUSAGE_INDIRECT (1u << 2)
+constexpr GPUBufferUsageFlags GPU_BUFFERUSAGE_INDIRECT =
+  SDL_GPU_BUFFERUSAGE_INDIRECT; ///< Buffer is an indirect buffer.
 
-/// Buffer supports storage reads in graphics stages.
-#define SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ (1u << 3)
+constexpr GPUBufferUsageFlags GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ =
+  SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ; ///< Buffer supports storage reads
+                                             ///< in graphics stages.
 
 /// Buffer supports storage reads in the compute stage.
-#define SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ (1u << 4)
+constexpr GPUBufferUsageFlags GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ =
+  SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ;
 
 /// Buffer supports storage writes in the compute stage.
-#define SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE (1u << 5)
+constexpr GPUBufferUsageFlags GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE =
+  SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE;
 
 /**
  * Specifies how a transfer buffer is intended to be used by the client.
@@ -4125,26 +4155,6 @@ constexpr GPUShaderStage GPU_SHADERSTAGE_VERTEX =
 
 constexpr GPUShaderStage GPU_SHADERSTAGE_FRAGMENT =
   SDL_GPU_SHADERSTAGE_FRAGMENT; ///< GPU_SHADERSTAGE_FRAGMENT
-
-#define SDL_GPU_SHADERFORMAT_INVALID 0
-
-/// Shaders for NDA'd platforms.
-#define SDL_GPU_SHADERFORMAT_PRIVATE (1u << 0)
-
-/// SPIR-V shaders for Vulkan.
-#define SDL_GPU_SHADERFORMAT_SPIRV (1u << 1)
-
-/// DXBC SM5_1 shaders for D3D12.
-#define SDL_GPU_SHADERFORMAT_DXBC (1u << 2)
-
-/// DXIL SM6_0 shaders for D3D12.
-#define SDL_GPU_SHADERFORMAT_DXIL (1u << 3)
-
-/// MSL shaders for Metal.
-#define SDL_GPU_SHADERFORMAT_MSL (1u << 4)
-
-/// Precompiled metallib shaders for Metal.
-#define SDL_GPU_SHADERFORMAT_METALLIB (1u << 5)
 
 /**
  * Specifies the format of a vertex attribute.
@@ -4490,19 +4500,19 @@ constexpr GPUBlendFactor GPU_BLENDFACTOR_SRC_ALPHA_SATURATE =
  *
  * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
  */
-using GPUColorComponentFlags = SDL_GPUColorComponentFlags;
+using GPUColorComponentFlags = Uint8;
 
-/// the red component
-#define SDL_GPU_COLORCOMPONENT_R (1u << 0)
+constexpr GPUColorComponentFlags GPU_COLORCOMPONENT_R =
+  SDL_GPU_COLORCOMPONENT_R; ///< the red component
 
-/// the green component
-#define SDL_GPU_COLORCOMPONENT_G (1u << 1)
+constexpr GPUColorComponentFlags GPU_COLORCOMPONENT_G =
+  SDL_GPU_COLORCOMPONENT_G; ///< the green component
 
-/// the blue component
-#define SDL_GPU_COLORCOMPONENT_B (1u << 2)
+constexpr GPUColorComponentFlags GPU_COLORCOMPONENT_B =
+  SDL_GPU_COLORCOMPONENT_B; ///< the blue component
 
-/// the alpha component
-#define SDL_GPU_COLORCOMPONENT_A (1u << 3)
+constexpr GPUColorComponentFlags GPU_COLORCOMPONENT_A =
+  SDL_GPU_COLORCOMPONENT_A; ///< the alpha component
 
 /**
  * Specifies a filter operation used by a sampler.
@@ -4794,31 +4804,31 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN`: enable debug mode
+ * - `prop::GpuDevice.CREATE_DEBUGMODE_BOOLEAN`: enable debug mode
  *   properties and validations, defaults to true.
- * - `SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer
+ * - `prop::GpuDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer
  *   energy efficiency over maximum GPU performance, defaults to false.
- * - `SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING`: the name of the GPU driver to
+ * - `prop::GpuDevice.CREATE_NAME_STRING`: the name of the GPU driver to
  *   use, if a specific one is desired.
  *
  * These are the current shader format properties:
  *
- * - `SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to
+ * - `prop::GpuDevice.CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to
  *   provide shaders for an NDA platform.
- * - `SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to
+ * - `prop::GpuDevice.CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to
  *   provide SPIR-V shaders if applicable.
- * - `SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to
+ * - `prop::GpuDevice.CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to
  *   provide DXBC shaders if applicable
- * - `SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to
+ * - `prop::GpuDevice.CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to
  *   provide DXIL shaders if applicable.
- * - `SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN`: The app is able to
+ * - `prop::GpuDevice.CREATE_SHADERS_MSL_BOOLEAN`: The app is able to
  *   provide MSL shaders if applicable.
- * - `SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
+ * - `prop::GpuDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
  *   provide Metal shader libraries if applicable.
  *
  * With the D3D12 renderer:
  *
- * - `SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to
+ * - `prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to
  *   use for all vertex semantics, default is "TEXCOORD".
  *
  * @param props the properties to use.
@@ -4837,34 +4847,38 @@ inline GPUDevice CreateGPUDeviceWithProperties(PropertiesParam props)
   return GPUDevice(props);
 }
 
-#define SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN                           \
-  "SDL.gpu.device.create.debugmode"
+namespace prop::GpuDevice {
 
-#define SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN                      \
-  "SDL.gpu.device.create.preferlowpower"
+constexpr auto CREATE_DEBUGMODE_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN;
 
-#define SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING "SDL.gpu.device.create.name"
+constexpr auto CREATE_PREFERLOWPOWER_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN;
 
-#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN                     \
-  "SDL.gpu.device.create.shaders.private"
+constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING;
 
-#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN                       \
-  "SDL.gpu.device.create.shaders.spirv"
+constexpr auto CREATE_SHADERS_PRIVATE_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN;
 
-#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN                        \
-  "SDL.gpu.device.create.shaders.dxbc"
+constexpr auto CREATE_SHADERS_SPIRV_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN;
 
-#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN                        \
-  "SDL.gpu.device.create.shaders.dxil"
+constexpr auto CREATE_SHADERS_DXBC_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN;
 
-#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN                         \
-  "SDL.gpu.device.create.shaders.msl"
+constexpr auto CREATE_SHADERS_DXIL_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN;
 
-#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN                    \
-  "SDL.gpu.device.create.shaders.metallib"
+constexpr auto CREATE_SHADERS_MSL_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN;
 
-#define SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING                  \
-  "SDL.gpu.device.create.d3d12.semantic"
+constexpr auto CREATE_SHADERS_METALLIB_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN;
+
+constexpr auto CREATE_D3D12_SEMANTIC_NAME_STRING =
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING;
+
+} // namespace prop::GpuDevice
 
 /**
  * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -4986,7 +5000,7 @@ inline GPUComputePipeline GPUDevice::CreateGPUComputePipeline(
  * There are optional properties that can be provided through `props`. These
  * are the supported properties:
  *
- * - `SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING`: a name that can be
+ * - `prop::GPUComputePipeline.CREATE_NAME_STRING`: a name that can be
  *   displayed in debugging tools.
  *
  * @param device a GPU Context.
@@ -5007,8 +5021,12 @@ inline GPUComputePipeline CreateGPUComputePipeline(
   return CheckError(SDL_CreateGPUComputePipeline(device, createinfo));
 }
 
-#define SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING                        \
-  "SDL.gpu.computepipeline.create.name"
+namespace prop::GPUComputePipeline {
+
+constexpr auto CREATE_NAME_STRING =
+  SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING;
+
+} // namespace prop::GPUComputePipeline
 
 inline GPUGraphicsPipeline GPUDevice::CreateGPUGraphicsPipeline(
   const GPUGraphicsPipelineCreateInfo* createinfo)
@@ -5022,7 +5040,7 @@ inline GPUGraphicsPipeline GPUDevice::CreateGPUGraphicsPipeline(
  * There are optional properties that can be provided through `props`. These
  * are the supported properties:
  *
- * - `SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING`: a name that can be
+ * - `prop::GPUGraphicsPipeline.CREATE_NAME_STRING`: a name that can be
  *   displayed in debugging tools.
  *
  * @param device a GPU Context.
@@ -5044,8 +5062,12 @@ inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
   return CheckError(SDL_CreateGPUGraphicsPipeline(device, createinfo));
 }
 
-#define SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING                       \
-  "SDL.gpu.graphicspipeline.create.name"
+namespace prop::GPUGraphicsPipeline {
+
+constexpr auto CREATE_NAME_STRING =
+  SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING;
+
+} // namespace prop::GPUGraphicsPipeline
 
 inline GPUSampler GPUDevice::CreateGPUSampler(
   const GPUSamplerCreateInfo* createinfo)
@@ -5060,7 +5082,7 @@ inline GPUSampler GPUDevice::CreateGPUSampler(
  * There are optional properties that can be provided through `props`. These
  * are the supported properties:
  *
- * - `SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING`: a name that can be displayed
+ * - `prop::GPUSampler.CREATE_NAME_STRING`: a name that can be displayed
  *   in debugging tools.
  *
  * @param device a GPU Context.
@@ -5080,7 +5102,11 @@ inline GPUSampler CreateGPUSampler(GPUDeviceParam device,
   return CheckError(SDL_CreateGPUSampler(device, createinfo));
 }
 
-#define SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING "SDL.gpu.sampler.create.name"
+namespace prop::GPUSampler {
+
+constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
+
+} // namespace prop::GPUSampler
 
 inline GPUShader GPUDevice::CreateGPUShader(
   const GPUShaderCreateInfo* createinfo)
@@ -5142,13 +5168,13 @@ inline GPUShader GPUDevice::CreateGPUShader(
  * language, your vertex semantics should start at TEXCOORD0 and increment
  * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
  * prefix to something other than TEXCOORD you can use
- * SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING with
+ * prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
  * GPUDevice.GPUDevice().
  *
  * There are optional properties that can be provided through `props`. These
  * are the supported properties:
  *
- * - `SDL_PROP_GPU_SHADER_CREATE_NAME_STRING`: a name that can be displayed in
+ * - `prop::GPUShader.CREATE_NAME_STRING`: a name that can be displayed in
  *   debugging tools.
  *
  * @param device a GPU Context.
@@ -5167,7 +5193,11 @@ inline GPUShader CreateGPUShader(GPUDeviceParam device,
   return CheckError(SDL_CreateGPUShader(device, createinfo));
 }
 
-#define SDL_PROP_GPU_SHADER_CREATE_NAME_STRING "SDL.gpu.shader.create.name"
+namespace prop::GPUShader {
+
+constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
+
+} // namespace prop::GPUShader
 
 inline GPUTexture GPUDevice::CreateGPUTexture(
   const GPUTextureCreateInfo* createinfo)
@@ -5191,25 +5221,25 @@ inline GPUTexture GPUDevice::CreateGPUTexture(
  * There are optional properties that can be provided through
  * GPUTextureCreateInfo's `props`. These are the supported properties:
  *
- * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if
- *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+ * - `prop::GPUTexture.CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if
+ *   the texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
  *   to a color with this red intensity. Defaults to zero.
- * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if
- *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+ * - `prop::GPUTexture.CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if
+ *   the texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
  *   to a color with this green intensity. Defaults to zero.
- * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if
- *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+ * - `prop::GPUTexture.CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if
+ *   the texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
  *   to a color with this blue intensity. Defaults to zero.
- * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if
- *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+ * - `prop::GPUTexture.CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if
+ *   the texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
  *   to a color with this alpha intensity. Defaults to zero.
- * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only)
- *   if the texture usage is SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear
+ * - `prop::GPUTexture.CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only)
+ *   if the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear
  *   the texture to a depth of this value. Defaults to zero.
- * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12
- *   only) if the texture usage is SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
+ * - `prop::GPUTexture.CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12
+ *   only) if the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
  *   clear the texture to a stencil of this Uint8 value. Defaults to zero.
- * - `SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING`: a name that can be displayed
+ * - `prop::GPUTexture.CREATE_NAME_STRING`: a name that can be displayed
  *   in debugging tools.
  *
  * @param device a GPU Context.
@@ -5236,25 +5266,29 @@ inline GPUTexture CreateGPUTexture(GPUDeviceParam device,
   return CheckError(SDL_CreateGPUTexture(device, createinfo));
 }
 
-#define SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT                        \
-  "SDL.gpu.texture.create.d3d12.clear.r"
+namespace prop::GPUTexture {
 
-#define SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT                        \
-  "SDL.gpu.texture.create.d3d12.clear.g"
+constexpr auto CREATE_D3D12_CLEAR_R_FLOAT =
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT;
 
-#define SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT                        \
-  "SDL.gpu.texture.create.d3d12.clear.b"
+constexpr auto CREATE_D3D12_CLEAR_G_FLOAT =
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT;
 
-#define SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT                        \
-  "SDL.gpu.texture.create.d3d12.clear.a"
+constexpr auto CREATE_D3D12_CLEAR_B_FLOAT =
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT;
 
-#define SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT                    \
-  "SDL.gpu.texture.create.d3d12.clear.depth"
+constexpr auto CREATE_D3D12_CLEAR_A_FLOAT =
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT;
 
-#define SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER                 \
-  "SDL.gpu.texture.create.d3d12.clear.stencil"
+constexpr auto CREATE_D3D12_CLEAR_DEPTH_FLOAT =
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT;
 
-#define SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING "SDL.gpu.texture.create.name"
+constexpr auto CREATE_D3D12_CLEAR_STENCIL_NUMBER =
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER;
+
+constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
+
+} // namespace prop::GPUTexture
 
 inline GPUBuffer GPUDevice::CreateGPUBuffer(
   const GPUBufferCreateInfo* createinfo)
@@ -5283,7 +5317,7 @@ inline GPUBuffer GPUDevice::CreateGPUBuffer(
  * There are optional properties that can be provided through `props`. These
  * are the supported properties:
  *
- * - `SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING`: a name that can be displayed in
+ * - `prop::GPUBuffer.CREATE_NAME_STRING`: a name that can be displayed in
  *   debugging tools.
  *
  * @param device a GPU Context.
@@ -5312,7 +5346,11 @@ inline GPUBuffer CreateGPUBuffer(GPUDeviceParam device,
   return CheckError(SDL_CreateGPUBuffer(device, createinfo));
 }
 
-#define SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING "SDL.gpu.buffer.create.name"
+namespace prop::GPUBuffer {
+
+constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
+
+} // namespace prop::GPUBuffer
 
 inline GPUTransferBuffer GPUDevice::CreateGPUTransferBuffer(
   const GPUTransferBufferCreateInfo* createinfo)
@@ -5330,7 +5368,7 @@ inline GPUTransferBuffer GPUDevice::CreateGPUTransferBuffer(
  * There are optional properties that can be provided through `props`. These
  * are the supported properties:
  *
- * - `SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING`: a name that can be
+ * - `prop::GPUTransferBuffer.CREATE_NAME_STRING`: a name that can be
  *   displayed in debugging tools.
  *
  * @param device a GPU Context.
@@ -5354,13 +5392,17 @@ inline GPUTransferBuffer CreateGPUTransferBuffer(
   return CheckError(SDL_CreateGPUTransferBuffer(device, createinfo));
 }
 
-#define SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING                         \
-  "SDL.gpu.transferbuffer.create.name"
+namespace prop::GPUTransferBuffer {
+
+constexpr auto CREATE_NAME_STRING =
+  SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING;
+
+} // namespace prop::GPUTransferBuffer
 
 /**
  * Sets an arbitrary string constant to label a buffer.
  *
- * You should use SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING with
+ * You should use prop::GPUBuffer.CREATE_NAME_STRING with
  * GPUBuffer.GPUBuffer instead of this function to avoid thread safety issues.
  *
  * @param device a GPU Context.
@@ -5389,7 +5431,7 @@ inline void GPUDevice::SetGPUBufferName(GPUBuffer buffer, StringParam text)
 /**
  * Sets an arbitrary string constant to label a texture.
  *
- * You should use SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING with
+ * You should use prop::GPUTexture.CREATE_NAME_STRING with
  * GPUTexture.GPUTexture instead of this function to avoid thread safety
  * issues.
  *
@@ -5964,7 +6006,7 @@ inline void GPURenderPass::BindGPUIndexBuffer(
 /**
  * Binds texture-sampler pairs for use on the vertex shader.
  *
- * The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
+ * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
  * GPUShader.GPUShader().
@@ -6003,7 +6045,7 @@ inline void GPURenderPass::BindGPUVertexSamplers(
  * Binds storage textures for use on the vertex shader.
  *
  * These textures must have been created with
- * SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+ * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
  * GPUShader.GPUShader().
@@ -6040,7 +6082,7 @@ inline void GPURenderPass::BindGPUVertexStorageTextures(
  * Binds storage buffers for use on the vertex shader.
  *
  * These buffers must have been created with
- * SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
+ * GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
  * GPUShader.GPUShader().
@@ -6075,7 +6117,7 @@ inline void GPURenderPass::BindGPUVertexStorageBuffers(
 /**
  * Binds texture-sampler pairs for use on the fragment shader.
  *
- * The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
+ * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
  * GPUShader.GPUShader().
@@ -6114,7 +6156,7 @@ inline void GPURenderPass::BindGPUFragmentSamplers(
  * Binds storage textures for use on the fragment shader.
  *
  * These textures must have been created with
- * SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+ * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
  * GPUShader.GPUShader().
@@ -6151,7 +6193,7 @@ inline void GPURenderPass::BindGPUFragmentStorageTextures(
  * Binds storage buffers for use on the fragment shader.
  *
  * These buffers must have been created with
- * SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
+ * GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
  * GPUShader.GPUShader().
@@ -6441,7 +6483,7 @@ inline void GPUComputePass::BindGPUComputePipeline(
 /**
  * Binds texture-sampler pairs for use on the compute shader.
  *
- * The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
+ * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
  * GPUShader.GPUShader().
@@ -6480,7 +6522,7 @@ inline void GPUComputePass::BindGPUComputeSamplers(
  * Binds storage textures as readonly for use on the compute pipeline.
  *
  * These textures must have been created with
- * SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
+ * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
  * GPUShader.GPUShader().
@@ -6517,7 +6559,7 @@ inline void GPUComputePass::BindGPUComputeStorageTextures(
  * Binds storage buffers as readonly for use on the compute pipeline.
  *
  * These buffers must have been created with
- * SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
+ * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
  * GPUShader.GPUShader().

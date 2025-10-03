@@ -1,4 +1,4 @@
-5862c5862
+5904c5904
 <   SDL_SetGPUScissor(render_pass, scissor);
 ---
 >   SDL_SetGPUScissor(render_pass, &scissor);
