@@ -1,4 +1,99 @@
-5904c5904
+1260d1259
+<    * @param num_bindings the number of bindings in the bindings array.
+1313d1311
+<    * @param num_bindings the number of storage texture to bind from the array.
+1334d1331
+<    * @param num_bindings the number of buffers to bind from the array.
+1354,1355d1350
+<    * @param num_bindings the number of texture-sampler pairs to bind from the
+<    *                     array.
+1376d1370
+<    * @param num_bindings the number of storage textures to bind from the array.
+1397d1390
+<    * @param num_bindings the number of storage buffers to bind from the array.
+2140d2132
+<    * @param length the length of the data to write.
+2157d2148
+<    * @param length the length of the data to write.
+2174d2164
+<    * @param length the length of the data to write.
+2193,2194d2182
+<    * @param num_color_targets the number of color targets in the
+<    *                          color_target_infos array.
+5713d5700
+<  * @param length the length of the data to write.
+5744d5730
+<  * @param length the length of the data to write.
+5775d5760
+<  * @param length the length of the data to write.
+5808,5809d5792
+<  * @param num_color_targets the number of color targets in the
+<  *                          color_target_infos array.
+5824,5825c5807,5810
+<   return SDL_BeginGPURenderPass(
+<     command_buffer, color_target_infos, depth_stencil_target_info);
+---
+>   return SDL_BeginGPURenderPass(command_buffer,
+>                                 color_target_infos.data(),
+>                                 color_target_infos.size(),
+>                                 depth_stencil_target_info);
+5887c5872
 <   SDL_SetGPUScissor(render_pass, scissor);
 ---
 >   SDL_SetGPUScissor(render_pass, &scissor);
+5943d5927
+<  * @param num_bindings the number of bindings in the bindings array.
+5951c5935,5936
+<   SDL_BindGPUVertexBuffers(render_pass, first_slot, bindings);
+---
+>   SDL_BindGPUVertexBuffers(
+>     render_pass, first_slot, bindings.data(), bindings.size());
+5998,5999d5982
+<  * @param num_bindings the number of texture-sampler pairs to bind from the
+<  *                     array.
+6010c5993,5996
+<   SDL_BindGPUVertexSamplers(render_pass, first_slot, texture_sampler_bindings);
+---
+>   SDL_BindGPUVertexSamplers(render_pass,
+>                             first_slot,
+>                             texture_sampler_bindings.data(),
+>                             texture_sampler_bindings.size());
+6033d6018
+<  * @param num_bindings the number of storage texture to bind from the array.
+6044c6029,6030
+<   SDL_BindGPUVertexStorageTextures(render_pass, first_slot, storage_textures);
+---
+>   SDL_BindGPUVertexStorageTextures(
+>     render_pass, first_slot, storage_textures.data(), storage_textures.size());
+6067d6052
+<  * @param num_bindings the number of buffers to bind from the array.
+6078c6063,6064
+<   SDL_BindGPUVertexStorageBuffers(render_pass, first_slot, storage_buffers);
+---
+>   SDL_BindGPUVertexStorageBuffers(
+>     render_pass, first_slot, storage_buffers.data(), storage_buffers.size());
+6101,6102d6086
+<  * @param num_bindings the number of texture-sampler pairs to bind from the
+<  *                     array.
+6113,6114c6097,6100
+<   SDL_BindGPUFragmentSamplers(
+<     render_pass, first_slot, texture_sampler_bindings);
+---
+>   SDL_BindGPUFragmentSamplers(render_pass,
+>                               first_slot,
+>                               texture_sampler_bindings.data(),
+>                               texture_sampler_bindings.size());
+6137d6122
+<  * @param num_bindings the number of storage textures to bind from the array.
+6148c6133,6134
+<   SDL_BindGPUFragmentStorageTextures(render_pass, first_slot, storage_textures);
+---
+>   SDL_BindGPUFragmentStorageTextures(
+>     render_pass, first_slot, storage_textures.data(), storage_textures.size());
+6171d6156
+<  * @param num_bindings the number of storage buffers to bind from the array.
+6182c6167,6168
+<   SDL_BindGPUFragmentStorageBuffers(render_pass, first_slot, storage_buffers);
+---
+>   SDL_BindGPUFragmentStorageBuffers(
+>     render_pass, first_slot, storage_buffers.data(), storage_buffers.size());

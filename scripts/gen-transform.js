@@ -1657,6 +1657,43 @@ const transform = {
         "SDL_GPUSampleCount": { before: "SDL_GPUDevice" },
         "SDL_GPUBufferUsageFlags": { enum: "SDL_GPU_BUFFERUSAGE_" },
         "SDL_GPUColorComponentFlags": { enum: "SDL_GPU_COLORCOMPONENT_" },
+        "SDL_PushGPUVertexUniformData": {
+          parameters: [{}, {}, { type: "SourceBytes" }],
+        },
+        "SDL_PushGPUFragmentUniformData": {
+          parameters: [{}, {}, { type: "SourceBytes" }],
+        },
+        "SDL_PushGPUComputeUniformData": {
+          parameters: [{}, {}, { type: "SourceBytes" }],
+        },
+        "SDL_BeginGPURenderPass": {
+          parameters: [
+            {},
+            { type: "std::span<const GPUColorTargetInfo>" },
+            { type: "OptionalRef<const GPUDepthStencilTargetInfo>", name: "depth_stencil_target_info" },
+          ],
+        },
+        "SDL_BindGPUVertexBuffers": {
+          parameters: [{}, {}, { type: "std::span<const GPUBufferBinding>" }],
+        },
+        "SDL_BindGPUVertexSamplers": {
+          parameters: [{}, {}, { type: "std::span<const GPUTextureSamplerBinding>" }],
+        },
+        "SDL_BindGPUVertexStorageTextures": {
+          parameters: [{}, {}, { type: "SpanRef<const GPUTextureRaw>" }],
+        },
+        "SDL_BindGPUVertexStorageBuffers": {
+          parameters: [{}, {}, { type: "SpanRef<const GPUBufferRaw>" }],
+        },
+        "SDL_BindGPUFragmentSamplers": {
+          parameters: [{}, {}, { type: "std::span<const GPUTextureSamplerBinding>" }],
+        },
+        "SDL_BindGPUFragmentStorageTextures": {
+          parameters: [{}, {}, { type: "SpanRef<const GPUTextureRaw>" }],
+        },
+        "SDL_BindGPUFragmentStorageBuffers": {
+          parameters: [{}, {}, { type: "SpanRef<const GPUBufferRaw>" }],
+        },
       }
     },
     "SDL_guid.h": {

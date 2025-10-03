@@ -1262,8 +1262,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    */
   void BindGPUVertexBuffers(Uint32 first_slot,
-                            const GPUBufferBinding& bindings,
-                            Uint32 num_bindings);
+                            std::span<const GPUBufferBinding> bindings);
 
   /**
    * Binds an index buffer on a command buffer for use with subsequent draw
@@ -1298,8 +1297,7 @@ public:
    */
   void BindGPUVertexSamplers(
     Uint32 first_slot,
-    const GPUTextureSamplerBinding& texture_sampler_bindings,
-    Uint32 num_bindings);
+    std::span<const GPUTextureSamplerBinding> texture_sampler_bindings);
 
   /**
    * Binds storage textures for use on the vertex shader.
@@ -1318,9 +1316,9 @@ public:
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUVertexStorageTextures(Uint32 first_slot,
-                                    SDL_GPUTexture* const* storage_textures,
-                                    Uint32 num_bindings);
+  void BindGPUVertexStorageTextures(
+    Uint32 first_slot,
+    SpanRef<const GPUTextureRaw> storage_textures);
 
   /**
    * Binds storage buffers for use on the vertex shader.
@@ -1340,8 +1338,7 @@ public:
    * @sa GPUShader.GPUShader
    */
   void BindGPUVertexStorageBuffers(Uint32 first_slot,
-                                   SDL_GPUBuffer* const* storage_buffers,
-                                   Uint32 num_bindings);
+                                   SpanRef<const GPUBufferRaw> storage_buffers);
 
   /**
    * Binds texture-sampler pairs for use on the fragment shader.
@@ -1363,8 +1360,7 @@ public:
    */
   void BindGPUFragmentSamplers(
     Uint32 first_slot,
-    const GPUTextureSamplerBinding& texture_sampler_bindings,
-    Uint32 num_bindings);
+    std::span<const GPUTextureSamplerBinding> texture_sampler_bindings);
 
   /**
    * Binds storage textures for use on the fragment shader.
@@ -1383,9 +1379,9 @@ public:
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUFragmentStorageTextures(Uint32 first_slot,
-                                      SDL_GPUTexture* const* storage_textures,
-                                      Uint32 num_bindings);
+  void BindGPUFragmentStorageTextures(
+    Uint32 first_slot,
+    SpanRef<const GPUTextureRaw> storage_textures);
 
   /**
    * Binds storage buffers for use on the fragment shader.
@@ -1404,9 +1400,9 @@ public:
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUFragmentStorageBuffers(Uint32 first_slot,
-                                     SDL_GPUBuffer* const* storage_buffers,
-                                     Uint32 num_bindings);
+  void BindGPUFragmentStorageBuffers(
+    Uint32 first_slot,
+    SpanRef<const GPUBufferRaw> storage_buffers);
 
   /**
    * Draws data using bound graphics state with an index buffer and instancing
@@ -2145,9 +2141,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void PushGPUVertexUniformData(Uint32 slot_index,
-                                const void* data,
-                                Uint32 length);
+  void PushGPUVertexUniformData(Uint32 slot_index, SourceBytes data);
 
   /**
    * Pushes data to a fragment uniform slot on the command buffer.
@@ -2164,9 +2158,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void PushGPUFragmentUniformData(Uint32 slot_index,
-                                  const void* data,
-                                  Uint32 length);
+  void PushGPUFragmentUniformData(Uint32 slot_index, SourceBytes data);
 
   /**
    * Pushes data to a uniform slot on the command buffer.
@@ -2183,9 +2175,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void PushGPUComputeUniformData(Uint32 slot_index,
-                                 const void* data,
-                                 Uint32 length);
+  void PushGPUComputeUniformData(Uint32 slot_index, SourceBytes data);
 
   /**
    * Begins a render pass on a command buffer.
@@ -2212,9 +2202,8 @@ public:
    * @sa GPURenderPass.End
    */
   GPURenderPass BeginGPURenderPass(
-    const GPUColorTargetInfo& color_target_infos,
-    Uint32 num_color_targets,
-    const GPUDepthStencilTargetInfo& depth_stencil_target_info);
+    std::span<const GPUColorTargetInfo> color_target_infos,
+    OptionalRef<const GPUDepthStencilTargetInfo> depth_stencil_target_info);
 
   /**
    * Begins a compute pass on a command buffer.
@@ -5727,17 +5716,17 @@ inline GPUCommandBuffer GPUDevice::AcquireGPUCommandBuffer()
  */
 inline void PushGPUVertexUniformData(GPUCommandBuffer command_buffer,
                                      Uint32 slot_index,
-                                     const void* data,
-                                     Uint32 length)
+                                     SourceBytes data)
 {
-  SDL_PushGPUVertexUniformData(command_buffer, slot_index, data, length);
+  SDL_PushGPUVertexUniformData(
+    command_buffer, slot_index, data.data, data.size_bytes);
 }
 
 inline void GPUCommandBuffer::PushGPUVertexUniformData(Uint32 slot_index,
-                                                       const void* data,
-                                                       Uint32 length)
+                                                       SourceBytes data)
 {
-  SDL::PushGPUVertexUniformData(m_gPUCommandBuffer, slot_index, data, length);
+  SDL::PushGPUVertexUniformData(
+    m_gPUCommandBuffer, slot_index, std::move(data));
 }
 
 /**
@@ -5758,17 +5747,17 @@ inline void GPUCommandBuffer::PushGPUVertexUniformData(Uint32 slot_index,
  */
 inline void PushGPUFragmentUniformData(GPUCommandBuffer command_buffer,
                                        Uint32 slot_index,
-                                       const void* data,
-                                       Uint32 length)
+                                       SourceBytes data)
 {
-  SDL_PushGPUFragmentUniformData(command_buffer, slot_index, data, length);
+  SDL_PushGPUFragmentUniformData(
+    command_buffer, slot_index, data.data, data.size_bytes);
 }
 
 inline void GPUCommandBuffer::PushGPUFragmentUniformData(Uint32 slot_index,
-                                                         const void* data,
-                                                         Uint32 length)
+                                                         SourceBytes data)
 {
-  SDL::PushGPUFragmentUniformData(m_gPUCommandBuffer, slot_index, data, length);
+  SDL::PushGPUFragmentUniformData(
+    m_gPUCommandBuffer, slot_index, std::move(data));
 }
 
 /**
@@ -5789,17 +5778,17 @@ inline void GPUCommandBuffer::PushGPUFragmentUniformData(Uint32 slot_index,
  */
 inline void PushGPUComputeUniformData(GPUCommandBuffer command_buffer,
                                       Uint32 slot_index,
-                                      const void* data,
-                                      Uint32 length)
+                                      SourceBytes data)
 {
-  SDL_PushGPUComputeUniformData(command_buffer, slot_index, data, length);
+  SDL_PushGPUComputeUniformData(
+    command_buffer, slot_index, data.data, data.size_bytes);
 }
 
 inline void GPUCommandBuffer::PushGPUComputeUniformData(Uint32 slot_index,
-                                                        const void* data,
-                                                        Uint32 length)
+                                                        SourceBytes data)
 {
-  SDL::PushGPUComputeUniformData(m_gPUCommandBuffer, slot_index, data, length);
+  SDL::PushGPUComputeUniformData(
+    m_gPUCommandBuffer, slot_index, std::move(data));
 }
 
 /**
@@ -5829,25 +5818,19 @@ inline void GPUCommandBuffer::PushGPUComputeUniformData(Uint32 slot_index,
  */
 inline GPURenderPass BeginGPURenderPass(
   GPUCommandBuffer command_buffer,
-  const GPUColorTargetInfo& color_target_infos,
-  Uint32 num_color_targets,
-  const GPUDepthStencilTargetInfo& depth_stencil_target_info)
+  std::span<const GPUColorTargetInfo> color_target_infos,
+  OptionalRef<const GPUDepthStencilTargetInfo> depth_stencil_target_info)
 {
-  return SDL_BeginGPURenderPass(command_buffer,
-                                &color_target_infos,
-                                num_color_targets,
-                                &depth_stencil_target_info);
+  return SDL_BeginGPURenderPass(
+    command_buffer, color_target_infos, depth_stencil_target_info);
 }
 
 inline GPURenderPass GPUCommandBuffer::BeginGPURenderPass(
-  const GPUColorTargetInfo& color_target_infos,
-  Uint32 num_color_targets,
-  const GPUDepthStencilTargetInfo& depth_stencil_target_info)
+  std::span<const GPUColorTargetInfo> color_target_infos,
+  OptionalRef<const GPUDepthStencilTargetInfo> depth_stencil_target_info)
 {
-  return SDL::BeginGPURenderPass(m_gPUCommandBuffer,
-                                 color_target_infos,
-                                 num_color_targets,
-                                 depth_stencil_target_info);
+  return SDL::BeginGPURenderPass(
+    m_gPUCommandBuffer, color_target_infos, depth_stencil_target_info);
 }
 
 /**
@@ -5963,19 +5946,16 @@ inline void GPURenderPass::SetGPUStencilReference(Uint8 reference)
  */
 inline void BindGPUVertexBuffers(GPURenderPass render_pass,
                                  Uint32 first_slot,
-                                 const GPUBufferBinding& bindings,
-                                 Uint32 num_bindings)
+                                 std::span<const GPUBufferBinding> bindings)
 {
-  SDL_BindGPUVertexBuffers(render_pass, first_slot, &bindings, num_bindings);
+  SDL_BindGPUVertexBuffers(render_pass, first_slot, bindings);
 }
 
 inline void GPURenderPass::BindGPUVertexBuffers(
   Uint32 first_slot,
-  const GPUBufferBinding& bindings,
-  Uint32 num_bindings)
+  std::span<const GPUBufferBinding> bindings)
 {
-  SDL::BindGPUVertexBuffers(
-    m_gPURenderPass, first_slot, bindings, num_bindings);
+  SDL::BindGPUVertexBuffers(m_gPURenderPass, first_slot, bindings);
 }
 
 /**
@@ -6025,20 +6005,17 @@ inline void GPURenderPass::BindGPUIndexBuffer(
 inline void BindGPUVertexSamplers(
   GPURenderPass render_pass,
   Uint32 first_slot,
-  const GPUTextureSamplerBinding& texture_sampler_bindings,
-  Uint32 num_bindings)
+  std::span<const GPUTextureSamplerBinding> texture_sampler_bindings)
 {
-  SDL_BindGPUVertexSamplers(
-    render_pass, first_slot, &texture_sampler_bindings, num_bindings);
+  SDL_BindGPUVertexSamplers(render_pass, first_slot, texture_sampler_bindings);
 }
 
 inline void GPURenderPass::BindGPUVertexSamplers(
   Uint32 first_slot,
-  const GPUTextureSamplerBinding& texture_sampler_bindings,
-  Uint32 num_bindings)
+  std::span<const GPUTextureSamplerBinding> texture_sampler_bindings)
 {
   SDL::BindGPUVertexSamplers(
-    m_gPURenderPass, first_slot, texture_sampler_bindings, num_bindings);
+    m_gPURenderPass, first_slot, texture_sampler_bindings);
 }
 
 /**
@@ -6062,20 +6039,17 @@ inline void GPURenderPass::BindGPUVertexSamplers(
 inline void BindGPUVertexStorageTextures(
   GPURenderPass render_pass,
   Uint32 first_slot,
-  SDL_GPUTexture* const* storage_textures,
-  Uint32 num_bindings)
+  SpanRef<const GPUTextureRaw> storage_textures)
 {
-  SDL_BindGPUVertexStorageTextures(
-    render_pass, first_slot, storage_textures, num_bindings);
+  SDL_BindGPUVertexStorageTextures(render_pass, first_slot, storage_textures);
 }
 
 inline void GPURenderPass::BindGPUVertexStorageTextures(
   Uint32 first_slot,
-  SDL_GPUTexture* const* storage_textures,
-  Uint32 num_bindings)
+  SpanRef<const GPUTextureRaw> storage_textures)
 {
   SDL::BindGPUVertexStorageTextures(
-    m_gPURenderPass, first_slot, storage_textures, num_bindings);
+    m_gPURenderPass, first_slot, storage_textures);
 }
 
 /**
@@ -6096,22 +6070,20 @@ inline void GPURenderPass::BindGPUVertexStorageTextures(
  *
  * @sa GPUShader.GPUShader
  */
-inline void BindGPUVertexStorageBuffers(GPURenderPass render_pass,
-                                        Uint32 first_slot,
-                                        SDL_GPUBuffer* const* storage_buffers,
-                                        Uint32 num_bindings)
+inline void BindGPUVertexStorageBuffers(
+  GPURenderPass render_pass,
+  Uint32 first_slot,
+  SpanRef<const GPUBufferRaw> storage_buffers)
 {
-  SDL_BindGPUVertexStorageBuffers(
-    render_pass, first_slot, storage_buffers, num_bindings);
+  SDL_BindGPUVertexStorageBuffers(render_pass, first_slot, storage_buffers);
 }
 
 inline void GPURenderPass::BindGPUVertexStorageBuffers(
   Uint32 first_slot,
-  SDL_GPUBuffer* const* storage_buffers,
-  Uint32 num_bindings)
+  SpanRef<const GPUBufferRaw> storage_buffers)
 {
   SDL::BindGPUVertexStorageBuffers(
-    m_gPURenderPass, first_slot, storage_buffers, num_bindings);
+    m_gPURenderPass, first_slot, storage_buffers);
 }
 
 /**
@@ -6136,20 +6108,18 @@ inline void GPURenderPass::BindGPUVertexStorageBuffers(
 inline void BindGPUFragmentSamplers(
   GPURenderPass render_pass,
   Uint32 first_slot,
-  const GPUTextureSamplerBinding& texture_sampler_bindings,
-  Uint32 num_bindings)
+  std::span<const GPUTextureSamplerBinding> texture_sampler_bindings)
 {
   SDL_BindGPUFragmentSamplers(
-    render_pass, first_slot, &texture_sampler_bindings, num_bindings);
+    render_pass, first_slot, texture_sampler_bindings);
 }
 
 inline void GPURenderPass::BindGPUFragmentSamplers(
   Uint32 first_slot,
-  const GPUTextureSamplerBinding& texture_sampler_bindings,
-  Uint32 num_bindings)
+  std::span<const GPUTextureSamplerBinding> texture_sampler_bindings)
 {
   SDL::BindGPUFragmentSamplers(
-    m_gPURenderPass, first_slot, texture_sampler_bindings, num_bindings);
+    m_gPURenderPass, first_slot, texture_sampler_bindings);
 }
 
 /**
@@ -6173,20 +6143,17 @@ inline void GPURenderPass::BindGPUFragmentSamplers(
 inline void BindGPUFragmentStorageTextures(
   GPURenderPass render_pass,
   Uint32 first_slot,
-  SDL_GPUTexture* const* storage_textures,
-  Uint32 num_bindings)
+  SpanRef<const GPUTextureRaw> storage_textures)
 {
-  SDL_BindGPUFragmentStorageTextures(
-    render_pass, first_slot, storage_textures, num_bindings);
+  SDL_BindGPUFragmentStorageTextures(render_pass, first_slot, storage_textures);
 }
 
 inline void GPURenderPass::BindGPUFragmentStorageTextures(
   Uint32 first_slot,
-  SDL_GPUTexture* const* storage_textures,
-  Uint32 num_bindings)
+  SpanRef<const GPUTextureRaw> storage_textures)
 {
   SDL::BindGPUFragmentStorageTextures(
-    m_gPURenderPass, first_slot, storage_textures, num_bindings);
+    m_gPURenderPass, first_slot, storage_textures);
 }
 
 /**
@@ -6207,22 +6174,20 @@ inline void GPURenderPass::BindGPUFragmentStorageTextures(
  *
  * @sa GPUShader.GPUShader
  */
-inline void BindGPUFragmentStorageBuffers(GPURenderPass render_pass,
-                                          Uint32 first_slot,
-                                          SDL_GPUBuffer* const* storage_buffers,
-                                          Uint32 num_bindings)
+inline void BindGPUFragmentStorageBuffers(
+  GPURenderPass render_pass,
+  Uint32 first_slot,
+  SpanRef<const GPUBufferRaw> storage_buffers)
 {
-  SDL_BindGPUFragmentStorageBuffers(
-    render_pass, first_slot, storage_buffers, num_bindings);
+  SDL_BindGPUFragmentStorageBuffers(render_pass, first_slot, storage_buffers);
 }
 
 inline void GPURenderPass::BindGPUFragmentStorageBuffers(
   Uint32 first_slot,
-  SDL_GPUBuffer* const* storage_buffers,
-  Uint32 num_bindings)
+  SpanRef<const GPUBufferRaw> storage_buffers)
 {
   SDL::BindGPUFragmentStorageBuffers(
-    m_gPURenderPass, first_slot, storage_buffers, num_bindings);
+    m_gPURenderPass, first_slot, storage_buffers);
 }
 
 /**
